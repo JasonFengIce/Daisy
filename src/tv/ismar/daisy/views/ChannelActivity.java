@@ -1,5 +1,6 @@
 package tv.ismar.daisy.views;
 
+import tv.ismar.daisy.R;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.NavUtils;
