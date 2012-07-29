@@ -24,7 +24,6 @@ public class MainActivity extends Activity {
     @App
     MainApplication application;
 
-    @RestService
     MainClient client;
 
     @ViewById(R.id.myInput)
@@ -41,8 +40,7 @@ public class MainActivity extends Activity {
 
     @AfterInject
     void initialize() {
-        Object json = client.getChannels();
-        Log.i("TEST", json.toString());
+        //
     }
 
     @Override
