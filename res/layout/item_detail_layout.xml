@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:id="@+id/detail_left_container"
+        android:layout_width="1281dip"
+        android:layout_height="match_parent" >
+
+        <ImageView
+            android:layout_width="669dip"
+            android:layout_height="155dip"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/vod_watermark" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="80dip"
+            android:layout_marginTop="160dip"
+            android:orientation="vertical"
+            android:id="@+id/detail_attribute_container">
+
+            <TextView
+                android:id="@+id/detail_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFBBBBBB"
+                android:textSize="60sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/detail_intro"
+            android:layout_width="1172dip"
+            android:layout_height="273dip"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="110dip"
+            android:layout_marginLeft="68dip"
+            android:background="@drawable/detail_intro_bg"
+            android:lineSpacingExtra="20dip"
+            android:lines="4"
+            android:paddingLeft="13dip"
+            android:paddingRight="15dip"
+            android:paddingTop="23dip"
+            android:textColor="#FFBBBBBB"
+            android:textSize="35sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/detail_intro"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="81dip"
+            android:text="@string/introduction"
+            android:textColor="#FF999999"
+            android:textSize="35sp" />
+
+        <RelativeLayout
+            android:layout_width="480dip"
+            android:layout_height="447dip"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="116dip"
+            android:layout_marginTop="159dip" >
+
+            <ImageView
+                android:id="@+id/detail_preview_img"
+                android:layout_width="480dip"
+                android:layout_height="271dip"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="4dip"
+                android:padding="2dip"
+                android:background="@drawable/preview_img_bg" />
+
+            <Button
+                android:id="@+id/btn_left"
+                android:layout_width="240dip"
+                android:layout_height="80dip"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/detail_preview_img"
+                android:textSize="35sp"
+                android:textColor="#FFBBBBBB"
+                android:gravity="center"
+                android:background="@drawable/button_left"/>
+
+            <Button
+                android:id="@+id/btn_right"
+                android:layout_width="240dip"
+                android:layout_height="80dip"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/detail_preview_img"
+                android:textSize="35sp"
+                android:textColor="#FFBBBBBB"
+                android:gravity="center"
+                android:background="@drawable/button_right"/>
+
+            <Button
+                android:id="@+id/btn_fill"
+                android:layout_width="480dip"
+                android:layout_height="80dip"
+                android:layout_below="@id/detail_preview_img"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:visibility="gone"
+                android:text="@string/play"
+                android:textSize="35sp"
+                android:textColor="#FFBBBBBB"
+                android:background="@drawable/button_fill"/>
+
+            <Button
+                android:id="@+id/btn_favorite"
+                android:layout_width="186dip"
+                android:layout_height="69dip"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/favorite_btn"
+                android:textColor="#FFBBBBBB"
+                android:textSize="35sp"
+                android:paddingLeft="60dip"
+                android:paddingTop="3dip"
+                android:gravity="left|top"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/detail_right_container"
+        android:layout_width="639dip"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="left">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dip"
+            android:layout_marginTop="113dip"
+            android:text="@string/related_video"
+            android:textColor="#FFBBBBBB"
+            android:textSize="40sp" />
+
+        <ImageView
+            android:layout_width="558dip"
+            android:layout_height="5dip"
+            android:layout_marginTop="5dip"
+            android:layout_marginBottom="15dip"
+            android:src="@drawable/related_divider" />
+
+        <LinearLayout
+            android:id="@+id/related_video_container"
+            android:layout_width="match_parent"
+            android:layout_height="710dip"
+            android:orientation="vertical" >
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/more_content"
+            android:layout_width="247dip"
+            android:layout_height="68dip"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/more_btn"
+            android:textColor="#FFBBBBBB"
+            android:textSize="35dip" />
+    </LinearLayout>
+
+</LinearLayout>
