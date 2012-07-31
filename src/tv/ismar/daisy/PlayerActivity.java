@@ -1,10 +1,14 @@
 package tv.ismar.daisy;
 
 import tv.ismar.daisy.core.VodUserAgent;
+import tv.ismar.daisy.models.Clip;
+import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.player.ISTVVodMenu;
 import tv.ismar.daisy.player.ISTVVodMenuItem;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.AudioManager;
@@ -24,6 +28,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -34,14 +39,15 @@ import android.widget.VideoView;
 import com.ismartv.api.AccessProxy;
 import com.ismartv.bean.ClipInfo;
 
+
 public class PlayerActivity extends Activity {
 	private static final String TAG = "ISTVVodPlayer";
 
 	private static final String PREFS_NAME = "tv.ismar.daisy";
 
 	private static final int PANEL_HIDE_TIME = 6;
-	private static final int SHORT_FB_STEP = 30000;
-	private static final int SHORT_FF_STEP = 30000;
+	private static final int SHORT_FB_STEP = 10000;
+	private static final int SHORT_FF_STEP = 10000;
 	private static final int LONG_FB_PERCENT = 10;
 	private static final int LONG_FF_PERCENT = 10;
 	private static final int KEY_REPEAT_COUNT = 4;
@@ -58,6 +64,14 @@ public class PlayerActivity extends Activity {
 	public static final int RES_INT_OFFSET = 9;
 	public static final int RES_INT_EPISODE_REALCOUNT = 10;
 
+	public static final int DIALOG_OK_CANCEL=0;
+	public static final int DIALOG_RETRY_CANCEL=1;
+	public static final int DIALOG_IKNOW=2;
+	public static final int DIALOG_NET_BROKEN=3;
+	public static final int DIALOG_CANNOT_GET_DATA=4;
+	public static final int DIALOG_LOGIN=5;
+	public static final int DIALOG_ITEM_CLICK_NET_BROKEN=6;
+	
 	// private ISTVVodPlayerDoc doc;
 	private int itemPK = 18821;
 	private int subItemPK = -1;
@@ -128,21 +142,25 @@ public class PlayerActivity extends Activity {
 	private long mStartTime = 0;
 	
 	private TextView bufferText;
-	private String TempName = "幻影2000";
-	private int tempLength = 2000;
 	private int tempOffset = 0;
-	private int tempClipId = 205264;
-	
-	
+	private Item item;
+	private Clip clip;
+
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		/* before super, because onCreateVodMenu use subItemPK */
-		Bundle bundle = this.getIntent().getExtras();
-		if (bundle != null) {
-			itemPK = bundle.getInt("itemPK", itemPK);
-			subItemPK = bundle.getInt("subItemPK", subItemPK);
+//		Bundle bundle = this.getIntent().getExtras();
+//		if (bundle != null) {
+//			itemPK = bundle.getInt("itemPK", itemPK);
+//			subItemPK = bundle.getInt("subItemPK", subItemPK);
+//		}
+		Intent intent = getIntent();
+		if(intent!=null){
+			item = (Item) intent.getSerializableExtra("item");
+			itemPK = item.pk;
+			clip = item.clip;
 		}
 
 		super.onCreate(savedInstanceState);
@@ -415,10 +433,10 @@ public class PlayerActivity extends Activity {
 		Log.d(TAG, "RES_URL_CLIP_HIGH=" + info.getHigh());
 		urls[2] = info.getHigh();
 	
-		titleText.setText(TempName); // -----------------------------接口获得 name
+		titleText.setText(item.title); // -----------------------------接口获得 name
 		titleText.setSelected(true);
 	
-		clipLength = tempLength * 1000; // ------------------------------接口获得 影片时长
+		clipLength = clip.length * 1000; // ------------------------------接口获得 影片时长
 		Log.d(TAG, "RES_INT_CLIP_LENGTH=" + clipLength);
 	
 		clipBookmarked = true;
@@ -619,7 +637,10 @@ public class PlayerActivity extends Activity {
 				ret = true;
 			} else {
 				popupstatus = 2;
-			
+				showPopupDialog(
+						0,
+						getResources().getString(
+								R.string.vod_player_exit_dialog));
 				ret = true;
 			}
 			break;
@@ -646,10 +667,11 @@ public class PlayerActivity extends Activity {
 				gotoplayerfinishpage(itemPK);
 			}
 			needSeek = false;
-			videoView.seekTo(currPosition);
+			
 		} else {
 			needSeek = true;
 		}
+		videoView.seekTo(currPosition);
 		buffering = true;
 		seeking = true;
 	}
@@ -739,7 +761,7 @@ public class PlayerActivity extends Activity {
 			}else{
 				currPosition = 0 ;
 			}
-			videoView.setDrawingCacheEnabled(true);
+//			videoView.setDrawingCacheEnabled(true);
 			videoView.start();
 			showPanel();
 		}
@@ -888,27 +910,6 @@ public class PlayerActivity extends Activity {
 				setQuality(pos);
 			}
 		} 
-//		else if (id == 5) {
-//			
-//		} else if (id == 6) {
-//			gotorelatepage(itemPK);
-//		} else if (id == 8 || id == 9) {
-//			SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME,
-//					0).edit();
-//			if (id == 8) {
-//				isContinue = true;
-//				editor.putBoolean("continue_play", true);
-//			} else {
-//				isContinue = false;
-//				editor.putBoolean("continue_play", false);
-//			}
-//			editor.commit();
-//		} else if (id > 10) {
-//
-//			int index = id - 11;
-//
-//			
-//		}
 
 		return true;
 	}
@@ -1018,9 +1019,8 @@ public class PlayerActivity extends Activity {
 		protected ClipInfo doInBackground(String... arg0) {
 			String sn = VodUserAgent.getMACAddress();
 			AccessProxy.init(VodUserAgent.deviceType, VodUserAgent.deviceVersion, sn);
-			cinfo = AccessProxy.parse("http://cms.tvxio.com/api/clip/"+tempClipId+"/",VodUserAgent.getUserAgent(sn), PlayerActivity.this); // ------------------------------接口获得
-														// clip的id组成播放地址
-														// 例如：205264
+			cinfo = AccessProxy.parse("http://cms.tvxio.com/api/clip/"+clip.pk+"/",VodUserAgent.getUserAgent(sn), PlayerActivity.this); 
+														
 			return cinfo;
 
 		}
@@ -1068,7 +1068,7 @@ public class PlayerActivity extends Activity {
 				timeText.setText(text);
 				int val = currPosition * 100 / clipLength;
 				timeBar.setProgress(val);
-	//			bufferText.setText("Buffering..." + videoView.getBufferPercentage() + "%");
+				bufferText.setText("Buffering..." + videoView.getBufferPercentage() + "%");
 			}else{
 				showBuffer();
 				timeTaskPause();
@@ -1096,7 +1096,54 @@ public class PlayerActivity extends Activity {
 			hideMenuHandler.removeCallbacks(hideMenuRunnable);
 		}
 	};
+	private Dialog popupDlg = null;
 	
+	public void showPopupDialog(int type, String msg) {
+		if (type == DIALOG_OK_CANCEL ) {
+			popupDlg = new Dialog(this, R.style.PopupDialog);
+			View view;
+			LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			if((type==DIALOG_IKNOW) || (type==DIALOG_NET_BROKEN)||(type==DIALOG_ITEM_CLICK_NET_BROKEN)){
+				view = inflater.inflate(R.layout.popup_1btn, null);
+			}else{
+				view = inflater.inflate(R.layout.popup_2btn, null);
+			}
+			popupDlg.addContentView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+			TextView tv = (TextView)view.findViewById(R.id.PopupText);
+			tv.setText(msg);
+			Button btn1=null, btn2=null;
+			btn1 = (Button)view.findViewById(R.id.LeftButton);
+			btn1.setText(R.string.vod_ok);
+			btn2 = (Button)view.findViewById(R.id.RightButton);
+			btn2.setText(R.string.vod_cancel);
+			if(btn1!=null){
+				btn1.setOnClickListener(new View.OnClickListener() {
+					public void onClick(View v) {
+						if(popupDlg!=null){
+							popupDlg.dismiss();
+							PlayerActivity.this.finish();
+						}
+					};
+				});
+			}
+
+			if(btn2!=null){
+				btn2.setOnClickListener(new View.OnClickListener() {
+					public void onClick(View v) {
+						if(popupDlg!=null){
+							popupDlg.dismiss();
+						}
+					};
+				});
+			}
+			popupDlg.setOnDismissListener(new DialogInterface.OnDismissListener(){
+				public void onDismiss(DialogInterface dialog){
+					popupDlg = null;
+				}
+			});
+			popupDlg.show();
+		}
+	}
 	
 
 }

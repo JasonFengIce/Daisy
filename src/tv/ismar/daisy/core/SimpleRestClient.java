@@ -1,21 +1,13 @@
 package tv.ismar.daisy.core;
 
-import java.lang.reflect.Field;
-import java.util.Iterator;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.util.Log;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import tv.ismar.daisy.models.Attribute;
 import tv.ismar.daisy.models.ContentModelList;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemList;
 import tv.ismar.daisy.models.SectionList;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class SimpleRestClient {
 	public String root_url = "http://cord.tvxio.com";
