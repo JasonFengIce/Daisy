@@ -4,6 +4,7 @@ import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.ContentModel;
 import android.app.Application;
 
+
 public class VodApplication extends Application {
 
 	public static final String content_model_api = "/static/meta/content_model.json";
