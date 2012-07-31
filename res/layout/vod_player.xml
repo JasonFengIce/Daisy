@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RootRelativeLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/transparent"
+    android:foreground="@android:color/transparent" >
+
+    <VideoView
+        android:id="@+id/VideoView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+    </VideoView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:background="@android:color/transparent"
+        android:foreground="@android:color/transparent" >
+
+        <ImageView
+            android:id="@+id/LogoImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:alpha="0.8"
+            android:paddingRight="30px"
+            android:paddingTop="30px"
+            android:src="@drawable/logo31" />
+
+        <RelativeLayout
+            android:id="@+id/BufferLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"
+            android:foreground="@android:color/transparent" >
+
+            <ImageView
+                android:id="@+id/BufferBGImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/toast_bg" />
+
+            <LinearLayout
+                android:id="@+id/BufferLinearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@android:color/transparent"
+                android:foreground="@android:color/transparent"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/BufferImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/loading" />
+
+                <TextView
+                    android:id="@+id/BufferText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="30px" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/PanelLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/player_panel_bg"
+            android:foreground="@color/player_panel_fg"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/TitleLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/TitleText"
+                    android:layout_width="600px"
+                    android:layout_height="80px"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="80px"
+                    android:ellipsize="marquee"
+                    android:gravity="left"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:singleLine="true"
+                    android:textColor="@android:color/white"
+                    android:textSize="60px" />
+
+                <TextView
+                    android:id="@+id/TimeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80px"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="80px"
+                    android:gravity="right"
+                    android:paddingRight="40px"
+                    android:textColor="@android:color/white"
+                    android:textSize="40px" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/TitleLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingLeft="80px"
+                android:paddingRight="80px" >
+
+                <ImageView
+                    android:id="@+id/PlayPauseImage"
+                    android:layout_width="85px"
+                    android:layout_height="85px"
+                    android:layout_marginLeft="80px"
+                    android:src="@drawable/vod_player_pause" />
+
+                <ImageView
+                    android:id="@+id/FBImage"
+                    android:layout_width="43px"
+                    android:layout_height="35px"
+                    android:layout_marginLeft="20px"
+                    android:src="@drawable/vod_player_fb" />
+
+                <SeekBar
+                    android:id="@+id/TimeSeekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:max="100"
+                    android:paddingLeft="12px"
+                    android:paddingRight="12px"
+                    android:progressDrawable="@drawable/vod_player_time_prog"
+                    android:thumb="@drawable/vod_player_time_thumb" />
+
+                <ImageView
+                    android:id="@+id/FFImage"
+                    android:layout_width="42px"
+                    android:layout_height="35px"
+                    android:layout_marginRight="80px"
+                    android:src="@drawable/vod_player_ff" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/TipImage"
+                android:layout_width="1920px"
+                android:layout_height="80px"
+                android:scaleType="fitXY"
+                android:src="@drawable/vod_player_tip" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>
