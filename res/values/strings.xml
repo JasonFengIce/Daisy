@@ -92,6 +92,7 @@
 	<string name="vod_login_passwordprompt">Lenovo account password</string>
 	<string name="vod_login_passworderror">Retrieve password</string>	
 	<string name="vod_register">Register</string>	
+<!-- 	<string name="vod_loading">Loading</string> -->
 	<string name="vod_movielist_title_bookmark">bookmark</string> 
 	<string name="vod_bookmark_clear">Clear bookmark records</string>
 	<string name="vod_bookmark_clear_dialog">Confirm clear bookmark records?</string>

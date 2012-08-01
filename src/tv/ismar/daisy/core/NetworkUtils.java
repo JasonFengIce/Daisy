@@ -32,8 +32,6 @@ public class NetworkUtils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
 		return null;
 	}
 	
@@ -46,12 +44,9 @@ public class NetworkUtils {
 			conn.addRequestProperty("Accept", "application/json");
 			conn.connect();
 			return conn.getInputStream();
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
 		return null;
 	}
 }
