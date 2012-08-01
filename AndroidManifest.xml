@@ -16,11 +16,7 @@
             android:name=".DramaListActivity"
             android:label="@string/title_activity_main"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+          
         </activity>
         <activity android:name=".ChannelListActivity" >
             
@@ -33,6 +29,11 @@
                 <action android:name="tv.ismar.daisy.ItemDetail" />
 
                 <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".PlayerActivity">

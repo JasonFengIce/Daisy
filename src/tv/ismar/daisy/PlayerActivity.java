@@ -18,7 +18,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
-import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -309,12 +308,13 @@ public class PlayerActivity extends Activity {
 							seeking = false;
 							buffering = false;
 							firstPlay = false;
-
 							showBuffer();
-						} else {
-							gotoplayerfinishpage(itemPK);// ----------------到播放完成后的页面
-
+							gotoplayerfinishpage();
 						}
+//						else {
+//							gotoplayerfinishpage();// ----------------到播放完成后的页面
+//
+//						}
 					}
 				});
 		// videoView.setOnInfoListener(new MediaPlayer.OnInfoListener() {
@@ -658,17 +658,11 @@ public class PlayerActivity extends Activity {
 		Log.d(TAG, "seekTo currPosition=" + currPosition);
 		if (!prepared || !playing)
 			return;
-		if (!seeking) {
-			if (currPosition < 0)
-				currPosition = 0;
-			else if (currPosition > clipLength && clipLength != 0) {
-				currPosition = clipLength;
-				gotoplayerfinishpage(itemPK);
-			}
-			needSeek = false;
-
-		} else {
-			needSeek = true;
+		if (currPosition < 0)
+			currPosition = 0;
+		else if (currPosition > clipLength && clipLength != 0) {
+			currPosition = clipLength;
+			gotoplayerfinishpage();
 		}
 		videoView.seekTo(currPosition);
 		buffering = true;
@@ -913,17 +907,10 @@ public class PlayerActivity extends Activity {
 		return true;
 	}
 
-	private void gotoplayerfinishpage(int pk) {
-		if (pk == -1)
-			return;
-
-		Bundle bundle = new Bundle();
-		bundle.putInt("itemPK", pk);
-
-		Intent intent = new Intent();
-		intent.putExtras(bundle);
-
-		startActivityForResult(intent, 1);
+	private void gotoplayerfinishpage() {
+		Intent intent = new Intent("PlayFinishedActivity");
+		intent.putExtra("item", item);
+		startActivity(intent);
 		finish();
 	}
 
@@ -1056,14 +1043,12 @@ public class PlayerActivity extends Activity {
 
 	private Runnable mUpdateTimeTask = new Runnable() {
 		public void run() {
-			// System.out.println("videoView.isPlaying() == "+videoView.isPlaying());
 			if (videoView.isPlaying()) {
 				hideBuffer();
 				long tempTime = SystemClock.uptimeMillis();
 				currPosition += (int) (tempTime - mStartTime);
 				mStartTime = tempTime;
-				String text = getTimeString(currPosition) + "/"
-						+ getTimeString(clipLength);
+				String text = getTimeString(currPosition) + "/" + getTimeString(clipLength);
 				timeText.setText(text);
 				int val = currPosition * 100 / clipLength;
 				timeBar.setProgress(val);
