@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drama_gridview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="100dp"
+    android:listSelector="@drawable/grid_selector"
+    android:scrollbarDefaultDelayBeforeFade="60000"
+    android:scrollbarThumbVertical="@drawable/srollbar"
+    android:scrollbarTrackVertical="@drawable/srollbar_backgroud"
+    android:verticalSpacing="5dp" />
