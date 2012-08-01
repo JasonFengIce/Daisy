@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/RootRelativeLayout"
+	android:layout_width="fill_parent" 
+	android:layout_height="fill_parent"
+	android:background="@android:color/transparent"
+	android:foreground="@android:color/transparent"
+	>
+	<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+		android:id="@+id/MenuListView"
+		android:layout_width="520px"
+		android:layout_height="fill_parent"
+		android:layout_alignParentRight="true"
+		android:paddingTop="160px"
+		android:paddingBottom="160px"
+		android:foreground="@color/player_menu_fg"
+		android:background="@color/player_menu_bg"
+		android:visibility="invisible"
+	>
+	</ListView>
+</RelativeLayout>

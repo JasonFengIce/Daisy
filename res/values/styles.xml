@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+<<<<<<< HEAD
     <style name="tv_search_text" parent="android:Widget.TextView">
         <item name="android:textColor">@color/search_text_result</item>
         <item name="android:textSize">30dp</item>
@@ -17,5 +18,14 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@+android:style/Animation.Translucent</item>
     </style>
-
+=======
+    <style name="AppTheme" parent="android:Theme.Light" />
+	<style name="PopupDialog" parent="android:style/Theme.Dialog">
+		<item name="android:windowBackground">@android:color/transparent</item>
+		<item name="android:windowNoTitle">true</item>
+		<item name="android:windowIsFloating">true</item>
+		<item name="android:backgroundDimEnabled">false</item>
+	</style>
 </resources>
+>>>>>>> 15fbd302918113623af431d68ef3c106bd33b6fb
+
