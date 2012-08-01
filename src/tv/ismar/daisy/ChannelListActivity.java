@@ -3,25 +3,17 @@ package tv.ismar.daisy;
 import java.util.ArrayList;
 
 import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemList;
-import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
-import tv.ismar.daisy.views.ItemListContainer;
 import tv.ismar.daisy.views.ItemListScrollView;
 import tv.ismar.daisy.views.ItemListScrollView.OnSectionPrepareListener;
-import tv.ismar.daisy.views.MainItemsView;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View.OnFocusChangeListener;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.HorizontalScrollView;
-import android.widget.LinearLayout;
+import android.view.View.OnFocusChangeListener;
 
 public class ChannelListActivity extends Activity {
 
