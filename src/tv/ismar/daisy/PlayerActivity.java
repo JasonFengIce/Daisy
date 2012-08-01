@@ -1,5 +1,6 @@
 package tv.ismar.daisy;
 
+import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.models.Clip;
 import tv.ismar.daisy.models.Item;
@@ -158,7 +159,9 @@ public class PlayerActivity extends Activity {
 			Bundle bundle = this.getIntent().getExtras();
 			item = (Item) bundle.get("item");
 			itemPK = item.pk;
-			clip = item.clip;
+			if (item.clip != null) {
+				clip = item.clip;
+			} 
 		}
 
 		super.onCreate(savedInstanceState);
@@ -270,7 +273,8 @@ public class PlayerActivity extends Activity {
 
 		bufferLayout = (RelativeLayout) findViewById(R.id.BufferLayout);
 		bufferText = (TextView) bufferLayout.findViewById(R.id.BufferText);
-		bufferAnim = (AnimationDrawable) ((ImageView) findViewById(R.id.BufferImage)).getBackground();
+		bufferAnim = (AnimationDrawable) ((ImageView) findViewById(R.id.BufferImage))
+				.getBackground();
 
 		videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 			@Override
@@ -312,10 +316,10 @@ public class PlayerActivity extends Activity {
 							showBuffer();
 							gotoplayerfinishpage();
 						}
-//						else {
-//							gotoplayerfinishpage();// ----------------到播放完成后的页面
-//
-//						}
+						// else {
+						// gotoplayerfinishpage();// ----------------到播放完成后的页面
+						//
+						// }
 					}
 				});
 		// videoView.setOnInfoListener(new MediaPlayer.OnInfoListener() {
@@ -1049,7 +1053,8 @@ public class PlayerActivity extends Activity {
 				long tempTime = SystemClock.uptimeMillis();
 				currPosition += (int) (tempTime - mStartTime);
 				mStartTime = tempTime;
-				String text = getTimeString(currPosition) + "/" + getTimeString(clipLength);
+				String text = getTimeString(currPosition) + "/"
+						+ getTimeString(clipLength);
 				timeText.setText(text);
 				int val = currPosition * 100 / clipLength;
 				timeBar.setProgress(val);
