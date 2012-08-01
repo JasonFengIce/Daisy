@@ -127,14 +127,14 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 			break;
 		case R.id.btn_replay:
 			if (hasFocus) {
-				btnReplay.setTextColor(getResources().getColor(R.color.hotwords_test));
+				btnReplay.setTextColor(getResources().getColor(R.color.play_finished));
 			} else {
 				btnReplay.setTextColor(getResources().getColor(R.color.search_color));
 			}
 			break;
 		case R.id.btn_favorites:
 			if (hasFocus) {
-				btnFavorites.setTextColor(getResources().getColor(R.color.hotwords_test));
+				btnFavorites.setTextColor(getResources().getColor(R.color.play_finished));
 			} else {
 				btnFavorites.setTextColor(getResources().getColor(R.color.search_color));
 			}

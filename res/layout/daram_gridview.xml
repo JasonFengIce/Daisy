@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="100dp"
-    android:listSelector="@drawable/grid_selector"
+    android:listSelector="@drawable/daram_grid_selector"
     android:scrollbarDefaultDelayBeforeFade="60000"
     android:scrollbarThumbVertical="@drawable/srollbar"
     android:scrollbarTrackVertical="@drawable/srollbar_backgroud"

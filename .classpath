@@ -13,5 +13,6 @@
 	<classpathentry exported="true" kind="lib" path="libs/ormlite-android-4.41.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/ormlite-core-4.41.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/accessProxy4.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/androidannotations-2.6-api.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

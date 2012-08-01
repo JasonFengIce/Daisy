@@ -2,9 +2,7 @@ package tv.ismar.daisy.core;
 
 import java.lang.reflect.Type;
 
-import tv.ismar.daisy.models.Channel;
 import tv.ismar.daisy.models.ChannelList;
-
 import android.util.Log;
 
 import com.google.gson.JsonArray;
