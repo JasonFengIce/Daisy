@@ -52,6 +52,7 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		final SimpleRestClient simpleRest = new SimpleRestClient();
 		loadDialogShow();
 
+		
 		Intent intent = getIntent();
 		Bundle bundle = new Bundle();
 		bundle = intent.getExtras();
