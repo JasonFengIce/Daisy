@@ -8,7 +8,6 @@ import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.views.LoadingDialog;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -110,7 +109,6 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		}
 	};
 
-	@SuppressLint("ResourceAsColor")
 	@Override
 	public void onFocusChange(View v, boolean hasFocus) {
 		switch (v.getId()) {

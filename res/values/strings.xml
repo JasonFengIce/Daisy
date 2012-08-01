@@ -4,18 +4,15 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
-<<<<<<< HEAD
     <string name="vod_releted">相关推荐</string>
     <string name="daram_ji">集</string>
     <string name="daram_di">第 </string>
     <string name="daram_all">全 </string>
     <string name="daram_favorites">收藏</string>
     <string name="daram_restart">重播</string>
-    <string name="searching">搜索中请稍后...</string>
-    <string name="vod_loading">加载中请稍后...</string>
+    <string name="searching">搜索中请稍后#8230;</string>
+    <string name="vod_loading">加载中请稍后#8230;</string>
     
-
-=======
 	<string name="genre">类型</string>
     <string name="vendor">来源</string>
     <string name="length">时长</string>
@@ -95,7 +92,6 @@
 	<string name="vod_login_passwordprompt">Lenovo account password</string>
 	<string name="vod_login_passworderror">Retrieve password</string>	
 	<string name="vod_register">Register</string>	
-	<string name="vod_loading">Loading</string>
 	<string name="vod_movielist_title_bookmark">bookmark</string> 
 	<string name="vod_bookmark_clear">Clear bookmark records</string>
 	<string name="vod_bookmark_clear_dialog">Confirm clear bookmark records?</string>
@@ -118,5 +114,4 @@
 	<string name="area">area</string>
 	<string name="vod_login_success">login is successful</string>
 	<string name="vod_login_failed">login is failed</string>
->>>>>>> 15fbd302918113623af431d68ef3c106bd33b6fb
 </resources>

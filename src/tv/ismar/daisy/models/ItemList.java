@@ -11,8 +11,5 @@ public class ItemList implements Serializable {
 	public int num_pages;
 	public ArrayList<Item> objects;
 	public String slug;
-<<<<<<< HEAD
-=======
 	public String title;
->>>>>>> 15fbd302918113623af431d68ef3c106bd33b6fb
 }

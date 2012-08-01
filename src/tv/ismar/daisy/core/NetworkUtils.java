@@ -42,20 +42,11 @@ public class NetworkUtils {
 		try {
 			URL url = new URL(urlStr);
 			URLConnection conn = url.openConnection();
-<<<<<<< HEAD
 			conn.addRequestProperty("User-Agent", UA);
 			conn.addRequestProperty("Accept", "application/json");
 			conn.connect();
 			return conn.getInputStream();
-=======
-			StringBuffer sb = new StringBuffer();
-			conn.addRequestProperty("User-Agent", UA);
-			conn.addRequestProperty("Accept", "application/json");
-			conn.connect();
 			
-			return conn.getInputStream();
-			
->>>>>>> 15fbd302918113623af431d68ef3c106bd33b6fb
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
