@@ -52,7 +52,6 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		final SimpleRestClient simpleRest = new SimpleRestClient();
 		loadDialogShow();
 
-		
 		Intent intent = getIntent();
 		Bundle bundle = new Bundle();
 		bundle = intent.getExtras();
@@ -61,8 +60,6 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-//				String urls = "http://cord.tvxio.com/api/item/68409/";
-//				item = simpleRest.getItem(urls);
 				input = NetworkUtils.getInputStream(item.poster_url);
 				bitmap = ImageUtils.getBitmapFromInputStream(input, 480, 270);
 				mHandle.sendEmptyMessage(UPDATE_BITMAP);
@@ -86,6 +83,7 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		tvVodName = (TextView) findViewById(R.id.tv_vodie_name);
 		imageBackgroud = (ImageView) findViewById(R.id.image_vodie_backgroud);
 		btnReplay = (Button) findViewById(R.id.btn_replay);
+		btnReplay.setOnClickListener(this);
 		btnReplay.setOnFocusChangeListener(this);
 		btnFavorites = (Button) findViewById(R.id.btn_favorites);
 		btnFavorites.setOnFocusChangeListener(this);
@@ -154,17 +152,8 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 	public void onItemClick(AdapterView<?> adapterView, View view, int position, long postions) {
 		item = items[position];
 		Intent intent = new Intent();
-		Bundle bundle = new Bundle();
-		if (item.is_complex) {
-			bundle.putInt("itemPK", item.pk);
-			intent.setAction("com.ismartv.vod.item");
-			intent.putExtras(bundle);
-		} else {
-			bundle.putInt("itemPK", item.pk);
-			bundle.putInt("subItemPK", item.item_pk);
-			intent.setAction("com.ismartv.vod.play");
-			intent.putExtras(bundle);
-		}
+		intent.putExtra("url", item.item_url);
+		intent.setAction("tv.ismar.daisy.ItemDetail");
 		try {
 			startActivity(intent);
 		} catch (Exception e) {
@@ -177,19 +166,14 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		switch (v.getId()) {
 		case R.id.btn_replay:
 			Intent intent = new Intent();
-			Bundle bundle = new Bundle();
-			bundle.putInt("itemPK", item.pk);
-			bundle.putInt("subItemPK", item.item_pk);
-			intent.setAction("com.ismartv.vod.play");
-			intent.putExtras(bundle);
+			intent.putExtra("item", item);
+			intent.setAction("tv.ismar.daisy.Play");
 			try {
 				startActivity(intent);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
 			break;
-
 		default:
 			break;
 		}
