@@ -3,16 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    <HorizontalScrollView
-        android:id="@+id/scroll_container"
+    <tv.ismar.daisy.views.ItemListScrollView
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:id="@+id/inner_holder"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            ></LinearLayout>
-    </HorizontalScrollView>
+        android:layout_height="match_parent"
+        android:id="@+id/itemlist_scroll_view">
+        
+    </tv.ismar.daisy.views.ItemListScrollView>
 
 </LinearLayout>
