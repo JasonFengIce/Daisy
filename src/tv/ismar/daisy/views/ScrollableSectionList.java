@@ -1,9 +1,11 @@
 package tv.ismar.daisy.views;
 
+import tv.ismar.daisy.R;
 import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -37,6 +39,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 	}
 	
 	private void getSectionLabelLayout(Section section) {
+		LinearLayout sectionHolder = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.section_list_item, null);
 		
 	}
 }

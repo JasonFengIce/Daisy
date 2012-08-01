@@ -7,6 +7,17 @@
         android:id="@+id/section_label"
         android:layout_width="200dip"
         android:layout_height="52dip"
-        android:layout_marginBottom="6dip"/>
+        android:layout_marginBottom="6dip"
+        android:focusable="true"
+        android:textSize="35dip"
+        android:textColor="#FFBBBBBB"/>
+    
+    <ProgressBar
+        android:id="@+id/section_percentage"
+        android:layout_width="200dip"
+        android:layout_height="8dip"
+        android:progressDrawable="@drawable/section_percentage_selected"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:indeterminate="false"/>
 
 </LinearLayout>
