@@ -53,9 +53,11 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		loadDialogShow();
 
 		Intent intent = getIntent();
-		Bundle bundle = new Bundle();
-		bundle = intent.getExtras();
-		item = (Item) bundle.get("item");
+		if (null != intent) {
+			Bundle bundle = new Bundle();
+			bundle = intent.getExtras();
+			item = (Item) bundle.get("item");
+		}
 		// 实际这些已经封装好了
 		new Thread(new Runnable() {
 			@Override
@@ -150,9 +152,8 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 
 	@Override
 	public void onItemClick(AdapterView<?> adapterView, View view, int position, long postions) {
-		item = items[position];
 		Intent intent = new Intent();
-		intent.putExtra("url", item.item_url);
+		intent.putExtra("url", items[position].item_url);
 		intent.setAction("tv.ismar.daisy.ItemDetail");
 		try {
 			startActivity(intent);
