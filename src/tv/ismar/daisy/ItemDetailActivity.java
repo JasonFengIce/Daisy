@@ -3,7 +3,7 @@ package tv.ismar.daisy;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import tv.ismar.daisy.R;
+
 import tv.ismar.daisy.core.ImageUtils;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;

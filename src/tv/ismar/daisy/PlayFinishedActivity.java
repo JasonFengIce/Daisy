@@ -52,12 +52,17 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		final SimpleRestClient simpleRest = new SimpleRestClient();
 		loadDialogShow();
 
+		
+		Intent intent = getIntent();
+		Bundle bundle = new Bundle();
+		bundle = intent.getExtras();
+		item = (Item) bundle.get("item");
 		// 实际这些已经封装好了
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				String urls = "http://cord.tvxio.com/api/item/68409/";
-				item = simpleRest.getItem(urls);
+//				String urls = "http://cord.tvxio.com/api/item/68409/";
+//				item = simpleRest.getItem(urls);
 				input = NetworkUtils.getInputStream(item.poster_url);
 				bitmap = ImageUtils.getBitmapFromInputStream(input, 480, 270);
 				mHandle.sendEmptyMessage(UPDATE_BITMAP);
@@ -68,7 +73,7 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				items = simpleRest.getRelatedItem("/api/tv/relate/68409/");
+				items = simpleRest.getRelatedItem("/api/tv/relate/" + item.item_pk);
 				mHandle.sendEmptyMessage(UPDATE);
 			}
 		}) {
@@ -127,14 +132,14 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 			break;
 		case R.id.btn_replay:
 			if (hasFocus) {
-				btnReplay.setTextColor(getResources().getColor(R.color.hotwords_test));
+				btnReplay.setTextColor(getResources().getColor(R.color.play_finished));
 			} else {
 				btnReplay.setTextColor(getResources().getColor(R.color.search_color));
 			}
 			break;
 		case R.id.btn_favorites:
 			if (hasFocus) {
-				btnFavorites.setTextColor(getResources().getColor(R.color.hotwords_test));
+				btnFavorites.setTextColor(getResources().getColor(R.color.play_finished));
 			} else {
 				btnFavorites.setTextColor(getResources().getColor(R.color.search_color));
 			}

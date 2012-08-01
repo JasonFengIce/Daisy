@@ -10,7 +10,6 @@ import java.util.Set;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 import android.util.Base64;
 import android.util.Log;
 

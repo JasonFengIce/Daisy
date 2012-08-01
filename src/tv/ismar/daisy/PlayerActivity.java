@@ -908,7 +908,7 @@ public class PlayerActivity extends Activity {
 	}
 
 	private void gotoplayerfinishpage() {
-		Intent intent = new Intent("PlayFinishedActivity");
+		Intent intent = new Intent("tv.ismar.daisy.PlayFinished");
 		intent.putExtra("item", item);
 		startActivity(intent);
 		finish();

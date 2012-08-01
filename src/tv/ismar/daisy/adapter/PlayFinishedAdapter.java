@@ -1,8 +1,10 @@
 package tv.ismar.daisy.adapter;
 
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.FinshedImageService;
 import tv.ismar.daisy.models.Item;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
@@ -83,7 +85,7 @@ public class PlayFinishedAdapter extends BaseAdapter {
 			imageView = (ImageView) params[0];
 			imageLabel = (ImageView) params[1];
 			try {
-				return ImageService.getImage((Item) params[2]);
+				return FinshedImageService.getImage((Item) params[2]);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
