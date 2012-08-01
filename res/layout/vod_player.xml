@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/RootRelativeLayout"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@android:color/transparent"
     android:foreground="@android:color/transparent" >
 
     <VideoView
         android:id="@+id/VideoView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true">
     </VideoView>
 
     <RelativeLayout
@@ -35,6 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:text="@string/vod_player_buffering"
             android:background="@android:color/transparent"
             android:foreground="@android:color/transparent" >
 
@@ -100,7 +102,7 @@
                     android:marqueeRepeatLimit="marquee_forever"
                     android:singleLine="true"
                     android:textColor="@android:color/white"
-                    android:textSize="60px" />
+                    android:textSize="50px" />
 
                 <TextView
                     android:id="@+id/TimeText"
@@ -156,13 +158,6 @@
                     android:layout_marginRight="80px"
                     android:src="@drawable/vod_player_ff" />
             </LinearLayout>
-
-            <ImageView
-                android:id="@+id/TipImage"
-                android:layout_width="1920px"
-                android:layout_height="80px"
-                android:scaleType="fitXY"
-                android:src="@drawable/vod_player_tip" />
         </LinearLayout>
     </RelativeLayout>
 
