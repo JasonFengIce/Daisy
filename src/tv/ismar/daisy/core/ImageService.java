@@ -14,7 +14,7 @@ public class ImageService {
 
 	public static Object[] getImage(MovieBean movieBean) throws Exception {
 		Object[] object = new Object[4];
-		object[0] = (BitmapFactory.decodeStream(HttpUtil.getHttpConnectionByGet(movieBean.adlet_url).getInputStream()));
+		object[0] = (BitmapFactory.decodeStream(NetworkUtils.getInputStream(movieBean.adlet_url)));
 		int resourceLabel = 0;
 		String resourceType = null;
 		// movie 为电影
