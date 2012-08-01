@@ -49,17 +49,18 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.drama_list_main);
 		initViews();
-		final SimpleRestClient simpleRest = new SimpleRestClient();
 		loadDialogShow();
+		
+		Intent intent = getIntent();
+		Bundle bundle = intent.getExtras();
+		item  = (Item) bundle.get("item");
+		for (int i = 0; i < item.subitems.length; i++) {
+			subitems = item.subitems[i];
+			list.add(subitems);
+		}
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				String urls = "http://cord.tvxio.com/api/item/47160/";
-				item = simpleRest.getItem(urls);
-				for (int i = 0; i < item.subitems.length; i++) {
-					subitems = item.subitems[i];
-					list.add(subitems);
-				}
 				input = NetworkUtils.getInputStream(item.poster_url);
 				bitmap = ImageUtils.getBitmapFromInputStream(input, 480, 270);
 				mHandle.sendEmptyMessage(UPDATE);
