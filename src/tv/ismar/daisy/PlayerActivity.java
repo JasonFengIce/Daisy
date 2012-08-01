@@ -155,7 +155,8 @@ public class PlayerActivity extends Activity {
 		// }
 		Intent intent = getIntent();
 		if (intent != null) {
-			item = (Item) intent.getSerializableExtra("item");
+			Bundle bundle = this.getIntent().getExtras();
+			item = (Item) bundle.get("item");
 			itemPK = item.pk;
 			clip = item.clip;
 		}
