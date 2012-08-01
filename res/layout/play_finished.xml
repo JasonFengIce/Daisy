@@ -1,0 +1,112 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/vodbg"
+    android:baselineAligned="false"
+    android:orientation="horizontal" >
+
+    <!-- 左边整块 -->
+
+    <LinearLayout
+        android:id="@+id/linear_left"
+        android:layout_width="753px"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingRight="100dp" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp" >
+
+            <TextView
+                android:id="@+id/tv_vodie_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="45dp" />
+
+            <LinearLayout
+                android:id="@+id/linear_vodie_backgroud"
+                android:layout_width="480px"
+                android:layout_height="271px"
+                android:background="@drawable/image_back" >
+
+                <ImageView
+                    android:id="@+id/image_vodie_backgroud"
+                    android:layout_width="478px"
+                    android:layout_height="269px"
+                    android:layout_below="@+id/tv_vodie_name"
+                    android:layout_marginLeft="1px"
+                    android:layout_marginTop="1px"
+                    android:focusable="false" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_replay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linear_vodie_backgroud"
+                android:background="@drawable/poster_image_selector"
+                android:text="@string/daram_restart"
+                android:textSize="35dp" />
+
+            <Button
+                android:id="@+id/btn_favorites"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_replay"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/favorites_image_selector"
+                android:text="@string/daram_favorites"
+                android:textColor="@color/search_text_result"
+                android:textSize="35dp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <!-- 左边整块 -->
+    <!-- 右边整块 -->
+
+    <LinearLayout
+        android:id="@+id/linear_right"
+        android:layout_width="1170px"
+        android:layout_height="match_parent"
+        android:layout_weight="5"
+        android:background="@drawable/cover_right"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/tv_releted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:text="@string/vod_releted"
+                android:textSize="40dp" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_releted"
+                android:background="@drawable/related_dation" />
+        </RelativeLayout>
+
+        <GridView
+            android:id="@+id/gridview_related"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="45dp"
+            android:layout_weight="1"
+            android:listSelector="@drawable/play_grid_selector" >
+        </GridView>
+    </LinearLayout>
+    <!-- 右边整块 -->
+
+</LinearLayout>
