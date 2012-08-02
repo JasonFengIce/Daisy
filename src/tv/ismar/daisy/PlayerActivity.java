@@ -1,6 +1,5 @@
 package tv.ismar.daisy;
 
-import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.models.Clip;
 import tv.ismar.daisy.models.Item;
@@ -73,15 +72,20 @@ public class PlayerActivity extends Activity {
 	public static final int DIALOG_ITEM_CLICK_NET_BROKEN = 6;
 
 	// private ISTVVodPlayerDoc doc;
+	@SuppressWarnings("unused")
 	private int itemPK = 18821;
+	@SuppressWarnings("unused")
 	private int subItemPK = -1;
 	private String urls[] = new String[6];
+	@SuppressWarnings("unused")
 	private String itemTitle;
 
 	private int clipLength = 0;
 	private int currPosition = 0;
 	private int clipOffset = 0;
+	@SuppressWarnings("unused")
 	private boolean clipBookmarked = false;
+	@SuppressWarnings("unused")
 	private int episoderealcount;
 
 	// private URL currURL = null;
@@ -90,12 +94,14 @@ public class PlayerActivity extends Activity {
 	private boolean urlUpdate = false;
 	private boolean playing = false;
 	private boolean prepared = false;
+	@SuppressWarnings("unused")
 	private boolean buffering = false;
 	private boolean seeking = false;
 	private boolean needSeek = false;
 	private boolean paused = false;
 	private boolean panelShow = false;
 	private boolean bufferShow = false;
+	@SuppressWarnings("unused")
 	private int panelHideCounter = 0;
 
 	private Animation panelShowAnimation;
@@ -118,18 +124,20 @@ public class PlayerActivity extends Activity {
 	private boolean keyOKDown = false;
 	private boolean keyLeftDown = false;
 	private boolean keyRightDown = false;
+	@SuppressWarnings("unused")
 	private boolean seekBarDown = false;
 	private int keyLeftRepeat = 0;
 	private int keyRightRepeat = 0;
 
 	private boolean firstPlay;
-
+	@SuppressWarnings("unused")
 	private int popupstatus = 0;
 	/*
 	 * private VodTimer replayTimer; private boolean replaytimerflag = false;
 	 */
 
 	private boolean isContinue = true;
+	@SuppressWarnings("unused")
 	private boolean isChangeUrl = false;
 	private ISTVVodMenu menu = null;
 	private boolean winOK = false;
@@ -139,7 +147,7 @@ public class PlayerActivity extends Activity {
 	// 播放时间轴计时器
 	private Handler mHandler = new Handler();
 	private long mStartTime = 0;
-
+	@SuppressWarnings("unused")
 	private TextView bufferText;
 	private int tempOffset = 0;
 	private Item item;
@@ -296,30 +304,22 @@ public class PlayerActivity extends Activity {
 					public void onCompletion(MediaPlayer mp) {
 						Log.d(TAG, "!!!!!!!!!video complete");
 						clipOffset = -1;
-						storeOffset();
-						int sub = 3333;// ----------接口获得subid 获得
-						if (sub != -1) {
-							for (int i = 0; i < 4; i++) {
-								urls[i] = null;
-							}
-							itemTitle = null;
-							clipLength = 0;
-							currPosition = 0;
-							currURL = null;
-							currQuality = 0;
-							urlUpdate = false;
-							playing = false;
-							prepared = false;
-							seeking = false;
-							buffering = false;
-							firstPlay = false;
-							showBuffer();
-							gotoplayerfinishpage();
+						for (int i = 0; i < 4; i++) {
+							urls[i] = null;
 						}
-						// else {
-						// gotoplayerfinishpage();// ----------------到播放完成后的页面
-						//
-						// }
+						itemTitle = null;
+						clipLength = 0;
+						currPosition = 0;
+						currURL = null;
+						currQuality = 0;
+						urlUpdate = false;
+						playing = false;
+						prepared = false;
+						seeking = false;
+						buffering = false;
+						firstPlay = false;
+						showBuffer();
+						gotoplayerfinishpage();
 					}
 				});
 		// videoView.setOnInfoListener(new MediaPlayer.OnInfoListener() {
@@ -382,6 +382,7 @@ public class PlayerActivity extends Activity {
 		return true;
 	}
 
+	@SuppressWarnings("unused")
 	private void seekComplete() {
 		if (!seeking)
 			return;
@@ -424,18 +425,18 @@ public class PlayerActivity extends Activity {
 	}
 
 	protected void onDocGotResource(ClipInfo info) {
-		Log.d(TAG, "RES_URL_CLIP_ADAPTIVE=" + info.getAdaptive());
+//		Log.d(TAG, "RES_URL_CLIP_ADAPTIVE=" + info.getAdaptive());
 		urlUpdate = true;
-		Log.d(TAG, "RES_URL_CLIP_ADAPTIVE=" + info.getAdaptive());
+//		Log.d(TAG, "RES_URL_CLIP_ADAPTIVE=" + info.getAdaptive());
 		urls[3] = info.getAdaptive();
 
-		Log.d(TAG, "RES_URL_CLIP_MEDIUM=" + info.getMedium());
+//		Log.d(TAG, "RES_URL_CLIP_MEDIUM=" + info.getMedium());
 		urls[1] = info.getMedium();
 
-		Log.d(TAG, "RES_URL_CLIP_NORMAL=" + info.getNormal());
+//		Log.d(TAG, "RES_URL_CLIP_NORMAL=" + info.getNormal());
 		urls[0] = info.getNormal();
 
-		Log.d(TAG, "RES_URL_CLIP_HIGH=" + info.getHigh());
+//		Log.d(TAG, "RES_URL_CLIP_HIGH=" + info.getHigh());
 		urls[2] = info.getHigh();
 
 		titleText.setText(item.title);
@@ -768,7 +769,6 @@ public class PlayerActivity extends Activity {
 	private void stopVideo() {
 		if (!playing)
 			return;
-		storeOffset();
 		videoView.stopPlayback();
 		showBuffer();
 		playing = false;
@@ -777,16 +777,11 @@ public class PlayerActivity extends Activity {
 		showPanel();
 	}
 
-	private void storeOffset() {
-		int offset = (clipOffset == -1) ? -1 : (currPosition / 1000);
-
-	}
+	
 
 	@Override
 	protected void onPause() {
 		Log.d(TAG, "!!!!!!!!!onPause");
-
-		storeOffset();
 		stopVideo();
 		super.onPause();
 	}
@@ -800,39 +795,11 @@ public class PlayerActivity extends Activity {
 		startVideo();
 	}
 
-	private boolean episodeSubMenuCreated = false;
 
-	private void addEpisodeSubMenu(ISTVVodMenu menu) {
-		if (episodeSubMenuCreated)
-			return;
-
-		ISTVVodMenuItem episode_sub;
-
-		episode_sub = menu.addSubMenu(10,
-				getResources().getString(R.string.vod_player_episode));
-		int i = 11;
-		int j = 0;
-		for (i = 11, j = 0; j < episoderealcount; i++, j++) {
-			int spisodenum = j + 1;
-
-			String str_tmp1 = getResources().getString(
-					R.string.vod_player_prefixepisode);
-			String str_tmp2 = new Integer(spisodenum).toString();
-			String str_tmp3 = getResources().getString(
-					R.string.vod_player_postfixepisode);
-
-			episode_sub.addItem(i, str_tmp1 + str_tmp2 + str_tmp3);
-		}
-
-		menu.enable_scroll(false);
-
-		episodeSubMenuCreated = true;
-		// }
-	}
+	
 
 	public boolean onCreateVodMenu(ISTVVodMenu menu) {
 		ISTVVodMenuItem sub;
-		ISTVVodMenuItem episode_sub;
 
 		sub = menu.addSubMenu(0,
 				getResources().getString(R.string.vod_player_quality_setting));
@@ -876,16 +843,6 @@ public class PlayerActivity extends Activity {
 				item.unselect();
 			}
 		}
-
-		episodeSubMenuCreated = false;
-		// addEpisodeSubMenu(menu);
-
-		// menu.setTitle(
-		// 5,
-		// getResources().getString(
-		// !clipBookmarked ? R.string.vod_player_bookmark_setting
-		// : R.string.vod_player_remove_bookmark_setting));
-
 		if (panelShow) {
 			hidePanel();
 		}
@@ -919,18 +876,7 @@ public class PlayerActivity extends Activity {
 		finish();
 	}
 
-	private void gotorelatepage(int pk) {
-		if (pk == -1)
-			return;
-
-		Bundle bundle = new Bundle();
-		bundle.putInt("itemPK", pk);
-
-		Intent intent = new Intent();
-		intent.putExtras(bundle);
-
-		startActivityForResult(intent, 1);
-	}
+	
 
 	public void replayVideo() {
 		if (playing) {
@@ -1017,24 +963,20 @@ public class PlayerActivity extends Activity {
 	}
 
 	private void showBuffer() {
-		if (!bufferShow) {
 			Log.d(TAG, "show buffer");
 			bufferLayout.startAnimation(bufferShowAnimation);
 			bufferLayout.setVisibility(View.VISIBLE);
 			bufferAnim.start();
-			bufferShow = true;
-		}
+			bufferShow = true;	
 	}
 
-	private void hideBuffer() {
-		if (bufferShow) {
+	private void hideBuffer() {	
 			Log.d(TAG, "hide buffer");
 			bufferLayout.startAnimation(bufferHideAnimation);
 			bufferLayout.setVisibility(View.GONE);
 			bufferAnim.stop();
 			bufferShow = false;
 
-		}
 	}
 
 	private void timeTaskStart() {
@@ -1049,7 +991,10 @@ public class PlayerActivity extends Activity {
 	private Runnable mUpdateTimeTask = new Runnable() {
 		public void run() {
 			if (videoView.isPlaying()) {
-				hideBuffer();
+				if(bufferShow){
+					hideBuffer();
+					bufferShow = false;
+				}
 				long tempTime = SystemClock.uptimeMillis();
 				currPosition += (int) (tempTime - mStartTime);
 				mStartTime = tempTime;
