@@ -42,7 +42,6 @@ public class DaramAdapter extends BaseAdapter {
 
 	Subitem subitem;
 	ViewHolder holder;
-
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		subitem = getItem(position);
