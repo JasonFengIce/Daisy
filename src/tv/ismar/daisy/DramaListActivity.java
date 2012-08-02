@@ -38,7 +38,6 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 	private TextView tvDramaAll;
 	private TextView tvDramaType;
 
-	private InputStream input;
 	private Bitmap bitmap;
 
 	private LoadingDialog loadDialog;
@@ -51,8 +50,9 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 		initViews();
 		loadDialogShow();
 		
-		Intent intent = getIntent();
-		Bundle bundle = intent.getExtras();
+		Bundle bundle = getIntent().getExtras();
+		if (null == bundle) 
+			return;
 		item  = (Item) bundle.get("item");
 		for (int i = 0; i < item.subitems.length; i++) {
 			subitems = item.subitems[i];
@@ -61,8 +61,7 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				input = NetworkUtils.getInputStream(item.poster_url);
-				bitmap = ImageUtils.getBitmapFromInputStream(input, 480, 270);
+				bitmap = ImageUtils.getBitmapFromInputStream(NetworkUtils.getInputStream(item.poster_url), 480, 270);
 				mHandle.sendEmptyMessage(UPDATE);
 			}
 		}) {
