@@ -78,7 +78,6 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 	}
 
 	private void initViews() {
-		
 		linearLeft = (LinearLayout) findViewById(R.id.linear_left);
 		linearRight = (LinearLayout) findViewById(R.id.linear_right);
 		tvVodName = (TextView) findViewById(R.id.tv_vodie_name);
@@ -96,7 +95,6 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		gridview.setVerticalSpacing(40);
 		gridview.setHorizontalSpacing(100);
 		loadDialog = new LoadingDialog(this, getString(R.string.vod_loading));
-		
 	}
 
 	private Handler mHandle = new Handler() {
