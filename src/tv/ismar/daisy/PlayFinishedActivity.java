@@ -34,6 +34,7 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 
 	TextView tvVodName;
 	ImageView imageBackgroud;
+	ImageView imageVodLabel;
 	Button btnReplay;
 	Button btnFavorites;
 	GridView gridview;
@@ -51,12 +52,9 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		initViews();
 		final SimpleRestClient simpleRest = new SimpleRestClient();
 		loadDialogShow();
-
 		Intent intent = getIntent();
 		if (null != intent) {
-			Bundle bundle = new Bundle();
-			bundle = intent.getExtras();
-			item = (Item) bundle.get("item");
+			item = (Item) intent.getExtras().get("item");
 		}
 		// 实际这些已经封装好了
 		new Thread(new Runnable() {
@@ -84,6 +82,7 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		linearRight = (LinearLayout) findViewById(R.id.linear_right);
 		tvVodName = (TextView) findViewById(R.id.tv_vodie_name);
 		imageBackgroud = (ImageView) findViewById(R.id.image_vodie_backgroud);
+		imageVodLabel = (ImageView) findViewById(R.id.image_vod_label);
 		btnReplay = (Button) findViewById(R.id.btn_replay);
 		btnReplay.setOnClickListener(this);
 		btnReplay.setOnFocusChangeListener(this);
@@ -108,6 +107,17 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 				break;
 			case UPDATE_BITMAP:
 				tvVodName.setText(item.title);
+				switch (item.quality) {
+				case 3:
+					imageVodLabel.setBackgroundResource(R.drawable.label_uhd);
+					break;
+				case 4:
+					imageVodLabel.setBackgroundResource(R.drawable.label_hd);
+					break;
+				default:
+					imageVodLabel.setVisibility(View.GONE);
+					break;
+				}
 				imageBackgroud.setImageBitmap(bitmap);
 				loadDialogShow();
 			}

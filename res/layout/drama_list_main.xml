@@ -13,20 +13,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="480px"
             android:layout_height="271px"
-            android:background="@drawable/image_back"
-            android:layout_marginLeft="10dp" >
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/image_back" >
 
             <ImageView
                 android:id="@+id/image_daram_back"
-                android:layout_marginTop="1px"
-                android:layout_marginLeft="1px"
                 android:layout_width="478px"
                 android:layout_height="269px"
+                android:layout_marginLeft="1px"
+                android:layout_marginTop="1px"
                 android:focusable="false" />
-        </LinearLayout>
+
+            <ImageView
+                android:id="@+id/image_daram_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/image_daram_back"
+                android:layout_alignTop="@+id/image_daram_back"
+                android:layout_marginRight="-3px"
+                android:layout_marginTop="-3px" />
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"

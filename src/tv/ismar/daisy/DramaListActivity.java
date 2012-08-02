@@ -1,13 +1,11 @@
 package tv.ismar.daisy;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import tv.ismar.daisy.adapter.DaramAdapter;
 import tv.ismar.daisy.core.ImageUtils;
 import tv.ismar.daisy.core.NetworkUtils;
-import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.Subitem;
 import tv.ismar.daisy.views.LoadingDialog;
@@ -34,6 +32,7 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 	private GridView daramView;
 
 	private ImageView imageBackgroud;
+	private ImageView imageDaramLabel;
 	private TextView tvDramaName;
 	private TextView tvDramaAll;
 	private TextView tvDramaType;
@@ -76,6 +75,7 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 		daramView.setVerticalSpacing(50);
 
 		imageBackgroud = (ImageView) findViewById(R.id.image_daram_back);
+		imageDaramLabel = (ImageView) findViewById(R.id.image_daram_label);
 		tvDramaName = (TextView) findViewById(R.id.tv_drama_name);
 		tvDramaAll = (TextView) findViewById(R.id.tv_daram_all);
 		tvDramaType = (TextView) findViewById(R.id.tv_daram_type);
@@ -93,6 +93,17 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 				tvDramaAll.setText(item.episode + getString(R.string.daram_ji) + getString(R.string.daram_all) + "  /");
 				// 显示图片
 				imageBackgroud.setImageBitmap(bitmap);
+				switch (item.quality) {
+				case 3:
+					imageDaramLabel.setBackgroundResource(R.drawable.label_uhd);
+					break;
+				case 4:
+					imageDaramLabel.setBackgroundResource(R.drawable.label_hd);
+					break;
+				default:
+					imageDaramLabel.setVisibility(View.GONE);
+					break;
+				}
 				daram = new DaramAdapter(DramaListActivity.this, list, R.layout.drama_gridview_item);
 				daramView.setAdapter(daram);
 				loadDialogShow();
