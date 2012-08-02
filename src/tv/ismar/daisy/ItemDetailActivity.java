@@ -380,7 +380,7 @@ public class ItemDetailActivity extends Activity {
 			if(hasFocus) {
 				mDetailRightContainer.setBackgroundResource(R.drawable.right_bg_normal);
 				mDetailLeftContainer.setBackgroundResource(android.R.color.transparent);
-				((Button)v).setTextColor(0x08000000);
+				((Button)v).setTextColor(0xff000000);
 			} else {
 				((Button)v).setTextColor(0xffbbbbbb);
 			}

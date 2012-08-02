@@ -6,14 +6,16 @@ import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.ItemList;
 import tv.ismar.daisy.models.SectionList;
 import tv.ismar.daisy.views.ItemListScrollView;
+import tv.ismar.daisy.views.ItemListScrollView.OnColumnChangeListener;
+import tv.ismar.daisy.views.ItemListScrollView.OnItemClickedListener;
 import tv.ismar.daisy.views.ItemListScrollView.OnSectionPrepareListener;
+import tv.ismar.daisy.views.ScrollableSectionList;
+import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnFocusChangeListener;
+import android.widget.TextView;
 
 public class ChannelListActivity extends Activity {
 
@@ -24,13 +26,21 @@ public class ChannelListActivity extends Activity {
 	
 	private ArrayList<ItemList> mItemLists;
 	
-	
 	private ItemListScrollView mItemListScrollView;
 	
+	private ScrollableSectionList mScrollableSectionList;
+	
+	private TextView mChannelLabel;
 	
 	private void initViews() {
 		mItemListScrollView = (ItemListScrollView) findViewById(R.id.itemlist_scroll_view);
 		mItemListScrollView.setOnSectionPrepareListener(mOnSectionPrepareListener);
+		mItemListScrollView.setOnColumnChangeListener(mOnColumnChangeListener);
+		mItemListScrollView.setOnItemClickedListener(mOnItemClickedListener);
+		mScrollableSectionList = (ScrollableSectionList) findViewById(R.id.section_tabs);
+		mScrollableSectionList.setOnSectionSelectChangeListener(mOnSectionSelectChangedListener);
+		
+		mChannelLabel = (TextView) findViewById(R.id.channel_label);
 	}
 	
 	@Override
@@ -39,15 +49,27 @@ public class ChannelListActivity extends Activity {
 		setContentView(R.layout.list_view);
 		initViews();
 		Intent intent = getIntent();
+		String url = null;
+		String title = null;
 		if(intent!=null){
-			String url = intent.getStringExtra("url");
-			if(url==null) {
-				url = "http://cord.tvxio.com/api/tv/sections/chinesemovie/";
+			Bundle bundle = intent.getExtras();
+			if(bundle!=null){
+				url =bundle.getString("url");
+				
+				title = bundle.getString("title");
+				
+				
 			}
-			new InitTask().execute(url);
 		}
+		if(url==null) {
+			url = "http://cord.tvxio.com/api/tv/sections/chinesemovie/";
+		}
+		if(title==null) {
+			title = "华语电影";
+		}
+		mChannelLabel.setText(title);
+		new InitTask().execute(url);
 	}
-	
 	
 	
 	class InitTask extends AsyncTask<String, Void, Void> {
@@ -78,9 +100,12 @@ public class ChannelListActivity extends Activity {
 		@Override
 		protected void onPostExecute(Void result) {
 			if(mSectionList!=null && mItemLists.get(0)!=null) {
+				mScrollableSectionList.init(mSectionList);
 				for(int i=0; i<mItemLists.size(); i++) {
 					mItemListScrollView.addSection(mItemLists.get(i), i);
 				}
+				int totalColumnsOfSection0 = mItemListScrollView.getTotalColumnCount(0);
+				mScrollableSectionList.setPercentage(0, (int)(1f/(float)totalColumnsOfSection0*100f));
 			}
 			new GetItemListTask().execute();
 			super.onPostExecute(result);
@@ -126,21 +151,7 @@ public class ChannelListActivity extends Activity {
 			}
 		}
 		
-		
-		
 	}
-	
-	private OnFocusChangeListener mFocusChangeListener = new OnFocusChangeListener() {
-		
-		@Override
-		public void onFocusChange(View v, boolean hasFocus) {
-			String slug = (String) v.getTag();
-			Log.d("Current", slug);
-//			if(slug.equals(mNextItemList.slug)){
-//				mContainer.snapToView(1);
-//			}
-		}
-	};
 	
 	private OnSectionPrepareListener mOnSectionPrepareListener = new OnSectionPrepareListener() {
 		
@@ -154,6 +165,37 @@ public class ChannelListActivity extends Activity {
 		}
 	};
 	
+	private OnSectionSelectChangedListener mOnSectionSelectChangedListener = new OnSectionSelectChangedListener() {
+		
+		@Override
+		public void onSectionSelectChanged(int index) {
+			if(mItemLists.get(index).objects!=null){
+				mItemListScrollView.updateSection(mItemLists.get(index), index);
+			} else {
+				new GetItemListTask().execute(mItemLists.get(index).slug, mSectionList.get(index).url);
+			}
+			mItemListScrollView.jumpToSection(index);
+		}
+	};
+	
+	private OnColumnChangeListener mOnColumnChangeListener = new OnColumnChangeListener() {
+		
+		@Override
+		public void onColumnChanged(int position, int column, int totalColumn) {
+			int percentage = (int)((float)(column+1)/(float)totalColumn*100f);
+			mScrollableSectionList.setPercentage(position, percentage);
+		}
+	};
+	
+	private OnItemClickedListener mOnItemClickedListener = new OnItemClickedListener() {
+		
+		@Override
+		public void onItemClicked(String url) {
+			Intent intent = new Intent("tv.ismar.daisy.ItemDetail");
+			intent.putExtra("url", url);
+			startActivity(intent);
+		}
+	};
 
 	@Override
 	protected void onResume() {

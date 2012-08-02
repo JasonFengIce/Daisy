@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
     <TextView
         android:id="@+id/section_label"
@@ -10,13 +10,14 @@
         android:layout_marginBottom="6dip"
         android:focusable="true"
         android:textSize="35dip"
-        android:textColor="#FFBBBBBB"/>
+        android:textColor="#FFBBBBBB"
+        android:gravity="center"/>
     
     <ProgressBar
         android:id="@+id/section_percentage"
         android:layout_width="200dip"
         android:layout_height="8dip"
-        android:progressDrawable="@drawable/section_percentage_selected"
+        android:progressDrawable="@drawable/section_percentage_noselected"
         style="@android:style/Widget.ProgressBar.Horizontal"
         android:indeterminate="false"/>
 
