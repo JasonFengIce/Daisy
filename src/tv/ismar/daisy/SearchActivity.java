@@ -39,7 +39,7 @@ import com.googlecode.androidannotations.annotations.ItemClick;
 import com.googlecode.androidannotations.annotations.UiThread;
 import com.googlecode.androidannotations.annotations.ViewById;
 
-@EActivity(R.layout.main)
+@EActivity(R.layout.search_main)
 public class SearchActivity extends Activity {
 	// 缓存适配器
 	ImageCacheAdapter imageAdapter;
@@ -247,7 +247,7 @@ public class SearchActivity extends Activity {
 			}
 			setSearchResult(movieList.size());
 			movieList = SortMovieUtils.sort(movieList);
-			imageAdapter = new ImageCacheAdapter(SearchActivity.this, movieList, R.layout.grid_view_item);
+			imageAdapter = new ImageCacheAdapter(SearchActivity.this, movieList, R.layout.search_grid_view_item);
 			gridView.setAdapter(imageAdapter);
 			break;
 		case UPDATE_ADAPTER:
@@ -257,7 +257,7 @@ public class SearchActivity extends Activity {
 				return;
 			setSearchResult(movieList.size());
 			movieList = SortMovieUtils.sort(movieList);
-			imageAdapter = new ImageCacheAdapter(SearchActivity.this, movieList, R.layout.grid_view_item);
+			imageAdapter = new ImageCacheAdapter(SearchActivity.this, movieList, R.layout.search_grid_view_item);
 			gridView.setAdapter(imageAdapter);
 			break;
 		case UPDATE_SUGGEST:
