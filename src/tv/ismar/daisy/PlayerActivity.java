@@ -1059,8 +1059,8 @@ public class PlayerActivity extends Activity {
 				int val = currPosition * 100 / clipLength;
 				timeBar.setProgress(val);
 			} else {
-				showBuffer();
 				timeTaskPause();
+				showBuffer();
 			}
 			mHandler.postDelayed(mUpdateTimeTask, 200);
 		}
