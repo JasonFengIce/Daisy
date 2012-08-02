@@ -96,6 +96,7 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		gridview.setVerticalSpacing(40);
 		gridview.setHorizontalSpacing(100);
 		loadDialog = new LoadingDialog(this, getString(R.string.vod_loading));
+		
 	}
 
 	private Handler mHandle = new Handler() {
