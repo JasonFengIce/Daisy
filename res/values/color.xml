@@ -21,6 +21,8 @@
     <color name="search_background">#1e979f</color>
     <!-- 搜索到结果文字  白灰 -->
     <color name="search_text_result">#D4D6D7</color>
+    <!-- 搜索推荐   黑灰 -->
+    <color name="search_words">#333333</color>
     <!-- 搜索按钮 黄色 -->
 	<color name ="player_panel_bg" >#CC000000</color>
 	<color name ="player_panel_fg" >#CC000000</color>

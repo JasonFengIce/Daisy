@@ -1,5 +1,6 @@
 package tv.ismar.daisy.views;
 
+import tv.ismar.daisy.R;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.FloatMath;

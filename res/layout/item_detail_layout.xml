@@ -86,6 +86,7 @@
                 android:layout_below="@id/detail_preview_img"
                 android:textSize="35sp"
                 android:textColor="#FFBBBBBB"
+                android:text="@string/play"
                 android:gravity="center"
                 android:background="@drawable/button_left"/>
 
@@ -98,6 +99,7 @@
                 android:textSize="35sp"
                 android:textColor="#FFBBBBBB"
                 android:gravity="center"
+                android:text="@string/vod_itemepisode"
                 android:background="@drawable/button_right"/>
 
             <Button
@@ -149,6 +151,7 @@
             android:layout_height="5dip"
             android:layout_marginTop="5dip"
             android:layout_marginBottom="15dip"
+            android:layout_marginLeft="40dip"
             android:src="@drawable/related_divider" />
 
         <LinearLayout

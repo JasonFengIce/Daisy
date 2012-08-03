@@ -11,6 +11,7 @@ import com.google.gson.GsonBuilder;
 
 public class SimpleRestClient {
 	public String root_url = "http://cord.tvxio.com";
+//	public String root_url = "http://127.0.0.1:21098/cord";
 
 	private Gson gson;
 
@@ -48,4 +49,5 @@ public class SimpleRestClient {
 		String jsonStr = NetworkUtils.getJsonStr(root_url + api);
 		return gson.fromJson(jsonStr, Item[].class);
 	}
+	
 }

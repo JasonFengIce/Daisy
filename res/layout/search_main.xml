@@ -119,7 +119,7 @@
 
         <include
             android:id="@id/gridview"
-            layout="@layout/grid_view" />
+            layout="@layout/search_grid_view" />
     </LinearLayout>
 
 </LinearLayout>
