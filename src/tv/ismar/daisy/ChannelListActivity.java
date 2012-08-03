@@ -1,5 +1,6 @@
 package tv.ismar.daisy;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -62,10 +63,13 @@ public class ChannelListActivity extends Activity {
 			}
 		}
 		if(url==null) {
-			url = "http://cord.tvxio.com/api/tv/sections/chinesemovie/";
+			url = "http://127.0.0.1:21098/cord/api/tv/sections/chinesemovie/";
 		}
 		if(title==null) {
 			title = "华语电影";
+		}
+		if(url.contains("/bookmarks")||url.contains("/histories")) {
+			return;
 		}
 		mChannelLabel.setText(title);
 		new InitTask().execute(url);
@@ -191,7 +195,7 @@ public class ChannelListActivity extends Activity {
 		
 		@Override
 		public void onItemClicked(String url) {
-			Intent intent = new Intent("tv.ismar.daisy.ItemDetail");
+			Intent intent = new Intent("tv.ismar.daisy.Item");
 			intent.putExtra("url", url);
 			startActivity(intent);
 		}

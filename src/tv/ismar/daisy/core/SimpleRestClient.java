@@ -10,8 +10,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class SimpleRestClient {
-	public String root_url = "http://cord.tvxio.com";
-//	public String root_url = "http://127.0.0.1:21098/cord";
+//	public String root_url = "http://cord.tvxio.com";
+	public String root_url = "http://127.0.0.1:21098/cord";
 
 	private Gson gson;
 
