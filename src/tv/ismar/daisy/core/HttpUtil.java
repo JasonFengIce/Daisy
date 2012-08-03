@@ -29,8 +29,8 @@ import android.util.Log;
 public class HttpUtil {
 	public final static String TAG = HttpUtil.class.getSimpleName();
 	// 接口入口地址
-//	 public static String ROOT_URL = "http://cord.tvxio.com/";
-	public static String ROOT_URL = "http://127.0.0.1:21098/cord/";
+	 public static String ROOT_URL = "http://cord.tvxio.com/";
+//	public static String ROOT_URL = "http://127.0.0.1:21098/cord/";
 	// 搜索接口
 	public static String search_URL = "api/tv/search/";
 	// 提示接口

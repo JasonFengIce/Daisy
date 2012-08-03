@@ -78,7 +78,6 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 	}
 
 	private void initViews() {
-		
 		linearLeft = (LinearLayout) findViewById(R.id.linear_left);
 		linearRight = (LinearLayout) findViewById(R.id.linear_right);
 		tvVodName = (TextView) findViewById(R.id.tv_vodie_name);

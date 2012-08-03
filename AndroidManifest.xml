@@ -11,6 +11,7 @@
     <application
         android:name=".VodApplication"
         android:icon="@drawable/ic_launcher"
+<<<<<<< HEAD
        	android:label="@string/app_name">
        <activity
            android:name=".DramaListActivity"
@@ -23,11 +24,24 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
      
+=======
+        android:label="@string/app_name" >
+        <activity
+            android:name=".ItemDetailActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="tv.ismar.daisy.ItemDetail" /> -->
+            <!-- <category android:name="android.intent.category.DEFAULT" /> -->
+            <!-- </intent-filter> -->
+>>>>>>> 009e4b94c88f49f6172bfc6c811b23a503147c2c
             <intent-filter>
-            <action android:name="com.ismartv.vod.SearchActivity" />
-            <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
        <activity android:name=".ChannelListActivity" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,14 +54,24 @@
         </activity>
 		 <activity
             android:name=".PlayFinishedActivity"
+=======
+        <activity
+            android:name="SearchActivity_"
+            android:configChanges="keyboardHidden|orientation|keyboard"
+>>>>>>> 009e4b94c88f49f6172bfc6c811b23a503147c2c
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="stateUnspecified" >
             <intent-filter>
-            <action android:name="tv.ismar.daisy.PlayFinished" />
-            <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="tv.ismar.daisy.Play" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <!-- <action android:name="android.intent.action.MAIN" /> -->
+                <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             </intent-filter>
         </activity>
         <activity
+<<<<<<< HEAD
             android:name=".ItemDetailActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             
@@ -61,8 +85,19 @@
             <intent-filter>
                 <action android:name="tv.ismar.daisy.Play"/>
                 <category android:name="android.intent.category.DEFAULT"/>
+=======
+            android:name=".PlayFinishedActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            <intent-filter>
+                <action android:name="tv.ismar.daisy.PlayFinished" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+>>>>>>> 009e4b94c88f49f6172bfc6c811b23a503147c2c
             </intent-filter>
         </activity>
+        <activity android:name=".PlayerActivity" />
+        <activity android:name=".ChannelListActivity" />
+        <activity android:name=".DramaListActivity" />
     </application>
 
 </manifest>
