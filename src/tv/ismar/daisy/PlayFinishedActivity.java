@@ -164,7 +164,7 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 	public void onItemClick(AdapterView<?> adapterView, View view, int position, long postions) {
 		Intent intent = new Intent();
 		intent.putExtra("url", items[position].item_url);
-		intent.setAction("tv.ismar.daisy.ItemDetail");
+		intent.setAction("tv.ismar.daisy.Item");
 		try {
 			startActivity(intent);
 		} catch (Exception e) {
