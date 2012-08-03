@@ -14,7 +14,7 @@ public class VodUserAgent {
 	 * @return Sn
 	 */
 	public static  String getMACAddress(){
-		String mac = "00112233445566";
+		String mac = "001122334455";
 			try{
 				byte addr[];
 				addr=NetworkInterface.getByName("eth0").getHardwareAddress();

@@ -1,5 +1,9 @@
 package tv.ismar.daisy;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.models.Clip;
 import tv.ismar.daisy.models.Item;
@@ -45,8 +49,8 @@ public class PlayerActivity extends Activity {
 	private static final String PREFS_NAME = "tv.ismar.daisy";
 
 	private static final int PANEL_HIDE_TIME = 6;
-	private static final int SHORT_FB_STEP = 10000;
-	private static final int SHORT_FF_STEP = 10000;
+	private static final int SHORT_FB_STEP = 30000;
+	private static final int SHORT_FF_STEP = 30000;
 	private static final int LONG_FB_PERCENT = 10;
 	private static final int LONG_FF_PERCENT = 10;
 	private static final int KEY_REPEAT_COUNT = 4;
@@ -152,7 +156,7 @@ public class PlayerActivity extends Activity {
 	private int tempOffset = 0;
 	private Item item;
 	private Clip clip;
-
+	private Bundle bundle;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
@@ -164,12 +168,19 @@ public class PlayerActivity extends Activity {
 		// }
 		Intent intent = getIntent();
 		if (intent != null) {
-			Bundle bundle = this.getIntent().getExtras();
-			item = (Item) bundle.get("item");
-			itemPK = item.pk;
-			if (item.clip != null) {
-				clip = item.clip;
-			} 
+			bundle = this.getIntent().getExtras();
+			Object obj =  bundle.get("item");
+			if(obj!=null){
+				item = (Item)obj;
+				itemPK = item.pk;
+				if (item.clip != null) {
+					clip = item.clip;
+					new AccessProxyTask().execute();
+				} 
+			}else{
+				new itemByUrlTask().execute();
+			}
+			
 		}
 
 		super.onCreate(savedInstanceState);
@@ -223,7 +234,7 @@ public class PlayerActivity extends Activity {
 		ffImage = (ImageView) findViewById(R.id.FFImage);
 		fbImage = (ImageView) findViewById(R.id.FBImage);
 
-		new AccessProxyTask().execute();
+		
 
 		playPauseImage.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -287,7 +298,7 @@ public class PlayerActivity extends Activity {
 		videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 			@Override
 			public void onPrepared(MediaPlayer player) {
-				timeTaskStart();
+				clipLength = videoView.getDuration();
 				Log.d(TAG, "video prepared");
 				if (!prepared) {
 					prepared = true;
@@ -705,8 +716,7 @@ public class PlayerActivity extends Activity {
 					playPauseImage.setImageResource(R.drawable.vod_player_play);
 				} else {
 					timeTaskStart();
-					playPauseImage
-							.setImageResource(R.drawable.vod_player_pause);
+					playPauseImage.setImageResource(R.drawable.vod_player_pause);
 				}
 				keyOKDown = false;
 				ret = true;
@@ -762,6 +772,7 @@ public class PlayerActivity extends Activity {
 				currPosition = 0;
 			}
 			videoView.start();
+			timeTaskStart();
 			showPanel();
 		}
 	}
@@ -953,16 +964,49 @@ public class PlayerActivity extends Activity {
 			String sn = VodUserAgent.getMACAddress();
 			AccessProxy.init(VodUserAgent.deviceType,
 					VodUserAgent.deviceVersion, sn);
-			cinfo = AccessProxy.parse("http://cms.tvxio.com/api/clip/"
-					+ clip.pk + "/", VodUserAgent.getUserAgent(sn),
-					PlayerActivity.this);
+				String host = "cord.tvxio.com";
+				try {
+					host = (new URL(item.poster_url)).getHost();
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				}
+				cinfo = AccessProxy.parse("http://" + host  + "/api/clip/"+ clip.pk + "/", VodUserAgent.getUserAgent(sn),PlayerActivity.this);
+				return cinfo;
 
+		}
+	}
+	private class itemByUrlTask extends AsyncTask<String, Void, ClipInfo> {
+
+		protected void onPostExecute(ClipInfo result) {
+
+			onDocGotResource(cinfo);
+		}
+
+		@Override
+		protected ClipInfo doInBackground(String... arg0) {
+			Object obj = bundle.get("url");
+			if(obj!=null){
+				SimpleRestClient simpleRestClient = new SimpleRestClient();
+				item = simpleRestClient.getItem((String)obj);
+				String sn = VodUserAgent.getMACAddress();
+				AccessProxy.init(VodUserAgent.deviceType,VodUserAgent.deviceVersion, sn);
+				if(item!=null){
+					String host = "cord.tvxio.com";
+					try {
+						host = (new URL((String)obj)).getHost();
+					} catch (MalformedURLException e) {
+						e.printStackTrace();
+					}
+					cinfo = AccessProxy.parse("http://" + host  + "/api/clip/"+ clip.pk + "/", VodUserAgent.getUserAgent(sn),PlayerActivity.this);
+				}
+			}
 			return cinfo;
-
+			
 		}
 	}
 
 	private void showBuffer() {
+			timeTaskPause();
 			Log.d(TAG, "show buffer");
 			bufferLayout.startAnimation(bufferShowAnimation);
 			bufferLayout.setVisibility(View.VISIBLE);
@@ -971,6 +1015,7 @@ public class PlayerActivity extends Activity {
 	}
 
 	private void hideBuffer() {	
+			timeTaskStart();
 			Log.d(TAG, "hide buffer");
 			bufferLayout.startAnimation(bufferHideAnimation);
 			bufferLayout.setVisibility(View.GONE);
@@ -1003,9 +1048,9 @@ public class PlayerActivity extends Activity {
 				timeText.setText(text);
 				int val = currPosition * 100 / clipLength;
 				timeBar.setProgress(val);
-			} else {
-				timeTaskPause();
+			} else if(!bufferShow){
 				showBuffer();
+				
 			}
 			mHandler.postDelayed(mUpdateTimeTask, 200);
 		}
