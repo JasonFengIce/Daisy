@@ -29,7 +29,7 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:windowSoftInputMode="stateUnspecified" >
             <intent-filter>
-                <action android:name="tv.ismarv.daisy.Search"/>
+                <action android:name="tv.ismarv.daisy.Search"/> 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
