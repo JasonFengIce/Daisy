@@ -8,6 +8,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * 自定义Dialog
+ * @author liuhao
+ *
+ */
 public class LoadingDialog extends Dialog {
 	Context context;
 	private ImageView imageLoading;
@@ -29,7 +34,6 @@ public class LoadingDialog extends Dialog {
 
 	@Override
 	protected void onStart() {
-		// TODO Auto-generated method stub
 		super.onStart();
 		initViews();
 	}
@@ -43,5 +47,4 @@ public class LoadingDialog extends Dialog {
 		Animation myAnimation = AnimationUtils.loadAnimation(context, R.anim.rotate_loading);
 		imageLoading.startAnimation(myAnimation);
 	}
-	// 使用AnimationUtils类的静态方法loadAnimation()来加载XML中的动画XML文件
 }

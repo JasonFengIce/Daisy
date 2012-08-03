@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- 背景色白色 -->
-    <color name="order_transparent">#00000000</color>
-    <color name="hotwords_test">#000000</color>
+    <color name="play_finished">#000000</color>
+    <color name="hotwords_test">#00000000</color>
     <color name="hotwords_test_selected">#FBCE8B</color>
     <color name="hotwords_text_color">#FFFFFFFF</color>
     <!-- 自动提示Item backgound-->

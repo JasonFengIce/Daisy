@@ -1,11 +1,9 @@
-package tv.ismar.daisy.adapter;
+package tv.ismar.daisy.core;
 
 import tv.ismar.daisy.R;
-import tv.ismar.daisy.core.ImageUtils;
-import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.models.Item;
 
-public class ImageService {
+public class FinshedImageService {
 
 	public static Object[] getImage(Item item) {
 		Object[] object = new Object[2];
