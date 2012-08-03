@@ -109,7 +109,7 @@ public class SearchActivity extends Activity implements OnFocusChangeListener {
 	@ViewById(R.id.act_autocomplete_country)
 	AutoCompleteTextView autoCompleteTextView;// 找到相应的控件
 	// GridView
-	@ViewById(R.id.gridview)
+	@ViewById(R.id.serarc_gridview)
 	GridView gridView;
 
 	// =====================ViewById======================
@@ -121,13 +121,11 @@ public class SearchActivity extends Activity implements OnFocusChangeListener {
 		movieList = new ArrayList<MovieBean>();
 		loadDialog = new LoadingDialog(this);
 		startTime = System.currentTimeMillis();
-		// autoCompleteTextView.onKeyDown(KeyEvent.KEYCODE_BACK, new KeyEvent);
 		autoCompleteTextView.setOnFocusChangeListener(this);
 		autoCompleteTextView.setOnKeyListener(new OnKeyListener() {
 
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				// TODO Auto-generated method stub
 				return false;
 			}
 		});
@@ -293,8 +291,10 @@ public class SearchActivity extends Activity implements OnFocusChangeListener {
 	 * 点击Gridview Item
 	 */
 	@ItemClick
-	void gridview(int position) {
+	void serarc_gridview(int position) {
 		movie = movieList.get(position);
+		if (null == movie) 
+			return;
 		Intent intent = new Intent();
 		Bundle bundle = new Bundle();
 		if (movie.is_complex) {

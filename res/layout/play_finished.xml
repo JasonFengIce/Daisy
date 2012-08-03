@@ -33,7 +33,7 @@
                 android:layout_width="480px"
                 android:layout_height="271px"
                 android:layout_below="@+id/tv_vodie_name"
-                android:background="@drawable/image_back" >
+                android:background="@drawable/preview_img_bg" >
 
                 <ImageView
                     android:id="@+id/image_vodie_backgroud"
@@ -70,6 +70,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="40dp"
                 android:background="@drawable/favorites_image_selector"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingBottom="13dp"
                 android:text="@string/daram_favorites"
                 android:textColor="@color/search_text_result"
                 android:textSize="35dp" />
