@@ -191,7 +191,7 @@ public class ChannelListActivity extends Activity {
 		
 		@Override
 		public void onItemClicked(String url) {
-			Intent intent = new Intent("tv.ismar.daisy.ItemDetail");
+			Intent intent = new Intent("tv.ismar.daisy.Item");
 			intent.putExtra("url", url);
 			startActivity(intent);
 		}
