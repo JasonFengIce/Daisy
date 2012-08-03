@@ -15,9 +15,10 @@
             android:layout_width="284dp"
             android:layout_height="160dp"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/vod_movie_background" />
+            android:src="@drawable/list_item_preview_bg" />
 
         <Button
+            android:focusable="false"
             android:id="@+id/iv_type"
             android:layout_width="105px"
             android:layout_height="55px"
@@ -35,8 +36,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/itemImage"
             android:layout_centerHorizontal="true"
-            android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
+            android:layout_marginLeft="6dp"
             android:ellipsize="marquee"
             android:singleLine="true"
             android:textSize="28dp"

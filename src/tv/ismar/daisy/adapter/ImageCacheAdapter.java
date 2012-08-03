@@ -31,7 +31,7 @@ public class ImageCacheAdapter extends BaseAdapter {
 	//UUID对象
 	private String uuid;
 	//背景图ID
-	private int backgroudID = R.drawable.vod_movie_background;
+	private int backgroudID = R.drawable.list_item_preview_bg;
 	private int backType = R.drawable.iv_type_comic;
 	private Animation myAnimation;
 

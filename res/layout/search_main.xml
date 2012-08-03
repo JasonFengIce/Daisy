@@ -112,14 +112,8 @@
         <include layout="@layout/search_line" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
 
         <include
-            android:id="@id/gridview"
-            layout="@layout/search_grid_view" />
-    </LinearLayout>
+            android:id="@id/serarc_gridview"  layout="@layout/search_grid_view" />
 
 </LinearLayout>
