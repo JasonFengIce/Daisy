@@ -187,6 +187,11 @@ public class ItemDetailActivity extends Activity {
 			if(mContentModel.attributes.get("vendor")==null) {
 				mContentModel.attributes.put("vendor", getResources().getString(R.string.vendor));
 			}
+			if(isDrama){
+				if(mContentModel.attributes.get("episodes")==null) {
+					mContentModel.attributes.put("episodes", getResources().getString(R.string.episodes));
+				}
+			}
 			if(mContentModel.attributes.get("length")==null) {
 				mContentModel.attributes.put("length", getResources().getString(R.string.length));
 			}
@@ -199,6 +204,9 @@ public class ItemDetailActivity extends Activity {
 				attributeMap.put(key, null);
 			}
 			attributeMap.put("vendor", mItem.vendor);
+			if(isDrama){
+				attributeMap.put("episodes", getEpisodes(mItem));
+			}
 			attributeMap.put("length", getClipLength(mItem.clip));
 			Iterator iter = mItem.attributes.map.keySet().iterator();
 			while(iter.hasNext()){
@@ -206,10 +214,8 @@ public class ItemDetailActivity extends Activity {
 				Object value = mItem.attributes.map.get(key);
 				if(value.getClass().equals(String.class)){
 					attributeMap.put(key, (String)value);
-					Log.d(key, " is String");
 				} else if(value.getClass().equals(Attribute.Info.class)){
 					attributeMap.put(key, ((Attribute.Info)value).name);
-					Log.d(key, " is Attribute.Info");
 				} else if(value.getClass().equals(Attribute.Info[].class)){
 					StringBuffer sb = new StringBuffer();
 					for(Attribute.Info info: (Attribute.Info[])value){
@@ -217,7 +223,6 @@ public class ItemDetailActivity extends Activity {
 						sb.append(",");
 					}
 					attributeMap.put(key, sb.substring(0, sb.length()-1));
-					Log.d(key, " is Attribute.Info[]");
 				}
 			}
 			buildAttributeList(attributeMap);
@@ -231,10 +236,6 @@ public class ItemDetailActivity extends Activity {
 			mBtnFavorite.setText(getResources().getString(R.string.favorite));
 		}
 		
-		if(isDrama) {
-			
-		}
-		
 		if(mItem.poster_url!=null){
 			mDetailPreviewImg.setTag(mItem.poster_url);
 			new GetImageTask().execute(mDetailPreviewImg);
@@ -246,6 +247,14 @@ public class ItemDetailActivity extends Activity {
 	private String getClipLength(Clip clip) {
 		if(clip!=null){
 			return clip.length/60 + getResources().getString(R.string.minute);
+		} else {
+			return null;
+		}
+	}
+	
+	private String getEpisodes(Item item) {
+		if(item.subitems.length>0) {
+			return item.episode+"("+getResources().getString(R.string.update_to_episode).replace("#", ""+item.subitems.length)+")";
 		} else {
 			return null;
 		}
@@ -412,7 +421,7 @@ public class ItemDetailActivity extends Activity {
 				startActivity(intent);
 				break;
 			case R.id.btn_right:
-				intent.setAction("tv.ismar.daisy.DramaList");
+				intent.setClass(ItemDetailActivity.this, DramaListActivity.class);
 				intent.putExtra("item", mItem);
 				startActivity(intent);
 				break;
