@@ -18,7 +18,7 @@
             android:name=".ItemDetailActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
-                <action android:name="tv.ismar.daisy.ItemDetail" />
+                <action android:name="tv.ismar.daisy.Item" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -29,7 +29,7 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:windowSoftInputMode="stateUnspecified" >
             <intent-filter>
-                <action android:name="tv.ismarv.daisy.Search"/> 
+                <action android:name="tv.ismar.daisy.Search"/> 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
