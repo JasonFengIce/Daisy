@@ -1,5 +1,6 @@
 package tv.ismar.daisy;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -66,6 +67,9 @@ public class ChannelListActivity extends Activity {
 		}
 		if(title==null) {
 			title = "华语电影";
+		}
+		if(url.contains("/bookmarks")||url.contains("/histories")) {
+			return;
 		}
 		mChannelLabel.setText(title);
 		new InitTask().execute(url);
