@@ -20,6 +20,8 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.view.View.OnKeyListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -40,7 +42,7 @@ import com.googlecode.androidannotations.annotations.UiThread;
 import com.googlecode.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.search_main)
-public class SearchActivity extends Activity {
+public class SearchActivity extends Activity implements OnFocusChangeListener {
 	// 缓存适配器
 	ImageCacheAdapter imageAdapter;
 	// 返回的搜索结果list
@@ -106,12 +108,12 @@ public class SearchActivity extends Activity {
 	// 自动提示
 	@ViewById(R.id.act_autocomplete_country)
 	AutoCompleteTextView autoCompleteTextView;// 找到相应的控件
-	//GridView
+	// GridView
 	@ViewById(R.id.gridview)
 	GridView gridView;
 
 	// =====================ViewById======================
-	
+
 	// =====================@AfterViews======================
 	@AfterViews
 	void initAfterViews() {
@@ -119,6 +121,16 @@ public class SearchActivity extends Activity {
 		movieList = new ArrayList<MovieBean>();
 		loadDialog = new LoadingDialog(this);
 		startTime = System.currentTimeMillis();
+		// autoCompleteTextView.onKeyDown(KeyEvent.KEYCODE_BACK, new KeyEvent);
+		autoCompleteTextView.setOnFocusChangeListener(this);
+		autoCompleteTextView.setOnKeyListener(new OnKeyListener() {
+
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		});
 		autoCompleteTextView.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -134,9 +146,11 @@ public class SearchActivity extends Activity {
 					doInUiThread(null, null, UPDATE_SUGGEST);
 				}
 			}
+
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 			}
+
 			@Override
 			public void afterTextChanged(Editable s) {
 			}
@@ -148,15 +162,16 @@ public class SearchActivity extends Activity {
 				someBackgroundWork(autoCompleteTextView.getText().toString(), SEARCH_AUTOCOMPLE);
 			}
 		});
-		
-//		autoCompleteTextView.setOnFocusChangeListener(new OnFocusChangeListener() {
-//			@Override
-//			public void onFocusChange(View v, boolean hasFocus) {
-//				autoCompleteTextView.showDropDown();
-//			}
-//		});
-		
+
+		// autoCompleteTextView.setOnFocusChangeListener(new OnFocusChangeListener() {
+		// @Override
+		// public void onFocusChange(View v, boolean hasFocus) {
+		// autoCompleteTextView.showDropDown();
+		// }
+		// });
+
 	}
+
 	// =====================@AfterViews======================
 	// =====================@Click======================
 	@Click
@@ -179,6 +194,7 @@ public class SearchActivity extends Activity {
 		m.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
 		autoCompleteTextView.showDropDown();
 	}
+
 	// =====================@Click======================
 	// =====================@OnItem======================
 	// =====================@OnItem======================
@@ -212,6 +228,7 @@ public class SearchActivity extends Activity {
 			break;
 		}
 	}
+
 	// =====================@Background======================
 	// =====================@UiThread======================
 	@UiThread
@@ -225,7 +242,7 @@ public class SearchActivity extends Activity {
 					btnHotWords.setTextSize(30);
 					btnHotWords.setPadding(15, 0, 15, 0);
 					btnHotWords.setBackgroundResource(R.drawable.hotwords_selector);
-					btnHotWords.setTextColor(R.color.search_background);
+					btnHotWords.setTextColor(getResources().getColor(R.color.search_words));
 					btnHotWords.setText(String.valueOf(listHotWords.get(j)));
 					linearAdd.addView(btnHotWords);
 					btnHotWords.setOnClickListener(new OnClickListener() {
@@ -269,6 +286,7 @@ public class SearchActivity extends Activity {
 			break;
 		}
 	}
+
 	// =====================@UiThread======================
 	// =====================@ItemClick======================
 	/**
@@ -281,12 +299,12 @@ public class SearchActivity extends Activity {
 		Bundle bundle = new Bundle();
 		if (movie.is_complex) {
 			bundle.putInt("itemPK", movie.pk);
-			intent.setAction("com.ismartv.vod.item");
+			intent.setAction("tv.ismar.daisy.ItemDetail");
 			intent.putExtras(bundle);
 		} else {
 			bundle.putInt("itemPK", movie.pk);
 			bundle.putInt("subItemPK", movie.item_pk);
-			intent.setAction("com.ismartv.vod.play");
+			intent.setAction("tv.ismar.daisy.Play");
 			intent.putExtras(bundle);
 		}
 		try {
@@ -295,7 +313,7 @@ public class SearchActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// =====================@ItemClick======================
 	/**
 	 * 设置搜索个数
@@ -314,13 +332,14 @@ public class SearchActivity extends Activity {
 		}
 	}
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			finish();
-		}
-		return false;
-	}
+	// @Override
+	// public boolean onKeyDown(int keyCode, KeyEvent event) {
+	// if (keyCode == KeyEvent.KEYCODE_BACK) {
+	//
+	// finish();
+	// }
+	// return false;
+	// }
 
 	/**
 	 * 显示自定义Dialog
@@ -330,6 +349,13 @@ public class SearchActivity extends Activity {
 			loadDialog.dismiss();
 		} else {
 			loadDialog.show();
+		}
+	}
+
+	@Override
+	public void onFocusChange(View v, boolean hasFocus) {
+		if (hasFocus) {
+			autoCompleteTextView.showDropDown();
 		}
 	}
 }
