@@ -63,7 +63,7 @@ public class ChannelListActivity extends Activity {
 			}
 		}
 		if(url==null) {
-			url = "http://127.0.0.1:21098/cord/api/tv/sections/chinesemovie/";
+			url = "http://127.0.0.1:21098/cord/api/tv/sections/teleplay/";
 		}
 		if(title==null) {
 			title = "华语电影";
