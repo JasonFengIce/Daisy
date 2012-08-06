@@ -14,10 +14,8 @@ import android.widget.Button;
 public class DaramAdapter extends BaseAdapter {
 	Context mContext;
 	private List<Item> subitemlist;
-
 	private int sourceid;
 	private LayoutInflater mLayoutInflater;
-
 	public DaramAdapter(Context context, List<Item> subitemlist, int sourceid) {
 		this.mContext = context;
 		this.subitemlist = subitemlist;

@@ -17,7 +17,6 @@ public class PlayFinishedAdapter extends BaseAdapter {
 	Context mContext;
 	private Item[] listItem;
 	private Item[] listItemSort;
-
 	private int sourceid;
 	private LayoutInflater mLayoutInflater;
 
