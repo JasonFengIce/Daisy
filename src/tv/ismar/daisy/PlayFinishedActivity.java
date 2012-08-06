@@ -31,7 +31,6 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 	private Bitmap bitmap;
 	LinearLayout linearLeft;
 	LinearLayout linearRight;
-
 	TextView tvVodName;
 	ImageView imageBackgroud;
 	ImageView imageVodLabel;
