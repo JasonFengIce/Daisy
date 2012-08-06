@@ -3,6 +3,7 @@ package tv.ismar.daisy.adapter;
 import java.util.List;
 
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.Subitem;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,12 +14,12 @@ import android.widget.Button;
 
 public class DaramAdapter extends BaseAdapter {
 	Context mContext;
-	private List<Subitem> subitemlist;
+	private List<Item> subitemlist;
 
 	private int sourceid;
 	private LayoutInflater mLayoutInflater;
 
-	public DaramAdapter(Context context, List<Subitem> subitemlist, int sourceid) {
+	public DaramAdapter(Context context, List<Item> subitemlist, int sourceid) {
 		this.mContext = context;
 		this.subitemlist = subitemlist;
 		this.sourceid = sourceid;
@@ -31,7 +32,7 @@ public class DaramAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public Subitem getItem(int position) {
+	public Item getItem(int position) {
 		return subitemlist.get(position);
 	}
 
@@ -40,7 +41,7 @@ public class DaramAdapter extends BaseAdapter {
 		return position;
 	}
 
-	Subitem subitem;
+	Item subitem;
 	ViewHolder holder;
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {

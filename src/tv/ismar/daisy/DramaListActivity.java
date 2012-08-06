@@ -26,9 +26,9 @@ import android.widget.TextView;
 
 public class DramaListActivity extends Activity implements OnItemSelectedListener, OnItemClickListener, OnFocusChangeListener {
 	private Item item = new Item();
-	private List<Subitem> list = new ArrayList<Subitem>();
+	private List<Item> list = new ArrayList<Item>();
 	private DaramAdapter daram;
-	private Subitem subitems;
+	private Item subitems;
 	private GridView daramView;
 
 	private ImageView imageBackgroud;
@@ -134,9 +134,10 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 		subitems = list.get(postion);
 		Intent intent = new Intent();
 		Bundle bundle = new Bundle();
-		bundle.putInt("itemPK", subitems.pk);
-		bundle.putInt("subItemPK", subitems.item_pk);
-		intent.setAction("com.ismartv.vod.play");
+//		bundle.putInt("itemPK", subitems.pk);
+//		bundle.putInt("subItemPK", subitems.item_pk);
+		bundle.putSerializable("item", subitems);
+		intent.setAction("tv.ismar.daisy.Play");
 		intent.putExtras(bundle);
 		try {
 			startActivity(intent);

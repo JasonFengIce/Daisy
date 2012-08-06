@@ -965,11 +965,11 @@ public class PlayerActivity extends Activity {
 			AccessProxy.init(VodUserAgent.deviceType,
 					VodUserAgent.deviceVersion, sn);
 				String host = "cord.tvxio.com";
-				try {
-					host = (new URL(item.poster_url)).getHost();
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				}
+//				try {
+//					host = (new URL(item.poster_url)).getHost();
+//				} catch (MalformedURLException e) {
+//					e.printStackTrace();
+//				}
 				cinfo = AccessProxy.parse("http://" + host  + "/api/clip/"+ clip.pk + "/", VodUserAgent.getUserAgent(sn),PlayerActivity.this);
 				return cinfo;
 
@@ -992,11 +992,11 @@ public class PlayerActivity extends Activity {
 				AccessProxy.init(VodUserAgent.deviceType,VodUserAgent.deviceVersion, sn);
 				if(item!=null){
 					String host = "cord.tvxio.com";
-					try {
-						host = (new URL((String)obj)).getHost();
-					} catch (MalformedURLException e) {
-						e.printStackTrace();
-					}
+//					try {
+//						host = (new URL((String)obj)).getHost();
+//					} catch (MalformedURLException e) {
+//						e.printStackTrace();
+//					}
 					cinfo = AccessProxy.parse("http://" + host  + "/api/clip/"+ clip.pk + "/", VodUserAgent.getUserAgent(sn),PlayerActivity.this);
 				}
 			}

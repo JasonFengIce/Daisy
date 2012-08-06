@@ -11,6 +11,7 @@ import tv.ismar.daisy.models.Attribute;
 import tv.ismar.daisy.models.Clip;
 import tv.ismar.daisy.models.ContentModel;
 import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.views.LoadingDialog;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -30,7 +31,7 @@ import android.widget.TextView;
 
 public class ItemDetailActivity extends Activity {
 	
-	public static final String action = "tv.ismar.daisy.ItemDetail";
+	public static final String action = "tv.ismar.daisy.Item";
 	
 	private SimpleRestClient mSimpleRestClient;
 	
@@ -57,6 +58,8 @@ public class ItemDetailActivity extends Activity {
 	private Button mMoreContent;
 
 	private LinearLayout mDetailAttributeContainer;
+
+	private LoadingDialog mLoadingDialog;
 	
 	private void initViews() {
 		mDetailLeftContainer = (RelativeLayout)findViewById(R.id.detail_left_container);
@@ -94,6 +97,8 @@ public class ItemDetailActivity extends Activity {
 		mSimpleRestClient = new SimpleRestClient();
 		mApplication = (VodApplication) getApplication();
 		
+		mLoadingDialog = new LoadingDialog(this);
+		loadDialogShow();
 		initViews();
 		
 		Intent intent = getIntent();
@@ -112,7 +117,14 @@ public class ItemDetailActivity extends Activity {
 			}
 		}
 	}
-
+	
+	private void loadDialogShow() {
+		if (mLoadingDialog.isShowing()) {
+			mLoadingDialog.dismiss();
+		} else {
+			mLoadingDialog.show();
+		}
+	}
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
@@ -242,6 +254,7 @@ public class ItemDetailActivity extends Activity {
 		}
 		
 		new GetRelatedTask().execute();
+		loadDialogShow();
 	}
 	
 	private String getClipLength(Clip clip) {
@@ -417,7 +430,7 @@ public class ItemDetailActivity extends Activity {
 			switch(id){
 			case R.id.btn_left:
 				intent.setAction("tv.ismar.daisy.Play");
-				intent.putExtra("item", mItem);
+				intent.putExtra("item", mItem.subitems[0]);
 				startActivity(intent);
 				break;
 			case R.id.btn_right:

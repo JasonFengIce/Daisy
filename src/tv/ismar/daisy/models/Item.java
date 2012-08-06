@@ -23,7 +23,7 @@ public class Item implements Serializable {
     public int quality;
     public float rating_average;
     public int rating_count;
-    public Subitem[] subitems;
+    public Item[] subitems;
     public String[] tags;
     public String thumb_url;
     public String title;
@@ -40,4 +40,5 @@ public class Item implements Serializable {
     public String model_name;
     public int item_pk;
     public String item_url;
+    public int position;
 }
