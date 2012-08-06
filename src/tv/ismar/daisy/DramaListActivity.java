@@ -7,7 +7,6 @@ import tv.ismar.daisy.adapter.DaramAdapter;
 import tv.ismar.daisy.core.ImageUtils;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.models.Item;
-import tv.ismar.daisy.models.Subitem;
 import tv.ismar.daisy.views.LoadingDialog;
 import android.app.Activity;
 import android.content.Intent;

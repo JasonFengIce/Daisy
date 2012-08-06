@@ -4,7 +4,6 @@ import java.util.List;
 
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.models.Item;
-import tv.ismar.daisy.models.Subitem;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

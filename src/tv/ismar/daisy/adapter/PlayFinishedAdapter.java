@@ -4,7 +4,6 @@ import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.FinshedImageService;
 import tv.ismar.daisy.models.Item;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;

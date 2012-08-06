@@ -1,8 +1,5 @@
 package tv.ismar.daisy;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.models.Clip;

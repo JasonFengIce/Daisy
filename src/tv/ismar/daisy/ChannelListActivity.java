@@ -1,6 +1,5 @@
 package tv.ismar.daisy;
 
-import java.net.URL;
 import java.util.ArrayList;
 
 import tv.ismar.daisy.core.SimpleRestClient;
