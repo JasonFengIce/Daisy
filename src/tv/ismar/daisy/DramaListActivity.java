@@ -29,15 +29,12 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 	private DaramAdapter daram;
 	private Item subitems;
 	private GridView daramView;
-
 	private ImageView imageBackgroud;
 	private ImageView imageDaramLabel;
 	private TextView tvDramaName;
 	private TextView tvDramaAll;
 	private TextView tvDramaType;
-
 	private Bitmap bitmap;
-
 	private LoadingDialog loadDialog;
 	private static final int UPDATE = 1;
 
