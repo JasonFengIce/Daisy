@@ -16,9 +16,9 @@ public class NetworkUtils {
 			URL url = new URL(urlStr);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			StringBuffer sb = new StringBuffer();
-			conn.addRequestProperty("User-Agent", UA);
-			conn.addRequestProperty("Accept", "application/json");
-			conn.connect();
+//			conn.addRequestProperty("User-Agent", UA);
+//			conn.addRequestProperty("Accept", "application/json");
+//			conn.connect();
 
 			InputStream in = conn.getInputStream();
 			BufferedReader buff = new BufferedReader(new InputStreamReader(in));
@@ -42,7 +42,7 @@ public class NetworkUtils {
 			URLConnection conn = url.openConnection();
 			conn.addRequestProperty("User-Agent", UA);
 			conn.addRequestProperty("Accept", "application/json");
-			conn.connect();
+//			conn.connect();
 			return conn.getInputStream();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -50,4 +50,12 @@ public class NetworkUtils {
 		return null;
 	}
 	
+	public static boolean urlEquals(String url1, String url2) {
+		return removeRoot(url1).equals(removeRoot(url2));
+	}
+	
+	public static String removeRoot(String url) {
+		int start = url.indexOf("/api/");
+		return url.substring(start, url.length());
+	}
 }

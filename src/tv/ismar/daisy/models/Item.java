@@ -41,4 +41,5 @@ public class Item implements Serializable {
     public int item_pk;
     public String item_url;
     public int position;
+    public String url;
 }

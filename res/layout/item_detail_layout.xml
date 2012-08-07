@@ -88,7 +88,8 @@
                 android:textColor="#FFBBBBBB"
                 android:text="@string/play"
                 android:gravity="center"
-                android:background="@drawable/button_left"/>
+                android:background="@drawable/button_left"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/btn_right"
@@ -100,7 +101,8 @@
                 android:textColor="#FFBBBBBB"
                 android:gravity="center"
                 android:text="@string/vod_itemepisode"
-                android:background="@drawable/button_right"/>
+                android:background="@drawable/button_right"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/btn_fill"
