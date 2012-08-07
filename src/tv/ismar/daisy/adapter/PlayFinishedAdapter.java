@@ -21,7 +21,7 @@ public class PlayFinishedAdapter extends BaseAdapter {
 	private LayoutInflater mLayoutInflater;
 
 	public PlayFinishedAdapter(Context context, Item[] items, int sourceid) {
-		this.mContext = context;
+		this.mContext = context;	
 		this.listItemSort = items;
 		this.sourceid = sourceid;
 		this.mLayoutInflater = LayoutInflater.from(context);
@@ -30,6 +30,9 @@ public class PlayFinishedAdapter extends BaseAdapter {
 
 	private void sortItem() {
 		listItem = new Item[9];
+		if (null == listItemSort) 
+			return;
+			
 		for (int i = 0; i < 9; i++) {
 			listItem[i] = listItemSort[i];
 		}
