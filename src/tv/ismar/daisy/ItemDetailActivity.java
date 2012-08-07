@@ -98,7 +98,7 @@ public class ItemDetailActivity extends Activity {
 		mApplication = (VodApplication) getApplication();
 //		Log.e("START", System.currentTimeMillis()+"");
 		mLoadingDialog = new LoadingDialog(this);
-		
+		mLoadingDialog.show();
 		initViews();
 		
 		Intent intent = getIntent();
@@ -121,7 +121,6 @@ public class ItemDetailActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		mLoadingDialog.show();
 	}
 
 	@Override
