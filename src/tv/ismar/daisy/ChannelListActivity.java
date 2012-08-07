@@ -73,13 +73,16 @@ public class ChannelListActivity extends Activity {
 			url = "http://127.0.0.1:21098/cord/api/tv/sections/teleplay/";
 		}
 		if(title==null) {
-			title = "华语电影";
+			title = "电视剧";
+		}
+		if(channel==null) {
+			channel = "teleplay";
 		}
 		if(channel!=null && channel.contains("$")) {
 			return;
 		}
 		mChannelLabel.setText(title);
-		new InitTask().execute(url);
+		new InitTask().execute(url, channel);
 	}
 	
 	private boolean isChannelUrl(String url) {
@@ -97,18 +100,12 @@ public class ChannelListActivity extends Activity {
 		protected Void doInBackground(String... params) {
 			mItemLists = new ArrayList<ItemList>();
 			String url = params[0];
+			String channel = params[1];
 			if(!isChannelUrl(url)){
-				ChannelList channelList = mRestClient.getChannelList();
-				for(Channel channel:channelList){
-					SectionList sectionList = mRestClient.getSections(channel.url);
-					for(int i=0; i<sectionList.size(); i++) {
-						if(NetworkUtils.urlEquals(url, sectionList.get(i).url)) {
-							mSectionList = sectionList;
-							mCurrentSectionPosition = i;
-							break;
-						}
-					}
-					if(mSectionList != null) {
+				mSectionList = mRestClient.getSectionsByChannel(channel);
+				for(int i=0; i<mSectionList.size(); i++) {
+					if(NetworkUtils.urlEquals(url, mSectionList.get(i).url)) {
+						mCurrentSectionPosition = i;
 						break;
 					}
 				}

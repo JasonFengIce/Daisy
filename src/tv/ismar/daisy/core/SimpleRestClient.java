@@ -34,6 +34,13 @@ public class SimpleRestClient {
 		return gson.fromJson(jsonStr, ChannelList.class);
 	}
 
+	public SectionList getSectionsByChannel(String channel) {
+		String url = root_url + "/api/tv/sections/"+channel+"/";
+		String jsonStr = NetworkUtils.getJsonStr(url);
+		SectionList list = gson.fromJson(jsonStr, SectionList.class);
+		return list;
+	}
+	
 	public SectionList getSections(String url) {
 		String jsonStr = NetworkUtils.getJsonStr(url);
 		SectionList list = gson.fromJson(jsonStr, SectionList.class);
