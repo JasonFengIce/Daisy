@@ -141,7 +141,7 @@ public class ChannelListActivity extends Activity {
 				int totalColumnsOfSectionX = mItemListScrollView.getTotalColumnCount(mCurrentSectionPosition);
 				mScrollableSectionList.setPercentage(mCurrentSectionPosition, (int)(1f/(float)totalColumnsOfSectionX*100f));
 			}
-			new GetItemListTask().execute();
+//			new GetItemListTask().execute();
 			super.onPostExecute(result);
 		}
 		

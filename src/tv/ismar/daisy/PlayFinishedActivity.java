@@ -68,7 +68,7 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				items = simpleRest.getRelatedItem("/api/tv/relate/" + item.pk);
+				items = simpleRest.getRelatedItem("/api/tv/relate/" + item.item_pk);
 				mHandle.sendEmptyMessage(UPDATE);
 			}
 		}) {
