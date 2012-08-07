@@ -139,9 +139,10 @@ public class ItemDetailActivity extends Activity {
 		@Override
 		protected Void doInBackground(String... params) {
 			mItem = mSimpleRestClient.getItem(params[0]);
-			if(mItem.subitems!=null && mItem.subitems.length>0 && mItem.subitems[0].item_pk==0){
-				mItem.subitems[0] = mSimpleRestClient.getItem(mItem.subitems[0].url);
-			}
+//			if(mItem.subitems!=null && mItem.subitems.length>0 && mItem.subitems[0].item_pk==0){
+//				mItem.subitems[0] = mSimpleRestClient.getItem(mItem.subitems[0].url);
+//				mItem.subitems[0].url = mItem.subitems[0].item_url;
+//			}
 			return null;
 		}
 
@@ -428,7 +429,7 @@ public class ItemDetailActivity extends Activity {
 			switch(id){
 			case R.id.btn_left:
 				intent.setAction("tv.ismar.daisy.Play");
-				intent.putExtra("item", mItem.subitems[0]);
+				intent.putExtra("url", mItem.subitems[0].url);
 				startActivity(intent);
 				break;
 			case R.id.btn_right:

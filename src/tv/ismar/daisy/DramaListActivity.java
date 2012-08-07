@@ -132,7 +132,7 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 		Bundle bundle = new Bundle();
 //		bundle.putInt("itemPK", subitems.pk);
 //		bundle.putInt("subItemPK", subitems.item_pk);
-		bundle.putSerializable("item", subitems);
+		bundle.putString("url", subitems.url);
 		intent.setAction("tv.ismar.daisy.Play");
 		intent.putExtras(bundle);
 		try {
