@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -95,7 +96,7 @@ public class ItemDetailActivity extends Activity {
 		setContentView(R.layout.item_detail_layout);
 		mSimpleRestClient = new SimpleRestClient();
 		mApplication = (VodApplication) getApplication();
-		
+//		Log.e("START", System.currentTimeMillis()+"");
 		mLoadingDialog = new LoadingDialog(this);
 		loadDialogShow();
 		initViews();
