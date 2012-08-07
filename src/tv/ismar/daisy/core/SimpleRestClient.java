@@ -1,6 +1,8 @@
 package tv.ismar.daisy.core;
 
 import tv.ismar.daisy.models.Attribute;
+import tv.ismar.daisy.models.Channel;
+import tv.ismar.daisy.models.ChannelList;
 import tv.ismar.daisy.models.ContentModelList;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemList;
@@ -24,6 +26,12 @@ public class SimpleRestClient {
 	public ContentModelList getContentModelLIst(String url) {
 		String jsonStr = NetworkUtils.getJsonStr(root_url + url);
 		return gson.fromJson(jsonStr, ContentModelList.class);
+	}
+	
+	public ChannelList getChannelList() {
+		String api = "/api/tv/channels/";
+		String jsonStr = NetworkUtils.getJsonStr(root_url+api);
+		return gson.fromJson(jsonStr, ChannelList.class);
 	}
 
 	public SectionList getSections(String url) {
@@ -49,5 +57,5 @@ public class SimpleRestClient {
 		String jsonStr = NetworkUtils.getJsonStr(root_url + api);
 		return gson.fromJson(jsonStr, Item[].class);
 	}
-	
+
 }

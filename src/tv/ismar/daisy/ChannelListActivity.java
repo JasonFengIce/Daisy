@@ -1,8 +1,13 @@
 package tv.ismar.daisy;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.models.Channel;
+import tv.ismar.daisy.models.ChannelList;
 import tv.ismar.daisy.models.ItemList;
 import tv.ismar.daisy.models.SectionList;
 import tv.ismar.daisy.views.ItemListScrollView;
@@ -32,6 +37,8 @@ public class ChannelListActivity extends Activity {
 	
 	private TextView mChannelLabel;
 	
+	private int mCurrentSectionPosition = 0;
+	
 	private void initViews() {
 		mItemListScrollView = (ItemListScrollView) findViewById(R.id.itemlist_scroll_view);
 		mItemListScrollView.setOnSectionPrepareListener(mOnSectionPrepareListener);
@@ -51,6 +58,7 @@ public class ChannelListActivity extends Activity {
 		Intent intent = getIntent();
 		String url = null;
 		String title = null;
+		String channel = null;
 		if(intent!=null){
 			Bundle bundle = intent.getExtras();
 			if(bundle!=null){
@@ -58,7 +66,7 @@ public class ChannelListActivity extends Activity {
 				
 				title = bundle.getString("title");
 				
-				
+				channel = bundle.getString("channel");
 			}
 		}
 		if(url==null) {
@@ -67,12 +75,20 @@ public class ChannelListActivity extends Activity {
 		if(title==null) {
 			title = "华语电影";
 		}
-		if(url.contains("/bookmarks")||url.contains("/histories")) {
+		if(channel!=null && channel.contains("$")) {
 			return;
 		}
 		mChannelLabel.setText(title);
 		new InitTask().execute(url);
 	}
+	
+	private boolean isChannelUrl(String url) {
+		String patternStr = ".+/api/tv/sections/[\\w\\d]+/";
+		Pattern pattern = Pattern.compile(patternStr, Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(url);
+		return matcher.matches();
+	}
+	
 	
 	
 	class InitTask extends AsyncTask<String, Void, Void> {
@@ -81,7 +97,25 @@ public class ChannelListActivity extends Activity {
 		protected Void doInBackground(String... params) {
 			mItemLists = new ArrayList<ItemList>();
 			String url = params[0];
-			mSectionList = mRestClient.getSections(url);
+			if(!isChannelUrl(url)){
+				ChannelList channelList = mRestClient.getChannelList();
+				for(Channel channel:channelList){
+					SectionList sectionList = mRestClient.getSections(channel.url);
+					for(int i=0; i<sectionList.size(); i++) {
+						if(NetworkUtils.urlEquals(url, sectionList.get(i).url)) {
+							mSectionList = sectionList;
+							mCurrentSectionPosition = i;
+							break;
+						}
+					}
+					if(mSectionList != null) {
+						break;
+					}
+				}
+			}
+			if(mSectionList==null){
+				mSectionList = mRestClient.getSections(url);
+			}
 			int itemsCount = 0;
 			for(int i=0; i<mSectionList.size();i++) {
 				ItemList itemList = null;
@@ -102,13 +136,13 @@ public class ChannelListActivity extends Activity {
 
 		@Override
 		protected void onPostExecute(Void result) {
-			if(mSectionList!=null && mItemLists.get(0)!=null) {
+			if(mSectionList!=null && mItemLists.get(mCurrentSectionPosition)!=null) {
 				mScrollableSectionList.init(mSectionList);
 				for(int i=0; i<mItemLists.size(); i++) {
 					mItemListScrollView.addSection(mItemLists.get(i), i);
 				}
-				int totalColumnsOfSection0 = mItemListScrollView.getTotalColumnCount(0);
-				mScrollableSectionList.setPercentage(0, (int)(1f/(float)totalColumnsOfSection0*100f));
+				int totalColumnsOfSectionX = mItemListScrollView.getTotalColumnCount(mCurrentSectionPosition);
+				mScrollableSectionList.setPercentage(mCurrentSectionPosition, (int)(1f/(float)totalColumnsOfSectionX*100f));
 			}
 			new GetItemListTask().execute();
 			super.onPostExecute(result);
@@ -121,29 +155,29 @@ public class ChannelListActivity extends Activity {
 		@Override
 		protected Integer doInBackground(String... params) {
 			int position = -1;
-			if(params.length==0){
-				for(int i=0;i<mSectionList.size();i++){
-					if(mItemLists.get(i).objects==null){
-						mItemLists.set(i, mRestClient.getItemList(mSectionList.get(i).url));
-						mItemLists.get(i).slug = mSectionList.get(i).slug;
-						mItemLists.get(i).title = mSectionList.get(i).title;
-					}
-				}
-			} else {
-				String slug = params[0];
-				String url = params[1];
-				
-				for(int i=0; i<mItemLists.size();i++){
-					if(slug.equals(mItemLists.get(i).slug)){
-						ItemList itemList = mRestClient.getItemList(url);
-						itemList.slug = mSectionList.get(i).slug;
-						itemList.title = mSectionList.get(i).title;
-						mItemLists.set(i, itemList);
-						position = i;
-						break;
-					}
+//			if(params.length==0){
+//				for(int i=0;i<mSectionList.size();i++){
+//					if(mItemLists.get(i).objects==null){
+//						mItemLists.set(i, mRestClient.getItemList(mSectionList.get(i).url));
+//						mItemLists.get(i).slug = mSectionList.get(i).slug;
+//						mItemLists.get(i).title = mSectionList.get(i).title;
+//					}
+//				}
+//			} else {
+			String slug = params[0];
+			String url = params[1];
+			
+			for(int i=0; i<mItemLists.size();i++){
+				if(slug.equals(mItemLists.get(i).slug)){
+					ItemList itemList = mRestClient.getItemList(url);
+					itemList.slug = mSectionList.get(i).slug;
+					itemList.title = mSectionList.get(i).title;
+					mItemLists.set(i, itemList);
+					position = i;
+					break;
 				}
 			}
+//			}
 			return position;
 		}
 

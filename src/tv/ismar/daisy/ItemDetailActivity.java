@@ -98,7 +98,7 @@ public class ItemDetailActivity extends Activity {
 		mApplication = (VodApplication) getApplication();
 //		Log.e("START", System.currentTimeMillis()+"");
 		mLoadingDialog = new LoadingDialog(this);
-		loadDialogShow();
+		
 		initViews();
 		
 		Intent intent = getIntent();
@@ -118,22 +118,14 @@ public class ItemDetailActivity extends Activity {
 		}
 	}
 	
-	private void loadDialogShow() {
-		if (mLoadingDialog.isShowing()) {
-			mLoadingDialog.dismiss();
-		} else {
-			mLoadingDialog.show();
-		}
-	}
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
+		mLoadingDialog.show();
 	}
 
 	@Override
 	protected void onPause() {
-		// TODO Auto-generated method stub
 		super.onPause();
 	}
 
@@ -148,6 +140,9 @@ public class ItemDetailActivity extends Activity {
 		@Override
 		protected Void doInBackground(String... params) {
 			mItem = mSimpleRestClient.getItem(params[0]);
+			if(mItem.subitems!=null && mItem.subitems.length>0 && mItem.subitems[0].item_pk==0){
+				mItem.subitems[0] = mSimpleRestClient.getItem(mItem.subitems[0].url);
+			}
 			return null;
 		}
 
@@ -224,17 +219,19 @@ public class ItemDetailActivity extends Activity {
 			while(iter.hasNext()){
 				String key = (String) iter.next();
 				Object value = mItem.attributes.map.get(key);
-				if(value.getClass().equals(String.class)){
-					attributeMap.put(key, (String)value);
-				} else if(value.getClass().equals(Attribute.Info.class)){
-					attributeMap.put(key, ((Attribute.Info)value).name);
-				} else if(value.getClass().equals(Attribute.Info[].class)){
-					StringBuffer sb = new StringBuffer();
-					for(Attribute.Info info: (Attribute.Info[])value){
-						sb.append(info.name);
-						sb.append(",");
+				if(value!=null) {
+					if(value.getClass().equals(String.class)){
+						attributeMap.put(key, (String)value);
+					} else if(value.getClass().equals(Attribute.Info.class)){
+						attributeMap.put(key, ((Attribute.Info)value).name);
+					} else if(value.getClass().equals(Attribute.Info[].class)){
+						StringBuffer sb = new StringBuffer();
+						for(Attribute.Info info: (Attribute.Info[])value){
+							sb.append(info.name);
+							sb.append(",");
+						}
+						attributeMap.put(key, sb.substring(0, sb.length()-1));
 					}
-					attributeMap.put(key, sb.substring(0, sb.length()-1));
 				}
 			}
 			buildAttributeList(attributeMap);
@@ -254,7 +251,9 @@ public class ItemDetailActivity extends Activity {
 		}
 		
 		new GetRelatedTask().execute();
-		loadDialogShow();
+		if(mLoadingDialog.isShowing()){
+			mLoadingDialog.dismiss();
+		}
 	}
 	
 	private String getClipLength(Clip clip) {

@@ -27,6 +27,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class ItemListScrollView extends HorizontalScrollView implements OnFocusChangeListener, OnClickListener {
+
+	private static final String TAG = "ItemListScrollView";
+	
+	public int mCurrentPosition;
 	
 	public ArrayList<ItemListContainer> mSectionContainerList;
 	
@@ -133,7 +137,7 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 			titleView.setText(title);
 			ImageView previewImage = (ImageView) cellHolder.findViewById(R.id.list_item_preview_img);
 			previewImage.setTag(item.adlet_url);
-			new GetImageTask().execute(previewImage);
+//			new GetImageTask().execute(previewImage);
 			cellHolder.setOnFocusChangeListener(this);
 			cellHolder.setOnClickListener(this);
 			container.addView(cellHolder, i);
@@ -284,12 +288,13 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 		if(nextFocused!=null) {
 			// indicate the nextfocus column and its postion's total column. to notify the watcher of OnColumnChangeListener
 	        int nextPosition = (Integer) nextFocused.getTag();
-	        Log.d("nextFocused", "position:"+nextPosition);
+//	        Log.d(TAG, "nextFocused position:"+nextPosition);
 	        ItemListContainer nextItemListContainer = mSectionContainerList.get(nextPosition);
 	        int nextTotalColumns = nextItemListContainer.getChildCount();
 	        View nextColHolder = (View) nextFocused.getParent();
 	        int nextColumn = (Integer) nextColHolder.getTag();
-	        Log.d("nextFocused", "column:"+nextColumn+"  totalColumns:"+nextTotalColumns);
+	        mCurrentPosition = nextPosition;
+//	        Log.d(TAG, "nextFocused column:"+nextColumn+"  totalColumns:"+nextTotalColumns);
 	        if(mOnColumnChangeListener!=null) {
 	        	mOnColumnChangeListener.onColumnChanged(nextPosition, nextColumn, nextTotalColumns);
 	        }
@@ -391,6 +396,7 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
                 scrollBy(delta, 0);
             }
         }
+        
     }
     
     /**
@@ -400,8 +406,10 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
     private boolean isOffScreen(View descendant) {
         return !isWithinDeltaOfScreen(descendant, 0);
     }
-    
-    /**
+
+	
+
+	/**
      * Use to move the next section(indexed by position).scroll the screen.
      * @param position
      * @param direction
@@ -432,7 +440,7 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
     	itemListContainer.getDrawingRect(mTempRect);
     	offsetDescendantRectToMyCoords(itemListContainer, mTempRect);
     	int delta = mTempRect.left - 137 - getScrollX();
-    	
+    	mCurrentPosition = position;
     	doScrollX(delta);
 //    	LinearLayout newColumn = (LinearLayout) itemListContainer.getChildAt(0);
 //    	View newFocused = newColumn.getChildAt(0);

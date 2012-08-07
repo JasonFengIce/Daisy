@@ -2,6 +2,7 @@ package tv.ismar.daisy;
 
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.ContentModel;
+import tv.ismar.daisy.models.ContentModelList;
 import android.app.Application;
 
 
@@ -27,7 +28,12 @@ public class VodApplication extends Application {
 		@Override
 		public void run() {
 			SimpleRestClient restClient = new SimpleRestClient();
-			mContentModel = restClient.getContentModelLIst(content_model_api).zh_CN;
+			
+			ContentModelList contentModelList = restClient.getContentModelLIst(content_model_api);
+			if(contentModelList!=null){
+				mContentModel = contentModelList.zh_CN;
+			}
+			
 		}
 	};
 

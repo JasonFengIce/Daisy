@@ -1,16 +1,22 @@
 package tv.ismar.daisy.views;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.FloatMath;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
 public class ItemListContainer extends LinearLayout {
 	
+	private static final String TAG = "";
+	
 	private static final int DEFAULT_ROWS = 3;
 	
 	private int mTotalCellCount;
+	
+	private Rect mTempRect;
 
 	public ItemListContainer(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -71,5 +77,4 @@ public class ItemListContainer extends LinearLayout {
 		return index - (index / DEFAULT_ROWS)*DEFAULT_ROWS;
 	}
 
-	
 }
