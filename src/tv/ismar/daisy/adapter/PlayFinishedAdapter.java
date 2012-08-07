@@ -4,7 +4,6 @@ import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.FinshedImageService;
 import tv.ismar.daisy.models.Item;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
@@ -18,12 +17,11 @@ public class PlayFinishedAdapter extends BaseAdapter {
 	Context mContext;
 	private Item[] listItem;
 	private Item[] listItemSort;
-
 	private int sourceid;
 	private LayoutInflater mLayoutInflater;
 
 	public PlayFinishedAdapter(Context context, Item[] items, int sourceid) {
-		this.mContext = context;
+		this.mContext = context;	
 		this.listItemSort = items;
 		this.sourceid = sourceid;
 		this.mLayoutInflater = LayoutInflater.from(context);
@@ -32,6 +30,9 @@ public class PlayFinishedAdapter extends BaseAdapter {
 
 	private void sortItem() {
 		listItem = new Item[9];
+		if (null == listItemSort) 
+			return;
+			
 		for (int i = 0; i < 9; i++) {
 			listItem[i] = listItemSort[i];
 		}

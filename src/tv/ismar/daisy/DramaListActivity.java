@@ -7,7 +7,6 @@ import tv.ismar.daisy.adapter.DaramAdapter;
 import tv.ismar.daisy.core.ImageUtils;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.models.Item;
-import tv.ismar.daisy.models.Subitem;
 import tv.ismar.daisy.views.LoadingDialog;
 import android.app.Activity;
 import android.content.Intent;
@@ -30,15 +29,12 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 	private DaramAdapter daram;
 	private Item subitems;
 	private GridView daramView;
-
 	private ImageView imageBackgroud;
 	private ImageView imageDaramLabel;
 	private TextView tvDramaName;
 	private TextView tvDramaAll;
 	private TextView tvDramaType;
-
 	private Bitmap bitmap;
-
 	private LoadingDialog loadDialog;
 	private static final int UPDATE = 1;
 

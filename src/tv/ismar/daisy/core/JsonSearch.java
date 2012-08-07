@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import tv.ismar.daisy.models.MovieBean;
 import android.text.TextUtils;
+
 import com.google.gson.Gson;
 
 /**

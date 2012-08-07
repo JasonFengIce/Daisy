@@ -31,7 +31,6 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 	private Bitmap bitmap;
 	LinearLayout linearLeft;
 	LinearLayout linearRight;
-
 	TextView tvVodName;
 	ImageView imageBackgroud;
 	ImageView imageVodLabel;
@@ -42,7 +41,6 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 	private Item[] items;
 	private static final int UPDATE = 1;
 	private static final int UPDATE_BITMAP = 2;
-
 	private LoadingDialog loadDialog;
 
 	@Override
@@ -70,7 +68,7 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				items = simpleRest.getRelatedItem("/api/tv/relate/" + item.item_pk);
+				items = simpleRest.getRelatedItem("/api/tv/relate/" + item.pk);
 				mHandle.sendEmptyMessage(UPDATE);
 			}
 		}) {

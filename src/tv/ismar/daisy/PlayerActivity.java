@@ -1,8 +1,5 @@
 package tv.ismar.daisy;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.models.Clip;
@@ -453,7 +450,7 @@ public class PlayerActivity extends Activity {
 		titleText.setText(item.title);
 		titleText.setSelected(true);
 
-		clipLength = clip.length * 1000;
+		clipLength = item.clip.length * 1000;
 		Log.d(TAG, "RES_INT_CLIP_LENGTH=" + clipLength);
 
 		clipBookmarked = true;
@@ -970,7 +967,7 @@ public class PlayerActivity extends Activity {
 //				} catch (MalformedURLException e) {
 //					e.printStackTrace();
 //				}
-				cinfo = AccessProxy.parse("http://" + host  + "/api/clip/"+ clip.pk + "/", VodUserAgent.getUserAgent(sn),PlayerActivity.this);
+				cinfo = AccessProxy.parse("http://" + host  + "/api/clip/"+ item.clip.pk + "/", VodUserAgent.getUserAgent(sn),PlayerActivity.this);
 				return cinfo;
 
 		}
@@ -996,8 +993,8 @@ public class PlayerActivity extends Activity {
 //						host = (new URL((String)obj)).getHost();
 //					} catch (MalformedURLException e) {
 //						e.printStackTrace();
-//					}
-					cinfo = AccessProxy.parse("http://" + host  + "/api/clip/"+ clip.pk + "/", VodUserAgent.getUserAgent(sn),PlayerActivity.this);
+//					}http://cord.tvxio.com/api/clip/361784/
+					cinfo = AccessProxy.parse("http://" + host  + "/api/clip/"+ item.clip.pk + "/", VodUserAgent.getUserAgent(sn),PlayerActivity.this);
 				}
 			}
 			return cinfo;

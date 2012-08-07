@@ -4,7 +4,6 @@ import java.util.List;
 
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.models.Item;
-import tv.ismar.daisy.models.Subitem;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +14,8 @@ import android.widget.Button;
 public class DaramAdapter extends BaseAdapter {
 	Context mContext;
 	private List<Item> subitemlist;
-
 	private int sourceid;
 	private LayoutInflater mLayoutInflater;
-
 	public DaramAdapter(Context context, List<Item> subitemlist, int sourceid) {
 		this.mContext = context;
 		this.subitemlist = subitemlist;
