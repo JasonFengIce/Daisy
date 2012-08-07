@@ -45,6 +45,7 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 	private static final int TEXT_COLOR_FOCUSED = 0xff000000;
 	private static final int TEXT_COLOR_NOFOCUSED = 0xffbbbbbb;
 	
+	
 	/**
      * Whether arrow scrolling is animated.
      */
@@ -74,9 +75,20 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 		mSectionContainerList = new ArrayList<ItemListContainer>();
 		mContainer = new LinearLayout(getContext());
 		mContainer.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.MATCH_PARENT));
+		
 		this.addView(mContainer);
 		this.setHorizontalFadingEdgeEnabled(true);
 		this.setFadingEdgeLength(100);
+	}
+	
+	private LinearLayout getLoadingView() {
+		LinearLayout emptySpace = new LinearLayout(getContext());
+		emptySpace.setLayoutParams(new FrameLayout.LayoutParams(1920, FrameLayout.LayoutParams.MATCH_PARENT));
+		emptySpace.setGravity(Gravity.CENTER);
+		View loadingView = mInflater.inflate(R.layout.loading_dialog_layout, null);
+		loadingView.setLayoutParams(new LinearLayout.LayoutParams(372, 132));
+		emptySpace.addView(loadingView);
+		return emptySpace;
 	}
 	
 	/**
@@ -102,9 +114,9 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 		shadow.setFocusable(false);
 		
 		ItemListContainer itemListContainer = new ItemListContainer(getContext());
-		if(itemList.objects!=null){
-			addViewsToContainer(itemListContainer, itemList.objects, index);
-		}
+		//if itemList.objects == null add an mEmptySpace to fill the position space. and show a loading ProgressBar.
+		addViewsToContainer(itemListContainer, itemList.objects, index);
+			
 		RelativeLayout.LayoutParams itemListContainerLayoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
 		itemListContainerLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
 		itemListContainerLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
@@ -123,6 +135,10 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 	 * Add views to container.
 	 */
 	private void addViewsToContainer(ItemListContainer container, ArrayList<Item> items, Integer position){
+		if(items==null) {
+			container.addView(getLoadingView());
+			return;
+		}
 		for(int i=0; i<items.size(); i++) {
 			Item item = items.get(i);
 			String title = item.title;

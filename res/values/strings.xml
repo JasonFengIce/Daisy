@@ -28,10 +28,10 @@
     <string name="dialog_know">我知道了</string>
     <string name="dialog_setting">网络设置</string>
     <string name="dialog_disconnect">网络连接已断开，请检查网络</string>
-    <string name="search_not_result">无搜索结果...</string>
+    <string name="search_not_result">无搜索结果&#8230;</string>
     <string name="movie_tag">电影/</string>
     <string name="teleplay_tag">电视/</string>
-    <string name="vod_player_buffering">正在缓冲...</string>
+    <string name="vod_player_buffering">正在缓冲&#8230;</string>
     <string name="vod_home_local_video">在线视频</string>
     <string name="vod_home_local_play">电视直播</string>
     <string name="vod_itemdexpense">免费</string>
@@ -97,4 +97,5 @@
     <string name="area">地区</string>
     <string name="episodes">集数</string>
     <string name="update_to_episode">更新至#集</string>
+    <string name="loading">正在加载&#8230;</string>
 </resources>

@@ -15,7 +15,6 @@ import android.widget.TextView;
  */
 public class LoadingDialog extends Dialog {
 	Context context;
-	private ImageView imageLoading;
 	private TextView tvLoading;
 	String tvTextName = null;
 
@@ -39,12 +38,9 @@ public class LoadingDialog extends Dialog {
 	}
 
 	private void initViews() {
-		imageLoading = (ImageView) findViewById(R.id.iv_loading);
 		tvLoading = (TextView) findViewById(R.id.tv_loading);
 		if (null != tvTextName) {
 			tvLoading.setText(tvTextName);
 		}
-		Animation myAnimation = AnimationUtils.loadAnimation(context, R.anim.rotate_loading);
-		imageLoading.startAnimation(myAnimation);
 	}
 }

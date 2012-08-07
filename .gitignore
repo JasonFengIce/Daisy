@@ -5,8 +5,6 @@
 src/tv/ismar/daisy/VideoSurfaceDemo.java
 bin
 gen
-<<<<<<< HEAD
 .classpath
-=======
->>>>>>> 15fbd302918113623af431d68ef3c106bd33b6fb
 *.orig
+*.directory
