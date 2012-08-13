@@ -51,17 +51,14 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 	private static final String TAG = "PLAYER";
 	
 	private static final int SHORT_STEP = 30000;
-
-	private static final int LONG_FB_PERCENT = 10;
-	private static final int LONG_FF_PERCENT = 10;
-	private static final int KEY_REPEAT_COUNT = 4;
-	
 	private static final int DIALOG_OK_CANCEL = 0;
+
 	private static final int DIALOG_IKNOW = 2;
 	private static final int DIALOG_NET_BROKEN = 3;
 
 	
 	private static final int DIALOG_ITEM_CLICK_NET_BROKEN = 6;
+	private static final int PANEL_HIDE_TIME = 6;
 	
 	private boolean paused = false;
 	private boolean panelShow = false;
@@ -100,13 +97,6 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 	private MediaPlayer mediaPlayer;
 	private Dialog popupDlg = null;
 	private InputStream logoInputStream;
-	
-	private boolean keyLeftDown = false;
-	private boolean keyRightDown = false;
-	private boolean keyOKDown = false;
-	private int keyLeftRepeat = 0;
-	private int keyRightRepeat = 0;
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -114,7 +104,6 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 		setView();
 	}
 	
-	@SuppressWarnings("deprecation")
 	private void setView(){
 		panelShowAnimation = AnimationUtils.loadAnimation(this,R.drawable.fly_up);
 		panelHideAnimation = AnimationUtils.loadAnimation(this,R.drawable.fly_down);
@@ -425,199 +414,146 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 	}
 
 	private void fastForward(int step) {
-		if (currPosition == clipLength)
+		if (currPosition > clipLength)
 			return;
 		currPosition += step;
 
-		if (currPosition > clipLength)
-			currPosition = clipLength;
-
+		if (currPosition > clipLength){
+			gotofinishpage();
+		}
 		Log.d(TAG, "ff " + currPosition);
 	}
 
 	private void fastBackward(int step) {
-		if (currPosition == 0)
+		if (currPosition < 0)
 			return;
 		currPosition -= step;
 
 		if (currPosition < 0)
 			currPosition = 0;
-
+		
 		Log.d(TAG, "fb " + currPosition);
 	}
-	
-	public void seekTo() {
-		Log.d(TAG, "seekTo currPosition=" + currPosition);
-		if (currPosition > clipLength && clipLength != 0) {
-			currPosition = clipLength;
-			gotofinishpage();
-		}
-		mediaPlayer.seekTo(currPosition);
-	}
-
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean ret = false;
-
-		switch (keyCode) {
-		case KeyEvent.KEYCODE_DPAD_LEFT:
-			if (!isVodMenuVisible()) {
-				if (!keyLeftDown) {
-					keyLeftDown = true;
-					keyLeftRepeat = 0;
+		if(mediaPlayer!=null){
+			switch (keyCode) {
+			case KeyEvent.KEYCODE_DPAD_LEFT:
+				if (!isVodMenuVisible()&&mediaPlayer.isPlaying()) {
+					showPanel();
 					fbImage.setImageResource(R.drawable.vod_player_fb_focus);
-					showPanel();
-				} else {
-					keyLeftRepeat++;
-				}
-
-				if (keyLeftRepeat == 0) {
 					fastBackward(SHORT_STEP);
-				} else if ((keyLeftRepeat % KEY_REPEAT_COUNT) == 0) {
-					if (clipLength != 0)
-						fastBackward(clipLength / LONG_FB_PERCENT);
-					else
-						fastBackward(SHORT_STEP);
+					ret = true;
 				}
-				ret = true;
-			}
-			break;
-		case KeyEvent.KEYCODE_DPAD_RIGHT:
-			if (!isVodMenuVisible()) {
-				if (!keyRightDown) {
-					keyRightDown = true;
-					keyRightRepeat = 0;
+				break;
+			case KeyEvent.KEYCODE_DPAD_RIGHT:
+				if (!isVodMenuVisible()&&mediaPlayer.isPlaying()) {
+					showPanel();
 					ffImage.setImageResource(R.drawable.vod_player_ff_focus);
-					showPanel();
-				} else {
-					keyRightRepeat++;
-				}
-
-				if (keyRightRepeat == 0) {
 					fastForward(SHORT_STEP);
-				} else if ((keyRightRepeat % KEY_REPEAT_COUNT) == 0) {
-					if (clipLength != 0)
-						fastForward(clipLength / LONG_FF_PERCENT);
-					else
-						fastForward(SHORT_STEP);
+					ret = true;
 				}
-				ret = true;
-			}
-			break;
-
-		case KeyEvent.KEYCODE_DPAD_CENTER:
-		case KeyEvent.KEYCODE_ENTER:
-			if (!isVodMenuVisible()) {
-				if (!keyOKDown) {
-					if (!paused) {
-
-						pauseItem();
-						playPauseImage
-								.setImageResource(R.drawable.vod_player_pause_focus);
-					} else {
-
-						resumeItem();
-						playPauseImage
-								.setImageResource(R.drawable.vod_player_play_focus);
-					}
+				break;
+			case KeyEvent.KEYCODE_DPAD_CENTER:
+			case KeyEvent.KEYCODE_ENTER:
+				if (!isVodMenuVisible()) {
 					showPanel();
-					keyOKDown = true;
+					if (!paused) {
+						pauseItem();
+						playPauseImage.setImageResource(R.drawable.vod_player_pause_focus);
+					} else {
+						resumeItem();
+						playPauseImage.setImageResource(R.drawable.vod_player_play_focus);
+					}
+					
+					ret = true;
 				}
-				ret = true;
-			}
-			break;
-		case KeyEvent.KEYCODE_A:
-		case KeyEvent.KEYCODE_F1:
-		case KeyEvent.KEYCODE_PROG_RED:
-			if (!isVodMenuVisible()) {
+				break;
+			case KeyEvent.KEYCODE_A:
+			case KeyEvent.KEYCODE_F1:
+			case KeyEvent.KEYCODE_PROG_RED:
+				if (!isVodMenuVisible()) {
+					if (panelShow) {
+						hidePanel();
+					} else {
+						showPanel();
+					}
+					ret = true;
+				}
+				break;
+			case KeyEvent.KEYCODE_DPAD_UP:
+				if (!isVodMenuVisible()) {
+					showPanel();
+					ret = true;
+				}
+				break;
+			case KeyEvent.KEYCODE_BACK:
 				if (panelShow) {
 					hidePanel();
+					ret = true;
 				} else {
-					showPanel();
-				}
-				ret = true;
+					showPopupDialog(
+							0,
+							getResources().getString(
+									R.string.vod_player_exit_dialog));
+					ret = true;
+				}		
+				break;
+			default:
+				break;
 			}
-			break;
-		case KeyEvent.KEYCODE_DPAD_UP:
-			if (!isVodMenuVisible()) {
-				showPanel();
-				ret = true;
+	
+			if (ret == false) {
+				ret = super.onKeyDown(keyCode, event);
 			}
-			break;
-		case KeyEvent.KEYCODE_BACK:
-			if (panelShow) {
-				hidePanel();
-				ret = true;
-			} else {
-				showPopupDialog(
-						0,
-						getResources().getString(
-								R.string.vod_player_exit_dialog));
-				ret = true;
-			}
-			break;
-		default:
-			break;
 		}
-
-		if (ret == false) {
-			ret = super.onKeyDown(keyCode, event);
-		}
-
 		return ret;
 	}
-
 	
-
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		boolean ret = false;
-		switch (keyCode) {
-		case KeyEvent.KEYCODE_DPAD_LEFT:
-			if (!isVodMenuVisible()) {
-				fbImage.setImageResource(R.drawable.vod_player_fb);
-				Log.d(TAG, "seek to " + currPosition);
-				seekTo();
-				keyLeftDown = false;
-				ret = true;
-			}
-			break;
-		case KeyEvent.KEYCODE_DPAD_RIGHT:
-			if (!isVodMenuVisible()) {
-				ffImage.setImageResource(R.drawable.vod_player_ff);
-				Log.d(TAG, "seek to " + currPosition);
-				seekTo();
-				keyRightDown = false;
-				ret = true;
-			}
-			break;
-		case KeyEvent.KEYCODE_DPAD_CENTER:
-		case KeyEvent.KEYCODE_ENTER:
-			if (!isVodMenuVisible()) {
-				if (paused) {
-					timeTaskPause();
-					playPauseImage.setImageResource(R.drawable.vod_player_play);
-				} else {
-					timeTaskStart();
-					playPauseImage
-							.setImageResource(R.drawable.vod_player_pause);
+		if(mediaPlayer!=null){
+			switch (keyCode) {
+			case KeyEvent.KEYCODE_DPAD_LEFT:
+				if (!isVodMenuVisible()) {
+					fbImage.setImageResource(R.drawable.vod_player_fb);
+					Log.d(TAG, "seek to " + currPosition);
+					mediaPlayer.seekTo(currPosition);
+					ret = true;
 				}
-				keyOKDown = false;
-				ret = true;
+				break;
+			case KeyEvent.KEYCODE_DPAD_RIGHT:
+				if (!isVodMenuVisible()) {
+					ffImage.setImageResource(R.drawable.vod_player_ff);
+					Log.d(TAG, "seek to " + currPosition);
+					mediaPlayer.seekTo(currPosition);
+					ret = true;
+				}
+				break;
+			case KeyEvent.KEYCODE_DPAD_CENTER:
+			case KeyEvent.KEYCODE_ENTER:
+				if (!isVodMenuVisible()) {
+					if (paused) {
+						playPauseImage.setImageResource(R.drawable.vod_player_play);
+					} else {
+						playPauseImage.setImageResource(R.drawable.vod_player_pause);
+					}
+					ret = true;
+				}
+				break;
+			default:
+				break;
 			}
-			break;
-		default:
-			break;
+	
+			if (ret == false) {
+				ret = super.onKeyUp(keyCode, event);
+			}
 		}
-
-		if (ret == false) {
-			ret = super.onKeyUp(keyCode, event);
-		}
-
 		return ret;
 	}
-
 	
 	
 	public void showPopupDialog(int type, String msg) {
