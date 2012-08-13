@@ -6,8 +6,6 @@ import java.util.regex.Pattern;
 
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.models.Channel;
-import tv.ismar.daisy.models.ChannelList;
 import tv.ismar.daisy.models.ItemList;
 import tv.ismar.daisy.models.SectionList;
 import tv.ismar.daisy.views.ItemListScrollView;
@@ -24,6 +22,10 @@ import android.widget.TextView;
 
 public class ChannelListActivity extends Activity {
 
+	/*
+	 * defines max number of cells can be show in a single screen.
+	 */
+	private static final int MAX_CELLS_IN_SCREEN = 15;
 	
 	private SimpleRestClient mRestClient = new SimpleRestClient();
 	
@@ -112,12 +114,16 @@ public class ChannelListActivity extends Activity {
 			}
 			if(mSectionList==null){
 				mSectionList = mRestClient.getSections(url);
+				if(mSectionList==null) {
+					mSectionList = mRestClient.getSections(url);
+				}
 			}
 			int itemsCount = 0;
 			for(int i=0; i<mSectionList.size();i++) {
 				ItemList itemList = null;
-				if(i==0 || itemsCount<=15){
+				if(i==mCurrentSectionPosition || itemsCount<=MAX_CELLS_IN_SCREEN){
 					itemList = mRestClient.getItemList(mSectionList.get(i).url);
+					// if the itemList's items is not able to fill the full single screen. we need load the second itemList.
 					if(itemList.objects!=null) {
 						itemsCount += itemList.objects.size();
 					}
@@ -140,6 +146,7 @@ public class ChannelListActivity extends Activity {
 				}
 				int totalColumnsOfSectionX = mItemListScrollView.getTotalColumnCount(mCurrentSectionPosition);
 				mScrollableSectionList.setPercentage(mCurrentSectionPosition, (int)(1f/(float)totalColumnsOfSectionX*100f));
+				mItemListScrollView.jumpToSection(mCurrentSectionPosition);
 			}
 //			new GetItemListTask().execute();
 			super.onPostExecute(result);
@@ -167,6 +174,9 @@ public class ChannelListActivity extends Activity {
 			for(int i=0; i<mItemLists.size();i++){
 				if(slug.equals(mItemLists.get(i).slug)){
 					ItemList itemList = mRestClient.getItemList(url);
+					if(itemList==null) {
+						continue;
+					}
 					itemList.slug = mSectionList.get(i).slug;
 					itemList.title = mSectionList.get(i).title;
 					mItemLists.set(i, itemList);
@@ -192,6 +202,7 @@ public class ChannelListActivity extends Activity {
 		@Override
 		public void onPrepareNeeded(int position) {
 			if(mItemLists.get(position).objects==null){
+				mItemListScrollView.addScrapViewsToSection(position, 0);
 				new GetItemListTask().execute(mItemLists.get(position).slug, mSectionList.get(position).url);
 			} else {
 				mItemListScrollView.updateSection(mItemLists.get(position), position);
@@ -206,6 +217,7 @@ public class ChannelListActivity extends Activity {
 			if(mItemLists.get(index).objects!=null){
 				mItemListScrollView.updateSection(mItemLists.get(index), index);
 			} else {
+				mItemListScrollView.addScrapViewsToSection(index, 0);
 				new GetItemListTask().execute(mItemLists.get(index).slug, mSectionList.get(index).url);
 			}
 			mItemListScrollView.jumpToSection(index);
@@ -233,13 +245,17 @@ public class ChannelListActivity extends Activity {
 
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
+		if(mItemListScrollView != null) {
+			mItemListScrollView.setPause(false);
+		}
 		super.onResume();
 	}
 
 	@Override
 	protected void onPause() {
-		// TODO Auto-generated method stub
+		if(mItemListScrollView != null) {
+			mItemListScrollView.setPause(true);
+		}
 		super.onPause();
 	}
 

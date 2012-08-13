@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    <ImageView
+    <tv.ismar.daisy.views.AsyncImageView
         android:layout_width="345dip"
         android:layout_height="204dip"
         android:id="@+id/list_item_preview_img"

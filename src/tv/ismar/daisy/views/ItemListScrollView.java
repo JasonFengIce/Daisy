@@ -1,16 +1,18 @@
 package tv.ismar.daisy.views;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 
 import tv.ismar.daisy.R;
-import tv.ismar.daisy.core.ImageUtils;
-import tv.ismar.daisy.core.NetworkUtils;
+import tv.ismar.daisy.VodApplication.OnLowMemoryListener;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemList;
+import tv.ismar.daisy.views.AsyncImageView.OnImageViewLoadListener;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
-import android.os.AsyncTask;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -24,15 +26,24 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Scroller;
 import android.widget.TextView;
 
-public class ItemListScrollView extends HorizontalScrollView implements OnFocusChangeListener, OnClickListener {
+public class ItemListScrollView extends HorizontalScrollView implements OnFocusChangeListener, OnClickListener, OnImageViewLoadListener, OnLowMemoryListener {
+	
+	/*
+	 * defines max number of cells can be show in a single screen.
+	 */
+	private static final int MAX_CELLS_IN_SCREEN = 15;
+	private static final int MAX_RECYCLEBIN_SIZE = 50;	
 
 	private static final String TAG = "ItemListScrollView";
 	
 	public int mCurrentPosition;
 	
 	public ArrayList<ItemListContainer> mSectionContainerList;
+	
+	private ArrayList<View> mScrapViews;
 	
 	public LinearLayout mContainer;
 	
@@ -54,6 +65,12 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
     private OnSectionPrepareListener mOnSectionPrepareListener;
     private OnColumnChangeListener mOnColumnChangeListener;
     private OnItemClickedListener mOnItemClickedListener;
+    
+    /**
+     * when a AsyncImageView is on image loading task, it will be add to this queue;
+     */
+    private HashMap<AsyncImageView, Boolean> mLoadingImageQueue;
+    
 	
 	public ItemListScrollView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -71,6 +88,8 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 	}
 
 	public void init() {
+		mScrapViews = new ArrayList<View>();
+		mLoadingImageQueue = new HashMap<AsyncImageView, Boolean>();
 		mInflater = LayoutInflater.from(getContext());
 		mSectionContainerList = new ArrayList<ItemListContainer>();
 		mContainer = new LinearLayout(getContext());
@@ -81,14 +100,34 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 		this.setFadingEdgeLength(100);
 	}
 	
-	private LinearLayout getLoadingView() {
-		LinearLayout emptySpace = new LinearLayout(getContext());
-		emptySpace.setLayoutParams(new FrameLayout.LayoutParams(1920, FrameLayout.LayoutParams.MATCH_PARENT));
-		emptySpace.setGravity(Gravity.CENTER);
-		View loadingView = mInflater.inflate(R.layout.loading_dialog_layout, null);
-		loadingView.setLayoutParams(new LinearLayout.LayoutParams(372, 132));
-		emptySpace.addView(loadingView);
-		return emptySpace;
+//	private LinearLayout getLoadingView() {
+//		LinearLayout emptySpace = new LinearLayout(getContext());
+//		emptySpace.setLayoutParams(new FrameLayout.LayoutParams(1920, FrameLayout.LayoutParams.MATCH_PARENT));
+//		emptySpace.setGravity(Gravity.CENTER);
+//		View loadingView = mInflater.inflate(R.layout.loading_dialog_layout, null);
+//		loadingView.setLayoutParams(new LinearLayout.LayoutParams(372, 132));
+//		emptySpace.addView(loadingView);
+//		return emptySpace;
+//	}
+	
+	private void getScrapViews(int size) {
+		if(mScrapViews.size() == 0 || mScrapViews.size() < size) {
+			if(size<=0) {
+				size = MAX_CELLS_IN_SCREEN;
+			}
+			int differ = size-mScrapViews.size();
+			for(int i=0; i<differ; i++) {
+				RelativeLayout cellHolder = (RelativeLayout) mInflater.inflate(R.layout.list_view_item, null);
+				LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(348, 252);
+				layoutParams.rightMargin = 81;
+				cellHolder.setLayoutParams(layoutParams);
+				cellHolder.setFocusable(true);
+				TextView titleView =(TextView) cellHolder.findViewById(R.id.list_item_title);
+				titleView.setText(getResources().getString(R.string.onload));
+				cellHolder.setOnFocusChangeListener(this);
+				mScrapViews.add(cellHolder);
+			}
+		}
 	}
 	
 	/**
@@ -114,8 +153,9 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 		shadow.setFocusable(false);
 		
 		ItemListContainer itemListContainer = new ItemListContainer(getContext());
-		//if itemList.objects == null add an mEmptySpace to fill the position space. and show a loading ProgressBar.
-		addViewsToContainer(itemListContainer, itemList.objects, index);
+		if(itemList.objects!=null){
+			addViewsToContainer(itemListContainer, itemList.objects, index);
+		}
 			
 		RelativeLayout.LayoutParams itemListContainerLayoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
 		itemListContainerLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
@@ -135,49 +175,24 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 	 * Add views to container.
 	 */
 	private void addViewsToContainer(ItemListContainer container, ArrayList<Item> items, Integer position){
-		if(items==null) {
-			container.addView(getLoadingView());
-			return;
-		}
+		getScrapViews(items.size());
 		for(int i=0; i<items.size(); i++) {
 			Item item = items.get(i);
 			String title = item.title;
-			RelativeLayout cellHolder = (RelativeLayout) mInflater.inflate(R.layout.list_view_item, null);
-			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(348, 252);
-			layoutParams.rightMargin = 81;
-			cellHolder.setLayoutParams(layoutParams);
+			RelativeLayout cellHolder = (RelativeLayout) container.getCellAt(i);
+			if(cellHolder==null) {
+				cellHolder = (RelativeLayout) mScrapViews.remove(mScrapViews.size()-1);
+			}
 			cellHolder.setTag(position);
-			cellHolder.setFocusable(true);
 			TextView titleView =(TextView) cellHolder.findViewById(R.id.list_item_title);
 			titleView.setTag(item.item_url);
 			titleView.setText(title);
-			ImageView previewImage = (ImageView) cellHolder.findViewById(R.id.list_item_preview_img);
+			AsyncImageView previewImage = (AsyncImageView) cellHolder.findViewById(R.id.list_item_preview_img);
 			previewImage.setTag(item.adlet_url);
-//			new GetImageTask().execute(previewImage);
-			cellHolder.setOnFocusChangeListener(this);
+			previewImage.setOnImageViewLoadListener(this);
 			cellHolder.setOnClickListener(this);
 			container.addView(cellHolder, i);
 		}
-	}
-	
-	class GetImageTask extends AsyncTask<ImageView, Void, Bitmap> {
-		
-		private ImageView view;
-
-		@Override
-		protected Bitmap doInBackground(ImageView... params) {
-			view = params[0];
-			String url = (String) view.getTag();
-			return ImageUtils.getBitmapFromInputStream(NetworkUtils.getInputStream(url), 319, 179);
-		}
-
-		@Override
-		protected void onPostExecute(Bitmap result) {
-			if(result!=null) {
-				view.setImageBitmap(result);
-			}
-		}
-		
 	}
 	
 	/**
@@ -187,11 +202,64 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 	 */
 	public void updateSection(ItemList itemList, int position) {
 		ItemListContainer itemListContainer = mSectionContainerList.get(position);
-		if(itemListContainer.getTotalCellCount()!=itemList.objects.size()){
-			itemListContainer.removeAllViews();
-			addViewsToContainer(itemListContainer, itemList.objects, position);
+		addViewsToContainer(itemListContainer, itemList.objects, position);
+		requestImageShow(position);
+//		requestLayout();
+		recycleView(position);
+	}
+	
+	/**
+	 * Use to recycle views.
+	 * @param position the position intent to reach.
+	 */
+	public void recycleView(int position) {
+		for(int index=0;index<mSectionContainerList.size(); ++index) {
+			if(index!=mCurrentPosition && index!=mCurrentPosition-1 && index!= mCurrentPosition+1 && index!= position) {
+				ItemListContainer section = mSectionContainerList.get(index);
+				if(section.getChildCount()==0) {
+					continue;
+				}
+				View colHolder0 = section.getChildAt(0);
+				View colHolderN = section.getChildAt(section.getChildCount()-1);
+				//if this view has first or last child column on screen don't recycle it.
+				if(isOffScreen(colHolder0) && isOffScreen(colHolderN)){
+					final ArrayList<View> recycledViews = section.recycleAll();
+					if(mScrapViews.size()<MAX_RECYCLEBIN_SIZE) {
+						int differ = MAX_RECYCLEBIN_SIZE -mScrapViews.size(); 
+						for(int i=0; i<differ && i<recycledViews.size();++i) {
+							View recycledView = recycledViews.remove(recycledViews.size()-1);
+							TextView titleView = (TextView) recycledView.findViewById(R.id.list_item_title);
+							titleView.setText(getResources().getString(R.string.onload));
+							AsyncImageView previewImageView = (AsyncImageView) recycledView.findViewById(R.id.list_item_preview_img);
+							previewImageView.setImageDrawable(null);
+							mScrapViews.add(recycledView);
+						}
+					}
+					section.removeAllViews();
+				}
+			}
 		}
-		this.requestLayout();
+	}
+	
+	/**
+	 * We need add some scrapViews to next section we intent to reach so that it won't be null when we move focus to the next section.
+	 * @param position the next section's index.
+	 * @param viewsOnScreen the next section's cells which can be show on screen. when called from other method. left this argument with ZERO.
+	 */
+	public void addScrapViewsToSection(int position, int viewsOnScreen) {
+		getScrapViews(MAX_CELLS_IN_SCREEN);
+		ItemListContainer itemListContainer = mSectionContainerList.get(position);
+		viewsOnScreen += itemListContainer.getTotalCellCount();
+		if(viewsOnScreen<MAX_CELLS_IN_SCREEN && itemListContainer.getTotalCellCount()>0 && position<mSectionContainerList.size()-1) {
+			addScrapViewsToSection(position+1, viewsOnScreen);
+		} else if(itemListContainer.getTotalCellCount()==0) {
+			for(int i=0;i<MAX_CELLS_IN_SCREEN; ++i) {
+				View scrapView = mScrapViews.remove(mScrapViews.size()-1);
+				scrapView.setTag(position);
+				itemListContainer.addView(scrapView,i);
+			}
+//			requestLayout();
+		}
 	}
 	
 	
@@ -294,7 +362,7 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 		}
 		int row = 0;
 		for(int i=0;i<colHolder.getChildCount();i++) {
-			if(currentFocused == getChildAt(i)){
+			if(currentFocused == colHolder.getChildAt(i)){
 				row = i;
 				break;
 			}
@@ -303,16 +371,20 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 		
 		if(nextFocused!=null) {
 			// indicate the nextfocus column and its postion's total column. to notify the watcher of OnColumnChangeListener
-	        int nextPosition = (Integer) nextFocused.getTag();
-//	        Log.d(TAG, "nextFocused position:"+nextPosition);
-	        ItemListContainer nextItemListContainer = mSectionContainerList.get(nextPosition);
-	        int nextTotalColumns = nextItemListContainer.getChildCount();
-	        View nextColHolder = (View) nextFocused.getParent();
-	        int nextColumn = (Integer) nextColHolder.getTag();
-	        mCurrentPosition = nextPosition;
-//	        Log.d(TAG, "nextFocused column:"+nextColumn+"  totalColumns:"+nextTotalColumns);
-	        if(mOnColumnChangeListener!=null) {
-	        	mOnColumnChangeListener.onColumnChanged(nextPosition, nextColumn, nextTotalColumns);
+			Object tag = nextFocused.getTag();
+	        if(tag!=null){
+	        	int nextPosition = (Integer)tag;
+	        
+	//	        Log.d(TAG, "nextFocused position:"+nextPosition);
+		        ItemListContainer nextItemListContainer = mSectionContainerList.get(nextPosition);
+		        int nextTotalColumns = nextItemListContainer.getChildCount();
+		        View nextColHolder = (View) nextFocused.getParent();
+		        int nextColumn = (Integer) nextColHolder.getTag();
+		        mCurrentPosition = nextPosition;
+	//	        Log.d(TAG, "nextFocused column:"+nextColumn+"  totalColumns:"+nextTotalColumns);
+		        if(mOnColumnChangeListener!=null) {
+		        	mOnColumnChangeListener.onColumnChanged(nextPosition, nextColumn, nextTotalColumns);
+		        }
 	        }
 		}
 		return nextFocused;
@@ -412,7 +484,7 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
                 scrollBy(delta, 0);
             }
         }
-        
+    	
     }
     
     /**
@@ -516,6 +588,92 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 	
 	public interface OnItemClickedListener {
 		public void onItemClicked(String url);
+	}
+	
+	/**
+	 * view only allow the views which were currently placed in screen to show image.
+	 */
+	public void requestImageShow(int position) {
+		for(AsyncImageView imageView: mLoadingImageQueue.keySet()){
+			mLoadingImageQueue.put(imageView, false);
+		}
+		ItemListContainer itemListContainer = mSectionContainerList.get(position);
+		int columnCount = itemListContainer.getChildCount();
+		for(int i=0; i<columnCount; ++i) {
+			LinearLayout columnHolder = (LinearLayout) itemListContainer.getChildAt(i);
+			if(!isOffScreen(columnHolder)) {
+//				Log.i(TAG, "column:" + i+" is in screen");
+				for(int row=0; row<columnHolder.getChildCount(); ++row) {
+					ViewGroup cellHolder = (ViewGroup) columnHolder.getChildAt(row);
+					AsyncImageView previewImage = (AsyncImageView) cellHolder.findViewById(R.id.list_item_preview_img);
+					Object tag = previewImage.getTag();
+					if(tag!=null){
+						previewImage.setPaused(false);
+						previewImage.setUrl((String)tag);
+						mLoadingImageQueue.put(previewImage, true);
+					}
+				}
+			}
+		}
+		
+		for(AsyncImageView imageView: mLoadingImageQueue.keySet()){
+			if(!mLoadingImageQueue.get(imageView)) {
+				imageView.setPaused(true);
+			}
+		}
+	}
+
+	/**
+	 * OnImageViewLoadListener allow user to handle AsyncImageView loading event.
+	 */
+	@Override
+	public void onLoadingStarted(AsyncImageView imageView) {
+	}
+
+	@Override
+	public void onLoadingEnded(AsyncImageView imageView, Bitmap image) {
+		mLoadingImageQueue.remove(imageView);
+	}
+
+	@Override
+	public void onLoadingFailed(AsyncImageView imageView, Throwable throwable) {
+		mLoadingImageQueue.remove(imageView);
+	}
+	
+	/**
+	 * when the view is invisible( such as another activity has overlap the activity which contains this view). 
+	 * we need to pause the loading task to release thread resource to future task.
+	 * when we back to this view. we need to re-start the task.
+	 * @param isPaused
+	 */
+	public void setPause(boolean isPaused) {
+		if(mLoadingImageQueue==null || mLoadingImageQueue.size()==0) {
+			return;
+		}
+		for(AsyncImageView imageView: mLoadingImageQueue.keySet()) {
+			if(mLoadingImageQueue.get(imageView)) {
+				imageView.setPaused(isPaused);
+			}
+		}
+	}
+
+	@Override
+	public void onLowMemoryReceived() {
+//		recycleView(mCurrentPosition);
+	}
+	
+	int mLastScrollX;
+	
+	@Override
+	public void computeScroll() {
+		int scrollX = getScrollX();
+		if(mLastScrollX != scrollX) {
+			mLastScrollX = scrollX;
+		} else {
+			requestImageShow(mCurrentPosition);
+			mLastScrollX = 0;
+		}
+		super.computeScroll();
 	}
 	
 }

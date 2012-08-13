@@ -4,6 +4,7 @@ import tv.ismar.daisy.R;
 import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
 import android.content.Context;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,11 +17,20 @@ import android.widget.TextView;
 
 public class ScrollableSectionList extends HorizontalScrollView {
 	
+	private static final String TAG = "ScrollableSectionList";
+	
 	private LinearLayout mContainer;
 	
+	/*
+	 * current selected section index. don't change this value directly.Always use ScrollableSectionList.changeSelection(int position) to change this value.
+	 */
 	private int mSelectPosition = 0;
 	
 	private OnSectionSelectChangedListener mSectionSelectChangedListener;
+	
+	private Rect mTempRect = new Rect();
+	
+	private boolean mSmoothScrollingEnabled = true;
 	
 	private static final int LABEL_TEXT_COLOR_NOFOCUSED = 0xffbbbbbb;
 	
@@ -120,7 +130,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 				lastPercentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_noselected));
 				TextView lastLabel = (TextView) lastSelectedView.findViewById(R.id.section_label);
 				lastLabel.setBackgroundColor(LABEL_TEXT_BACKGROUND_NOSELECTED_NOFOCUSED);
-				mSelectPosition = index;
+				changeSelection(index);
 				if(mSectionSelectChangedListener!=null) {
 					mSectionSelectChangedListener.onSectionSelectChanged(index);
 				}
@@ -144,7 +154,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 			lastPercentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_noselected));
 			lastPercentageBar.setProgress(0);
 			
-			mSelectPosition = position;
+			changeSelection(position);
 			label.setBackgroundColor(LABEL_TEXT_BACKGROUND_SELECTED_NOFOCUSED);
 			percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_selected));
 		}
@@ -177,10 +187,75 @@ public class ScrollableSectionList extends HorizontalScrollView {
 				//if currentFocused is the last element of the list. just do nothing.
 				return true;
 			}
+		} else if(direction==View.FOCUS_LEFT){
+			View currentFocused = findFocus();
+			int index = (Integer) currentFocused.getTag();
+			if(index > 0 ){
+				return super.arrowScroll(direction);
+			} else {
+				//if currentFocused is the last element of the list. just do nothing.
+				return true;
+			}
 		} else {
 			return super.arrowScroll(direction);
 		}
 	}
 	
+	/**
+     * @return whether the descendant of this scroll view is within delta
+     *  pixels of being on the screen.
+     */
+    private boolean isWithinDeltaOfScreen(View descendant, int delta) {
+        descendant.getDrawingRect(mTempRect);
+        offsetDescendantRectToMyCoords(descendant, mTempRect);
+
+        return (mTempRect.right + delta) >= getScrollX()
+                && (mTempRect.left - delta) <= (getScrollX() + getWidth());
+    }
+    
+    /**
+     * Smooth scroll by a X delta
+     *
+     * @param delta the number of pixels to scroll by on the X axis
+     */
+    private void doScrollX(int delta) {
+        if (delta != 0) {
+            if (mSmoothScrollingEnabled) {
+                smoothScrollBy(delta, 0);
+            } else {
+                scrollBy(delta, 0);
+            }
+        }
+    	
+    }
+    
+//    /**
+//     * @return whether the descendant of this scroll view is scrolled off
+//     *  screen.
+//     */
+//    private boolean isOffScreen(View descendant) {
+//        return !isWithinDeltaOfScreen(descendant, 0);
+//    }
+//    
+//    
+
+	/*
+	 * use to change the mSelectPosition.
+	 */
+	private void changeSelection(int position) {
+		if(position < 0 || position >= mContainer.getChildCount()) {
+			return;
+		}
+		mSelectPosition = position;
+		View section = mContainer.getChildAt(position);
+		final int maxJump = getMaxScrollAmount();
+		
+		if(isWithinDeltaOfScreen(section, maxJump)) {
+			section.getDrawingRect(mTempRect);
+			offsetDescendantRectToMyCoords(section, mTempRect);
+			int delta = computeScrollDeltaToGetChildRectOnScreen(mTempRect);
+			doScrollX(delta);
+		}
+	}
 	
 }

@@ -23,7 +23,7 @@
             android:padding="10dip"/>
         <tv.ismar.daisy.views.ScrollableSectionList
             android:id="@+id/section_tabs"
-            android:layout_width="match_parent"
+            android:layout_width="1365dip"
             android:layout_height="wrap_content"
             android:layout_marginTop="174dip"
             android:scrollbars="none">
