@@ -34,6 +34,8 @@ public class ImageCacheAdapter extends BaseAdapter {
 	private int backgroudID = R.drawable.list_item_preview_bg;
 	private int backType = R.drawable.iv_type_comic;
 	private Animation myAnimation;
+	
+	List<Bitmap> listBitmap = new ArrayList<Bitmap>();
 
 	public ImageCacheAdapter(Context context, List<MovieBean> movieList, int sourceid) {
 		this.mContext = context;
