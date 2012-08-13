@@ -1,5 +1,7 @@
 package tv.ismar.daisy;
 
+import java.io.IOException;
+
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.models.Clip;
@@ -11,8 +13,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.drawable.AnimationDrawable;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,477 +24,329 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MotionEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.ismartv.api.AccessProxy;
 import com.ismartv.bean.ClipInfo;
 
-public class PlayerActivity extends Activity {
-	private static final String TAG = "ISTVVodPlayer";
+public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 
 	private static final String PREFS_NAME = "tv.ismar.daisy";
+	private static final String TAG = "PLAYER";
+	
+	private static final int SHORT_STEP = 30000;
+	private static final int DIALOG_OK_CANCEL = 0;
 
+	private static final int DIALOG_IKNOW = 2;
+	private static final int DIALOG_NET_BROKEN = 3;
+
+	
+	private static final int DIALOG_ITEM_CLICK_NET_BROKEN = 6;
 	private static final int PANEL_HIDE_TIME = 6;
-	private static final int SHORT_FB_STEP = 30000;
-	private static final int SHORT_FF_STEP = 30000;
-	private static final int LONG_FB_PERCENT = 10;
-	private static final int LONG_FF_PERCENT = 10;
-	private static final int KEY_REPEAT_COUNT = 4;
-
-	public final int RES_URL_CLIP_ADAPTIVE = 0;
-	public static final int RES_URL_CLIP_LOW = 1;
-	public static final int RES_URL_CLIP_MEDIUM = 2;
-	public static final int RES_URL_CLIP_NORMAL = 3;
-	public static final int RES_URL_CLIP_HIGH = 4;
-	public static final int RES_URL_CLIP_ULTRA = 5;
-	public static final int RES_STR_ITEM_TITLE = 6;
-	public static final int RES_INT_CLIP_LENGTH = 7;
-	public static final int RES_BOOL_BOOKMARKED = 8;
-	public static final int RES_INT_OFFSET = 9;
-	public static final int RES_INT_EPISODE_REALCOUNT = 10;
-
-	public static final int DIALOG_OK_CANCEL = 0;
-	public static final int DIALOG_RETRY_CANCEL = 1;
-	public static final int DIALOG_IKNOW = 2;
-	public static final int DIALOG_NET_BROKEN = 3;
-	public static final int DIALOG_CANNOT_GET_DATA = 4;
-	public static final int DIALOG_LOGIN = 5;
-	public static final int DIALOG_ITEM_CLICK_NET_BROKEN = 6;
-
-	// private ISTVVodPlayerDoc doc;
-	@SuppressWarnings("unused")
-	private int itemPK = 18821;
-	@SuppressWarnings("unused")
-	private int subItemPK = -1;
-	private String urls[] = new String[6];
-	@SuppressWarnings("unused")
-	private String itemTitle;
-
-	private int clipLength = 0;
-	private int currPosition = 0;
-	private int clipOffset = 0;
-	@SuppressWarnings("unused")
-	private boolean clipBookmarked = false;
-	@SuppressWarnings("unused")
-	private int episoderealcount;
-
-	// private URL currURL = null;
-	private String currURL = null;
-	private int currQuality = 0;
-	private boolean urlUpdate = false;
-	private boolean playing = false;
-	private boolean prepared = false;
-	@SuppressWarnings("unused")
-	private boolean buffering = false;
-	private boolean seeking = false;
-	private boolean needSeek = false;
+	
 	private boolean paused = false;
 	private boolean panelShow = false;
-	private boolean bufferShow = false;
-	@SuppressWarnings("unused")
-	private int panelHideCounter = 0;
-
+	private int currQuality = 0;
+	private String urls[] = new String[6];
+	private boolean noFinish = false;
 	private Animation panelShowAnimation;
 	private Animation panelHideAnimation;
 	private Animation bufferShowAnimation;
-	private Animation bufferHideAnimation;
-
-	private VideoView videoView;// load
-
+//	private Animation bufferHideAnimation;
 	private RelativeLayout bufferLayout;
+//	private ImageView logoImage;
 	private AnimationDrawable bufferAnim;
 	private LinearLayout panelLayout;
 	private TextView titleText;
 	private TextView timeText;
-	private SeekBar timeBar;
 	private ImageView playPauseImage;
 	private ImageView ffImage;
 	private ImageView fbImage;
-
-	private boolean keyOKDown = false;
-	private boolean keyLeftDown = false;
-	private boolean keyRightDown = false;
-	@SuppressWarnings("unused")
-	private boolean seekBarDown = false;
-	private int keyLeftRepeat = 0;
-	private int keyRightRepeat = 0;
-
-	private boolean firstPlay;
-	@SuppressWarnings("unused")
-	private int popupstatus = 0;
-	/*
-	 * private VodTimer replayTimer; private boolean replaytimerflag = false;
-	 */
-
+	private int clipLength = 0;
+	private int currPosition = 0;
+	private int clipOffset = 0;
 	private boolean isContinue = true;
-	@SuppressWarnings("unused")
-	private boolean isChangeUrl = false;
 	private ISTVVodMenu menu = null;
-	private boolean winOK = false;
-
-	// accessProxy 返回播放的码流地址
-	private ClipInfo cinfo = new ClipInfo();
-	// 播放时间轴计时器
+	private ClipInfo urlInfo = new ClipInfo();
 	private Handler mHandler = new Handler();
 	private long mStartTime = 0;
-	@SuppressWarnings("unused")
-	private TextView bufferText;
 	private int tempOffset = 0;
 	private Item item;
 	private Clip clip;
 	private Bundle bundle;
+	private long tempTime;
+	private SeekBar timeBar;
+	private SurfaceView surfaceView;
+	private SurfaceHolder surfaceHolder;
+	private MediaPlayer mediaPlayer;
+	private Dialog popupDlg = null;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-
-		/* before super, because onCreateVodMenu use subItemPK */
-		// Bundle bundle = this.getIntent().getExtras();
-		// if (bundle != null) {
-		// itemPK = bundle.getInt("itemPK", itemPK);
-		// subItemPK = bundle.getInt("subItemPK", subItemPK);
-		// }
-		Intent intent = getIntent();
-		if (intent != null) {
-			bundle = this.getIntent().getExtras();
-			Object obj =  bundle.get("item");
-			if(obj!=null){
-				item = (Item)obj;
-				itemPK = item.pk;
-				if (item.clip != null) {
-					clip = item.clip;
-					new AccessProxyTask().execute();
-				} 
-			}else{
-				new itemByUrlTask().execute();
-			}
-			
-		}
-
 		super.onCreate(savedInstanceState);
-
-		episoderealcount = 0;
-
-		firstPlay = true;
-		itemTitle = null;
-		clipLength = 0;
-		currPosition = 0;
-		currURL = null;
-		currQuality = 0;
-		urlUpdate = false;
-		playing = false;
-		prepared = false;
-		seeking = false;
-		buffering = false;
-		panelShow = false;
-		bufferShow = false;
-		keyOKDown = false;
-		keyLeftDown = false;
-		keyRightDown = false;
-
-		isContinue = getSharedPreferences(PREFS_NAME, 0).getBoolean(
-				"continue_play", true);
-		Log.d(TAG, "isContinue=" + isContinue);
-
-		panelShowAnimation = AnimationUtils.loadAnimation(this,
-				R.drawable.fly_up);
-		panelHideAnimation = AnimationUtils.loadAnimation(this,
-				R.drawable.fly_down);
-		bufferShowAnimation = AnimationUtils.loadAnimation(this,
-				R.drawable.fade_in);
-		bufferHideAnimation = AnimationUtils.loadAnimation(this,
-				R.drawable.fade_out);
-
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setVolumeControlStream(AudioManager.STREAM_MUSIC);
-
+		noFinish = false;
+		setView();
+	}
+	
+	private void setView(){
+		panelShowAnimation = AnimationUtils.loadAnimation(this,R.drawable.fly_up);
+		panelHideAnimation = AnimationUtils.loadAnimation(this,R.drawable.fly_down);
+		bufferShowAnimation = AnimationUtils.loadAnimation(this,R.drawable.fade_in);
+//		bufferHideAnimation = AnimationUtils.loadAnimation(this,R.drawable.fade_out);
+		requestWindowFeature(Window.FEATURE_NO_TITLE); 
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setContentView(R.layout.vod_player);
-
-		videoView = (VideoView) findViewById(R.id.VideoView);
-
+		surfaceView = (SurfaceView) findViewById(R.id.surface_view);
+//		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(1920, 1080);
+//		surfaceView.setLayoutParams(param); 
+		surfaceHolder = surfaceView.getHolder();
+		surfaceHolder.addCallback(this);
+		surfaceHolder.setSizeFromLayout(); 
+		surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 		panelLayout = (LinearLayout) findViewById(R.id.PanelLayout);
 		titleText = (TextView) findViewById(R.id.TitleText);
 		timeText = (TextView) findViewById(R.id.TimeText);
 		timeBar = (SeekBar) findViewById(R.id.TimeSeekBar);
+		timeBar.setOnSeekBarChangeListener(new SeekBarChangeEvent());
 		playPauseImage = (ImageView) findViewById(R.id.PlayPauseImage);
 		ffImage = (ImageView) findViewById(R.id.FFImage);
 		fbImage = (ImageView) findViewById(R.id.FBImage);
-
-		
-
-		playPauseImage.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				if (!keyOKDown) {
-					if (!paused) {
-						pauseItem();
-						playPauseImage
-								.setImageResource(R.drawable.vod_player_play);
-					} else {
-						resumeItem();
-						playPauseImage
-								.setImageResource(R.drawable.vod_player_pause);
-					}
-					showPanel();
-				}
-			}
-		});
-		ffImage.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				if (!keyRightDown) {
-					showPanel();
-					fastForward(SHORT_FF_STEP);
-					seekTo();
-				}
-			}
-		});
-		fbImage.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				if (!keyLeftDown) {
-					showPanel();
-					fastBackward(SHORT_FB_STEP);
-					seekTo();
-				}
-			}
-		});
-		timeBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-			public void onProgressChanged(SeekBar seekBar, int progress,
-					boolean fromUser) {
-				if (fromUser) {
-					currPosition = progress * clipLength / 100;
-					onDocUpdate();
-				}
-			}
-
-			public void onStartTrackingTouch(SeekBar seekBar) {
-				seekBarDown = true;
-			}
-
-			public void onStopTrackingTouch(SeekBar seekBar) {
-				seekBarDown = false;
-				showPanel();
-				seekTo();
-			}
-		});
-
 		bufferLayout = (RelativeLayout) findViewById(R.id.BufferLayout);
-		bufferText = (TextView) bufferLayout.findViewById(R.id.BufferText);
-		bufferAnim = (AnimationDrawable) ((ImageView) findViewById(R.id.BufferImage))
-				.getBackground();
-
-		videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-			@Override
-			public void onPrepared(MediaPlayer player) {
-				clipLength = videoView.getDuration();
-				Log.d(TAG, "video prepared");
-				if (!prepared) {
-					prepared = true;
-					if (currPosition != 0) {
-						seekTo();
+		bufferAnim = (AnimationDrawable) ((ImageView) findViewById(R.id.BufferImage)).getBackground();
+//		logoImage = (ImageView) findViewById(R.id.LogoImage);
+		isContinue = getSharedPreferences(PREFS_NAME, 0).getBoolean("continue_play", true);
+	}
+	
+	@Override
+	public void surfaceCreated(SurfaceHolder holder) {
+		Log.d(TAG, "surfaceCreated");
+		
+		initClipInfo();
+	}
+	
+	private void initClipInfo() {
+		Intent intent = getIntent();
+		if (intent != null) {
+			bundle = this.getIntent().getExtras();
+			new ItemByUrlTask().execute();
+		}
+	}
+	private class ItemByUrlTask extends AsyncTask<String, Void, ClipInfo> {
+			
+		@Override
+		protected void onPostExecute(ClipInfo result) {
+			showBuffer();
+			initPlayer();
+		}
+		@Override
+		protected ClipInfo doInBackground(String... arg0) {
+			Object obj = bundle.get("url");
+			String sn = VodUserAgent.getMACAddress();
+			if(obj!=null){
+				SimpleRestClient simpleRestClient = new SimpleRestClient();
+				item = simpleRestClient.getItem((String)obj);
+				
+				AccessProxy.init(VodUserAgent.deviceType,VodUserAgent.deviceVersion, sn);
+				if(item!=null){
+					clip = item.clip;
+					String host = "cord.tvxio.com";
+//							try {
+//								host = (new URL((String)obj)).getHost();
+//							} catch (MalformedURLException e) {
+//								e.printStackTrace();
+//							}
+					urlInfo = AccessProxy.parse("http://" + host  + "/api/clip/"+ clip.pk + "/", VodUserAgent.getUserAgent(sn),PlayerActivity.this);
+				}
+			}else{
+				obj = bundle.get("item");
+				if(obj!=null){
+					item = (Item)obj;
+					if(item.clip!=null){
+						clip = item.clip;
+						String host = "cord.tvxio.com";
+	//							try {
+	//								host = (new URL((String)obj)).getHost();
+	//							} catch (MalformedURLException e) {
+	//								e.printStackTrace();
+	//							}
+						urlInfo = AccessProxy.parse("http://" + host  + "/api/clip/"+ clip.pk + "/", VodUserAgent.getUserAgent(sn),PlayerActivity.this);
 					}
 				}
 			}
-
-		});
-
-		videoView
-				.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-					public void onCompletion(MediaPlayer mp) {
-						Log.d(TAG, "!!!!!!!!!video complete");
-						clipOffset = -1;
-						for (int i = 0; i < 4; i++) {
-							urls[i] = null;
-						}
-						itemTitle = null;
-						clipLength = 0;
-						currPosition = 0;
-						currURL = null;
-						currQuality = 0;
-						urlUpdate = false;
-						playing = false;
-						prepared = false;
-						seeking = false;
-						buffering = false;
-						firstPlay = false;
-						showBuffer();
-						gotoplayerfinishpage();
-					}
-				});
-		// videoView.setOnInfoListener(new MediaPlayer.OnInfoListener() {
-		// public boolean onInfo(MediaPlayer mp, int what, int extra) {
-		// switch (what) {
-		// case MediaPlayer.MEDIA_INFO_BUFFERING_START:
-		// Log.d(TAG, "buffering start");
-		// buffering = true;
-		// showBuffer();
-		//
-		// break;
-		// case MediaPlayer.MEDIA_INFO_BUFFERING_END:
-		// Log.d(TAG, "buffering end");
-		// buffering = false;
-		// // CallaPlay.videoPlayLoad(item, subitem, title, clip, quality,
-		// duration, speed, mediaip);
-		// seekComplete();
-		// hideBuffer();
-		// if (isChangeUrl) {
-		// seekTo();
-		// isChangeUrl = false;
-		// }
-		// break;
-		// }
-		// return true;
-		// }
-		// });
-		//
-		// videoView.setOnSeekCompleteListener(new
-		// MediaPlayer.OnSeekCompleteListener() {
-		// public void onSeekComplete(MediaPlayer mp) {
-		// seekComplete();
-		// }
-		// });
-		videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-			public boolean onError(MediaPlayer mp, int what, int extra) {
-				timeTaskPause();
-				if (playing && prepared) {
-
-					popupstatus = 1;
-
-				}
-				return true;
-			}
-
-		});
-
-		showBuffer();
-	}
-
-	public void onDestroy() {
-		super.onDestroy();
-	}
-
-	public boolean onVodMenuClosed(ISTVVodMenu menu) {
-		if (paused || !playing || !prepared) {
-			showPanel();
-		}
-
-		return true;
-	}
-
-	@SuppressWarnings("unused")
-	private void seekComplete() {
-		if (!seeking)
-			return;
-
-		seeking = false;
-		if (needSeek) {
-			seekTo();
-		}
-		hideBuffer();
-		if (!seeking) {
-			Log.d(TAG, "seek complete");
+			
+			return urlInfo;
+			
 		}
 	}
-
-	private String getClipURL() {
-		String url = urls[currQuality];
-
-		if (url != null)
-			return url;
-
-		for (int i = 0; i < 4; i++) {
-			if (urls[i] != null) {
-				currQuality = i;
-				Log.d(TAG, "seek complete");
-				return urls[i];
-			}
-		}
-
-		return null;
-	}
-
-	private void setQuality(int q) {
-		if (q != currQuality) {
-			timeTaskPause();
-			currQuality = q;
-			urlUpdate = true;
-			isChangeUrl = true;
-			onDocUpdate();
-		}
-	}
-
-	protected void onDocGotResource(ClipInfo info) {
-//		Log.d(TAG, "RES_URL_CLIP_ADAPTIVE=" + info.getAdaptive());
-		urlUpdate = true;
-//		Log.d(TAG, "RES_URL_CLIP_ADAPTIVE=" + info.getAdaptive());
-		urls[3] = info.getAdaptive();
-
-//		Log.d(TAG, "RES_URL_CLIP_MEDIUM=" + info.getMedium());
-		urls[1] = info.getMedium();
-
-//		Log.d(TAG, "RES_URL_CLIP_NORMAL=" + info.getNormal());
-		urls[0] = info.getNormal();
-
-//		Log.d(TAG, "RES_URL_CLIP_HIGH=" + info.getHigh());
-		urls[2] = info.getHigh();
-
+	private void initPlayer() {
+		urls[0] = urlInfo.getNormal();
+		urls[1] = urlInfo.getMedium();
+		urls[2] = urlInfo.getHigh();
+		urls[3] = urlInfo.getAdaptive();
 		titleText.setText(item.title);
 		titleText.setSelected(true);
-
-		clipLength = item.clip.length * 1000;
+		clipLength = clip.length * 1000;
 		Log.d(TAG, "RES_INT_CLIP_LENGTH=" + clipLength);
-
-		clipBookmarked = true;
-
-		if (isContinue)
+		if (currPosition>0||isContinue)
 			currPosition = tempOffset * 1000;
 		else
 			clipOffset = 0;
+		Log.d(TAG, "RES_INT_OFFSET currPosition=" + currPosition + ",clipOffset=" + clipOffset);
+		
+		try {
 
-		Log.d(TAG, "RES_INT_OFFSET currPosition=" + currPosition
-				+ ",clipOffset=" + clipOffset + ",firstPlay=" + firstPlay);
-
-		episoderealcount = 0;
-		onDocUpdate();
-	}
-
-	private String getTimeString(int ms) {
-		int left = ms;
-		int hour = left / 3600000;
-		left %= 3600000;
-		int min = left / 60000;
-		left %= 60000;
-		int sec = left / 1000;
-
-		return String.format("%1$02d:%2$02d:%3$02d", hour, min, sec);
-	}
-
-	protected void onDocUpdate() {
-		/* Redraw the activity */
-		if (urlUpdate) {
-			startVideo();
-			urlUpdate = false;
+			if(mediaPlayer!=null){
+				mediaPlayer.release();
+			}else{
+				mediaPlayer = new MediaPlayer();
+			}
+			mediaPlayer.setDisplay(surfaceHolder);
+			mediaPlayer.setDataSource(urls[currQuality]);
+			mediaPlayer.prepareAsync();
+			
+		} catch (Exception e) {
+			Log.d(TAG, e.getMessage());
+			e.printStackTrace();
 		}
-		if (clipLength > 0) {
-			String text = getTimeString(currPosition) + "/"
-					+ getTimeString(clipLength);
-			timeText.setText(text);
-			int val = currPosition * 100 / clipLength;
-			timeBar.setProgress(val);
-		}
+		mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+			@Override
+			public boolean onInfo(MediaPlayer mp, int what, int extra) {
+				switch (what) {
+				case MediaPlayer.MEDIA_INFO_BUFFERING_START:
+					Log.d(TAG, "buffering start");
+					showBuffer();
+					timeTaskPause();
+					break;
+				case MediaPlayer.MEDIA_INFO_BUFFERING_END:
+					Log.d(TAG, "buffering end");
+					hideBuffer();
+					timeTaskStart();
+					break;
+				}
+				return true;
+			}
+		});
+		mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+			@Override
+			public void onBufferingUpdate(MediaPlayer arg0,int bufferingProgress) {
+				timeBar.setSecondaryProgress(bufferingProgress);
+//				int currentProgress = skbProgress.getMax()* mediaPlayer.getCurrentPosition()/ mediaPlayer.getDuration();
+//				Log.d(TAG ,"% play "+bufferingProgress + "% buffer");
+
+			}
+		});
+
+		mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+
+			@Override
+			public void onPrepared(MediaPlayer mp) {
+				if(mediaPlayer.getVideoWidth()>0&&mediaPlayer.getVideoHeight()>0){
+					
+					mediaPlayer.start();
+					timeBar.setMax(mediaPlayer.getDuration());
+					timeTaskStart();
+				}
+			}
+		});
+		mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+			@Override
+			public void onCompletion(MediaPlayer mp) {
+				Log.d(TAG, "mediaPlayer onCompletion");
+				timeTaskPause();
+				if(!noFinish){
+					gotofinishpage();
+				}
+			}
+		});
+		mediaPlayer.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener(){
+
+			@Override
+			public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
+			
+				Log.d(TAG, "MediaPlayer onVideoSizeChanged width =="+width);
+				Log.d(TAG, "MediaPlayer onVideoSizeChanged height =="+height);
+				
+				Log.d(TAG, "SurfaceViewWidth == "+ surfaceView.getWidth() );
+				Log.d(TAG, "SurfaceViewHeight == "+ surfaceView.getHeight());
+			}
+			
+		});
+		showPanel();
+	}
+//	private class AccessProxyTask extends AsyncTask<String, Void, ClipInfo> {
+//
+//		protected void onPostExecute(ClipInfo result) {
+//				showBuffer();
+//				initPlayer();
+//		}
+//
+//		@Override
+//		protected ClipInfo doInBackground(String... arg0) {
+//			String sn = VodUserAgent.getMACAddress();
+//			AccessProxy.init(VodUserAgent.deviceType,VodUserAgent.deviceVersion, sn);
+//			String host = "cord.tvxio.com";
+//			// try {
+//			// host = (new URL(item.poster_url)).getHost();
+//			// } catch (MalformedURLException e) {
+//			// e.printStackTrace();
+//			// }
+//			urlInfo = AccessProxy.parse("http://" + host + "/api/clip/" + clip.pk + "/", VodUserAgent.getUserAgent(sn), PlayerActivity.this);
+//			return urlInfo;
+//
+//		}
+//	}
+	
+	private void timeTaskStart() {
+		mStartTime = SystemClock.uptimeMillis();
+		mHandler.post(mUpdateTimeTask);
 	}
 
+	private void timeTaskPause() {
+		mHandler.removeCallbacks(mUpdateTimeTask);
+	}
+
+	private Runnable mUpdateTimeTask = new Runnable() {
+		public void run() {
+			if (mediaPlayer.isPlaying()) {
+				if(bufferAnim.isRunning()){
+					hideBuffer();
+				}
+				tempTime = SystemClock.uptimeMillis();
+				currPosition += (int) (tempTime - mStartTime);
+				mStartTime = tempTime;
+				timeBar.setProgress(currPosition);
+			}
+			mHandler.postDelayed(mUpdateTimeTask, 200);
+		}
+	};
+	private void gotofinishpage() {
+		Intent intent = new Intent("tv.ismar.daisy.PlayFinished");
+		intent.putExtra("item", item);
+		startActivity(intent);
+		finish();
+	}
+	
+	
+	@SuppressWarnings("unused")
+	private int panelHideCounter = 0;
+	
 	private void showPanel() {
 		if (isVodMenuVisible())
 			return;
@@ -514,37 +368,36 @@ public class PlayerActivity extends Activity {
 	}
 
 	private void pauseItem() {
-		if (paused)
+		if (paused||mediaPlayer==null)
 			return;
-
+		showBuffer();
 		Log.d(TAG, "pause");
-		videoView.pause();
+		mediaPlayer.pause();
 		paused = true;
 	}
 
 	private void resumeItem() {
-		if (!paused)
+		if (!paused||mediaPlayer==null)
 			return;
-
-		videoView.start();
+		hideBuffer();
+		mediaPlayer.start();
 		Log.d(TAG, "resume");
 		paused = false;
 	}
 
 	private void fastForward(int step) {
-		if (currPosition == clipLength)
+		if (currPosition > clipLength)
 			return;
 		currPosition += step;
 
-		if (currPosition > clipLength)
-			currPosition = clipLength;
-
+		if (currPosition > clipLength){
+			gotofinishpage();
+		}
 		Log.d(TAG, "ff " + currPosition);
-		onDocUpdate();
 	}
 
 	private void fastBackward(int step) {
-		if (currPosition == 0)
+		if (currPosition < 0)
 			return;
 		currPosition -= step;
 
@@ -552,287 +405,275 @@ public class PlayerActivity extends Activity {
 			currPosition = 0;
 
 		Log.d(TAG, "fb " + currPosition);
-		onDocUpdate();
 	}
-
+	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean ret = false;
-
-		switch (keyCode) {
-		case KeyEvent.KEYCODE_DPAD_LEFT:
-			if (!isVodMenuVisible()) {
-				if (!keyLeftDown) {
-					keyLeftDown = true;
-					keyLeftRepeat = 0;
+		if(mediaPlayer!=null){
+			switch (keyCode) {
+			case KeyEvent.KEYCODE_DPAD_LEFT:
+				if (!isVodMenuVisible()) {
+					showPanel();
 					fbImage.setImageResource(R.drawable.vod_player_fb_focus);
+					fastBackward(SHORT_STEP);
+					ret = true;
+				}
+				break;
+			case KeyEvent.KEYCODE_DPAD_RIGHT:
+				if (!isVodMenuVisible()) {
 					showPanel();
-				} else {
-					keyLeftRepeat++;
-				}
-
-				if (keyLeftRepeat == 0) {
-					fastBackward(SHORT_FB_STEP);
-				} else if ((keyLeftRepeat % KEY_REPEAT_COUNT) == 0) {
-					if (clipLength != 0)
-						fastBackward(clipLength / LONG_FB_PERCENT);
-					else
-						fastBackward(SHORT_FB_STEP);
-				}
-				ret = true;
-			}
-			break;
-		case KeyEvent.KEYCODE_DPAD_RIGHT:
-			if (!isVodMenuVisible()) {
-				if (!keyRightDown) {
-					keyRightDown = true;
-					keyRightRepeat = 0;
 					ffImage.setImageResource(R.drawable.vod_player_ff_focus);
+					fastForward(SHORT_STEP);
+					ret = true;
+				}
+				break;
+			case KeyEvent.KEYCODE_DPAD_CENTER:
+			case KeyEvent.KEYCODE_ENTER:
+				if (!isVodMenuVisible()) {
 					showPanel();
-				} else {
-					keyRightRepeat++;
-				}
-
-				if (keyRightRepeat == 0) {
-					fastForward(SHORT_FF_STEP);
-				} else if ((keyRightRepeat % KEY_REPEAT_COUNT) == 0) {
-					if (clipLength != 0)
-						fastForward(clipLength / LONG_FF_PERCENT);
-					else
-						fastForward(SHORT_FF_STEP);
-				}
-				ret = true;
-			}
-			break;
-
-		case KeyEvent.KEYCODE_DPAD_CENTER:
-		case KeyEvent.KEYCODE_ENTER:
-			if (!isVodMenuVisible()) {
-				if (!keyOKDown) {
 					if (!paused) {
-
 						pauseItem();
-						playPauseImage
-								.setImageResource(R.drawable.vod_player_pause_focus);
+						playPauseImage.setImageResource(R.drawable.vod_player_pause_focus);
 					} else {
-
 						resumeItem();
 						playPauseImage
 								.setImageResource(R.drawable.vod_player_play_focus);
 					}
-					showPanel();
-					keyOKDown = true;
+					
+					ret = true;
 				}
-				ret = true;
-			}
-			break;
-		case KeyEvent.KEYCODE_A:
-		case KeyEvent.KEYCODE_F1:
-		case KeyEvent.KEYCODE_PROG_RED:
-			if (!isVodMenuVisible()) {
+				break;
+			case KeyEvent.KEYCODE_A:
+			case KeyEvent.KEYCODE_F1:
+			case KeyEvent.KEYCODE_PROG_RED:
+				if (!isVodMenuVisible()) {
+					if (panelShow) {
+						hidePanel();
+					} else {
+						showPanel();
+					}
+					ret = true;
+				}
+				break;
+			case KeyEvent.KEYCODE_DPAD_UP:
+				if (!isVodMenuVisible()) {
+					showPanel();
+					ret = true;
+				}
+				break;
+			case KeyEvent.KEYCODE_BACK:
 				if (panelShow) {
 					hidePanel();
+					ret = true;
 				} else {
-					showPanel();
-				}
-				ret = true;
+					showPopupDialog(
+							0,
+							getResources().getString(
+									R.string.vod_player_exit_dialog));
+					ret = true;
+				}		
+				break;
+			default:
+				break;
 			}
-			break;
-		case KeyEvent.KEYCODE_DPAD_UP:
-			if (!isVodMenuVisible()) {
-				showPanel();
-				ret = true;
+	
+			if (ret == false) {
+				ret = super.onKeyDown(keyCode, event);
 			}
-			break;
-		case KeyEvent.KEYCODE_BACK:
-			if (panelShow) {
-				hidePanel();
-				ret = true;
-			} else {
-				popupstatus = 2;
-				showPopupDialog(
-						0,
-						getResources().getString(
-								R.string.vod_player_exit_dialog));
-				ret = true;
-			}
-			break;
-		default:
-			break;
 		}
-
-		if (ret == false) {
-			ret = super.onKeyDown(keyCode, event);
-		}
-
 		return ret;
 	}
-
-	public void seekTo() {
-		Log.d(TAG, "seekTo currPosition=" + currPosition);
-		if (!prepared || !playing)
-			return;
-		if (currPosition < 0)
-			currPosition = 0;
-		else if (currPosition > clipLength && clipLength != 0) {
-			currPosition = clipLength;
-			gotoplayerfinishpage();
-		}
-		videoView.seekTo(currPosition);
-		buffering = true;
-		seeking = true;
-	}
-
+	
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		boolean ret = false;
-		switch (keyCode) {
-		case KeyEvent.KEYCODE_DPAD_LEFT:
-			if (!isVodMenuVisible()) {
-				fbImage.setImageResource(R.drawable.vod_player_fb);
-				Log.d(TAG, "seek to " + currPosition);
-				seekTo();
-				keyLeftDown = false;
-				ret = true;
-			}
-			break;
-		case KeyEvent.KEYCODE_DPAD_RIGHT:
-			if (!isVodMenuVisible()) {
-				ffImage.setImageResource(R.drawable.vod_player_ff);
-				Log.d(TAG, "seek to " + currPosition);
-				seekTo();
-				keyRightDown = false;
-				ret = true;
-			}
-			break;
-		case KeyEvent.KEYCODE_DPAD_CENTER:
-		case KeyEvent.KEYCODE_ENTER:
-			if (!isVodMenuVisible()) {
-				if (paused) {
-					timeTaskPause();
-					playPauseImage.setImageResource(R.drawable.vod_player_play);
-				} else {
-					timeTaskStart();
-					playPauseImage.setImageResource(R.drawable.vod_player_pause);
+		if(mediaPlayer!=null){
+			switch (keyCode) {
+			case KeyEvent.KEYCODE_DPAD_LEFT:
+				if (!isVodMenuVisible()) {
+					fbImage.setImageResource(R.drawable.vod_player_fb);
+					Log.d(TAG, "seek to " + currPosition);
+					mediaPlayer.seekTo(currPosition);
+					ret = true;
 				}
-				keyOKDown = false;
-				ret = true;
+				break;
+			case KeyEvent.KEYCODE_DPAD_RIGHT:
+				if (!isVodMenuVisible()) {
+					ffImage.setImageResource(R.drawable.vod_player_ff);
+					Log.d(TAG, "seek to " + currPosition);
+					mediaPlayer.seekTo(currPosition);
+					ret = true;
+				}
+				break;
+			case KeyEvent.KEYCODE_DPAD_CENTER:
+			case KeyEvent.KEYCODE_ENTER:
+				if (!isVodMenuVisible()) {
+					if (paused) {
+						playPauseImage.setImageResource(R.drawable.vod_player_play);
+					} else {
+						playPauseImage.setImageResource(R.drawable.vod_player_pause);
+					}
+					ret = true;
+				}
+				break;
+			default:
+				break;
 			}
-			break;
-		default:
-			break;
+	
+			if (ret == false) {
+				ret = super.onKeyUp(keyCode, event);
+			}
 		}
-
-		if (ret == false) {
-			ret = super.onKeyUp(keyCode, event);
-		}
-
 		return ret;
 	}
-
-	@Override
-	public boolean onTouchEvent(MotionEvent evt) {
-		boolean ret = false;
-
-		switch (evt.getActionMasked()) {
-		case MotionEvent.ACTION_DOWN:
-			if (!panelShow) {
-				showPanel();
-				ret = true;
-			}
-			break;
-		default:
-			break;
-		}
-
-		return ret;
-	}
-
-	private void startVideo() {
-		String url = getClipURL();
-
-		if ((url != null) && ((currURL == null) || !(url.equals(currURL)))) {
-			if (playing) {
-				videoView.stopPlayback();
-
-			}
-			Log.d(TAG, "play URL " + url.toString() + ",currPosition="
-					+ currPosition);
-			videoView.setVideoPath(url.toString());
-			playing = true;
-			prepared = false;
-			seeking = false;
-			currURL = url;
-			if (currPosition > 0 || isContinue) {
-				seekTo();
+	
+	
+	public void showPopupDialog(int type, String msg) {
+		if (type == DIALOG_OK_CANCEL) {
+			popupDlg = new Dialog(this, R.style.PopupDialog);
+			View view;
+			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			if ((type == DIALOG_IKNOW) || (type == DIALOG_NET_BROKEN)
+					|| (type == DIALOG_ITEM_CLICK_NET_BROKEN)) {
+				view = inflater.inflate(R.layout.popup_1btn, null);
 			} else {
-				currPosition = 0;
+				view = inflater.inflate(R.layout.popup_2btn, null);
 			}
-			videoView.start();
-			timeTaskStart();
-			showPanel();
+			popupDlg.addContentView(view, new ViewGroup.LayoutParams(
+					ViewGroup.LayoutParams.WRAP_CONTENT,
+					ViewGroup.LayoutParams.WRAP_CONTENT));
+			TextView tv = (TextView) view.findViewById(R.id.PopupText);
+			tv.setText(msg);
+			Button btn1 = null, btn2 = null;
+			btn1 = (Button) view.findViewById(R.id.LeftButton);
+			btn1.setText(R.string.vod_ok);
+			btn2 = (Button) view.findViewById(R.id.RightButton);
+			btn2.setText(R.string.vod_cancel);
+			if (btn1 != null) {
+				btn1.setOnClickListener(new View.OnClickListener() {
+					public void onClick(View v) {
+						if (popupDlg != null) {
+							popupDlg.dismiss();
+							timeTaskPause();
+							noFinish = true;
+							if(mediaPlayer!=null)
+								mediaPlayer.reset();
+							PlayerActivity.this.finish();
+							surfaceView.destroyDrawingCache();
+						}
+					};
+				});
+			}
+
+			if (btn2 != null) {
+				btn2.setOnClickListener(new View.OnClickListener() {
+					public void onClick(View v) {
+						if (popupDlg != null) {
+							popupDlg.dismiss();
+						}
+					};
+				});
+			}
+			popupDlg.setOnDismissListener(new DialogInterface.OnDismissListener() {
+				public void onDismiss(DialogInterface dialog) {
+					popupDlg = null;
+				}
+			});
+			popupDlg.show();
+		}
+	}
+	
+	private Handler hidePanelHandler = new Handler();
+	
+	private Runnable hidePanelRunnable = new Runnable() {
+		@Override
+		public void run() {
+			hidePanel();
+			hidePanelHandler.removeCallbacks(hidePanelRunnable);
+		}
+	};
+
+	private Handler hideMenuHandler = new Handler();
+
+	private Runnable hideMenuRunnable = new Runnable() {
+		@Override
+		public void run() {
+			menu.hide();
+			hideMenuHandler.removeCallbacks(hideMenuRunnable);
+		}
+	};
+	
+	
+	private boolean isVodMenuVisible() {
+		if (menu == null)
+			return false;
+		return menu.isVisible();
+	}
+	
+	private void showBuffer() {
+		Log.d(TAG, "show buffer");
+		if(!bufferAnim.isRunning()){
+			bufferLayout.startAnimation(bufferShowAnimation);
+			bufferLayout.setVisibility(View.VISIBLE);
+			bufferAnim.start();
+		}
+	}
+	
+	private void hideBuffer() {	
+		Log.d(TAG, "hide buffer");
+		if(bufferAnim.isRunning()){
+			bufferLayout.setVisibility(View.GONE);
+			bufferAnim.stop();
 		}
 	}
 
-	private void stopVideo() {
-		if (!playing)
-			return;
-		videoView.stopPlayback();
-		showBuffer();
-		playing = false;
-		prepared = false;
-		currURL = null;
-		showPanel();
-	}
-
 	
-
-	@Override
-	protected void onPause() {
-		Log.d(TAG, "!!!!!!!!!onPause");
-		stopVideo();
-		super.onPause();
+	private String getTimeString(int ms) {
+		int left = ms;
+		int hour = left / 3600000;
+		left %= 3600000;
+		int min = left / 60000;
+		left %= 60000;
+		int sec = left / 1000;
+		return String.format("%1$02d:%2$02d:%3$02d", hour, min, sec);
 	}
 
-	@Override
-	protected void onResume() {
-		Log.d(TAG, "!!!!!!!!!onResume");
-
-		super.onResume();
-
-		startVideo();
+	public void onVodMenuClosed(ISTVVodMenu istvVodMenu) {
+		// TODO Auto-generated method stub
+		
 	}
-
-
+	@Override
+	public void surfaceChanged(SurfaceHolder holder, int format, int width,
+			int height) {
+//		mediaPlayer.setScreenOnWhilePlaying(screenOn)
+		 
+		Log.d(TAG, "surfaceChanged");
+		
+	}
+	@Override
+	public void surfaceDestroyed(SurfaceHolder holder) {
+		Log.d(TAG, "surfaceDestroyed");
+		
+	}
 	
-
-	public boolean onCreateVodMenu(ISTVVodMenu menu) {
+	
+	
+	public boolean createMenu(ISTVVodMenu menu) {
 		ISTVVodMenuItem sub;
 
-		sub = menu.addSubMenu(0,
-				getResources().getString(R.string.vod_player_quality_setting));
-		sub.addItem(1,
-				getResources().getString(R.string.vod_player_quality_medium));
-		sub.addItem(2,
-				getResources().getString(R.string.vod_player_quality_high));
-		sub.addItem(3,
-				getResources().getString(R.string.vod_player_quality_ultra));
-		sub.addItem(4,
-				getResources().getString(R.string.vod_player_quality_adaptive));
+		sub = menu.addSubMenu(0,getResources().getString(R.string.vod_player_quality_setting));
+		sub.addItem(1,getResources().getString(R.string.vod_player_quality_medium));
+		sub.addItem(2,getResources().getString(R.string.vod_player_quality_high));
+		sub.addItem(3,getResources().getString(R.string.vod_player_quality_ultra));
+		sub.addItem(4,getResources().getString(R.string.vod_player_quality_adaptive));
 
-		menu.addItem(5,
-				getResources().getString(R.string.vod_player_bookmark_setting),
-				false, false);
-		menu.addItem(6,
-				getResources().getString(R.string.vod_player_related_setting),
-				false, false);
+		menu.addItem(5,getResources().getString(R.string.vod_player_bookmark_setting),false, false);
+		menu.addItem(6,getResources().getString(R.string.vod_player_related_setting),false, false);
 
-		sub = menu.addSubMenu(7,
-				getResources().getString(R.string.vod_player_continue_setting));
-		sub.addItem(8, getResources()
-				.getString(R.string.vod_player_continue_on));
-		sub.addItem(9,
-				getResources().getString(R.string.vod_player_continue_off));
+		sub = menu.addSubMenu(7,getResources().getString(R.string.vod_player_continue_setting));
+		sub.addItem(8, getResources().getString(R.string.vod_player_continue_on));
+		sub.addItem(9, getResources().getString(R.string.vod_player_continue_off));
 		return true;
 	}
 
@@ -866,44 +707,25 @@ public class PlayerActivity extends Activity {
 		return true;
 	}
 
-	public boolean onVodMenuClicked(ISTVVodMenu menu, int id) {
-		if (id > 0 && id < 5) {
-			int pos = id - 1;
-			if (urls[pos] != null) {
-				setQuality(pos);
-			}
+	class SeekBarChangeEvent implements SeekBar.OnSeekBarChangeListener {
+
+		@Override
+		public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
+			String text = getTimeString(currPosition) + "/" + getTimeString(clipLength);
+			timeText.setText(text);
 		}
 
-		return true;
-	}
+		@Override
+		public void onStartTrackingTouch(SeekBar seekBar) {
+			
+		}
 
-	private void gotoplayerfinishpage() {
-		Intent intent = new Intent("tv.ismar.daisy.PlayFinished");
-		intent.putExtra("item", item);
-		startActivity(intent);
-		finish();
+		@Override
+		public void onStopTrackingTouch(SeekBar seekBar) {
+		
+		}
 	}
-
 	
-
-	public void replayVideo() {
-		if (playing) {
-			Log.d(TAG, "replay the program");
-			stopVideo();
-			startVideo();
-		}
-	}
-
-	public void onNetConnected() {
-		replayVideo();
-	}
-
-	public boolean isVodMenuVisible() {
-		if (menu == null)
-			return false;
-		return menu.isVisible();
-	}
-
 	@Override
 	public boolean onPrepareOptionsMenu(Menu m) {
 		boolean ret;
@@ -912,218 +734,153 @@ public class PlayerActivity extends Activity {
 		m.add("menu");
 		ret = super.onPrepareOptionsMenu(m);
 		if (ret) {
-			winOK = false;
 			createWindow();
 			menu = new ISTVVodMenu(this);
-			ret = onCreateVodMenu(menu);
+			ret = createMenu(menu);
 		}
-
 		return ret;
 	}
-
 	@Override
 	public boolean onMenuOpened(int featureId, Menu m) {
 		if (onVodMenuOpened(menu)) {
 			menu.show();
-			hideMenuHandler.postDelayed(hideMenuRunnable, 10000);
+			hideMenuHandler.postDelayed(hideMenuRunnable, 5000);
 		}
 		return false;
 	}
-
+	
 	private void createWindow() {
 		View win;
-
-		if (winOK)
-			return;
-
 		ViewGroup root = (ViewGroup) findViewById(Window.ID_ANDROID_CONTENT);
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
 		win = inflater.inflate(R.layout.menu, null);
-		ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
-				ViewGroup.LayoutParams.MATCH_PARENT,
-				ViewGroup.LayoutParams.MATCH_PARENT);
+		ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
 		win.setLayoutParams(lp);
 		root.addView(win);
-
-		winOK = true;
 	}
-
-	private class AccessProxyTask extends AsyncTask<String, Void, ClipInfo> {
-
-		protected void onPostExecute(ClipInfo result) {
-
-			onDocGotResource(cinfo);
-		}
-
-		@Override
-		protected ClipInfo doInBackground(String... arg0) {
-			String sn = VodUserAgent.getMACAddress();
-			AccessProxy.init(VodUserAgent.deviceType,
-					VodUserAgent.deviceVersion, sn);
-				String host = "cord.tvxio.com";
-//				try {
-//					host = (new URL(item.poster_url)).getHost();
-//				} catch (MalformedURLException e) {
-//					e.printStackTrace();
-//				}
-				cinfo = AccessProxy.parse("http://" + host  + "/api/clip/"+ item.clip.pk + "/", VodUserAgent.getUserAgent(sn),PlayerActivity.this);
-				return cinfo;
-
-		}
-	}
-	private class itemByUrlTask extends AsyncTask<String, Void, ClipInfo> {
-
-		protected void onPostExecute(ClipInfo result) {
-
-			onDocGotResource(cinfo);
-		}
-
-		@Override
-		protected ClipInfo doInBackground(String... arg0) {
-			Object obj = bundle.get("url");
-			if(obj!=null){
-				SimpleRestClient simpleRestClient = new SimpleRestClient();
-				item = simpleRestClient.getItem((String)obj);
-				String sn = VodUserAgent.getMACAddress();
-				AccessProxy.init(VodUserAgent.deviceType,VodUserAgent.deviceVersion, sn);
-				if(item!=null){
-					String host = "cord.tvxio.com";
-//					try {
-//						host = (new URL((String)obj)).getHost();
-//					} catch (MalformedURLException e) {
-//						e.printStackTrace();
-//					}http://cord.tvxio.com/api/clip/361784/
-					cinfo = AccessProxy.parse("http://" + host  + "/api/clip/"+ item.clip.pk + "/", VodUserAgent.getUserAgent(sn),PlayerActivity.this);
-				}
-			}
-			return cinfo;
-			
-		}
-	}
-
-	private void showBuffer() {
-			timeTaskPause();
-			Log.d(TAG, "show buffer");
-			bufferLayout.startAnimation(bufferShowAnimation);
-			bufferLayout.setVisibility(View.VISIBLE);
-			bufferAnim.start();
-			bufferShow = true;	
-	}
-
-	private void hideBuffer() {	
-			timeTaskStart();
-			Log.d(TAG, "hide buffer");
-			bufferLayout.startAnimation(bufferHideAnimation);
-			bufferLayout.setVisibility(View.GONE);
-			bufferAnim.stop();
-			bufferShow = false;
-
-	}
-
-	private void timeTaskStart() {
-		mStartTime = SystemClock.uptimeMillis();
-		mHandler.post(mUpdateTimeTask);
-	}
-
-	private void timeTaskPause() {
-		mHandler.removeCallbacks(mUpdateTimeTask);
-	}
-
-	private Runnable mUpdateTimeTask = new Runnable() {
-		public void run() {
-			if (videoView.isPlaying()) {
-				if(bufferShow){
-					hideBuffer();
-					bufferShow = false;
-				}
-				long tempTime = SystemClock.uptimeMillis();
-				currPosition += (int) (tempTime - mStartTime);
-				mStartTime = tempTime;
-				String text = getTimeString(currPosition) + "/"
-						+ getTimeString(clipLength);
-				timeText.setText(text);
-				int val = currPosition * 100 / clipLength;
-				timeBar.setProgress(val);
-			} else if(!bufferShow){
-				showBuffer();
+	
+	public boolean onVodMenuClicked(ISTVVodMenu menu, int id) {
+		if (id > 0 && id < 5) {
+			int pos = id - 1;
+			if (urls[pos] != null) {
+				try {
+					noFinish = true;
+					mediaPlayer.reset();
+					currQuality = pos;
+					mediaPlayer.setDataSource(urls[currQuality].toString());
+					mediaPlayer.prepare();
+					mediaPlayer.start();
+				} catch (IllegalArgumentException e) {
+					
+					e.printStackTrace();
+				} catch (SecurityException e) {
 				
-			}
-			mHandler.postDelayed(mUpdateTimeTask, 200);
-		}
-	};
-
-	private Handler hidePanelHandler = new Handler();
-
-	private Runnable hidePanelRunnable = new Runnable() {
-		@Override
-		public void run() {
-			hidePanel();
-			hidePanelHandler.removeCallbacks(hidePanelRunnable);
-		}
-	};
-
-	private Handler hideMenuHandler = new Handler();
-
-	private Runnable hideMenuRunnable = new Runnable() {
-		@Override
-		public void run() {
-			menu.hide();
-			hideMenuHandler.removeCallbacks(hideMenuRunnable);
-		}
-	};
-	private Dialog popupDlg = null;
-
-	public void showPopupDialog(int type, String msg) {
-		if (type == DIALOG_OK_CANCEL) {
-			popupDlg = new Dialog(this, R.style.PopupDialog);
-			View view;
-			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			if ((type == DIALOG_IKNOW) || (type == DIALOG_NET_BROKEN)
-					|| (type == DIALOG_ITEM_CLICK_NET_BROKEN)) {
-				view = inflater.inflate(R.layout.popup_1btn, null);
-			} else {
-				view = inflater.inflate(R.layout.popup_2btn, null);
-			}
-			popupDlg.addContentView(view, new ViewGroup.LayoutParams(
-					ViewGroup.LayoutParams.WRAP_CONTENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT));
-			TextView tv = (TextView) view.findViewById(R.id.PopupText);
-			tv.setText(msg);
-			Button btn1 = null, btn2 = null;
-			btn1 = (Button) view.findViewById(R.id.LeftButton);
-			btn1.setText(R.string.vod_ok);
-			btn2 = (Button) view.findViewById(R.id.RightButton);
-			btn2.setText(R.string.vod_cancel);
-			if (btn1 != null) {
-				btn1.setOnClickListener(new View.OnClickListener() {
-					public void onClick(View v) {
-						if (popupDlg != null) {
-							popupDlg.dismiss();
-							PlayerActivity.this.finish();
-							videoView.stopPlayback();
-							videoView.destroyDrawingCache();
-						}
-					};
-				});
-			}
-
-			if (btn2 != null) {
-				btn2.setOnClickListener(new View.OnClickListener() {
-					public void onClick(View v) {
-						if (popupDlg != null) {
-							popupDlg.dismiss();
-						}
-					};
-				});
-			}
-			popupDlg.setOnDismissListener(new DialogInterface.OnDismissListener() {
-				public void onDismiss(DialogInterface dialog) {
-					popupDlg = null;
+					e.printStackTrace();
+				} catch (IllegalStateException e) {
+					
+					e.printStackTrace();
+				} catch (IOException e) {
+			
+					e.printStackTrace();
 				}
-			});
-			popupDlg.show();
+				Log.d(TAG, "play URL " + urls[currQuality].toString() + ",currPosition="+ currPosition);
+				if (currPosition > 0 || isContinue) {
+					mediaPlayer.seekTo(currPosition);
+				} else {
+					currPosition = 0;
+				}
+			}
 		}
+		return true;
 	}
+	
+//	private void savaScreenShot()
+//    {
+//		
+//        mediaPlayer.pause();
+//        Bitmap bitmap = null;
+//        try
+//        {
+//        	surfaceView.setDrawingCacheEnabled(true);
+//            bitmap = surfaceView.getDrawingCache();
+//            surfaceView.setDrawingCacheEnabled(false);
+//            surfaceView.destroyDrawingCache();
+//        }
+//        catch (Exception ex)
+//        {
+//        	surfaceView.setDrawingCacheEnabled(false);
+//            surfaceView.destroyDrawingCache();
+//
+//        }finally
+//	        {
+//	        //截图保存路径
+//	        String mScreenshotPath = Environment.getExternalStorageDirectory() + "/ScreenShot";
+//	        String path = mScreenshotPath ;
+//	        
+//	        java.io.File file = new java.io.File(path);
+//	        
+//	        java.io.FileOutputStream fos;
+//	        try
+//	        {
+//	            Toast.makeText(PlayerActivity.this, "savaScreenShot success" + path, Toast.LENGTH_SHORT).show();
+//	            fos = new java.io.FileOutputStream(file);
+//	            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+//	            fos.close();
+//	        }
+//	        catch (java.io.FileNotFoundException e)
+//	        {
+//	            Log.e("Panel", "FileNotFoundException", e);
+//	        }
+//	        catch (IOException e)
+//	        {
+//	            Log.e("Panel", "IOEception", e);
+//	        }
+//	        mediaPlayer.start();
+//	    }
+//	}
+	
+	
+//	public static Bitmap getHttpBitmap(String url){
+//
+//		  URL myFileURL;
+//		  Bitmap bitmap=null;
+//		
+//		  try{
+//			  myFileURL = new URL(url);
+//			  HttpURLConnection  conn = (HttpURLConnection)myFileURL.openConnection();
+//			  conn.setConnectTimeout(6000);
+//			  conn.setUseCaches(false);
+//			  conn=(HttpURLConnection)myFileURL.openConnection();
+//			  InputStream is = conn.getInputStream();
+//			  bitmap = BitmapFactory.decodeStream(is);
+//			  is.close();
+//			  conn.disconnect();
+//		  }catch(Exception e){
+//			
+//			  e.printStackTrace();
+//		  }   
+//		  return bitmap;
+//
+//		}
 
+	
+
+//	private void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//		Log.d(TAG, "onMeasure");
+//		int width = surfaceView.getDefaultSize(mVideoWidth, widthMeasureSpec);
+//		int height = surfaceView.getDefaultSize(mVideoHeight, heightMeasureSpec);
+//		if (mVideoWidth > 0 && mVideoHeight > 0) {
+//			if (mVideoWidth * height > width * mVideoHeight) {
+//				Log.d(TAG, "image too tall, correcting");
+//				height = width * mVideoHeight / mVideoWidth;
+//			} else if (mVideoWidth * height < width * mVideoHeight) {
+//				Log.d(TAG, "image too wide, correcting");
+//				width = height * mVideoWidth / mVideoHeight;
+//			} else {
+//				Log.d(TAG, "aspect ratio is correct: " + width+"/"+height+"="+ mVideoWidth+"/"+mVideoHeight);
+//			}
+//		}
+//		Log.d(TAG, "setting size: " + width + 'x' + height);
+//		
+//	}
 }
