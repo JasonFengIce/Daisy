@@ -1,7 +1,10 @@
 package tv.ismar.daisy;
 
 import java.io.IOException;
+import java.io.InputStream;
 
+import tv.ismar.daisy.core.ImageUtils;
+import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.models.Clip;
@@ -28,13 +31,11 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -69,7 +70,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 	private Animation bufferShowAnimation;
 //	private Animation bufferHideAnimation;
 	private RelativeLayout bufferLayout;
-//	private ImageView logoImage;
+	private ImageView logoImage;
 	private AnimationDrawable bufferAnim;
 	private LinearLayout panelLayout;
 	private TextView titleText;
@@ -95,7 +96,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 	private SurfaceHolder surfaceHolder;
 	private MediaPlayer mediaPlayer;
 	private Dialog popupDlg = null;
-	
+	private InputStream logoInputStream;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -129,7 +130,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 		fbImage = (ImageView) findViewById(R.id.FBImage);
 		bufferLayout = (RelativeLayout) findViewById(R.id.BufferLayout);
 		bufferAnim = (AnimationDrawable) ((ImageView) findViewById(R.id.BufferImage)).getBackground();
-//		logoImage = (ImageView) findViewById(R.id.LogoImage);
+		logoImage = (ImageView) findViewById(R.id.logo_image);
 		isContinue = getSharedPreferences(PREFS_NAME, 0).getBoolean("continue_play", true);
 	}
 	
@@ -147,6 +148,9 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 			new ItemByUrlTask().execute();
 		}
 	}
+	
+	
+	//初始化播放地址url
 	private class ItemByUrlTask extends AsyncTask<String, Void, ClipInfo> {
 			
 		@Override
@@ -194,15 +198,39 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 			
 		}
 	}
+	
+	//初始化logo图片
+	private class LogoImageTask extends AsyncTask<String, Void, String> {
+		
+		@Override
+		protected void onPostExecute(String result) {
+			logoImage.setImageBitmap(ImageUtils.getBitmapFromInputStream(logoInputStream, 160, 50));
+		}
+		@Override
+		protected String doInBackground(String... arg0) {
+			if(item.logo!=null&&item.logo.length()>0)
+				if(NetworkUtils.getInputStream(item.logo)!=null){
+					Log.d(TAG, "item.logo ===" + item.logo);
+					logoInputStream = NetworkUtils.getInputStream(item.logo);
+				}
+			return "success";
+			
+		}
+	}
+	
+	
 	private void initPlayer() {
 		urls[0] = urlInfo.getNormal();
 		urls[1] = urlInfo.getMedium();
 		urls[2] = urlInfo.getHigh();
 		urls[3] = urlInfo.getAdaptive();
-		titleText.setText(item.title);
+		if(item!=null){
+			titleText.setText(item.title);
+			new LogoImageTask().execute();
+		}
 		titleText.setSelected(true);
 		clipLength = clip.length * 1000;
-		Log.d(TAG, "RES_INT_CLIP_LENGTH=" + clipLength);
+		
 		if (currPosition>0||isContinue)
 			currPosition = tempOffset * 1000;
 		else
@@ -271,6 +299,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 				Log.d(TAG, "mediaPlayer onCompletion");
 				timeTaskPause();
 				if(!noFinish){
+					noFinish = true;
 					gotofinishpage();
 				}
 			}
@@ -280,11 +309,11 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 			@Override
 			public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
 			
-				Log.d(TAG, "MediaPlayer onVideoSizeChanged width =="+width);
-				Log.d(TAG, "MediaPlayer onVideoSizeChanged height =="+height);
-				
-				Log.d(TAG, "SurfaceViewWidth == "+ surfaceView.getWidth() );
-				Log.d(TAG, "SurfaceViewHeight == "+ surfaceView.getHeight());
+//				Log.d(TAG, "MediaPlayer onVideoSizeChanged width =="+width);
+//				Log.d(TAG, "MediaPlayer onVideoSizeChanged height =="+height);
+//				
+//				Log.d(TAG, "SurfaceViewWidth == "+ surfaceView.getWidth() );
+//				Log.d(TAG, "SurfaceViewHeight == "+ surfaceView.getHeight());
 			}
 			
 		});
