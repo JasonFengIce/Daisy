@@ -51,14 +51,17 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 	private static final String TAG = "PLAYER";
 	
 	private static final int SHORT_STEP = 30000;
-	private static final int DIALOG_OK_CANCEL = 0;
 
+	private static final int LONG_FB_PERCENT = 10;
+	private static final int LONG_FF_PERCENT = 10;
+	private static final int KEY_REPEAT_COUNT = 4;
+	
+	private static final int DIALOG_OK_CANCEL = 0;
 	private static final int DIALOG_IKNOW = 2;
 	private static final int DIALOG_NET_BROKEN = 3;
 
 	
 	private static final int DIALOG_ITEM_CLICK_NET_BROKEN = 6;
-	private static final int PANEL_HIDE_TIME = 6;
 	
 	private boolean paused = false;
 	private boolean panelShow = false;
@@ -97,6 +100,13 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 	private MediaPlayer mediaPlayer;
 	private Dialog popupDlg = null;
 	private InputStream logoInputStream;
+	
+	private boolean keyLeftDown = false;
+	private boolean keyRightDown = false;
+	private boolean keyOKDown = false;
+	private int keyLeftRepeat = 0;
+	private int keyRightRepeat = 0;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -104,6 +114,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 		setView();
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void setView(){
 		panelShowAnimation = AnimationUtils.loadAnimation(this,R.drawable.fly_up);
 		panelHideAnimation = AnimationUtils.loadAnimation(this,R.drawable.fly_down);
@@ -114,8 +125,6 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setContentView(R.layout.vod_player);
 		surfaceView = (SurfaceView) findViewById(R.id.surface_view);
-//		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(1920, 1080);
-//		surfaceView.setLayoutParams(param); 
 		surfaceHolder = surfaceView.getHolder();
 		surfaceHolder.addCallback(this);
 		surfaceHolder.setSizeFromLayout(); 
@@ -144,7 +153,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 	private void initClipInfo() {
 		Intent intent = getIntent();
 		if (intent != null) {
-			bundle = this.getIntent().getExtras();
+			bundle = intent.getExtras();
 			new ItemByUrlTask().execute();
 		}
 	}
@@ -226,9 +235,9 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 		urls[3] = urlInfo.getAdaptive();
 		if(item!=null){
 			titleText.setText(item.title);
+			titleText.setSelected(true);
 			new LogoImageTask().execute();
 		}
-		titleText.setSelected(true);
 		clipLength = clip.length * 1000;
 		
 		if (currPosition>0||isContinue)
@@ -273,7 +282,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 		mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
 			@Override
 			public void onBufferingUpdate(MediaPlayer arg0,int bufferingProgress) {
-				timeBar.setSecondaryProgress(bufferingProgress);
+//				timeBar.setSecondaryProgress(bufferingProgress);
 //				int currentProgress = skbProgress.getMax()* mediaPlayer.getCurrentPosition()/ mediaPlayer.getDuration();
 //				Log.d(TAG ,"% play "+bufferingProgress + "% buffer");
 
@@ -285,9 +294,11 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 			@Override
 			public void onPrepared(MediaPlayer mp) {
 				if(mediaPlayer.getVideoWidth()>0&&mediaPlayer.getVideoHeight()>0){
-					
+					clipLength = mediaPlayer.getDuration();
+					String text = getTimeString(currPosition) + "/" + getTimeString(clipLength);
+					timeText.setText(text);
 					mediaPlayer.start();
-					timeBar.setMax(mediaPlayer.getDuration());
+					timeBar.setMax(clipLength);
 					timeTaskStart();
 				}
 			}
@@ -373,8 +384,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 	}
 	
 	
-	@SuppressWarnings("unused")
-	private int panelHideCounter = 0;
+	
 	
 	private void showPanel() {
 		if (isVodMenuVisible())
@@ -385,7 +395,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 			panelShow = true;
 			hidePanelHandler.postDelayed(hidePanelRunnable, 20000);
 		}
-		panelHideCounter = PANEL_HIDE_TIME;
+		
 	}
 
 	private void hidePanel() {
@@ -415,18 +425,18 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 	}
 
 	private void fastForward(int step) {
-		if (currPosition > clipLength)
+		if (currPosition == clipLength)
 			return;
 		currPosition += step;
 
-		if (currPosition > clipLength){
-			gotofinishpage();
-		}
+		if (currPosition > clipLength)
+			currPosition = clipLength;
+
 		Log.d(TAG, "ff " + currPosition);
 	}
 
 	private void fastBackward(int step) {
-		if (currPosition < 0)
+		if (currPosition == 0)
 			return;
 		currPosition -= step;
 
@@ -436,126 +446,178 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 		Log.d(TAG, "fb " + currPosition);
 	}
 	
+	public void seekTo() {
+		Log.d(TAG, "seekTo currPosition=" + currPosition);
+		if (currPosition > clipLength && clipLength != 0) {
+			currPosition = clipLength;
+			gotofinishpage();
+		}
+		mediaPlayer.seekTo(currPosition);
+	}
+
+	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean ret = false;
-		if(mediaPlayer!=null){
-			switch (keyCode) {
-			case KeyEvent.KEYCODE_DPAD_LEFT:
-				if (!isVodMenuVisible()) {
-					showPanel();
+
+		switch (keyCode) {
+		case KeyEvent.KEYCODE_DPAD_LEFT:
+			if (!isVodMenuVisible()) {
+				if (!keyLeftDown) {
+					keyLeftDown = true;
+					keyLeftRepeat = 0;
 					fbImage.setImageResource(R.drawable.vod_player_fb_focus);
+					showPanel();
+				} else {
+					keyLeftRepeat++;
+				}
+
+				if (keyLeftRepeat == 0) {
 					fastBackward(SHORT_STEP);
-					ret = true;
+				} else if ((keyLeftRepeat % KEY_REPEAT_COUNT) == 0) {
+					if (clipLength != 0)
+						fastBackward(clipLength / LONG_FB_PERCENT);
+					else
+						fastBackward(SHORT_STEP);
 				}
-				break;
-			case KeyEvent.KEYCODE_DPAD_RIGHT:
-				if (!isVodMenuVisible()) {
-					showPanel();
+				ret = true;
+			}
+			break;
+		case KeyEvent.KEYCODE_DPAD_RIGHT:
+			if (!isVodMenuVisible()) {
+				if (!keyRightDown) {
+					keyRightDown = true;
+					keyRightRepeat = 0;
 					ffImage.setImageResource(R.drawable.vod_player_ff_focus);
-					fastForward(SHORT_STEP);
-					ret = true;
-				}
-				break;
-			case KeyEvent.KEYCODE_DPAD_CENTER:
-			case KeyEvent.KEYCODE_ENTER:
-				if (!isVodMenuVisible()) {
 					showPanel();
+				} else {
+					keyRightRepeat++;
+				}
+
+				if (keyRightRepeat == 0) {
+					fastForward(SHORT_STEP);
+				} else if ((keyRightRepeat % KEY_REPEAT_COUNT) == 0) {
+					if (clipLength != 0)
+						fastForward(clipLength / LONG_FF_PERCENT);
+					else
+						fastForward(SHORT_STEP);
+				}
+				ret = true;
+			}
+			break;
+
+		case KeyEvent.KEYCODE_DPAD_CENTER:
+		case KeyEvent.KEYCODE_ENTER:
+			if (!isVodMenuVisible()) {
+				if (!keyOKDown) {
 					if (!paused) {
+
 						pauseItem();
-						playPauseImage.setImageResource(R.drawable.vod_player_pause_focus);
+						playPauseImage
+								.setImageResource(R.drawable.vod_player_pause_focus);
 					} else {
+
 						resumeItem();
 						playPauseImage
 								.setImageResource(R.drawable.vod_player_play_focus);
 					}
-					
-					ret = true;
-				}
-				break;
-			case KeyEvent.KEYCODE_A:
-			case KeyEvent.KEYCODE_F1:
-			case KeyEvent.KEYCODE_PROG_RED:
-				if (!isVodMenuVisible()) {
-					if (panelShow) {
-						hidePanel();
-					} else {
-						showPanel();
-					}
-					ret = true;
-				}
-				break;
-			case KeyEvent.KEYCODE_DPAD_UP:
-				if (!isVodMenuVisible()) {
 					showPanel();
-					ret = true;
+					keyOKDown = true;
 				}
-				break;
-			case KeyEvent.KEYCODE_BACK:
+				ret = true;
+			}
+			break;
+		case KeyEvent.KEYCODE_A:
+		case KeyEvent.KEYCODE_F1:
+		case KeyEvent.KEYCODE_PROG_RED:
+			if (!isVodMenuVisible()) {
 				if (panelShow) {
 					hidePanel();
-					ret = true;
 				} else {
-					showPopupDialog(
-							0,
-							getResources().getString(
-									R.string.vod_player_exit_dialog));
-					ret = true;
-				}		
-				break;
-			default:
-				break;
+					showPanel();
+				}
+				ret = true;
 			}
-	
-			if (ret == false) {
-				ret = super.onKeyDown(keyCode, event);
+			break;
+		case KeyEvent.KEYCODE_DPAD_UP:
+			if (!isVodMenuVisible()) {
+				showPanel();
+				ret = true;
 			}
+			break;
+		case KeyEvent.KEYCODE_BACK:
+			if (panelShow) {
+				hidePanel();
+				ret = true;
+			} else {
+				showPopupDialog(
+						0,
+						getResources().getString(
+								R.string.vod_player_exit_dialog));
+				ret = true;
+			}
+			break;
+		default:
+			break;
 		}
+
+		if (ret == false) {
+			ret = super.onKeyDown(keyCode, event);
+		}
+
 		return ret;
 	}
+
 	
+
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		boolean ret = false;
-		if(mediaPlayer!=null){
-			switch (keyCode) {
-			case KeyEvent.KEYCODE_DPAD_LEFT:
-				if (!isVodMenuVisible()) {
-					fbImage.setImageResource(R.drawable.vod_player_fb);
-					Log.d(TAG, "seek to " + currPosition);
-					mediaPlayer.seekTo(currPosition);
-					ret = true;
-				}
-				break;
-			case KeyEvent.KEYCODE_DPAD_RIGHT:
-				if (!isVodMenuVisible()) {
-					ffImage.setImageResource(R.drawable.vod_player_ff);
-					Log.d(TAG, "seek to " + currPosition);
-					mediaPlayer.seekTo(currPosition);
-					ret = true;
-				}
-				break;
-			case KeyEvent.KEYCODE_DPAD_CENTER:
-			case KeyEvent.KEYCODE_ENTER:
-				if (!isVodMenuVisible()) {
-					if (paused) {
-						playPauseImage.setImageResource(R.drawable.vod_player_play);
-					} else {
-						playPauseImage.setImageResource(R.drawable.vod_player_pause);
-					}
-					ret = true;
-				}
-				break;
-			default:
-				break;
+		switch (keyCode) {
+		case KeyEvent.KEYCODE_DPAD_LEFT:
+			if (!isVodMenuVisible()) {
+				fbImage.setImageResource(R.drawable.vod_player_fb);
+				Log.d(TAG, "seek to " + currPosition);
+				seekTo();
+				keyLeftDown = false;
+				ret = true;
 			}
-	
-			if (ret == false) {
-				ret = super.onKeyUp(keyCode, event);
+			break;
+		case KeyEvent.KEYCODE_DPAD_RIGHT:
+			if (!isVodMenuVisible()) {
+				ffImage.setImageResource(R.drawable.vod_player_ff);
+				Log.d(TAG, "seek to " + currPosition);
+				seekTo();
+				keyRightDown = false;
+				ret = true;
 			}
+			break;
+		case KeyEvent.KEYCODE_DPAD_CENTER:
+		case KeyEvent.KEYCODE_ENTER:
+			if (!isVodMenuVisible()) {
+				if (paused) {
+					timeTaskPause();
+					playPauseImage.setImageResource(R.drawable.vod_player_play);
+				} else {
+					timeTaskStart();
+					playPauseImage
+							.setImageResource(R.drawable.vod_player_pause);
+				}
+				keyOKDown = false;
+				ret = true;
+			}
+			break;
+		default:
+			break;
 		}
+
+		if (ret == false) {
+			ret = super.onKeyUp(keyCode, event);
+		}
+
 		return ret;
 	}
+
 	
 	
 	public void showPopupDialog(int type, String msg) {
@@ -643,8 +705,8 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 	private void showBuffer() {
 		Log.d(TAG, "show buffer");
 		if(!bufferAnim.isRunning()){
-			bufferLayout.startAnimation(bufferShowAnimation);
 			bufferLayout.setVisibility(View.VISIBLE);
+			bufferLayout.startAnimation(bufferShowAnimation);
 			bufferAnim.start();
 		}
 	}
@@ -746,12 +808,12 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 
 		@Override
 		public void onStartTrackingTouch(SeekBar seekBar) {
-			
+			Log.d(TAG, "onStartTrackingTouch"+seekBar.getProgress());
 		}
 
 		@Override
 		public void onStopTrackingTouch(SeekBar seekBar) {
-		
+			Log.d(TAG, "onStopTrackingTouch"+seekBar.getProgress());
 		}
 	}
 	
