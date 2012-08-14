@@ -7,6 +7,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import tv.ismar.daisy.VodApplication.OnLowMemoryListener;
 import tv.ismar.daisy.core.ImageCache;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.ContentModel;
