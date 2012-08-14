@@ -58,7 +58,6 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 
 	
 	private static final int DIALOG_ITEM_CLICK_NET_BROKEN = 6;
-	private static final int PANEL_HIDE_TIME = 6;
 	
 	private boolean paused = false;
 	private boolean panelShow = false;
@@ -104,6 +103,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 		setView();
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void setView(){
 		panelShowAnimation = AnimationUtils.loadAnimation(this,R.drawable.fly_up);
 		panelHideAnimation = AnimationUtils.loadAnimation(this,R.drawable.fly_down);
@@ -202,7 +202,9 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 		
 		@Override
 		protected void onPostExecute(String result) {
-			logoImage.setImageBitmap(ImageUtils.getBitmapFromInputStream(logoInputStream, 160, 50));
+			if(logoInputStream!=null){
+				logoImage.setImageBitmap(ImageUtils.getBitmapFromInputStream(logoInputStream, 160, 50));
+			}
 		}
 		@Override
 		protected String doInBackground(String... arg0) {
@@ -282,7 +284,15 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 
 			@Override
 			public void onPrepared(MediaPlayer mp) {
+				Log.d(TAG, "mediaPlayer onPrepared");
 				if(mediaPlayer.getVideoWidth()>0&&mediaPlayer.getVideoHeight()>0){
+					Log.d(TAG, "mediaPlayer.getVideoWidth() =="+mediaPlayer.getVideoWidth());
+					Log.d(TAG, "mediaPlayer.getVideoHeight() =="+mediaPlayer.getVideoHeight());
+					if (currPosition > 0 || isContinue) {
+						mediaPlayer.seekTo(currPosition);
+					} else {
+						currPosition = 0;
+					}
 					clipLength = mediaPlayer.getDuration();
 					String text = getTimeString(currPosition) + "/" + getTimeString(clipLength);
 					timeText.setText(text);
@@ -316,6 +326,14 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 //				Log.d(TAG, "SurfaceViewHeight == "+ surfaceView.getHeight());
 			}
 			
+		});
+		mediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
+			
+			@Override
+			public void onSeekComplete(MediaPlayer mp) {
+				surfaceView.destroyDrawingCache();
+				
+			}
 		});
 		showPanel();
 	}
@@ -520,16 +538,20 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 			case KeyEvent.KEYCODE_DPAD_LEFT:
 				if (!isVodMenuVisible()) {
 					fbImage.setImageResource(R.drawable.vod_player_fb);
-					Log.d(TAG, "seek to " + currPosition);
+					Log.d(TAG, "LEFT seek to " + currPosition);
+					mediaPlayer.pause();
 					mediaPlayer.seekTo(currPosition);
+					mediaPlayer.start();
 					ret = true;
 				}
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
 				if (!isVodMenuVisible()) {
 					ffImage.setImageResource(R.drawable.vod_player_ff);
-					Log.d(TAG, "seek to " + currPosition);
+					Log.d(TAG, "RIGHT seek to " + currPosition);
+					mediaPlayer.pause();
 					mediaPlayer.seekTo(currPosition);
+					mediaPlayer.start();
 					ret = true;
 				}
 				break;
@@ -680,7 +702,8 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 	}
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
-		Log.d(TAG, "surfaceDestroyed");
+		mediaPlayer.release();
+		
 		
 	}
 	
@@ -785,18 +808,18 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 		win.setLayoutParams(lp);
 		root.addView(win);
 	}
-	
+	//reset()-->setDataSource(path)-->prepare()-->start()-->stop()--reset()-->
 	public boolean onVodMenuClicked(ISTVVodMenu menu, int id) {
 		if (id > 0 && id < 5) {
 			int pos = id - 1;
 			if (urls[pos] != null) {
 				try {
+					
 					noFinish = true;
 					mediaPlayer.reset();
 					currQuality = pos;
 					mediaPlayer.setDataSource(urls[currQuality].toString());
 					mediaPlayer.prepare();
-					mediaPlayer.start();
 				} catch (IllegalArgumentException e) {
 					
 					e.printStackTrace();
@@ -811,11 +834,6 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 					e.printStackTrace();
 				}
 				Log.d(TAG, "play URL " + urls[currQuality].toString() + ",currPosition="+ currPosition);
-				if (currPosition > 0 || isContinue) {
-					mediaPlayer.seekTo(currPosition);
-				} else {
-					currPosition = 0;
-				}
 			}
 		}
 		return true;

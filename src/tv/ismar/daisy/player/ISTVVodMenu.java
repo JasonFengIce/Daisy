@@ -23,6 +23,7 @@ public class ISTVVodMenu extends ISTVVodMenuItem{
 	private ListView view;
 	private boolean visible=false;
 	private boolean created=false;
+	@SuppressWarnings("unused")
 	private ISTVVodMenuItem currMenu;
 	private ISTVVodMenuItem menuStack[]=new ISTVVodMenuItem[10];
 	private int menuStackTop=0;
