@@ -28,7 +28,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -41,6 +40,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.ismartv.api.AccessProxy;
 import com.ismartv.bean.ClipInfo;
@@ -91,7 +91,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 	private Bundle bundle;
 	private long tempTime;
 	private SeekBar timeBar;
-	private SurfaceView surfaceView;
+	private VideoView mVideoView;
 	private SurfaceHolder surfaceHolder;
 	private MediaPlayer mediaPlayer;
 	private Dialog popupDlg = null;
@@ -113,8 +113,8 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setContentView(R.layout.vod_player);
-		surfaceView = (SurfaceView) findViewById(R.id.surface_view);
-		surfaceHolder = surfaceView.getHolder();
+		mVideoView = (VideoView) findViewById(R.id.video_View);
+		surfaceHolder = mVideoView.getHolder();
 		surfaceHolder.addCallback(this);
 		surfaceHolder.setSizeFromLayout(); 
 		surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
@@ -263,6 +263,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 					break;
 				case MediaPlayer.MEDIA_INFO_BUFFERING_END:
 					Log.d(TAG, "buffering end");
+					mediaPlayer.start();
 					hideBuffer();
 					timeTaskStart();
 					break;
@@ -294,10 +295,8 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 						currPosition = 0;
 					}
 					clipLength = mediaPlayer.getDuration();
-					String text = getTimeString(currPosition) + "/" + getTimeString(clipLength);
-					timeText.setText(text);
-					mediaPlayer.start();
 					timeBar.setMax(clipLength);
+					mediaPlayer.start();
 					timeTaskStart();
 				}
 			}
@@ -319,8 +318,8 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 			@Override
 			public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
 			
-//				Log.d(TAG, "MediaPlayer onVideoSizeChanged width =="+width);
-//				Log.d(TAG, "MediaPlayer onVideoSizeChanged height =="+height);
+				Log.d(TAG, "MediaPlayer onVideoSizeChanged width =="+width);
+				Log.d(TAG, "MediaPlayer onVideoSizeChanged height =="+height);
 //				
 //				Log.d(TAG, "SurfaceViewWidth == "+ surfaceView.getWidth() );
 //				Log.d(TAG, "SurfaceViewHeight == "+ surfaceView.getHeight());
@@ -331,8 +330,8 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 			
 			@Override
 			public void onSeekComplete(MediaPlayer mp) {
-				surfaceView.destroyDrawingCache();
-				
+				Log.d(TAG, "onSeekComplete");
+//				mVideoView.destroyDrawingCache();
 			}
 		});
 		showPanel();
@@ -389,10 +388,6 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 		startActivity(intent);
 		finish();
 	}
-	
-	
-	
-	
 	private void showPanel() {
 		if (isVodMenuVisible())
 			return;
@@ -419,6 +414,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 		showBuffer();
 		Log.d(TAG, "pause");
 		mediaPlayer.pause();
+		timeTaskPause();
 		paused = true;
 	}
 
@@ -426,8 +422,9 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 		if (!paused||mediaPlayer==null)
 			return;
 		hideBuffer();
-		mediaPlayer.start();
 		Log.d(TAG, "resume");
+		mediaPlayer.start();
+		timeTaskStart();
 		paused = false;
 	}
 
@@ -439,7 +436,8 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 		if (currPosition > clipLength){
 			gotofinishpage();
 		}
-		Log.d(TAG, "ff " + currPosition);
+		timeBar.setProgress(currPosition);
+		Log.d(TAG, "seek Forward " + currPosition);
 	}
 
 	private void fastBackward(int step) {
@@ -449,8 +447,8 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 
 		if (currPosition < 0)
 			currPosition = 0;
-		
-		Log.d(TAG, "fb " + currPosition);
+		timeBar.setProgress(currPosition);
+		Log.d(TAG, "seek Backward " + currPosition);
 	}
 	
 	@Override
@@ -459,16 +457,22 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 		if(mediaPlayer!=null){
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
-				if (!isVodMenuVisible()&&mediaPlayer.isPlaying()) {
+				if (!isVodMenuVisible()) {
 					showPanel();
+					showBuffer();
+					mediaPlayer.pause();
+					timeTaskPause();
 					fbImage.setImageResource(R.drawable.vod_player_fb_focus);
 					fastBackward(SHORT_STEP);
 					ret = true;
 				}
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
-				if (!isVodMenuVisible()&&mediaPlayer.isPlaying()) {
+				if (!isVodMenuVisible()) {
 					showPanel();
+					showBuffer();
+					mediaPlayer.pause();
+					timeTaskPause();
 					ffImage.setImageResource(R.drawable.vod_player_ff_focus);
 					fastForward(SHORT_STEP);
 					ret = true;
@@ -539,9 +543,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 				if (!isVodMenuVisible()) {
 					fbImage.setImageResource(R.drawable.vod_player_fb);
 					Log.d(TAG, "LEFT seek to " + currPosition);
-					mediaPlayer.pause();
 					mediaPlayer.seekTo(currPosition);
-					mediaPlayer.start();
 					ret = true;
 				}
 				break;
@@ -549,9 +551,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 				if (!isVodMenuVisible()) {
 					ffImage.setImageResource(R.drawable.vod_player_ff);
 					Log.d(TAG, "RIGHT seek to " + currPosition);
-					mediaPlayer.pause();
 					mediaPlayer.seekTo(currPosition);
-					mediaPlayer.start();
 					ret = true;
 				}
 				break;
@@ -589,9 +589,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 			} else {
 				view = inflater.inflate(R.layout.popup_2btn, null);
 			}
-			popupDlg.addContentView(view, new ViewGroup.LayoutParams(
-					ViewGroup.LayoutParams.WRAP_CONTENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT));
+			popupDlg.addContentView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
 			TextView tv = (TextView) view.findViewById(R.id.PopupText);
 			tv.setText(msg);
 			Button btn1 = null, btn2 = null;
@@ -606,10 +604,11 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 							popupDlg.dismiss();
 							timeTaskPause();
 							noFinish = true;
-							if(mediaPlayer!=null)
+							if(mediaPlayer!=null){
 								mediaPlayer.reset();
+							}
 							PlayerActivity.this.finish();
-							surfaceView.destroyDrawingCache();
+							mVideoView.destroyDrawingCache();
 						}
 					};
 				});
@@ -707,8 +706,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 		
 	}
 	
-	
-	
+
 	public boolean createMenu(ISTVVodMenu menu) {
 		ISTVVodMenuItem sub;
 
@@ -761,8 +759,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 
 		@Override
 		public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
-			String text = getTimeString(currPosition) + "/" + getTimeString(clipLength);
-			timeText.setText(text);
+			updataTimeText();
 		}
 
 		@Override
@@ -839,6 +836,10 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 		return true;
 	}
 	
+	private void updataTimeText(){
+		String text = getTimeString(currPosition) + "/" + getTimeString(clipLength);
+		timeText.setText(text);
+	}
 //	private void savaScreenShot()
 //    {
 //		
