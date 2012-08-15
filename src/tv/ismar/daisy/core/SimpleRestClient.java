@@ -1,7 +1,6 @@
 package tv.ismar.daisy.core;
 
 import tv.ismar.daisy.models.Attribute;
-import tv.ismar.daisy.models.Channel;
 import tv.ismar.daisy.models.ChannelList;
 import tv.ismar.daisy.models.ContentModelList;
 import tv.ismar.daisy.models.Item;

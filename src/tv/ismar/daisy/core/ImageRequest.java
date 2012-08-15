@@ -18,7 +18,6 @@ package tv.ismar.daisy.core;
 import java.util.concurrent.Future;
 
 import tv.ismar.daisy.core.ImageLoader.ImageLoaderCallback;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

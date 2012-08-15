@@ -2,8 +2,6 @@ package tv.ismar.daisy.views;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication.OnLowMemoryListener;
@@ -14,7 +12,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +23,6 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Scroller;
 import android.widget.TextView;
 
 public class ItemListScrollView extends HorizontalScrollView implements OnFocusChangeListener, OnClickListener, OnImageViewLoadListener, OnLowMemoryListener {

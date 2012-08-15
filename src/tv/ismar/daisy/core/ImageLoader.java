@@ -13,7 +13,6 @@ import android.os.Message;
 import android.os.Process;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 public class ImageLoader {
 

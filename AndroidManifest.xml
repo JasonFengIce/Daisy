@@ -21,9 +21,13 @@
                 <action android:name="tv.ismar.daisy.Item" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+          	 <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity
-            android:name="SearchActivity_"
+            android:name="SearchActivity"
             android:configChanges="keyboardHidden|orientation|keyboard"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
@@ -59,10 +63,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+            
         </activity>
         <activity
             android:name=".DramaListActivity"
