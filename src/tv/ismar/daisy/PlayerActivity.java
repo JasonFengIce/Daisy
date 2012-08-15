@@ -50,7 +50,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 	private static final String PREFS_NAME = "tv.ismar.daisy";
 	private static final String TAG = "PLAYER";
 	
-	private static final int SHORT_STEP = 30000;
+	private static final int SHORT_STEP = 20000;
 	private static final int DIALOG_OK_CANCEL = 0;
 
 	private static final int DIALOG_IKNOW = 2;
