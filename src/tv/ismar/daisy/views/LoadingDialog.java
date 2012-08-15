@@ -3,9 +3,6 @@ package tv.ismar.daisy.views;
 import tv.ismar.daisy.R;
 import android.app.Dialog;
 import android.content.Context;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 /**

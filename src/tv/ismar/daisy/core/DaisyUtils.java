@@ -4,7 +4,6 @@ package tv.ismar.daisy.core;
 import java.util.concurrent.ExecutorService;
 
 import tv.ismar.daisy.VodApplication;
-
 import android.content.Context;
 
 public class DaisyUtils {
