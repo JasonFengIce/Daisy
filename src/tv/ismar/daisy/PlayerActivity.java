@@ -113,7 +113,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setContentView(R.layout.vod_player);
-		mVideoView = (VideoView) findViewById(R.id.video_View);
+		mVideoView = (VideoView) findViewById(R.id.video_view);
 		surfaceHolder = mVideoView.getHolder();
 		surfaceHolder.addCallback(this);
 		surfaceHolder.setSizeFromLayout(); 
@@ -160,20 +160,19 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 		protected ClipInfo doInBackground(String... arg0) {
 			Object obj = bundle.get("url");
 			String sn = VodUserAgent.getMACAddress();
+			AccessProxy.init(VodUserAgent.deviceType,VodUserAgent.deviceVersion, sn);
 			if(obj!=null){
 				SimpleRestClient simpleRestClient = new SimpleRestClient();
 				item = simpleRestClient.getItem((String)obj);
-				
-				AccessProxy.init(VodUserAgent.deviceType,VodUserAgent.deviceVersion, sn);
 				if(item!=null){
 					clip = item.clip;
-					String host = "cord.tvxio.com";
+					String host = "cord.t.tvxio.com";
 //							try {
 //								host = (new URL((String)obj)).getHost();
 //							} catch (MalformedURLException e) {
 //								e.printStackTrace();
 //							}
-					urlInfo = AccessProxy.parse("http://" + host  + "/api/clip/"+ clip.pk + "/", VodUserAgent.getUserAgent(sn),PlayerActivity.this);
+					urlInfo = AccessProxy.parse("http://" + host  + "/api/clip/204107/", VodUserAgent.getUserAgent(sn),PlayerActivity.this);
 				}
 			}else{
 				obj = bundle.get("item");
@@ -181,13 +180,13 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 					item = (Item)obj;
 					if(item.clip!=null){
 						clip = item.clip;
-						String host = "cord.tvxio.com";
+						String host = "cord.t.tvxio.com";
 	//							try {
 	//								host = (new URL((String)obj)).getHost();
 	//							} catch (MalformedURLException e) {
 	//								e.printStackTrace();
 	//							}
-						urlInfo = AccessProxy.parse("http://" + host  + "/api/clip/"+ clip.pk + "/", VodUserAgent.getUserAgent(sn),PlayerActivity.this);
+						urlInfo = AccessProxy.parse("http://" + host  + "/api/clip/204107/", VodUserAgent.getUserAgent(sn),PlayerActivity.this);
 					}
 				}
 			}
@@ -229,7 +228,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 			titleText.setSelected(true);
 			new LogoImageTask().execute();
 		}
-		clipLength = clip.length * 1000;
+		
 		
 		if (currPosition>0||isContinue)
 			currPosition = tempOffset * 1000;
@@ -330,7 +329,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 			
 			@Override
 			public void onSeekComplete(MediaPlayer mp) {
-				Log.d(TAG, "onSeekComplete");
+				Log.d(TAG, "onSeekComplete msc =="+getTimeString(mp.getCurrentPosition()));
 //				mVideoView.destroyDrawingCache();
 			}
 		});
@@ -386,7 +385,13 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 		Intent intent = new Intent("tv.ismar.daisy.PlayFinished");
 		intent.putExtra("item", item);
 		startActivity(intent);
-		finish();
+		timeTaskPause();
+		noFinish = true;
+		if(mediaPlayer!=null){
+			mediaPlayer.reset();
+		}
+		PlayerActivity.this.finish();
+		mVideoView.destroyDrawingCache();
 	}
 	private void showPanel() {
 		if (isVodMenuVisible())
@@ -454,7 +459,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean ret = false;
-		if(mediaPlayer!=null){
+		if(mediaPlayer!=null&&mediaPlayer.getVideoHeight()>0){
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
 				if (!isVodMenuVisible()) {
@@ -537,21 +542,21 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		boolean ret = false;
-		if(mediaPlayer!=null){
+		if(mediaPlayer!=null&&mediaPlayer.getVideoHeight()>0){
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
 				if (!isVodMenuVisible()) {
 					fbImage.setImageResource(R.drawable.vod_player_fb);
-					Log.d(TAG, "LEFT seek to " + currPosition);
 					mediaPlayer.seekTo(currPosition);
+					Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
 					ret = true;
 				}
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
 				if (!isVodMenuVisible()) {
 					ffImage.setImageResource(R.drawable.vod_player_ff);
-					Log.d(TAG, "RIGHT seek to " + currPosition);
 					mediaPlayer.seekTo(currPosition);
+					Log.d(TAG, "RIGHT seek to" + getTimeString(currPosition));
 					ret = true;
 				}
 				break;
