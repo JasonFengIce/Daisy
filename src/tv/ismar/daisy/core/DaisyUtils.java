@@ -4,6 +4,10 @@ package tv.ismar.daisy.core;
 import java.util.concurrent.ExecutorService;
 
 import tv.ismar.daisy.VodApplication;
+import tv.ismar.daisy.dao.DBHelper;
+import tv.ismar.daisy.persistence.FavoriteManager;
+import tv.ismar.daisy.persistence.HistoryManager;
+
 import android.content.Context;
 
 public class DaisyUtils {
@@ -39,6 +43,18 @@ public class DaisyUtils {
      */
     public static ExecutorService getExecutor(Context context) {
         return getVodApplication(context).getExecutor();
+    }
+    
+    public static DBHelper getDBHelper(Context context) {
+    	return getVodApplication(context).getDBHelper();
+    }
+    
+    public static HistoryManager getHistoryManager(Context context) {
+    	return getVodApplication(context).getHistoryManager();
+    }
+    
+    public static FavoriteManager getFavoriteManager(Context context) {
+    	return getVodApplication(context).getFavoriteManager();
     }
 
 }

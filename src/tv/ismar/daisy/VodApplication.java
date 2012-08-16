@@ -10,8 +10,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import tv.ismar.daisy.VodApplication.OnLowMemoryListener;
 import tv.ismar.daisy.core.ImageCache;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.models.ContentModel;
 import tv.ismar.daisy.models.ContentModelList;
+import tv.ismar.daisy.persistence.FavoriteManager;
+import tv.ismar.daisy.persistence.HistoryManager;
+import tv.ismar.daisy.persistence.LocalFavoriteManager;
+import tv.ismar.daisy.persistence.LocalHistoryManager;
 import android.app.Application;
 
 
@@ -29,6 +34,12 @@ public class VodApplication extends Application {
 	public VodApplication() {
 		mLowMemoryListeners = new ArrayList<WeakReference<OnLowMemoryListener>>();
 	}
+	
+	private HistoryManager mHistoryManager;
+	
+	private FavoriteManager mFavoriteManager;
+	
+	private DBHelper mDBHelper;
 	
 	@Override
 	public void onCreate() {
@@ -55,6 +66,35 @@ public class VodApplication extends Application {
 			
 		}
 	};
+	
+	/**
+	 * Return this application {@link DBHelper}
+	 * @return The application {@link DBHelper}
+	 */
+	public DBHelper getDBHelper() {
+		if(mDBHelper==null) {
+			mDBHelper = new DBHelper(this);
+		}
+		return mDBHelper;
+	}
+	
+	/**
+	 * Return this application {@link HistoryManager}
+	 * @return The application {@link HistoryManager}
+	 */
+	public HistoryManager getHistoryManager() {
+		if(mHistoryManager==null) {
+			mHistoryManager = new LocalHistoryManager(this);
+		}
+		return mHistoryManager;
+	}
+	
+	public FavoriteManager getFavoriteManager() {
+		if(mFavoriteManager == null) {
+			mFavoriteManager = new LocalFavoriteManager(this);
+		}
+		return mFavoriteManager;
+	}
 	
 	private static final ThreadFactory sThreadFactory = new ThreadFactory() {
         private final AtomicInteger mCount = new AtomicInteger(1);

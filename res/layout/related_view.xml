@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background">
+    <ImageView
+        android:layout_width="639dip"
+        android:layout_height="152dip"
+        android:src="@drawable/related_watermark"/>
+    <tv.ismar.daisy.views.ScrollableSectionList
+        android:id="@+id/related_section_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="151dip"
+        android:layout_marginRight="151dip"
+        android:layout_marginTop="23dip"
+        android:scrollbars="none">
+        
+    </tv.ismar.daisy.views.ScrollableSectionList>
+    <GridView
+        android:id="@+id/related_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="139dip"
+        android:layout_marginRight="139dip"
+        android:layout_marginTop="35dip"
+        android:numColumns="4"
+        android:horizontalSpacing="81dip"
+        android:verticalSpacing="0dip"
+        android:stretchMode="none"
+        android:columnWidth="348dip"
+        android:listSelector="@drawable/list_item_bg_hot">
+    </GridView>
+</LinearLayout>

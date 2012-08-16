@@ -1,16 +1,22 @@
 package tv.ismar.daisy;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.ImageUtils;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.Attribute;
 import tv.ismar.daisy.models.Clip;
 import tv.ismar.daisy.models.ContentModel;
+import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.persistence.FavoriteManager;
 import tv.ismar.daisy.views.LoadingDialog;
 import android.app.Activity;
 import android.content.Intent;
@@ -59,6 +65,8 @@ public class ItemDetailActivity extends Activity {
 	private LinearLayout mDetailAttributeContainer;
 
 	private LoadingDialog mLoadingDialog;
+
+	private FavoriteManager mFavoriteManager;
 	
 	private void initViews() {
 		mDetailLeftContainer = (RelativeLayout)findViewById(R.id.detail_left_container);
@@ -98,6 +106,9 @@ public class ItemDetailActivity extends Activity {
 //		Log.e("START", System.currentTimeMillis()+"");
 		mLoadingDialog = new LoadingDialog(this);
 		mLoadingDialog.show();
+		
+		mFavoriteManager = DaisyUtils.getFavoriteManager(this);
+		
 		initViews();
 		
 		Intent intent = getIntent();
@@ -167,11 +178,13 @@ public class ItemDetailActivity extends Activity {
 			mBtnFill.setVisibility(View.VISIBLE);
 			mBtnLeft.setVisibility(View.GONE);
 			mBtnRight.setVisibility(View.GONE);
+			mBtnFill.requestFocus();
 		} else {
 			isDrama = true;
 			mBtnFill.setVisibility(View.GONE);
 			mBtnLeft.setVisibility(View.VISIBLE);
 			mBtnRight.setVisibility(View.VISIBLE);
+			mBtnLeft.requestFocus();
 		}
 		
 		mDetailTitle.setText(mItem.title);
@@ -305,7 +318,17 @@ public class ItemDetailActivity extends Activity {
 	 * get the favorite status of the item.
 	 */
 	private boolean isFavorite() {
-		//TODO: Need to be completed.
+		if(mItem!=null) {
+			String url = mItem.item_url;
+			if(url==null && mItem.pk != 0) {
+				url = mSimpleRestClient.root_url + "/api/item/" + mItem.pk + "/";
+			}
+			Favorite favorite = mFavoriteManager.getFavoriteByUrl(url);
+			if(favorite!=null) {
+				return true;
+			}
+		}
+		
 		return false;
 	}
 	
@@ -442,8 +465,26 @@ public class ItemDetailActivity extends Activity {
 				startActivity(intent);
 				break;
 			case R.id.btn_favorite:
+				if(isFavorite()) {
+					String url = mSimpleRestClient.root_url + "/api/item/"+mItem.pk+"/";
+					mFavoriteManager.deleteFavoriteByUrl(url);
+				} else {
+					String url = mSimpleRestClient.root_url + "/api/item/"+mItem.pk+"/";
+					mFavoriteManager.addFavorite(mItem.title, url, mItem.content_model);
+				}
+				if(isFavorite()) {
+					mBtnFavorite.setText(getResources().getString(R.string.favorited));
+				} else {
+					mBtnFavorite.setText(getResources().getString(R.string.favorite));
+				}
 				break;
 			case R.id.more_content:
+				if(mRelatedItem!=null && mRelatedItem.length >0 ){
+					intent.putExtra("related_item", new ArrayList<Item>(Arrays.asList(mRelatedItem)));
+				}
+				intent.putExtra("item", mItem);
+				intent.setClass(ItemDetailActivity.this, RelatedActivity.class);
+				startActivity(intent);
 				break;
 			}
 		}
