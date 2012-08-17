@@ -459,10 +459,9 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean ret = false;
-		if(mediaPlayer!=null){
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
-				if (!isVodMenuVisible()&&mediaPlayer.getVideoHeight()>0) {
+				if (mediaPlayer!=null&&!isVodMenuVisible()&&mediaPlayer.getVideoHeight()>0) {
 					showPanel();
 					showBuffer();
 					mediaPlayer.pause();
@@ -473,7 +472,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 				}
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
-				if (!isVodMenuVisible()&&mediaPlayer.getVideoHeight()>0) {
+				if (mediaPlayer!=null&&!isVodMenuVisible()&&mediaPlayer.getVideoHeight()>0) {
 					showPanel();
 					showBuffer();
 					mediaPlayer.pause();
@@ -485,7 +484,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 				break;
 			case KeyEvent.KEYCODE_DPAD_CENTER:
 			case KeyEvent.KEYCODE_ENTER:
-				if (!isVodMenuVisible()&&mediaPlayer.getVideoHeight()>0) {
+				if (mediaPlayer!=null&&!isVodMenuVisible()&&mediaPlayer.getVideoHeight()>0) {
 					showPanel();
 					if (!paused) {
 						pauseItem();
@@ -501,7 +500,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 			case KeyEvent.KEYCODE_A:
 			case KeyEvent.KEYCODE_F1:
 			case KeyEvent.KEYCODE_PROG_RED:
-				if (!isVodMenuVisible()) {
+				if (mediaPlayer!=null&&!isVodMenuVisible()) {
 					if (panelShow) {
 						hidePanel();
 					} else {
@@ -511,7 +510,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 				}
 				break;
 			case KeyEvent.KEYCODE_DPAD_UP:
-				if (!isVodMenuVisible()) {
+				if (mediaPlayer!=null&&!isVodMenuVisible()) {
 					showPanel();
 					ret = true;
 				}
@@ -532,20 +531,19 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 				break;
 			}
 	
-			if (ret == false) {
+			if (mediaPlayer!=null&&ret == false) {
 				ret = super.onKeyDown(keyCode, event);
 			}
-		}
 		return ret;
 	}
 	
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		boolean ret = false;
-		if(mediaPlayer!=null&&mediaPlayer.getVideoHeight()>0){
+		if(mediaPlayer!=null){
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
-				if (!isVodMenuVisible()) {
+				if (!isVodMenuVisible()&&mediaPlayer.getVideoHeight()>0) {
 					fbImage.setImageResource(R.drawable.vod_player_fb);
 					mediaPlayer.seekTo(currPosition);
 					Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
@@ -553,7 +551,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 				}
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
-				if (!isVodMenuVisible()) {
+				if (!isVodMenuVisible()&&mediaPlayer.getVideoHeight()>0) {
 					ffImage.setImageResource(R.drawable.vod_player_ff);
 					mediaPlayer.seekTo(currPosition);
 					Log.d(TAG, "RIGHT seek to" + getTimeString(currPosition));
@@ -562,7 +560,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 				break;
 			case KeyEvent.KEYCODE_DPAD_CENTER:
 			case KeyEvent.KEYCODE_ENTER:
-				if (!isVodMenuVisible()) {
+				if (!isVodMenuVisible()&&mediaPlayer.getVideoHeight()>0) {
 					if (paused) {
 						playPauseImage.setImageResource(R.drawable.vod_player_play);
 					} else {
