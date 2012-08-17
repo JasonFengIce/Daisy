@@ -21,10 +21,6 @@
                 <action android:name="tv.ismar.daisy.Item" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-          	 <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity
             android:name="SearchActivity"
@@ -60,10 +56,12 @@
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="tv.ismar.daisy.Channel" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity
             android:name=".DramaListActivity"

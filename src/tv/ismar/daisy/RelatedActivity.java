@@ -2,8 +2,6 @@ package tv.ismar.daisy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
-
 import tv.ismar.daisy.adapter.RelatedAdapter;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.Attribute;
@@ -17,12 +15,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.AdapterView.OnItemSelectedListener;
 
-public class RelatedActivity extends Activity implements OnSectionSelectChangedListener {
+public class RelatedActivity extends Activity implements OnSectionSelectChangedListener, OnItemClickListener {
 	
 	private static final String TAG = "RelatedActivity";
 	
@@ -44,6 +44,7 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		mSectionTabs = (ScrollableSectionList) findViewById(R.id.related_section_tabs);
 		mSectionTabs.setOnSectionSelectChangeListener(this);
 		mItemListGrid = (GridView) findViewById(R.id.related_list);
+		mItemListGrid.setOnItemClickListener(this);
 	}
 
 	@SuppressWarnings({ "unchecked" })
@@ -186,6 +187,16 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 			}
 		}
 		
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		Log.d(TAG, view.toString());
+		Item item = mAdapter.getItem(position);
+		Intent intent = new Intent("tv.ismar.daisy.Item");
+		intent.putExtra("url", item.item_url);
+		startActivity(intent);
 	}
 	
 }
