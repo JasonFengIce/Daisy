@@ -38,5 +38,10 @@ public class VodUserAgent {
 		String userAgent = deviceType + "/"+ deviceVersion + " " + getMACAddress().toUpperCase();
 		return userAgent;
 	}
-	
+	//String access_token
+	public static String getAccessToken(String token) {
+//		String userAgent = deviceType + "/"+ deviceVersion + " " + getMACAddress().toUpperCase();
+		String access_token = "";
+		return access_token;
+	}
 }

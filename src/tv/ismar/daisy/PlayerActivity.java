@@ -166,13 +166,13 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 				item = simpleRestClient.getItem((String)obj);
 				if(item!=null){
 					clip = item.clip;
-					String host = "cord.t.tvxio.com";
+					String host = "cord.tvxio.com";
 //							try {
 //								host = (new URL((String)obj)).getHost();
 //							} catch (MalformedURLException e) {
 //								e.printStackTrace();
 //							}
-					urlInfo = AccessProxy.parse("http://" + host  + "/api/clip/204107/", VodUserAgent.getUserAgent(sn),PlayerActivity.this);
+					urlInfo = AccessProxy.parse("http://" + host  + "/api/clip/"+clip.pk+"/", VodUserAgent.getAccessToken(sn),PlayerActivity.this);
 				}
 			}else{
 				obj = bundle.get("item");
@@ -180,13 +180,13 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 					item = (Item)obj;
 					if(item.clip!=null){
 						clip = item.clip;
-						String host = "cord.t.tvxio.com";
+						String host = "cord.tvxio.com";
 	//							try {
 	//								host = (new URL((String)obj)).getHost();
 	//							} catch (MalformedURLException e) {
 	//								e.printStackTrace();
 	//							}
-						urlInfo = AccessProxy.parse("http://" + host  + "/api/clip/204107/", VodUserAgent.getUserAgent(sn),PlayerActivity.this);
+						urlInfo = AccessProxy.parse("http://" + host  + "/api/clip/"+clip.pk+"/", VodUserAgent.getAccessToken(sn),PlayerActivity.this);
 					}
 				}
 			}
