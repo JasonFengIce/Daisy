@@ -459,10 +459,10 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean ret = false;
-		if(mediaPlayer!=null&&mediaPlayer.getVideoHeight()>0){
+		if(mediaPlayer!=null){
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
-				if (!isVodMenuVisible()) {
+				if (!isVodMenuVisible()&&mediaPlayer.getVideoHeight()>0) {
 					showPanel();
 					showBuffer();
 					mediaPlayer.pause();
@@ -473,7 +473,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 				}
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
-				if (!isVodMenuVisible()) {
+				if (!isVodMenuVisible()&&mediaPlayer.getVideoHeight()>0) {
 					showPanel();
 					showBuffer();
 					mediaPlayer.pause();
@@ -485,7 +485,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 				break;
 			case KeyEvent.KEYCODE_DPAD_CENTER:
 			case KeyEvent.KEYCODE_ENTER:
-				if (!isVodMenuVisible()) {
+				if (!isVodMenuVisible()&&mediaPlayer.getVideoHeight()>0) {
 					showPanel();
 					if (!paused) {
 						pauseItem();
