@@ -1,6 +1,5 @@
 ﻿package tv.ismar.daisy.core;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.NetworkInterface;
@@ -8,16 +7,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
 
 import android.util.Log;
 
@@ -102,21 +93,6 @@ public class HttpUtil {
 		return new HttpPost(urlString);
 	}
 
-	/**
-	 * 通过HttpGet获取HttpResponse对象
-	 * 
-	 * @throws IOException
-	 * @throws ClientProtocolException
-	 */
-	public static HttpResponse getHttpResponseByGet(HttpGet httpGet) throws ClientProtocolException, IOException {
-		HttpClient client = null;
-		HttpParams params = new BasicHttpParams();// Set the timeout in milliseconds until a connection is established.
-		HttpConnectionParams.setConnectionTimeout(params, 10000);// Set the default socket timeout (SO_TIMEOUT) // in milliseconds which is the timeout for waiting for data.
-		HttpConnectionParams.setSoTimeout(params, 10000);
-		client = new DefaultHttpClient(params);
-
-		return client.execute(httpGet);
-	}
 
 	/**
 	 * 通过HttpPost获取HttpResponse对象
@@ -130,9 +106,8 @@ public class HttpUtil {
 	public static URLConnection getHttpConnectionByGet(String httpPath) throws Exception {
 		url = new URL(httpPath);
 		urlConnection = url.openConnection();
-		urlConnection.addRequestProperty("User-Agent", getUserAgent());
-		urlConnection.setConnectTimeout(20000);
-		urlConnection.setReadTimeout(20000);
+		urlConnection.setConnectTimeout(5000);
+		urlConnection.setReadTimeout(5000);
 		return urlConnection;
 	}
 
@@ -149,55 +124,6 @@ public class HttpUtil {
 		inputS.close();
 		return json;
 	}
-
-	/**
-	 * 通过url发送get请求，并得到返回结果
-	 */
-	public static String queryStringByGet(String url) {
-		String resultString = null;
-		// 获取HttpPost实例
-		HttpGet request = getHttpGet(url);
-		try {
-			HttpResponse response = getHttpResponseByGet(request);
-			// 判断是否请求成功
-			if (200 == response.getStatusLine().getStatusCode()) {
-				resultString = EntityUtils.toString(response.getEntity());
-			}
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-			resultString = "connection error";
-		} catch (IOException e) {
-			e.printStackTrace();
-			resultString = "connection error";
-		}
-
-		return resultString;
-	}
-
-	/**
-	 * 通过HttpGet对象发送请求，获取请求结果
-	 */
-	public static String queryStringByGet(HttpGet request) {
-		String resultString = null;
-
-		try {
-			HttpResponse response = getHttpResponseByGet(request);
-
-			// 判断是否请求成功
-			if (200 == response.getStatusLine().getStatusCode()) {
-				resultString = EntityUtils.toString(response.getEntity());
-			}
-
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-			resultString = "connection error";
-		} catch (IOException e) {
-			e.printStackTrace();
-			resultString = "connection error";
-		}
-		return resultString;
-	}
-
 	static String keyWord = null;
 
 	// 拼接搜索接口

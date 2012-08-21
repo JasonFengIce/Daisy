@@ -10,15 +10,14 @@
         android:layout_marginBottom="11dp"
         android:layout_marginLeft="14dp" >
 
-        <ImageView
+        <tv.ismar.daisy.views.AsyncImageView
             android:id="@+id/itemImage"
             android:layout_width="284dp"
             android:layout_height="160dp"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/list_item_preview_bg" />
+            android:src="@drawable/list_item_preview_bgg" />
 
         <Button
-            android:focusable="false"
             android:id="@+id/iv_type"
             android:layout_width="105px"
             android:layout_height="55px"
@@ -26,18 +25,19 @@
             android:layout_alignLeft="@+id/itemImage"
             android:layout_marginBottom="-5dp"
             android:layout_marginLeft="-20dp"
+            android:focusable="false"
             android:textColor="@color/hotwords_text_color"
             android:textSize="20dp" />
 
         <TextView
             android:id="@+id/itemText"
-            style="@drawable/gridview_text_selector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/itemImage"
+            android:layout_marginTop="-15px"
             android:layout_centerHorizontal="true"
-            android:layout_marginRight="6dp"
             android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
             android:ellipsize="marquee"
             android:singleLine="true"
             android:textSize="28dp"
@@ -45,7 +45,7 @@
         </TextView>
     </RelativeLayout>
 
-    <ImageView
+    <tv.ismar.daisy.views.AsyncImageView
         android:id="@+id/iv_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

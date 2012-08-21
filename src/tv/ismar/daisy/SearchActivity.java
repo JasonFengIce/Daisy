@@ -98,6 +98,13 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 			return;
 		}
 		showHotWords();
+		imageAdapter.setAsyncisPauseed(false);
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		imageAdapter.setAsyncisPauseed(true);
 	}
 
 	private void showHotWords() {
@@ -118,6 +125,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 		gridView.setNumColumns(6);
 		gridView.setVerticalSpacing(5);
 		gridView.setOnItemClickListener(SearchActivity.this);
+		imageAdapter = new ImageCacheAdapter(SearchActivity.this,  R.layout.search_grid_view_item);
 		ibtnSearch = (ImageButton) findViewById(R.id.ibtn_search);
 		ibtnSearch.setOnClickListener(this);
 		tvSearchCount = (TextView) findViewById(R.id.tv_search_count);
@@ -201,6 +209,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 		}
 	}
 
+
 	private Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
@@ -214,8 +223,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 				// cacheAdapter = new CacheAdapter(SearchActivity.this, movieList);
 				// gridView.setAdapter(cacheAdapter);
 				movieList = SortMovieUtils.sort(movieList);
-				imageAdapter = new ImageCacheAdapter(SearchActivity.this, movieList, R.layout.search_grid_view_item);
-				gridView.setAdapter(imageAdapter);
+				setImageAdapter(movieList);
 				break;
 			case UPDATE_SUGGEST:
 				autoAdapter = new ArrayAdapter<String>(SearchActivity.this, R.layout.autocomplete_list_item, listHelp);// 配置Adaptor
@@ -266,15 +274,22 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 					return;
 				}
 				setSearchResult(movieList.size());
-				// cacheAdapter = new CacheAdapter(SearchActivity.this, movieList);
-				// gridView.setAdapter(cacheAdapter);
 				movieList = SortMovieUtils.sort(movieList);
-				imageAdapter = new ImageCacheAdapter(SearchActivity.this, movieList, R.layout.search_grid_view_item);
-				gridView.setAdapter(imageAdapter);
+				setImageAdapter(movieList);
 				break;
 			default:
 				break;
 			}
+		}
+
+		/**
+		 * This clear data and set adapter
+		 * @param movieList
+		 */
+		private void setImageAdapter(List<MovieBean> movieList) {
+			imageAdapter.cancelAsync();
+			imageAdapter = new ImageCacheAdapter(SearchActivity.this, movieList, R.layout.search_grid_view_item);
+			gridView.setAdapter(imageAdapter);			
 		};
 	};
 
@@ -302,6 +317,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 		}
 		return false;
 	}
+	
 
 	private void loadDialogShow() {
 		if (loadDialog.isShowing()) {
@@ -327,6 +343,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 			intent.putExtra("url",movieList.get(position).url);
 		}
 		try {
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 		} catch (Exception e) {
 			e.printStackTrace();

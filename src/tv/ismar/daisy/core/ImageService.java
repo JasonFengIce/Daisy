@@ -1,10 +1,14 @@
 package tv.ismar.daisy.core;
 
+import java.util.HashMap;
+
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.models.MovieBean;
 import android.graphics.BitmapFactory;
 
 public class ImageService {
+	private static HashMap<String, Object> mHashMap;
+
 	/**
 	 * 
 	 * @param path
@@ -12,23 +16,23 @@ public class ImageService {
 	 * @throws Exception
 	 */
 
-	public static Object[] getImage(MovieBean movieBean) throws Exception {
-		Object[] object = new Object[4];
-		object[0] = (BitmapFactory.decodeStream(NetworkUtils.getInputStream(movieBean.adlet_url)));
+	public static HashMap<String, Object> getImage(MovieBean movieBean) throws Exception {
+		mHashMap = new HashMap<String, Object>();
+		mHashMap.put("imageView", BitmapFactory.decodeStream(HttpUtil.getHttpConnectionByGet(movieBean.adlet_url).getInputStream()));
 		int resourceLabel = 0;
 		String resourceType = null;
 		// movie 为电影
 		if (movieBean.content_model.equals("movie")) {
 			// holder.imageLabel.setVisibility(View.VISIBLE);
-//			resourceLabel = R.drawable.iv_type_movie;
+			// resourceLabel = R.drawable.iv_type_movie;
 			if (movieBean.quality.equals("2")) {
 				resourceLabel = R.drawable.label_no;
 			} else if (movieBean.quality.equals("3")) {
 				resourceLabel = R.drawable.label_uhd;
 			} else if (movieBean.quality.equals("4")) {
 				resourceLabel = R.drawable.label_hd;
-			} 
-			object[1] = resourceLabel;
+			}
+			mHashMap.put("imageLabel",resourceLabel);
 			resourceType = "电影";
 		}
 		// holder.imageLabel.setVisibility(View.GONE);
@@ -53,10 +57,12 @@ public class ImageService {
 			// comic 为喜剧
 		} else if (movieBean.content_model.equals("comic")) {
 			resourceType = "喜剧";
-		} 
-		object[2] = resourceType;
-		object[3] = movieBean.title;
+		}else if(movieBean.content_model.equals("sport")){
+			resourceType = "体育";
+		}
+		mHashMap.put("imageType",resourceType);
+		mHashMap.put("imageTitle",movieBean.title);
 
-		return object;
+		return mHashMap;
 	}
 }
