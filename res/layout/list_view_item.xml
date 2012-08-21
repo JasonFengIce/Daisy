@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingBottom="17dip">
     <tv.ismar.daisy.views.AsyncImageView
         android:layout_width="345dip"
         android:layout_height="204dip"
@@ -20,10 +21,10 @@
         android:singleLine="true"
         android:ellipsize="marquee"
         android:gravity="center_horizontal"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="17dip"
+        android:layout_marginTop="198dip"
         android:textSize="35dip"
-        android:textAppearance="@drawable/gridview_text_selector"
+        style="@drawable/gridview_text_selector"
         android:id="@+id/list_item_title"/>
 </RelativeLayout>
