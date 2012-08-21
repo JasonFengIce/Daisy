@@ -17,10 +17,7 @@ import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListener, OnFocusChangeListener {
-	
-	private static final int TEXT_COLOR_FOCUSED = 0xff000000;
-	private static final int TEXT_COLOR_NOFOCUSED = 0xffbbbbbb;
+public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListener {
 	
 	private Context mContext;
 	private ArrayList<Item> mItemList;
@@ -68,8 +65,11 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 		if(convertView == null) {
 			holder = new Holder();
 			convertView = LayoutInflater.from(mContext).inflate(R.layout.list_view_item, null);
-			AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(348, 252);
-			convertView.setLayoutParams(layoutParams);
+//			AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(348, 252);
+//			View titleView = convertView.findViewById(R.id.list_item_title);
+//			titleView.setFocusable(true);
+//			convertView.setClickable(true);
+//			convertView.setLayoutParams(layoutParams);
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder)convertView.getTag();
@@ -78,7 +78,6 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 		holder.title = (TextView) convertView.findViewById(R.id.list_item_title);
 		holder.previewImage.setUrl(mItemList.get(position).adlet_url);
 		holder.title.setText(mItemList.get(position).title);
-		holder.title.setOnFocusChangeListener(this);
 		return convertView;
 	}
 	
@@ -109,15 +108,6 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 	@Override
 	public void onLoadingFailed(AsyncImageView imageView, Throwable throwable) {
 		mOnLoadingImageQueue.remove(imageView);
-	}
-
-	@Override
-	public void onFocusChange(View v, boolean hasFocus) {
-		if(hasFocus) {
-			((TextView)v).setTextColor(TEXT_COLOR_FOCUSED);
-		} else {
-			((TextView)v).setTextColor(TEXT_COLOR_NOFOCUSED);
-		}
 	}
 
 }

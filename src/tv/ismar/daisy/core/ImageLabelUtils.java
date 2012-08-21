@@ -1,27 +1,11 @@
 package tv.ismar.daisy.core;
 
-import java.util.HashMap;
-
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.models.MovieBean;
-import android.graphics.BitmapFactory;
 
-public class ImageService {
-	private static HashMap<String, Object> mHashMap;
-
-	/**
-	 * 
-	 * @param path
-	 * @return BitMap
-	 * @throws Exception
-	 */
-
-	public static HashMap<String, Object> getImage(MovieBean movieBean) throws Exception {
-		mHashMap = new HashMap<String, Object>();
-		mHashMap.put("imageView", BitmapFactory.decodeStream(HttpUtil.getHttpConnectionByGet(movieBean.adlet_url).getInputStream()));
+public class ImageLabelUtils {
+	public static int getImageLabel(MovieBean movieBean){
 		int resourceLabel = 0;
-		String resourceType = null;
-		// movie 为电影
 		if (movieBean.content_model.equals("movie")) {
 			// holder.imageLabel.setVisibility(View.VISIBLE);
 			// resourceLabel = R.drawable.iv_type_movie;
@@ -32,12 +16,17 @@ public class ImageService {
 			} else if (movieBean.quality.equals("4")) {
 				resourceLabel = R.drawable.label_hd;
 			}
-			mHashMap.put("imageLabel",resourceLabel);
-			resourceType = "电影";
+			
 		}
-		// holder.imageLabel.setVisibility(View.GONE);
-		// teleplay 为电视剧trailer
-		else if (movieBean.content_model.equals("teleplay")) {
+		
+		return resourceLabel;
+	}
+	public static String getImageType(MovieBean movieBean){
+		String resourceType = null;
+		if (movieBean.content_model.equals("movie")) {
+			resourceType = "电影";
+			// teleplay 为电视剧trailer
+		}else if (movieBean.content_model.equals("teleplay")) {
 			resourceType = "电视剧";
 			// variety 为综艺
 		} else if (movieBean.content_model.equals("variety")) {
@@ -57,12 +46,10 @@ public class ImageService {
 			// comic 为喜剧
 		} else if (movieBean.content_model.equals("comic")) {
 			resourceType = "喜剧";
-		}else if(movieBean.content_model.equals("sport")){
+			// sport 为体育
+		} else if(movieBean.content_model.equals("sport")){
 			resourceType = "体育";
 		}
-		mHashMap.put("imageType",resourceType);
-		mHashMap.put("imageTitle",movieBean.title);
-
-		return mHashMap;
+		return resourceType;
 	}
 }

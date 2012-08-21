@@ -1,8 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tv.ismar.daisy"
-    android:versionCode="2"
-    android:versionName="1.1" >
-
+    android:versionCode="9"
+    android:versionName="0.9" >
     <uses-sdk
         android:minSdkVersion="15"
         android:targetSdkVersion="15" />
@@ -21,10 +20,6 @@
                 <action android:name="tv.ismar.daisy.Item" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-          	 <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity
             android:name="SearchActivity"
@@ -33,7 +28,7 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:windowSoftInputMode="stateUnspecified" >
             <intent-filter>
-                <action android:name="tv.ismar.daisy.Search"/> 
+                <action android:name="tv.ismar.daisy.Search" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -42,37 +37,38 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="tv.ismar.daisy.PlayFinished" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".PlayerActivity" 
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:name=".PlayerActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
-	            <action android:name="tv.ismar.daisy.Play" />
-	            <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="tv.ismar.daisy.Play" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ChannelListActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="tv.ismar.daisy.Channel" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".DramaListActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-            
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
         <activity
             android:name=".RelatedActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>
     </application>
 
 </manifest>
