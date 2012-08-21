@@ -1,6 +1,5 @@
 package tv.ismar.daisy;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 import tv.ismar.daisy.core.ImageUtils;
@@ -22,12 +21,10 @@ import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -45,25 +42,20 @@ import android.widget.VideoView;
 import com.ismartv.api.AccessProxy;
 import com.ismartv.bean.ClipInfo;
 
-public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
+public class PlayerActivity extends Activity {
 
 	private static final String PREFS_NAME = "tv.ismar.daisy";
 	private static final String TAG = "PLAYER";
 	
+	
 	private static final int SHORT_STEP = 20000;
 	private static final int DIALOG_OK_CANCEL = 0;
-
-	private static final int DIALOG_IKNOW = 2;
-	private static final int DIALOG_NET_BROKEN = 3;
-
-	
-	private static final int DIALOG_ITEM_CLICK_NET_BROKEN = 6;
 	
 	private boolean paused = false;
+	private boolean isBuffer = true;
 	private boolean panelShow = false;
 	private int currQuality = 0;
 	private String urls[] = new String[6];
-	private boolean noFinish = false;
 	private Animation panelShowAnimation;
 	private Animation panelHideAnimation;
 	private Animation bufferShowAnimation;
@@ -84,26 +76,27 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 	private ISTVVodMenu menu = null;
 	private ClipInfo urlInfo = new ClipInfo();
 	private Handler mHandler = new Handler();
-	private long mStartTime = 0;
 	private int tempOffset = 0;
 	private Item item;
 	private Clip clip;
 	private Bundle bundle;
-	private long tempTime;
 	private SeekBar timeBar;
 	private VideoView mVideoView;
-	private SurfaceHolder surfaceHolder;
-	private MediaPlayer mediaPlayer;
 	private Dialog popupDlg = null;
 	private InputStream logoInputStream;
+//	private HistoryManager historyManager;
+//	private History mHistory;
+	private SimpleRestClient simpleRestClient;
+//	private String itemUrl;
+	private boolean onPrepared = false;
+	private int seekPostion = 0 ;
+	private boolean isSeek = false;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		noFinish = false;
 		setView();
 	}
 	
-	@SuppressWarnings("deprecation")
 	private void setView(){
 		panelShowAnimation = AnimationUtils.loadAnimation(this,R.drawable.fly_up);
 		panelHideAnimation = AnimationUtils.loadAnimation(this,R.drawable.fly_down);
@@ -114,10 +107,6 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setContentView(R.layout.vod_player);
 		mVideoView = (VideoView) findViewById(R.id.video_view);
-		surfaceHolder = mVideoView.getHolder();
-		surfaceHolder.addCallback(this);
-		surfaceHolder.setSizeFromLayout(); 
-		surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 		panelLayout = (LinearLayout) findViewById(R.id.PanelLayout);
 		titleText = (TextView) findViewById(R.id.TitleText);
 		timeText = (TextView) findViewById(R.id.TimeText);
@@ -130,14 +119,10 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 		bufferAnim = (AnimationDrawable) ((ImageView) findViewById(R.id.BufferImage)).getBackground();
 		logoImage = (ImageView) findViewById(R.id.logo_image);
 		isContinue = getSharedPreferences(PREFS_NAME, 0).getBoolean("continue_play", true);
-	}
-	
-	@Override
-	public void surfaceCreated(SurfaceHolder holder) {
-		Log.d(TAG, "surfaceCreated");
 		
 		initClipInfo();
 	}
+	
 	
 	private void initClipInfo() {
 		Intent intent = getIntent();
@@ -158,11 +143,11 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 		}
 		@Override
 		protected ClipInfo doInBackground(String... arg0) {
+			simpleRestClient = new SimpleRestClient();
 			Object obj = bundle.get("url");
 			String sn = VodUserAgent.getMACAddress();
 			AccessProxy.init(VodUserAgent.deviceType,VodUserAgent.deviceVersion, sn);
 			if(obj!=null){
-				SimpleRestClient simpleRestClient = new SimpleRestClient();
 				item = simpleRestClient.getItem((String)obj);
 				if(item!=null){
 					clip = item.clip;
@@ -216,13 +201,19 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 			
 		}
 	}
-	
-	
 	private void initPlayer() {
 		urls[0] = urlInfo.getNormal();
 		urls[1] = urlInfo.getMedium();
 		urls[2] = urlInfo.getHigh();
 		urls[3] = urlInfo.getAdaptive();
+//		if(item!=null){
+//			historyManager = DaisyUtils.getHistoryManager(this);
+//			itemUrl = simpleRestClient.root_url+"/api/item/"+item.item_pk+"/";
+//			mHistory = historyManager.getHistoryByUrl(itemUrl);
+//			if(mHistory!=null)
+//				tempOffset =  (int) mHistory.last_position;
+//		}
+		
 		if(item!=null){
 			titleText.setText(item.title);
 			titleText.setSelected(true);
@@ -234,132 +225,27 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 			currPosition = tempOffset * 1000;
 		else
 			clipOffset = 0;
-		Log.d(TAG, "RES_INT_OFFSET currPosition=" + currPosition + ",clipOffset=" + clipOffset);
 		
-		try {
-
-			if(mediaPlayer!=null){
-				mediaPlayer.release();
-			}else{
-				mediaPlayer = new MediaPlayer();
-			}
-			mediaPlayer.setDisplay(surfaceHolder);
-			mediaPlayer.setDataSource(urls[currQuality]);
-			mediaPlayer.prepareAsync();
-			
-		} catch (Exception e) {
-			Log.d(TAG, e.getMessage());
-			e.printStackTrace();
-		}
-		mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
-			@Override
-			public boolean onInfo(MediaPlayer mp, int what, int extra) {
-				switch (what) {
-				case MediaPlayer.MEDIA_INFO_BUFFERING_START:
-					Log.d(TAG, "buffering start");
-					showBuffer();
-					timeTaskPause();
-					break;
-				case MediaPlayer.MEDIA_INFO_BUFFERING_END:
-					Log.d(TAG, "buffering end");
-					mediaPlayer.start();
-					hideBuffer();
-					timeTaskStart();
-					break;
-				}
-				return true;
-			}
-		});
-		mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
-			@Override
-			public void onBufferingUpdate(MediaPlayer arg0,int bufferingProgress) {
-//				timeBar.setSecondaryProgress(bufferingProgress);
-//				int currentProgress = skbProgress.getMax()* mediaPlayer.getCurrentPosition()/ mediaPlayer.getDuration();
-//				Log.d(TAG ,"% play "+bufferingProgress + "% buffer");
-
-			}
-		});
-
-		mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-
+		Log.d(TAG, "RES_INT_OFFSET currPosition=" + currPosition + ",clipOffset=" + clipOffset);
+		mVideoView.setVideoPath(urls[currQuality]);
+		mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 			@Override
 			public void onPrepared(MediaPlayer mp) {
-				Log.d(TAG, "mediaPlayer onPrepared");
-				if(mediaPlayer.getVideoWidth()>0&&mediaPlayer.getVideoHeight()>0){
-					Log.d(TAG, "mediaPlayer.getVideoWidth() =="+mediaPlayer.getVideoWidth());
-					Log.d(TAG, "mediaPlayer.getVideoHeight() =="+mediaPlayer.getVideoHeight());
-					if (currPosition > 0 || isContinue) {
-						mediaPlayer.seekTo(currPosition);
-					} else {
-						currPosition = 0;
-					}
-					clipLength = mediaPlayer.getDuration();
+				onPrepared = true;
+				Log.d(TAG, "mVideoView onPrepared");
+					clipLength = mVideoView.getDuration();
 					timeBar.setMax(clipLength);
-					mediaPlayer.start();
+					mVideoView.start();
 					timeTaskStart();
-				}
 			}
 		});
-		mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-
-			@Override
-			public void onCompletion(MediaPlayer mp) {
-				Log.d(TAG, "mediaPlayer onCompletion");
-				timeTaskPause();
-				if(!noFinish){
-					noFinish = true;
-					gotofinishpage();
-				}
-			}
-		});
-		mediaPlayer.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener(){
-
-			@Override
-			public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
-			
-				Log.d(TAG, "MediaPlayer onVideoSizeChanged width =="+width);
-				Log.d(TAG, "MediaPlayer onVideoSizeChanged height =="+height);
-//				
-//				Log.d(TAG, "SurfaceViewWidth == "+ surfaceView.getWidth() );
-//				Log.d(TAG, "SurfaceViewHeight == "+ surfaceView.getHeight());
-			}
-			
-		});
-		mediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
-			
-			@Override
-			public void onSeekComplete(MediaPlayer mp) {
-				Log.d(TAG, "onSeekComplete msc =="+getTimeString(mp.getCurrentPosition()));
-//				mVideoView.destroyDrawingCache();
-			}
-		});
+		
+		
 		showPanel();
 	}
-//	private class AccessProxyTask extends AsyncTask<String, Void, ClipInfo> {
-//
-//		protected void onPostExecute(ClipInfo result) {
-//				showBuffer();
-//				initPlayer();
-//		}
-//
-//		@Override
-//		protected ClipInfo doInBackground(String... arg0) {
-//			String sn = VodUserAgent.getMACAddress();
-//			AccessProxy.init(VodUserAgent.deviceType,VodUserAgent.deviceVersion, sn);
-//			String host = "cord.tvxio.com";
-//			// try {
-//			// host = (new URL(item.poster_url)).getHost();
-//			// } catch (MalformedURLException e) {
-//			// e.printStackTrace();
-//			// }
-//			urlInfo = AccessProxy.parse("http://" + host + "/api/clip/" + clip.pk + "/", VodUserAgent.getUserAgent(sn), PlayerActivity.this);
-//			return urlInfo;
-//
-//		}
-//	}
+
 	
 	private void timeTaskStart() {
-		mStartTime = SystemClock.uptimeMillis();
 		mHandler.post(mUpdateTimeTask);
 	}
 
@@ -369,29 +255,38 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 
 	private Runnable mUpdateTimeTask = new Runnable() {
 		public void run() {
-			if (mediaPlayer.isPlaying()) {
+			Log.d(TAG, "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
+			if (mVideoView.isPlaying()&&Math.abs(mVideoView.getCurrentPosition()-seekPostion)>299) {
 				if(bufferAnim.isRunning()){
+					isBuffer = false;
 					hideBuffer();
 				}
-				tempTime = SystemClock.uptimeMillis();
-				currPosition += (int) (tempTime - mStartTime);
-				mStartTime = tempTime;
-				timeBar.setProgress(currPosition);
+				seekPostion = mVideoView.getCurrentPosition();
+				if(!isSeek){
+					currPosition = mVideoView.getCurrentPosition();
+					timeBar.setProgress(seekPostion);
+				}
+				if(mVideoView.getCurrentPosition() == mVideoView.getDuration()){
+					gotofinishpage();
+				}
+			}else{
+				seekPostion = mVideoView.getCurrentPosition();
+				isBuffer = true;
+				showBuffer();
 			}
-			mHandler.postDelayed(mUpdateTimeTask, 200);
+			mHandler.postDelayed(mUpdateTimeTask, 300);
 		}
 	};
 	private void gotofinishpage() {
 		Intent intent = new Intent("tv.ismar.daisy.PlayFinished");
 		intent.putExtra("item", item);
 		startActivity(intent);
+		onPrepared = false;
 		timeTaskPause();
-		noFinish = true;
-		if(mediaPlayer!=null){
-			mediaPlayer.reset();
-		}
+		seekPostion = 0;
+		currPosition = 0;
+		mVideoView = null;
 		PlayerActivity.this.finish();
-		mVideoView.destroyDrawingCache();
 	}
 	private void showPanel() {
 		if (isVodMenuVisible())
@@ -414,22 +309,23 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 	}
 
 	private void pauseItem() {
-		if (paused||mediaPlayer==null)
+		if (paused||mVideoView==null)
 			return;
-		showBuffer();
+//		showBuffer();
 		Log.d(TAG, "pause");
-		mediaPlayer.pause();
-		timeTaskPause();
+		mVideoView.pause();
 		paused = true;
 	}
 
 	private void resumeItem() {
-		if (!paused||mediaPlayer==null)
+		if (!paused||mVideoView==null)
 			return;
-		hideBuffer();
+//		hideBuffer();
 		Log.d(TAG, "resume");
-		mediaPlayer.start();
-		timeTaskStart();
+		mVideoView.start();
+		if(!isBuffer){
+			timeTaskStart();
+		}
 		paused = false;
 	}
 
@@ -459,24 +355,21 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean ret = false;
+		if (!isVodMenuVisible()) {
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
-				if (mediaPlayer!=null&&!isVodMenuVisible()&&mediaPlayer.getVideoHeight()>0) {
+				if(onPrepared){
+					isSeek = true;
 					showPanel();
-					showBuffer();
-					mediaPlayer.pause();
-					timeTaskPause();
 					fbImage.setImageResource(R.drawable.vod_player_fb_focus);
 					fastBackward(SHORT_STEP);
 					ret = true;
 				}
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
-				if (mediaPlayer!=null&&!isVodMenuVisible()&&mediaPlayer.getVideoHeight()>0) {
+				if(onPrepared){
+					isSeek = true;
 					showPanel();
-					showBuffer();
-					mediaPlayer.pause();
-					timeTaskPause();
 					ffImage.setImageResource(R.drawable.vod_player_ff_focus);
 					fastForward(SHORT_STEP);
 					ret = true;
@@ -484,7 +377,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 				break;
 			case KeyEvent.KEYCODE_DPAD_CENTER:
 			case KeyEvent.KEYCODE_ENTER:
-				if (mediaPlayer!=null&&!isVodMenuVisible()&&mediaPlayer.getVideoHeight()>0) {
+				if(onPrepared){
 					showPanel();
 					if (!paused) {
 						pauseItem();
@@ -500,20 +393,20 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 			case KeyEvent.KEYCODE_A:
 			case KeyEvent.KEYCODE_F1:
 			case KeyEvent.KEYCODE_PROG_RED:
-				if (mediaPlayer!=null&&!isVodMenuVisible()) {
+				
 					if (panelShow) {
 						hidePanel();
 					} else {
 						showPanel();
 					}
 					ret = true;
-				}
+			
 				break;
 			case KeyEvent.KEYCODE_DPAD_UP:
-				if (mediaPlayer!=null&&!isVodMenuVisible()) {
+				
 					showPanel();
 					ret = true;
-				}
+				
 				break;
 			case KeyEvent.KEYCODE_BACK:
 				if (panelShow) {
@@ -521,7 +414,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 					ret = true;
 				} else {
 					showPopupDialog(
-							0,
+							DIALOG_OK_CANCEL,
 							getResources().getString(
 									R.string.vod_player_exit_dialog));
 					ret = true;
@@ -529,9 +422,9 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 				break;
 			default:
 				break;
+				}
 			}
-	
-			if (mediaPlayer!=null&&ret == false) {
+			if (mVideoView!=null&&ret == false) {
 				ret = super.onKeyDown(keyCode, event);
 			}
 		return ret;
@@ -540,34 +433,34 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		boolean ret = false;
-		if(mediaPlayer!=null){
+		if(mVideoView!=null&&!isVodMenuVisible()&&onPrepared){
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
-				if (!isVodMenuVisible()&&mediaPlayer.getVideoHeight()>0) {
 					fbImage.setImageResource(R.drawable.vod_player_fb);
-					mediaPlayer.seekTo(currPosition);
+					mVideoView.seekTo(currPosition);
+					isSeek = false;
 					Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
 					ret = true;
-				}
+			
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
-				if (!isVodMenuVisible()&&mediaPlayer.getVideoHeight()>0) {
+			
 					ffImage.setImageResource(R.drawable.vod_player_ff);
-					mediaPlayer.seekTo(currPosition);
+					mVideoView.seekTo(currPosition);
+					isSeek = false;
 					Log.d(TAG, "RIGHT seek to" + getTimeString(currPosition));
 					ret = true;
-				}
+				
 				break;
 			case KeyEvent.KEYCODE_DPAD_CENTER:
 			case KeyEvent.KEYCODE_ENTER:
-				if (!isVodMenuVisible()&&mediaPlayer.getVideoHeight()>0) {
 					if (paused) {
 						playPauseImage.setImageResource(R.drawable.vod_player_play);
 					} else {
 						playPauseImage.setImageResource(R.drawable.vod_player_pause);
 					}
 					ret = true;
-				}
+			
 				break;
 			default:
 				break;
@@ -586,12 +479,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 			popupDlg = new Dialog(this, R.style.PopupDialog);
 			View view;
 			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			if ((type == DIALOG_IKNOW) || (type == DIALOG_NET_BROKEN)
-					|| (type == DIALOG_ITEM_CLICK_NET_BROKEN)) {
-				view = inflater.inflate(R.layout.popup_1btn, null);
-			} else {
-				view = inflater.inflate(R.layout.popup_2btn, null);
-			}
+			view = inflater.inflate(R.layout.popup_2btn, null);
 			popupDlg.addContentView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
 			TextView tv = (TextView) view.findViewById(R.id.PopupText);
 			tv.setText(msg);
@@ -604,14 +492,12 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 				btn1.setOnClickListener(new View.OnClickListener() {
 					public void onClick(View v) {
 						if (popupDlg != null) {
+//							historyManager.addHistory(item.title, itemUrl, currPosition);
 							popupDlg.dismiss();
+							onPrepared = false;
+							mVideoView = null;
 							timeTaskPause();
-							noFinish = true;
-							if(mediaPlayer!=null){
-								mediaPlayer.reset();
-							}
 							PlayerActivity.this.finish();
-							mVideoView.destroyDrawingCache();
 						}
 					};
 				});
@@ -663,22 +549,21 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 	}
 	
 	private void showBuffer() {
-		Log.d(TAG, "show buffer");
-		if(!bufferAnim.isRunning()){
+		if(isBuffer&&!bufferAnim.isRunning()){
+			Log.d(TAG, "show buffer");
 			bufferLayout.setVisibility(View.VISIBLE);
 			bufferLayout.startAnimation(bufferShowAnimation);
 			bufferAnim.start();
 		}
 	}
 	
-	private void hideBuffer() {	
-		Log.d(TAG, "hide buffer");
-		if(bufferAnim.isRunning()){
+	private void hideBuffer() {		
+		if(!isBuffer&&bufferAnim.isRunning()){
+			Log.d(TAG, "hide buffer");
 			bufferLayout.setVisibility(View.GONE);
 			bufferAnim.stop();
 		}
 	}
-
 	
 	private String getTimeString(int ms) {
 		int left = ms;
@@ -694,22 +579,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 		// TODO Auto-generated method stub
 		
 	}
-	@Override
-	public void surfaceChanged(SurfaceHolder holder, int format, int width,
-			int height) {
-//		mediaPlayer.setScreenOnWhilePlaying(screenOn)
-		 
-		Log.d(TAG, "surfaceChanged");
-		
-	}
-	@Override
-	public void surfaceDestroyed(SurfaceHolder holder) {
-		mediaPlayer.release();
-		
-		
-	}
 	
-
 	public boolean createMenu(ISTVVodMenu menu) {
 		ISTVVodMenuItem sub;
 
@@ -794,7 +664,7 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 	public boolean onMenuOpened(int featureId, Menu m) {
 		if (onVodMenuOpened(menu)) {
 			menu.show();
-			hideMenuHandler.postDelayed(hideMenuRunnable, 5000);
+			hideMenuHandler.postDelayed(hideMenuRunnable, 10000);
 		}
 		return false;
 	}
@@ -814,26 +684,15 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 			int pos = id - 1;
 			if (urls[pos] != null) {
 				try {
-					
-					noFinish = true;
-					mediaPlayer.reset();
 					currQuality = pos;
-					mediaPlayer.setDataSource(urls[currQuality].toString());
-					mediaPlayer.prepare();
-				} catch (IllegalArgumentException e) {
-					
-					e.printStackTrace();
-				} catch (SecurityException e) {
-				
-					e.printStackTrace();
-				} catch (IllegalStateException e) {
-					
-					e.printStackTrace();
-				} catch (IOException e) {
-			
-					e.printStackTrace();
+					mVideoView.setVideoPath(urls[currQuality].toString());
+					if(currPosition>0){
+						seekPostion = currPosition;
+						mVideoView.seekTo(currPosition);
+					}
+				}catch (Exception e) {
+					Log.d(TAG,"Exception change url " + e);
 				}
-				Log.d(TAG, "play URL " + urls[currQuality].toString() + ",currPosition="+ currPosition);
 			}
 		}
 		return true;
@@ -843,93 +702,5 @@ public class PlayerActivity extends Activity implements SurfaceHolder.Callback{
 		String text = getTimeString(currPosition) + "/" + getTimeString(clipLength);
 		timeText.setText(text);
 	}
-//	private void savaScreenShot()
-//    {
-//		
-//        mediaPlayer.pause();
-//        Bitmap bitmap = null;
-//        try
-//        {
-//        	surfaceView.setDrawingCacheEnabled(true);
-//            bitmap = surfaceView.getDrawingCache();
-//            surfaceView.setDrawingCacheEnabled(false);
-//            surfaceView.destroyDrawingCache();
-//        }
-//        catch (Exception ex)
-//        {
-//        	surfaceView.setDrawingCacheEnabled(false);
-//            surfaceView.destroyDrawingCache();
-//
-//        }finally
-//	        {
-//	        //截图保存路径
-//	        String mScreenshotPath = Environment.getExternalStorageDirectory() + "/ScreenShot";
-//	        String path = mScreenshotPath ;
-//	        
-//	        java.io.File file = new java.io.File(path);
-//	        
-//	        java.io.FileOutputStream fos;
-//	        try
-//	        {
-//	            Toast.makeText(PlayerActivity.this, "savaScreenShot success" + path, Toast.LENGTH_SHORT).show();
-//	            fos = new java.io.FileOutputStream(file);
-//	            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-//	            fos.close();
-//	        }
-//	        catch (java.io.FileNotFoundException e)
-//	        {
-//	            Log.e("Panel", "FileNotFoundException", e);
-//	        }
-//	        catch (IOException e)
-//	        {
-//	            Log.e("Panel", "IOEception", e);
-//	        }
-//	        mediaPlayer.start();
-//	    }
-//	}
-	
-	
-//	public static Bitmap getHttpBitmap(String url){
-//
-//		  URL myFileURL;
-//		  Bitmap bitmap=null;
-//		
-//		  try{
-//			  myFileURL = new URL(url);
-//			  HttpURLConnection  conn = (HttpURLConnection)myFileURL.openConnection();
-//			  conn.setConnectTimeout(6000);
-//			  conn.setUseCaches(false);
-//			  conn=(HttpURLConnection)myFileURL.openConnection();
-//			  InputStream is = conn.getInputStream();
-//			  bitmap = BitmapFactory.decodeStream(is);
-//			  is.close();
-//			  conn.disconnect();
-//		  }catch(Exception e){
-//			
-//			  e.printStackTrace();
-//		  }   
-//		  return bitmap;
-//
-//		}
 
-	
-
-//	private void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//		Log.d(TAG, "onMeasure");
-//		int width = surfaceView.getDefaultSize(mVideoWidth, widthMeasureSpec);
-//		int height = surfaceView.getDefaultSize(mVideoHeight, heightMeasureSpec);
-//		if (mVideoWidth > 0 && mVideoHeight > 0) {
-//			if (mVideoWidth * height > width * mVideoHeight) {
-//				Log.d(TAG, "image too tall, correcting");
-//				height = width * mVideoHeight / mVideoWidth;
-//			} else if (mVideoWidth * height < width * mVideoHeight) {
-//				Log.d(TAG, "image too wide, correcting");
-//				width = height * mVideoWidth / mVideoHeight;
-//			} else {
-//				Log.d(TAG, "aspect ratio is correct: " + width+"/"+height+"="+ mVideoWidth+"/"+mVideoHeight);
-//			}
-//		}
-//		Log.d(TAG, "setting size: " + width + 'x' + height);
-//		
-//	}
 }
