@@ -2,12 +2,15 @@ package tv.ismar.daisy;
 
 import java.io.InputStream;
 
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.ImageUtils;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.models.Clip;
+import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.player.ISTVVodMenu;
 import tv.ismar.daisy.player.ISTVVodMenuItem;
 import android.app.Activity;
@@ -84,10 +87,10 @@ public class PlayerActivity extends Activity {
 	private VideoView mVideoView;
 	private Dialog popupDlg = null;
 	private InputStream logoInputStream;
-//	private HistoryManager historyManager;
-//	private History mHistory;
+	private HistoryManager historyManager;
+	private History mHistory;
 	private SimpleRestClient simpleRestClient;
-//	private String itemUrl;
+	private String itemUrl;
 	private boolean onPrepared = false;
 	private int seekPostion = 0 ;
 	private boolean isSeek = false;
@@ -206,13 +209,13 @@ public class PlayerActivity extends Activity {
 		urls[1] = urlInfo.getMedium();
 		urls[2] = urlInfo.getHigh();
 		urls[3] = urlInfo.getAdaptive();
-//		if(item!=null){
-//			historyManager = DaisyUtils.getHistoryManager(this);
-//			itemUrl = simpleRestClient.root_url+"/api/item/"+item.item_pk+"/";
-//			mHistory = historyManager.getHistoryByUrl(itemUrl);
-//			if(mHistory!=null)
-//				tempOffset =  (int) mHistory.last_position;
-//		}
+		if(item!=null){
+			historyManager = DaisyUtils.getHistoryManager(this);
+			itemUrl = simpleRestClient.root_url+"/api/item/"+item.item_pk+"/";
+			mHistory = historyManager.getHistoryByUrl(itemUrl);
+			if(mHistory!=null)
+				tempOffset =  (int) mHistory.last_position;
+		}
 		
 		if(item!=null){
 			titleText.setText(item.title);
@@ -492,7 +495,7 @@ public class PlayerActivity extends Activity {
 				btn1.setOnClickListener(new View.OnClickListener() {
 					public void onClick(View v) {
 						if (popupDlg != null) {
-//							historyManager.addHistory(item.title, itemUrl, currPosition);
+							historyManager.addHistory(item.title, itemUrl, currPosition);
 							popupDlg.dismiss();
 							onPrepared = false;
 							mVideoView = null;

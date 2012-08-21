@@ -42,7 +42,7 @@ public class LocalHistoryManager implements HistoryManager {
 			}
 		} else {
 			ContentValues cv = new ContentValues();
-			cv.put(DBFields.HistroyTable._ID, title);
+			cv.put(DBFields.HistroyTable.TITLE, title);
 			cv.put(DBFields.HistroyTable.URL, url);
 			cv.put(DBFields.HistroyTable.LAST_PLAY_TIME, currentTimeMillis);
 			cv.put(DBFields.HistroyTable.LAST_POSITION, currentPosition);
@@ -69,7 +69,9 @@ public class LocalHistoryManager implements HistoryManager {
 		}
 		if(history == null) {
 			history = mDBHelper.queryHistoryByUrl(url);
-			mHistories.add(history);
+			if(history!=null) {
+				mHistories.add(history);
+			}
 		}
 		return history;
 	}

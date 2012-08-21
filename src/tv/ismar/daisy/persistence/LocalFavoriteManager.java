@@ -61,6 +61,9 @@ public class LocalFavoriteManager implements FavoriteManager {
 		}
 		if(favorite==null) {
 			favorite = mDBHelper.queryFavoriteByUrl(url);
+			if(favorite!=null) {
+				mFavorites.add(favorite);
+			}
 		}
 		return favorite;
 	}
