@@ -61,6 +61,9 @@ public class LocalFavoriteManager implements FavoriteManager {
 		}
 		if(favorite==null) {
 			favorite = mDBHelper.queryFavoriteByUrl(url);
+			if(favorite!=null) {
+				mFavorites.add(favorite);
+			}
 		}
 		return favorite;
 	}
@@ -86,6 +89,35 @@ public class LocalFavoriteManager implements FavoriteManager {
 	public void deleteAll() {
 		mDBHelper.delete(DBFields.FavoriteTable.TABLE_NAME, null);
 		mFavorites.clear();
+	}
+
+	@Override
+	public void addFavorite(Favorite favorite) {
+		if(favorite==null || favorite.url==null || favorite.title==null || favorite.content_model==null) {
+			throw new RuntimeException("favorite or favorite fields cannot be null");
+		}
+		if(mFavorites != null && mFavorites.size()>0) {
+			for(Favorite f: mFavorites) {
+				if(favorite.url.equals(f.url) && f.id!=0) {
+					f.title = favorite.title;
+					f.content_model = favorite.content_model;
+					f.adlet_url = favorite.adlet_url;
+					f.quality = favorite.quality;
+					f.is_complex = favorite.is_complex;
+					mDBHelper.updateFavorite(favorite);
+				}
+			}
+		} else {
+			ContentValues cv = new ContentValues();
+			cv.put(DBFields.FavoriteTable.TITLE, favorite.title);
+			cv.put(DBFields.FavoriteTable.URL, favorite.url);
+			cv.put(DBFields.FavoriteTable.CONTENT_MODEL, favorite.content_model);
+			cv.put(DBFields.FavoriteTable.ADLET_URL, favorite.adlet_url);
+			cv.put(DBFields.FavoriteTable.QUALITY, favorite.quality);
+			cv.put(DBFields.FavoriteTable.IS_COMPLEX, favorite.is_complex?1:0);
+			mDBHelper.insert(cv, DBFields.FavoriteTable.TABLE_NAME);
+			mFavorites = mDBHelper.getAllFavorites();
+		}
 	}
 
 }

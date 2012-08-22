@@ -10,6 +10,12 @@ import tv.ismar.daisy.models.History;
  *
  */
 public interface HistoryManager {
+	
+	/**
+	 * Add a history.
+	 * @param history
+	 */
+	public void addFavorite(History history);
 	/**
 	 * Add a history. Called by player when user exits player.Note that url may be an field of {@link Item}.
 	 * Both {@link Item.item_url} and {@link Item.url} is OK. This depends on the category of you {@link Item} object. Commonly, an subitem contains url field,
@@ -19,6 +25,7 @@ public interface HistoryManager {
 	 * @param url  the url representing the item.
 	 * @param currentPosition  the played position when user exits player. if playback is finished. pass 0 instead of the played position.
 	 */
+	@Deprecated
 	public void addHistory(String title, String url, long currentPosition);
 	
 	/**
