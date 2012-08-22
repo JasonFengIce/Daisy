@@ -308,6 +308,7 @@ public class PlayerActivity extends Activity {
 		seekPostion = 0;
 		currPosition = 0;
 		mVideoView = null;
+		addHistory(0);
 		PlayerActivity.this.finish();
 	}
 	private void gotoRelatePage() {
@@ -317,10 +318,26 @@ public class PlayerActivity extends Activity {
 		startActivity(intent);
 		onPrepared = false;
 		timeTaskPause();
+		addHistory(currPosition);
 		seekPostion = 0;
 		currPosition = 0;
 		mVideoView = null;
 		PlayerActivity.this.finish();
+	}
+	private void addHistory(int last_position){
+		Log.d(TAG, "historyManager item.title =="+item.title);
+		Log.d(TAG, "historyManager itemUrl =="+itemUrl);
+		Log.d(TAG, "historyManager seekPostion =="+seekPostion);
+		History history = new History();
+		history.title = item.title;
+		history.adlet_url = item.adlet_url;
+		history.content_model = item.content_model;
+		history.is_complex = item.is_complex;
+		history.last_position = 0;
+		history.last_quality = currQuality;
+		history.url = itemUrl;
+		history.is_continue = isContinue;
+		historyManager.addFavorite(history);
 	}
 	private void showPanel() {
 		if (isVodMenuVisible())
@@ -526,19 +543,7 @@ public class PlayerActivity extends Activity {
 				btn1.setOnClickListener(new View.OnClickListener() {
 					public void onClick(View v) {
 						if (popupDlg != null) {
-							Log.d(TAG, "historyManager item.title =="+item.title);
-							Log.d(TAG, "historyManager itemUrl =="+itemUrl);
-							Log.d(TAG, "historyManager seekPostion =="+seekPostion);
-							History history = new History();
-							history.title = item.title;
-							history.adlet_url = item.adlet_url;
-							history.content_model = item.content_model;
-							history.is_complex = item.is_complex;
-							history.last_position = seekPostion;
-							history.last_quality = currQuality;
-							history.url = itemUrl;
-							history.is_continue = isContinue;
-							historyManager.addFavorite(history);
+							addHistory(currPosition);
 							popupDlg.dismiss();
 							onPrepared = false;
 							mVideoView = null;
