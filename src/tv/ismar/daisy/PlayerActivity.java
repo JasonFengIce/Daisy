@@ -49,6 +49,7 @@ import com.ismartv.bean.ClipInfo;
 
 public class PlayerActivity extends Activity {
 
+	@SuppressWarnings("unused")
 	private static final String PREFS_NAME = "tv.ismar.daisy";
 	private static final String TAG = "PLAYER";
 	
@@ -274,7 +275,7 @@ public class PlayerActivity extends Activity {
 	private Runnable mUpdateTimeTask = new Runnable() {
 		public void run() {
 			Log.d(TAG, "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
-			if (mVideoView.isPlaying()&&Math.abs(mVideoView.getCurrentPosition()-seekPostion)>100) {
+			if (mVideoView.isPlaying()&&Math.abs(mVideoView.getCurrentPosition()-seekPostion)>0) {
 				if(bufferAnim.isRunning()){
 					isBuffer = false;
 					hideBuffer();
@@ -292,7 +293,7 @@ public class PlayerActivity extends Activity {
 				isBuffer = true;
 				showBuffer();
 			}
-			mHandler.postDelayed(mUpdateTimeTask, 300);
+			mHandler.postDelayed(mUpdateTimeTask, 500);
 		}
 	};
 	private void gotoFinishPage() {
