@@ -19,6 +19,7 @@ import tv.ismar.daisy.views.ItemListScrollView.OnItemClickedListener;
 import tv.ismar.daisy.views.ItemListScrollView.OnSectionPrepareListener;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -155,9 +156,15 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		mItemListScrollView.updateSection(itemList, position);
 	}
 	@Override
-	public void onItemClicked(String url) {
-		// TODO Auto-generated method stub
-		
+	public void onItemClicked(Item item) {
+		Intent intent = new Intent();
+		if(item.is_complex) {
+			intent.setAction("tv.ismar.daisy.Item");
+		} else {
+			intent.setAction("tv.ismar.daisy.Play");
+		}
+		intent.putExtra("url", item.url);
+		startActivity(intent);
 	}
 	@Override
 	public void onColumnChanged(int position, int column, int totalColumn) {

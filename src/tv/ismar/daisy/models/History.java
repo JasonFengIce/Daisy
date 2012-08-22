@@ -17,6 +17,7 @@ public class History implements Serializable {
 	public int quality = 1;
 	public int last_quality = 1;
 	public boolean is_complex;
+	public boolean is_continue;
 	public long last_played_time;
 	public long last_position;
 	
@@ -28,7 +29,7 @@ public class History implements Serializable {
 	
 	public History(long id, String title, String url, String adlet_url,
 			String content_model, int quality, int last_quality,
-			boolean is_complex, long last_played_time, long last_position) {
+			boolean is_complex, boolean is_continue, long last_played_time, long last_position) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -38,6 +39,7 @@ public class History implements Serializable {
 		this.quality = quality;
 		this.last_quality = last_quality;
 		this.is_complex = is_complex;
+		this.is_continue = is_continue;
 		this.last_played_time = last_played_time;
 		this.last_position = last_position;
 	}
@@ -53,6 +55,7 @@ public class History implements Serializable {
 		quality = c.getInt(c.getColumnIndex(DBFields.HistroyTable.QUALITY));
 		last_quality = c.getInt(c.getColumnIndex(DBFields.HistroyTable.LAST_QUALITY));
 		is_complex = c.getInt(c.getColumnIndex(DBFields.HistroyTable.IS_COMPLEX))==0 ? false:true;
+		is_continue = c.getInt(c.getColumnIndex(DBFields.HistroyTable.IS_CONTINUE))==0 ? false:true;
 		last_played_time = c.getLong(c.getColumnIndex(DBFields.HistroyTable.LAST_PLAY_TIME));
 		last_position = c.getLong(c.getColumnIndex(DBFields.HistroyTable.LAST_POSITION));
 	}

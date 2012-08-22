@@ -91,21 +91,18 @@ public class LocalHistoryManager implements HistoryManager {
 		}
 		
 		long currentTimeMillis = System.currentTimeMillis();
-		if(mHistories != null && mHistories.size()>0) {
-			for(History h: mHistories) {
-				if(history.url.equals(h.url) && h.id!=0) {
-					h.last_position = history.last_position;
-					h.last_played_time = currentTimeMillis;
-					h.title = history.title;
-					h.adlet_url = history.adlet_url;
-					h.content_model = history.content_model;
-					h.quality = history.quality;
-					h.last_quality = history.last_quality;
-					h.is_complex = history.is_complex;
-					mDBHelper.updateHistory(h);
-					break;
-				}
-			}
+		History h = getHistoryByUrl(history.url);
+		if(h!=null) {
+			h.last_position = history.last_position;
+			h.last_played_time = currentTimeMillis;
+			h.title = history.title;
+			h.adlet_url = history.adlet_url;
+			h.content_model = history.content_model;
+			h.quality = history.quality;
+			h.last_quality = history.last_quality;
+			h.is_complex = history.is_complex;
+			h.is_continue = history.is_continue;
+			mDBHelper.updateHistory(h);
 		} else {
 			ContentValues cv = new ContentValues();
 			cv.put(DBFields.HistroyTable.TITLE, history.title);
@@ -117,6 +114,7 @@ public class LocalHistoryManager implements HistoryManager {
 			cv.put(DBFields.HistroyTable.QUALITY, history.quality);
 			cv.put(DBFields.HistroyTable.LAST_QUALITY, history.last_quality);
 			cv.put(DBFields.HistroyTable.IS_COMPLEX, history.is_complex?1:0);
+			cv.put(DBFields.HistroyTable.IS_CONTINUE, history.is_continue?1:0);
 			mDBHelper.insert(cv, DBFields.HistroyTable.TABLE_NAME);
 			mHistories = mDBHelper.getAllHistories();
 		}

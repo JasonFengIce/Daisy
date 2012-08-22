@@ -96,18 +96,15 @@ public class LocalFavoriteManager implements FavoriteManager {
 		if(favorite==null || favorite.url==null || favorite.title==null || favorite.content_model==null) {
 			throw new RuntimeException("favorite or favorite fields cannot be null");
 		}
-		if(mFavorites != null && mFavorites.size()>0) {
-			for(Favorite f: mFavorites) {
-				if(favorite.url.equals(f.url) && f.id!=0) {
-					f.title = favorite.title;
-					f.content_model = favorite.content_model;
-					f.adlet_url = favorite.adlet_url;
-					f.quality = favorite.quality;
-					f.is_complex = favorite.is_complex;
-					mDBHelper.updateFavorite(favorite);
-				}
-			}
-		} else {
+		Favorite f = getFavoriteByUrl(favorite.url);
+		if(f!=null) {
+			f.title = favorite.title;
+			f.content_model = favorite.content_model;
+			f.adlet_url = favorite.adlet_url;
+			f.quality = favorite.quality;
+			f.is_complex = favorite.is_complex;
+			mDBHelper.updateFavorite(favorite);
+		}  else {
 			ContentValues cv = new ContentValues();
 			cv.put(DBFields.FavoriteTable.TITLE, favorite.title);
 			cv.put(DBFields.FavoriteTable.URL, favorite.url);

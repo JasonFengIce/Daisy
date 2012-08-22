@@ -34,13 +34,13 @@ public class ChannelListActivity extends Activity {
 			}
 		}
 		if(url==null) {
-			url = "http://cord.tvxio.com/api/tv/sections/chinesemovie/";
+			url = "http://cord.tvxio.com/api/bookmarks/";
 		}
 		if(title==null) {
 			title = "华语电影";
 		}
 		if(channel==null) {
-			channel = "chinesemovie";
+			channel = "$bookmarks";
 		}
 		
 		FragmentManager fragmentManager = getFragmentManager();

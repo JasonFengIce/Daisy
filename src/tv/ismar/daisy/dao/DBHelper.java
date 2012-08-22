@@ -32,7 +32,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	private static final String CREATE_HISTORY_TABLE = "CREATE TABLE IF NOT EXISTS 'history_table' " +
 			"('_id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'title' TEXT NOT NULL, 'url' TEXT NOT NULL, 'adlet_url' TEXT, " +
 			"'last_played_time' INTEGER DEFAULT(0), 'last_position' INTEGER DEFAULT(0), 'content_model' TEXT NOT NULL, 'quality' INTEGER DEFAULT(1), " +
-			"'last_quality' INTEGER DEFAULT(1), 'is_complex' INTEGER DEFAULT(0))";
+			"'last_quality' INTEGER DEFAULT(1), 'is_complex' INTEGER DEFAULT(0), 'is_continue' INTEGER DEFAULT(0))";
 	private static final String CREATE_FAVORITE_TABLE = "CREATE TABLE IF NOT EXISTS 'favorite_table' " +
 			"('_id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'title' TEXT NOT NULL, 'url' TEXT NOT NULL, 'content_model' TEXT, " +
 			"'adlet_url' TEXT, 'quality' INTEGER DEFAULT(1), 'is_complex' INTEGER DEFAULT(0))";
@@ -50,6 +50,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			public static final String QUALITY = "quality";
 			public static final String LAST_QUALITY = "last_quality";
 			public static final String IS_COMPLEX = "is_complex";
+			public static final String IS_CONTINUE = "is_continue";
 			public static final String LAST_PLAY_TIME = "last_played_time";
 			public static final String LAST_POSITION = "last_position";
 		}
@@ -144,6 +145,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		cv.put(DBFields.HistroyTable.QUALITY, history.quality);
 		cv.put(DBFields.HistroyTable.LAST_QUALITY, history.last_quality);
 		cv.put(DBFields.HistroyTable.IS_COMPLEX, history.is_complex?1:0);
+		cv.put(DBFields.HistroyTable.IS_CONTINUE, history.is_continue?1:0);
 		cv.put(DBFields.HistroyTable.LAST_PLAY_TIME, history.last_played_time);
 		cv.put(DBFields.HistroyTable.LAST_POSITION, history.last_position);
 		

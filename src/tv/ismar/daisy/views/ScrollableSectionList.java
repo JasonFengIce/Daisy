@@ -66,8 +66,10 @@ public class ScrollableSectionList extends HorizontalScrollView {
 	public void init(SectionList sectionList) {
 		mContainer = new LinearLayout(getContext());
 		mContainer.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, 66));
+		int width = 1365 / sectionList.size() - 10;
+		width = width < 200 ? 200 : width;
 		for(int i=0; i<sectionList.size();i++) {
-			LinearLayout sectionHolder = getSectionLabelLayout(sectionList.get(i));
+			LinearLayout sectionHolder = getSectionLabelLayout(sectionList.get(i), width);
 			sectionHolder.setOnFocusChangeListener(mOnFocusChangeListener);
 			sectionHolder.setOnClickListener(mOnClickListener);
 			sectionHolder.setTag(i);
@@ -77,15 +79,17 @@ public class ScrollableSectionList extends HorizontalScrollView {
 		mContainer.getChildAt(0).requestFocus();
 	}
 	
-	private LinearLayout getSectionLabelLayout(Section section) {
+	private LinearLayout getSectionLabelLayout(Section section, int width) {
 		LinearLayout sectionHolder = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.section_list_item, null);
-		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(200, 66);
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, 66);
 		layoutParams.rightMargin = 10;
 		sectionHolder.setLayoutParams(layoutParams);
 		sectionHolder.setFocusable(true);
 		TextView label = (TextView) sectionHolder.findViewById(R.id.section_label);
-//		ProgressBar percentage = (ProgressBar) sectionHolder.findViewById(R.id.section_percentage);
+		label.getLayoutParams().width = width;
 		label.setText(section.title);
+		ProgressBar percentage = (ProgressBar) sectionHolder.findViewById(R.id.section_percentage);
+		percentage.getLayoutParams().width = width;
 		return sectionHolder;
 	}
 	
