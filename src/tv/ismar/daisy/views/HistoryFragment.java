@@ -24,6 +24,7 @@ import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class HistoryFragment extends Fragment implements OnSectionPrepareListener, OnColumnChangeListener, OnItemClickedListener, OnSectionSelectChangedListener {
@@ -40,6 +41,8 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 	private ItemList mEarlyItemList;
 	private int mCurrentSectionPosition = 0;
 	private SimpleRestClient mRestClient;
+	
+	private RelativeLayout mNoVideoContainer;
 	
 	private long getTodayStartPoint() {
 		long currentTime = System.currentTimeMillis();
@@ -66,6 +69,8 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 		
 		mChannelLabel = (TextView) fragmentView.findViewById(R.id.channel_label);
 		mChannelLabel.setText(getResources().getString(R.string.vod_movielist_title_history));
+		
+		mNoVideoContainer = (RelativeLayout) fragmentView.findViewById(R.id.no_video_container);
 	}
 	
 	@Override
@@ -165,6 +170,8 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 				int totalColumnsOfSectionX = mItemListScrollView.getTotalColumnCount(mCurrentSectionPosition);
 				mScrollableSectionList.setPercentage(mCurrentSectionPosition, (int)(1f/(float)totalColumnsOfSectionX*100f));
 				mItemListScrollView.jumpToSection(mCurrentSectionPosition);
+			} else {
+				no_video();
 			}
 		}
 		
@@ -220,6 +227,11 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 		}
 	}
 	
-	
+	private void no_video() {
+		mNoVideoContainer.setVisibility(View.VISIBLE);
+		mNoVideoContainer.setBackgroundResource(R.drawable.history_no_video);
+		mScrollableSectionList.setVisibility(View.GONE);
+		mItemListScrollView.setVisibility(View.GONE);
+	}
 
 }

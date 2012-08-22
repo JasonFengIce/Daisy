@@ -1,6 +1,7 @@
 package tv.ismar.daisy;
 
 import tv.ismar.daisy.views.ChannelFragment;
+import tv.ismar.daisy.views.FavoriteFragment;
 import tv.ismar.daisy.views.HistoryFragment;
 import android.app.Activity;
 import android.app.Fragment;
@@ -33,13 +34,13 @@ public class ChannelListActivity extends Activity {
 			}
 		}
 		if(url==null) {
-			url = "http://cord.tvxio.com/api/histories/";
+			url = "http://cord.tvxio.com/api/tv/sections/chinesemovie/";
 		}
 		if(title==null) {
-			title = "历史记录";
+			title = "华语电影";
 		}
 		if(channel==null) {
-			channel = "$histories";
+			channel = "chinesemovie";
 		}
 		
 		FragmentManager fragmentManager = getFragmentManager();
@@ -47,7 +48,8 @@ public class ChannelListActivity extends Activity {
 		
 		if(channel!=null) {
 			if(channel.equals("$bookmarks")) {
-				//do something..
+				Fragment favoriteFragment = new FavoriteFragment();
+				fragmentTransaction.add(R.id.fragment_container, favoriteFragment);
 			} else if(channel.equals("$histories")) {
 				Fragment historyFragment = new HistoryFragment();
 				fragmentTransaction.add(R.id.fragment_container, historyFragment);

@@ -30,10 +30,12 @@ public class DBHelper extends SQLiteOpenHelper {
 	 * SQLite command string. use to create history_table and favorite_table.
 	 */
 	private static final String CREATE_HISTORY_TABLE = "CREATE TABLE IF NOT EXISTS 'history_table' " +
-			"('_id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'title' TEXT NOT NULL, 'url' TEXT NOT NULL, " +
-			"'last_played_time' INTEGER DEFAULT(0), 'last_position' INTEGER DEFAULT(0))";
+			"('_id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'title' TEXT NOT NULL, 'url' TEXT NOT NULL, 'adlet_url' TEXT, " +
+			"'last_played_time' INTEGER DEFAULT(0), 'last_position' INTEGER DEFAULT(0), 'content_model' TEXT NOT NULL, 'quality' INTEGER DEFAULT(1), " +
+			"'LAST_QUALITY' INTEGER DEFAULT(1), 'is_complex' INTEGER DEFAULT(0))";
 	private static final String CREATE_FAVORITE_TABLE = "CREATE TABLE IF NOT EXISTS 'favorite_table' " +
-			"('_id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'title' TEXT NOT NULL, 'url' TEXT NOT NULL, 'content_model' TEXT)";
+			"('_id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'title' TEXT NOT NULL, 'url' TEXT NOT NULL, 'content_model' TEXT, " +
+			"'adlet_url' TEXT, 'quality' INTEGER DEFAULT(1), 'is_complex' INTEGER DEFAULT(0))";
 	
 	public static interface DBFields {
 		/**
@@ -43,6 +45,11 @@ public class DBHelper extends SQLiteOpenHelper {
 			public static final String TABLE_NAME = "history_table";
 			public static final String TITLE = "title";
 			public static final String URL = "url";
+			public static final String ADLET_URL = "adlet_url";
+			public static final String CONTENT_MODEL = "content_model";
+			public static final String QUALITY = "quality";
+			public static final String LAST_QUALITY = "last_quality";
+			public static final String IS_COMPLEX = "is_complex";
 			public static final String LAST_PLAY_TIME = "last_played_time";
 			public static final String LAST_POSITION = "last_position";
 		}
@@ -51,6 +58,9 @@ public class DBHelper extends SQLiteOpenHelper {
 			public static final String TABLE_NAME = "favorite_table";
 			public static final String TITLE = "title";
 			public static final String URL = "url";
+			public static final String ADLET_URL = "adlet_url";
+			public static final String IS_COMPLEX = "is_complex";
+			public static final String QUALITY = "quality";
 			public static final String CONTENT_MODEL = "content_model";
 		}
 	}
@@ -129,6 +139,11 @@ public class DBHelper extends SQLiteOpenHelper {
 		cv.put(DBFields.HistroyTable._ID, history.id);
 		cv.put(DBFields.HistroyTable.TITLE, history.title);
 		cv.put(DBFields.HistroyTable.URL, history.url);
+		cv.put(DBFields.HistroyTable.ADLET_URL, history.adlet_url);
+		cv.put(DBFields.HistroyTable.CONTENT_MODEL, history.content_model);
+		cv.put(DBFields.HistroyTable.QUALITY, history.quality);
+		cv.put(DBFields.HistroyTable.LAST_QUALITY, history.last_quality);
+		cv.put(DBFields.HistroyTable.IS_COMPLEX, history.is_complex?1:0);
 		cv.put(DBFields.HistroyTable.LAST_PLAY_TIME, history.last_played_time);
 		cv.put(DBFields.HistroyTable.LAST_POSITION, history.last_position);
 		
@@ -140,6 +155,9 @@ public class DBHelper extends SQLiteOpenHelper {
 		cv.put(DBFields.FavoriteTable._ID, favorite.id);
 		cv.put(DBFields.FavoriteTable.TITLE, favorite.title);
 		cv.put(DBFields.FavoriteTable.URL, favorite.url);
+		cv.put(DBFields.FavoriteTable.ADLET_URL, favorite.adlet_url);
+		cv.put(DBFields.FavoriteTable.QUALITY, favorite.quality);
+		cv.put(DBFields.FavoriteTable.IS_COMPLEX, favorite.is_complex?1:0);
 		cv.put(DBFields.FavoriteTable.CONTENT_MODEL, favorite.content_model);
 		
 		db.update(DBFields.FavoriteTable.TABLE_NAME, cv, " _id = ?", new String[]{String.valueOf(favorite.id)});

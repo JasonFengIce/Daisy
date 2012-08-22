@@ -36,5 +36,11 @@
         android:id="@+id/itemlist_scroll_view">
         
     </tv.ismar.daisy.views.ItemListScrollView>
-
+    <RelativeLayout
+        android:layout_width="1480dip"
+        android:layout_height="681dip"
+        android:id="@+id/no_video_container"
+        android:layout_marginLeft="280dip"
+        android:visibility="gone">
+    </RelativeLayout>
 </LinearLayout>

@@ -470,7 +470,15 @@ public class ItemDetailActivity extends Activity {
 					mFavoriteManager.deleteFavoriteByUrl(url);
 				} else {
 					String url = mSimpleRestClient.root_url + "/api/item/"+mItem.pk+"/";
-					mFavoriteManager.addFavorite(mItem.title, url, mItem.content_model);
+					Favorite favorite = new Favorite();
+					favorite.title = mItem.title;
+					favorite.adlet_url = mItem.adlet_url;
+					favorite.content_model = mItem.content_model;
+					favorite.url = url;
+					favorite.quality = mItem.quality;
+					favorite.is_complex = mItem.is_complex;
+					mFavoriteManager.addFavorite(favorite);
+//					mFavoriteManager.addFavorite(mItem.title, url, mItem.content_model);
 				}
 				if(isFavorite()) {
 					mBtnFavorite.setText(getResources().getString(R.string.favorited));
