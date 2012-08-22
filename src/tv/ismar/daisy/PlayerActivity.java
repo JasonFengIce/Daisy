@@ -273,7 +273,7 @@ public class PlayerActivity extends Activity {
 
 	private Runnable mUpdateTimeTask = new Runnable() {
 		public void run() {
-//			Log.d(TAG, "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
+			Log.d(TAG, "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
 			if (mVideoView.isPlaying()&&Math.abs(mVideoView.getCurrentPosition()-seekPostion)>100) {
 				if(bufferAnim.isRunning()){
 					isBuffer = false;
@@ -663,7 +663,7 @@ public class PlayerActivity extends Activity {
 			hidePanel();
 		}
 		
-		if (mHistory!=null&&mHistory.is_continue) {
+		if (isContinue) {
 			menu.findItem(8).select();
 			menu.findItem(9).unselect();
 		} else {
