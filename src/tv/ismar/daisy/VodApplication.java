@@ -1,5 +1,7 @@
 package tv.ismar.daisy;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
@@ -18,6 +20,7 @@ import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.persistence.LocalFavoriteManager;
 import tv.ismar.daisy.persistence.LocalHistoryManager;
 import android.app.Application;
+import android.content.res.AssetManager;
 
 
 public class VodApplication extends Application {
@@ -44,7 +47,22 @@ public class VodApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		getContentModelFromAssets();
 		getNewContentModel();
+	}
+	
+	public void getContentModelFromAssets() {
+		AssetManager assetManager = getAssets();
+		SimpleRestClient restClient = new SimpleRestClient();
+		try {
+			InputStream in = assetManager.open("content_model.json");
+			ContentModelList contentModelList = restClient.getContentModelList(in);
+			if(contentModelList!=null) {
+				mContentModel = contentModelList.zh_CN;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	

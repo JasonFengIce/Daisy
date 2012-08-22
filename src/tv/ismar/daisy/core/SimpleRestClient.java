@@ -1,5 +1,8 @@
 package tv.ismar.daisy.core;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import tv.ismar.daisy.models.Attribute;
 import tv.ismar.daisy.models.ChannelList;
 import tv.ismar.daisy.models.ContentModelList;
@@ -25,6 +28,11 @@ public class SimpleRestClient {
 	public ContentModelList getContentModelLIst(String url) {
 		String jsonStr = NetworkUtils.getJsonStr(root_url + url);
 		return gson.fromJson(jsonStr, ContentModelList.class);
+	}
+	
+	
+	public ContentModelList getContentModelList(InputStream in) {
+		return gson.fromJson(new InputStreamReader(in), ContentModelList.class);
 	}
 	
 	public ChannelList getChannelList() {
