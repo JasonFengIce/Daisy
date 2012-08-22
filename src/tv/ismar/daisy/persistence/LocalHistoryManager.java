@@ -91,21 +91,17 @@ public class LocalHistoryManager implements HistoryManager {
 		}
 		
 		long currentTimeMillis = System.currentTimeMillis();
-		if(mHistories != null && mHistories.size()>0) {
-			for(History h: mHistories) {
-				if(history.url.equals(h.url) && h.id!=0) {
-					h.last_position = history.last_position;
-					h.last_played_time = currentTimeMillis;
-					h.title = history.title;
-					h.adlet_url = history.adlet_url;
-					h.content_model = history.content_model;
-					h.quality = history.quality;
-					h.last_quality = history.last_quality;
-					h.is_complex = history.is_complex;
-					mDBHelper.updateHistory(h);
-					break;
-				}
-			}
+		History h = getHistoryByUrl(history.url);
+		if(h!=null) {
+			h.last_position = history.last_position;
+			h.last_played_time = currentTimeMillis;
+			h.title = history.title;
+			h.adlet_url = history.adlet_url;
+			h.content_model = history.content_model;
+			h.quality = history.quality;
+			h.last_quality = history.last_quality;
+			h.is_complex = history.is_complex;
+			mDBHelper.updateHistory(h);
 		} else {
 			ContentValues cv = new ContentValues();
 			cv.put(DBFields.HistroyTable.TITLE, history.title);
