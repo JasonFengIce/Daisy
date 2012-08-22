@@ -1,8 +1,7 @@
 package tv.ismar.daisy.adapter;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -36,13 +35,13 @@ public class ImageCacheAdapter extends BaseAdapter implements OnImageViewLoadLis
 	private int backType = R.drawable.iv_type_comic;
 	private Animation myAnimation;
 	List<Bitmap> listBitmap = new ArrayList<Bitmap>();
-	private HashSet<AsyncImageView> mAsyncImageList;
+	private HashSet<AsyncImageView> mAsyncImageList = new HashSet<AsyncImageView>();;
+	private HashMap<String, Bitmap>hashCache = new HashMap<String, Bitmap>();
 
 	// private HashMap<Integer, HashMap<String, Object>> cacheMap = new HashMap<Integer, HashMap<String, Object>>();
 	public ImageCacheAdapter(Context context, int sourceid) {
 		this.mContext = context;
 		this.sourceid = sourceid;
-		this.mAsyncImageList = new HashSet<AsyncImageView>();
 		this.mLayoutInflater = LayoutInflater.from(context);
 	}
 
@@ -50,7 +49,7 @@ public class ImageCacheAdapter extends BaseAdapter implements OnImageViewLoadLis
 		this.mContext = context;
 		this.movieList = movieList;
 		this.sourceid = sourceid;
-		this.mAsyncImageList = new HashSet<AsyncImageView>();
+		this.hashCache.clear();
 		this.mLayoutInflater = LayoutInflater.from(context);
 	}
 
@@ -74,6 +73,8 @@ public class ImageCacheAdapter extends BaseAdapter implements OnImageViewLoadLis
 
 	private MovieBean movieBean;
 	ViewHolder holder;
+	
+	
 
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
@@ -101,8 +102,13 @@ public class ImageCacheAdapter extends BaseAdapter implements OnImageViewLoadLis
 		holder.imageType.setBackgroundResource(backType);
 		holder.imageType.setText(ImageLabelUtils.getImageType(movieBean));
 		holder.tvItemText.setText(movieBean.title);
-		holder.imageView.setTag(position);
-		holder.imageView.setUrl(movieBean.adlet_url);
+		holder.imageView.setTag(movieBean.adlet_url);
+		if (null != hashCache.get(position)) {
+			holder.imageView.setImageBitmap(hashCache.get(position));
+		}else{
+			holder.imageView.setUrl(movieBean.adlet_url);
+		}
+		
 		return convertView;
 	}
 
@@ -186,6 +192,27 @@ public class ImageCacheAdapter extends BaseAdapter implements OnImageViewLoadLis
 		public Button imageType;
 		public TextView tvItemText;
 	}
+	
+	@Override
+	public void onLoadingStarted(AsyncImageView imageView) {
+		mAsyncImageList.add(imageView);
+	}
+
+	@Override
+	public void onLoadingEnded(AsyncImageView imageView, Bitmap image) {
+		
+		hashCache.put((String) imageView.getTag(), image);
+		myAnimation = AnimationUtils.loadAnimation(mContext, anim.fade_in);
+		imageView.setImageBitmap(Bitmap.createScaledBitmap(image, 284, 160,false));
+		imageView.startAnimation(myAnimation);
+		mAsyncImageList.remove(imageView);
+	}
+
+	@Override
+	public void onLoadingFailed(AsyncImageView imageView, Throwable throwable) {
+//		imageView.setImageResource(backgroudID);
+//		imageView.reload();
+	}
 
 	public void cancelAsync() {
 		try {
@@ -197,24 +224,10 @@ public class ImageCacheAdapter extends BaseAdapter implements OnImageViewLoadLis
 			e.printStackTrace();
 		}
 	}
-
-	@Override
-	public void onLoadingStarted(AsyncImageView imageView) {
-		mAsyncImageList.add(imageView);
-	}
-
-	@Override
-	public void onLoadingEnded(AsyncImageView imageView, Bitmap image) {
-		myAnimation = AnimationUtils.loadAnimation(mContext, anim.fade_in);
-		imageView.setImageBitmap(image);
-		imageView.startAnimation(myAnimation);
-		mAsyncImageList.remove(imageView);
-	}
-
-	@Override
-	public void onLoadingFailed(AsyncImageView imageView, Throwable throwable) {
-//		imageView.setImageResource(backgroudID);
-//		imageView.reload();
+	
+	public void clearCache(){
+		hashCache.clear();
+		hashCache = null;
 	}
 
 }

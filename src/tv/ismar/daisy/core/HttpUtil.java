@@ -106,7 +106,7 @@ public class HttpUtil {
 	public static URLConnection getHttpConnectionByGet(String httpPath) throws Exception {
 		url = new URL(httpPath);
 		urlConnection = url.openConnection();
-		urlConnection.setConnectTimeout(5000);
+		urlConnection.setConnectTimeout(10000);
 		urlConnection.setReadTimeout(5000);
 		return urlConnection;
 	}
