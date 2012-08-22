@@ -181,7 +181,7 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 			}
 			cellHolder.setTag(position);
 			TextView titleView =(TextView) cellHolder.findViewById(R.id.list_item_title);
-			titleView.setTag(item.item_url);
+			titleView.setTag(item);
 			titleView.setText(title);
 			AsyncImageView previewImage = (AsyncImageView) cellHolder.findViewById(R.id.list_item_preview_img);
 			previewImage.setTag(item.adlet_url);
@@ -572,9 +572,12 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 	@Override
 	public void onClick(View v) {
 		View titleView = v.findViewById(R.id.list_item_title);
-		String url = (String) titleView.getTag();
-		if(mOnItemClickedListener!=null) {
-			mOnItemClickedListener.onItemClicked(url);
+		Object obj = titleView.getTag();
+		if(obj!=null) {
+			Item item = (Item)obj;
+			if(mOnItemClickedListener!=null) {
+				mOnItemClickedListener.onItemClicked(item);
+			}
 		}
 	}
 	
@@ -583,7 +586,7 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 	}
 	
 	public interface OnItemClickedListener {
-		public void onItemClicked(String url);
+		public void onItemClicked(Item item);
 	}
 	
 	/**

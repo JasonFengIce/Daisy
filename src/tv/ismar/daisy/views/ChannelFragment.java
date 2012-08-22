@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemList;
 import tv.ismar.daisy.models.SectionList;
 import tv.ismar.daisy.views.ItemListScrollView.OnColumnChangeListener;
@@ -227,9 +228,14 @@ public class ChannelFragment extends Fragment {
 	private OnItemClickedListener mOnItemClickedListener = new OnItemClickedListener() {
 		
 		@Override
-		public void onItemClicked(String url) {
-			Intent intent = new Intent("tv.ismar.daisy.Item");
-			intent.putExtra("url", url);
+		public void onItemClicked(Item item) {
+			Intent intent = new Intent();
+			if(item.is_complex) {
+				intent.setAction("tv.ismar.daisy.Item");
+			} else {
+				intent.setAction("tv.ismar.daisy.Play");
+			}
+			intent.putExtra("url", item.url);
 			startActivity(intent);
 		}
 	};
