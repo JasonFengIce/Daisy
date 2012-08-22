@@ -100,8 +100,8 @@ public class ImageCacheAdapter extends BaseAdapter implements OnImageViewLoadLis
 		holder.imageType.setBackgroundResource(backType);
 		holder.imageType.setText(ImageLabelUtils.getImageType(movieBean));
 		holder.tvItemText.setText(movieBean.title);
+		holder.imageView.setTag(movieBean.adlet_url);
 		if (null != hashCache.get(position)) {
-			holder.imageView.setTag(movieBean.adlet_url);
 			holder.imageView.setImageBitmap(hashCache.get(position));
 		}else{
 			holder.imageView.setUrl(movieBean.adlet_url);
