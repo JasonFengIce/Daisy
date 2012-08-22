@@ -98,13 +98,18 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 			return;
 		}
 		showHotWords();
-		imageAdapter.setAsyncisPauseed(false);
+//		imageAdapter.setAsyncisPauseed(false);
 	}
 	
 	@Override
 	protected void onPause() {
 		super.onPause();
-		imageAdapter.setAsyncisPauseed(true);
+//		imageAdapter.setAsyncisPauseed(true);
+	}
+	@Override
+	public void onLowMemory() {
+		super.onLowMemory();
+		imageAdapter.clearCache();
 	}
 
 	private void showHotWords() {
