@@ -31,11 +31,10 @@ public class ImageCacheAdapter extends BaseAdapter implements OnImageViewLoadLis
 	private int sourceid;
 	private LayoutInflater mLayoutInflater;
 	// 背景图ID
-	private int backgroudID = R.drawable.list_item_preview_bgg;
-	private int backType = R.drawable.iv_type_comic;
+	private final int backgroudID = R.drawable.list_item_preview_bgg;
+	private final int backType = R.drawable.iv_type_comic;
 	private Animation myAnimation;
-	List<Bitmap> listBitmap = new ArrayList<Bitmap>();
-	private HashSet<AsyncImageView> mAsyncImageList = new HashSet<AsyncImageView>();;
+	private HashSet<AsyncImageView> mAsyncImageList = new HashSet<AsyncImageView>();
 	private HashMap<String, Bitmap>hashCache = new HashMap<String, Bitmap>();
 
 	// private HashMap<Integer, HashMap<String, Object>> cacheMap = new HashMap<Integer, HashMap<String, Object>>();
@@ -94,7 +93,6 @@ public class ImageCacheAdapter extends BaseAdapter implements OnImageViewLoadLis
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		holder.imageView.stopLoading();
 		holder.imageView.setDefaultImageResource(backgroudID);
 		holder.imageLabel.setBackgroundResource(ImageLabelUtils.getImageLabel(movieBean));
 		// holder.imageLabel.setVisibility(View.GONE);
@@ -102,8 +100,8 @@ public class ImageCacheAdapter extends BaseAdapter implements OnImageViewLoadLis
 		holder.imageType.setBackgroundResource(backType);
 		holder.imageType.setText(ImageLabelUtils.getImageType(movieBean));
 		holder.tvItemText.setText(movieBean.title);
-		holder.imageView.setTag(movieBean.adlet_url);
 		if (null != hashCache.get(position)) {
+			holder.imageView.setTag(movieBean.adlet_url);
 			holder.imageView.setImageBitmap(hashCache.get(position));
 		}else{
 			holder.imageView.setUrl(movieBean.adlet_url);
