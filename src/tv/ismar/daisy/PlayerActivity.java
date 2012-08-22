@@ -276,6 +276,7 @@ public class PlayerActivity extends Activity {
 		public void run() {
 			Log.d(TAG, "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
 			if (mVideoView.isPlaying()&&Math.abs(mVideoView.getCurrentPosition()-seekPostion)>0) {
+				
 				if(bufferAnim.isRunning()){
 					isBuffer = false;
 					hideBuffer();
@@ -289,11 +290,13 @@ public class PlayerActivity extends Activity {
 					gotoFinishPage();
 				}
 			}else{
-				seekPostion = mVideoView.getCurrentPosition();
+				if(!isBuffer){
+					seekPostion = mVideoView.getCurrentPosition();
+				}
 				isBuffer = true;
 				showBuffer();
 			}
-			mHandler.postDelayed(mUpdateTimeTask, 500);
+			mHandler.postDelayed(mUpdateTimeTask, 1000);
 		}
 	};
 	private void gotoFinishPage() {
