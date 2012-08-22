@@ -87,8 +87,8 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			mFavorites = mFavoriteManager.getAllFavorites();
 			for(int i=0;i<mFavorites.size();i++) {
 				String content_model = mFavorites.get(i).content_model;
-				String url = mFavorites.get(i).url;
-				Item item = mRestClient.getItem(url);
+//				String url = mFavorites.get(i).url;
+				Item item = getItem(mFavorites.get(i));
 				if(item!=null) {
 					ItemList itemList = mItemListMap.get(content_model);
 					if(itemList==null) {
@@ -136,7 +136,17 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		}
 		
 	}
-	 
+	
+	public Item getItem(Favorite favorite) {
+		Item item = new Item();
+		item.url = favorite.url;
+		item.title = favorite.title;
+		item.adlet_url = favorite.adlet_url;
+		item.content_model = favorite.content_model;
+		item.is_complex = favorite.is_complex;
+		item.quality = favorite.quality;
+		return item;
+	}
 	
 	@Override
 	public void onPrepareNeeded(int position) {

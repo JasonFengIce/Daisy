@@ -116,7 +116,7 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 			if(mHistories.size()>0) {
 				for(int i=0;i<mHistories.size();++i) {
 					History history = mHistories.get(i);
-					Item item = mRestClient.getItem(history.url);
+					Item item = getItem(history);
 					if(history.last_played_time < yesterdayStartPoint){
 						mEarlyItemList.objects.add(item);
 					} else if(history.last_played_time > yesterdayStartPoint && history.last_played_time < todayStartPoint) {
@@ -175,6 +175,17 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 			}
 		}
 		
+	}
+	
+	private Item getItem(History history) {
+		Item item = new Item();
+		item.adlet_url = history.adlet_url;
+		item.is_complex = history.is_complex;
+		item.url = history.url;
+		item.content_model = history.content_model;
+		item.quality = history.quality;
+		item.title = history.title;
+		return item;
 	}
 
 	@Override
