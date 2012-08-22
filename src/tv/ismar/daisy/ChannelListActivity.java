@@ -33,13 +33,13 @@ public class ChannelListActivity extends Activity {
 			}
 		}
 		if(url==null) {
-			url = "http://127.0.0.1:21098/cord/api/tv/sections/teleplay/";
+			url = "http://cord.tvxio.com/api/histories/";
 		}
 		if(title==null) {
-			title = "电视剧";
+			title = "历史记录";
 		}
 		if(channel==null) {
-			channel = "teleplay";
+			channel = "$histories";
 		}
 		
 		FragmentManager fragmentManager = getFragmentManager();

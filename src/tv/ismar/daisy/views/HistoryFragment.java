@@ -65,6 +65,7 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 		mScrollableSectionList.setOnSectionSelectChangeListener(this);
 		
 		mChannelLabel = (TextView) fragmentView.findViewById(R.id.channel_label);
+		mChannelLabel.setText(getResources().getString(R.string.vod_movielist_title_history));
 	}
 	
 	@Override
@@ -96,6 +97,7 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 			Bundle savedInstanceState) {
 		View fragmentView = inflater.inflate(R.layout.list_view, container, false);
 		initViews(fragmentView);
+		new GetHistoryTask().execute();
 		return fragmentView;
 	}
 	
