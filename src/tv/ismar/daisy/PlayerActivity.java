@@ -291,7 +291,7 @@ public class PlayerActivity extends Activity {
 				}
 			}else{
 				if(!isBuffer){
-					seekPostion = mVideoView.getCurrentPosition();
+					seekPostion = mVideoView.getCurrentPosition();					
 				}
 				isBuffer = true;
 				showBuffer();
@@ -737,6 +737,7 @@ public class PlayerActivity extends Activity {
 			int pos = id - 1;
 			if (urls[pos] != null) {
 				try {
+					isBuffer = true;
 					currQuality = pos;
 					mVideoView.setVideoPath(urls[currQuality].toString());
 					if(currPosition>0){
