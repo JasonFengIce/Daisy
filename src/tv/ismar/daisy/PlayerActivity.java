@@ -74,7 +74,6 @@ public class PlayerActivity extends Activity {
 	private ImageView fbImage;
 	private int clipLength = 0;
 	private int currPosition = 0;
-	private int clipOffset = 0;
 	private boolean isContinue = true;
 	private ISTVVodMenu menu = null;
 	private ClipInfo urlInfo = new ClipInfo();
@@ -212,9 +211,12 @@ public class PlayerActivity extends Activity {
 		if(item!=null){
 			historyManager = DaisyUtils.getHistoryManager(this);
 			itemUrl = simpleRestClient.root_url+"/api/item/"+item.item_pk+"/";
+			Log.d(TAG, "historyManager getHistoryByUrl == "+itemUrl);
 			mHistory = historyManager.getHistoryByUrl(itemUrl);
-			if(mHistory!=null)
+			if(mHistory!=null){
 				tempOffset =  (int) mHistory.last_position;
+			}
+			Log.d(TAG, "tempOffset == "+tempOffset);
 		}
 		
 		if(item!=null){
@@ -224,21 +226,26 @@ public class PlayerActivity extends Activity {
 		}
 		
 		
-		if (currPosition>0||isContinue)
-			currPosition = tempOffset * 1000;
-		else
-			clipOffset = 0;
+		if (tempOffset>0&&isContinue){
+			currPosition = tempOffset;
+			seekPostion = tempOffset;
+		}
+		Log.d(TAG, "RES_INT_OFFSET currPosition=" + currPosition);
 		
-		Log.d(TAG, "RES_INT_OFFSET currPosition=" + currPosition + ",clipOffset=" + clipOffset);
+		
 		mVideoView.setVideoPath(urls[currQuality]);
+		
 		mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 			@Override
 			public void onPrepared(MediaPlayer mp) {
 				onPrepared = true;
-				Log.d(TAG, "mVideoView onPrepared");
+				Log.d(TAG, "mVideoView onPrepared tempOffset =="+tempOffset);
 					clipLength = mVideoView.getDuration();
 					timeBar.setMax(clipLength);
 					mVideoView.start();
+					if(tempOffset>0){
+						mVideoView.seekTo(tempOffset);
+					}
 					timeTaskStart();
 			}
 		});
@@ -258,16 +265,16 @@ public class PlayerActivity extends Activity {
 
 	private Runnable mUpdateTimeTask = new Runnable() {
 		public void run() {
-			Log.d(TAG, "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
-			if (mVideoView.isPlaying()&&Math.abs(mVideoView.getCurrentPosition()-seekPostion)>299) {
+//			Log.d(TAG, "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
+			if (mVideoView.isPlaying()&&Math.abs(mVideoView.getCurrentPosition()-seekPostion)>100) {
 				if(bufferAnim.isRunning()){
 					isBuffer = false;
 					hideBuffer();
 				}
 				seekPostion = mVideoView.getCurrentPosition();
 				if(!isSeek){
-					currPosition = mVideoView.getCurrentPosition();
 					timeBar.setProgress(seekPostion);
+					currPosition = mVideoView.getCurrentPosition();
 				}
 				if(mVideoView.getCurrentPosition() == mVideoView.getDuration()){
 					gotofinishpage();
@@ -495,7 +502,10 @@ public class PlayerActivity extends Activity {
 				btn1.setOnClickListener(new View.OnClickListener() {
 					public void onClick(View v) {
 						if (popupDlg != null) {
-							historyManager.addHistory(item.title, itemUrl, currPosition);
+							Log.d(TAG, "historyManager item.title =="+item.title);
+							Log.d(TAG, "historyManager itemUrl =="+itemUrl);
+							Log.d(TAG, "historyManager seekPostion =="+seekPostion);
+							historyManager.addHistory(item.title, itemUrl, seekPostion);
 							popupDlg.dismiss();
 							onPrepared = false;
 							mVideoView = null;
