@@ -79,7 +79,12 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 			}
 		}) {
 		}.start();
-
+	}
+	
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
 		if (isFavorite()) {
 			btnFavorites.setText(getResources().getString(R.string.favorited));
 		} else {

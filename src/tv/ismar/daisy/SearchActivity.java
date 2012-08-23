@@ -2,6 +2,8 @@ package tv.ismar.daisy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import tv.ismar.daisy.adapter.ImageCacheAdapter;
 import tv.ismar.daisy.core.ConnectionHelper;
@@ -33,6 +35,7 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SearchActivity extends Activity implements OnClickListener, OnItemClickListener {
 	// 搜索
@@ -193,6 +196,9 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 					return;
 				}
 				if (TextUtils.isEmpty(autoCompleteTextView.getText().toString().trim())) {
+					return;
+				}else if (checkInput(autoCompleteTextView.getText().toString())) {
+					Toast.makeText(SearchActivity.this,getString(R.string.search_error_text) , Toast.LENGTH_LONG).show();
 					return;
 				}
 				loadDialogShow();
@@ -359,5 +365,12 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static boolean checkInput(String username) {
+		String check = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]+";
+		Pattern regex = Pattern.compile(check);
+		Matcher matcher = regex.matcher(username);
+		return matcher.matches();
 	}
 }

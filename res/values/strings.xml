@@ -100,4 +100,5 @@
     <string name="loading">正在加载&#8230;</string>
     <string name="onload">加载中</string>
     <string name="same_category_clip">同类型影片</string>
+    <string name="search_error_text">抱歉，无法搜索非法字符</string>
 </resources>
