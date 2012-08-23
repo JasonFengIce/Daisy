@@ -19,6 +19,7 @@ import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,7 +44,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	GridView gridView;
 	// 搜索结果数
 	TextView tvSearchCount;
-	// 搜索结果linear	
+	// 搜索结果linear
 	LinearLayout linearSearch;
 	// 返回的搜索结果list
 	MovieBean movie = new MovieBean();
@@ -98,14 +99,15 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 			return;
 		}
 		showHotWords();
-//		imageAdapter.setAsyncisPauseed(false);
+		// imageAdapter.setAsyncisPauseed(false);
 	}
-	
+
 	@Override
 	protected void onPause() {
 		super.onPause();
-//		imageAdapter.setAsyncisPauseed(true);
+		// imageAdapter.setAsyncisPauseed(true);
 	}
+
 	@Override
 	public void onLowMemory() {
 		super.onLowMemory();
@@ -130,7 +132,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 		gridView.setNumColumns(6);
 		gridView.setVerticalSpacing(5);
 		gridView.setOnItemClickListener(SearchActivity.this);
-		imageAdapter = new ImageCacheAdapter(SearchActivity.this,  R.layout.search_grid_view_item);
+		imageAdapter = new ImageCacheAdapter(SearchActivity.this, R.layout.search_grid_view_item);
 		ibtnSearch = (ImageButton) findViewById(R.id.ibtn_search);
 		ibtnSearch.setOnClickListener(this);
 		tvSearchCount = (TextView) findViewById(R.id.tv_search_count);
@@ -145,11 +147,16 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 		autoCompleteTextView.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				Log.i("onTextChanged", "start" + start + "  before  " + before + "  count  " + count);
 				long endTime = System.currentTimeMillis();
-				if (endTime - startTime < 2000) {
+				if (count == 1 || before == 1) {
+					if (endTime - startTime < 1000) {
+						return;
+					} else {
+						startTime = endTime;
+					}
+				}else{
 					return;
-				} else {
-					startTime = endTime;
 				}
 				new Thread(new Runnable() {
 					@Override
@@ -214,7 +221,6 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 		}
 	}
 
-
 	private Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
@@ -259,8 +265,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 								public void run() {
 									try {
 										movieList = searchService.getSearchResult(btnHotWords.getText().toString());
-//										Log.i("SearchActivity", movieList.size()+"");
-										mHandler.sendEmptyMessage(SEARCH_WORDS); 
+										mHandler.obtainMessage(SEARCH_WORDS, btnHotWords.getText().toString()).sendToTarget();
 									} catch (Exception e) {
 										e.printStackTrace();
 									}
@@ -273,6 +278,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 				break;
 			case SEARCH_WORDS:
 				loadDialogShow();
+				autoCompleteTextView.setText((String) msg.obj);
 				linearSearch.setVisibility(View.VISIBLE);
 				if (null == movieList) {
 					setSearchResult(0);
@@ -289,12 +295,13 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 
 		/**
 		 * This clear data and set adapter
+		 * 
 		 * @param movieList
 		 */
 		private void setImageAdapter(List<MovieBean> movieList) {
 			imageAdapter.cancelAsync();
 			imageAdapter = new ImageCacheAdapter(SearchActivity.this, movieList, R.layout.search_grid_view_item);
-			gridView.setAdapter(imageAdapter);			
+			gridView.setAdapter(imageAdapter);
 		};
 	};
 
@@ -322,7 +329,6 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 		}
 		return false;
 	}
-	
 
 	private void loadDialogShow() {
 		if (loadDialog.isShowing()) {
@@ -345,7 +351,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 			intent.putExtras(bundle);
 		} else {
 			intent.setAction("tv.ismar.daisy.Play");
-			intent.putExtra("url",movieList.get(position).url);
+			intent.putExtra("url", movieList.get(position).url);
 		}
 		try {
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
