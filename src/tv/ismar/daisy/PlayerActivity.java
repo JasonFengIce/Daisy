@@ -81,6 +81,7 @@ public class PlayerActivity extends Activity {
 	private ISTVVodMenu menu = null;
 	private ClipInfo urlInfo = new ClipInfo();
 	private Handler mHandler = new Handler();
+	private Handler mCheckHandler = new Handler();
 	private int tempOffset = 0;
 	private Item item;
 	private Clip clip;
@@ -93,7 +94,6 @@ public class PlayerActivity extends Activity {
 	private History mHistory;
 	private SimpleRestClient simpleRestClient;
 	private String itemUrl;
-	private boolean onPrepared = false;
 	private int seekPostion = 0 ;
 	private boolean isSeek = false;
 	private FavoriteManager favoriteManager;
@@ -241,25 +241,25 @@ public class PlayerActivity extends Activity {
 		}
 		Log.d(TAG, "RES_INT_OFFSET currPosition=" + currPosition);
 		
-		
 		mVideoView.setVideoPath(urls[currQuality]);
 		
 		mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 			@Override
 			public void onPrepared(MediaPlayer mp) {
-				onPrepared = true;
+				
 				Log.d(TAG, "mVideoView onPrepared tempOffset =="+tempOffset);
-					clipLength = mVideoView.getDuration();
-					timeBar.setMax(clipLength);
-					mVideoView.start();
-					if(tempOffset>0){
-						mVideoView.seekTo(tempOffset);
+					if(mVideoView!=null){
+						clipLength = mVideoView.getDuration();
+						timeBar.setMax(clipLength);
+						mVideoView.start();
+						if(tempOffset>0&&isContinue){
+							mVideoView.seekTo(tempOffset);
+						}
+						timeTaskStart();
+						checkTaskStart();
 					}
-					timeTaskStart();
 			}
 		});
-		
-		
 		showPanel();
 	}
 
@@ -274,37 +274,70 @@ public class PlayerActivity extends Activity {
 
 	private Runnable mUpdateTimeTask = new Runnable() {
 		public void run() {
-			Log.d(TAG, "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
-			if (mVideoView.isPlaying()&&Math.abs(mVideoView.getCurrentPosition()-seekPostion)>0) {
-				
-				if(bufferAnim.isRunning()){
-					isBuffer = false;
-					hideBuffer();
+			if(mVideoView!=null){
+				if (mVideoView.isPlaying()){
+					seekPostion = mVideoView.getCurrentPosition();
+					if(!isSeek){
+						
+						timeBar.setProgress(currPosition);
+						currPosition = mVideoView.getCurrentPosition();
+					}
+				}else{
+					if(mVideoView.getDuration()>0&&mVideoView.getCurrentPosition()>0&&mVideoView.getDuration()-mVideoView.getCurrentPosition()<3000){
+						gotoFinishPage();
+					}
 				}
-				seekPostion = mVideoView.getCurrentPosition();
-				if(!isSeek){
-					timeBar.setProgress(seekPostion);
-					currPosition = mVideoView.getCurrentPosition();
-				}
-				if(mVideoView.getCurrentPosition() == mVideoView.getDuration()){
-					gotoFinishPage();
-				}
+				mHandler.postDelayed(mUpdateTimeTask, 1000);
 			}else{
-				if(!isBuffer){
-					seekPostion = mVideoView.getCurrentPosition();					
-				}
-				isBuffer = true;
-				showBuffer();
+				timeTaskPause();
 			}
-			mHandler.postDelayed(mUpdateTimeTask, 1000);
 		}
 	};
+	
+	
+	private void checkTaskStart() {
+		mCheckHandler.post(checkStatus);
+	}
+
+	private void checkTaskPause() {
+		mCheckHandler.removeCallbacks(checkStatus);
+	}
+	private int i =0;
+	private Runnable checkStatus = new Runnable(){
+		public void run() {
+			if(mVideoView!=null){
+				Log.d(TAG, "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
+				if (mVideoView.isPlaying()&&Math.abs(mVideoView.getCurrentPosition()-seekPostion)>0) {
+					Log.d(TAG, "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
+					if(isBuffer||bufferAnim.isRunning()){
+						isBuffer = false;
+						hideBuffer();
+					}
+					i=0;
+				}else{
+					i++;
+					seekPostion = mVideoView.getCurrentPosition();
+					if(i>2){
+						isBuffer = true;
+						showBuffer();
+					}
+				}
+				mCheckHandler.postDelayed(checkStatus, 500);
+			}else{
+				checkTaskPause();
+			}
+		
+		}
+		
+	};
+	
+	
 	private void gotoFinishPage() {
 		Intent intent = new Intent("tv.ismar.daisy.PlayFinished");
 		intent.putExtra("item", item);
 		startActivity(intent);
-		onPrepared = false;
 		timeTaskPause();
+		checkTaskPause();
 		seekPostion = 0;
 		currPosition = 0;
 		mVideoView = null;
@@ -316,8 +349,8 @@ public class PlayerActivity extends Activity {
 		intent.setClass(PlayerActivity.this, tv.ismar.daisy.RelatedActivity.class);
 		intent.putExtra("item", item);
 		startActivity(intent);
-		onPrepared = false;
 		timeTaskPause();
+		checkTaskPause();
 		addHistory(currPosition);
 		seekPostion = 0;
 		currPosition = 0;
@@ -327,13 +360,13 @@ public class PlayerActivity extends Activity {
 	private void addHistory(int last_position){
 		Log.d(TAG, "historyManager item.title =="+item.title);
 		Log.d(TAG, "historyManager itemUrl =="+itemUrl);
-		Log.d(TAG, "historyManager seekPostion =="+seekPostion);
+		Log.d(TAG, "historyManager last_position =="+last_position);
 		History history = new History();
 		history.title = item.title;
 		history.adlet_url = item.adlet_url;
 		history.content_model = item.content_model;
 		history.is_complex = item.is_complex;
-		history.last_position = 0;
+		history.last_position = last_position;
 		history.last_quality = currQuality;
 		history.url = itemUrl;
 		history.is_continue = isContinue;
@@ -406,10 +439,10 @@ public class PlayerActivity extends Activity {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean ret = false;
-		if (!isVodMenuVisible()) {
+		if (!isVodMenuVisible()&&mVideoView!=null) {
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
-				if(onPrepared){
+				if(mVideoView.getDuration()>0){
 					isSeek = true;
 					showPanel();
 					fbImage.setImageResource(R.drawable.vod_player_fb_focus);
@@ -418,7 +451,7 @@ public class PlayerActivity extends Activity {
 				}
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
-				if(onPrepared){
+				if(mVideoView.getDuration()>0){
 					isSeek = true;
 					showPanel();
 					ffImage.setImageResource(R.drawable.vod_player_ff_focus);
@@ -428,7 +461,7 @@ public class PlayerActivity extends Activity {
 				break;
 			case KeyEvent.KEYCODE_DPAD_CENTER:
 			case KeyEvent.KEYCODE_ENTER:
-				if(onPrepared){
+				if(mVideoView.getDuration()>0){
 					showPanel();
 					if (!paused) {
 						pauseItem();
@@ -484,24 +517,21 @@ public class PlayerActivity extends Activity {
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		boolean ret = false;
-		if(mVideoView!=null&&!isVodMenuVisible()&&onPrepared){
+		if(mVideoView!=null&&!isVodMenuVisible()&&mVideoView.getDuration()>0){
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
 					fbImage.setImageResource(R.drawable.vod_player_fb);
 					mVideoView.seekTo(currPosition);
-					isSeek = false;
 					Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
 					ret = true;
-			
+					isSeek = false;
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
-			
 					ffImage.setImageResource(R.drawable.vod_player_ff);
 					mVideoView.seekTo(currPosition);
-					isSeek = false;
 					Log.d(TAG, "RIGHT seek to" + getTimeString(currPosition));
 					ret = true;
-				
+					isSeek = false;
 				break;
 			case KeyEvent.KEYCODE_DPAD_CENTER:
 			case KeyEvent.KEYCODE_ENTER:
@@ -511,7 +541,7 @@ public class PlayerActivity extends Activity {
 						playPauseImage.setImageResource(R.drawable.vod_player_pause);
 					}
 					ret = true;
-			
+					
 				break;
 			default:
 				break;
@@ -544,10 +574,10 @@ public class PlayerActivity extends Activity {
 					public void onClick(View v) {
 						if (popupDlg != null) {
 							addHistory(currPosition);
-							popupDlg.dismiss();
-							onPrepared = false;
-							mVideoView = null;
+							checkTaskPause();
 							timeTaskPause();
+							popupDlg.dismiss();
+							mVideoView = null;
 							PlayerActivity.this.finish();
 						}
 					};
@@ -737,18 +767,27 @@ public class PlayerActivity extends Activity {
 		root.addView(win);
 	}
 	//reset()-->setDataSource(path)-->prepare()-->start()-->stop()--reset()-->
+	/**
+	 * @param menu
+	 * @param id
+	 * @return
+	 */
 	public boolean onVodMenuClicked(ISTVVodMenu menu, int id) {
 		if (id > 0 && id < 5) {
 			int pos = id - 1;
 			if (urls[pos] != null) {
 				try {
+					timeTaskPause();
 					isBuffer = true;
 					currQuality = pos;
+					mVideoView = (VideoView) findViewById(R.id.video_view);
 					mVideoView.setVideoPath(urls[currQuality].toString());
 					if(currPosition>0){
-						seekPostion = currPosition;
+						seekPostion = 0;
 						mVideoView.seekTo(currPosition);
+						
 					}
+					timeTaskStart();
 					return true;
 				}catch (Exception e) {
 					Log.d(TAG,"Exception change url " + e);
@@ -781,10 +820,12 @@ public class PlayerActivity extends Activity {
 		}
 		if(id==8){
 			isContinue = true;
+			addHistory(seekPostion);
 			return true;
 		}
 		if(id==9){
 			isContinue = false;
+			addHistory(seekPostion);
 			return true;
 		}
 		return true;
