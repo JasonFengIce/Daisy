@@ -278,6 +278,7 @@ public class PlayerActivity extends Activity {
 				if (mVideoView.isPlaying()){
 					seekPostion = mVideoView.getCurrentPosition();
 					if(!isSeek){
+						
 						timeBar.setProgress(currPosition);
 						currPosition = mVideoView.getCurrentPosition();
 					}
@@ -301,7 +302,7 @@ public class PlayerActivity extends Activity {
 	private void checkTaskPause() {
 		mCheckHandler.removeCallbacks(checkStatus);
 	}
-
+	private int i =0;
 	private Runnable checkStatus = new Runnable(){
 		public void run() {
 			if(mVideoView!=null){
@@ -312,13 +313,16 @@ public class PlayerActivity extends Activity {
 						isBuffer = false;
 						hideBuffer();
 					}
-					
+					i=0;
 				}else{
+					i++;
 					seekPostion = mVideoView.getCurrentPosition();
-					isBuffer = true;
-					showBuffer();
+					if(i>2){
+						isBuffer = true;
+						showBuffer();
+					}
 				}
-				mCheckHandler.postDelayed(checkStatus, 2000);
+				mCheckHandler.postDelayed(checkStatus, 500);
 			}else{
 				checkTaskPause();
 			}
@@ -571,9 +575,9 @@ public class PlayerActivity extends Activity {
 						if (popupDlg != null) {
 							addHistory(currPosition);
 							checkTaskPause();
+							timeTaskPause();
 							popupDlg.dismiss();
 							mVideoView = null;
-							timeTaskPause();
 							PlayerActivity.this.finish();
 						}
 					};
