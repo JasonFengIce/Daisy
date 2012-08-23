@@ -144,7 +144,7 @@ public class PlayerActivity extends Activity {
 			
 		@Override
 		protected void onPostExecute(ClipInfo result) {
-			showBuffer();
+			//showBuffer();
 			initPlayer();
 		}
 		@Override
@@ -253,7 +253,7 @@ public class PlayerActivity extends Activity {
 						timeBar.setMax(clipLength);
 						mVideoView.start();
 						if(tempOffset>0&&isContinue){
-							mVideoView.seekTo(tempOffset);
+							mVideoView.seekTo(seekPostion);
 						}
 						timeTaskStart();
 						checkTaskStart();
@@ -265,6 +265,7 @@ public class PlayerActivity extends Activity {
 
 	
 	private void timeTaskStart() {
+		mHandler.removeCallbacks(mUpdateTimeTask);
 		mHandler.post(mUpdateTimeTask);
 	}
 
@@ -277,17 +278,13 @@ public class PlayerActivity extends Activity {
 			if(mVideoView!=null){
 				if (mVideoView.isPlaying()){
 					seekPostion = mVideoView.getCurrentPosition();
-					if(!isSeek){
-						
-						timeBar.setProgress(currPosition);
-						currPosition = mVideoView.getCurrentPosition();
-					}
+					
 				}else{
 					if(mVideoView.getDuration()>0&&mVideoView.getCurrentPosition()>0&&mVideoView.getDuration()-mVideoView.getCurrentPosition()<3000){
 						gotoFinishPage();
 					}
 				}
-				mHandler.postDelayed(mUpdateTimeTask, 1000);
+				mHandler.postDelayed(mUpdateTimeTask, 300);
 			}else{
 				timeTaskPause();
 			}
@@ -296,6 +293,7 @@ public class PlayerActivity extends Activity {
 	
 	
 	private void checkTaskStart() {
+		mCheckHandler.removeCallbacks(checkStatus);
 		mCheckHandler.post(checkStatus);
 	}
 
@@ -313,13 +311,17 @@ public class PlayerActivity extends Activity {
 						isBuffer = false;
 						hideBuffer();
 					}
+					if(!isSeek){
+						timeBar.setProgress(currPosition);
+						currPosition = mVideoView.getCurrentPosition();
+					}
 					i=0;
 				}else{
-					i++;
+					i+=1;
 					seekPostion = mVideoView.getCurrentPosition();
-					if(i>2){
+					if(i>1){
 						isBuffer = true;
-						showBuffer();
+						//showBuffer();
 					}
 				}
 				mCheckHandler.postDelayed(checkStatus, 500);
@@ -351,7 +353,7 @@ public class PlayerActivity extends Activity {
 		startActivity(intent);
 		timeTaskPause();
 		checkTaskPause();
-		addHistory(currPosition);
+		addHistory(seekPostion);
 		seekPostion = 0;
 		currPosition = 0;
 		mVideoView = null;
@@ -395,7 +397,7 @@ public class PlayerActivity extends Activity {
 	private void pauseItem() {
 		if (paused||mVideoView==null)
 			return;
-//		showBuffer();
+//		//showBuffer();
 		Log.d(TAG, "pause");
 		mVideoView.pause();
 		paused = true;
@@ -573,7 +575,7 @@ public class PlayerActivity extends Activity {
 				btn1.setOnClickListener(new View.OnClickListener() {
 					public void onClick(View v) {
 						if (popupDlg != null) {
-							addHistory(currPosition);
+							addHistory(seekPostion);
 							checkTaskPause();
 							timeTaskPause();
 							popupDlg.dismiss();
@@ -778,16 +780,11 @@ public class PlayerActivity extends Activity {
 			if (urls[pos] != null) {
 				try {
 					timeTaskPause();
+					checkTaskPause();
 					isBuffer = true;
 					currQuality = pos;
 					mVideoView = (VideoView) findViewById(R.id.video_view);
 					mVideoView.setVideoPath(urls[currQuality].toString());
-					if(currPosition>0){
-						seekPostion = 0;
-						mVideoView.seekTo(currPosition);
-						
-					}
-					timeTaskStart();
 					return true;
 				}catch (Exception e) {
 					Log.d(TAG,"Exception change url " + e);
