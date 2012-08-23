@@ -125,7 +125,7 @@ public class PlayerActivity extends Activity {
 		bufferLayout = (RelativeLayout) findViewById(R.id.BufferLayout);
 		bufferAnim = (AnimationDrawable) ((ImageView) findViewById(R.id.BufferImage)).getBackground();
 		logoImage = (ImageView) findViewById(R.id.logo_image);
-		
+		bufferLayout.setVisibility(View.GONE);
 		initClipInfo();
 	}
 	
