@@ -68,6 +68,8 @@ public class ItemDetailActivity extends Activity {
 
 	private FavoriteManager mFavoriteManager;
 	
+	private boolean isInitialized = false;
+	
 	private void initViews() {
 		mDetailLeftContainer = (RelativeLayout)findViewById(R.id.detail_left_container);
 		mDetailAttributeContainer = (LinearLayout) findViewById(R.id.detail_attribute_container);
@@ -130,6 +132,13 @@ public class ItemDetailActivity extends Activity {
 	
 	@Override
 	protected void onResume() {
+		if(isInitialized) {
+			if(isFavorite()){
+				mBtnFavorite.setText(getResources().getString(R.string.favorited));
+			} else {
+				mBtnFavorite.setText(getResources().getString(R.string.favorite));
+			} 
+		}
 		super.onResume();
 	}
 
@@ -266,6 +275,7 @@ public class ItemDetailActivity extends Activity {
 		if(mLoadingDialog.isShowing()){
 			mLoadingDialog.dismiss();
 		}
+		isInitialized = true;
 	}
 	
 	private String getClipLength(Clip clip) {
