@@ -56,7 +56,7 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 	/**
      * Whether arrow scrolling is animated.
      */
-    private boolean mSmoothScrollingEnabled = true;
+    private boolean mSmoothScrollingEnabled = false;
     
     private OnSectionPrepareListener mOnSectionPrepareListener;
     private OnColumnChangeListener mOnColumnChangeListener;
@@ -226,6 +226,7 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 							View recycledView = recycledViews.remove(recycledViews.size()-1);
 							TextView titleView = (TextView) recycledView.findViewById(R.id.list_item_title);
 							titleView.setText(getResources().getString(R.string.onload));
+							titleView.setTag(null);
 							AsyncImageView previewImageView = (AsyncImageView) recycledView.findViewById(R.id.list_item_preview_img);
 							previewImageView.setImageDrawable(null);
 							mScrapViews.add(recycledView);
