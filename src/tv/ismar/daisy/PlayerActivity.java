@@ -8,8 +8,10 @@ import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.models.Clip;
+import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.persistence.FavoriteManager;
 import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.player.ISTVVodMenu;
 import tv.ismar.daisy.player.ISTVVodMenuItem;
@@ -47,6 +49,7 @@ import com.ismartv.bean.ClipInfo;
 
 public class PlayerActivity extends Activity {
 
+	@SuppressWarnings("unused")
 	private static final String PREFS_NAME = "tv.ismar.daisy";
 	private static final String TAG = "PLAYER";
 	
@@ -93,6 +96,8 @@ public class PlayerActivity extends Activity {
 	private boolean onPrepared = false;
 	private int seekPostion = 0 ;
 	private boolean isSeek = false;
+	private FavoriteManager favoriteManager;
+	private Favorite favorite;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -120,7 +125,6 @@ public class PlayerActivity extends Activity {
 		bufferLayout = (RelativeLayout) findViewById(R.id.BufferLayout);
 		bufferAnim = (AnimationDrawable) ((ImageView) findViewById(R.id.BufferImage)).getBackground();
 		logoImage = (ImageView) findViewById(R.id.logo_image);
-		isContinue = getSharedPreferences(PREFS_NAME, 0).getBoolean("continue_play", true);
 		
 		initClipInfo();
 	}
@@ -209,13 +213,18 @@ public class PlayerActivity extends Activity {
 		urls[2] = urlInfo.getHigh();
 		urls[3] = urlInfo.getAdaptive();
 		if(item!=null){
+			favoriteManager = DaisyUtils.getFavoriteManager(this);
 			historyManager = DaisyUtils.getHistoryManager(this);
 			itemUrl = simpleRestClient.root_url+"/api/item/"+item.item_pk+"/";
 			Log.d(TAG, "historyManager getHistoryByUrl == "+itemUrl);
 			mHistory = historyManager.getHistoryByUrl(itemUrl);
+			favorite = favoriteManager.getFavoriteByUrl(itemUrl);
 			if(mHistory!=null){
+				isContinue = mHistory.is_continue;
 				tempOffset =  (int) mHistory.last_position;
+				currQuality = mHistory.last_quality;
 			}
+			
 			Log.d(TAG, "tempOffset == "+tempOffset);
 		}
 		
@@ -265,8 +274,9 @@ public class PlayerActivity extends Activity {
 
 	private Runnable mUpdateTimeTask = new Runnable() {
 		public void run() {
-//			Log.d(TAG, "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
-			if (mVideoView.isPlaying()&&Math.abs(mVideoView.getCurrentPosition()-seekPostion)>100) {
+			Log.d(TAG, "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
+			if (mVideoView.isPlaying()&&Math.abs(mVideoView.getCurrentPosition()-seekPostion)>0) {
+				
 				if(bufferAnim.isRunning()){
 					isBuffer = false;
 					hideBuffer();
@@ -277,17 +287,19 @@ public class PlayerActivity extends Activity {
 					currPosition = mVideoView.getCurrentPosition();
 				}
 				if(mVideoView.getCurrentPosition() == mVideoView.getDuration()){
-					gotofinishpage();
+					gotoFinishPage();
 				}
 			}else{
-				seekPostion = mVideoView.getCurrentPosition();
+				if(!isBuffer){
+					seekPostion = mVideoView.getCurrentPosition();					
+				}
 				isBuffer = true;
 				showBuffer();
 			}
-			mHandler.postDelayed(mUpdateTimeTask, 300);
+			mHandler.postDelayed(mUpdateTimeTask, 1000);
 		}
 	};
-	private void gotofinishpage() {
+	private void gotoFinishPage() {
 		Intent intent = new Intent("tv.ismar.daisy.PlayFinished");
 		intent.putExtra("item", item);
 		startActivity(intent);
@@ -296,7 +308,36 @@ public class PlayerActivity extends Activity {
 		seekPostion = 0;
 		currPosition = 0;
 		mVideoView = null;
+		addHistory(0);
 		PlayerActivity.this.finish();
+	}
+	private void gotoRelatePage() {
+		Intent intent = new Intent();
+		intent.setClass(PlayerActivity.this, tv.ismar.daisy.RelatedActivity.class);
+		intent.putExtra("item", item);
+		startActivity(intent);
+		onPrepared = false;
+		timeTaskPause();
+		addHistory(currPosition);
+		seekPostion = 0;
+		currPosition = 0;
+		mVideoView = null;
+		PlayerActivity.this.finish();
+	}
+	private void addHistory(int last_position){
+		Log.d(TAG, "historyManager item.title =="+item.title);
+		Log.d(TAG, "historyManager itemUrl =="+itemUrl);
+		Log.d(TAG, "historyManager seekPostion =="+seekPostion);
+		History history = new History();
+		history.title = item.title;
+		history.adlet_url = item.adlet_url;
+		history.content_model = item.content_model;
+		history.is_complex = item.is_complex;
+		history.last_position = 0;
+		history.last_quality = currQuality;
+		history.url = itemUrl;
+		history.is_continue = isContinue;
+		historyManager.addFavorite(history);
 	}
 	private void showPanel() {
 		if (isVodMenuVisible())
@@ -345,7 +386,7 @@ public class PlayerActivity extends Activity {
 		currPosition += step;
 
 		if (currPosition > clipLength){
-			gotofinishpage();
+			gotoFinishPage();
 		}
 		timeBar.setProgress(currPosition);
 		Log.d(TAG, "seek Forward " + currPosition);
@@ -502,10 +543,7 @@ public class PlayerActivity extends Activity {
 				btn1.setOnClickListener(new View.OnClickListener() {
 					public void onClick(View v) {
 						if (popupDlg != null) {
-							Log.d(TAG, "historyManager item.title =="+item.title);
-							Log.d(TAG, "historyManager itemUrl =="+itemUrl);
-							Log.d(TAG, "historyManager seekPostion =="+seekPostion);
-							historyManager.addHistory(item.title, itemUrl, seekPostion);
+							addHistory(currPosition);
 							popupDlg.dismiss();
 							onPrepared = false;
 							mVideoView = null;
@@ -601,9 +639,13 @@ public class PlayerActivity extends Activity {
 		sub.addItem(2,getResources().getString(R.string.vod_player_quality_high));
 		sub.addItem(3,getResources().getString(R.string.vod_player_quality_ultra));
 		sub.addItem(4,getResources().getString(R.string.vod_player_quality_adaptive));
-
-		menu.addItem(5,getResources().getString(R.string.vod_player_bookmark_setting),false, false);
-		menu.addItem(6,getResources().getString(R.string.vod_player_related_setting),false, false);
+		
+		if(favoriteManager.getFavoriteByUrl(itemUrl)==null){
+			menu.addItem(5,getResources().getString(R.string.vod_player_bookmark_setting));
+		}else{
+			menu.addItem(5,getResources().getString(R.string.vod_bookmark_remove_bookmark_setting));
+		}
+		menu.addItem(6,getResources().getString(R.string.vod_player_related_setting));
 
 		sub = menu.addSubMenu(7,getResources().getString(R.string.vod_player_continue_setting));
 		sub.addItem(8, getResources().getString(R.string.vod_player_continue_on));
@@ -629,7 +671,7 @@ public class PlayerActivity extends Activity {
 		if (panelShow) {
 			hidePanel();
 		}
-
+		
 		if (isContinue) {
 			menu.findItem(8).select();
 			menu.findItem(9).unselect();
@@ -671,6 +713,9 @@ public class PlayerActivity extends Activity {
 			menu = new ISTVVodMenu(this);
 			ret = createMenu(menu);
 		}
+		if(favoriteManager.getFavoriteByUrl(itemUrl)!=null){
+			menu.findItem(5).setTitle(getResources().getString(R.string.vod_bookmark_remove_bookmark_setting));
+		}
 		return ret;
 	}
 	@Override
@@ -697,16 +742,50 @@ public class PlayerActivity extends Activity {
 			int pos = id - 1;
 			if (urls[pos] != null) {
 				try {
+					isBuffer = true;
 					currQuality = pos;
 					mVideoView.setVideoPath(urls[currQuality].toString());
 					if(currPosition>0){
 						seekPostion = currPosition;
 						mVideoView.seekTo(currPosition);
 					}
+					return true;
 				}catch (Exception e) {
 					Log.d(TAG,"Exception change url " + e);
+					return false;
 				}
 			}
+			return true;
+		}
+		if(id==5){
+			if(favoriteManager.getFavoriteByUrl(itemUrl)!=null){
+				favoriteManager.deleteFavoriteByUrl(itemUrl);
+				menu.findItem(5).setTitle(getResources().getString(R.string.vod_player_bookmark_setting));
+			}else{
+				if(item!=null&&itemUrl!=null){
+					favorite = new Favorite();
+					favorite.adlet_url = item.adlet_url;
+					favorite.content_model = item.content_model;
+					favorite.is_complex = item.is_complex;
+					favorite.title = item.title;
+					favorite.url = itemUrl;
+					favoriteManager.addFavorite(favorite);
+					menu.findItem(5).setTitle(getResources().getString(R.string.vod_bookmark_remove_bookmark_setting));
+				}
+			}
+			return true;
+		}
+		if(id==6){
+			gotoRelatePage();
+			return true;
+		}
+		if(id==8){
+			isContinue = true;
+			return true;
+		}
+		if(id==9){
+			isContinue = false;
+			return true;
 		}
 		return true;
 	}
