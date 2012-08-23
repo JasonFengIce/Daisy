@@ -3,10 +3,13 @@ package tv.ismar.daisy;
 import java.io.InputStream;
 
 import tv.ismar.daisy.adapter.PlayFinishedAdapter;
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.ImageUtils;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.persistence.FavoriteManager;
 import tv.ismar.daisy.views.LoadingDialog;
 import android.app.Activity;
 import android.content.Intent;
@@ -42,13 +45,16 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 	private static final int UPDATE = 1;
 	private static final int UPDATE_BITMAP = 2;
 	private LoadingDialog loadDialog;
+	final SimpleRestClient simpleRest = new SimpleRestClient();
+	private FavoriteManager mFavoriteManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.play_finished);
+
 		initViews();
-		final SimpleRestClient simpleRest = new SimpleRestClient();
+		mFavoriteManager = DaisyUtils.getFavoriteManager(this);
 		loadDialogShow();
 		Intent intent = getIntent();
 		if (null != intent) {
@@ -73,6 +79,12 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 			}
 		}) {
 		}.start();
+
+		if (isFavorite()) {
+			btnFavorites.setText(getResources().getString(R.string.favorited));
+		} else {
+			btnFavorites.setText(getResources().getString(R.string.favorite));
+		}
 	}
 
 	private void initViews() {
@@ -85,6 +97,7 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		btnReplay.setOnClickListener(this);
 		btnReplay.setOnFocusChangeListener(this);
 		btnFavorites = (Button) findViewById(R.id.btn_favorites);
+		btnFavorites.setOnClickListener(this);
 		btnFavorites.setOnFocusChangeListener(this);
 		gridview = (GridView) findViewById(R.id.gridview_related);
 		gridview.setOnFocusChangeListener(this);
@@ -93,6 +106,7 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		gridview.setVerticalSpacing(40);
 		gridview.setHorizontalSpacing(100);
 		loadDialog = new LoadingDialog(this, getString(R.string.vod_loading));
+
 	}
 
 	private Handler mHandle = new Handler() {
@@ -183,6 +197,28 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 				e.printStackTrace();
 			}
 			break;
+		case R.id.btn_favorites:
+			if (isFavorite()) {
+				String url = simpleRest.root_url + "/api/item/" + item.pk + "/";
+				mFavoriteManager.deleteFavoriteByUrl(url);
+			} else {
+				String url = simpleRest.root_url + "/api/item/" + item.pk + "/";
+				Favorite favorite = new Favorite();
+				favorite.title = item.title;
+				favorite.adlet_url = item.adlet_url;
+				favorite.content_model = item.content_model;
+				favorite.url = url;
+				favorite.quality = item.quality;
+				favorite.is_complex = item.is_complex;
+				mFavoriteManager.addFavorite(favorite);
+				// mFavoriteManager.addFavorite(item.title, url, mItem.content_model);
+			}
+			if (isFavorite()) {
+				btnFavorites.setText(getResources().getString(R.string.favorited));
+			} else {
+				btnFavorites.setText(getResources().getString(R.string.favorite));
+			}
+			break;
 		default:
 			break;
 		}
@@ -198,5 +234,22 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		} else {
 			loadDialog.show();
 		}
+	}
+
+	/*
+	 * get the favorite status of the item.
+	 */
+	private boolean isFavorite() {
+		if (item != null) {
+			String url = item.item_url;
+			if (url == null && item.pk != 0) {
+				url = simpleRest.root_url + "/api/item/" + item.pk + "/";
+			}
+			Favorite favorite = mFavoriteManager.getFavoriteByUrl(url);
+			if (favorite != null) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
