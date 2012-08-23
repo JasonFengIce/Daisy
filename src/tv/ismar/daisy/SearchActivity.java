@@ -149,7 +149,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				Log.i("onTextChanged", "start" + start + "  before  " + before + "  count  " + count);
 				long endTime = System.currentTimeMillis();
-				if (count == 1 || before == 1) {
+				if ((count == 1 && before == 0) || count == 0 && before == 1) {
 					if (endTime - startTime < 1000) {
 						return;
 					} else {
