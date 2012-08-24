@@ -252,7 +252,7 @@ public class PlayerActivity extends Activity {
 						clipLength = mVideoView.getDuration();
 						timeBar.setMax(clipLength);
 						mVideoView.start();
-						if(tempOffset>0&&isContinue){
+						if(seekPostion>0){
 							mVideoView.seekTo(seekPostion);
 						}
 						timeTaskStart();
@@ -304,7 +304,6 @@ public class PlayerActivity extends Activity {
 	private Runnable checkStatus = new Runnable(){
 		public void run() {
 			if(mVideoView!=null){
-				Log.d(TAG, "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
 				if (mVideoView.isPlaying()&&Math.abs(mVideoView.getCurrentPosition()-seekPostion)>0) {
 					Log.d(TAG, "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
 					if(isBuffer||bufferAnim.isRunning()){
