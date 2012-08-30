@@ -67,18 +67,10 @@ public class ChannelFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View fragmentView = inflater.inflate(R.layout.list_view, container, false);
 		initViews(fragmentView);
+		new InitTask().execute(mUrl, mChannel);
 		return fragmentView;
 	}
 	
-	
-	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-		new InitTask().execute(mUrl, mChannel);
-	}
-
 	private boolean isChannelUrl(String url) {
 		String patternStr = ".+/api/tv/sections/[\\w\\d]+/";
 		Pattern pattern = Pattern.compile(patternStr, Pattern.CASE_INSENSITIVE);
