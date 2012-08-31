@@ -244,14 +244,14 @@ public class PlayerActivity extends Activity {
 			Log.d(TAG, "historyManager getHistoryByUrl == "+itemUrl);
 			mHistory = historyManager.getHistoryByUrl(itemUrl);
 			favorite = favoriteManager.getFavoriteByUrl(itemUrl);
-			if(mHistory!=null){
+			if(mHistory!=null && mHistory.is_continue){
 				isContinue = mHistory.is_continue;
 				tempOffset =  (int) mHistory.last_position;
 				currQuality = mHistory.last_quality;
 			}else{
 				currQuality=0;
 				tempOffset=0;
-				isContinue=true;
+				isContinue=false;
 			}
 			Log.d(TAG, "tempOffset == "+tempOffset);
 			
@@ -262,8 +262,8 @@ public class PlayerActivity extends Activity {
 			
 		}
 		
-		timeTaskStart();
-		checkTaskStart();
+//		timeTaskStart();
+//		checkTaskStart();
 		
 		if (tempOffset>0&&isContinue){
 			currPosition = tempOffset;
@@ -285,13 +285,31 @@ public class PlayerActivity extends Activity {
 					if(mVideoView!=null){
 						clipLength = mVideoView.getDuration();
 						timeBar.setMax(clipLength);
-						mVideoView.clearAnimation();
+//						mVideoView.clearAnimation();
 						mVideoView.start();
 						mVideoView.seekTo(currPosition);
 						timeBar.setProgress(currPosition);
 						timeTaskStart();
 						checkTaskStart();
 					}
+			}
+		});
+		mVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+			@Override
+			public boolean onError(MediaPlayer mp, int what, int extra) {
+				Log.d(TAG, "mVideoView  Error setVideoPath urls[currQuality] ");
+				addHistory(currPosition);
+				PlayerActivity.this.finish();
+				return false;
+			}
+		});
+		
+		mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+			
+			@Override
+			public void onCompletion(MediaPlayer mp) {
+				Log.d(TAG, "mVideoView  Completion");
+				gotoFinishPage();
 			}
 		});
 		showPanel();
@@ -312,15 +330,10 @@ public class PlayerActivity extends Activity {
 			if(mVideoView!=null){
 				if (mVideoView.isPlaying()){
 					seekPostion = mVideoView.getCurrentPosition();
-					if(mVideoView.getDuration()-mVideoView.getCurrentPosition()<6000){
-						gotoFinishPage();
-//						mVideoView.setVideoPath(urls[currQuality].toString());
-//						mVideoView.seekTo(0);
-					}
 				}
 				mHandler.postDelayed(mUpdateTimeTask, 300);
 			}else{
-//				Log.d(TAG, "mVideoView ======= null");
+				Log.d(TAG, "mVideoView ======= null or err");
 				timeTaskPause();
 			}
 		}
@@ -360,7 +373,7 @@ public class PlayerActivity extends Activity {
 				}
 				mCheckHandler.postDelayed(checkStatus, 200);
 			}else{
-//				Log.d(TAG, "mVideoView ====== null");
+				Log.d(TAG, "mVideoView ====== null or err");
 				checkTaskPause();
 			}
 		
@@ -372,26 +385,28 @@ public class PlayerActivity extends Activity {
 	private void gotoFinishPage() {
 		timeTaskPause();
 		checkTaskPause();
-		mVideoView.clearAnimation();
-		if(listItems!=null&&listItems.size()>0){
-			item = listItems.get(currNum+1);
-			Log.d(TAG,"to Next Num =="+(currNum+1));
-			itemUrl = "http://" + HOST  + "/api/subitem/"+item.pk+"/";
-			bundle.get("bundle url ==="+bundle.get("url"));
-			bundle.remove("url");
-			bundle.putString("url",itemUrl);
-			bundle.get("bundle url ==="+bundle.get("url"));
-			bundle.get("bundle next url ==="+itemUrl);
-			new ItemByUrlTask().execute();
-		}else{
-			Intent intent = new Intent("tv.ismar.daisy.PlayFinished");
-			intent.putExtra("item", item);
-			startActivity(intent);
-			seekPostion = 0;
-			currPosition = 0;
-			mVideoView = null;
-			addHistory(0);
-			PlayerActivity.this.finish();
+		if(mVideoView!=null){
+//			mVideoView.clearAnimation();
+			if(listItems!=null&&listItems.size()>0&&currNum<(listItems.size()-1)){
+				item = listItems.get(currNum+1);
+				Log.d(TAG,"to Next Num =="+(currNum+1));
+				itemUrl = "http://" + HOST  + "/api/subitem/"+item.pk+"/";
+				bundle.get("bundle url ==="+bundle.get("url"));
+				bundle.remove("url");
+				bundle.putString("url",itemUrl);
+				bundle.get("bundle url ==="+bundle.get("url"));
+				bundle.get("bundle next url ==="+itemUrl);
+				new ItemByUrlTask().execute();
+			}else{
+				Intent intent = new Intent("tv.ismar.daisy.PlayFinished");
+				intent.putExtra("item", item);
+				startActivity(intent);
+				seekPostion = 0;
+				currPosition = 0;
+				mVideoView = null;
+				addHistory(0);
+				PlayerActivity.this.finish();
+			}
 		}
 		
 	}
@@ -748,6 +763,7 @@ public class PlayerActivity extends Activity {
 			}
 			if (i == currQuality) {
 				item.select();
+				item.disable();
 			} else {
 				item.unselect();
 			}
@@ -829,14 +845,16 @@ public class PlayerActivity extends Activity {
 	public boolean onVodMenuClicked(ISTVVodMenu menu, int id) {
 		if (id > 0 && id < 5) {
 			int pos = id - 1;
-			if (urls[pos] != null) {
+			if (urls[pos] != null&&currQuality!=pos) {
 				try {
 					timeTaskPause();
 					checkTaskPause();
+					paused = false;
+					playPauseImage.setImageResource(R.drawable.vod_player_pause);
 					isBuffer = true;
 					currQuality = pos;
 					mVideoView = (VideoView) findViewById(R.id.video_view);
-					mVideoView.clearAnimation();
+//					mVideoView.clearAnimation();
 					mVideoView.setVideoPath(urls[currQuality].toString());
 					initQualtiyText();
 					return true;
