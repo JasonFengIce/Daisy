@@ -51,7 +51,8 @@ public class SearchPromptDialog extends Dialog implements android.view.View.OnCl
 			Intent intent = new Intent();
 			intent.setAction(Intent.ACTION_VIEW);
 			Bundle mBundle = new Bundle();
-			mBundle.putInt("curChoice", 1);
+			mBundle.putInt("PreID", 0); 
+			mBundle.putInt("CurrentID", 1);
 			intent.putExtras(mBundle);
 			intent.setClassName("com.alpha.setting", "com.alpha.setting.AlphaSettingsActivity"); 
 			context.startActivity(intent);

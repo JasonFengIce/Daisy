@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -31,6 +32,8 @@ public class ScrollableSectionList extends HorizontalScrollView {
 	private Rect mTempRect = new Rect();
 	
 	private boolean mSmoothScrollingEnabled = true;
+	
+	private boolean isSectionWidthResized = false;
 	
 	private static final int LABEL_TEXT_COLOR_NOFOCUSED = 0xffbbbbbb;
 	
@@ -65,10 +68,15 @@ public class ScrollableSectionList extends HorizontalScrollView {
 
 	public void init(SectionList sectionList) {
 		mContainer = new LinearLayout(getContext());
-		mContainer.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, 66));
+		mContainer.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 66));
 		int width = 1365 / sectionList.size() - 10;
 		width = width < 200 ? 200 : width;
-		for(int i=0; i<sectionList.size();i++) {
+		for(int i=0; i<sectionList.size(); i++) {
+			String title = sectionList.get(i).title;
+			int length = title.length();
+			width = width > length * 38 ? width : length * 38;
+		}
+		for(int i=0; i<sectionList.size(); i++) {
 			LinearLayout sectionHolder = getSectionLabelLayout(sectionList.get(i), width);
 			sectionHolder.setOnFocusChangeListener(mOnFocusChangeListener);
 			sectionHolder.setOnClickListener(mOnClickListener);
@@ -86,9 +94,9 @@ public class ScrollableSectionList extends HorizontalScrollView {
 		sectionHolder.setLayoutParams(layoutParams);
 		sectionHolder.setFocusable(true);
 		TextView label = (TextView) sectionHolder.findViewById(R.id.section_label);
-		label.getLayoutParams().width = width;
 		label.setText(section.title);
 		ProgressBar percentage = (ProgressBar) sectionHolder.findViewById(R.id.section_percentage);
+		label.getLayoutParams().width = width;
 		percentage.getLayoutParams().width = width;
 		return sectionHolder;
 	}
@@ -260,6 +268,54 @@ public class ScrollableSectionList extends HorizontalScrollView {
 			int delta = computeScrollDeltaToGetChildRectOnScreen(mTempRect);
 			doScrollX(delta);
 		}
+	}
+	
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+	}
+
+
+	@Override
+	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+		super.onLayout(changed, l, t, r, b);
+//		if(mContainer!=null && mContainer.getChildCount()>0 && !isSectionWidthResized) {
+//			Log.d(TAG, "onLayout called");
+//			int width = getWidth() / mContainer.getChildCount() - 10;
+//			width = width < 200 ? 200 : width;
+//			int rightMargin = 0;
+//			Log.d(TAG, "width: " + width);
+//			for(int i=0; i<mContainer.getChildCount(); i++) {
+//				LinearLayout sectionHolder = (LinearLayout) mContainer.getChildAt(i);
+//				if(sectionHolder.getVisibility()!=View.GONE){
+//					int sectionWidth = sectionHolder.getWidth();
+//					rightMargin = ((LinearLayout.LayoutParams) sectionHolder.getLayoutParams()).rightMargin;
+//					Log.d(TAG, "sectionWidth: " + sectionWidth);
+//					if(sectionWidth == 0) {
+//						
+//						return;
+//					}
+//					width = sectionWidth > width ? sectionWidth : width;
+//				}
+//			}
+//			Log.d(TAG, "onMeasure");
+//			int childLeft = 0;
+//			int childTop = getTop();
+//			for(int i=0; i<mContainer.getChildCount(); i++) {
+//				LinearLayout sectionHolder = (LinearLayout) mContainer.getChildAt(i);
+//				sectionHolder.layout(childLeft, childTop, childLeft+width, childTop+sectionHolder.getHeight());
+//				int top = childTop;
+//				for(int j=0; j<sectionHolder.getChildCount();j++) {
+//					View child = sectionHolder.getChildAt(j);
+//					child.layout(childLeft, top, childLeft+ width, top + child.getHeight());
+//					top += child.getHeight() + ((LinearLayout.LayoutParams)child.getLayoutParams()).bottomMargin;
+//				}
+//				childLeft += width + rightMargin;
+//			}
+//			isSectionWidthResized = true;
+//			Log.d(TAG, "width: " + width);
+//		}
+		
 	}
 	
 }

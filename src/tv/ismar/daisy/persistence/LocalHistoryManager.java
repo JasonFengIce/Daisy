@@ -107,7 +107,7 @@ public class LocalHistoryManager implements HistoryManager {
 			ContentValues cv = new ContentValues();
 			cv.put(DBFields.HistroyTable.TITLE, history.title);
 			cv.put(DBFields.HistroyTable.URL, history.url);
-			cv.put(DBFields.HistroyTable.LAST_PLAY_TIME, history.last_played_time);
+			cv.put(DBFields.HistroyTable.LAST_PLAY_TIME, currentTimeMillis);
 			cv.put(DBFields.HistroyTable.LAST_POSITION, history.last_position);
 			cv.put(DBFields.HistroyTable.ADLET_URL, history.adlet_url);
 			cv.put(DBFields.HistroyTable.CONTENT_MODEL, history.content_model);
