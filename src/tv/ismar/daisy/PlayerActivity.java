@@ -123,6 +123,7 @@ public class PlayerActivity extends Activity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setContentView(R.layout.vod_player);
 		mVideoView = (VideoView) findViewById(R.id.video_view);
+		mVideoView.clearAnimation();
 		panelLayout = (LinearLayout) findViewById(R.id.PanelLayout);
 		titleText = (TextView) findViewById(R.id.TitleText);
 		qualityText = (TextView) findViewById(R.id.QualityText);
@@ -135,7 +136,9 @@ public class PlayerActivity extends Activity {
 		bufferLayout = (RelativeLayout) findViewById(R.id.BufferLayout);
 		bufferAnim = (AnimationDrawable) ((ImageView) findViewById(R.id.BufferImage)).getBackground();
 		logoImage = (ImageView) findViewById(R.id.logo_image);
+		panelLayout.setVisibility(View.GONE);
 		bufferLayout.setVisibility(View.GONE);
+		qualityText.setVisibility(View.GONE);
 		initClipInfo();
 	}
 	
@@ -263,6 +266,7 @@ public class PlayerActivity extends Activity {
 			
 			initQualtiyText();
 			titleText.setText(item.title);
+			qualityText.setVisibility(View.VISIBLE);
 			titleText.setSelected(true);
 			new LogoImageTask().execute();
 			
@@ -291,7 +295,6 @@ public class PlayerActivity extends Activity {
 					if(mVideoView!=null){
 						clipLength = mVideoView.getDuration();
 						timeBar.setMax(clipLength);
-//						mVideoView.clearAnimation();
 						mVideoView.start();
 						mVideoView.seekTo(currPosition);
 						timeBar.setProgress(currPosition);
@@ -408,7 +411,6 @@ public class PlayerActivity extends Activity {
 				startActivity(intent);
 				seekPostion = 0;
 				currPosition = 0;
-				mVideoView.clearAnimation();
 				mVideoView = null;
 				addHistory(0);
 				PlayerActivity.this.finish();
@@ -861,7 +863,6 @@ public class PlayerActivity extends Activity {
 					isBuffer = true;
 					currQuality = pos;
 					mVideoView = (VideoView) findViewById(R.id.video_view);
-//					mVideoView.clearAnimation();
 					mVideoView.setVideoPath(urls[currQuality].toString());
 					initQualtiyText();
 					return true;
