@@ -645,6 +645,7 @@ public class PlayerActivity extends Activity {
 							checkTaskPause();
 							timeTaskPause();
 							popupDlg.dismiss();
+							mVideoView.clearAnimation();
 							mVideoView = null;
 							PlayerActivity.this.finish();
 						}
