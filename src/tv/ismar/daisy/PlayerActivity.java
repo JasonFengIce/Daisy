@@ -244,14 +244,20 @@ public class PlayerActivity extends Activity {
 			Log.d(TAG, "historyManager getHistoryByUrl == "+itemUrl);
 			mHistory = historyManager.getHistoryByUrl(itemUrl);
 			favorite = favoriteManager.getFavoriteByUrl(itemUrl);
-			if(mHistory!=null && mHistory.is_continue){
-				isContinue = mHistory.is_continue;
-				tempOffset =  (int) mHistory.last_position;
-				currQuality = mHistory.last_quality;
+			if(mHistory!=null ){
+				if(mHistory.is_continue){
+					isContinue = mHistory.is_continue;
+					tempOffset =  (int) mHistory.last_position;
+					currQuality = mHistory.last_quality;
+				}else{
+					currQuality=0;
+					tempOffset=0;
+					isContinue=false;
+				}
 			}else{
 				currQuality=0;
 				tempOffset=0;
-				isContinue=false;
+				isContinue=true;
 			}
 			Log.d(TAG, "tempOffset == "+tempOffset);
 			
@@ -385,8 +391,7 @@ public class PlayerActivity extends Activity {
 	private void gotoFinishPage() {
 		timeTaskPause();
 		checkTaskPause();
-		if(mVideoView!=null){
-//			mVideoView.clearAnimation();
+		if(mVideoView!=null){		
 			if(listItems!=null&&listItems.size()>0&&currNum<(listItems.size()-1)){
 				item = listItems.get(currNum+1);
 				Log.d(TAG,"to Next Num =="+(currNum+1));
@@ -403,6 +408,7 @@ public class PlayerActivity extends Activity {
 				startActivity(intent);
 				seekPostion = 0;
 				currPosition = 0;
+				mVideoView.clearAnimation();
 				mVideoView = null;
 				addHistory(0);
 				PlayerActivity.this.finish();
