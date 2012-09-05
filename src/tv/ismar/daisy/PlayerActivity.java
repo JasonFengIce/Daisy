@@ -748,7 +748,7 @@ public class PlayerActivity extends Activity {
 		sub.addItem(3,getResources().getString(R.string.vod_player_quality_ultra));
 		sub.addItem(4,getResources().getString(R.string.vod_player_quality_adaptive));
 		
-		if(favoriteManager.getFavoriteByUrl(itemUrl)==null){
+		if(itemUrl!=null&&favoriteManager.getFavoriteByUrl(itemUrl)==null){
 			menu.addItem(5,getResources().getString(R.string.vod_player_bookmark_setting));
 		}else{
 			menu.addItem(5,getResources().getString(R.string.vod_bookmark_remove_bookmark_setting));
@@ -822,7 +822,7 @@ public class PlayerActivity extends Activity {
 			menu = new ISTVVodMenu(this);
 			ret = createMenu(menu);
 		}
-		if(favoriteManager.getFavoriteByUrl(itemUrl)!=null){
+		if(itemUrl!=null&&favoriteManager.getFavoriteByUrl(itemUrl)!=null){
 			menu.findItem(5).setTitle(getResources().getString(R.string.vod_bookmark_remove_bookmark_setting));
 		}
 		return ret;
@@ -874,7 +874,7 @@ public class PlayerActivity extends Activity {
 			return true;
 		}
 		if(id==5){
-			if(favoriteManager.getFavoriteByUrl(itemUrl)!=null){
+			if(itemUrl!=null&&favoriteManager.getFavoriteByUrl(itemUrl)!=null){
 				favoriteManager.deleteFavoriteByUrl(itemUrl);
 				menu.findItem(5).setTitle(getResources().getString(R.string.vod_player_bookmark_setting));
 			}else{
