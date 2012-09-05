@@ -20,6 +20,7 @@ public class History implements Serializable {
 	public boolean is_continue;
 	public long last_played_time;
 	public long last_position;
+	public String sub_url;
 	
 	public History() {
 		super();
@@ -29,7 +30,7 @@ public class History implements Serializable {
 	
 	public History(long id, String title, String url, String adlet_url,
 			String content_model, int quality, int last_quality,
-			boolean is_complex, boolean is_continue, long last_played_time, long last_position) {
+			boolean is_complex, boolean is_continue, long last_played_time, long last_position, String sub_url) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -42,6 +43,7 @@ public class History implements Serializable {
 		this.is_continue = is_continue;
 		this.last_played_time = last_played_time;
 		this.last_position = last_position;
+		this.sub_url = sub_url;
 	}
 
 
@@ -58,5 +60,6 @@ public class History implements Serializable {
 		is_continue = c.getInt(c.getColumnIndex(DBFields.HistroyTable.IS_CONTINUE))==0 ? false:true;
 		last_played_time = c.getLong(c.getColumnIndex(DBFields.HistroyTable.LAST_PLAY_TIME));
 		last_position = c.getLong(c.getColumnIndex(DBFields.HistroyTable.LAST_POSITION));
+		sub_url = c.getString(c.getColumnIndex(DBFields.HistroyTable.SUB_URL));
 	}
 }

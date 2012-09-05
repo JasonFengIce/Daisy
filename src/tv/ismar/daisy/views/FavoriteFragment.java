@@ -126,7 +126,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 				no_video();
 				return;
 			}
-			mScrollableSectionList.init(mSectionList);
+			mScrollableSectionList.init(mSectionList, 1365);
 			for(int i=0;i<mSectionList.size();i++) {
 				ItemList itemList = mItemListMap.get(mSectionList.get(i).slug);
 				mItemListScrollView.addSection(itemList, i);

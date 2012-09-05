@@ -124,7 +124,7 @@ public class ChannelFragment extends Fragment {
 		@Override
 		protected void onPostExecute(Void result) {
 			if(mSectionList!=null && mItemLists.get(mCurrentSectionPosition)!=null) {
-				mScrollableSectionList.init(mSectionList);
+				mScrollableSectionList.init(mSectionList, 1365);
 				for(int i=0; i<mItemLists.size(); i++) {
 					mItemListScrollView.addSection(mItemLists.get(i), i);
 				}

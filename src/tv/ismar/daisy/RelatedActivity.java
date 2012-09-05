@@ -9,9 +9,12 @@ import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemList;
 import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
+import tv.ismar.daisy.views.LoadingDialog;
 import tv.ismar.daisy.views.ScrollableSectionList;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
 import android.app.Activity;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -40,6 +43,8 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 	
 	private RelatedAdapter mAdapter;
 	
+	private LoadingDialog mLoadingDialog;
+	
 	private void initViews(){
 		mSectionTabs = (ScrollableSectionList) findViewById(R.id.related_section_tabs);
 		mSectionTabs.setOnSectionSelectChangeListener(this);
@@ -54,6 +59,9 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		setContentView(R.layout.related_view);
 		mSimpleRestClient = new SimpleRestClient();
 		initViews();
+		mLoadingDialog = new LoadingDialog(this, getResources().getString(R.string.vod_loading));
+		mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
+		mLoadingDialog.show();
 		Intent intent = getIntent();
 		if(intent!=null) {
 			Bundle bundle = intent.getExtras();
@@ -130,8 +138,11 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 	
 	private void initLayout() {
 		initSectionTabs();
-		mSectionTabs.init(mVirtualSectionList);
+		mSectionTabs.init(mVirtualSectionList, 1681);
 		buildGridView();
+		if(mLoadingDialog.isShowing()){
+			mLoadingDialog.dismiss();
+		}
 	}
 	
 	private void buildGridView() {
@@ -198,5 +209,14 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		intent.putExtra("url", item.item_url);
 		startActivity(intent);
 	}
+	
+	
+	private OnCancelListener mLoadingCancelListener = new OnCancelListener() {
+		
+		@Override
+		public void onCancel(DialogInterface dialog) {
+			RelatedActivity.this.finish();
+		}
+	};
 	
 }
