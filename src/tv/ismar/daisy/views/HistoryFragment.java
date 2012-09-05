@@ -157,7 +157,7 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 		@Override
 		protected void onPostExecute(Void result) {
 			if(mSectionList.size() > 0) {
-				mScrollableSectionList.init(mSectionList);
+				mScrollableSectionList.init(mSectionList, 1365);
 				int index=0;
 				if(mTodayItemList.count > 0) {
 					mItemListScrollView.addSection(mTodayItemList, index++);

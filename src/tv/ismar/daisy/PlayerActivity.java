@@ -123,6 +123,7 @@ public class PlayerActivity extends Activity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setContentView(R.layout.vod_player);
 		mVideoView = (VideoView) findViewById(R.id.video_view);
+		mVideoView.clearAnimation();
 		panelLayout = (LinearLayout) findViewById(R.id.PanelLayout);
 		titleText = (TextView) findViewById(R.id.TitleText);
 		qualityText = (TextView) findViewById(R.id.QualityText);
@@ -135,7 +136,9 @@ public class PlayerActivity extends Activity {
 		bufferLayout = (RelativeLayout) findViewById(R.id.BufferLayout);
 		bufferAnim = (AnimationDrawable) ((ImageView) findViewById(R.id.BufferImage)).getBackground();
 		logoImage = (ImageView) findViewById(R.id.logo_image);
+		panelLayout.setVisibility(View.GONE);
 		bufferLayout.setVisibility(View.GONE);
+		qualityText.setVisibility(View.GONE);
 		initClipInfo();
 	}
 	
@@ -244,19 +247,26 @@ public class PlayerActivity extends Activity {
 			Log.d(TAG, "historyManager getHistoryByUrl == "+itemUrl);
 			mHistory = historyManager.getHistoryByUrl(itemUrl);
 			favorite = favoriteManager.getFavoriteByUrl(itemUrl);
-			if(mHistory!=null && mHistory.is_continue){
-				isContinue = mHistory.is_continue;
-				tempOffset =  (int) mHistory.last_position;
-				currQuality = mHistory.last_quality;
+			if(mHistory!=null ){
+				if(mHistory.is_continue){
+					isContinue = mHistory.is_continue;
+					tempOffset =  (int) mHistory.last_position;
+					currQuality = mHistory.last_quality;
+				}else{
+					currQuality=0;
+					tempOffset=0;
+					isContinue=false;
+				}
 			}else{
 				currQuality=0;
 				tempOffset=0;
-				isContinue=false;
+				isContinue=true;
 			}
 			Log.d(TAG, "tempOffset == "+tempOffset);
 			
 			initQualtiyText();
 			titleText.setText(item.title);
+			qualityText.setVisibility(View.VISIBLE);
 			titleText.setSelected(true);
 			new LogoImageTask().execute();
 			
@@ -285,7 +295,6 @@ public class PlayerActivity extends Activity {
 					if(mVideoView!=null){
 						clipLength = mVideoView.getDuration();
 						timeBar.setMax(clipLength);
-//						mVideoView.clearAnimation();
 						mVideoView.start();
 						mVideoView.seekTo(currPosition);
 						timeBar.setProgress(currPosition);
@@ -385,8 +394,7 @@ public class PlayerActivity extends Activity {
 	private void gotoFinishPage() {
 		timeTaskPause();
 		checkTaskPause();
-		if(mVideoView!=null){
-//			mVideoView.clearAnimation();
+		if(mVideoView!=null){		
 			if(listItems!=null&&listItems.size()>0&&currNum<(listItems.size()-1)){
 				item = listItems.get(currNum+1);
 				Log.d(TAG,"to Next Num =="+(currNum+1));
@@ -424,7 +432,7 @@ public class PlayerActivity extends Activity {
 		PlayerActivity.this.finish();
 	}
 	private void addHistory(int last_position){
-		if(item!=null){
+		if(item!=null&&historyManager!=null){
 			Log.d(TAG, "historyManager item.title =="+item.title);
 			Log.d(TAG, "historyManager itemUrl =="+itemUrl);
 			Log.d(TAG, "historyManager last_position =="+last_position);
@@ -645,6 +653,7 @@ public class PlayerActivity extends Activity {
 							checkTaskPause();
 							timeTaskPause();
 							popupDlg.dismiss();
+							mVideoView.clearAnimation();
 							mVideoView = null;
 							PlayerActivity.this.finish();
 						}
@@ -739,7 +748,7 @@ public class PlayerActivity extends Activity {
 		sub.addItem(3,getResources().getString(R.string.vod_player_quality_ultra));
 		sub.addItem(4,getResources().getString(R.string.vod_player_quality_adaptive));
 		
-		if(favoriteManager.getFavoriteByUrl(itemUrl)==null){
+		if(itemUrl!=null&&favoriteManager!=null&&favoriteManager.getFavoriteByUrl(itemUrl)==null){
 			menu.addItem(5,getResources().getString(R.string.vod_player_bookmark_setting));
 		}else{
 			menu.addItem(5,getResources().getString(R.string.vod_bookmark_remove_bookmark_setting));
@@ -813,7 +822,7 @@ public class PlayerActivity extends Activity {
 			menu = new ISTVVodMenu(this);
 			ret = createMenu(menu);
 		}
-		if(favoriteManager.getFavoriteByUrl(itemUrl)!=null){
+		if(itemUrl!=null&&favoriteManager!=null&&favoriteManager.getFavoriteByUrl(itemUrl)!=null){
 			menu.findItem(5).setTitle(getResources().getString(R.string.vod_bookmark_remove_bookmark_setting));
 		}
 		return ret;
@@ -854,7 +863,6 @@ public class PlayerActivity extends Activity {
 					isBuffer = true;
 					currQuality = pos;
 					mVideoView = (VideoView) findViewById(R.id.video_view);
-//					mVideoView.clearAnimation();
 					mVideoView.setVideoPath(urls[currQuality].toString());
 					initQualtiyText();
 					return true;
@@ -866,11 +874,11 @@ public class PlayerActivity extends Activity {
 			return true;
 		}
 		if(id==5){
-			if(favoriteManager.getFavoriteByUrl(itemUrl)!=null){
+			if(itemUrl!=null&&favoriteManager!=null&&favoriteManager.getFavoriteByUrl(itemUrl)!=null){
 				favoriteManager.deleteFavoriteByUrl(itemUrl);
 				menu.findItem(5).setTitle(getResources().getString(R.string.vod_player_bookmark_setting));
 			}else{
-				if(item!=null&&itemUrl!=null){
+				if(item!=null&&favoriteManager!=null&&itemUrl!=null){
 					favorite = new Favorite();
 					favorite.adlet_url = item.adlet_url;
 					favorite.content_model = item.content_model;

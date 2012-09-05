@@ -102,6 +102,7 @@ public class LocalHistoryManager implements HistoryManager {
 			h.last_quality = history.last_quality;
 			h.is_complex = history.is_complex;
 			h.is_continue = history.is_continue;
+			h.sub_url = history.sub_url;
 			mDBHelper.updateHistory(h);
 		} else {
 			ContentValues cv = new ContentValues();
@@ -115,6 +116,7 @@ public class LocalHistoryManager implements HistoryManager {
 			cv.put(DBFields.HistroyTable.LAST_QUALITY, history.last_quality);
 			cv.put(DBFields.HistroyTable.IS_COMPLEX, history.is_complex?1:0);
 			cv.put(DBFields.HistroyTable.IS_CONTINUE, history.is_continue?1:0);
+			cv.put(DBFields.HistroyTable.SUB_URL, history.sub_url);
 			mDBHelper.insert(cv, DBFields.HistroyTable.TABLE_NAME);
 			mHistories = mDBHelper.getAllHistories();
 		}

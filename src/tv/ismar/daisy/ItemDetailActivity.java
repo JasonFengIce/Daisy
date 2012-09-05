@@ -15,10 +15,14 @@ import tv.ismar.daisy.models.Attribute;
 import tv.ismar.daisy.models.Clip;
 import tv.ismar.daisy.models.ContentModel;
 import tv.ismar.daisy.models.Favorite;
+import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.persistence.FavoriteManager;
+import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.views.LoadingDialog;
 import android.app.Activity;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -48,6 +52,8 @@ public class ItemDetailActivity extends Activity {
 	
 	private Item[] mRelatedItem;
 	
+	private String mSubItemUrl;
+	
 	private boolean isDrama = false;
 	
 	private RelativeLayout mDetailLeftContainer;
@@ -69,6 +75,8 @@ public class ItemDetailActivity extends Activity {
 	private FavoriteManager mFavoriteManager;
 	
 	private boolean isInitialized = false;
+
+	private HistoryManager mHistoryManager;
 	
 	private void initViews() {
 		mDetailLeftContainer = (RelativeLayout)findViewById(R.id.detail_left_container);
@@ -106,10 +114,13 @@ public class ItemDetailActivity extends Activity {
 		mSimpleRestClient = new SimpleRestClient();
 		mApplication = (VodApplication) getApplication();
 //		Log.e("START", System.currentTimeMillis()+"");
-		mLoadingDialog = new LoadingDialog(this);
+		mLoadingDialog = new LoadingDialog(this, getResources().getString(R.string.vod_loading));
+		mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
 		mLoadingDialog.show();
 		
 		mFavoriteManager = DaisyUtils.getFavoriteManager(this);
+		
+		mHistoryManager = DaisyUtils.getHistoryManager(this);
 		
 		initViews();
 		
@@ -194,6 +205,14 @@ public class ItemDetailActivity extends Activity {
 			mBtnLeft.setVisibility(View.VISIBLE);
 			mBtnRight.setVisibility(View.VISIBLE);
 			mBtnLeft.requestFocus();
+		}
+		
+		if(isDrama) {
+			String url = mItem.item_url==null ? mSimpleRestClient.root_url + "/api/item/" + mItem.pk + "/": mItem.item_url;
+			History history = mHistoryManager.getHistoryByUrl(url);
+			if(history!=null) {
+				mSubItemUrl = history.sub_url;
+			}
 		}
 		
 		mDetailTitle.setText(mItem.title);
@@ -316,6 +335,7 @@ public class ItemDetailActivity extends Activity {
 			itemValue.setTextColor(0xffbbbbbb);
 			itemValue.setTextSize(30f);
 			itemValue.setText(entry.getValue());
+			itemValue.setEllipsize(android.text.TextUtils.TruncateAt.END);
 			infoLine.addView(itemValue);
 			
 			mDetailAttributeContainer.addView(infoLine);
@@ -460,8 +480,9 @@ public class ItemDetailActivity extends Activity {
 			Intent intent = new Intent();
 			switch(id){
 			case R.id.btn_left:
+				String subUrl = mSubItemUrl == null ? mItem.subitems[0].url : mSubItemUrl;
 				intent.setAction("tv.ismar.daisy.Play");
-				intent.putExtra("url", mItem.subitems[0].url);
+				intent.putExtra("url", subUrl);
 				startActivity(intent);
 				break;
 			case R.id.btn_right:
@@ -508,4 +529,11 @@ public class ItemDetailActivity extends Activity {
 		}
 	};
 	
+	private OnCancelListener mLoadingCancelListener = new OnCancelListener() {
+		
+		@Override
+		public void onCancel(DialogInterface dialog) {
+			ItemDetailActivity.this.finish();
+		}
+	};
 }

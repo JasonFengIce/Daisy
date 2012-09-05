@@ -33,7 +33,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 	
 	private boolean mSmoothScrollingEnabled = true;
 	
-	private boolean isSectionWidthResized = false;
+//	private boolean isSectionWidthResized = false;
 	
 	private static final int LABEL_TEXT_COLOR_NOFOCUSED = 0xffbbbbbb;
 	
@@ -66,10 +66,10 @@ public class ScrollableSectionList extends HorizontalScrollView {
 		this.setHorizontalFadingEdgeEnabled(true);
 	}
 
-	public void init(SectionList sectionList) {
+	public void init(SectionList sectionList, int totalWidth) {
 		mContainer = new LinearLayout(getContext());
 		mContainer.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 66));
-		int width = 1365 / sectionList.size() - 10;
+		int width = totalWidth / sectionList.size() - 10;
 		width = width < 200 ? 200 : width;
 		for(int i=0; i<sectionList.size(); i++) {
 			String title = sectionList.get(i).title;
