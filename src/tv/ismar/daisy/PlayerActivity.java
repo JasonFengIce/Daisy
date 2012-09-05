@@ -443,7 +443,11 @@ public class PlayerActivity extends Activity {
 			Log.d(TAG, "historyManager last_position =="+last_position);
 			Log.d(TAG, "historyManager isContinue =="+isContinue);
 			History history = new History();
-			history.title = item.title;
+			if(subItem!=null&&subItem.title!=null){
+				history.title = subItem.title;
+			}else{
+				history.title = item.title;
+			}
 			history.adlet_url = item.adlet_url;
 			history.content_model = item.content_model;
 			history.is_complex = item.is_complex;
