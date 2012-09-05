@@ -88,6 +88,7 @@ public class PlayerActivity extends Activity {
 	private Handler mCheckHandler = new Handler();
 	private int tempOffset = 0;
 	private Item item;
+	private Item subItem;
 	private Clip clip;
 	private Bundle bundle;
 	private SeekBar timeBar;
@@ -98,12 +99,12 @@ public class PlayerActivity extends Activity {
 	private History mHistory;
 	private SimpleRestClient simpleRestClient;
 	private String itemUrl;
+	private String subItemUrl;
 	private int seekPostion = 0 ;
 	private boolean isSeek = false;
 	private FavoriteManager favoriteManager;
 	private Favorite favorite;
 	private List<Item> listItems = new ArrayList<Item>();
-	private Item subitems;
 	private int currNum = 0;
 	
 	
@@ -165,7 +166,7 @@ public class PlayerActivity extends Activity {
 		protected ClipInfo doInBackground(String... arg0) {
 			simpleRestClient = new SimpleRestClient();
 			Object obj = bundle.get("url");
-			Log.d(TAG, "item url==="+obj);
+			Log.d(TAG, "bundle url === " +obj);
 			String sn = VodUserAgent.getMACAddress();
 			AccessProxy.init(VodUserAgent.deviceType,VodUserAgent.deviceVersion, sn);
 			if(obj!=null){
@@ -178,7 +179,7 @@ public class PlayerActivity extends Activity {
 //							} catch (MalformedURLException e) {
 //								e.printStackTrace();
 //							}
-					urlInfo = AccessProxy.parse("http://" + HOST  + "/api/clip/"+clip.pk+"/", VodUserAgent.getAccessToken(sn),PlayerActivity.this);
+					urlInfo = AccessProxy.parse(simpleRestClient.root_url + "/api/clip/"+clip.pk+"/", VodUserAgent.getAccessToken(sn),PlayerActivity.this);
 				}
 			}else{
 				obj = bundle.get("item");
@@ -192,7 +193,7 @@ public class PlayerActivity extends Activity {
 	//							} catch (MalformedURLException e) {
 	//								e.printStackTrace();
 	//							}
-						urlInfo = AccessProxy.parse("http://" + HOST  + "/api/clip/"+clip.pk+"/", VodUserAgent.getAccessToken(sn),PlayerActivity.this);
+						urlInfo = AccessProxy.parse(simpleRestClient.root_url + "/api/clip/"+clip.pk+"/", VodUserAgent.getAccessToken(sn),PlayerActivity.this);
 					}
 				}
 			}
@@ -200,12 +201,16 @@ public class PlayerActivity extends Activity {
 				if(item.item_pk!=item.pk){
 					currNum = item.position;
 					Log.d(TAG, "currNum ==="+currNum);
-					subitems = simpleRestClient.getItem("http://" + HOST  + "/api/item/"+item.item_pk+"/");
-					if(subitems!=null&&subitems.subitems!=null){
-						for (int i = 0; i < subitems.subitems.length; i++) {
-							listItems.add(subitems.subitems[i]);
+					subItemUrl = simpleRestClient.root_url + "/api/subitem/"+item.pk+"/";
+					subItem = simpleRestClient.getItem(subItemUrl);
+					itemUrl = simpleRestClient.root_url + "/api/item/"+item.item_pk+"/";
+					item = simpleRestClient.getItem(itemUrl);
+					if(item!=null&&item.subitems!=null){
+						for (int i = 0; i < item.subitems.length; i++) {
+							listItems.add(item.subitems[i]);
 						}
 					}
+					
 				}
 			}
 			
@@ -243,11 +248,16 @@ public class PlayerActivity extends Activity {
 		if(item!=null){
 			favoriteManager = DaisyUtils.getFavoriteManager(this);
 			historyManager = DaisyUtils.getHistoryManager(this);
-			itemUrl = simpleRestClient.root_url+"/api/item/"+item.pk+"/";
-			Log.d(TAG, "historyManager getHistoryByUrl == "+itemUrl);
-			mHistory = historyManager.getHistoryByUrl(itemUrl);
-			favorite = favoriteManager.getFavoriteByUrl(itemUrl);
-			if(mHistory!=null ){
+			if(subItem!=null&&subItem.item_pk!=subItem.pk){
+				mHistory = historyManager.getHistoryByUrl(itemUrl);
+				favorite = favoriteManager.getFavoriteByUrl(itemUrl);
+				titleText.setText(subItem.title);
+			}else{
+				mHistory = historyManager.getHistoryByUrl(itemUrl);
+				favorite = favoriteManager.getFavoriteByUrl(itemUrl);
+				titleText.setText(item.title);
+			}
+			if(mHistory!=null&&mHistory.sub_url.equals(subItemUrl)){
 				if(mHistory.is_continue){
 					isContinue = mHistory.is_continue;
 					tempOffset =  (int) mHistory.last_position;
@@ -262,10 +272,7 @@ public class PlayerActivity extends Activity {
 				tempOffset=0;
 				isContinue=true;
 			}
-			Log.d(TAG, "tempOffset == "+tempOffset);
-			
 			initQualtiyText();
-			titleText.setText(item.title);
 			qualityText.setVisibility(View.VISIBLE);
 			titleText.setSelected(true);
 			new LogoImageTask().execute();
@@ -396,14 +403,11 @@ public class PlayerActivity extends Activity {
 		checkTaskPause();
 		if(mVideoView!=null){		
 			if(listItems!=null&&listItems.size()>0&&currNum<(listItems.size()-1)){
-				item = listItems.get(currNum+1);
-				Log.d(TAG,"to Next Num =="+(currNum+1));
-				itemUrl = "http://" + HOST  + "/api/subitem/"+item.pk+"/";
-				bundle.get("bundle url ==="+bundle.get("url"));
+				subItem = listItems.get(currNum+1);
+				subItemUrl = simpleRestClient.root_url + "/api/subitem/" + subItem.pk + "/";
 				bundle.remove("url");
-				bundle.putString("url",itemUrl);
-				bundle.get("bundle url ==="+bundle.get("url"));
-				bundle.get("bundle next url ==="+itemUrl);
+				bundle.putString("url",subItemUrl);
+				addHistory(0);
 				new ItemByUrlTask().execute();
 			}else{
 				Intent intent = new Intent("tv.ismar.daisy.PlayFinished");
@@ -433,9 +437,11 @@ public class PlayerActivity extends Activity {
 	}
 	private void addHistory(int last_position){
 		if(item!=null&&historyManager!=null){
-			Log.d(TAG, "historyManager item.title =="+item.title);
+			Log.d(TAG, "historyManager title =="+item.title);
 			Log.d(TAG, "historyManager itemUrl =="+itemUrl);
+			Log.d(TAG, "historyManager subItemUrl =="+subItemUrl);
 			Log.d(TAG, "historyManager last_position =="+last_position);
+			Log.d(TAG, "historyManager isContinue =="+isContinue);
 			History history = new History();
 			history.title = item.title;
 			history.adlet_url = item.adlet_url;
@@ -444,6 +450,7 @@ public class PlayerActivity extends Activity {
 			history.last_position = last_position;
 			history.last_quality = currQuality;
 			history.url = itemUrl;
+			history.sub_url = subItemUrl;
 			history.is_continue = isContinue;
 			historyManager.addFavorite(history);
 		}
@@ -498,7 +505,7 @@ public class PlayerActivity extends Activity {
 			gotoFinishPage();
 		}
 		timeBar.setProgress(currPosition);
-		Log.d(TAG, "seek Forward " + currPosition);
+//		Log.d(TAG, "seek Forward " + currPosition);
 	}
 
 	private void fastBackward(int step) {
@@ -509,7 +516,7 @@ public class PlayerActivity extends Activity {
 		if (currPosition < 0)
 			currPosition = 0;
 		timeBar.setProgress(currPosition);
-		Log.d(TAG, "seek Backward " + currPosition);
+//		Log.d(TAG, "seek Backward " + currPosition);
 	}
 	
 	@Override
