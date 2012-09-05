@@ -210,7 +210,9 @@ public class ItemDetailActivity extends Activity {
 		if(isDrama) {
 			String url = mItem.item_url==null ? mSimpleRestClient.root_url + "/api/item/" + mItem.pk + "/": mItem.item_url;
 			History history = mHistoryManager.getHistoryByUrl(url);
-			mSubItemUrl = history.sub_url;
+			if(history!=null) {
+				mSubItemUrl = history.sub_url;
+			}
 		}
 		
 		mDetailTitle.setText(mItem.title);
