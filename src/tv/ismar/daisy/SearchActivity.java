@@ -368,8 +368,8 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	}
 	
 	public static boolean checkInput(String username) {
-		String check = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]+";
-		Pattern regex = Pattern.compile(check);
+		String check = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？ ]+";
+		Pattern regex = Pattern.compile(check.trim());
 		Matcher matcher = regex.matcher(username);
 		return matcher.matches();
 	}
