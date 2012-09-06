@@ -210,8 +210,11 @@ public class PlayerActivity extends Activity {
 							listItems.add(item.subitems[i]);
 						}
 					}
-					
+				}else{
+					itemUrl = simpleRestClient.root_url + "/api/item/"+item.item_pk+"/";
+					item = simpleRestClient.getItem(itemUrl);
 				}
+			
 			}
 			
 			return urlInfo;
@@ -258,7 +261,8 @@ public class PlayerActivity extends Activity {
 				titleText.setText(item.title);
 			}
 			if(mHistory!=null){
-				if(mHistory.is_continue&&mHistory.sub_url.equals(subItemUrl)){
+				if(mHistory.is_continue){
+					if(mHistory.url.equals(itemUrl)||(mHistory.sub_url!=null&&mHistory.sub_url.equals(subItemUrl)))
 					isContinue = mHistory.is_continue;
 					tempOffset =  (int) mHistory.last_position;
 					currQuality = mHistory.last_quality;
