@@ -36,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class ItemDetailActivity extends Activity {
@@ -499,6 +500,7 @@ public class ItemDetailActivity extends Activity {
 				if(isFavorite()) {
 					String url = mSimpleRestClient.root_url + "/api/item/"+mItem.pk+"/";
 					mFavoriteManager.deleteFavoriteByUrl(url);
+					Toast.makeText(ItemDetailActivity.this, getResources().getString(R.string.vod_bookmark_remove_success), Toast.LENGTH_SHORT).show();
 				} else {
 					String url = mSimpleRestClient.root_url + "/api/item/"+mItem.pk+"/";
 					Favorite favorite = new Favorite();
@@ -510,6 +512,7 @@ public class ItemDetailActivity extends Activity {
 					favorite.is_complex = mItem.is_complex;
 					mFavoriteManager.addFavorite(favorite);
 //					mFavoriteManager.addFavorite(mItem.title, url, mItem.content_model);
+					Toast.makeText(ItemDetailActivity.this, getResources().getString(R.string.vod_bookmark_add_success), Toast.LENGTH_SHORT).show();
 				}
 				if(isFavorite()) {
 					mBtnFavorite.setText(getResources().getString(R.string.favorited));
