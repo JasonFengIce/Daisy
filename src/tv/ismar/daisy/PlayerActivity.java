@@ -166,7 +166,7 @@ public class PlayerActivity extends Activity {
 		protected ClipInfo doInBackground(String... arg0) {
 			simpleRestClient = new SimpleRestClient();
 			Object obj = bundle.get("url");
-			Log.d(TAG, "bundle url === " +obj);
+			Log.d(TAG, "init player bundle url === " +obj);
 			String sn = VodUserAgent.getMACAddress();
 			AccessProxy.init(VodUserAgent.deviceType,VodUserAgent.deviceVersion, sn);
 			if(obj!=null){
@@ -257,15 +257,15 @@ public class PlayerActivity extends Activity {
 				favorite = favoriteManager.getFavoriteByUrl(itemUrl);
 				titleText.setText(item.title);
 			}
-			if(mHistory!=null&&mHistory.sub_url.equals(subItemUrl)){
-				if(mHistory.is_continue){
+			if(mHistory!=null){
+				if(mHistory.is_continue&&mHistory.sub_url.equals(subItemUrl)){
 					isContinue = mHistory.is_continue;
 					tempOffset =  (int) mHistory.last_position;
 					currQuality = mHistory.last_quality;
 				}else{
 					currQuality=0;
 					tempOffset=0;
-					isContinue=false;
+					isContinue=mHistory.is_continue;
 				}
 			}else{
 				currQuality=0;
