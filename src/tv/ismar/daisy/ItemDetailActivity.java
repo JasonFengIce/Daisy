@@ -2,7 +2,6 @@ package tv.ismar.daisy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -53,8 +52,6 @@ public class ItemDetailActivity extends Activity {
 	
 	private Item[] mRelatedItem;
 	
-	private String mSubItemUrl;
-	
 	private boolean isDrama = false;
 	
 	private RelativeLayout mDetailLeftContainer;
@@ -78,6 +75,8 @@ public class ItemDetailActivity extends Activity {
 	private boolean isInitialized = false;
 
 	private HistoryManager mHistoryManager;
+	
+	private History mHistory;
 	
 	private void initViews() {
 		mDetailLeftContainer = (RelativeLayout)findViewById(R.id.detail_left_container);
@@ -150,6 +149,10 @@ public class ItemDetailActivity extends Activity {
 			} else {
 				mBtnFavorite.setText(getResources().getString(R.string.favorite));
 			} 
+			if(isDrama) {
+				String url = mItem.item_url==null ? mSimpleRestClient.root_url + "/api/item/" + mItem.pk + "/": mItem.item_url;
+				mHistory = mHistoryManager.getHistoryByUrl(url);
+			}
 		}
 		super.onResume();
 	}
@@ -210,10 +213,7 @@ public class ItemDetailActivity extends Activity {
 		
 		if(isDrama) {
 			String url = mItem.item_url==null ? mSimpleRestClient.root_url + "/api/item/" + mItem.pk + "/": mItem.item_url;
-			History history = mHistoryManager.getHistoryByUrl(url);
-			if(history!=null) {
-				mSubItemUrl = history.sub_url;
-			}
+			mHistory = mHistoryManager.getHistoryByUrl(url);
 		}
 		
 		mDetailTitle.setText(mItem.title);
@@ -481,7 +481,13 @@ public class ItemDetailActivity extends Activity {
 			Intent intent = new Intent();
 			switch(id){
 			case R.id.btn_left:
-				String subUrl = mSubItemUrl == null ? mItem.subitems[0].url : mSubItemUrl;
+				String subUrl = null;
+				if(mHistory!=null && mHistory.is_continue) {
+					subUrl = mHistory.sub_url;
+				} else {
+					subUrl = mItem.subitems[0].url;
+				}
+				
 				intent.setAction("tv.ismar.daisy.Play");
 				intent.putExtra("url", subUrl);
 				startActivity(intent);
