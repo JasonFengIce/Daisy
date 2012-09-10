@@ -262,10 +262,15 @@ public class PlayerActivity extends Activity {
 			}
 			if(mHistory!=null){
 				if(mHistory.is_continue){
-					if(mHistory.url.equals(itemUrl)||(mHistory.sub_url!=null&&mHistory.sub_url.equals(subItemUrl)))
-					isContinue = mHistory.is_continue;
-					tempOffset =  (int) mHistory.last_position;
-					currQuality = mHistory.last_quality;
+					if(mHistory.sub_url!=null&&mHistory.sub_url.equals(subItemUrl)){
+						isContinue = mHistory.is_continue;
+						tempOffset =  (int) mHistory.last_position;
+						currQuality = mHistory.last_quality;
+					}else if(mHistory.sub_url==null){
+						isContinue = mHistory.is_continue;
+						tempOffset =  (int) mHistory.last_position;
+						currQuality = mHistory.last_quality;
+					}
 				}else{
 					currQuality=0;
 					tempOffset=0;
