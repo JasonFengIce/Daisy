@@ -266,7 +266,7 @@ public class PlayerActivity extends Activity {
 						isContinue = mHistory.is_continue;
 						tempOffset =  (int) mHistory.last_position;
 						currQuality = mHistory.last_quality;
-					}else if(mHistory.sub_url==null){
+					}else if(mHistory.sub_url==null&&mHistory.url!=null){
 						isContinue = mHistory.is_continue;
 						tempOffset =  (int) mHistory.last_position;
 						currQuality = mHistory.last_quality;
@@ -668,7 +668,7 @@ public class PlayerActivity extends Activity {
 			if (btn1 != null) {
 				btn1.setOnClickListener(new View.OnClickListener() {
 					public void onClick(View v) {
-						if (popupDlg != null) {
+						if (popupDlg != null&&mVideoView != null) {
 							addHistory(seekPostion);
 							checkTaskPause();
 							timeTaskPause();
