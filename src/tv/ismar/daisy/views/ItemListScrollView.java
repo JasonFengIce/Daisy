@@ -565,9 +565,11 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 		if(hasFocus) {
 			titleView.setTextColor(TEXT_COLOR_FOCUSED);
 			v.setBackgroundResource(R.drawable.list_item_bg_hot);
+			titleView.setSelected(true);
 		} else {
 			titleView.setTextColor(TEXT_COLOR_NOFOCUSED);
 			v.setBackgroundResource(android.R.color.transparent);
+			titleView.setSelected(false);
 		}
 	}
 
