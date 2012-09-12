@@ -4,7 +4,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import tv.ismar.daisy.adapter.DaramAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.ImageUtils;
 import tv.ismar.daisy.core.NetworkUtils;
@@ -55,9 +54,10 @@ public class PlayerActivity extends Activity {
 	@SuppressWarnings("unused")
 	private static final String PREFS_NAME = "tv.ismar.daisy";
 	private static final String TAG = "PLAYER";
+	@SuppressWarnings("unused")
 	private static final String HOST = "cord.tvxio.com";
 	
-	private static final int SHORT_STEP = 20000;
+	private static final int SHORT_STEP = 1;
 	private static final int DIALOG_OK_CANCEL = 0;
 	
 	private boolean paused = false;
@@ -179,7 +179,7 @@ public class PlayerActivity extends Activity {
 //								host = (new URL((String)obj)).getHost();
 //							} catch (MalformedURLException e) {
 //								e.printStackTrace();
-//							}
+//							}http://127.0.0.1:21098/cord
 					urlInfo = AccessProxy.parse(simpleRestClient.root_url + "/api/clip/"+clip.pk+"/", VodUserAgent.getAccessToken(sn),PlayerActivity.this);
 				}
 			}else{
@@ -193,7 +193,7 @@ public class PlayerActivity extends Activity {
 	//								host = (new URL((String)obj)).getHost();
 	//							} catch (MalformedURLException e) {
 	//								e.printStackTrace();
-	//							}
+	//							}http://127.0.0.1:21098/cord
 						urlInfo = AccessProxy.parse(simpleRestClient.root_url + "/api/clip/"+clip.pk+"/", VodUserAgent.getAccessToken(sn),PlayerActivity.this);
 					}
 				}
@@ -517,7 +517,7 @@ public class PlayerActivity extends Activity {
 	private void fastForward(int step) {
 		if (currPosition > clipLength)
 			return;
-		currPosition += step;
+		currPosition += clipLength*0.1;
 
 		if (currPosition > clipLength){
 			gotoFinishPage();
@@ -529,7 +529,7 @@ public class PlayerActivity extends Activity {
 	private void fastBackward(int step) {
 		if (currPosition < 0)
 			return;
-		currPosition -= step;
+		currPosition -= clipLength*0.1;
 
 		if (currPosition < 0)
 			currPosition = 0;
@@ -731,7 +731,7 @@ public class PlayerActivity extends Activity {
 		return menu.isVisible();
 	}
 	
-	@SuppressWarnings("unused")
+	
 	private void showBuffer() {
 		if(isBuffer&&!bufferAnim.isRunning()){
 			Log.d(TAG, "show buffer");
