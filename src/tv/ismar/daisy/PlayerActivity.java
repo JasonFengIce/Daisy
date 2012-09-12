@@ -145,6 +145,7 @@ public class PlayerActivity extends Activity {
 	
 	
 	private void initClipInfo() {
+		showBuffer();
 		Log.d(TAG, " initClipInfo ");
 		Intent intent = getIntent();
 		if (intent != null) {
@@ -159,7 +160,7 @@ public class PlayerActivity extends Activity {
 			
 		@Override
 		protected void onPostExecute(ClipInfo result) {
-			//showBuffer();
+			
 			initPlayer();
 		}
 		@Override
@@ -288,9 +289,7 @@ public class PlayerActivity extends Activity {
 			
 		}
 		
-//		timeTaskStart();
-//		checkTaskStart();
-		
+
 		if (tempOffset>0&&isContinue){
 			currPosition = tempOffset;
 			seekPostion = tempOffset;
@@ -301,43 +300,49 @@ public class PlayerActivity extends Activity {
 		
 		Log.d(TAG, "RES_INT_OFFSET currPosition=" + currPosition);
 		
-		mVideoView.setVideoPath(urls[currQuality]);
-		
-		mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-			@Override
-			public void onPrepared(MediaPlayer mp) {
-				
-				Log.d(TAG, "mVideoView onPrepared tempOffset =="+tempOffset);
-					if(mVideoView!=null){
-						clipLength = mVideoView.getDuration();
-						timeBar.setMax(clipLength);
-						mVideoView.start();
-						mVideoView.seekTo(currPosition);
-						timeBar.setProgress(currPosition);
-						timeTaskStart();
-						checkTaskStart();
-					}
-			}
-		});
-		mVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-			@Override
-			public boolean onError(MediaPlayer mp, int what, int extra) {
-				Log.d(TAG, "mVideoView  Error setVideoPath urls[currQuality] ");
-				addHistory(currPosition);
-				PlayerActivity.this.finish();
-				return false;
-			}
-		});
-		
-		mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+		if(urls!=null&&mVideoView!=null){
 			
-			@Override
-			public void onCompletion(MediaPlayer mp) {
-				Log.d(TAG, "mVideoView  Completion");
-				gotoFinishPage();
-			}
-		});
-		showPanel();
+			mVideoView.setVideoPath(urls[currQuality]);
+			
+			mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+				@Override
+				public void onPrepared(MediaPlayer mp) {
+					
+					Log.d(TAG, "mVideoView onPrepared tempOffset =="+tempOffset);
+						if(mVideoView!=null){
+							clipLength = mVideoView.getDuration();
+							timeBar.setMax(clipLength);
+							mVideoView.start();
+							mVideoView.seekTo(currPosition);
+							timeBar.setProgress(currPosition);
+							timeTaskStart();
+							checkTaskStart();
+						}
+				}
+			});
+			mVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+				@Override
+				public boolean onError(MediaPlayer mp, int what, int extra) {
+					Log.d(TAG, "mVideoView  Error setVideoPath urls[currQuality] ");
+					addHistory(currPosition);
+					PlayerActivity.this.finish();
+					return false;
+				}
+			});
+			
+			mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+				
+				@Override
+				public void onCompletion(MediaPlayer mp) {
+					Log.d(TAG, "mVideoView  Completion");
+					gotoFinishPage();
+				}
+			});
+			showPanel();
+		}
+		
+		
+		
 	}
 
 	
@@ -393,7 +398,7 @@ public class PlayerActivity extends Activity {
 					seekPostion = mVideoView.getCurrentPosition();
 					if(i>1){
 						isBuffer = true;
-						//showBuffer();
+						showBuffer();
 					}
 				}
 				mCheckHandler.postDelayed(checkStatus, 200);
