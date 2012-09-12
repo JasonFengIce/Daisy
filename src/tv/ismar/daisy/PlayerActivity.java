@@ -106,7 +106,7 @@ public class PlayerActivity extends Activity {
 	private Favorite favorite;
 	private List<Item> listItems = new ArrayList<Item>();
 	private int currNum = 0;
-	
+	private int offsets = 0;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -517,7 +517,16 @@ public class PlayerActivity extends Activity {
 	private void fastForward(int step) {
 		if (currPosition > clipLength)
 			return;
-		currPosition += clipLength*0.1;
+		if(clipLength/100000>1){
+			offsets+= step;
+			if(offsets<11){
+				currPosition+=clipLength*offsets*0.01;
+			}else{
+				currPosition+=clipLength*offsets*0.1;
+			}
+		}else{
+			currPosition+=10000;
+		}
 
 		if (currPosition > clipLength){
 			gotoFinishPage();
@@ -529,7 +538,16 @@ public class PlayerActivity extends Activity {
 	private void fastBackward(int step) {
 		if (currPosition < 0)
 			return;
-		currPosition -= clipLength*0.1;
+		if(clipLength/100000>1){
+			offsets+= step;
+			if(offsets<11){
+				currPosition-=clipLength*offsets*0.01;
+			}else{
+				currPosition-=clipLength*offsets*0.1;
+			}
+		}else{
+			currPosition-=10000;
+		}
 
 		if (currPosition < 0)
 			currPosition = 0;
@@ -626,6 +644,7 @@ public class PlayerActivity extends Activity {
 					Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
 					ret = true;
 					isSeek = false;
+					offsets = 0;
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
 					ffImage.setImageResource(R.drawable.vod_player_ff);
@@ -633,6 +652,7 @@ public class PlayerActivity extends Activity {
 					Log.d(TAG, "RIGHT seek to" + getTimeString(currPosition));
 					ret = true;
 					isSeek = false;
+					offsets = 0;
 				break;
 			case KeyEvent.KEYCODE_DPAD_CENTER:
 			case KeyEvent.KEYCODE_ENTER:
