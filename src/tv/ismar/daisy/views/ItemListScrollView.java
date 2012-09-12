@@ -11,6 +11,7 @@ import tv.ismar.daisy.views.AsyncImageView.OnImageViewLoadListener;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
+import android.provider.ContactsContract.CommonDataKinds.Event;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
