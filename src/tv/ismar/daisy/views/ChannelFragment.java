@@ -14,7 +14,9 @@ import tv.ismar.daisy.views.ItemListScrollView.OnColumnChangeListener;
 import tv.ismar.daisy.views.ItemListScrollView.OnItemClickedListener;
 import tv.ismar.daisy.views.ItemListScrollView.OnSectionPrepareListener;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
+import android.app.Dialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -81,42 +83,50 @@ public class ChannelFragment extends Fragment {
 	
 	
 	class InitTask extends AsyncTask<String, Void, Void> {
+		
+		String url;
+		String channel;
 
 		@Override
 		protected Void doInBackground(String... params) {
-			mItemLists = new ArrayList<ItemList>();
-			String url = params[0];
-			String channel = params[1];
-			if(!isChannelUrl(url)){
-				mSectionList = mRestClient.getSectionsByChannel(channel);
-				for(int i=0; i<mSectionList.size(); i++) {
-					if(NetworkUtils.urlEquals(url, mSectionList.get(i).url)) {
-						mCurrentSectionPosition = i;
-						break;
+			try {
+				mItemLists = new ArrayList<ItemList>();
+				url = params[0];
+				channel = params[1];
+				if(!isChannelUrl(url)){
+					mSectionList = mRestClient.getSectionsByChannel(channel);
+					for(int i=0; i<mSectionList.size(); i++) {
+						if(NetworkUtils.urlEquals(url, mSectionList.get(i).url)) {
+							mCurrentSectionPosition = i;
+							break;
+						}
 					}
 				}
-			}
-			if(mSectionList==null){
-				mSectionList = mRestClient.getSections(url);
-				if(mSectionList==null) {
+				if(mSectionList==null){
 					mSectionList = mRestClient.getSections(url);
-				}
-			}
-			int itemsCount = 0;
-			for(int i=0; i<mSectionList.size();i++) {
-				ItemList itemList = null;
-				if(i==mCurrentSectionPosition || itemsCount<=MAX_CELLS_IN_SCREEN){
-					itemList = mRestClient.getItemList(mSectionList.get(i).url);
-					// if the itemList's items is not able to fill the full single screen. we need load the second itemList.
-					if(itemList.objects!=null) {
-						itemsCount += itemList.objects.size();
+					if(mSectionList==null) {
+						mSectionList = mRestClient.getSections(url);
 					}
-				} else {
-					itemList = new ItemList();
 				}
-				itemList.slug = mSectionList.get(i).slug;
-				itemList.title = mSectionList.get(i).title;
-				mItemLists.add(itemList);
+				int itemsCount = 0;
+				for(int i=0; i<mSectionList.size();i++) {
+					ItemList itemList = null;
+					if(i==mCurrentSectionPosition || itemsCount<=MAX_CELLS_IN_SCREEN){
+						itemList = mRestClient.getItemList(mSectionList.get(i).url);
+						// if the itemList's items is not able to fill the full single screen. we need load the second itemList.
+						if(itemList.objects!=null) {
+							itemsCount += itemList.objects.size();
+						}
+					} else {
+						itemList = new ItemList();
+					}
+					itemList.slug = mSectionList.get(i).slug;
+					itemList.title = mSectionList.get(i).title;
+					mItemLists.add(itemList);
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			return null;
 		}
@@ -131,6 +141,8 @@ public class ChannelFragment extends Fragment {
 				int totalColumnsOfSectionX = mItemListScrollView.getTotalColumnCount(mCurrentSectionPosition);
 				mScrollableSectionList.setPercentage(mCurrentSectionPosition, (int)(1f/(float)totalColumnsOfSectionX*100f));
 				mItemListScrollView.jumpToSection(mCurrentSectionPosition);
+			} else {
+				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new InitTask(), new String[]{url, channel});
 			}
 //			new GetItemListTask().execute();
 			super.onPostExecute(result);
@@ -139,21 +151,15 @@ public class ChannelFragment extends Fragment {
 	}
 	
 	class GetItemListTask extends AsyncTask<String, Void, Integer> {
-
+		
+		private String slug;
+		private String url;
+		
 		@Override
 		protected Integer doInBackground(String... params) {
 			int position = -1;
-//			if(params.length==0){
-//				for(int i=0;i<mSectionList.size();i++){
-//					if(mItemLists.get(i).objects==null){
-//						mItemLists.set(i, mRestClient.getItemList(mSectionList.get(i).url));
-//						mItemLists.get(i).slug = mSectionList.get(i).slug;
-//						mItemLists.get(i).title = mSectionList.get(i).title;
-//					}
-//				}
-//			} else {
-			String slug = params[0];
-			String url = params[1];
+			slug = params[0];
+			url = params[1];
 			
 			for(int i=0; i<mItemLists.size();i++){
 				if(slug.equals(mItemLists.get(i).slug)){
@@ -176,6 +182,8 @@ public class ChannelFragment extends Fragment {
 		protected void onPostExecute(Integer position) {
 			if(position!=-1) {
 				mItemListScrollView.updateSection(mItemLists.get(position), position);
+			} else {
+				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new GetItemListTask(), new String[]{slug, url});
 			}
 		}
 		
@@ -254,4 +262,26 @@ public class ChannelFragment extends Fragment {
 		super.onDestroy();
 	}
 	
+
+	public void showDialog(int dialogType, final AsyncTask task, final Object[] params ) {
+		AlertDialogFragment newFragment = AlertDialogFragment.newInstance(dialogType);
+		newFragment.setPositiveListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				task.execute(params);
+				dialog.dismiss();
+			}
+		});
+		newFragment.setNegativeListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				getActivity().finish();
+				dialog.dismiss();
+			}
+		});
+		newFragment.show(getFragmentManager(), "dialog");
+	}
 }

@@ -2,6 +2,7 @@ package tv.ismar.daisy.dao;
 
 import java.util.ArrayList;
 
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
 
@@ -14,10 +15,12 @@ import android.provider.BaseColumns;
 
 public class DBHelper extends SQLiteOpenHelper {
 	
+	private Context mContext;
+	
 	/**
 	 * database version. this may changed with future update.
 	 */
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 	
 	/**
 	 * database file name.
@@ -69,6 +72,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	
 	public DBHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		mContext = context;
 		db = getWritableDatabase();
 	}
 
@@ -80,8 +84,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// TODO Auto-generated method stub
-
+		//delete old tables
+		db.execSQL("DROP TABLE IF EXISTS " + DBFields.HistroyTable.TABLE_NAME);
+		db.execSQL("DROP TABLE IF EXISTS " + DBFields.FavoriteTable.TABLE_NAME);
+		
+		db.execSQL(CREATE_HISTORY_TABLE);
+		db.execSQL(CREATE_FAVORITE_TABLE);
 	}
 	
 	/**

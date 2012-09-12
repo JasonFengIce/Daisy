@@ -221,7 +221,7 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 				if(isOffScreen(colHolder0) && isOffScreen(colHolderN)){
 					final ArrayList<View> recycledViews = section.recycleAll();
 					if(mScrapViews.size()<MAX_RECYCLEBIN_SIZE) {
-						int differ = MAX_RECYCLEBIN_SIZE -mScrapViews.size(); 
+						int differ = MAX_RECYCLEBIN_SIZE -mScrapViews.size();
 						for(int i=0; i<differ && i<recycledViews.size();++i) {
 							View recycledView = recycledViews.remove(recycledViews.size()-1);
 							TextView titleView = (TextView) recycledView.findViewById(R.id.list_item_title);
@@ -322,7 +322,7 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 			if(direction == View.FOCUS_RIGHT && position < mSectionContainerList.size()-1) {
 				ItemListContainer nextItemListContainer = mSectionContainerList.get(position + 1);
 				LinearLayout nextColumn = (LinearLayout) nextItemListContainer.getChildAt(0);
-				nextFocused = nextColumn.getChildAt(0);
+				nextFocused = nextColumn==null?null: nextColumn.getChildAt(0);
 //				moveToSection(position+1, direction, nextColumn.getChildAt(0));
 //				int nextCol = (Integer) nextColumn.getTag();
 //				if(mOnColumnChangeListener!=null) {
@@ -331,7 +331,7 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 			} else if(direction == View.FOCUS_LEFT && position > 0) {
 				ItemListContainer nextItemListContainer = mSectionContainerList.get(position - 1);
 				LinearLayout nextColumn = (LinearLayout) nextItemListContainer.getChildAt(nextItemListContainer.getChildCount()-1);
-				nextFocused = nextColumn.getChildAt(0);
+				nextFocused = nextColumn==null?null: nextColumn.getChildAt(0);
 //				moveToSection(position-1, direction, nextColumn.getChildAt(0));
 //				int nextCol = (Integer) nextColumn.getTag();
 //				if(mOnColumnChangeListener!=null) {

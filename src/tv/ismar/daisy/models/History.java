@@ -5,7 +5,7 @@ import java.io.Serializable;
 import tv.ismar.daisy.dao.DBHelper.DBFields;
 import android.database.Cursor;
 
-public class History implements Serializable {
+public class History implements Serializable, Comparable<History> {
 	
 	private static final long serialVersionUID = -921551037735535764L;
 	
@@ -62,4 +62,15 @@ public class History implements Serializable {
 		last_position = c.getLong(c.getColumnIndex(DBFields.HistroyTable.LAST_POSITION));
 		sub_url = c.getString(c.getColumnIndex(DBFields.HistroyTable.SUB_URL));
 	}
+
+
+	/**
+	 * This is reverse order
+	 */
+	@Override
+	public int compareTo(History another) {
+		return (int) (another.last_played_time - this.last_played_time);
+	}
+	
+	
 }

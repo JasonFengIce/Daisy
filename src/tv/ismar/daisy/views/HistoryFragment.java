@@ -1,6 +1,7 @@
 package tv.ismar.daisy.views;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -115,6 +116,7 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 			final long yesterdayStartPoint = getYesterdayStartPoint();
 			ArrayList<History> mHistories = mHistoryManager.getAllHistories();
 			if(mHistories.size()>0) {
+				Collections.sort(mHistories);
 				for(int i=0;i<mHistories.size();++i) {
 					History history = mHistories.get(i);
 					Item item = getItem(history);
@@ -251,5 +253,4 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 		mScrollableSectionList.setVisibility(View.GONE);
 		mItemListScrollView.setVisibility(View.GONE);
 	}
-
 }

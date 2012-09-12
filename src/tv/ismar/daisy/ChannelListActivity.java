@@ -1,9 +1,11 @@
 package tv.ismar.daisy;
 
+import tv.ismar.daisy.views.AlertDialogFragment;
 import tv.ismar.daisy.views.ChannelFragment;
 import tv.ismar.daisy.views.FavoriteFragment;
 import tv.ismar.daisy.views.HistoryFragment;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -63,7 +65,6 @@ public class ChannelListActivity extends Activity {
 			fragmentTransaction.commit();
 		}
 		
-//		mChannelLabel.setText(title);
-//		new InitTask().execute(url, channel);
 	}
+	
 }
