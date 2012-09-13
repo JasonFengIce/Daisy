@@ -1,5 +1,6 @@
 package tv.ismar.daisy.core;
 
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -12,6 +13,7 @@ import tv.ismar.daisy.models.SectionList;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 
 public class SimpleRestClient {
 //	public String root_url = "http://cord.tvxio.com";
@@ -26,8 +28,17 @@ public class SimpleRestClient {
 	}
 
 	public ContentModelList getContentModelLIst(String url) {
-		String jsonStr = NetworkUtils.getJsonStr(root_url + url);
-		return gson.fromJson(jsonStr, ContentModelList.class);
+		try {
+			String jsonStr = NetworkUtils.getJsonStr(root_url + url);
+			return gson.fromJson(jsonStr, ContentModelList.class);
+		} catch (JsonSyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	
@@ -36,40 +47,91 @@ public class SimpleRestClient {
 	}
 	
 	public ChannelList getChannelList() {
-		String api = "/api/tv/channels/";
-		String jsonStr = NetworkUtils.getJsonStr(root_url+api);
-		return gson.fromJson(jsonStr, ChannelList.class);
+		try {
+			String api = "/api/tv/channels/";
+			String jsonStr = NetworkUtils.getJsonStr(root_url+api);
+			return gson.fromJson(jsonStr, ChannelList.class);
+		} catch (JsonSyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public SectionList getSectionsByChannel(String channel) {
-		String url = root_url + "/api/tv/sections/"+channel+"/";
-		String jsonStr = NetworkUtils.getJsonStr(url);
-		SectionList list = gson.fromJson(jsonStr, SectionList.class);
-		return list;
+		try {
+			String url = root_url + "/api/tv/sections/"+channel+"/";
+			String jsonStr = NetworkUtils.getJsonStr(url);
+			SectionList list = gson.fromJson(jsonStr, SectionList.class);
+			return list;
+		} catch (JsonSyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public SectionList getSections(String url) {
-		String jsonStr = NetworkUtils.getJsonStr(url);
-		SectionList list = gson.fromJson(jsonStr, SectionList.class);
-		return list;
+		try {
+			String jsonStr = NetworkUtils.getJsonStr(url);
+			SectionList list = gson.fromJson(jsonStr, SectionList.class);
+			return list;
+		} catch (JsonSyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public ItemList getItemList(String url) {
-		String jsonStr = NetworkUtils.getJsonStr(url);
-		ItemList list = gson.fromJson(jsonStr, ItemList.class);
-		return list;
+		try {
+			String jsonStr = NetworkUtils.getJsonStr(url);
+			ItemList list = gson.fromJson(jsonStr, ItemList.class);
+			return list;
+		} catch (JsonSyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
-	public Item getItem(String url) {
-		String jsonStr = NetworkUtils.getJsonStr(url);
-		// Log.d("Item is", jsonStr);
+	public Item getItem(String url) throws FileNotFoundException {
+		try {
+			String jsonStr = NetworkUtils.getJsonStr(url);
+			// Log.d("Item is", jsonStr);
 
-		return gson.fromJson(jsonStr, Item.class);
+			return gson.fromJson(jsonStr, Item.class);
+		} catch (JsonSyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public Item[] getRelatedItem(String api) {
-		String jsonStr = NetworkUtils.getJsonStr(root_url + api);
-		return gson.fromJson(jsonStr, Item[].class);
+		try {
+			String jsonStr = NetworkUtils.getJsonStr(root_url + api);
+			return gson.fromJson(jsonStr, Item[].class);
+		} catch (JsonSyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
