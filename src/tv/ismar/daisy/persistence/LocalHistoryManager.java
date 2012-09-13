@@ -122,4 +122,13 @@ public class LocalHistoryManager implements HistoryManager {
 		}
 	}
 
+	@Override
+	public void deleteHistory(String url) {
+		if(url==null) {
+			throw new RuntimeException("history or history's field should not be null");
+		}
+		mDBHelper.delete(DBFields.HistroyTable.TABLE_NAME, url);
+		mHistories = getAllHistories();
+	}
+
 }

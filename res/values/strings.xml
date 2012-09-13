@@ -101,4 +101,6 @@
     <string name="onload">加载中</string>
     <string name="same_category_clip">同类型影片</string>
     <string name="search_error_text">抱歉，无法搜索非法字符</string>
+    <string name="item_offline">抱歉，该片已下线</string>
+    <string name="delete_history">删除记录</string>
 </resources>

@@ -48,6 +48,5 @@
 	        android:textColor="#FFFFFFFF"
 	        android:text="@string/dialog_setting"
 	        android:background="@drawable/dialog_btn_netagive_drawable"/>
-	
 	</RelativeLayout>
 </LinearLayout>

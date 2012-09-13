@@ -1,5 +1,6 @@
 package tv.ismar.daisy;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -18,6 +19,7 @@ import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.persistence.FavoriteManager;
 import tv.ismar.daisy.persistence.HistoryManager;
+import tv.ismar.daisy.views.AlertDialogFragment;
 import tv.ismar.daisy.views.LoadingDialog;
 import android.app.Activity;
 import android.content.DialogInterface.OnCancelListener;
@@ -172,7 +174,12 @@ public class ItemDetailActivity extends Activity {
 
 		@Override
 		protected Void doInBackground(String... params) {
-			mItem = mSimpleRestClient.getItem(params[0]);
+			try {
+				mItem = mSimpleRestClient.getItem(params[0]);
+			} catch (FileNotFoundException e) {
+				showDialog();
+				e.printStackTrace();
+			}
 //			if(mItem.subitems!=null && mItem.subitems.length>0 && mItem.subitems[0].item_pk==0){
 //				mItem.subitems[0] = mSimpleRestClient.getItem(mItem.subitems[0].url);
 //				mItem.subitems[0].url = mItem.subitems[0].item_url;
@@ -545,4 +552,27 @@ public class ItemDetailActivity extends Activity {
 			ItemDetailActivity.this.finish();
 		}
 	};
+	
+	private void showDialog() {
+		AlertDialogFragment newFragment = AlertDialogFragment.newInstance(AlertDialogFragment.ITEM_OFFLINE_DIALOG);
+		newFragment.setPositiveListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				String url = mSimpleRestClient.root_url + "/api/item/"+mItem.pk+"/";
+				mHistoryManager.deleteHistory(url);
+				ItemDetailActivity.this.finish();
+				dialog.dismiss();
+			}
+		});
+		newFragment.setNegativeListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				ItemDetailActivity.this.finish();
+				dialog.dismiss();
+			}
+		});
+		newFragment.show(getFragmentManager(), "dialog");
+	}
 }

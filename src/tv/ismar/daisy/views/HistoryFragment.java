@@ -1,10 +1,12 @@
 package tv.ismar.daisy.views;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import tv.ismar.daisy.ItemDetailActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -19,6 +21,7 @@ import tv.ismar.daisy.views.ItemListScrollView.OnItemClickedListener;
 import tv.ismar.daisy.views.ItemListScrollView.OnSectionPrepareListener;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -221,6 +224,12 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 	}
 	@Override
 	public void onItemClicked(Item item) {
+		try {
+			mRestClient.getItem(item.url);
+		} catch (FileNotFoundException e) {
+			showDialog(item.url);
+			e.printStackTrace();
+		}
 		Intent intent = new Intent();
 		if(item.is_complex) {
 			intent.setAction("tv.ismar.daisy.Item");
@@ -252,5 +261,27 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 		mNoVideoContainer.setBackgroundResource(R.drawable.history_no_video);
 		mScrollableSectionList.setVisibility(View.GONE);
 		mItemListScrollView.setVisibility(View.GONE);
+	}
+	
+	private void showDialog(final String url) {
+		AlertDialogFragment newFragment = AlertDialogFragment.newInstance(AlertDialogFragment.ITEM_OFFLINE_DIALOG);
+		newFragment.setPositiveListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				mHistoryManager.deleteHistory(url);
+				getActivity().finish();
+				dialog.dismiss();
+			}
+		});
+		newFragment.setNegativeListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				getActivity().finish();
+				dialog.dismiss();
+			}
+		});
+		newFragment.show(getFragmentManager(), "dialog");
 	}
 }
