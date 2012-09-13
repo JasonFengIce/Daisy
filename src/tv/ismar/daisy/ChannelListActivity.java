@@ -5,7 +5,6 @@ import tv.ismar.daisy.views.ChannelFragment;
 import tv.ismar.daisy.views.FavoriteFragment;
 import tv.ismar.daisy.views.HistoryFragment;
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -14,8 +13,6 @@ import android.os.Bundle;
 
 public class ChannelListActivity extends Activity {
 	
-	private int fragment_id = 0;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -66,5 +63,12 @@ public class ChannelListActivity extends Activity {
 		}
 		
 	}
+
+	@Override
+	protected void onDestroy() {
+		System.exit(0);
+		super.onDestroy();
+	}
+	
 	
 }

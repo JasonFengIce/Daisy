@@ -1,5 +1,6 @@
 package tv.ismar.daisy.views;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -19,6 +20,7 @@ import tv.ismar.daisy.views.ItemListScrollView.OnItemClickedListener;
 import tv.ismar.daisy.views.ItemListScrollView.OnSectionPrepareListener;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -157,6 +159,13 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	}
 	@Override
 	public void onItemClicked(Item item) {
+		try {
+			mRestClient.getItem(item.url);
+		} catch (FileNotFoundException e) {
+			showDialog(item.url);
+			e.printStackTrace();
+			return;
+		}
 		Intent intent = new Intent();
 		if(item.is_complex) {
 			intent.setAction("tv.ismar.daisy.Item");
@@ -200,4 +209,24 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		mItemListScrollView.setVisibility(View.GONE);
 	}
 	
+	private void showDialog(final String url) {
+		AlertDialogFragment newFragment = AlertDialogFragment.newInstance(AlertDialogFragment.ITEM_OFFLINE_DIALOG);
+		newFragment.setPositiveListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				mFavoriteManager.deleteFavoriteByUrl(url);
+//				getActivity().finish();
+				dialog.dismiss();
+			}
+		});
+		newFragment.setNegativeListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		newFragment.show(getFragmentManager(), "dialog");
+	}
 }

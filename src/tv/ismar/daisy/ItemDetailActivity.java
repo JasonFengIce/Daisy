@@ -177,7 +177,6 @@ public class ItemDetailActivity extends Activity {
 			try {
 				mItem = mSimpleRestClient.getItem(params[0]);
 			} catch (FileNotFoundException e) {
-				showDialog();
 				e.printStackTrace();
 			}
 //			if(mItem.subitems!=null && mItem.subitems.length>0 && mItem.subitems[0].item_pk==0){
@@ -553,26 +552,4 @@ public class ItemDetailActivity extends Activity {
 		}
 	};
 	
-	private void showDialog() {
-		AlertDialogFragment newFragment = AlertDialogFragment.newInstance(AlertDialogFragment.ITEM_OFFLINE_DIALOG);
-		newFragment.setPositiveListener(new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				String url = mSimpleRestClient.root_url + "/api/item/"+mItem.pk+"/";
-				mHistoryManager.deleteHistory(url);
-				ItemDetailActivity.this.finish();
-				dialog.dismiss();
-			}
-		});
-		newFragment.setNegativeListener(new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				ItemDetailActivity.this.finish();
-				dialog.dismiss();
-			}
-		});
-		newFragment.show(getFragmentManager(), "dialog");
-	}
 }
