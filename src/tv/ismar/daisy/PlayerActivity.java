@@ -54,6 +54,7 @@ public class PlayerActivity extends Activity {
 	@SuppressWarnings("unused")
 	private static final String PREFS_NAME = "tv.ismar.daisy";
 	private static final String TAG = "PLAYER";
+	private	static final String BUFFERCONTINUE = "上次播放：";
 	@SuppressWarnings("unused")
 	private static final String HOST = "cord.tvxio.com";
 	
@@ -288,9 +289,9 @@ public class PlayerActivity extends Activity {
 			qualityText.setVisibility(View.VISIBLE);
 			titleText.setSelected(true);
 			if(tempOffset>0&&isContinue==true){
-				bufferText.setText(titleText.getText()+getTimeString(tempOffset));
+				bufferText.setText("  "+BUFFERCONTINUE+getTimeString(tempOffset));
 			}else{
-				bufferText.setText(titleText.getText());
+				bufferText.setText("  "+titleText.getText());
 			}
 			new LogoImageTask().execute();
 			
