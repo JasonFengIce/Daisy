@@ -107,6 +107,7 @@ public class PlayerActivity extends Activity {
 	private List<Item> listItems = new ArrayList<Item>();
 	private int currNum = 0;
 	private int offsets = 0;
+	private TextView bufferText;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -129,6 +130,7 @@ public class PlayerActivity extends Activity {
 		titleText = (TextView) findViewById(R.id.TitleText);
 		qualityText = (TextView) findViewById(R.id.QualityText);
 		timeText = (TextView) findViewById(R.id.TimeText);
+		bufferText = (TextView) findViewById(R.id.BufferText);
 		timeBar = (SeekBar) findViewById(R.id.TimeSeekBar);
 		timeBar.setOnSeekBarChangeListener(new SeekBarChangeEvent());
 		playPauseImage = (ImageView) findViewById(R.id.PlayPauseImage);
@@ -285,6 +287,11 @@ public class PlayerActivity extends Activity {
 			initQualtiyText();
 			qualityText.setVisibility(View.VISIBLE);
 			titleText.setSelected(true);
+			if(tempOffset>0&&isContinue==true){
+				bufferText.setText(titleText.getText()+getTimeString(tempOffset));
+			}else{
+				bufferText.setText(titleText.getText());
+			}
 			new LogoImageTask().execute();
 			
 		}
@@ -311,6 +318,7 @@ public class PlayerActivity extends Activity {
 					Log.d(TAG, "mVideoView onPrepared tempOffset =="+tempOffset);
 						if(mVideoView!=null){
 							clipLength = mVideoView.getDuration();
+							bufferText.setText("");
 							timeBar.setMax(clipLength);
 							mVideoView.start();
 							mVideoView.seekTo(currPosition);
@@ -517,19 +525,19 @@ public class PlayerActivity extends Activity {
 	private void fastForward(int step) {
 		if (currPosition > clipLength)
 			return;
-		if(clipLength/100000>1){
+		if((clipLength-currPosition)/100000>1){
 			offsets+= step;
 			if(offsets<11){
 				currPosition+=clipLength*offsets*0.01;
 			}else{
-				currPosition+=clipLength*offsets*0.1;
+				currPosition+=clipLength*0.1;
 			}
 		}else{
 			currPosition+=10000;
 		}
 
 		if (currPosition > clipLength){
-			gotoFinishPage();
+			currPosition = clipLength - 10;
 		}
 		timeBar.setProgress(currPosition);
 //		Log.d(TAG, "seek Forward " + currPosition);
@@ -543,7 +551,7 @@ public class PlayerActivity extends Activity {
 			if(offsets<11){
 				currPosition-=clipLength*offsets*0.01;
 			}else{
-				currPosition-=clipLength*offsets*0.1;
+				currPosition-=clipLength*0.1;
 			}
 		}else{
 			currPosition-=10000;
