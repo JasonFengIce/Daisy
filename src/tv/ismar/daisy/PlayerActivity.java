@@ -347,7 +347,7 @@ public class PlayerActivity extends Activity {
 					gotoFinishPage();
 				}
 			});
-			showPanel();
+//			showPanel();
 		}
 		
 		
@@ -403,11 +403,13 @@ public class PlayerActivity extends Activity {
 					}
 					i=0;
 				}else{
-					i+=1;
-					seekPostion = mVideoView.getCurrentPosition();
-					if(i>1){
-						isBuffer = true;
-						showBuffer();
+					if(!paused&&!isBuffer){
+						i+=1;
+						seekPostion = mVideoView.getCurrentPosition();
+						if(i>1){
+							isBuffer = true;
+							showBuffer();
+						}
 					}
 				}
 				mCheckHandler.postDelayed(checkStatus, 200);
