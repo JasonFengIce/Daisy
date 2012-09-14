@@ -1,10 +1,13 @@
 package tv.ismar.daisy.views;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import tv.ismar.daisy.ChannelListActivity;
+import tv.ismar.daisy.ItemDetailActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -19,6 +22,8 @@ import tv.ismar.daisy.views.ItemListScrollView.OnItemClickedListener;
 import tv.ismar.daisy.views.ItemListScrollView.OnSectionPrepareListener;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -219,17 +224,46 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 		}
 		mItemListScrollView.jumpToSection(index);
 	}
+	
+	class GetItemTask extends AsyncTask<Item, Void, Integer> {
+
+		private Item item;
+		@Override
+		protected Integer doInBackground(Item... params) {
+			item = params[0];
+			try {
+				mRestClient.getItem(item.url);
+				return 1;
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+				return 0;
+			}
+			
+		}
+
+		@Override
+		protected void onPostExecute(Integer result) {
+			if(result==0) {
+				showDialog(item.url);
+			} else {
+				Intent intent = new Intent();
+				if(item.is_complex) {
+					intent.setAction("tv.ismar.daisy.Item");
+				} else {
+					intent.setAction("tv.ismar.daisy.Play");
+				}
+				intent.putExtra("url", item.url);
+				startActivity(intent);
+			}
+		}
+		
+	}
+	
 	@Override
 	public void onItemClicked(Item item) {
-		Intent intent = new Intent();
-		if(item.is_complex) {
-			intent.setAction("tv.ismar.daisy.Item");
-		} else {
-			intent.setAction("tv.ismar.daisy.Play");
-		}
-		intent.putExtra("url", item.url);
-		startActivity(intent);
+		new GetItemTask().execute(item);
 	}
+	
 	@Override
 	public void onColumnChanged(int position, int column, int totalColumn) {
 		int percentage = (int)((float)(column+1)/(float)totalColumn*100f);
@@ -252,5 +286,26 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 		mNoVideoContainer.setBackgroundResource(R.drawable.history_no_video);
 		mScrollableSectionList.setVisibility(View.GONE);
 		mItemListScrollView.setVisibility(View.GONE);
+	}
+	
+	private void showDialog(final String url) {
+		AlertDialogFragment newFragment = AlertDialogFragment.newInstance(AlertDialogFragment.ITEM_OFFLINE_DIALOG);
+		newFragment.setPositiveListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				mHistoryManager.deleteHistory(url);
+//				getActivity().finish();
+				dialog.dismiss();
+			}
+		});
+		newFragment.setNegativeListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		newFragment.show(getFragmentManager(), "dialog");
 	}
 }

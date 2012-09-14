@@ -1,6 +1,8 @@
 package tv.ismar.daisy.core;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -10,7 +12,7 @@ import java.net.URLConnection;
 public class NetworkUtils {
 	private static String UA = "A11/V1 Unknown";
 	
-	public static String getJsonStr(String target) {
+	public static String getJsonStr(String target) throws FileNotFoundException {
 		String urlStr = target;
 		try {
 			URL url = new URL(urlStr);
@@ -18,8 +20,6 @@ public class NetworkUtils {
 			StringBuffer sb = new StringBuffer();
 //			conn.addRequestProperty("User-Agent", UA);
 //			conn.addRequestProperty("Accept", "application/json");
-//			conn.connect();
-
 			InputStream in = conn.getInputStream();
 			BufferedReader buff = new BufferedReader(new InputStreamReader(in));
 			String line = null;
@@ -30,6 +30,9 @@ public class NetworkUtils {
 			conn.disconnect();
 			return sb.toString();
 		} catch (Exception e) {
+			if(e.getClass()==FileNotFoundException.class) {
+				throw (FileNotFoundException)e;
+			}
 			e.printStackTrace();
 		}
 		return null;

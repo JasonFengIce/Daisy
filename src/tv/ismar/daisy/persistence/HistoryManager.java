@@ -40,4 +40,6 @@ public interface HistoryManager {
 	 * @return an ArrayList of History.
 	 */
 	public ArrayList<History> getAllHistories();
+	
+	public void deleteHistory(String url);
 }

@@ -9,6 +9,7 @@ import android.os.Bundle;
 public class AlertDialogFragment extends DialogFragment {
 	
 	public static final int NETWORK_EXCEPTION_DIALOG = 1;
+	public static final int ITEM_OFFLINE_DIALOG = 2;
 	
 	private DialogInterface.OnClickListener mPositiveListener;
 	private DialogInterface.OnClickListener mNegativeListener;
@@ -33,10 +34,16 @@ public class AlertDialogFragment extends DialogFragment {
 		Dialog dialog = null;
 		switch(dialogType) {
 		case NETWORK_EXCEPTION_DIALOG:
-			new CustomDialog.Builder(getActivity())
+			dialog = new CustomDialog.Builder(getActivity())
 			.setMessage(R.string.vod_get_data_error)
 			.setPositiveButton(R.string.vod_retry, mPositiveListener)
 			.setNegativeButton(R.string.vod_ok, mNegativeListener).create();
+			break;
+		case ITEM_OFFLINE_DIALOG:
+			dialog = new CustomDialog.Builder(getActivity())
+			.setMessage(R.string.item_offline)
+			.setPositiveButton(R.string.delete_history, mPositiveListener)
+			.setNegativeButton(R.string.vod_cancel, mNegativeListener).create();
 			break;
 		}
 		

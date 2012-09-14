@@ -1,5 +1,6 @@
 package tv.ismar.daisy;
 
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -173,52 +174,57 @@ public class PlayerActivity extends Activity {
 			Log.d(TAG, "init player bundle url === " +obj);
 			String sn = VodUserAgent.getMACAddress();
 			AccessProxy.init(VodUserAgent.deviceType,VodUserAgent.deviceVersion, sn);
-			if(obj!=null){
-				item = simpleRestClient.getItem((String)obj);
-				if(item!=null){
-					clip = item.clip;
-					
+			try {
+				if(obj!=null){
+					item = simpleRestClient.getItem((String)obj);
+					if(item!=null){
+						clip = item.clip;
+						
 //							try {
 //								host = (new URL((String)obj)).getHost();
 //							} catch (MalformedURLException e) {
 //								e.printStackTrace();
 //							}http://127.0.0.1:21098/cord
-					urlInfo = AccessProxy.parse(simpleRestClient.root_url + "/api/clip/"+clip.pk+"/", VodUserAgent.getAccessToken(sn),PlayerActivity.this);
-				}
-			}else{
-				obj = bundle.get("item");
-				if(obj!=null){
-					item = (Item)obj;
-					if(item.clip!=null){
-						clip = item.clip;
-						
-	//							try {
-	//								host = (new URL((String)obj)).getHost();
-	//							} catch (MalformedURLException e) {
-	//								e.printStackTrace();
-	//							}http://127.0.0.1:21098/cord
 						urlInfo = AccessProxy.parse(simpleRestClient.root_url + "/api/clip/"+clip.pk+"/", VodUserAgent.getAccessToken(sn),PlayerActivity.this);
 					}
-				}
-			}
-			if(item!=null){
-				if(item.item_pk!=item.pk){
-					currNum = item.position;
-					Log.d(TAG, "currNum ==="+currNum);
-					subItemUrl = simpleRestClient.root_url + "/api/subitem/"+item.pk+"/";
-					subItem = simpleRestClient.getItem(subItemUrl);
-					itemUrl = simpleRestClient.root_url + "/api/item/"+item.item_pk+"/";
-					item = simpleRestClient.getItem(itemUrl);
-					if(item!=null&&item.subitems!=null){
-						for (int i = 0; i < item.subitems.length; i++) {
-							listItems.add(item.subitems[i]);
+				}else{
+					obj = bundle.get("item");
+					if(obj!=null){
+						item = (Item)obj;
+						if(item.clip!=null){
+							clip = item.clip;
+							
+//							try {
+//								host = (new URL((String)obj)).getHost();
+//							} catch (MalformedURLException e) {
+//								e.printStackTrace();
+//							}http://127.0.0.1:21098/cord
+							urlInfo = AccessProxy.parse(simpleRestClient.root_url + "/api/clip/"+clip.pk+"/", VodUserAgent.getAccessToken(sn),PlayerActivity.this);
 						}
 					}
-				}else{
-					itemUrl = simpleRestClient.root_url + "/api/item/"+item.item_pk+"/";
-					item = simpleRestClient.getItem(itemUrl);
 				}
-			
+				if(item!=null){
+					if(item.item_pk!=item.pk){
+						currNum = item.position;
+						Log.d(TAG, "currNum ==="+currNum);
+						subItemUrl = simpleRestClient.root_url + "/api/subitem/"+item.pk+"/";
+						subItem = simpleRestClient.getItem(subItemUrl);
+						itemUrl = simpleRestClient.root_url + "/api/item/"+item.item_pk+"/";
+						item = simpleRestClient.getItem(itemUrl);
+						if(item!=null&&item.subitems!=null){
+							for (int i = 0; i < item.subitems.length; i++) {
+								listItems.add(item.subitems[i]);
+							}
+						}
+					}else{
+						itemUrl = simpleRestClient.root_url + "/api/item/"+item.item_pk+"/";
+						item = simpleRestClient.getItem(itemUrl);
+					}
+				
+				}
+			} catch (FileNotFoundException e) {
+				PlayerActivity.this.finish();
+				e.printStackTrace();
 			}
 			
 			return urlInfo;
