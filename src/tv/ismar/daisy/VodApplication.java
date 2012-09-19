@@ -20,11 +20,18 @@ import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.persistence.LocalFavoriteManager;
 import tv.ismar.daisy.persistence.LocalHistoryManager;
 import android.app.Application;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.AssetManager;
+import android.util.Log;
 
 
 public class VodApplication extends Application {
 
+	private static final String TAG = "VodApplication";
+	
 	public static final String content_model_api = "/static/meta/content_model.json";
 	public ContentModel[] mContentModel;
 	
@@ -49,6 +56,7 @@ public class VodApplication extends Application {
 		super.onCreate();
 		getContentModelFromAssets();
 		getNewContentModel();
+		registerReceiver(mCloseReceiver, new IntentFilter("com.amlogic.dvbplayer.homekey"));
 	}
 	
 	public void getContentModelFromAssets() {
@@ -219,5 +227,15 @@ public class VodApplication extends Application {
 		// TODO Auto-generated method stub
 		super.onTrimMemory(level);
 	}
+	
+	private BroadcastReceiver mCloseReceiver = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			Log.d(TAG, "Home key is pressed!");
+			System.exit(0);
+		}
+		
+	};
 
 }
