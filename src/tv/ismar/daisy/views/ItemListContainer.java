@@ -45,6 +45,7 @@ public class ItemListContainer extends LinearLayout {
 	
 	private void init() {
 		setOrientation(HORIZONTAL);
+//		setBackgroundColor(0xFF000000);
 		mCellList = new ArrayList<View>();
 	}
 
@@ -132,7 +133,7 @@ public class ItemListContainer extends LinearLayout {
 		} else {
 			measureWidthMode = MeasureSpec.EXACTLY;
 			measureHeightMode = MeasureSpec.getMode(heightMeasureSpec);
-			maxWidth = (getCurrentCol(mCellCount)+1) * (348+81);
+			maxWidth = ((int)(FloatMath.ceil((float)mCellCount/(float)DEFAULT_ROWS))) * (348+81);
 			maxHeight = getHeight();
 			widthMeasureSpec = MeasureSpec.makeMeasureSpec(maxWidth, MeasureSpec.EXACTLY);
 //			heightMeasureSpec = MeasureSpec.makeMeasureSpec(maxHeight, measureHeightMode);
