@@ -557,6 +557,7 @@ public class PlayerActivity extends Activity {
 			return;
 		// //showBuffer();
 		Log.d(TAG, "pause");
+		hideBuffer();
 		mVideoView.pause();
 		paused = true;
 	}
