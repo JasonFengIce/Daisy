@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -242,24 +243,25 @@ public class PlayerActivity extends Activity {
 	}
 
 	// 初始化logo图片
-	private class LogoImageTask extends AsyncTask<String, Void, String> {
+	private class LogoImageTask extends AsyncTask<String, Void, Bitmap> {
 
 		@Override
-		protected void onPostExecute(String result) {
-			if (logoInputStream != null) {
-				logoImage.setImageBitmap(ImageUtils.getBitmapFromInputStream(
-						logoInputStream, 160, 50));
+		protected void onPostExecute(Bitmap result) {
+			if (result != null) {
+				logoImage.setImageBitmap(result);
 			}
 		}
 
 		@Override
-		protected String doInBackground(String... arg0) {
+		protected Bitmap doInBackground(String... arg0) {
 			if (item.logo != null && item.logo.length() > 0)
 				if (NetworkUtils.getInputStream(item.logo) != null) {
 					Log.d(TAG, "item.logo ===" + item.logo);
 					logoInputStream = NetworkUtils.getInputStream(item.logo);
+					Bitmap bitmap = ImageUtils.getBitmapFromInputStream(logoInputStream, 160, 50);
+					return bitmap;
 				}
-			return "success";
+			return null;
 
 		}
 	}
