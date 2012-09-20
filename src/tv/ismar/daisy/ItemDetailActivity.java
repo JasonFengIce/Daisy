@@ -321,7 +321,11 @@ public class ItemDetailActivity extends Activity {
 	
 	private String getClipLength(Clip clip) {
 		if(clip!=null){
-			return clip.length/60 + getResources().getString(R.string.minute);
+			if(clip.length>120) {
+				return clip.length/60 + getResources().getString(R.string.minute);
+			} else {
+				return clip.length + getResources().getString(R.string.second);
+			}
 		} else {
 			return null;
 		}
