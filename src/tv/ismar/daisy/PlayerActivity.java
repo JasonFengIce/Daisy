@@ -258,8 +258,10 @@ public class PlayerActivity extends Activity {
 				if (NetworkUtils.getInputStream(item.logo) != null) {
 					Log.d(TAG, "item.logo ===" + item.logo);
 					logoInputStream = NetworkUtils.getInputStream(item.logo);
-					Bitmap bitmap = ImageUtils.getBitmapFromInputStream(logoInputStream, 160, 50);
-					return bitmap;
+					if(logoInputStream !=null){
+						Bitmap bitmap = ImageUtils.getBitmapFromInputStream(logoInputStream, 160, 50);
+						return bitmap;
+					}
 				}
 			return null;
 
