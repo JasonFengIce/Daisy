@@ -54,7 +54,7 @@ public class PlayerActivity extends Activity {
 	private static final String PREFS_NAME = "tv.ismar.daisy";
 	private static final String TAG = "PLAYER";
 	private static final String BUFFERCONTINUE = "上次放映：";
-	private static final String PlAYSTART ="即将放映：";
+	private static final String PlAYSTART = "即将放映：";
 	private static final String BUFFERING = "正在加载 。。。";
 	private static final String EXTOCLOSE = "网络数据异常，即将退出播放器";
 	@SuppressWarnings("unused")
@@ -124,7 +124,8 @@ public class PlayerActivity extends Activity {
 		// bufferHideAnimation =
 		// AnimationUtils.loadAnimation(this,R.drawable.fade_out);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setContentView(R.layout.vod_player);
 		mVideoView = (VideoView) findViewById(R.id.video_view);
@@ -139,7 +140,7 @@ public class PlayerActivity extends Activity {
 		ffImage = (ImageView) findViewById(R.id.FFImage);
 		fbImage = (ImageView) findViewById(R.id.FBImage);
 		bufferLayout = (LinearLayout) findViewById(R.id.BufferLayout);
-		bufferText = (TextView)findViewById(R.id.BufferText);
+		bufferText = (TextView) findViewById(R.id.BufferText);
 		logoImage = (ImageView) findViewById(R.id.logo_image);
 		panelLayout.setVisibility(View.GONE);
 		bufferLayout.setVisibility(View.GONE);
@@ -162,8 +163,11 @@ public class PlayerActivity extends Activity {
 
 		@Override
 		protected void onPostExecute(ClipInfo result) {
-
-			initPlayer();
+			if(result!=null){
+				initPlayer();
+			}else{
+				ExToClosePlayer();
+			}
 		}
 
 		@Override
@@ -233,10 +237,8 @@ public class PlayerActivity extends Activity {
 
 				}
 			} catch (Exception e) {
-				ExToClosePlayer();
-				e.printStackTrace();
+				return null;
 			}
-
 			return urlInfo;
 
 		}
@@ -258,8 +260,9 @@ public class PlayerActivity extends Activity {
 				if (NetworkUtils.getInputStream(item.logo) != null) {
 					Log.d(TAG, "item.logo ===" + item.logo);
 					logoInputStream = NetworkUtils.getInputStream(item.logo);
-					if(logoInputStream !=null){
-						Bitmap bitmap = ImageUtils.getBitmapFromInputStream(logoInputStream, 160, 50);
+					if (logoInputStream != null) {
+						Bitmap bitmap = ImageUtils.getBitmapFromInputStream(
+								logoInputStream, 160, 50);
 						return bitmap;
 					}
 				}
@@ -269,127 +272,129 @@ public class PlayerActivity extends Activity {
 	}
 
 	private void initPlayer() {
-		if (urlInfo != null) {
-			urls[0] = urlInfo.getNormal();
-			urls[1] = urlInfo.getMedium();
-			urls[2] = urlInfo.getHigh();
-			urls[3] = urlInfo.getAdaptive();
+		try {
+			if (urlInfo != null) {
+				urls[0] = urlInfo.getNormal();
+				urls[1] = urlInfo.getMedium();
+				urls[2] = urlInfo.getHigh();
+				urls[3] = urlInfo.getAdaptive();
 
-			if (item != null) {
-				favoriteManager = DaisyUtils.getFavoriteManager(this);
-				historyManager = DaisyUtils.getHistoryManager(this);
-				if (subItem != null && subItem.item_pk != subItem.pk) {
-					mHistory = historyManager.getHistoryByUrl(itemUrl);
-					favorite = favoriteManager.getFavoriteByUrl(itemUrl);
-					titleText.setText(subItem.title);
-				} else {
-					mHistory = historyManager.getHistoryByUrl(itemUrl);
-					favorite = favoriteManager.getFavoriteByUrl(itemUrl);
-					titleText.setText(item.title);
-				}
-				if (mHistory != null) {
-					if (mHistory.is_continue) {
-						if (mHistory.sub_url != null
-								&& mHistory.sub_url.equals(subItemUrl)) {
+				if (item != null) {
+					favoriteManager = DaisyUtils.getFavoriteManager(this);
+					historyManager = DaisyUtils.getHistoryManager(this);
+					if (subItem != null && subItem.item_pk != subItem.pk) {
+						mHistory = historyManager.getHistoryByUrl(itemUrl);
+						favorite = favoriteManager.getFavoriteByUrl(itemUrl);
+						titleText.setText(subItem.title);
+					} else {
+						mHistory = historyManager.getHistoryByUrl(itemUrl);
+						favorite = favoriteManager.getFavoriteByUrl(itemUrl);
+						titleText.setText(item.title);
+					}
+					if (mHistory != null) {
+						if (mHistory.is_continue) {
+							if (mHistory.sub_url != null
+									&& mHistory.sub_url.equals(subItemUrl)) {
+								isContinue = mHistory.is_continue;
+								tempOffset = (int) mHistory.last_position;
+								currQuality = mHistory.last_quality;
+							} else if (mHistory.sub_url == null
+									&& mHistory.url != null) {
+								isContinue = mHistory.is_continue;
+								tempOffset = (int) mHistory.last_position;
+								currQuality = mHistory.last_quality;
+							}
+						} else {
+							currQuality = 0;
+							tempOffset = 0;
 							isContinue = mHistory.is_continue;
-							tempOffset = (int) mHistory.last_position;
-							currQuality = mHistory.last_quality;
-						} else if (mHistory.sub_url == null
-								&& mHistory.url != null) {
-							isContinue = mHistory.is_continue;
-							tempOffset = (int) mHistory.last_position;
-							currQuality = mHistory.last_quality;
 						}
 					} else {
 						currQuality = 0;
 						tempOffset = 0;
-						isContinue = mHistory.is_continue;
+						isContinue = true;
 					}
-				} else {
-					currQuality = 0;
-					tempOffset = 0;
-					isContinue = true;
+					initQualtiyText();
+					qualityText.setVisibility(View.VISIBLE);
+					titleText.setSelected(true);
+					if (tempOffset > 0 && isContinue == true) {
+						bufferText.setText("  " + BUFFERCONTINUE
+								+ getTimeString(tempOffset));
+					} else {
+						bufferText.setText(PlAYSTART + "《"
+								+ titleText.getText() + "》");
+					}
+					new LogoImageTask().execute();
+
 				}
-				initQualtiyText();
-				qualityText.setVisibility(View.VISIBLE);
-				titleText.setSelected(true);
-				if (tempOffset > 0 && isContinue == true) {
-					bufferText.setText("  " + BUFFERCONTINUE
-							+ getTimeString(tempOffset));
+
+				if (tempOffset > 0 && isContinue) {
+					currPosition = tempOffset;
+					seekPostion = tempOffset;
 				} else {
-					bufferText.setText(PlAYSTART+ "《" + titleText.getText()+"》");
+					currPosition = 0;
+					seekPostion = 0;
 				}
-				new LogoImageTask().execute();
 
-			}
+				Log.d(TAG, "RES_INT_OFFSET currPosition=" + currPosition);
 
-			if (tempOffset > 0 && isContinue) {
-				currPosition = tempOffset;
-				seekPostion = tempOffset;
-			} else {
-				currPosition = 0;
-				seekPostion = 0;
-			}
+				if (urls != null && mVideoView != null) {
 
-			Log.d(TAG, "RES_INT_OFFSET currPosition=" + currPosition);
+					mVideoView.setVideoPath(urls[currQuality]);
 
-			if (urls != null && mVideoView != null) {
+					mVideoView
+							.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+								@Override
+								public void onPrepared(MediaPlayer mp) {
 
-				mVideoView.setVideoPath(urls[currQuality]);
-
-				mVideoView
-						.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-							@Override
-							public void onPrepared(MediaPlayer mp) {
-
-								Log.d(TAG,
-										"mVideoView onPrepared tempOffset =="
-												+ tempOffset);
-								if (mVideoView != null) {
-									clipLength = mVideoView.getDuration();
-//									bufferText.setText("");
-									timeBar.setMax(clipLength);
-									mVideoView.start();
-									mVideoView.seekTo(currPosition);
-									timeBar.setProgress(currPosition);
-									timeTaskStart();
-									checkTaskStart();
+									Log.d(TAG,
+											"mVideoView onPrepared tempOffset =="
+													+ tempOffset);
+									if (mVideoView != null) {
+										clipLength = mVideoView.getDuration();
+										// bufferText.setText("");
+										timeBar.setMax(clipLength);
+										mVideoView.start();
+										mVideoView.seekTo(currPosition);
+										timeBar.setProgress(currPosition);
+										timeTaskStart();
+										checkTaskStart();
+									}
 								}
-							}
-						});
-				mVideoView
-						.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-							@Override
-							public boolean onError(MediaPlayer mp, int what,
-									int extra) {
-								Log.d(TAG,
-										"mVideoView  Error setVideoPath urls[currQuality] ");
-								addHistory(currPosition);
-								ExToClosePlayer();
-								return false;
-							}
-						});
+							});
+					mVideoView
+							.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+								@Override
+								public boolean onError(MediaPlayer mp,
+										int what, int extra) {
+									Log.d(TAG,
+											"mVideoView  Error setVideoPath urls[currQuality] ");
+									addHistory(currPosition);
+									ExToClosePlayer();
+									return false;
+								}
+							});
 
-				mVideoView
-						.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+					mVideoView
+							.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
-							@Override
-							public void onCompletion(MediaPlayer mp) {
-								Log.d(TAG, "mVideoView  Completion");
-								gotoFinishPage();
-							}
-						});
-				// showPanel();
+								@Override
+								public void onCompletion(MediaPlayer mp) {
+									Log.d(TAG, "mVideoView  Completion");
+									gotoFinishPage();
+								}
+							});
+					// showPanel();
+				}
+
+			} else {
+				ExToClosePlayer();
 			}
-
-		}else{
+		} catch (Exception e) {
 			ExToClosePlayer();
 		}
-
 	}
 
-	
-	
 	private void timeTaskStart() {
 		mHandler.removeCallbacks(mUpdateTimeTask);
 		mHandler.post(mUpdateTimeTask);
@@ -412,16 +417,22 @@ public class PlayerActivity extends Activity {
 			}
 		}
 	};
-	private void ExToClosePlayer(){
-		bufferText.setText(EXTOCLOSE);
-		showBuffer();
-		mHandler.postDelayed(finishPlayerActivity, 3000);
+
+	private void ExToClosePlayer() {
+		 if(bufferText!=null){
+			 bufferText.setText(EXTOCLOSE);
+		 }
+		 mHandler.postDelayed(finishPlayerActivity, 3000);
 	}
+
 	private Runnable finishPlayerActivity = new Runnable() {
 		public void run() {
+			mHandler.removeCallbacks(finishPlayerActivity);
 			PlayerActivity.this.finish();
+
 		}
 	};
+
 	private void checkTaskStart() {
 		mCheckHandler.removeCallbacks(checkStatus);
 		mCheckHandler.post(checkStatus);
