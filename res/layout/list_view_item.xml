@@ -26,4 +26,12 @@
         android:layout_marginTop="193dip"
         android:textSize="35dip"
         android:id="@+id/list_item_title"/>
+    <ImageView
+        android:layout_width="57dip"
+        android:layout_height="57dip"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="4dip"
+        android:layout_marginRight="10dip"
+        android:id="@+id/list_item_quality_label"/>
 </RelativeLayout>

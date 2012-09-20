@@ -10,10 +10,13 @@ import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.persistence.FavoriteManager;
+import tv.ismar.daisy.views.AlertDialogFragment;
 import tv.ismar.daisy.views.LoadingDialog;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -44,6 +47,7 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 	private Item[] items;
 	private static final int UPDATE = 1;
 	private static final int UPDATE_BITMAP = 2;
+	private static final int NETWORK_EXCEPTION = -1;
 	private LoadingDialog loadDialog;
 	final SimpleRestClient simpleRest = new SimpleRestClient();
 	private FavoriteManager mFavoriteManager;
@@ -56,30 +60,46 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		initViews();
 		mFavoriteManager = DaisyUtils.getFavoriteManager(this);
 		loadDialogShow();
-		Intent intent = getIntent();
-		if (null != intent) {
-			item = (Item) intent.getExtras().get("item");
+		try {
+			Intent intent = getIntent();
+			if (null != intent) {
+				item = (Item) intent.getExtras().get("item");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			finish();
+			return;
 		}
 		// 实际这些已经封装好了
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				input = NetworkUtils.getInputStream(item.poster_url);
-				bitmap = ImageUtils.getBitmapFromInputStream(input, 480, 270);
+		new Thread(mBitmapTask).start();
+		// 实际这些已经封装好了
+		new Thread(mRelatedTask).start();
+	}
+	
+	private Runnable mBitmapTask= new Runnable() {
+		@Override
+		public void run() {
+			input = NetworkUtils.getInputStream(item.poster_url);
+			bitmap = ImageUtils.getBitmapFromInputStream(input, 480, 270);
+			if(bitmap==null) {
+				
+			} else {
 				mHandle.sendEmptyMessage(UPDATE_BITMAP);
 			}
-		}) {
-		}.start();
-		// 实际这些已经封装好了
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				items = simpleRest.getRelatedItem("/api/tv/relate/" + item.item_pk);
+		}
+	};
+	
+	private Runnable mRelatedTask = new Runnable() {
+		@Override
+		public void run() {
+			items = simpleRest.getRelatedItem("/api/tv/relate/" + item.item_pk);
+			if(items==null || items.length==0) {
+				mHandle.sendEmptyMessage(NETWORK_EXCEPTION);
+			} else {
 				mHandle.sendEmptyMessage(UPDATE);
 			}
-		}) {
-		}.start();
-	}
+		}
+	};
 	
 	@Override
 	protected void onResume() {
@@ -137,6 +157,10 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 				}
 				imageBackgroud.setImageBitmap(bitmap);
 				loadDialogShow();
+				break;
+			case NETWORK_EXCEPTION:
+				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, mRelatedTask);
+				break;
 			}
 		}
 	};
@@ -256,5 +280,27 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 			}
 		}
 		return false;
+	}
+	
+	public void showDialog(int dialogType, final Runnable task) {
+		AlertDialogFragment newFragment = AlertDialogFragment.newInstance(dialogType);
+		newFragment.setPositiveListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				new Thread(task).start();
+				dialog.dismiss();
+			}
+		});
+		newFragment.setNegativeListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				PlayFinishedActivity.this.finish();
+				dialog.dismiss();
+			}
+		});
+		newFragment.show(getFragmentManager(), "dialog");
 	}
 }

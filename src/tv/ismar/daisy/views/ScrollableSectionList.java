@@ -318,4 +318,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 		
 	}
 	
+	public void reset() {
+		removeAllViews();
+	}
 }

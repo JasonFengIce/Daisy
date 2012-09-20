@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ListView
+        android:id="@+id/menu_list"
+        android:layout_width="540dip"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:listSelector="@drawable/menu_selector_focus"
+        android:background="@drawable/context_menu_bg">
+        
+    </ListView>
+</RelativeLayout>

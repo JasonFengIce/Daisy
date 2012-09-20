@@ -23,6 +23,8 @@ public class LocalHistoryManager implements HistoryManager {
 		mDBHelper = DaisyUtils.getDBHelper(context);
 		mHistories = mDBHelper.getAllHistories();
 	}
+	
+	private int mTotalEntriesLimit = 50;
 
 	@Override
 	public void addHistory(String title, String url, long currentPosition) {
@@ -46,7 +48,7 @@ public class LocalHistoryManager implements HistoryManager {
 			cv.put(DBFields.HistroyTable.URL, url);
 			cv.put(DBFields.HistroyTable.LAST_PLAY_TIME, currentTimeMillis);
 			cv.put(DBFields.HistroyTable.LAST_POSITION, currentPosition);
-			mDBHelper.insert(cv, DBFields.HistroyTable.TABLE_NAME);
+			mDBHelper.insert(cv, DBFields.HistroyTable.TABLE_NAME, mTotalEntriesLimit);
 			mHistories = mDBHelper.getAllHistories();
 		}
 	}
@@ -117,7 +119,7 @@ public class LocalHistoryManager implements HistoryManager {
 			cv.put(DBFields.HistroyTable.IS_COMPLEX, history.is_complex?1:0);
 			cv.put(DBFields.HistroyTable.IS_CONTINUE, history.is_continue?1:0);
 			cv.put(DBFields.HistroyTable.SUB_URL, history.sub_url);
-			mDBHelper.insert(cv, DBFields.HistroyTable.TABLE_NAME);
+			mDBHelper.insert(cv, DBFields.HistroyTable.TABLE_NAME, mTotalEntriesLimit);
 			mHistories = mDBHelper.getAllHistories();
 		}
 	}

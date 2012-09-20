@@ -136,8 +136,20 @@ public class DBHelper extends SQLiteOpenHelper {
 	 * @param table the table name which you want to insert to.
 	 * @return the row ID of the newly inserted row, or -1 if an error occurred
 	 */
-	public long insert(ContentValues cv, String table) {
-		return db.insert(table, null, cv);
+	public long insert(ContentValues cv, String table, int limit) {
+		long result = 0;
+		db.beginTransaction();
+		if(limit>0 && table.equals(DBFields.HistroyTable.TABLE_NAME)) {
+			Cursor cur = db.query(table, new String[]{"_id"}, null, null, null, null, "last_played_time desc", null);
+			if(cur!=null && cur.getCount()>=limit) {
+				cur.moveToFirst();
+				long id = cur.getLong(cur.getColumnIndex("_id"));
+				db.delete(table, " _id = ? ", new String[]{String.valueOf(id)});
+			}
+		}
+		result = db.insert(table, null, cv);
+		db.endTransaction();
+		return result;
 	}
 	
 	/**

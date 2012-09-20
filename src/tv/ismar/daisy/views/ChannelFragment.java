@@ -82,13 +82,13 @@ public class ChannelFragment extends Fragment {
 	
 	
 	
-	class InitTask extends AsyncTask<String, Void, Void> {
+	class InitTask extends AsyncTask<String, Void, Integer> {
 		
 		String url;
 		String channel;
 
 		@Override
-		protected Void doInBackground(String... params) {
+		protected Integer doInBackground(String... params) {
 			try {
 				mItemLists = new ArrayList<ItemList>();
 				url = params[0];
@@ -104,9 +104,6 @@ public class ChannelFragment extends Fragment {
 				}
 				if(mSectionList==null){
 					mSectionList = mRestClient.getSections(url);
-					if(mSectionList==null) {
-						mSectionList = mRestClient.getSections(url);
-					}
 				}
 				int itemsCount = 0;
 				for(int i=0; i<mSectionList.size();i++) {
@@ -122,17 +119,23 @@ public class ChannelFragment extends Fragment {
 					}
 					itemList.slug = mSectionList.get(i).slug;
 					itemList.title = mSectionList.get(i).title;
+					itemList.count = mSectionList.get(i).count;
 					mItemLists.add(itemList);
 				}
+				return 0;
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+
+				return -1;
 			}
-			return null;
 		}
 
 		@Override
-		protected void onPostExecute(Void result) {
+		protected void onPostExecute(Integer result) {
+			if(result==-1) {
+				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new InitTask(), new String[]{url, channel});
+				return;
+			}
 			if(mSectionList!=null && mItemLists.get(mCurrentSectionPosition)!=null) {
 				mScrollableSectionList.init(mSectionList, 1365);
 				for(int i=0; i<mItemLists.size(); i++) {
