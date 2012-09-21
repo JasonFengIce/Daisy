@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.View.OnFocusChangeListener;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListener {
@@ -78,12 +79,20 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 		holder.title = (TextView) convertView.findViewById(R.id.list_item_title);
 		holder.previewImage.setUrl(mItemList.get(position).adlet_url);
 		holder.title.setText(mItemList.get(position).title);
+		holder.qualityLabel = (ImageView) convertView.findViewById(R.id.list_item_quality_label);
+		if(mItemList.get(position).quality==3) {
+			holder.qualityLabel.setImageResource(R.drawable.label_hd_small);
+		} else if(mItemList.get(position).quality==4 || mItemList.get(position).quality==5) {
+			holder.qualityLabel.setImageResource(R.drawable.label_uhd_small);
+		}
+		
 		return convertView;
 	}
 	
 	static class Holder {
 		AsyncImageView previewImage;
 		TextView title;
+		ImageView qualityLabel;
 	}
 	
 	public void cancel() {

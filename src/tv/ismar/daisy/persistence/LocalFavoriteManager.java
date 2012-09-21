@@ -38,7 +38,7 @@ public class LocalFavoriteManager implements FavoriteManager {
 			cv.put(DBFields.FavoriteTable.TITLE, title);
 			cv.put(DBFields.FavoriteTable.URL, url);
 			cv.put(DBFields.FavoriteTable.CONTENT_MODEL, content_model);
-			mDBHelper.insert(cv, DBFields.FavoriteTable.TABLE_NAME);
+			mDBHelper.insert(cv, DBFields.FavoriteTable.TABLE_NAME, 0);
 			mFavorites = mDBHelper.getAllFavorites();
 		}
 	}
@@ -112,7 +112,7 @@ public class LocalFavoriteManager implements FavoriteManager {
 			cv.put(DBFields.FavoriteTable.ADLET_URL, favorite.adlet_url);
 			cv.put(DBFields.FavoriteTable.QUALITY, favorite.quality);
 			cv.put(DBFields.FavoriteTable.IS_COMPLEX, favorite.is_complex?1:0);
-			mDBHelper.insert(cv, DBFields.FavoriteTable.TABLE_NAME);
+			mDBHelper.insert(cv, DBFields.FavoriteTable.TABLE_NAME, 0);
 			mFavorites = mDBHelper.getAllFavorites();
 		}
 	}

@@ -85,11 +85,13 @@ public class DBHelper extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		//delete old tables
-		db.execSQL("DROP TABLE IF EXISTS " + DBFields.HistroyTable.TABLE_NAME);
-		db.execSQL("DROP TABLE IF EXISTS " + DBFields.FavoriteTable.TABLE_NAME);
-		
-		db.execSQL(CREATE_HISTORY_TABLE);
-		db.execSQL(CREATE_FAVORITE_TABLE);
+		if(newVersion != oldVersion) {
+			db.execSQL("DROP TABLE IF EXISTS " + DBFields.HistroyTable.TABLE_NAME);
+			db.execSQL("DROP TABLE IF EXISTS " + DBFields.FavoriteTable.TABLE_NAME);
+			
+			db.execSQL(CREATE_HISTORY_TABLE);
+			db.execSQL(CREATE_FAVORITE_TABLE);
+		}
 	}
 	
 	/**
@@ -136,8 +138,27 @@ public class DBHelper extends SQLiteOpenHelper {
 	 * @param table the table name which you want to insert to.
 	 * @return the row ID of the newly inserted row, or -1 if an error occurred
 	 */
-	public long insert(ContentValues cv, String table) {
-		return db.insert(table, null, cv);
+	public long insert(ContentValues cv, String table, int limit) {
+		long result = 0;
+		db.beginTransaction();
+		try {
+			if(limit>0 && table.equals(DBFields.HistroyTable.TABLE_NAME)) {
+				Cursor cur = db.query(table, new String[]{"_id"}, null, null, null, null, "last_played_time desc", null);
+				if(cur!=null && cur.getCount()>=limit) {
+					cur.moveToFirst();
+					long id = cur.getLong(cur.getColumnIndex("_id"));
+					db.delete(table, " _id = ? ", new String[]{String.valueOf(id)});
+				}
+			}
+			result = db.insert(table, null, cv);
+			db.setTransactionSuccessful();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.endTransaction();
+		}
+		return result;
 	}
 	
 	/**

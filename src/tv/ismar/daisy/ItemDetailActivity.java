@@ -79,6 +79,8 @@ public class ItemDetailActivity extends Activity {
 	private HistoryManager mHistoryManager;
 	
 	private History mHistory;
+
+	private ImageView mDetailQualityLabel;
 	
 	private void initViews() {
 		mDetailLeftContainer = (RelativeLayout)findViewById(R.id.detail_left_container);
@@ -86,6 +88,7 @@ public class ItemDetailActivity extends Activity {
 		mDetailTitle = (TextView) findViewById(R.id.detail_title);
 		mDetailIntro = (TextView) findViewById(R.id.detail_intro);
 		mDetailPreviewImg = (ImageView)findViewById(R.id.detail_preview_img);
+		mDetailQualityLabel = (ImageView)findViewById(R.id.detail_quality_label);
 		mBtnLeft = (Button) findViewById(R.id.btn_left);
 		mBtnRight = (Button) findViewById(R.id.btn_right);
 		mBtnFill = (Button) findViewById(R.id.btn_fill);
@@ -301,12 +304,28 @@ public class ItemDetailActivity extends Activity {
 		if(mLoadingDialog.isShowing()){
 			mLoadingDialog.dismiss();
 		}
+		//label_uhd and label_hd has worry name. which label_uhd presents hd.
+		switch(mItem.quality) {
+		case 3:
+			mDetailQualityLabel.setImageResource(R.drawable.label_uhd);
+			break;
+		case 4:
+		case 5:
+			mDetailQualityLabel.setImageResource(R.drawable.label_hd);
+			break;
+		default:
+			mDetailQualityLabel.setVisibility(View.GONE);
+		}
 		isInitialized = true;
 	}
 	
 	private String getClipLength(Clip clip) {
 		if(clip!=null){
-			return clip.length/60 + getResources().getString(R.string.minute);
+			if(clip.length>120) {
+				return clip.length/60 + getResources().getString(R.string.minute);
+			} else {
+				return clip.length + getResources().getString(R.string.second);
+			}
 		} else {
 			return null;
 		}
@@ -418,6 +437,12 @@ public class ItemDetailActivity extends Activity {
 			TextView titleView = (TextView) relatedHolder.findViewById(R.id.related_title);
 			ImageView imgView = (ImageView) relatedHolder.findViewById(R.id.related_preview_img);
 			TextView focusView = (TextView) relatedHolder.findViewById(R.id.related_focus);
+			ImageView qualityLabel = (ImageView) relatedHolder.findViewById(R.id.related_quality_label);
+			if(mRelatedItem[i].quality==3) {
+				qualityLabel.setImageResource(R.drawable.label_hd_small);
+			} else if(mRelatedItem[i].quality==4 || mRelatedItem[i].quality==5) {
+				qualityLabel.setImageResource(R.drawable.label_uhd_small);
+			}
 			imgView.setTag(mRelatedItem[i].adlet_url);
 			new GetImageTask().execute(imgView);
 			titleView.setText(mRelatedItem[i].title);

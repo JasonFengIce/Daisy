@@ -25,6 +25,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -216,7 +218,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				mFavoriteManager.deleteFavoriteByUrl(url);
-//				getActivity().finish();
+				reset();
 				dialog.dismiss();
 			}
 		});
@@ -229,4 +231,13 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		});
 		newFragment.show(getFragmentManager(), "dialog");
 	}
+	
+	private void reset() {
+		mItemListScrollView.reset();
+		mScrollableSectionList.reset();
+		mSectionList = new SectionList();
+		mItemListMap = new HashMap<String, ItemList>();
+		new GetFavoriteTask().execute();
+	}
+	
 }
