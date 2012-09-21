@@ -55,7 +55,7 @@ public class PlayerActivity extends Activity {
 	private static final String TAG = "PLAYER";
 	private static final String BUFFERCONTINUE = "上次放映：";
 	private static final String PlAYSTART = "即将放映：";
-	private static final String BUFFERING = "正在加载 。。。";
+	private static final String BUFFERING = "正在加载 ";
 	private static final String EXTOCLOSE = "网络数据异常，即将退出播放器";
 	@SuppressWarnings("unused")
 	private static final String HOST = "cord.tvxio.com";
