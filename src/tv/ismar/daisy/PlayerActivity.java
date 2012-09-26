@@ -513,12 +513,10 @@ public class PlayerActivity extends Activity {
 				tv.ismar.daisy.RelatedActivity.class);
 		intent.putExtra("item", item);
 		startActivity(intent);
-		timeTaskPause();
-		checkTaskPause();
 		addHistory(seekPostion);
-		seekPostion = 0;
-		currPosition = 0;
-		mVideoView = null;
+		checkTaskPause();
+		timeTaskPause();
+		mVideoView.stopPlayback();
 		PlayerActivity.this.finish();
 	}
 
@@ -777,8 +775,7 @@ public class PlayerActivity extends Activity {
 							checkTaskPause();
 							timeTaskPause();
 							popupDlg.dismiss();
-							mVideoView.clearAnimation();
-							mVideoView = null;
+							mVideoView.stopPlayback();
 							PlayerActivity.this.finish();
 						}
 					};
@@ -1087,4 +1084,20 @@ public class PlayerActivity extends Activity {
 		}
 
 	}
+
+	@Override
+	protected void onPause() {
+		try{
+			addHistory(seekPostion);
+			checkTaskPause();
+			timeTaskPause();
+			mVideoView.stopPlayback();
+			PlayerActivity.this.finish();
+		}catch(Exception e){
+			Log.d(TAG,"Player close to Home");
+		}
+		super.onPause();
+	}
+	
+	
 }
