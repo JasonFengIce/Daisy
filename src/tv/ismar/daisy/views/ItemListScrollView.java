@@ -296,22 +296,24 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 		textView.setTextSize(35);
 		textView.setTextColor(TEXT_COLOR_NOFOCUSED);
 		textView.setGravity(Gravity.CENTER);
-		int height = 0 ;
-		if(title.length()<=2){
-			height = 118;
-			textView.setBackgroundResource(R.drawable.label_two_words);
-		} else if (title.length()==3) {
-			height = 166;
-			textView.setBackgroundResource(R.drawable.label_three_words);
-		} else if (title.length()==4) {
-			height = 214;
-			textView.setBackgroundResource(R.drawable.label_four_words);
-		}
-		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(53, height);
+		textView.setBackgroundResource(R.drawable.section_label_drawable);
+//		int height = 0 ;
+//		if(title.length()<=2){
+//			height = 118;
+//			textView.setBackgroundResource(R.drawable.label_two_words);
+//		} else if (title.length()==3) {
+//			height = 166;
+//			textView.setBackgroundResource(R.drawable.label_three_words);
+//		} else if (title.length()==4) {
+//			height = 214;
+//			textView.setBackgroundResource(R.drawable.label_four_words);
+//		}
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(53, RelativeLayout.LayoutParams.WRAP_CONTENT);
 		layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
 		layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
 		layoutParams.leftMargin = 17;
 		textView.setLayoutParams(layoutParams);
+		textView.setPadding(3, 15, 5, 20);
 		return textView;
 	}
 	

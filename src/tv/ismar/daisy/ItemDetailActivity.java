@@ -464,11 +464,15 @@ public class ItemDetailActivity extends Activity {
 					title.setTextColor(0xff000000);
 					TextView focus = (TextView) v.findViewById(R.id.related_focus);
 					focus.setTextColor(0xff000000);
+					title.setSelected(true);
+					focus.setSelected(true);
 				} else {
 					TextView title = (TextView) v.findViewById(R.id.related_title);
 					title.setTextColor(0xffBBBBBB);
 					TextView focus = (TextView) v.findViewById(R.id.related_focus);
 					focus.setTextColor(0xff999999);
+					title.setSelected(false);
+					focus.setSelected(false);
 				}
 			}
 			if(hasFocus) {

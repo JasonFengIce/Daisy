@@ -192,6 +192,9 @@ public class ScrollableSectionList extends HorizontalScrollView {
 	public boolean arrowScroll(int direction) {
 		if(direction==View.FOCUS_RIGHT){
 			View currentFocused = findFocus();
+			if(currentFocused==null || currentFocused.getTag()==null) {
+				return super.arrowScroll(direction);
+			}
 			int index = (Integer) currentFocused.getTag();
 			if(index < mContainer.getChildCount()-1){
 				return super.arrowScroll(direction);
@@ -201,6 +204,9 @@ public class ScrollableSectionList extends HorizontalScrollView {
 			}
 		} else if(direction==View.FOCUS_LEFT){
 			View currentFocused = findFocus();
+			if(currentFocused==null || currentFocused.getTag()==null) {
+				return super.arrowScroll(direction);
+			}
 			int index = (Integer) currentFocused.getTag();
 			if(index > 0 ){
 				return super.arrowScroll(direction);
