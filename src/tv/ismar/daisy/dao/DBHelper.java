@@ -148,6 +148,7 @@ public class DBHelper extends SQLiteOpenHelper {
 					cur.moveToFirst();
 					long id = cur.getLong(cur.getColumnIndex("_id"));
 					db.delete(table, " _id = ? ", new String[]{String.valueOf(id)});
+					cur.close();
 				}
 			}
 			result = db.insert(table, null, cv);

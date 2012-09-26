@@ -233,7 +233,7 @@ public class VodApplication extends Application {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			Log.d(TAG, "Home key is pressed!");
-			System.exit(0);
+//			System.exit(0);
 		}
 		
 	};

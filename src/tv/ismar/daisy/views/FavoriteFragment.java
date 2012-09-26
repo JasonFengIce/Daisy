@@ -15,6 +15,7 @@ import tv.ismar.daisy.models.ItemList;
 import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
 import tv.ismar.daisy.persistence.FavoriteManager;
+import tv.ismar.daisy.views.HistoryFragment.GetItemTask;
 import tv.ismar.daisy.views.ItemListScrollView.OnColumnChangeListener;
 import tv.ismar.daisy.views.ItemListScrollView.OnItemClickedListener;
 import tv.ismar.daisy.views.ItemListScrollView.OnSectionPrepareListener;
@@ -159,23 +160,44 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		ItemList itemList = mItemListMap.get(section.slug);
 		mItemListScrollView.updateSection(itemList, position);
 	}
+	
+	class GetItemTask extends AsyncTask<Item, Void, Integer> {
+
+		private Item item;
+		@Override
+		protected Integer doInBackground(Item... params) {
+			item = params[0];
+			try {
+				mRestClient.getItem(item.url);
+				return 1;
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+				return 0;
+			}
+			
+		}
+
+		@Override
+		protected void onPostExecute(Integer result) {
+			if(result==0) {
+				showDialog(item.url);
+			} else {
+				Intent intent = new Intent();
+				if(item.is_complex) {
+					intent.setAction("tv.ismar.daisy.Item");
+				} else {
+					intent.setAction("tv.ismar.daisy.Play");
+				}
+				intent.putExtra("url", item.url);
+				startActivity(intent);
+			}
+		}
+		
+	}
+	
 	@Override
 	public void onItemClicked(Item item) {
-		try {
-			mRestClient.getItem(item.url);
-		} catch (FileNotFoundException e) {
-			showDialog(item.url);
-			e.printStackTrace();
-			return;
-		}
-		Intent intent = new Intent();
-		if(item.is_complex) {
-			intent.setAction("tv.ismar.daisy.Item");
-		} else {
-			intent.setAction("tv.ismar.daisy.Play");
-		}
-		intent.putExtra("url", item.url);
-		startActivity(intent);
+		new GetItemTask().execute(item);
 	}
 	@Override
 	public void onColumnChanged(int position, int column, int totalColumn) {
