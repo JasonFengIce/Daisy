@@ -8,3 +8,8 @@ gen
 .classpath
 *.orig
 *.directory
+project.properties
+proguard-android.txt
+proguard-project.txt
+.gitigonre
+/proguard
