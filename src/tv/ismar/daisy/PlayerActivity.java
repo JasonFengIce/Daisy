@@ -149,6 +149,7 @@ public class PlayerActivity extends Activity {
 	}
 
 	private void initClipInfo() {
+		bufferText.setText(BUFFERING);
 		showBuffer();
 		Log.d(TAG, " initClipInfo ");
 		Intent intent = getIntent();
