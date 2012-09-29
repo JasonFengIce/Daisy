@@ -16,7 +16,6 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -51,6 +50,8 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 	private LoadingDialog loadDialog;
 	final SimpleRestClient simpleRest = new SimpleRestClient();
 	private FavoriteManager mFavoriteManager;
+	private static int leftCover = R.drawable.cover_left;
+	private static int rightCover = R.drawable.cover_right;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,32 +76,32 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		// 实际这些已经封装好了
 		new Thread(mRelatedTask).start();
 	}
-	
-	private Runnable mBitmapTask= new Runnable() {
+
+	private Runnable mBitmapTask = new Runnable() {
 		@Override
 		public void run() {
 			input = NetworkUtils.getInputStream(item.poster_url);
 			bitmap = ImageUtils.getBitmapFromInputStream(input, 480, 270);
-			if(bitmap==null) {
-				
+			if (bitmap == null) {
+
 			} else {
 				mHandle.sendEmptyMessage(UPDATE_BITMAP);
 			}
 		}
 	};
-	
+
 	private Runnable mRelatedTask = new Runnable() {
 		@Override
 		public void run() {
 			items = simpleRest.getRelatedItem("/api/tv/relate/" + item.item_pk);
-			if(items==null || items.length==0) {
+			if (items == null || items.length == 0) {
 				mHandle.sendEmptyMessage(NETWORK_EXCEPTION);
 			} else {
 				mHandle.sendEmptyMessage(UPDATE);
 			}
 		}
 	};
-	
+
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
@@ -172,29 +173,34 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 			try {
 				if (hasFocus) {
 					linearRight.setBackgroundResource(0);
-					linearLeft.setBackgroundResource(R.drawable.cover_left);
+					linearLeft.setBackgroundResource(leftCover);
 				} else {
 					linearLeft.setBackgroundResource(0);
-					linearRight.setBackgroundResource(R.drawable.cover_right);
+					linearRight.setBackgroundResource(rightCover);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
 			}
 			break;
 		case R.id.btn_replay:
-			if (hasFocus) {
-				btnReplay.setTextColor(getResources().getColor(R.color.play_finished));
-			} else {
-				btnReplay.setTextColor(getResources().getColor(R.color.search_color));
+			try {
+				if (hasFocus) {
+					btnReplay.setTextColor(getResources().getColor(R.color.play_finished));
+				} else {
+					btnReplay.setTextColor(getResources().getColor(R.color.search_color));
+				}
+				break;
+			} catch (Exception e) {
 			}
-			break;
 		case R.id.btn_favorites:
-			if (hasFocus) {
-				btnFavorites.setTextColor(getResources().getColor(R.color.play_finished));
-			} else {
-				btnFavorites.setTextColor(getResources().getColor(R.color.search_color));
+			try {
+				if (hasFocus) {
+					btnFavorites.setTextColor(getResources().getColor(R.color.play_finished));
+				} else {
+					btnFavorites.setTextColor(getResources().getColor(R.color.search_color));
+				}
+				break;
+			} catch (Exception e) {
 			}
-			break;
 
 		default:
 			break;
@@ -281,11 +287,11 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		}
 		return false;
 	}
-	
+
 	public void showDialog(int dialogType, final Runnable task) {
 		AlertDialogFragment newFragment = AlertDialogFragment.newInstance(dialogType);
 		newFragment.setPositiveListener(new DialogInterface.OnClickListener() {
-			
+
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
@@ -294,7 +300,7 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 			}
 		});
 		newFragment.setNegativeListener(new DialogInterface.OnClickListener() {
-			
+
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				PlayFinishedActivity.this.finish();
