@@ -6,7 +6,7 @@
     android:background="@drawable/related_bg"
     android:focusable="true">
     
-    <ImageView
+    <tv.ismar.daisy.views.AsyncImageView
         android:id="@+id/related_preview_img"
         android:layout_width="184dip"
         android:layout_height="115dip"

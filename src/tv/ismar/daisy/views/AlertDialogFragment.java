@@ -57,5 +57,4 @@ public class AlertDialogFragment extends DialogFragment {
 		f.setArguments(args);
 		return f;
 	}
-	
 }

@@ -226,25 +226,35 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 	}
 	
 	class GetItemTask extends AsyncTask<Item, Void, Integer> {
+		
+		private static final int ITEM_OFFLINE = 0;
+		private static final int ITEM_SUCCESS_GET = 1;
+		private static final int NETWORK_EXCEPTION = 2;
 
 		private Item item;
 		@Override
 		protected Integer doInBackground(Item... params) {
 			item = params[0];
 			try {
-				mRestClient.getItem(item.url);
-				return 1;
+				Item i = mRestClient.getItem(item.url);
+				if(i==null) {
+					return NETWORK_EXCEPTION;
+				} else {
+					return ITEM_SUCCESS_GET;
+				}
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
-				return 0;
+				return ITEM_OFFLINE;
 			}
 			
 		}
 
 		@Override
 		protected void onPostExecute(Integer result) {
-			if(result==0) {
-				showDialog(item.url);
+			if(result== ITEM_OFFLINE) {
+				showDialog(AlertDialogFragment.ITEM_OFFLINE_DIALOG, null, new Object[]{item.url});
+			} else if(result == NETWORK_EXCEPTION) {
+				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new GetItemTask(), new Object[]{item});
 			} else {
 				Intent intent = new Intent();
 				if(item.is_complex) {
@@ -288,15 +298,19 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 		mItemListScrollView.setVisibility(View.GONE);
 	}
 	
-	private void showDialog(final String url) {
-		AlertDialogFragment newFragment = AlertDialogFragment.newInstance(AlertDialogFragment.ITEM_OFFLINE_DIALOG);
+	private void showDialog(final int dialogType, final AsyncTask task, final Object[] params) {
+		AlertDialogFragment newFragment = AlertDialogFragment.newInstance(dialogType);
 		newFragment.setPositiveListener(new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				mHistoryManager.deleteHistory(url);
-//				getActivity().finish();
-				dialog.dismiss();
+				if(dialogType==AlertDialogFragment.NETWORK_EXCEPTION_DIALOG) {
+					task.execute(params);
+				} else {
+					mHistoryManager.deleteHistory((String)params[0]);
+	//				getActivity().finish();
+					dialog.dismiss();
+				}
 			}
 		});
 		newFragment.setNegativeListener(new DialogInterface.OnClickListener() {

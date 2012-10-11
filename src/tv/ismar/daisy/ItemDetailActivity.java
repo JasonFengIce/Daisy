@@ -20,6 +20,7 @@ import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.persistence.FavoriteManager;
 import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.views.AlertDialogFragment;
+import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.LoadingDialog;
 import android.app.Activity;
 import android.content.DialogInterface.OnCancelListener;
@@ -59,7 +60,7 @@ public class ItemDetailActivity extends Activity {
 	private RelativeLayout mDetailLeftContainer;
 	private TextView mDetailTitle;
 	private TextView mDetailIntro;
-	private ImageView mDetailPreviewImg;
+	private AsyncImageView mDetailPreviewImg;
 	private Button mBtnLeft;
 	private Button mBtnRight;
 	private Button mBtnFill;
@@ -87,7 +88,7 @@ public class ItemDetailActivity extends Activity {
 		mDetailAttributeContainer = (LinearLayout) findViewById(R.id.detail_attribute_container);
 		mDetailTitle = (TextView) findViewById(R.id.detail_title);
 		mDetailIntro = (TextView) findViewById(R.id.detail_intro);
-		mDetailPreviewImg = (ImageView)findViewById(R.id.detail_preview_img);
+		mDetailPreviewImg = (AsyncImageView)findViewById(R.id.detail_preview_img);
 		mDetailQualityLabel = (ImageView)findViewById(R.id.detail_quality_label);
 		mBtnLeft = (Button) findViewById(R.id.btn_left);
 		mBtnRight = (Button) findViewById(R.id.btn_right);
@@ -297,7 +298,7 @@ public class ItemDetailActivity extends Activity {
 		
 		if(mItem.poster_url!=null){
 			mDetailPreviewImg.setTag(mItem.poster_url);
-			new GetImageTask().execute(mDetailPreviewImg);
+			mDetailPreviewImg.setUrl(mItem.poster_url);
 		}
 		
 		new GetRelatedTask().execute();
@@ -435,7 +436,7 @@ public class ItemDetailActivity extends Activity {
 			layoutParams.leftMargin = 1;
 			relatedHolder.setLayoutParams(layoutParams);
 			TextView titleView = (TextView) relatedHolder.findViewById(R.id.related_title);
-			ImageView imgView = (ImageView) relatedHolder.findViewById(R.id.related_preview_img);
+			AsyncImageView imgView = (AsyncImageView) relatedHolder.findViewById(R.id.related_preview_img);
 			TextView focusView = (TextView) relatedHolder.findViewById(R.id.related_focus);
 			ImageView qualityLabel = (ImageView) relatedHolder.findViewById(R.id.related_quality_label);
 			if(mRelatedItem[i].quality==3) {
@@ -444,7 +445,7 @@ public class ItemDetailActivity extends Activity {
 				qualityLabel.setImageResource(R.drawable.label_uhd_small);
 			}
 			imgView.setTag(mRelatedItem[i].adlet_url);
-			new GetImageTask().execute(imgView);
+			imgView.setUrl(mRelatedItem[i].adlet_url);
 			titleView.setText(mRelatedItem[i].title);
 			focusView.setText(mRelatedItem[i].focus);
 			relatedHolder.setTag(mRelatedItem[i].item_url);

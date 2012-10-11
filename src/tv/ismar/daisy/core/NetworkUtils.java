@@ -20,6 +20,9 @@ public class NetworkUtils {
 			StringBuffer sb = new StringBuffer();
 //			conn.addRequestProperty("User-Agent", UA);
 //			conn.addRequestProperty("Accept", "application/json");
+			if(conn.getResponseCode()==404) {
+				throw new FileNotFoundException();
+			}
 			InputStream in = conn.getInputStream();
 			BufferedReader buff = new BufferedReader(new InputStreamReader(in));
 			String line = null;
@@ -30,9 +33,6 @@ public class NetworkUtils {
 			conn.disconnect();
 			return sb.toString();
 		} catch (Exception e) {
-			if(e.getClass()==FileNotFoundException.class) {
-				throw (FileNotFoundException)e;
-			}
 			e.printStackTrace();
 		}
 		return null;

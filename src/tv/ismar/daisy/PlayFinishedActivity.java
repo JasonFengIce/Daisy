@@ -11,6 +11,7 @@ import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.persistence.FavoriteManager;
 import tv.ismar.daisy.views.AlertDialogFragment;
+import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.LoadingDialog;
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -33,11 +34,11 @@ import android.widget.TextView;
 public class PlayFinishedActivity extends Activity implements OnFocusChangeListener, OnItemClickListener, OnClickListener {
 	private Item item = new Item();
 	private InputStream input;
-	private Bitmap bitmap;
+//	private Bitmap bitmap;
 	LinearLayout linearLeft;
 	LinearLayout linearRight;
 	TextView tvVodName;
-	ImageView imageBackgroud;
+	AsyncImageView imageBackgroud;
 	ImageView imageVodLabel;
 	Button btnReplay;
 	Button btnFavorites;
@@ -72,23 +73,24 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 			return;
 		}
 		// 实际这些已经封装好了
-		new Thread(mBitmapTask).start();
+//		new Thread(mBitmapTask).start();
 		// 实际这些已经封装好了
 		new Thread(mRelatedTask).start();
+		initLayout();
 	}
 
-	private Runnable mBitmapTask = new Runnable() {
-		@Override
-		public void run() {
-			input = NetworkUtils.getInputStream(item.poster_url);
-			bitmap = ImageUtils.getBitmapFromInputStream(input, 480, 270);
-			if (bitmap == null) {
-
-			} else {
-				mHandle.sendEmptyMessage(UPDATE_BITMAP);
-			}
-		}
-	};
+//	private Runnable mBitmapTask = new Runnable() {
+//		@Override
+//		public void run() {
+//			input = NetworkUtils.getInputStream(item.poster_url);
+//			bitmap = ImageUtils.getBitmapFromInputStream(input, 480, 270);
+//			if (bitmap == null) {
+//
+//			} else {
+//				mHandle.sendEmptyMessage(UPDATE_BITMAP);
+//			}
+//		}
+//	};
 
 	private Runnable mRelatedTask = new Runnable() {
 		@Override
@@ -117,7 +119,7 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		linearLeft = (LinearLayout) findViewById(R.id.linear_left);
 		linearRight = (LinearLayout) findViewById(R.id.linear_right);
 		tvVodName = (TextView) findViewById(R.id.tv_vodie_name);
-		imageBackgroud = (ImageView) findViewById(R.id.image_vodie_backgroud);
+		imageBackgroud = (AsyncImageView) findViewById(R.id.image_vodie_backgroud);
 		imageVodLabel = (ImageView) findViewById(R.id.image_vod_label);
 		btnReplay = (Button) findViewById(R.id.btn_replay);
 		btnReplay.setOnClickListener(this);
@@ -143,22 +145,22 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 				playAdapter = new PlayFinishedAdapter(PlayFinishedActivity.this, items, R.layout.playfinish_gridview_item);
 				gridview.setAdapter(playAdapter);
 				break;
-			case UPDATE_BITMAP:
-				tvVodName.setText(item.title);
-				switch (item.quality) {
-				case 3:
-					imageVodLabel.setBackgroundResource(R.drawable.label_uhd);
-					break;
-				case 4:
-					imageVodLabel.setBackgroundResource(R.drawable.label_hd);
-					break;
-				default:
-					imageVodLabel.setVisibility(View.GONE);
-					break;
-				}
-				imageBackgroud.setImageBitmap(bitmap);
-				loadDialogShow();
-				break;
+//			case UPDATE_BITMAP:
+//				tvVodName.setText(item.title);
+//				switch (item.quality) {
+//				case 3:
+//					imageVodLabel.setBackgroundResource(R.drawable.label_uhd);
+//					break;
+//				case 4:
+//					imageVodLabel.setBackgroundResource(R.drawable.label_hd);
+//					break;
+//				default:
+//					imageVodLabel.setVisibility(View.GONE);
+//					break;
+//				}
+//				imageBackgroud.setImageBitmap(bitmap);
+//				loadDialogShow();
+//				break;
 			case NETWORK_EXCEPTION:
 				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, mRelatedTask);
 				break;
@@ -308,5 +310,22 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 			}
 		});
 		newFragment.show(getFragmentManager(), "dialog");
+	}
+	
+	private void initLayout() {
+		tvVodName.setText(item.title);
+		switch (item.quality) {
+		case 3:
+			imageVodLabel.setBackgroundResource(R.drawable.label_uhd);
+			break;
+		case 4:
+			imageVodLabel.setBackgroundResource(R.drawable.label_hd);
+			break;
+		default:
+			imageVodLabel.setVisibility(View.GONE);
+			break;
+		}
+		imageBackgroud.setUrl(item.poster_url);
+		loadDialogShow();
 	}
 }

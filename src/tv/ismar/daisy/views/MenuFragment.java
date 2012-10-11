@@ -1,18 +1,32 @@
 package tv.ismar.daisy.views;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
+import org.xmlpull.v1.XmlPullParserException;
+
+import tv.ismar.daisy.R;
 import android.app.Fragment;
-import android.content.ComponentName;
-import android.content.Intent;
+import android.content.res.XmlResourceParser;
 import android.os.Bundle;
-import android.view.KeyEvent;
+import android.util.AttributeSet;
+import android.util.Xml;
+import android.view.InflateException;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class MenuFragment extends Fragment implements Menu {
+public class MenuFragment extends Fragment{
+	
+	public ArrayList<MenuItem> mMenuList;
+	
+	public static MenuFragment newInstance(int layout) {
+		MenuFragment fragment = new MenuFragment();
+		Bundle args = new Bundle();
+		args.putInt("layout", layout);
+		fragment.setArguments(args);
+		return fragment;
+	}
 
 	public interface OnMenuItemClickListener {
 		public void onMenuItemClick();
@@ -27,157 +41,42 @@ public class MenuFragment extends Fragment implements Menu {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		return super.onCreateView(inflater, container, savedInstanceState);
+		Bundle args = getArguments();
+		if(args!=null) {
+			int layoutResId = args.getInt("layout");
+			return inflater.inflate(layoutResId, container, false);
+		}
+		return inflater.inflate(R.layout.menu_layout, container, false);
+	}
+	
+	public void inflate(int resId, ArrayList<MenuItem> menuList) {
+		XmlResourceParser parser = null;
+        try {
+            parser = getResources().getLayout(resId);
+            AttributeSet attrs = Xml.asAttributeSet(parser);
+            
+            parseMenu(parser, attrs, menuList);
+        } catch (XmlPullParserException e) {
+            throw new InflateException("Error inflating menu XML", e);
+        } catch (IOException e) {
+            throw new InflateException("Error inflating menu XML", e);
+        } finally {
+            if (parser != null) parser.close();
+        }
 	}
 
-	@Override
-	public MenuItem add(CharSequence title) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public MenuItem add(int titleRes) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public MenuItem add(int groupId, int itemId, int order, CharSequence title) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public MenuItem add(int groupId, int itemId, int order, int titleRes) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public SubMenu addSubMenu(CharSequence title) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public SubMenu addSubMenu(int titleRes) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public SubMenu addSubMenu(int groupId, int itemId, int order,
-			CharSequence title) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public SubMenu addSubMenu(int groupId, int itemId, int order, int titleRes) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int addIntentOptions(int groupId, int itemId, int order,
-			ComponentName caller, Intent[] specifics, Intent intent, int flags,
-			MenuItem[] outSpecificItems) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void removeItem(int id) {
+	private void parseMenu(XmlResourceParser parser, AttributeSet attrs,
+			ArrayList<MenuItem> menuList) throws XmlPullParserException, IOException {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
-	public void removeGroup(int groupId) {
-		// TODO Auto-generated method stub
-		
+	public static class MenuItem {
+		public int id;
+		public boolean isEnable;
+		public String title;
+		public ArrayList<MenuItem> subMenu;
+		public int parentId;
 	}
-
-	@Override
-	public void clear() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setGroupCheckable(int group, boolean checkable,
-			boolean exclusive) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setGroupVisible(int group, boolean visible) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setGroupEnabled(int group, boolean enabled) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean hasVisibleItems() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public MenuItem findItem(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public MenuItem getItem(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void close() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean performShortcut(int keyCode, KeyEvent event, int flags) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isShortcutKey(int keyCode, KeyEvent event) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean performIdentifierAction(int id, int flags) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void setQwertyMode(boolean isQwerty) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	
 }

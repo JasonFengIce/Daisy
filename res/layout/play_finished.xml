@@ -36,7 +36,7 @@
                 android:layout_below="@+id/tv_vodie_name"
                 android:background="@drawable/preview_img_bg" >
 
-                <ImageView
+                <tv.ismar.daisy.views.AsyncImageView
                     android:id="@+id/image_vodie_backgroud"
                     android:layout_width="478px"
                     android:layout_height="269px"
