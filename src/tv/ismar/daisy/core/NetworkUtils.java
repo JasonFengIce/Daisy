@@ -12,7 +12,7 @@ import java.net.URLConnection;
 public class NetworkUtils {
 	private static String UA = "A11/V1 Unknown";
 	
-	public static String getJsonStr(String target) throws FileNotFoundException {
+	public static String getJsonStr(String target) throws ItemOfflineException {
 		String urlStr = target;
 		try {
 			URL url = new URL(urlStr);
@@ -21,7 +21,7 @@ public class NetworkUtils {
 //			conn.addRequestProperty("User-Agent", UA);
 //			conn.addRequestProperty("Accept", "application/json");
 			if(conn.getResponseCode()==404) {
-				throw new FileNotFoundException();
+				throw new ItemOfflineException();
 			}
 			InputStream in = conn.getInputStream();
 			BufferedReader buff = new BufferedReader(new InputStreamReader(in));
@@ -33,6 +33,9 @@ public class NetworkUtils {
 			conn.disconnect();
 			return sb.toString();
 		} catch (Exception e) {
+			if(e instanceof ItemOfflineException) {
+				throw (ItemOfflineException) e;
+			}
 			e.printStackTrace();
 		}
 		return null;

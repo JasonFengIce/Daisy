@@ -7,6 +7,7 @@ import java.util.HashMap;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.ItemOfflineException;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.ContentModel;
 import tv.ismar.daisy.models.Favorite;
@@ -172,16 +173,17 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		@Override
 		protected Integer doInBackground(Item... params) {
 			item = params[0];
+			Item i;
 			try {
-				Item i = mRestClient.getItem(item.url);
-				if(i==null) {
-					return NETWORK_EXCEPTION;
-				} else {
-					return ITEM_SUCCESS_GET;
-				}
-			} catch (FileNotFoundException e) {
+				i = mRestClient.getItem(item.url);
+			} catch (ItemOfflineException e) {
 				e.printStackTrace();
 				return ITEM_OFFLINE;
+			}
+			if(i==null) {
+				return NETWORK_EXCEPTION;
+			} else {
+				return ITEM_SUCCESS_GET;
 			}
 			
 		}
@@ -191,7 +193,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			if(result== ITEM_OFFLINE) {
 				showDialog(AlertDialogFragment.ITEM_OFFLINE_DIALOG, null, new Object[]{item.url});
 			} else if(result == NETWORK_EXCEPTION) {
-				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new GetItemTask(), new Object[]{item});
+				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new GetItemTask(), new Item[]{item});
 			} else {
 				Intent intent = new Intent();
 				if(item.is_complex) {
@@ -255,8 +257,8 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 				} else {
 					mFavoriteManager.deleteFavoriteByUrl((String)params[0]);
 					reset();
-					dialog.dismiss();
 				}
+				dialog.dismiss();
 			}
 		});
 		newFragment.setNegativeListener(new DialogInterface.OnClickListener() {

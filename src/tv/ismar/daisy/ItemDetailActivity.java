@@ -9,6 +9,7 @@ import java.util.Map;
 
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.ImageUtils;
+import tv.ismar.daisy.core.ItemOfflineException;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.Attribute;
@@ -180,7 +181,7 @@ public class ItemDetailActivity extends Activity {
 		protected Void doInBackground(String... params) {
 			try {
 				mItem = mSimpleRestClient.getItem(params[0]);
-			} catch (FileNotFoundException e) {
+			} catch (ItemOfflineException e) {
 				e.printStackTrace();
 			}
 //			if(mItem.subitems!=null && mItem.subitems.length>0 && mItem.subitems[0].item_pk==0){

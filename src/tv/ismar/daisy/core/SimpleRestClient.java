@@ -34,7 +34,7 @@ public class SimpleRestClient {
 		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (FileNotFoundException e) {
+		} catch (ItemOfflineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -54,7 +54,7 @@ public class SimpleRestClient {
 		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (FileNotFoundException e) {
+		} catch (ItemOfflineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -70,7 +70,7 @@ public class SimpleRestClient {
 		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (FileNotFoundException e) {
+		} catch (ItemOfflineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -85,7 +85,7 @@ public class SimpleRestClient {
 		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (FileNotFoundException e) {
+		} catch (ItemOfflineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -100,14 +100,14 @@ public class SimpleRestClient {
 		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (FileNotFoundException e) {
+		} catch (ItemOfflineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	public Item getItem(String url) throws FileNotFoundException {
+	public Item getItem(String url) throws ItemOfflineException {
 		try {
 			String jsonStr = NetworkUtils.getJsonStr(url);
 			// Log.d("Item is", jsonStr);
@@ -127,7 +127,7 @@ public class SimpleRestClient {
 		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (FileNotFoundException e) {
+		} catch (ItemOfflineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

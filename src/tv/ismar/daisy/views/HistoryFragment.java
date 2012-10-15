@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 
 import tv.ismar.daisy.ChannelListActivity;
 import tv.ismar.daisy.ItemDetailActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.ItemOfflineException;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
@@ -17,6 +19,7 @@ import tv.ismar.daisy.models.ItemList;
 import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
 import tv.ismar.daisy.persistence.HistoryManager;
+import tv.ismar.daisy.views.FavoriteFragment.GetFavoriteTask;
 import tv.ismar.daisy.views.ItemListScrollView.OnColumnChangeListener;
 import tv.ismar.daisy.views.ItemListScrollView.OnItemClickedListener;
 import tv.ismar.daisy.views.ItemListScrollView.OnSectionPrepareListener;
@@ -80,11 +83,7 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 		mNoVideoContainer = (RelativeLayout) fragmentView.findViewById(R.id.no_video_container);
 	}
 	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		mHistoryManager = DaisyUtils.getHistoryManager(getActivity());
-		mRestClient = new SimpleRestClient();
+	private void initHistoryList(){
 		//define today's ItemList
 		mTodayItemList = new ItemList();
 		mTodayItemList.objects = new ArrayList<Item>();
@@ -100,6 +99,14 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 		mEarlyItemList.objects = new ArrayList<Item>();
 		mEarlyItemList.slug = "early";
 		mEarlyItemList.title = getResources().getString(R.string.vod_movielist_recent);
+	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mHistoryManager = DaisyUtils.getHistoryManager(getActivity());
+		mRestClient = new SimpleRestClient();
+		initHistoryList();
 		
 		mSectionList = new SectionList();
 	}
@@ -235,16 +242,17 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 		@Override
 		protected Integer doInBackground(Item... params) {
 			item = params[0];
+			Item i;
 			try {
-				Item i = mRestClient.getItem(item.url);
-				if(i==null) {
-					return NETWORK_EXCEPTION;
-				} else {
-					return ITEM_SUCCESS_GET;
-				}
-			} catch (FileNotFoundException e) {
+				i = mRestClient.getItem(item.url);
+			} catch (ItemOfflineException e) {
 				e.printStackTrace();
 				return ITEM_OFFLINE;
+			}
+			if(i==null) {
+				return NETWORK_EXCEPTION;
+			} else {
+				return ITEM_SUCCESS_GET;
 			}
 			
 		}
@@ -254,7 +262,7 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 			if(result== ITEM_OFFLINE) {
 				showDialog(AlertDialogFragment.ITEM_OFFLINE_DIALOG, null, new Object[]{item.url});
 			} else if(result == NETWORK_EXCEPTION) {
-				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new GetItemTask(), new Object[]{item});
+				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new GetItemTask(), new Item[]{item});
 			} else {
 				Intent intent = new Intent();
 				if(item.is_complex) {
@@ -308,9 +316,9 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 					task.execute(params);
 				} else {
 					mHistoryManager.deleteHistory((String)params[0]);
-	//				getActivity().finish();
-					dialog.dismiss();
+					reset();
 				}
+				dialog.dismiss();
 			}
 		});
 		newFragment.setNegativeListener(new DialogInterface.OnClickListener() {
@@ -321,5 +329,13 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 			}
 		});
 		newFragment.show(getFragmentManager(), "dialog");
+	}
+	
+	private void reset() {
+		mItemListScrollView.reset();
+		mScrollableSectionList.reset();
+		mSectionList = new SectionList();
+		initHistoryList();
+		new GetHistoryTask().execute();
 	}
 }
