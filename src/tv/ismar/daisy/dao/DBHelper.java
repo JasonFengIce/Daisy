@@ -143,7 +143,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		db.beginTransaction();
 		try {
 			if(limit>0 && table.equals(DBFields.HistroyTable.TABLE_NAME)) {
-				Cursor cur = db.query(table, new String[]{"_id"}, null, null, null, null, "last_played_time desc", null);
+				Cursor cur = db.query(table, new String[]{"_id"}, null, null, null, null, " last_played_time asc", null);
 				if(cur!=null && cur.getCount()>=limit) {
 					cur.moveToFirst();
 					long id = cur.getLong(cur.getColumnIndex("_id"));

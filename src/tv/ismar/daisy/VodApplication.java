@@ -203,7 +203,6 @@ public class VodApplication extends Application {
     }
 	@Override
 	public void onTerminate() {
-		// TODO Auto-generated method stub
 		super.onTerminate();
 	}
 
@@ -233,7 +232,10 @@ public class VodApplication extends Application {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			Log.d(TAG, "Home key is pressed!");
-//			System.exit(0);
+			Intent i = new Intent();
+			i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			i.setClass(getApplicationContext(), ChannelListActivity.class);
+			startActivity(i);
 		}
 		
 	};
