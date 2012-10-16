@@ -53,10 +53,10 @@ public class PlayerActivity extends Activity {
 	@SuppressWarnings("unused")
 	private static final String PREFS_NAME = "tv.ismar.daisy";
 	private static final String TAG = "PLAYER";
-	private static final String BUFFERCONTINUE = "上次放映：";
-	private static final String PlAYSTART = "即将放映：";
-	private static final String BUFFERING = "正在加载 ";
-	private static final String EXTOCLOSE = "网络数据异常，即将退出播放器";
+	private static final String BUFFERCONTINUE = " 上次放映：";
+	private static final String PlAYSTART = " 即将放映：";
+	private static final String BUFFERING = " 正在加载 ";
+	private static final String EXTOCLOSE = " 网络数据异常，即将退出播放器";
 	@SuppressWarnings("unused")
 	private static final String HOST = "cord.tvxio.com";
 
@@ -148,8 +148,9 @@ public class PlayerActivity extends Activity {
 
 	private void initClipInfo() {
 		bufferText.setText(BUFFERING);
-		if (mVideoView!=null)
+		if (mVideoView!=null){
 			mVideoView.setAlpha(0);
+		}
 		showBuffer();
 		Log.d(TAG, " initClipInfo ");
 		Intent intent = getIntent();
@@ -407,7 +408,7 @@ public class PlayerActivity extends Activity {
 				if (mVideoView.isPlaying()) {
 					seekPostion = mVideoView.getCurrentPosition();
 				}
-				mHandler.postDelayed(mUpdateTimeTask, 300);
+				mHandler.postDelayed(mUpdateTimeTask, 500);
 			} else {
 				Log.d(TAG, "mVideoView ======= null or err");
 				timeTaskPause();
@@ -445,14 +446,12 @@ public class PlayerActivity extends Activity {
 			if (mVideoView != null) {
 				// Log.d(TAG,
 				// "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
-				if (mVideoView.isPlaying()
-						&& Math.abs(mVideoView.getCurrentPosition()
-								- seekPostion) > 0) {
+				if (mVideoView.isPlaying() && Math.abs(mVideoView.getCurrentPosition() - seekPostion) > 0) {
 					if (isBuffer || bufferLayout.isShown()) {
 						isBuffer = false;
-						if(mVideoView.getAlpha()<1)
-							mVideoView.setAlpha(1);
 						hideBuffer();
+					}else{
+						if(mVideoView.getAlpha()<1) mVideoView.setAlpha(1);
 					}
 					if (!isSeek) {
 						timeBar.setProgress(currPosition);
@@ -469,7 +468,7 @@ public class PlayerActivity extends Activity {
 						}
 					}
 				}
-				mCheckHandler.postDelayed(checkStatus, 200);
+				mCheckHandler.postDelayed(checkStatus, 500);
 			} else {
 				Log.d(TAG, "mVideoView ====== null or err");
 				checkTaskPause();
