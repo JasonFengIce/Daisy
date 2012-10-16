@@ -350,13 +350,13 @@ public class PlayerActivity extends Activity {
 									if (mVideoView != null) {
 										clipLength = mVideoView.getDuration();
 										// bufferText.setText("");
-										mVideoView.setAlpha(1);
 										timeBar.setMax(clipLength);
 										mVideoView.start();
 										mVideoView.seekTo(currPosition);
 										timeBar.setProgress(currPosition);
 										timeTaskStart();
 										checkTaskStart();
+										mVideoView.setAlpha(1);
 									}
 								}
 							});
