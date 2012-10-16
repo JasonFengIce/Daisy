@@ -41,5 +41,13 @@ public interface HistoryManager {
 	 */
 	public ArrayList<History> getAllHistories();
 	
+	/**
+	 * Delete a history entry in database by url
+	 * @param url
+	 */
 	public void deleteHistory(String url);
+	/**
+	 * Delete all histories in database
+	 */
+	public void deleteAll();
 }

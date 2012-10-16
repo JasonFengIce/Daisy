@@ -580,6 +580,7 @@ public class ItemDetailActivity extends Activity {
 		@Override
 		public void onCancel(DialogInterface dialog) {
 			ItemDetailActivity.this.finish();
+			dialog.dismiss();
 		}
 	};
 	

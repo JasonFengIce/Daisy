@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import org.xmlpull.v1.XmlPullParserException;
 
 import tv.ismar.daisy.R;
-import android.app.Fragment;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
@@ -20,9 +21,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class MenuFragment extends Fragment implements OnItemClickListener {
+public class MenuFragment extends DialogFragment implements OnItemClickListener {
+	
+	public final static String TAG = "MenuFragment"; 
 	
 	public ArrayList<MenuItem> mMenuList;
 	
@@ -38,12 +42,8 @@ public class MenuFragment extends Fragment implements OnItemClickListener {
 		public void onMenuItemClicked(MenuItem item);
 	}
 	
-	public static MenuFragment newInstance(int layout) {
-		MenuFragment fragment = new MenuFragment();
-		Bundle args = new Bundle();
-		args.putInt("layout", layout);
-		fragment.setArguments(args);
-		return fragment;
+	public static MenuFragment newInstance() {
+		return new MenuFragment();
 	}
 
 	public interface OnMenuItemClickListener {
@@ -53,7 +53,6 @@ public class MenuFragment extends Fragment implements OnItemClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
 		mMenuList = new ArrayList<MenuFragment.MenuItem>();
 		MenuItem deleteItem = new MenuItem();
 		deleteItem.id = 1;
@@ -67,26 +66,22 @@ public class MenuFragment extends Fragment implements OnItemClickListener {
 		mMenuList.add(clearItem);
 	}
 
+	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		Bundle args = getArguments();
-		View menuFragment = null;
-		if(args!=null) {
-			int layoutResId = args.getInt("layout");
-			menuFragment = inflater.inflate(layoutResId, container, false);
-		} else {
-			menuFragment =  inflater.inflate(R.layout.menu_layout, container, false);
-		}
-		mMenuListView = (ListView) menuFragment.findViewById(R.id.menu_list);
+	public Dialog onCreateDialog(Bundle savedInstanceState) {
+		View layout = LayoutInflater.from(getActivity()).inflate(R.layout.menu_layout, null);
+		Dialog menuDialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+		menuDialog.addContentView(layout, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+		mMenuListView = (ListView) layout.findViewById(R.id.menu_list);
 		initLayout();
-		return menuFragment;
+		return menuDialog;
 	}
-	
-	
+
 	private void initLayout() {
 		MenuAdapter adapter = new MenuAdapter(getActivity(), mMenuList);
 		mMenuListView.setAdapter(adapter);
+		mMenuListView.setOnItemClickListener(this);
+//		mMenuListView.requestFocus();
 	}
 
 	public void inflate(int resId, ArrayList<MenuItem> menuList) {
@@ -157,9 +152,14 @@ public class MenuFragment extends Fragment implements OnItemClickListener {
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		if(mOnMenuItemClickedListener!=null) {
-			mOnMenuItemClickedListener.onMenuItemClicked((MenuItem) mMenuListView.getAdapter().getItem(position));
+			mOnMenuItemClickedListener.onMenuItemClicked((MenuItem) (mMenuListView.getAdapter().getItem(position)));
+			dismiss();
 		}
 		
+	}
+	
+	public boolean isShowing() {
+		return getDialog()!=null?getDialog().isShowing():false;
 	}
 	
 }

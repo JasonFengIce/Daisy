@@ -1,6 +1,5 @@
 package tv.ismar.daisy;
 
-import tv.ismar.daisy.views.AlertDialogFragment;
 import tv.ismar.daisy.views.ChannelFragment;
 import tv.ismar.daisy.views.FavoriteFragment;
 import tv.ismar.daisy.views.HistoryFragment;
@@ -10,8 +9,14 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 
 public class ChannelListActivity extends Activity {
+	
+	private final static String TAG = "ChannelListActivity";
+	
+	private OnMenuToggleListener mOnMenuToggleListener;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +38,13 @@ public class ChannelListActivity extends Activity {
 			}
 		}
 		if(url==null) {
-			url = "http://cord.tvxio.com/api/bookmarks/";
+			url = "http://cord.tvxio.com/api/histories/";
 		}
 		if(title==null) {
 			title = "华语电影";
 		}
 		if(channel==null) {
-			channel = "$bookmarks";
+			channel = "$histories";
 		}
 		
 		FragmentManager fragmentManager = getFragmentManager();
@@ -66,9 +71,30 @@ public class ChannelListActivity extends Activity {
 
 	@Override
 	protected void onDestroy() {
-		System.exit(0);
+//		System.exit(0);
 		super.onDestroy();
 	}
+
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if(keyCode==KeyEvent.KEYCODE_MENU) {
+			if(mOnMenuToggleListener!=null) {
+				mOnMenuToggleListener.OnMenuToggle();
+				return true;
+			}
+		}
+		return super.onKeyUp(keyCode, event);
+	}
 	
+	public void registerOnMenuToggleListener(OnMenuToggleListener listener) {
+		mOnMenuToggleListener = listener;
+	}
 	
+	public void unregisterOnMenuToggleListener() {
+		mOnMenuToggleListener = null;
+	}
+	
+	public interface OnMenuToggleListener {
+		public void OnMenuToggle();
+	}
 }

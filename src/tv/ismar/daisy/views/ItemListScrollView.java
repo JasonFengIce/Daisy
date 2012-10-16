@@ -27,7 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.view.View.OnKeyListener;
 
-public class ItemListScrollView extends HorizontalScrollView implements OnFocusChangeListener, OnClickListener, OnImageViewLoadListener, OnLowMemoryListener, OnKeyListener {
+public class ItemListScrollView extends HorizontalScrollView implements OnFocusChangeListener, OnClickListener, OnImageViewLoadListener, OnLowMemoryListener {
 	
 	/*
 	 * defines max number of cells can be show in a single screen.
@@ -38,6 +38,8 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 	private static final String TAG = "ItemListScrollView";
 	
 	public int mCurrentPosition;
+	
+	public View mCurrentSelectedView;
 	
 	public ArrayList<ItemListContainer> mSectionContainerList;
 	
@@ -63,7 +65,6 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
     private OnSectionPrepareListener mOnSectionPrepareListener;
     private OnColumnChangeListener mOnColumnChangeListener;
     private OnItemClickedListener mOnItemClickedListener;
-    private OnContextMenuListener mOnContextMenuListener;
     
     /**
      * when a AsyncImageView is on image loading task, it will be add to this queue;
@@ -201,7 +202,6 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 				qualityLabel.setImageResource(R.drawable.label_uhd_small);
 			}
 			cellHolder.setOnClickListener(this);
-			cellHolder.setOnKeyListener(this);
 			container.addView(cellHolder, i);
 		}
 	}
@@ -582,6 +582,7 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 			titleView.setTextColor(TEXT_COLOR_FOCUSED);
 			v.setBackgroundResource(R.drawable.list_item_bg_hot);
 			titleView.setSelected(true);
+			mCurrentSelectedView = v;
 		} else {
 			titleView.setTextColor(TEXT_COLOR_NOFOCUSED);
 			v.setBackgroundResource(android.R.color.transparent);
@@ -604,11 +605,7 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 	public void setOnItemClickedListener(OnItemClickedListener listener) {
 		mOnItemClickedListener = listener;
 	}
-	
-	public void setOnContextMenuListener(OnContextMenuListener listener) {
-		mOnContextMenuListener = listener;
-	}
-	
+
 	public interface OnItemClickedListener {
 		public void onItemClicked(Item item);
 	}
@@ -704,27 +701,16 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 	}
 	
 	public void reset() {
+		clean();
+		init();
+	}
+	
+	public void clean() {
 		for(int i=0;i<mSectionContainerList.size();i++) {
 			mSectionContainerList.get(i).removeAllViews();
 		}
 		mSectionContainerList.clear();
 		removeAllViews();
-		init();
 	}
-
-	@Override
-	public boolean onKey(View v, int keyCode, KeyEvent event) {
-		if(keyCode == KeyEvent.KEYCODE_MENU && v!=null) {
-			try {
-				Item item = (Item) v.getTag();
-				if(mOnContextMenuListener!=null) {
-					mOnContextMenuListener.onContextMenuCreate(item);
-				}
-				return true;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
-	}
+	
 }

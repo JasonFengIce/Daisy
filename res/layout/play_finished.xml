@@ -24,10 +24,12 @@
 
             <TextView
                 android:id="@+id/tv_vodie_name"
-                android:layout_width="wrap_content"
+                android:layout_width="550dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:textSize="45dp" />
+                android:textSize="45dp"
+                android:maxLines="4"
+                android:ellipsize="end"/>
 
             <LinearLayout
                 android:id="@+id/linear_vodie_backgroud"

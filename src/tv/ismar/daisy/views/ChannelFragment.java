@@ -52,6 +52,10 @@ public class ChannelFragment extends Fragment {
 	
 	public String mChannel;
 	
+	private LoadingDialog mLoadingDialog;
+	
+	private boolean isInitTaskLoading;
+	
 	private void initViews(View fragmentView) {
 		mItemListScrollView = (ItemListScrollView) fragmentView.findViewById(R.id.itemlist_scroll_view);
 		mItemListScrollView.setOnSectionPrepareListener(mOnSectionPrepareListener);
@@ -67,6 +71,7 @@ public class ChannelFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		mLoadingDialog = new LoadingDialog(getActivity(), getResources().getString(R.string.loading));
 		View fragmentView = inflater.inflate(R.layout.list_view, container, false);
 		initViews(fragmentView);
 		new InitTask().execute(mUrl, mChannel);
@@ -86,6 +91,15 @@ public class ChannelFragment extends Fragment {
 		
 		String url;
 		String channel;
+
+		@Override
+		protected void onPreExecute() {
+			if(mLoadingDialog!=null && !mLoadingDialog.isShowing()) {
+				mLoadingDialog.show();
+			}
+			isInitTaskLoading = true;
+			super.onPreExecute();
+		}
 
 		@Override
 		protected Integer doInBackground(String... params) {
@@ -148,6 +162,10 @@ public class ChannelFragment extends Fragment {
 				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new InitTask(), new String[]{url, channel});
 			}
 //			new GetItemListTask().execute();
+			if(mLoadingDialog!=null && mLoadingDialog.isShowing()) {
+				mLoadingDialog.dismiss();
+			}
+			isInitTaskLoading = false;
 			super.onPostExecute(result);
 		}
 		
@@ -255,6 +273,9 @@ public class ChannelFragment extends Fragment {
 	public void onPause() {
 		if(mItemListScrollView != null) {
 			mItemListScrollView.setPause(true);
+		}
+		if(mLoadingDialog!=null&& mLoadingDialog.isShowing()) {
+			mLoadingDialog.dismiss();
 		}
 		super.onPause();
 	}

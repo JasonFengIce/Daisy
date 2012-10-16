@@ -1,14 +1,11 @@
 package tv.ismar.daisy.views;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 
 import tv.ismar.daisy.ChannelListActivity;
-import tv.ismar.daisy.ItemDetailActivity;
+import tv.ismar.daisy.ChannelListActivity.OnMenuToggleListener;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.ItemOfflineException;
@@ -19,25 +16,29 @@ import tv.ismar.daisy.models.ItemList;
 import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
 import tv.ismar.daisy.persistence.HistoryManager;
-import tv.ismar.daisy.views.FavoriteFragment.GetFavoriteTask;
 import tv.ismar.daisy.views.ItemListScrollView.OnColumnChangeListener;
 import tv.ismar.daisy.views.ItemListScrollView.OnItemClickedListener;
 import tv.ismar.daisy.views.ItemListScrollView.OnSectionPrepareListener;
+import tv.ismar.daisy.views.MenuFragment.MenuItem;
+import tv.ismar.daisy.views.MenuFragment.OnMenuItemClickedListener;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class HistoryFragment extends Fragment implements OnSectionPrepareListener, OnColumnChangeListener, OnItemClickedListener, OnSectionSelectChangedListener {
+public class HistoryFragment extends Fragment implements OnSectionPrepareListener, 
+														OnColumnChangeListener, 
+														OnItemClickedListener, 
+														OnSectionSelectChangedListener, 
+														OnMenuToggleListener,
+														OnMenuItemClickedListener{
 	
 	private HistoryManager mHistoryManager;
 	private ItemListScrollView mItemListScrollView;
@@ -53,6 +54,15 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 	private SimpleRestClient mRestClient;
 	
 	private RelativeLayout mNoVideoContainer;
+	
+	private LoadingDialog mLoadingDialog;
+	
+	private boolean isInGetHistoryTask;
+	private boolean isInGetItemTask;
+	
+	private MenuFragment mMenuFragment;
+	
+	public final static String MENU_TAG = "HistoryMenu";
 	
 	private long getTodayStartPoint() {
 		long currentTime = System.currentTimeMillis();
@@ -84,6 +94,7 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 	}
 	
 	private void initHistoryList(){
+		
 		//define today's ItemList
 		mTodayItemList = new ItemList();
 		mTodayItemList.objects = new ArrayList<Item>();
@@ -106,8 +117,9 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 		super.onCreate(savedInstanceState);
 		mHistoryManager = DaisyUtils.getHistoryManager(getActivity());
 		mRestClient = new SimpleRestClient();
+		mLoadingDialog = new LoadingDialog(getActivity(), getResources().getString(R.string.loading));
 		initHistoryList();
-		
+		createMenu();
 		mSectionList = new SectionList();
 	}
 	
@@ -121,6 +133,14 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 	}
 	
 	class GetHistoryTask extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected void onPreExecute() {
+			if(mLoadingDialog!=null && !mLoadingDialog.isShowing()) {
+				mLoadingDialog.show();
+			}
+			isInGetHistoryTask = true;
+		}
 
 		@Override
 		protected Void doInBackground(Void... params) {
@@ -188,6 +208,10 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 			} else {
 				no_video();
 			}
+			if(mLoadingDialog!=null && mLoadingDialog.isShowing()) {
+				mLoadingDialog.dismiss();
+			}
+			isInGetHistoryTask = false;
 		}
 		
 	}
@@ -208,6 +232,7 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 		if(mItemListScrollView != null) {
 			mItemListScrollView.setPause(false);
 		}
+		((ChannelListActivity)getActivity()).registerOnMenuToggleListener(this);
 		super.onResume();
 	}
 
@@ -216,6 +241,7 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 		if(mItemListScrollView != null) {
 			mItemListScrollView.setPause(true);
 		}
+		((ChannelListActivity)getActivity()).unregisterOnMenuToggleListener();
 		super.onPause();
 	}
 	
@@ -239,6 +265,15 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 		private static final int NETWORK_EXCEPTION = 2;
 
 		private Item item;
+		
+		@Override
+		protected void onPreExecute() {
+			if(mLoadingDialog!=null && !mLoadingDialog.isShowing()) {
+				mLoadingDialog.show();
+			}
+			isInGetItemTask = true;
+		}
+
 		@Override
 		protected Integer doInBackground(Item... params) {
 			item = params[0];
@@ -273,6 +308,10 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 				intent.putExtra("url", item.url);
 				startActivity(intent);
 			}
+			if(mLoadingDialog!=null && mLoadingDialog.isShowing()) {
+				mLoadingDialog.dismiss();
+			}
+			isInGetItemTask = false;
 		}
 		
 	}
@@ -312,9 +351,9 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				if(dialogType==AlertDialogFragment.NETWORK_EXCEPTION_DIALOG) {
+				if(dialogType==AlertDialogFragment.NETWORK_EXCEPTION_DIALOG && !isInGetItemTask) {
 					task.execute(params);
-				} else {
+				} else if (!isInGetHistoryTask) {
 					mHistoryManager.deleteHistory((String)params[0]);
 					reset();
 				}
@@ -338,4 +377,72 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 		initHistoryList();
 		new GetHistoryTask().execute();
 	}
+
+	@Override
+	public void OnMenuToggle() {
+		if(mMenuFragment==null) {
+			createMenu();
+		}
+		if(mMenuFragment.isShowing()) {
+			mMenuFragment.dismiss();
+		} else {
+			mMenuFragment.show(getFragmentManager(), MENU_TAG);
+		}
+	}
+	
+	private void createMenu() {
+		mMenuFragment = MenuFragment.newInstance();
+		mMenuFragment.setOnMenuItemClickedListener(this);
+	}
+
+	@Override
+	public void onMenuItemClicked(MenuItem item) {
+		switch(item.id) {
+		case 1:
+			if(mItemListScrollView!=null && mItemListScrollView.mCurrentSelectedView!=null) {
+				if(mItemListScrollView.mCurrentSelectedView.hasFocus()) {
+					Item selectedItem = null;
+					TextView titleView = (TextView) mItemListScrollView.mCurrentSelectedView.findViewById(R.id.list_item_title);
+					Object obj = titleView.getTag();
+					if(obj!=null) {
+						selectedItem = (Item) obj;
+						if(!isInGetHistoryTask && selectedItem.url!=null) {
+							mHistoryManager.deleteHistory(selectedItem.url);
+							reset();
+						}
+					}
+				}
+			}
+			break;
+		case 2:
+			if(mItemListScrollView!=null) {
+				if(!isInGetHistoryTask) {
+					mHistoryManager.deleteAll();
+					reset();
+				}
+			}
+			break;
+		}
+	}
+
+	@Override
+	public void onDetach() {
+		if(mLoadingDialog.isShowing()){
+			mLoadingDialog.dismiss();
+		}
+		mLoadingDialog = null;
+		mHistoryManager = null;
+		mSectionList = null;
+		mTodayItemList = null;
+		mYesterdayItemList = null;
+		mEarlyItemList = null;
+		mItemListScrollView.clean();
+		mItemListScrollView = null;
+		mScrollableSectionList = null;
+		mRestClient = null;
+		mMenuFragment = null;
+		super.onDetach();
+	}
+	
+	
 }

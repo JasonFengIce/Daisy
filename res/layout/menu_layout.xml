@@ -9,7 +9,9 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:listSelector="@drawable/menu_selector_focus"
-        android:background="@drawable/context_menu_bg">
+        android:background="@drawable/context_menu_bg"
+        android:paddingTop="50dip"
+        android:paddingBottom="50dip">
         
     </ListView>
 </RelativeLayout>

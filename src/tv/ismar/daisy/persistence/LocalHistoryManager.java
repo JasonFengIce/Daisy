@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.util.Log;
 
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.dao.DBHelper;
@@ -127,10 +128,17 @@ public class LocalHistoryManager implements HistoryManager {
 	@Override
 	public void deleteHistory(String url) {
 		if(url==null) {
-			throw new RuntimeException("history or history's field should not be null");
+			throw new RuntimeException("url should not be null");
 		}
-		mDBHelper.delete(DBFields.HistroyTable.TABLE_NAME, url);
-		mHistories = getAllHistories();
+		int rowsAffected = mDBHelper.delete(DBFields.HistroyTable.TABLE_NAME, url);
+		Log.d("LocalHistoryManager", rowsAffected + "records delete");
+		mHistories = mDBHelper.getAllHistories();
+	}
+
+	@Override
+	public void deleteAll() {
+		mDBHelper.delete(DBFields.HistroyTable.TABLE_NAME, null);
+		mHistories.clear();
 	}
 
 }

@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import tv.ismar.daisy.ChannelListActivity.OnMenuToggleListener;
+import tv.ismar.daisy.ChannelListActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
@@ -20,6 +22,8 @@ import tv.ismar.daisy.views.HistoryFragment.GetItemTask;
 import tv.ismar.daisy.views.ItemListScrollView.OnColumnChangeListener;
 import tv.ismar.daisy.views.ItemListScrollView.OnItemClickedListener;
 import tv.ismar.daisy.views.ItemListScrollView.OnSectionPrepareListener;
+import tv.ismar.daisy.views.MenuFragment.MenuItem;
+import tv.ismar.daisy.views.MenuFragment.OnMenuItemClickedListener;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
 import android.app.Fragment;
 import android.content.DialogInterface;
@@ -34,7 +38,12 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class FavoriteFragment extends Fragment implements OnSectionSelectChangedListener, OnColumnChangeListener, OnItemClickedListener, OnSectionPrepareListener {
+public class FavoriteFragment extends Fragment implements OnSectionSelectChangedListener,
+														OnColumnChangeListener, 
+														OnItemClickedListener, 
+														OnSectionPrepareListener,
+														OnMenuToggleListener,
+														OnMenuItemClickedListener{
 	
 	private ItemListScrollView mItemListScrollView;
 	private ScrollableSectionList mScrollableSectionList;
@@ -52,6 +61,14 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	
 	private RelativeLayout mNoVideoContainer;
 	private HashMap<String, ItemList> mItemListMap;
+	
+	private boolean isInGetFavoriteTask;
+	private boolean isInGetItemTask;
+	
+	private MenuFragment mMenuFragment;
+	private LoadingDialog mLoadingDialog;
+	
+	public final static String MENU_TAG = "FavoriteMenu";
 	
 	private void initViews(View fragmentView) {
 		mItemListScrollView = (ItemListScrollView) fragmentView.findViewById(R.id.itemlist_scroll_view);
@@ -85,9 +102,19 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		mContentModels = application.mContentModel;
 		mSectionList = new SectionList();
 		mItemListMap = new HashMap<String, ItemList>();
+		mLoadingDialog = new LoadingDialog(getActivity(), getResources().getString(R.string.loading));
+		createMenu();
 	}
 	
 	class GetFavoriteTask extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected void onPreExecute() {
+			if(mLoadingDialog!=null && !mLoadingDialog.isShowing()) {
+				mLoadingDialog.show();
+			}
+			isInGetFavoriteTask = true;
+		}
 
 		@Override
 		protected Void doInBackground(Void... params) {
@@ -140,6 +167,11 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			int totalColumnsOfSectionX = mItemListScrollView.getTotalColumnCount(mCurrentSectionPosition);
 			mScrollableSectionList.setPercentage(mCurrentSectionPosition, (int)(1f/(float)totalColumnsOfSectionX*100f));
 			mItemListScrollView.jumpToSection(mCurrentSectionPosition);
+			
+			if(mLoadingDialog!=null && mLoadingDialog.isShowing()) {
+				mLoadingDialog.dismiss();
+			}
+			isInGetFavoriteTask = false;
 		}
 		
 	}
@@ -169,6 +201,14 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		private static final int NETWORK_EXCEPTION = 2;
 		
 		private Item item;
+		
+		@Override
+		protected void onPreExecute() {
+			if(mLoadingDialog!=null && !mLoadingDialog.isShowing()) {
+				mLoadingDialog.show();
+			}
+			isInGetItemTask = true;
+		}
 		
 		@Override
 		protected Integer doInBackground(Item... params) {
@@ -204,6 +244,11 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 				intent.putExtra("url", item.url);
 				startActivity(intent);
 			}
+			
+			if(mLoadingDialog!=null && mLoadingDialog.isShowing()) {
+				mLoadingDialog.dismiss();
+			}
+			isInGetItemTask = false;
 		}
 		
 	}
@@ -229,6 +274,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		if(mItemListScrollView != null) {
 			mItemListScrollView.setPause(false);
 		}
+		((ChannelListActivity)getActivity()).registerOnMenuToggleListener(this);
 		super.onResume();
 	}
 	@Override
@@ -236,6 +282,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		if(mItemListScrollView != null) {
 			mItemListScrollView.setPause(true);
 		}
+		((ChannelListActivity)getActivity()).registerOnMenuToggleListener(this);
 		super.onPause();
 	}
 	
@@ -254,7 +301,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			public void onClick(DialogInterface dialog, int which) {
 				if(dialogType==AlertDialogFragment.NETWORK_EXCEPTION_DIALOG) {
 					task.execute(params);
-				} else {
+				} else if(!isInGetFavoriteTask) {
 					mFavoriteManager.deleteFavoriteByUrl((String)params[0]);
 					reset();
 				}
@@ -277,6 +324,69 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		mSectionList = new SectionList();
 		mItemListMap = new HashMap<String, ItemList>();
 		new GetFavoriteTask().execute();
+	}
+	
+	private void createMenu() {
+		mMenuFragment = MenuFragment.newInstance();
+		mMenuFragment.setOnMenuItemClickedListener(this);
+	}
+	
+	@Override
+	public void onMenuItemClicked(MenuItem item) {
+		switch(item.id) {
+		case 1:
+			if(mItemListScrollView!=null && mItemListScrollView.mCurrentSelectedView!=null) {
+				if(mItemListScrollView.mCurrentSelectedView.hasFocus()) {
+					Item selectedItem = null;
+					TextView titleView = (TextView) mItemListScrollView.mCurrentSelectedView.findViewById(R.id.list_item_title);
+					Object obj = titleView.getTag();
+					if(obj!=null) {
+						selectedItem = (Item) obj;
+						if(!isInGetFavoriteTask && selectedItem.url!=null) {
+							mFavoriteManager.deleteFavoriteByUrl(selectedItem.url);
+							reset();
+						}
+					}
+				}
+			}
+			break;
+		case 2:
+			if(mItemListScrollView!=null) {
+				if(!isInGetFavoriteTask) {
+					mFavoriteManager.deleteAll();
+					reset();
+				}
+			}
+			break;
+		}
+	}
+	
+	@Override
+	public void OnMenuToggle() {
+		if(mMenuFragment==null) {
+			createMenu();
+		}
+		if(mMenuFragment.isShowing()) {
+			mMenuFragment.dismiss();
+		} else {
+			mMenuFragment.show(getFragmentManager(), MENU_TAG);
+		}
+	}
+	@Override
+	public void onDetach() {
+		if(mLoadingDialog.isShowing()){
+			mLoadingDialog.dismiss();
+		}
+		mLoadingDialog = null;
+		mFavoriteManager = null;
+		mSectionList = null;
+		mItemListMap = null;
+		mItemListScrollView.clean();
+		mItemListScrollView = null;
+		mScrollableSectionList = null;
+		mRestClient = null;
+		mMenuFragment = null;
+		super.onDetach();
 	}
 	
 }
