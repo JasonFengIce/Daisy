@@ -124,12 +124,10 @@ public class PlayerActivity extends Activity {
 		// bufferHideAnimation =
 		// AnimationUtils.loadAnimation(this,R.drawable.fade_out);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setContentView(R.layout.vod_player);
 		mVideoView = (VideoView) findViewById(R.id.video_view);
-		mVideoView.clearAnimation();
 		panelLayout = (LinearLayout) findViewById(R.id.PanelLayout);
 		titleText = (TextView) findViewById(R.id.TitleText);
 		qualityText = (TextView) findViewById(R.id.QualityText);
@@ -150,6 +148,8 @@ public class PlayerActivity extends Activity {
 
 	private void initClipInfo() {
 		bufferText.setText(BUFFERING);
+		if (mVideoView!=null)
+			mVideoView.setAlpha(0);
 		showBuffer();
 		Log.d(TAG, " initClipInfo ");
 		Intent intent = getIntent();
@@ -340,20 +340,17 @@ public class PlayerActivity extends Activity {
 				Log.d(TAG, "RES_INT_OFFSET currPosition=" + currPosition);
 
 				if (urls != null && mVideoView != null) {
-
 					mVideoView.setVideoPath(urls[currQuality]);
-
 					mVideoView
 							.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 								@Override
 								public void onPrepared(MediaPlayer mp) {
 
-									Log.d(TAG,
-											"mVideoView onPrepared tempOffset =="
-													+ tempOffset);
+									Log.d(TAG,"mVideoView onPrepared tempOffset ==" + tempOffset);
 									if (mVideoView != null) {
 										clipLength = mVideoView.getDuration();
 										// bufferText.setText("");
+										mVideoView.setAlpha(1);
 										timeBar.setMax(clipLength);
 										mVideoView.start();
 										mVideoView.seekTo(currPosition);
