@@ -468,7 +468,7 @@ public class PlayerActivity extends Activity {
 						}
 					}
 				}
-				mCheckHandler.postDelayed(checkStatus, 500);
+				mCheckHandler.postDelayed(checkStatus, 300);
 			} else {
 				Log.d(TAG, "mVideoView ====== null or err");
 				checkTaskPause();
