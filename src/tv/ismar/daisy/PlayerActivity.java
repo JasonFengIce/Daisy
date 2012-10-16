@@ -356,7 +356,6 @@ public class PlayerActivity extends Activity {
 										timeBar.setProgress(currPosition);
 										timeTaskStart();
 										checkTaskStart();
-										mVideoView.setAlpha(1);
 									}
 								}
 							});
@@ -451,6 +450,8 @@ public class PlayerActivity extends Activity {
 								- seekPostion) > 0) {
 					if (isBuffer || bufferLayout.isShown()) {
 						isBuffer = false;
+						if(mVideoView.getAlpha()<1)
+							mVideoView.setAlpha(1);
 						hideBuffer();
 					}
 					if (!isSeek) {
