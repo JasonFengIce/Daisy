@@ -53,10 +53,10 @@ public class PlayerActivity extends Activity {
 	@SuppressWarnings("unused")
 	private static final String PREFS_NAME = "tv.ismar.daisy";
 	private static final String TAG = "PLAYER";
-	private static final String BUFFERCONTINUE = "上次放映：";
-	private static final String PlAYSTART = "即将放映：";
-	private static final String BUFFERING = "正在加载 ";
-	private static final String EXTOCLOSE = "网络数据异常，即将退出播放器";
+	private static final String BUFFERCONTINUE = " 上次放映：";
+	private static final String PlAYSTART = " 即将放映：";
+	private static final String BUFFERING = " 正在加载 ";
+	private static final String EXTOCLOSE = " 网络数据异常，即将退出播放器";
 	@SuppressWarnings("unused")
 	private static final String HOST = "cord.tvxio.com";
 
@@ -124,12 +124,10 @@ public class PlayerActivity extends Activity {
 		// bufferHideAnimation =
 		// AnimationUtils.loadAnimation(this,R.drawable.fade_out);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setContentView(R.layout.vod_player);
 		mVideoView = (VideoView) findViewById(R.id.video_view);
-		mVideoView.clearAnimation();
 		panelLayout = (LinearLayout) findViewById(R.id.PanelLayout);
 		titleText = (TextView) findViewById(R.id.TitleText);
 		qualityText = (TextView) findViewById(R.id.QualityText);
@@ -150,6 +148,9 @@ public class PlayerActivity extends Activity {
 
 	private void initClipInfo() {
 		bufferText.setText(BUFFERING);
+		if (mVideoView!=null){
+			mVideoView.setAlpha(0);
+		}
 		showBuffer();
 		Log.d(TAG, " initClipInfo ");
 		Intent intent = getIntent();
@@ -340,17 +341,13 @@ public class PlayerActivity extends Activity {
 				Log.d(TAG, "RES_INT_OFFSET currPosition=" + currPosition);
 
 				if (urls != null && mVideoView != null) {
-
 					mVideoView.setVideoPath(urls[currQuality]);
-
 					mVideoView
 							.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 								@Override
 								public void onPrepared(MediaPlayer mp) {
 
-									Log.d(TAG,
-											"mVideoView onPrepared tempOffset =="
-													+ tempOffset);
+									Log.d(TAG,"mVideoView onPrepared tempOffset ==" + tempOffset);
 									if (mVideoView != null) {
 										clipLength = mVideoView.getDuration();
 										// bufferText.setText("");
@@ -411,7 +408,7 @@ public class PlayerActivity extends Activity {
 				if (mVideoView.isPlaying()) {
 					seekPostion = mVideoView.getCurrentPosition();
 				}
-				mHandler.postDelayed(mUpdateTimeTask, 300);
+				mHandler.postDelayed(mUpdateTimeTask, 500);
 			} else {
 				Log.d(TAG, "mVideoView ======= null or err");
 				timeTaskPause();
@@ -449,12 +446,12 @@ public class PlayerActivity extends Activity {
 			if (mVideoView != null) {
 				// Log.d(TAG,
 				// "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
-				if (mVideoView.isPlaying()
-						&& Math.abs(mVideoView.getCurrentPosition()
-								- seekPostion) > 0) {
+				if (mVideoView.isPlaying() && Math.abs(mVideoView.getCurrentPosition() - seekPostion) > 0) {
 					if (isBuffer || bufferLayout.isShown()) {
 						isBuffer = false;
 						hideBuffer();
+					}else{
+						if(mVideoView.getAlpha()<1) mVideoView.setAlpha(1);
 					}
 					if (!isSeek) {
 						timeBar.setProgress(currPosition);
@@ -471,7 +468,7 @@ public class PlayerActivity extends Activity {
 						}
 					}
 				}
-				mCheckHandler.postDelayed(checkStatus, 200);
+				mCheckHandler.postDelayed(checkStatus, 300);
 			} else {
 				Log.d(TAG, "mVideoView ====== null or err");
 				checkTaskPause();
