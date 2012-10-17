@@ -1,8 +1,8 @@
 package tv.ismar.daisy;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -20,9 +20,9 @@ import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.persistence.FavoriteManager;
 import tv.ismar.daisy.persistence.HistoryManager;
-import tv.ismar.daisy.views.AlertDialogFragment;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.LoadingDialog;
+import tv.ismar.daisy.views.AsyncImageView.OnImageViewLoadListener;
 import android.app.Activity;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface;
@@ -30,6 +30,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,7 +43,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class ItemDetailActivity extends Activity {
+public class ItemDetailActivity extends Activity implements OnImageViewLoadListener {
+	
+	private static final String TAG = "ItemDetailActivity";
 	
 	public static final String action = "tv.ismar.daisy.Item";
 	
@@ -84,12 +87,15 @@ public class ItemDetailActivity extends Activity {
 
 	private ImageView mDetailQualityLabel;
 	
+	private HashMap<AsyncImageView, Boolean> mLoadingImageQueue = new HashMap<AsyncImageView, Boolean>();
+	
 	private void initViews() {
 		mDetailLeftContainer = (RelativeLayout)findViewById(R.id.detail_left_container);
 		mDetailAttributeContainer = (LinearLayout) findViewById(R.id.detail_attribute_container);
 		mDetailTitle = (TextView) findViewById(R.id.detail_title);
 		mDetailIntro = (TextView) findViewById(R.id.detail_intro);
 		mDetailPreviewImg = (AsyncImageView)findViewById(R.id.detail_preview_img);
+		mDetailPreviewImg.setOnImageViewLoadListener(this);
 		mDetailQualityLabel = (ImageView)findViewById(R.id.detail_quality_label);
 		mBtnLeft = (Button) findViewById(R.id.btn_left);
 		mBtnRight = (Button) findViewById(R.id.btn_right);
@@ -146,6 +152,7 @@ public class ItemDetailActivity extends Activity {
 				new GetItemTask().execute(url);
 			}
 		}
+			DaisyUtils.getVodApplication(this).addActivityToPool(this);
 	}
 	
 	@Override
@@ -161,17 +168,40 @@ public class ItemDetailActivity extends Activity {
 				mHistory = mHistoryManager.getHistoryByUrl(url);
 			}
 		}
+		for(HashMap.Entry<AsyncImageView, Boolean> entry: mLoadingImageQueue.entrySet()) {
+			if(entry.getValue()) {
+				entry.getKey().setPaused(true);
+			}
+		}
 		super.onResume();
 	}
 
 	@Override
 	protected void onPause() {
+		if(mLoadingDialog!=null && mLoadingDialog.isShowing()) {
+			mLoadingDialog.dismiss();
+		}
+		for(HashMap.Entry<AsyncImageView, Boolean> entry: mLoadingImageQueue.entrySet()) {
+			if(entry.getValue()) {
+				entry.getKey().setPaused(true);
+			}
+		}
 		super.onPause();
 	}
 
 	@Override
 	protected void onDestroy() {
-		// TODO Auto-generated method stub
+		for(HashMap.Entry<AsyncImageView, Boolean> entry: mLoadingImageQueue.entrySet()) {
+			entry.getKey().stopLoading();
+		}
+		mLoadingImageQueue.clear();
+		mLoadingImageQueue = null;
+		mLoadingDialog = null;
+		mFavoriteManager = null;
+		mItem = null;
+		mRelatedItem = null;
+		mApplication = null;
+		DaisyUtils.getVodApplication(this).removeActivtyFromPool();
 		super.onDestroy();
 	}
 	
@@ -369,7 +399,6 @@ public class ItemDetailActivity extends Activity {
 			mDetailAttributeContainer.addView(infoLine);
 		}
 		
-		
 	}
 	
 	/*
@@ -438,6 +467,7 @@ public class ItemDetailActivity extends Activity {
 			relatedHolder.setLayoutParams(layoutParams);
 			TextView titleView = (TextView) relatedHolder.findViewById(R.id.related_title);
 			AsyncImageView imgView = (AsyncImageView) relatedHolder.findViewById(R.id.related_preview_img);
+			imgView.setOnImageViewLoadListener(this);
 			TextView focusView = (TextView) relatedHolder.findViewById(R.id.related_focus);
 			ImageView qualityLabel = (ImageView) relatedHolder.findViewById(R.id.related_quality_label);
 			if(mRelatedItem[i].quality==3) {
@@ -583,5 +613,22 @@ public class ItemDetailActivity extends Activity {
 			dialog.dismiss();
 		}
 	};
+
+	@Override
+	public void onLoadingStarted(AsyncImageView imageView) {
+		mLoadingImageQueue.put(imageView, true);
+	}
+
+
+	@Override
+	public void onLoadingEnded(AsyncImageView imageView, Bitmap image) {
+		mLoadingImageQueue.remove(imageView);
+	}
+
+
+	@Override
+	public void onLoadingFailed(AsyncImageView imageView, Throwable throwable) {
+		mLoadingImageQueue.remove(imageView);
+	}
 	
 }

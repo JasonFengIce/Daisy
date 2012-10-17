@@ -39,6 +39,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class SearchActivity extends Activity implements OnClickListener, OnItemClickListener {
+	
 	// 搜索
 	ImageButton ibtnSearch;
 	// 缓存适配器android:minSdkVersion

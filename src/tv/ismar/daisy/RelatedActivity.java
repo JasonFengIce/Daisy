@@ -3,6 +3,7 @@ package tv.ismar.daisy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import tv.ismar.daisy.adapter.RelatedAdapter;
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.Attribute;
 import tv.ismar.daisy.models.Item;
@@ -28,6 +29,8 @@ import android.widget.GridView;
 public class RelatedActivity extends Activity implements OnSectionSelectChangedListener, OnItemClickListener {
 	
 	private static final String TAG = "RelatedActivity";
+	
+	private String mUrl;
 	
 	private ScrollableSectionList mSectionTabs;
 	
@@ -67,6 +70,7 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 			Bundle bundle = intent.getExtras();
 			try {
 				mItem = (Item) bundle.getSerializable("item");
+				mUrl = mSimpleRestClient.root_url + "/api/item/" + mItem.pk +"/";
 				Object relatedlistObj = bundle.getSerializable("related_item");
 				if(relatedlistObj != null) {
 					mRelatedItem = (ArrayList<Item>) relatedlistObj;
@@ -76,6 +80,7 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 				} else {
 					initLayout();
 				}
+				DaisyUtils.getVodApplication(this).addActivityToPool(this);
 			} catch (Exception e) {
 				e.printStackTrace();
 				this.finish();
@@ -158,8 +163,23 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 
 	@Override
 	protected void onPause() {
-		// TODO Auto-generated method stub
+		if(mLoadingDialog!=null && mLoadingDialog.isShowing()) {
+			mLoadingDialog.dismiss();
+		}
 		super.onPause();
+	}
+	
+	
+	@Override
+	protected void onDestroy() {
+		mAdapter = null;
+		mVirtualSectionList = null;
+		mRelatedItem = null;
+		mSectionTabs = null;
+		mSimpleRestClient = null;
+		mLoadingDialog = null;
+		DaisyUtils.getVodApplication(this).removeActivtyFromPool();
+		super.onDestroy();
 	}
 
 	@Override

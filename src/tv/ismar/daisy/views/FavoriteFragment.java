@@ -1,6 +1,5 @@
 package tv.ismar.daisy.views;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,7 +17,6 @@ import tv.ismar.daisy.models.ItemList;
 import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
 import tv.ismar.daisy.persistence.FavoriteManager;
-import tv.ismar.daisy.views.HistoryFragment.GetItemTask;
 import tv.ismar.daisy.views.ItemListScrollView.OnColumnChangeListener;
 import tv.ismar.daisy.views.ItemListScrollView.OnItemClickedListener;
 import tv.ismar.daisy.views.ItemListScrollView.OnSectionPrepareListener;
@@ -31,8 +29,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -155,6 +151,11 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 
 		@Override
 		protected void onPostExecute(Void result) {
+			if(mLoadingDialog!=null && mLoadingDialog.isShowing()) {
+				mLoadingDialog.dismiss();
+			}
+			
+			isInGetFavoriteTask = false;
 			if(mSectionList.size()==0) {
 				no_video();
 				return;
@@ -167,11 +168,6 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			int totalColumnsOfSectionX = mItemListScrollView.getTotalColumnCount(mCurrentSectionPosition);
 			mScrollableSectionList.setPercentage(mCurrentSectionPosition, (int)(1f/(float)totalColumnsOfSectionX*100f));
 			mItemListScrollView.jumpToSection(mCurrentSectionPosition);
-			
-			if(mLoadingDialog!=null && mLoadingDialog.isShowing()) {
-				mLoadingDialog.dismiss();
-			}
-			isInGetFavoriteTask = false;
 		}
 		
 	}
@@ -299,7 +295,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				if(dialogType==AlertDialogFragment.NETWORK_EXCEPTION_DIALOG) {
+				if(dialogType==AlertDialogFragment.NETWORK_EXCEPTION_DIALOG && !isInGetItemTask) {
 					task.execute(params);
 				} else if(!isInGetFavoriteTask) {
 					mFavoriteManager.deleteFavoriteByUrl((String)params[0]);

@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tv.ismar.daisy.adapter.DaramAdapter;
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.ImageUtils;
 import tv.ismar.daisy.core.NetworkUtils;
+import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.LoadingDialog;
@@ -25,6 +27,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class DramaListActivity extends Activity implements OnItemSelectedListener, OnItemClickListener, OnFocusChangeListener {
+	
+	private static final String TAG = "DramaListActivity";
+	
 	private Item item = new Item();
 	private List<Item> list = new ArrayList<Item>();
 	private DaramAdapter daram;
@@ -37,14 +42,14 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 	private TextView tvDramaType;
 //	private Bitmap bitmap;
 	private LoadingDialog loadDialog;
-	private static final int UPDATE = 1;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.drama_list_main);
 		initViews();
-		loadDialogShow();
+		if(loadDialog!=null && !loadDialog.isShowing()) {
+			loadDialog.show();
+		}
 		
 		Bundle bundle = getIntent().getExtras();
 		if (null == bundle) 
@@ -54,6 +59,7 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 			subitems = item.subitems[i];
 			list.add(subitems);
 		}
+		DaisyUtils.getVodApplication(this).addActivityToPool(this);
 //		new Thread(new Runnable() {
 //			@Override
 //			public void run() {
@@ -132,7 +138,9 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 		}
 		daram = new DaramAdapter(DramaListActivity.this, list, R.layout.drama_gridview_item);
 		daramView.setAdapter(daram);
-		loadDialogShow();
+		if(loadDialog!=null && loadDialog.isShowing()) {
+			loadDialog.dismiss();
+		}
 	}
 
 	@Override
@@ -172,12 +180,32 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 	/**
 	 * 显示自定义Dialog
 	 */
-	private void loadDialogShow() {
-		if (loadDialog.isShowing()) {
-			loadDialog.dismiss();
-		} else {
-			loadDialog.show();
-		}
+//	private void loadDialogShow() {
+//		if (loadDialog.isShowing()) {
+//			loadDialog.dismiss();
+//		} else {
+//			loadDialog.show();
+//		}
+//	}
+
+	@Override
+	protected void onDestroy() {
+		item = null;
+		list = null;
+		daram = null;
+		subitems = null;
+		loadDialog = null;
+		DaisyUtils.getVodApplication(this).removeActivtyFromPool();
+		super.onDestroy();
 	}
 
+	@Override
+	protected void onPause() {
+		if(loadDialog!=null && loadDialog.isShowing()) {
+			loadDialog.dismiss();
+		}
+		super.onPause();
+	}
+
+	
 }

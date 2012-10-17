@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Stack;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -19,6 +22,7 @@ import tv.ismar.daisy.persistence.FavoriteManager;
 import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.persistence.LocalFavoriteManager;
 import tv.ismar.daisy.persistence.LocalHistoryManager;
+import android.app.Activity;
 import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -38,11 +42,15 @@ public class VodApplication extends Application {
 	private static final int CORE_POOL_SIZE = 5;
 	private ExecutorService mExecutorService;
 	
+	/**
+	 * Use to cache the AsyncImageView's bitmap in memory, When application memory is low, the cache will be recovered.
+	 */
 	private ImageCache mImageCache;
 	private ArrayList<WeakReference<OnLowMemoryListener>> mLowMemoryListeners;
 	
 	public VodApplication() {
 		mLowMemoryListeners = new ArrayList<WeakReference<OnLowMemoryListener>>();
+		mActivityStack = new Stack<Activity>();
 	}
 	
 	private HistoryManager mHistoryManager;
@@ -50,6 +58,16 @@ public class VodApplication extends Application {
 	private FavoriteManager mFavoriteManager;
 	
 	private DBHelper mDBHelper;
+	
+	private volatile Stack<Activity> mActivityStack;
+	
+	public synchronized void removeActivtyFromPool() {
+		mActivityStack.pop();
+	}
+	
+	public synchronized void addActivityToPool(Activity activity) {
+		mActivityStack.push(activity);
+	}
 	
 	@Override
 	public void onCreate() {
@@ -232,10 +250,14 @@ public class VodApplication extends Application {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			Log.d(TAG, "Home key is pressed!");
-//			Intent i = new Intent();
-//			i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//			i.setClass(getApplicationContext(), ChannelListActivity.class);
-//			startActivity(i);
+			Stack<Activity> activityStack = (Stack<Activity>) mActivityStack.clone();
+			while(!activityStack.isEmpty()) {
+				Activity activity = activityStack.pop();
+				if(activity!=null) {
+					activity.finish();
+				}
+			}
+			activityStack.clear();
 		}
 		
 	};

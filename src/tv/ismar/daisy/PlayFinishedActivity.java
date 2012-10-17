@@ -1,11 +1,7 @@
 package tv.ismar.daisy;
 
-import java.io.InputStream;
-
 import tv.ismar.daisy.adapter.PlayFinishedAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.ImageUtils;
-import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.Item;
@@ -16,7 +12,6 @@ import tv.ismar.daisy.views.LoadingDialog;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -32,9 +27,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class PlayFinishedActivity extends Activity implements OnFocusChangeListener, OnItemClickListener, OnClickListener {
+	
+	private static final String TAG = "PlayFinishedActvity";
 	private Item item = new Item();
-	private InputStream input;
-//	private Bitmap bitmap;
+	//	private Bitmap bitmap;
 	LinearLayout linearLeft;
 	LinearLayout linearRight;
 	TextView tvVodName;
@@ -66,6 +62,7 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 			Intent intent = getIntent();
 			if (null != intent) {
 				item = (Item) intent.getExtras().get("item");
+				DaisyUtils.getVodApplication(this).addActivityToPool(this);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -328,4 +325,24 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		imageBackgroud.setUrl(item.poster_url);
 		loadDialogShow();
 	}
+
+	@Override
+	protected void onPause() {
+		if(loadDialog!=null && loadDialog.isShowing()) {
+			loadDialog.dismiss();
+		}
+		super.onPause();
+	}
+
+	@Override
+	protected void onDestroy() {
+		item = null;
+		loadDialog = null;
+		playAdapter = null;
+		mFavoriteManager = null;
+		DaisyUtils.getVodApplication(this).removeActivtyFromPool();
+		super.onDestroy();
+	}
+	
+	
 }

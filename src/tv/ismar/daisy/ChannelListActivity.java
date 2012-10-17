@@ -1,5 +1,6 @@
 package tv.ismar.daisy;
 
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.views.ChannelFragment;
 import tv.ismar.daisy.views.FavoriteFragment;
 import tv.ismar.daisy.views.HistoryFragment;
@@ -24,8 +25,8 @@ public class ChannelListActivity extends Activity {
 		setContentView(R.layout.channel_layout);
 //		initViews();
 		Intent intent = getIntent();
-		String url = null;
 		String title = null;
+		String url = null;
 		String channel = null;
 		if(intent!=null){
 			Bundle bundle = intent.getExtras();
@@ -67,11 +68,13 @@ public class ChannelListActivity extends Activity {
 			fragmentTransaction.commit();
 		}
 		
+		DaisyUtils.getVodApplication(this).addActivityToPool(this);
 	}
 
 	@Override
 	protected void onDestroy() {
 //		System.exit(0);
+		DaisyUtils.getVodApplication(this).removeActivtyFromPool();
 		super.onDestroy();
 	}
 

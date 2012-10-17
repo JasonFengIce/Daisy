@@ -14,10 +14,10 @@ import tv.ismar.daisy.views.ItemListScrollView.OnColumnChangeListener;
 import tv.ismar.daisy.views.ItemListScrollView.OnItemClickedListener;
 import tv.ismar.daisy.views.ItemListScrollView.OnSectionPrepareListener;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
-import android.app.Dialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -72,6 +72,7 @@ public class ChannelFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		mLoadingDialog = new LoadingDialog(getActivity(), getResources().getString(R.string.loading));
+		mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
 		View fragmentView = inflater.inflate(R.layout.list_view, container, false);
 		initViews(fragmentView);
 		new InitTask().execute(mUrl, mChannel);
@@ -146,6 +147,10 @@ public class ChannelFragment extends Fragment {
 
 		@Override
 		protected void onPostExecute(Integer result) {
+			if(mLoadingDialog!=null && mLoadingDialog.isShowing()) {
+				mLoadingDialog.dismiss();
+			}
+			isInitTaskLoading = false;
 			if(result==-1) {
 				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new InitTask(), new String[]{url, channel});
 				return;
@@ -162,10 +167,6 @@ public class ChannelFragment extends Fragment {
 				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new InitTask(), new String[]{url, channel});
 			}
 //			new GetItemListTask().execute();
-			if(mLoadingDialog!=null && mLoadingDialog.isShowing()) {
-				mLoadingDialog.dismiss();
-			}
-			isInitTaskLoading = false;
 			super.onPostExecute(result);
 		}
 		
@@ -280,12 +281,19 @@ public class ChannelFragment extends Fragment {
 		super.onPause();
 	}
 
-	@Override
-	public void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-	}
 	
+
+	@Override
+	public void onDestroyView() {
+		mSectionList = null;
+		mItemLists = null;
+		if(mItemListScrollView!=null){
+			mItemListScrollView.clean();
+		}
+		mItemListScrollView = null;
+		mScrollableSectionList = null;
+		super.onDestroyView();
+	}
 
 	public void showDialog(int dialogType, final AsyncTask task, final Object[] params ) {
 		AlertDialogFragment newFragment = AlertDialogFragment.newInstance(dialogType);
@@ -294,7 +302,9 @@ public class ChannelFragment extends Fragment {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
-				task.execute(params);
+				if(!isInitTaskLoading) {
+					task.execute(params);
+				}
 				dialog.dismiss();
 			}
 		});
@@ -308,4 +318,21 @@ public class ChannelFragment extends Fragment {
 		});
 		newFragment.show(getFragmentManager(), "dialog");
 	}
+	
+	private OnCancelListener mLoadingCancelListener = new OnCancelListener() {
+		
+		@Override
+		public void onCancel(DialogInterface dialog) {
+			getActivity().finish();
+			dialog.dismiss();
+		}
+	};
+
+	@Override
+	public void onDetach() {
+		mRestClient = null;
+		super.onDetach();
+	}
+	
+	
 }

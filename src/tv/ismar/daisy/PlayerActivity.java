@@ -49,7 +49,7 @@ import com.ismartv.api.AccessProxy;
 import com.ismartv.bean.ClipInfo;
 
 public class PlayerActivity extends Activity {
-
+	
 	@SuppressWarnings("unused")
 	private static final String PREFS_NAME = "tv.ismar.daisy";
 	private static final String TAG = "PLAYER";
@@ -147,6 +147,7 @@ public class PlayerActivity extends Activity {
 	}
 
 	private void initClipInfo() {
+		simpleRestClient = new SimpleRestClient();
 		bufferText.setText(BUFFERING);
 		if (mVideoView!=null){
 			mVideoView.setAlpha(0);
@@ -156,6 +157,9 @@ public class PlayerActivity extends Activity {
 		Intent intent = getIntent();
 		if (intent != null) {
 			bundle = intent.getExtras();
+			//use to get mUrl, and registerActivity
+			DaisyUtils.getVodApplication(this).addActivityToPool(this);
+			//*********************
 			new ItemByUrlTask().execute();
 		}
 	}
@@ -174,7 +178,6 @@ public class PlayerActivity extends Activity {
 
 		@Override
 		protected ClipInfo doInBackground(String... arg0) {
-			simpleRestClient = new SimpleRestClient();
 			Object obj = bundle.get("url");
 			Log.d(TAG, "init player bundle url === " + obj);
 			String sn = VodUserAgent.getMACAddress();
@@ -1095,6 +1098,18 @@ public class PlayerActivity extends Activity {
 			Log.d(TAG,"Player close to Home");
 		}
 		super.onPause();
+	}
+
+	@Override
+	protected void onDestroy() {
+		menu = null;
+		urlInfo = null;
+		mCheckHandler = null;
+		historyManager = null;
+		simpleRestClient = null;
+		favoriteManager = null;
+		DaisyUtils.getVodApplication(this).removeActivtyFromPool();
+		super.onDestroy();
 	}
 	
 	
