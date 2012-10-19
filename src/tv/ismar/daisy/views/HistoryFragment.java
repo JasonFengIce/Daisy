@@ -68,7 +68,7 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 		long currentTime = System.currentTimeMillis();
 		GregorianCalendar currentCalendar = new GregorianCalendar();
 		currentCalendar.setTimeInMillis(currentTime);
-		currentCalendar.set(GregorianCalendar.HOUR, 0);
+		currentCalendar.set(GregorianCalendar.HOUR_OF_DAY, 0);
 		currentCalendar.set(GregorianCalendar.MINUTE, 0);
 		currentCalendar.set(GregorianCalendar.SECOND, 0);
 		return currentCalendar.getTimeInMillis();

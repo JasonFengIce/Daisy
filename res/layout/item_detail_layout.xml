@@ -17,9 +17,11 @@
             android:layout_alignParentTop="true"
             android:src="@drawable/vod_watermark" />
 
-        <LinearLayout
+        <tv.ismar.daisy.views.DetailAttributeContainer
             android:layout_width="521dip"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
             android:layout_marginLeft="80dip"
             android:layout_marginTop="160dip"
             android:orientation="vertical"
@@ -30,8 +32,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#FFBBBBBB"
-                android:textSize="60sp" />
-        </LinearLayout>
+                android:textSize="60sp"
+                android:ellipsize="end"
+                android:maxLines="2"/>
+        </tv.ismar.daisy.views.DetailAttributeContainer>
 
         <TextView
             android:id="@+id/detail_intro"

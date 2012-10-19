@@ -15,6 +15,7 @@ import tv.ismar.daisy.views.ItemListScrollView.OnItemClickedListener;
 import tv.ismar.daisy.views.ItemListScrollView.OnSectionPrepareListener;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
@@ -316,7 +317,10 @@ public class ChannelFragment extends Fragment {
 				dialog.dismiss();
 			}
 		});
-		newFragment.show(getFragmentManager(), "dialog");
+		FragmentManager manager = getFragmentManager();
+		if(manager!=null) {
+			newFragment.show(manager, "dialog");
+		}
 	}
 	
 	private OnCancelListener mLoadingCancelListener = new OnCancelListener() {

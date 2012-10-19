@@ -21,6 +21,7 @@ import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.persistence.FavoriteManager;
 import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.views.AsyncImageView;
+import tv.ismar.daisy.views.DetailAttributeContainer;
 import tv.ismar.daisy.views.LoadingDialog;
 import tv.ismar.daisy.views.AsyncImageView.OnImageViewLoadListener;
 import android.app.Activity;
@@ -31,10 +32,12 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -73,7 +76,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 	private LinearLayout mRelatedVideoContainer;
 	private Button mMoreContent;
 
-	private LinearLayout mDetailAttributeContainer;
+	private DetailAttributeContainer mDetailAttributeContainer;
 
 	private LoadingDialog mLoadingDialog;
 
@@ -91,7 +94,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 	
 	private void initViews() {
 		mDetailLeftContainer = (RelativeLayout)findViewById(R.id.detail_left_container);
-		mDetailAttributeContainer = (LinearLayout) findViewById(R.id.detail_attribute_container);
+		mDetailAttributeContainer = (DetailAttributeContainer) findViewById(R.id.detail_attribute_container);
 		mDetailTitle = (TextView) findViewById(R.id.detail_title);
 		mDetailIntro = (TextView) findViewById(R.id.detail_intro);
 		mDetailPreviewImg = (AsyncImageView)findViewById(R.id.detail_preview_img);
@@ -169,8 +172,9 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 			}
 		}
 		for(HashMap.Entry<AsyncImageView, Boolean> entry: mLoadingImageQueue.entrySet()) {
-			if(entry.getValue()) {
+			if(!entry.getValue()) {
 				entry.getKey().setPaused(true);
+				entry.setValue(true);
 			}
 		}
 		super.onResume();
@@ -184,6 +188,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 		for(HashMap.Entry<AsyncImageView, Boolean> entry: mLoadingImageQueue.entrySet()) {
 			if(entry.getValue()) {
 				entry.getKey().setPaused(true);
+				entry.setValue(false);
 			}
 		}
 		super.onPause();
@@ -191,10 +196,12 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 
 	@Override
 	protected void onDestroy() {
-		for(HashMap.Entry<AsyncImageView, Boolean> entry: mLoadingImageQueue.entrySet()) {
+		final HashMap<AsyncImageView, Boolean> loadingImageQueue = new HashMap<AsyncImageView, Boolean>();
+		loadingImageQueue.putAll(mLoadingImageQueue);
+		for(HashMap.Entry<AsyncImageView, Boolean> entry: loadingImageQueue.entrySet()) {
 			entry.getKey().stopLoading();
 		}
-		mLoadingImageQueue.clear();
+		loadingImageQueue.clear();
 		mLoadingImageQueue = null;
 		mLoadingDialog = null;
 		mFavoriteManager = null;
@@ -316,7 +323,8 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 					}
 				}
 			}
-			buildAttributeList(attributeMap);
+			mDetailAttributeContainer.addAttribute(attributeMap, mContentModel);
+			mDetailAttributeContainer.setMaxHeight(400);
 		}
 		//Set the content to Introduction View
 		mDetailIntro.setText(mItem.description);
@@ -370,37 +378,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 			return null;
 		}
 	}
-	
-	private void buildAttributeList(LinkedHashMap<String, String> attrMap){
-		for(Map.Entry<String, String> entry: attrMap.entrySet()){
-			if(entry.getValue()==null || mContentModel.attributes.get(entry.getKey())==null){
-				continue;
-			}
-			LinearLayout infoLine = new LinearLayout(ItemDetailActivity.this);
-			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(471,LinearLayout.LayoutParams.WRAP_CONTENT);
-			layoutParams.topMargin = 20;
-			
-			infoLine.setLayoutParams(layoutParams);
-			infoLine.setOrientation(LinearLayout.HORIZONTAL);
-			TextView itemName = new TextView(ItemDetailActivity.this);
-			itemName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-			itemName.setTextColor(0xff999999);
-			itemName.setTextSize(30f);
-			itemName.setText(mContentModel.attributes.get(entry.getKey())+":");
-			infoLine.addView(itemName);
-			TextView itemValue = new TextView(ItemDetailActivity.this);
-			itemValue.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-			itemValue.setTextColor(0xffbbbbbb);
-			itemValue.setTextSize(30f);
-			itemValue.setText(entry.getValue());
-			itemValue.setEllipsize(android.text.TextUtils.TruncateAt.END);
-			infoLine.addView(itemValue);
-			
-			mDetailAttributeContainer.addView(infoLine);
-		}
-		
-	}
-	
+
 	/*
 	 * get the favorite status of the item.
 	 */
@@ -573,7 +551,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 				if(isFavorite()) {
 					String url = mSimpleRestClient.root_url + "/api/item/"+mItem.pk+"/";
 					mFavoriteManager.deleteFavoriteByUrl(url);
-					Toast.makeText(ItemDetailActivity.this, getResources().getString(R.string.vod_bookmark_remove_success), Toast.LENGTH_SHORT).show();
+					showToast(getResources().getString(R.string.vod_bookmark_remove_success));
 				} else {
 					String url = mSimpleRestClient.root_url + "/api/item/"+mItem.pk+"/";
 					Favorite favorite = new Favorite();
@@ -585,7 +563,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 					favorite.is_complex = mItem.is_complex;
 					mFavoriteManager.addFavorite(favorite);
 //					mFavoriteManager.addFavorite(mItem.title, url, mItem.content_model);
-					Toast.makeText(ItemDetailActivity.this, getResources().getString(R.string.vod_bookmark_add_success), Toast.LENGTH_SHORT).show();
+					showToast(getResources().getString(R.string.vod_bookmark_add_success));
 				}
 				if(isFavorite()) {
 					mBtnFavorite.setText(getResources().getString(R.string.favorited));
@@ -616,19 +594,36 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 
 	@Override
 	public void onLoadingStarted(AsyncImageView imageView) {
-		mLoadingImageQueue.put(imageView, true);
+		if(mLoadingImageQueue!=null) {
+			mLoadingImageQueue.put(imageView, true);
+		}
 	}
 
 
 	@Override
 	public void onLoadingEnded(AsyncImageView imageView, Bitmap image) {
-		mLoadingImageQueue.remove(imageView);
+		if(mLoadingImageQueue != null) {
+			mLoadingImageQueue.remove(imageView);
+		}
 	}
 
 
 	@Override
 	public void onLoadingFailed(AsyncImageView imageView, Throwable throwable) {
-		mLoadingImageQueue.remove(imageView);
+		if(mLoadingImageQueue != null) {
+			mLoadingImageQueue.remove(imageView);
+		}
 	}
 	
+	private void showToast(String text) {
+		LayoutInflater inflater = getLayoutInflater();
+		View layout = inflater.inflate(R.layout.simple_toast, (ViewGroup) findViewById(R.id.simple_toast_root));
+		TextView toastText = (TextView) layout.findViewById(R.id.toast_text);
+		toastText.setText(text);
+		Toast toast = new Toast(getApplicationContext());
+		toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+		toast.setDuration(Toast.LENGTH_SHORT);
+		toast.setView(layout);
+		toast.show();
+	}
 }

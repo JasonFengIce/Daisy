@@ -712,5 +712,11 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 		mSectionContainerList.clear();
 		removeAllViews();
 	}
+
+	@Override
+	protected void onDetachedFromWindow() {
+		// TODO Auto-generated method stub
+		super.onDetachedFromWindow();
+	}
 	
 }
