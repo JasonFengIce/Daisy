@@ -816,14 +816,17 @@ public class PlayerActivity extends Activity {
 	private Runnable hideMenuRunnable = new Runnable() {
 		@Override
 		public void run() {
-			menu.hide();
+			if(menu!=null){
+				menu.hide();
+			}
 			hideMenuHandler.removeCallbacks(hideMenuRunnable);
 		}
 	};
 
 	private boolean isVodMenuVisible() {
-		if (menu == null)
+		if (menu == null){
 			return false;
+		}
 		return menu.isVisible();
 	}
 
