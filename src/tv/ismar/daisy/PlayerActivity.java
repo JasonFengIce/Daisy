@@ -1095,6 +1095,7 @@ public class PlayerActivity extends Activity {
 			addHistory(seekPostion);
 			checkTaskPause();
 			timeTaskPause();
+			removeAllHandler();
 			mVideoView.stopPlayback();
 			PlayerActivity.this.finish();
 		}catch(Exception e){
@@ -1114,6 +1115,14 @@ public class PlayerActivity extends Activity {
 		DaisyUtils.getVodApplication(this).removeActivtyFromPool();
 		super.onDestroy();
 	}
-	
+	private void  removeAllHandler(){
+		
+		mHandler.removeCallbacks(mUpdateTimeTask);
+		mHandler.removeCallbacks(finishPlayerActivity);
+		hideMenuHandler.removeCallbacks(hideMenuRunnable);
+		mHandler.removeCallbacks(mUpdateTimeTask);
+		mCheckHandler.removeCallbacks(checkStatus);
+		hidePanelHandler.removeCallbacks(hidePanelRunnable);
+	}
 	
 }
