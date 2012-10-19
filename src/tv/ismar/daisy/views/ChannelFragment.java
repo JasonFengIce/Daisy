@@ -57,6 +57,8 @@ public class ChannelFragment extends Fragment {
 	
 	private boolean isInitTaskLoading;
 	
+	private InitTask mInitTask;
+	
 	private void initViews(View fragmentView) {
 		mItemListScrollView = (ItemListScrollView) fragmentView.findViewById(R.id.itemlist_scroll_view);
 		mItemListScrollView.setOnSectionPrepareListener(mOnSectionPrepareListener);
@@ -76,7 +78,8 @@ public class ChannelFragment extends Fragment {
 		mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
 		View fragmentView = inflater.inflate(R.layout.list_view, container, false);
 		initViews(fragmentView);
-		new InitTask().execute(mUrl, mChannel);
+		mInitTask = new InitTask();
+		mInitTask.execute(mUrl, mChannel);
 		return fragmentView;
 	}
 	
@@ -153,7 +156,7 @@ public class ChannelFragment extends Fragment {
 			}
 			isInitTaskLoading = false;
 			if(result==-1) {
-				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new InitTask(), new String[]{url, channel});
+				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, (mInitTask = new InitTask()), new String[]{url, channel});
 				return;
 			}
 			if(mSectionList!=null && mItemLists.get(mCurrentSectionPosition)!=null) {
@@ -165,7 +168,7 @@ public class ChannelFragment extends Fragment {
 				mScrollableSectionList.setPercentage(mCurrentSectionPosition, (int)(1f/(float)totalColumnsOfSectionX*100f));
 				mItemListScrollView.jumpToSection(mCurrentSectionPosition);
 			} else {
-				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new InitTask(), new String[]{url, channel});
+				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, (mInitTask = new InitTask()), new String[]{url, channel});
 			}
 //			new GetItemListTask().execute();
 			super.onPostExecute(result);
@@ -203,7 +206,7 @@ public class ChannelFragment extends Fragment {
 
 		@Override
 		protected void onPostExecute(Integer position) {
-			if(position!=-1) {
+			if(mItemListScrollView!=null && mItemLists!=null && position!=-1) {
 				mItemListScrollView.updateSection(mItemLists.get(position), position);
 			} else {
 				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new GetItemListTask(), new String[]{slug, url});
@@ -286,6 +289,10 @@ public class ChannelFragment extends Fragment {
 
 	@Override
 	public void onDestroyView() {
+		if(mInitTask!=null && mInitTask.getStatus()!=AsyncTask.Status.FINISHED) {
+			mInitTask.cancel(true);
+		}
+		mInitTask = null;
 		mSectionList = null;
 		mItemLists = null;
 		if(mItemListScrollView!=null){

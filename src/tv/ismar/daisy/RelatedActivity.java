@@ -48,6 +48,8 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 	
 	private LoadingDialog mLoadingDialog;
 	
+	private GetRelatedTask mGetRelatedTask;
+	
 	private void initViews(){
 		mSectionTabs = (ScrollableSectionList) findViewById(R.id.related_section_tabs);
 		mSectionTabs.setOnSectionSelectChangeListener(this);
@@ -76,7 +78,8 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 					mRelatedItem = (ArrayList<Item>) relatedlistObj;
 				}
 				if(mRelatedItem==null || mRelatedItem.size()==0) {
-					new GetRelatedTask().execute(mItem.pk);
+					mGetRelatedTask = new GetRelatedTask();
+					mGetRelatedTask.execute(mItem.pk);
 				} else {
 					initLayout();
 				}
@@ -135,7 +138,12 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		@Override
 		protected void onPostExecute(Void result) {
 			if(mRelatedItem!=null && mRelatedItem.size()>0){
-				initLayout();
+				try {
+					initLayout();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 		
@@ -172,6 +180,10 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 	
 	@Override
 	protected void onDestroy() {
+		if(mGetRelatedTask!=null && mGetRelatedTask.getStatus()!=AsyncTask.Status.FINISHED) {
+			mGetRelatedTask.cancel(true);
+		}
+		mGetRelatedTask = null;
 		mAdapter = null;
 		mVirtualSectionList = null;
 		mRelatedItem = null;
