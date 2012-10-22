@@ -229,7 +229,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 		protected Void doInBackground(String... params) {
 			try {
 				mItem = mSimpleRestClient.getItem(params[0]);
-			} catch (ItemOfflineException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 //			if(mItem.subitems!=null && mItem.subitems.length>0 && mItem.subitems[0].item_pk==0){
@@ -439,7 +439,11 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			mRelatedItem = mSimpleRestClient.getRelatedItem("/api/tv/relate/"+mItem.pk+"/");
+			try {
+				mRelatedItem = mSimpleRestClient.getRelatedItem("/api/tv/relate/"+mItem.pk+"/");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			return null;
 		}
 

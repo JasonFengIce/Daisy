@@ -20,17 +20,19 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
 public class RelatedActivity extends Activity implements OnSectionSelectChangedListener, OnItemClickListener {
 	
 	private static final String TAG = "RelatedActivity";
-	
-	private String mUrl;
 	
 	private ScrollableSectionList mSectionTabs;
 	
@@ -72,7 +74,6 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 			Bundle bundle = intent.getExtras();
 			try {
 				mItem = (Item) bundle.getSerializable("item");
-				mUrl = mSimpleRestClient.root_url + "/api/item/" + mItem.pk +"/";
 				Object relatedlistObj = bundle.getSerializable("related_item");
 				if(relatedlistObj != null) {
 					mRelatedItem = (ArrayList<Item>) relatedlistObj;
@@ -86,6 +87,7 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 				DaisyUtils.getVodApplication(this).addActivityToPool(this);
 			} catch (Exception e) {
 				e.printStackTrace();
+				showToast(getResources().getString(R.string.no_related_video));
 				this.finish();
 			}
 		}
@@ -127,10 +129,14 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 
 		@Override
 		protected Void doInBackground(Integer... params) {
-			int pk = params[0];
-			Item[] relatedArray = mSimpleRestClient.getRelatedItem("/api/tv/relate/"+pk+"/");
-			if(relatedArray!=null && relatedArray.length >0 ) {
-				mRelatedItem = new ArrayList<Item>(Arrays.asList(relatedArray));
+			try {
+				int pk = params[0];
+				Item[] relatedArray = mSimpleRestClient.getRelatedItem("/api/tv/relate/"+pk+"/");
+				if(relatedArray!=null && relatedArray.length >0 ) {
+					mRelatedItem = new ArrayList<Item>(Arrays.asList(relatedArray));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 			return null;
 		}
@@ -141,9 +147,11 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 				try {
 					initLayout();
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			} else {
+				showToast(getResources().getString(R.string.no_related_video));
+				RelatedActivity.this.finish();
 			}
 		}
 		
@@ -204,20 +212,24 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 
 		@Override
 		protected Void doInBackground(Section... params) {
-			Section section = params[0];
-			String url = null;
-			if(section.slug.equals("default")) {
-				url = "/api/tv/relate/"+mItem.pk+"/";
-				Item[] itemArray = mSimpleRestClient.getRelatedItem(url);
-				if(itemArray!=null) {
-					mRelatedItem = new ArrayList<Item>(Arrays.asList(itemArray));
+			try {
+				Section section = params[0];
+				String url = null;
+				if(section.slug.equals("default")) {
+					url = "/api/tv/relate/"+mItem.pk+"/";
+					Item[] itemArray = mSimpleRestClient.getRelatedItem(url);
+					if(itemArray!=null) {
+						mRelatedItem = new ArrayList<Item>(Arrays.asList(itemArray));
+					}
+				} else {
+					url = mSimpleRestClient.root_url + "/api/tv/filtrate/$" + mItem.content_model +"/" + section.slug + "*" + section.template +"/";
+					ItemList itemList = mSimpleRestClient.getItemList(url);
+					if(itemList!=null) {
+						mRelatedItem = itemList.objects;
+					}
 				}
-			} else {
-				url = mSimpleRestClient.root_url + "/api/tv/filtrate/$" + mItem.content_model +"/" + section.slug + "*" + section.template +"/";
-				ItemList itemList = mSimpleRestClient.getItemList(url);
-				if(itemList!=null) {
-					mRelatedItem = itemList.objects;
-				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 			return null;
 		}
@@ -251,4 +263,15 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		}
 	};
 	
+	private void showToast(String text) {
+		LayoutInflater inflater = getLayoutInflater();
+		View layout = inflater.inflate(R.layout.simple_toast, (ViewGroup) findViewById(R.id.simple_toast_root));
+		TextView toastText = (TextView) layout.findViewById(R.id.toast_text);
+		toastText.setText(text);
+		Toast toast = new Toast(getApplicationContext());
+		toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+		toast.setDuration(Toast.LENGTH_SHORT);
+		toast.setView(layout);
+		toast.show();
+	}
 }
