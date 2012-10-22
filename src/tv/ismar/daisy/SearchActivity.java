@@ -251,6 +251,8 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 				// autoAdapter.notifyDataSetChanged();
 				break;
 			case ADD_VIEW:
+				if (null == listHotWords) 
+					return;
 				for (int j = 0; j < listHotWords.size(); j++) {
 					final Button btnHotWords = new Button(SearchActivity.this);
 					// final Button btnHotWords = (Button) findViewById(R.id.btn_words);
