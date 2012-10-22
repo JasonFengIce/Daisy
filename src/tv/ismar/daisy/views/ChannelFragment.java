@@ -1,6 +1,8 @@
 package tv.ismar.daisy.views;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -57,6 +59,10 @@ public class ChannelFragment extends Fragment {
 	
 	private boolean isInitTaskLoading;
 	
+	private InitTask mInitTask;
+	
+	private ConcurrentHashMap<String, GetItemListTask> mCurrentLoadingTask = new ConcurrentHashMap<String, ChannelFragment.GetItemListTask>();
+	
 	private void initViews(View fragmentView) {
 		mItemListScrollView = (ItemListScrollView) fragmentView.findViewById(R.id.itemlist_scroll_view);
 		mItemListScrollView.setOnSectionPrepareListener(mOnSectionPrepareListener);
@@ -76,7 +82,8 @@ public class ChannelFragment extends Fragment {
 		mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
 		View fragmentView = inflater.inflate(R.layout.list_view, container, false);
 		initViews(fragmentView);
-		new InitTask().execute(mUrl, mChannel);
+		mInitTask = new InitTask();
+		mInitTask.execute(mUrl, mChannel);
 		return fragmentView;
 	}
 	
@@ -111,18 +118,18 @@ public class ChannelFragment extends Fragment {
 				channel = params[1];
 				if(!isChannelUrl(url)){
 					mSectionList = mRestClient.getSectionsByChannel(channel);
-					for(int i=0; i<mSectionList.size(); i++) {
+					for(int i=0; i<mSectionList.size() && !isCancelled(); i++) {
 						if(NetworkUtils.urlEquals(url, mSectionList.get(i).url)) {
 							mCurrentSectionPosition = i;
 							break;
 						}
 					}
 				}
-				if(mSectionList==null){
+				if(mSectionList==null && !isCancelled()){
 					mSectionList = mRestClient.getSections(url);
 				}
 				int itemsCount = 0;
-				for(int i=0; i<mSectionList.size();i++) {
+				for(int i=0; i<mSectionList.size() && !isCancelled();i++) {
 					ItemList itemList = null;
 					if(i==mCurrentSectionPosition || itemsCount<=MAX_CELLS_IN_SCREEN){
 						itemList = mRestClient.getItemList(mSectionList.get(i).url);
@@ -138,7 +145,11 @@ public class ChannelFragment extends Fragment {
 					itemList.count = mSectionList.get(i).count;
 					mItemLists.add(itemList);
 				}
-				return 0;
+				if(isCancelled()) {
+					return -1;
+				} else {
+					return 0;
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 
@@ -153,7 +164,7 @@ public class ChannelFragment extends Fragment {
 			}
 			isInitTaskLoading = false;
 			if(result==-1) {
-				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new InitTask(), new String[]{url, channel});
+				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, (mInitTask = new InitTask()), new String[]{url, channel});
 				return;
 			}
 			if(mSectionList!=null && mItemLists.get(mCurrentSectionPosition)!=null) {
@@ -165,7 +176,7 @@ public class ChannelFragment extends Fragment {
 				mScrollableSectionList.setPercentage(mCurrentSectionPosition, (int)(1f/(float)totalColumnsOfSectionX*100f));
 				mItemListScrollView.jumpToSection(mCurrentSectionPosition);
 			} else {
-				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new InitTask(), new String[]{url, channel});
+				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, (mInitTask = new InitTask()), new String[]{url, channel});
 			}
 //			new GetItemListTask().execute();
 			super.onPostExecute(result);
@@ -177,33 +188,50 @@ public class ChannelFragment extends Fragment {
 		
 		private String slug;
 		private String url;
-		
+
+		@Override
+		protected void onCancelled() {
+			mCurrentLoadingTask.remove(slug);
+			super.onCancelled();
+		}
+
 		@Override
 		protected Integer doInBackground(String... params) {
-			int position = -1;
-			slug = params[0];
-			url = params[1];
-			
-			for(int i=0; i<mItemLists.size();i++){
-				if(slug.equals(mItemLists.get(i).slug)){
-					ItemList itemList = mRestClient.getItemList(url);
-					if(itemList==null) {
-						continue;
+			try {
+				int position = -1;
+				slug = params[0];
+				url = params[1];
+				
+				mCurrentLoadingTask.put(slug, this);
+				
+				for(int i=0; i<mItemLists.size() && !isCancelled();i++){
+					if(slug.equals(mItemLists.get(i).slug)){
+						ItemList itemList = mRestClient.getItemList(url);
+						if(itemList==null) {
+							continue;
+						}
+						itemList.slug = mSectionList.get(i).slug;
+						itemList.title = mSectionList.get(i).title;
+						mItemLists.set(i, itemList);
+						position = i;
+						break;
 					}
-					itemList.slug = mSectionList.get(i).slug;
-					itemList.title = mSectionList.get(i).title;
-					mItemLists.set(i, itemList);
-					position = i;
-					break;
 				}
+				if(isCancelled()) {
+					return -1;
+				} else {
+					return position;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				return -1;
 			}
-//			}
-			return position;
 		}
 
 		@Override
 		protected void onPostExecute(Integer position) {
-			if(position!=-1) {
+			mCurrentLoadingTask.remove(slug);
+			if(mItemListScrollView!=null && mItemLists!=null && position!=-1) {
 				mItemListScrollView.updateSection(mItemLists.get(position), position);
 			} else {
 				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new GetItemListTask(), new String[]{slug, url});
@@ -216,6 +244,10 @@ public class ChannelFragment extends Fragment {
 		
 		@Override
 		public void onPrepareNeeded(int position) {
+			final ConcurrentHashMap<String, GetItemListTask> currentTask = mCurrentLoadingTask;
+			if(currentTask.containsKey(mSectionList.get(position).slug)) {
+				return;
+			}
 			if(mItemLists.get(position).objects==null){
 				mItemListScrollView.addScrapViewsToSection(position, 0);
 				new GetItemListTask().execute(mItemLists.get(position).slug, mSectionList.get(position).url);
@@ -286,6 +318,14 @@ public class ChannelFragment extends Fragment {
 
 	@Override
 	public void onDestroyView() {
+		if(mInitTask!=null && mInitTask.getStatus()!=AsyncTask.Status.FINISHED) {
+			mInitTask.cancel(true);
+		}
+		final ConcurrentHashMap<String, GetItemListTask> currentLoadingTask = mCurrentLoadingTask;
+		for(String slug:currentLoadingTask.keySet()) {
+			currentLoadingTask.get(slug).cancel(true);
+		}
+		mInitTask = null;
 		mSectionList = null;
 		mItemLists = null;
 		if(mItemListScrollView!=null){

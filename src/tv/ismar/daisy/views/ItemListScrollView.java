@@ -621,6 +621,9 @@ public class ItemListScrollView extends HorizontalScrollView implements OnFocusC
 		for(AsyncImageView imageView: mLoadingImageQueue.keySet()){
 			mLoadingImageQueue.put(imageView, false);
 		}
+		if(mSectionContainerList==null || mSectionContainerList.size()==0) {
+			return;
+		}
 		ItemListContainer itemListContainer = mSectionContainerList.get(position);
 		int columnCount = itemListContainer.getChildCount();
 		for(int i=0; i<columnCount; ++i) {

@@ -54,8 +54,6 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 	
 	private SimpleRestClient mSimpleRestClient;
 	
-	private VodApplication mApplication;
-	
 	private ContentModel mContentModel;
 	
 	private Item mItem;
@@ -89,6 +87,9 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 	private History mHistory;
 
 	private ImageView mDetailQualityLabel;
+	
+	private GetItemTask mGetItemTask;
+	private GetRelatedTask mGetRelatedTask;
 	
 	private HashMap<AsyncImageView, Boolean> mLoadingImageQueue = new HashMap<AsyncImageView, Boolean>();
 	
@@ -128,7 +129,6 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.item_detail_layout);
 		mSimpleRestClient = new SimpleRestClient();
-		mApplication = (VodApplication) getApplication();
 //		Log.e("START", System.currentTimeMillis()+"");
 		mLoadingDialog = new LoadingDialog(this, getResources().getString(R.string.vod_loading));
 		mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
@@ -145,17 +145,22 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 			if(intent.getSerializableExtra("item")!=null){
 				mItem = (Item) intent.getSerializableExtra("item");
 				if(mItem!=null) {
-					initLayout();
+					try {
+						initLayout();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			} else {
 				String url = intent.getStringExtra("url");
 				if(url==null){
 					url = "http://cord.tvxio.com/api/item/96538/";
 				}
-				new GetItemTask().execute(url);
+				mGetItemTask = new GetItemTask();
+				mGetItemTask.execute(url);
 			}
 		}
-			DaisyUtils.getVodApplication(this).addActivityToPool(this);
+		DaisyUtils.getVodApplication(this).addActivityToPool(this);
 	}
 	
 	@Override
@@ -196,6 +201,13 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 
 	@Override
 	protected void onDestroy() {
+		if(mGetItemTask!=null && mGetItemTask.getStatus()!=AsyncTask.Status.FINISHED) {
+			mGetItemTask.cancel(true);
+		}
+		if(mGetRelatedTask!=null && mGetItemTask.getStatus()!=AsyncTask.Status.FINISHED) {
+			mGetItemTask.cancel(true);
+		}
+		
 		final HashMap<AsyncImageView, Boolean> loadingImageQueue = new HashMap<AsyncImageView, Boolean>();
 		loadingImageQueue.putAll(mLoadingImageQueue);
 		for(HashMap.Entry<AsyncImageView, Boolean> entry: loadingImageQueue.entrySet()) {
@@ -207,7 +219,6 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 		mFavoriteManager = null;
 		mItem = null;
 		mRelatedItem = null;
-		mApplication = null;
 		DaisyUtils.getVodApplication(this).removeActivtyFromPool();
 		super.onDestroy();
 	}
@@ -218,7 +229,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 		protected Void doInBackground(String... params) {
 			try {
 				mItem = mSimpleRestClient.getItem(params[0]);
-			} catch (ItemOfflineException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 //			if(mItem.subitems!=null && mItem.subitems.length>0 && mItem.subitems[0].item_pk==0){
@@ -231,7 +242,11 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 		@Override
 		protected void onPostExecute(Void result) {
 			if(mItem!=null){
-				initLayout();
+				try {
+					initLayout();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		
@@ -272,7 +287,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 		 */
 		if(mItem.attributes!=null && mItem.attributes.map!=null){
 			
-			for(ContentModel m:mApplication.mContentModel){
+			for(ContentModel m:DaisyUtils.getVodApplication(this).mContentModel){
 				if(m.content_model.equals(mItem.content_model)){
 					mContentModel = m;
 				}
@@ -340,7 +355,8 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 			mDetailPreviewImg.setUrl(mItem.poster_url);
 		}
 		
-		new GetRelatedTask().execute();
+		mGetRelatedTask = new GetRelatedTask();
+		mGetRelatedTask.execute();
 		if(mLoadingDialog.isShowing()){
 			mLoadingDialog.dismiss();
 		}
@@ -423,7 +439,11 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			mRelatedItem = mSimpleRestClient.getRelatedItem("/api/tv/relate/"+mItem.pk+"/");
+			try {
+				mRelatedItem = mSimpleRestClient.getRelatedItem("/api/tv/relate/"+mItem.pk+"/");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			return null;
 		}
 
@@ -626,4 +646,5 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 		toast.setView(layout);
 		toast.show();
 	}
+	
 }
