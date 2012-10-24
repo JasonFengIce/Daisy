@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Stack;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -50,7 +51,7 @@ public class VodApplication extends Application {
 	
 	public VodApplication() {
 		mLowMemoryListeners = new ArrayList<WeakReference<OnLowMemoryListener>>();
-		mActivityStack = new Stack<Activity>();
+		mActivityPool = new ConcurrentHashMap<String, Activity>();
 	}
 	
 	private HistoryManager mHistoryManager;
@@ -59,14 +60,16 @@ public class VodApplication extends Application {
 	
 	private DBHelper mDBHelper;
 	
-	private volatile Stack<Activity> mActivityStack;
+	private ConcurrentHashMap<String, Activity> mActivityPool;
 	
-	public synchronized void removeActivtyFromPool() {
-		mActivityStack.pop();
+	public void removeActivtyFromPool(String tag) {
+		Activity a = mActivityPool.remove(tag);
+		Log.d(TAG, "remove activity: "+a);
 	}
 	
-	public synchronized void addActivityToPool(Activity activity) {
-		mActivityStack.push(activity);
+	public void addActivityToPool(String tag, Activity activity) {
+		Log.d(TAG, "add activity: "+activity);
+		mActivityPool.put(tag, activity);
 	}
 	
 	@Override
@@ -250,14 +253,14 @@ public class VodApplication extends Application {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			Log.d(TAG, "Home key is pressed!");
-			Stack<Activity> activityStack = (Stack<Activity>) mActivityStack.clone();
-			while(!activityStack.isEmpty()) {
-				Activity activity = activityStack.pop();
+			ConcurrentHashMap<String, Activity> activityPool =(ConcurrentHashMap<String, Activity>)mActivityPool;
+			for(String tag: activityPool.keySet()) {
+				Activity activity = activityPool.get(tag);
 				if(activity!=null) {
 					activity.finish();
 				}
 			}
-			activityStack.clear();
+			activityPool.clear();
 		}
 		
 	};

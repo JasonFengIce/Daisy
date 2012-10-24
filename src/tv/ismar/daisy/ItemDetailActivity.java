@@ -160,7 +160,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 				mGetItemTask.execute(url);
 			}
 		}
-		DaisyUtils.getVodApplication(this).addActivityToPool(this);
+		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
 	}
 	
 	@Override
@@ -219,7 +219,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 		mFavoriteManager = null;
 		mItem = null;
 		mRelatedItem = null;
-		DaisyUtils.getVodApplication(this).removeActivtyFromPool();
+		DaisyUtils.getVodApplication(this).removeActivtyFromPool(this.toString());
 		super.onDestroy();
 	}
 	

@@ -15,7 +15,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
@@ -25,10 +29,11 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PlayFinishedActivity extends Activity implements OnFocusChangeListener, OnItemClickListener, OnClickListener {
 	
-	private static final String TAG = "PlayFinishedActvity";
+	private static final String TAG = "PlayFinishedActivity";
 	private Item item = new Item();
 	//	private Bitmap bitmap;
 	LinearLayout linearLeft;
@@ -61,8 +66,8 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		try {
 			Intent intent = getIntent();
 			if (null != intent) {
+				DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
 				item = (Item) intent.getExtras().get("item");
-				DaisyUtils.getVodApplication(this).addActivityToPool(this);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -235,6 +240,7 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 			if (isFavorite()) {
 				String url = simpleRest.root_url + "/api/item/" + item.pk + "/";
 				mFavoriteManager.deleteFavoriteByUrl(url);
+				showToast(getResources().getString(R.string.vod_bookmark_remove_success));
 			} else {
 				String url = simpleRest.root_url + "/api/item/" + item.pk + "/";
 				Favorite favorite = new Favorite();
@@ -246,6 +252,7 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 				favorite.is_complex = item.is_complex;
 				mFavoriteManager.addFavorite(favorite);
 				// mFavoriteManager.addFavorite(item.title, url, mItem.content_model);
+				showToast(getResources().getString(R.string.vod_bookmark_add_success));
 			}
 			if (isFavorite()) {
 				btnFavorites.setText(getResources().getString(R.string.favorited));
@@ -340,9 +347,20 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		loadDialog = null;
 		playAdapter = null;
 		mFavoriteManager = null;
-		DaisyUtils.getVodApplication(this).removeActivtyFromPool();
+		DaisyUtils.getVodApplication(this).removeActivtyFromPool(this.toString());
 		super.onDestroy();
 	}
 	
+	private void showToast(String text) {
+		LayoutInflater inflater = getLayoutInflater();
+		View layout = inflater.inflate(R.layout.simple_toast, (ViewGroup) findViewById(R.id.simple_toast_root));
+		TextView toastText = (TextView) layout.findViewById(R.id.toast_text);
+		toastText.setText(text);
+		Toast toast = new Toast(getApplicationContext());
+		toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+		toast.setDuration(Toast.LENGTH_SHORT);
+		toast.setView(layout);
+		toast.show();
+	}
 	
 }
