@@ -90,7 +90,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.search_main);
-		listHotWords = null;
+//		listHotWords = null;
 		movieList = new ArrayList<MovieBean>();
 		initViews();
 	}
@@ -123,7 +123,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				if (null == listHotWords) {
+				if (0 == listHotWords.size()) {
 					listHotWords = searchService.getHotWords();
 					mHandler.sendEmptyMessage(ADD_VIEW);
 				}
@@ -251,7 +251,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 				// autoAdapter.notifyDataSetChanged();
 				break;
 			case ADD_VIEW:
-				if (null == listHotWords) 
+				if (0 == listHotWords.size()) 
 					return;
 				for (int j = 0; j < listHotWords.size(); j++) {
 					final Button btnHotWords = new Button(SearchActivity.this);
