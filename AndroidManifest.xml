@@ -25,7 +25,7 @@
             android:name="SearchActivity"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:launchMode="singleInstance">
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="tv.ismar.daisy.Search" />
                 <category android:name="android.intent.category.DEFAULT" />

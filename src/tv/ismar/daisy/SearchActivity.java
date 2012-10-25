@@ -364,7 +364,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 			intent.putExtra("url", movieList.get(position).url);
 		}
 		try {
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 		} catch (Exception e) {
 			e.printStackTrace();
