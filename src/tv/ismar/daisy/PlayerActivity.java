@@ -217,6 +217,8 @@ public class PlayerActivity extends Activity {
 									VodUserAgent.getAccessToken(sn),
 									PlayerActivity.this);
 						}
+					}else{
+						Log.e(TAG,"init player bundle item and url is null");
 					}
 				}
 				if (item != null) {
@@ -242,6 +244,7 @@ public class PlayerActivity extends Activity {
 
 				}
 			} catch (Exception e) {
+				Log.e(TAG,e.toString());
 				return null;
 			}
 			return urlInfo;
@@ -283,7 +286,12 @@ public class PlayerActivity extends Activity {
 				urls[1] = urlInfo.getMedium();
 				urls[2] = urlInfo.getHigh();
 				urls[3] = urlInfo.getAdaptive();
-
+				for(int i=0;i<urls.length;i++){
+					if(urls[i]!=null&&!urls[i].isEmpty()){
+						currQuality = i;
+						break;
+					}
+				}
 				if (item != null) {
 					favoriteManager = DaisyUtils.getFavoriteManager(this);
 					historyManager = DaisyUtils.getHistoryManager(this);
@@ -298,24 +306,27 @@ public class PlayerActivity extends Activity {
 					}
 					if (mHistory != null) {
 						if (mHistory.is_continue) {
-							if (mHistory.sub_url != null
-									&& mHistory.sub_url.equals(subItemUrl)) {
+							if (mHistory.sub_url != null&& mHistory.sub_url.equals(subItemUrl)) {
 								isContinue = mHistory.is_continue;
 								tempOffset = (int) mHistory.last_position;
-								currQuality = mHistory.last_quality;
-							} else if (mHistory.sub_url == null
-									&& mHistory.url != null) {
+								if(urls[mHistory.last_quality]!=null&&!urls[mHistory.last_quality].isEmpty()){
+									currQuality = mHistory.last_quality;
+								}
+							} else if (mHistory.sub_url == null&& mHistory.url != null) {
 								isContinue = mHistory.is_continue;
 								tempOffset = (int) mHistory.last_position;
-								currQuality = mHistory.last_quality;
+								if(urls[mHistory.last_quality]!=null&&!urls[mHistory.last_quality].isEmpty()){
+									currQuality = mHistory.last_quality;
+								}
 							}
 						} else {
-							currQuality = 0;
+							if(urls[mHistory.last_quality]!=null&&!urls[mHistory.last_quality].isEmpty()){
+								currQuality = mHistory.last_quality;
+							}
 							tempOffset = 0;
 							isContinue = mHistory.is_continue;
 						}
 					} else {
-						currQuality = 0;
 						tempOffset = 0;
 						isContinue = true;
 					}
