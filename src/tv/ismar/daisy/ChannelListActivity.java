@@ -68,13 +68,13 @@ public class ChannelListActivity extends Activity {
 			fragmentTransaction.commit();
 		}
 		
-		DaisyUtils.getVodApplication(this).addActivityToPool(this);
+		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
 	}
 
 	@Override
 	protected void onDestroy() {
 //		System.exit(0);
-		DaisyUtils.getVodApplication(this).removeActivtyFromPool();
+		DaisyUtils.getVodApplication(this).removeActivtyFromPool(this.toString());
 		super.onDestroy();
 	}
 

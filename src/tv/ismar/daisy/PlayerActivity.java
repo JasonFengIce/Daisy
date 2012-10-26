@@ -158,7 +158,7 @@ public class PlayerActivity extends Activity {
 		if (intent != null) {
 			bundle = intent.getExtras();
 			//use to get mUrl, and registerActivity
-			DaisyUtils.getVodApplication(this).addActivityToPool(this);
+			DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(),this);
 			//*********************
 			new ItemByUrlTask().execute();
 		}
@@ -1123,7 +1123,7 @@ public class PlayerActivity extends Activity {
 		historyManager = null;
 		simpleRestClient = null;
 		favoriteManager = null;
-		DaisyUtils.getVodApplication(this).removeActivtyFromPool();
+		DaisyUtils.getVodApplication(this).removeActivtyFromPool(this.toString());
 		super.onDestroy();
 	}
 	private void  removeAllHandler(){

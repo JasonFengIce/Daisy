@@ -59,7 +59,7 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 			subitems = item.subitems[i];
 			list.add(subitems);
 		}
-		DaisyUtils.getVodApplication(this).addActivityToPool(this);
+		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
 //		new Thread(new Runnable() {
 //			@Override
 //			public void run() {
@@ -195,7 +195,7 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 		daram = null;
 		subitems = null;
 		loadDialog = null;
-		DaisyUtils.getVodApplication(this).removeActivtyFromPool();
+		DaisyUtils.getVodApplication(this).removeActivtyFromPool(this.toString());
 		super.onDestroy();
 	}
 

@@ -84,7 +84,7 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 				} else {
 					initLayout();
 				}
-				DaisyUtils.getVodApplication(this).addActivityToPool(this);
+				DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
 			} catch (Exception e) {
 				e.printStackTrace();
 				showToast(getResources().getString(R.string.no_related_video));
@@ -198,7 +198,7 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		mSectionTabs = null;
 		mSimpleRestClient = null;
 		mLoadingDialog = null;
-		DaisyUtils.getVodApplication(this).removeActivtyFromPool();
+		DaisyUtils.getVodApplication(this).removeActivtyFromPool(this.toString());
 		super.onDestroy();
 	}
 
