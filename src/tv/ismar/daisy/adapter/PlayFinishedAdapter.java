@@ -29,10 +29,14 @@ public class PlayFinishedAdapter extends BaseAdapter {
 	}
 
 	private void sortItem() {
-		listItem = new Item[9];
-		if (null == listItemSort) 
+		if (null == listItemSort){
 			return;
-			
+		}
+		if(listItemSort.length<=9) {
+			listItem = listItemSort;
+			return;
+		}
+		listItem = new Item[9];
 		for (int i = 0; i < 9; i++) {
 			listItem[i] = listItemSort[i];
 		}
