@@ -79,7 +79,7 @@ public class NetworkUtils {
 	 * @return true、false  是否成功
 	 * 
 	 */
-	public boolean LogSender(String eventName,HashMap<String,Object> propertiesMap) {
+	public static boolean LogSender(String eventName,HashMap<String,Object> propertiesMap) {
 		BufferedReader in = null;
 		try {
 			String jsonContent = getContentJson(eventName, propertiesMap);
