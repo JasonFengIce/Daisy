@@ -23,7 +23,7 @@ public class NetworkUtils {
 	
 	private static final String TAG = "NetworkUtils";
 	
-	private static final String URL = "http://calla.tvxio.com/log";
+	private static final String URL = "http://callatest.tvxio.com/log";
 	
 	public static String getJsonStr(String target) throws ItemOfflineException {
 		String urlStr = target;
