@@ -25,7 +25,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnKeyListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -85,6 +84,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	List<List<MovieBean>> groupList = new ArrayList<List<MovieBean>>();
 	// 自定义的Dialog
 	private LoadingDialog loadDialog;
+	private SearchPromptDialog customDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -99,12 +99,13 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	protected void onResume() {
 		super.onResume();
 		if (!ConnectionHelper.isNetWorkAvailable(this)) {
-			new SearchPromptDialog(SearchActivity.this, R.style.MyDialog).show();
+			if (!customDialog.isShowing()) {
+				customDialog.show();
+			}
 			// 初始化一个自定义的Dialog
 			return;
 		}
 		showHotWords();
-		// imageAdapter.setAsyncisPauseed(false);
 	}
 
 	@Override
@@ -148,6 +149,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 		autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.act_autocomplete_country);// 找到相应的控件
 		autoCompleteTextView.setOnClickListener(this);
 		loadDialog = new LoadingDialog(this);
+		customDialog = new SearchPromptDialog(SearchActivity.this, R.style.MyDialog);
 		startTime = System.currentTimeMillis();
 		autoCompleteTextView.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -193,7 +195,9 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 		case R.id.ibtn_search:
 			try {
 				if (!ConnectionHelper.isNetWorkAvailable(this)) {
-					new SearchPromptDialog(SearchActivity.this, R.style.MyDialog).show();
+					if (!customDialog.isShowing()) {
+						customDialog.show();
+					}
 					// 初始化一个自定义的Dialog
 					return;
 				}
