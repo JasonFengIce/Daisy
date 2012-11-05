@@ -51,6 +51,7 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 	private LoadingDialog mLoadingDialog;
 	
 	private GetRelatedTask mGetRelatedTask;
+	private GetRelatedItemByInfo mGetRelatedItemByInfoTask;
 	
 	private void initViews(){
 		mSectionTabs = (ScrollableSectionList) findViewById(R.id.related_section_tabs);
@@ -191,6 +192,9 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		if(mGetRelatedTask!=null && mGetRelatedTask.getStatus()!=AsyncTask.Status.FINISHED) {
 			mGetRelatedTask.cancel(true);
 		}
+		if(mGetRelatedItemByInfoTask!=null && mGetRelatedItemByInfoTask.getStatus()!=AsyncTask.Status.FINISHED) {
+			mGetRelatedItemByInfoTask.cancel(true);
+		}
 		mGetRelatedTask = null;
 		mAdapter = null;
 		mVirtualSectionList = null;
@@ -205,7 +209,11 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 	@Override
 	public void onSectionSelectChanged(int index) {
 		Section section = mVirtualSectionList.get(index);
-		new GetRelatedItemByInfo().execute(section);
+		if(mGetRelatedItemByInfoTask!=null && mGetRelatedItemByInfoTask.getStatus()!=AsyncTask.Status.FINISHED) {
+			mGetRelatedItemByInfoTask.cancel(true);
+		}
+		mGetRelatedItemByInfoTask = new GetRelatedItemByInfo();
+		mGetRelatedItemByInfoTask.execute(section);
 	}
 	
 	class GetRelatedItemByInfo extends AsyncTask<Section, Void, Void> {
