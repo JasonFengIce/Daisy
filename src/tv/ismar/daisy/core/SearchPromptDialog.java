@@ -16,7 +16,6 @@ public class SearchPromptDialog extends Dialog implements android.view.View.OnCl
 
 	public SearchPromptDialog(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
 		this.context = context;
 	}
 
@@ -27,7 +26,6 @@ public class SearchPromptDialog extends Dialog implements android.view.View.OnCl
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.search_dialog);
 		initViews();
