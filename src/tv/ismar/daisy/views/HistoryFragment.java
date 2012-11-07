@@ -60,6 +60,8 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 	private boolean isInGetHistoryTask;
 	private boolean isInGetItemTask;
 	
+	private GetHistoryTask mGetHistoryTask;
+	
 	private MenuFragment mMenuFragment;
 	
 	public final static String MENU_TAG = "HistoryMenu";
@@ -128,7 +130,8 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 			Bundle savedInstanceState) {
 		View fragmentView = inflater.inflate(R.layout.list_view, container, false);
 		initViews(fragmentView);
-		new GetHistoryTask().execute();
+		mGetHistoryTask = new GetHistoryTask();
+		mGetHistoryTask.execute();
 		return fragmentView;
 	}
 	
@@ -144,53 +147,57 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			final long todayStartPoint = getTodayStartPoint();
-			final long yesterdayStartPoint = getYesterdayStartPoint();
-			ArrayList<History> mHistories = mHistoryManager.getAllHistories();
-			if(mHistories.size()>0) {
-				Collections.sort(mHistories);
-				for(int i=0;i<mHistories.size();++i) {
-					History history = mHistories.get(i);
-					Item item = getItem(history);
-					if(history.last_played_time < yesterdayStartPoint){
-						mEarlyItemList.objects.add(item);
-					} else if(history.last_played_time > yesterdayStartPoint && history.last_played_time < todayStartPoint) {
-						mYesterdayItemList.objects.add(item);
-					} else {
-						mTodayItemList.objects.add(item);
+			try {
+				final long todayStartPoint = getTodayStartPoint();
+				final long yesterdayStartPoint = getYesterdayStartPoint();
+				ArrayList<History> mHistories = mHistoryManager.getAllHistories();
+				if(mHistories.size()>0) {
+					Collections.sort(mHistories);
+					for(int i=0;i<mHistories.size();++i) {
+						History history = mHistories.get(i);
+						Item item = getItem(history);
+						if(history.last_played_time < yesterdayStartPoint){
+							mEarlyItemList.objects.add(item);
+						} else if(history.last_played_time > yesterdayStartPoint && history.last_played_time < todayStartPoint) {
+							mYesterdayItemList.objects.add(item);
+						} else {
+							mTodayItemList.objects.add(item);
+						}
+					}
+					mTodayItemList.count = mTodayItemList.objects.size();
+					mYesterdayItemList.count = mYesterdayItemList.objects.size();
+					mEarlyItemList.count = mEarlyItemList.objects.size();
+					if(mTodayItemList.count > 0) {
+						Section todaySection = new Section();
+						todaySection.slug = mTodayItemList.slug;
+						todaySection.title = mTodayItemList.title;
+						todaySection.count = mTodayItemList.count;
+						mSectionList.add(todaySection);
+					}
+					if(mYesterdayItemList.count > 0) {
+						Section yesterdaySection = new Section();
+						yesterdaySection.slug = mYesterdayItemList.slug;
+						yesterdaySection.title = mYesterdayItemList.title;
+						yesterdaySection.count = mYesterdayItemList.count;
+						mSectionList.add(yesterdaySection);
+					}
+					if(mEarlyItemList.count > 0) {
+						Section earlySection = new Section();
+						earlySection.slug = mEarlyItemList.slug;
+						earlySection.title = mEarlyItemList.title;
+						earlySection.count = mEarlyItemList.count;
+						mSectionList.add(earlySection);
 					}
 				}
-				mTodayItemList.count = mTodayItemList.objects.size();
-				mYesterdayItemList.count = mYesterdayItemList.objects.size();
-				mEarlyItemList.count = mEarlyItemList.objects.size();
-				if(mTodayItemList.count > 0) {
-					Section todaySection = new Section();
-					todaySection.slug = mTodayItemList.slug;
-					todaySection.title = mTodayItemList.title;
-					todaySection.count = mTodayItemList.count;
-					mSectionList.add(todaySection);
-				}
-				if(mYesterdayItemList.count > 0) {
-					Section yesterdaySection = new Section();
-					yesterdaySection.slug = mYesterdayItemList.slug;
-					yesterdaySection.title = mYesterdayItemList.title;
-					yesterdaySection.count = mYesterdayItemList.count;
-					mSectionList.add(yesterdaySection);
-				}
-				if(mEarlyItemList.count > 0) {
-					Section earlySection = new Section();
-					earlySection.slug = mEarlyItemList.slug;
-					earlySection.title = mEarlyItemList.title;
-					earlySection.count = mEarlyItemList.count;
-					mSectionList.add(earlySection);
-				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 			return null;
 		}
 
 		@Override
 		protected void onPostExecute(Void result) {
-			if(mSectionList.size() > 0) {
+			if(mSectionList!=null && mSectionList.size() > 0) {
 				mScrollableSectionList.init(mSectionList, 1365);
 				int index=0;
 				if(mTodayItemList.count > 0) {
@@ -375,7 +382,11 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 		mScrollableSectionList.reset();
 		mSectionList = new SectionList();
 		initHistoryList();
-		new GetHistoryTask().execute();
+		if(mGetHistoryTask!=null && mGetHistoryTask.getStatus()!=AsyncTask.Status.FINISHED) {
+			mGetHistoryTask.cancel(true);
+		}
+		mGetHistoryTask = new GetHistoryTask();
+		mGetHistoryTask.execute();
 	}
 
 	@Override
@@ -429,6 +440,9 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 	public void onDetach() {
 		if(mLoadingDialog.isShowing()){
 			mLoadingDialog.dismiss();
+		}
+		if(mGetHistoryTask!=null && mGetHistoryTask.getStatus()!=AsyncTask.Status.FINISHED) {
+			mGetHistoryTask.cancel(true);
 		}
 		mLoadingDialog = null;
 		mHistoryManager = null;
