@@ -89,7 +89,6 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.i("SearchActivity", "oncreate");
 		setContentView(R.layout.search_main);
 //		listHotWords = null;
 		movieList = new ArrayList<MovieBean>();
@@ -99,7 +98,6 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Log.i("SearchActivity", "onresume");
 		if (!ConnectionHelper.isNetWorkAvailable(this)) {
 			if (!customDialog.isShowing()) {
 				customDialog.show();
@@ -128,7 +126,6 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 			@Override
 			public void run() {
 				synchronized (SearchActivity.this) {
-					Log.i("SearchActivity", listHotWords.size()+"");
 					if (0 == listHotWords.size()) {
 						listHotWords = searchService.getHotWords();
 						mHandler.sendEmptyMessage(ADD_VIEW);
