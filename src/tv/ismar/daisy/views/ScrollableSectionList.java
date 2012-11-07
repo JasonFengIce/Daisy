@@ -74,7 +74,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 		for(int i=0; i<sectionList.size(); i++) {
 			String title = sectionList.get(i).title;
 			int length = title.length();
-			width = width > length * 38 ? width : length * 38;
+			width = width > length * 38 ? width : length * 38 + 60;
 		}
 		for(int i=0; i<sectionList.size(); i++) {
 			LinearLayout sectionHolder = getSectionLabelLayout(sectionList.get(i), width);

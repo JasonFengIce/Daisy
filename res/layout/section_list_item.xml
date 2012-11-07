@@ -11,7 +11,7 @@
         android:paddingLeft="10dip"
         android:paddingRight="10dip"
         android:focusable="true"
-        android:textSize="35dip"
+        android:textSize="35sp"
         android:textColor="#FFBBBBBB"
         android:singleLine="true"
         android:gravity="center"/>

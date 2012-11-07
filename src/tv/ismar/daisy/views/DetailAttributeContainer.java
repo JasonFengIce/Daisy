@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 public class DetailAttributeContainer extends LinearLayout {
 	
+	private final static String TAG = "DetailAttributeContainer";
+	
 	private int mMaxHeight;
 	
 	private LinkedHashMap<String, String> mAttributeMap;
@@ -87,22 +89,32 @@ public class DetailAttributeContainer extends LinearLayout {
 		}
 	}
 	
+	
+	
 	@Override
-	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+		super.onLayout(changed, l, t, r, b);
+		int h = b - t;
 		if(mMaxHeight == 0) {
 			mMaxHeight = h;
 		}
-		Log.d("DetailSize", "h="+h+" oldh="+oldh);
 		mCurrentHeight = h;
+		Log.d(TAG, "mCurrentHeight: "+mCurrentHeight+" mMaxHeight: " + mMaxHeight);
 		if(mCurrentHeight>0 && h > mMaxHeight && getChildCount() > 1) {
 			if(hasAdjustSpaceItem){
 				hasAdjustSpaceItem = adjustItemHeight();
 			}
-			requestLayout();
-			invalidate();
+			post(new Runnable() {
+				
+				@Override
+				public void run() {
+					requestLayout();
+					invalidate();
+				}
+			});
 		}
 	}
-	
+
 	/**
 	 * Adjust the max lines of an items value to fit the maxHeight of the container.
 	 * @return true if some item still have space (mutiple lines) to adjust. otherwise, return false;
