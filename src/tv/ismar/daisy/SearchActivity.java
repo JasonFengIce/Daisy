@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import tv.ismar.daisy.adapter.ImageCacheAdapter;
 import tv.ismar.daisy.core.ConnectionHelper;
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SearchMovieService;
 import tv.ismar.daisy.core.SearchPromptDialog;
 import tv.ismar.daisy.core.SortMovieUtils;
@@ -93,6 +94,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 //		listHotWords = null;
 		movieList = new ArrayList<MovieBean>();
 		initViews();
+		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
 	}
 
 	@Override
@@ -113,6 +115,12 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	protected void onPause() {
 		super.onPause();
 		// imageAdapter.setAsyncisPauseed(true);
+	}
+	
+	@Override
+	protected void onDestroy() {
+		DaisyUtils.getVodApplication(this).removeActivtyFromPool(this.toString());
+		super.onDestroy();
 	}
 
 	@Override

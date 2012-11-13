@@ -28,6 +28,7 @@ import android.app.Activity;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources.NotFoundException;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -154,7 +155,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 			} else {
 				String url = intent.getStringExtra("url");
 				if(url==null){
-					url = "http://cord.tvxio.com/api/item/96538/";
+					url = SimpleRestClient.sRoot_url + "/api/item/96538/";
 				}
 				mGetItemTask = new GetItemTask();
 				mGetItemTask.execute(url);
@@ -217,7 +218,6 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 		mLoadingImageQueue = null;
 		mLoadingDialog = null;
 		mFavoriteManager = null;
-		mItem = null;
 		mRelatedItem = null;
 		DaisyUtils.getVodApplication(this).removeActivtyFromPool(this.toString());
 		super.onDestroy();
@@ -275,7 +275,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 		}
 		
 		if(isDrama) {
-			String url = mItem.item_url==null ? mSimpleRestClient.root_url + "/api/item/" + mItem.pk + "/": mItem.item_url;
+			String url = mItem.item_url==null ? SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk + "/": mItem.item_url;
 			mHistory = mHistoryManager.getHistoryByUrl(url);
 		}
 		
@@ -402,7 +402,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 		if(mItem!=null) {
 			String url = mItem.item_url;
 			if(url==null && mItem.pk != 0) {
-				url = mSimpleRestClient.root_url + "/api/item/" + mItem.pk + "/";
+				url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk + "/";
 			}
 			Favorite favorite = mFavoriteManager.getFavoriteByUrl(url);
 			if(favorite!=null) {
@@ -542,63 +542,67 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 		
 		@Override
 		public void onClick(View v) {
-			int id = v.getId();
-			Intent intent = new Intent();
-			switch(id){
-			case R.id.btn_left:
-				String subUrl = null;
-				if(mHistory!=null && mHistory.is_continue) {
-					subUrl = mHistory.sub_url;
-				} else {
-					subUrl = mItem.subitems[0].url;
-				}
-				
-				intent.setAction("tv.ismar.daisy.Play");
-				intent.putExtra("url", subUrl);
-				startActivity(intent);
-				break;
-			case R.id.btn_right:
-				intent.setClass(ItemDetailActivity.this, DramaListActivity.class);
-				intent.putExtra("item", mItem);
-				startActivity(intent);
-				break;
-			case R.id.btn_fill:
-				intent.setAction("tv.ismar.daisy.Play");
-				intent.putExtra("item", mItem);
-				startActivity(intent);
-				break;
-			case R.id.btn_favorite:
-				if(isFavorite()) {
-					String url = mSimpleRestClient.root_url + "/api/item/"+mItem.pk+"/";
-					mFavoriteManager.deleteFavoriteByUrl(url);
-					showToast(getResources().getString(R.string.vod_bookmark_remove_success));
-				} else {
-					String url = mSimpleRestClient.root_url + "/api/item/"+mItem.pk+"/";
-					Favorite favorite = new Favorite();
-					favorite.title = mItem.title;
-					favorite.adlet_url = mItem.adlet_url;
-					favorite.content_model = mItem.content_model;
-					favorite.url = url;
-					favorite.quality = mItem.quality;
-					favorite.is_complex = mItem.is_complex;
-					mFavoriteManager.addFavorite(favorite);
+			try {
+				int id = v.getId();
+				Intent intent = new Intent();
+				switch(id){
+				case R.id.btn_left:
+					String subUrl = null;
+					if(mHistory!=null && mHistory.is_continue) {
+						subUrl = mHistory.sub_url;
+					} else {
+						subUrl = mItem.subitems[0].url;
+					}
+					
+					intent.setAction("tv.ismar.daisy.Play");
+					intent.putExtra("url", subUrl);
+					startActivity(intent);
+					break;
+				case R.id.btn_right:
+					intent.setClass(ItemDetailActivity.this, DramaListActivity.class);
+					intent.putExtra("item", mItem);
+					startActivity(intent);
+					break;
+				case R.id.btn_fill:
+					intent.setAction("tv.ismar.daisy.Play");
+					intent.putExtra("item", mItem);
+					startActivity(intent);
+					break;
+				case R.id.btn_favorite:
+					if(isFavorite()) {
+						String url = SimpleRestClient.sRoot_url + "/api/item/"+mItem.pk+"/";
+						mFavoriteManager.deleteFavoriteByUrl(url);
+						showToast(getResources().getString(R.string.vod_bookmark_remove_success));
+					} else {
+						String url = SimpleRestClient.sRoot_url + "/api/item/"+mItem.pk+"/";
+						Favorite favorite = new Favorite();
+						favorite.title = mItem.title;
+						favorite.adlet_url = mItem.adlet_url;
+						favorite.content_model = mItem.content_model;
+						favorite.url = url;
+						favorite.quality = mItem.quality;
+						favorite.is_complex = mItem.is_complex;
+						mFavoriteManager.addFavorite(favorite);
 //					mFavoriteManager.addFavorite(mItem.title, url, mItem.content_model);
-					showToast(getResources().getString(R.string.vod_bookmark_add_success));
+						showToast(getResources().getString(R.string.vod_bookmark_add_success));
+					}
+					if(isFavorite()) {
+						mBtnFavorite.setText(getResources().getString(R.string.favorited));
+					} else {
+						mBtnFavorite.setText(getResources().getString(R.string.favorite));
+					}
+					break;
+				case R.id.more_content:
+					if(mRelatedItem!=null && mRelatedItem.length >0 ){
+						intent.putExtra("related_item", new ArrayList<Item>(Arrays.asList(mRelatedItem)));
+					}
+					intent.putExtra("item", mItem);
+					intent.setClass(ItemDetailActivity.this, RelatedActivity.class);
+					startActivity(intent);
+					break;
 				}
-				if(isFavorite()) {
-					mBtnFavorite.setText(getResources().getString(R.string.favorited));
-				} else {
-					mBtnFavorite.setText(getResources().getString(R.string.favorite));
-				}
-				break;
-			case R.id.more_content:
-				if(mRelatedItem!=null && mRelatedItem.length >0 ){
-					intent.putExtra("related_item", new ArrayList<Item>(Arrays.asList(mRelatedItem)));
-				}
-				intent.putExtra("item", mItem);
-				intent.setClass(ItemDetailActivity.this, RelatedActivity.class);
-				startActivity(intent);
-				break;
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	};
