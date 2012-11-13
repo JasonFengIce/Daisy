@@ -15,7 +15,7 @@ import android.util.Log;
 
 public class CallaSender {
 
-	private static final String TAG = "CallaSender";
+	private static final String TAG = "LogSender";
 	
 	private static final String URL = "http://calla.tvxio.com/log";
 	
@@ -32,7 +32,7 @@ public class CallaSender {
     }     
 
 	
-	public void httpConn(String eventName,HashMap<String,Object> propertiesMap) {
+	public boolean httpConn(String eventName,HashMap<String,Object> propertiesMap) {
 		BufferedReader in = null;
 		try {
 			String jsonContent = getContentJson(eventName, propertiesMap);
@@ -42,8 +42,6 @@ public class CallaSender {
 			String url=URL+"/A11/track/?date="+base64Code(jsonContent);
 			java.net.URL connURL = new java.net.URL(url);
 			java.net.HttpURLConnection httpConn = (java.net.HttpURLConnection) connURL.openConnection();
-			httpConn.setDoOutput(true);
-			httpConn.setDoInput(true); 
 			httpConn.setRequestMethod("POST");
 			httpConn.setConnectTimeout(10000);
 			httpConn.setReadTimeout(10000);  
@@ -51,15 +49,16 @@ public class CallaSender {
 			httpConn.setRequestProperty("User-Agent", VodUserAgent.getUserAgent(VodUserAgent.getMACAddress()));
 			httpConn.connect();
 			Log.d(TAG, eventName+" SUCCESS ");
+			return true;
 		} catch (MalformedURLException e) {
-			Log.d(TAG, eventName +" MalformedURLException "+e.toString());
-			e.printStackTrace();
+			Log.e(TAG, eventName +" MalformedURLException "+e.toString());
+			return false;
 		} catch (IOException e) {
-			Log.d(TAG, eventName +" IOException "+e.toString());
-			e.printStackTrace();
+			Log.e(TAG, eventName +" IOException "+e.toString());
+			return false;
 		} catch (Exception e) {
-			Log.d(TAG, eventName +" Exception "+e.toString());
-			e.printStackTrace();
+			Log.e(TAG, eventName +" Exception "+e.toString());
+			return false;
 		} finally {
 			try {
 				if (in != null) {

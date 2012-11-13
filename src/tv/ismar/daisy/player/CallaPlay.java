@@ -3,6 +3,7 @@ package tv.ismar.daisy.player;
 import java.util.HashMap;
 
 import tv.ismar.daisy.core.CallaSender;
+import tv.ismar.daisy.core.NetworkUtils;
 
 public class CallaPlay {
 
@@ -32,7 +33,7 @@ public class CallaPlay {
 		tempMap.put("quality", quality);
 		tempMap.put("userid", userid);
 		tempMap.put("speed", speed);
-		csender.httpConn("video_start", tempMap);
+		NetworkUtils.LogSender(NetworkUtils.VIDEO_START, tempMap);
 		
 		return tempMap;
 	}
@@ -61,7 +62,7 @@ public class CallaPlay {
 		tempMap.put("duration", duration);
 		tempMap.put("speed", speed);
 		tempMap.put("mediaip",mediaip);
-		csender.httpConn("video_play_load", tempMap);
+		NetworkUtils.LogSender(NetworkUtils.VIDEO_PLAY_LOAD, tempMap);
 		return tempMap;
 		
 	}
@@ -93,7 +94,7 @@ public class CallaPlay {
 		tempMap.put("userid", userid);
 		tempMap.put("speed", speed);
 		tempMap.put("mediaip",mediaip);
-		csender.httpConn("video_switch_stream", tempMap);
+		NetworkUtils.LogSender(NetworkUtils.VIDEO_SWITCH_STREAM, tempMap);
 		return tempMap;
 		
 	}
