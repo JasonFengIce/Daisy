@@ -3,6 +3,8 @@ package tv.ismar.daisy.persistence;
 import java.util.ArrayList;
 
 import tv.ismar.daisy.models.History;
+import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.models.Quality;
 
 /**
  * An History Manager.
@@ -50,4 +52,18 @@ public interface HistoryManager {
 	 * Delete all histories in database
 	 */
 	public void deleteAll();
+	
+	
+	/**
+	 * Add or update only one Quality
+	 * 
+	 */
+	public void addOrUpdateQuality(Quality quality);
+	
+	/**
+	 * get user Quality
+	 * 
+	 */
+	public Quality getQuality();
+	
 }

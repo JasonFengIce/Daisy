@@ -10,6 +10,7 @@ import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.dao.DBHelper.DBFields;
 import tv.ismar.daisy.models.History;
+import tv.ismar.daisy.models.Quality;
 
 public class LocalHistoryManager implements HistoryManager {
 	
@@ -139,6 +140,27 @@ public class LocalHistoryManager implements HistoryManager {
 	public void deleteAll() {
 		mDBHelper.delete(DBFields.HistroyTable.TABLE_NAME, null);
 		mHistories.clear();
+	}
+	
+	@Override
+	public void addOrUpdateQuality(Quality quality) {
+		Quality tempQuality = mDBHelper.queryQualtiy();
+		if(tempQuality!=null){
+			tempQuality.url = quality.url;
+			tempQuality.quality = quality.quality;
+			mDBHelper.updateQualtiy(tempQuality);
+		}else{
+			ContentValues cv = new ContentValues();
+			cv.put(DBFields.QualityTable.URL, quality.url);
+			cv.put(DBFields.QualityTable.QUALITY, quality.quality);
+			mDBHelper.insert(cv, DBFields.QualityTable.TABLE_NAME, 1);
+		}
+		
+	}
+	@Override
+	public Quality getQuality() {
+		Quality quality = mDBHelper.queryQualtiy();
+		return quality;
 	}
 
 }

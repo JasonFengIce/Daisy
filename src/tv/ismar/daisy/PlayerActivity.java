@@ -13,8 +13,10 @@ import tv.ismar.daisy.models.Clip;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.models.Quality;
 import tv.ismar.daisy.persistence.FavoriteManager;
 import tv.ismar.daisy.persistence.HistoryManager;
+import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.player.ISTVVodMenu;
 import tv.ismar.daisy.player.ISTVVodMenuItem;
 import android.app.Activity;
@@ -49,7 +51,7 @@ import com.ismartv.api.AccessProxy;
 import com.ismartv.bean.ClipInfo;
 
 public class PlayerActivity extends Activity {
-	
+
 	@SuppressWarnings("unused")
 	private static final String PREFS_NAME = "tv.ismar.daisy";
 	private static final String TAG = "PLAYER";
@@ -109,7 +111,8 @@ public class PlayerActivity extends Activity {
 	private int currNum = 0;
 	private int offsets = 0;
 	private TextView bufferText;
-
+	private long  bufferDuration = 0 ; 
+	private CallaPlay callaPlay = new CallaPlay();
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -124,7 +127,8 @@ public class PlayerActivity extends Activity {
 		// bufferHideAnimation =
 		// AnimationUtils.loadAnimation(this,R.drawable.fade_out);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setContentView(R.layout.vod_player);
 		mVideoView = (VideoView) findViewById(R.id.video_view);
@@ -149,7 +153,7 @@ public class PlayerActivity extends Activity {
 	private void initClipInfo() {
 		simpleRestClient = new SimpleRestClient();
 		bufferText.setText(BUFFERING);
-		if (mVideoView!=null){
+		if (mVideoView != null) {
 			mVideoView.setAlpha(0);
 		}
 		showBuffer();
@@ -157,9 +161,10 @@ public class PlayerActivity extends Activity {
 		Intent intent = getIntent();
 		if (intent != null) {
 			bundle = intent.getExtras();
-			//use to get mUrl, and registerActivity
-			DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(),this);
-			//*********************
+			// use to get mUrl, and registerActivity
+			DaisyUtils.getVodApplication(this).addActivityToPool(
+					this.toString(), this);
+			// *********************
 			new ItemByUrlTask().execute();
 		}
 	}
@@ -169,10 +174,10 @@ public class PlayerActivity extends Activity {
 
 		@Override
 		protected void onPostExecute(ClipInfo result) {
-			if(result!=null){
+			if (result != null) {
 				initPlayer();
-			}else{
-				ExToClosePlayer();
+			} else {
+				ExToClosePlayer("url");
 			}
 		}
 
@@ -217,8 +222,8 @@ public class PlayerActivity extends Activity {
 									VodUserAgent.getAccessToken(sn),
 									PlayerActivity.this);
 						}
-					}else{
-						Log.e(TAG,"init player bundle item and url is null");
+					} else {
+						Log.e(TAG, "init player bundle item and url is null");
 					}
 				}
 				if (item != null) {
@@ -244,7 +249,7 @@ public class PlayerActivity extends Activity {
 
 				}
 			} catch (Exception e) {
-				Log.e(TAG,e.toString());
+				Log.e(TAG, e.toString());
 				return null;
 			}
 			return urlInfo;
@@ -286,15 +291,20 @@ public class PlayerActivity extends Activity {
 				urls[1] = urlInfo.getMedium();
 				urls[2] = urlInfo.getHigh();
 				urls[3] = urlInfo.getAdaptive();
-				for(int i=0;i<urls.length;i++){
-					if(urls[i]!=null&&!urls[i].isEmpty()){
-						currQuality = i;
-						break;
+				favoriteManager = DaisyUtils.getFavoriteManager(this);
+				historyManager = DaisyUtils.getHistoryManager(this);
+				Quality quality = historyManager.getQuality();
+				if(quality!=null){
+					currQuality = quality.quality;
+				}else{
+					for (int i = urls.length-1; i >0; i--) {
+						if (urls[i] != null && !urls[i].isEmpty()) {
+							currQuality = i;
+							break;
+						}
 					}
 				}
 				if (item != null) {
-					favoriteManager = DaisyUtils.getFavoriteManager(this);
-					historyManager = DaisyUtils.getHistoryManager(this);
 					if (subItem != null && subItem.item_pk != subItem.pk) {
 						mHistory = historyManager.getHistoryByUrl(itemUrl);
 						favorite = favoriteManager.getFavoriteByUrl(itemUrl);
@@ -306,21 +316,28 @@ public class PlayerActivity extends Activity {
 					}
 					if (mHistory != null) {
 						if (mHistory.is_continue) {
-							if (mHistory.sub_url != null&& mHistory.sub_url.equals(subItemUrl)) {
+							if (mHistory.sub_url != null
+									&& mHistory.sub_url.equals(subItemUrl)) {
 								isContinue = mHistory.is_continue;
 								tempOffset = (int) mHistory.last_position;
-								if(urls[mHistory.last_quality]!=null&&!urls[mHistory.last_quality].isEmpty()){
+								if (urls[mHistory.last_quality] != null
+										&& !urls[mHistory.last_quality]
+												.isEmpty()) {
 									currQuality = mHistory.last_quality;
 								}
-							} else if (mHistory.sub_url == null&& mHistory.url != null) {
+							} else if (mHistory.sub_url == null
+									&& mHistory.url != null) {
 								isContinue = mHistory.is_continue;
 								tempOffset = (int) mHistory.last_position;
-								if(urls[mHistory.last_quality]!=null&&!urls[mHistory.last_quality].isEmpty()){
+								if (urls[mHistory.last_quality] != null
+										&& !urls[mHistory.last_quality]
+												.isEmpty()) {
 									currQuality = mHistory.last_quality;
 								}
 							}
 						} else {
-							if(urls[mHistory.last_quality]!=null&&!urls[mHistory.last_quality].isEmpty()){
+							if (urls[mHistory.last_quality] != null
+									&& !urls[mHistory.last_quality].isEmpty()) {
 								currQuality = mHistory.last_quality;
 							}
 							tempOffset = 0;
@@ -361,7 +378,9 @@ public class PlayerActivity extends Activity {
 								@Override
 								public void onPrepared(MediaPlayer mp) {
 
-									Log.d(TAG,"mVideoView onPrepared tempOffset ==" + tempOffset);
+									Log.d(TAG,
+											"mVideoView onPrepared tempOffset =="
+													+ tempOffset);
 									if (mVideoView != null) {
 										clipLength = mVideoView.getDuration();
 										// bufferText.setText("");
@@ -371,6 +390,11 @@ public class PlayerActivity extends Activity {
 										timeBar.setProgress(currPosition);
 										timeTaskStart();
 										checkTaskStart();
+
+										urls[0] = urlInfo.getNormal();
+										urls[1] = urlInfo.getMedium();
+										urls[2] = urlInfo.getHigh();
+										urls[3] = urlInfo.getAdaptive();
 									}
 								}
 							});
@@ -382,7 +406,7 @@ public class PlayerActivity extends Activity {
 									Log.d(TAG,
 											"mVideoView  Error setVideoPath urls[currQuality] ");
 									addHistory(currPosition);
-									ExToClosePlayer();
+									ExToClosePlayer("error");
 									return false;
 								}
 							});
@@ -396,17 +420,45 @@ public class PlayerActivity extends Activity {
 									gotoFinishPage();
 								}
 							});
-					// showPanel();
+					
+					TaskStart();
 				}
 
 			} else {
-				ExToClosePlayer();
+				ExToClosePlayer("url");
 			}
 		} catch (Exception e) {
-			ExToClosePlayer();
+			Log.e(TAG, e.toString());
+			ExToClosePlayer("url");
 		}
 	}
+	private Handler logHandler = new Handler(); 
+	
+	private void TaskStart() {
+		logHandler.removeCallbacks(logTaskRunnable);
+		logHandler.post(logTaskRunnable);
+	}
 
+	private void timeTaskStop() {
+		logHandler.removeCallbacks(logTaskRunnable);
+	}
+
+	private Runnable logTaskRunnable = new Runnable() {
+		@Override
+		public void run() {
+			try {
+				if (subItem != null)
+					callaPlay.videoPlayStart(item.pk, subItem.pk,
+							item.title, clip.pk, currQuality, 0);
+				else
+					callaPlay.videoPlayStart(item.pk, null, item.title,
+							clip.pk, currQuality, 0);
+			} catch (Exception e) {
+				Log.e(TAG, " Sender log videoPlayStart " + e.toString());
+			}
+		}
+	};
+	
 	private void timeTaskStart() {
 		mHandler.removeCallbacks(mUpdateTimeTask);
 		mHandler.post(mUpdateTimeTask);
@@ -417,6 +469,7 @@ public class PlayerActivity extends Activity {
 	}
 
 	private Runnable mUpdateTimeTask = new Runnable() {
+		@Override
 		public void run() {
 			if (mVideoView != null) {
 				if (mVideoView.isPlaying()) {
@@ -430,11 +483,32 @@ public class PlayerActivity extends Activity {
 		}
 	};
 
-	private void ExToClosePlayer() {
-		 if(bufferText!=null){
-			 bufferText.setText(EXTOCLOSE);
-		 }
-		 mHandler.postDelayed(finishPlayerActivity, 3000);
+	private void ExToClosePlayer(String content) {
+		if (bufferText != null) {
+			bufferText.setText(EXTOCLOSE);
+			if(content == "url"){
+				try {
+					if (subItem != null)
+						callaPlay.videoExcept("noplayaddress", item.pk, subItem.pk,item.title, clip.pk,currQuality,0);
+					else
+						callaPlay.videoExcept("noplayaddress", item.pk,null,item.title, clip.pk,currQuality,0);
+				} catch (Exception e) {
+					Log.e(TAG, " Sender log videoExcept noplayaddress " + e.toString());
+				}
+			}
+			if(content == "error"){
+				try {
+					if (subItem != null)
+						callaPlay.videoExcept("mediaexception", item.pk, subItem.pk,item.title, clip.pk,currQuality,currPosition);
+					else
+						callaPlay.videoExcept("mediaexception", item.pk,null,item.title, clip.pk,currQuality,currPosition);
+				} catch (Exception e) {
+					Log.e(TAG, " Sender log videoExcept noplayaddress " + e.toString());
+				}
+			}
+			
+		}
+		mHandler.postDelayed(finishPlayerActivity, 3000);
 	}
 
 	private Runnable finishPlayerActivity = new Runnable() {
@@ -460,12 +534,15 @@ public class PlayerActivity extends Activity {
 			if (mVideoView != null) {
 				// Log.d(TAG,
 				// "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
-				if (mVideoView.isPlaying() && Math.abs(mVideoView.getCurrentPosition() - seekPostion) > 0) {
+				if (mVideoView.isPlaying()
+						&& Math.abs(mVideoView.getCurrentPosition()
+								- seekPostion) > 0) {
 					if (isBuffer || bufferLayout.isShown()) {
 						isBuffer = false;
 						hideBuffer();
-					}else{
-						if(mVideoView.getAlpha()<1) mVideoView.setAlpha(1);
+					} else {
+						if (mVideoView.getAlpha() < 1)
+							mVideoView.setAlpha(1);
 					}
 					if (!isSeek) {
 						timeBar.setProgress(currPosition);
@@ -513,7 +590,18 @@ public class PlayerActivity extends Activity {
 				currPosition = 0;
 				mVideoView = null;
 				addHistory(0);
+				try {
+					if (subItem != null)
+						callaPlay.videoExit(item.pk, subItem.pk, item.title,
+								clip.pk, currQuality, 0, "end");
+					else
+						callaPlay.videoExit(item.pk, null, item.title, clip.pk,
+								currQuality, 0, "end");
+				} catch (Exception e) {
+					Log.e(TAG, " log Sender videoExit end " + e.toString());
+				}
 				PlayerActivity.this.finish();
+
 			}
 		}
 
@@ -529,6 +617,18 @@ public class PlayerActivity extends Activity {
 		checkTaskPause();
 		timeTaskPause();
 		mVideoView.stopPlayback();
+		try {
+			if (subItem != null)
+				callaPlay.videoExit(item.pk, subItem.pk, item.title, clip.pk,
+						currQuality, 0, "relate");
+			else
+				callaPlay.videoExit(item.pk, null, item.title, clip.pk,
+						currQuality, 0, "relate");
+			mVideoView.stopPlayback();
+		} catch (Exception e) {
+			Log.e(TAG, "log Sender videoExit relate " + e.toString());
+		}
+
 		PlayerActivity.this.finish();
 	}
 
@@ -787,6 +887,20 @@ public class PlayerActivity extends Activity {
 							checkTaskPause();
 							timeTaskPause();
 							popupDlg.dismiss();
+							try {
+								if (subItem != null)
+									callaPlay.videoExit(item.pk, subItem.pk,
+											item.title, clip.pk, currQuality,
+											0, "detail");
+								else
+									callaPlay.videoExit(item.pk, null,
+											item.title, clip.pk, currQuality,
+											0, "detail");
+							} catch (Exception e) {
+								Log.e(TAG,
+										" Sender log videoPlayStart "
+												+ e.toString());
+							}
 							mVideoView.stopPlayback();
 							PlayerActivity.this.finish();
 						}
@@ -827,7 +941,7 @@ public class PlayerActivity extends Activity {
 	private Runnable hideMenuRunnable = new Runnable() {
 		@Override
 		public void run() {
-			if(menu!=null){
+			if (menu != null) {
 				menu.hide();
 			}
 			hideMenuHandler.removeCallbacks(hideMenuRunnable);
@@ -835,7 +949,7 @@ public class PlayerActivity extends Activity {
 	};
 
 	private boolean isVodMenuVisible() {
-		if (menu == null){
+		if (menu == null) {
 			return false;
 		}
 		return menu.isVisible();
@@ -844,6 +958,7 @@ public class PlayerActivity extends Activity {
 	private void showBuffer() {
 		if (isBuffer && !bufferLayout.isShown()) {
 			bufferLayout.setVisibility(View.VISIBLE);
+			bufferDuration = System.currentTimeMillis();
 		}
 	}
 
@@ -851,6 +966,14 @@ public class PlayerActivity extends Activity {
 		if (!isBuffer && bufferLayout.isShown()) {
 			bufferText.setText(BUFFERING);
 			bufferLayout.setVisibility(View.GONE);
+			try {
+				if (subItem != null)
+					callaPlay.videoPlayBlockend(item.pk, subItem.pk, item.title, clip.pk, currQuality, 0, currPosition, (System.currentTimeMillis()-bufferDuration)/1000 , null);
+				else
+					callaPlay.videoPlayBlockend(item.pk, null, item.title, clip.pk, currQuality, 0, currPosition, (System.currentTimeMillis()-bufferDuration)/1000, null);
+			} catch (Exception e) {
+				Log.e(TAG, " Sender log videoPlayBlockend " + e.toString());
+			}
 		}
 	}
 
@@ -941,8 +1064,7 @@ public class PlayerActivity extends Activity {
 	class SeekBarChangeEvent implements SeekBar.OnSeekBarChangeListener {
 
 		@Override
-		public void onProgressChanged(SeekBar seekBar, int progress,
-				boolean fromUser) {
+		public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 			updataTimeText();
 		}
 
@@ -1017,6 +1139,7 @@ public class PlayerActivity extends Activity {
 							.setImageResource(R.drawable.vod_player_pause);
 					isBuffer = true;
 					currQuality = pos;
+					historyManager.addOrUpdateQuality(new Quality(0, urls[currQuality], currQuality));
 					mVideoView = (VideoView) findViewById(R.id.video_view);
 					mVideoView.setVideoPath(urls[currQuality].toString());
 					initQualtiyText();
@@ -1102,15 +1225,15 @@ public class PlayerActivity extends Activity {
 
 	@Override
 	protected void onPause() {
-		try{
+		try {
 			addHistory(seekPostion);
 			checkTaskPause();
 			timeTaskPause();
 			removeAllHandler();
 			mVideoView.stopPlayback();
 			PlayerActivity.this.finish();
-		}catch(Exception e){
-			Log.d(TAG,"Player close to Home");
+		} catch (Exception e) {
+			Log.d(TAG, "Player close to Home");
 		}
 		super.onPause();
 	}
@@ -1123,11 +1246,13 @@ public class PlayerActivity extends Activity {
 		historyManager = null;
 		simpleRestClient = null;
 		favoriteManager = null;
-		DaisyUtils.getVodApplication(this).removeActivtyFromPool(this.toString());
+		DaisyUtils.getVodApplication(this).removeActivtyFromPool(
+				this.toString());
 		super.onDestroy();
 	}
-	private void  removeAllHandler(){
-		
+
+	private void removeAllHandler() {
+
 		mHandler.removeCallbacks(mUpdateTimeTask);
 		mHandler.removeCallbacks(finishPlayerActivity);
 		hideMenuHandler.removeCallbacks(hideMenuRunnable);
@@ -1135,5 +1260,5 @@ public class PlayerActivity extends Activity {
 		mCheckHandler.removeCallbacks(checkStatus);
 		hidePanelHandler.removeCallbacks(hidePanelRunnable);
 	}
-	
+
 }

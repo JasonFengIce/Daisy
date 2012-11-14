@@ -2,10 +2,9 @@ package tv.ismar.daisy.dao;
 
 import java.util.ArrayList;
 
-import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
-
+import tv.ismar.daisy.models.Quality;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -39,6 +38,8 @@ public class DBHelper extends SQLiteOpenHelper {
 	private static final String CREATE_FAVORITE_TABLE = "CREATE TABLE IF NOT EXISTS 'favorite_table' " +
 			"('_id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'title' TEXT NOT NULL, 'url' TEXT NOT NULL, 'content_model' TEXT, " +
 			"'adlet_url' TEXT, 'quality' INTEGER DEFAULT(1), 'is_complex' INTEGER DEFAULT(0))";
+	private static final String CREATE_QUALITY_TABLE = "CREATE TABLE IF NOT EXISTS 'quality_table' " +
+			"('_id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'url' TEXT NOT NULL,  'quality' INTEGER DEFAULT(1))";
 	
 	public static interface DBFields {
 		/**
@@ -68,6 +69,12 @@ public class DBHelper extends SQLiteOpenHelper {
 			public static final String QUALITY = "quality";
 			public static final String CONTENT_MODEL = "content_model";
 		}
+		
+		public static interface QualityTable extends BaseColumns {
+			public static final String TABLE_NAME = "quality_table";
+			public static final String URL = "url";
+			public static final String QUALITY = "quality";
+		}
 	}
 	
 	public DBHelper(Context context) {
@@ -80,6 +87,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(CREATE_HISTORY_TABLE);
 		db.execSQL(CREATE_FAVORITE_TABLE);
+		db.execSQL(CREATE_QUALITY_TABLE);
 	}
 
 	@Override
@@ -88,9 +96,11 @@ public class DBHelper extends SQLiteOpenHelper {
 		if(newVersion != oldVersion) {
 			db.execSQL("DROP TABLE IF EXISTS " + DBFields.HistroyTable.TABLE_NAME);
 			db.execSQL("DROP TABLE IF EXISTS " + DBFields.FavoriteTable.TABLE_NAME);
+			db.execSQL("DROP TABLE IF EXISTS " + DBFields.QualityTable.TABLE_NAME);
 			
 			db.execSQL(CREATE_HISTORY_TABLE);
 			db.execSQL(CREATE_FAVORITE_TABLE);
+			db.execSQL(CREATE_QUALITY_TABLE);
 		}
 	}
 	
@@ -196,6 +206,15 @@ public class DBHelper extends SQLiteOpenHelper {
 		db.update(DBFields.FavoriteTable.TABLE_NAME, cv, " _id = ?", new String[]{String.valueOf(favorite.id)});
 	}
 	
+	public void updateQualtiy(Quality quality) {
+		ContentValues cv = new ContentValues();
+		cv.put(DBFields.QualityTable._ID, quality.id);
+		cv.put(DBFields.QualityTable.URL, quality.url);
+		cv.put(DBFields.QualityTable.QUALITY, quality.quality);
+	
+		db.update(DBFields.QualityTable.TABLE_NAME, cv, " _id = ?", new String[]{String.valueOf(quality.id)});
+	}
+	
 	public History queryHistoryByUrl(String url) {
 		History history = null;
 		Cursor cur = db.query(DBFields.HistroyTable.TABLE_NAME, null, DBFields.HistroyTable.URL + " = ?", new String[]{url}, null, null, " _id desc");
@@ -222,6 +241,18 @@ public class DBHelper extends SQLiteOpenHelper {
 		return favorite;
 	}
 	
+	public Quality queryQualtiy() {
+		Quality quality = null;
+		Cursor cur = db.query(DBFields.QualityTable.TABLE_NAME, null, null, null, null, null, " _id desc");
+		if(cur!=null) {
+			if(cur.moveToFirst()) {
+				quality = new Quality(cur);
+			}
+			cur.close();
+			cur = null;
+		}
+		return quality;
+	}
 	public int delete(String table, String url) {
 		if(url==null) {
 			return db.delete(table, null, null);
