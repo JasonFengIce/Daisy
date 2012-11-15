@@ -297,21 +297,22 @@ public class PlayerActivity extends Activity {
 				if(quality!=null){
 					currQuality = quality.quality;
 				}else{
-					for (int i = urls.length-1; i >0; i--) {
+					for (int i = urls.length-1; i >-1; i--) {
 						if (urls[i] != null && !urls[i].isEmpty()) {
 							currQuality = i;
 							break;
 						}
 					}
 				}
-				if(urls[currQuality] == null && urls[currQuality].isEmpty()){
-					for (int i = urls.length-1; i >0; i--) {
+				if(urls[currQuality] == null || urls[currQuality].isEmpty()){
+					for (int i = urls.length-1; i >-1; i--) {
 						if (urls[i] != null && !urls[i].isEmpty()) {
 							currQuality = i;
 							break;
 						}
 					}
 				}
+				Log.d(TAG, "currQuality ====="+currQuality);
 				if (item != null) {
 					if (subItem != null && subItem.item_pk != subItem.pk) {
 						mHistory = historyManager.getHistoryByUrl(itemUrl);
