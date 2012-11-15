@@ -304,6 +304,14 @@ public class PlayerActivity extends Activity {
 						}
 					}
 				}
+				if(urls[currQuality] == null && urls[currQuality].isEmpty()){
+					for (int i = urls.length-1; i >0; i--) {
+						if (urls[i] != null && !urls[i].isEmpty()) {
+							currQuality = i;
+							break;
+						}
+					}
+				}
 				if (item != null) {
 					if (subItem != null && subItem.item_pk != subItem.pk) {
 						mHistory = historyManager.getHistoryByUrl(itemUrl);
