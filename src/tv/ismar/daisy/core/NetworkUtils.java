@@ -135,6 +135,7 @@ public class NetworkUtils {
 		JSONObject logJson = new JSONObject();
         logJson.put("event", eventName);
         logJson.put("properties", propertiesJson);
+        Log.d(TAG," Log data For Test === " + logJson.toString());
         return base64Code(logJson.toString());
 	}
 	
