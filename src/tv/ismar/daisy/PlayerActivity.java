@@ -110,9 +110,11 @@ public class PlayerActivity extends Activity {
 	private List<Item> listItems = new ArrayList<Item>();
 	private int currNum = 0;
 	private int offsets = 0;
+	private int offn = 1;
 	private TextView bufferText;
-	private long  bufferDuration = 0 ; 
+	private long bufferDuration = 0;
 	private CallaPlay callaPlay = new CallaPlay();
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -294,25 +296,25 @@ public class PlayerActivity extends Activity {
 				favoriteManager = DaisyUtils.getFavoriteManager(this);
 				historyManager = DaisyUtils.getHistoryManager(this);
 				Quality quality = historyManager.getQuality();
-				if(quality!=null){
+				if (quality != null) {
 					currQuality = quality.quality;
-				}else{
-					for (int i = urls.length-1; i >-1; i--) {
+				} else {
+					for (int i = urls.length - 1; i > -1; i--) {
 						if (urls[i] != null && !urls[i].isEmpty()) {
 							currQuality = i;
 							break;
 						}
 					}
 				}
-				if(urls[currQuality] == null || urls[currQuality].isEmpty()){
-					for (int i = urls.length-1; i >-1; i--) {
+				if (urls[currQuality] == null || urls[currQuality].isEmpty()) {
+					for (int i = urls.length - 1; i > -1; i--) {
 						if (urls[i] != null && !urls[i].isEmpty()) {
 							currQuality = i;
 							break;
 						}
 					}
 				}
-				Log.d(TAG, "currQuality ====="+currQuality);
+				Log.d(TAG, "currQuality =====" + currQuality);
 				if (item != null) {
 					if (subItem != null && subItem.item_pk != subItem.pk) {
 						mHistory = historyManager.getHistoryByUrl(itemUrl);
@@ -429,7 +431,7 @@ public class PlayerActivity extends Activity {
 									gotoFinishPage();
 								}
 							});
-					
+
 					TaskStart();
 				}
 
@@ -441,8 +443,9 @@ public class PlayerActivity extends Activity {
 			ExToClosePlayer("url");
 		}
 	}
-	private Handler logHandler = new Handler(); 
-	
+
+	private Handler logHandler = new Handler();
+
 	private void TaskStart() {
 		logHandler.removeCallbacks(logTaskRunnable);
 		logHandler.post(logTaskRunnable);
@@ -457,17 +460,18 @@ public class PlayerActivity extends Activity {
 		public void run() {
 			try {
 				if (subItem != null)
-					callaPlay.videoPlayStart(item.pk, subItem.pk,
-							item.title, clip.pk, currQuality, 0);
+					callaPlay.videoPlayStart(item.pk, subItem.pk, item.title,
+							clip.pk, currQuality, 0);
 				else
 					callaPlay.videoPlayStart(item.pk, null, item.title,
 							clip.pk, currQuality, 0);
+				timeTaskStop();
 			} catch (Exception e) {
 				Log.e(TAG, " Sender log videoPlayStart " + e.toString());
 			}
 		}
 	};
-	
+
 	private void timeTaskStart() {
 		mHandler.removeCallbacks(mUpdateTimeTask);
 		mHandler.post(mUpdateTimeTask);
@@ -495,27 +499,38 @@ public class PlayerActivity extends Activity {
 	private void ExToClosePlayer(String content) {
 		if (bufferText != null) {
 			bufferText.setText(EXTOCLOSE);
-			if(content == "url"){
+			if (content == "url") {
 				try {
 					if (subItem != null)
-						callaPlay.videoExcept("noplayaddress", item.pk, subItem.pk,item.title, clip.pk,currQuality,0);
+						callaPlay
+								.videoExcept("noplayaddress", item.pk,
+										subItem.pk, item.title, clip.pk,
+										currQuality, 0);
 					else
-						callaPlay.videoExcept("noplayaddress", item.pk,null,item.title, clip.pk,currQuality,0);
+						callaPlay.videoExcept("noplayaddress", item.pk, null,
+								item.title, clip.pk, currQuality, 0);
 				} catch (Exception e) {
-					Log.e(TAG, " Sender log videoExcept noplayaddress " + e.toString());
+					Log.e(TAG,
+							" Sender log videoExcept noplayaddress "
+									+ e.toString());
 				}
 			}
-			if(content == "error"){
+			if (content == "error") {
 				try {
 					if (subItem != null)
-						callaPlay.videoExcept("mediaexception", item.pk, subItem.pk,item.title, clip.pk,currQuality,currPosition);
+						callaPlay.videoExcept("mediaexception", item.pk,
+								subItem.pk, item.title, clip.pk, currQuality,
+								currPosition);
 					else
-						callaPlay.videoExcept("mediaexception", item.pk,null,item.title, clip.pk,currQuality,currPosition);
+						callaPlay.videoExcept("mediaexception", item.pk, null,
+								item.title, clip.pk, currQuality, currPosition);
 				} catch (Exception e) {
-					Log.e(TAG, " Sender log videoExcept noplayaddress " + e.toString());
+					Log.e(TAG,
+							" Sender log videoExcept noplayaddress "
+									+ e.toString());
 				}
 			}
-			
+
 		}
 		mHandler.postDelayed(finishPlayerActivity, 3000);
 	}
@@ -553,9 +568,9 @@ public class PlayerActivity extends Activity {
 						if (mVideoView.getAlpha() < 1)
 							mVideoView.setAlpha(1);
 					}
-					if (!isSeek) {
-						timeBar.setProgress(currPosition);
+					if (!isSeek && !paused && !isBuffer) {
 						currPosition = mVideoView.getCurrentPosition();
+						timeBar.setProgress(currPosition);
 					}
 					i = 0;
 				} else {
@@ -711,10 +726,16 @@ public class PlayerActivity extends Activity {
 	private void fastForward(int step) {
 		if (currPosition > clipLength)
 			return;
-		if ((clipLength - currPosition) / 100000 > 1) {
+		if (offsets != 1 && offsets % 5 != 0) {
 			offsets += step;
-			if (offsets < 11) {
-				currPosition += clipLength * offsets * 0.01;
+		} else {
+			if (offsets > 0) {
+				offn = offsets / 5;
+			}
+		}
+		if (clipLength / 1000000 > 1) {
+			if (offn < 11) {
+				currPosition += clipLength * offn * 0.01;
 			} else {
 				currPosition += clipLength * 0.1;
 			}
@@ -723,30 +744,35 @@ public class PlayerActivity extends Activity {
 		}
 
 		if (currPosition > clipLength) {
-			currPosition = clipLength - 10;
+			currPosition = clipLength - 3000;
 		}
 		timeBar.setProgress(currPosition);
-		// Log.d(TAG, "seek Forward " + currPosition);
+		Log.d(TAG, "seek Forward " + currPosition);
 	}
 
 	private void fastBackward(int step) {
 		if (currPosition < 0)
 			return;
-		if (clipLength / 100000 > 1) {
+		if (offsets != 1 && offsets % 5 != 0) {
 			offsets += step;
-			if (offsets < 11) {
-				currPosition -= clipLength * offsets * 0.01;
+		} else {
+			if (offsets > 0) {
+				offn = offsets / 5;
+			}
+		}
+		if (clipLength / 1000000 > 1) {
+			if (offn < 11) {
+				currPosition -= clipLength * offn * 0.01;
 			} else {
 				currPosition -= clipLength * 0.1;
 			}
 		} else {
 			currPosition -= 10000;
 		}
-
 		if (currPosition < 0)
 			currPosition = 0;
 		timeBar.setProgress(currPosition);
-		// Log.d(TAG, "seek Backward " + currPosition);
+		Log.d(TAG, "seek Backward " + currPosition);
 	}
 
 	@Override
@@ -842,6 +868,7 @@ public class PlayerActivity extends Activity {
 				ret = true;
 				isSeek = false;
 				offsets = 0;
+				offn = 1;
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
 				ffImage.setImageResource(R.drawable.vod_player_ff);
@@ -850,6 +877,7 @@ public class PlayerActivity extends Activity {
 				ret = true;
 				isSeek = false;
 				offsets = 0;
+				offn = 1;
 				break;
 			case KeyEvent.KEYCODE_DPAD_CENTER:
 			case KeyEvent.KEYCODE_ENTER:
@@ -977,9 +1005,29 @@ public class PlayerActivity extends Activity {
 			bufferLayout.setVisibility(View.GONE);
 			try {
 				if (subItem != null)
-					callaPlay.videoPlayBlockend(item.pk, subItem.pk, item.title, clip.pk, currQuality, 0, currPosition, (System.currentTimeMillis()-bufferDuration)/1000 , null);
+					callaPlay
+							.videoPlayBlockend(
+									item.pk,
+									subItem.pk,
+									item.title,
+									clip.pk,
+									currQuality,
+									0,
+									currPosition,
+									(System.currentTimeMillis() - bufferDuration) / 1000,
+									null);
 				else
-					callaPlay.videoPlayBlockend(item.pk, null, item.title, clip.pk, currQuality, 0, currPosition, (System.currentTimeMillis()-bufferDuration)/1000, null);
+					callaPlay
+							.videoPlayBlockend(
+									item.pk,
+									null,
+									item.title,
+									clip.pk,
+									currQuality,
+									0,
+									currPosition,
+									(System.currentTimeMillis() - bufferDuration) / 1000,
+									null);
 			} catch (Exception e) {
 				Log.e(TAG, " Sender log videoPlayBlockend " + e.toString());
 			}
@@ -1073,7 +1121,8 @@ public class PlayerActivity extends Activity {
 	class SeekBarChangeEvent implements SeekBar.OnSeekBarChangeListener {
 
 		@Override
-		public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+		public void onProgressChanged(SeekBar seekBar, int progress,
+				boolean fromUser) {
 			updataTimeText();
 		}
 
@@ -1148,7 +1197,8 @@ public class PlayerActivity extends Activity {
 							.setImageResource(R.drawable.vod_player_pause);
 					isBuffer = true;
 					currQuality = pos;
-					historyManager.addOrUpdateQuality(new Quality(0, urls[currQuality], currQuality));
+					historyManager.addOrUpdateQuality(new Quality(0,
+							urls[currQuality], currQuality));
 					mVideoView = (VideoView) findViewById(R.id.video_view);
 					mVideoView.setVideoPath(urls[currQuality].toString());
 					initQualtiyText();
