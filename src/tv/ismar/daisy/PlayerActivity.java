@@ -733,7 +733,7 @@ public class PlayerActivity extends Activity {
 				offn = offsets / 5;
 			}
 		}
-		if (clipLength / 1000000 > 1) {
+		if (clipLength  > 1000000) {
 			if (offn < 11) {
 				currPosition += clipLength * offn * 0.01;
 			} else {
@@ -760,7 +760,7 @@ public class PlayerActivity extends Activity {
 				offn = offsets / 5;
 			}
 		}
-		if (clipLength / 1000000 > 1) {
+		if (clipLength  > 1000000) {
 			if (offn < 11) {
 				currPosition -= clipLength * offn * 0.01;
 			} else {
