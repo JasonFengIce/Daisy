@@ -1,6 +1,7 @@
 package tv.ismar.daisy.core;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -9,6 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -79,14 +81,12 @@ public class NetworkUtils {
 	 * @return true、false  是否成功
 	 * 
 	 */
-	public static boolean LogSender(String eventName,HashMap<String,Object> propertiesMap) {
-		BufferedReader in = null;
+	public static Boolean LogSender(String eventName,HashMap<String,Object> propertiesMap) {
 		try {
 			String jsonContent = getContentJson(eventName, propertiesMap);
-			Log.d(TAG, eventName+" properties = " + jsonContent);
 			jsonContent.replaceAll("-", "+");
 			jsonContent.replaceAll("_", "/");
-			String url=URL+"?date="+base64Code(jsonContent);
+			String url=URL;
 			java.net.URL connURL = new java.net.URL(url);
 			java.net.HttpURLConnection httpConn = (java.net.HttpURLConnection) connURL.openConnection();
 			httpConn.setRequestMethod("POST");
@@ -95,7 +95,20 @@ public class NetworkUtils {
 			httpConn.setRequestProperty("Accept", "application/json");
 			httpConn.setRequestProperty("User-Agent", VodUserAgent.getUserAgent(VodUserAgent.getMACAddress()));
 			httpConn.connect();
-			Log.d(TAG, eventName+" SUCCESS ");
+			DataOutputStream out = new DataOutputStream(httpConn.getOutputStream());
+			String content = "data=" + URLEncoder.encode(jsonContent, "UTF-8");
+			Log.d(TAG,content);
+	        out.writeBytes(content); 
+	        out.flush();
+	        out.close(); // flush and close
+	        BufferedReader reader = new BufferedReader(new InputStreamReader(httpConn.getInputStream(), "UTF-8"));
+    		String line;
+    		while ((line = reader.readLine()) != null)
+    		{
+    			System.out.println(line);
+    		}
+    		reader.close();
+    		httpConn.disconnect();
 			return true;
 		} catch (MalformedURLException e) {
 			Log.e(TAG, eventName +" MalformedURLException "+e.toString());
@@ -104,17 +117,9 @@ public class NetworkUtils {
 			Log.e(TAG, eventName +" IOException "+e.toString());
 			return false;
 		} catch (Exception e) {
+			e.printStackTrace();
 			Log.e(TAG, eventName +" Exception "+e.toString());
 			return false;
-		} finally {
-			try {
-				if (in != null) {
-					in.close();
-				}
-			} catch (IOException ex) {
-				Log.d(TAG, eventName +" close() IOException  " + ex.toString());
-				ex.printStackTrace();
-			}
 		}
 	}
 	
@@ -130,7 +135,8 @@ public class NetworkUtils {
 		JSONObject logJson = new JSONObject();
         logJson.put("event", eventName);
         logJson.put("properties", propertiesJson);
-        return logJson.toString();
+        Log.d(TAG," Log data For Test === " + logJson.toString());
+        return base64Code(logJson.toString());
 	}
 	
 	private static String base64Code(String date){
