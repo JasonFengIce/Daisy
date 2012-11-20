@@ -17,7 +17,7 @@ public interface HistoryManager {
 	 * Add a history.
 	 * @param history
 	 */
-	public void addFavorite(History history);
+	public void addHistory(History history);
 	/**
 	 * Add a history. Called by player when user exits player.Note that url may be an field of {@link Item}.
 	 * Both {@link Item.item_url} and {@link Item.url} is OK. This depends on the category of you {@link Item} object. Commonly, an subitem contains url field,

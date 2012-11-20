@@ -89,7 +89,7 @@ public class LocalHistoryManager implements HistoryManager {
 	}
 
 	@Override
-	public void addFavorite(History history) {
+	public void addHistory(History history) {
 		if(history==null || history.title==null || history.content_model==null || history.url==null) {
 			throw new RuntimeException("history or history's field should not be null");
 		}

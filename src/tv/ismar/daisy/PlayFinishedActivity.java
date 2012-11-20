@@ -4,8 +4,10 @@ import tv.ismar.daisy.adapter.PlayFinishedAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.Favorite;
+import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.persistence.FavoriteManager;
+import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.views.AlertDialogFragment;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.LoadingDialog;
@@ -52,6 +54,8 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 	private LoadingDialog loadDialog;
 	final SimpleRestClient simpleRest = new SimpleRestClient();
 	private FavoriteManager mFavoriteManager;
+	private HistoryManager mHistorymanager;
+	
 	private static int leftCover = R.drawable.cover_left;
 	private static int rightCover = R.drawable.cover_right;
 
@@ -62,6 +66,7 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 
 		initViews();
 		mFavoriteManager = DaisyUtils.getFavoriteManager(this);
+		mHistorymanager = DaisyUtils.getHistoryManager(this);
 		loadDialogShow();
 		try {
 			Intent intent = getIntent();
@@ -227,13 +232,23 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btn_replay:
-			Intent intent = new Intent();
-			intent.putExtra("item", item);
-			intent.setAction("tv.ismar.daisy.Play");
-			try {
-				startActivity(intent);
-			} catch (Exception e) {
-				e.printStackTrace();
+			if(item!=null) {
+				String url = simpleRest.root_url + "/api/item/" + item.pk + "/";
+				History history = mHistorymanager.getHistoryByUrl(url);
+				if(history!=null) {
+					history.last_position = 0;
+					mHistorymanager.addHistory(history);
+				}
+				Intent intent = new Intent();
+				intent.putExtra("item", item);
+				intent.setAction("tv.ismar.daisy.Play");
+				
+				try {
+					startActivity(intent);
+					finish();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 			break;
 		case R.id.btn_favorites:
@@ -343,7 +358,6 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 
 	@Override
 	protected void onDestroy() {
-		item = null;
 		loadDialog = null;
 		playAdapter = null;
 		mFavoriteManager = null;
