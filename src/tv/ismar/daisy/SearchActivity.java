@@ -39,7 +39,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class SearchActivity extends Activity implements OnClickListener, OnItemClickListener {
-	
+
 	// 搜索
 	ImageButton ibtnSearch;
 	// 缓存适配器android:minSdkVersion
@@ -91,7 +91,6 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.search_main);
-//		listHotWords = null;
 		movieList = new ArrayList<MovieBean>();
 		initViews();
 		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
@@ -106,9 +105,10 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 			}
 			// 初始化一个自定义的Dialog
 			return;
+		} else {
+			showHotWords();
 		}
-		showHotWords();
-		
+
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 		super.onPause();
 		// imageAdapter.setAsyncisPauseed(true);
 	}
-	
+
 	@Override
 	protected void onDestroy() {
 		DaisyUtils.getVodApplication(this).removeActivtyFromPool(this.toString());
@@ -134,9 +134,15 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 			@Override
 			public void run() {
 				synchronized (SearchActivity.this) {
-					if (0 == listHotWords.size()) {
-						listHotWords = searchService.getHotWords();
-						mHandler.sendEmptyMessage(ADD_VIEW);
+					try {
+						Log.i("listHotWords", listHotWords+"" );
+						if (null == listHotWords || 0==listHotWords.size()) {
+							Log.i("listHotWords", listHotWords+"Ture" );
+							listHotWords = searchService.getHotWords();
+							mHandler.sendEmptyMessage(ADD_VIEW);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				}
 			}
@@ -173,7 +179,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 					} else {
 						startTime = endTime;
 					}
-				}else{
+				} else {
 					return;
 				}
 				new Thread(new Runnable() {
@@ -214,8 +220,8 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 				}
 				if (TextUtils.isEmpty(autoCompleteTextView.getText().toString().trim())) {
 					return;
-				}else if (checkInput(autoCompleteTextView.getText().toString())) {
-					Toast.makeText(SearchActivity.this,getString(R.string.search_error_text) , Toast.LENGTH_LONG).show();
+				} else if (checkInput(autoCompleteTextView.getText().toString())) {
+					Toast.makeText(SearchActivity.this, getString(R.string.search_error_text), Toast.LENGTH_LONG).show();
 					return;
 				}
 				loadDialogShow();
@@ -266,7 +272,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 				// autoAdapter.notifyDataSetChanged();
 				break;
 			case ADD_VIEW:
-				if (null == listHotWords) 
+				if (null == listHotWords)
 					return;
 				for (int j = 0; j < listHotWords.size(); j++) {
 					final Button btnHotWords = new Button(SearchActivity.this);
@@ -379,13 +385,13 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 			intent.putExtra("url", movieList.get(position).url);
 		}
 		try {
-//			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			// intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static boolean checkInput(String username) {
 		String check = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？ ]+";
 		Pattern regex = Pattern.compile(check.trim());
