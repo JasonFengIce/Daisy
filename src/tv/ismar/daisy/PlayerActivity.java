@@ -188,8 +188,7 @@ public class PlayerActivity extends Activity {
 			Object obj = bundle.get("url");
 			Log.d(TAG, "init player bundle url === " + obj);
 			String sn = VodUserAgent.getMACAddress();
-			AccessProxy.init(VodUserAgent.deviceType,
-					VodUserAgent.deviceVersion, sn);
+			AccessProxy.init(VodUserAgent.deviceType,VodUserAgent.deviceVersion, sn);
 			try {
 				if (obj != null) {
 					item = simpleRestClient.getItem((String) obj);
@@ -239,6 +238,7 @@ public class PlayerActivity extends Activity {
 								+ item.item_pk + "/";
 						item = simpleRestClient.getItem(itemUrl);
 						if (item != null && item.subitems != null) {
+							listItems = new ArrayList<Item>();
 							for (int i = 0; i < item.subitems.length; i++) {
 								listItems.add(item.subitems[i]);
 							}
@@ -597,11 +597,9 @@ public class PlayerActivity extends Activity {
 		timeTaskPause();
 		checkTaskPause();
 		if (mVideoView != null) {
-			if (listItems != null && listItems.size() > 0
-					&& currNum < (listItems.size() - 1)) {
+			if (listItems != null && listItems.size() > 0 && currNum < (listItems.size() - 1)) {
 				subItem = listItems.get(currNum + 1);
-				subItemUrl = simpleRestClient.root_url + "/api/subitem/"
-						+ subItem.pk + "/";
+				subItemUrl = simpleRestClient.root_url + "/api/subitem/"+ subItem.pk + "/";
 				bundle.remove("url");
 				bundle.putString("url", subItemUrl);
 				addHistory(0);
@@ -616,11 +614,9 @@ public class PlayerActivity extends Activity {
 				addHistory(0);
 				try {
 					if (subItem != null)
-						callaPlay.videoExit(item.pk, subItem.pk, item.title,
-								clip.pk, currQuality, 0, "end");
+						callaPlay.videoExit(item.pk, subItem.pk, item.title,clip.pk, currQuality, 0, "end");
 					else
-						callaPlay.videoExit(item.pk, null, item.title, clip.pk,
-								currQuality, 0, "end");
+						callaPlay.videoExit(item.pk, null, item.title, clip.pk,currQuality, 0, "end");
 				} catch (Exception e) {
 					Log.e(TAG, " log Sender videoExit end " + e.toString());
 				}
