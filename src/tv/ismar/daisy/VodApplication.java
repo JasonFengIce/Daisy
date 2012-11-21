@@ -4,16 +4,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import tv.ismar.daisy.VodApplication.OnLowMemoryListener;
 import tv.ismar.daisy.core.ImageCache;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.dao.DBHelper;
@@ -78,6 +74,7 @@ public class VodApplication extends Application {
 		getContentModelFromAssets();
 		getNewContentModel();
 		registerReceiver(mCloseReceiver, new IntentFilter("com.amlogic.dvbplayer.homekey"));
+		registerReceiver(mSleepReceiver, new IntentFilter("com.alpha.lenovo.powerKey"));
 	}
 	
 	public void getContentModelFromAssets() {
@@ -253,16 +250,28 @@ public class VodApplication extends Application {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			Log.d(TAG, "Home key is pressed!");
-			ConcurrentHashMap<String, Activity> activityPool =(ConcurrentHashMap<String, Activity>)mActivityPool;
-			for(String tag: activityPool.keySet()) {
-				Activity activity = activityPool.get(tag);
-				if(activity!=null) {
-					activity.finish();
-				}
-			}
-			activityPool.clear();
+			finishVOD();
 		}
 		
+	};
+	
+	private void finishVOD() {
+		ConcurrentHashMap<String, Activity> activityPool =(ConcurrentHashMap<String, Activity>)mActivityPool;
+		for(String tag: activityPool.keySet()) {
+			Activity activity = activityPool.get(tag);
+			if(activity!=null) {
+				activity.finish();
+			}
+		}
+		activityPool.clear();
+	}
+	
+	private BroadcastReceiver mSleepReceiver = new BroadcastReceiver() {
+		
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			finishVOD();
+		}
 	};
 
 }

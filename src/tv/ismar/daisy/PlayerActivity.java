@@ -673,7 +673,7 @@ public class PlayerActivity extends Activity {
 			history.url = itemUrl;
 			history.sub_url = subItemUrl;
 			history.is_continue = isContinue;
-			historyManager.addFavorite(history);
+			historyManager.addHistory(history);
 		}
 	}
 
