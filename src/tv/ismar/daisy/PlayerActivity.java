@@ -238,7 +238,9 @@ public class PlayerActivity extends Activity {
 								+ item.item_pk + "/";
 						item = simpleRestClient.getItem(itemUrl);
 						if (item != null && item.subitems != null) {
+							
 							listItems = new ArrayList<Item>();
+							
 							for (int i = 0; i < item.subitems.length; i++) {
 								listItems.add(item.subitems[i]);
 							}
