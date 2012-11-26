@@ -92,6 +92,8 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 	private GetItemTask mGetItemTask;
 	private GetRelatedTask mGetRelatedTask;
 	
+	private HashMap<String, Object> mDataCollectionProperties = new HashMap<String, Object>();
+	
 	private HashMap<AsyncImageView, Boolean> mLoadingImageQueue = new HashMap<AsyncImageView, Boolean>();
 	
 	private void initViews() {
@@ -197,6 +199,13 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 				entry.setValue(false);
 			}
 		}
+		final HashMap<String, Object> properties = new HashMap<String, Object>();
+		properties.putAll(mDataCollectionProperties);
+		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_DETAIL_OUT, properties);
+		mDataCollectionProperties.put("title", mItem.title);
+		mDataCollectionProperties.put("item", mItem.pk);
+		mDataCollectionProperties.put("to", "return");
+		mDataCollectionProperties.remove("subitem");
 		super.onPause();
 	}
 
@@ -257,6 +266,9 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 	 * Init layout elements when all data has been fetched.
 	 */
 	private void initLayout() {
+		mDataCollectionProperties.put("item", mItem.pk);
+		mDataCollectionProperties.put("title", mItem.title);
+		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_DETAIL_IN, mDataCollectionProperties);
 		/*
 		 * if this item is a drama , the button should split to two. otherwise. use one button.
 		 */
@@ -531,6 +543,17 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 		@Override
 		public void onClick(View v) {
 			String url = (String) v.getTag();
+			final Item[] relatedItem = mRelatedItem;
+			for(Item item: relatedItem) {
+				if(url.equals(item.item_url)) {
+					HashMap<String, Object> properties = new HashMap<String, Object>();
+					properties.put("item", mItem.pk);
+					properties.put("to_item", item.pk);
+					properties.put("to_title", item.title);
+					new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_RELATE, properties);
+					break;
+				}
+			}
 			Intent intent = new Intent();
 			intent.setAction(action);
 			intent.putExtra("url", url);
@@ -548,22 +571,39 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 				switch(id){
 				case R.id.btn_left:
 					String subUrl = null;
+					int sub_id = 0;
+					String title = mItem.title;
 					if(mHistory!=null && mHistory.is_continue) {
 						subUrl = mHistory.sub_url;
+						for(Item item: mItem.subitems) {
+							if(item.url.equals(subUrl)) {
+								sub_id = item.pk;
+								title += "("+item.episode+")";
+								break;
+							}
+						}
 					} else {
 						subUrl = mItem.subitems[0].url;
+						sub_id = mItem.subitems[0].pk;
+						title += "("+mItem.subitems[0].episode+")";
 					}
+					mDataCollectionProperties.put("title", title);
+					mDataCollectionProperties.put("subitem", sub_id);
+					mDataCollectionProperties.put("to", "play");
 					
 					intent.setAction("tv.ismar.daisy.Play");
 					intent.putExtra("url", subUrl);
 					startActivity(intent);
 					break;
 				case R.id.btn_right:
+					mDataCollectionProperties.put("to", "list");
 					intent.setClass(ItemDetailActivity.this, DramaListActivity.class);
 					intent.putExtra("item", mItem);
 					startActivity(intent);
 					break;
 				case R.id.btn_fill:
+					mDataCollectionProperties.put("to", "play");
+					
 					intent.setAction("tv.ismar.daisy.Play");
 					intent.putExtra("item", mItem);
 					startActivity(intent);
@@ -596,6 +636,8 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 					if(mRelatedItem!=null && mRelatedItem.length >0 ){
 						intent.putExtra("related_item", new ArrayList<Item>(Arrays.asList(mRelatedItem)));
 					}
+					mDataCollectionProperties.put("to", "relate");
+					
 					intent.putExtra("item", mItem);
 					intent.setClass(ItemDetailActivity.this, RelatedActivity.class);
 					startActivity(intent);

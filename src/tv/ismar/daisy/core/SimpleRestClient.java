@@ -3,6 +3,8 @@ package tv.ismar.daisy.core;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import tv.ismar.daisy.models.Attribute;
 import tv.ismar.daisy.models.ChannelList;
@@ -27,6 +29,34 @@ public class SimpleRestClient {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(Attribute.class, new AttributeDeserializer());
 		gson = gsonBuilder.create();
+	}
+	
+	/**
+	 * Extract the item id from given url, check whether the given url is an subitem.
+	 * @param url is the valid url contains item id(or item pk)
+	 * @param isSubItem is an boolean array with a size of one, use to gain the result of subitem check.
+	 * @return a item id.
+	 */
+	public static int getItemId(String url, boolean[] isSubItem) {
+		int id = 0;
+		if(url.contains("/item/")) {
+			isSubItem[0] = false;
+		} else {
+			isSubItem[0] = true;
+		}
+		try {
+			Pattern p = Pattern.compile("/(\\d+)/?$");
+			Matcher m = p.matcher(url);
+			if(m.find()) {
+				String idStr = m.group(1);
+				if(idStr!=null) {
+					id = Integer.parseInt(idStr);
+				}
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return id;
 	}
 
 	public ContentModelList getContentModelLIst(String url) {

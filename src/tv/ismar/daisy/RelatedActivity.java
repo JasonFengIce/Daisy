@@ -2,8 +2,11 @@ package tv.ismar.daisy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+
 import tv.ismar.daisy.adapter.RelatedAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.Attribute;
 import tv.ismar.daisy.models.Item;
@@ -52,6 +55,8 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 	
 	private GetRelatedTask mGetRelatedTask;
 	private GetRelatedItemByInfo mGetRelatedItemByInfoTask;
+	
+	private HashMap<String, Object> mDataCollectionProperties = new HashMap<String, Object>();
 	
 	private void initViews(){
 		mSectionTabs = (ScrollableSectionList) findViewById(R.id.related_section_tabs);
@@ -159,6 +164,12 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 	}
 	
 	private void initLayout() {
+		// Data collection.
+		mDataCollectionProperties.put("item", mItem.pk);
+		mDataCollectionProperties.put("title", mItem.title);
+		mDataCollectionProperties.put("clip", mItem.clip.pk);
+		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_RELATE_IN, mDataCollectionProperties);
+		
 		initSectionTabs();
 		mSectionTabs.init(mVirtualSectionList, 1681);
 		buildGridView();
@@ -183,6 +194,11 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		if(mLoadingDialog!=null && mLoadingDialog.isShowing()) {
 			mLoadingDialog.dismiss();
 		}
+		final HashMap<String, Object> properties = new HashMap<String, Object>();
+		properties.putAll(mDataCollectionProperties);
+		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_RELATE_OUT, properties);
+		mDataCollectionProperties.remove("to_item");
+		mDataCollectionProperties.remove("to_title");
 		super.onPause();
 	}
 	
@@ -255,8 +271,9 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		Log.d(TAG, view.toString());
 		Item item = mAdapter.getItem(position);
+		mDataCollectionProperties.put("to_item", item.pk);
+		mDataCollectionProperties.put("to_title", item.title);
 		Intent intent = new Intent("tv.ismar.daisy.Item");
 		intent.putExtra("url", item.item_url);
 		startActivity(intent);

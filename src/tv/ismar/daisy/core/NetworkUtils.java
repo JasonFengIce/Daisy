@@ -17,6 +17,7 @@ import java.util.Set;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
 
@@ -158,6 +159,24 @@ public class NetworkUtils {
 		return url.substring(start, url.length());
 	}
 	
+	public static class DataCollectionTask extends AsyncTask<Object, Void, Void> {
+		
+		@SuppressWarnings("unchecked")
+		@Override
+		protected Void doInBackground(Object... params) {
+			if(params!=null && params.length>0) {
+				String eventName = (String) params[0];
+				HashMap<String, Object> properties = null;
+				if(params.length>1 && params[1]!=null) {
+					properties = (HashMap<String, Object>) params[1];
+				}
+				LogSender(eventName, properties);
+			}
+			return null;
+		}
+		
+	}
+
 	/**
 	 * 设备启动
 	 */
@@ -357,4 +376,12 @@ public class NetworkUtils {
 	 * 退出我的频道
 	 */
 	public static final String VIDEO_MYCHANNEL_OUT = "video_mychannel_out";
+	/**
+	 * 进入剧集列表界面
+	 */
+	public static final String VIDEO_DRAMALIST_IN = "video_dramalist_in";
+	/**
+	 * 退出剧集列表界面
+	 */
+	public static final String VIDEO_DRAMALIST_OUT = "video_dramalist_out";
 }

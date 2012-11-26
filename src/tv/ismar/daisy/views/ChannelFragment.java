@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import tv.ismar.daisy.ChannelListActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -84,6 +85,11 @@ public class ChannelFragment extends Fragment {
 		initViews(fragmentView);
 		mInitTask = new InitTask();
 		mInitTask.execute(mUrl, mChannel);
+		// Add data collection.
+		HashMap<String, Object> properties = new HashMap<String, Object>();
+		properties.put("category", mChannel);
+		properties.put("title", mTitle);
+		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_CHANNEL_IN, properties);
 		return fragmentView;
 	}
 	
@@ -325,6 +331,11 @@ public class ChannelFragment extends Fragment {
 		for(String slug:currentLoadingTask.keySet()) {
 			currentLoadingTask.get(slug).cancel(true);
 		}
+		// Add data collection.
+		HashMap<String, Object> properties = new HashMap<String, Object>();
+		properties.put("category", mChannel);
+		properties.put("title", mTitle);
+		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_CHANNEL_OUT, properties);
 		mInitTask = null;
 		mSectionList = null;
 		mItemLists = null;
@@ -377,6 +388,5 @@ public class ChannelFragment extends Fragment {
 		mRestClient = null;
 		super.onDetach();
 	}
-	
 	
 }

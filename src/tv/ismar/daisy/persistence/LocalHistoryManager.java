@@ -1,12 +1,16 @@
 package tv.ismar.daisy.persistence;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.NetworkUtils;
+import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.dao.DBHelper.DBFields;
 import tv.ismar.daisy.models.History;
@@ -121,8 +125,11 @@ public class LocalHistoryManager implements HistoryManager {
 			cv.put(DBFields.HistroyTable.IS_COMPLEX, history.is_complex?1:0);
 			cv.put(DBFields.HistroyTable.IS_CONTINUE, history.is_continue?1:0);
 			cv.put(DBFields.HistroyTable.SUB_URL, history.sub_url);
-			mDBHelper.insert(cv, DBFields.HistroyTable.TABLE_NAME, mTotalEntriesLimit);
+			long result = mDBHelper.insert(cv, DBFields.HistroyTable.TABLE_NAME, mTotalEntriesLimit);
 			mHistories = mDBHelper.getAllHistories();
+			if(result >=0) {
+				new DataCollectionTask().execute(history);
+			}
 		}
 	}
 
@@ -157,10 +164,33 @@ public class LocalHistoryManager implements HistoryManager {
 		}
 		
 	}
+	
 	@Override
 	public Quality getQuality() {
 		Quality quality = mDBHelper.queryQualtiy();
 		return quality;
+	}
+	
+	class DataCollectionTask extends AsyncTask<History, Void, Void> {
+
+		@Override
+		protected Void doInBackground(History... params) {
+			if(params != null && params.length>0) {
+				History history = params[0];
+				HashMap<String, Object> properties = new HashMap<String, Object>();
+				int item_id = SimpleRestClient.getItemId(history.url, new boolean[1]);
+				properties.put("item", item_id);
+				if(history.sub_url!=null) {
+					int sub_id = SimpleRestClient.getItemId(history.sub_url, new boolean[1]);
+					properties.put("subitem", sub_id);
+				}
+				properties.put("title", history.title);
+				properties.put("position", history.last_position);
+				NetworkUtils.LogSender(NetworkUtils.VIDEO_HISTORY, properties);
+			}
+			return null;
+		}
+		
 	}
 
 }

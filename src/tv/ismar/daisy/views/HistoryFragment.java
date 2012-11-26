@@ -3,12 +3,14 @@ package tv.ismar.daisy.views;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 
 import tv.ismar.daisy.ChannelListActivity;
 import tv.ismar.daisy.ChannelListActivity.OnMenuToggleListener;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.ItemOfflineException;
+import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
@@ -65,6 +67,8 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 	private MenuFragment mMenuFragment;
 	
 	public final static String MENU_TAG = "HistoryMenu";
+	
+	private HashMap<String, Object> mDataCollectionProperties;
 	
 	private long getTodayStartPoint() {
 		long currentTime = System.currentTimeMillis();
@@ -148,9 +152,10 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 		@Override
 		protected Void doInBackground(Void... params) {
 			try {
+				final HistoryManager historyManager = mHistoryManager;
 				final long todayStartPoint = getTodayStartPoint();
 				final long yesterdayStartPoint = getYesterdayStartPoint();
-				ArrayList<History> mHistories = mHistoryManager.getAllHistories();
+				ArrayList<History> mHistories = historyManager.getAllHistories();
 				if(mHistories.size()>0) {
 					Collections.sort(mHistories);
 					for(int i=0;i<mHistories.size();++i) {
@@ -240,6 +245,7 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 			mItemListScrollView.setPause(false);
 		}
 		((ChannelListActivity)getActivity()).registerOnMenuToggleListener(this);
+		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_HISTORY_IN);
 		super.onResume();
 	}
 
@@ -249,6 +255,9 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 			mItemListScrollView.setPause(true);
 		}
 		((ChannelListActivity)getActivity()).unregisterOnMenuToggleListener();
+		HashMap<String, Object> properties = mDataCollectionProperties;
+		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_HISTORY_OUT, properties);
+		mDataCollectionProperties = null;
 		super.onPause();
 	}
 	
@@ -294,6 +303,7 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 			if(i==null) {
 				return NETWORK_EXCEPTION;
 			} else {
+				item = i;
 				return ITEM_SUCCESS_GET;
 			}
 			
@@ -306,6 +316,28 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 			} else if(result == NETWORK_EXCEPTION) {
 				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new GetItemTask(), new Item[]{item});
 			} else {
+				final HistoryManager historyManager = mHistoryManager;
+				History history = historyManager.getHistoryByUrl(item.url);
+				// Use to data collection.
+				mDataCollectionProperties = new HashMap<String, Object>();
+				int id = SimpleRestClient.getItemId(item.url, new boolean[1]);
+				mDataCollectionProperties.put("to_item", id);
+				if(history.sub_url!=null && item.subitems!=null) {
+					int sub_id = SimpleRestClient.getItemId(history.sub_url, new boolean[1]);
+					mDataCollectionProperties.put("to_subitem", sub_id);
+					for(Item subitem: item.subitems) {
+						if(sub_id==subitem.pk) {
+							mDataCollectionProperties.put("to_clip", subitem.clip.pk);
+							break;
+						}
+					}
+				} else {
+					mDataCollectionProperties.put("to_subitem", item.clip.pk);
+				}
+				mDataCollectionProperties.put("to_title", item.title);
+				mDataCollectionProperties.put("position", history.last_position);
+				mDataCollectionProperties.put("quality", history.last_quality);
+				// start a new activity.
 				Intent intent = new Intent();
 				if(item.is_complex) {
 					intent.setAction("tv.ismar.daisy.Item");
@@ -445,7 +477,7 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 			mGetHistoryTask.cancel(true);
 		}
 		mLoadingDialog = null;
-		mHistoryManager = null;
+//		mHistoryManager = null;
 		mSectionList = null;
 		mTodayItemList = null;
 		mYesterdayItemList = null;
@@ -457,6 +489,5 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 		mMenuFragment = null;
 		super.onDetach();
 	}
-	
 	
 }

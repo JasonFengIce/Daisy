@@ -9,6 +9,7 @@ import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.ItemOfflineException;
+import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.ContentModel;
 import tv.ismar.daisy.models.Favorite;
@@ -63,6 +64,8 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	
 	private MenuFragment mMenuFragment;
 	private LoadingDialog mLoadingDialog;
+	
+	private HashMap<String, Object> mDataCollectionProperties;
 	
 	public final static String MENU_TAG = "FavoriteMenu";
 	
@@ -231,6 +234,18 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			} else if(result == NETWORK_EXCEPTION) {
 				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new GetItemTask(), new Item[]{item});
 			} else {
+				// Use to data collection.
+				mDataCollectionProperties = new HashMap<String, Object>();
+				boolean[] isSubItem = new boolean[1]; 
+				int id = SimpleRestClient.getItemId(item.url, isSubItem);
+				if(isSubItem[0]) {
+					mDataCollectionProperties.put("to_subitem", id);
+				} else {
+					mDataCollectionProperties.put("to_item", id);
+				}
+				mDataCollectionProperties.put("to_title", item.title);
+				
+				// start new Activity.
 				Intent intent = new Intent();
 				if(item.is_complex) {
 					intent.setAction("tv.ismar.daisy.Item");
@@ -271,6 +286,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			mItemListScrollView.setPause(false);
 		}
 		((ChannelListActivity)getActivity()).registerOnMenuToggleListener(this);
+		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_COLLECT_IN);
 		super.onResume();
 	}
 	@Override
@@ -278,7 +294,10 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		if(mItemListScrollView != null) {
 			mItemListScrollView.setPause(true);
 		}
-		((ChannelListActivity)getActivity()).registerOnMenuToggleListener(this);
+		((ChannelListActivity)getActivity()).unregisterOnMenuToggleListener();
+		HashMap<String, Object> properties = mDataCollectionProperties;
+		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_COLLECT_OUT, properties);
+		mDataCollectionProperties = null;
 		super.onPause();
 	}
 	
@@ -374,7 +393,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			mLoadingDialog.dismiss();
 		}
 		mLoadingDialog = null;
-		mFavoriteManager = null;
+//		mFavoriteManager = null;
 		mSectionList = null;
 		mItemListMap = null;
 		mItemListScrollView.clean();

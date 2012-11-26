@@ -1,11 +1,15 @@
 package tv.ismar.daisy.persistence;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.os.AsyncTask;
 
 import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.NetworkUtils;
+import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.dao.DBHelper.DBFields;
 import tv.ismar.daisy.models.Favorite;
@@ -112,9 +116,33 @@ public class LocalFavoriteManager implements FavoriteManager {
 			cv.put(DBFields.FavoriteTable.ADLET_URL, favorite.adlet_url);
 			cv.put(DBFields.FavoriteTable.QUALITY, favorite.quality);
 			cv.put(DBFields.FavoriteTable.IS_COMPLEX, favorite.is_complex?1:0);
-			mDBHelper.insert(cv, DBFields.FavoriteTable.TABLE_NAME, 0);
+			long result = mDBHelper.insert(cv, DBFields.FavoriteTable.TABLE_NAME, 0);
 			mFavorites = mDBHelper.getAllFavorites();
+			if(result>=0) {
+				new DataUploadTask().execute(favorite);
+			}
 		}
+	}
+	
+	class DataUploadTask extends AsyncTask<Favorite, Void, Void> {
+
+		@Override
+		protected Void doInBackground(Favorite... params) {
+			if(params!=null && params.length>0) {
+				Favorite favorite = params[0];
+				final String url = favorite.url;
+				final String title = favorite.title;
+				int id = SimpleRestClient.getItemId(url, new boolean[1]);
+				HashMap<String, Object> properties = new HashMap<String, Object>();
+				properties.put("item", id);
+				properties.put("title", title);
+				if(params!=null && params.length>0) {
+					NetworkUtils.LogSender(NetworkUtils.VIDEO_COLLECT, properties);	
+				}
+			}
+			return null;
+		}
+		
 	}
 
 }
