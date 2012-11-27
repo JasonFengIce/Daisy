@@ -238,9 +238,12 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 				if(history!=null) {
 					history.last_position = 0;
 					mHistorymanager.addHistory(history);
+					if(history.sub_url!=null) {
+						url = history.sub_url;
+					}
 				}
 				Intent intent = new Intent();
-				intent.putExtra("item", item);
+				intent.putExtra("url", url);
 				intent.setAction("tv.ismar.daisy.Play");
 				
 				try {

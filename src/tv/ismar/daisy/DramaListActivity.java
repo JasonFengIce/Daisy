@@ -6,18 +6,13 @@ import java.util.List;
 
 import tv.ismar.daisy.adapter.DaramAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.ImageUtils;
 import tv.ismar.daisy.core.NetworkUtils;
-import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.LoadingDialog;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
@@ -57,13 +52,13 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 		Bundle bundle = getIntent().getExtras();
 		if (null == bundle) 
 			return;
-		mItem  = (Item) bundle.get("mItem");
+		mItem  = (Item) bundle.get("item");
 		for (int i = 0; i < mItem.subitems.length; i++) {
 			mSubItem = mItem.subitems[i];
 			mList.add(mSubItem);
 		}
-		mDataCollectionProperties.put("mItem", mItem.pk);
-		mDataCollectionProperties.put("mItem", mItem.title);
+		mDataCollectionProperties.put("item", mItem.pk);
+		mDataCollectionProperties.put("item", mItem.title);
 		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_DRAMALIST_IN, mDataCollectionProperties);
 		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
 //		new Thread(new Runnable() {

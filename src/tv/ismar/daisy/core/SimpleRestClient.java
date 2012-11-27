@@ -39,12 +39,12 @@ public class SimpleRestClient {
 	 */
 	public static int getItemId(String url, boolean[] isSubItem) {
 		int id = 0;
-		if(url.contains("/item/")) {
-			isSubItem[0] = false;
-		} else {
-			isSubItem[0] = true;
-		}
 		try {
+			if(url.contains("/item/")) {
+				isSubItem[0] = false;
+			} else {
+				isSubItem[0] = true;
+			}
 			Pattern p = Pattern.compile("/(\\d+)/?$");
 			Matcher m = p.matcher(url);
 			if(m.find()) {

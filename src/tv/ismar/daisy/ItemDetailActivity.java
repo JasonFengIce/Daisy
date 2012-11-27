@@ -550,6 +550,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 					properties.put("item", mItem.pk);
 					properties.put("to_item", item.pk);
 					properties.put("to_title", item.title);
+					properties.put("to", "relate");
 					new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_RELATE, properties);
 					break;
 				}

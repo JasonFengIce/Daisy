@@ -317,10 +317,11 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new GetItemTask(), new Item[]{item});
 			} else {
 				final HistoryManager historyManager = mHistoryManager;
-				History history = historyManager.getHistoryByUrl(item.url);
+				String url = SimpleRestClient.sRoot_url + "/api/item/" + item.pk + "/";
+				History history = historyManager.getHistoryByUrl(url);
 				// Use to data collection.
 				mDataCollectionProperties = new HashMap<String, Object>();
-				int id = SimpleRestClient.getItemId(item.url, new boolean[1]);
+				int id = SimpleRestClient.getItemId(url, new boolean[1]);
 				mDataCollectionProperties.put("to_item", id);
 				if(history.sub_url!=null && item.subitems!=null) {
 					int sub_id = SimpleRestClient.getItemId(history.sub_url, new boolean[1]);
@@ -344,7 +345,7 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 				} else {
 					intent.setAction("tv.ismar.daisy.Play");
 				}
-				intent.putExtra("url", item.url);
+				intent.putExtra("url", url);
 				startActivity(intent);
 			}
 			if(mLoadingDialog!=null && mLoadingDialog.isShowing()) {

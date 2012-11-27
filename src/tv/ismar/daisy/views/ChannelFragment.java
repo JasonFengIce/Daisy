@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,6 +95,9 @@ public class ChannelFragment extends Fragment {
 	}
 	
 	private boolean isChannelUrl(String url) {
+		if(TextUtils.isEmpty(url)) {
+			return false;
+		}
 		String patternStr = ".+/api/tv/sections/[\\w\\d]+/";
 		Pattern pattern = Pattern.compile(patternStr, Pattern.CASE_INSENSITIVE);
 		Matcher matcher = pattern.matcher(url);
@@ -317,6 +321,11 @@ public class ChannelFragment extends Fragment {
 		if(mLoadingDialog!=null&& mLoadingDialog.isShowing()) {
 			mLoadingDialog.dismiss();
 		}
+		
+		final ConcurrentHashMap<String, GetItemListTask> currentLoadingTask = mCurrentLoadingTask;
+		for(String slug:currentLoadingTask.keySet()) {
+			currentLoadingTask.get(slug).cancel(true);
+		}
 		super.onPause();
 	}
 
@@ -327,10 +336,7 @@ public class ChannelFragment extends Fragment {
 		if(mInitTask!=null && mInitTask.getStatus()!=AsyncTask.Status.FINISHED) {
 			mInitTask.cancel(true);
 		}
-		final ConcurrentHashMap<String, GetItemListTask> currentLoadingTask = mCurrentLoadingTask;
-		for(String slug:currentLoadingTask.keySet()) {
-			currentLoadingTask.get(slug).cancel(true);
-		}
+		
 		// Add data collection.
 		HashMap<String, Object> properties = new HashMap<String, Object>();
 		properties.put("category", mChannel);
