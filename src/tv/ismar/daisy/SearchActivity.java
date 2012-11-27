@@ -86,6 +86,8 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	// 自定义的Dialog
 	private LoadingDialog loadDialog;
 	private SearchPromptDialog customDialog;
+	
+	private Boolean isActivityExit = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +121,10 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 
 	@Override
 	protected void onDestroy() {
+		mHandler.removeMessages(UPDATE_ADAPTER);
+		mHandler.removeMessages(UPDATE_SUGGEST);
+		mHandler.removeMessages(ADD_VIEW);
+		mHandler.removeMessages(SEARCH_WORDS);
 		DaisyUtils.getVodApplication(this).removeActivtyFromPool(this.toString());
 		super.onDestroy();
 	}
@@ -188,7 +194,9 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 						listHelp = searchService.getSearchHelper(autoCompleteTextView.getText().toString());
 						// 添加自动提示词组
 						if (null != listHelp) {
-							mHandler.sendEmptyMessage(UPDATE_SUGGEST);
+							if (!isActivityExit) {
+								mHandler.sendEmptyMessage(UPDATE_SUGGEST);
+							}
 						}
 					}
 				}) {
@@ -356,6 +364,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == 4) {
+			isActivityExit = true;
 			finish();
 		}
 		return false;
