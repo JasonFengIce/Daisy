@@ -116,9 +116,15 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	@Override
 	protected void onPause() {
 		super.onPause();
+		isActivityExit = true;
 		// imageAdapter.setAsyncisPauseed(true);
 	}
 
+	@Override
+	protected void onStop() {
+		super.onStop();
+	}
+	
 	@Override
 	protected void onDestroy() {
 		mHandler.removeMessages(UPDATE_ADAPTER);
@@ -364,7 +370,6 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == 4) {
-			isActivityExit = true;
 			finish();
 		}
 		return false;

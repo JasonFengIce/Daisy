@@ -210,12 +210,14 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 		if(loadDialog!=null && loadDialog.isShowing()) {
 			loadDialog.dismiss();
 		}
-		HashMap<String, Object> properties = new HashMap<String, Object>();
-		properties.putAll(mDataCollectionProperties);
-		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_DRAMALIST_OUT, properties);
-		mDataCollectionProperties.put("title", mItem.title);
-		mDataCollectionProperties.put("to", "return");
-		mDataCollectionProperties.remove("subitem");
+		if(mItem!=null) {
+			HashMap<String, Object> properties = new HashMap<String, Object>();
+			properties.putAll(mDataCollectionProperties);
+			new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_DRAMALIST_OUT, properties);
+			mDataCollectionProperties.put("title", mItem.title);
+			mDataCollectionProperties.put("to", "return");
+			mDataCollectionProperties.remove("subitem");
+		}
 		super.onPause();
 	}
 

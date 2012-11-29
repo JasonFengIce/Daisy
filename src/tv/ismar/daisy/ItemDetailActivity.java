@@ -199,13 +199,15 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 				entry.setValue(false);
 			}
 		}
-		final HashMap<String, Object> properties = new HashMap<String, Object>();
-		properties.putAll(mDataCollectionProperties);
-		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_DETAIL_OUT, properties);
-		mDataCollectionProperties.put("title", mItem.title);
-		mDataCollectionProperties.put("item", mItem.pk);
-		mDataCollectionProperties.put("to", "return");
-		mDataCollectionProperties.remove("subitem");
+		if(mItem!=null) {
+			final HashMap<String, Object> properties = new HashMap<String, Object>();
+			properties.putAll(mDataCollectionProperties);
+			new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_DETAIL_OUT, properties);
+			mDataCollectionProperties.put("title", mItem.title);
+			mDataCollectionProperties.put("item", mItem.pk);
+			mDataCollectionProperties.put("to", "return");
+			mDataCollectionProperties.remove("subitem");
+		}
 		super.onPause();
 	}
 
