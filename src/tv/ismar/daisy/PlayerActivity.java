@@ -567,10 +567,13 @@ public class PlayerActivity extends Activity {
 						isBuffer = false;
 						hideBuffer();
 					} else {
-						if (mVideoView.getAlpha() < 1)
+						if (mVideoView.getAlpha() < 1){
 							mVideoView.setAlpha(1);
+							bufferText.setText(BUFFERING);
+						}
+							
 					}
-					if (!isSeek && !paused && !isBuffer) {
+					if (!isSeek  && !isBuffer) {
 						currPosition = mVideoView.getCurrentPosition();
 						timeBar.setProgress(currPosition);
 					}
@@ -605,6 +608,11 @@ public class PlayerActivity extends Activity {
 				bundle.remove("url");
 				bundle.putString("url", subItemUrl);
 				addHistory(0);
+				if (mVideoView != null) {
+					mVideoView.setAlpha(0);
+				}
+				isBuffer = true;
+				showBuffer();
 				new ItemByUrlTask().execute();
 			} else {
 				Intent intent = new Intent("tv.ismar.daisy.PlayFinished");
