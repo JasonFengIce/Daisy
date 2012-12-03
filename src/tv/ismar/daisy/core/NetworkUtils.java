@@ -11,6 +11,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -84,6 +85,7 @@ public class NetworkUtils {
 	 */
 	public static Boolean LogSender(String eventName,HashMap<String,Object> propertiesMap) {
 		try {
+			
 			String jsonContent = getContentJson(eventName, propertiesMap);
 			jsonContent.replaceAll("-", "+");
 			jsonContent.replaceAll("_", "/");
