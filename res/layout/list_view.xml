@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sakura="http://schemas.android.com/apk/res/tv.ismar.daisy"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -30,12 +31,34 @@
             
         </tv.ismar.daisy.views.ScrollableSectionList>
     </LinearLayout>
-    <tv.ismar.daisy.views.ItemListScrollView
-        android:layout_width="wrap_content"
+    <org.sakuratya.horizontal.ui.HGridView
+        android:id="@+id/h_grid_view"
+        android:layout_width="match_parent"
         android:layout_height="810dip"
-        android:id="@+id/itemlist_scroll_view">
+        android:fadingEdge="horizontal"
+        android:fadingEdgeLength="144dip"
+        sakura:horizontalSpacing="82dip"
+        sakura:verticalSpacing="0dip"
+        sakura:rowHeight="252dip"
+        sakura:numRows="3"
+        sakura:labelDrawable="@drawable/section_label_drawable"
+        sakura:labelBackgroundDrawable="@drawable/section_shadow_bg"
+        sakura:selectorDrawable="@drawable/list_item_bg_hot"
+        sakura:labelTopOffset="8dip"
+        sakura:labelLeftOffset="35dip"
+        sakura:labelWidth="53dip"
+        sakura:labelHeight="118dip"
+        sakura:labelBackgroundLeftOffset="18dip"
+        sakura:labelBackgroundWidth="499dip"
+        sakura:labelBackgroundHeight="810dip"
+        sakura:labelTextSize="35sp"
+        sakura:labelTextColor="#FFBBBBBB"
+        sakura:labelTextMarginTop="20dip"
+        sakura:labelTextMarginLeft="7dip"
+        sakura:labelTextMarginBottom="20dip"
+        sakura:labelTextMarginRight="10dip">
         
-    </tv.ismar.daisy.views.ItemListScrollView>
+    </org.sakuratya.horizontal.ui.HGridView>
     <RelativeLayout
         android:layout_width="1480dip"
         android:layout_height="681dip"

@@ -1,21 +1,24 @@
 package tv.ismar.daisy.views;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import tv.ismar.daisy.ChannelListActivity;
+import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
+import org.sakuratya.horizontal.ui.HGridView;
+import org.sakuratya.horizontal.ui.HGridView.OnScrollListener;
+
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.models.ItemCollection;
 import tv.ismar.daisy.models.ItemList;
+import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
-import tv.ismar.daisy.views.ItemListScrollView.OnColumnChangeListener;
-import tv.ismar.daisy.views.ItemListScrollView.OnItemClickedListener;
-import tv.ismar.daisy.views.ItemListScrollView.OnSectionPrepareListener;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -25,25 +28,29 @@ import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.FloatMath;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.TextView;
 
-public class ChannelFragment extends Fragment {
-
-	/*
-	 * defines max number of cells can be show in a single screen.
-	 */
-	private static final int MAX_CELLS_IN_SCREEN = 15;
+public class ChannelFragment extends Fragment implements OnItemSelectedListener, OnItemClickListener, OnScrollListener {
 	
+	private static final String TAG = "ChannelFragment";
+
 	private SimpleRestClient mRestClient = new SimpleRestClient();
 	
 	private SectionList mSectionList;
 	
-	private ArrayList<ItemList> mItemLists;
+	private ArrayList<ItemCollection> mItemCollections;
 	
-	private ItemListScrollView mItemListScrollView;
+	private HGridView mHGridView;
+	
+	private HGridAdapterImpl mHGridAdapter;
 	
 	private ScrollableSectionList mScrollableSectionList;
 	
@@ -63,13 +70,15 @@ public class ChannelFragment extends Fragment {
 	
 	private InitTask mInitTask;
 	
-	private ConcurrentHashMap<String, GetItemListTask> mCurrentLoadingTask = new ConcurrentHashMap<String, ChannelFragment.GetItemListTask>();
+	private ConcurrentHashMap<Integer, GetItemListTask> mCurrentLoadingTask = new ConcurrentHashMap<Integer, ChannelFragment.GetItemListTask>();
+	
+	private boolean mIsBusy = false;
 	
 	private void initViews(View fragmentView) {
-		mItemListScrollView = (ItemListScrollView) fragmentView.findViewById(R.id.itemlist_scroll_view);
-		mItemListScrollView.setOnSectionPrepareListener(mOnSectionPrepareListener);
-		mItemListScrollView.setOnColumnChangeListener(mOnColumnChangeListener);
-		mItemListScrollView.setOnItemClickedListener(mOnItemClickedListener);
+		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
+		mHGridView.setOnItemClickListener(this);
+		mHGridView.setOnItemSelectedListener(this);
+		mHGridView.setOnScrollListener(this);
 		mScrollableSectionList = (ScrollableSectionList) fragmentView.findViewById(R.id.section_tabs);
 		mScrollableSectionList.setOnSectionSelectChangeListener(mOnSectionSelectChangedListener);
 		
@@ -123,7 +132,6 @@ public class ChannelFragment extends Fragment {
 		@Override
 		protected Integer doInBackground(String... params) {
 			try {
-				mItemLists = new ArrayList<ItemList>();
 				url = params[0];
 				channel = params[1];
 				if(!isChannelUrl(url)){
@@ -138,22 +146,14 @@ public class ChannelFragment extends Fragment {
 				if(mSectionList==null && !isCancelled()){
 					mSectionList = mRestClient.getSections(url);
 				}
-				int itemsCount = 0;
-				for(int i=0; i<mSectionList.size() && !isCancelled();i++) {
-					ItemList itemList = null;
-					if(i==mCurrentSectionPosition || itemsCount<=MAX_CELLS_IN_SCREEN){
-						itemList = mRestClient.getItemList(mSectionList.get(i).url);
-						// if the itemList's items is not able to fill the full single screen. we need load the second itemList.
-						if(itemList.objects!=null) {
-							itemsCount += itemList.objects.size();
-						}
-					} else {
-						itemList = new ItemList();
+				if(mSectionList!=null) {
+					mItemCollections = new ArrayList<ItemCollection>();
+					for(int i=0; i<mSectionList.size(); i++) {
+						Section section = mSectionList.get(i);
+						int num_pages = (int) FloatMath.ceil((float)section.count / (float)ItemCollection.NUM_PER_PAGE);
+						ItemCollection itemCollection = new ItemCollection(num_pages, section.count, section.slug, section.title);
+						mItemCollections.add(itemCollection);
 					}
-					itemList.slug = mSectionList.get(i).slug;
-					itemList.title = mSectionList.get(i).title;
-					itemList.count = mSectionList.get(i).count;
-					mItemLists.add(itemList);
 				}
 				if(isCancelled()) {
 					return -1;
@@ -177,14 +177,16 @@ public class ChannelFragment extends Fragment {
 				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, (mInitTask = new InitTask()), new String[]{url, channel});
 				return;
 			}
-			if(mSectionList!=null && mItemLists.get(mCurrentSectionPosition)!=null) {
+			if(mSectionList!=null ) {
 				mScrollableSectionList.init(mSectionList, 1365);
-				for(int i=0; i<mItemLists.size(); i++) {
-					mItemListScrollView.addSection(mItemLists.get(i), i);
-				}
-				int totalColumnsOfSectionX = mItemListScrollView.getTotalColumnCount(mCurrentSectionPosition);
+				mHGridAdapter = new HGridAdapterImpl(getActivity(), mItemCollections);
+				mHGridView.setAdapter(mHGridAdapter);
+				mHGridView.setFocusable(true);
+				mHGridView.setHorizontalFadingEdgeEnabled(true);
+				mHGridView.setFadingEdgeLength(144);
+				int num_rows = mHGridView.getRows();
+				int totalColumnsOfSectionX = (int) FloatMath.ceil((float)mItemCollections.get(mCurrentSectionPosition).count / (float) num_rows);
 				mScrollableSectionList.setPercentage(mCurrentSectionPosition, (int)(1f/(float)totalColumnsOfSectionX*100f));
-				mItemListScrollView.jumpToSection(mCurrentSectionPosition);
 			} else {
 				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, (mInitTask = new InitTask()), new String[]{url, channel});
 			}
@@ -194,137 +196,87 @@ public class ChannelFragment extends Fragment {
 		
 	}
 	
-	class GetItemListTask extends AsyncTask<String, Void, Integer> {
+	class GetItemListTask extends AsyncTask<Object, Void, ItemList> {
 		
-		private String slug;
-		private String url;
+		private Integer index;
 
 		@Override
 		protected void onCancelled() {
-			mCurrentLoadingTask.remove(slug);
+			mCurrentLoadingTask.remove(index);
 			super.onCancelled();
 		}
 
 		@Override
-		protected Integer doInBackground(String... params) {
+		protected ItemList doInBackground(Object... params) {
 			try {
-				int position = -1;
-				slug = params[0];
-				url = params[1];
+				index = (Integer) params[0];
 				
-				mCurrentLoadingTask.put(slug, this);
-				
-				for(int i=0; i<mItemLists.size() && !isCancelled();i++){
-					if(slug.equals(mItemLists.get(i).slug)){
-						ItemList itemList = mRestClient.getItemList(url);
-						if(itemList==null) {
-							continue;
-						}
-						itemList.slug = mSectionList.get(i).slug;
-						itemList.title = mSectionList.get(i).title;
-						mItemLists.set(i, itemList);
-						position = i;
-						break;
-					}
-				}
+				mCurrentLoadingTask.put(index, this);
+				int[] sectionAndPage = getSectionAndPageFromIndex(index);
+				int sectionIndex = sectionAndPage[0];
+				// page in api must start at 1.
+				int page = sectionAndPage[1] + 1;
+				Section section = mSectionList.get(sectionIndex);
+				String url = section.url + page +"/";
+				ItemList itemList = mRestClient.getItemList(url);
 				if(isCancelled()) {
-					return -1;
+					return null;
 				} else {
-					return position;
+					return itemList;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				return -1;
+				return null;
 			}
 		}
 
 		@Override
-		protected void onPostExecute(Integer position) {
-			mCurrentLoadingTask.remove(slug);
-			if(mItemListScrollView!=null && mItemLists!=null && position!=-1) {
-				mItemListScrollView.updateSection(mItemLists.get(position), position);
+		protected void onPostExecute(ItemList itemList) {
+			mCurrentLoadingTask.remove(index);
+			if(itemList!=null && itemList.objects!=null) {
+				int sectionIndex = getSectionAndPageFromIndex(index)[0];
+				int page = getSectionAndPageFromIndex(index)[1];
+				ItemCollection itemCollection = mItemCollections.get(sectionIndex);
+				itemCollection.fillItems(page, itemList.objects);
+				mHGridAdapter.setList(mItemCollections);
 			} else {
-				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new GetItemListTask(), new String[]{slug, url});
+				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new GetItemListTask(), new Object[]{index});
 			}
 		}
 		
 	}
-	
-	private OnSectionPrepareListener mOnSectionPrepareListener = new OnSectionPrepareListener() {
-		
-		@Override
-		public void onPrepareNeeded(int position) {
-			final ConcurrentHashMap<String, GetItemListTask> currentTask = mCurrentLoadingTask;
-			if(currentTask.containsKey(mSectionList.get(position).slug)) {
-				return;
-			}
-			if(mItemLists.get(position).objects==null){
-				mItemListScrollView.addScrapViewsToSection(position, 0);
-				new GetItemListTask().execute(mItemLists.get(position).slug, mSectionList.get(position).url);
-			} else {
-				mItemListScrollView.updateSection(mItemLists.get(position), position);
-			}
-		}
-	};
 	
 	private OnSectionSelectChangedListener mOnSectionSelectChangedListener = new OnSectionSelectChangedListener() {
 		
 		@Override
 		public void onSectionSelectChanged(int index) {
-			if(mItemLists.get(index).objects!=null){
-				mItemListScrollView.updateSection(mItemLists.get(index), index);
-			} else {
-				mItemListScrollView.addScrapViewsToSection(index, 0);
-				new GetItemListTask().execute(mItemLists.get(index).slug, mSectionList.get(index).url);
-			}
-			mItemListScrollView.jumpToSection(index);
-		}
-	};
-	
-	private OnColumnChangeListener mOnColumnChangeListener = new OnColumnChangeListener() {
-		
-		@Override
-		public void onColumnChanged(int position, int column, int totalColumn) {
-			int percentage = (int)((float)(column+1)/(float)totalColumn*100f);
-			mScrollableSectionList.setPercentage(position, percentage);
-		}
-	};
-	
-	private OnItemClickedListener mOnItemClickedListener = new OnItemClickedListener() {
-		
-		@Override
-		public void onItemClicked(Item item) {
-			Intent intent = new Intent();
-			if(item.is_complex) {
-				intent.setAction("tv.ismar.daisy.Item");
-			} else {
-				intent.setAction("tv.ismar.daisy.Play");
-			}
-			intent.putExtra("url", item.url);
-			startActivity(intent);
+			mHGridView.jumpToSection(index);
 		}
 	};
 
 	@Override
 	public void onResume() {
-		if(mItemListScrollView != null) {
-			mItemListScrollView.setPause(false);
-		}
+		mIsBusy = false;
 		super.onResume();
 	}
 
 	@Override
 	public void onPause() {
-		if(mItemListScrollView != null) {
-			mItemListScrollView.setPause(true);
+		// We don't want to load when this page has been invisible.
+		// This can prevent onScroll event to put new task to mCurrentLoadingTask.
+		mIsBusy = true;
+		// Prevent AsyncImageView loading
+		if(mHGridAdapter!=null) {
+			mHGridAdapter.cancel();
 		}
+		
 		if(mLoadingDialog!=null&& mLoadingDialog.isShowing()) {
 			mLoadingDialog.dismiss();
 		}
 		
-		final ConcurrentHashMap<String, GetItemListTask> currentLoadingTask = mCurrentLoadingTask;
-		for(String slug:currentLoadingTask.keySet()) {
-			currentLoadingTask.get(slug).cancel(true);
+		final ConcurrentHashMap<Integer, GetItemListTask> currentLoadingTask = mCurrentLoadingTask;
+		for(Integer index:currentLoadingTask.keySet()) {
+			currentLoadingTask.get(index).cancel(true);
 		}
 		super.onPause();
 	}
@@ -344,11 +296,6 @@ public class ChannelFragment extends Fragment {
 		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_CHANNEL_OUT, properties);
 		mInitTask = null;
 		mSectionList = null;
-		mItemLists = null;
-		if(mItemListScrollView!=null){
-			mItemListScrollView.clean();
-		}
-		mItemListScrollView = null;
 		mScrollableSectionList = null;
 		super.onDestroyView();
 	}
@@ -393,6 +340,135 @@ public class ChannelFragment extends Fragment {
 	public void onDetach() {
 		mRestClient = null;
 		super.onDetach();
+	}
+
+	@Override
+	public void onScrollStateChanged(HGridView view, int scrollState) {
+		if(scrollState==OnScrollListener.SCROLL_STATE_FOCUS_MOVING) {
+			mIsBusy = true;
+			Log.d(TAG, "Scroll State Changed! current is SCROLL_STATE_FOCUS_MOVING");
+		} else if(scrollState == OnScrollListener.SCROLL_STATE_IDLE) {
+			Log.d(TAG, "Scroll State Changed! current is SCROLL_STATE_IDLE");
+			mIsBusy = false;
+		}
+		
+		
+	}
+
+	@Override
+	public void onScroll(HGridView view, int firstVisibleItem,
+			int visibleItemCount, int totalItemCount) {
+		if(!mIsBusy) {
+			// We put the composed index which need to loading to this list. and check with
+			// mCurrentLoadingTask soon after
+			ArrayList<Integer> needToLoadComposedIndex = new ArrayList<Integer>();
+			// The index of child in HGridView
+			int index = 0;
+			int sectionIndex = mHGridAdapter.getSectionIndex(firstVisibleItem);
+			int itemCount = 0;
+			for(int i=0; i < sectionIndex;i++) {
+				itemCount += mHGridAdapter.getSectionCount(i);
+			}
+			// The index of current section.
+			int indexOfSection = firstVisibleItem - itemCount;
+			
+			while(index < visibleItemCount) {
+				final ItemCollection itemCollection = mItemCollections.get(sectionIndex);
+				int num_pages = itemCollection.num_pages;
+				int page = indexOfSection / ItemCollection.NUM_PER_PAGE;
+				Log.d(TAG, "indexOfSection: "+ indexOfSection+" sectionIndex: "+sectionIndex + " index: "+ index + " page: " + page);
+				if(!itemCollection.isItemReady(indexOfSection)) {
+					int composedIndex = getIndexFromSectionAndPage(sectionIndex, page);
+					needToLoadComposedIndex.add(composedIndex);
+				}
+				
+				if(page<num_pages - 1) {
+					// Go to next page of this section.
+					index += (page+1) * ItemCollection.NUM_PER_PAGE - indexOfSection;
+					indexOfSection = (page + 1) * ItemCollection.NUM_PER_PAGE;
+				} else {
+					// This page is already the last page of current section.
+					index += mHGridAdapter.getSectionCount(sectionIndex) - indexOfSection;
+					indexOfSection = 0;
+					sectionIndex++;
+				}
+			}
+			
+			Log.d(TAG, "needToloadComposedIndex: " + needToLoadComposedIndex.toString());
+			if(needToLoadComposedIndex.isEmpty()){
+				return;
+			}
+			
+			// Check the composedIndex in mCurrentLoadingTask if it existed do nothing, else start a task.
+			// cancel other task that not in needToLoadComposedIndex list.
+			final ConcurrentHashMap<Integer, GetItemListTask> currentLoadingTask = mCurrentLoadingTask;
+			
+			for(Integer i: currentLoadingTask.keySet()) {
+				if(!needToLoadComposedIndex.contains(i)) {
+					currentLoadingTask.get(i).cancel(true);
+				}
+			}
+			
+			for(int i=0; i<needToLoadComposedIndex.size();i++) {
+				int composedIndex = needToLoadComposedIndex.get(i);
+				if(!currentLoadingTask.containsKey(composedIndex)) {
+					new GetItemListTask().execute(composedIndex);
+				}
+			}
+			Log.d(TAG, currentLoadingTask.size() + " tasks in currentLoadingTask: ");
+		}
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		Item item = mHGridAdapter.getItem(position);
+		if(item!=null) {
+			Intent intent = new Intent();
+			if(item.is_complex) {
+				intent.setAction("tv.ismar.daisy.Item");
+			} else {
+				intent.setAction("tv.ismar.daisy.Play");
+			}
+			intent.putExtra("url", item.url);
+			startActivity(intent);
+		}
+		
+	}
+	
+	
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int position,
+			long id) {
+		// When selected column has changed, we need to update the ScrollableSectionList
+		int sectionIndex = mHGridAdapter.getSectionIndex(position);
+		int rows = mHGridView.getRows();
+		int itemCount = 0;
+		for(int i=0; i < sectionIndex; i++) {
+			itemCount += mHGridAdapter.getSectionCount(i);
+			
+		}
+		int columnOfX = (position - itemCount) / rows + 1;
+		int totalColumnOfSectionX = (int)(FloatMath.ceil((float)mHGridAdapter.getSectionCount(sectionIndex) / (float) rows)); 
+		int percentage = (int) ((float)columnOfX / (float)totalColumnOfSectionX * 100f);
+		mScrollableSectionList.setPercentage(sectionIndex, percentage);
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> parent) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	private int getIndexFromSectionAndPage(int sectionIndex, int page) {
+		return sectionIndex * 10000 + page;
+	}
+	
+	private int[] getSectionAndPageFromIndex(int index) {
+		int[] sectionAndPage = new int[2];
+		sectionAndPage[0] = index / 10000;
+		sectionAndPage[1] = index - index/10000 * 10000;
+		return sectionAndPage;
 	}
 	
 }

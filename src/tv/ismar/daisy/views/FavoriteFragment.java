@@ -1,8 +1,10 @@
 package tv.ismar.daisy.views;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-
+import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
+import org.sakuratya.horizontal.ui.HGridView;
 import tv.ismar.daisy.ChannelListActivity.OnMenuToggleListener;
 import tv.ismar.daisy.ChannelListActivity;
 import tv.ismar.daisy.R;
@@ -14,13 +16,9 @@ import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.ContentModel;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.Item;
-import tv.ismar.daisy.models.ItemList;
+import tv.ismar.daisy.models.ItemCollection;
 import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
-import tv.ismar.daisy.persistence.FavoriteManager;
-import tv.ismar.daisy.views.ItemListScrollView.OnColumnChangeListener;
-import tv.ismar.daisy.views.ItemListScrollView.OnItemClickedListener;
-import tv.ismar.daisy.views.ItemListScrollView.OnSectionPrepareListener;
 import tv.ismar.daisy.views.MenuFragment.MenuItem;
 import tv.ismar.daisy.views.MenuFragment.OnMenuItemClickedListener;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
@@ -29,35 +27,39 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.FloatMath;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class FavoriteFragment extends Fragment implements OnSectionSelectChangedListener,
-														OnColumnChangeListener, 
-														OnItemClickedListener, 
-														OnSectionPrepareListener,
 														OnMenuToggleListener,
-														OnMenuItemClickedListener{
+														OnMenuItemClickedListener,
+														OnItemSelectedListener,
+														OnItemClickListener{
 	
-	private ItemListScrollView mItemListScrollView;
+	private static final int INVALID_POSITION = -1;
+	
+	private HGridView mHGridView;
 	private ScrollableSectionList mScrollableSectionList;
 	private TextView mChannelLabel;
 	
+	private HGridAdapterImpl mHGridAdapter;
+	private ArrayList<ItemCollection> mItemCollections;
 	private SectionList mSectionList;
 	
 	private int mCurrentSectionPosition = 0;
 	
-	private FavoriteManager mFavoriteManager;
 	private SimpleRestClient mRestClient;
 	
-	private ArrayList<Favorite> mFavorites;
 	private ContentModel[] mContentModels;
 	
 	private RelativeLayout mNoVideoContainer;
-	private HashMap<String, ItemList> mItemListMap;
 	
 	private boolean isInGetFavoriteTask;
 	private boolean isInGetItemTask;
@@ -65,15 +67,17 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	private MenuFragment mMenuFragment;
 	private LoadingDialog mLoadingDialog;
 	
+	private int mSelectedPosition = INVALID_POSITION;
+	
 	private HashMap<String, Object> mDataCollectionProperties;
 	
 	public final static String MENU_TAG = "FavoriteMenu";
 	
 	private void initViews(View fragmentView) {
-		mItemListScrollView = (ItemListScrollView) fragmentView.findViewById(R.id.itemlist_scroll_view);
-		mItemListScrollView.setOnSectionPrepareListener(this);
-		mItemListScrollView.setOnColumnChangeListener(this);
-		mItemListScrollView.setOnItemClickedListener(this);
+		
+		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
+		mHGridView.setOnItemClickListener(this);
+		mHGridView.setOnItemSelectedListener(this);
 		mScrollableSectionList = (ScrollableSectionList) fragmentView.findViewById(R.id.section_tabs);
 		mScrollableSectionList.setOnSectionSelectChangeListener(this);
 		
@@ -95,12 +99,9 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mFavoriteManager = DaisyUtils.getFavoriteManager(getActivity());
 		mRestClient = new SimpleRestClient();
 		VodApplication application = DaisyUtils.getVodApplication(getActivity());
 		mContentModels = application.mContentModel;
-		mSectionList = new SectionList();
-		mItemListMap = new HashMap<String, ItemList>();
 		mLoadingDialog = new LoadingDialog(getActivity(), getResources().getString(R.string.loading));
 		createMenu();
 	}
@@ -117,37 +118,40 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			mFavorites = mFavoriteManager.getAllFavorites();
-			for(int i=0;i<mFavorites.size();i++) {
-				String content_model = mFavorites.get(i).content_model;
-//				String url = mFavorites.get(i).url;
-				Item item = getItem(mFavorites.get(i));
+			ArrayList<Favorite> favorites = DaisyUtils.getFavoriteManager(getActivity()).getAllFavorites();
+			mSectionList = new SectionList();
+			HashMap<String, ItemCollection> itemCollectionMap = new HashMap<String, ItemCollection>();
+			for(Favorite favorite: favorites) {
+				String content_model = favorite.content_model;
+				Item item = getItem(favorite);
 				if(item!=null) {
-					ItemList itemList = mItemListMap.get(content_model);
-					if(itemList==null) {
-						itemList = new ItemList();
-						itemList.slug = content_model;
-						itemList.objects = new ArrayList<Item>();
-						//get title represented by content_model
+					ItemCollection itemCollection = itemCollectionMap.get(content_model);
+					if(itemCollection==null) {
+						Section section = new Section();
+						section.slug = content_model;
 						for(ContentModel cm: mContentModels) {
 							if(cm.content_model.equals(content_model)) {
-								itemList.title = cm.title;
+								section.title = cm.title;
 								break;
 							}
 						}
-						Section section = new Section();
-						section.slug = content_model;
-						section.title = itemList.title;
+						itemCollection = new ItemCollection(1, 0, content_model, section.title);
 						mSectionList.add(section);
-						mItemListMap.put(content_model, itemList);
+						itemCollectionMap.put(content_model, itemCollection);
 					}
-					itemList.objects.add(item);
+					itemCollection.objects.put(itemCollection.count++, item);
 				}
-				
 			}
-			for(Section section: mSectionList) {
-				section.count = mItemListMap.get(section.slug).objects.size();
-				mItemListMap.get(section.slug).count = section.count;
+			mItemCollections = new ArrayList<ItemCollection>();
+			for(Section section:mSectionList) {
+				ItemCollection itemCollection= itemCollectionMap.get(section.slug);
+				int count = itemCollection.objects.size();
+				itemCollection.num_pages = (int)FloatMath.ceil((float)count / (float)ItemCollection.NUM_PER_PAGE);
+				section.count = count;
+				// we have already complete data collection.
+				itemCollection.hasFilledValidItem = new boolean[itemCollection.num_pages];
+				Arrays.fill(itemCollection.hasFilledValidItem, true);
+				mItemCollections.add(itemCollection);
 			}
 			return null;
 		}
@@ -164,13 +168,14 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 				return;
 			}
 			mScrollableSectionList.init(mSectionList, 1365);
-			for(int i=0;i<mSectionList.size();i++) {
-				ItemList itemList = mItemListMap.get(mSectionList.get(i).slug);
-				mItemListScrollView.addSection(itemList, i);
-			}
-			int totalColumnsOfSectionX = mItemListScrollView.getTotalColumnCount(mCurrentSectionPosition);
+			mHGridAdapter = new HGridAdapterImpl(getActivity(), mItemCollections);
+			mHGridView.setAdapter(mHGridAdapter);
+			mHGridView.setFocusable(true);
+			mHGridView.setHorizontalFadingEdgeEnabled(true);
+			mHGridView.setFadingEdgeLength(144);
+			int num_rows = mHGridView.getRows();
+			int totalColumnsOfSectionX = (int) FloatMath.ceil((float)mItemCollections.get(mCurrentSectionPosition).count / (float) num_rows);
 			mScrollableSectionList.setPercentage(mCurrentSectionPosition, (int)(1f/(float)totalColumnsOfSectionX*100f));
-			mItemListScrollView.jumpToSection(mCurrentSectionPosition);
 		}
 		
 	}
@@ -184,13 +189,6 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		item.is_complex = favorite.is_complex;
 		item.quality = favorite.quality;
 		return item;
-	}
-	
-	@Override
-	public void onPrepareNeeded(int position) {
-		Section section = mSectionList.get(position);
-		ItemList itemList = mItemListMap.get(section.slug);
-		mItemListScrollView.updateSection(itemList, position);
 	}
 	
 	class GetItemTask extends AsyncTask<Item, Void, Integer> {
@@ -265,34 +263,19 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	}
 	
 	@Override
-	public void onItemClicked(Item item) {
-		new GetItemTask().execute(item);
-	}
-	@Override
-	public void onColumnChanged(int position, int column, int totalColumn) {
-		int percentage = (int)((float)(column+1)/(float)totalColumn*100f);
-		mScrollableSectionList.setPercentage(position, percentage);
-	}
-	@Override
 	public void onSectionSelectChanged(int index) {
-		Section section = mSectionList.get(index);
-		ItemList itemList = mItemListMap.get(section.slug);
-		mItemListScrollView.updateSection(itemList, index);
-		mItemListScrollView.jumpToSection(index);
+		mHGridView.jumpToSection(index);
 	}
 	@Override
 	public void onResume() {
-		if(mItemListScrollView != null) {
-			mItemListScrollView.setPause(false);
-		}
 		((ChannelListActivity)getActivity()).registerOnMenuToggleListener(this);
 		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_COLLECT_IN);
 		super.onResume();
 	}
 	@Override
 	public void onPause() {
-		if(mItemListScrollView != null) {
-			mItemListScrollView.setPause(true);
+		if(mHGridAdapter!=null) {
+			mHGridAdapter.cancel();
 		}
 		((ChannelListActivity)getActivity()).unregisterOnMenuToggleListener();
 		HashMap<String, Object> properties = mDataCollectionProperties;
@@ -305,7 +288,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		mNoVideoContainer.setVisibility(View.VISIBLE);
 		mNoVideoContainer.setBackgroundResource(R.drawable.favorite_no_video);
 		mScrollableSectionList.setVisibility(View.GONE);
-		mItemListScrollView.setVisibility(View.GONE);
+		mHGridView.setVisibility(View.GONE);
 	}
 	
 	private void showDialog(final int dialogType, final AsyncTask task, final Object[] params)  {
@@ -317,7 +300,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 				if(dialogType==AlertDialogFragment.NETWORK_EXCEPTION_DIALOG && !isInGetItemTask) {
 					task.execute(params);
 				} else if(!isInGetFavoriteTask) {
-					mFavoriteManager.deleteFavoriteByUrl((String)params[0]);
+					DaisyUtils.getFavoriteManager(getActivity()).deleteFavoriteByUrl((String)params[0]);
 					reset();
 				}
 				dialog.dismiss();
@@ -334,10 +317,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	}
 	
 	private void reset() {
-		mItemListScrollView.reset();
 		mScrollableSectionList.reset();
-		mSectionList = new SectionList();
-		mItemListMap = new HashMap<String, ItemList>();
 		new GetFavoriteTask().execute();
 	}
 	
@@ -350,25 +330,20 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	public void onMenuItemClicked(MenuItem item) {
 		switch(item.id) {
 		case 1:
-			if(mItemListScrollView!=null && mItemListScrollView.mCurrentSelectedView!=null) {
-				if(mItemListScrollView.mCurrentSelectedView.hasFocus()) {
-					Item selectedItem = null;
-					TextView titleView = (TextView) mItemListScrollView.mCurrentSelectedView.findViewById(R.id.list_item_title);
-					Object obj = titleView.getTag();
-					if(obj!=null) {
-						selectedItem = (Item) obj;
-						if(!isInGetFavoriteTask && selectedItem.url!=null) {
-							mFavoriteManager.deleteFavoriteByUrl(selectedItem.url);
-							reset();
-						}
+			if(mHGridAdapter!=null) {
+				if(mSelectedPosition!=INVALID_POSITION) {
+					Item selectedItem = mHGridAdapter.getItem(mSelectedPosition);
+					if(!isInGetFavoriteTask && selectedItem!=null && selectedItem.url!=null) {
+						DaisyUtils.getFavoriteManager(getActivity()).deleteFavoriteByUrl(selectedItem.url);
+						reset();
 					}
 				}
 			}
 			break;
 		case 2:
-			if(mItemListScrollView!=null) {
+			if(mHGridAdapter!=null) {
 				if(!isInGetFavoriteTask) {
-					mFavoriteManager.deleteAll();
+					DaisyUtils.getFavoriteManager(getActivity()).deleteAll();
 					reset();
 				}
 			}
@@ -393,15 +368,41 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			mLoadingDialog.dismiss();
 		}
 		mLoadingDialog = null;
-//		mFavoriteManager = null;
 		mSectionList = null;
-		mItemListMap = null;
-		mItemListScrollView.clean();
-		mItemListScrollView = null;
 		mScrollableSectionList = null;
 		mRestClient = null;
 		mMenuFragment = null;
 		super.onDetach();
+	}
+	
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		Item item = mHGridAdapter.getItem(position);
+		new GetItemTask().execute(item);
+		
+	}
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int position,
+			long id) {
+		mSelectedPosition = position;
+		// When selected column has changed, we need to update the ScrollableSectionList
+		int sectionIndex = mHGridAdapter.getSectionIndex(position);
+		int rows = mHGridView.getRows();
+		int itemCount = 0;
+		for(int i=0; i < sectionIndex; i++) {
+			itemCount += mHGridAdapter.getSectionCount(i);
+			
+		}
+		int columnOfX = (position - itemCount) / rows + 1;
+		int totalColumnOfSectionX = (int)(FloatMath.ceil((float)mHGridAdapter.getSectionCount(sectionIndex) / (float) rows)); 
+		int percentage = (int) ((float)columnOfX / (float)totalColumnOfSectionX * 100f);
+		mScrollableSectionList.setPercentage(sectionIndex, percentage);
+		
+	}
+	@Override
+	public void onNothingSelected(AdapterView<?> parent) {
+		mSelectedPosition = INVALID_POSITION;
 	}
 	
 }

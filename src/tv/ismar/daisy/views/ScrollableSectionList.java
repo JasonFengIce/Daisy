@@ -170,7 +170,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 			label.setBackgroundColor(LABEL_TEXT_BACKGROUND_SELECTED_NOFOCUSED);
 			percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_selected));
 		}
-		Log.d("CurrentPercentage", percentage + "");
+//		Log.d("CurrentPercentage", percentage + "");
 		percentageBar.setProgress(percentage);
 		
 	}

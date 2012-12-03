@@ -9,6 +9,8 @@
         android:layout_height="204dip"
         android:id="@+id/list_item_preview_img"
         android:background="@drawable/list_item_preview_bg"
+        android:layout_marginLeft="2dip"
+        android:layout_marginRight="2dip"
         android:paddingTop="7dip"
         android:paddingBottom="18dip"
         android:paddingLeft="13dip"
@@ -29,9 +31,9 @@
     <ImageView
         android:layout_width="57dip"
         android:layout_height="57dip"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="4dip"
-        android:layout_marginRight="10dip"
+        android:layout_alignTop="@id/list_item_preview_img"
+        android:layout_alignRight="@id/list_item_preview_img"
+        android:layout_marginTop="3dip"
+        android:layout_marginRight="8dip"
         android:id="@+id/list_item_quality_label"/>
 </RelativeLayout>

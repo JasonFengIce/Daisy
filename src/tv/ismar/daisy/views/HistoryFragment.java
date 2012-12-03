@@ -1,9 +1,13 @@
 package tv.ismar.daisy.views;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+
+import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
+import org.sakuratya.horizontal.ui.HGridView;
 
 import tv.ismar.daisy.ChannelListActivity;
 import tv.ismar.daisy.ChannelListActivity.OnMenuToggleListener;
@@ -14,13 +18,9 @@ import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
-import tv.ismar.daisy.models.ItemList;
+import tv.ismar.daisy.models.ItemCollection;
 import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
-import tv.ismar.daisy.persistence.HistoryManager;
-import tv.ismar.daisy.views.ItemListScrollView.OnColumnChangeListener;
-import tv.ismar.daisy.views.ItemListScrollView.OnItemClickedListener;
-import tv.ismar.daisy.views.ItemListScrollView.OnSectionPrepareListener;
 import tv.ismar.daisy.views.MenuFragment.MenuItem;
 import tv.ismar.daisy.views.MenuFragment.OnMenuItemClickedListener;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
@@ -29,29 +29,34 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.FloatMath;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class HistoryFragment extends Fragment implements OnSectionPrepareListener, 
-														OnColumnChangeListener, 
-														OnItemClickedListener, 
-														OnSectionSelectChangedListener, 
+public class HistoryFragment extends Fragment implements OnSectionSelectChangedListener,
 														OnMenuToggleListener,
-														OnMenuItemClickedListener{
+														OnMenuItemClickedListener,
+														OnItemClickListener,
+														OnItemSelectedListener{
 	
-	private HistoryManager mHistoryManager;
-	private ItemListScrollView mItemListScrollView;
+	private static final int INVALID_POSITION = -1;
+	
+	private HGridView mHGridView;
 	private ScrollableSectionList mScrollableSectionList;
 	private TextView mChannelLabel;
 	
+	private HGridAdapterImpl mHGridAdapter;
 	private SectionList mSectionList;
 	
-	private ItemList mTodayItemList;
-	private ItemList mYesterdayItemList;
-	private ItemList mEarlyItemList;
+	private ItemCollection mTodayItemList;
+	private ItemCollection mYesterdayItemList;
+	private ItemCollection mEarlyItemList;
 	private int mCurrentSectionPosition = 0;
 	private SimpleRestClient mRestClient;
 	
@@ -70,6 +75,8 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 	
 	private HashMap<String, Object> mDataCollectionProperties;
 	
+	private int mSelectedPosition = INVALID_POSITION;
+	
 	private long getTodayStartPoint() {
 		long currentTime = System.currentTimeMillis();
 		GregorianCalendar currentCalendar = new GregorianCalendar();
@@ -86,10 +93,9 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 	}
 
 	private void initViews(View fragmentView) {
-		mItemListScrollView = (ItemListScrollView) fragmentView.findViewById(R.id.itemlist_scroll_view);
-		mItemListScrollView.setOnSectionPrepareListener(this);
-		mItemListScrollView.setOnColumnChangeListener(this);
-		mItemListScrollView.setOnItemClickedListener(this);
+		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
+		mHGridView.setOnItemClickListener(this);
+		mHGridView.setOnItemSelectedListener(this);
 		mScrollableSectionList = (ScrollableSectionList) fragmentView.findViewById(R.id.section_tabs);
 		mScrollableSectionList.setOnSectionSelectChangeListener(this);
 		
@@ -102,26 +108,16 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 	private void initHistoryList(){
 		
 		//define today's ItemList
-		mTodayItemList = new ItemList();
-		mTodayItemList.objects = new ArrayList<Item>();
-		mTodayItemList.slug = "today";
-		mTodayItemList.title = getResources().getString(R.string.vod_movielist_today);
+		mTodayItemList = new ItemCollection(1, 0, "today", getResources().getString(R.string.vod_movielist_today));
 		//define yesterday's ItemList
-		mYesterdayItemList = new ItemList();
-		mYesterdayItemList.objects = new ArrayList<Item>();
-		mYesterdayItemList.slug = "yesterday";
-		mYesterdayItemList.title = getResources().getString(R.string.vod_movielist_yesterday);
+		mYesterdayItemList = new ItemCollection(1, 0, "yesterday", getResources().getString(R.string.vod_movielist_yesterday));
 		//define early days's ItemList
-		mEarlyItemList = new ItemList();
-		mEarlyItemList.objects = new ArrayList<Item>();
-		mEarlyItemList.slug = "early";
-		mEarlyItemList.title = getResources().getString(R.string.vod_movielist_recent);
+		mEarlyItemList = new ItemCollection(1, 0, "early", getResources().getString(R.string.vod_movielist_recent));
 	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mHistoryManager = DaisyUtils.getHistoryManager(getActivity());
 		mRestClient = new SimpleRestClient();
 		mLoadingDialog = new LoadingDialog(getActivity(), getResources().getString(R.string.loading));
 		initHistoryList();
@@ -152,32 +148,32 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 		@Override
 		protected Void doInBackground(Void... params) {
 			try {
-				final HistoryManager historyManager = mHistoryManager;
 				final long todayStartPoint = getTodayStartPoint();
 				final long yesterdayStartPoint = getYesterdayStartPoint();
-				ArrayList<History> mHistories = historyManager.getAllHistories();
+				ArrayList<History> mHistories = DaisyUtils.getHistoryManager(getActivity()).getAllHistories();
 				if(mHistories.size()>0) {
 					Collections.sort(mHistories);
 					for(int i=0;i<mHistories.size();++i) {
 						History history = mHistories.get(i);
 						Item item = getItem(history);
 						if(history.last_played_time < yesterdayStartPoint){
-							mEarlyItemList.objects.add(item);
+							mEarlyItemList.objects.put(mEarlyItemList.count++, item);
 						} else if(history.last_played_time > yesterdayStartPoint && history.last_played_time < todayStartPoint) {
-							mYesterdayItemList.objects.add(item);
+							mYesterdayItemList.objects.put(mYesterdayItemList.count++, item);
 						} else {
-							mTodayItemList.objects.add(item);
+							mTodayItemList.objects.put(mTodayItemList.count++, item);
 						}
 					}
-					mTodayItemList.count = mTodayItemList.objects.size();
-					mYesterdayItemList.count = mYesterdayItemList.objects.size();
-					mEarlyItemList.count = mEarlyItemList.objects.size();
+					mTodayItemList.num_pages = (int) FloatMath.ceil((float)mTodayItemList.count / (float)ItemCollection.NUM_PER_PAGE);
+					mYesterdayItemList.num_pages = (int) FloatMath.ceil((float)mYesterdayItemList.count /(float) ItemCollection.NUM_PER_PAGE);
+					mEarlyItemList.num_pages = (int) FloatMath.ceil((float)mEarlyItemList.count / (float)ItemCollection.NUM_PER_PAGE);
 					if(mTodayItemList.count > 0) {
 						Section todaySection = new Section();
 						todaySection.slug = mTodayItemList.slug;
 						todaySection.title = mTodayItemList.title;
 						todaySection.count = mTodayItemList.count;
 						mSectionList.add(todaySection);
+						Arrays.fill(mTodayItemList.hasFilledValidItem, true);
 					}
 					if(mYesterdayItemList.count > 0) {
 						Section yesterdaySection = new Section();
@@ -185,6 +181,7 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 						yesterdaySection.title = mYesterdayItemList.title;
 						yesterdaySection.count = mYesterdayItemList.count;
 						mSectionList.add(yesterdaySection);
+						Arrays.fill(mYesterdayItemList.hasFilledValidItem, true);
 					}
 					if(mEarlyItemList.count > 0) {
 						Section earlySection = new Section();
@@ -192,6 +189,7 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 						earlySection.title = mEarlyItemList.title;
 						earlySection.count = mEarlyItemList.count;
 						mSectionList.add(earlySection);
+						Arrays.fill(mEarlyItemList.hasFilledValidItem, true);
 					}
 				}
 			} catch (Exception e) {
@@ -204,19 +202,24 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 		protected void onPostExecute(Void result) {
 			if(mSectionList!=null && mSectionList.size() > 0) {
 				mScrollableSectionList.init(mSectionList, 1365);
-				int index=0;
+				ArrayList<ItemCollection> itemCollections = new ArrayList<ItemCollection>();
 				if(mTodayItemList.count > 0) {
-					mItemListScrollView.addSection(mTodayItemList, index++);
+					itemCollections.add(mTodayItemList);
 				}
 				if(mYesterdayItemList.count > 0) {
-					mItemListScrollView.addSection(mYesterdayItemList, index++);
+					itemCollections.add(mYesterdayItemList);
 				}
 				if(mEarlyItemList.count > 0) {
-					mItemListScrollView.addSection(mEarlyItemList, index);
+					itemCollections.add(mEarlyItemList);
 				}
-				int totalColumnsOfSectionX = mItemListScrollView.getTotalColumnCount(mCurrentSectionPosition);
+				mHGridAdapter = new HGridAdapterImpl(getActivity(), itemCollections);
+				mHGridView.setAdapter(mHGridAdapter);
+				mHGridView.setFocusable(true);
+				mHGridView.setHorizontalFadingEdgeEnabled(true);
+				mHGridView.setFadingEdgeLength(144);
+				int rows = mHGridView.getRows();
+				int totalColumnsOfSectionX = (int) FloatMath.ceil((float)mHGridAdapter.getSectionCount(mCurrentSectionPosition) / (float)rows);
 				mScrollableSectionList.setPercentage(mCurrentSectionPosition, (int)(1f/(float)totalColumnsOfSectionX*100f));
-				mItemListScrollView.jumpToSection(mCurrentSectionPosition);
 			} else {
 				no_video();
 			}
@@ -241,9 +244,6 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 
 	@Override
 	public void onResume() {
-		if(mItemListScrollView != null) {
-			mItemListScrollView.setPause(false);
-		}
 		((ChannelListActivity)getActivity()).registerOnMenuToggleListener(this);
 		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_HISTORY_IN);
 		super.onResume();
@@ -251,8 +251,8 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 
 	@Override
 	public void onPause() {
-		if(mItemListScrollView != null) {
-			mItemListScrollView.setPause(true);
+		if(mHGridAdapter!=null) {
+			mHGridAdapter.cancel();
 		}
 		((ChannelListActivity)getActivity()).unregisterOnMenuToggleListener();
 		HashMap<String, Object> properties = mDataCollectionProperties;
@@ -263,15 +263,7 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 	
 	@Override
 	public void onSectionSelectChanged(int index) {
-		Section section = mSectionList.get(index);
-		if(section.slug.equals("today")) {
-			mItemListScrollView.updateSection(mTodayItemList, index);
-		} else if(section.slug.equals("yesterday")) {
-			mItemListScrollView.updateSection(mYesterdayItemList, index);
-		} else if(section.slug.equals("early")) {
-			mItemListScrollView.updateSection(mEarlyItemList, index);
-		}
-		mItemListScrollView.jumpToSection(index);
+		mHGridView.jumpToSection(index);
 	}
 	
 	class GetItemTask extends AsyncTask<Item, Void, Integer> {
@@ -316,9 +308,8 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 			} else if(result == NETWORK_EXCEPTION) {
 				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new GetItemTask(), new Item[]{item});
 			} else {
-				final HistoryManager historyManager = mHistoryManager;
 				String url = SimpleRestClient.sRoot_url + "/api/item/" + item.pk + "/";
-				History history = historyManager.getHistoryByUrl(url);
+				History history = DaisyUtils.getHistoryManager(getActivity()).getHistoryByUrl(url);
 				// Use to data collection.
 				mDataCollectionProperties = new HashMap<String, Object>();
 				int id = SimpleRestClient.getItemId(url, new boolean[1]);
@@ -356,33 +347,11 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 		
 	}
 	
-	@Override
-	public void onItemClicked(Item item) {
-		new GetItemTask().execute(item);
-	}
-	
-	@Override
-	public void onColumnChanged(int position, int column, int totalColumn) {
-		int percentage = (int)((float)(column+1)/(float)totalColumn*100f);
-		mScrollableSectionList.setPercentage(position, percentage);
-	}
-	@Override
-	public void onPrepareNeeded(int position) {
-		Section section = mSectionList.get(position);
-		if(section.slug.equals("today")) {
-			mItemListScrollView.updateSection(mTodayItemList, position);
-		} else if(section.slug.equals("yesterday")) {
-			mItemListScrollView.updateSection(mYesterdayItemList, position);
-		} else if(section.slug.equals("early")) {
-			mItemListScrollView.updateSection(mEarlyItemList, position);
-		}
-	}
-	
 	private void no_video() {
 		mNoVideoContainer.setVisibility(View.VISIBLE);
 		mNoVideoContainer.setBackgroundResource(R.drawable.history_no_video);
 		mScrollableSectionList.setVisibility(View.GONE);
-		mItemListScrollView.setVisibility(View.GONE);
+		mHGridView.setVisibility(View.GONE);
 	}
 	
 	private void showDialog(final int dialogType, final AsyncTask task, final Object[] params) {
@@ -394,7 +363,7 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 				if(dialogType==AlertDialogFragment.NETWORK_EXCEPTION_DIALOG && !isInGetItemTask) {
 					task.execute(params);
 				} else if (!isInGetHistoryTask) {
-					mHistoryManager.deleteHistory((String)params[0]);
+					DaisyUtils.getHistoryManager(getActivity()).deleteHistory((String)params[0]);
 					reset();
 				}
 				dialog.dismiss();
@@ -411,7 +380,6 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 	}
 	
 	private void reset() {
-		mItemListScrollView.reset();
 		mScrollableSectionList.reset();
 		mSectionList = new SectionList();
 		initHistoryList();
@@ -443,25 +411,18 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 	public void onMenuItemClicked(MenuItem item) {
 		switch(item.id) {
 		case 1:
-			if(mItemListScrollView!=null && mItemListScrollView.mCurrentSelectedView!=null) {
-				if(mItemListScrollView.mCurrentSelectedView.hasFocus()) {
-					Item selectedItem = null;
-					TextView titleView = (TextView) mItemListScrollView.mCurrentSelectedView.findViewById(R.id.list_item_title);
-					Object obj = titleView.getTag();
-					if(obj!=null) {
-						selectedItem = (Item) obj;
-						if(!isInGetHistoryTask && selectedItem.url!=null) {
-							mHistoryManager.deleteHistory(selectedItem.url);
-							reset();
-						}
-					}
+			if(mHGridAdapter!=null && mSelectedPosition!=INVALID_POSITION) {
+				Item selectedItem = mHGridAdapter.getItem(mSelectedPosition);
+				if(!isInGetHistoryTask && selectedItem.url!=null) {
+					DaisyUtils.getHistoryManager(getActivity()).deleteHistory(selectedItem.url);
+					reset();
 				}
 			}
 			break;
 		case 2:
-			if(mItemListScrollView!=null) {
+			if(mHGridAdapter!=null) {
 				if(!isInGetHistoryTask) {
-					mHistoryManager.deleteAll();
+					DaisyUtils.getHistoryManager(getActivity()).deleteAll();
 					reset();
 				}
 			}
@@ -478,17 +439,39 @@ public class HistoryFragment extends Fragment implements OnSectionPrepareListene
 			mGetHistoryTask.cancel(true);
 		}
 		mLoadingDialog = null;
-//		mHistoryManager = null;
-		mSectionList = null;
-		mTodayItemList = null;
-		mYesterdayItemList = null;
-		mEarlyItemList = null;
-		mItemListScrollView.clean();
-		mItemListScrollView = null;
-		mScrollableSectionList = null;
 		mRestClient = null;
 		mMenuFragment = null;
 		super.onDetach();
+	}
+
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int position,
+			long id) {
+		mSelectedPosition = position;
+		// When selected column has changed, we need to update the ScrollableSectionList
+		int sectionIndex = mHGridAdapter.getSectionIndex(position);
+		int rows = mHGridView.getRows();
+		int itemCount = 0;
+		for(int i=0; i < sectionIndex; i++) {
+			itemCount += mHGridAdapter.getSectionCount(i);
+			
+		}
+		int columnOfX = (position - itemCount) / rows + 1;
+		int totalColumnOfSectionX = (int)(FloatMath.ceil((float)mHGridAdapter.getSectionCount(sectionIndex) / (float) rows)); 
+		int percentage = (int) ((float)columnOfX / (float)totalColumnOfSectionX * 100f);
+		mScrollableSectionList.setPercentage(sectionIndex, percentage);
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> parent) {
+		mSelectedPosition = INVALID_POSITION;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		Item item = mHGridAdapter.getItem(position);
+		new GetItemTask().execute(item);
 	}
 	
 }
