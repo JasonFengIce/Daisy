@@ -3,14 +3,10 @@ package tv.ismar.daisy.player;
 import java.util.HashMap;
 
 import tv.ismar.daisy.core.NetworkUtils;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.os.Handler;
 
 public class CallaPlay {
 
-//	private  CallaSender csender = CallaSender.getInstance();
-	private Handler mHandler = new Handler(); 
 	private HashMap<String,Object> properties =  new HashMap<String,Object>();
 	private String eventName="";
 	/**
