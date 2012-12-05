@@ -1,6 +1,7 @@
 package tv.ismar.daisy;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,6 +9,7 @@ import java.util.regex.Pattern;
 import tv.ismar.daisy.adapter.ImageCacheAdapter;
 import tv.ismar.daisy.core.ConnectionHelper;
 import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SearchMovieService;
 import tv.ismar.daisy.core.SearchPromptDialog;
 import tv.ismar.daisy.core.SortMovieUtils;
@@ -83,6 +85,9 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	SearchMovieService searchService = SearchMovieService.getInstance();
 	// 分组后的List
 	List<List<MovieBean>> groupList = new ArrayList<List<MovieBean>>();
+	//日志上报
+	HashMap<String, Object> hashLog = new HashMap<String, Object>();
+	
 	// 自定义的Dialog
 	private LoadingDialog loadDialog;
 	private SearchPromptDialog customDialog;
@@ -242,6 +247,9 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
+						hashLog.put("q",autoCompleteTextView.getText().toString());
+						NetworkUtils.LogSender(NetworkUtils.VIDEO_SEARCH, hashLog);
+						hashLog.clear();
 						movieList = searchService.getSearchResult(autoCompleteTextView.getText().toString());
 						mHandler.sendEmptyMessage(UPDATE_ADAPTER);
 					}
@@ -309,6 +317,9 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 								@Override
 								public void run() {
 									try {
+										hashLog.put("q",btnHotWords.getText().toString());
+										NetworkUtils.LogSender(NetworkUtils.VIDEO_SEARCH, hashLog);
+										hashLog.clear();
 										movieList = searchService.getSearchResult(btnHotWords.getText().toString());
 										mHandler.obtainMessage(SEARCH_WORDS, btnHotWords.getText().toString()).sendToTarget();
 									} catch (Exception e) {
@@ -390,6 +401,17 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long positions) {
 		Intent intent = new Intent();
 		Bundle bundle = new Bundle();
+		hashLog.put("content_type", movieList.get(position).content_model);
+		hashLog.put("q", autoCompleteTextView.getText().toString());
+		hashLog.put("item", movieList.get(position).item_pk);
+		hashLog.put("title", movieList.get(position).title);
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				NetworkUtils.LogSender(NetworkUtils.VIDEO_SEARCH_ARRIVE, hashLog);	
+				hashLog.clear();
+			}
+		}){}.start();
 		if (movieList.get(position).is_complex) {
 			bundle.putString("url", movieList.get(position).url);
 			intent.setAction("tv.ismar.daisy.Item");
