@@ -167,7 +167,9 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		// Data collection.
 		mDataCollectionProperties.put("item", mItem.pk);
 		mDataCollectionProperties.put("title", mItem.title);
-		mDataCollectionProperties.put("clip", mItem.clip.pk);
+		if(mItem.clip!=null) {
+			mDataCollectionProperties.put("clip", mItem.clip.pk);
+		}
 		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_RELATE_IN, mDataCollectionProperties);
 		
 		initSectionTabs();

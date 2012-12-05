@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
 import org.sakuratya.horizontal.ui.HGridView;
@@ -68,6 +69,8 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 	private boolean isInGetItemTask;
 	
 	private GetHistoryTask mGetHistoryTask;
+	
+	private ConcurrentHashMap<String, HistoryFragment.GetItemTask> mCurrentGetItemTask = new ConcurrentHashMap<String, HistoryFragment.GetItemTask>();
 	
 	private MenuFragment mMenuFragment;
 	
@@ -254,6 +257,11 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		if(mHGridAdapter!=null) {
 			mHGridAdapter.cancel();
 		}
+		ConcurrentHashMap<String, HistoryFragment.GetItemTask> currentGetItemTask = mCurrentGetItemTask;
+		for(String url: currentGetItemTask.keySet()) {
+			currentGetItemTask.get(url).cancel(true);
+		}
+		
 		((ChannelListActivity)getActivity()).unregisterOnMenuToggleListener();
 		HashMap<String, Object> properties = mDataCollectionProperties;
 		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_HISTORY_OUT, properties);
@@ -271,6 +279,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		private static final int ITEM_OFFLINE = 0;
 		private static final int ITEM_SUCCESS_GET = 1;
 		private static final int NETWORK_EXCEPTION = 2;
+		private static final int TASK_CANCELLED = 3;
 
 		private Item item;
 		
@@ -281,10 +290,18 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 			}
 			isInGetItemTask = true;
 		}
+		
+
+		@Override
+		protected void onCancelled() {
+			mCurrentGetItemTask.remove(item.url);
+		}
+
 
 		@Override
 		protected Integer doInBackground(Item... params) {
 			item = params[0];
+			mCurrentGetItemTask.put(item.url, this);
 			Item i;
 			try {
 				i = mRestClient.getItem(item.url);
@@ -292,11 +309,13 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 				e.printStackTrace();
 				return ITEM_OFFLINE;
 			}
-			if(i==null) {
+			if(i==null && !isCancelled()) {
 				return NETWORK_EXCEPTION;
-			} else {
+			} else if(!isCancelled()) {
 				item = i;
 				return ITEM_SUCCESS_GET;
+			} else {
+				return TASK_CANCELLED;
 			}
 			
 		}
@@ -307,7 +326,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 				showDialog(AlertDialogFragment.ITEM_OFFLINE_DIALOG, null, new Object[]{item.url});
 			} else if(result == NETWORK_EXCEPTION) {
 				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new GetItemTask(), new Item[]{item});
-			} else {
+			} else if(result == ITEM_SUCCESS_GET){
 				String url = SimpleRestClient.sRoot_url + "/api/item/" + item.pk + "/";
 				History history = DaisyUtils.getHistoryManager(getActivity()).getHistoryByUrl(url);
 				// Use to data collection.

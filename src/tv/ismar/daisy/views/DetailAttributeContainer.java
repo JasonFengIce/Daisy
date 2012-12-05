@@ -31,6 +31,8 @@ public class DetailAttributeContainer extends LinearLayout {
 	private boolean hasAdjustSpaceItem = true;
 	
 //	private boolean hasAdjustSpaceTitle = true;
+	
+	private int mTotalHeight;
 
 	public DetailAttributeContainer(Context context, AttributeSet attrs,
 			int defStyle) {
@@ -147,5 +149,27 @@ public class DetailAttributeContainer extends LinearLayout {
 		return content.getLineCount();
 	}
 
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		
+		int count = getChildCount();
+		mTotalHeight = 0;
+		if(count > 0) {
+			for(int i=0; i < count; i++) {
+				View child = getChildAt(i);
+				measureChildWithMargins(child, widthMeasureSpec, 0, heightMeasureSpec, 0);
+				int childHeight = child.getMeasuredHeight();
+				Log.d(TAG, "childHeight: "+childHeight);
+				mTotalHeight += childHeight;
+			}
+		}
+		if(mTotalHeight>mMaxHeight && mMaxHeight >0) {
+			
+		}
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+	}
+	
+	
+	
 	
 }
