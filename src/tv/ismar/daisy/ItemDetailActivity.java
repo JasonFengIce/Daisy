@@ -353,7 +353,6 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 				}
 			}
 			mDetailAttributeContainer.addAttribute(attributeMap, mContentModel);
-			mDetailAttributeContainer.setMaxHeight(478);
 		}
 		//Set the content to Introduction View
 		mDetailIntro.setText(mItem.description);
