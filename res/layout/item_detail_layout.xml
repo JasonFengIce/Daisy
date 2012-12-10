@@ -18,7 +18,7 @@
             android:src="@drawable/vod_watermark" />
         <TextView
             android:id="@+id/detail_title"
-            android:layout_width="wrap_content"
+            android:layout_width="521dip"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
@@ -32,10 +32,10 @@
         <tv.ismar.daisy.views.DetailAttributeContainer
             android:layout_width="521dip"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_below="@id/detail_title"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="80dip"
-            android:layout_marginTop="240dip"
+            android:layout_marginTop="18dip"
             android:orientation="vertical"
             android:id="@+id/detail_attribute_container">
 

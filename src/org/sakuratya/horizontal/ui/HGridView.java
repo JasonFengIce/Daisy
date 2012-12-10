@@ -341,6 +341,40 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		offsetChildrenLeftAndRight(-delta);
 	}
 	
+	private void correctTooLeft(int childCount) {
+		// First see if the last item is visible
+		final int lastPosition = mFirstPosition + childCount - 1;
+		if(lastPosition == mAdapter.getCount() - 1 && childCount > 0) {
+			// Get the last child...
+			final View lastChild = getChildAt(childCount - 1);
+			// and its right edge.
+			final int lastRight = lastChild.getRight();
+			// get the right end of our draw area.
+			final int end = getRight() - getLeft() - mListPadding.right;
+			
+			int rightOffset = end - lastRight;
+			
+			final View firstChild = getChildAt(0);
+			final int firstLeft = firstChild.getLeft();
+			// Make sure we are 1) Too right, and 2) Either there are more columns before the
+            // first column or the first column is scrolled off the top of the drawable area
+			if(rightOffset > 0 && (mFirstPosition > 0 || firstLeft < mListPadding.left)) {
+				// don't pull the first too left.
+				rightOffset = Math.min(rightOffset, mListPadding.left - firstLeft);
+				
+				// Move everything right
+				offsetChildrenLeftAndRight(rightOffset);
+				int firstCol = getColumn(mFirstPosition);
+				if(firstCol - 1 >= 0) {
+					// Fill columns that was opened before the mFirstPosition with more columns if possible.
+					fillLeft(firstCol - 1, firstChild.getLeft() - mHorizontalSpacing);
+					adjustViewLeftAndRight();
+				}
+			}
+		}
+		
+	}
+	
 	private void pinToRight(int childrenRight) {
 		final int count = getChildCount();
 		if(mFirstPosition + count == mAdapter.getCount() - 1) {
@@ -372,7 +406,11 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		before = fillLeft(motionCol - 1, referenceView.getLeft() - horizontalSpacing);
 		adjustViewLeftAndRight();
 		after = fillRight(motionCol + 1, referenceView.getRight() + horizontalSpacing);
-		
+		// Check if we have dragged the right end of the grid too left. 
+		final int childCount = getChildCount();
+		if(childCount > 0) {
+			correctTooLeft(childCount);
+		}
 		if(temp != null) {
 			return temp;
 		} else if( before != null) {
@@ -769,6 +807,8 @@ public class HGridView extends AdapterView<HGridAdapter> {
 			boolean needToScroll = false;
 			int delta = 0;
 			switch(mLayoutMode) {
+			case LAYOUT_SPECIFIC:
+				break;
 			case LAYOUT_JUMP:
 				index = mNextSelectedPosition - mFirstPosition;
 				if(index >= 0 && index < childCount) {
@@ -825,14 +865,17 @@ public class HGridView extends AdapterView<HGridAdapter> {
 			detachAllViewsFromParent();
 			
 			switch(mLayoutMode) {
+			case LAYOUT_SPECIFIC:
+				sel = fillSpecific(mSelectedPosition, mSpecificLeft);
+				break;
 			case LAYOUT_SYNC:
 				sel = fillSpecific(mSyncPosition, mSpecificLeft);
 				break;
 			case LAYOUT_JUMP:
 				if(needToScroll) {
-					fillFromSelection(newSel.getLeft(), childrenLeft, childrenRight);
+					sel = fillFromSelection(newSel.getLeft(), childrenLeft, childrenRight);
 				} else {
-					fillSelection(childrenLeft, childrenRight);
+					sel = fillSelection(childrenLeft, childrenRight);
 				}
 				break;
 			case LAYOUT_SET_SELECTION:
@@ -972,9 +1015,14 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	}
 	
 	private boolean commonKey(int keyCode, int repeatCount, KeyEvent event) {
+		if(mAdapter == null) {
+			return false;
+		}
+		
 		if(mDataChanged) {
 			layoutChildren();
 		}
+		Log.d(TAG, "KeyCode: "+keyCode);
 		final int action = event.getAction();
 		boolean handled = false;
 		if(action!=KeyEvent.ACTION_UP) {
@@ -1009,13 +1057,23 @@ public class HGridView extends AdapterView<HGridAdapter> {
 					keyPressed();
 				}
 				break;
+			case KeyEvent.KEYCODE_PAGE_UP:
+				if(getChildCount() > 0 && mSelectedPosition != INVALID_POSITION) {
+					handled = pageScroll(FOCUS_LEFT);
+				}
+				break;
+			case KeyEvent.KEYCODE_PAGE_DOWN:
+				if(getChildCount() > 0 && mSelectedPosition != INVALID_POSITION) {
+					handled = pageScroll(FOCUS_RIGHT);
+				}
+				break;
 			}
 			
 		}
-		if((keyCode == KeyEvent.KEYCODE_DPAD_LEFT || keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) && action == KeyEvent.ACTION_DOWN) {
+		if((keyCode == KeyEvent.KEYCODE_DPAD_LEFT || keyCode == KeyEvent.KEYCODE_DPAD_RIGHT || keyCode == KeyEvent.KEYCODE_PAGE_DOWN || keyCode == KeyEvent.KEYCODE_PAGE_UP) && action == KeyEvent.ACTION_DOWN) {
 			checkScrollState(OnScrollListener.SCROLL_STATE_FOCUS_MOVING);
 		}
-		if((keyCode == KeyEvent.KEYCODE_DPAD_LEFT || keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) && action == KeyEvent.ACTION_UP) {
+		if((keyCode == KeyEvent.KEYCODE_DPAD_LEFT || keyCode == KeyEvent.KEYCODE_DPAD_RIGHT || keyCode == KeyEvent.KEYCODE_PAGE_DOWN || keyCode == KeyEvent.KEYCODE_PAGE_UP) && action == KeyEvent.ACTION_UP) {
 			checkScrollState(OnScrollListener.SCROLL_STATE_IDLE);
 		}
 		
@@ -2038,5 +2096,50 @@ public class HGridView extends AdapterView<HGridAdapter> {
 			}
 			mScrollState = newState;
 		}
+	}
+	
+	public boolean pageScroll(int direction) {
+		int count = getChildCount();
+		int nextPage = -1;
+		int rightEdge = getRight() - mListPadding.right;
+		int leftEdge = mListPadding.left;
+		int currentCol = getColumn(mSelectedPosition);
+		int currentRow = getRow(mSelectedPosition);
+		if(direction == FOCUS_LEFT) {
+			int lastVisiblePosition = mFirstPosition + count - 1;
+			for(int i = count - 1; i >=0 ; i--) {
+				View v = getChildAt(i);
+				if(v.getRight() < rightEdge) {
+					lastVisiblePosition = mFirstPosition + i;
+					break;
+				}
+			}
+			int cols = getColumn(lastVisiblePosition) - getColumn(mFirstPosition);
+			int nextCol = Math.max(0, currentCol - cols);
+			int[] positionRange = getPositionRangeByColumn(nextCol);
+			nextPage = Math.min(positionRange[0] + currentRow, positionRange[1]);
+		} else {
+			int firstVisibilePosition = mFirstPosition;
+			for(int i = 0; i < count; i++) {
+				View v = getChildAt(i);
+				if(v.getLeft() > leftEdge) {
+					firstVisibilePosition += i;
+					break;
+				}
+			}
+			int cols = getColumn(mFirstPosition + count - 1) - getColumn(firstVisibilePosition);
+			int nextCol = Math.min(mMaxColumn, currentCol + cols);
+			int[] positionRange = getPositionRangeByColumn(nextCol);
+			nextPage = Math.min(positionRange[0] + currentRow, positionRange[1]);
+		}
+		if(nextPage >= 0) {
+			View v = getChildAt(mSelectedPosition - mFirstPosition);
+			mSpecificLeft = v.getLeft();
+			setNextSelectedPositionInt(nextPage);
+			mLayoutMode = LAYOUT_SPECIFIC;
+			layoutChildren();
+			return true;
+		}
+		return false;
 	}
 }
