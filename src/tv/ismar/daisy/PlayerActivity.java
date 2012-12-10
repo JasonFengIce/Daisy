@@ -157,7 +157,7 @@ public class PlayerActivity extends Activity {
 		bufferText.setText(BUFFERING);
 		if (mVideoView != null) {
 			mVideoView.setAlpha(0);
-		}
+		}	
 		showBuffer();
 		Log.d(TAG, " initClipInfo ");
 		Intent intent = getIntent();
@@ -297,7 +297,7 @@ public class PlayerActivity extends Activity {
 				urls[3] = urlInfo.getAdaptive();
 				favoriteManager = DaisyUtils.getFavoriteManager(this);
 				historyManager = DaisyUtils.getHistoryManager(this);
-				Quality quality = historyManager.getQuality();
+				Quality quality = historyManager.getQuality();	
 				if (quality != null) {
 					currQuality = quality.quality;
 				} else {
@@ -408,6 +408,13 @@ public class PlayerActivity extends Activity {
 										urls[1] = urlInfo.getMedium();
 										urls[2] = urlInfo.getHigh();
 										urls[3] = urlInfo.getAdaptive();
+										
+										if (subItem != null)
+											callaPlay.videoPlayStart(item.pk, subItem.pk, item.title,
+													clip.pk, currQuality, 0);
+										else
+											callaPlay.videoPlayStart(item.pk, null, item.title,
+													clip.pk, currQuality, 0);
 									}
 								}
 							});
@@ -462,11 +469,9 @@ public class PlayerActivity extends Activity {
 		public void run() {
 			try {
 				if (subItem != null)
-					callaPlay.videoPlayStart(item.pk, subItem.pk, item.title,
-							clip.pk, currQuality, 0);
+					callaPlay.videoStart(item.pk, subItem.pk, subItem.title, clip.pk, currQuality, null, 0);
 				else
-					callaPlay.videoPlayStart(item.pk, null, item.title,
-							clip.pk, currQuality, 0);
+					callaPlay.videoStart(item.pk, null, item.title, clip.pk, currQuality, null, 0);
 				timeTaskStop();
 			} catch (Exception e) {
 				Log.e(TAG, " Sender log videoPlayStart " + e.toString());
