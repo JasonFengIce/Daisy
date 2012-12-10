@@ -11,7 +11,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -87,8 +86,7 @@ public class NetworkUtils {
 		try {
 			
 			String jsonContent = getContentJson(eventName, propertiesMap);
-			jsonContent.replaceAll("-", "+");
-			jsonContent.replaceAll("_", "/");
+			Log.d(TAG,"base64 =="+jsonContent);
 			String url=URL;
 			java.net.URL connURL = new java.net.URL(url);
 			java.net.HttpURLConnection httpConn = (java.net.HttpURLConnection) connURL.openConnection();
@@ -144,7 +142,7 @@ public class NetworkUtils {
 	
 	private static String base64Code(String date){
 		try {
-			return Base64.encodeToString(date.getBytes("UTF-8"),Base64.DEFAULT);
+			return Base64.encodeToString(date.getBytes("UTF-8"),Base64.NO_WRAP|Base64.URL_SAFE);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			return null;
