@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import tv.ismar.daisy.exception.ItemOfflineException;
+import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.Attribute;
 import tv.ismar.daisy.models.ChannelList;
 import tv.ismar.daisy.models.ContentModelList;
@@ -69,6 +71,9 @@ public class SimpleRestClient {
 		} catch (ItemOfflineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (NetworkException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -89,11 +94,14 @@ public class SimpleRestClient {
 		} catch (ItemOfflineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (NetworkException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return null;
 	}
 
-	public SectionList getSectionsByChannel(String channel) {
+	public SectionList getSectionsByChannel(String channel) throws NetworkException {
 		try {
 			String url = root_url + "/api/tv/sections/"+channel+"/";
 			String jsonStr = NetworkUtils.getJsonStr(url);
@@ -109,7 +117,7 @@ public class SimpleRestClient {
 		return null;
 	}
 	
-	public SectionList getSections(String url) {
+	public SectionList getSections(String url) throws NetworkException, ItemOfflineException {
 		try {
 			String jsonStr = NetworkUtils.getJsonStr(url);
 			SectionList list = gson.fromJson(jsonStr, SectionList.class);
@@ -117,14 +125,11 @@ public class SimpleRestClient {
 		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (ItemOfflineException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		return null;
 	}
 
-	public ItemList getItemList(String url) {
+	public ItemList getItemList(String url) throws NetworkException, ItemOfflineException {
 		try {
 			String jsonStr = NetworkUtils.getJsonStr(url);
 			ItemList list = gson.fromJson(jsonStr, ItemList.class);
@@ -132,27 +137,19 @@ public class SimpleRestClient {
 		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (ItemOfflineException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		return null;
 	}
 
-	public Item getItem(String url) throws ItemOfflineException {
-		try {
-			String jsonStr = NetworkUtils.getJsonStr(url);
-			// Log.d("Item is", jsonStr);
+	public Item getItem(String url) throws ItemOfflineException, NetworkException, JsonSyntaxException {
 
-			return gson.fromJson(jsonStr, Item.class);
-		} catch (JsonSyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+		String jsonStr = NetworkUtils.getJsonStr(url);
+		// Log.d("Item is", jsonStr);
+
+		return gson.fromJson(jsonStr, Item.class);
 	}
 
-	public Item[] getRelatedItem(String api) {
+	public Item[] getRelatedItem(String api) throws NetworkException {
 		try {
 			String jsonStr = NetworkUtils.getJsonStr(root_url + api);
 			return gson.fromJson(jsonStr, Item[].class);

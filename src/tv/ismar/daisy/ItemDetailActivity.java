@@ -7,11 +7,14 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.google.gson.JsonSyntaxException;
+
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.ImageUtils;
-import tv.ismar.daisy.core.ItemOfflineException;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.exception.ItemOfflineException;
+import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.Attribute;
 import tv.ismar.daisy.models.Clip;
 import tv.ismar.daisy.models.ContentModel;
@@ -79,12 +82,8 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 
 	private LoadingDialog mLoadingDialog;
 
-	private FavoriteManager mFavoriteManager;
-	
 	private boolean isInitialized = false;
 
-	private HistoryManager mHistoryManager;
-	
 	private History mHistory;
 
 	private ImageView mDetailQualityLabel;
@@ -137,10 +136,6 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 		mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
 		mLoadingDialog.show();
 		
-		mFavoriteManager = DaisyUtils.getFavoriteManager(this);
-		
-		mHistoryManager = DaisyUtils.getHistoryManager(this);
-		
 		initViews();
 		
 		Intent intent = getIntent();
@@ -176,7 +171,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 			} 
 			if(isDrama) {
 				String url = mItem.item_url==null ? mSimpleRestClient.root_url + "/api/item/" + mItem.pk + "/": mItem.item_url;
-				mHistory = mHistoryManager.getHistoryByUrl(url);
+				mHistory = DaisyUtils.getHistoryManager(this).getHistoryByUrl(url);
 			}
 		}
 		for(HashMap.Entry<AsyncImageView, Boolean> entry: mLoadingImageQueue.entrySet()) {
@@ -228,25 +223,43 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 		loadingImageQueue.clear();
 		mLoadingImageQueue = null;
 		mLoadingDialog = null;
-		mFavoriteManager = null;
 		mRelatedItem = null;
 		DaisyUtils.getVodApplication(this).removeActivtyFromPool(this.toString());
 		super.onDestroy();
 	}
 	
 	class GetItemTask extends AsyncTask<String, Void, Void>{
-
+		
+		int id = 0;
+		String url = null;
 		@Override
 		protected Void doInBackground(String... params) {
 			try {
-				mItem = mSimpleRestClient.getItem(params[0]);
-			} catch (Exception e) {
+				url = params[0];
+				id = SimpleRestClient.getItemId(url, new boolean[1]);
+				mItem = mSimpleRestClient.getItem(url);
+			} catch (ItemOfflineException e) {
+				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
+				exceptionProperties.put("code", "nodetail");
+				exceptionProperties.put("content", "no detail error : " + e.getUrl());
+				exceptionProperties.put("item", id);
+				NetworkUtils.LogSender(NetworkUtils.DETAIL_EXCEPT, exceptionProperties);
+				e.printStackTrace();
+			} catch (JsonSyntaxException e) {
+				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
+				exceptionProperties.put("code", "parsejsonerror");
+				exceptionProperties.put("content", e.getMessage() + " : "+url );
+				exceptionProperties.put("item", id);
+				NetworkUtils.LogSender(NetworkUtils.DETAIL_EXCEPT, exceptionProperties);
+				e.printStackTrace();
+			} catch (NetworkException e) {
+				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
+				exceptionProperties.put("code", "networkconnerror");
+				exceptionProperties.put("content", e.getMessage() + " : " + e.getUrl());
+				exceptionProperties.put("item", id);
+				NetworkUtils.LogSender(NetworkUtils.DETAIL_EXCEPT, exceptionProperties);
 				e.printStackTrace();
 			}
-//			if(mItem.subitems!=null && mItem.subitems.length>0 && mItem.subitems[0].item_pk==0){
-//				mItem.subitems[0] = mSimpleRestClient.getItem(mItem.subitems[0].url);
-//				mItem.subitems[0].url = mItem.subitems[0].item_url;
-//			}
 			return null;
 		}
 
@@ -290,7 +303,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 		
 		if(isDrama) {
 			String url = mItem.item_url==null ? SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk + "/": mItem.item_url;
-			mHistory = mHistoryManager.getHistoryByUrl(url);
+			mHistory = DaisyUtils.getHistoryManager(this).getHistoryByUrl(url);
 		}
 		
 		mDetailTitle.setText(mItem.title);
@@ -417,7 +430,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 			if(url==null && mItem.pk != 0) {
 				url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk + "/";
 			}
-			Favorite favorite = mFavoriteManager.getFavoriteByUrl(url);
+			Favorite favorite = DaisyUtils.getFavoriteManager(this).getFavoriteByUrl(url);
 			if(favorite!=null) {
 				return true;
 			}
@@ -613,7 +626,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 				case R.id.btn_favorite:
 					if(isFavorite()) {
 						String url = SimpleRestClient.sRoot_url + "/api/item/"+mItem.pk+"/";
-						mFavoriteManager.deleteFavoriteByUrl(url);
+						DaisyUtils.getFavoriteManager(ItemDetailActivity.this).deleteFavoriteByUrl(url);
 						showToast(getResources().getString(R.string.vod_bookmark_remove_success));
 					} else {
 						String url = SimpleRestClient.sRoot_url + "/api/item/"+mItem.pk+"/";
@@ -624,7 +637,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 						favorite.url = url;
 						favorite.quality = mItem.quality;
 						favorite.is_complex = mItem.is_complex;
-						mFavoriteManager.addFavorite(favorite);
+						DaisyUtils.getFavoriteManager(ItemDetailActivity.this).addFavorite(favorite);
 //					mFavoriteManager.addFavorite(mItem.title, url, mItem.content_model);
 						showToast(getResources().getString(R.string.vod_bookmark_add_success));
 					}
