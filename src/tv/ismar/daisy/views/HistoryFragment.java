@@ -10,13 +10,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
 import org.sakuratya.horizontal.ui.HGridView;
 
+import com.google.gson.JsonSyntaxException;
+
 import tv.ismar.daisy.ChannelListActivity;
 import tv.ismar.daisy.ChannelListActivity.OnMenuToggleListener;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.ItemOfflineException;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.exception.ItemOfflineException;
+import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemCollection;
@@ -308,6 +311,12 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 			} catch (ItemOfflineException e) {
 				e.printStackTrace();
 				return ITEM_OFFLINE;
+			} catch (JsonSyntaxException e) {
+				e.printStackTrace();
+				return NETWORK_EXCEPTION;
+			} catch (NetworkException e) {
+				e.printStackTrace();
+				return NETWORK_EXCEPTION;
 			}
 			if(i==null && !isCancelled()) {
 				return NETWORK_EXCEPTION;
@@ -322,12 +331,16 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 
 		@Override
 		protected void onPostExecute(Integer result) {
+			
 			if(result== ITEM_OFFLINE) {
+				mCurrentGetItemTask.remove(item.url);
 				showDialog(AlertDialogFragment.ITEM_OFFLINE_DIALOG, null, new Object[]{item.url});
 			} else if(result == NETWORK_EXCEPTION) {
+				mCurrentGetItemTask.remove(item.url);
 				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new GetItemTask(), new Item[]{item});
 			} else if(result == ITEM_SUCCESS_GET){
 				String url = SimpleRestClient.sRoot_url + "/api/item/" + item.pk + "/";
+				mCurrentGetItemTask.remove(url);
 				History history = DaisyUtils.getHistoryManager(getActivity()).getHistoryByUrl(url);
 				// Use to data collection.
 				mDataCollectionProperties = new HashMap<String, Object>();

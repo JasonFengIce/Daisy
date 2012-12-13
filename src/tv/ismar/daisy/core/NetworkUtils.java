@@ -2,6 +2,7 @@ package tv.ismar.daisy.core;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -17,6 +18,9 @@ import java.util.Set;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tv.ismar.daisy.exception.ItemOfflineException;
+import tv.ismar.daisy.exception.NetworkException;
+
 import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
@@ -28,7 +32,7 @@ public class NetworkUtils {
 	
 	private static final String URL = "http://127.0.0.1:21098/log/track/";
 	
-	public static String getJsonStr(String target) throws ItemOfflineException {
+	public static String getJsonStr(String target) throws ItemOfflineException, NetworkException {
 		String urlStr = target;
 		try {
 			URL url = new URL(urlStr);
@@ -36,9 +40,15 @@ public class NetworkUtils {
 			StringBuffer sb = new StringBuffer();
 //			conn.addRequestProperty("User-Agent", UA);
 //			conn.addRequestProperty("Accept", "application/json");
-			if(conn.getResponseCode()==404) {
-				throw new ItemOfflineException();
+			int resCode = conn.getResponseCode();
+			switch(resCode) {
+			case 404:
+				throw new ItemOfflineException(urlStr);
+			case 599:
+				throw new NetworkException(urlStr);
 			}
+				
+			
 			InputStream in = conn.getInputStream();
 			BufferedReader buff = new BufferedReader(new InputStreamReader(in));
 			String line = null;
@@ -48,11 +58,12 @@ public class NetworkUtils {
 			buff.close();
 			conn.disconnect();
 			return sb.toString();
-		} catch (Exception e) {
+		} catch(Exception e) {
 			if(e instanceof ItemOfflineException) {
-				throw (ItemOfflineException) e;
+				throw (ItemOfflineException)e;
+			} else if(e instanceof NetworkException) {
+				throw (NetworkException)e;
 			}
-			e.printStackTrace();
 		}
 		return null;
 	}

@@ -14,6 +14,8 @@ import org.sakuratya.horizontal.ui.HGridView.OnScrollListener;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.exception.ItemOfflineException;
+import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemCollection;
 import tv.ismar.daisy.models.ItemList;
@@ -56,7 +58,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 	
 	private TextView mChannelLabel;
 	
-	private int mCurrentSectionPosition = 0;
+	private int mCurrentSectionIndex = -1;
 	
 	public String mTitle;
 	
@@ -73,6 +75,8 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 	private ConcurrentHashMap<Integer, GetItemListTask> mCurrentLoadingTask = new ConcurrentHashMap<Integer, ChannelFragment.GetItemListTask>();
 	
 	private boolean mIsBusy = false;
+	
+	private HashMap<String, Object> mSectionProperties = new HashMap<String, Object>();
 	
 	private void initViews(View fragmentView) {
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
@@ -119,6 +123,11 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		
 		String url;
 		String channel;
+		int nextSection = 0;
+		
+		private final static int RESULT_NETWORKEXCEPTION = -1;
+		private final static int RESUTL_CANCELED = -2;
+		private final static int RESULT_SUCCESS = 0;
 
 		@Override
 		protected void onPreExecute() {
@@ -138,7 +147,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 					mSectionList = mRestClient.getSectionsByChannel(channel);
 					for(int i=0; i<mSectionList.size() && !isCancelled(); i++) {
 						if(NetworkUtils.urlEquals(url, mSectionList.get(i).url)) {
-							mCurrentSectionPosition = i;
+							nextSection = i;
 							break;
 						}
 					}
@@ -156,14 +165,13 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 					}
 				}
 				if(isCancelled()) {
-					return -1;
+					return RESUTL_CANCELED;
 				} else {
-					return 0;
+					return RESULT_SUCCESS;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-
-				return -1;
+				return RESULT_NETWORKEXCEPTION;
 			}
 		}
 
@@ -173,7 +181,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 				mLoadingDialog.dismiss();
 			}
 			isInitTaskLoading = false;
-			if(result==-1) {
+			if(result!=RESULT_SUCCESS) {
 				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, (mInitTask = new InitTask()), new String[]{url, channel});
 				return;
 			}
@@ -185,8 +193,9 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 				mHGridView.setHorizontalFadingEdgeEnabled(true);
 				mHGridView.setFadingEdgeLength(144);
 				int num_rows = mHGridView.getRows();
-				int totalColumnsOfSectionX = (int) FloatMath.ceil((float)mItemCollections.get(mCurrentSectionPosition).count / (float) num_rows);
-				mScrollableSectionList.setPercentage(mCurrentSectionPosition, (int)(1f/(float)totalColumnsOfSectionX*100f));
+				int totalColumnsOfSectionX = (int) FloatMath.ceil((float)mItemCollections.get(nextSection).count / (float) num_rows);
+				mScrollableSectionList.setPercentage(nextSection, (int)(1f/(float)totalColumnsOfSectionX*100f));
+				checkSectionChanged(nextSection);
 			} else {
 				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, (mInitTask = new InitTask()), new String[]{url, channel});
 			}
@@ -199,6 +208,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 	class GetItemListTask extends AsyncTask<Object, Void, ItemList> {
 		
 		private Integer index;
+		private String slug;
 
 		@Override
 		protected void onCancelled() {
@@ -217,6 +227,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 				// page in api must start at 1.
 				int page = sectionAndPage[1] + 1;
 				Section section = mSectionList.get(sectionIndex);
+				slug = section.slug;
 				String url = section.url + page +"/";
 				ItemList itemList = mRestClient.getItemList(url);
 				if(isCancelled()) {
@@ -225,6 +236,19 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 					return itemList;
 				}
 			} catch (Exception e) {
+				if(e instanceof ItemOfflineException) {
+					HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
+					exceptionProperties.put("code", "nocategory");
+					exceptionProperties.put("content", "get category error : "+((ItemOfflineException) e).getUrl());
+					exceptionProperties.put("section", slug);
+					NetworkUtils.LogSender(NetworkUtils.CATEGORY_EXCEPT, exceptionProperties);
+				} else if(e instanceof NetworkException) {
+					HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
+					exceptionProperties.put("code", "networkconnerror");
+					exceptionProperties.put("content", "network connect error : " + ((ItemOfflineException) e).getUrl());
+					exceptionProperties.put("section", slug);
+					NetworkUtils.LogSender(NetworkUtils.CATEGORY_EXCEPT, exceptionProperties);
+				}
 				e.printStackTrace();
 				return null;
 			}
@@ -250,6 +274,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		
 		@Override
 		public void onSectionSelectChanged(int index) {
+			checkSectionChanged(index);
 			mHGridView.jumpToSection(index);
 		}
 	};
@@ -278,6 +303,13 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		for(Integer index:currentLoadingTask.keySet()) {
 			currentLoadingTask.get(index).cancel(true);
 		}
+		
+		final HashMap<String, Object> properties = new HashMap<String, Object>();
+		properties.putAll(mSectionProperties);
+		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_CATEGORY_OUT, properties);
+		mSectionProperties.remove("to_item");
+		mSectionProperties.remove("to_title");
+		mSectionProperties.remove("position");
 		super.onPause();
 	}
 
@@ -424,6 +456,9 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 			long id) {
 		Item item = mHGridAdapter.getItem(position);
 		if(item!=null) {
+			mSectionProperties.put("to_item", item.pk);
+			mSectionProperties.put("to_title", item.title);
+			mSectionProperties.put("position", position);
 			Intent intent = new Intent();
 			if(item.is_complex) {
 				intent.setAction("tv.ismar.daisy.Item");
@@ -452,6 +487,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		int totalColumnOfSectionX = (int)(FloatMath.ceil((float)mHGridAdapter.getSectionCount(sectionIndex) / (float) rows)); 
 		int percentage = (int) ((float)columnOfX / (float)totalColumnOfSectionX * 100f);
 		mScrollableSectionList.setPercentage(sectionIndex, percentage);
+		checkSectionChanged(sectionIndex);
 	}
 
 	@Override
@@ -471,4 +507,20 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		return sectionAndPage;
 	}
 	
+	private void checkSectionChanged(int newSectionIndex) {
+		if(newSectionIndex != mCurrentSectionIndex && newSectionIndex >= 0) {
+			Section newSection = mSectionList.get(newSectionIndex);
+			mSectionProperties.put("section", newSection.slug);
+			mSectionProperties.put("title", newSection.title);
+			new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_CATEGORY_IN, mSectionProperties);
+			if(mCurrentSectionIndex >=0 ){
+				Section oldSection = mSectionList.get(mCurrentSectionIndex);
+				HashMap<String, Object> sectionProperties = new HashMap<String, Object>();
+				sectionProperties.put("section", oldSection.slug);
+				sectionProperties.put("title", oldSection.title);
+				new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_CATEGORY_OUT, sectionProperties);
+			}
+			mCurrentSectionIndex = newSectionIndex;
+		}
+	}
 }

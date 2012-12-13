@@ -3,6 +3,7 @@ package tv.ismar.daisy;
 import tv.ismar.daisy.adapter.PlayFinishedAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
@@ -102,7 +103,11 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 	private Runnable mRelatedTask = new Runnable() {
 		@Override
 		public void run() {
-			items = simpleRest.getRelatedItem("/api/tv/relate/" + item.item_pk);
+			try {
+				items = simpleRest.getRelatedItem("/api/tv/relate/" + item.item_pk);
+			} catch (NetworkException e) {
+				e.printStackTrace();
+			}
 			if (items == null || items.length == 0) {
 				mHandle.sendEmptyMessage(NETWORK_EXCEPTION);
 			} else {

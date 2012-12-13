@@ -3,16 +3,22 @@ package tv.ismar.daisy.views;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
 import org.sakuratya.horizontal.ui.HGridView;
+
+import com.google.gson.JsonSyntaxException;
+
 import tv.ismar.daisy.ChannelListActivity.OnMenuToggleListener;
 import tv.ismar.daisy.ChannelListActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.ItemOfflineException;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.exception.ItemOfflineException;
+import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.ContentModel;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.Item;
@@ -72,6 +78,8 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	private HashMap<String, Object> mDataCollectionProperties;
 	
 	public final static String MENU_TAG = "FavoriteMenu";
+	
+	private ConcurrentHashMap<String, FavoriteFragment.GetItemTask> mCurrentGetItemTask = new ConcurrentHashMap<String, FavoriteFragment.GetItemTask>();
 	
 	private void initViews(View fragmentView) {
 		
@@ -208,14 +216,26 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		}
 		
 		@Override
+		protected void onCancelled() {
+			mCurrentGetItemTask.remove(item.url);
+		}
+
+		@Override
 		protected Integer doInBackground(Item... params) {
 			item = params[0];
+			mCurrentGetItemTask.put(item.url, this);
 			Item i;
 			try {
 				i = mRestClient.getItem(item.url);
 			} catch (ItemOfflineException e) {
 				e.printStackTrace();
 				return ITEM_OFFLINE;
+			} catch (JsonSyntaxException e) {
+				e.printStackTrace();
+				return NETWORK_EXCEPTION;
+			} catch (NetworkException e) {
+				e.printStackTrace();
+				return NETWORK_EXCEPTION;
 			}
 			if(i==null) {
 				return NETWORK_EXCEPTION;
@@ -227,6 +247,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 
 		@Override
 		protected void onPostExecute(Integer result) {
+			mCurrentGetItemTask.remove(item.url);
 			if(result== ITEM_OFFLINE) {
 				showDialog(AlertDialogFragment.ITEM_OFFLINE_DIALOG, null, new Object[]{item.url});
 			} else if(result == NETWORK_EXCEPTION) {
@@ -277,6 +298,12 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		if(mHGridAdapter!=null) {
 			mHGridAdapter.cancel();
 		}
+		
+		ConcurrentHashMap<String, FavoriteFragment.GetItemTask> currentGetItemTask = mCurrentGetItemTask;
+		for(String url: currentGetItemTask.keySet()) {
+			currentGetItemTask.get(url).cancel(true);
+		}
+		
 		((ChannelListActivity)getActivity()).unregisterOnMenuToggleListener();
 		HashMap<String, Object> properties = mDataCollectionProperties;
 		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_COLLECT_OUT, properties);
