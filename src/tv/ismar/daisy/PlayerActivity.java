@@ -179,7 +179,7 @@ public class PlayerActivity extends Activity {
 			if (result != null) {
 				initPlayer();
 			} else {
-				ExToClosePlayer("url");
+				//ExToClosePlayer("url"," m3u8 quality is null ,or get m3u8 err");
 			}
 		}
 
@@ -254,6 +254,7 @@ public class PlayerActivity extends Activity {
 				}
 			} catch (Exception e) {
 				Log.e(TAG, e.toString());
+				ExToClosePlayer("url","m3u8 quality is null ,or get m3u8 err /n"+e.toString());
 				return null;
 			}
 			return urlInfo;
@@ -426,7 +427,7 @@ public class PlayerActivity extends Activity {
 									Log.d(TAG,
 											"mVideoView  Error setVideoPath urls[currQuality] ");
 									addHistory(currPosition);
-									ExToClosePlayer("error");
+									ExToClosePlayer("error",what+" "+extra);
 									return false;
 								}
 							});
@@ -445,11 +446,11 @@ public class PlayerActivity extends Activity {
 				}
 
 			} else {
-				ExToClosePlayer("url");
+				ExToClosePlayer("url","m3u8 content error ,");
 			}
 		} catch (Exception e) {
 			Log.e(TAG, e.toString());
-			ExToClosePlayer("url");
+			ExToClosePlayer("url",e.toString());
 		}
 	}
 
@@ -503,18 +504,17 @@ public class PlayerActivity extends Activity {
 		}
 	};
 
-	private void ExToClosePlayer(String content) {
+	private void ExToClosePlayer(String code ,String content) {
 		if (bufferText != null) {
 			bufferText.setText(EXTOCLOSE);
-			if (content == "url") {
+			if (code == "url") {
 				try {
 					if (subItem != null)
-						callaPlay
-								.videoExcept("noplayaddress", item.pk,
+						callaPlay.videoExcept("noplayaddress",content, item.pk,
 										subItem.pk, item.title, clip.pk,
 										currQuality, 0);
 					else
-						callaPlay.videoExcept("noplayaddress", item.pk, null,
+						callaPlay.videoExcept("noplayaddress",content, item.pk, null,
 								item.title, clip.pk, currQuality, 0);
 				} catch (Exception e) {
 					Log.e(TAG,
@@ -522,14 +522,14 @@ public class PlayerActivity extends Activity {
 									+ e.toString());
 				}
 			}
-			if (content == "error") {
+			if (code == "error") {
 				try {
 					if (subItem != null)
-						callaPlay.videoExcept("mediaexception", item.pk,
+						callaPlay.videoExcept("mediaexception",content, item.pk,
 								subItem.pk, item.title, clip.pk, currQuality,
 								currPosition);
 					else
-						callaPlay.videoExcept("mediaexception", item.pk, null,
+						callaPlay.videoExcept("mediaexception",content, item.pk, null,
 								item.title, clip.pk, currQuality, currPosition);
 				} catch (Exception e) {
 					Log.e(TAG,

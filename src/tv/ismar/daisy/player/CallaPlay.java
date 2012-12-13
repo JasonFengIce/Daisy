@@ -390,7 +390,8 @@ public class CallaPlay {
 	/**
 	 * 
 	 * 播放缓冲结束 videoExcept
-	 * @param content(异常内容) STRING (servertimeout|noplayaddress|mediaexception|mediatimeout|filenotfound|nodetail|debuggingexception|noextras))
+	 * @param code(异常码servertimeout|servertimeout|noplayaddress|mediaexception|mediatimeout|filenotfound|nodetail|debuggingexception|noextras) STRING
+	 * @param content(异常内容) STRING
 	 * @param item (媒体id) INTEGER
 	 * @param subitem(子媒体id, 可空) INTEGER
 	 * @param title(名称) STRING
@@ -402,8 +403,10 @@ public class CallaPlay {
 	 * @return HashMap<String,Object> 
 	 */
 	
-	public  HashMap<String,Object> videoExcept(String content,Integer item,Integer subitem,String title,Integer clip,Integer quality,Integer position){
+	public  HashMap<String,Object> videoExcept(String code,String content,Integer item,Integer subitem,String title,Integer clip,Integer quality,Integer position){
 		HashMap<String,Object> tempMap =  new HashMap<String,Object>();
+		tempMap.put("code", code);
+		tempMap.put("content", content);
 		tempMap.put("item", item);
 		if(subitem!=null)
 			tempMap.put("subitem", subitem);
