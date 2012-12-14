@@ -45,7 +45,7 @@
             <intent-filter>
                 <action android:name="tv.ismar.daisy.Play" />
                 <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
+            </intent-filter>        
         </activity>
         <activity
             android:name=".ChannelListActivity"
