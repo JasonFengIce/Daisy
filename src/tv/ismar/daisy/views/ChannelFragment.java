@@ -512,12 +512,14 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 			Section newSection = mSectionList.get(newSectionIndex);
 			mSectionProperties.put("section", newSection.slug);
 			mSectionProperties.put("title", newSection.title);
+			mSectionProperties.put("sid", newSectionIndex);
 			new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_CATEGORY_IN, mSectionProperties);
 			if(mCurrentSectionIndex >=0 ){
 				Section oldSection = mSectionList.get(mCurrentSectionIndex);
 				HashMap<String, Object> sectionProperties = new HashMap<String, Object>();
 				sectionProperties.put("section", oldSection.slug);
 				sectionProperties.put("title", oldSection.title);
+				sectionProperties.put("sid", mCurrentSectionIndex);
 				new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_CATEGORY_OUT, sectionProperties);
 			}
 			mCurrentSectionIndex = newSectionIndex;

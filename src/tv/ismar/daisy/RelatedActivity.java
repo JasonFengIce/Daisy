@@ -169,6 +169,8 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		mDataCollectionProperties.put("title", mItem.title);
 		if(mItem.clip!=null) {
 			mDataCollectionProperties.put("clip", mItem.clip.pk);
+		} else {
+			mDataCollectionProperties.put("clip", "");
 		}
 		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_RELATE_IN, mDataCollectionProperties);
 		
@@ -276,6 +278,11 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		Item item = mAdapter.getItem(position);
 		mDataCollectionProperties.put("to_item", item.pk);
 		mDataCollectionProperties.put("to_title", item.title);
+		if(item.clip!=null) {
+			mDataCollectionProperties.put("clip", item.clip);
+		} else {
+			mDataCollectionProperties.put("clip", "");
+		}
 		Intent intent = new Intent("tv.ismar.daisy.Item");
 		intent.putExtra("url", item.item_url);
 		startActivity(intent);
