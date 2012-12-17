@@ -50,7 +50,7 @@ public class CallaPlay {
 	 * @param mediaip（媒体IP）STRING
 	 * @return HashMap<String,Object>
 	 */
-	public  HashMap<String,Object> videoPlayLoad(Integer item,Integer subitem,String title,Integer clip,Integer quality,Integer duration,Integer speed ,String mediaip){
+	public  HashMap<String,Object> videoPlayLoad(Integer item,Integer subitem,String title,Integer clip,Integer quality,long duration,Integer speed ,String mediaip){
 		
 		HashMap<String,Object> tempMap =  new HashMap<String,Object>();
 		tempMap.put("item", item);
@@ -69,40 +69,7 @@ public class CallaPlay {
 		
 	}
 	
-	/**
-	 * 切换码流 video_switch_stream
-	 * 
-	 * @param item(媒体id) INTEGER
-	 * @param subitem(子媒体id, 可空) INTEGER
-	 * @param title(名称) STRING
-	 * @param clip (视频id) INTEGER
-	 * @param quality(视频清晰度: normal |  medium | high | ultra | adaptive | adaptive_norma l | adaptive_medium | adaptive_high | adaptive_ultra) STRING
-	 * @param mode(切换模式：auto | manual) STRING
-	 * @param userid(用户ID) STRING
-	 * @param speed (网速, 单位Kbits/s) INTEGER 
-	 * @param mediaip（媒体IP）STRING
-	 * @return HashMap<String,Object>
-	 */
 	
-	public  HashMap<String,Object> videoSwitchStream(Integer item,Integer subitem,String title,Integer clip,Integer quality,String mode,String userid,Integer speed ,String mediaip){
-		
-		HashMap<String,Object> tempMap =  new HashMap<String,Object>();
-		tempMap.put("item", item);
-		if(subitem!=null)
-			tempMap.put("subitem", subitem);
-		tempMap.put("title", title);
-		tempMap.put("clip", clip);
-		tempMap.put("quality", switchQuality(quality));
-		tempMap.put("mode", mode);
-		tempMap.put("userid", userid);
-		//tempMap.put("speed", speed);
-		tempMap.put("mediaip",mediaip);
-		eventName =	NetworkUtils.VIDEO_SWITCH_STREAM;
-		properties = tempMap;
-		new LogTask().execute();
-		return tempMap;
-		
-	}
 	
 	
 	/**
@@ -148,7 +115,7 @@ public class CallaPlay {
 	 * @param speed (网速, 单位Kbits/s) INTEGER
 	 * @return HashMap<String,Object>
 	 */
-	public  HashMap<String,Object> videoPlayPause(Integer item,Integer subitem,String title,Integer clip,String quality,Integer speed,Integer position){
+	public  HashMap<String,Object> videoPlayPause(Integer item,Integer subitem,String title,Integer clip,Integer currQuality,Integer speed,Integer position){
 		
 		HashMap<String,Object> tempMap =  new HashMap<String,Object>();
 		tempMap.put("item", item);
@@ -156,8 +123,8 @@ public class CallaPlay {
 			tempMap.put("subitem", subitem);
 		tempMap.put("title", title);
 		tempMap.put("clip", clip);
-		tempMap.put("quality", quality);
-		tempMap.put("position", position);
+		tempMap.put("quality", switchQuality(currQuality));
+		tempMap.put("position", position/1000);
 		//tempMap.put("speed", speed);
 		eventName =	NetworkUtils.VIDEO_PLAY_PAUSE;
 		properties = tempMap;
@@ -242,7 +209,7 @@ public class CallaPlay {
 	 * @return HashMap<String,Object>
 	 */
 	
-	public  HashMap<String,Object> videoPlaySeekBlockend(Integer item,Integer subitem,String title,Integer clip,Integer quality,Integer speed,Integer position,Integer duration,String mediaip ){
+	public  HashMap<String,Object> videoPlaySeekBlockend(Integer item,Integer subitem,String title,Integer clip,Integer quality,Integer speed,Integer position,long duration,String mediaip ){
 		
 		HashMap<String,Object> tempMap =  new HashMap<String,Object>();
 		tempMap.put("item", item);
@@ -252,7 +219,10 @@ public class CallaPlay {
 		tempMap.put("clip", clip);
 		tempMap.put("quality", switchQuality(quality));
 		//tempMap.put("speed", speed);
+		tempMap.put("duration", duration);
 		tempMap.put("position", position/1000);
+		tempMap.put("mediaip", mediaip);
+		
 		eventName =	NetworkUtils.VIDEO_PLAY_SEEK_BLOCKEND;
 		properties = tempMap;
 		new LogTask().execute();
@@ -419,6 +389,42 @@ public class CallaPlay {
 		properties = tempMap;
 		new LogTask().execute();
 		return tempMap;
+	}
+	
+	
+	/**
+	 * 切换码流 video_switch_stream 
+	 * 
+	 * @param item (媒体id) INTEGER
+	 * @param subitem (子媒体id, 可空) INTEGER
+	 * @param title (名称) STRING
+	 * @param clip (视频id) INTEGER
+	 * @param quality (视频清晰度: normal |  medium | high | ultra | adaptive) STRING
+	 * @param mode(切换模式：auto | manual) STRIN
+	 * @param speed (网速, 单位Kbits/s) INTEGER
+	 * @param userid STRING
+	 * @param mediaip STRING
+	 * @return HashMap<String,Object>
+	 */
+	
+	public  HashMap<String,Object> videoSwitchStream(Integer item,Integer subitem,String title,Integer clip,Integer quality,String mode, Integer speed,String userid,String mediaip){
+		
+		HashMap<String,Object> tempMap =  new HashMap<String,Object>();
+		tempMap.put("item", item);
+		if(subitem!=null)
+			tempMap.put("subitem", subitem);
+		tempMap.put("title", title);
+		tempMap.put("clip", clip);
+		tempMap.put("quality", switchQuality(quality));
+		//tempMap.put("speed", speed);
+		tempMap.put("mode", mode);
+		tempMap.put("userid", userid);
+		tempMap.put("mediaip", mediaip);
+		eventName =	NetworkUtils.VIDEO_EXIT;
+		properties = tempMap;
+		new LogTask().execute();
+		return tempMap;
+
 	}
 	
 	private  String switchQuality(Integer currQuality)
