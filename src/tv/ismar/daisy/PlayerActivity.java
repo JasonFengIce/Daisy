@@ -636,9 +636,9 @@ public class PlayerActivity extends Activity {
 				addHistory(0);
 				try {
 					if (subItem != null)
-						callaPlay.videoExit(item.pk, subItem.pk, item.title,clip.pk, currQuality, 0, "end");
+						callaPlay.videoExit(item.pk, subItem.pk, item.title,clip.pk, currQuality, 0, "end",currPosition,(System.currentTimeMillis() - startDuration) / 1000);
 					else
-						callaPlay.videoExit(item.pk, null, item.title, clip.pk,currQuality, 0, "end");
+						callaPlay.videoExit(item.pk, null, item.title, clip.pk,currQuality, 0, "end",currPosition,(System.currentTimeMillis() - startDuration) / 1000);
 				} catch (Exception e) {
 					Log.e(TAG, " log Sender videoExit end " + e.toString());
 				}
@@ -662,10 +662,10 @@ public class PlayerActivity extends Activity {
 		try {
 			if (subItem != null)
 				callaPlay.videoExit(item.pk, subItem.pk, item.title, clip.pk,
-						currQuality, 0, "relate");
+						currQuality, 0, "relate",currPosition,(System.currentTimeMillis() - startDuration) / 1000);
 			else
 				callaPlay.videoExit(item.pk, null, item.title, clip.pk,
-						currQuality, 0, "relate");
+						currQuality, 0, "relate",currPosition,(System.currentTimeMillis() - startDuration) / 1000);
 			mVideoView.stopPlayback();
 		} catch (Exception e) {
 			Log.e(TAG, "log Sender videoExit relate " + e.toString());
@@ -967,11 +967,11 @@ public class PlayerActivity extends Activity {
 								if (subItem != null)
 									callaPlay.videoExit(item.pk, subItem.pk,
 											item.title, clip.pk, currQuality,
-											0, "detail");
+											0, "detail",currPosition,(System.currentTimeMillis() - startDuration) / 1000);
 								else
 									callaPlay.videoExit(item.pk, null,
 											item.title, clip.pk, currQuality,
-											0, "detail");
+											0, "detail",currPosition,(System.currentTimeMillis() - startDuration) / 1000);
 							} catch (Exception e) {
 								Log.e(TAG,
 										" Sender log videoPlayStart "
