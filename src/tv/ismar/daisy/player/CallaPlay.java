@@ -222,7 +222,7 @@ public class CallaPlay {
 		tempMap.put("duration", duration);
 		tempMap.put("position", position/1000);
 		tempMap.put("mediaip", mediaip);
-		
+		tempMap.put("mediaurl", "");
 		eventName =	NetworkUtils.VIDEO_PLAY_SEEK_BLOCKEND;
 		properties = tempMap;
 		new LogTask().execute();
