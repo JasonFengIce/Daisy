@@ -360,7 +360,8 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 				}
 				mDataCollectionProperties.put("to_title", item.title);
 				mDataCollectionProperties.put("position", history.last_position);
-				mDataCollectionProperties.put("quality", history.last_quality);
+				String[] qualitys = new String[]{"normal", "high", "ultra", "adaptive"};
+				mDataCollectionProperties.put("quality", qualitys[(history.quality >=0 && history.quality < qualitys.length)?history.quality:0]);
 				// start a new activity.
 				Intent intent = new Intent();
 				if(item.is_complex) {
