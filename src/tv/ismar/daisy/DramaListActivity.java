@@ -58,7 +58,7 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 			mList.add(mSubItem);
 		}
 		mDataCollectionProperties.put("item", mItem.pk);
-		mDataCollectionProperties.put("item", mItem.title);
+		mDataCollectionProperties.put("title", mItem.title);
 		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_DRAMALIST_IN, mDataCollectionProperties);
 		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
 //		new Thread(new Runnable() {

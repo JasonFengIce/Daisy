@@ -1022,7 +1022,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		if(mDataChanged) {
 			layoutChildren();
 		}
-		Log.d(TAG, "KeyCode: "+keyCode);
+//		Log.d(TAG, "KeyCode: "+keyCode);
 		final int action = event.getAction();
 		boolean handled = false;
 		if(action!=KeyEvent.ACTION_UP) {
@@ -1436,12 +1436,12 @@ public class HGridView extends AdapterView<HGridAdapter> {
 					}
 					mMinSingleTextHeight = height / labelText.length();
 					
-					Log.d(TAG, "labelRect: " + labelRect.toString());
+//					Log.d(TAG, "labelRect: " + labelRect.toString());
 					int textHorizontalSpace = mLabelTextMargin.left + mMinSingleTextWidth + mLabelTextMargin.right;
 					int textVerticalSpace = mLabelTextMargin.top + (mMinSingleTextHeight + mMinSingleTextHeight / 2) * labelText.length() + mLabelTextMargin.bottom;
 					labelRect.right = labelRect.right >= labelRect.left + textHorizontalSpace ? labelRect.right : labelRect.left +textHorizontalSpace;
 					labelRect.bottom = labelRect.bottom >= labelRect.top + textVerticalSpace ? labelRect.bottom : labelRect.top + textVerticalSpace;
-					Log.d(TAG, "labelRect: " + labelRect.toString());
+//					Log.d(TAG, "labelRect: " + labelRect.toString());
 					labelDrawable.setBounds(labelRect);
 					labelDrawable.draw(canvas);
 				}
@@ -1705,8 +1705,8 @@ public class HGridView extends AdapterView<HGridAdapter> {
 				}
 			}
 			long timeCost = System.currentTimeMillis() - startTime;
-			Log.d(TAG, "time cost :" + timeCost);
-			Log.d(TAG, "min dimension is " +"w:"+ mMinSingleTextWidth + " h:" +mMinSingleTextHeight);
+//			Log.d(TAG, "time cost :" + timeCost);
+//			Log.d(TAG, "min dimension is " +"w:"+ mMinSingleTextWidth + " h:" +mMinSingleTextHeight);
 		}
 	}
 	
