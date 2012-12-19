@@ -339,7 +339,7 @@ public class CallaPlay {
 	 * @return HashMap<String,Object>
 	 */
 	
-	public  HashMap<String,Object> videoExit(Integer item,Integer subitem,String title,Integer clip,Integer quality,Integer speed,String to){
+	public  HashMap<String,Object> videoExit(Integer item,Integer subitem,String title,Integer clip,Integer quality,Integer speed,String to,Integer position,long duration){
 		
 		HashMap<String,Object> tempMap =  new HashMap<String,Object>();
 		tempMap.put("item", item);
@@ -350,6 +350,8 @@ public class CallaPlay {
 		tempMap.put("quality", switchQuality(quality));
 		//tempMap.put("speed", speed);
 		tempMap.put("to", to);
+		tempMap.put("position", position);
+		tempMap.put("duration", duration);
 		eventName =	NetworkUtils.VIDEO_EXIT;
 		properties = tempMap;
 		new LogTask().execute();
