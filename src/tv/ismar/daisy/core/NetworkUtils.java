@@ -94,45 +94,46 @@ public class NetworkUtils {
 	 * 
 	 */
 	public static Boolean LogSender(String eventName,HashMap<String,Object> propertiesMap) {
-		try {
-			
-			String jsonContent = getContentJson(eventName, propertiesMap);
-			Log.d(TAG,"base64 =="+jsonContent);
-			String url=URL;
-			java.net.URL connURL = new java.net.URL(url);
-			java.net.HttpURLConnection httpConn = (java.net.HttpURLConnection) connURL.openConnection();
-			httpConn.setRequestMethod("POST");
-			httpConn.setConnectTimeout(10000);
-			httpConn.setReadTimeout(10000);  
-			httpConn.setRequestProperty("Accept", "application/json");
-			httpConn.setRequestProperty("User-Agent", VodUserAgent.getUserAgent(VodUserAgent.getMACAddress()));
-			httpConn.connect();
-			DataOutputStream out = new DataOutputStream(httpConn.getOutputStream());
-			String content = "data=" + URLEncoder.encode(jsonContent, "UTF-8");
-			Log.d(TAG,content);
-	        out.writeBytes(content); 
-	        out.flush();
-	        out.close(); // flush and close
-	        BufferedReader reader = new BufferedReader(new InputStreamReader(httpConn.getInputStream(), "UTF-8"));
-    		String line;
-    		while ((line = reader.readLine()) != null)
-    		{
-    			System.out.println(line);
-    		}
-    		reader.close();
-    		httpConn.disconnect();
-			return true;
-		} catch (MalformedURLException e) {
-			Log.e(TAG, eventName +" MalformedURLException "+e.toString());
-			return false;
-		} catch (IOException e) {
-			Log.e(TAG, eventName +" IOException "+e.toString());
-			return false;
-		} catch (Exception e) {
-			e.printStackTrace();
-			Log.e(TAG, eventName +" Exception "+e.toString());
-			return false;
-		}
+//		try {
+//			
+//			String jsonContent = getContentJson(eventName, propertiesMap);
+//			Log.d(TAG,"base64 =="+jsonContent);
+//			String url=URL;
+//			java.net.URL connURL = new java.net.URL(url);
+//			java.net.HttpURLConnection httpConn = (java.net.HttpURLConnection) connURL.openConnection();
+//			httpConn.setRequestMethod("POST");
+//			httpConn.setConnectTimeout(10000);
+//			httpConn.setReadTimeout(10000);  
+//			httpConn.setRequestProperty("Accept", "application/json");
+//			httpConn.setRequestProperty("User-Agent", VodUserAgent.getUserAgent(VodUserAgent.getMACAddress()));
+//			httpConn.connect();
+//			DataOutputStream out = new DataOutputStream(httpConn.getOutputStream());
+//			String content = "data=" + URLEncoder.encode(jsonContent, "UTF-8");
+//			Log.d(TAG,content);
+//	        out.writeBytes(content); 
+//	        out.flush();
+//	        out.close(); // flush and close
+//	        BufferedReader reader = new BufferedReader(new InputStreamReader(httpConn.getInputStream(), "UTF-8"));
+//    		String line;
+//    		while ((line = reader.readLine()) != null)
+//    		{
+//    			System.out.println(line);
+//    		}
+//    		reader.close();
+//    		httpConn.disconnect();
+//			return true;
+//		} catch (MalformedURLException e) {
+//			Log.e(TAG, eventName +" MalformedURLException "+e.toString());
+//			return false;
+//		} catch (IOException e) {
+//			Log.e(TAG, eventName +" IOException "+e.toString());
+//			return false;
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			Log.e(TAG, eventName +" Exception "+e.toString());
+//			return false;
+//		}
+		return true;
 	}
 	
 	private static String getContentJson(String eventName,HashMap<String,Object> propertiesMap) throws JSONException {

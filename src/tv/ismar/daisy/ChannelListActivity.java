@@ -43,13 +43,13 @@ public class ChannelListActivity extends Activity {
 			}
 		}
 		if(url==null) {
-			url = "http://cord.tvxio.com/api/histories/";
+			url = "http://cord.tvxio.com/api/tv/sections/chinesemovie/";
 		}
 		if(title==null) {
 			title = "华语电影";
 		}
 		if(channel==null) {
-			channel = "$histories";
+			channel = "$histories_dd";
 		}
 		
 		FragmentManager fragmentManager = getFragmentManager();

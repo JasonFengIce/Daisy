@@ -202,7 +202,7 @@ public class PlayerActivity extends Activity {
 						// } catch (MalformedURLException e) {
 						// e.printStackTrace();
 						// }http://127.0.0.1:21098/cord
-						urlInfo = AccessProxy.parse(simpleRestClient.root_url
+						urlInfo = AccessProxy.parse("http://cord.tvxio.com"
 								+ "/api/clip/" + clip.pk + "/",
 								VodUserAgent.getAccessToken(sn),
 								PlayerActivity.this);
@@ -220,7 +220,7 @@ public class PlayerActivity extends Activity {
 							// e.printStackTrace();
 							// }http://127.0.0.1:21098/cord
 							urlInfo = AccessProxy.parse(
-									simpleRestClient.root_url + "/api/clip/"
+									"http://cord.tvxio.com" + "/api/clip/"
 											+ clip.pk + "/",
 									VodUserAgent.getAccessToken(sn),
 									PlayerActivity.this);
@@ -233,10 +233,10 @@ public class PlayerActivity extends Activity {
 					if (item.item_pk != item.pk) {
 						currNum = item.position;
 						Log.d(TAG, "currNum ===" + currNum);
-						subItemUrl = simpleRestClient.root_url
+						subItemUrl = "http://cord.tvxio.com"
 								+ "/api/subitem/" + item.pk + "/";
 						subItem = simpleRestClient.getItem(subItemUrl);
-						itemUrl = simpleRestClient.root_url + "/api/item/"
+						itemUrl = "http://cord.tvxio.com" + "/api/item/"
 								+ item.item_pk + "/";
 						item = simpleRestClient.getItem(itemUrl);
 						if (item != null && item.subitems != null) {
@@ -248,7 +248,7 @@ public class PlayerActivity extends Activity {
 							}
 						}
 					} else {
-						itemUrl = simpleRestClient.root_url + "/api/item/"
+						itemUrl = "http://cord.tvxio.com" + "/api/item/"
 								+ item.item_pk + "/";
 						item = simpleRestClient.getItem(itemUrl);
 					}
@@ -256,7 +256,7 @@ public class PlayerActivity extends Activity {
 				}
 			} catch (Exception e) {
 				Log.e(TAG, e.toString());
-				ExToClosePlayer("url","m3u8 quality is null ,or get m3u8 err /n"+e.toString());
+//				ExToClosePlayer("url","m3u8 quality is null ,or get m3u8 err /n"+e.toString());
 				return null;
 			}
 			return urlInfo;
