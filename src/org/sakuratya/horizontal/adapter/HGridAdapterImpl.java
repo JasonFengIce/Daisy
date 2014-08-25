@@ -12,6 +12,7 @@ import tv.ismar.daisy.views.AsyncImageView.OnImageViewLoadListener;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,6 +106,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 			final Item item = mList.get(sectionIndex).objects.get(indexOfCurrentSection);
 			holder.title.setText(item.title);
 			holder.previewImage.setUrl(item.adlet_url);
+//			Log.v("aaaa", "item.title ="+item.title+"<><>item.expense ="+item.expense.price);
 			if(item.quality==3) {
 				holder.qualityLabel.setImageResource(R.drawable.label_hd_small);
 			} else if(item.quality==4 || item.quality==5) {

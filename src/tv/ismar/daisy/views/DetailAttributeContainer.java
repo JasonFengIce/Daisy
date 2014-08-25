@@ -2,18 +2,12 @@ package tv.ismar.daisy.views;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.SortedMap;
 
-import tv.ismar.daisy.ItemDetailActivity;
-import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.R;
 import tv.ismar.daisy.models.ContentModel;
-
 import android.content.Context;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,15 +18,20 @@ public class DetailAttributeContainer extends LinearLayout {
 	private LinkedHashMap<String, String> mAttributeMap;
 	
 	private ContentModel mContentModel;
-
+	private Context myContext;
+	private float textsize; 
 	public DetailAttributeContainer(Context context, AttributeSet attrs,
 			int defStyle) {
 		super(context, attrs, defStyle);
+		myContext = context;
+		textsize = myContext.getResources().getDimension(R.dimen.item_detail_introlabel_textsize);
 		// TODO Auto-generated constructor stub
 	}
 
 	public DetailAttributeContainer(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		myContext = context;
+		textsize = myContext.getResources().getDimension(R.dimen.item_detail_introlabel_textsize);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -55,20 +54,19 @@ public class DetailAttributeContainer extends LinearLayout {
 			}
 			LinearLayout infoLine = new LinearLayout(getContext());
 			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(471,LinearLayout.LayoutParams.WRAP_CONTENT);
-			layoutParams.topMargin = 15;
-			
+//			layoutParams.topMargin =(15f);
 			infoLine.setLayoutParams(layoutParams);
 			infoLine.setOrientation(LinearLayout.HORIZONTAL);
 			TextView itemName = new TextView(getContext());
 			itemName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 			itemName.setTextColor(0xff999999);
-			itemName.setTextSize(30f);
+			itemName.setTextSize(textsize);
 			itemName.setText(mContentModel.attributes.get(entry.getKey())+":");
 			infoLine.addView(itemName);
 			TextView itemValue = new TextView(getContext());
 			itemValue.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 			itemValue.setTextColor(0xffbbbbbb);
-			itemValue.setTextSize(30f);
+			itemValue.setTextSize(textsize);
 			itemValue.setText(entry.getValue());
 			itemValue.setMaxLines(2);
 			itemValue.setEllipsize(TruncateAt.END);

@@ -19,6 +19,8 @@ import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.player.ISTVVodMenu;
 import tv.ismar.daisy.player.ISTVVodMenuItem;
+import tv.ismar.daisy.views.IsmatvVideoView;
+import tv.ismar.player.SmartPlayer;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -53,6 +55,8 @@ import com.ismartv.bean.ClipInfo;
 public class PlayerActivity extends Activity {
 
 	@SuppressWarnings("unused")
+	private static final String SAMPLE = "http://114.80.0.33/qyrrs?url=http%3A%2F%2Fjq.v.tvxio.com%2Fcdn%2F0%2F7b%2F78fadc2ffa42309bda633346871f26%2Fhigh%2Fslice%2Findex.m3u8&quality=high&sn=weihongchang_s52&clipid=779521&sid=85d3f919a918460d9431136d75db17f03&sign=08a868ad3c4e3b37537a13321a6f9d4b";
+
 	private static final String PREFS_NAME = "tv.ismar.daisy";
 	private static final String TAG = "PLAYER";
 	private static final String BUFFERCONTINUE = " 上次放映：";
@@ -96,7 +100,7 @@ public class PlayerActivity extends Activity {
 	private Clip clip;
 	private Bundle bundle;
 	private SeekBar timeBar;
-	private VideoView mVideoView;
+	private IsmatvVideoView mVideoView;
 	private Dialog popupDlg = null;
 	private InputStream logoInputStream;
 	private HistoryManager historyManager;
@@ -135,7 +139,7 @@ public class PlayerActivity extends Activity {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setContentView(R.layout.vod_player);
-		mVideoView = (VideoView) findViewById(R.id.video_view);
+		mVideoView = (IsmatvVideoView) findViewById(R.id.video_view);
 		panelLayout = (LinearLayout) findViewById(R.id.PanelLayout);
 		titleText = (TextView) findViewById(R.id.TitleText);
 		qualityText = (TextView) findViewById(R.id.QualityText);
@@ -387,23 +391,31 @@ public class PlayerActivity extends Activity {
 
 				Log.d(TAG, "RES_INT_OFFSET currPosition=" + currPosition);
 
+//				mVideoView.setVideoPath(urls[currQuality]);
+//				mVideoView.setOnPreparedListener(new SmartPlayer.OnPreparedListener(){
+//
+//					@Override
+//					public void onPrepared(SmartPlayer arg0) {
+//						
+//						arg0.start();
+//						checkTaskStart();
+//					}});
 				if (urls != null && mVideoView != null) {
 					TaskStart();
 					mVideoView.setVideoPath(urls[currQuality]);
 					mVideoView
-							.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+							.setOnPreparedListener(new SmartPlayer.OnPreparedListener() {
 								@Override
-								public void onPrepared(MediaPlayer mp) {
+								public void onPrepared(SmartPlayer mp) {
 
 									Log.d(TAG,
 											"mVideoView onPrepared tempOffset =="
 													+ tempOffset);
 									if (mVideoView != null) {
 										clipLength = mVideoView.getDuration();
-										// bufferText.setText("");
 										timeBar.setMax(clipLength);
-										mVideoView.start();
-										mVideoView.seekTo(currPosition);
+										mp.start();
+										mp.seekTo(currPosition);
 										timeBar.setProgress(currPosition);
 										timeTaskStart();
 										checkTaskStart();
@@ -428,9 +440,9 @@ public class PlayerActivity extends Activity {
 								}
 							});
 					mVideoView
-							.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+							.setOnErrorListener(new SmartPlayer.OnErrorListener() {
 								@Override
-								public boolean onError(MediaPlayer mp,
+								public boolean onError(SmartPlayer mp,
 										int what, int extra) {
 									Log.d(TAG,
 											"mVideoView  Error setVideoPath urls[currQuality] ");
@@ -441,10 +453,10 @@ public class PlayerActivity extends Activity {
 							});
 
 					mVideoView
-							.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+							.setOnCompletionListener(new SmartPlayer.OnCompletionListener() {
 
 								@Override
-								public void onCompletion(MediaPlayer mp) {
+								public void onCompletion(SmartPlayer mp) {
 									Log.d(TAG, "mVideoView  Completion");
 									gotoFinishPage();
 								}
@@ -596,7 +608,7 @@ public class PlayerActivity extends Activity {
 						seekPostion = mVideoView.getCurrentPosition();
 						if (i > 1) {
 							isBuffer = true;
-							showBuffer();
+//							showBuffer();
 						}
 					}
 				}
@@ -1264,7 +1276,7 @@ public class PlayerActivity extends Activity {
 							.setImageResource(R.drawable.vod_player_pause);
 					isBuffer = true;
 					currQuality = pos;
-					mVideoView = (VideoView) findViewById(R.id.video_view);
+					mVideoView = (IsmatvVideoView) findViewById(R.id.video_view);
 					mVideoView.setVideoPath(urls[currQuality].toString());
 					historyManager.addOrUpdateQuality(new Quality(0,urls[currQuality], currQuality));
 					if (subItem != null)

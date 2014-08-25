@@ -33,4 +33,5 @@
         <attr name="labelTextMarginRight" format="dimension"/>
         <attr name="labelTextMarginBottom" format="dimension"/>
     </declare-styleable>
+
 </resources>
