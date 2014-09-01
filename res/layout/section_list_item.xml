@@ -6,12 +6,12 @@
     <TextView
         android:id="@+id/section_label"
         android:layout_width="wrap_content"
-        android:layout_height="52dip"
-        android:layout_marginBottom="6dip"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip"
+        android:layout_height="35dip"
+        android:layout_marginBottom="4dip"
+        android:paddingLeft="7dip"
+        android:paddingRight="7dip"
         android:focusable="true"
-        android:textSize="35sp"
+        android:textSize="24sp"
         android:textColor="#FFBBBBBB"
         android:singleLine="true"
         android:gravity="center"/>
@@ -19,7 +19,7 @@
     <ProgressBar
         android:id="@+id/section_percentage"
         android:layout_width="match_parent"
-        android:layout_height="8dip"
+        android:layout_height="5dip"
         android:progressDrawable="@drawable/section_percentage_noselected"
         style="@android:style/Widget.ProgressBar.Horizontal"
         android:indeterminate="false"/>

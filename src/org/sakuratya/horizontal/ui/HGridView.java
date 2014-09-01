@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.DaisyUtils;
+
 import org.sakuratya.horizontal.adapter.HGridAdapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
@@ -15,8 +18,10 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.FloatMath;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -1351,6 +1356,8 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		final int lastVisibleColumn = getColumn(mFirstPosition + getChildCount() - 1);
 		final int leftBound = mListPadding.left;
 		final int rightBound = getRight() - mListPadding.right;
+		int H = DaisyUtils.getVodApplication(getContext()).getheightPixels(getContext());
+		
 		// look up all visible column on screen. check if it is in the mSectionFirstColumns
 		// or mSectionLastColumns.
 		for(int i=firstVisibleColumn; i<=lastVisibleColumn; i++) {
@@ -1365,9 +1372,13 @@ public class HGridView extends AdapterView<HGridAdapter> {
 					// only if the left edge of referenceView is on screen, we will draw
 					// its label before it.
 					if(referenceView.getLeft() > leftBound) {
-						rect.top = mListPadding.top + mVerticalSpace;
+						rect.top = mListPadding.top + 0;
 						rect.right = referenceView.getLeft();
-						rect.left = rect.right - mHorizontalSpacing;
+						//rect.left = rect.right - mHorizontalSpacing;
+						if(H==720)
+						    rect.left = rect.right - 55;
+						else
+							rect.left = rect.right - 82;
 						rect.bottom = getBottom() - mListPadding.bottom;
 					}
 				}
@@ -1381,9 +1392,13 @@ public class HGridView extends AdapterView<HGridAdapter> {
 					final int columnStart = getPositionRangeByColumn(i)[0];
 					final View referenceView = getChildAt(columnStart - firstPosition);
 					if(referenceView.getRight() < rightBound) {
-						rect.top = mListPadding.top + mVerticalSpace;
+						rect.top = mListPadding.top + 0;
 						rect.left = referenceView.getRight();
-						rect.right = rect.left + mHorizontalSpacing;
+						//rect.right = rect.left + mHorizontalSpacing;
+						if(H==720)
+						    rect.right = rect.left + 55;
+						else
+							rect.right = rect.left + 82;
 						rect.bottom = getBottom() - mListPadding.bottom;
 					}
 				}
@@ -1407,7 +1422,6 @@ public class HGridView extends AdapterView<HGridAdapter> {
 					
 				}
 				if(drawables!=null && drawables.length>1) {
-					
 					Drawable backgroundDrawable = drawables[0];
 					Rect backgroundRect = new Rect();
 					backgroundRect.top = rect.top + mLabelBackgroundDrawableOffset.top;
@@ -1445,8 +1459,14 @@ public class HGridView extends AdapterView<HGridAdapter> {
 					labelDrawable.setBounds(labelRect);
 					labelDrawable.draw(canvas);
 				}
-				textTop += 40;
-				textLeft += 7;
+				if(H==720){
+					textTop += 34;
+					textLeft += 4;	
+				}
+				else{
+					textTop += 40;
+					textLeft += 7;	
+				}
 				for(int j=0; j<labelText.length(); j++) {
 					canvas.drawText(labelText, j, j+1, textLeft, textTop, mLabelTextPaint);
 					textTop += mMinSingleTextHeight + mMinSingleTextHeight /2;

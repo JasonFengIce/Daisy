@@ -1,6 +1,7 @@
 package tv.ismar.daisy.views;
 
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
 import android.content.Context;
@@ -68,7 +69,11 @@ public class ScrollableSectionList extends HorizontalScrollView {
 
 	public void init(SectionList sectionList, int totalWidth) {
 		mContainer = new LinearLayout(getContext());
-		mContainer.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 66));
+		int H = DaisyUtils.getVodApplication(getContext()).getheightPixels(getContext());
+		if(H==720)			
+		    mContainer.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 44));
+		else
+			mContainer.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 66));
 		int width = totalWidth / sectionList.size() - 10;
 		width = width < 200 ? 200 : width;
 		for(int i=0; i<sectionList.size(); i++) {
@@ -89,7 +94,12 @@ public class ScrollableSectionList extends HorizontalScrollView {
 	
 	private LinearLayout getSectionLabelLayout(Section section, int width) {
 		LinearLayout sectionHolder = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.section_list_item, null);
-		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, 66);
+		int H = DaisyUtils.getVodApplication(getContext()).getheightPixels(getContext());
+		LinearLayout.LayoutParams layoutParams;
+		if(H==720)
+		    layoutParams = new LinearLayout.LayoutParams(width, 44);
+		else
+			layoutParams = new LinearLayout.LayoutParams(width, 66);
 		layoutParams.rightMargin = 10;
 		sectionHolder.setLayoutParams(layoutParams);
 		sectionHolder.setFocusable(true);

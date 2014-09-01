@@ -39,7 +39,8 @@
             android:textSize="@dimen/item_detail_introlabel_textsize"
             android:layout_marginTop="@dimen/item_detail_attribute_top"
             android:orientation="vertical"
-            android:id="@+id/detail_attribute_container">
+            android:id="@+id/detail_attribute_container"
+            >
 
             
         </tv.ismar.daisy.views.DetailAttributeContainer>
@@ -95,7 +96,9 @@
                 android:layout_width="@dimen/item_detail_detailquality_width"
                 android:layout_height="@dimen/item_detail_detailquality_height"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"/>
+                android:layout_alignParentRight="true"               
+                android:layout_marginTop="@dimen/item_detail_detailquality_margintop"
+                android:layout_marginRight="@dimen/item_detail_detailquality_marginright"/>
 
             <Button
                 android:id="@+id/btn_left"
@@ -136,7 +139,8 @@
                 android:text="@string/play"
                 android:textSize="@dimen/item_detail_btn_fill_textsize"
                 android:textColor="#FFBBBBBB"
-                android:background="@drawable/button_fill"/>
+                android:background="@drawable/button_fill"
+               />
 
             <Button
                 android:id="@+id/btn_favorite"
@@ -192,7 +196,8 @@
             android:layout_gravity="center_horizontal"
             android:background="@drawable/more_btn"
             android:textColor="#FFBBBBBB"
-            android:textSize="@dimen/item_detail_more_content_textsize" />
+            android:textSize="@dimen/item_detail_more_content_textsize" 
+            />
     </LinearLayout>
 
 </LinearLayout>

@@ -21,10 +21,13 @@ import com.google.gson.JsonSyntaxException;
 
 public class SimpleRestClient {
 //	public String root_url = "http://cord.tvxio.com";
-	public String root_url = "http://127.0.0.1:21098/cord";
+	//public String root_url = "http://127.0.0.1:21098/cord";
 	
-	public static String sRoot_url = "http://127.0.0.1:21098/cord";
-
+	//public static String sRoot_url = "http://127.0.0.1:21098/cord";
+	
+	
+	public String root_url = "http://cord.tvxio.com";
+    public static String sRoot_url = "http://cord.tvxio.com";
 	private Gson gson;
 
 	public SimpleRestClient() {

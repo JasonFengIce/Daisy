@@ -1,46 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="178dip"
-    android:layout_marginLeft="1dip"
+    android:layout_height="@dimen/related_item_layout_H"
+    android:layout_marginLeft="@dimen/related_item_layout_marginleft"
     android:background="@drawable/related_bg"
     android:focusable="true">
     
     <tv.ismar.daisy.views.AsyncImageView
         android:id="@+id/related_preview_img"
-        android:layout_width="184dip"
-        android:layout_height="115dip"
-        android:layout_marginLeft="31dip"
-        android:layout_marginTop="32dip"
-        android:layout_marginRight="23dip"
-        android:layout_marginBottom="31dip"
+        android:layout_width="@dimen/related_item_image_W"
+        android:layout_height="@dimen/related_item_image_H"
+        android:layout_marginLeft="@dimen/related_item_image_marginleft"
+        android:layout_marginTop="@dimen/related_item_image_margintop"
+        android:layout_marginRight="@dimen/related_item_image_marginright"
+        android:layout_marginBottom="@dimen/related_item_image_marginbottom"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:paddingLeft="7dip"
-        android:paddingTop="3dip"
-        android:paddingRight="7dip"
-        android:paddingBottom="12dip"
-        android:background="@drawable/related_img_bg"/>
+        android:paddingLeft="@dimen/related_item_image_paddingleft"
+        android:paddingTop="@dimen/related_item_image_paddingtop"
+        android:paddingRight="@dimen/related_item_image_paddingright"
+        android:paddingBottom="@dimen/related_item_image_paddingbottom"
+        android:background="@drawable/related_img_bg"
+        android:scaleType="fitXY"/>
     <ImageView
         android:id="@+id/related_quality_label"
-        android:layout_width="57dip"
-        android:layout_height="57dip"
+        android:layout_width="@dimen/related_item_image_quality_W"
+        android:layout_height="@dimen/related_item_image_quality_H"
         android:layout_alignTop="@id/related_preview_img"
         android:layout_alignRight="@id/related_preview_img"
-        android:layout_marginTop="-3dip"
-        android:layout_marginRight="-3dip"
+        android:layout_marginTop="@dimen/related_item_image_quality_margintop"
+        android:layout_marginRight="@dimen/related_item_image_quality_marginright"
         />
     <TextView
         android:id="@+id/related_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="34dip"
-        android:layout_marginBottom="14dip"
+        android:layout_marginTop="@dimen/related_item_title_margintop"
+        android:layout_marginBottom="@dimen/related_item_title_marginbottom"
         android:layout_toRightOf="@id/related_preview_img"
         android:layout_alignParentTop="true"
         android:singleLine="true"
         android:ellipsize="marquee"
-        android:textSize="35sp"
+        android:textSize="@dimen/related_item_title_textsize"
         android:textColor="#FFBBBBBB"/>
     <TextView
         android:id="@+id/related_focus"
@@ -51,7 +52,8 @@
         android:singleLine="true"
         android:ellipsize="marquee"
         android:textColor="#FF999999"
-        android:textSize="30sp"
-        android:layout_marginRight="41dip"/>
+        android:textSize="@dimen/related_item_focus_textsize"
+        android:layout_marginRight="@dimen/related_item_focus_marginright"
+        />
     
 </RelativeLayout>

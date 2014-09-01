@@ -37,8 +37,10 @@
     <dimen name="item_detail_previewimgview_padding">1dp</dimen>
     <dimen name="item_detail_detailquality_width">71dp</dimen>
     <dimen name="item_detail_detailquality_height">72dp</dimen>
+    <dimen name="item_detail_detailquality_margintop">2dip</dimen>
+    <dimen name="item_detail_detailquality_marginright">2dip</dimen>
     <dimen name="item_detail_btn_left_width">240dp</dimen>
-    <dimen name="item_detail_btn_left_height">80dp</dimen>
+    <dimen name="item_detail_btn_left_height">80dip</dimen>
     <dimen name="item_detail_btn_left_textsize">35sp</dimen>
     <dimen name="item_detail_btn_right_width">240dip</dimen>
     <dimen name="item_detail_btn_right_height">80dp</dimen>
@@ -98,4 +100,55 @@
     <dimen name="gridview_no_video_container_width">1480dip</dimen>
     <dimen name="gridview_no_video_container_height">681dip</dimen>
     <dimen name="gridview_no_video_container_marginLeft">280dip</dimen>
+    
+    <dimen name="gridview_item_image_H">204dip</dimen>
+    <dimen name="gridview_item_image_W">345dip</dimen>
+    <dimen name="gridview_item_image_marginright">2dip</dimen>
+    <dimen name="gridview_item_image_marginleft">2dip</dimen>
+    <dimen name="gridview_item_title_W">300dip</dimen>
+    <dimen name="gridview_item_title_textsize">35sp</dimen>
+    <dimen name="gridview_item_quality_img_marginT">3dip</dimen>
+    <dimen name="gridview_item_quality_img_marginR">8dip</dimen>
+    <dimen name="gridview_item_quality_img_H">57dip</dimen>
+    <dimen name="gridview_item_quality_img_W">57dip</dimen>
+    <dimen name="gridview_item_container_PB">17dip</dimen>
+    <dimen name="ScrollableSectionList_item_PB">0dip</dimen>
+    
+        <!-- popup_2btn -->
+    <dimen name="popup_dialog_width">806dip</dimen>
+    <dimen name="popup_dialog_height">444dip</dimen>
+    <dimen name="popup_dialog_layout_PT">20dip</dimen>
+    <dimen name="popup_dialog_layout_PB">20dip</dimen>
+    <dimen name="popup_dialog_layout_PL">23dip</dimen>
+    <dimen name="popup_dialog_layout_PR">23dip</dimen>
+    <dimen name="popup_dialog_poptext_height">304dip</dimen>
+    <dimen name="popup_dialog_poptext_size">35sp</dimen>
+    <dimen name="popup_dialog_button_layout_height">100dip</dimen>
+    <dimen name="popup_dialog_button_layout_width">760dip</dimen>
+    <dimen name="popup_dialog_lbutton_width">440dip</dimen>
+    <dimen name="popup_dialog_rbutton_width">320dip</dimen>
+    <dimen name="popup_dialog_button_textsize">40sp</dimen>
+    
+        <!-- related_item -->
+    <dimen name="related_item_layout_H">178dip</dimen>
+    <dimen name="related_item_layout_marginleft">1dip</dimen>
+    <dimen name="related_item_image_H">115dip</dimen>
+    <dimen name="related_item_image_W">184dip</dimen>
+    <dimen name="related_item_image_marginleft">31dip</dimen>
+    <dimen name="related_item_image_margintop">32dip</dimen>
+    <dimen name="related_item_image_marginright">23dip</dimen>
+    <dimen name="related_item_image_marginbottom">31dip</dimen>
+    <dimen name="related_item_image_paddingleft">7dip</dimen>
+    <dimen name="related_item_image_paddingtop">3dip</dimen>
+    <dimen name="related_item_image_paddingright">7dip</dimen>
+    <dimen name="related_item_image_paddingbottom">12dip</dimen>
+    <dimen name="related_item_image_quality_W">57dip</dimen>
+    <dimen name="related_item_image_quality_H">57dip</dimen>
+    <dimen name="related_item_image_quality_margintop">-3dip</dimen>
+    <dimen name="related_item_image_quality_marginright">-3dip</dimen>
+    <dimen name="related_item_title_margintop">34dip</dimen>
+    <dimen name="related_item_title_marginbottom">14dip</dimen>
+    <dimen name="related_item_title_textsize">35sp</dimen>
+    <dimen name="related_item_focus_textsize">30sp</dimen>
+    <dimen name="related_item_focus_marginright">41dip</dimen>
 </resources>

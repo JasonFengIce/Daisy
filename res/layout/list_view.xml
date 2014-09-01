@@ -34,7 +34,7 @@
     <org.sakuratya.horizontal.ui.HGridView
         android:id="@+id/h_grid_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/gridview_main_panel_height"
+        android:layout_height="match_parent"
         android:fadingEdge="horizontal"
         android:fadingEdgeLength="@dimen/gridview_main_panel_fadingEdgeLength"
         sakura:horizontalSpacing="@dimen/gridview_main_panel_horizontalSpacing"

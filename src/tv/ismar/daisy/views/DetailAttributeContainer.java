@@ -4,10 +4,14 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.models.ContentModel;
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -53,7 +57,13 @@ public class DetailAttributeContainer extends LinearLayout {
 				continue;
 			}
 			LinearLayout infoLine = new LinearLayout(getContext());
-			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(471,LinearLayout.LayoutParams.WRAP_CONTENT);
+			LinearLayout.LayoutParams layoutParams;
+			int H = DaisyUtils.getVodApplication(getContext()).getheightPixels(getContext());
+			if(H==720)				
+				 layoutParams = new LinearLayout.LayoutParams(314,LinearLayout.LayoutParams.WRAP_CONTENT);
+			else
+				layoutParams = new LinearLayout.LayoutParams(471,LinearLayout.LayoutParams.WRAP_CONTENT);
+									
 //			layoutParams.topMargin =(15f);
 			infoLine.setLayoutParams(layoutParams);
 			infoLine.setOrientation(LinearLayout.HORIZONTAL);
@@ -64,7 +74,7 @@ public class DetailAttributeContainer extends LinearLayout {
 			itemName.setText(mContentModel.attributes.get(entry.getKey())+":");
 			infoLine.addView(itemName);
 			TextView itemValue = new TextView(getContext());
-			itemValue.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            itemValue.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));				
 			itemValue.setTextColor(0xffbbbbbb);
 			itemValue.setTextSize(textsize);
 			itemValue.setText(entry.getValue());

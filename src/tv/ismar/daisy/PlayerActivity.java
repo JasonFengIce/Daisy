@@ -424,7 +424,6 @@ public class PlayerActivity extends Activity {
 										urls[1] = urlInfo.getMedium();
 										urls[2] = urlInfo.getHigh();
 										urls[3] = urlInfo.getAdaptive();
-										
 										if (subItem != null){
 											callaPlay.videoPlayLoad(item.pk, subItem.pk, item.title,
 													clip.pk, currQuality,(System.currentTimeMillis() - startDuration) / 1000,0,null);
@@ -957,9 +956,14 @@ public class PlayerActivity extends Activity {
 			View view;
 			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			view = inflater.inflate(R.layout.popup_2btn, null);
-			popupDlg.addContentView(view, new ViewGroup.LayoutParams(
-					ViewGroup.LayoutParams.WRAP_CONTENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT));
+			int H = DaisyUtils.getVodApplication(this).getheightPixels(this);
+			if(H==720)
+			    popupDlg.addContentView(view, new ViewGroup.LayoutParams(
+					538,296));
+			else
+				popupDlg.addContentView(view, new ViewGroup.LayoutParams(
+						ViewGroup.LayoutParams.WRAP_CONTENT,
+						ViewGroup.LayoutParams.WRAP_CONTENT));
 			TextView tv = (TextView) view.findViewById(R.id.PopupText);
 			tv.setText(msg);
 			Button btn1 = null, btn2 = null;

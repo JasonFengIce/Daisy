@@ -26,6 +26,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.AssetManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 
@@ -273,5 +274,11 @@ public class VodApplication extends Application {
 			finishVOD();
 		}
 	};
-
+   public int getheightPixels(Context context){
+	   int H = 0;
+	   DisplayMetrics mDisplayMetrics = new DisplayMetrics();
+	   ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(mDisplayMetrics);
+	   H = mDisplayMetrics.heightPixels;
+	   return H;
+   }
 }

@@ -11,10 +11,12 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 
 public class ChannelListActivity extends Activity {
@@ -51,10 +53,8 @@ public class ChannelListActivity extends Activity {
 		if(channel==null) {
 			channel = "$histories_dd";
 		}
-		
 		FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		
 		if(channel!=null) {
 			if(channel.equals("$bookmarks")) {
 				Fragment favoriteFragment = new FavoriteFragment();
@@ -104,6 +104,9 @@ public class ChannelListActivity extends Activity {
 	public interface OnMenuToggleListener {
 		public void OnMenuToggle();
 	}
-	
+	public  int px2dip(Context context, float pxValue) {
+		final float scale = context.getResources().getDisplayMetrics().density;
+		return (int) (pxValue / scale + 0.5f);
+	}
 	
 }
