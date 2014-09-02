@@ -143,8 +143,15 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		gridview.setOnFocusChangeListener(this);
 		gridview.setOnItemClickListener(this);
 		gridview.setNumColumns(3);
-		gridview.setVerticalSpacing(40);
-		gridview.setHorizontalSpacing(100);
+		int H = DaisyUtils.getVodApplication(this).getheightPixels(this);
+		if(H==720){
+			gridview.setVerticalSpacing(27);
+			gridview.setHorizontalSpacing(67);
+		}
+		else{
+			gridview.setVerticalSpacing(40);
+			gridview.setHorizontalSpacing(100);
+		}
 		loadDialog = new LoadingDialog(this, getString(R.string.vod_loading));
 
 	}

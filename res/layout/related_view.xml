@@ -5,16 +5,16 @@
     android:orientation="vertical"
     android:background="@drawable/background">
     <ImageView
-        android:layout_width="639dip"
-        android:layout_height="152dip"
+        android:layout_width="@dimen/related_view_img_W"
+        android:layout_height="@dimen/related_view_img_H"
         android:src="@drawable/related_watermark"/>
     <tv.ismar.daisy.views.ScrollableSectionList
         android:id="@+id/related_section_tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="151dip"
-        android:layout_marginRight="151dip"
-        android:layout_marginTop="23dip"
+        android:layout_marginLeft="@dimen/related_view_tabs_marginleft"
+        android:layout_marginRight="@dimen/related_view_tabs_marginright"
+        android:layout_marginTop="@dimen/related_view_tabs_margintop"
         android:scrollbars="none">
         
     </tv.ismar.daisy.views.ScrollableSectionList>
@@ -22,14 +22,14 @@
         android:id="@+id/related_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="139dip"
-        android:layout_marginRight="139dip"
-        android:layout_marginTop="35dip"
+        android:layout_marginLeft="@dimen/related_view_list_marginleft"
+        android:layout_marginRight="@dimen/related_view_list_marginright"
+        android:layout_marginTop="@dimen/related_view_list_margintop"
         android:numColumns="4"
-        android:horizontalSpacing="81dip"
-        android:verticalSpacing="0dip"
+        android:horizontalSpacing="@dimen/related_view_list_horizontalspacing"
+        android:verticalSpacing="@dimen/related_view_list_verticalspacing"
         android:stretchMode="none"
-        android:columnWidth="348dip"
+        android:columnWidth="@dimen/related_view_list_columnwidth"
         android:listSelector="@drawable/list_item_bg_hot">
     </GridView>
 </LinearLayout>

@@ -10,40 +10,40 @@
 
     <LinearLayout
         android:id="@+id/linear_left"
-        android:layout_width="753px"
+        android:layout_width="@dimen/play_finished_leftlayout_W"
         android:layout_height="match_parent"
         android:layout_weight="3"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingRight="100dp" >
+        android:paddingRight="@dimen/play_finished_leftlayout_PR" >
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp" >
+            android:layout_marginLeft="@dimen/play_finished_left_subcontainer_marginleft" >
 
             <TextView
                 android:id="@+id/tv_vodie_name"
-                android:layout_width="550dp"
+                android:layout_width="@dimen/play_finished_tv_vodie_name_W"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:textSize="45dp"
+                android:layout_marginRight="@dimen/play_finished_tv_vodie_name_marginright"
+                android:textSize="@dimen/play_finished_tv_vodie_name_textsize"
                 android:maxLines="4"
                 android:ellipsize="end"/>
 
             <LinearLayout
                 android:id="@+id/linear_vodie_backgroud"
-                android:layout_width="480px"
-                android:layout_height="271px"
+                android:layout_width="@dimen/play_finished_linear_vodie_backgroud_W"
+                android:layout_height="@dimen/play_finished_linear_vodie_backgroud_H"
                 android:layout_below="@+id/tv_vodie_name"
                 android:background="@drawable/preview_img_bg" >
 
                 <tv.ismar.daisy.views.AsyncImageView
                     android:id="@+id/image_vodie_backgroud"
-                    android:layout_width="478px"
-                    android:layout_height="269px"
-                    android:layout_marginLeft="1px"
-                    android:layout_marginTop="1px"
+                    android:layout_width="@dimen/play_finished_image_vodie_backgroud_W"
+                    android:layout_height="@dimen/play_finished_image_vodie_backgroud_H"
+                    android:layout_marginLeft="@dimen/play_finished_image_vodie_backgroud_marginleft"
+                    android:layout_marginTop="@dimen/play_finished_image_vodie_backgroud_margintop"
                     android:focusable="false" />
             </LinearLayout>
 
@@ -53,17 +53,17 @@
                 android:layout_height="wrap_content"
                 android:layout_alignRight="@+id/linear_vodie_backgroud"
                 android:layout_alignTop="@+id/linear_vodie_backgroud"
-                android:layout_marginRight="-3px"
-                android:layout_marginTop="-3px" />
+                android:layout_marginRight="@dimen/play_finished_image_vod_label_marginright"
+                android:layout_marginTop="@dimen/play_finished_image_vod_label_margintop" />
 
             <Button
                 android:id="@+id/btn_replay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/play_finished_image_vodie_backgroud_W"
+                android:layout_height="@dimen/play_finished_btn_replay_H"
                 android:layout_below="@+id/linear_vodie_backgroud"
                 android:background="@drawable/poster_image_selector"
                 android:text="@string/daram_restart"
-                android:textSize="35dp" />
+                android:textSize="@dimen/play_finished_btn_replay_textsize" />
 
             <Button
                 android:id="@+id/btn_favorites"
@@ -71,13 +71,13 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/btn_replay"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="@dimen/play_finished_btn_favorites_margintop"
                 android:background="@drawable/favorites_image_selector"
                 android:gravity="center_horizontal|center_vertical"
-                android:paddingBottom="13dp"
+                android:paddingBottom="@dimen/play_finished_btn_favorites_PB"
                 android:text="@string/daram_favorites"
                 android:textColor="@color/search_text_result"
-                android:textSize="35dp" />
+                android:textSize="@dimen/play_finished_btn_favorites_textsize"/>
         </RelativeLayout>
     </LinearLayout>
 
@@ -86,7 +86,7 @@
 
     <LinearLayout
         android:id="@+id/linear_right"
-        android:layout_width="1170px"
+        android:layout_width="@dimen/play_finished_rightlayout_W"
         android:layout_height="match_parent"
         android:layout_weight="5"
         android:background="@drawable/cover_right"
@@ -101,9 +101,9 @@
                 android:id="@+id/tv_releted"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="@dimen/play_finished_tv_releted_margintop"
                 android:text="@string/vod_releted"
-                android:textSize="40dp" />
+                android:textSize="@dimen/play_finished_tv_releted_textsize" />
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -116,8 +116,7 @@
             android:id="@+id/gridview_related"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="45dp"
-            android:layout_weight="1"
+            android:layout_margin="@dimen/play_finished_gridview_related_margin"
             android:listSelector="@drawable/play_grid_selector" >
         </GridView>
     </LinearLayout>
