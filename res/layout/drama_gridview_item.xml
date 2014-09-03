@@ -7,12 +7,12 @@
         android:id="@+id/btn_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginBottom="@dimen/drama_gridview_item_btn_marginbottom"
+        android:layout_marginLeft="@dimen/drama_gridview_item_btn_marginleft"
+        android:layout_marginTop="@dimen/drama_gridview_item_btn_margintop"
         android:background="@drawable/watch_no"
         android:focusable="false"
         android:textColor="@color/search_text_result"
-        android:textSize="36dp" />
+        android:textSize="@dimen/drama_gridview_item_btn_textsize" />
 
 </LinearLayout>

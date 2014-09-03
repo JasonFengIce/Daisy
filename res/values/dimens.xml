@@ -107,7 +107,7 @@
     <dimen name="gridview_item_title_W">240dip</dimen>
     <dimen name="gridview_item_title_textsize">24sp</dimen>
     <dimen name="gridview_item_quality_img_marginT">-1dip</dimen>
-    <dimen name="gridview_item_quality_img_marginR">-4dip</dimen>
+    <dimen name="gridview_item_quality_img_marginR">-7dip</dimen>
     <dimen name="gridview_item_quality_img_H">38dip</dimen>
     <dimen name="gridview_item_quality_img_W">38dip</dimen>
     <dimen name="gridview_item_container_PB">11dip</dimen>
@@ -130,7 +130,7 @@
     
     
     <!-- related_item -->
-    <dimen name="related_item_layout_H">120dip</dimen>
+    <dimen name="related_item_layout_H">119dip</dimen>
     <dimen name="related_item_layout_marginleft">1dip</dimen>
     <dimen name="related_item_image_H">77dip</dimen>
     <dimen name="related_item_image_W">104dip</dimen>
@@ -142,10 +142,10 @@
     <dimen name="related_item_image_paddingtop">2dip</dimen>
     <dimen name="related_item_image_paddingright">5dip</dimen>
     <dimen name="related_item_image_paddingbottom">8dip</dimen>
-    <dimen name="related_item_image_quality_W">38dip</dimen>
-    <dimen name="related_item_image_quality_H">38dip</dimen>
-    <dimen name="related_item_image_quality_margintop">-2dip</dimen>
-    <dimen name="related_item_image_quality_marginright">-2dip</dimen>
+    <dimen name="related_item_image_quality_W">32dip</dimen>
+    <dimen name="related_item_image_quality_H">32dip</dimen>
+    <dimen name="related_item_image_quality_margintop">2dip</dimen>
+    <dimen name="related_item_image_quality_marginright">4dip</dimen>
     <dimen name="related_item_title_margintop">23dip</dimen>
     <dimen name="related_item_title_marginbottom">9dip</dimen>
     <dimen name="related_item_title_textsize">23sp</dimen>
@@ -238,11 +238,46 @@
     <dimen name="related_view_list_marginright">93dip</dimen>
     <dimen name="related_view_list_horizontalspacing">54dip</dimen>
     <dimen name="related_view_list_verticalspacing">0dip</dimen>
-    <dimen name="related_view_list_columnwidth">232dip</dimen>
+    <dimen name="related_view_list_columnwidth">210dip</dimen>
     
     <!-- Toast -->
     <dimen name="toast_layout_W">355dip</dimen>
     <dimen name="toast_layout_H">115dip</dimen>
     <dimen name="toast_textsize">27sp</dimen>
     <dimen name="toast_padding">27dip</dimen>
+    
+    <!-- menu -->
+    <dimen name="menu_menulistview_W">347dip</dimen>
+    <dimen name="menu_menulistview_PT">107dip</dimen>
+    <dimen name="menu_menulistview_PB">107dip</dimen>
+    <dimen name="menu_item_layout_H">80dip</dimen>
+    <dimen name="menu_item_layout_PL">27dip</dimen>
+    <dimen name="menu_item_menutext_textsize">32sp</dimen>
+    <dimen name="menu_item_menutext_marginleft">27dip</dimen>
+    
+    <!-- dramaList -->
+    <dimen name="drama_main_layout_PL">173dip</dimen>
+    <dimen name="drama_main_layout_PT">133dip</dimen>
+    <dimen name="drama_main_layout_PR">173dip</dimen>
+    <dimen name="drama_main_layout_PB">67dip</dimen>
+    <dimen name="drama_main_img_layout_W">320dip</dimen>
+    <dimen name="drama_main_img_layout_H">181dip</dimen>
+    <dimen name="drama_main_img_layout_marginleft">7dip</dimen>
+    <dimen name="drama_main_image_daram_back_W">319dip</dimen>
+    <dimen name="drama_main_image_daram_back_H">179dip</dimen>
+    <dimen name="drama_main_image_daram_back_marginleft">1dip</dimen>
+    <dimen name="drama_main_image_daram_back_margintop">1dip</dimen>
+    <dimen name="drama_main_image_daram_label_MR">-2dip</dimen>
+    <dimen name="drama_main_image_daram_label_MT">-2dip</dimen>
+    <dimen name="drama_main_content_layout_ML">67dip</dimen>
+    <dimen name="drama_main_tv_drama_name_textsize">37sp</dimen>
+    <dimen name="drama_main_sub_content_layout_MT">33dip</dimen>
+    <dimen name="drama_main_tv_daram_textsize">24sp</dimen>
+    <dimen name="drama_main_tv_daram_marginleft">13dip</dimen>
+    <dimen name="drama_gridview_margintop">67dip</dimen>
+    <dimen name="drama_gridview_verticalspacing">3dip</dimen>
+    <dimen name="drama_gridview_item_btn_textsize">24dip</dimen>
+    <dimen name="drama_gridview_item_btn_marginleft">7dip</dimen>
+    <dimen name="drama_gridview_item_btn_margintop">3dip</dimen>
+    <dimen name="drama_gridview_item_btn_marginbottom">3dip</dimen>
 </resources>

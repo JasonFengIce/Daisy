@@ -4,6 +4,7 @@ import java.util.Map;
 
 import tv.ismar.daisy.R;
 import tv.ismar.player.SmartPlayer;
+import tv.ismar.player.SmartPlayer.OnSeekCompleteListener;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -65,6 +66,7 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 	private MediaController mMediaController;
 	private SmartPlayer.OnCompletionListener mOnCompletionListener;
 	private SmartPlayer.OnPreparedListener mOnPreparedListener;
+	private SmartPlayer.OnSeekCompleteListener mOnSeekCompleteListener;
 	private int mCurrentBufferPercentage;
 	private SmartPlayer.OnErrorListener mOnErrorListener;
 	private SmartPlayer.OnInfoListener mOnInfoListener;
@@ -222,6 +224,7 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 			player.setOnPreparedListener(mPreparedListener);
 			player.setOnVideoSizeChangedListener(mSizeChangedListener);
 			mDuration = -1;
+			player.setOnSeekCompleteListener(mSeekCompleteChangedListener);
 //			if (mOnCompletionListener != null)
 				player.setOnCompletionListener(mCompletionListener);
 //			else
@@ -347,9 +350,10 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 	
 	SmartPlayer.OnSeekCompleteListener mSeekCompleteChangedListener = new SmartPlayer.OnSeekCompleteListener() {
 		@Override
-		public void onSeekComplete(SmartPlayer arg0) {
+		public void onSeekComplete(SmartPlayer mp) {
 //			Log.i(LOG_TAG, "seek complete");
 //			isSeeking = false;
+			mOnSeekCompleteListener.onSeekComplete(mp);
 		}
 	};
 	
@@ -490,6 +494,9 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 		mOnInfoListener = l;
 	}
 
+	public void setOnSeekCompleteListener(SmartPlayer.OnSeekCompleteListener l){
+		mOnSeekCompleteListener = l;
+	}
 	SurfaceHolder.Callback mSHCallback = new SurfaceHolder.Callback() {
 		public void surfaceChanged(SurfaceHolder holder, int format, int w,
 				int h) {

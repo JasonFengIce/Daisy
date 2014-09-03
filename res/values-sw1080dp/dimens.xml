@@ -245,4 +245,39 @@
     <dimen name="toast_layout_H">172dip</dimen>
     <dimen name="toast_textsize">40sp</dimen>
     <dimen name="toast_padding">40dip</dimen>
+    
+    <!-- menu -->
+    <dimen name="menu_menulistview_W">520dip</dimen>
+    <dimen name="menu_menulistview_PT">160dip</dimen>
+    <dimen name="menu_menulistview_PB">160dip</dimen>
+    <dimen name="menu_item_layout_H">120dip</dimen>
+    <dimen name="menu_item_layout_PL">40dip</dimen>
+    <dimen name="menu_item_menutext_textsize">48sp</dimen>
+    <dimen name="menu_item_menutext_marginleft">40dip</dimen>
+    
+    <!-- dramaList -->
+    <dimen name="drama_main_layout_PL">260dip</dimen>
+    <dimen name="drama_main_layout_PT">200dip</dimen>
+    <dimen name="drama_main_layout_PR">260dip</dimen>
+    <dimen name="drama_main_layout_PB">100dip</dimen>
+    <dimen name="drama_main_img_layout_W">480dip</dimen>
+    <dimen name="drama_main_img_layout_H">271dip</dimen>
+    <dimen name="drama_main_img_layout_marginleft">10dip</dimen>
+    <dimen name="drama_main_image_daram_back_W">478dip</dimen>
+    <dimen name="drama_main_image_daram_back_H">269dip</dimen>
+    <dimen name="drama_main_image_daram_back_marginleft">1dip</dimen>
+    <dimen name="drama_main_image_daram_back_margintop">1dip</dimen>
+    <dimen name="drama_main_image_daram_label_MR">-3dip</dimen>
+    <dimen name="drama_main_image_daram_label_MT">-3dip</dimen>
+    <dimen name="drama_main_content_layout_ML">100dip</dimen>
+    <dimen name="drama_main_tv_drama_name_textsize">55sp</dimen>
+    <dimen name="drama_main_sub_content_layout_MT">50dip</dimen>
+    <dimen name="drama_main_tv_daram_textsize">36sp</dimen>
+    <dimen name="drama_main_tv_daram_marginleft">20dip</dimen>
+    <dimen name="drama_gridview_margintop">100dip</dimen>
+    <dimen name="drama_gridview_verticalspacing">5dip</dimen>
+    <dimen name="drama_gridview_item_btn_textsize">36dip</dimen>
+    <dimen name="drama_gridview_item_btn_marginleft">10dip</dimen>
+    <dimen name="drama_gridview_item_btn_margintop">5dip</dimen>
+    <dimen name="drama_gridview_item_btn_marginbottom">5dip</dimen>
 </resources>

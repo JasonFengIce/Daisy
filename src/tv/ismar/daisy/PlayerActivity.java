@@ -460,6 +460,15 @@ public class PlayerActivity extends Activity {
 									gotoFinishPage();
 								}
 							});
+					
+					mVideoView.setOnSeekCompleteListener(new SmartPlayer.OnSeekCompleteListener() {
+						
+						@Override
+						public void onSeekComplete(SmartPlayer arg0) {
+							// TODO Auto-generated method stub
+							hideBuffer();
+						}
+					});
 				}
 
 			} else {
@@ -885,6 +894,26 @@ public class PlayerActivity extends Activity {
 					ret = true;
 				}
 				break;
+			case KeyEvent.KEYCODE_MENU:
+				if (menu != null && menu.isVisible())
+					return false;
+				if (menu==null) {
+					createWindow();
+					menu = new ISTVVodMenu(this);
+					ret = createMenu(menu);
+				}
+				if (itemUrl != null && favoriteManager != null
+						&& favoriteManager.getFavoriteByUrl(itemUrl) != null) {
+					menu.findItem(5).setTitle(
+							getResources().getString(
+									R.string.vod_bookmark_remove_bookmark_setting));
+				}
+				if (onVodMenuOpened(menu)) {
+				menu.show();
+				hideMenuHandler.postDelayed(hideMenuRunnable, 10000);
+			}
+				break;
+				
 			default:
 				break;
 			}
@@ -1218,36 +1247,6 @@ public class PlayerActivity extends Activity {
 		public void onStopTrackingTouch(SeekBar seekBar) {
 			Log.d(TAG, "onStopTrackingTouch" + seekBar.getProgress());
 		}
-	}
-
-	@Override
-	public boolean onPrepareOptionsMenu(Menu m) {
-		boolean ret;
-		if (menu != null && menu.isVisible())
-			return false;
-		m.add("menu");
-		ret = super.onPrepareOptionsMenu(m);
-		if (ret) {
-			createWindow();
-			menu = new ISTVVodMenu(this);
-			ret = createMenu(menu);
-		}
-		if (itemUrl != null && favoriteManager != null
-				&& favoriteManager.getFavoriteByUrl(itemUrl) != null) {
-			menu.findItem(5).setTitle(
-					getResources().getString(
-							R.string.vod_bookmark_remove_bookmark_setting));
-		}
-		return ret;
-	}
-
-	@Override
-	public boolean onMenuOpened(int featureId, Menu m) {
-		if (onVodMenuOpened(menu)) {
-			menu.show();
-			hideMenuHandler.postDelayed(hideMenuRunnable, 10000);
-		}
-		return false;
 	}
 
 	private void createWindow() {

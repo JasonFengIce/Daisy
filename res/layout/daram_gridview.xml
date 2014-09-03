@@ -3,9 +3,9 @@
     android:id="@+id/drama_gridview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="100dp"
+    android:layout_marginTop="@dimen/drama_gridview_margintop"
     android:listSelector="@drawable/daram_grid_selector"
     android:scrollbarDefaultDelayBeforeFade="60000"
     android:scrollbarThumbVertical="@drawable/srollbar"
     android:scrollbarTrackVertical="@drawable/srollbar_backgroud"
-    android:verticalSpacing="5dp" />
+    android:verticalSpacing="@dimen/drama_gridview_verticalspacing" />
