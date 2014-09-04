@@ -299,10 +299,17 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 				for (int j = 0; j < listHotWords.size(); j++) {
 					final Button btnHotWords = new Button(SearchActivity.this);
 					// final Button btnHotWords = (Button) findViewById(R.id.btn_words);
+					int H = DaisyUtils.getVodApplication(SearchActivity.this).getheightPixels(SearchActivity.this);
+					if(H==720){
+						btnHotWords.setPadding(10, 0, 10, 0);
+						btnHotWords.setTextSize(20);
+					}
+					else{
+						btnHotWords.setPadding(15, 0, 15, 0);
+						btnHotWords.setTextSize(30);
+					}
 					btnHotWords.setId(j);
-					btnHotWords.setTextSize(30);
 					// btnHotWords.setBackgroundColor(R.drawable.gridview_text_selector);
-					btnHotWords.setPadding(15, 0, 15, 0);
 					btnHotWords.setBackgroundResource(R.drawable.hotwords_selector);
 					btnHotWords.setTextColor(getResources().getColor(R.color.search_words));
 					// btnHotWords.setTypeface(Typeface.DEFAULT_BOLD,Typeface.NORMAL);

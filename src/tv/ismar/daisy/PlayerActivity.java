@@ -466,6 +466,7 @@ public class PlayerActivity extends Activity {
 						@Override
 						public void onSeekComplete(SmartPlayer arg0) {
 							// TODO Auto-generated method stub
+							isBuffer = false;
 							hideBuffer();
 						}
 					});
@@ -590,21 +591,21 @@ public class PlayerActivity extends Activity {
 	private Runnable checkStatus = new Runnable() {
 		public void run() {
 			if (mVideoView != null) {
-				// Log.d(TAG,
-				// "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
+//				 Log.d(TAG,
+//				 "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
 				if (mVideoView.isPlaying()
 						&& Math.abs(mVideoView.getCurrentPosition()
 								- seekPostion) > 0) {
-					if (isBuffer || bufferLayout.isShown()) {
-						isBuffer = false;
-						hideBuffer();
-					} else {
+//					if (isBuffer || bufferLayout.isShown()) {
+//						//isBuffer = false;
+//						//hideBuffer();
+//					} else {
 						if (mVideoView.getAlpha() < 1){
 							mVideoView.setAlpha(1);
 							bufferText.setText(BUFFERING);
 						}
 							
-					}
+				//	}
 					if (!isSeek  && !isBuffer) {
 						currPosition = mVideoView.getCurrentPosition();
 						timeBar.setProgress(currPosition);
@@ -834,7 +835,9 @@ public class PlayerActivity extends Activity {
 					isSeek = true;
 					showPanel();
 					fbImage.setImageResource(R.drawable.vod_player_fb_focus);
-					fastBackward(SHORT_STEP);
+					isBuffer = true;
+                    showBuffer();
+					fastBackward(SHORT_STEP);                  
 					ret = true;
 				}
 				break;
@@ -843,6 +846,8 @@ public class PlayerActivity extends Activity {
 					isSeek = true;
 					showPanel();
 					ffImage.setImageResource(R.drawable.vod_player_ff_focus);
+					isBuffer = true;
+                    showBuffer();
 					fastForward(SHORT_STEP);
 					ret = true;
 				}
@@ -947,6 +952,7 @@ public class PlayerActivity extends Activity {
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
 				ffImage.setImageResource(R.drawable.vod_player_ff);
 				mVideoView.seekTo(currPosition);
+				Log.i("zhangjiqiang", "seekto");
 				if (subItem != null)			
 					callaPlay.videoPlaySeek(item.pk, subItem.pk, item.title,clip.pk, currQuality, 0, currPosition);
 				else
@@ -1087,8 +1093,7 @@ public class PlayerActivity extends Activity {
 		if (!isBuffer && bufferLayout.isShown()) {
 			bufferText.setText(BUFFERING);
 			bufferLayout.setVisibility(View.GONE);
-			try {
-				
+			try {				
 				if (subItem != null)
 					if(isSeekBuffer){
 						callaPlay.videoPlaySeekBlockend(

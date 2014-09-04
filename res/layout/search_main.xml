@@ -20,49 +20,49 @@
                 style="@style/tv_search_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:paddingTop="30dp"
+                android:layout_marginLeft="@dimen/search_main_tv_search_text_marginL"
+                android:paddingTop="@dimen/search_main_tv_search_text_PT"
                 android:text="@string/search_where"
                 android:textColor="@color/search_color"
-                android:textSize="32dp"
+                android:textSize="@dimen/search_main_tv_search_text_textsize"
                 android:typeface="normal" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="14dp"
+                android:layout_marginLeft="@dimen/serach_main_layout_marginL"
                 android:gravity="center_vertical"
                 android:orientation="horizontal" >
 
                 <AutoCompleteTextView
                     android:id="@+id/act_autocomplete_country"
-                    android:layout_width="870px"
-                    android:layout_height="90px"
+                    android:layout_width="@dimen/search_main_autocomplete_W"
+                    android:layout_height="@dimen/search_main_autocomplete_H"
                     android:background="@drawable/search_frame_selector"
                     android:cacheColorHint="#00000000"
                     android:hint="@string/searching_hint"
                     android:maxLength="30"
-                    android:paddingLeft="80dp"
-                    android:paddingRight="20dp"
+                    android:paddingLeft="@dimen/search_main_autocomplete_PL"
+                    android:paddingRight="@dimen/search_main_autocomplete_PR"
                     android:singleLine="true"
-                    android:textSize="34dp" />
+                    android:textSize="@dimen/search_main_autocomplete_textsize" />
 
                 <ImageButton
                     android:id="@+id/ibtn_search"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="@dimen/search_main_btn_search_marginL"
+                    android:layout_marginTop="@dimen/search_main_btn_search_marginT"
                     android:background="@drawable/search_button_selector" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linear_hot_words"
                 android:layout_width="fill_parent"
-                android:layout_height="50dp"
+                android:layout_height="@dimen/search_main_hot_words_H"
                 android:orientation="horizontal"
-                android:paddingLeft="2dp"
-                android:paddingTop="10dp" >
+                android:paddingLeft="@dimen/search_main_hot_words_PL"
+                android:paddingTop="@dimen/search_main_hot_words_PT" >
 
                 <!-- 这里动态生成Button -->
 
@@ -73,8 +73,8 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="160dp"
-        android:layout_marginRight="160dp"
+        android:layout_marginLeft="@dimen/search_main_result_layout_marginL"
+        android:layout_marginRight="@dimen/search_main_result_layout_marginR"
         android:orientation="vertical" >
 
         <LinearLayout
@@ -83,8 +83,8 @@
             android:layout_height="wrap_content"
             android:background="@color/search_background"
             android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:paddingLeft="@dimen/search_main_liner_search_result_PL"
+            android:paddingRight="@dimen/search_main_liner_search_result_PL"
             android:visibility="invisible" >
 
             <TextView

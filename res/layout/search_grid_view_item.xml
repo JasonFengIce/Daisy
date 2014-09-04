@@ -5,42 +5,43 @@
 
     <RelativeLayout
         android:id="@+id/linearLayout1"
-        android:layout_width="240dp"
+        android:layout_width="@dimen/search_gridview_item_main_layout_W"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="11dp"
-        android:layout_marginLeft="14dp" >
+        android:layout_marginBottom="@dimen/search_gridview_item_main_layout_marginB"
+        android:layout_marginLeft="@dimen/search_gridview_item_main_layout_marginL"
+    >
 
         <tv.ismar.daisy.views.AsyncImageView
             android:id="@+id/itemImage"
-            android:layout_width="284dp"
-            android:layout_height="160dp"
+            android:layout_width="@dimen/search_gridview_item_image_W"
+            android:layout_height="@dimen/search_gridview_item_image_H"
             android:layout_centerHorizontal="true"
             android:src="@drawable/list_item_preview_bgg" />
 
         <Button
             android:id="@+id/iv_type"
-            android:layout_width="105px"
-            android:layout_height="55px"
+            android:layout_width="@dimen/search_gridview_item_btn_type_W"
+            android:layout_height="@dimen/search_gridview_item_btn_type_H"
             android:layout_alignBottom="@+id/itemImage"
             android:layout_alignLeft="@+id/itemImage"
-            android:layout_marginBottom="-5dp"
-            android:layout_marginLeft="-20dp"
+            android:layout_marginBottom="@dimen/search_gridview_item_btn_type_marginB"
+            android:layout_marginLeft="@dimen/search_gridview_item_btn_type_marginL"
             android:focusable="false"
             android:textColor="@color/hotwords_text_color"
-            android:textSize="20dp" />
+            android:textSize="@dimen/search_gridview_item_btn_type_textsize" />
 
         <TextView
             android:id="@+id/itemText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/itemImage"
-            android:layout_marginTop="-15px"
+            android:layout_marginTop="@dimen/search_gridview_item_text_marginT"
             android:layout_centerHorizontal="true"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
+            android:layout_marginLeft="@dimen/search_gridview_item_text_marginL"
+            android:layout_marginRight="@dimen/search_gridview_item_text_marginR"
             android:ellipsize="marquee"
             android:singleLine="true"
-            android:textSize="28dp"
+            android:textSize="@dimen/search_gridview_item_text_size"
             android:textStyle="bold" >
         </TextView>
     </RelativeLayout>
@@ -50,7 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="9dp" />
+        android:layout_marginRight="@dimen/search_gridview_item_label_marginR"
+        android:layout_marginTop="@dimen/search_gridview_item_label_marginT" />
 
 </FrameLayout>

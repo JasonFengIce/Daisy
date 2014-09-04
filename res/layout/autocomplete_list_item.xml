@@ -3,8 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/autocomplete_selector"
-    android:padding="15dp"
+    android:padding="@dimen/search_autocomplete_item_padding"
     android:textColor="@color/autocomplete_text_color_selector"
-    android:textSize="22dp" >
+    android:textSize="@dimen/search_autocomplete_item_textsize" >
 
 </TextView>

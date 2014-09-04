@@ -277,7 +277,76 @@
     <dimen name="drama_gridview_margintop">100dip</dimen>
     <dimen name="drama_gridview_verticalspacing">5dip</dimen>
     <dimen name="drama_gridview_item_btn_textsize">36dip</dimen>
-    <dimen name="drama_gridview_item_btn_marginleft">10dip</dimen>
-    <dimen name="drama_gridview_item_btn_margintop">5dip</dimen>
-    <dimen name="drama_gridview_item_btn_marginbottom">5dip</dimen>
+    <dimen name="drama_gridview_item_btn_marginleft">2dip</dimen>
+    <dimen name="drama_gridview_item_btn_margintop">2dip</dimen>
+    <dimen name="drama_gridview_item_btn_marginbottom">2dip</dimen>
+    <dimen name="drama_gridview_item_btn_marginright">2dip</dimen>
+    
+    <!-- playfinish_gridview_item -->
+    <dimen name="playfinish_gridview_iv_label_W">71dip</dimen>
+    <dimen name="playfinish_gridview_iv_label_H">71dip</dimen>
+    
+    <!-- alert_dialog -->
+    <dimen name="dialog_layout_W">574dip</dimen>
+    <dimen name="dialog_layout_H">375dip</dimen>
+    <dimen name="dialog_alert_info_text_textsize">30sp</dimen>
+    <dimen name="dialog_alert_info_text_marginL">82dip</dimen>
+    <dimen name="dialog_alert_info_text_marginT">92dip</dimen>
+    <dimen name="dialog_alert_info_text_marginR">30dip</dimen>
+    <dimen name="dialog_alert_info_text_marginB">20dip</dimen>
+    <dimen name="dialog_positive_button_W">255dip</dimen>
+    <dimen name="dialog_positive_button_H">64dip</dimen>
+    <dimen name="dialog_positive_button_PT">5dip</dimen>
+    <dimen name="dialog_positive_button_marginL">3dip</dimen>
+    <dimen name="dialog_positive_button_marginB">25dip</dimen>
+    <dimen name="dialog_positive_button_textsize">30sp</dimen>
+    <dimen name="dialog_negative_btn_W">294dip</dimen>
+    <dimen name="dialog_negative_btn_H">64dip</dimen>
+    <dimen name="dialog_negative_btn_marginR">22dip</dimen>
+    <dimen name="dialog_negative_btn_marginB">25dip</dimen>
+    <dimen name="dialog_negative_btn_textsize">30sp</dimen>
+    
+    <!-- serach -->
+    <dimen name="search_main_tv_search_text_marginL">15dip</dimen>
+    <dimen name="search_main_tv_search_text_PT">30dip</dimen>
+    <dimen name="search_main_tv_search_text_textsize">32dip</dimen>
+    <dimen name="serach_main_layout_marginL">14dip</dimen>
+    <dimen name="search_main_autocomplete_W">870dip</dimen>
+    <dimen name="search_main_autocomplete_H">90dip</dimen>
+    <dimen name="search_main_autocomplete_PL">80dip</dimen>
+    <dimen name="search_main_autocomplete_PR">20dip</dimen>
+    <dimen name="search_main_autocomplete_textsize">34dip</dimen>
+    <dimen name="search_main_btn_search_marginL">10dip</dimen>
+    <dimen name="search_main_btn_search_marginT">5dip</dimen>
+    <dimen name="search_main_hot_words_H">50dip</dimen>
+    <dimen name="search_main_hot_words_PL">2dip</dimen>
+    <dimen name="search_main_hot_words_PT">10dip</dimen>
+    <dimen name="search_main_result_layout_marginL">160dip</dimen>
+    <dimen name="search_main_result_layout_marginR">160dip</dimen>
+    <dimen name="search_main_liner_search_result_PL">10dip</dimen>
+    <dimen name="search_main_liner_search_result_PR">10dip</dimen>
+    <dimen name="search_autocomplete_item_padding">15dip</dimen>
+    <dimen name="search_autocomplete_item_textsize">22dip</dimen>  
+    <dimen name="search_gridview_verticalspacing">5dip</dimen>
+    <dimen name="search_gridview_marginL">150dip</dimen>
+    <dimen name="search_gridview_marginT">8dip</dimen>
+    <dimen name="search_gridview_marginR">150dip</dimen>
+    <dimen name="search_gridview_marginB">10dip</dimen>
+    <dimen name="search_line_height">2dip</dimen>
+    <dimen name="search_gridview_item_main_layout_W">240dip</dimen>
+    <dimen name="search_gridview_item_main_layout_marginB">11dip</dimen>
+    <dimen name="search_gridview_item_main_layout_marginL">14dip</dimen>
+    <dimen name="search_gridview_item_image_W">284dip</dimen>
+    <dimen name="search_gridview_item_image_H">160dip</dimen>
+    <dimen name="search_gridview_item_btn_type_W">105dip</dimen>
+    <dimen name="search_gridview_item_btn_type_H">55dip</dimen>
+    <dimen name="search_gridview_item_btn_type_marginL">-20dip</dimen>
+    <dimen name="search_gridview_item_btn_type_marginB">-5dip</dimen>
+    <dimen name="search_gridview_item_btn_type_textsize">20dip</dimen>
+    <dimen name="search_gridview_item_text_marginL">6dip</dimen>
+    <dimen name="search_gridview_item_text_marginT">-15dip</dimen>
+    <dimen name="search_gridview_item_text_marginR">6dip</dimen>
+    <dimen name="search_gridview_item_text_size">28sp</dimen>
+    <dimen name="search_gridview_item_label_marginR">10dip</dimen>
+    <dimen name="search_gridview_item_label_marginT">9dip</dimen>
 </resources>

@@ -90,7 +90,7 @@ public class PlayFinishedAdapter extends BaseAdapter {
 			imageView = (ImageView) params[0];
 			imageLabel = (ImageView) params[1];
 			try {
-				return FinshedImageService.getImage((Item) params[2]);
+				return FinshedImageService.getImage((Item) params[2],mContext);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

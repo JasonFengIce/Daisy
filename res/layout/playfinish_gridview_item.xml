@@ -44,8 +44,8 @@
 
     <ImageView
         android:id="@+id/iv_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/playfinish_gridview_iv_label_W"
+        android:layout_height="@dimen/playfinish_gridview_iv_label_H"
         android:layout_gravity="right"
         android:layout_marginRight="@dimen/playfinish_gridview_item_iv_label_marginright"
         android:layout_marginTop="@dimen/playfinish_gridview_item_iv_label_margintop" />
