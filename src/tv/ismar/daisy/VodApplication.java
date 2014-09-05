@@ -3,6 +3,7 @@ package tv.ismar.daisy;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -26,6 +27,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.AssetManager;
+import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
@@ -276,9 +278,34 @@ public class VodApplication extends Application {
 	};
    public int getheightPixels(Context context){
 	   int H = 0;
-	   DisplayMetrics mDisplayMetrics = new DisplayMetrics();
-	   ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(mDisplayMetrics);
-	   H = mDisplayMetrics.heightPixels;
+//	   DisplayMetrics mDisplayMetrics = new DisplayMetrics();
+//	   ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(mDisplayMetrics);
+//	   H = mDisplayMetrics.heightPixels;
+	   int ver = Build.VERSION.SDK_INT;
+	   DisplayMetrics dm = new DisplayMetrics(); 
+	   android.view.Display display = ((Activity)context).getWindowManager().getDefaultDisplay();
+	   display.getMetrics(dm);
+	   if(ver<13){
+		   H = dm.heightPixels;
+	   }
+	   else if(ver==13){
+		   try {
+			Method mt = display.getClass().getMethod("getRealHeight");
+			 H = (Integer) mt.invoke(display);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+	   }
+	   else if(ver>13){
+           try {
+			Method mt = display.getClass().getMethod("getRawHeight");
+	        H = (Integer) mt.invoke(display); 
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}   
+	   }
 	   return H;
    }
 }

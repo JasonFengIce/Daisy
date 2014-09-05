@@ -1,9 +1,6 @@
 package tv.ismar.daisy;
 
-import java.util.HashMap;
-
 import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.views.ChannelFragment;
 import tv.ismar.daisy.views.FavoriteFragment;
 import tv.ismar.daisy.views.HistoryFragment;
@@ -13,10 +10,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Display;
 import android.view.KeyEvent;
 
 public class ChannelListActivity extends Activity {

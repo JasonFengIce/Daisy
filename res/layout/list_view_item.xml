@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/gridview_item_container_PB">
+    android:paddingBottom="@dimen/gridview_item_container_PB"
+    android:id="@+id/list_item_layout">
     <tv.ismar.daisy.views.AsyncImageView
         android:layout_width="@dimen/gridview_item_image_W"
         android:layout_height="@dimen/gridview_item_image_H"

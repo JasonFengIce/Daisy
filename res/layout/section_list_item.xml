@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="@dimen/channel_section_tabs_W"
+    android:layout_height="@dimen/channel_section_tabs_H"
     android:orientation="vertical" >
     <TextView
         android:id="@+id/section_label"
-        android:layout_width="wrap_content"
-        android:layout_height="35dip"
-        android:layout_marginBottom="4dip"
-        android:paddingLeft="7dip"
-        android:paddingRight="7dip"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/channel_section_tabs_label_marginB"
+        android:paddingLeft="@dimen/channel_section_tabs_label_marginL"
+        android:paddingRight="@dimen/channel_section_tabs_label_marginR"
         android:focusable="true"
-        android:textSize="24sp"
+        android:textSize="@dimen/channel_section_tabs_label_textsize"
         android:textColor="#FFBBBBBB"
         android:singleLine="true"
         android:gravity="center"/>
@@ -19,7 +19,7 @@
     <ProgressBar
         android:id="@+id/section_percentage"
         android:layout_width="match_parent"
-        android:layout_height="5dip"
+        android:layout_height="@dimen/channel_section_tabs_percentage_H"
         android:progressDrawable="@drawable/section_percentage_noselected"
         style="@android:style/Widget.ProgressBar.Horizontal"
         android:indeterminate="false"/>

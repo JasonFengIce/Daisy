@@ -16,7 +16,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements OnImageViewLoadListener {
@@ -83,6 +86,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 			holder.title = (TextView) convertView.findViewById(R.id.list_item_title);
 			holder.previewImage = (AsyncImageView) convertView.findViewById(R.id.list_item_preview_img);
 			holder.qualityLabel = (ImageView) convertView.findViewById(R.id.list_item_quality_label);
+			holder.listLayout = (RelativeLayout)convertView.findViewById(R.id.list_item_layout);
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();
@@ -105,6 +109,11 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 		if(mList.get(sectionIndex).isItemReady(indexOfCurrentSection)) {
 			final Item item = mList.get(sectionIndex).objects.get(indexOfCurrentSection);
 			holder.title.setText(item.title);
+			Animation mAnimation = null; 
+			/**加载透明动画**/
+		    mAnimation = AnimationUtils.loadAnimation(mContext, R.anim.image_alpha); 
+		   // holder.previewImage.setAnimation(mAnimation);
+		    holder.listLayout.setAnimation(mAnimation);
 			holder.previewImage.setUrl(item.adlet_url);
 //			Log.v("aaaa", "item.title ="+item.title+"<><>item.expense ="+item.expense.price);
 			if(item.quality==3) {
@@ -128,6 +137,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 		AsyncImageView previewImage;
 		TextView title;
 		ImageView qualityLabel;
+		RelativeLayout listLayout;
 	}
 
 	@Override

@@ -306,7 +306,7 @@
     <dimen name="dialog_negative_btn_marginB">25dip</dimen>
     <dimen name="dialog_negative_btn_textsize">30sp</dimen>
     
-    <!-- serach -->
+    <!-- search -->
     <dimen name="search_main_tv_search_text_marginL">15dip</dimen>
     <dimen name="search_main_tv_search_text_PT">30dip</dimen>
     <dimen name="search_main_tv_search_text_textsize">32dip</dimen>
@@ -349,4 +349,13 @@
     <dimen name="search_gridview_item_text_size">28sp</dimen>
     <dimen name="search_gridview_item_label_marginR">10dip</dimen>
     <dimen name="search_gridview_item_label_marginT">9dip</dimen>
+    
+    <!-- channel_section_tabs -->
+    <dimen name="channel_section_tabs_W">300dip</dimen>
+    <dimen name="channel_section_tabs_H">66dip</dimen>
+    <dimen name="channel_section_tabs_label_marginL">10dip</dimen>
+    <dimen name="channel_section_tabs_label_marginR">10dip</dimen>
+    <dimen name="channel_section_tabs_label_marginB">7dip</dimen>
+    <dimen name="channel_section_tabs_label_textsize">35sp</dimen>
+    <dimen name="channel_section_tabs_percentage_H">8dip</dimen>
 </resources>

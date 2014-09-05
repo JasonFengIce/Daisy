@@ -220,7 +220,6 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		mLabelTextPaint = new Paint();
 		mLabelTextPaint.setTextSize(labelTextSize);
 		mLabelTextPaint.setColor(labelTextColor);
-		
 		int labelTextMarginLeft = a.getDimensionPixelOffset(R.styleable.HGridView_labelTextMarginLeft, 0);
 		int labelTextMarginTop = a.getDimensionPixelOffset(R.styleable.HGridView_labelTextMarginTop, 0);
 		int labelTextMarginRight = a.getDimensionPixelOffset(R.styleable.HGridView_labelTextMarginRight, 0);
@@ -1468,7 +1467,18 @@ public class HGridView extends AdapterView<HGridAdapter> {
 					textLeft += 7;	
 				}
 				for(int j=0; j<labelText.length(); j++) {
-					canvas.drawText(labelText, j, j+1, textLeft, textTop, mLabelTextPaint);
+					int chr=labelText.charAt(j);
+					if(chr>=48&&chr<=57){
+						canvas.drawText(labelText, j, j+1, textLeft+5, textTop, mLabelTextPaint);
+					}
+					else if(chr>=65&&chr<=90||chr>=97&&chr<=122){
+						canvas.rotate(90, textLeft+4, textTop);
+						canvas.drawText(labelText, j, j+1, textLeft+4, textTop, mLabelTextPaint);
+						canvas.rotate(-90, textLeft+4, textTop);
+					}
+					else{
+						canvas.drawText(labelText, j, j+1, textLeft, textTop, mLabelTextPaint);
+					}
 					textTop += mMinSingleTextHeight + mMinSingleTextHeight /2;
 				}
 				
@@ -1478,7 +1488,14 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		// Test purpose
 //		Log.d(TAG, "mScrapDrawables size = " + mRecycler.mScrapDrawables.size());
 	}
-	
+	public static boolean isNumeric(String str){
+		   for(int i=str.length();--i>=0;){
+		      int chr=str.charAt(i);
+		      if(chr<48 || chr>57)
+		         return false;
+		   }
+		   return true;
+		}
 	private Drawable[] obtainLabelDrawable() {
 		Drawable[] drawables =  new Drawable[2];
 		// label background drawable

@@ -186,7 +186,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 				return;
 			}
 			if(mSectionList!=null ) {
-				mScrollableSectionList.init(mSectionList, 1365);
+				mScrollableSectionList.init(mSectionList, getResources().getDimensionPixelSize(R.dimen.gridview_channel_section_tabs_width));
 				mHGridAdapter = new HGridAdapterImpl(getActivity(), mItemCollections);
 				mHGridView.setAdapter(mHGridAdapter);
 				mHGridView.setFocusable(true);

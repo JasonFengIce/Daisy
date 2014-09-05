@@ -340,13 +340,22 @@
     <dimen name="search_gridview_item_image_H">109dip</dimen>
     <dimen name="search_gridview_item_btn_type_W">70dip</dimen>
     <dimen name="search_gridview_item_btn_type_H">37dip</dimen>
-    <dimen name="search_gridview_item_btn_type_marginL">-13dip</dimen>
+    <dimen name="search_gridview_item_btn_type_marginL">-8dip</dimen>
     <dimen name="search_gridview_item_btn_type_marginB">-3dip</dimen>
     <dimen name="search_gridview_item_btn_type_textsize">13dip</dimen>
-    <dimen name="search_gridview_item_text_marginL">4dip</dimen>
+    <dimen name="search_gridview_item_text_marginL">6dip</dimen>
     <dimen name="search_gridview_item_text_marginT">-10dip</dimen>
     <dimen name="search_gridview_item_text_marginR">4dip</dimen>
     <dimen name="search_gridview_item_text_size">19sp</dimen>
     <dimen name="search_gridview_item_label_marginR">7dip</dimen>
     <dimen name="search_gridview_item_label_marginT">6dip</dimen>
+    
+    <!-- channel_section_tabs -->
+    <dimen name="channel_section_tabs_W">200dip</dimen>
+    <dimen name="channel_section_tabs_H">44dip</dimen>
+    <dimen name="channel_section_tabs_label_marginL">7dip</dimen>
+    <dimen name="channel_section_tabs_label_marginR">7dip</dimen>
+    <dimen name="channel_section_tabs_label_marginB">4dip</dimen>
+    <dimen name="channel_section_tabs_label_textsize">24sp</dimen>
+    <dimen name="channel_section_tabs_percentage_H">5dip</dimen>
 </resources>

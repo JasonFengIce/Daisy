@@ -69,20 +69,23 @@ public class ScrollableSectionList extends HorizontalScrollView {
 
 	public void init(SectionList sectionList, int totalWidth) {
 		mContainer = new LinearLayout(getContext());
-		int H = DaisyUtils.getVodApplication(getContext()).getheightPixels(getContext());
-		if(H==720)			
-		    mContainer.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 44));
-		else
-			mContainer.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 66));
-		int width = totalWidth / sectionList.size() - 10;
-		width = width < 200 ? 200 : width;
+//		int H = DaisyUtils.getVodApplication(getContext()).getheightPixels(getContext());
+//		if(H==720)			
+		    mContainer.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, getResources().
+		    		getDimensionPixelSize(R.dimen.channel_section_tabs_W)));
+//		else
+//			mContainer.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 66));
+//		int width = totalWidth / sectionList.size() - 10;
+//		width = width < 200 ? 200 : width;
+//		for(int i=0; i<sectionList.size(); i++) {
+//			String title = sectionList.get(i).title;
+//			int length = title.length();
+//			width = width > length * 38 ? width : length * 38 + 60;
+//		}
+		
 		for(int i=0; i<sectionList.size(); i++) {
-			String title = sectionList.get(i).title;
-			int length = title.length();
-			width = width > length * 38 ? width : length * 38 + 60;
-		}
-		for(int i=0; i<sectionList.size(); i++) {
-			LinearLayout sectionHolder = getSectionLabelLayout(sectionList.get(i), width);
+			LinearLayout sectionHolder = getSectionLabelLayout(sectionList.get(i), getResources()
+					.getDimensionPixelSize(R.dimen.channel_section_tabs_W));
 			sectionHolder.setOnFocusChangeListener(mOnFocusChangeListener);
 			sectionHolder.setOnClickListener(mOnClickListener);
 			sectionHolder.setTag(i);
@@ -95,13 +98,13 @@ public class ScrollableSectionList extends HorizontalScrollView {
 	private LinearLayout getSectionLabelLayout(Section section, int width) {
 		LinearLayout sectionHolder = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.section_list_item, null);
 		int H = DaisyUtils.getVodApplication(getContext()).getheightPixels(getContext());
-		LinearLayout.LayoutParams layoutParams;
-		if(H==720)
-		    layoutParams = new LinearLayout.LayoutParams(width, 44);
-		else
-			layoutParams = new LinearLayout.LayoutParams(width, 66);
-		layoutParams.rightMargin = 10;
-		sectionHolder.setLayoutParams(layoutParams);
+//		LinearLayout.LayoutParams layoutParams;
+//		if(H==720)
+//		    layoutParams = new LinearLayout.LayoutParams(width, 44);
+//		else
+//			layoutParams = new LinearLayout.LayoutParams(width, 66);
+//		layoutParams.rightMargin = 10;
+	//	sectionHolder.setLayoutParams(layoutParams);
 		sectionHolder.setFocusable(true);
 		TextView label = (TextView) sectionHolder.findViewById(R.id.section_label);
 		label.setText(section.title);
