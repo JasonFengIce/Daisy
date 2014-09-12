@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class ScrollableSectionList extends HorizontalScrollView {
@@ -38,7 +39,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 	
 	private static final int LABEL_TEXT_COLOR_NOFOCUSED = 0xffbbbbbb;
 	
-	private static final int LABEL_TEXT_COLOR_FOCUSED = 0xff000000;
+	private static final int LABEL_TEXT_COLOR_FOCUSED = 0xffF8F8FF;
 	
 	private static final int LABEL_TEXT_BACKGROUND_COLOR_FOCUSED = 0xffe5aa50;
 	
@@ -59,7 +60,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 
 	public ScrollableSectionList(Context context) {
 		super(context);
-		initialize();
+		initialize();	
 	}
 	
 	private void initialize() {
@@ -72,7 +73,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 //		int H = DaisyUtils.getVodApplication(getContext()).getheightPixels(getContext());
 //		if(H==720)			
 		    mContainer.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, getResources().
-		    		getDimensionPixelSize(R.dimen.channel_section_tabs_W)));
+		    		getDimensionPixelSize(R.dimen.channel_section_tabs_H)));
 //		else
 //			mContainer.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 66));
 //		int width = totalWidth / sectionList.size() - 10;
@@ -113,7 +114,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 		percentage.getLayoutParams().width = width;
 		return sectionHolder;
 	}
-	
+	private View lastView = null;
 	private OnFocusChangeListener mOnFocusChangeListener = new OnFocusChangeListener() {
 		
 		@Override
@@ -122,20 +123,37 @@ public class ScrollableSectionList extends HorizontalScrollView {
 			TextView label = (TextView) v.findViewById(R.id.section_label);
 			ProgressBar percentageBar = (ProgressBar) v.findViewById(R.id.section_percentage);
 			if(hasFocus){
-				label.setBackgroundColor(LABEL_TEXT_BACKGROUND_COLOR_FOCUSED);
+			//	label.setBackgroundColor(LABEL_TEXT_BACKGROUND_COLOR_FOCUSED);
+				label.setPadding(label.getPaddingLeft(), 0, label.getPaddingRight(), label.getPaddingBottom());
+				label.setTextSize(30);
 				label.setTextColor(LABEL_TEXT_COLOR_FOCUSED);
 				if(index==mSelectPosition) {
+					Log.i("zhangjiqiang", "index==mSelectPosition hasFocus:// index=="+index+"//mSelectPosition=="+mSelectPosition);
 					percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_hot_selected));
+					lastView = v;
 				} else {
+					Log.i("zhangjiqiang", "index!=mSelectPosition hasFocus:// index=="+index+"//mSelectPosition=="+mSelectPosition);
 					percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_hot_noselected));
+					if(lastView!=null){
+						TextView lastlabel = (TextView) lastView.findViewById(R.id.section_label);
+						lastlabel.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
+						lastlabel.setPadding(label.getPaddingLeft(), 8, label.getPaddingRight(), label.getPaddingBottom());
+						lastlabel.setTextSize(24);
+					}
 				}
 			} else {
-				label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
+
 				if(index==mSelectPosition) {
-					label.setBackgroundColor(LABEL_TEXT_BACKGROUND_SELECTED_NOFOCUSED);
+					Log.i("zhangjiqiang", "index==mSelectPosition nohasFocus:// index=="+index+"//mSelectPosition=="+mSelectPosition);
+					//label.setBackgroundColor(LABEL_TEXT_BACKGROUND_SELECTED_NOFOCUSED);
 					percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_selected));
+					label.setTextColor(LABEL_TEXT_COLOR_FOCUSED);
 				} else {
-					label.setBackgroundColor(LABEL_TEXT_BACKGROUND_NOSELECTED_NOFOCUSED);
+					//label.setBackgroundColor(LABEL_TEXT_BACKGROUND_NOSELECTED_NOFOCUSED);
+					label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
+					label.setPadding(label.getPaddingLeft(), 8, label.getPaddingRight(), label.getPaddingBottom());
+					label.setTextSize(24);
+					Log.i("zhangjiqiang", "index!=mSelectPosition nohasFocus:// index=="+index+"//mSelectPosition=="+mSelectPosition);
 					percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_noselected));
 				}
 			}
@@ -154,7 +172,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 				ProgressBar lastPercentageBar = (ProgressBar) lastSelectedView.findViewById(R.id.section_percentage);
 				lastPercentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_noselected));
 				TextView lastLabel = (TextView) lastSelectedView.findViewById(R.id.section_label);
-				lastLabel.setBackgroundColor(LABEL_TEXT_BACKGROUND_NOSELECTED_NOFOCUSED);
+			//	lastLabel.setBackgroundColor(LABEL_TEXT_BACKGROUND_NOSELECTED_NOFOCUSED);
 				changeSelection(index);
 				if(mSectionSelectChangedListener!=null) {
 					mSectionSelectChangedListener.onSectionSelectChanged(index);
@@ -175,12 +193,12 @@ public class ScrollableSectionList extends HorizontalScrollView {
 			View lastSectionHolder = mContainer.getChildAt(mSelectPosition);
 			TextView lastLabel = (TextView) lastSectionHolder.findViewById(R.id.section_label);
 			ProgressBar lastPercentageBar = (ProgressBar) lastSectionHolder.findViewById(R.id.section_percentage);
-			lastLabel.setBackgroundColor(LABEL_TEXT_BACKGROUND_NOSELECTED_NOFOCUSED);
+			//lastLabel.setBackgroundColor(LABEL_TEXT_BACKGROUND_NOSELECTED_NOFOCUSED);
 			lastPercentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_noselected));
 			lastPercentageBar.setProgress(0);
 			
 			changeSelection(position);
-			label.setBackgroundColor(LABEL_TEXT_BACKGROUND_SELECTED_NOFOCUSED);
+			//label.setBackgroundColor(LABEL_TEXT_BACKGROUND_SELECTED_NOFOCUSED);
 			percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_selected));
 		}
 //		Log.d("CurrentPercentage", percentage + "");

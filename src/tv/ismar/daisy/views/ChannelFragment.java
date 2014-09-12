@@ -38,6 +38,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ChannelFragment extends Fragment implements OnItemSelectedListener, OnItemClickListener, OnScrollListener {
@@ -78,6 +79,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 	
 	private HashMap<String, Object> mSectionProperties = new HashMap<String, Object>();
 	
+	private ImageView leftarrow;
 	private void initViews(View fragmentView) {
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
 		mHGridView.setOnItemClickListener(this);
@@ -85,7 +87,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		mHGridView.setOnScrollListener(this);
 		mScrollableSectionList = (ScrollableSectionList) fragmentView.findViewById(R.id.section_tabs);
 		mScrollableSectionList.setOnSectionSelectChangeListener(mOnSectionSelectChangedListener);
-		
+		leftarrow = (ImageView)fragmentView.findViewById(R.id.arrow_left);
 		mChannelLabel = (TextView) fragmentView.findViewById(R.id.channel_label);
 		mChannelLabel.setText(mTitle);
 	}
@@ -134,6 +136,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 			if(mLoadingDialog!=null && !mLoadingDialog.isShowing()) {
 				mLoadingDialog.show();
 			}
+			Log.i("zhangjiqiang", "InitTask onpre");
 			isInitTaskLoading = true;
 			super.onPreExecute();
 		}
@@ -141,6 +144,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		@Override
 		protected Integer doInBackground(String... params) {
 			try {
+				Log.i("zhangjiqiang", "InitTask doInBackground");
 				url = params[0];
 				channel = params[1];
 				if(!isChannelUrl(url)){
@@ -179,7 +183,9 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		protected void onPostExecute(Integer result) {
 			if(mLoadingDialog!=null && mLoadingDialog.isShowing()) {
 				mLoadingDialog.dismiss();
+				leftarrow.setVisibility(View.VISIBLE);
 			}
+			Log.i("zhangjiqiang", "InitTask onPostExecute");
 			isInitTaskLoading = false;
 			if(result!=RESULT_SUCCESS) {
 				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, (mInitTask = new InitTask()), new String[]{url, channel});
@@ -471,11 +477,11 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		
 	}
 	
-	
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
 		// When selected column has changed, we need to update the ScrollableSectionList
+		Log.i("zhangjiqiang", "onItemSelected position=="+position);
 		int sectionIndex = mHGridAdapter.getSectionIndex(position);
 		int rows = mHGridView.getRows();
 		int itemCount = 0;
@@ -483,6 +489,18 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 			itemCount += mHGridAdapter.getSectionCount(i);
 			
 		}
+//		if(lastImage!=null){
+//			lastImage.setBackgroundResource(R.drawable.list_item_preview_bg);
+//			lastImage.setPadding(0, 0, 0, 0);
+//		}
+//		if(view!=null){
+//			AsyncImageView vv = (AsyncImageView) view.findViewById(R.id.list_item_preview_img);
+//			vv.setBackgroundResource(R.drawable.list_item_bg_hot);
+//			vv.setPadding(7, 7, 7, 7);
+//			lastImage = vv;
+//			Log.i("zhangjiqiang", "HHHHHHHHHH");
+//		}
+
 		int columnOfX = (position - itemCount) / rows + 1;
 		int totalColumnOfSectionX = (int)(FloatMath.ceil((float)mHGridAdapter.getSectionCount(sectionIndex) / (float) rows)); 
 		int percentage = (int) ((float)columnOfX / (float)totalColumnOfSectionX * 100f);

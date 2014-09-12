@@ -291,7 +291,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 			isDrama = false;
 			mBtnFill.setVisibility(View.VISIBLE);
 			mBtnLeft.setVisibility(View.GONE);
-			mBtnRight.setVisibility(View.GONE);
+			mBtnRight.setVisibility(View.INVISIBLE);
 			mBtnFill.requestFocus();
 		} else {
 			isDrama = true;
@@ -345,7 +345,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 			if(isDrama){
 				attributeMap.put("episodes", getEpisodes(mItem));
 			}
-			attributeMap.put("length", getClipLength(mItem.clip));
+			attributeMap.put("length", getClipLength(mItem.clip));//modify by zjq
 			Iterator iter = mItem.attributes.map.keySet().iterator();
 			while(iter.hasNext()){
 				String key = (String) iter.next();
@@ -383,9 +383,6 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 		
 		mGetRelatedTask = new GetRelatedTask();
 		mGetRelatedTask.execute();
-		if(mLoadingDialog.isShowing()){
-			mLoadingDialog.dismiss();
-		}
 		//label_uhd and label_hd has worry name. which label_uhd presents hd.
 		switch(mItem.quality) {
 		case 3:
@@ -478,6 +475,11 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 			if(mRelatedItem!=null && mRelatedItem.length>0){
 				buildRelatedList();
 			}
+			if(mLoadingDialog.isShowing()){				
+				mLoadingDialog.dismiss();
+				mDetailLeftContainer.setVisibility(View.VISIBLE);
+				mDetailRightContainer.setVisibility(View.VISIBLE);
+			}
 		}
 		
 		
@@ -486,6 +488,15 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 	private void buildRelatedList() {
 		for(int i=0; i<4&&i<mRelatedItem.length; i++) {
 			RelativeLayout relatedHolder = (RelativeLayout) LayoutInflater.from(ItemDetailActivity.this).inflate(R.layout.related_item_layout, null);
+			
+			int H = DaisyUtils.getVodApplication(ItemDetailActivity.this).getheightPixels(ItemDetailActivity.this);
+			LinearLayout.LayoutParams layoutParams;
+			if(H<=720)
+				layoutParams = new LinearLayout.LayoutParams(426, 119);
+			else
+			    layoutParams = new LinearLayout.LayoutParams(638, 178);
+				relatedHolder.setLayoutParams(layoutParams);
+			
 			TextView titleView = (TextView) relatedHolder.findViewById(R.id.related_title);
 			AsyncImageView imgView = (AsyncImageView) relatedHolder.findViewById(R.id.related_preview_img);
 			imgView.setOnImageViewLoadListener(this);
@@ -514,16 +525,16 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 			if(v.getParent()==mRelatedVideoContainer){
 				if(hasFocus) {
 					TextView title = (TextView) v.findViewById(R.id.related_title);
-					title.setTextColor(0xff000000);
+					title.setTextColor(0xFFF8F8FF);
 					TextView focus = (TextView) v.findViewById(R.id.related_focus);
-					focus.setTextColor(0xff000000);
+					focus.setTextColor(0xFFF8F8FF);
 					title.setSelected(true);
 					focus.setSelected(true);
 				} else {
 					TextView title = (TextView) v.findViewById(R.id.related_title);
-					title.setTextColor(0xffBBBBBB);
+					title.setTextColor(0xFFF8F8FF);
 					TextView focus = (TextView) v.findViewById(R.id.related_focus);
-					focus.setTextColor(0xff999999);
+					focus.setTextColor(0xFFF8F8FF);
 					title.setSelected(false);
 					focus.setSelected(false);
 				}
@@ -542,7 +553,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 			if(hasFocus) {
 				mDetailRightContainer.setBackgroundResource(R.drawable.right_bg_normal);
 				mDetailLeftContainer.setBackgroundResource(android.R.color.transparent);
-				((Button)v).setTextColor(0xff000000);
+				((Button)v).setTextColor(0xFFF8F8FF);
 			} else {
 				((Button)v).setTextColor(0xffbbbbbb);
 			}

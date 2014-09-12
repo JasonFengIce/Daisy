@@ -11,6 +11,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 
 public class ChannelListActivity extends Activity {
@@ -24,6 +25,10 @@ public class ChannelListActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.channel_layout);
 //		initViews();
+		DisplayMetrics dm = new DisplayMetrics();  
+		dm = getResources().getDisplayMetrics();  		  
+		float density  = dm.density; 
+		int densityDPI = dm.densityDpi;
 		Intent intent = getIntent();
 		String title = null;
 		String url = null;
@@ -40,6 +45,7 @@ public class ChannelListActivity extends Activity {
 		}
 		if(url==null) {
 			url = "http://cord.tvxio.com/api/tv/sections/chinesemovie/";
+		//	url = "http://cord.tvxio.com/api/live/channel/movie/";
 		}
 		if(title==null) {
 			title = "华语电影";

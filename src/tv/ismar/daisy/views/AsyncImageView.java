@@ -25,13 +25,18 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 
 /**
@@ -434,7 +439,12 @@ public class AsyncImageView extends ImageView implements ImageRequestCallback {
 
     public void onImageRequestEnded(ImageRequest request, Bitmap image) {
         mBitmap = image;
-        setImageBitmap(image);
+		Animation mAnimation = null; 
+		/**加载透明动画**/
+	    mAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.image_alpha); 
+	    RelativeLayout d = (RelativeLayout) getParent();
+	    d.startAnimation(mAnimation);
+        setImageBitmap(mBitmap);
         if (mOnImageViewLoadListener != null) {
             mOnImageViewLoadListener.onLoadingEnded(this, image);
         }

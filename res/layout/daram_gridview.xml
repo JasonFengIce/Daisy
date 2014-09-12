@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="@dimen/drama_gridview_margintop"
-    android:listSelector="@drawable/daram_grid_selector"
     android:scrollbarDefaultDelayBeforeFade="60000"
     android:scrollbarThumbVertical="@drawable/srollbar"
     android:scrollbarTrackVertical="@drawable/srollbar_backgroud"
-    android:verticalSpacing="@dimen/drama_gridview_verticalspacing" />
+    android:verticalSpacing="@dimen/drama_gridview_verticalspacing"
+    android:listSelector="#00000000"/>

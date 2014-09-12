@@ -1,8 +1,0 @@
-*~
-.apt_generated
-.settings
-.classpath
-src/tv/ismar/daisy/VideoSurfaceDemo.java
-bin
-gen
-*.orig

@@ -67,7 +67,7 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		mSectionTabs.setOnSectionSelectChangeListener(this);
 		mItemListGrid = (DGridView) findViewById(R.id.related_list);
 		mItemListGrid.setOnItemClickListener(this);
-		mItemListGrid.setFocusable(true);
+
 	}
 
 	@SuppressWarnings({ "unchecked" })

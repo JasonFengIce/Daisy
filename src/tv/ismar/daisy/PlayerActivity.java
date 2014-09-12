@@ -28,6 +28,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -120,7 +121,7 @@ public class PlayerActivity extends Activity {
 	private long bufferDuration = 0;
 	private long startDuration = 0;
 	private CallaPlay callaPlay = new CallaPlay();
-
+	AudioManager am;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -155,6 +156,7 @@ public class PlayerActivity extends Activity {
 		panelLayout.setVisibility(View.GONE);
 		bufferLayout.setVisibility(View.GONE);
 		qualityText.setVisibility(View.GONE);
+		am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		initClipInfo();
 	}
 
@@ -834,7 +836,7 @@ public class PlayerActivity extends Activity {
 				if (mVideoView.getDuration() > 0) {
 					isSeek = true;
 					showPanel();
-					fbImage.setImageResource(R.drawable.vod_player_fb_focus);
+					fbImage.setImageResource(R.drawable.vodplayer_controller_rew_pressed);
 					isBuffer = true;
                     showBuffer();
 					fastBackward(SHORT_STEP);                  
@@ -845,7 +847,7 @@ public class PlayerActivity extends Activity {
 				if (mVideoView.getDuration() > 0) {
 					isSeek = true;
 					showPanel();
-					ffImage.setImageResource(R.drawable.vod_player_ff_focus);
+					ffImage.setImageResource(R.drawable.vodplayer_controller_ffd_pressed);
 					isBuffer = true;
                     showBuffer();
 					fastForward(SHORT_STEP);
@@ -858,12 +860,14 @@ public class PlayerActivity extends Activity {
 					showPanel();
 					if (!paused) {
 						pauseItem();
-						playPauseImage
-								.setImageResource(R.drawable.vod_player_pause_focus);
+//						playPauseImage
+//								.setImageResource(R.drawable.vod_player_pause_focus);
+						playPauseImage.setImageResource(R.drawable.vodplayer_controller_pause_pressed);
 					} else {
 						resumeItem();
-						playPauseImage
-								.setImageResource(R.drawable.vod_player_play_focus);
+//						playPauseImage
+//								.setImageResource(R.drawable.vod_player_play_focus);
+						playPauseImage.setImageResource(R.drawable.vodplayer_controller_play_pressed);
 					}
 
 					ret = true;
@@ -882,10 +886,15 @@ public class PlayerActivity extends Activity {
 
 				break;
 			case KeyEvent.KEYCODE_DPAD_UP:
-
+		
+			 am.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
 				showPanel();
 				ret = true;
 
+				break;
+			case KeyEvent.KEYCODE_DPAD_DOWN:
+				am.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+				ret = true;
 				break;
 			case KeyEvent.KEYCODE_BACK:
 				if (panelShow) {
@@ -936,7 +945,7 @@ public class PlayerActivity extends Activity {
 				&& mVideoView.getDuration() > 0) {
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
-				fbImage.setImageResource(R.drawable.vod_player_fb);
+				fbImage.setImageResource(R.drawable.vodplayer_controller_rew);
 				mVideoView.seekTo(currPosition);
 				if (subItem != null)			
 					callaPlay.videoPlaySeek(item.pk, subItem.pk, item.title,clip.pk, currQuality, 0, currPosition);
@@ -950,7 +959,7 @@ public class PlayerActivity extends Activity {
 				offn = 1;
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
-				ffImage.setImageResource(R.drawable.vod_player_ff);
+				ffImage.setImageResource(R.drawable.vodplayer_controller_ffd);
 				mVideoView.seekTo(currPosition);
 				Log.i("zhangjiqiang", "seekto");
 				if (subItem != null)			
@@ -967,10 +976,11 @@ public class PlayerActivity extends Activity {
 			case KeyEvent.KEYCODE_DPAD_CENTER:
 			case KeyEvent.KEYCODE_ENTER:
 				if (paused) {
-					playPauseImage.setImageResource(R.drawable.vod_player_play);
+				//	playPauseImage.setImageResource(R.drawable.vod_player_play);
+					playPauseImage.setImageResource(R.drawable.vodplayer_controller_play);
 				} else {
-					playPauseImage
-							.setImageResource(R.drawable.vod_player_pause);
+					//playPauseImage.setImageResource(R.drawable.vod_player_pause);
+					playPauseImage.setImageResource(R.drawable.vodplayer_controller_pause);
 				}
 				ret = true;
 				break;
@@ -1280,8 +1290,9 @@ public class PlayerActivity extends Activity {
 					timeTaskPause();
 					checkTaskPause();
 					paused = false;
-					playPauseImage
-							.setImageResource(R.drawable.vod_player_pause);
+//					playPauseImage
+//							.setImageResource(R.drawable.vod_player_pause);
+					playPauseImage.setImageResource(R.drawable.vodplayer_controller_pause);
 					isBuffer = true;
 					currQuality = pos;
 					mVideoView = (IsmatvVideoView) findViewById(R.id.video_view);
@@ -1352,21 +1363,26 @@ public class PlayerActivity extends Activity {
 
 		switch (currQuality) {
 		case 0:
-			qualityText.setText("流畅");
+			//qualityText.setText("流畅");
+			qualityText.setBackgroundResource(R.drawable.vodplayer_stream_normal);
 			break;
 		case 1:
-			qualityText.setText("高清");
+			//qualityText.setText("高清");
+			qualityText.setBackgroundResource(R.drawable.vodplayer_stream_high);
 			break;
 		case 2:
-			qualityText.setText("超清");
+			//qualityText.setText("超清");
+			qualityText.setBackgroundResource(R.drawable.vodplayer_stream_ultra);
 			break;
 
 		case 3:
 			qualityText.setText("自适应");
+			qualityText.setBackgroundResource(R.drawable.rounded_edittext);
 			break;
 
 		default:
-			qualityText.setText("流畅");
+			//qualityText.setText("流畅");
+			qualityText.setBackgroundResource(R.drawable.vodplayer_stream_normal);
 			break;
 		}
 

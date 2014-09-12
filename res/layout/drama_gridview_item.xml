@@ -11,9 +11,9 @@
         android:layout_marginLeft="@dimen/drama_gridview_item_btn_marginleft"
         android:layout_marginTop="@dimen/drama_gridview_item_btn_margintop"
         android:layout_marginRight="@dimen/drama_gridview_item_btn_marginright"
-        android:background="@drawable/watch_no"
         android:focusable="false"
         android:textColor="@color/search_text_result"
-        android:textSize="@dimen/drama_gridview_item_btn_textsize" />
+        android:textSize="@dimen/drama_gridview_item_btn_textsize"
+        android:background="@drawable/daram_grid_selector" />
 
 </LinearLayout>

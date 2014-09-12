@@ -109,4 +109,5 @@
     <string name="VideoView_error_text_invalid_progressive_playback" msgid="3186670335938670444">"This video isn\'t valid for streaming to this device."</string>
     <string name="VideoView_error_text_unknown" msgid="3450439155187810085">"Can\'t play this video."</string>
     <string name="VideoView_error_button" msgid="2822238215100679592">"OK"</string>
+    <string name="video_Detail_MoreContent">更多内容</string>
 </resources>

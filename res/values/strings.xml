@@ -109,4 +109,5 @@
     <string name="VideoView_error_text_invalid_progressive_playback">视频不可用</string>
     <string name="VideoView_error_text_unknown">未知错误</string>
     <string name="VideoView_error_button">视频错误</string>
+    <string name="video_Detail_MoreContent">更多内容</string>
 </resources>

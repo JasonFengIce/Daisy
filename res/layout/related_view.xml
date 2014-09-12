@@ -29,7 +29,7 @@
         android:numColumns="4"
         android:horizontalSpacing="@dimen/related_view_list_horizontalspacing"
         android:verticalSpacing="@dimen/related_view_list_verticalspacing"
-        android:stretchMode="none"
+        android:stretchMode="columnWidth"
         android:columnWidth="@dimen/related_view_list_columnwidth"
         android:listSelector="@drawable/vod_gv_selector"
         >

@@ -68,6 +68,7 @@
     <dimen name="item_detail_more_content_width">247dip</dimen>
     <dimen name="item_detail_more_content_height">68dip</dimen>
     <dimen name="item_detail_more_content_textsize">35dip</dimen>
+    <dimen name="item_detail_btn_marginleft">51dip</dimen>
 <!-- grid listview page-->
     <dimen name="gridview_channel_panel_height">240dip</dimen>
     <dimen name="gridview_channel_panel_marginBottom">35dp</dimen>
@@ -169,6 +170,7 @@
     <dimen name="vod_player_titletext_H">80dip</dimen>
     <dimen name="vod_player_titletext_marginleft">220dip</dimen>
     <dimen name="vod_player_titletext_textsize">50dip</dimen>
+    <dimen name="vod_player_titletext_margintop">6dip</dimen>
     <dimen name="vod_player_timetext_H">80dip</dimen>
     <dimen name="vod_player_timetext_marginright">80dip</dimen>
     <dimen name="vod_player_timetext_PR">40dip</dimen>
@@ -176,6 +178,8 @@
     <dimen name="vod_player_titlelayout_H">110dip</dimen>
     <dimen name="vod_player_titlelayout_PL">80dip</dimen>
     <dimen name="vod_player_titlelayout_PR">80dip</dimen>
+    <dimen name="vod_player_titlelayout_marginleft">150dip</dimen>
+    <dimen name="vod_player_titlelayout_margintop">23dip</dimen>
     <dimen name="vod_player_playpauseimage_W">85dip</dimen>
     <dimen name="vod_player_playpauseimage_H">85dip</dimen>
     <dimen name="vod_player_playpauseimage_marginleft">80dip</dimen>
@@ -187,6 +191,12 @@
     <dimen name="vod_player_ffimage_W">42dip</dimen>
     <dimen name="vod_player_ffimage_H">35dip</dimen>
     <dimen name="vod_player_ffimage_marginright">80dip</dimen>
+    <dimen name="vod_player_timeseekbar_H">23dip</dimen>
+    <dimen name="vod_player_vodlayout_marginleft">60dip</dimen>
+    <dimen name="vod_player_vodlayout_margintop">12dip</dimen>
+    <dimen name="vod_player_vodlayout_PB">12dip</dimen>
+    <dimen name="vod_player_vod_content_layout_W">600dip</dimen>
+    <dimen name="vod_player_qualitytext_margintop">20dip</dimen>
     
     <!-- play_finished -->
     <dimen name="play_finished_leftlayout_W">753dip</dimen>

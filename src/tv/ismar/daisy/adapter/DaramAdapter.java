@@ -53,4 +53,6 @@ public class DaramAdapter extends BaseAdapter {
 	public static class ViewHolder {
 		Button btnCount;
 	}
+	
+	public Button testbtn;
 }

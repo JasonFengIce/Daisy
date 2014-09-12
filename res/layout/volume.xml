@@ -18,7 +18,7 @@
 		android:layout_marginRight="150px"
 		android:layout_marginTop="150px"
 	/>
-	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	<LinearLayout
 		android:id="@+id/VolLinearView"
 		android:orientation="horizontal"
 		android:gravity="center"

@@ -216,7 +216,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		setLabelBackgroundDrawableOffset(labelBackgroundLeftOffset, labelBackgroundTopOffset, labelBackgroundLeftOffset + labelBackgroundWidth, labelBackgroundTopOffset + labelBackgroundheight);
 		
 		int labelTextSize = a.getDimensionPixelSize(R.styleable.HGridView_labelTextSize, 20);
-		int labelTextColor = a.getColor(R.styleable.HGridView_labelTextColor, 0xffffffff);
+		int labelTextColor = a.getColor(R.styleable.HGridView_labelTextColor, 0xffffffff);		
 		mLabelTextPaint = new Paint();
 		mLabelTextPaint.setTextSize(labelTextSize);
 		mLabelTextPaint.setColor(labelTextColor);
@@ -1005,17 +1005,24 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		return commonKey(keyCode, 1, event);
+		boolean s = commonKey(keyCode, 1, event);
+		Log.i("zjq", "onKeyDown return "+s);
+		return s;
 	}
 
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		return commonKey(keyCode, 1, event);
+		boolean s = commonKey(keyCode, 1, event);
+		Log.i("zjq", "onKeyUp return "+s);
+		return s;
 	}
 
 	@Override
 	public boolean onKeyMultiple(int keyCode, int repeatCount, KeyEvent event) {
-		return commonKey(keyCode, repeatCount, event);
+		boolean s = commonKey(keyCode, 1, event);
+		Log.i("zjq", "onKeyMultiple return "+s);
+		return s;
+		
 	}
 	
 	private boolean commonKey(int keyCode, int repeatCount, KeyEvent event) {
@@ -1294,7 +1301,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 //	private int getArrowScrollPreviewLength() {
 //		return Math.max(MIN_SCROLL_PREVIEW_PIXELS, getHorizontalFadingEdgeLength());
 //	}
-	
+//	
 //	private int getMaxScrollAmount() {
 //		return (int) (MAX_SCROLL_FACTOR * (getRight() - getLeft()));
 //	}
@@ -1338,6 +1345,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	
 	@Override
 	protected void dispatchDraw(Canvas canvas) {
+		Log.i("zhangjiqiang", "hgridview dispatchDraw");
 		if(mAdapter!=null && mAdapter.hasSection() && getChildCount() > 0) {
 			drawSectionLabels(canvas);
 		}
@@ -1642,10 +1650,19 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		mSelector = sel;
         Rect padding = new Rect();
         sel.getPadding(padding);
-        mSelectionLeftPadding = padding.left;
-        mSelectionTopPadding = padding.top;
-        mSelectionRightPadding = padding.right;
-        mSelectionBottomPadding = padding.bottom;
+//        mSelectionLeftPadding = padding.left;
+//        mSelectionTopPadding = padding.top;
+//        mSelectionRightPadding = padding.right;
+//        mSelectionBottomPadding = padding.bottom;
+        
+        mSelectionLeftPadding = 17;//24
+        mSelectionTopPadding = 20;//24
+        mSelectionRightPadding = 17;//24;
+        mSelectionBottomPadding = -26;
+//        mSelectionLeftPadding = 0;
+//        mSelectionTopPadding = 0;
+//        mSelectionRightPadding = 0;
+//        mSelectionBottomPadding = 0;
         sel.setCallback(this);
         sel.setState(getDrawableState());
 	}
@@ -2179,4 +2196,6 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		}
 		return false;
 	}
+
+
 }

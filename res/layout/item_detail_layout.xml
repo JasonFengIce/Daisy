@@ -9,7 +9,8 @@
     <RelativeLayout
         android:id="@+id/detail_left_container"
         android:layout_width="@dimen/item_detail_detail_left_container_width"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:visibility="invisible" >
 
         <ImageView
             android:layout_width="@dimen/item_detail_vod_watermark_width"
@@ -63,15 +64,86 @@
             android:textColor="#FFBBBBBB"
             android:textSize="@dimen/item_detail_intro_textsize" />
 
-        <TextView
+        <LinearLayout 
+            android:layout_height="@dimen/item_detail_btn_left_height"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_above="@id/detail_intro"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="@dimen/item_detail_introlabel_marginleft"
-            android:text="@string/introduction"
-            android:textColor="#FF999999"
-            android:textSize="@dimen/item_detail_introlabel_textsize" />
+            android:orientation="horizontal">
+                   
+           <Button
+                android:id="@+id/btn_fill"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/item_detail_btn_left_textsize"
+                android:textColor="#FFF8F8FF"
+                android:text="@string/play"
+                android:drawableLeft="@drawable/vod_detail_poster_play_icon_selector"
+                android:background="@drawable/vod_detail_relatemore_button_selector"
+                android:paddingLeft="@dimen/item_detail_btn_favorite_paddingleft"
+                android:paddingRight="@dimen/item_detail_btn_favorite_paddingright"
+                android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"
+               
+                android:visibility="gone"/>
+            
+           <Button
+                android:id="@+id/btn_left"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/item_detail_btn_left_textsize"
+                android:textColor="#FFF8F8FF"
+                android:text="@string/play"
+                android:drawableLeft="@drawable/vod_detail_poster_play_icon_selector"
+                android:background="@drawable/vod_detail_relatemore_button_selector"
+                android:paddingLeft="@dimen/item_detail_btn_favorite_paddingleft"
+                android:paddingRight="@dimen/item_detail_btn_favorite_paddingright"
+                android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"
+                
+                android:visibility="gone"/>
+           
+             <Button
+                android:id="@+id/btn_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:drawableLeft="@drawable/vod_detail_poster_favorite_icon_selector"
+                android:textColor="#FFF8F8FF"
+                android:textSize="@dimen/item_detail_btn_favorite_textsize"
+                android:layout_marginLeft="@dimen/item_detail_btn_marginleft"
+                android:paddingLeft="@dimen/item_detail_btn_favorite_paddingleft"
+                android:paddingRight="@dimen/item_detail_btn_favorite_paddingright"
+                android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"
+                android:background="@drawable/vod_detail_relatemore_button_selector"
+                />
+
+            <Button
+                android:id="@+id/btn_right"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:drawableLeft="@drawable/vod_detail_poster_episode_normal_icon"
+                android:layout_marginLeft="@dimen/item_detail_btn_marginleft"                
+                android:textSize="@dimen/item_detail_btn_right_textsize"
+                android:textColor="#FFF8F8FF"
+                android:text="@string/vod_itemepisode"
+                android:background="@drawable/vod_detail_relatemore_button_selector"
+                android:visibility="invisible"
+                android:paddingLeft="@dimen/item_detail_btn_favorite_paddingleft"
+                android:paddingRight="@dimen/item_detail_btn_favorite_paddingright"
+                android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"
+                android:paddingBottom="@dimen/item_detail_btn_favorite_paddingtop"/>
+           
+        </LinearLayout>
+        
+        
+<!--         <TextView -->
+<!--             android:layout_width="wrap_content" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:layout_above="@id/detail_intro" -->
+<!--             android:layout_alignParentLeft="true" -->
+<!--             android:layout_marginLeft="@dimen/item_detail_introlabel_marginleft" -->
+<!--             android:text="@string/introduction" -->
+<!--             android:textColor="#FF999999" -->
+<!--             android:textSize="@dimen/item_detail_introlabel_textsize" /> -->
 
         <RelativeLayout
             android:layout_width="@dimen/item_detail_previewpanel_width"
@@ -100,65 +172,12 @@
                 android:layout_marginTop="@dimen/item_detail_detailquality_margintop"
                 android:layout_marginRight="@dimen/item_detail_detailquality_marginright"/>
 
-            <Button
-                android:id="@+id/btn_left"
-                android:layout_width="@dimen/item_detail_btn_left_width"
-                android:layout_height="@dimen/item_detail_btn_left_height"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@id/detail_preview_img"
-                android:textSize="@dimen/item_detail_btn_left_textsize"
-                android:textColor="#FFBBBBBB"
-                android:text="@string/play"
-                android:gravity="center"
-                android:background="@drawable/button_left"
-                android:visibility="visible"/>
 
-            <Button
-                android:id="@+id/btn_right"
-                android:layout_width="@dimen/item_detail_btn_right_width"
-                android:layout_height="@dimen/item_detail_btn_right_height"
-                android:layout_marginRight="@dimen/item_detail_detailquality_height"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/detail_preview_img"
-                android:textSize="@dimen/item_detail_btn_right_textsize"
-                android:textColor="#FFBBBBBB"
-                android:gravity="center"
-                android:text="@string/vod_itemepisode"
-                android:background="@drawable/button_right"
-                android:visibility="visible"/>
-
-            <Button
-                android:id="@+id/btn_fill"
-                android:layout_width="@dimen/item_detail_btn_fill_width"
-                android:layout_height="@dimen/item_detail_btn_fill_height"
-                android:layout_below="@id/detail_preview_img"
-                android:layout_centerHorizontal="true"
-                android:layout_marginRight="@dimen/item_detail_detailquality_height"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="@string/play"
-                android:textSize="@dimen/item_detail_btn_fill_textsize"
-                android:textColor="#FFBBBBBB"
-                android:background="@drawable/button_fill"
-               />
-
-            <Button
-                android:id="@+id/btn_favorite"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/item_detail_btn_favorite_height"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/favorite_btn"
-                android:textColor="#FFBBBBBB"
-                android:textSize="@dimen/item_detail_btn_favorite_textsize"
-                android:paddingLeft="@dimen/item_detail_btn_favorite_paddingleft"
-                android:paddingRight="@dimen/item_detail_btn_favorite_paddingright"
-                android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"
-                android:gravity="left|top"/>
         </RelativeLayout>
     </RelativeLayout>
 
     <LinearLayout
+        android:visibility="invisible"
         android:id="@+id/detail_right_container"
         android:layout_width="@dimen/item_detail_right_container_width"
         android:layout_height="match_parent"
@@ -194,9 +213,10 @@
             android:layout_width="@dimen/item_detail_more_content_width"
             android:layout_height="@dimen/item_detail_more_content_height"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/more_btn"
-            android:textColor="#FFBBBBBB"
+            android:background="@drawable/vod_detail_relatemore_button_selector"
+            android:textColor="#FFF8F8FF"
             android:textSize="@dimen/item_detail_more_content_textsize" 
+            android:text="@string/video_Detail_MoreContent"
             />
     </LinearLayout>
 

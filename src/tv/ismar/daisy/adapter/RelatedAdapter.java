@@ -2,6 +2,9 @@ package tv.ismar.daisy.adapter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import org.sakuratya.horizontal.adapter.HGridAdapter;
+
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.models.Item;
@@ -12,7 +15,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.View.OnFocusChangeListener;
 import android.widget.AbsListView;
@@ -60,7 +65,7 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 	@Override
 	public long getItemId(int position) {
 		// TODO Auto-generated method stub
-		return 0;
+		return position;
 	}
 
 	@Override
@@ -68,7 +73,7 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 		Holder holder = null;
 		if(convertView == null) {
 			holder = new Holder();
-			convertView = LayoutInflater.from(mContext).inflate(R.layout.list_view_item, null);
+			convertView = LayoutInflater.from(mContext).inflate(R.layout.related_view_item, null);
 //			AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(348, 252);
 //			View titleView = convertView.findViewById(R.id.list_item_title);
 //			titleView.setFocusable(true);
@@ -83,6 +88,17 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 		holder.previewImage.setUrl(mItemList.get(position).adlet_url);
 		holder.title.setText(mItemList.get(position).title);
 		holder.qualityLabel = (ImageView) convertView.findViewById(R.id.list_item_quality_label);
+		//holder.previewImage.setBackgroundResource(R.drawable.video_item_selector);
+	
+		holder.previewImage.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View arg0, MotionEvent arg1) {
+				// TODO Auto-generated method stub
+				Log.i("zhangjiqiang", "onTouch");
+				return false;
+			}
+		});
 		if(mItemList.get(position).quality==3) {
 			holder.qualityLabel.setImageResource(R.drawable.label_hd_small);
 		} else if(mItemList.get(position).quality==4 || mItemList.get(position).quality==5) {
@@ -126,5 +142,19 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 	public void onLoadingFailed(AsyncImageView imageView, Throwable throwable) {
 		mOnLoadingImageQueue.remove(imageView);
 	}
+
+	
+
+	
+//	@Override
+//	public int getSectionCount(int sectionIndex) {
+//		return mList.get(sectionIndex).count;
+//	}
+//
+//	@Override
+//	public String getLabelText(int sectionIndex) {
+//		return mList.get(sectionIndex).title;
+//	}
+	
 
 }

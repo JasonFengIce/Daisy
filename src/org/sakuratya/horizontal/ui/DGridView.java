@@ -43,15 +43,7 @@ setOnItemSelectedListener(this);
 
 
 
-	@Override
-	public void setAdapter(ListAdapter adapter) {
-		// TODO Auto-generated method stub
-		this.adapter = adapter;
-		super.setAdapter(adapter);
-	}
-	protected boolean shouldShowSelector() {
-		return hasFocus();
-	}
+
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
@@ -66,58 +58,16 @@ setOnItemSelectedListener(this);
 		// TODO Auto-generated method stub
 		
 	}
-	
-	@Override
-    public boolean verifyDrawable(Drawable dr) {
-        return mSelector == dr || super.verifyDrawable(dr);
-    }
-	
-	@Override
-	protected void dispatchDraw(Canvas canvas) {
-		if(shouldShowSelector()){
-			View v = getChildAt(currentSecected);
-			if(v!=null&&v.isSelected()){
-				Log.i("zhnagjiqiang", "draw secector");
-				mSelector.setBounds(new Rect(v.getLeft(),v.getTop()-30,v.getRight(),v.getBottom()-30));
-				mSelector.draw(canvas);
-				lastPosition = currentSecected;
-			}
-		}
-	
-		super.dispatchDraw(canvas);
-	}
-	@Override
-    protected void drawableStateChanged() {
-        super.drawableStateChanged();
-        if (mSelector != null) {
-            mSelector.setState(getDrawableState());
-        }
-    }
-	
-	
-	@Override
-	protected int[] onCreateDrawableState(int extraSpace) {
-		return super.onCreateDrawableState(extraSpace);
-	}
+ }
 	
 
-	
-	@Override
-    protected void dispatchSetPressed(boolean pressed) {
-        // Don't dispatch setPressed to our children. We call setPressed on ourselves to
-        // get the selector in the right state, but we don't want to press each child.
-    }
-	
-	
-	@Override
-	public View getSelectedView() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setSelection(int arg0) {
-		// TODO Auto-generated method stub
 		
-	}
-}
+
+
+	
+
+
+
+    }
+	
+

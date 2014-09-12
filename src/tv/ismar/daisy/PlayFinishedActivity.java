@@ -202,26 +202,26 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 			} catch (Exception e) {
 			}
 			break;
-		case R.id.btn_replay:
-			try {
-				if (hasFocus) {
-					btnReplay.setTextColor(getResources().getColor(R.color.play_finished));
-				} else {
-					btnReplay.setTextColor(getResources().getColor(R.color.search_color));
-				}
-				break;
-			} catch (Exception e) {
-			}
-		case R.id.btn_favorites:
-			try {
-				if (hasFocus) {
-					btnFavorites.setTextColor(getResources().getColor(R.color.play_finished));
-				} else {
-					btnFavorites.setTextColor(getResources().getColor(R.color.search_color));
-				}
-				break;
-			} catch (Exception e) {
-			}
+//		case R.id.btn_replay:
+//			try {
+//				if (hasFocus) {
+//					btnReplay.setTextColor(getResources().getColor(R.color.play_finished));
+//				} else {
+//					btnReplay.setTextColor(getResources().getColor(R.color.search_color));
+//				}
+//				break;
+//			} catch (Exception e) {
+//			}
+//		case R.id.btn_favorites:
+//			try {
+//				if (hasFocus) {
+//					btnFavorites.setTextColor(getResources().getColor(R.color.play_finished));
+//				} else {
+//					btnFavorites.setTextColor(getResources().getColor(R.color.search_color));
+//				}
+//				break;
+//			} catch (Exception e) {
+//			}
 
 		default:
 			break;

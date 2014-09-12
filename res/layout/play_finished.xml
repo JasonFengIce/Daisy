@@ -61,9 +61,15 @@
                 android:layout_width="@dimen/play_finished_image_vodie_backgroud_W"
                 android:layout_height="@dimen/play_finished_btn_replay_H"
                 android:layout_below="@+id/linear_vodie_backgroud"
-                android:background="@drawable/poster_image_selector"
+                android:background="@drawable/vod_detail_relatemore_button_selector"
                 android:text="@string/daram_restart"
-                android:textSize="@dimen/play_finished_btn_replay_textsize" />
+                android:textSize="@dimen/play_finished_btn_replay_textsize"
+                android:drawableLeft="@drawable/vod_detail_end_poster_replay_normal_icon" 
+                android:textColor="#FFF8F8FF"
+                android:paddingLeft="@dimen/item_detail_btn_favorite_paddingleft"
+                android:paddingRight="@dimen/item_detail_btn_favorite_paddingright"
+                android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"
+                android:paddingBottom="@dimen/item_detail_btn_favorite_paddingtop"/>
 
             <Button
                 android:id="@+id/btn_favorites"
@@ -72,12 +78,15 @@
                 android:layout_below="@+id/btn_replay"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/play_finished_btn_favorites_margintop"
-                android:background="@drawable/favorites_image_selector"
+                android:background="@drawable/vod_detail_relatemore_button_selector"
                 android:gravity="center_horizontal|center_vertical"
-                android:paddingBottom="@dimen/play_finished_btn_favorites_PB"
+                android:paddingLeft="@dimen/item_detail_btn_favorite_paddingleft"
+                android:paddingRight="@dimen/item_detail_btn_favorite_paddingright"
+                android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"
                 android:text="@string/daram_favorites"
-                android:textColor="@color/search_text_result"
-                android:textSize="@dimen/play_finished_btn_favorites_textsize"/>
+                android:textColor="#FFF8F8FF"
+                android:textSize="@dimen/play_finished_btn_favorites_textsize"
+                android:drawableLeft="@drawable/vod_detail_poster_favorite_icon_selector"/>
         </RelativeLayout>
     </LinearLayout>
 
@@ -117,7 +126,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/play_finished_gridview_related_margin"
-            android:listSelector="@drawable/play_grid_selector" >
+            android:listSelector="#00000000"
+             >
         </GridView>
     </LinearLayout>
     <!-- 右边整块 -->

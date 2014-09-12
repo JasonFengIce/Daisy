@@ -6,6 +6,7 @@ import java.util.List;
 
 import tv.ismar.daisy.adapter.DaramAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.ImageUtils;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.views.AsyncImageView;
@@ -78,7 +79,7 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 		mDramaView.setOnItemSelectedListener(this);
 		mDramaView.setOnItemClickListener(this);
 		mDramaView.setNumColumns(10);
-		mDramaView.setVerticalSpacing(50);
+		mDramaView.setVerticalSpacing(30);
 
 		mImageBackground = (AsyncImageView) findViewById(R.id.image_daram_back);
 		mDramaImageLabel = (ImageView) findViewById(R.id.image_daram_label);
@@ -148,7 +149,7 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 	@Override
 	public void onFocusChange(View v, boolean hasFocus) {
 		// TODO Auto-generated method stub
-
+		mDramaView.setSelector(null);
 	}
 
 	@Override

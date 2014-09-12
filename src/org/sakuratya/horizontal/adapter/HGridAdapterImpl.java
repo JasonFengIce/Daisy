@@ -31,7 +31,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 	private int mSize = 0;
 	
 	private HashSet<AsyncImageView> mOnLoadingImageQueue = new HashSet<AsyncImageView>();
-	
+	private HashSet<RelativeLayout> mOnLoadinglayoutQueue = new HashSet<RelativeLayout>();
 	public HGridAdapterImpl(Context context, ArrayList<ItemCollection> list) {
 		mContext = context;
 		if(list != null && list.size()>0) {
@@ -74,7 +74,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 	@Override
 	public long getItemId(int position) {
 		// TODO Auto-generated method stub
-		return 0;
+		return position;
 	}
 
 	@Override
@@ -109,12 +109,9 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 		if(mList.get(sectionIndex).isItemReady(indexOfCurrentSection)) {
 			final Item item = mList.get(sectionIndex).objects.get(indexOfCurrentSection);
 			holder.title.setText(item.title);
-			Animation mAnimation = null; 
-			/**加载透明动画**/
-		    mAnimation = AnimationUtils.loadAnimation(mContext, R.anim.image_alpha); 
-		   // holder.previewImage.setAnimation(mAnimation);
-		    holder.listLayout.setAnimation(mAnimation);
 			holder.previewImage.setUrl(item.adlet_url);
+			//Log.i("zhangjiqiang", "layout width and height=="+holder.listLayout.getWidth()+"//"+holder.listLayout.getHeight());
+			//Log.i("zhangjiqiang", "imageView width and height=="+holder.previewImage.getWidth()+"//"+holder.previewImage.getHeight());
 //			Log.v("aaaa", "item.title ="+item.title+"<><>item.expense ="+item.expense.price);
 			if(item.quality==3) {
 				holder.qualityLabel.setImageResource(R.drawable.label_hd_small);
@@ -130,6 +127,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 			holder.previewImage.setUrl(null);
 			holder.qualityLabel.setImageDrawable(null);
 		}
+		//holder.previewImage.setBackgroundResource(R.drawable.video_item_selector);
 		return convertView;
 	}
 
@@ -188,5 +186,4 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 	public void onLoadingFailed(AsyncImageView imageView, Throwable throwable) {
 		mOnLoadingImageQueue.remove(imageView);
 	}
-
 }
