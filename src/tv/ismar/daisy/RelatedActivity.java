@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import org.sakuratya.horizontal.ui.DGridView;
+import org.sakuratya.horizontal.ui.HGridView;
+
 import tv.ismar.daisy.adapter.RelatedAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.NetworkUtils;
@@ -39,7 +42,8 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 	
 	private ScrollableSectionList mSectionTabs;
 	
-	private GridView mItemListGrid;
+	private DGridView mItemListGrid;
+   // private HGridView mItemListGrid;
 	
 	private ArrayList<Item> mRelatedItem;
 	
@@ -61,8 +65,9 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 	private void initViews(){
 		mSectionTabs = (ScrollableSectionList) findViewById(R.id.related_section_tabs);
 		mSectionTabs.setOnSectionSelectChangeListener(this);
-		mItemListGrid = (GridView) findViewById(R.id.related_list);
+		mItemListGrid = (DGridView) findViewById(R.id.related_list);
 		mItemListGrid.setOnItemClickListener(this);
+		mItemListGrid.setFocusable(true);
 	}
 
 	@SuppressWarnings({ "unchecked" })
@@ -175,7 +180,7 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_RELATE_IN, mDataCollectionProperties);
 		
 		initSectionTabs();
-		mSectionTabs.init(mVirtualSectionList, 1681);
+		mSectionTabs.init(mVirtualSectionList, getResources().getDimensionPixelSize(R.dimen.gridview_channel_section_tabs_width));
 		buildGridView();
 		if(mLoadingDialog.isShowing()){
 			mLoadingDialog.dismiss();
@@ -184,7 +189,9 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 	
 	private void buildGridView() {
 		mAdapter = new RelatedAdapter(this, mRelatedItem);
+		//mAdapter.setList(mRelatedItem);
 		mItemListGrid.setAdapter(mAdapter);
+		
 	}
 
 	@Override

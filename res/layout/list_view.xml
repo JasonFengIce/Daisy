@@ -20,8 +20,13 @@
             android:layout_marginRight="@dimen/gridview_channel_label_marginright"
             android:textSize="@dimen/gridview_channel_label_textsize"
             android:textColor="#FFBBBBBB"
-            android:background="@drawable/channel_label_bg"
             android:padding="@dimen/gridview_channel_label_padding"/>
+        <ImageView 
+            android:id="@+id/gridview_line"
+            android:layout_height="123dip"
+            android:layout_width="2dip"
+            android:background="@drawable/vodplayer_channels_bg"/>
+     
         <tv.ismar.daisy.views.ScrollableSectionList
             android:id="@+id/section_tabs"
             android:layout_width="@dimen/gridview_channel_section_tabs_width"
@@ -30,6 +35,13 @@
             android:scrollbars="none">
             
         </tv.ismar.daisy.views.ScrollableSectionList>
+        <ImageView
+            android:id="@+id/arrow_left"
+            android:layout_marginTop="108dip"
+            android:layout_height="24dip"
+            android:layout_width="20dip"
+            android:background="@drawable/vod_arrow_right_normal"
+            android:visibility="invisible"/>
     </LinearLayout>
     <org.sakuratya.horizontal.ui.HGridView
         android:id="@+id/h_grid_view"
@@ -39,11 +51,11 @@
         android:fadingEdgeLength="@dimen/gridview_main_panel_fadingEdgeLength"
         sakura:horizontalSpacing="@dimen/gridview_main_panel_horizontalSpacing"
         sakura:verticalSpacing="@dimen/gridview_main_panel_verticalSpacing"
-        sakura:rowHeight="@dimen/gridview_main_panel_rowHeight"
+        sakura:rowHeight="@dimen/gridview_main_panel_rowHeight" 
         sakura:numRows="3"
+        sakura:selectorDrawable="@drawable/vod_gv_selector"
         sakura:labelDrawable="@drawable/section_label_drawable"
         sakura:labelBackgroundDrawable="@drawable/section_shadow_bg"
-        sakura:selectorDrawable="@drawable/list_item_bg_hot"
         sakura:labelTopOffset="@dimen/gridview_main_panel_labelTopOffset"
         sakura:labelLeftOffset="@dimen/gridview_main_panel_labelLeftOffset"
         sakura:labelWidth="@dimen/gridview_main_panel_labelWidth"
@@ -52,11 +64,12 @@
         sakura:labelBackgroundWidth="@dimen/gridview_main_panel_labelBackgroundWidth"
         sakura:labelBackgroundHeight="@dimen/gridview_main_panel_labelBackgroundHeight"
         sakura:labelTextSize="@dimen/gridview_main_panel_labelTextSize"
-        sakura:labelTextColor="#FFBBBBBB"
+        sakura:labelTextColor="#FFF8F8FF"
         sakura:labelTextMarginTop="@dimen/gridview_main_panel_labelTextMarginTop"
         sakura:labelTextMarginLeft="@dimen/gridview_main_panel_labelTextMarginLeft"
         sakura:labelTextMarginBottom="@dimen/gridview_main_panel_labelTextMarginBottom"
-        sakura:labelTextMarginRight="@dimen/gridview_main_panel_labelTextMarginRight">
+        sakura:labelTextMarginRight="@dimen/gridview_main_panel_labelTextMarginRight"
+        >
         
     </org.sakuratya.horizontal.ui.HGridView>
     <RelativeLayout

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sakura="http://schemas.android.com/apk/res/tv.ismar.daisy"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -18,7 +19,7 @@
         android:scrollbars="none">
         
     </tv.ismar.daisy.views.ScrollableSectionList>
-    <GridView
+    <org.sakuratya.horizontal.ui.DGridView
         android:id="@+id/related_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,6 +31,25 @@
         android:verticalSpacing="@dimen/related_view_list_verticalspacing"
         android:stretchMode="none"
         android:columnWidth="@dimen/related_view_list_columnwidth"
-        android:listSelector="@drawable/list_item_bg_hot">
-    </GridView>
+        android:listSelector="@drawable/vod_gv_selector"
+        >
+    </org.sakuratya.horizontal.ui.DGridView>
+    
+<!--         <org.sakuratya.horizontal.ui.HGridView -->
+<!--         android:id="@+id/related_list" -->
+<!--         android:layout_width="match_parent" -->
+<!--         android:layout_height="match_parent" -->
+<!--         android:layout_marginLeft="@dimen/related_view_list_marginleft" -->
+<!--         android:layout_marginRight="@dimen/related_view_list_marginright" -->
+<!--         android:layout_marginTop="@dimen/related_view_list_margintop" -->
+<!--         android:fadingEdge="horizontal" -->
+<!--         android:fadingEdgeLength="@dimen/gridview_main_panel_fadingEdgeLength" -->
+<!--         sakura:horizontalSpacing="@dimen/related_view_list_horizontalspacing" -->
+<!--         sakura:verticalSpacing="@dimen/related_view_list_verticalspacing" -->
+<!--         sakura:rowHeight="100dip"  -->
+<!--         sakura:numRows="3" -->
+<!--         sakura:selectorDrawable="@drawable/vod_gv_selector"     -->
+<!--         > -->
+        
+<!--     </org.sakuratya.horizontal.ui.HGridView> -->
 </LinearLayout>
