@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ListView;
 
 /**
@@ -157,7 +158,10 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	private SelectionNotifier mSelectionNotifier;
 	
 	public int mScrollState = OnScrollListener.SCROLL_STATE_IDLE;
-	
+	   /**
+     * Controls how the next layout will happen
+     */
+
 	public HGridView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		initView(context, attrs);
@@ -174,13 +178,14 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	}
 	
 	private void initView() {
+		GridView s;
 		setWillNotDraw(false);
-//		setFocusable(true);
+		setFocusable(true);
 		setClickable(true);
         setFocusableInTouchMode(true);
 		setHorizontalFadingEdgeEnabled(true);
 	}
-	
+
 	private void initView(Context context, AttributeSet attrs) {
 		initView();
 		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.HGridView);
@@ -199,6 +204,12 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		int numRows = a.getInt(R.styleable.HGridView_numRows, 1);
 		setRows(numRows);
 		Drawable d = a.getDrawable(R.styleable.HGridView_selectorDrawable);
+        
+		
+		mSelectionLeftPadding = a.getDimensionPixelOffset(R.styleable.HGridView_selectionLeftPadding, 0);//24
+        mSelectionTopPadding = a.getDimensionPixelOffset(R.styleable.HGridView_selectionTopPadding, 0);//24
+        mSelectionRightPadding =a.getDimensionPixelOffset(R.styleable.HGridView_selectionRightPadding, 0);//24;       
+        mSelectionBottomPadding = a.getDimensionPixelOffset(R.styleable.HGridView_selectionBottomPadding, 0);
 		if(d!=null) {
 			setSelector(d);
 		}
@@ -973,7 +984,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
         	final View child = obtainView(0, mIsScrap);
         	HGridView.LayoutParams p = (HGridView.LayoutParams) child.getLayoutParams();
         	if(p==null) {
-        		p = new HGridView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        		p = new HGridView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         		child.setLayoutParams(p);
         	}
         	int childWidthSpec = getChildMeasureSpec(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED), 0, p.height);
@@ -1345,7 +1356,6 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	
 	@Override
 	protected void dispatchDraw(Canvas canvas) {
-		Log.i("zhangjiqiang", "hgridview dispatchDraw");
 		if(mAdapter!=null && mAdapter.hasSection() && getChildCount() > 0) {
 			drawSectionLabels(canvas);
 		}
@@ -1650,19 +1660,6 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		mSelector = sel;
         Rect padding = new Rect();
         sel.getPadding(padding);
-//        mSelectionLeftPadding = padding.left;
-//        mSelectionTopPadding = padding.top;
-//        mSelectionRightPadding = padding.right;
-//        mSelectionBottomPadding = padding.bottom;
-        
-        mSelectionLeftPadding = 17;//24
-        mSelectionTopPadding = 20;//24
-        mSelectionRightPadding = 17;//24;
-        mSelectionBottomPadding = -26;
-//        mSelectionLeftPadding = 0;
-//        mSelectionTopPadding = 0;
-//        mSelectionRightPadding = 0;
-//        mSelectionBottomPadding = 0;
         sel.setCallback(this);
         sel.setState(getDrawableState());
 	}

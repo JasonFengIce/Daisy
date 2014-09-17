@@ -73,7 +73,7 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 		Holder holder = null;
 		if(convertView == null) {
 			holder = new Holder();
-			convertView = LayoutInflater.from(mContext).inflate(R.layout.related_view_item, null);
+			convertView = LayoutInflater.from(mContext).inflate(R.layout.list_view_item, null);
 //			AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(348, 252);
 //			View titleView = convertView.findViewById(R.id.list_item_title);
 //			titleView.setFocusable(true);

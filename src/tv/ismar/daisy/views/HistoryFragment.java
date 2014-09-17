@@ -207,7 +207,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		@Override
 		protected void onPostExecute(Void result) {
 			if(mSectionList!=null && mSectionList.size() > 0) {
-				mScrollableSectionList.init(mSectionList, 1365);
+				mScrollableSectionList.init(mSectionList, 1365,false);
 				ArrayList<ItemCollection> itemCollections = new ArrayList<ItemCollection>();
 				if(mTodayItemList.count > 0) {
 					itemCollections.add(mTodayItemList);

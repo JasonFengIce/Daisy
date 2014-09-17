@@ -1,5 +1,7 @@
 package tv.ismar.daisy;
 
+import org.sakuratya.horizontal.ui.ZGridView;
+
 import tv.ismar.daisy.adapter.PlayFinishedAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -46,7 +48,7 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 	ImageView imageVodLabel;
 	Button btnReplay;
 	Button btnFavorites;
-	GridView gridview;
+	ZGridView gridview;
 	PlayFinishedAdapter playAdapter;
 	private Item[] items;
 	private static final int UPDATE = 1;
@@ -139,19 +141,20 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		btnFavorites = (Button) findViewById(R.id.btn_favorites);
 		btnFavorites.setOnClickListener(this);
 		btnFavorites.setOnFocusChangeListener(this);
-		gridview = (GridView) findViewById(R.id.gridview_related);
+		gridview = (ZGridView) findViewById(R.id.gridview_related);
 		gridview.setOnFocusChangeListener(this);
 		gridview.setOnItemClickListener(this);
-		gridview.setNumColumns(3);
-		int H = DaisyUtils.getVodApplication(this).getheightPixels(this);
-		if(H==720){
-			gridview.setVerticalSpacing(27);
-			gridview.setHorizontalSpacing(67);
-		}
-		else{
-			gridview.setVerticalSpacing(40);
-			gridview.setHorizontalSpacing(100);
-		}
+		
+//		gridview.setNumColumns(3);
+//		int H = DaisyUtils.getVodApplication(this).getheightPixels(this);
+//		if(H==720){
+//			gridview.setVerticalSpacing(20);
+//			gridview.setHorizontalSpacing(50);
+//		}
+//		else{
+//			gridview.setVerticalSpacing(40);
+//			gridview.setHorizontalSpacing(100);
+//		}
 		loadDialog = new LoadingDialog(this, getString(R.string.vod_loading));
 
 	}
@@ -163,6 +166,9 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 			case UPDATE:
 				playAdapter = new PlayFinishedAdapter(PlayFinishedActivity.this, items, R.layout.playfinish_gridview_item);
 				gridview.setAdapter(playAdapter);
+				gridview.setFocusable(true);
+				//gridview.setHorizontalFadingEdgeEnabled(true);
+				//gridview.setFadingEdgeLength(144);
 				break;
 //			case UPDATE_BITMAP:
 //				tvVodName.setText(item.title);
@@ -193,11 +199,11 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		case R.id.gridview_related:
 			try {
 				if (hasFocus) {
-					linearRight.setBackgroundResource(0);
-					linearLeft.setBackgroundResource(leftCover);
+					//linearRight.setBackgroundResource(0);
+					//linearLeft.setBackgroundResource(leftCover);
 				} else {
-					linearLeft.setBackgroundResource(0);
-					linearRight.setBackgroundResource(rightCover);
+					//linearLeft.setBackgroundResource(0);
+					//linearRight.setBackgroundResource(rightCover);
 				}
 			} catch (Exception e) {
 			}

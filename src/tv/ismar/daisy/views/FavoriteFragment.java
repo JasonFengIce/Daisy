@@ -175,7 +175,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 				no_video();
 				return;
 			}
-			mScrollableSectionList.init(mSectionList, 1365);
+			mScrollableSectionList.init(mSectionList, 1365,false);
 			mHGridAdapter = new HGridAdapterImpl(getActivity(), mItemCollections);
 			mHGridView.setAdapter(mHGridAdapter);
 			mHGridView.setFocusable(true);

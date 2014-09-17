@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import org.sakuratya.horizontal.ui.DGridView;
+
 import org.sakuratya.horizontal.ui.HGridView;
+import org.sakuratya.horizontal.ui.ZGridView;
 
 import tv.ismar.daisy.adapter.RelatedAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
@@ -16,6 +17,7 @@ import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemList;
 import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
+import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.LoadingDialog;
 import tv.ismar.daisy.views.ScrollableSectionList;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
@@ -31,19 +33,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-
-public class RelatedActivity extends Activity implements OnSectionSelectChangedListener, OnItemClickListener {
+import android.widget.AdapterView.OnItemSelectedListener;
+public class RelatedActivity extends Activity implements OnSectionSelectChangedListener, OnItemClickListener,OnItemSelectedListener {
 	
 	private static final String TAG = "RelatedActivity";
 	
 	private ScrollableSectionList mSectionTabs;
 	
-	private DGridView mItemListGrid;
-   // private HGridView mItemListGrid;
+	//private GridView mItemListGrid;
+    private ZGridView mItemListGrid;
 	
 	private ArrayList<Item> mRelatedItem;
 	
@@ -65,9 +68,10 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 	private void initViews(){
 		mSectionTabs = (ScrollableSectionList) findViewById(R.id.related_section_tabs);
 		mSectionTabs.setOnSectionSelectChangeListener(this);
-		mItemListGrid = (DGridView) findViewById(R.id.related_list);
+		mItemListGrid = (ZGridView) findViewById(R.id.related_list);
 		mItemListGrid.setOnItemClickListener(this);
-
+		mItemListGrid.setOnItemSelectedListener(this);
+		mItemListGrid.setFocusable(true);
 	}
 
 	@SuppressWarnings({ "unchecked" })
@@ -180,7 +184,7 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_RELATE_IN, mDataCollectionProperties);
 		
 		initSectionTabs();
-		mSectionTabs.init(mVirtualSectionList, getResources().getDimensionPixelSize(R.dimen.gridview_channel_section_tabs_width));
+		mSectionTabs.init(mVirtualSectionList, getResources().getDimensionPixelSize(R.dimen.gridview_channel_section_tabs_width),true);
 		buildGridView();
 		if(mLoadingDialog.isShowing()){
 			mLoadingDialog.dismiss();
@@ -191,7 +195,9 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		mAdapter = new RelatedAdapter(this, mRelatedItem);
 		//mAdapter.setList(mRelatedItem);
 		mItemListGrid.setAdapter(mAdapter);
-		
+		mItemListGrid.setFocusable(true);
+		mItemListGrid.setHorizontalFadingEdgeEnabled(true);
+		mItemListGrid.setFadingEdgeLength(144);
 	}
 
 	@Override
@@ -314,5 +320,26 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		toast.setDuration(Toast.LENGTH_SHORT);
 		toast.setView(layout);
 		toast.show();
+	}
+
+	@Override
+	public void onItemSelected(AdapterView<?> arg0, View view, int arg2,
+			long arg3) {
+		// TODO Auto-generated method stub
+		if(view!=null){
+			AsyncImageView s = (AsyncImageView)view.findViewById(R.id.list_item_preview_img);
+			if(s!=null){
+				s.setBackgroundResource(R.drawable.vod_small_focus);
+				
+				
+			}
+		}
+		
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -22,12 +22,14 @@ public class ScrollableSectionList extends HorizontalScrollView {
 	
 	private static final String TAG = "ScrollableSectionList";
 	
+	private boolean isChangeBarStyle = false;
 	private LinearLayout mContainer;
 	
 	/*
 	 * current selected section index. don't change this value directly.Always use ScrollableSectionList.changeSelection(int position) to change this value.
 	 */
 	private int mSelectPosition = 0;
+	private int lastSelectPosition = 0;
 	
 	private OnSectionSelectChangedListener mSectionSelectChangedListener;
 	
@@ -68,8 +70,9 @@ public class ScrollableSectionList extends HorizontalScrollView {
 		this.setHorizontalFadingEdgeEnabled(true);
 	}
 
-	public void init(SectionList sectionList, int totalWidth) {
+	public void init(SectionList sectionList, int totalWidth,boolean isChangeBarStyle) {
 		mContainer = new LinearLayout(getContext());
+		this.isChangeBarStyle = isChangeBarStyle;
 //		int H = DaisyUtils.getVodApplication(getContext()).getheightPixels(getContext());
 //		if(H==720)			
 		    mContainer.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, getResources().
@@ -120,40 +123,59 @@ public class ScrollableSectionList extends HorizontalScrollView {
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
 			int index = (Integer) v.getTag();
+
 			TextView label = (TextView) v.findViewById(R.id.section_label);
 			ProgressBar percentageBar = (ProgressBar) v.findViewById(R.id.section_percentage);
+			Log.i("zhangjiqiang", "label text=="+label.getText().toString());
 			if(hasFocus){
 			//	label.setBackgroundColor(LABEL_TEXT_BACKGROUND_COLOR_FOCUSED);
 				label.setPadding(label.getPaddingLeft(), 0, label.getPaddingRight(), label.getPaddingBottom());
-				label.setTextSize(30);
+				label.setTextSize(getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_ctextsize));
+				//percentageBar.setProgress(0);
 				label.setTextColor(LABEL_TEXT_COLOR_FOCUSED);
-				if(index==mSelectPosition) {
-					Log.i("zhangjiqiang", "index==mSelectPosition hasFocus:// index=="+index+"//mSelectPosition=="+mSelectPosition);
-					percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_hot_selected));
-					lastView = v;
-				} else {
+				if(index==lastSelectPosition) {
+					Log.i("zhangjiqiang", "index==mSelectPosition hasFocus:// index=="+index+"//mSelectPosition=="+mSelectPosition+"//size=="+getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_ctextsize));
+					if(!isChangeBarStyle)
+					    percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_hot_selected));
+					else{
+						percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.progress_line));
+					}
+				} else {//section_percentage_noselected
 					Log.i("zhangjiqiang", "index!=mSelectPosition hasFocus:// index=="+index+"//mSelectPosition=="+mSelectPosition);
-					percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_hot_noselected));
+					if(!isChangeBarStyle)
+					    percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_hot_noselected));
+					else
+						percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.progress_line));	
 					if(lastView!=null){
 						TextView lastlabel = (TextView) lastView.findViewById(R.id.section_label);
+						ProgressBar lastPercentageBar = (ProgressBar) lastView.findViewById(R.id.section_percentage); 
 						lastlabel.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
-						lastlabel.setPadding(label.getPaddingLeft(), 8, label.getPaddingRight(), label.getPaddingBottom());
-						lastlabel.setTextSize(24);
-					}
+						lastlabel.setPadding(label.getPaddingLeft(), getResources().
+								getDimensionPixelSize(R.dimen.channel_section_tabs_label_paddingT), label.getPaddingRight(), label.getPaddingBottom());
+						lastlabel.setTextSize(getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_textsize));	
+						lastPercentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_noselected));
+					}	
+					
 				}
+				lastView = mContainer.getChildAt(index);
+				lastSelectPosition = index;
+				//mSelectPosition = index;
+					
 			} else {
 
-				if(index==mSelectPosition) {
+				if(index==lastSelectPosition) {
 					Log.i("zhangjiqiang", "index==mSelectPosition nohasFocus:// index=="+index+"//mSelectPosition=="+mSelectPosition);
 					//label.setBackgroundColor(LABEL_TEXT_BACKGROUND_SELECTED_NOFOCUSED);
+					if(!isChangeBarStyle)
 					percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_selected));
 					label.setTextColor(LABEL_TEXT_COLOR_FOCUSED);
 				} else {
 					//label.setBackgroundColor(LABEL_TEXT_BACKGROUND_NOSELECTED_NOFOCUSED);
-					label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
-					label.setPadding(label.getPaddingLeft(), 8, label.getPaddingRight(), label.getPaddingBottom());
-					label.setTextSize(24);
+//					label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
+//					label.setPadding(label.getPaddingLeft(), 8, label.getPaddingRight(), label.getPaddingBottom());
+//					label.setTextSize(24);
 					Log.i("zhangjiqiang", "index!=mSelectPosition nohasFocus:// index=="+index+"//mSelectPosition=="+mSelectPosition);
+					if(!isChangeBarStyle)
 					percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_noselected));
 				}
 			}
@@ -167,7 +189,10 @@ public class ScrollableSectionList extends HorizontalScrollView {
 			int index = (Integer) v.getTag();
 			if(index!=mSelectPosition){
 				ProgressBar currentPercentageBar = (ProgressBar) v.findViewById(R.id.section_percentage);
-				currentPercentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_hot_selected));
+				if(!isChangeBarStyle)
+				  currentPercentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_hot_selected));
+				else
+				  currentPercentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.progress_line));
 				View lastSelectedView = mContainer.getChildAt(mSelectPosition);
 				ProgressBar lastPercentageBar = (ProgressBar) lastSelectedView.findViewById(R.id.section_percentage);
 				lastPercentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_noselected));
@@ -296,7 +321,9 @@ public class ScrollableSectionList extends HorizontalScrollView {
 			return;
 		}
 		mSelectPosition = position;
+		Log.i("zhangjiqiang", "change selection=="+position);
 		View section = mContainer.getChildAt(position);
+		//lastView = section;
 		final int maxJump = getMaxScrollAmount();
 		
 		if(isWithinDeltaOfScreen(section, maxJump)) {
