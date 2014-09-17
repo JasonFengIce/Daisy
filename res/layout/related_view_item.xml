@@ -10,16 +10,13 @@
         android:layout_width="@dimen/gridview_item_image_W"
         android:layout_height="@dimen/gridview_item_image_H"
         android:id="@+id/list_item_preview_img"
-        android:background="@drawable/video_item_selector"
+        android:background="@drawable/list_item_preview_bg"
         android:layout_marginLeft="@dimen/gridview_item_image_marginright"
         android:layout_marginRight="@dimen/gridview_item_image_marginleft"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:scaleType="fitXY"
-                  android:paddingLeft="@dimen/playfinish_gridview_item_itemImage_PL"
-            android:paddingRight="@dimen/playfinish_gridview_item_itemImage_PL"
-            android:paddingTop="@dimen/playfinish_gridview_item_itemImage_PL"
-            android:paddingBottom="@dimen/playfinish_gridview_item_itemImage_PL"/>
+        android:scaleType="fitXY"         
+       />
     <TextView
         android:layout_width="@dimen/gridview_item_image_W"
         android:layout_height="match_parent"

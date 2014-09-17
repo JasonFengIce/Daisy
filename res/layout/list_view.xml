@@ -3,46 +3,50 @@
     xmlns:sakura="http://schemas.android.com/apk/res/tv.ismar.daisy"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/background">
+    android:background="@drawable/background"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/channel_label"
+        android:layout_width="@dimen/gridview_channel_label_width"
+        android:layout_height="@dimen/gridview_channel_label_height"
+        android:layout_marginLeft="@dimen/gridview_channel_label_marginleft"
+        android:layout_marginRight="@dimen/gridview_channel_label_marginright"
+        android:layout_marginTop="@dimen/gridview_channel_label_margintop"
+        android:gravity="center"
+        android:padding="@dimen/gridview_channel_label_padding"
+        android:textColor="#FFBBBBBB"
+        android:textSize="@dimen/gridview_channel_label_textsize" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/gridview_channel_panel_height"
-        android:orientation="horizontal"
-        android:layout_marginBottom="@dimen/gridview_channel_panel_marginBottom">
-        <TextView
-            android:id="@+id/channel_label"
-            android:layout_width="@dimen/gridview_channel_label_width"
-            android:layout_height="@dimen/gridview_channel_label_height"
-            android:gravity="center"
-            android:layout_marginLeft="@dimen/gridview_channel_label_marginleft"
-            android:layout_marginTop="@dimen/gridview_channel_label_margintop"
-            android:layout_marginRight="@dimen/gridview_channel_label_marginright"
-            android:textSize="@dimen/gridview_channel_label_textsize"
-            android:textColor="#FFBBBBBB"
-            android:padding="@dimen/gridview_channel_label_padding"/>
-        <ImageView 
+        android:layout_marginLeft="110dip"
+        android:orientation="horizontal" >
+
+        <ImageView
             android:id="@+id/gridview_line"
-            android:layout_height="123dip"
-            android:layout_width="2dip"
-            android:background="@drawable/vodplayer_channels_bg"/>
-     
+            android:layout_width="@dimen/gridview_main_gridview_line_W"
+            android:layout_height="@dimen/gridview_main_gridview_line_H"
+            android:background="@drawable/vodplayer_channels_bg"
+            android:visibility="gone" />
+
         <tv.ismar.daisy.views.ScrollableSectionList
             android:id="@+id/section_tabs"
             android:layout_width="@dimen/gridview_channel_section_tabs_width"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/gridview_channel_section_tabs_margintop"
-            android:scrollbars="none">
-            
+            android:layout_height="match_parent"
+            android:scrollbars="none" >
         </tv.ismar.daisy.views.ScrollableSectionList>
+
         <ImageView
             android:id="@+id/arrow_left"
-            android:layout_marginTop="108dip"
-            android:layout_height="24dip"
-            android:layout_width="20dip"
+            android:layout_width="@dimen/grid_view_main_arrow_left_W"
+            android:layout_height="@dimen/grid_view_main_arrow_left_H"
+            android:layout_marginTop="@dimen/grid_view_main_arrow_left_marginT"
             android:background="@drawable/vod_arrow_right_normal"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
     </LinearLayout>
+
     <org.sakuratya.horizontal.ui.HGridView
         android:id="@+id/h_grid_view"
         android:layout_width="match_parent"
@@ -50,33 +54,37 @@
         android:fadingEdge="horizontal"
         android:fadingEdgeLength="@dimen/gridview_main_panel_fadingEdgeLength"
         sakura:horizontalSpacing="@dimen/gridview_main_panel_horizontalSpacing"
-        sakura:verticalSpacing="@dimen/gridview_main_panel_verticalSpacing"
-        sakura:rowHeight="@dimen/gridview_main_panel_rowHeight" 
-        sakura:numRows="3"
-        sakura:selectorDrawable="@drawable/vod_gv_selector"
-        sakura:labelDrawable="@drawable/section_label_drawable"
         sakura:labelBackgroundDrawable="@drawable/section_shadow_bg"
-        sakura:labelTopOffset="@dimen/gridview_main_panel_labelTopOffset"
-        sakura:labelLeftOffset="@dimen/gridview_main_panel_labelLeftOffset"
-        sakura:labelWidth="@dimen/gridview_main_panel_labelWidth"
-        sakura:labelHeight="@dimen/gridview_main_panel_labelHeight"
+        sakura:labelBackgroundHeight="@dimen/gridview_main_panel_labelBackgroundHeight"
         sakura:labelBackgroundLeftOffset="@dimen/gridview_main_panel_labelBackgroundLeftOffset"
         sakura:labelBackgroundWidth="@dimen/gridview_main_panel_labelBackgroundWidth"
-        sakura:labelBackgroundHeight="@dimen/gridview_main_panel_labelBackgroundHeight"
-        sakura:labelTextSize="@dimen/gridview_main_panel_labelTextSize"
+        sakura:labelDrawable="@drawable/section_label_drawable"
+        sakura:labelHeight="@dimen/gridview_main_panel_labelHeight"
+        sakura:labelLeftOffset="@dimen/gridview_main_panel_labelLeftOffset"
         sakura:labelTextColor="#FFF8F8FF"
-        sakura:labelTextMarginTop="@dimen/gridview_main_panel_labelTextMarginTop"
-        sakura:labelTextMarginLeft="@dimen/gridview_main_panel_labelTextMarginLeft"
         sakura:labelTextMarginBottom="@dimen/gridview_main_panel_labelTextMarginBottom"
+        sakura:labelTextMarginLeft="@dimen/gridview_main_panel_labelTextMarginLeft"
         sakura:labelTextMarginRight="@dimen/gridview_main_panel_labelTextMarginRight"
-        >
-        
+        sakura:labelTextMarginTop="@dimen/gridview_main_panel_labelTextMarginTop"
+        sakura:labelTextSize="@dimen/gridview_main_panel_labelTextSize"
+        sakura:labelTopOffset="@dimen/gridview_main_panel_labelTopOffset"
+        sakura:labelWidth="@dimen/gridview_main_panel_labelWidth"
+        sakura:numRows="3"
+        sakura:rowHeight="@dimen/gridview_main_panel_rowHeight"
+        sakura:selectorDrawable="@drawable/vod_gv_selector"
+        sakura:verticalSpacing="@dimen/gridview_main_panel_verticalSpacing"
+        sakura:selectionLeftPadding="18dip"
+        sakura:selectionTopPadding="21dip"
+        sakura:selectionRightPadding="18dip"
+        sakura:selectionBottomPadding="-25dip">
     </org.sakuratya.horizontal.ui.HGridView>
+
     <RelativeLayout
+        android:id="@+id/no_video_container"
         android:layout_width="@dimen/gridview_no_video_container_width"
         android:layout_height="@dimen/gridview_no_video_container_height"
-        android:id="@+id/no_video_container"
         android:layout_marginLeft="@dimen/gridview_no_video_container_marginLeft"
-        android:visibility="gone">
+        android:visibility="gone" >
     </RelativeLayout>
+
 </LinearLayout>

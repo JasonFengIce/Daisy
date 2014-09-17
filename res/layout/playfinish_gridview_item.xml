@@ -16,35 +16,32 @@
             android:id="@+id/linearimage"
             android:layout_width="@dimen/playfinish_gridview_item_linearimage_W"
             android:layout_height="@dimen/playfinish_gridview_item_linearimage_H"
-            android:layout_centerHorizontal="true"
             android:orientation="vertical"
-     
-             >      
+            android:visibility="gone" >
+        </LinearLayout>
+
         <ImageView
             android:id="@+id/itemImage"
             android:layout_width="@dimen/playfinish_gridview_item_linearimage_W"
             android:layout_height="@dimen/playfinish_gridview_item_linearimage_H"
-            android:background="@drawable/video_item_selector"
-            android:paddingLeft="@dimen/playfinish_gridview_item_itemImage_PL"
-            android:paddingRight="@dimen/playfinish_gridview_item_itemImage_PL"
-            android:paddingTop="@dimen/playfinish_gridview_item_itemImage_PL"
-            android:paddingBottom="@dimen/playfinish_gridview_item_itemImage_PL"
-            android:scaleType="fitXY"
-             />
-</LinearLayout>
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/list_item_preview_bg"
+            android:scaleType="fitXY" />
+
         <TextView
             android:id="@+id/itemText"
-            style="@drawable/gridview_text_selector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/linearimage"
+            android:layout_below="@+id/itemImage"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="@dimen/playfinish_gridview_item_itemText_marginleft"
             android:layout_marginRight="@dimen/playfinish_gridview_item_itemText_marginright"
+            android:layout_marginTop="4dip"
             android:ellipsize="marquee"
             android:singleLine="true"
             android:textSize="@dimen/playfinish_gridview_item_itemText_textsize"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#FFF8F8FF"/>
     </RelativeLayout>
 
     <ImageView

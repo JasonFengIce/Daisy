@@ -114,7 +114,11 @@
     <dimen name="gridview_item_quality_img_W">57dip</dimen>
     <dimen name="gridview_item_container_PB">17dip</dimen>
     <dimen name="ScrollableSectionList_item_PB">0dip</dimen>
-    
+    <dimen name="gridview_main_gridview_line_W">3dip</dimen>
+    <dimen name="gridview_main_gridview_line_H">180dip</dimen>
+    <dimen name="grid_view_main_arrow_left_W">30dip</dimen>
+    <dimen name="grid_view_main_arrow_left_H">36dip</dimen>
+    <dimen name="grid_view_main_arrow_left_marginT">152dip</dimen>
     <!-- popup_2btn -->
     <dimen name="popup_dialog_width">806dip</dimen>
     <dimen name="popup_dialog_height">444dip</dimen>
@@ -368,4 +372,24 @@
     <dimen name="channel_section_tabs_label_marginB">7dip</dimen>
     <dimen name="channel_section_tabs_label_textsize">35sp</dimen>
     <dimen name="channel_section_tabs_percentage_H">8dip</dimen>
+    <dimen name="channel_section_tabs_label_ctextsize">45sp</dimen>
+    <dimen name="channel_section_tabs_label_paddingT">12dip</dimen>
+    
+    <!-- ZGridview -->
+    <dimen name="ZGridView_related_selectorLeftPadding">30dip</dimen>
+    <dimen name="ZGridView_related_selectorTopPadding">30dip</dimen>
+    <dimen name="ZGridView_related_selectorRightPadding">20dip</dimen>
+    <dimen name="ZGridView_related_selectorBottomPadding">-34dip</dimen>
+    
+    <dimen name="ZGridView_played_selectorLeftPadding">18dip</dimen>
+    <dimen name="ZGridView_played_selectorTopPadding">29dip</dimen>
+    <dimen name="ZGridView_played_selectorRightPadding">16dip</dimen>
+    <dimen name="ZGridView_played_selectorBottomPadding">-39dip</dimen>
+    
+    <!-- HGridView -->
+    <dimen name="HGridView_related_selectionLeftPadding">27dip</dimen>
+    <dimen name="HGridView_related_selectionTopPadding">31dip</dimen>
+    <dimen name="HGridView_related_selectionRightPadding">27dip</dimen>
+    <dimen name="HGridView_related_selectionBottomPadding">-37dip</dimen>
+</resources>
 </resources>

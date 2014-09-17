@@ -62,26 +62,25 @@
             android:layout_alignParentBottom="true"
             android:background="@color/player_panel_bg"
             android:foreground="@color/player_panel_fg"
-            android:gravity="center"
             android:orientation="vertical" >
 
             <SeekBar
                 android:id="@+id/TimeSeekBar"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/vod_player_timeseekbar_H"
+                android:layout_height="20dip"
                 android:focusable="false"
                 android:max="100"
                 android:paddingLeft="@dimen/vod_player_timeseekbar_PL"
                 android:paddingRight="@dimen/vod_player_timeseekbar_PR"
                 android:progressDrawable="@drawable/vodplayer_seekbar_style"
-                android:thumb="@drawable/vod_player_time_thumb" />
+               
+                android:visibility="visible" />
 
             <RelativeLayout
                 android:id="@+id/vodLayout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/vod_player_vodlayout_marginleft"
-                android:layout_marginTop="@dimen/vod_player_vodlayout_margintop"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/vod_player_vodlayout_PB" >
 
@@ -90,15 +89,17 @@
                     android:layout_width="@dimen/vod_player_vod_content_layout_W"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:orientation="vertical" >
+                    android:orientation="vertical"
+                    >
 
                     <TextView
+                    
                         android:id="@+id/TimeText"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/vod_player_timetext_H"
-                        android:gravity="center"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/vod_player_timetext_textsize" />
+                        android:textSize="@dimen/vod_player_timetext_textsize"
+                         />
 
                     <TextView
                         android:id="@+id/QualityText"

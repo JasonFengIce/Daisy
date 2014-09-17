@@ -3,53 +3,85 @@
     xmlns:sakura="http://schemas.android.com/apk/res/tv.ismar.daisy"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/background">
+    android:background="@drawable/background"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/channel_label"
+        android:layout_width="@dimen/gridview_channel_label_width"
+        android:layout_height="@dimen/gridview_channel_label_height"
+        android:layout_marginLeft="@dimen/gridview_channel_label_marginleft"
+        android:layout_marginRight="@dimen/gridview_channel_label_marginright"
+        android:layout_marginTop="10dip"
+        android:gravity="center"
+        android:padding="@dimen/gridview_channel_label_padding"
+        android:text="关联视频"
+        android:textColor="#FFBBBBBB"
+        android:textSize="@dimen/gridview_channel_label_textsize" />
+
     <ImageView
         android:layout_width="@dimen/related_view_img_W"
         android:layout_height="@dimen/related_view_img_H"
-        android:src="@drawable/related_watermark"/>
-    <tv.ismar.daisy.views.ScrollableSectionList
-        android:id="@+id/related_section_tabs"
+        android:src="@drawable/related_watermark"
+        android:visibility="gone" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/related_view_tabs_marginleft"
-        android:layout_marginRight="@dimen/related_view_tabs_marginright"
-        android:layout_marginTop="@dimen/related_view_tabs_margintop"
-        android:scrollbars="none">
-        
-    </tv.ismar.daisy.views.ScrollableSectionList>
-    <org.sakuratya.horizontal.ui.DGridView
+        android:layout_height="50dip"
+        android:orientation="horizontal" >
+
+        <tv.ismar.daisy.views.ScrollableSectionList
+            android:id="@+id/related_section_tabs"
+            android:layout_width="@dimen/gridview_channel_section_tabs_width"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/related_view_tabs_marginleft"
+            android:layout_marginRight="@dimen/related_view_tabs_marginright"
+            android:scrollbars="none" >
+        </tv.ismar.daisy.views.ScrollableSectionList>
+
+        <ImageView
+            android:id="@+id/arrow_left"
+            android:layout_width="@dimen/grid_view_main_arrow_left_W"
+            android:layout_height="@dimen/grid_view_main_arrow_left_H"
+            android:layout_marginTop="13dip"
+            android:background="@drawable/vod_arrow_right_normal"
+            android:visibility="visible" />
+    </LinearLayout>
+    <!-- <GridView -->
+    <!-- android:id="@+id/related_list" -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="match_parent" -->
+    <!-- android:layout_marginLeft="@dimen/related_view_list_marginleft" -->
+    <!-- android:layout_marginRight="@dimen/related_view_list_marginright" -->
+    <!-- android:layout_marginTop="@dimen/related_view_list_margintop" -->
+    <!-- android:numColumns="4" -->
+    <!-- android:horizontalSpacing="@dimen/related_view_list_horizontalspacing" -->
+    <!-- android:verticalSpacing="@dimen/related_view_list_verticalspacing" -->
+    <!-- android:stretchMode="columnWidth" -->
+    <!-- android:columnWidth="@dimen/related_view_list_columnwidth" -->
+    <!-- android:listSelector="#00000000" -->
+    <!-- > -->
+    <!-- </GridView> -->
+
+    <org.sakuratya.horizontal.ui.ZGridView
         android:id="@+id/related_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/related_view_list_marginleft"
         android:layout_marginRight="@dimen/related_view_list_marginright"
         android:layout_marginTop="@dimen/related_view_list_margintop"
-        android:numColumns="4"
-        android:horizontalSpacing="@dimen/related_view_list_horizontalspacing"
-        android:verticalSpacing="@dimen/related_view_list_verticalspacing"
-        android:stretchMode="columnWidth"
-        android:columnWidth="@dimen/related_view_list_columnwidth"
-        android:listSelector="@drawable/vod_gv_selector"
-        >
-    </org.sakuratya.horizontal.ui.DGridView>
-    
-<!--         <org.sakuratya.horizontal.ui.HGridView -->
-<!--         android:id="@+id/related_list" -->
-<!--         android:layout_width="match_parent" -->
-<!--         android:layout_height="match_parent" -->
-<!--         android:layout_marginLeft="@dimen/related_view_list_marginleft" -->
-<!--         android:layout_marginRight="@dimen/related_view_list_marginright" -->
-<!--         android:layout_marginTop="@dimen/related_view_list_margintop" -->
-<!--         android:fadingEdge="horizontal" -->
-<!--         android:fadingEdgeLength="@dimen/gridview_main_panel_fadingEdgeLength" -->
-<!--         sakura:horizontalSpacing="@dimen/related_view_list_horizontalspacing" -->
-<!--         sakura:verticalSpacing="@dimen/related_view_list_verticalspacing" -->
-<!--         sakura:rowHeight="100dip"  -->
-<!--         sakura:numRows="3" -->
-<!--         sakura:selectorDrawable="@drawable/vod_gv_selector"     -->
-<!--         > -->
-        
-<!--     </org.sakuratya.horizontal.ui.HGridView> -->
+        android:fadingEdge="horizontal"
+        android:fadingEdgeLength="@dimen/gridview_main_panel_fadingEdgeLength"
+        sakura:columnWidth="@dimen/gridview_item_image_W"
+        sakura:horizontalSpace="@dimen/related_view_list_horizontalspacing"
+        sakura:listSelector="@drawable/vod_gv_selector"
+        sakura:numColumns="4"
+        sakura:stretchMode="columnWidth"
+        sakura:verticalSpace="@dimen/related_view_list_verticalspacing"
+        sakura:selectorLeftPadding="19dip"
+        sakura:selectorTopPadding="21dip"
+        sakura:selectorRightPadding="19dip"
+        sakura:selectorBottomPadding="-23dip" >
+    </org.sakuratya.horizontal.ui.ZGridView>
+
 </LinearLayout>
