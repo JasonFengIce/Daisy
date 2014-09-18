@@ -89,16 +89,6 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 		holder.title.setText(mItemList.get(position).title);
 		holder.qualityLabel = (ImageView) convertView.findViewById(R.id.list_item_quality_label);
 		//holder.previewImage.setBackgroundResource(R.drawable.video_item_selector);
-	
-		holder.previewImage.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				// TODO Auto-generated method stub
-				Log.i("zhangjiqiang", "onTouch");
-				return false;
-			}
-		});
 		if(mItemList.get(position).quality==3) {
 			holder.qualityLabel.setImageResource(R.drawable.label_hd_small);
 		} else if(mItemList.get(position).quality==4 || mItemList.get(position).quality==5) {

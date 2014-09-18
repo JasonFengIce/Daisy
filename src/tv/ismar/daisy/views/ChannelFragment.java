@@ -136,7 +136,6 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 			if(mLoadingDialog!=null && !mLoadingDialog.isShowing()) {
 				mLoadingDialog.show();
 			}
-			Log.i("zhangjiqiang", "InitTask onpre");
 			isInitTaskLoading = true;
 			super.onPreExecute();
 		}
@@ -144,7 +143,6 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		@Override
 		protected Integer doInBackground(String... params) {
 			try {
-				Log.i("zhangjiqiang", "InitTask doInBackground");
 				url = params[0];
 				channel = params[1];
 				if(!isChannelUrl(url)){
@@ -185,7 +183,6 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 				mLoadingDialog.dismiss();
 				leftarrow.setVisibility(View.VISIBLE);
 			}
-			Log.i("zhangjiqiang", "InitTask onPostExecute");
 			isInitTaskLoading = false;
 			if(result!=RESULT_SUCCESS) {
 				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, (mInitTask = new InitTask()), new String[]{url, channel});
@@ -481,7 +478,6 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
 		// When selected column has changed, we need to update the ScrollableSectionList
-		Log.i("zhangjiqiang", "onItemSelected position=="+position);
 		int sectionIndex = mHGridAdapter.getSectionIndex(position);
 		int rows = mHGridView.getRows();
 		int itemCount = 0;

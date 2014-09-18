@@ -30,6 +30,7 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 /**
  * These is a horizontal scroll GridView with arrow key action support and a dataset of sections.
@@ -946,6 +947,15 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	}
 	
 	protected void positionSelector(View sel) {
+		View image = sel.findViewById(R.id.list_item_preview_img);
+		TextView text = (TextView) sel.findViewById(R.id.list_item_title);
+		if(image!=null){
+			Log.i("zhangjiqiang", "image text="+text.getText().toString());
+			Log.i("zhangjiqiang", "sel rect=="+"("+sel.getLeft()+","+sel.getTop()+","+sel.getRight()+","+sel.getBottom()+")");
+		}
+		else{
+			Log.i("zhangjiqiang", "null");
+		}
 		final Rect selectorRect = mSelectorRect;
 		selectorRect.set(sel.getLeft(), sel.getTop(), sel.getRight(), sel.getBottom());
 		positionSelector(selectorRect.left, selectorRect.top, selectorRect.right, selectorRect.bottom);
@@ -955,6 +965,8 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	private void positionSelector(int l, int t, int r, int b) {
         mSelectorRect.set(l - mSelectionLeftPadding, t - mSelectionTopPadding, r
                 + mSelectionRightPadding, b + mSelectionBottomPadding);
+        
+        Log.i("zhangjiqiang", "image rect=="+"("+mSelectorRect.left+","+mSelectorRect.top+","+mSelectorRect.right+","+mSelectorRect.bottom+")");
     }
 
 	@Override
@@ -1527,6 +1539,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		if(shouldShowSelector() && mSelector!=null && !mSelectorRect.isEmpty()) {
 			final Drawable selector = mSelector;
 			selector.setBounds(mSelectorRect);
+			 Log.i("zhangjiqiang", "drawSelector rect=="+"("+mSelectorRect.left+","+mSelectorRect.top+","+mSelectorRect.right+","+mSelectorRect.bottom+")");
 			selector.draw(canvas);
 		}
 	}

@@ -491,7 +491,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 			
 			int H = DaisyUtils.getVodApplication(ItemDetailActivity.this).getheightPixels(ItemDetailActivity.this);
 			LinearLayout.LayoutParams layoutParams;
-			if(H<=720)
+			if(H==720)
 				layoutParams = new LinearLayout.LayoutParams(426, 119);
 			else
 			    layoutParams = new LinearLayout.LayoutParams(638, 178);

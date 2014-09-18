@@ -110,9 +110,6 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 			final Item item = mList.get(sectionIndex).objects.get(indexOfCurrentSection);
 			holder.title.setText(item.title);
 			holder.previewImage.setUrl(item.adlet_url);
-			//Log.i("zhangjiqiang", "layout width and height=="+holder.listLayout.getWidth()+"//"+holder.listLayout.getHeight());
-			//Log.i("zhangjiqiang", "imageView width and height=="+holder.previewImage.getWidth()+"//"+holder.previewImage.getHeight());
-//			Log.v("aaaa", "item.title ="+item.title+"<><>item.expense ="+item.expense.price);
 			if(item.quality==3) {
 				holder.qualityLabel.setImageResource(R.drawable.label_hd_small);
 			} else if(item.quality==4 || item.quality==5) {
@@ -127,7 +124,6 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 			holder.previewImage.setUrl(null);
 			holder.qualityLabel.setImageDrawable(null);
 		}
-		//holder.previewImage.setBackgroundResource(R.drawable.video_item_selector);
 		return convertView;
 	}
 

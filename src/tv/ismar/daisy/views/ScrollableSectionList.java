@@ -101,7 +101,6 @@ public class ScrollableSectionList extends HorizontalScrollView {
 	
 	private LinearLayout getSectionLabelLayout(Section section, int width) {
 		LinearLayout sectionHolder = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.section_list_item, null);
-		int H = DaisyUtils.getVodApplication(getContext()).getheightPixels(getContext());
 //		LinearLayout.LayoutParams layoutParams;
 //		if(H==720)
 //		    layoutParams = new LinearLayout.LayoutParams(width, 44);
