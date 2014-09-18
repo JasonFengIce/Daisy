@@ -16,13 +16,13 @@
         android:layout_weight="3"
         android:orientation="vertical"
         android:paddingRight="@dimen/play_finished_leftlayout_PR"
-        android:paddingLeft="40dip" >
+        android:paddingLeft="@dimen/play_finished_leftlayout_PL" >
 
         <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/play_finished_tv_releted_textsize"
-            android:text="播放完成"
+            android:text="@string/play_finished"
             android:layout_marginTop="@dimen/play_finished_tv_releted_margintop"
             />
         <RelativeLayout
@@ -38,7 +38,7 @@
                 android:textSize="@dimen/play_finished_tv_vodie_name_textsize"
                 android:maxLines="4"
                 android:ellipsize="end"
-                android:layout_marginTop="30dip"/>
+                android:layout_marginTop="@dimen/play_finished_tv_vodie_name_marginTop"/>
 
             <LinearLayout
                 android:id="@+id/linear_vodie_backgroud"
@@ -46,7 +46,7 @@
                 android:layout_height="@dimen/play_finished_linear_vodie_backgroud_H"
                 android:layout_below="@+id/tv_vodie_name"
                 android:background="@drawable/preview_img_bg" 
-                android:layout_marginTop="20dip"
+                android:layout_marginTop="@dimen/play_finished_image_vodie_backgroud_marginTop"
                 >
 
                 <tv.ismar.daisy.views.AsyncImageView
@@ -68,7 +68,7 @@
                 android:layout_marginTop="@dimen/play_finished_image_vod_label_margintop" />
 
             <Button
-                android:layout_marginTop="28dip"
+                android:layout_marginTop="@dimen/play_finished_btn_reply_marginTop"
                 android:id="@+id/btn_replay"
                 android:layout_width="@dimen/play_finished_image_vodie_backgroud_W"
                 android:layout_height="@dimen/play_finished_btn_replay_H"
@@ -149,16 +149,16 @@
         android:fadingEdge="horizontal"
         android:fadingEdgeLength="@dimen/gridview_main_panel_fadingEdgeLength"
         sakura:columnWidth="@dimen/playfinish_gridview_item_linearimage_W"
-        sakura:horizontalSpace="35dip"
+        sakura:horizontalSpace="@dimen/play_finished_gridview_related_horizontalSpace"
         sakura:listSelector="@drawable/vod_gv_selector"
         sakura:numColumns="3"
         sakura:stretchMode="columnWidth"
-        sakura:verticalSpace="10dip"
+        sakura:verticalSpace="@dimen/play_finished_gridview_related_verticalSpace"
         android:layout_margin="@dimen/play_finished_gridview_related_margin"
-        sakura:selectorLeftPadding="12dip"
-        sakura:selectorTopPadding="19dip"
-        sakura:selectorRightPadding="11dip"
-        sakura:selectorBottomPadding="-26dip">
+        sakura:selectorLeftPadding="@dimen/ZGridView_played_selectorLeftPadding"
+        sakura:selectorTopPadding="@dimen/ZGridView_played_selectorTopPadding"
+        sakura:selectorRightPadding="@dimen/ZGridView_played_selectorRightPadding"
+        sakura:selectorBottomPadding="@dimen/ZGridView_played_selectorBottomPadding">
     </org.sakuratya.horizontal.ui.ZGridView>
     </LinearLayout>
     <!-- 右边整块 -->

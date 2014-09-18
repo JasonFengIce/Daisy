@@ -8,14 +8,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="@dimen/channel_section_tabs_label_paddingT"
-        android:layout_marginBottom="@dimen/channel_section_tabs_label_marginB"
         android:paddingLeft="@dimen/channel_section_tabs_label_marginL"
         android:paddingRight="@dimen/channel_section_tabs_label_marginR"
         android:focusable="true"
         android:textSize="@dimen/channel_section_tabs_label_textsize"
         android:textColor="#FFBBBBBB"
         android:singleLine="true"
-        android:gravity="center"/>
+        android:gravity="bottom|center_horizontal"
+        />
     
     <ProgressBar
         android:id="@+id/section_percentage"
@@ -24,7 +24,8 @@
         android:progressDrawable="@drawable/section_percentage_noselected"
         style="@android:style/Widget.ProgressBar.Horizontal"
         android:indeterminate="false"
-        android:paddingLeft="7dip"
-        android:paddingRight="7dip"/>
+        android:paddingLeft="@dimen/channel_section_tabs_percentage_PLR"
+        android:paddingRight="@dimen/channel_section_tabs_percentage_PLR"
+        android:layout_marginTop="@dimen/channel_section_tabs_label_marginB"/>
 
 </LinearLayout>

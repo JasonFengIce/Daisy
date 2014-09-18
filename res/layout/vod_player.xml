@@ -49,7 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/vod_player_buffertext_marginleft"
-                android:layout_marginTop="10dip"
+                android:layout_marginTop="@dimen/vod_player_buffertext_marginTop"
                 android:text="@string/loading"
                 android:textColor="#ffffffff"
                 android:textSize="@dimen/vod_player_buffertext_textsize" />
@@ -67,13 +67,12 @@
             <SeekBar
                 android:id="@+id/TimeSeekBar"
                 android:layout_width="match_parent"
-                android:layout_height="20dip"
+                android:layout_height="@dimen/vod_player_timeseekbar_H"
                 android:focusable="false"
                 android:max="100"
                 android:paddingLeft="@dimen/vod_player_timeseekbar_PL"
                 android:paddingRight="@dimen/vod_player_timeseekbar_PR"
-                android:progressDrawable="@drawable/vodplayer_seekbar_style"
-               
+                android:progressDrawable="@drawable/vodplayer_seekbar_style"              
                 android:visibility="visible" />
 
             <RelativeLayout
@@ -92,8 +91,7 @@
                     android:orientation="vertical"
                     >
 
-                    <TextView
-                    
+                    <TextView                   
                         android:id="@+id/TimeText"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/vod_player_timetext_H"

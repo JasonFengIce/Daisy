@@ -110,4 +110,6 @@
     <string name="VideoView_error_text_unknown">未知错误</string>
     <string name="VideoView_error_button">视频错误</string>
     <string name="video_Detail_MoreContent">更多内容</string>
+    <string name="related_view">关联视频</string>
+    <string name="play_finished">播放完成</string>
 </resources>

@@ -36,7 +36,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="@dimen/playfinish_gridview_item_itemText_marginleft"
             android:layout_marginRight="@dimen/playfinish_gridview_item_itemText_marginright"
-            android:layout_marginTop="4dip"
+            android:layout_marginTop="2dip"
             android:ellipsize="marquee"
             android:singleLine="true"
             android:textSize="@dimen/playfinish_gridview_item_itemText_textsize"

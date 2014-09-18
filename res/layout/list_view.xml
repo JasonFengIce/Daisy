@@ -9,7 +9,7 @@
     <TextView
         android:id="@+id/channel_label"
         android:layout_width="@dimen/gridview_channel_label_width"
-        android:layout_height="@dimen/gridview_channel_label_height"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/gridview_channel_label_marginleft"
         android:layout_marginRight="@dimen/gridview_channel_label_marginright"
         android:layout_marginTop="@dimen/gridview_channel_label_margintop"
@@ -19,9 +19,10 @@
         android:textSize="@dimen/gridview_channel_label_textsize" />
 
     <LinearLayout
+        android:id="@+id/tabs_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/gridview_channel_panel_height"
-        android:layout_marginLeft="110dip"
+        android:layout_marginLeft="@dimen/channel_section_tabs_layout_marginLeft"
         android:orientation="horizontal" >
 
         <ImageView
@@ -35,7 +36,8 @@
             android:id="@+id/section_tabs"
             android:layout_width="@dimen/gridview_channel_section_tabs_width"
             android:layout_height="match_parent"
-            android:scrollbars="none" >
+            android:scrollbars="none"
+             >
         </tv.ismar.daisy.views.ScrollableSectionList>
 
         <ImageView
@@ -73,10 +75,10 @@
         sakura:rowHeight="@dimen/gridview_main_panel_rowHeight"
         sakura:selectorDrawable="@drawable/vod_gv_selector"
         sakura:verticalSpacing="@dimen/gridview_main_panel_verticalSpacing"
-        sakura:selectionLeftPadding="18dip"
-        sakura:selectionTopPadding="21dip"
-        sakura:selectionRightPadding="18dip"
-        sakura:selectionBottomPadding="-25dip">
+        sakura:selectionLeftPadding="@dimen/HGridView_related_selectionLeftPadding"
+        sakura:selectionTopPadding="@dimen/HGridView_related_selectionTopPadding"
+        sakura:selectionRightPadding="@dimen/HGridView_related_selectionRightPadding"
+        sakura:selectionBottomPadding="@dimen/HGridView_related_selectionBottomPadding">
     </org.sakuratya.horizontal.ui.HGridView>
 
     <RelativeLayout
