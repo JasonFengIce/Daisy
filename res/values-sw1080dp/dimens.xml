@@ -379,7 +379,7 @@
     <dimen name="ZGridView_related_selectorLeftPadding">30dip</dimen>
     <dimen name="ZGridView_related_selectorTopPadding">30dip</dimen>
     <dimen name="ZGridView_related_selectorRightPadding">20dip</dimen>
-    <dimen name="ZGridView_related_selectorBottomPadding">-34dip</dimen>
+    <dimen name="ZGridView_related_selectorBottomPadding">-31dip</dimen>
     
     <dimen name="ZGridView_played_selectorLeftPadding">18dip</dimen>
     <dimen name="ZGridView_played_selectorTopPadding">29dip</dimen>
@@ -390,6 +390,6 @@
     <dimen name="HGridView_related_selectionLeftPadding">27dip</dimen>
     <dimen name="HGridView_related_selectionTopPadding">31dip</dimen>
     <dimen name="HGridView_related_selectionRightPadding">27dip</dimen>
-    <dimen name="HGridView_related_selectionBottomPadding">-37dip</dimen>
-</resources>
+    <dimen name="HGridView_related_selectionBottomPadding">-25dip</dimen>
+
 </resources>
