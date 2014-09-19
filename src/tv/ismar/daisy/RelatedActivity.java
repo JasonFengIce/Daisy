@@ -3,11 +3,7 @@ package tv.ismar.daisy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-
-
-import org.sakuratya.horizontal.ui.HGridView;
 import org.sakuratya.horizontal.ui.ZGridView;
-
 import tv.ismar.daisy.adapter.RelatedAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.NetworkUtils;
@@ -27,17 +23,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.GridView;
 import android.widget.AdapterView.OnItemSelectedListener;
 public class RelatedActivity extends Activity implements OnSectionSelectChangedListener, OnItemClickListener,OnItemSelectedListener {
 	

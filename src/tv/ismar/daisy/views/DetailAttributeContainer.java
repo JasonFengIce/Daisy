@@ -6,12 +6,9 @@ import java.util.Map;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.models.ContentModel;
-import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 

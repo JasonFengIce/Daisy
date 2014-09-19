@@ -4,7 +4,6 @@ import java.util.Map;
 
 import tv.ismar.daisy.R;
 import tv.ismar.player.SmartPlayer;
-import tv.ismar.player.SmartPlayer.OnSeekCompleteListener;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -400,7 +399,6 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 			 * have a window, don't bother showing the user an error.
 			 */
 			if (getWindowToken() != null) {
-				Resources r = mContext.getResources();
 				int messageId;
 
 				if (framework_err == SmartPlayer.MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK) {

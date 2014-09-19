@@ -1,7 +1,6 @@
 package tv.ismar.daisy.views;
 
 import tv.ismar.daisy.R;
-import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
 import android.content.Context;
@@ -10,12 +9,10 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class ScrollableSectionList extends HorizontalScrollView {
@@ -320,9 +317,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 			return;
 		}
 		mSelectPosition = position;
-		Log.i("zhangjiqiang", "change selection=="+position);
 		View section = mContainer.getChildAt(position);
-		//lastView = section;
 		final int maxJump = getMaxScrollAmount();
 		
 		if(isWithinDeltaOfScreen(section, maxJump)) {

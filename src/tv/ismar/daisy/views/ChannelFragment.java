@@ -1,16 +1,13 @@
 package tv.ismar.daisy.views;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
 import org.sakuratya.horizontal.ui.HGridView;
 import org.sakuratya.horizontal.ui.HGridView.OnScrollListener;
-
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -485,18 +482,6 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 			itemCount += mHGridAdapter.getSectionCount(i);
 			
 		}
-//		if(lastImage!=null){
-//			lastImage.setBackgroundResource(R.drawable.list_item_preview_bg);
-//			lastImage.setPadding(0, 0, 0, 0);
-//		}
-//		if(view!=null){
-//			AsyncImageView vv = (AsyncImageView) view.findViewById(R.id.list_item_preview_img);
-//			vv.setBackgroundResource(R.drawable.list_item_bg_hot);
-//			vv.setPadding(7, 7, 7, 7);
-//			lastImage = vv;
-//			Log.i("zhangjiqiang", "HHHHHHHHHH");
-//		}
-
 		int columnOfX = (position - itemCount) / rows + 1;
 		int totalColumnOfSectionX = (int)(FloatMath.ceil((float)mHGridAdapter.getSectionCount(sectionIndex) / (float) rows)); 
 		int percentage = (int) ((float)columnOfX / (float)totalColumnOfSectionX * 100f);

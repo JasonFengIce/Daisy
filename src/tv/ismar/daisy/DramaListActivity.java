@@ -3,10 +3,8 @@ package tv.ismar.daisy;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import tv.ismar.daisy.adapter.DaramAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.ImageUtils;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.views.AsyncImageView;

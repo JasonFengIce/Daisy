@@ -2,13 +2,9 @@ package org.sakuratya.horizontal.ui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.DaisyUtils;
-
 import org.sakuratya.horizontal.adapter.HGridAdapter;
-
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
@@ -19,10 +15,8 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.FloatMath;
 import android.util.Log;
-import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,8 +25,6 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
-import android.widget.TextView;
-
 /**
  * These is a horizontal scroll GridView with arrow key action support and a dataset of sections.
  * You need to implement an adapter base on {@link HGridAdapter}. if you have a dataset which is separated by sections. 
@@ -180,7 +172,6 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	}
 	
 	private void initView() {
-		GridView s;
 		setWillNotDraw(false);
 		setFocusable(true);
 		setClickable(true);
@@ -949,15 +940,6 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	}
 	
 	protected void positionSelector(View sel) {
-		View image = sel.findViewById(R.id.list_item_preview_img);
-		TextView text = (TextView) sel.findViewById(R.id.list_item_title);
-		if(image!=null){
-			Log.i("zhangjiqiang", "image text="+text.getText().toString());
-			Log.i("zhangjiqiang", "sel rect=="+"("+sel.getLeft()+","+sel.getTop()+","+sel.getRight()+","+sel.getBottom()+")");
-		}
-		else{
-			Log.i("zhangjiqiang", "null");
-		}
 		final Rect selectorRect = mSelectorRect;
 		selectorRect.set(sel.getLeft(), sel.getTop(), sel.getRight(), sel.getBottom());
 		positionSelector(selectorRect.left, selectorRect.top, selectorRect.right, selectorRect.bottom);
@@ -966,9 +948,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	
 	private void positionSelector(int l, int t, int r, int b) {
         mSelectorRect.set(l - mSelectionLeftPadding, t - mSelectionTopPadding, r
-                + mSelectionRightPadding, b + mSelectionBottomPadding);
-        
-        Log.i("zhangjiqiang", "image rect=="+"("+mSelectorRect.left+","+mSelectorRect.top+","+mSelectorRect.right+","+mSelectorRect.bottom+")");
+                + mSelectionRightPadding, b + mSelectionBottomPadding);      
     }
 
 	@Override
@@ -1544,7 +1524,6 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		if(shouldShowSelector() && mSelector!=null && !mSelectorRect.isEmpty()) {
 			final Drawable selector = mSelector;
 			selector.setBounds(mSelectorRect);
-			 Log.i("zhangjiqiang", "drawSelector rect=="+"("+mSelectorRect.left+","+mSelectorRect.top+","+mSelectorRect.right+","+mSelectorRect.bottom+")");
 			selector.draw(canvas);
 		}
 	}

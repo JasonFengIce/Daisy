@@ -2,9 +2,6 @@ package org.sakuratya.horizontal.ui;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.sakuratya.horizontal.ui.HGridView.OnScrollListener;
-
 import tv.ismar.daisy.R;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -12,12 +9,9 @@ import android.database.DataSetObserver;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Parcelable;
 import android.os.SystemClock;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.util.LongSparseArray;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.util.StateSet;
@@ -27,16 +21,13 @@ import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewDebug;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.view.accessibility.AccessibilityEvent;
-import android.view.accessibility.AccessibilityManager;
 import android.widget.AbsListView;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.Checkable;
 import android.widget.ListAdapter;
 import android.widget.AbsListView.RecyclerListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 
 public class ZGridView extends AdapterView<ListAdapter> {
 
@@ -3236,10 +3227,6 @@ public class ZGridView extends AdapterView<ListAdapter> {
 		default:
 			return false;
 		}
-	}
-
-	private boolean seekForOtherView(int direction) {
-		return false;
 	}
 
 	boolean pageScroll(int direction) {

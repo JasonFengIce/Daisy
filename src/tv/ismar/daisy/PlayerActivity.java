@@ -3,7 +3,6 @@ package tv.ismar.daisy;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.ImageUtils;
 import tv.ismar.daisy.core.NetworkUtils;
@@ -29,14 +28,12 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -48,8 +45,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.VideoView;
-
 import com.ismartv.api.AccessProxy;
 import com.ismartv.bean.ClipInfo;
 
@@ -961,7 +956,6 @@ public class PlayerActivity extends Activity {
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
 				ffImage.setImageResource(R.drawable.vodplayer_controller_ffd);
 				mVideoView.seekTo(currPosition);
-				Log.i("zhangjiqiang", "seekto");
 				if (subItem != null)			
 					callaPlay.videoPlaySeek(item.pk, subItem.pk, item.title,clip.pk, currQuality, 0, currPosition);
 				else
