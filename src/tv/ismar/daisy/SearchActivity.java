@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.sakuratya.horizontal.ui.ZGridView;
+
 import tv.ismar.daisy.adapter.ImageCacheAdapter;
 import tv.ismar.daisy.core.ConnectionHelper;
 import tv.ismar.daisy.core.DaisyUtils;
@@ -48,7 +50,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	ImageCacheAdapter imageAdapter;
 	// CacheAdapter cacheAdapter;
 	// ViewHolderAdapter holderAdapter;
-	GridView gridView;
+	ZGridView gridView;
 	// 搜索结果数
 	TextView tvSearchCount;
 	// 搜索结果linear
@@ -168,9 +170,9 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	}
 
 	public void initViews() {
-		gridView = (GridView) findViewById(R.id.serarc_gridview);
+		gridView = (ZGridView) findViewById(R.id.serarc_gridview);
 		gridView.setNumColumns(6);
-		gridView.setVerticalSpacing(5);
+	//	gridView.setVerticalSpacing(5);
 		gridView.setOnItemClickListener(SearchActivity.this);
 		imageAdapter = new ImageCacheAdapter(SearchActivity.this, R.layout.search_grid_view_item);
 		ibtnSearch = (ImageButton) findViewById(R.id.ibtn_search);
@@ -356,18 +358,19 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 			}
 		}
 
-		/**
-		 * This clear data and set adapter
-		 * 
-		 * @param movieList
-		 */
-		private void setImageAdapter(List<MovieBean> movieList) {
-			imageAdapter.cancelAsync();
-			imageAdapter = new ImageCacheAdapter(SearchActivity.this, movieList, R.layout.search_grid_view_item);
-			gridView.setAdapter(imageAdapter);
-		};
-	};
 
+	};
+	/**
+	 * This clear data and set adapter
+	 * 
+	 * @param movieList
+	 */
+	private void setImageAdapter(List<MovieBean> movieList) {
+		imageAdapter.cancelAsync();
+		imageAdapter = new ImageCacheAdapter(SearchActivity.this, movieList, R.layout.search_grid_view_item);
+		gridView.setAdapter(imageAdapter);
+		gridView.setFocusable(true);
+	};
 	/**
 	 * 设置搜索个数
 	 * 

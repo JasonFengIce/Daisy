@@ -128,7 +128,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 			Log.i("zhangjiqiang", "label text=="+label.getText().toString());
 			if(hasFocus){
 			//	label.setBackgroundColor(LABEL_TEXT_BACKGROUND_COLOR_FOCUSED);
-				label.setPadding(label.getPaddingLeft(), 0, label.getPaddingRight(), label.getPaddingBottom());
+				label.setPadding(label.getPaddingLeft(), getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_text_PT), label.getPaddingRight(), label.getPaddingBottom());
 				label.setTextSize(getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_ctextsize));
 				//percentageBar.setProgress(0);
 				label.setTextColor(LABEL_TEXT_COLOR_FOCUSED);

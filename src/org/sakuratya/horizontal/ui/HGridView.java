@@ -14,6 +14,7 @@ import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Paint.Align;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
@@ -232,6 +233,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		mLabelTextPaint = new Paint();
 		mLabelTextPaint.setTextSize(labelTextSize);
 		mLabelTextPaint.setColor(labelTextColor);
+		mLabelTextPaint.setTextAlign(Align.CENTER);
 		int labelTextMarginLeft = a.getDimensionPixelOffset(R.styleable.HGridView_labelTextMarginLeft, 0);
 		int labelTextMarginTop = a.getDimensionPixelOffset(R.styleable.HGridView_labelTextMarginTop, 0);
 		int labelTextMarginRight = a.getDimensionPixelOffset(R.styleable.HGridView_labelTextMarginRight, 0);
@@ -1056,7 +1058,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		if(mDataChanged) {
 			layoutChildren();
 		}
-//		Log.d(TAG, "KeyCode: "+keyCode);
+		Log.d(TAG, "KeyCode: "+keyCode);
 		final int action = event.getAction();
 		boolean handled = false;
 		if(action!=KeyEvent.ACTION_UP) {
@@ -1422,10 +1424,11 @@ public class HGridView extends AdapterView<HGridAdapter> {
 					final View referenceView = getChildAt(columnStart - firstPosition);
 					if(referenceView.getRight() < rightBound) {
 						rect.top = mListPadding.top + 0;
-						rect.left = referenceView.getRight();
+						int offset = getResources().getDimensionPixelSize(R.dimen.HGridView_label_lr_offset);
+						rect.left = referenceView.getRight()-offset;
 						//rect.right = rect.left + mHorizontalSpacing;
 						if(H==720)
-						    rect.right = rect.left + 55;
+						    rect.right = rect.left + 55-offset;
 						else
 							rect.right = rect.left + 82;
 						rect.bottom = getBottom() - mListPadding.bottom;
@@ -1448,8 +1451,8 @@ public class HGridView extends AdapterView<HGridAdapter> {
 				if(!mLabelTextMargin.isEmpty()) {
 					textLeft += mLabelTextMargin.left;
 					textTop += mLabelTextMargin.top;
-					
 				}
+				Rect labelRect = new Rect();;
 				if(drawables!=null && drawables.length>1) {
 					Drawable backgroundDrawable = drawables[0];
 					Rect backgroundRect = new Rect();
@@ -1462,8 +1465,8 @@ public class HGridView extends AdapterView<HGridAdapter> {
 					backgroundDrawable.draw(canvas);
 					
 					Drawable labelDrawable = drawables[1];
-					Rect labelRect;
-					labelRect = new Rect();
+					 
+					
 					labelRect.top = rect.top + mLabelDrawableOffset.top;
 					labelRect.left = rect.left + mLabelDrawableOffset.left;
 					labelRect.bottom = mLabelDrawableOffset.bottom > 0 ? rect.top + mLabelDrawableOffset.bottom : rect.bottom;
@@ -1490,25 +1493,27 @@ public class HGridView extends AdapterView<HGridAdapter> {
 				}
 				if(H==720){
 					textTop += 34;
-					textLeft += 4;	
+					textLeft += 15;	
 				}
 				else{
-					textTop += 40;
-					textLeft += 7;	
+					textTop += 56;
+					textLeft += 18;	
 				}
 				for(int j=0; j<labelText.length(); j++) {
 					int chr=labelText.charAt(j);
-					if(chr>=48&&chr<=57){
-						canvas.drawText(labelText, j, j+1, textLeft+5, textTop, mLabelTextPaint);
-					}
-					else if(chr>=65&&chr<=90||chr>=97&&chr<=122){
-						canvas.rotate(90, textLeft+4, textTop);
-						canvas.drawText(labelText, j, j+1, textLeft+4, textTop, mLabelTextPaint);
-						canvas.rotate(-90, textLeft+4, textTop);
-					}
-					else{
-						canvas.drawText(labelText, j, j+1, textLeft, textTop, mLabelTextPaint);
-					}
+//					if(chr>=48&&chr<=57){
+//						canvas.drawText(labelText, j, j+1, textLeft+5, textTop, mLabelTextPaint);
+//					}
+//					else if(chr>=65&&chr<=90||chr>=97&&chr<=122){
+//						//canvas.rotate(90, textLeft+4, textTop);
+//						canvas.drawText(labelText, j, j+1, textLeft+4, textTop, mLabelTextPaint);
+//						//canvas.rotate(-90, textLeft+4, textTop);
+//					}
+//					else{
+//						canvas.drawText(labelText, j, j+1, textLeft, textTop, mLabelTextPaint);
+//						canvas.drawtex
+//					}
+					canvas.drawText(labelText,j,j+1,textLeft,textTop,mLabelTextPaint);
 					textTop += mMinSingleTextHeight + mMinSingleTextHeight /2;
 				}
 				
