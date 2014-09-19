@@ -83,8 +83,7 @@
                 android:background="@drawable/vod_detail_relatemore_button_selector"
                 android:paddingLeft="@dimen/item_detail_btn_favorite_paddingleft"
                 android:paddingRight="@dimen/item_detail_btn_favorite_paddingright"
-                android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"
-               
+                android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"              
                 android:visibility="gone"/>
             
            <Button
@@ -98,8 +97,7 @@
                 android:background="@drawable/vod_detail_relatemore_button_selector"
                 android:paddingLeft="@dimen/item_detail_btn_favorite_paddingleft"
                 android:paddingRight="@dimen/item_detail_btn_favorite_paddingright"
-                android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"
-                
+                android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"               
                 android:visibility="gone"/>
            
              <Button

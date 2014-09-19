@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/gridview_item_container_PB"
     android:id="@+id/list_item_layout"
    >
     <tv.ismar.daisy.views.AsyncImageView
@@ -16,7 +15,10 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:scaleType="fitXY" 
-        />
+        android:paddingTop="@dimen/gridview_item_image_PaddingT"
+        android:paddingBottom="@dimen/gridview_item_image_PaddingB"
+        android:paddingLeft="@dimen/gridview_item_image_PaddingL"
+        android:paddingRight="@dimen/gridview_item_image_PaddingR" />
     <TextView
         android:layout_width="@dimen/gridview_item_image_W"
         android:layout_height="match_parent"
@@ -27,7 +29,8 @@
         android:layout_below="@id/list_item_preview_img"
         android:textSize="@dimen/gridview_item_title_textsize"
         android:id="@+id/list_item_title"
-        android:textColor="#FFF8F8FF"/>
+        android:textColor="#FFF8F8FF"
+        />
     <ImageView
         android:layout_width="@dimen/gridview_item_quality_img_H"
         android:layout_height="@dimen/gridview_item_quality_img_W"

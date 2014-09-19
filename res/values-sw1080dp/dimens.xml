@@ -70,7 +70,7 @@
     <dimen name="item_detail_more_content_textsize">35dip</dimen>
     <dimen name="item_detail_btn_marginleft">51dip</dimen>
 <!-- grid listview page-->
-    <dimen name="gridview_channel_panel_height">90dip</dimen>
+    <dimen name="gridview_channel_panel_height">88dip</dimen>
     <dimen name="gridview_channel_panel_marginBottom">35dp</dimen>
     <dimen name="gridview_channel_label_width">375dip</dimen>
     <dimen name="gridview_channel_label_height">135dip</dimen>
@@ -83,7 +83,7 @@
     <dimen name="gridview_channel_section_tabs_margintop">174dip</dimen>
     <dimen name="gridview_main_panel_height">810dip</dimen>
     <dimen name="gridview_main_panel_fadingEdgeLength">144dip</dimen>
-    <dimen name="gridview_main_panel_horizontalSpacing">82dip</dimen>
+    <dimen name="gridview_main_panel_horizontalSpacing">77dip</dimen>
     <dimen name="gridview_main_panel_verticalSpacing">0dip</dimen>
     <dimen name="gridview_main_panel_rowHeight">252dip</dimen>
     <dimen name="gridview_main_panel_labelTopOffset">8dip</dimen>
@@ -101,18 +101,21 @@
     <dimen name="gridview_no_video_container_width">1480dip</dimen>
     <dimen name="gridview_no_video_container_height">681dip</dimen>
     <dimen name="gridview_no_video_container_marginLeft">280dip</dimen>
-    
-    <dimen name="gridview_item_image_H">184dip</dimen>
-    <dimen name="gridview_item_image_W">336dip</dimen>
+    <dimen name="gridview_item_image_PaddingL">13dip</dimen>
+    <dimen name="gridview_item_image_PaddingT">7dip</dimen>
+    <dimen name="gridview_item_image_PaddingR">13dip</dimen>
+    <dimen name="gridview_item_image_PaddingB">18dip</dimen>
+    <dimen name="gridview_item_image_H">204dip</dimen>
+    <dimen name="gridview_item_image_W">345dip</dimen>
     <dimen name="gridview_item_image_marginright">3dip</dimen>
     <dimen name="gridview_item_image_marginleft">3dip</dimen>
     <dimen name="gridview_item_title_W">300dip</dimen>
     <dimen name="gridview_item_title_textsize">35sp</dimen>
-    <dimen name="gridview_item_quality_img_marginT">3dip</dimen>
-    <dimen name="gridview_item_quality_img_marginR">8dip</dimen>
+    <dimen name="gridview_item_quality_img_marginT">4dip</dimen>
+    <dimen name="gridview_item_quality_img_marginR">12dip</dimen>
     <dimen name="gridview_item_quality_img_H">57dip</dimen>
     <dimen name="gridview_item_quality_img_W">57dip</dimen>
-    <dimen name="gridview_item_container_PB">8dip</dimen>
+    <dimen name="gridview_item_container_PB">18dip</dimen>
     <dimen name="ScrollableSectionList_item_PB">0dip</dimen>
     <dimen name="gridview_main_gridview_line_W">3dip</dimen>
     <dimen name="gridview_main_gridview_line_H">180dip</dimen>
@@ -156,7 +159,7 @@
     <dimen name="related_item_image_quality_margintop">-3dip</dimen>
     <dimen name="related_item_image_quality_marginright">-3dip</dimen>
     <dimen name="related_item_title_margintop">34dip</dimen>
-    <dimen name="related_item_title_marginbottom">14dip</dimen>
+    <dimen name="related_item_title_marginbottom">34dip</dimen>
     <dimen name="related_item_title_textsize">35sp</dimen>
     <dimen name="related_item_focus_textsize">30sp</dimen>
     <dimen name="related_item_focus_marginright">41dip</dimen>
@@ -249,10 +252,9 @@
     <dimen name="playfinish_gridview_item_itemText_marginleft">6dip</dimen>
     <dimen name="playfinish_gridview_item_itemText_marginright">6dip</dimen>
     <dimen name="playfinish_gridview_item_itemText_textsize">30sp</dimen>
- 
     <dimen name="playfinish_gridview_item_iv_label_marginright">12dip</dimen>
     <dimen name="playfinish_gridview_item_iv_label_margintop">3dip</dimen>
-    
+    <dimen name="playfinish_gridview_item_text_margintop">3dip</dimen>
     <!-- related_view -->
     <dimen name="related_view_img_W">639dip</dimen>
     <dimen name="related_view_img_H">152dip</dimen>
@@ -378,16 +380,17 @@
     
     <!-- channel_section_tabs -->
     <dimen name="channel_section_tabs_W">300dip</dimen>
-    <dimen name="channel_section_tabs_H">66dip</dimen>
+    <dimen name="channel_section_tabs_H">98dip</dimen>
     <dimen name="channel_section_tabs_label_marginL">10dip</dimen>
     <dimen name="channel_section_tabs_label_marginR">10dip</dimen>
-    <dimen name="channel_section_tabs_label_marginB">7dip</dimen>
-    <dimen name="channel_section_tabs_label_textsize">35sp</dimen>
-    <dimen name="channel_section_tabs_percentage_H">8dip</dimen>
-    <dimen name="channel_section_tabs_label_ctextsize">45sp</dimen>
-    <dimen name="channel_section_tabs_label_paddingT">12dip</dimen>
+    <dimen name="channel_section_tabs_label_marginB">6dip</dimen>
+    <dimen name="channel_section_tabs_label_textsize">39sp</dimen>
+    <dimen name="channel_section_tabs_percentage_H">5dip</dimen>
+    <dimen name="channel_section_tabs_label_ctextsize">51sp</dimen>
+    <dimen name="channel_section_tabs_label_paddingT">23dip</dimen>
     <dimen name="channel_section_tabs_percentage_PLR">11dip</dimen>
     <dimen name="channel_section_tabs_layout_marginLeft">165dip</dimen>
+    <dimen name="channel_section_tabs_text_PT">11dip</dimen>
     
     <!-- ZGridview -->
     <dimen name="ZGridView_related_selectorLeftPadding">30dip</dimen>
@@ -401,9 +404,10 @@
     <dimen name="ZGridView_played_selectorBottomPadding">-39dip</dimen>
     
     <!-- HGridView -->
-    <dimen name="HGridView_related_selectionLeftPadding">27dip</dimen>
-    <dimen name="HGridView_related_selectionTopPadding">31dip</dimen>
-    <dimen name="HGridView_related_selectionRightPadding">27dip</dimen>
-    <dimen name="HGridView_related_selectionBottomPadding">-25dip</dimen>
+    <dimen name="HGridView_related_selectionLeftPadding">7dip</dimen>
+    <dimen name="HGridView_related_selectionTopPadding">14dip</dimen>
+    <dimen name="HGridView_related_selectionRightPadding">6dip</dimen>
+    <dimen name="HGridView_related_selectionBottomPadding">-50dip</dimen>      
+    <dimen name="HGridView_label_lr_offset">8dip</dimen>
 
 </resources>
