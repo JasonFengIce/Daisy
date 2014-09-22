@@ -484,12 +484,9 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 			
 			int H = DaisyUtils.getVodApplication(ItemDetailActivity.this).getheightPixels(ItemDetailActivity.this);
 			LinearLayout.LayoutParams layoutParams;
-			if(H==720)
-				layoutParams = new LinearLayout.LayoutParams(426, 119);
-			else
-			    layoutParams = new LinearLayout.LayoutParams(638, 178);
-				relatedHolder.setLayoutParams(layoutParams);
-			
+			layoutParams = new LinearLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.item_detail_related_W), 
+					getResources().getDimensionPixelSize(R.dimen.item_detail_related_H));
+			relatedHolder.setLayoutParams(layoutParams);
 			TextView titleView = (TextView) relatedHolder.findViewById(R.id.related_title);
 			AsyncImageView imgView = (AsyncImageView) relatedHolder.findViewById(R.id.related_preview_img);
 			imgView.setOnImageViewLoadListener(this);

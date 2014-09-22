@@ -294,6 +294,7 @@ public class VodApplication extends Application {
 			 H = (Integer) mt.invoke(display);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			H = dm.heightPixels;
 			e.printStackTrace();
 		} 
 	   }
@@ -303,6 +304,7 @@ public class VodApplication extends Application {
 	        H = (Integer) mt.invoke(display); 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			H = dm.heightPixels;
 			e.printStackTrace();
 		}   
 	   }

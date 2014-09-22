@@ -454,9 +454,9 @@ public class ZGridView extends AdapterView<ListAdapter> {
 		if (scrapView != null) {
 			child = mAdapter.getView(position, scrapView, this);
 
-			if (child.getImportantForAccessibility() == IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
-				child.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_YES);
-			}
+//			if (child.getImportantForAccessibility() == IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
+//				child.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_YES);
+//			}
 
 			if (child != scrapView) {
 				mRecycler.addScrapView(scrapView, position);
@@ -470,9 +470,9 @@ public class ZGridView extends AdapterView<ListAdapter> {
 		} else {
 			child = mAdapter.getView(position, null, this);
 
-			if (child.getImportantForAccessibility() == IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
-				child.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_YES);
-			}
+//			if (child.getImportantForAccessibility() == IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
+//				child.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_YES);
+//			}
 
 			if (mCacheColorHint != 0) {
 				child.setDrawingCacheBackgroundColor(mCacheColorHint);
@@ -2730,23 +2730,23 @@ public class ZGridView extends AdapterView<ListAdapter> {
 
 			// Don't put header or footer views or views that should be ignored
 			// into the scrap heap
-			int viewType = 0;
-			final boolean scrapHasTransientState = scrap.hasTransientState();
-			if (!shouldRecycleViewType(viewType) || scrapHasTransientState) {
+			int viewType = lp.viewType;
+		//	final boolean scrapHasTransientState = scrap.hasTransientState();
+			if (!shouldRecycleViewType(viewType) ) {
 				if (viewType != ITEM_VIEW_TYPE_HEADER_OR_FOOTER
-						|| scrapHasTransientState) {
+						) {
 					if (mSkippedScrap == null) {
 						mSkippedScrap = new ArrayList<View>();
 					}
 					mSkippedScrap.add(scrap);
 				}
-				if (scrapHasTransientState) {
-					if (mTransientStateViews == null) {
-						mTransientStateViews = new SparseArray<View>();
-					}
-					dispatchStartTemporaryDetach(scrap);
-					mTransientStateViews.put(position, scrap);
-				}
+//				if (scrapHasTransientState) {
+//					if (mTransientStateViews == null) {
+//						mTransientStateViews = new SparseArray<View>();
+//					}
+//					dispatchStartTemporaryDetach(scrap);
+//					mTransientStateViews.put(position, scrap);
+//				}
 				return;
 			}
 
@@ -2796,22 +2796,22 @@ public class ZGridView extends AdapterView<ListAdapter> {
 
 					activeViews[i] = null;
 
-					final boolean scrapHasTransientState = victim
-							.hasTransientState();
+//					final boolean scrapHasTransientState = victim
+//							.hasTransientState();
 					if (!shouldRecycleViewType(whichScrap)
-							|| scrapHasTransientState) {
+							) {
 						// Do not move views that should be ignored
 						if (whichScrap != ITEM_VIEW_TYPE_HEADER_OR_FOOTER
-								|| scrapHasTransientState) {
+								) {
 							removeDetachedView(victim, false);
 						}
-						if (scrapHasTransientState) {
-							if (mTransientStateViews == null) {
-								mTransientStateViews = new SparseArray<View>();
-							}
-							mTransientStateViews.put(mFirstActivePosition + i,
-									victim);
-						}
+//						if (scrapHasTransientState) {
+//							if (mTransientStateViews == null) {
+//								mTransientStateViews = new SparseArray<View>();
+//							}
+//							mTransientStateViews.put(mFirstActivePosition + i,
+//									victim);
+//						}
 						continue;
 					}
 
@@ -2861,16 +2861,16 @@ public class ZGridView extends AdapterView<ListAdapter> {
 					removeDetachedView(scrapPile.remove(size--), false);
 				}
 			}
-
-			if (mTransientStateViews != null) {
-				for (int i = 0; i < mTransientStateViews.size(); i++) {
-					final View v = mTransientStateViews.valueAt(i);
-					if (!v.hasTransientState()) {
-						mTransientStateViews.removeAt(i);
-						i--;
-					}
-				}
-			}
+//
+//			if (mTransientStateViews != null) {
+//				for (int i = 0; i < mTransientStateViews.size(); i++) {
+//					final View v = mTransientStateViews.valueAt(i);
+//					if (!v.hasTransientState()) {
+//						mTransientStateViews.removeAt(i);
+//						i--;
+//					}
+//				}
+//			}
 		}
 
 		/**

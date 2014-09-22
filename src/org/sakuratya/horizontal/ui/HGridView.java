@@ -1477,7 +1477,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 				}
 				else{
 					textTop += 56;
-					textLeft += 18;	
+					textLeft += 25;	
 				}
 				for(int j=0; j<labelText.length(); j++) {
 					int chr=labelText.charAt(j);
