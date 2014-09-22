@@ -41,7 +41,7 @@
             android:layout_marginTop="@dimen/item_detail_attribute_top"
             android:orientation="vertical"
             android:id="@+id/detail_attribute_container"
-            >
+           >
 
             
         </tv.ismar.daisy.views.DetailAttributeContainer>
@@ -70,7 +70,8 @@
             android:layout_above="@id/detail_intro"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="@dimen/item_detail_introlabel_marginleft"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/item_detail_btn_layout_marginB">
                    
            <Button
                 android:id="@+id/btn_fill"
@@ -215,7 +216,7 @@
             android:textColor="#FFF8F8FF"
             android:textSize="@dimen/item_detail_more_content_textsize" 
             android:text="@string/video_Detail_MoreContent"
-            />
+            android:layout_marginTop="@dimen/item_detail_btn_layout_marginB"/>
     </LinearLayout>
 
 </LinearLayout>

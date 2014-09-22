@@ -67,13 +67,14 @@
             <SeekBar
                 android:id="@+id/TimeSeekBar"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/vod_player_timeseekbar_H"
+                android:layout_height="wrap_content"
                 android:focusable="false"
                 android:max="100"
                 android:paddingLeft="@dimen/vod_player_timeseekbar_PL"
                 android:paddingRight="@dimen/vod_player_timeseekbar_PR"
                 android:progressDrawable="@drawable/vodplayer_seekbar_style"              
-                android:visibility="visible" />
+                android:visibility="visible" 
+                android:thumb="@drawable/vod_player_time_round"/>
 
             <RelativeLayout
                 android:id="@+id/vodLayout"
@@ -97,7 +98,8 @@
                         android:layout_height="@dimen/vod_player_timetext_H"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/vod_player_timetext_textsize"
-                         />
+                        android:layout_marginTop="@dimen/vod_player_timetext_marginTop"                                      
+                        />
 
                     <TextView
                         android:id="@+id/QualityText"

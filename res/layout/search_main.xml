@@ -62,7 +62,8 @@
                 android:layout_height="@dimen/search_main_hot_words_H"
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/search_main_hot_words_PL"
-                android:paddingTop="@dimen/search_main_hot_words_PT" >
+                android:paddingTop="@dimen/search_main_hot_words_PT"
+                android:layout_marginBottom="@dimen/search_main_hot_words_marginBottom" >
 
                 <!-- 这里动态生成Button -->
 

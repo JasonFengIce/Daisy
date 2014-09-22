@@ -7,6 +7,6 @@
         
     </item>
     <item android:id="@android:id/progress">
-        <scale android:drawable="@drawable/vodplayer_seek_color" android:scaleWidth="100%"  android:scaleGravity="left"/>
+        <scale android:drawable="@color/progress_color_start" android:scaleWidth="100%"  android:scaleGravity="left"/>
     </item>
 </layer-list>

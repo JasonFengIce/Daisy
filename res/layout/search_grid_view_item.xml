@@ -32,24 +32,23 @@
 
         <TextView
             android:id="@+id/itemText"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/search_gridview_item_image_W"
             android:layout_height="wrap_content"
             android:layout_below="@+id/itemImage"
             android:layout_marginTop="@dimen/search_gridview_item_text_marginT"
             android:layout_centerHorizontal="true"
-            android:layout_marginLeft="@dimen/search_gridview_item_text_marginL"
-            android:layout_marginRight="@dimen/search_gridview_item_text_marginR"
             android:ellipsize="marquee"
             android:singleLine="true"
             android:textSize="@dimen/search_gridview_item_text_size"
             android:textStyle="bold" >
+
         </TextView>
     </RelativeLayout>
 
     <tv.ismar.daisy.views.AsyncImageView
         android:id="@+id/iv_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/search_gridview_item_label_W"
+        android:layout_height="@dimen/search_gridview_item_label_H"
         android:layout_gravity="right"
         android:layout_marginRight="@dimen/search_gridview_item_label_marginR"
         android:layout_marginTop="@dimen/search_gridview_item_label_marginT" />
