@@ -787,7 +787,7 @@ public class PlayerActivity extends Activity {
 				currPosition += clipLength * 0.1;
 			}
 		} else {
-			currPosition += 30000;
+			currPosition += 10000;
 		}
 
 		if (currPosition > clipLength) {

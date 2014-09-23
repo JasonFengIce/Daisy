@@ -61,9 +61,13 @@ public class VodApplication extends Application {
 	
 	private ConcurrentHashMap<String, Activity> mActivityPool;
 	
+	private boolean isFinish = true;
 	public void removeActivtyFromPool(String tag) {
 		Activity a = mActivityPool.remove(tag);
 		Log.d(TAG, "remove activity: "+a);
+		if(mActivityPool.size()==0){
+			isFinish = false;
+		}
 	}
 	
 	public void addActivityToPool(String tag, Activity activity) {
@@ -98,6 +102,7 @@ public class VodApplication extends Application {
 	public void getNewContentModel(){
 		
 		new Thread(mGetNewContentModelTask).start();
+		new Thread(mUpLoadLogRunnable).start();
 	}
 	
 	private Runnable mGetNewContentModelTask = new Runnable() {
@@ -114,6 +119,25 @@ public class VodApplication extends Application {
 		}
 	};
 	
+	
+	private Runnable mUpLoadLogRunnable = new Runnable(){
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			
+			while(isFinish){
+				try {
+					Thread.sleep(3000);
+					Log.i("zhangjiqiang", "upload");
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
+	};
 	/**
 	 * Return this application {@link DBHelper}
 	 * @return The application {@link DBHelper}
