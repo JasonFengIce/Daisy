@@ -42,8 +42,8 @@
 	<color name ="loginpopup_dlg_focus">#000000</color>
 	<color name ="loginpopup_dlg_error">#000000</color>	
 	<color name ="yellow">#FFFF00</color>
-	<color name="progress_color_end">#ff33f8ff</color>
-    <color name="progress_color_start">#33CCFF</color>
-    <color name="progress_bg_color">#3399ff</color>
-    <color name="secondary_progress_color">#ff33ccff</color>
+	<color name="progress_color_end">#407e8f</color>
+    <color name="progress_color_start">#407e8f</color>
+    <color name="progress_bg_color">#005c85</color>
+    <color name="secondary_progress_color">#407e8f</color>
 </resources>

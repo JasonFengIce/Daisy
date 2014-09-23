@@ -71,7 +71,7 @@
                 android:layout_marginTop="@dimen/play_finished_btn_reply_marginTop"
                 android:id="@+id/btn_replay"
                 android:layout_width="@dimen/play_finished_image_vodie_backgroud_W"
-                android:layout_height="@dimen/play_finished_btn_replay_H"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/linear_vodie_backgroud"
                 android:background="@drawable/vod_detail_relatemore_button_selector"
                 android:text="@string/daram_restart"

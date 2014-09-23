@@ -70,10 +70,9 @@
                 android:layout_height="wrap_content"
                 android:focusable="false"
                 android:max="100"
-                android:paddingLeft="@dimen/vod_player_timeseekbar_PL"
-                android:paddingRight="@dimen/vod_player_timeseekbar_PR"
-                android:progressDrawable="@drawable/vodplayer_seekbar_style"              
-                android:visibility="visible" 
+                android:progressDrawable="@drawable/vodplayer_seekbar_style"  
+                android:maxHeight="@dimen/vod_player_timeseekbar_MaxH"
+                android:thumbOffset="@dimen/vod_player_timeseekbar_thumbOffset"            
                 android:thumb="@drawable/vod_player_time_round"/>
 
             <RelativeLayout
