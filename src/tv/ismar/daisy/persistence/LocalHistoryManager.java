@@ -186,7 +186,7 @@ public class LocalHistoryManager implements HistoryManager {
 				}
 				properties.put("title", history.title);
 				properties.put("position", history.last_position);
-				NetworkUtils.LogSender(NetworkUtils.VIDEO_HISTORY, properties);
+				NetworkUtils.SaveLogToLocal(NetworkUtils.VIDEO_HISTORY, properties);
 			}
 			return null;
 		}

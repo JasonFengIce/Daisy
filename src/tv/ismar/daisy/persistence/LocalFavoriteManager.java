@@ -137,7 +137,7 @@ public class LocalFavoriteManager implements FavoriteManager {
 				properties.put("item", id);
 				properties.put("title", title);
 				if(params!=null && params.length>0) {
-					NetworkUtils.LogSender(NetworkUtils.VIDEO_COLLECT, properties);	
+					NetworkUtils.SaveLogToLocal(NetworkUtils.VIDEO_COLLECT, properties);	
 				}
 			}
 			return null;

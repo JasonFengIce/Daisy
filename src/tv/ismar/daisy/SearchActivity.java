@@ -247,7 +247,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 					@Override
 					public void run() {
 						hashLog.put("q",autoCompleteTextView.getText().toString());
-						NetworkUtils.LogSender(NetworkUtils.VIDEO_SEARCH, hashLog);
+						NetworkUtils.SaveLogToLocal(NetworkUtils.VIDEO_SEARCH, hashLog);
 						hashLog.clear();
 						movieList = searchService.getSearchResult(autoCompleteTextView.getText().toString());
 						mHandler.sendEmptyMessage(UPDATE_ADAPTER);
@@ -324,7 +324,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 								public void run() {
 									try {
 										hashLog.put("q",btnHotWords.getText().toString());
-										NetworkUtils.LogSender(NetworkUtils.VIDEO_SEARCH, hashLog);
+										NetworkUtils.SaveLogToLocal(NetworkUtils.VIDEO_SEARCH, hashLog);
 										hashLog.clear();
 										movieList = searchService.getSearchResult(btnHotWords.getText().toString());
 										mHandler.obtainMessage(SEARCH_WORDS, btnHotWords.getText().toString()).sendToTarget();
@@ -415,7 +415,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				NetworkUtils.LogSender(NetworkUtils.VIDEO_SEARCH_ARRIVE, hashLog);	
+				NetworkUtils.SaveLogToLocal(NetworkUtils.VIDEO_SEARCH_ARRIVE, hashLog);	
 				hashLog.clear();
 			}
 		}){}.start();

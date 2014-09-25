@@ -14,7 +14,7 @@ public class Item implements Serializable {
     public Attribute attributes;
     public String caption;
     public Clip clip;
-    public String content_model;
+    public String content_model; //对应频道, 例如: documentary
     public int counting_count;
     public String description;
     public int episode;

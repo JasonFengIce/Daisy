@@ -9,6 +9,7 @@ import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
 import org.sakuratya.horizontal.ui.HGridView;
 import org.sakuratya.horizontal.ui.HGridView.OnScrollListener;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.exception.ItemOfflineException;
@@ -102,6 +103,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		HashMap<String, Object> properties = new HashMap<String, Object>();
 		properties.put("category", mChannel);
 		properties.put("title", mTitle);
+		
 		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_CHANNEL_IN, properties);
 		return fragmentView;
 	}
@@ -241,13 +243,13 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 					exceptionProperties.put("code", "nocategory");
 					exceptionProperties.put("content", "get category error : "+((ItemOfflineException) e).getUrl());
 					exceptionProperties.put("section", slug);
-					NetworkUtils.LogSender(NetworkUtils.CATEGORY_EXCEPT, exceptionProperties);
+					NetworkUtils.SaveLogToLocal(NetworkUtils.CATEGORY_EXCEPT, exceptionProperties);
 				} else if(e instanceof NetworkException) {
 					HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
 					exceptionProperties.put("code", "networkconnerror");
 					exceptionProperties.put("content", "network connect error : " + ((ItemOfflineException) e).getUrl());
 					exceptionProperties.put("section", slug);
-					NetworkUtils.LogSender(NetworkUtils.CATEGORY_EXCEPT, exceptionProperties);
+					NetworkUtils.SaveLogToLocal(NetworkUtils.CATEGORY_EXCEPT, exceptionProperties);
 				}
 				e.printStackTrace();
 				return null;
@@ -465,7 +467,10 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 			} else {
 				intent.setAction("tv.ismar.daisy.Play");
 			}
+			int sectionIndex = mHGridAdapter.getSectionIndex(position);
+			Section s = mSectionList.get(sectionIndex);
 			intent.putExtra("url", item.url);
+			intent.putExtra(EventProperty.SECTION, s.slug);
 			startActivity(intent);
 		}
 		

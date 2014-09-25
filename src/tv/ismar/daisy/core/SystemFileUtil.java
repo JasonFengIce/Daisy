@@ -6,12 +6,22 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import android.content.Context;
 import android.os.Environment;
 
 public class SystemFileUtil {
 
+
+    public static String LogPath;
+    
+    static{
+		String LOGLOCALPATH = "vodlog.txt";
+	    String LOCALLOGDIR = "/tv/ismar/daisy";
+		File sdCardDir = Environment.getExternalStorageDirectory();
+	    LogPath = sdCardDir+File.separator+LOCALLOGDIR+File.separator+LOGLOCALPATH;
+    };
 	public static void readFile(String filePath, Context context) {
 
 		FileInputStream istream;
@@ -75,4 +85,45 @@ public class SystemFileUtil {
 		}
 
 	}
+
+	public static void writeLogToLocal(String content) {
+		if (Environment.getExternalStorageState().equals(
+				Environment.MEDIA_MOUNTED)) {
+			String LOGLOCALPATH = "vodlog.txt";
+		    String LOCALLOGDIR = "/tv/ismar/daisy";
+			File sdCardDir = Environment.getExternalStorageDirectory();
+		    LogPath = sdCardDir+File.separator+LOCALLOGDIR+File.separator+LOGLOCALPATH;
+			File Dir = new File(sdCardDir+File.separator+LOCALLOGDIR);
+			if(!Dir.exists())
+				Dir.mkdirs();
+			
+			File saveFile = new File(sdCardDir+File.separator+LOCALLOGDIR+File.separator+LOGLOCALPATH);
+			if (!saveFile.exists()) {
+				try {
+					saveFile.createNewFile();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} 
+				PrintWriter streamWriter = null;
+				try {
+					streamWriter = new PrintWriter(new FileOutputStream(
+							saveFile, true));
+					streamWriter.write(content + "\r\n");
+
+					streamWriter.close();
+				} catch (IOException EX) {
+					System.out.println(EX.toString());
+				} finally {
+					streamWriter.close();
+				}			
+		}
+	}
+    public static void delete(){
+	   File f = new File(LogPath);
+	   if(f.exists()){
+		   f.delete();
+	   }
+   }
 }

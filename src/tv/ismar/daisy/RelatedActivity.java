@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.sakuratya.horizontal.ui.ZGridView;
 import tv.ismar.daisy.adapter.RelatedAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.Attribute;
@@ -58,6 +59,7 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 	
 	private HashMap<String, Object> mDataCollectionProperties = new HashMap<String, Object>();
 	
+	private String mSection;
 	private void initViews(){
 		mSectionTabs = (ScrollableSectionList) findViewById(R.id.related_section_tabs);
 		mSectionTabs.setOnSectionSelectChangeListener(this);
@@ -80,6 +82,7 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		Intent intent = getIntent();
 		if(intent!=null) {
 			Bundle bundle = intent.getExtras();
+			mSection = intent.getStringExtra(EventProperty.SECTION);
 			try {
 				mItem = (Item) bundle.getSerializable("item");
 				Object relatedlistObj = bundle.getSerializable("related_item");
@@ -291,6 +294,7 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		}
 		Intent intent = new Intent("tv.ismar.daisy.Item");
 		intent.putExtra("url", item.item_url);
+        intent.putExtra(EventProperty.SECTION, mSection);
 		startActivity(intent);
 	}
 	

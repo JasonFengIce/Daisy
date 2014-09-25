@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import com.google.gson.JsonSyntaxException;
 import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.ImageUtils;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -88,6 +89,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 	
 	private HashMap<AsyncImageView, Boolean> mLoadingImageQueue = new HashMap<AsyncImageView, Boolean>();
 	
+	private String mSection;
 	private void initViews() {
 		mDetailLeftContainer = (RelativeLayout)findViewById(R.id.detail_left_container);
 		mDetailAttributeContainer = (DetailAttributeContainer) findViewById(R.id.detail_attribute_container);
@@ -144,6 +146,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 				}
 			} else {
 				String url = intent.getStringExtra("url");
+				mSection = intent.getStringExtra(EventProperty.SECTION);
 				if(url==null){
 					url = SimpleRestClient.sRoot_url + "/api/item/96538/";
 				}
@@ -236,21 +239,21 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 				exceptionProperties.put("code", "nodetail");
 				exceptionProperties.put("content", "no detail error : " + e.getUrl());
 				exceptionProperties.put("item", id);
-				NetworkUtils.LogSender(NetworkUtils.DETAIL_EXCEPT, exceptionProperties);
+				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT, exceptionProperties);
 				e.printStackTrace();
 			} catch (JsonSyntaxException e) {
 				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
 				exceptionProperties.put("code", "parsejsonerror");
 				exceptionProperties.put("content", e.getMessage() + " : "+url );
 				exceptionProperties.put("item", id);
-				NetworkUtils.LogSender(NetworkUtils.DETAIL_EXCEPT, exceptionProperties);
+				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT, exceptionProperties);
 				e.printStackTrace();
 			} catch (NetworkException e) {
 				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
 				exceptionProperties.put("code", "networkconnerror");
 				exceptionProperties.put("content", e.getMessage() + " : " + e.getUrl());
 				exceptionProperties.put("item", id);
-				NetworkUtils.LogSender(NetworkUtils.DETAIL_EXCEPT, exceptionProperties);
+				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT, exceptionProperties);
 				e.printStackTrace();
 			}
 			return null;
@@ -581,6 +584,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 			try {
 				int id = v.getId();
 				Intent intent = new Intent();
+				intent.putExtra(EventProperty.SECTION, mSection);
 				switch(id){
 				case R.id.btn_left:
 					String subUrl = null;

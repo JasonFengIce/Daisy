@@ -219,7 +219,7 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 		release(false);
 		try {
 			player = new SmartPlayer();
-			player.setSDCardisAvailable(true);
+			player.setSDCardisAvailable(false);
 			player.setOnPreparedListener(mPreparedListener);
 			player.setOnVideoSizeChangedListener(mSizeChangedListener);
 			mDuration = -1;

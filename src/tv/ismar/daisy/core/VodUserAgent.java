@@ -1,13 +1,18 @@
 package tv.ismar.daisy.core;
 
 import java.net.NetworkInterface;
+import java.util.UUID;
+
+import android.content.Context;
+import android.os.Build;
+import android.telephony.TelephonyManager;
 
 public class VodUserAgent {
 	
 	
 	public static final String deviceType = "A11";
 	public static final String deviceVersion = "2.0";
-	
+	private static String sn = "";
 	/**
 	 * getMACAddress == getSn
 	 * 
@@ -38,10 +43,64 @@ public class VodUserAgent {
 		String userAgent = deviceType + "/"+ deviceVersion + " " + getMACAddress().toUpperCase();
 		return userAgent;
 	}
+	public static String getHttpUserAgent(){
+		String userAgent = "";
+		userAgent = Build.MODEL + "/" + deviceVersion + " " + sn;
+		return userAgent;
+	}
+
+	public static String getModelName(){
+        return Build.MODEL.replaceAll(" ", "_");
+	}
+	  public static String getSerialNumber(Context context){
+		    TelephonyManager tm = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+	        String macAddr = "";
+	        try{
+	            sn = tm.getSimSerialNumber();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        } finally {
+	        	if(sn == null) {
+		        	sn = "";
+		        }
+	        	if(macAddr == null) {
+	        		macAddr = "";
+	        	}
+	        	//UUID deviceUuid = new UUID(sn.hashCode(), macAddr.hashCode());
+	        	String uuid = UUID.randomUUID().toString();
+	            //sn = deviceUuid.toString().replaceAll("-","");
+	           // sn = deviceUuid.toString();
+	        	sn = uuid;
+	        }
+	        return sn;
+	    }
 	//String access_token
 	public static String getAccessToken(String token) {
 //		String userAgent = deviceType + "/"+ deviceVersion + " " + getMACAddress().toUpperCase();
 		String access_token = "";
 		return access_token;
+	}
+	
+	/**
+	 * 获取媒体IP
+	 */
+	public static String getMediaIp(String str){
+		String ip = "";
+		String tmp = str.substring(7, str.length());
+		int index = tmp.indexOf("/");
+	    ip = tmp.substring(0, index);
+		return ip;
+	}
+	
+	/**
+	 * 获取sid
+	 */
+	public static String getSid(String str){
+		String sid = "";
+		int index = str.indexOf("sid");
+		String sidstr = str.substring(index, str.length());		
+		int sep = sidstr.indexOf("&");		
+		sid = sidstr.substring(4,sep);
+		return sid;
 	}
 }

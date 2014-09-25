@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.ImageUtils;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -117,6 +118,9 @@ public class PlayerActivity extends Activity {
 	private long startDuration = 0;
 	private CallaPlay callaPlay = new CallaPlay();
 	AudioManager am;
+	private String mSection;
+	private String sid;
+	private String mediaip;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -165,6 +169,7 @@ public class PlayerActivity extends Activity {
 		Log.d(TAG, " initClipInfo ");
 		Intent intent = getIntent();
 		if (intent != null) {
+			mSection = intent.getStringExtra(EventProperty.SECTION);
 			bundle = intent.getExtras();
 			// use to get mUrl, and registerActivity
 			DaisyUtils.getVodApplication(this).addActivityToPool(
@@ -400,6 +405,7 @@ public class PlayerActivity extends Activity {
 				if (urls != null && mVideoView != null) {
 					TaskStart();
 					mVideoView.setVideoPath(urls[currQuality]);
+					sid = VodUserAgent.getSid(urls[currQuality]);
 					mVideoView
 							.setOnPreparedListener(new SmartPlayer.OnPreparedListener() {
 								@Override
@@ -416,19 +422,18 @@ public class PlayerActivity extends Activity {
 										timeBar.setProgress(currPosition);
 										timeTaskStart();
 										checkTaskStart();
-
 										urls[0] = urlInfo.getNormal();
 										urls[1] = urlInfo.getMedium();
 										urls[2] = urlInfo.getHigh();
 										urls[3] = urlInfo.getAdaptive();
 										if (subItem != null){
 											callaPlay.videoPlayLoad(item.pk, subItem.pk, item.title,
-													clip.pk, currQuality,(System.currentTimeMillis() - startDuration) / 1000,0,null);
+													clip.pk, currQuality,(System.currentTimeMillis() - startDuration) / 1000,0,null, sid);
 											callaPlay.videoPlayStart(item.pk, subItem.pk, item.title,
 													clip.pk, currQuality, 0);
 										}else{
 											callaPlay.videoPlayLoad(item.pk, null, item.title,
-													clip.pk, currQuality,(System.currentTimeMillis() - startDuration) / 1000,0,null);
+													clip.pk, currQuality,(System.currentTimeMillis() - startDuration) / 1000,0,null, sid);
 											callaPlay.videoPlayStart(item.pk, null, item.title,
 													clip.pk, currQuality, 0);
 										}
@@ -495,9 +500,9 @@ public class PlayerActivity extends Activity {
 			try {
 				startDuration = System.currentTimeMillis();
 				if (subItem != null)
-					callaPlay.videoStart(item.pk, subItem.pk, subItem.title, clip.pk, currQuality, null, 0);
+					callaPlay.videoStart(item, subItem.pk, subItem.title, currQuality, null, 0, mSection, sid);
 				else
-					callaPlay.videoStart(item.pk, null, item.title, clip.pk, currQuality, null, 0);
+					callaPlay.videoStart(item, null, item.title, currQuality, null, 0, mSection, sid);
 				timeTaskStop();
 			} catch (Exception e) {
 				Log.e(TAG, " Sender log videoPlayStart " + e.toString());
@@ -654,9 +659,9 @@ public class PlayerActivity extends Activity {
 				addHistory(0);
 				try {
 					if (subItem != null)
-						callaPlay.videoExit(item.pk, subItem.pk, item.title,clip.pk, currQuality, 0, "end",currPosition,(System.currentTimeMillis() - startDuration) / 1000);
+						callaPlay.videoExit(item.pk, subItem.pk, item.title,clip.pk, currQuality, 0, "end",currPosition,(System.currentTimeMillis() - startDuration) / 1000, mSection, sid, "list", item.content_model);//String section,String sid,String source,String channel
 					else
-						callaPlay.videoExit(item.pk, null, item.title, clip.pk,currQuality, 0, "end",currPosition,(System.currentTimeMillis() - startDuration) / 1000);
+						callaPlay.videoExit(item.pk, null, item.title, clip.pk,currQuality, 0, "end",currPosition,(System.currentTimeMillis() - startDuration) / 1000, mSection, sid, "list", item.content_model);
 				} catch (Exception e) {
 					Log.e(TAG, " log Sender videoExit end " + e.toString());
 				}
@@ -680,10 +685,10 @@ public class PlayerActivity extends Activity {
 		try {
 			if (subItem != null)
 				callaPlay.videoExit(item.pk, subItem.pk, item.title, clip.pk,
-						currQuality, 0, "relate",currPosition,(System.currentTimeMillis() - startDuration) / 1000);
+						currQuality, 0, "relate",currPosition,(System.currentTimeMillis() - startDuration) / 1000,mSection, sid, "list", item.content_model);
 			else
 				callaPlay.videoExit(item.pk, null, item.title, clip.pk,
-						currQuality, 0, "relate",currPosition,(System.currentTimeMillis() - startDuration) / 1000);
+						currQuality, 0, "relate",currPosition,(System.currentTimeMillis() - startDuration) / 1000, mSection, sid, "list", item.content_model);
 			mVideoView.stopPlayback();
 		} catch (Exception e) {
 			Log.e(TAG, "log Sender videoExit relate " + e.toString());
@@ -745,11 +750,10 @@ public class PlayerActivity extends Activity {
 		hideBuffer();
 		mVideoView.pause();
 		paused = true;
-		
 		if (subItem != null)			
-			callaPlay.videoPlayPause(item.pk, subItem.pk, item.title,clip.pk, currQuality, 0, currPosition);
+			callaPlay.videoPlayPause(item.pk, subItem.pk, item.title,clip.pk, currQuality, 0, currPosition, sid);
 		else
-			callaPlay.videoPlayPause(item.pk, null, item.title, clip.pk,currQuality, 0, currPosition);
+			callaPlay.videoPlayPause(item.pk, null, item.title, clip.pk,currQuality, 0, currPosition, sid);
 		
 		
 	}
@@ -760,10 +764,11 @@ public class PlayerActivity extends Activity {
 		// hideBuffer();
 		Log.d(TAG, "resume");
 		mVideoView.start();
+		
 		if (subItem != null)			
-			callaPlay.videoPlayContinue(item.pk, subItem.pk, item.title,clip.pk, currQuality, 0, currPosition);
+			callaPlay.videoPlayContinue(item.pk, subItem.pk, item.title,clip.pk, currQuality, 0, currPosition, sid);
 		else
-			callaPlay.videoPlayContinue(item.pk, null, item.title,clip.pk, currQuality, 0, currPosition);
+			callaPlay.videoPlayContinue(item.pk, null, item.title,clip.pk, currQuality, 0, currPosition, sid);
 		if (!isBuffer) {
 			timeTaskStart();
 		}
@@ -943,9 +948,9 @@ public class PlayerActivity extends Activity {
 				fbImage.setImageResource(R.drawable.vodplayer_controller_rew);
 				mVideoView.seekTo(currPosition);
 				if (subItem != null)			
-					callaPlay.videoPlaySeek(item.pk, subItem.pk, item.title,clip.pk, currQuality, 0, currPosition);
+					callaPlay.videoPlaySeek(item.pk, subItem.pk, item.title,clip.pk, currQuality, 0, currPosition, sid);
 				else
-					callaPlay.videoPlayContinue(item.pk, null, item.title,clip.pk, currQuality, 0, currPosition);
+					callaPlay.videoPlayContinue(item.pk, null, item.title,clip.pk, currQuality, 0, currPosition, sid);
 				isSeekBuffer = true ;
 				Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
 				ret = true;
@@ -957,9 +962,9 @@ public class PlayerActivity extends Activity {
 				ffImage.setImageResource(R.drawable.vodplayer_controller_ffd);
 				mVideoView.seekTo(currPosition);
 				if (subItem != null)			
-					callaPlay.videoPlaySeek(item.pk, subItem.pk, item.title,clip.pk, currQuality, 0, currPosition);
+					callaPlay.videoPlaySeek(item.pk, subItem.pk, item.title,clip.pk, currQuality, 0, currPosition, sid);
 				else
-					callaPlay.videoPlayContinue(item.pk, null, item.title,clip.pk, currQuality, 0, currPosition);
+					callaPlay.videoPlayContinue(item.pk, null, item.title,clip.pk, currQuality, 0, currPosition, sid);
 				isSeekBuffer = true ;
 				Log.d(TAG, "RIGHT seek to" + getTimeString(currPosition));
 				ret = true;
@@ -1022,11 +1027,11 @@ public class PlayerActivity extends Activity {
 								if (subItem != null)
 									callaPlay.videoExit(item.pk, subItem.pk,
 											item.title, clip.pk, currQuality,
-											0, "detail",currPosition,(System.currentTimeMillis() - startDuration) / 1000);
+											0, "detail",currPosition,(System.currentTimeMillis() - startDuration) / 1000, mSection, sid, "list", item.content_model);
 								else
 									callaPlay.videoExit(item.pk, null,
 											item.title, clip.pk, currQuality,
-											0, "detail",currPosition,(System.currentTimeMillis() - startDuration) / 1000);
+											0, "detail",currPosition,(System.currentTimeMillis() - startDuration) / 1000, mSection, sid, "list", item.content_model);
 							} catch (Exception e) {
 								Log.e(TAG,
 										" Sender log videoPlayStart "
@@ -1292,10 +1297,11 @@ public class PlayerActivity extends Activity {
 					mVideoView = (IsmatvVideoView) findViewById(R.id.video_view);
 					mVideoView.setVideoPath(urls[currQuality].toString());
 					historyManager.addOrUpdateQuality(new Quality(0,urls[currQuality], currQuality));
+					mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
 					if (subItem != null)
-						callaPlay.videoSwitchStream(item.pk, subItem.pk, item.title,clip.pk, currQuality,"manual",null,null,null);
+						callaPlay.videoSwitchStream(item.pk, subItem.pk, item.title,clip.pk, currQuality,"manual",null,null,mediaip,sid);
 					else
-						callaPlay.videoSwitchStream(item.pk, null, item.title,clip.pk, currQuality,"manual",null,null,null);
+						callaPlay.videoSwitchStream(item.pk, null, item.title,clip.pk, currQuality,"manual",null,null,mediaip,sid);
 					initQualtiyText();
 					return true;
 				} catch (Exception e) {
