@@ -403,9 +403,10 @@ public class PlayerActivity extends Activity {
 //						checkTaskStart();
 //					}});
 				if (urls != null && mVideoView != null) {
-					TaskStart();
+					TaskStart();//cmstest.tvxio.com
 					mVideoView.setVideoPath(urls[currQuality]);
 					sid = VodUserAgent.getSid(urls[currQuality]);
+					mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
 					mVideoView
 							.setOnPreparedListener(new SmartPlayer.OnPreparedListener() {
 								@Override
@@ -418,8 +419,8 @@ public class PlayerActivity extends Activity {
 										clipLength = mVideoView.getDuration();
 										timeBar.setMax(clipLength);
 										mp.start();
-										mp.seekTo(currPosition);
-										timeBar.setProgress(currPosition);
+										//mp.seekTo(currPosition);
+										//timeBar.setProgress(currPosition);
 										timeTaskStart();
 										checkTaskStart();
 										urls[0] = urlInfo.getNormal();
@@ -466,7 +467,7 @@ public class PlayerActivity extends Activity {
 					mVideoView.setOnSeekCompleteListener(new SmartPlayer.OnSeekCompleteListener() {
 						
 						@Override
-						public void onSeekComplete(SmartPlayer arg0) {
+						public void onSeekComplete(SmartPlayer mp) {
 							// TODO Auto-generated method stub
 							isBuffer = false;
 							hideBuffer();
@@ -1114,7 +1115,7 @@ public class PlayerActivity extends Activity {
 									0,
 									currPosition,
 									(System.currentTimeMillis() - bufferDuration) / 1000,
-									null);
+									mediaip,sid);
 						
 					}else{
 					callaPlay.videoPlayBlockend(
@@ -1126,7 +1127,7 @@ public class PlayerActivity extends Activity {
 									0,
 									currPosition,
 									(System.currentTimeMillis() - bufferDuration) / 1000,
-									null);
+									mediaip,sid);
 					}
 				else
 					if(isSeekBuffer){
@@ -1139,7 +1140,7 @@ public class PlayerActivity extends Activity {
 								0,
 								currPosition,
 								(System.currentTimeMillis() - bufferDuration) / 1000,
-								null);
+								mediaip,sid);
 						
 					}else{
 					callaPlay.videoPlayBlockend(
@@ -1151,7 +1152,7 @@ public class PlayerActivity extends Activity {
 									0,
 									currPosition,
 									(System.currentTimeMillis() - bufferDuration) / 1000,
-									null);
+									mediaip,sid);
 					}
 				isSeekBuffer = false;
 			} catch (Exception e) {

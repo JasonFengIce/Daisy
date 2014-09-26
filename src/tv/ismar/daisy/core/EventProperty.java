@@ -23,4 +23,8 @@ public class EventProperty {
 	public final static String CONTENT = "content";
 	public final static String MEDIAIP = "mediaip";
 	public final static String MODE = "mode";
+    public final static String CATEGORY = "category";
+    public final static String TO_TITLE = "to_title";
+    public final static String TO_ITEM = "to_item";
+
 }

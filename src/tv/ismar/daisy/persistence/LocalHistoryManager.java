@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.dao.DBHelper;
@@ -179,13 +180,13 @@ public class LocalHistoryManager implements HistoryManager {
 				History history = params[0];
 				HashMap<String, Object> properties = new HashMap<String, Object>();
 				int item_id = SimpleRestClient.getItemId(history.url, new boolean[1]);
-				properties.put("item", item_id);
+				properties.put(EventProperty.ITEM, item_id);
 				if(history.sub_url!=null) {
 					int sub_id = SimpleRestClient.getItemId(history.sub_url, new boolean[1]);
-					properties.put("subitem", sub_id);
+					properties.put(EventProperty.SUBITEM, sub_id);
 				}
-				properties.put("title", history.title);
-				properties.put("position", history.last_position);
+				properties.put(EventProperty.TITLE, history.title);
+				properties.put(EventProperty.POSITION, history.last_position);
 				NetworkUtils.SaveLogToLocal(NetworkUtils.VIDEO_HISTORY, properties);
 			}
 			return null;

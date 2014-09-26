@@ -78,6 +78,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 	private HashMap<String, Object> mSectionProperties = new HashMap<String, Object>();
 	
 	private ImageView leftarrow;
+	
 	private void initViews(View fragmentView) {
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
 		mHGridView.setOnItemClickListener(this);
@@ -101,8 +102,8 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		mInitTask.execute(mUrl, mChannel);
 		// Add data collection.
 		HashMap<String, Object> properties = new HashMap<String, Object>();
-		properties.put("category", mChannel);
-		properties.put("title", mTitle);
+		properties.put(EventProperty.CATEGORY, mChannel);
+		properties.put(EventProperty.TITLE, mTitle);
 		
 		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_CHANNEL_IN, properties);
 		return fragmentView;
@@ -309,9 +310,11 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		final HashMap<String, Object> properties = new HashMap<String, Object>();
 		properties.putAll(mSectionProperties);
 		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_CATEGORY_OUT, properties);
-		mSectionProperties.remove("to_item");
-		mSectionProperties.remove("to_title");
-		mSectionProperties.remove("position");
+		mSectionProperties.remove(EventProperty.TO_ITEM);
+		mSectionProperties.remove(EventProperty.TO_TITLE);
+		mSectionProperties.remove(EventProperty.POSITION);
+		mSectionProperties.remove(EventProperty.TITLE);
+		mSectionProperties.remove(EventProperty.SECTION);
 		super.onPause();
 	}
 
@@ -325,8 +328,8 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		
 		// Add data collection.
 		HashMap<String, Object> properties = new HashMap<String, Object>();
-		properties.put("category", mChannel);
-		properties.put("title", mTitle);
+		properties.put(EventProperty.CATEGORY, mChannel);
+		properties.put(EventProperty.TITLE, mTitle);
 		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_CHANNEL_OUT, properties);
 		mInitTask = null;
 		mSectionList = null;
@@ -458,9 +461,9 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 			long id) {
 		Item item = mHGridAdapter.getItem(position);
 		if(item!=null) {
-			mSectionProperties.put("to_item", item.pk);
-			mSectionProperties.put("to_title", item.title);
-			mSectionProperties.put("position", position);
+			mSectionProperties.put(EventProperty.TO_ITEM, item.pk);
+			mSectionProperties.put(EventProperty.TO_TITLE, item.title);
+			mSectionProperties.put(EventProperty.POSITION, position);
 			Intent intent = new Intent();
 			if(item.is_complex) {
 				intent.setAction("tv.ismar.daisy.Item");
@@ -469,6 +472,8 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 			}
 			int sectionIndex = mHGridAdapter.getSectionIndex(position);
 			Section s = mSectionList.get(sectionIndex);
+			mSectionProperties.put(EventProperty.TITLE, s.title);
+			mSectionProperties.put(EventProperty.SECTION, s.slug);
 			intent.putExtra("url", item.url);
 			intent.putExtra(EventProperty.SECTION, s.slug);
 			startActivity(intent);
@@ -514,16 +519,16 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 	private void checkSectionChanged(int newSectionIndex) {
 		if(newSectionIndex != mCurrentSectionIndex && newSectionIndex >= 0) {
 			Section newSection = mSectionList.get(newSectionIndex);
-			mSectionProperties.put("section", newSection.slug);
-			mSectionProperties.put("title", newSection.title);
-			mSectionProperties.put("sid", newSectionIndex);
+			mSectionProperties.put(EventProperty.SECTION, newSection.slug);
+			mSectionProperties.put(EventProperty.TITLE, newSection.title);
+			//mSectionProperties.put("sid", newSectionIndex);
 			new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_CATEGORY_IN, mSectionProperties);
 			if(mCurrentSectionIndex >=0 ){
 				Section oldSection = mSectionList.get(mCurrentSectionIndex);
 				HashMap<String, Object> sectionProperties = new HashMap<String, Object>();
-				sectionProperties.put("section", oldSection.slug);
-				sectionProperties.put("title", oldSection.title);
-				sectionProperties.put("sid", mCurrentSectionIndex);
+				sectionProperties.put(EventProperty.SECTION, oldSection.slug);
+				sectionProperties.put(EventProperty.TITLE, oldSection.title);
+				//sectionProperties.put("sid", mCurrentSectionIndex);
 				new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_CATEGORY_OUT, sectionProperties);
 			}
 			mCurrentSectionIndex = newSectionIndex;

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.dao.DBHelper;
@@ -134,8 +135,8 @@ public class LocalFavoriteManager implements FavoriteManager {
 				final String title = favorite.title;
 				int id = SimpleRestClient.getItemId(url, new boolean[1]);
 				HashMap<String, Object> properties = new HashMap<String, Object>();
-				properties.put("item", id);
-				properties.put("title", title);
+				properties.put(EventProperty.ITEM, id);
+				properties.put(EventProperty.TITLE, title);
 				if(params!=null && params.length>0) {
 					NetworkUtils.SaveLogToLocal(NetworkUtils.VIDEO_COLLECT, properties);	
 				}

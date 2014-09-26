@@ -137,7 +137,7 @@ public class VodApplication extends Application {
 			// TODO Auto-generated method stub			
 			while(isFinish){		
 					try {
-						Thread.sleep(10000);
+						Thread.sleep(900000);
 						Log.i("zhangjiqiang", "upload123");
 						NetworkUtils.LogUpLoad(getApplicationContext());
 					} catch (InterruptedException e) {
