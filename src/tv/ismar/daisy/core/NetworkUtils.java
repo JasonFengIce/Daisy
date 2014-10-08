@@ -37,6 +37,8 @@ public class NetworkUtils {
 	
 	private static final String URL = "http://127.0.0.1:21098/log/track/";
 	
+	//private static final int BUFFERSIZE = 1024*1024;
+	private static final int BUFFERSIZE = 3*3;
 	DataCollectionTask mDataCollectionTask;
 	public static String getJsonStr(String target) throws ItemOfflineException, NetworkException {
 		String urlStr = target;
@@ -169,6 +171,35 @@ public class NetworkUtils {
 //		
 //	}
 	
+	private static boolean isSupportGzip(){
+		boolean isSupport = false;
+		
+		String url="http://a21.calla.tvxio.com/log";
+		java.net.URL connURL;
+		java.net.HttpURLConnection httpConn = null;
+		try {
+			connURL = new java.net.URL(url);
+			httpConn = (java.net.HttpURLConnection) connURL.openConnection();
+			httpConn.setRequestProperty("Accept-Encoding","gzip"); 
+			String gzip1 = httpConn.getContentEncoding();
+			if(gzip1!=null){
+				isSupport = true;
+			}
+
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally{
+			if(httpConn!=null)
+			httpConn.disconnect();
+		}
+		return isSupport;
+	}
+	
 	/**
 	 * 
 	 * LogSender 上报日志文件
@@ -205,7 +236,9 @@ public class NetworkUtils {
 			httpConn.setRequestProperty("User-Agent", VodUserAgent.getUserAgent(VodUserAgent.getMACAddress()));
 			httpConn.setRequestProperty("Pragma:", "no-cache");  
 			httpConn.setRequestProperty("Cache-Control", "no-cache");
-			httpConn.setRequestProperty("Accept-Encoding","gzip");  
+			boolean isSupport = isSupportGzip();
+			if(isSupport)
+			  httpConn.setRequestProperty("Accept-Encoding","gzip");
 			httpConn.setUseCaches(false);
 			//String gzip1 = httpConn.getContentEncoding();
 			//Log.i("zjq", "gzip1=="+gzip1);
@@ -215,7 +248,24 @@ public class NetworkUtils {
 			String content = "sn="+VodUserAgent.getSerialNumber(context) + "&modelname=" + VodUserAgent.getModelName() + "&data=" + 
 			URLEncoder.encode(jsonContent, "UTF-8") + "&token="+"1833777804168045";
 			Log.d(TAG,content);
-	        out.writeBytes(content); 
+			byte[] datas = content.getBytes();
+
+			byte[] b = new byte[BUFFERSIZE*BUFFERSIZE]; 
+			if(datas.length<=b.length)
+	          out.writeBytes(content);
+			else{
+				//out.write(buffer, offset, count)
+				int mod = datas.length%b.length;
+				int count = datas.length/b.length;
+				int i=1;
+				for(i=1; i<=count; i++){
+//					byte[] c = new byte[1024*1024];
+//					System.arraycopy(datas, (i-1)*1024*1024, c, 0, c.length);
+					out.write(datas, (i-1)*BUFFERSIZE*BUFFERSIZE, BUFFERSIZE*BUFFERSIZE);
+				}
+				out.write(datas,(i-1)*BUFFERSIZE*BUFFERSIZE,mod);
+			}
+
 	        out.flush();
 	        out.close(); // flush and close
 	        BufferedReader reader = new BufferedReader(new InputStreamReader(httpConn.getInputStream(), "UTF-8"));
