@@ -180,8 +180,8 @@ public class NetworkUtils {
 			connURL = new java.net.URL(url);
 			httpConn = (java.net.HttpURLConnection) connURL.openConnection();
 			httpConn.setRequestProperty("Accept-Encoding","gzip"); 
-			String gzip1 = httpConn.getContentEncoding();
-			if(gzip1!=null){
+			String gzip = httpConn.getContentEncoding();
+			if(gzip!=null&&"gzip".equals(gzip)){
 				isSupport = true;
 			}
 
