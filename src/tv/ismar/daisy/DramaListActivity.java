@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import tv.ismar.daisy.adapter.DaramAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.views.AsyncImageView;
@@ -56,7 +57,7 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 			mSubItem = mItem.subitems[i];
 			mList.add(mSubItem);
 		}
-		mDataCollectionProperties.put("item", mItem.pk);
+		mDataCollectionProperties.put(EventProperty.ITEM, mItem.pk);
 		mDataCollectionProperties.put("title", mItem.title);
 		mDataCollectionProperties.put("to", "return");
 		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_DRAMALIST_IN, mDataCollectionProperties);

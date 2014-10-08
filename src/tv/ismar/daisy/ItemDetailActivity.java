@@ -194,10 +194,10 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 			final HashMap<String, Object> properties = new HashMap<String, Object>();
 			properties.putAll(mDataCollectionProperties);
 			new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_DETAIL_OUT, properties);
-			mDataCollectionProperties.put("title", mItem.title);
-			mDataCollectionProperties.put("item", mItem.pk);
-			mDataCollectionProperties.put("to", "return");
-			mDataCollectionProperties.remove("subitem");
+			mDataCollectionProperties.put(EventProperty.TITLE, mItem.title);
+			mDataCollectionProperties.put(EventProperty.ITEM, mItem.pk);
+			mDataCollectionProperties.put(EventProperty.TO, "return");
+			mDataCollectionProperties.remove(EventProperty.SUBITEM);
 		}
 		super.onPause();
 	}
@@ -236,23 +236,23 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 				mItem = mSimpleRestClient.getItem(url);
 			} catch (ItemOfflineException e) {
 				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
-				exceptionProperties.put("code", "nodetail");
-				exceptionProperties.put("content", "no detail error : " + e.getUrl());
-				exceptionProperties.put("item", id);
+				exceptionProperties.put(EventProperty.CODE, "nodetail");
+				exceptionProperties.put(EventProperty.CONTENT, "no detail error : " + e.getUrl());
+				exceptionProperties.put(EventProperty.ITEM, id);
 				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT, exceptionProperties);
 				e.printStackTrace();
 			} catch (JsonSyntaxException e) {
 				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
-				exceptionProperties.put("code", "parsejsonerror");
-				exceptionProperties.put("content", e.getMessage() + " : "+url );
-				exceptionProperties.put("item", id);
+				exceptionProperties.put(EventProperty.CODE, "parsejsonerror");
+				exceptionProperties.put(EventProperty.CONTENT, e.getMessage() + " : "+url );
+				exceptionProperties.put(EventProperty.ITEM, id);
 				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT, exceptionProperties);
 				e.printStackTrace();
 			} catch (NetworkException e) {
 				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
-				exceptionProperties.put("code", "networkconnerror");
-				exceptionProperties.put("content", e.getMessage() + " : " + e.getUrl());
-				exceptionProperties.put("item", id);
+				exceptionProperties.put(EventProperty.CODE, "networkconnerror");
+				exceptionProperties.put(EventProperty.CONTENT, e.getMessage() + " : " + e.getUrl());
+				exceptionProperties.put(EventProperty.ITEM, id);
 				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT, exceptionProperties);
 				e.printStackTrace();
 			}
@@ -277,8 +277,28 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 	 * Init layout elements when all data has been fetched.
 	 */
 	private void initLayout() {
-		mDataCollectionProperties.put("item", mItem.pk);
-		mDataCollectionProperties.put("title", mItem.title);
+		mDataCollectionProperties.put(EventProperty.ITEM, mItem.pk);
+		mDataCollectionProperties.put(EventProperty.TITLE, mItem.title);
+		String subItemUrl = "http://cord.tvxio.com"
+				+ "/api/subitem/" + mItem.pk + "/";
+		SimpleRestClient simpleRestClient = new SimpleRestClient();
+		Item subItem;
+		try {
+			subItem = simpleRestClient.getItem(subItemUrl);
+			if(subItem!=null){
+				mDataCollectionProperties.put(EventProperty.SUBITEM, subItem.pk);
+			}
+		} catch (JsonSyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ItemOfflineException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NetworkException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_DETAIL_IN, mDataCollectionProperties);
 		/*
 		 * if this item is a drama , the button should split to two. otherwise. use one button.
@@ -562,10 +582,10 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 			for(Item item: relatedItem) {
 				if(url.equals(item.item_url)) {
 					HashMap<String, Object> properties = new HashMap<String, Object>();
-					properties.put("item", mItem.pk);
-					properties.put("to_item", item.pk);
-					properties.put("to_title", item.title);
-					properties.put("to", "relate");
+					properties.put(EventProperty.ITEM, mItem.pk);
+					properties.put(EventProperty.TO_ITEM, item.pk);
+					properties.put(EventProperty.TO_TITLE, item.title);
+					properties.put(EventProperty.TO, "relate");
 					new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_RELATE, properties);
 					break;
 				}
@@ -604,22 +624,22 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 						sub_id = mItem.subitems[0].pk;
 						title += "("+mItem.subitems[0].episode+")";
 					}
-					mDataCollectionProperties.put("title", title);
-					mDataCollectionProperties.put("subitem", sub_id);
-					mDataCollectionProperties.put("to", "play");
+					mDataCollectionProperties.put(EventProperty.TITLE, title);
+					mDataCollectionProperties.put(EventProperty.SUBITEM, sub_id);
+					mDataCollectionProperties.put(EventProperty.TO, "play");
 					
 					intent.setAction("tv.ismar.daisy.Play");
 					intent.putExtra("url", subUrl);
 					startActivity(intent);
 					break;
 				case R.id.btn_right:
-					mDataCollectionProperties.put("to", "list");
+					mDataCollectionProperties.put(EventProperty.TO_ITEM, "list");
 					intent.setClass(ItemDetailActivity.this, DramaListActivity.class);
-					intent.putExtra("item", mItem);
+					intent.putExtra(EventProperty.ITEM, mItem);
 					startActivity(intent);
 					break;
 				case R.id.btn_fill:
-					mDataCollectionProperties.put("to", "play");
+					mDataCollectionProperties.put(EventProperty.TO, "play");
 					
 					intent.setAction("tv.ismar.daisy.Play");
 					intent.putExtra("item", mItem);
@@ -653,7 +673,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 					if(mRelatedItem!=null && mRelatedItem.length >0 ){
 						intent.putExtra("related_item", new ArrayList<Item>(Arrays.asList(mRelatedItem)));
 					}
-					mDataCollectionProperties.put("to", "relate");
+					mDataCollectionProperties.put(EventProperty.TO, "relate");
 					
 					intent.putExtra("item", mItem);
 					intent.setClass(ItemDetailActivity.this, RelatedActivity.class);

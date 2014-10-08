@@ -9,6 +9,7 @@ import org.sakuratya.horizontal.ui.ZGridView;
 import tv.ismar.daisy.adapter.ImageCacheAdapter;
 import tv.ismar.daisy.core.ConnectionHelper;
 import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SearchMovieService;
 import tv.ismar.daisy.core.SearchPromptDialog;
@@ -246,7 +247,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						hashLog.put("q",autoCompleteTextView.getText().toString());
+						hashLog.put(EventProperty.Q,autoCompleteTextView.getText().toString());
 						NetworkUtils.SaveLogToLocal(NetworkUtils.VIDEO_SEARCH, hashLog);
 						hashLog.clear();
 						movieList = searchService.getSearchResult(autoCompleteTextView.getText().toString());
@@ -323,7 +324,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 								@Override
 								public void run() {
 									try {
-										hashLog.put("q",btnHotWords.getText().toString());
+										hashLog.put(EventProperty.Q,btnHotWords.getText().toString());
 										NetworkUtils.SaveLogToLocal(NetworkUtils.VIDEO_SEARCH, hashLog);
 										hashLog.clear();
 										movieList = searchService.getSearchResult(btnHotWords.getText().toString());
@@ -408,10 +409,10 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long positions) {
 		Intent intent = new Intent();
 		Bundle bundle = new Bundle();
-		hashLog.put("content_type", movieList.get(position).content_model);
-		hashLog.put("q", autoCompleteTextView.getText().toString());
-		hashLog.put("item", movieList.get(position).item_pk);
-		hashLog.put("title", movieList.get(position).title);
+		hashLog.put(EventProperty.CONTENT_TYPE, movieList.get(position).content_model);
+		hashLog.put(EventProperty.Q, autoCompleteTextView.getText().toString());
+		hashLog.put(EventProperty.ITEM, movieList.get(position).item_pk);
+		hashLog.put(EventProperty.TITLE, movieList.get(position).title);
 		new Thread(new Runnable() {
 			@Override
 			public void run() {

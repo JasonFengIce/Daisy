@@ -419,8 +419,8 @@ public class PlayerActivity extends Activity {
 										clipLength = mVideoView.getDuration();
 										timeBar.setMax(clipLength);
 										mp.start();
-										//mp.seekTo(currPosition);
-										//timeBar.setProgress(currPosition);
+										mp.seekTo(currPosition);
+										timeBar.setProgress(currPosition);
 										timeTaskStart();
 										checkTaskStart();
 										urls[0] = urlInfo.getNormal();

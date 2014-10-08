@@ -170,12 +170,12 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 	
 	private void initLayout() {
 		// Data collection.
-		mDataCollectionProperties.put("item", mItem.pk);
-		mDataCollectionProperties.put("title", mItem.title);
+		mDataCollectionProperties.put(EventProperty.ITEM, mItem.pk);
+		mDataCollectionProperties.put(EventProperty.TITLE, mItem.title);
 		if(mItem.clip!=null) {
-			mDataCollectionProperties.put("clip", mItem.clip.pk);
+			mDataCollectionProperties.put(EventProperty.CLIP, mItem.clip.pk);
 		} else {
-			mDataCollectionProperties.put("clip", "");
+			mDataCollectionProperties.put(EventProperty.CLIP, "");
 		}
 		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_RELATE_IN, mDataCollectionProperties);
 		
@@ -210,8 +210,8 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		final HashMap<String, Object> properties = new HashMap<String, Object>();
 		properties.putAll(mDataCollectionProperties);
 		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_RELATE_OUT, properties);
-		mDataCollectionProperties.remove("to_item");
-		mDataCollectionProperties.remove("to_title");
+		mDataCollectionProperties.remove(EventProperty.TO_ITEM);
+		mDataCollectionProperties.remove(EventProperty.TO_TITLE);
 		super.onPause();
 	}
 	
@@ -285,12 +285,12 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		Item item = mAdapter.getItem(position);
-		mDataCollectionProperties.put("to_item", item.pk);
-		mDataCollectionProperties.put("to_title", item.title);
+		mDataCollectionProperties.put(EventProperty.TO_ITEM, item.pk);
+		mDataCollectionProperties.put(EventProperty.TO_TITLE, item.title);
 		if(item.clip!=null) {
-			mDataCollectionProperties.put("clip", item.clip);
+			mDataCollectionProperties.put(EventProperty.CLIP, item.clip);
 		} else {
-			mDataCollectionProperties.put("clip", "");
+			mDataCollectionProperties.put(EventProperty.CLIP, "");
 		}
 		Intent intent = new Intent("tv.ismar.daisy.Item");
 		intent.putExtra("url", item.item_url);

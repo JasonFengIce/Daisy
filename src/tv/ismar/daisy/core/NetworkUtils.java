@@ -205,7 +205,10 @@ public class NetworkUtils {
 			httpConn.setRequestProperty("User-Agent", VodUserAgent.getUserAgent(VodUserAgent.getMACAddress()));
 			httpConn.setRequestProperty("Pragma:", "no-cache");  
 			httpConn.setRequestProperty("Cache-Control", "no-cache");
+			httpConn.setRequestProperty("Accept-Encoding","gzip");  
 			httpConn.setUseCaches(false);
+			//String gzip1 = httpConn.getContentEncoding();
+			//Log.i("zjq", "gzip1=="+gzip1);
 			httpConn.connect();
 			
 			DataOutputStream out = new DataOutputStream(httpConn.getOutputStream());
@@ -219,6 +222,8 @@ public class NetworkUtils {
     		String line;
     		int code = httpConn.getResponseCode();
     		String response = httpConn.getResponseMessage();
+    		String gzip2 = httpConn.getContentEncoding();
+    		Log.i("zjq", "gzip2=="+gzip2);
     		while ((line = reader.readLine()) != null)
     		{
     			System.out.println(line);

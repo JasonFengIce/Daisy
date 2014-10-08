@@ -20,6 +20,7 @@ import tv.ismar.daisy.models.ItemList;
 import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
@@ -90,7 +91,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		mChannelLabel = (TextView) fragmentView.findViewById(R.id.channel_label);
 		mChannelLabel.setText(mTitle);
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -241,18 +242,19 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 			} catch (Exception e) {
 				if(e instanceof ItemOfflineException) {
 					HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
-					exceptionProperties.put("code", "nocategory");
-					exceptionProperties.put("content", "get category error : "+((ItemOfflineException) e).getUrl());
-					exceptionProperties.put("section", slug);
+					exceptionProperties.put(EventProperty.CODE, "nocategory");
+					exceptionProperties.put(EventProperty.CONTENT, "get category error : "+((ItemOfflineException) e).getUrl());
+					exceptionProperties.put(EventProperty.SECTION, slug);
 					NetworkUtils.SaveLogToLocal(NetworkUtils.CATEGORY_EXCEPT, exceptionProperties);
 				} else if(e instanceof NetworkException) {
 					HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
-					exceptionProperties.put("code", "networkconnerror");
-					exceptionProperties.put("content", "network connect error : " + ((ItemOfflineException) e).getUrl());
-					exceptionProperties.put("section", slug);
+					exceptionProperties.put(EventProperty.CODE, "networkconnerror");
+					exceptionProperties.put(EventProperty.CONTENT, "network connect error : " + ((ItemOfflineException) e).getUrl());
+					exceptionProperties.put(EventProperty.SECTION, slug);
 					NetworkUtils.SaveLogToLocal(NetworkUtils.CATEGORY_EXCEPT, exceptionProperties);
 				}
 				e.printStackTrace();
+				getActivity();
 				return null;
 			}
 		}
