@@ -37,7 +37,7 @@ public class NetworkUtils {
 	
 	private static final String URL = "http://127.0.0.1:21098/log/track/";
 	
-	private static final int BUFFERSIZE = 1024*1024;
+	private static final int BUFFERSIZE = 1024;
 	DataCollectionTask mDataCollectionTask;
 	public static String getJsonStr(String target) throws ItemOfflineException, NetworkException {
 		String urlStr = target;

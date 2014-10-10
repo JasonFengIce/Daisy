@@ -121,6 +121,7 @@ public class PlayerActivity extends Activity {
 	private String mSection;
 	private String sid;
 	private String mediaip;
+	private int mCurrentSeed = 0;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -407,6 +408,20 @@ public class PlayerActivity extends Activity {
 					mVideoView.setVideoPath(urls[currQuality]);
 					sid = VodUserAgent.getSid(urls[currQuality]);
 					mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
+					mVideoView.setOnInfoListener(new SmartPlayer.OnInfoListener() {
+						
+						@Override
+						public boolean onInfo(SmartPlayer arg0, int arg1, int arg2) {
+							// TODO Auto-generated method stub
+							Log.i("zhangjiqiang", "arg1=="+arg1);
+							mCurrentSeed = arg1/8;
+							if(subItem != null)
+							  callaPlay.videoPlaySpeed(item.pk, subItem.pk, item.title, clip.pk, currQuality, mCurrentSeed, mediaip, sid);
+							else
+							  callaPlay.videoPlaySpeed(item.pk, null, item.title, clip.pk, currQuality, mCurrentSeed, mediaip, sid);
+							return false;
+						}
+					});
 					mVideoView
 							.setOnPreparedListener(new SmartPlayer.OnPreparedListener() {
 								@Override

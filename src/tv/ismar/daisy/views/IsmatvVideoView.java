@@ -443,6 +443,7 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 	SmartPlayer.OnInfoListener mInfoChangedListener = new SmartPlayer.OnInfoListener() {
 		@Override
 		public boolean onInfo(SmartPlayer arg0, int arg1, int arg2) {
+			mOnInfoListener.onInfo(arg0, arg1, arg2);
 			return false;
 		}
 	};

@@ -3,6 +3,8 @@ package org.sakuratya.horizontal.adapter;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import org.sakuratya.horizontal.ui.HGridView;
+
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemCollection;
@@ -14,7 +16,9 @@ import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnGenericMotionListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -29,7 +33,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 	private Context mContext;
 	
 	private int mSize = 0;
-	
+	public HGridView hg;
 	private HashSet<AsyncImageView> mOnLoadingImageQueue = new HashSet<AsyncImageView>();
 	private HashSet<RelativeLayout> mOnLoadinglayoutQueue = new HashSet<RelativeLayout>();
 	public HGridAdapterImpl(Context context, ArrayList<ItemCollection> list) {
@@ -40,6 +44,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 				mSize +=list.get(i).count;
 			}
 		}
+		
 	}
 	
 	@Override
@@ -78,7 +83,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView( final int position, View convertView, ViewGroup parent) {
 		Holder holder = null;
 		if(convertView == null) {
 			convertView = LayoutInflater.from(mContext).inflate(R.layout.list_view_item,null);
@@ -91,7 +96,39 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 		} else {
 			holder = (Holder) convertView.getTag();
 		}
-		
+		convertView.setOnGenericMotionListener(new OnGenericMotionListener() {
+			
+			@Override
+			public boolean onGenericMotion(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				int what = event.getButtonState();
+				switch (what) {
+				case MotionEvent.ACTION_DOWN:
+					System.out.println("��״̬");
+
+					break;	
+				case MotionEvent.BUTTON_PRIMARY:
+					Log.i("zhangjiqiang", "leftleft");
+//					View vv = mHGridView.getChildAt(mHGridView.mSelectedPosition-mHGridView.mFirstPosition);
+//					if(vv!=null){
+//						mHGridView.performItemClick(vv, mHGridView.mSelectedPosition, 0);
+//					}
+			if(hg!=null){
+				Log.i("zhangjiqiang", "position=="+position);
+				hg.performItemClick(v, position, 0);
+			}
+					break;	
+				case MotionEvent.BUTTON_TERTIARY:
+
+					break;		
+				case MotionEvent.BUTTON_SECONDARY:
+					
+					break;	
+	
+				}
+				return false;
+			}
+		});
 		int itemCount = 0;
 		int sectionIndex = 0;
 		int indexOfCurrentSection = 0;

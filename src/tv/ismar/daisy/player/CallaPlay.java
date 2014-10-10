@@ -35,7 +35,7 @@ public class CallaPlay {
 		tempMap.put("userid", userid);
 		tempMap.put(EventProperty.CHANNEL, item.content_model);
 		tempMap.put(EventProperty.SECTION, section);
-		tempMap.put(EventProperty.SID, "");
+		tempMap.put(EventProperty.SID, sid);
 		eventName =	NetworkUtils.VIDEO_START;
 		properties = tempMap;
 		//new LogTask().execute();
@@ -306,7 +306,7 @@ public class CallaPlay {
 		tempMap.put(EventProperty.TITLE, title);
 		tempMap.put(EventProperty.CLIP, clip);
 		tempMap.put(EventProperty.QUALITY, switchQuality(quality));
-		//tempMap.put("speed", speed);
+		tempMap.put(EventProperty.SPEED, speed+"KByte/s");
 		tempMap.put(EventProperty.MEDIAIP, mediaip);
 		tempMap.put(EventProperty.SID, sid);
 		eventName =	NetworkUtils.VIDEO_PLAY_SPEED; 
