@@ -5,7 +5,7 @@
     <dimen name="padding_large">16dp</dimen>
     
     <!-- item detail page-->
-    <dimen name="item_detail_detail_left_container_width">1281dp</dimen>
+    <dimen name="item_detail_detail_left_container_width">1281dip</dimen>
     <dimen name="item_detail_vod_watermark_width">669dip</dimen>
     <dimen name="item_detail_vod_watermark_height">155dip</dimen>
     <dimen name="item_detail_detail_title_width">521dip</dimen>
@@ -87,7 +87,7 @@
     <dimen name="gridview_channel_section_tabs_margintop">174dip</dimen>
     <dimen name="gridview_main_panel_height">810dip</dimen>
     <dimen name="gridview_main_panel_fadingEdgeLength">144dip</dimen>
-    <dimen name="gridview_main_panel_horizontalSpacing">77dip</dimen>
+    <dimen name="gridview_main_panel_horizontalSpacing">82dip</dimen>
     <dimen name="gridview_main_panel_verticalSpacing">0dip</dimen>
     <dimen name="gridview_main_panel_rowHeight">252dip</dimen>
     <dimen name="gridview_main_panel_labelTopOffset">8dip</dimen>
@@ -423,6 +423,33 @@
     <dimen name="HGridView_related_selectionTopPadding">14dip</dimen>
     <dimen name="HGridView_related_selectionRightPadding">6dip</dimen>
     <dimen name="HGridView_related_selectionBottomPadding">-43dip</dimen>      
-    <dimen name="HGridView_label_lr_offset">8dip</dimen>
+    <dimen name="HGridView_label_lr_offset">0dip</dimen>
 
+    <!-- LoadingDialog -->
+    <dimen name="Loading_Dialog_ProgressBar_Height">66dip</dimen>
+    <dimen name="Loading_Dialog_ProgressBar_width">66dip</dimen>
+    <dimen name="Loading_Dialog_ProgressBar_ML">14dip</dimen>
+    <dimen name="Loading_Dialog_ProgressBar_TextSize">23sp</dimen>
+     <!-- Launcher -->   
+<dimen name="Launcher_Layout_LP">40dip</dimen>
+<dimen name="Launcher_Layout_TP">1dip</dimen>
+<dimen name="Launcher_Layout_RP">40dip</dimen>
+<dimen name="Launcher_Layout_BP">15dip</dimen>
+<dimen name="Launcher_weather_layout_ML">100dip</dimen>
+<dimen name="Launcher_weather_layout_MT">5dip</dimen>
+<dimen name="Launcher_weather_layout_MR">100dip</dimen>
+<dimen name="Launcher_weather_icon_width">60dip</dimen>
+<dimen name="Launcher_weather_icon_height">60dip</dimen>
+<dimen name="Launcher_weather_tmp_ML">30dip</dimen>
+<dimen name="Launcher_weather_tmp_textsize">28sp</dimen>
+<dimen name="Launcher_today_weather_detail_textsize">18sp</dimen>
+<dimen name="Launcher_weather_divider_height">90dip</dimen>
+<dimen name="Launcher_weather_divider_ML">15dip</dimen>
+<dimen name="Launcher_weather_divider_MR">15dip</dimen>
+<dimen name="Launcher_tomorrow_detail_textsize">18sp</dimen>
+<dimen name="Launcher_video_layout_MLR">5dip</dimen>
+<dimen name="Launcher_video_view_margin">5dip</dimen>
+<dimen name="Launcher_preview_layout_MLR">5dip</dimen>
+<dimen name="Launcher_preview_title_textsize">24sp</dimen>
+<dimen name="Launcher_channel_title_textsize">32sp</dimen>
 </resources>

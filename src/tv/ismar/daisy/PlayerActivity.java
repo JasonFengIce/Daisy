@@ -9,6 +9,7 @@ import tv.ismar.daisy.core.ImageUtils;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.VodUserAgent;
+import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.models.Clip;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
@@ -408,20 +409,19 @@ public class PlayerActivity extends Activity {
 					mVideoView.setVideoPath(urls[currQuality]);
 					sid = VodUserAgent.getSid(urls[currQuality]);
 					mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
-					mVideoView.setOnInfoListener(new SmartPlayer.OnInfoListener() {
-						
-						@Override
-						public boolean onInfo(SmartPlayer arg0, int arg1, int arg2) {
-							// TODO Auto-generated method stub
-							Log.i("zhangjiqiang", "arg1=="+arg1);
-							mCurrentSeed = arg1/8;
-							if(subItem != null)
-							  callaPlay.videoPlaySpeed(item.pk, subItem.pk, item.title, clip.pk, currQuality, mCurrentSeed, mediaip, sid);
-							else
-							  callaPlay.videoPlaySpeed(item.pk, null, item.title, clip.pk, currQuality, mCurrentSeed, mediaip, sid);
-							return false;
-						}
-					});
+//					mVideoView.setOnInfoListener(new SmartPlayer.OnInfoListener() {
+//						
+//						@Override
+//						public boolean onInfo(SmartPlayer arg0, int arg1, int arg2) {
+//							// TODO Auto-generated method stub
+//							mCurrentSeed = arg1/8;
+//							if(subItem != null)
+//							  callaPlay.videoPlaySpeed(item.pk, subItem.pk, item.title, clip.pk, currQuality, mCurrentSeed, mediaip, sid);
+//							else
+//							  callaPlay.videoPlaySpeed(item.pk, null, item.title, clip.pk, currQuality, mCurrentSeed, mediaip, sid);
+//							return false;
+//						}
+//					});
 					mVideoView
 							.setOnPreparedListener(new SmartPlayer.OnPreparedListener() {
 								@Override
@@ -796,18 +796,23 @@ public class PlayerActivity extends Activity {
 			return;
 		if (offsets != 1 && offsets % 5 != 0) {
 			offsets += step;
+			Log.i("zhnagjiqiang", "offsets != 1 && offsets % 5 != 0");
 		} else {
 			if (offsets > 0) {
 				offn = offsets / 5;
+				Log.i("zhnagjiqiang", "offsets > 0");
 			}
 		}
 		if (clipLength  > 1000000) {
 			if (offn < 11) {
+				Log.i("zhnagjiqiang", "offn < 11");
 				currPosition += clipLength * offn * 0.01;
 			} else {
+				Log.i("zhnagjiqiang", "offn >=11");
 				currPosition += clipLength * 0.1;
 			}
 		} else {
+			Log.i("zhnagjiqiang", "clipLength  <= 1000000");
 			currPosition += 10000;
 		}
 
@@ -1016,14 +1021,20 @@ public class PlayerActivity extends Activity {
 			View view;
 			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			view = inflater.inflate(R.layout.popup_2btn, null);
-			int H = DaisyUtils.getVodApplication(this).getheightPixels(this);
-			if(H==720)
-			    popupDlg.addContentView(view, new ViewGroup.LayoutParams(
-					538,296));
-			else
+//			int H = DaisyUtils.getVodApplication(this).getheightPixels(this);
+//			if(H==720)
+//			    popupDlg.addContentView(view, new ViewGroup.LayoutParams(
+//					(int)(538/DBHelper.rate),(int)(296/DBHelper.rate)));
+//			else
+//				popupDlg.addContentView(view, new ViewGroup.LayoutParams(
+//						(807/DBHelper.rate,
+//						ViewGroup.LayoutParams.WRAP_CONTENT));
+				
+				int width = getResources().getDimensionPixelSize(R.dimen.popup_dialog_width);
+				int height = getResources().getDimensionPixelSize(R.dimen.popup_dialog_height);
+				
 				popupDlg.addContentView(view, new ViewGroup.LayoutParams(
-						ViewGroup.LayoutParams.WRAP_CONTENT,
-						ViewGroup.LayoutParams.WRAP_CONTENT));
+						width,height));
 			TextView tv = (TextView) view.findViewById(R.id.PopupText);
 			tv.setText(msg);
 			Button btn1 = null, btn2 = null;

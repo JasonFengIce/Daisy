@@ -31,6 +31,7 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -440,7 +441,7 @@ public class AsyncImageView extends ImageView implements ImageRequestCallback {
 		Animation mAnimation = null; 
 		/**加载透明动画**/
 	    mAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.image_alpha); 
-	    RelativeLayout d = (RelativeLayout) getParent();
+	    View d = (View) getParent();
 	    d.startAnimation(mAnimation);
         setImageBitmap(mBitmap);
         if (mOnImageViewLoadListener != null) {

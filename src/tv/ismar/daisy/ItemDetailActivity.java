@@ -505,7 +505,6 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 		for(int i=0; i<4&&i<mRelatedItem.length; i++) {
 			RelativeLayout relatedHolder = (RelativeLayout) LayoutInflater.from(ItemDetailActivity.this).inflate(R.layout.related_item_layout, null);
 			
-			int H = DaisyUtils.getVodApplication(ItemDetailActivity.this).getheightPixels(ItemDetailActivity.this);
 			LinearLayout.LayoutParams layoutParams;
 			layoutParams = new LinearLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.item_detail_related_W), 
 					getResources().getDimensionPixelSize(R.dimen.item_detail_related_H));

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+<declare-styleable name="MyHorizontalView"></declare-styleable>
+    <declare-styleable name="IsmartvVideoView"></declare-styleable>
     <declare-styleable name="AsyncImageView">
         <attr name="defaultSrc" format="reference" />
         <attr name="url" format="string" />

@@ -22,6 +22,7 @@ import android.app.Activity;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -295,7 +296,10 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		Intent intent = new Intent("tv.ismar.daisy.Item");
 		intent.putExtra("url", item.item_url);
         intent.putExtra(EventProperty.SECTION, mSection);
-		startActivity(intent);
+		//startActivity(intent);
+        
+        AsyncImageView s = (AsyncImageView)view.findViewById(R.id.list_item_preview_img);
+        s.setBackgroundColor(Color.BLUE);
 	}
 	
 	

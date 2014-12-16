@@ -13,11 +13,13 @@ import tv.ismar.daisy.views.AsyncImageView.OnImageViewLoadListener;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.view.View.OnGenericMotionListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -96,39 +98,52 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 		} else {
 			holder = (Holder) convertView.getTag();
 		}
-		convertView.setOnGenericMotionListener(new OnGenericMotionListener() {
-			
-			@Override
-			public boolean onGenericMotion(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				int what = event.getButtonState();
-				switch (what) {
-				case MotionEvent.ACTION_DOWN:
-					System.out.println("��״̬");
-
-					break;	
-				case MotionEvent.BUTTON_PRIMARY:
-					Log.i("zhangjiqiang", "leftleft");
-//					View vv = mHGridView.getChildAt(mHGridView.mSelectedPosition-mHGridView.mFirstPosition);
-//					if(vv!=null){
-//						mHGridView.performItemClick(vv, mHGridView.mSelectedPosition, 0);
-//					}
-			if(hg!=null){
-				Log.i("zhangjiqiang", "position=="+position);
-				hg.performItemClick(v, position, 0);
-			}
-					break;	
-				case MotionEvent.BUTTON_TERTIARY:
-
-					break;		
-				case MotionEvent.BUTTON_SECONDARY:
-					
-					break;	
-	
-				}
-				return false;
-			}
-		});
+//		holder.previewImage.setOnFocusChangeListener(new OnFocusChangeListener() {
+//			
+//			@Override
+//			public void onFocusChange(View v, boolean hasFocus) {
+//				// TODO Auto-generated method stub
+//				if(hasFocus){
+//					v.setBackgroundColor(Color.BLUE);
+//				}
+//				else{
+//					v.setBackgroundColor(Color.RED);
+//				}
+//			}
+//		});
+//		convertView.setOnGenericMotionListener(new OnGenericMotionListener() {
+//			
+//			@Override
+//			public boolean onGenericMotion(View v, MotionEvent event) {
+//				// TODO Auto-generated method stub
+//				int what = event.getButtonState();
+//				switch (what) {
+//				case MotionEvent.ACTION_DOWN:
+//					System.out.println("��״̬");
+//
+//					break;	
+//				case MotionEvent.BUTTON_PRIMARY:
+//					Log.i("zhangjiqiang", "leftleft");
+////					View vv = mHGridView.getChildAt(mHGridView.mSelectedPosition-mHGridView.mFirstPosition);
+////					if(vv!=null){
+////						mHGridView.performItemClick(vv, mHGridView.mSelectedPosition, 0);
+////					}
+//			if(hg!=null){
+//				Log.i("zhangjiqiang", "position=="+position);
+//				hg.performItemClick(v, position, 0);
+//			}
+//					break;	
+//				case MotionEvent.BUTTON_TERTIARY:
+//
+//					break;		
+//				case MotionEvent.BUTTON_SECONDARY:
+//					
+//					break;	
+//	
+//				}
+//				return false;
+//			}
+//		});
 		int itemCount = 0;
 		int sectionIndex = 0;
 		int indexOfCurrentSection = 0;

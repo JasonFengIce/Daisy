@@ -15,7 +15,7 @@ import android.provider.BaseColumns;
 public class DBHelper extends SQLiteOpenHelper {
 	
 	private Context mContext;
-	
+	public static  float rate = 1;
 	/**
 	 * database version. this may changed with future update.
 	 */

@@ -1,6 +1,7 @@
 package tv.ismar.daisy;
 
 import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.views.ChannelFragment;
 import tv.ismar.daisy.views.FavoriteFragment;
 import tv.ismar.daisy.views.HistoryFragment;
@@ -11,6 +12,8 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 
 public class ChannelListActivity extends Activity {
@@ -24,6 +27,15 @@ public class ChannelListActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.channel_layout);		  
 		Intent intent = getIntent();
+		 DisplayMetrics metric = new DisplayMetrics();
+	        getWindowManager().getDefaultDisplay().getMetrics(metric);
+	        int width = metric.widthPixels;  // 屏幕宽度（像素）
+	        int height = metric.heightPixels;  // 屏幕高度（像素）
+	        float density = metric.density;  // 屏幕密度（0.75 / 1.0 / 1.5）
+	        int densityDpi = metric.densityDpi;  // 屏幕密度DPI（120 / 160 / 240）
+    	        Log.i("zjq", "densityDpi=="+densityDpi+"heightPixels="+height);
+    	        float rate = (float)densityDpi/(float)160;
+    	        DBHelper.rate = rate;
 		String title = null;
 		String url = null;
 		String channel = null;

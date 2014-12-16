@@ -1,6 +1,7 @@
 package tv.ismar.daisy.views;
 
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
 import android.content.Context;
@@ -126,8 +127,11 @@ public class ScrollableSectionList extends HorizontalScrollView {
 			if(hasFocus){
 			//	label.setBackgroundColor(LABEL_TEXT_BACKGROUND_COLOR_FOCUSED);
 				label.setPadding(label.getPaddingLeft(), getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_text_PT), label.getPaddingRight(), label.getPaddingBottom());
-				label.setTextSize(getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_ctextsize));
+				
 				//percentageBar.setProgress(0);
+				int textsize = getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_ctextsize);
+				 textsize = (int) (textsize/DBHelper.rate);
+				 label.setTextSize(textsize);
 				label.setTextColor(LABEL_TEXT_COLOR_FOCUSED);
 				if(index==lastSelectPosition) {
 					Log.i("zhangjiqiang", "index==mSelectPosition hasFocus:// index=="+index+"//mSelectPosition=="+mSelectPosition+"//size=="+getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_ctextsize));
@@ -148,7 +152,9 @@ public class ScrollableSectionList extends HorizontalScrollView {
 						lastlabel.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
 						lastlabel.setPadding(label.getPaddingLeft(), getResources().
 								getDimensionPixelSize(R.dimen.channel_section_tabs_label_paddingT), label.getPaddingRight(), label.getPaddingBottom());
-						lastlabel.setTextSize(getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_textsize));	
+						
+						lastlabel.setTextSize(getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_textsize)/DBHelper.rate);	
+						
 						lastPercentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_noselected));
 					}	
 					

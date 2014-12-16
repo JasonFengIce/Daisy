@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/toast_loading_small"
     android:gravity="center"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -13,8 +14,8 @@
         android:orientation="horizontal" >
 
         <ProgressBar
-	        android:layout_width="66dip"
-	        android:layout_height="66dip"
+	        android:layout_width="@dimen/Loading_Dialog_ProgressBar_width"
+	        android:layout_height="@dimen/Loading_Dialog_ProgressBar_Height"
 	        android:indeterminate="true"
 	        android:indeterminateDrawable="@drawable/indetermin_drawable"
 	        style="@android:style/Widget.ProgressBar.Large"/>
@@ -23,10 +24,10 @@
             android:id="@+id/tv_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="14dp"
+            android:layout_marginLeft="@dimen/Loading_Dialog_ProgressBar_ML"
             android:text="@string/searching"
             android:textColor="@color/search_color"
-            android:textSize="23dp" />
+            android:textSize="@dimen/Loading_Dialog_ProgressBar_TextSize" />
     </LinearLayout>
 
 </LinearLayout>

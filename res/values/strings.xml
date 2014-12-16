@@ -1,5 +1,5 @@
 <resources>
-
+ <string name="tomorrow">明天</string>
     <string name="app_name">Daisy</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>

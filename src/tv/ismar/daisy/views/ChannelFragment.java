@@ -26,6 +26,7 @@ import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -196,6 +197,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 				mHGridView.setFocusable(true);
 				mHGridView.setHorizontalFadingEdgeEnabled(true);
 				mHGridView.setFadingEdgeLength(144);
+				mHGridAdapter.hg = mHGridView;
 				int num_rows = mHGridView.getRows();
 				int totalColumnsOfSectionX = (int) FloatMath.ceil((float)mItemCollections.get(nextSection).count / (float) num_rows);
 				mScrollableSectionList.setPercentage(nextSection, (int)(1f/(float)totalColumnsOfSectionX*100f));

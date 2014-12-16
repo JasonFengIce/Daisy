@@ -176,7 +176,13 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		setFocusable(true);
 		setClickable(true);
         setFocusableInTouchMode(true);
-		setHorizontalFadingEdgeEnabled(true);
+		//setHorizontalFadingEdgeEnabled(true);
+		
+		
+		
+	
+		setAlwaysDrawnWithCacheEnabled(false);
+	
 	}
 
 	private void initView(Context context, AttributeSet attrs) {
@@ -776,6 +782,8 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		return child;
 	}
 	
+	
+	
 	@Override
 	protected void onLayout(boolean changed, int left, int top, int right,
 			int bottom) {
@@ -872,7 +880,6 @@ public class HGridView extends AdapterView<HGridAdapter> {
 			}
 			
 			detachAllViewsFromParent();
-			
 			switch(mLayoutMode) {
 			case LAYOUT_SPECIFIC:
 				sel = fillSpecific(mSelectedPosition, mSpecificLeft);
@@ -1385,11 +1392,11 @@ public class HGridView extends AdapterView<HGridAdapter> {
 					if(referenceView.getLeft() > leftBound) {
 						rect.top = mListPadding.top + 0;
 						rect.right = referenceView.getLeft();
-						//rect.left = rect.right - mHorizontalSpacing;
-						if(H==720)
-						    rect.left = rect.right - 55;
-						else
-							rect.left = rect.right - 82;
+						rect.left = rect.right - mHorizontalSpacing;
+//						if(H==720)
+//						    rect.left = rect.right - 55;
+//						else
+//							rect.left = rect.right - 82;
 						rect.bottom = getBottom() - mListPadding.bottom;
 					}
 				}
@@ -1406,11 +1413,11 @@ public class HGridView extends AdapterView<HGridAdapter> {
 						rect.top = mListPadding.top + 0;
 						int offset = getResources().getDimensionPixelSize(R.dimen.HGridView_label_lr_offset);
 						rect.left = referenceView.getRight()-offset;
-						//rect.right = rect.left + mHorizontalSpacing;
-						if(H==720)
-						    rect.right = rect.left + 55-offset;
-						else
-							rect.right = rect.left + 82;
+						rect.right = rect.left + mHorizontalSpacing-offset;
+//						if(H==720)
+//						    rect.right = rect.left + 55-offset;
+//						else
+//							rect.right = rect.left + 82;
 						rect.bottom = getBottom() - mListPadding.bottom;
 					}
 				}
@@ -1477,7 +1484,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 				}
 				else{
 					textTop += 56;
-					textLeft += 25;	
+					textLeft += 24;	
 				}
 				for(int j=0; j<labelText.length(); j++) {
 					int chr=labelText.charAt(j);
@@ -1822,7 +1829,6 @@ public class HGridView extends AdapterView<HGridAdapter> {
 				mActiveViews = new View[childCount];
 			}
 			mFirstActivePosition = firstPosition;
-			
 			final View[] activeViews = mActiveViews;
 			for(int i=0; i<childCount; i++) {
 				View child = getChildAt(i);
@@ -1836,7 +1842,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		public View getActiveView(int position) {
 			int index = position - mFirstActivePosition;
 			final View[] activeViews = mActiveViews;
-			if(index > 0 && index < activeViews.length) {
+			if(index >= 0 && index < activeViews.length) {
 				final View match = activeViews[index];
 				activeViews[index] = null;
 				return match;

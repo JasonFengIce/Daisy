@@ -18,7 +18,8 @@
         android:paddingTop="@dimen/gridview_item_image_PaddingT"
         android:paddingBottom="@dimen/gridview_item_image_PaddingB"
         android:paddingLeft="@dimen/gridview_item_image_PaddingL"
-        android:paddingRight="@dimen/gridview_item_image_PaddingR" />
+        android:paddingRight="@dimen/gridview_item_image_PaddingR"
+         />
     <TextView
         android:layout_width="@dimen/gridview_item_image_W"
         android:layout_height="match_parent"

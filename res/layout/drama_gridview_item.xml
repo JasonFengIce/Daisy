@@ -14,6 +14,8 @@
         android:focusable="false"
         android:textColor="@color/search_text_result"
         android:textSize="@dimen/drama_gridview_item_btn_textsize"
-        android:background="@drawable/daram_grid_selector" />
+        android:background="@drawable/daram_grid_selector" 
+        android:alpha="0.5"
+        />
 
 </LinearLayout>

@@ -138,7 +138,7 @@ public class VodApplication extends Application {
 			while(isFinish){		
 					try {
 						//Thread.sleep(900000);
-						Thread.sleep(10000);
+						Thread.sleep(90000);
 						Log.i("zhangjiqiang", "upload123");
 						NetworkUtils.LogUpLoad(getApplicationContext());
 					} catch (InterruptedException e) {

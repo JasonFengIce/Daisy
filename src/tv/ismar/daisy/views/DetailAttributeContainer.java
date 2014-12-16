@@ -5,6 +5,7 @@ import java.util.Map;
 
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.models.ContentModel;
 import android.content.Context;
 import android.text.TextUtils.TruncateAt;
@@ -25,14 +26,14 @@ public class DetailAttributeContainer extends LinearLayout {
 			int defStyle) {
 		super(context, attrs, defStyle);
 		myContext = context;
-		textsize = myContext.getResources().getDimension(R.dimen.item_detail_introlabel_textsize);
+		textsize = myContext.getResources().getDimension(R.dimen.item_detail_introlabel_textsize)/DBHelper.rate;
 		// TODO Auto-generated constructor stub
 	}
 
 	public DetailAttributeContainer(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		myContext = context;
-		textsize = myContext.getResources().getDimension(R.dimen.item_detail_introlabel_textsize);
+		textsize = myContext.getResources().getDimension(R.dimen.item_detail_introlabel_textsize)/DBHelper.rate;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -57,9 +58,9 @@ public class DetailAttributeContainer extends LinearLayout {
 			LinearLayout.LayoutParams layoutParams;
 			int H = DaisyUtils.getVodApplication(getContext()).getheightPixels(getContext());
 			if(H==720)				
-				 layoutParams = new LinearLayout.LayoutParams(314,LinearLayout.LayoutParams.WRAP_CONTENT);
+				 layoutParams = new LinearLayout.LayoutParams((int) (314/DBHelper.rate),LinearLayout.LayoutParams.WRAP_CONTENT);
 			else
-				layoutParams = new LinearLayout.LayoutParams(471,LinearLayout.LayoutParams.WRAP_CONTENT);
+				layoutParams = new LinearLayout.LayoutParams((int) (471/DBHelper.rate),LinearLayout.LayoutParams.WRAP_CONTENT);
 									
 //			layoutParams.topMargin =(15f);
 			infoLine.setLayoutParams(layoutParams);
