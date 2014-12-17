@@ -47,7 +47,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import com.ismartv.api.AccessProxy;
+
+import com.ismartv.api.t.AccessProxy;
 import com.ismartv.bean.ClipInfo;
 
 public class PlayerActivity extends Activity {
