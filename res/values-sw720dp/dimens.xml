@@ -17,7 +17,7 @@
     <dimen name="item_detail_attribute_top">12dip</dimen>
     <dimen name="item_detail_intro_width">781dip</dimen>
     <dimen name="item_detail_intro_height">182dip</dimen>
-    <dimen name="item_detail_intro_bottom">73dip</dimen>
+    <dimen name="item_detail_intro_bottom">70dip</dimen>
     <dimen name="item_detail_intro_marginleft">45dip</dimen>
     <dimen name="item_detail_intro_paddingleft">9dip</dimen>
     <dimen name="item_detail_intro_paddingright">10dip</dimen>
@@ -72,7 +72,7 @@
     <dimen name="item_detail_btn_marginleft">34dip</dimen>        
     <dimen name="item_detail_related_H">119dip</dimen>
     <dimen name="item_detail_related_W">426dip</dimen>
-    <dimen name="item_detail_btn_layout_marginB">8dip</dimen>
+    <dimen name="item_detail_btn_layout_marginB">5dip</dimen>
     <!-- grid listview page-->
     <dimen name="gridview_channel_panel_height">60dip</dimen>
     <dimen name="gridview_channel_panel_marginBottom">13dp</dimen>
