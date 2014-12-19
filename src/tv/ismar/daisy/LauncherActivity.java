@@ -173,8 +173,13 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
     {
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra("url", view.getTag().toString());
-        intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.PlayerActivity");
+        String values[] = view.getTag().toString().split(",");
+        if(values[1].equals("item"))
+        	intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.ItemDetailActivity");
+        else
+        	intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.PlayerActivity");
+        
+        intent.putExtra("url", values[0]);
         startActivity(intent);
     }
 
@@ -241,8 +246,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
                             .placeholder(R.drawable.preview)
                             .error(R.drawable.preview)
                             .into(homeImages[i]);
-
-                   homeItems.get(i).setTag(tvHome.getObjects().get(i).getItem_url());
+                   boolean is_complex = tvHome.getObjects().get(i).isIs_complex();
+                   if(is_complex)
+                     homeItems.get(i).setTag(tvHome.getObjects().get(i).getItem_url()+","+"item");
+                   else
+                	 homeItems.get(i).setTag(tvHome.getObjects().get(i).getItem_url()+","+"play");
                 }
 
             }
@@ -313,7 +321,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
                             .placeholder(R.drawable.preview)
                             .error(R.drawable.preview)
                             .into(recomends[i]);
-                    recomends[i].setTag(videoEntity.getObjects().get(i).getItem_url());
+                    boolean is_complex = videoEntity.getObjects().get(i).isIs_complex();
+                    if(is_complex)
+                    	recomends[i].setTag(videoEntity.getObjects().get(i).getItem_url()+",item");
+                    else
+                        recomends[i].setTag(videoEntity.getObjects().get(i).getItem_url()+",play");
+
                     recomends[i].setOnClickListener(viewItemClickListener);
 
                 }
@@ -361,8 +374,13 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
         public void onClick(View view) {
             Intent intent = new Intent();
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra("url", view.getTag().toString());
-            intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.PlayerActivity");
+            String[] values = view.getTag().toString().split(",");
+            if(values[1].equals("item"))
+            	intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.ItemDetailActivity");
+            else
+                intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.PlayerActivity");
+
+            intent.putExtra("url", values[0]);
             startActivity(intent);
         }
     };

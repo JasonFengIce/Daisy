@@ -38,8 +38,16 @@ public class VideoEntity {
         private String image;
         private String title;
         private String item_url;
+        private boolean is_complex;
+        public boolean isIs_complex() {
+			return is_complex;
+		}
 
-        public String getItem_url() {
+		public void setIs_complex(boolean is_complex) {
+			this.is_complex = is_complex;
+		}
+
+		public String getItem_url() {
             return item_url;
         }
 
