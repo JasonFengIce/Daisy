@@ -3,13 +3,13 @@ package tv.ismar.daisy;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.ImageUtils;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.VodUserAgent;
-import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.models.Clip;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
@@ -30,6 +30,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -424,9 +425,9 @@ public class PlayerActivity extends Activity {
 //						}
 //					});
 					mVideoView
-							.setOnPreparedListener(new SmartPlayer.OnPreparedListener() {
+							.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 								@Override
-								public void onPrepared(SmartPlayer mp) {
+								public void onPrepared(MediaPlayer mp) {
 
 									Log.d(TAG,
 											"mVideoView onPrepared tempOffset =="
@@ -458,9 +459,9 @@ public class PlayerActivity extends Activity {
 								}
 							});
 					mVideoView
-							.setOnErrorListener(new SmartPlayer.OnErrorListener() {
+							.setOnErrorListener(new MediaPlayer.OnErrorListener() {
 								@Override
-								public boolean onError(SmartPlayer mp,
+								public boolean onError(MediaPlayer mp,
 										int what, int extra) {
 									Log.d(TAG,
 											"mVideoView  Error setVideoPath urls[currQuality] ");
@@ -471,19 +472,19 @@ public class PlayerActivity extends Activity {
 							});
 
 					mVideoView
-							.setOnCompletionListener(new SmartPlayer.OnCompletionListener() {
+							.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
 								@Override
-								public void onCompletion(SmartPlayer mp) {
+								public void onCompletion(MediaPlayer mp) {
 									Log.d(TAG, "mVideoView  Completion");
 									gotoFinishPage();
 								}
 							});
 					
-					mVideoView.setOnSeekCompleteListener(new SmartPlayer.OnSeekCompleteListener() {
+					mVideoView.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
 						
 						@Override
-						public void onSeekComplete(SmartPlayer mp) {
+						public void onSeekComplete(MediaPlayer mp) {
 							// TODO Auto-generated method stub
 							isBuffer = false;
 							hideBuffer();

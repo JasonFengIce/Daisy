@@ -111,39 +111,38 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 //				}
 //			}
 //		});
-//		convertView.setOnGenericMotionListener(new OnGenericMotionListener() {
-//			
-//			@Override
-//			public boolean onGenericMotion(View v, MotionEvent event) {
-//				// TODO Auto-generated method stub
-//				int what = event.getButtonState();
-//				switch (what) {
-//				case MotionEvent.ACTION_DOWN:
-//					System.out.println("��״̬");
-//
-//					break;	
-//				case MotionEvent.BUTTON_PRIMARY:
-//					Log.i("zhangjiqiang", "leftleft");
-////					View vv = mHGridView.getChildAt(mHGridView.mSelectedPosition-mHGridView.mFirstPosition);
-////					if(vv!=null){
-////						mHGridView.performItemClick(vv, mHGridView.mSelectedPosition, 0);
-////					}
-//			if(hg!=null){
-//				Log.i("zhangjiqiang", "position=="+position);
-//				hg.performItemClick(v, position, 0);
-//			}
-//					break;	
-//				case MotionEvent.BUTTON_TERTIARY:
-//
-//					break;		
-//				case MotionEvent.BUTTON_SECONDARY:
-//					
-//					break;	
-//	
-//				}
-//				return false;
-//			}
-//		});
+		convertView.setOnGenericMotionListener(new OnGenericMotionListener() {
+			
+			@Override
+			public boolean onGenericMotion(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				int what = event.getButtonState();
+				switch (what) {
+				case MotionEvent.ACTION_DOWN:
+
+					break;	
+				case MotionEvent.BUTTON_PRIMARY:
+					Log.i("zhangjiqiang", "leftleft");
+//					View vv = mHGridView.getChildAt(mHGridView.mSelectedPosition-mHGridView.mFirstPosition);
+//					if(vv!=null){
+//						mHGridView.performItemClick(vv, mHGridView.mSelectedPosition, 0);
+//					}
+			if(hg!=null){
+				Log.i("zhangjiqiang", "position=="+position);
+				hg.performItemClick(v, position, 0);
+			}
+					break;	
+				case MotionEvent.BUTTON_TERTIARY:
+
+					break;		
+				case MotionEvent.BUTTON_SECONDARY:
+					
+					break;	
+	
+				}
+				return false;
+			}
+		});
 		int itemCount = 0;
 		int sectionIndex = 0;
 		int indexOfCurrentSection = 0;

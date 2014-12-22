@@ -3,13 +3,12 @@ package tv.ismar.daisy.views;
 import java.util.Map;
 
 import tv.ismar.daisy.R;
-import tv.ismar.player.SmartPlayer;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -57,18 +56,18 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 	// All the stuff we need for playing and showing a video
 	private SurfaceHolder mSurfaceHolder = null;
 //	private MediaPlayer mMediaPlayer = null;
-	private SmartPlayer player = null;
+	private MediaPlayer player = null;
 	private int mVideoWidth;
 	private int mVideoHeight;
 	private int mSurfaceWidth;
 	private int mSurfaceHeight;
 	private MediaController mMediaController;
-	private SmartPlayer.OnCompletionListener mOnCompletionListener;
-	private SmartPlayer.OnPreparedListener mOnPreparedListener;
-	private SmartPlayer.OnSeekCompleteListener mOnSeekCompleteListener;
+	private MediaPlayer.OnCompletionListener mOnCompletionListener;
+	private MediaPlayer.OnPreparedListener mOnPreparedListener;
+	private MediaPlayer.OnSeekCompleteListener mOnSeekCompleteListener;
 	private int mCurrentBufferPercentage;
-	private SmartPlayer.OnErrorListener mOnErrorListener;
-	private SmartPlayer.OnInfoListener mOnInfoListener;
+	private MediaPlayer.OnErrorListener mOnErrorListener;
+	private MediaPlayer.OnInfoListener mOnInfoListener;
 	private int mSeekWhenPrepared; // recording the seek position while
 									// preparing
 	private boolean mCanPause;
@@ -218,8 +217,8 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 		// called start() previously
 		release(false);
 		try {
-			player = new SmartPlayer();
-			player.setSDCardisAvailable(true);
+			player = new MediaPlayer();
+//			player.setSDCardisAvailable(true);
 			player.setOnPreparedListener(mPreparedListener);
 			player.setOnVideoSizeChangedListener(mSizeChangedListener);
 			mDuration = -1;
@@ -247,14 +246,14 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 			mCurrentState = STATE_ERROR;
 			mTargetState = STATE_ERROR;
 			mErrorListener.onError(player,
-					SmartPlayer.MEDIA_ERROR_UNKNOWN, 0);
+					MediaPlayer.MEDIA_ERROR_UNKNOWN, 0);
 			return;
 		} catch (Exception ex) {
 			Log.w(TAG, "Unable to open content: " + mUri, ex);
 			mCurrentState = STATE_ERROR;
 			mTargetState = STATE_ERROR;
 			mErrorListener.onError(player,
-					SmartPlayer.MEDIA_ERROR_UNKNOWN, 0);
+					MediaPlayer.MEDIA_ERROR_UNKNOWN, 0);
 			return;
 		} 
 	}
@@ -277,8 +276,8 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 		}
 	}
 
-	SmartPlayer.OnPreparedListener mPreparedListener = new SmartPlayer.OnPreparedListener() {
-		public void onPrepared(SmartPlayer mp) {
+	MediaPlayer.OnPreparedListener mPreparedListener = new MediaPlayer.OnPreparedListener() {
+		public void onPrepared(MediaPlayer mp) {
 			mCurrentState = STATE_PREPARED;
 
 			// Get the capabilities of the player for this stream
@@ -347,23 +346,23 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 		}
 	};
 	
-	SmartPlayer.OnSeekCompleteListener mSeekCompleteChangedListener = new SmartPlayer.OnSeekCompleteListener() {
+	MediaPlayer.OnSeekCompleteListener mSeekCompleteChangedListener = new MediaPlayer.OnSeekCompleteListener() {
 		@Override
-		public void onSeekComplete(SmartPlayer mp) {
+		public void onSeekComplete(MediaPlayer mp) {
 //			Log.i(LOG_TAG, "seek complete");
 //			isSeeking = false;
 			mOnSeekCompleteListener.onSeekComplete(mp);
 		}
 	};
 	
-	private SmartPlayer.OnBufferingUpdateListener mBufferingUpdateListener = new SmartPlayer.OnBufferingUpdateListener() {
-		public void onBufferingUpdate(SmartPlayer mp, int percent) {
+	private MediaPlayer.OnBufferingUpdateListener mBufferingUpdateListener = new MediaPlayer.OnBufferingUpdateListener() {
+		public void onBufferingUpdate(MediaPlayer mp, int percent) {
 			mCurrentBufferPercentage = percent;
 		}
 	};
 	
-	private SmartPlayer.OnCompletionListener mCompletionListener = new SmartPlayer.OnCompletionListener() {
-		public void onCompletion(SmartPlayer mp) {
+	private MediaPlayer.OnCompletionListener mCompletionListener = new MediaPlayer.OnCompletionListener() {
+		public void onCompletion(MediaPlayer mp) {
 			mCurrentState = STATE_PLAYBACK_COMPLETED;
 			mTargetState = STATE_PLAYBACK_COMPLETED;
 			if (mMediaController != null) {
@@ -375,8 +374,8 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 		}
 	};
 	
-	private SmartPlayer.OnErrorListener mErrorListener = new SmartPlayer.OnErrorListener() {
-		public boolean onError(SmartPlayer mp, int framework_err, int impl_err) {
+	private MediaPlayer.OnErrorListener mErrorListener = new MediaPlayer.OnErrorListener() {
+		public boolean onError(MediaPlayer mp, int framework_err, int impl_err) {
 			Log.d(TAG, "Error: " + framework_err + "," + impl_err);
 			mCurrentState = STATE_ERROR;
 			mTargetState = STATE_ERROR;
@@ -401,7 +400,7 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 			if (getWindowToken() != null) {
 				int messageId;
 
-				if (framework_err == SmartPlayer.MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK) {
+				if (framework_err == MediaPlayer.MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK) {
 					messageId = R.string.VideoView_error_text_invalid_progressive_playback;
 				} else {
 					messageId = R.string.VideoView_error_text_unknown;
@@ -429,8 +428,8 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 		}
 	};
 	
-	SmartPlayer.OnVideoSizeChangedListener mSizeChangedListener = new SmartPlayer.OnVideoSizeChangedListener() {
-		public void onVideoSizeChanged(SmartPlayer mp, int width, int height) {
+	MediaPlayer.OnVideoSizeChangedListener mSizeChangedListener = new MediaPlayer.OnVideoSizeChangedListener() {
+		public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
 			mVideoWidth = mp.getVideoWidth();
 			mVideoHeight = mp.getVideoHeight();
 			if (mVideoWidth != 0 && mVideoHeight != 0) {
@@ -440,9 +439,9 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 		}
 	};
 
-	SmartPlayer.OnInfoListener mInfoChangedListener = new SmartPlayer.OnInfoListener() {
+	MediaPlayer.OnInfoListener mInfoChangedListener = new MediaPlayer.OnInfoListener() {
 		@Override
-		public boolean onInfo(SmartPlayer arg0, int arg1, int arg2) {
+		public boolean onInfo(MediaPlayer arg0, int arg1, int arg2) {
 			//mOnInfoListener.onInfo(arg0, arg1, arg2);
 			return false;
 		}
@@ -455,7 +454,7 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 	 * @param l
 	 *            The callback that will be run
 	 */
-	public void setOnPreparedListener(SmartPlayer.OnPreparedListener l) {
+	public void setOnPreparedListener(MediaPlayer.OnPreparedListener l) {
 		mOnPreparedListener = l;
 	}
 
@@ -466,7 +465,7 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 	 * @param l
 	 *            The callback that will be run
 	 */
-	public void setOnCompletionListener(SmartPlayer.OnCompletionListener l) {
+	public void setOnCompletionListener(MediaPlayer.OnCompletionListener l) {
 		mOnCompletionListener = l;
 	}
 
@@ -478,7 +477,7 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 	 * @param l
 	 *            The callback that will be run
 	 */
-	public void setOnErrorListener(SmartPlayer.OnErrorListener l) {
+	public void setOnErrorListener(MediaPlayer.OnErrorListener l) {
 		mOnErrorListener = l;
 	}
 
@@ -489,11 +488,11 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 	 * @param l
 	 *            The callback that will be run
 	 */
-	public void setOnInfoListener(SmartPlayer.OnInfoListener l) {
+	public void setOnInfoListener(MediaPlayer.OnInfoListener l) {
 		mOnInfoListener = l;
 	}
 
-	public void setOnSeekCompleteListener(SmartPlayer.OnSeekCompleteListener l){
+	public void setOnSeekCompleteListener(MediaPlayer.OnSeekCompleteListener l){
 		mOnSeekCompleteListener = l;
 	}
 	SurfaceHolder.Callback mSHCallback = new SurfaceHolder.Callback() {
@@ -687,5 +686,11 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 
 	public boolean canSeekForward() {
 		return mCanSeekForward;
+	}
+
+	@Override
+	public int getAudioSessionId() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }
