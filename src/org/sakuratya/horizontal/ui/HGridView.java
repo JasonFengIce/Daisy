@@ -18,6 +18,7 @@ import android.util.AttributeSet;
 import android.util.FloatMath;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
@@ -66,7 +67,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
     
     protected int mSyncMode;
     
-    
+    private Rect mTouchFrame;
     private boolean mNeedSync = false;
 	/**
 	 * Set rows per column.
@@ -184,7 +185,43 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		setAlwaysDrawnWithCacheEnabled(false);
 	
 	}
+@Override
+public boolean onTouchEvent(MotionEvent event) {
+	// TODO Auto-generated method stub
+	switch (event.getAction()) {
+	case MotionEvent.ACTION_DOWN:
+	     final int x = (int) event.getX();
+         final int y = (int) event.getY();
+         int motionPosition = pointToPosition(x, y);
+		final View v = getChildAt(motionPosition - mFirstPosition);
+		int position = motionPosition - mFirstPosition;
+		performItemClick(v, position, 0);
+		break;
 
+	default:
+		break;
+	}
+	return super.onTouchEvent(event);
+}
+public int pointToPosition(int x, int y) {
+    Rect frame = mTouchFrame;
+    if (frame == null) {
+        mTouchFrame = new Rect();
+        frame = mTouchFrame;
+    }
+
+    final int count = getChildCount();
+    for (int i = count - 1; i >= 0; i--) {
+        final View child = getChildAt(i);
+        if (child.getVisibility() == View.VISIBLE) {
+            child.getHitRect(frame);
+            if (frame.contains(x, y)) {
+                return mFirstPosition + i;
+            }
+        }
+    }
+    return INVALID_POSITION;
+}
 	private void initView(Context context, AttributeSet attrs) {
 		initView();
 		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.HGridView);
