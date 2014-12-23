@@ -185,21 +185,52 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		setAlwaysDrawnWithCacheEnabled(false);
 	
 	}
+
+	private int x_tmp1;
+	private int y_tmp1;
+	private int x_tmp2;
+	private int y_tmp2;
 @Override
 public boolean onTouchEvent(MotionEvent event) {
 	// TODO Auto-generated method stub
+    final int x = (int) event.getX();
+    final int y = (int) event.getY();
+    boolean handled;
 	switch (event.getAction()) {
 	case MotionEvent.ACTION_DOWN:
-	     final int x = (int) event.getX();
-         final int y = (int) event.getY();
-         int motionPosition = pointToPosition(x, y);
-		final View v = getChildAt(motionPosition - mFirstPosition);
-		int position = motionPosition - mFirstPosition;
-		performItemClick(v, position, 0);
+		 x_tmp1 = x;
+		 y_tmp1 = y;
 		break;
 
-	default:
+	case MotionEvent.ACTION_UP:
+		x_tmp2 = x;
+		y_tmp2 = y;
+		if(x_tmp1 != 0 && y_tmp1 != 0){
+            if(x_tmp1 - x_tmp2 > 8){
+					if (getChildCount() > 0
+							&& mSelectedPosition != INVALID_POSITION) {
+						handled = pageScroll(FOCUS_RIGHT);
+						this.checkScrollState(OnScrollListener.SCROLL_STATE_FOCUS_MOVING);
+						this.checkScrollState(OnScrollListener.SCROLL_STATE_IDLE);
+					}
+            }
+            if(x_tmp2 - x_tmp1 > 8){
+					if (getChildCount() > 0
+							&& mSelectedPosition != INVALID_POSITION) {
+						handled = pageScroll(FOCUS_LEFT);
+						this.checkScrollState(OnScrollListener.SCROLL_STATE_FOCUS_MOVING);
+						this.checkScrollState(OnScrollListener.SCROLL_STATE_IDLE);
+					}
+            }
+            if(Math.abs(x_tmp2 - x_tmp1) < 8){
+                int motionPosition_up = pointToPosition(x_tmp2, y_tmp2);
+                final View v = getChildAt(motionPosition_up - mFirstPosition);
+                performItemClick(v, motionPosition_up, 0);
+            }
+        }
 		break;
+	default:
+
 	}
 	return super.onTouchEvent(event);
 }
