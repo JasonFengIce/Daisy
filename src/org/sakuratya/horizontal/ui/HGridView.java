@@ -1478,14 +1478,18 @@ public class HGridView extends AdapterView<HGridAdapter> {
 					labelDrawable.setBounds(labelRect);
 					labelDrawable.draw(canvas);
 				}
-				if(H==720){
-					textTop += 34;
-					textLeft += 15;	
-				}
-				else{
-					textTop += 56;
-					textLeft += 24;	
-				}
+				
+				
+				textTop += getResources().getDimensionPixelSize(R.dimen.HGridView_label_texttop);
+				textLeft += getResources().getDimensionPixelSize(R.dimen.HGridView_label_textleft);	
+//				if(H==720){
+//					textTop += 34;
+//					textLeft += 15;	
+//				}
+//				else{
+//					textTop += 56;
+//					textLeft += 24;	
+//				}
 				for(int j=0; j<labelText.length(); j++) {
 					int chr=labelText.charAt(j);
 //					if(chr>=48&&chr<=57){

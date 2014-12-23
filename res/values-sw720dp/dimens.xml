@@ -421,6 +421,8 @@
     <dimen name="HGridView_related_selectionRightPadding">18dip</dimen>
     <dimen name="HGridView_related_selectionBottomPadding">-25dip</dimen>
     <dimen name="HGridView_label_lr_offset">12dip</dimen>
+    <dimen name="HGridView_label_textleft">15dip</dimen>
+    <dimen name="HGridView_label_texttop">34dip</dimen>
      <!-- LoadingDialog -->
     <dimen name="Loading_Dialog_ProgressBar_Height">66dip</dimen>
     <dimen name="Loading_Dialog_ProgressBar_width">66dip</dimen>
