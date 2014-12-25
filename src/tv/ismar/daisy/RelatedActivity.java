@@ -34,7 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
-public class RelatedActivity extends Activity implements OnSectionSelectChangedListener, OnItemClickListener,OnItemSelectedListener {
+public class RelatedActivity extends Activity implements OnSectionSelectChangedListener, OnItemClickListener {
 	
 	private static final String TAG = "RelatedActivity";
 	
@@ -66,7 +66,6 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		mSectionTabs.setOnSectionSelectChangeListener(this);
 		mItemListGrid = (ZGridView) findViewById(R.id.related_list);
 		mItemListGrid.setOnItemClickListener(this);
-		mItemListGrid.setOnItemSelectedListener(this);
 		mItemListGrid.setFocusable(true);
 	}
 
@@ -296,10 +295,7 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		Intent intent = new Intent("tv.ismar.daisy.Item");
 		intent.putExtra("url", item.item_url);
         intent.putExtra(EventProperty.SECTION, mSection);
-		//startActivity(intent);
-        
-        AsyncImageView s = (AsyncImageView)view.findViewById(R.id.list_item_preview_img);
-        s.setBackgroundColor(Color.BLUE);
+		startActivity(intent);
 	}
 	
 	
@@ -321,26 +317,5 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		toast.setDuration(Toast.LENGTH_SHORT);
 		toast.setView(layout);
 		toast.show();
-	}
-
-	@Override
-	public void onItemSelected(AdapterView<?> arg0, View view, int arg2,
-			long arg3) {
-		// TODO Auto-generated method stub
-		if(view!=null){
-			AsyncImageView s = (AsyncImageView)view.findViewById(R.id.list_item_preview_img);
-			if(s!=null){
-				s.setBackgroundResource(R.drawable.vod_small_focus);
-				
-				
-			}
-		}
-		
-	}
-
-	@Override
-	public void onNothingSelected(AdapterView<?> arg0) {
-		// TODO Auto-generated method stub
-		
 	}
 }

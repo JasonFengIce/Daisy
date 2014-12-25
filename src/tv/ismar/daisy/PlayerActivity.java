@@ -10,6 +10,7 @@ import tv.ismar.daisy.core.ImageUtils;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.VodUserAgent;
+import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.models.Clip;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
@@ -247,7 +248,27 @@ public class PlayerActivity extends Activity {
 		});
 		initClipInfo();
 	}
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		// TODO Auto-generated method stub
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_DOWN:
 
+	   if(!panelShow){
+			 showPanel(); 
+			 panelShow = true;
+	   }
+	   else{
+		   hidePanel();
+		   panelShow = false;
+	   }
+			break;
+
+		default:
+			break;
+		}
+		return super.onTouchEvent(event);
+	}
 	private void initClipInfo() {
 		simpleRestClient = new SimpleRestClient();
 		bufferText.setText(BUFFERING);

@@ -688,7 +688,6 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 		return mCanSeekForward;
 	}
 
-	@Override
 	public int getAudioSessionId() {
 		// TODO Auto-generated method stub
 		return 0;
