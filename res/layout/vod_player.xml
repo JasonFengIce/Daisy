@@ -134,28 +134,32 @@
                     android:layout_marginLeft="@dimen/vod_player_titlelayout_marginleft"
                     android:layout_marginTop="@dimen/vod_player_titlelayout_margintop"
                     android:layout_toRightOf="@id/vod_content_layout"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal"
+                    >
 
                     <ImageView
                         android:id="@+id/FBImage"
                         android:layout_width="@dimen/vod_player_ffimage_W"
                         android:layout_height="@dimen/vod_player_ffimage_W"
                         android:layout_marginLeft="@dimen/vod_player_fbimage_marginleft"
-                        android:src="@drawable/vodplayer_controller_rew" />
+                        android:src="@drawable/vodplayer_controller_rew" 
+                        android:clickable="true" />
 
                     <ImageView
                         android:id="@+id/PlayPauseImage"
                         android:layout_width="@dimen/vod_player_ffimage_W"
                         android:layout_height="@dimen/vod_player_ffimage_H"
                         android:layout_marginLeft="@dimen/vod_player_playpauseimage_marginleft"
-                        android:src="@drawable/vod_playbtn_selector" />
+                        android:src="@drawable/vod_playbtn_selector"
+                        android:clickable="true"  />
 
                     <ImageView
                         android:id="@+id/FFImage"
                         android:layout_width="@dimen/vod_player_ffimage_W"
                         android:layout_height="@dimen/vod_player_ffimage_H"
                         android:layout_marginLeft="@dimen/vod_player_playpauseimage_marginleft"
-                        android:src="@drawable/vodplayer_controller_ffd" />
+                        android:src="@drawable/vodplayer_controller_ffd"
+                        android:clickable="true" />
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>

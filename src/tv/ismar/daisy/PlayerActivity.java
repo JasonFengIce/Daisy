@@ -37,10 +37,12 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -160,6 +162,89 @@ public class PlayerActivity extends Activity {
 		bufferLayout.setVisibility(View.GONE);
 		qualityText.setVisibility(View.GONE);
 		am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+		playPauseImage.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent keycode) {
+				// TODO Auto-generated method stub
+				switch (keycode.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					if (mVideoView.getDuration() > 0) {
+						if (!paused) {
+							pauseItem();
+							playPauseImage.setImageResource(R.drawable.vod_pausebtn_selector);
+						} else {
+							resumeItem();
+							playPauseImage.setImageResource(R.drawable.vod_playbtn_selector);
+						}
+
+					}
+					break;
+
+				default:
+					break;
+				}
+				return false;
+			}
+		});
+		fbImage.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent keycode) {
+				// TODO Auto-generated method stub
+				switch (keycode.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					if (mVideoView.getDuration() > 0) {
+						isSeek = true;
+						showPanel();
+						fbImage.setImageResource(R.drawable.vod_controlb_selector);
+						isBuffer = true;
+	                    showBuffer();
+						fastBackward(SHORT_STEP); 						
+						mVideoView.seekTo(currPosition);
+						isSeekBuffer = true ;
+						Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
+						isSeek = false;
+						offsets = 0;
+						offn = 1;
+					}
+					break;
+
+				default:
+					break;
+				}
+				return false;
+			}
+		});
+		ffImage.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent keycode) {
+				// TODO Auto-generated method stub
+				switch (keycode.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					if (mVideoView.getDuration() > 0) {
+						isSeek = true;
+						showPanel();
+						ffImage.setImageResource(R.drawable.vod_controlf_selector);
+						isBuffer = true;
+	                    showBuffer();
+						fastForward(SHORT_STEP);
+						mVideoView.seekTo(currPosition);
+						isSeekBuffer = true ;
+						Log.d(TAG, "RIGHT seek to" + getTimeString(currPosition));
+						isSeek = false;
+						offsets = 0;
+						offn = 1;
+					}
+					break;
+
+				default:
+					break;
+				}
+				return false;				
+			}
+		});
 		initClipInfo();
 	}
 
@@ -1278,6 +1363,19 @@ public class PlayerActivity extends Activity {
 		@Override
 		public void onProgressChanged(SeekBar seekBar, int progress,
 				boolean fromUser) {
+//			if (mVideoView.getDuration() > 0) {
+//			isSeek = true;
+//			//fbImage.setImageResource(R.drawable.vodplayer_controller_rew_pressed);
+//			isBuffer = true;
+//            showBuffer();   
+//            timeBar.setProgress(progress);
+//			mVideoView.seekTo(progress);
+//			isSeekBuffer = true ;
+//			Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
+//			isSeek = false;
+//			offsets = 0;
+//			offn = 1;
+//		}
 			updataTimeText();
 		}
 
