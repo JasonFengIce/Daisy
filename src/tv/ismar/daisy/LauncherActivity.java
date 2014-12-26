@@ -432,7 +432,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 							"http://cord.tvxio.com/api/tv/section/tvhome/");
 					HttpURLConnection connection = (HttpURLConnection) getUrl
 							.openConnection();
-					connection.setReadTimeout(4000);
+					connection.setReadTimeout(9000);
 					connection.connect();
 					BufferedReader reader = new BufferedReader(
 							new InputStreamReader(connection.getInputStream()));
@@ -467,7 +467,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 							"http://cord.tvxio.com/api/tv/section/xinpianshangxian/");
 					HttpURLConnection connection = (HttpURLConnection) getUrl
 							.openConnection();
-					connection.setReadTimeout(4000);
+					connection.setReadTimeout(19000);
 					connection.connect();
 					BufferedReader reader = new BufferedReader(
 							new InputStreamReader(connection.getInputStream()));
@@ -484,7 +484,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 				} catch (MalformedURLException e) {
 					System.err.println(e.getMessage());
 				} catch (IOException e) {
-					System.err.println(e.getMessage());
+					//System.err.println(e.getMessage());
 				}
 			}
 

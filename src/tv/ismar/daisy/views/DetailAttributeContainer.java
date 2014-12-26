@@ -56,11 +56,8 @@ public class DetailAttributeContainer extends LinearLayout {
 			}
 			LinearLayout infoLine = new LinearLayout(getContext());
 			LinearLayout.LayoutParams layoutParams;
-			int H = DaisyUtils.getVodApplication(getContext()).getheightPixels(getContext());
-			if(H==720)				
-				 layoutParams = new LinearLayout.LayoutParams((int) (314/DBHelper.rate),LinearLayout.LayoutParams.WRAP_CONTENT);
-			else
-				layoutParams = new LinearLayout.LayoutParams((int) (471/DBHelper.rate),LinearLayout.LayoutParams.WRAP_CONTENT);
+			int width = getResources().getDimensionPixelSize(R.dimen.DetailAttributeContainer_Layout_W);
+			layoutParams = new LinearLayout.LayoutParams(width,LinearLayout.LayoutParams.WRAP_CONTENT);
 									
 //			layoutParams.topMargin =(15f);
 			infoLine.setLayoutParams(layoutParams);

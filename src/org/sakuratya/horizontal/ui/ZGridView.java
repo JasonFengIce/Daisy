@@ -17,6 +17,7 @@ import android.util.SparseBooleanArray;
 import android.util.StateSet;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewDebug;
@@ -3228,7 +3229,43 @@ public class ZGridView extends AdapterView<ListAdapter> {
 			return false;
 		}
 	}
+	private Rect mTouchFrame;
+	public int pointToPosition(int x, int y) {
+		Rect frame = mTouchFrame;
+		if (frame == null) {
+			mTouchFrame = new Rect();
+			frame = mTouchFrame;
+		}
 
+		final int count = getChildCount();
+		for (int i = count - 1; i >= 0; i--) {
+			final View child = getChildAt(i);
+			if (child.getVisibility() == View.VISIBLE) {
+				child.getHitRect(frame);
+				if (frame.contains(x, y)) {
+					return mFirstPosition + i;
+				}
+			}
+		}
+		return INVALID_POSITION;
+	}
+@Override
+public boolean onTouchEvent(MotionEvent event) {
+	// TODO Auto-generated method stub
+	switch (event.getAction()) {
+	case MotionEvent.ACTION_DOWN:
+		final int x = (int) event.getX();
+		final int y = (int) event.getY();
+		int motionPosition = pointToPosition(x, y);
+		final View v = getChildAt(motionPosition - mFirstPosition);
+		performItemClick(v, motionPosition - mFirstPosition, 0);
+		break;
+
+	default:
+		break;
+	}
+	return super.onTouchEvent(event);
+}
 	boolean pageScroll(int direction) {
 		int nextPage = -1;
 

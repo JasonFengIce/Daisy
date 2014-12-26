@@ -11,10 +11,10 @@ public class FinshedImageService {
 		Object[] object = new Object[2];
 		int resourceLabel = 0;
 		int H = DaisyUtils.getVodApplication(context).getheightPixels(context);
-		if(H==720)
-			object[0] = ImageUtils.getBitmapFromInputStream(NetworkUtils.getInputStream(item.adlet_url), (int)(188/DBHelper.rate), (int)(106/DBHelper.rate));
+		if(H==720||(H>720&&H<1080))
+			object[0] = ImageUtils.getBitmapFromInputStream(NetworkUtils.getInputStream(item.adlet_url), (int)(188), (int)(106));
 		else
-			object[0] = ImageUtils.getBitmapFromInputStream(NetworkUtils.getInputStream(item.adlet_url), (int)(282/DBHelper.rate), (int)(158/DBHelper.rate));
+			object[0] = ImageUtils.getBitmapFromInputStream(NetworkUtils.getInputStream(item.adlet_url), (int)(282), (int)(158));
 //		object[0] = (BitmapFactory.decodeStream(HttpUtil.getHttpConnectionByGet(item.adlet_url).getInputStream()));
 		switch (item.quality) {
 		case 3:

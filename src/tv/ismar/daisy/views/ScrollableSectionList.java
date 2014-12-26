@@ -9,11 +9,13 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class ScrollableSectionList extends HorizontalScrollView {
@@ -86,7 +88,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 //		}
 		
 		for(int i=0; i<sectionList.size(); i++) {
-			LinearLayout sectionHolder = getSectionLabelLayout(sectionList.get(i), getResources()
+			RelativeLayout sectionHolder = getSectionLabelLayout(sectionList.get(i), getResources()
 					.getDimensionPixelSize(R.dimen.channel_section_tabs_W));
 			sectionHolder.setOnFocusChangeListener(mOnFocusChangeListener);
 			sectionHolder.setOnClickListener(mOnClickListener);
@@ -94,11 +96,25 @@ public class ScrollableSectionList extends HorizontalScrollView {
 			mContainer.addView(sectionHolder, i);
 		}
 		this.addView(mContainer);
-		mContainer.getChildAt(0).requestFocus();
+		if(mContainer.getChildAt(0)!=null){
+			mContainer.getChildAt(0).requestFocus();
+			View v = mContainer.getChildAt(0);
+			TextView label = (TextView) v.findViewById(R.id.section_label);
+			ProgressBar percentageBar = (ProgressBar) v.findViewById(R.id.section_percentage);
+			label.setPadding(label.getPaddingLeft(),  getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_text_PT), label.getPaddingRight(), label.getPaddingBottom());
+			
+			//percentageBar.setProgress(0);
+			int textsize = getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_ctextsize);
+			 textsize = (int) (textsize/DBHelper.rate);
+			 label.setTextSize(textsize);
+			label.setTextColor(LABEL_TEXT_COLOR_FOCUSED);
+			percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_hot_selected));
+		}
+
 	}
 	
-	private LinearLayout getSectionLabelLayout(Section section, int width) {
-		LinearLayout sectionHolder = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.section_list_item, null);
+	private RelativeLayout getSectionLabelLayout(Section section, int width) {
+		RelativeLayout sectionHolder = (RelativeLayout) LayoutInflater.from(getContext()).inflate(R.layout.section_list_item, null);
 //		LinearLayout.LayoutParams layoutParams;
 //		if(H==720)
 //		    layoutParams = new LinearLayout.LayoutParams(width, 44);
@@ -184,22 +200,92 @@ public class ScrollableSectionList extends HorizontalScrollView {
 		}
 	};
 	
+	public void setSectionTabProperty(View currentView,View lastSelectedView){
+		
+		TextView lastLabel = (TextView) lastSelectedView.findViewById(R.id.section_label);
+		lastLabel.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
+		lastLabel.setPadding(lastLabel.getPaddingLeft(), getResources().
+				getDimensionPixelSize(R.dimen.channel_section_tabs_label_paddingT), lastLabel.getPaddingRight(), lastLabel.getPaddingBottom());
+		
+		lastLabel.setTextSize(getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_textsize)/DBHelper.rate);	
+		TextView label = (TextView) currentView.findViewById(R.id.section_label);
+		label.setPadding(label.getPaddingLeft(), getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_text_PT), label.getPaddingRight(), label.getPaddingBottom());
+		
+		//percentageBar.setProgress(0);
+		int textsize = getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_ctextsize);
+		textsize = (int) (textsize/DBHelper.rate);
+		label.setTextSize(textsize);
+		label.setTextColor(LABEL_TEXT_COLOR_FOCUSED);
+	}
+//	private OnTouchListener mOnTouchListener = new OnTouchListener() {
+//		
+//		@Override
+//		public boolean onTouch(View v, MotionEvent keycode) {
+//			// TODO Auto-generated method stub
+//			switch (keycode.getAction()) {
+//			case MotionEvent.ACTION_DOWN:
+//				int index = (Integer) v.getTag();
+//				
+//				if(index!=mSelectPosition){
+//					ProgressBar currentPercentageBar = (ProgressBar) v.findViewById(R.id.section_percentage);
+//					if(!isChangeBarStyle)
+//					  currentPercentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_hot_selected));
+//					else
+//					  currentPercentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.progress_line));
+//					
+//
+//					View lastSelectedView = mContainer.getChildAt(mSelectPosition);
+//					ProgressBar lastPercentageBar = (ProgressBar) lastSelectedView.findViewById(R.id.section_percentage);
+//					lastPercentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_noselected));
+//					setSectionTabProperty(v,lastSelectedView);
+//					changeSelection(index);
+//					if(mSectionSelectChangedListener!=null) {
+//						mSectionSelectChangedListener.onSectionSelectChanged(index);
+//					}
+//				}
+//				break;
+//
+//			default:
+//				break;
+//			}
+//			return false;
+//		}
+//	};
 	private OnClickListener mOnClickListener = new OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
+			
 			int index = (Integer) v.getTag();
+			
 			if(index!=mSelectPosition){
 				ProgressBar currentPercentageBar = (ProgressBar) v.findViewById(R.id.section_percentage);
 				if(!isChangeBarStyle)
 				  currentPercentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_hot_selected));
 				else
 				  currentPercentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.progress_line));
+				
+
 				View lastSelectedView = mContainer.getChildAt(mSelectPosition);
 				ProgressBar lastPercentageBar = (ProgressBar) lastSelectedView.findViewById(R.id.section_percentage);
 				lastPercentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_noselected));
-				TextView lastLabel = (TextView) lastSelectedView.findViewById(R.id.section_label);
+				setSectionTabProperty(v,lastSelectedView);
+//				TextView label = (TextView) v.findViewById(R.id.section_label);
+//				TextView lastLabel = (TextView) lastSelectedView.findViewById(R.id.section_label);
+//				label.setPadding(label.getPaddingLeft(), getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_text_PT), 
+//						label.getPaddingRight(), label.getPaddingBottom());
+				
+				//percentageBar.setProgress(0);
+//				int textsize = getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_ctextsize);
+//				textsize = (int) (textsize/DBHelper.rate);
+//				label.setTextSize(textsize);
+//				label.setTextColor(LABEL_TEXT_COLOR_FOCUSED);
 			//	lastLabel.setBackgroundColor(LABEL_TEXT_BACKGROUND_NOSELECTED_NOFOCUSED);
+//				lastLabel.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
+//				lastLabel.setPadding(lastLabel.getPaddingLeft(), getResources().
+//						getDimensionPixelSize(R.dimen.channel_section_tabs_label_paddingT), lastLabel.getPaddingRight(), lastLabel.getPaddingBottom());
+//				
+//				lastLabel.setTextSize(getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_textsize)/DBHelper.rate);	
 				changeSelection(index);
 				if(mSectionSelectChangedListener!=null) {
 					mSectionSelectChangedListener.onSectionSelectChanged(index);
@@ -214,7 +300,6 @@ public class ScrollableSectionList extends HorizontalScrollView {
 	 */
 	public void setPercentage(int position, int percentage) {
 		View sectionHolder = mContainer.getChildAt(position);
-		TextView label = (TextView) sectionHolder.findViewById(R.id.section_label);
 		ProgressBar percentageBar = (ProgressBar) sectionHolder.findViewById(R.id.section_percentage);
 		if(position!=mSelectPosition) {
 			View lastSectionHolder = mContainer.getChildAt(mSelectPosition);
@@ -226,7 +311,8 @@ public class ScrollableSectionList extends HorizontalScrollView {
 			
 			changeSelection(position);
 			//label.setBackgroundColor(LABEL_TEXT_BACKGROUND_SELECTED_NOFOCUSED);
-			percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_selected));
+			percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_hot_selected));
+			setSectionTabProperty(sectionHolder, lastSectionHolder);
 		}
 //		Log.d("CurrentPercentage", percentage + "");
 		percentageBar.setProgress(percentage);

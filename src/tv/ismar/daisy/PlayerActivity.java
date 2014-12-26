@@ -3,7 +3,6 @@ package tv.ismar.daisy;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.ImageUtils;
@@ -40,15 +39,17 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -128,6 +129,8 @@ public class PlayerActivity extends Activity {
 	private String sid;
 	private String mediaip;
 	private int mCurrentSeed = 0;
+	private RelativeLayout mRootLayout;
+	private boolean isHideControlPanel = true;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -163,6 +166,7 @@ public class PlayerActivity extends Activity {
 		bufferLayout.setVisibility(View.GONE);
 		qualityText.setVisibility(View.GONE);
 		am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+		mRootLayout = (RelativeLayout)findViewById(R.id.RootRelativeLayout);
 		playPauseImage.setOnTouchListener(new OnTouchListener() {
 			
 			@Override
@@ -248,27 +252,27 @@ public class PlayerActivity extends Activity {
 		});
 		initClipInfo();
 	}
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		// TODO Auto-generated method stub
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
+@Override
+public boolean onTouchEvent(MotionEvent event) {
+	// TODO Auto-generated method stub
+	switch (event.getAction()) {
+	case MotionEvent.ACTION_DOWN:
 
-	   if(!panelShow){
-			 showPanel(); 
-			 panelShow = true;
-	   }
-	   else{
-		   hidePanel();
-		   panelShow = false;
-	   }
-			break;
+   if(!panelShow){
+		 showPanel(); 
+		 panelShow = true;
+   }
+   else{
+	   hidePanel();
+	   panelShow = false;
+   }
+		break;
 
-		default:
-			break;
-		}
-		return super.onTouchEvent(event);
+	default:
+		break;
 	}
+	return super.onTouchEvent(event);
+}
 	private void initClipInfo() {
 		simpleRestClient = new SimpleRestClient();
 		bufferText.setText(BUFFERING);
@@ -955,7 +959,6 @@ public class PlayerActivity extends Activity {
 		timeBar.setProgress(currPosition);
 		Log.d(TAG, "seek Backward " + currPosition);
 	}
-
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean ret = false;
@@ -1384,20 +1387,21 @@ public class PlayerActivity extends Activity {
 		@Override
 		public void onProgressChanged(SeekBar seekBar, int progress,
 				boolean fromUser) {
-//			if (mVideoView.getDuration() > 0) {
-//			isSeek = true;
-//			//fbImage.setImageResource(R.drawable.vodplayer_controller_rew_pressed);
-//			isBuffer = true;
-//            showBuffer();   
-//            timeBar.setProgress(progress);
-//			mVideoView.seekTo(progress);
-//			isSeekBuffer = true ;
-//			Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
-//			isSeek = false;
-//			offsets = 0;
-//			offn = 1;
-//		}
+			if (mVideoView.getDuration() > 0) {
+				isSeek = true;
+				isBuffer = true;
+                showBuffer();   
+                timeBar.setProgress(progress);
+				mVideoView.seekTo(progress);
+				isSeekBuffer = true ;
+				Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
+				isSeek = false;
+				offsets = 0;
+				offn = 1;
+			}
+
 			updataTimeText();
+			
 		}
 
 		@Override

@@ -86,7 +86,7 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 			holder.qualityLabel.setImageResource(R.drawable.label_uhd_small);
 		}
 		int H = DaisyUtils.getVodApplication(mContext).getheightPixels(mContext);
-		if(H==720){
+		if(H==720||(H>720&&H<1080)){
 			LayoutParams f = (LayoutParams)holder.qualityLabel.getLayoutParams();
 			f.setMargins(f.leftMargin, -1, -1, f.bottomMargin);
 			holder.qualityLabel.setLayoutParams(f);

@@ -30,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
@@ -57,7 +58,7 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 	
 	private GetRelatedTask mGetRelatedTask;
 	private GetRelatedItemByInfo mGetRelatedItemByInfoTask;
-	
+	private ImageView arrow_left;
 	private HashMap<String, Object> mDataCollectionProperties = new HashMap<String, Object>();
 	
 	private String mSection;
@@ -75,6 +76,7 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.related_view);
 		mSimpleRestClient = new SimpleRestClient();
+		arrow_left = (ImageView) findViewById(R.id.arrow_left);
 		initViews();
 		mLoadingDialog = new LoadingDialog(this, getResources().getString(R.string.vod_loading));
 		mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
@@ -180,6 +182,8 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_RELATE_IN, mDataCollectionProperties);
 		
 		initSectionTabs();
+		if(mVirtualSectionList.size()>5)
+			arrow_left.setVisibility(View.VISIBLE);
 		mSectionTabs.init(mVirtualSectionList, getResources().getDimensionPixelSize(R.dimen.gridview_channel_section_tabs_width),true);
 		buildGridView();
 		if(mLoadingDialog.isShowing()){

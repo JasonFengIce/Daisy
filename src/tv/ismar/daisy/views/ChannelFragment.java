@@ -183,7 +183,6 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		protected void onPostExecute(Integer result) {
 			if(mLoadingDialog!=null && mLoadingDialog.isShowing()) {
 				mLoadingDialog.dismiss();
-				leftarrow.setVisibility(View.VISIBLE);
 			}
 			isInitTaskLoading = false;
 			if(result!=RESULT_SUCCESS) {
@@ -191,8 +190,11 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 				return;
 			}
 			if(mSectionList!=null ) {
+				if(mSectionList.size()>5)
+				  leftarrow.setVisibility(View.VISIBLE);
 				mScrollableSectionList.init(mSectionList, getResources().getDimensionPixelSize(R.dimen.gridview_channel_section_tabs_width),false);
 				mHGridAdapter = new HGridAdapterImpl(getActivity(), mItemCollections);
+				mHGridAdapter.setList(mItemCollections);
 				mHGridView.setAdapter(mHGridAdapter);
 				mHGridView.setFocusable(true);
 				mHGridView.setHorizontalFadingEdgeEnabled(true);
