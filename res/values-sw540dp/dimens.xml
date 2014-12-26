@@ -1,9 +1,5 @@
 <resources>
-
-    <dimen name="padding_small">8dp</dimen>
-    <dimen name="padding_medium">8dp</dimen>
-    <dimen name="padding_large">16dp</dimen>
-    
+   
     <!-- item detail page-->
     <dimen name="item_detail_detail_left_container_width">641dip</dimen>
     <dimen name="item_detail_vod_watermark_width">335dip</dimen>
@@ -17,7 +13,7 @@
     <dimen name="item_detail_attribute_top">9dip</dimen>
     <dimen name="item_detail_intro_width">586dip</dimen>
     <dimen name="item_detail_intro_height">137dip</dimen>
-    <dimen name="item_detail_intro_bottom">45dip</dimen>
+    <dimen name="item_detail_intro_bottom">20dip</dimen>
     <dimen name="item_detail_intro_marginleft">34dip</dimen>
     <dimen name="item_detail_intro_paddingleft">7dip</dimen>
     <dimen name="item_detail_intro_paddingright">8dip</dimen>
@@ -52,9 +48,9 @@
     <dimen name="item_detail_btn_fill_textsize">18sp</dimen>
     <dimen name="item_detail_btn_favorite_height">35dip</dimen>
     <dimen name="item_detail_btn_favorite_textsize">18sp</dimen>
-    <dimen name="item_detail_btn_favorite_paddingleft">37dip</dimen>
+    <dimen name="item_detail_btn_favorite_paddingleft">39dip</dimen>
     <dimen name="item_detail_btn_favorite_paddingright">37dip</dimen>
-    <dimen name="item_detail_btn_favorite_paddingtop">2dip</dimen>
+    <dimen name="item_detail_btn_favorite_paddingtop">0dip</dimen>
     <dimen name="item_detail_right_container_width">320dip</dimen>
     <dimen name="item_detail_related_video_label_left">20dip</dimen>
     <dimen name="item_detail_related_video_label_top">57dip</dimen>
@@ -72,7 +68,8 @@
     <dimen name="item_detail_btn_marginleft">26dip</dimen>
     <dimen name="item_detail_related_H">89dip</dimen>
     <dimen name="item_detail_related_W">319dip</dimen>
-    <dimen name="item_detail_btn_layout_marginB">1dip</dimen>
+    <dimen name="item_detail_btn_layout_marginB">2dip</dimen>
+    <dimen name="item_detail_Btn_Layout_marginT">11dip</dimen>
 <!-- grid listview page modified-->
     <dimen name="gridview_channel_panel_height">44dip</dimen>
     <dimen name="gridview_channel_panel_marginBottom">17dp</dimen>
@@ -125,7 +122,7 @@
     <dimen name="gridview_main_gridview_line_H">90dip</dimen>
     <dimen name="grid_view_main_arrow_left_W">15dip</dimen>
     <dimen name="grid_view_main_arrow_left_H">18dip</dimen>
-    <dimen name="grid_view_main_arrow_left_marginT">13dip</dimen>
+    <dimen name="grid_view_main_arrow_left_marginT">15dip</dimen>
     <!-- popup_2btn -->
     <dimen name="popup_dialog_width">403dip</dimen>
     <dimen name="popup_dialog_height">222dip</dimen>
@@ -172,11 +169,11 @@
     <dimen name="vod_player_logo_image_PT">16dip</dimen>
     <dimen name="vod_player_logo_image_PR">16dip</dimen>
     <dimen name="vod_player_bufferlayout_H">66dip</dimen>
-    <dimen name="vod_player_progressbar_H">66dip</dimen>
-    <dimen name="vod_player_progressbar_W">66dip</dimen>
+    <dimen name="vod_player_progressbar_H">35dip</dimen>
+    <dimen name="vod_player_progressbar_W">35dip</dimen>
     <dimen name="vod_player_buffertext_marginleft">8dip</dimen>
     <dimen name="vod_player_buffertext_textsize">18sp</dimen>
-    <dimen name="vod_player_buffertext_marginTop">16dip</dimen>
+    <dimen name="vod_player_buffertext_marginTop">5dip</dimen>
     <dimen name="vod_player_qualitytext_W">49dip</dimen>
     <dimen name="vod_player_qualitytext_H">24dip</dimen>
     <dimen name="vod_player_qualitytext_marginleft">40dip</dimen>
@@ -205,8 +202,8 @@
     <dimen name="vod_player_fbimage_marginleft">10dip</dimen>
     <dimen name="vod_player_timeseekbar_PL">1dip</dimen>
     <dimen name="vod_player_timeseekbar_PR">1dip</dimen>
-    <dimen name="vod_player_timeseekbar_MaxH">9dip</dimen>
-    <dimen name="vod_player_timeseekbar_thumbOffset">1dip</dimen>
+    <dimen name="vod_player_timeseekbar_MaxH">8dip</dimen>
+    <dimen name="vod_player_timeseekbar_thumbOffset">-8dip</dimen>
     <dimen name="vod_player_ffimage_W">36dip</dimen>
     <dimen name="vod_player_ffimage_H">35dip</dimen>
     <dimen name="vod_player_ffimage_marginright">40dip</dimen>
@@ -237,10 +234,10 @@
     <dimen name="play_finished_image_vod_label_marginright">-2dip</dimen>
     <dimen name="play_finished_btn_replay_H">35dip</dimen>
     <dimen name="play_finished_btn_reply_marginTop">23dip</dimen>
-    <dimen name="play_finished_btn_replay_textsize">18sp</dimen>
+    <dimen name="play_finished_btn_replay_textsize">23sp</dimen>
     <dimen name="play_finished_btn_favorites_margintop">26dip</dimen>
     <dimen name="play_finished_btn_favorites_PB">6dip</dimen>
-    <dimen name="play_finished_btn_favorites_textsize">17dip</dimen>
+    <dimen name="play_finished_btn_favorites_textsize">23dip</dimen>
     <dimen name="play_finished_rightlayout_W">585dip</dimen>
     <dimen name="play_finished_tv_releted_margintop">50dip</dimen>
     <dimen name="play_finished_tv_releted_textsize">20dip</dimen>
@@ -394,25 +391,25 @@
     <dimen name="channel_section_tabs_H">49dip</dimen>
     <dimen name="channel_section_tabs_label_marginL">5dip</dimen>
     <dimen name="channel_section_tabs_label_marginR">5dip</dimen>
-    <dimen name="channel_section_tabs_label_marginB">3dip</dimen>
-    <dimen name="channel_section_tabs_label_textsize">20sp</dimen>
-    <dimen name="channel_section_tabs_percentage_H">3dip</dimen>
-    <dimen name="channel_section_tabs_label_ctextsize">25sp</dimen>
+    <dimen name="channel_section_tabs_label_marginB">0dip</dimen>
+    <dimen name="channel_section_tabs_label_textsize">19sp</dimen>
+    <dimen name="channel_section_tabs_percentage_H">8dip</dimen>
+    <dimen name="channel_section_tabs_label_ctextsize">23sp</dimen>
     <dimen name="channel_section_tabs_label_paddingT">12dip</dimen>
     <dimen name="channel_section_tabs_percentage_PLR">5dip</dimen>
     <dimen name="channel_section_tabs_layout_marginLeft">83dip</dimen>
     <dimen name="channel_section_tabs_text_PT">5dip</dimen>
     
     <!-- ZGridview -->
-    <dimen name="ZGridView_related_selectorLeftPadding">17dip</dimen>
-    <dimen name="ZGridView_related_selectorTopPadding">20dip</dimen>
-    <dimen name="ZGridView_related_selectorRightPadding">17dip</dimen>
-    <dimen name="ZGridView_related_selectorBottomPadding">-3dip</dimen>
+    <dimen name="ZGridView_related_selectorLeftPadding">9dip</dimen>
+    <dimen name="ZGridView_related_selectorTopPadding">10dip</dimen>
+    <dimen name="ZGridView_related_selectorRightPadding">8dip</dimen>
+    <dimen name="ZGridView_related_selectorBottomPadding">-13dip</dimen>
     
-    <dimen name="ZGridView_played_selectorLeftPadding">13dip</dimen>
-    <dimen name="ZGridView_played_selectorTopPadding">18dip</dimen>
-    <dimen name="ZGridView_played_selectorRightPadding">12dip</dimen>
-    <dimen name="ZGridView_played_selectorBottomPadding">-15dip</dimen>
+    <dimen name="ZGridView_played_selectorLeftPadding">-1dip</dimen>
+    <dimen name="ZGridView_played_selectorTopPadding">7dip</dimen>
+    <dimen name="ZGridView_played_selectorRightPadding">-2dip</dimen>
+    <dimen name="ZGridView_played_selectorBottomPadding">-28dip</dimen>
     
     <dimen name="ZGridView_search_selectorLeftPadding">4dip</dimen>
     <dimen name="ZGridView_search_selectorTopPadding">4dip</dimen>
@@ -420,18 +417,18 @@
     <dimen name="ZGridView_search_selectorBottom">-14dip</dimen>
     
     <!-- HGridView -->
-    <dimen name="HGridView_related_selectionLeftPadding">19dip</dimen>
-    <dimen name="HGridView_related_selectionTopPadding">19dip</dimen>
-    <dimen name="HGridView_related_selectionRightPadding">20dip</dimen>
-    <dimen name="HGridView_related_selectionBottomPadding">-4dip</dimen>      
-    <dimen name="HGridView_label_lr_offset">0dip</dimen>
+    <dimen name="HGridView_related_selectionLeftPadding">10dip</dimen>
+    <dimen name="HGridView_related_selectionTopPadding">10dip</dimen>
+    <dimen name="HGridView_related_selectionRightPadding">9dip</dimen>
+    <dimen name="HGridView_related_selectionBottomPadding">-14dip</dimen>      
+    <dimen name="HGridView_label_lr_offset">2dip</dimen>
    <dimen name="HGridView_label_textleft">12dip</dimen>
     <dimen name="HGridView_label_texttop">28dip</dimen>
    <!-- LoadingDialog -->
-    <dimen name="Loading_Dialog_ProgressBar_Height">56dip</dimen>
-    <dimen name="Loading_Dialog_ProgressBar_width">56dip</dimen>
-    <dimen name="Loading_Dialog_ProgressBar_ML">16dip</dimen>
-    <dimen name="Loading_Dialog_ProgressBar_TextSize">18sp</dimen>
+    <dimen name="Loading_Dialog_ProgressBar_Height">39dip</dimen>
+    <dimen name="Loading_Dialog_ProgressBar_width">39dip</dimen>
+    <dimen name="Loading_Dialog_ProgressBar_ML">8dip</dimen>
+    <dimen name="Loading_Dialog_ProgressBar_TextSize">13sp</dimen>
     
      <!-- Launcher -->   
 <dimen name="Launcher_Layout_LP">40dip</dimen>
@@ -455,4 +452,7 @@
 <dimen name="Launcher_preview_layout_MLR">5dip</dimen>
 <dimen name="Launcher_preview_title_textsize">18sp</dimen>
 <dimen name="Launcher_channel_title_textsize">20sp</dimen>
+
+<!-- DetailAttributeContainer -->
+<dimen name="DetailAttributeContainer_Layout_W">236dip</dimen>
 </resources>

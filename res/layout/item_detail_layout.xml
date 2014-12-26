@@ -68,15 +68,17 @@
             android:layout_height="@dimen/item_detail_btn_left_height"
             android:layout_width="wrap_content"
             android:layout_above="@id/detail_intro"
+            android:layout_below="@id/detail_attribute_container"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="@dimen/item_detail_introlabel_marginleft"
             android:orientation="horizontal"
-            android:layout_marginBottom="@dimen/item_detail_btn_layout_marginB">
+            android:layout_marginBottom="@dimen/item_detail_btn_layout_marginB"
+            android:layout_marginTop="@dimen/item_detail_attribute_top">
                    
            <Button
                 android:id="@+id/btn_fill"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="@dimen/item_detail_btn_left_height"
                 android:textSize="@dimen/item_detail_btn_left_textsize"
                 android:textColor="#FFF8F8FF"
                 android:text="@string/play"
@@ -90,7 +92,7 @@
            <Button
                 android:id="@+id/btn_left"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="@dimen/item_detail_btn_left_height"
                 android:textSize="@dimen/item_detail_btn_left_textsize"
                 android:textColor="#FFF8F8FF"
                 android:text="@string/play"
@@ -104,7 +106,7 @@
              <Button
                 android:id="@+id/btn_favorite"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="@dimen/item_detail_btn_left_height"
                 android:drawableLeft="@drawable/vod_detail_poster_favorite_icon_selector"
                 android:textColor="#FFF8F8FF"
                 android:textSize="@dimen/item_detail_btn_favorite_textsize"
@@ -118,7 +120,7 @@
             <Button
                 android:id="@+id/btn_right"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="@dimen/item_detail_btn_left_height"
                 android:drawableLeft="@drawable/vod_detail_poster_episode_normal_icon"
                 android:layout_marginLeft="@dimen/item_detail_btn_marginleft"                
                 android:textSize="@dimen/item_detail_btn_right_textsize"

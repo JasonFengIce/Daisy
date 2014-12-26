@@ -1,9 +1,4 @@
-<resources>
-
-    <dimen name="padding_small">8dp</dimen>
-    <dimen name="padding_medium">8dp</dimen>
-    <dimen name="padding_large">16dp</dimen>
-    
+<resources>  
     <!-- item detail page-->
     <dimen name="item_detail_detail_left_container_width">1281dip</dimen>
     <dimen name="item_detail_vod_watermark_width">669dip</dimen>
@@ -73,6 +68,7 @@
     <dimen name="item_detail_related_H">178dip</dimen>
     <dimen name="item_detail_related_W">638dip</dimen>
     <dimen name="item_detail_btn_layout_marginB">20dip</dimen>
+    <dimen name="item_detail_Btn_Layout_marginT">18dip</dimen>
 <!-- grid listview page-->
     <dimen name="gridview_channel_panel_height">88dip</dimen>
     <dimen name="gridview_channel_panel_marginBottom">35dp</dimen>
@@ -453,4 +449,6 @@
 <dimen name="Launcher_preview_layout_MLR">5dip</dimen>
 <dimen name="Launcher_preview_title_textsize">24sp</dimen>
 <dimen name="Launcher_channel_title_textsize">32sp</dimen>
+<!-- DetailAttributeContainer -->
+<dimen name="DetailAttributeContainer_Layout_W">471dip</dimen>
 </resources>

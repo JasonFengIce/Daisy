@@ -44,7 +44,7 @@
             android:layout_height="@dimen/grid_view_main_arrow_left_H"
             android:layout_marginTop="@dimen/grid_view_main_arrow_left_marginT"
             android:background="@drawable/vod_arrow_right_normal"
-            android:visibility="visible" />
+            android:visibility="gone" />
     </LinearLayout>
     <!-- <GridView -->
     <!-- android:id="@+id/related_list" -->
