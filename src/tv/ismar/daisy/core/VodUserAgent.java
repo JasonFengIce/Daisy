@@ -98,6 +98,9 @@ public class VodUserAgent {
 	public static String getSid(String str){
 		String sid = "";
 		int index = str.indexOf("sid");
+		if(index==-1)
+			return "";
+		
 		String sidstr = str.substring(index, str.length());		
 		int sep = sidstr.indexOf("&");		
 		sid = sidstr.substring(4,sep);

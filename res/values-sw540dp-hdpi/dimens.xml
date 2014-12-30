@@ -1,0 +1,6 @@
+<resources>
+   
+  <dimen name="vod_player_progressbar_H">44dip</dimen>
+  <dimen name="vod_player_progressbar_W">44dip</dimen>
+  <dimen name="vod_player_timeseekbar_thumbOffset">8dip</dimen>
+</resources>

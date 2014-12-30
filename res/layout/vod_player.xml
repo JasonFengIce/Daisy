@@ -73,7 +73,9 @@
                 android:progressDrawable="@drawable/vodplayer_seekbar_style"  
                 android:maxHeight="@dimen/vod_player_timeseekbar_MaxH"
                 android:thumbOffset="@dimen/vod_player_timeseekbar_thumbOffset"            
-                android:thumb="@drawable/vod_player_time_round"/>
+                android:thumb="@drawable/vod_player_time_round"
+                android:secondaryProgress="0"
+                />
 
             <RelativeLayout
                 android:id="@+id/vodLayout"

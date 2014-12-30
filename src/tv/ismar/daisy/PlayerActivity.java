@@ -35,6 +35,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Display;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -55,8 +58,9 @@ import android.widget.TextView;
 
 import com.ismartv.api.t.AccessProxy;
 import com.ismartv.bean.ClipInfo;
+import android.view.GestureDetector.OnGestureListener;
 
-public class PlayerActivity extends Activity {
+public class PlayerActivity extends Activity implements OnGestureListener {
 
 	@SuppressWarnings("unused")
 	private static final String SAMPLE = "http://114.80.0.33/qyrrs?url=http%3A%2F%2Fjq.v.tvxio.com%2Fcdn%2F0%2F7b%2F78fadc2ffa42309bda633346871f26%2Fhigh%2Fslice%2Findex.m3u8&quality=high&sn=weihongchang_s52&clipid=779521&sid=85d3f919a918460d9431136d75db17f03&sign=08a868ad3c4e3b37537a13321a6f9d4b";
@@ -131,9 +135,12 @@ public class PlayerActivity extends Activity {
 	private int mCurrentSeed = 0;
 	private RelativeLayout mRootLayout;
 	private boolean isHideControlPanel = true;
+	private GestureDetector mGestureDetector; // 手势监测器
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mGestureDetector = new GestureDetector(this, this);
 		setView();
 	}
 
@@ -166,9 +173,9 @@ public class PlayerActivity extends Activity {
 		bufferLayout.setVisibility(View.GONE);
 		qualityText.setVisibility(View.GONE);
 		am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-		mRootLayout = (RelativeLayout)findViewById(R.id.RootRelativeLayout);
+		mRootLayout = (RelativeLayout) findViewById(R.id.RootRelativeLayout);
 		playPauseImage.setOnTouchListener(new OnTouchListener() {
-			
+
 			@Override
 			public boolean onTouch(View v, MotionEvent keycode) {
 				// TODO Auto-generated method stub
@@ -177,10 +184,12 @@ public class PlayerActivity extends Activity {
 					if (mVideoView.getDuration() > 0) {
 						if (!paused) {
 							pauseItem();
-							playPauseImage.setImageResource(R.drawable.vod_pausebtn_selector);
+							playPauseImage
+									.setImageResource(R.drawable.vod_pausebtn_selector);
 						} else {
 							resumeItem();
-							playPauseImage.setImageResource(R.drawable.vod_playbtn_selector);
+							playPauseImage
+									.setImageResource(R.drawable.vod_playbtn_selector);
 						}
 
 					}
@@ -193,7 +202,7 @@ public class PlayerActivity extends Activity {
 			}
 		});
 		fbImage.setOnTouchListener(new OnTouchListener() {
-			
+
 			@Override
 			public boolean onTouch(View v, MotionEvent keycode) {
 				// TODO Auto-generated method stub
@@ -204,11 +213,12 @@ public class PlayerActivity extends Activity {
 						showPanel();
 						fbImage.setImageResource(R.drawable.vod_controlb_selector);
 						isBuffer = true;
-	                    showBuffer();
-						fastBackward(SHORT_STEP); 						
+						showBuffer();
+						fastBackward(SHORT_STEP);
 						mVideoView.seekTo(currPosition);
-						isSeekBuffer = true ;
-						Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
+						isSeekBuffer = true;
+						Log.d(TAG, "LEFT seek to "
+								+ getTimeString(currPosition));
 						isSeek = false;
 						offsets = 0;
 						offn = 1;
@@ -222,7 +232,7 @@ public class PlayerActivity extends Activity {
 			}
 		});
 		ffImage.setOnTouchListener(new OnTouchListener() {
-			
+
 			@Override
 			public boolean onTouch(View v, MotionEvent keycode) {
 				// TODO Auto-generated method stub
@@ -233,11 +243,12 @@ public class PlayerActivity extends Activity {
 						showPanel();
 						ffImage.setImageResource(R.drawable.vod_controlf_selector);
 						isBuffer = true;
-	                    showBuffer();
+						showBuffer();
 						fastForward(SHORT_STEP);
 						mVideoView.seekTo(currPosition);
-						isSeekBuffer = true ;
-						Log.d(TAG, "RIGHT seek to" + getTimeString(currPosition));
+						isSeekBuffer = true;
+						Log.d(TAG, "RIGHT seek to"
+								+ getTimeString(currPosition));
 						isSeek = false;
 						offsets = 0;
 						offn = 1;
@@ -247,38 +258,39 @@ public class PlayerActivity extends Activity {
 				default:
 					break;
 				}
-				return false;				
+				return false;
 			}
 		});
 		initClipInfo();
 	}
-@Override
-public boolean onTouchEvent(MotionEvent event) {
-	// TODO Auto-generated method stub
-	switch (event.getAction()) {
-	case MotionEvent.ACTION_DOWN:
 
-   if(!panelShow){
-		 showPanel(); 
-		 panelShow = true;
-   }
-   else{
-	   hidePanel();
-	   panelShow = false;
-   }
-		break;
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		// TODO Auto-generated method stub
+			if (mGestureDetector.onTouchEvent(event))
+				return true;
 
-	default:
-		break;
+			// 处理手势结束
+			switch (event.getAction() & MotionEvent.ACTION_MASK) {
+			case MotionEvent.ACTION_UP:
+				 if(!panelShow){
+					 showPanel();
+					 panelShow = true;
+					 }
+					 else{
+					 hidePanel();
+					 panelShow = false;
+					 }
+				break;
+			}
+			 return super.onTouchEvent(event);
 	}
-	return super.onTouchEvent(event);
-}
 	private void initClipInfo() {
 		simpleRestClient = new SimpleRestClient();
 		bufferText.setText(BUFFERING);
 		if (mVideoView != null) {
 			mVideoView.setAlpha(0);
-		}	
+		}
 		showBuffer();
 		Log.d(TAG, " initClipInfo ");
 		Intent intent = getIntent();
@@ -301,7 +313,7 @@ public boolean onTouchEvent(MotionEvent event) {
 			if (result != null) {
 				initPlayer();
 			} else {
-				//ExToClosePlayer("url"," m3u8 quality is null ,or get m3u8 err");
+				// ExToClosePlayer("url"," m3u8 quality is null ,or get m3u8 err");
 			}
 		}
 
@@ -310,7 +322,8 @@ public boolean onTouchEvent(MotionEvent event) {
 			Object obj = bundle.get("url");
 			Log.d(TAG, "init player bundle url === " + obj);
 			String sn = VodUserAgent.getMACAddress();
-			AccessProxy.init(VodUserAgent.deviceType,VodUserAgent.deviceVersion, sn);
+			AccessProxy.init(VodUserAgent.deviceType,
+					VodUserAgent.deviceVersion, sn);
 			try {
 				if (obj != null) {
 					item = simpleRestClient.getItem((String) obj);
@@ -339,9 +352,8 @@ public boolean onTouchEvent(MotionEvent event) {
 							// } catch (MalformedURLException e) {
 							// e.printStackTrace();
 							// }http://127.0.0.1:21098/cord
-							urlInfo = AccessProxy.parse(
-									"http://cord.tvxio.com" + "/api/clip/"
-											+ clip.pk + "/",
+							urlInfo = AccessProxy.parse("http://cord.tvxio.com"
+									+ "/api/clip/" + clip.pk + "/",
 									VodUserAgent.getAccessToken(sn),
 									PlayerActivity.this);
 						}
@@ -353,16 +365,16 @@ public boolean onTouchEvent(MotionEvent event) {
 					if (item.item_pk != item.pk) {
 						currNum = item.position;
 						Log.d(TAG, "currNum ===" + currNum);
-						subItemUrl = "http://cord.tvxio.com"
-								+ "/api/subitem/" + item.pk + "/";
+						subItemUrl = "http://cord.tvxio.com" + "/api/subitem/"
+								+ item.pk + "/";
 						subItem = simpleRestClient.getItem(subItemUrl);
 						itemUrl = "http://cord.tvxio.com" + "/api/item/"
 								+ item.item_pk + "/";
 						item = simpleRestClient.getItem(itemUrl);
 						if (item != null && item.subitems != null) {
-							
+
 							listItems = new ArrayList<Item>();
-							
+
 							for (int i = 0; i < item.subitems.length; i++) {
 								listItems.add(item.subitems[i]);
 							}
@@ -376,7 +388,7 @@ public boolean onTouchEvent(MotionEvent event) {
 				}
 			} catch (Exception e) {
 				Log.e(TAG, e.toString());
-//				ExToClosePlayer("url","m3u8 quality is null ,or get m3u8 err /n"+e.toString());
+				// ExToClosePlayer("url","m3u8 quality is null ,or get m3u8 err /n"+e.toString());
 				return null;
 			}
 			return urlInfo;
@@ -420,7 +432,7 @@ public boolean onTouchEvent(MotionEvent event) {
 				urls[3] = urlInfo.getAdaptive();
 				favoriteManager = DaisyUtils.getFavoriteManager(this);
 				historyManager = DaisyUtils.getHistoryManager(this);
-				Quality quality = historyManager.getQuality();	
+				Quality quality = historyManager.getQuality();
 				if (quality != null) {
 					currQuality = quality.quality;
 				} else {
@@ -507,33 +519,38 @@ public boolean onTouchEvent(MotionEvent event) {
 
 				Log.d(TAG, "RES_INT_OFFSET currPosition=" + currPosition);
 
-//				mVideoView.setVideoPath(urls[currQuality]);
-//				mVideoView.setOnPreparedListener(new SmartPlayer.OnPreparedListener(){
-//
-//					@Override
-//					public void onPrepared(SmartPlayer arg0) {
-//						
-//						arg0.start();
-//						checkTaskStart();
-//					}});
+				// mVideoView.setVideoPath(urls[currQuality]);
+				// mVideoView.setOnPreparedListener(new
+				// SmartPlayer.OnPreparedListener(){
+				//
+				// @Override
+				// public void onPrepared(SmartPlayer arg0) {
+				//
+				// arg0.start();
+				// checkTaskStart();
+				// }});
 				if (urls != null && mVideoView != null) {
-					TaskStart();//cmstest.tvxio.com
+					TaskStart();// cmstest.tvxio.com
 					mVideoView.setVideoPath(urls[currQuality]);
 					sid = VodUserAgent.getSid(urls[currQuality]);
 					mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
-//					mVideoView.setOnInfoListener(new SmartPlayer.OnInfoListener() {
-//						
-//						@Override
-//						public boolean onInfo(SmartPlayer arg0, int arg1, int arg2) {
-//							// TODO Auto-generated method stub
-//							mCurrentSeed = arg1/8;
-//							if(subItem != null)
-//							  callaPlay.videoPlaySpeed(item.pk, subItem.pk, item.title, clip.pk, currQuality, mCurrentSeed, mediaip, sid);
-//							else
-//							  callaPlay.videoPlaySpeed(item.pk, null, item.title, clip.pk, currQuality, mCurrentSeed, mediaip, sid);
-//							return false;
-//						}
-//					});
+					// mVideoView.setOnInfoListener(new
+					// SmartPlayer.OnInfoListener() {
+					//
+					// @Override
+					// public boolean onInfo(SmartPlayer arg0, int arg1, int
+					// arg2) {
+					// // TODO Auto-generated method stub
+					// mCurrentSeed = arg1/8;
+					// if(subItem != null)
+					// callaPlay.videoPlaySpeed(item.pk, subItem.pk, item.title,
+					// clip.pk, currQuality, mCurrentSeed, mediaip, sid);
+					// else
+					// callaPlay.videoPlaySpeed(item.pk, null, item.title,
+					// clip.pk, currQuality, mCurrentSeed, mediaip, sid);
+					// return false;
+					// }
+					// });
 					mVideoView
 							.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 								@Override
@@ -554,16 +571,31 @@ public boolean onTouchEvent(MotionEvent event) {
 										urls[1] = urlInfo.getMedium();
 										urls[2] = urlInfo.getHigh();
 										urls[3] = urlInfo.getAdaptive();
-										if (subItem != null){
-											callaPlay.videoPlayLoad(item.pk, subItem.pk, item.title,
-													clip.pk, currQuality,(System.currentTimeMillis() - startDuration) / 1000,0,null, sid);
-											callaPlay.videoPlayStart(item.pk, subItem.pk, item.title,
+										if (subItem != null) {
+											callaPlay
+													.videoPlayLoad(
+															item.pk,
+															subItem.pk,
+															item.title,
+															clip.pk,
+															currQuality,
+															(System.currentTimeMillis() - startDuration) / 1000,
+															0, null, sid);
+											callaPlay.videoPlayStart(item.pk,
+													subItem.pk, item.title,
 													clip.pk, currQuality, 0);
-										}else{
-											callaPlay.videoPlayLoad(item.pk, null, item.title,
-													clip.pk, currQuality,(System.currentTimeMillis() - startDuration) / 1000,0,null, sid);
-											callaPlay.videoPlayStart(item.pk, null, item.title,
-													clip.pk, currQuality, 0);
+										} else {
+											callaPlay.videoPlayLoad(
+													item.pk,
+													null,
+													item.title,
+													clip.pk,
+													currQuality,
+													(System.currentTimeMillis() - startDuration) / 1000,
+													0, null, sid);
+											callaPlay.videoPlayStart(item.pk,
+													null, item.title, clip.pk,
+													currQuality, 0);
 										}
 									}
 								}
@@ -576,7 +608,7 @@ public boolean onTouchEvent(MotionEvent event) {
 									Log.d(TAG,
 											"mVideoView  Error setVideoPath urls[currQuality] ");
 									addHistory(currPosition);
-									ExToClosePlayer("error",what+" "+extra);
+									ExToClosePlayer("error", what + " " + extra);
 									return false;
 								}
 							});
@@ -590,24 +622,25 @@ public boolean onTouchEvent(MotionEvent event) {
 									gotoFinishPage();
 								}
 							});
-					
-					mVideoView.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
-						
-						@Override
-						public void onSeekComplete(MediaPlayer mp) {
-							// TODO Auto-generated method stub
-							isBuffer = false;
-							hideBuffer();
-						}
-					});
+
+					mVideoView
+							.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
+
+								@Override
+								public void onSeekComplete(MediaPlayer mp) {
+									// TODO Auto-generated method stub
+									isBuffer = false;
+									hideBuffer();
+								}
+							});
 				}
 
 			} else {
-				ExToClosePlayer("url","m3u8 content error ,");
+				ExToClosePlayer("url", "m3u8 content error ,");
 			}
 		} catch (Exception e) {
 			Log.e(TAG, e.toString());
-			ExToClosePlayer("url",e.toString());
+			ExToClosePlayer("url", e.toString());
 		}
 	}
 
@@ -628,9 +661,11 @@ public boolean onTouchEvent(MotionEvent event) {
 			try {
 				startDuration = System.currentTimeMillis();
 				if (subItem != null)
-					callaPlay.videoStart(item, subItem.pk, subItem.title, currQuality, null, 0, mSection, sid);
+					callaPlay.videoStart(item, subItem.pk, subItem.title,
+							currQuality, null, 0, mSection, sid);
 				else
-					callaPlay.videoStart(item, null, item.title, currQuality, null, 0, mSection, sid);
+					callaPlay.videoStart(item, null, item.title, currQuality,
+							null, 0, mSection, sid);
 				timeTaskStop();
 			} catch (Exception e) {
 				Log.e(TAG, " Sender log videoPlayStart " + e.toString());
@@ -662,18 +697,19 @@ public boolean onTouchEvent(MotionEvent event) {
 		}
 	};
 
-	private void ExToClosePlayer(String code ,String content) {
+	private void ExToClosePlayer(String code, String content) {
 		if (bufferText != null) {
 			bufferText.setText(EXTOCLOSE);
 			if (code == "url") {
 				try {
 					if (subItem != null)
-						callaPlay.videoExcept("noplayaddress",content, item.pk,
-										subItem.pk, item.title, clip.pk,
-										currQuality, 0);
+						callaPlay.videoExcept("noplayaddress", content,
+								item.pk, subItem.pk, item.title, clip.pk,
+								currQuality, 0);
 					else
-						callaPlay.videoExcept("noplayaddress",content, item.pk, null,
-								item.title, clip.pk, currQuality, 0);
+						callaPlay.videoExcept("noplayaddress", content,
+								item.pk, null, item.title, clip.pk,
+								currQuality, 0);
 				} catch (Exception e) {
 					Log.e(TAG,
 							" Sender log videoExcept noplayaddress "
@@ -683,12 +719,13 @@ public boolean onTouchEvent(MotionEvent event) {
 			if (code == "error") {
 				try {
 					if (subItem != null)
-						callaPlay.videoExcept("mediaexception",content, item.pk,
-								subItem.pk, item.title, clip.pk, currQuality,
-								currPosition);
+						callaPlay.videoExcept("mediaexception", content,
+								item.pk, subItem.pk, item.title, clip.pk,
+								currQuality, currPosition);
 					else
-						callaPlay.videoExcept("mediaexception",content, item.pk, null,
-								item.title, clip.pk, currQuality, currPosition);
+						callaPlay.videoExcept("mediaexception", content,
+								item.pk, null, item.title, clip.pk,
+								currQuality, currPosition);
 				} catch (Exception e) {
 					Log.e(TAG,
 							" Sender log videoExcept noplayaddress "
@@ -721,38 +758,36 @@ public boolean onTouchEvent(MotionEvent event) {
 	private Runnable checkStatus = new Runnable() {
 		public void run() {
 			if (mVideoView != null) {
-//				 Log.d(TAG,
-//				 "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
+				// Log.d(TAG,
+				// "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
 				if (mVideoView.isPlaying()
 						&& Math.abs(mVideoView.getCurrentPosition()
 								- seekPostion) > 0) {
-//					if (isBuffer || bufferLayout.isShown()) {
-//						//isBuffer = false;
-//						//hideBuffer();
-//					} else {
-						if (mVideoView.getAlpha() < 1){
-							mVideoView.setAlpha(1);
-							bufferText.setText(BUFFERING);
-						}
-							
-				//	}
-					if (!isSeek  && !isBuffer) {
+					// if (isBuffer || bufferLayout.isShown()) {
+					// //isBuffer = false;
+					// //hideBuffer();
+					// } else {
+					if (mVideoView.getAlpha() < 1) {
+						mVideoView.setAlpha(1);
+						bufferText.setText(BUFFERING);
+					}
+
+					// }
+					if (!isSeek && !isBuffer) {
 						currPosition = mVideoView.getCurrentPosition();
 						timeBar.setProgress(currPosition);
 					}
 					i = 0;
-				} else {
+				} 
+				else {
 					if (!paused && !isBuffer) {
 						i += 1;
 						seekPostion = mVideoView.getCurrentPosition();
-						if (i > 1) {
-							isBuffer = true;
-//							showBuffer();
-						}
 					}
 				}
 				mCheckHandler.postDelayed(checkStatus, 300);
-			} else {
+			} 
+			else {
 				Log.d(TAG, "mVideoView ====== null or err");
 				checkTaskPause();
 			}
@@ -765,9 +800,11 @@ public boolean onTouchEvent(MotionEvent event) {
 		timeTaskPause();
 		checkTaskPause();
 		if (mVideoView != null) {
-			if (listItems != null && listItems.size() > 0 && currNum < (listItems.size() - 1)) {
+			if (listItems != null && listItems.size() > 0
+					&& currNum < (listItems.size() - 1)) {
 				subItem = listItems.get(currNum + 1);
-				subItemUrl = simpleRestClient.root_url + "/api/subitem/"+ subItem.pk + "/";
+				subItemUrl = simpleRestClient.root_url + "/api/subitem/"
+						+ subItem.pk + "/";
 				bundle.remove("url");
 				bundle.putString("url", subItemUrl);
 				addHistory(0);
@@ -787,9 +824,37 @@ public boolean onTouchEvent(MotionEvent event) {
 				addHistory(0);
 				try {
 					if (subItem != null)
-						callaPlay.videoExit(item.pk, subItem.pk, item.title,clip.pk, currQuality, 0, "end",currPosition,(System.currentTimeMillis() - startDuration) / 1000, mSection, sid, "list", item.content_model);//String section,String sid,String source,String channel
+						callaPlay
+								.videoExit(
+										item.pk,
+										subItem.pk,
+										item.title,
+										clip.pk,
+										currQuality,
+										0,
+										"end",
+										currPosition,
+										(System.currentTimeMillis() - startDuration) / 1000,
+										mSection, sid, "list",
+										item.content_model);// String
+															// section,String
+															// sid,String
+															// source,String
+															// channel
 					else
-						callaPlay.videoExit(item.pk, null, item.title, clip.pk,currQuality, 0, "end",currPosition,(System.currentTimeMillis() - startDuration) / 1000, mSection, sid, "list", item.content_model);
+						callaPlay
+								.videoExit(
+										item.pk,
+										null,
+										item.title,
+										clip.pk,
+										currQuality,
+										0,
+										"end",
+										currPosition,
+										(System.currentTimeMillis() - startDuration) / 1000,
+										mSection, sid, "list",
+										item.content_model);
 				} catch (Exception e) {
 					Log.e(TAG, " log Sender videoExit end " + e.toString());
 				}
@@ -813,10 +878,14 @@ public boolean onTouchEvent(MotionEvent event) {
 		try {
 			if (subItem != null)
 				callaPlay.videoExit(item.pk, subItem.pk, item.title, clip.pk,
-						currQuality, 0, "relate",currPosition,(System.currentTimeMillis() - startDuration) / 1000,mSection, sid, "list", item.content_model);
+						currQuality, 0, "relate", currPosition,
+						(System.currentTimeMillis() - startDuration) / 1000,
+						mSection, sid, "list", item.content_model);
 			else
 				callaPlay.videoExit(item.pk, null, item.title, clip.pk,
-						currQuality, 0, "relate",currPosition,(System.currentTimeMillis() - startDuration) / 1000, mSection, sid, "list", item.content_model);
+						currQuality, 0, "relate", currPosition,
+						(System.currentTimeMillis() - startDuration) / 1000,
+						mSection, sid, "list", item.content_model);
 			mVideoView.stopPlayback();
 		} catch (Exception e) {
 			Log.e(TAG, "log Sender videoExit relate " + e.toString());
@@ -878,12 +947,13 @@ public boolean onTouchEvent(MotionEvent event) {
 		hideBuffer();
 		mVideoView.pause();
 		paused = true;
-		if (subItem != null)			
-			callaPlay.videoPlayPause(item.pk, subItem.pk, item.title,clip.pk, currQuality, 0, currPosition, sid);
+		if (subItem != null)
+			callaPlay.videoPlayPause(item.pk, subItem.pk, item.title, clip.pk,
+					currQuality, 0, currPosition, sid);
 		else
-			callaPlay.videoPlayPause(item.pk, null, item.title, clip.pk,currQuality, 0, currPosition, sid);
-		
-		
+			callaPlay.videoPlayPause(item.pk, null, item.title, clip.pk,
+					currQuality, 0, currPosition, sid);
+
 	}
 
 	private void resumeItem() {
@@ -892,11 +962,13 @@ public boolean onTouchEvent(MotionEvent event) {
 		// hideBuffer();
 		Log.d(TAG, "resume");
 		mVideoView.start();
-		
-		if (subItem != null)			
-			callaPlay.videoPlayContinue(item.pk, subItem.pk, item.title,clip.pk, currQuality, 0, currPosition, sid);
+
+		if (subItem != null)
+			callaPlay.videoPlayContinue(item.pk, subItem.pk, item.title,
+					clip.pk, currQuality, 0, currPosition, sid);
 		else
-			callaPlay.videoPlayContinue(item.pk, null, item.title,clip.pk, currQuality, 0, currPosition, sid);
+			callaPlay.videoPlayContinue(item.pk, null, item.title, clip.pk,
+					currQuality, 0, currPosition, sid);
 		if (!isBuffer) {
 			timeTaskStart();
 		}
@@ -915,7 +987,7 @@ public boolean onTouchEvent(MotionEvent event) {
 				Log.i("zhnagjiqiang", "offsets > 0");
 			}
 		}
-		if (clipLength  > 1000000) {
+		if (clipLength > 1000000) {
 			if (offn < 11) {
 				Log.i("zhnagjiqiang", "offn < 11");
 				currPosition += clipLength * offn * 0.01;
@@ -945,7 +1017,7 @@ public boolean onTouchEvent(MotionEvent event) {
 				offn = offsets / 5;
 			}
 		}
-		if (clipLength  > 1000000) {
+		if (clipLength > 1000000) {
 			if (offn < 11) {
 				currPosition -= clipLength * offn * 0.01;
 			} else {
@@ -959,6 +1031,7 @@ public boolean onTouchEvent(MotionEvent event) {
 		timeBar.setProgress(currPosition);
 		Log.d(TAG, "seek Backward " + currPosition);
 	}
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean ret = false;
@@ -970,8 +1043,8 @@ public boolean onTouchEvent(MotionEvent event) {
 					showPanel();
 					fbImage.setImageResource(R.drawable.vodplayer_controller_rew_pressed);
 					isBuffer = true;
-                    showBuffer();
-					fastBackward(SHORT_STEP);                  
+					showBuffer();
+					fastBackward(SHORT_STEP);
 					ret = true;
 				}
 				break;
@@ -981,7 +1054,7 @@ public boolean onTouchEvent(MotionEvent event) {
 					showPanel();
 					ffImage.setImageResource(R.drawable.vodplayer_controller_ffd_pressed);
 					isBuffer = true;
-                    showBuffer();
+					showBuffer();
 					fastForward(SHORT_STEP);
 					ret = true;
 				}
@@ -992,14 +1065,16 @@ public boolean onTouchEvent(MotionEvent event) {
 					showPanel();
 					if (!paused) {
 						pauseItem();
-//						playPauseImage
-//								.setImageResource(R.drawable.vod_player_pause_focus);
-						playPauseImage.setImageResource(R.drawable.vodplayer_controller_pause_pressed);
+						// playPauseImage
+						// .setImageResource(R.drawable.vod_player_pause_focus);
+						playPauseImage
+								.setImageResource(R.drawable.vodplayer_controller_pause_pressed);
 					} else {
 						resumeItem();
-//						playPauseImage
-//								.setImageResource(R.drawable.vod_player_play_focus);
-						playPauseImage.setImageResource(R.drawable.vodplayer_controller_play_pressed);
+						// playPauseImage
+						// .setImageResource(R.drawable.vod_player_play_focus);
+						playPauseImage
+								.setImageResource(R.drawable.vodplayer_controller_play_pressed);
 					}
 
 					ret = true;
@@ -1018,14 +1093,16 @@ public boolean onTouchEvent(MotionEvent event) {
 
 				break;
 			case KeyEvent.KEYCODE_DPAD_UP:
-		
-			 am.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+
+				am.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+						AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
 				showPanel();
 				ret = true;
 
 				break;
 			case KeyEvent.KEYCODE_DPAD_DOWN:
-				am.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+				am.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+						AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
 				ret = true;
 				break;
 			case KeyEvent.KEYCODE_BACK:
@@ -1043,23 +1120,25 @@ public boolean onTouchEvent(MotionEvent event) {
 			case KeyEvent.KEYCODE_MENU:
 				if (menu != null && menu.isVisible())
 					return false;
-				if (menu==null) {
+				if (menu == null) {
 					createWindow();
 					menu = new ISTVVodMenu(this);
 					ret = createMenu(menu);
 				}
 				if (itemUrl != null && favoriteManager != null
 						&& favoriteManager.getFavoriteByUrl(itemUrl) != null) {
-					menu.findItem(5).setTitle(
-							getResources().getString(
-									R.string.vod_bookmark_remove_bookmark_setting));
+					menu.findItem(5)
+							.setTitle(
+									getResources()
+											.getString(
+													R.string.vod_bookmark_remove_bookmark_setting));
 				}
 				if (onVodMenuOpened(menu)) {
-				menu.show();
-				hideMenuHandler.postDelayed(hideMenuRunnable, 10000);
-			}
+					menu.show();
+					hideMenuHandler.postDelayed(hideMenuRunnable, 10000);
+				}
 				break;
-				
+
 			default:
 				break;
 			}
@@ -1079,11 +1158,13 @@ public boolean onTouchEvent(MotionEvent event) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
 				fbImage.setImageResource(R.drawable.vodplayer_controller_rew);
 				mVideoView.seekTo(currPosition);
-				if (subItem != null)			
-					callaPlay.videoPlaySeek(item.pk, subItem.pk, item.title,clip.pk, currQuality, 0, currPosition, sid);
+				if (subItem != null)
+					callaPlay.videoPlaySeek(item.pk, subItem.pk, item.title,
+							clip.pk, currQuality, 0, currPosition, sid);
 				else
-					callaPlay.videoPlayContinue(item.pk, null, item.title,clip.pk, currQuality, 0, currPosition, sid);
-				isSeekBuffer = true ;
+					callaPlay.videoPlayContinue(item.pk, null, item.title,
+							clip.pk, currQuality, 0, currPosition, sid);
+				isSeekBuffer = true;
 				Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
 				ret = true;
 				isSeek = false;
@@ -1093,11 +1174,13 @@ public boolean onTouchEvent(MotionEvent event) {
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
 				ffImage.setImageResource(R.drawable.vodplayer_controller_ffd);
 				mVideoView.seekTo(currPosition);
-				if (subItem != null)			
-					callaPlay.videoPlaySeek(item.pk, subItem.pk, item.title,clip.pk, currQuality, 0, currPosition, sid);
+				if (subItem != null)
+					callaPlay.videoPlaySeek(item.pk, subItem.pk, item.title,
+							clip.pk, currQuality, 0, currPosition, sid);
 				else
-					callaPlay.videoPlayContinue(item.pk, null, item.title,clip.pk, currQuality, 0, currPosition, sid);
-				isSeekBuffer = true ;
+					callaPlay.videoPlayContinue(item.pk, null, item.title,
+							clip.pk, currQuality, 0, currPosition, sid);
+				isSeekBuffer = true;
 				Log.d(TAG, "RIGHT seek to" + getTimeString(currPosition));
 				ret = true;
 				isSeek = false;
@@ -1107,11 +1190,13 @@ public boolean onTouchEvent(MotionEvent event) {
 			case KeyEvent.KEYCODE_DPAD_CENTER:
 			case KeyEvent.KEYCODE_ENTER:
 				if (paused) {
-				//	playPauseImage.setImageResource(R.drawable.vod_player_play);
-					playPauseImage.setImageResource(R.drawable.vodplayer_controller_play);
+					// playPauseImage.setImageResource(R.drawable.vod_player_play);
+					playPauseImage
+							.setImageResource(R.drawable.vodplayer_controller_play);
 				} else {
-					//playPauseImage.setImageResource(R.drawable.vod_player_pause);
-					playPauseImage.setImageResource(R.drawable.vodplayer_controller_pause);
+					// playPauseImage.setImageResource(R.drawable.vod_player_pause);
+					playPauseImage
+							.setImageResource(R.drawable.vodplayer_controller_pause);
 				}
 				ret = true;
 				break;
@@ -1132,20 +1217,22 @@ public boolean onTouchEvent(MotionEvent event) {
 			View view;
 			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			view = inflater.inflate(R.layout.popup_2btn, null);
-//			int H = DaisyUtils.getVodApplication(this).getheightPixels(this);
-//			if(H==720)
-//			    popupDlg.addContentView(view, new ViewGroup.LayoutParams(
-//					(int)(538/DBHelper.rate),(int)(296/DBHelper.rate)));
-//			else
-//				popupDlg.addContentView(view, new ViewGroup.LayoutParams(
-//						(807/DBHelper.rate,
-//						ViewGroup.LayoutParams.WRAP_CONTENT));
-				
-				int width = getResources().getDimensionPixelSize(R.dimen.popup_dialog_width);
-				int height = getResources().getDimensionPixelSize(R.dimen.popup_dialog_height);
-				
-				popupDlg.addContentView(view, new ViewGroup.LayoutParams(
-						width,height));
+			// int H = DaisyUtils.getVodApplication(this).getheightPixels(this);
+			// if(H==720)
+			// popupDlg.addContentView(view, new ViewGroup.LayoutParams(
+			// (int)(538/DBHelper.rate),(int)(296/DBHelper.rate)));
+			// else
+			// popupDlg.addContentView(view, new ViewGroup.LayoutParams(
+			// (807/DBHelper.rate,
+			// ViewGroup.LayoutParams.WRAP_CONTENT));
+
+			int width = getResources().getDimensionPixelSize(
+					R.dimen.popup_dialog_width);
+			int height = getResources().getDimensionPixelSize(
+					R.dimen.popup_dialog_height);
+
+			popupDlg.addContentView(view, new ViewGroup.LayoutParams(width,
+					height));
 			TextView tv = (TextView) view.findViewById(R.id.PopupText);
 			tv.setText(msg);
 			Button btn1 = null, btn2 = null;
@@ -1163,13 +1250,31 @@ public boolean onTouchEvent(MotionEvent event) {
 							popupDlg.dismiss();
 							try {
 								if (subItem != null)
-									callaPlay.videoExit(item.pk, subItem.pk,
-											item.title, clip.pk, currQuality,
-											0, "detail",currPosition,(System.currentTimeMillis() - startDuration) / 1000, mSection, sid, "list", item.content_model);
+									callaPlay.videoExit(
+											item.pk,
+											subItem.pk,
+											item.title,
+											clip.pk,
+											currQuality,
+											0,
+											"detail",
+											currPosition,
+											(System.currentTimeMillis() - startDuration) / 1000,
+											mSection, sid, "list",
+											item.content_model);
 								else
-									callaPlay.videoExit(item.pk, null,
-											item.title, clip.pk, currQuality,
-											0, "detail",currPosition,(System.currentTimeMillis() - startDuration) / 1000, mSection, sid, "list", item.content_model);
+									callaPlay.videoExit(
+											item.pk,
+											null,
+											item.title,
+											clip.pk,
+											currQuality,
+											0,
+											"detail",
+											currPosition,
+											(System.currentTimeMillis() - startDuration) / 1000,
+											mSection, sid, "list",
+											item.content_model);
 							} catch (Exception e) {
 								Log.e(TAG,
 										" Sender log videoPlayStart "
@@ -1240,47 +1345,37 @@ public boolean onTouchEvent(MotionEvent event) {
 		if (!isBuffer && bufferLayout.isShown()) {
 			bufferText.setText(BUFFERING);
 			bufferLayout.setVisibility(View.GONE);
-			try {				
+			try {
 				if (subItem != null)
-					if(isSeekBuffer){
-						callaPlay.videoPlaySeekBlockend(
-									item.pk,
-									subItem.pk,
-									item.title,
-									clip.pk,
-									currQuality,
-									0,
-									currPosition,
-									(System.currentTimeMillis() - bufferDuration) / 1000,
-									mediaip,sid);
-						
-					}else{
-					callaPlay.videoPlayBlockend(
-									item.pk,
-									subItem.pk,
-									item.title,
-									clip.pk,
-									currQuality,
-									0,
-									currPosition,
-									(System.currentTimeMillis() - bufferDuration) / 1000,
-									mediaip,sid);
+					if (isSeekBuffer) {
+						callaPlay
+								.videoPlaySeekBlockend(
+										item.pk,
+										subItem.pk,
+										item.title,
+										clip.pk,
+										currQuality,
+										0,
+										currPosition,
+										(System.currentTimeMillis() - bufferDuration) / 1000,
+										mediaip, sid);
+
+					} else {
+						callaPlay
+								.videoPlayBlockend(
+										item.pk,
+										subItem.pk,
+										item.title,
+										clip.pk,
+										currQuality,
+										0,
+										currPosition,
+										(System.currentTimeMillis() - bufferDuration) / 1000,
+										mediaip, sid);
 					}
-				else
-					if(isSeekBuffer){
-						callaPlay.videoPlaySeekBlockend(
-								item.pk,
-								null,
-								item.title,
-								clip.pk,
-								currQuality,
-								0,
-								currPosition,
-								(System.currentTimeMillis() - bufferDuration) / 1000,
-								mediaip,sid);
-						
-					}else{
-					callaPlay.videoPlayBlockend(
+				else if (isSeekBuffer) {
+					callaPlay
+							.videoPlaySeekBlockend(
 									item.pk,
 									null,
 									item.title,
@@ -1289,8 +1384,21 @@ public boolean onTouchEvent(MotionEvent event) {
 									0,
 									currPosition,
 									(System.currentTimeMillis() - bufferDuration) / 1000,
-									mediaip,sid);
-					}
+									mediaip, sid);
+
+				} else {
+					callaPlay
+							.videoPlayBlockend(
+									item.pk,
+									null,
+									item.title,
+									clip.pk,
+									currQuality,
+									0,
+									currPosition,
+									(System.currentTimeMillis() - bufferDuration) / 1000,
+									mediaip, sid);
+				}
 				isSeekBuffer = false;
 			} catch (Exception e) {
 				Log.e(TAG, " Sender log videoPlayBlockend " + e.toString());
@@ -1388,30 +1496,33 @@ public boolean onTouchEvent(MotionEvent event) {
 		public void onProgressChanged(SeekBar seekBar, int progress,
 				boolean fromUser) {
 			if (mVideoView.getDuration() > 0) {
-				isSeek = true;
-				isBuffer = true;
-                showBuffer();   
-                timeBar.setProgress(progress);
-				mVideoView.seekTo(progress);
-				isSeekBuffer = true ;
+				timeBar.setProgress(progress);
 				Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
-				isSeek = false;
-				offsets = 0;
-				offn = 1;
 			}
 
 			updataTimeText();
-			
+
 		}
 
 		@Override
 		public void onStartTrackingTouch(SeekBar seekBar) {
 			Log.d(TAG, "onStartTrackingTouch" + seekBar.getProgress());
+			isSeek = true;
+			isBuffer = true;
+			showPanel();
+			showBuffer();
 		}
 
 		@Override
 		public void onStopTrackingTouch(SeekBar seekBar) {
 			Log.d(TAG, "onStopTrackingTouch" + seekBar.getProgress());
+			mVideoView.seekTo(seekBar.getProgress());
+			isBuffer = false;
+			isSeekBuffer = true;
+			isSeek = false;
+			offsets = 0;
+			offn = 1;
+			hideBuffer();
 		}
 	}
 
@@ -1441,19 +1552,25 @@ public boolean onTouchEvent(MotionEvent event) {
 					timeTaskPause();
 					checkTaskPause();
 					paused = false;
-//					playPauseImage
-//							.setImageResource(R.drawable.vod_player_pause);
-					playPauseImage.setImageResource(R.drawable.vodplayer_controller_pause);
+					// playPauseImage
+					// .setImageResource(R.drawable.vod_player_pause);
+					playPauseImage
+							.setImageResource(R.drawable.vodplayer_controller_pause);
 					isBuffer = true;
 					currQuality = pos;
 					mVideoView = (IsmatvVideoView) findViewById(R.id.video_view);
 					mVideoView.setVideoPath(urls[currQuality].toString());
-					historyManager.addOrUpdateQuality(new Quality(0,urls[currQuality], currQuality));
+					historyManager.addOrUpdateQuality(new Quality(0,
+							urls[currQuality], currQuality));
 					mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
 					if (subItem != null)
-						callaPlay.videoSwitchStream(item.pk, subItem.pk, item.title,clip.pk, currQuality,"manual",null,null,mediaip,sid);
+						callaPlay.videoSwitchStream(item.pk, subItem.pk,
+								item.title, clip.pk, currQuality, "manual",
+								null, null, mediaip, sid);
 					else
-						callaPlay.videoSwitchStream(item.pk, null, item.title,clip.pk, currQuality,"manual",null,null,mediaip,sid);
+						callaPlay.videoSwitchStream(item.pk, null, item.title,
+								clip.pk, currQuality, "manual", null, null,
+								mediaip, sid);
 					initQualtiyText();
 					return true;
 				} catch (Exception e) {
@@ -1515,16 +1632,18 @@ public boolean onTouchEvent(MotionEvent event) {
 
 		switch (currQuality) {
 		case 0:
-			//qualityText.setText("流畅");
-			qualityText.setBackgroundResource(R.drawable.vodplayer_stream_normal);
+			// qualityText.setText("流畅");
+			qualityText
+					.setBackgroundResource(R.drawable.vodplayer_stream_normal);
 			break;
 		case 1:
-			//qualityText.setText("高清");
+			// qualityText.setText("高清");
 			qualityText.setBackgroundResource(R.drawable.vodplayer_stream_high);
 			break;
 		case 2:
-			//qualityText.setText("超清");
-			qualityText.setBackgroundResource(R.drawable.vodplayer_stream_ultra);
+			// qualityText.setText("超清");
+			qualityText
+					.setBackgroundResource(R.drawable.vodplayer_stream_ultra);
 			break;
 
 		case 3:
@@ -1533,8 +1652,9 @@ public boolean onTouchEvent(MotionEvent event) {
 			break;
 
 		default:
-			//qualityText.setText("流畅");
-			qualityText.setBackgroundResource(R.drawable.vodplayer_stream_normal);
+			// qualityText.setText("流畅");
+			qualityText
+					.setBackgroundResource(R.drawable.vodplayer_stream_normal);
 			break;
 		}
 
@@ -1576,6 +1696,105 @@ public boolean onTouchEvent(MotionEvent event) {
 		mHandler.removeCallbacks(mUpdateTimeTask);
 		mCheckHandler.removeCallbacks(checkStatus);
 		hidePanelHandler.removeCallbacks(hidePanelRunnable);
+	}
+
+	@Override
+	public boolean onDown(MotionEvent arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	private int FLING_LEFT = 1;
+	private int FLING_RIGHT = 2;
+	private int FLING_DOWN = 3;
+	private int FLING_UP = 4;
+	private int FLING_STATE = -1;
+
+	@Override
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+			float velocitY) {
+		// TODO Auto-generated method stub
+		if (e1.getX() - e2.getX() > 50 && Math.abs(velocityX)>Math.abs(velocitY)) {// 向左滑，右边显示
+			// this.flipper.setInAnimation(AnimationUtils.loadAnimation(this,
+			// R.anim.push_left_in));
+			// this.flipper.setOutAnimation(AnimationUtils.loadAnimation(this,
+			// R.anim.push_left_out));
+			FLING_STATE = FLING_LEFT;
+			if (mVideoView.getDuration() > 0) {
+				isSeek = true;
+				showPanel();
+				fbImage.setImageResource(R.drawable.vod_controlb_selector);
+				isBuffer = true;
+				showBuffer();
+				fastBackward(SHORT_STEP);
+				mVideoView.seekTo(currPosition);
+				isSeekBuffer = true;
+				Log.d(TAG, "LEFT seek to "
+						+ getTimeString(currPosition));
+				isSeek = false;
+				offsets = 0;
+				offn = 1;
+				return true;
+			}
+		}
+		if (e1.getX() - e2.getX() < -50&&Math.abs(velocityX)>Math.abs(velocitY)) {// 向右滑，左边显示
+			FLING_STATE = FLING_RIGHT;
+			if (mVideoView.getDuration() > 0) {
+				isSeek = true;
+				showPanel();
+				ffImage.setImageResource(R.drawable.vod_controlf_selector);
+				isBuffer = true;
+				showBuffer();
+				fastForward(SHORT_STEP);
+				mVideoView.seekTo(currPosition);
+				isSeekBuffer = true;
+				Log.d(TAG, "RIGHT seek to"
+						+ getTimeString(currPosition));
+				isSeek = false;
+				offsets = 0;
+				offn = 1;
+				return true;
+			}
+		}
+
+		if (e1.getY() - e2.getY() < -15&&Math.abs(velocityX)<Math.abs(velocitY)) {
+			// 向下滑动
+			am.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+					AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+			return true;
+		}
+		if (e1.getY() - e2.getY() > 15&&Math.abs(velocityX)<Math.abs(velocitY)) {
+			// 向上滑动
+			am.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+					AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void onLongPress(MotionEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean onScroll(MotionEvent arg0, MotionEvent arg1, float arg2,
+			float arg3) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void onShowPress(MotionEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean onSingleTapUp(MotionEvent arg0) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

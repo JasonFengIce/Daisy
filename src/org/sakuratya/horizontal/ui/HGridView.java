@@ -239,7 +239,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 				//checkScrollState(OnScrollListener.SCROLL_STATE_IDLE);
 
 			}
-			if (TOUCH_STATE != FOCUS_LEFT || TOUCH_STATE != FOCUS_RIGHT) {
+			if (TOUCH_STATE != FOCUS_LEFT && TOUCH_STATE != FOCUS_RIGHT) {
 				if(Math.abs(deltaX)<50){
 					final int x = (int) event.getX();
 					final int y = (int) event.getY();

@@ -377,8 +377,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 					message.what = FETCHCHANNEL;
 					mainHandler.sendMessage(message);
 				} catch (MalformedURLException e) {
+					if(e!=null)
 					System.err.println(e.getMessage());
 				} catch (IOException e) {
+					if(e!=null)
 					System.err.println(e.getMessage());
 				}
 			}
