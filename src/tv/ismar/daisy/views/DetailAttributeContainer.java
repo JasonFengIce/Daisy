@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.models.ContentModel;
@@ -26,14 +27,14 @@ public class DetailAttributeContainer extends LinearLayout {
 			int defStyle) {
 		super(context, attrs, defStyle);
 		myContext = context;
-		textsize = myContext.getResources().getDimension(R.dimen.item_detail_introlabel_textsize)/DBHelper.rate;
+		textsize = myContext.getResources().getDimension(R.dimen.item_detail_introlabel_textsize)/VodApplication.rate;
 		// TODO Auto-generated constructor stub
 	}
 
 	public DetailAttributeContainer(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		myContext = context;
-		textsize = myContext.getResources().getDimension(R.dimen.item_detail_introlabel_textsize)/DBHelper.rate;
+		textsize = myContext.getResources().getDimension(R.dimen.item_detail_introlabel_textsize)/VodApplication.rate;
 		// TODO Auto-generated constructor stub
 	}
 

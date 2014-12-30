@@ -46,7 +46,7 @@ public class VodApplication extends Application {
 	
 	private static final int CORE_POOL_SIZE = 5;
 	private ExecutorService mExecutorService;
-	
+	public static float rate = 1;
 	/**
 	 * Use to cache the AsyncImageView's bitmap in memory, When application memory is low, the cache will be recovered.
 	 */

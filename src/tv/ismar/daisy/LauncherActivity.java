@@ -6,11 +6,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -20,6 +17,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextPaint;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -79,7 +78,13 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 		getChannels();
 		getLatest();
 		fetchWeather();
-
+		DisplayMetrics metric = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(metric);
+		int height = metric.heightPixels; // 屏幕高度（像素）
+		int densityDpi = metric.densityDpi; // 屏幕密度DPI（120 / 160 / 240）
+		Log.i("zjq", "densityDpi==" + densityDpi + "heightPixels=" + height);
+		float rate = (float) densityDpi / (float) 160;
+		VodApplication.rate = rate;
 	}
 
 	private void initViews() {
@@ -162,14 +167,13 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 	public void onClick(View view) {
 		Intent intent = new Intent();
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		String content =(String) view
-				.getTag();
+		String content = (String) view.getTag();
 		JSONObject jsonObject;
 		try {
 			jsonObject = new JSONObject(content);
-		intent.putExtra("title", jsonObject.getString("name"));
-		intent.putExtra("url", jsonObject.getString("url"));
-		intent.putExtra("channel", jsonObject.getString("channel"));
+			intent.putExtra("title", jsonObject.getString("name"));
+			intent.putExtra("url", jsonObject.getString("url"));
+			intent.putExtra("channel", jsonObject.getString("channel"));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -229,10 +233,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 			channelTexts[i].setTextColor(Color.WHITE);
 			TextPaint tp = channelTexts[i].getPaint();
 			tp.setFakeBoldText(true);
-//			HashMap<Integer, String> hashMap = new HashMap<Integer, String>();
-//			hashMap.put(1, channelBeans[i].getName());
-//			hashMap.put(2, channelBeans[i].getUrl());
-//			hashMap.put(3, channelBeans[i].getChannel());
+			// HashMap<Integer, String> hashMap = new HashMap<Integer,
+			// String>();
+			// hashMap.put(1, channelBeans[i].getName());
+			// hashMap.put(2, channelBeans[i].getUrl());
+			// hashMap.put(3, channelBeans[i].getChannel());
 			JSONObject jsonObject = new JSONObject();
 			try {
 				jsonObject.put("name", channelBeans[i].getName());
@@ -313,12 +318,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			String[] values = view.getTag().toString().split(",");
 			if (values[1].equals("item"))
-				intent.setClassName("tv.ismar.daisy",
-						"tv.ismar.daisy.ItemDetailActivity");
+				 intent.setClassName("tv.ismar.daisy",
+				 "tv.ismar.daisy.ItemDetailActivity");
 			else
-				intent.setClassName("tv.ismar.daisy",
-						"tv.ismar.daisy.PlayerActivity");
-
+				 intent.setClassName("tv.ismar.daisy",
+				 "tv.ismar.daisy.PlayerActivity");
 			intent.putExtra("url", values[0]);
 			startActivity(intent);
 		}
@@ -377,11 +381,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 					message.what = FETCHCHANNEL;
 					mainHandler.sendMessage(message);
 				} catch (MalformedURLException e) {
-					if(e!=null)
-					System.err.println(e.getMessage());
+					if (e != null)
+						System.err.println(e.getMessage());
 				} catch (IOException e) {
-					if(e!=null)
-					System.err.println(e.getMessage());
+					if (e != null)
+						System.err.println(e.getMessage());
 				}
 			}
 
@@ -486,7 +490,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 				} catch (MalformedURLException e) {
 					System.err.println(e.getMessage());
 				} catch (IOException e) {
-					//System.err.println(e.getMessage());
+					// System.err.println(e.getMessage());
 				}
 			}
 

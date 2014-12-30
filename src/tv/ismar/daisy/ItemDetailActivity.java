@@ -89,7 +89,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 	
 	private HashMap<AsyncImageView, Boolean> mLoadingImageQueue = new HashMap<AsyncImageView, Boolean>();
 	
-	private String mSection;
+	private String mSection="";
 	private void initViews() {
 		mDetailLeftContainer = (RelativeLayout)findViewById(R.id.detail_left_container);
 		mDetailAttributeContainer = (DetailAttributeContainer) findViewById(R.id.detail_attribute_container);
