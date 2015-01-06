@@ -130,13 +130,13 @@ public class PlayerActivity extends Activity implements OnGestureListener {
 	private CallaPlay callaPlay = new CallaPlay();
 	AudioManager am;
 	private String mSection;
-	private String sid;
+	private String sid="";
 	private String mediaip;
 	private int mCurrentSeed = 0;
 	private RelativeLayout mRootLayout;
 	private boolean isHideControlPanel = true;
 	private GestureDetector mGestureDetector; // 手势监测器
-
+    private boolean live_video = false;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -181,7 +181,7 @@ public class PlayerActivity extends Activity implements OnGestureListener {
 				// TODO Auto-generated method stub
 				switch (keycode.getAction()) {
 				case MotionEvent.ACTION_DOWN:
-					if (mVideoView.getDuration() > 0) {
+					if (mVideoView.getDuration() > 0&&!live_video) {
 						if (!paused) {
 							pauseItem();
 							playPauseImage
@@ -208,7 +208,7 @@ public class PlayerActivity extends Activity implements OnGestureListener {
 				// TODO Auto-generated method stub
 				switch (keycode.getAction()) {
 				case MotionEvent.ACTION_DOWN:
-					if (mVideoView.getDuration() > 0) {
+					if (mVideoView.getDuration() > 0&&!live_video) {
 						isSeek = true;
 						showPanel();
 						fbImage.setImageResource(R.drawable.vod_controlb_selector);
@@ -238,7 +238,7 @@ public class PlayerActivity extends Activity implements OnGestureListener {
 				// TODO Auto-generated method stub
 				switch (keycode.getAction()) {
 				case MotionEvent.ACTION_DOWN:
-					if (mVideoView.getDuration() > 0) {
+					if (mVideoView.getDuration() > 0&&!live_video) {
 						isSeek = true;
 						showPanel();
 						ffImage.setImageResource(R.drawable.vod_controlf_selector);
@@ -267,21 +267,11 @@ public class PlayerActivity extends Activity implements OnGestureListener {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		// TODO Auto-generated method stub
-			if (mGestureDetector.onTouchEvent(event))
-				return true;
-
+		
+			
+			if (mGestureDetector.onTouchEvent(event)){
+				return true;	
 			// 处理手势结束
-			switch (event.getAction() & MotionEvent.ACTION_MASK) {
-			case MotionEvent.ACTION_UP:
-				 if(!panelShow){
-					 showPanel();
-					 panelShow = true;
-					 }
-					 else{
-					 hidePanel();
-					 panelShow = false;
-					 }
-				break;
 			}
 			 return super.onTouchEvent(event);
 	}
@@ -344,6 +334,7 @@ public class PlayerActivity extends Activity implements OnGestureListener {
 					obj = bundle.get("item");
 					if (obj != null) {
 						item = (Item) obj;
+						live_video = item.live_video;
 						if (item.clip != null) {
 							clip = item.clip;
 
@@ -498,7 +489,7 @@ public class PlayerActivity extends Activity implements OnGestureListener {
 					initQualtiyText();
 					qualityText.setVisibility(View.VISIBLE);
 					titleText.setSelected(true);
-					if (tempOffset > 0 && isContinue == true) {
+					if (tempOffset > 0 && isContinue == true && !live_video) {
 						bufferText.setText("  " + BUFFERCONTINUE
 								+ getTimeString(tempOffset));
 					} else {
@@ -560,13 +551,20 @@ public class PlayerActivity extends Activity implements OnGestureListener {
 											"mVideoView onPrepared tempOffset =="
 													+ tempOffset);
 									if (mVideoView != null) {
-										clipLength = mVideoView.getDuration();
-										timeBar.setMax(clipLength);
-										mp.start();
-										mp.seekTo(currPosition);
-										timeBar.setProgress(currPosition);
-										timeTaskStart();
-										checkTaskStart();
+										if(live_video){											
+											timeBar.setEnabled(false);
+											
+										}
+										else{
+											  clipLength = mVideoView.getDuration();
+											  timeBar.setMax(clipLength);
+											  mp.seekTo(currPosition);
+											  timeBar.setProgress(currPosition);
+											  timeBar.setEnabled(true);
+										}
+									mp.start();	
+									timeTaskStart();
+									checkTaskStart();
 										urls[0] = urlInfo.getNormal();
 										urls[1] = urlInfo.getMedium();
 										urls[2] = urlInfo.getHigh();
@@ -767,6 +765,10 @@ public class PlayerActivity extends Activity implements OnGestureListener {
 					// //isBuffer = false;
 					// //hideBuffer();
 					// } else {
+					if(live_video&&(isBuffer || bufferLayout.isShown())){
+						isBuffer = false;
+						hideBuffer();
+					}
 					if (mVideoView.getAlpha() < 1) {
 						mVideoView.setAlpha(1);
 						bufferText.setText(BUFFERING);
@@ -1038,7 +1040,7 @@ public class PlayerActivity extends Activity implements OnGestureListener {
 		if (!isVodMenuVisible() && mVideoView != null) {
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
-				if (mVideoView.getDuration() > 0) {
+				if (mVideoView.getDuration() > 0&&!live_video) {
 					isSeek = true;
 					showPanel();
 					fbImage.setImageResource(R.drawable.vodplayer_controller_rew_pressed);
@@ -1049,7 +1051,7 @@ public class PlayerActivity extends Activity implements OnGestureListener {
 				}
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
-				if (mVideoView.getDuration() > 0) {
+				if (mVideoView.getDuration() > 0&&!live_video) {
 					isSeek = true;
 					showPanel();
 					ffImage.setImageResource(R.drawable.vodplayer_controller_ffd_pressed);
@@ -1156,36 +1158,42 @@ public class PlayerActivity extends Activity implements OnGestureListener {
 				&& mVideoView.getDuration() > 0) {
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
-				fbImage.setImageResource(R.drawable.vodplayer_controller_rew);
-				mVideoView.seekTo(currPosition);
-				if (subItem != null)
-					callaPlay.videoPlaySeek(item.pk, subItem.pk, item.title,
-							clip.pk, currQuality, 0, currPosition, sid);
-				else
-					callaPlay.videoPlayContinue(item.pk, null, item.title,
-							clip.pk, currQuality, 0, currPosition, sid);
-				isSeekBuffer = true;
-				Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
-				ret = true;
-				isSeek = false;
-				offsets = 0;
-				offn = 1;
+				if(!live_video){
+					fbImage.setImageResource(R.drawable.vodplayer_controller_rew);
+					mVideoView.seekTo(currPosition);
+					if (subItem != null)
+						callaPlay.videoPlaySeek(item.pk, subItem.pk, item.title,
+								clip.pk, currQuality, 0, currPosition, sid);
+					else
+						callaPlay.videoPlayContinue(item.pk, null, item.title,
+								clip.pk, currQuality, 0, currPosition, sid);
+					isSeekBuffer = true;
+					Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
+					ret = true;
+					isSeek = false;
+					offsets = 0;
+					offn = 1;
+				}
+
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
-				ffImage.setImageResource(R.drawable.vodplayer_controller_ffd);
-				mVideoView.seekTo(currPosition);
-				if (subItem != null)
-					callaPlay.videoPlaySeek(item.pk, subItem.pk, item.title,
-							clip.pk, currQuality, 0, currPosition, sid);
-				else
-					callaPlay.videoPlayContinue(item.pk, null, item.title,
-							clip.pk, currQuality, 0, currPosition, sid);
-				isSeekBuffer = true;
-				Log.d(TAG, "RIGHT seek to" + getTimeString(currPosition));
-				ret = true;
-				isSeek = false;
-				offsets = 0;
-				offn = 1;
+				if(!live_video){
+					ffImage.setImageResource(R.drawable.vodplayer_controller_ffd);
+					mVideoView.seekTo(currPosition);
+					if (subItem != null)
+						callaPlay.videoPlaySeek(item.pk, subItem.pk, item.title,
+								clip.pk, currQuality, 0, currPosition, sid);
+					else
+						callaPlay.videoPlayContinue(item.pk, null, item.title,
+								clip.pk, currQuality, 0, currPosition, sid);
+					isSeekBuffer = true;
+					Log.d(TAG, "RIGHT seek to" + getTimeString(currPosition));
+					ret = true;
+					isSeek = false;
+					offsets = 0;
+					offn = 1;
+				}
+
 				break;
 			case KeyEvent.KEYCODE_DPAD_CENTER:
 			case KeyEvent.KEYCODE_ENTER:
@@ -1495,34 +1503,43 @@ public class PlayerActivity extends Activity implements OnGestureListener {
 		@Override
 		public void onProgressChanged(SeekBar seekBar, int progress,
 				boolean fromUser) {
-			if (mVideoView.getDuration() > 0) {
-				timeBar.setProgress(progress);
-				Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
-			}
+			if(!live_video){
+				if (mVideoView.getDuration() > 0) {
+					timeBar.setProgress(progress);
+					Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
+				}
 
-			updataTimeText();
+				updataTimeText();
+
+			}
 
 		}
 
 		@Override
 		public void onStartTrackingTouch(SeekBar seekBar) {
 			Log.d(TAG, "onStartTrackingTouch" + seekBar.getProgress());
-			isSeek = true;
-			isBuffer = true;
-			showPanel();
-			showBuffer();
+			if(!live_video){
+				isSeek = true;
+				isBuffer = true;
+				showPanel();
+				showBuffer();
+			}
+
 		}
 
 		@Override
 		public void onStopTrackingTouch(SeekBar seekBar) {
 			Log.d(TAG, "onStopTrackingTouch" + seekBar.getProgress());
-			mVideoView.seekTo(seekBar.getProgress());
-			isBuffer = false;
-			isSeekBuffer = true;
-			isSeek = false;
-			offsets = 0;
-			offn = 1;
-			hideBuffer();
+			if(!live_video){
+				mVideoView.seekTo(seekBar.getProgress());
+				isBuffer = false;
+				isSeekBuffer = true;
+				isSeek = false;
+				offsets = 0;
+				offn = 1;
+				hideBuffer();
+			}
+
 		}
 	}
 
@@ -1714,11 +1731,14 @@ public class PlayerActivity extends Activity implements OnGestureListener {
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
 			float velocitY) {
 		// TODO Auto-generated method stub
-		if (e1.getX() - e2.getX() > 50 && Math.abs(velocityX)>Math.abs(velocitY)) {// 向左滑，右边显示
+		if (e1.getX() - e2.getX() > 100 && Math.abs(velocityX)>Math.abs(velocitY)) {// 向左滑，右边显示
 			// this.flipper.setInAnimation(AnimationUtils.loadAnimation(this,
 			// R.anim.push_left_in));
 			// this.flipper.setOutAnimation(AnimationUtils.loadAnimation(this,
 			// R.anim.push_left_out));
+			if(live_video){
+				return true;
+			}
 			FLING_STATE = FLING_LEFT;
 			if (mVideoView.getDuration() > 0) {
 				isSeek = true;
@@ -1737,7 +1757,10 @@ public class PlayerActivity extends Activity implements OnGestureListener {
 				return true;
 			}
 		}
-		if (e1.getX() - e2.getX() < -50&&Math.abs(velocityX)>Math.abs(velocitY)) {// 向右滑，左边显示
+		else if (e1.getX() - e2.getX() < -100&&Math.abs(velocityX)>Math.abs(velocitY)) {// 向右滑，左边显示
+			if(live_video){
+				return true;
+			}
 			FLING_STATE = FLING_RIGHT;
 			if (mVideoView.getDuration() > 0) {
 				isSeek = true;
@@ -1757,17 +1780,23 @@ public class PlayerActivity extends Activity implements OnGestureListener {
 			}
 		}
 
-		if (e1.getY() - e2.getY() < -15&&Math.abs(velocityX)<Math.abs(velocitY)) {
+		else if (e1.getY() - e2.getY() < -15&&Math.abs(velocityX)<Math.abs(velocitY)) {
 			// 向下滑动
+			FLING_STATE = FLING_DOWN;
 			am.adjustStreamVolume(AudioManager.STREAM_MUSIC,
 					AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
 			return true;
 		}
-		if (e1.getY() - e2.getY() > 15&&Math.abs(velocityX)<Math.abs(velocitY)) {
+		else if (e1.getY() - e2.getY() > 15&&Math.abs(velocityX)<Math.abs(velocitY)) {
 			// 向上滑动
+			FLING_STATE = FLING_UP;
 			am.adjustStreamVolume(AudioManager.STREAM_MUSIC,
 					AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
 			return true;
+		}
+		else{
+			FLING_STATE = -1;
+			return false;
 		}
 		return false;
 	}
@@ -1792,8 +1821,23 @@ public class PlayerActivity extends Activity implements OnGestureListener {
 	}
 
 	@Override
-	public boolean onSingleTapUp(MotionEvent arg0) {
+	public boolean onSingleTapUp(MotionEvent keyEvent) {
 		// TODO Auto-generated method stub
+		switch (keyEvent.getAction()) {
+		case MotionEvent.ACTION_UP:
+			 if(!panelShow){
+			 showPanel();
+			 panelShow = true;
+			 }
+			 else{
+			 hidePanel();
+			 panelShow = false;
+			 }
+			break;
+
+		default:
+			break;
+		}
 		return false;
 	}
 
