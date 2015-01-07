@@ -32,7 +32,7 @@ public class AccessProxy {
 		if (sn != null)
 			mySN = sn;
 		userAgent = (new StringBuilder(String.valueOf(myDeviceType)))
-				.append("/").append(myDeviceVersion).append(" ").append(mySN)
+				.append("/").append(myDeviceVersion).append(" ").append(mySN).append(" thirdpartyid")
 				.toString();
 	}
 
