@@ -83,7 +83,7 @@
     <dimen name="gridview_channel_section_tabs_margintop">98dip</dimen>
     <dimen name="gridview_main_panel_height">540dip</dimen>
     <dimen name="gridview_main_panel_fadingEdgeLength">96dip</dimen>
-    <dimen name="gridview_main_panel_horizontalSpacing">55dip</dimen>
+    <dimen name="gridview_main_panel_horizontalSpacing">40dip</dimen>
     <dimen name="gridview_main_panel_verticalSpacing">0dip</dimen>
     <dimen name="gridview_main_panel_rowHeight">168dip</dimen>
     <dimen name="gridview_main_panel_labelTopOffset">5dip</dimen>
@@ -112,7 +112,7 @@
     <dimen name="gridview_item_title_W">240dip</dimen>
     <dimen name="gridview_item_title_textsize">24sp</dimen>
     <dimen name="gridview_item_quality_img_marginT">-1dip</dimen>
-    <dimen name="gridview_item_quality_img_marginR">-6dip</dimen>
+    <dimen name="gridview_item_quality_img_marginR">-3dip</dimen>
     <dimen name="gridview_item_quality_img_H">38dip</dimen>
     <dimen name="gridview_item_quality_img_W">38dip</dimen>
     <dimen name="gridview_item_container_PB">5dip</dimen>
@@ -388,7 +388,7 @@
     <dimen name="channel_section_tabs_label_marginR">7dip</dimen>
     <dimen name="channel_section_tabs_label_marginB">4dip</dimen>
     <dimen name="channel_section_tabs_label_textsize">27sp</dimen>
-    <dimen name="channel_section_tabs_percentage_H">3dip</dimen>
+    <dimen name="channel_section_tabs_percentage_H">9dip</dimen>
     <dimen name="channel_section_tabs_label_ctextsize">35sp</dimen>
     <dimen name="channel_section_tabs_label_paddingT">10dip</dimen>
     <dimen name="channel_section_tabs_percentage_PLR">7dip</dimen>
@@ -416,7 +416,7 @@
     <dimen name="HGridView_related_selectionTopPadding">21dip</dimen>
     <dimen name="HGridView_related_selectionRightPadding">18dip</dimen>
     <dimen name="HGridView_related_selectionBottomPadding">-25dip</dimen>
-    <dimen name="HGridView_label_lr_offset">12dip</dimen>
+    <dimen name="HGridView_label_lr_offset">15dip</dimen>
     <dimen name="HGridView_label_textleft">14dip</dimen>
     <dimen name="HGridView_label_texttop">34dip</dimen>
      <!-- LoadingDialog -->
