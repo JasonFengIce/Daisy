@@ -45,4 +45,5 @@ public class Item implements Serializable {
     public String item_url;
     public int position;
     public String url;
+    public boolean live_video;
 }
