@@ -181,7 +181,7 @@ public class PlayerActivity extends Activity implements OnGestureListener {
 				// TODO Auto-generated method stub
 				switch (keycode.getAction()) {
 				case MotionEvent.ACTION_DOWN:
-					if (mVideoView.getDuration() > 0&&!live_video) {
+					//if (mVideoView.getDuration() > 0) {
 						if (!paused) {
 							pauseItem();
 							playPauseImage
@@ -192,7 +192,7 @@ public class PlayerActivity extends Activity implements OnGestureListener {
 									.setImageResource(R.drawable.vod_playbtn_selector);
 						}
 
-					}
+					//}
 					break;
 
 				default:
@@ -775,7 +775,7 @@ public class PlayerActivity extends Activity implements OnGestureListener {
 					}
 
 					// }
-					if (!isSeek && !isBuffer) {
+					if (!isSeek && !isBuffer&&!live_video) {
 						currPosition = mVideoView.getCurrentPosition();
 						timeBar.setProgress(currPosition);
 					}
