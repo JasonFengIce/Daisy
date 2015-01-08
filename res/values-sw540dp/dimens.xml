@@ -230,8 +230,8 @@
     <dimen name="play_finished_image_vodie_backgroud_marginleft">1dip</dimen>
     <dimen name="play_finished_image_vodie_backgroud_margintop">1dip</dimen>
     <dimen name="play_finished_image_vodie_backgroud_marginTop">15dip</dimen>
-    <dimen name="play_finished_image_vod_label_margintop">-2dip</dimen>
-    <dimen name="play_finished_image_vod_label_marginright">-2dip</dimen>
+    <dimen name="play_finished_image_vod_label_margintop">1dip</dimen>
+    <dimen name="play_finished_image_vod_label_marginright">1dip</dimen>
     <dimen name="play_finished_btn_replay_H">35dip</dimen>
     <dimen name="play_finished_btn_reply_marginTop">23dip</dimen>
     <dimen name="play_finished_btn_replay_textsize">23sp</dimen>
@@ -256,8 +256,8 @@
     <dimen name="playfinish_gridview_item_itemText_marginleft">3dip</dimen>
     <dimen name="playfinish_gridview_item_itemText_marginright">3dip</dimen>
     <dimen name="playfinish_gridview_item_itemText_textsize">15sp</dimen>
-    <dimen name="playfinish_gridview_item_iv_label_marginright">6dip</dimen>
-    <dimen name="playfinish_gridview_item_iv_label_margintop">2dip</dimen>
+    <dimen name="playfinish_gridview_item_iv_label_marginright">14dip</dimen>
+    <dimen name="playfinish_gridview_item_iv_label_margintop">4dip</dimen>
     <dimen name="playfinish_gridview_item_text_margintop">8dip</dimen>
     <!-- related_view -->
     <dimen name="related_view_img_W">320dip</dimen>

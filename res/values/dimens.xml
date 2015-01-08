@@ -424,7 +424,28 @@
     <dimen name="Loading_Dialog_ProgressBar_width">44dip</dimen>
     <dimen name="Loading_Dialog_ProgressBar_ML">10dip</dimen>
     <dimen name="Loading_Dialog_ProgressBar_TextSize">15sp</dimen>
-    
+     <!-- Launcher -->   
+<dimen name="Launcher_Layout_LP">40dip</dimen>
+<dimen name="Launcher_Layout_TP">10dip</dimen>
+<dimen name="Launcher_Layout_RP">40dip</dimen>
+<dimen name="Launcher_Layout_BP">15dip</dimen>
+<dimen name="Launcher_weather_layout_ML">100dip</dimen>
+<dimen name="Launcher_weather_layout_MT">5dip</dimen>
+<dimen name="Launcher_weather_layout_MR">100dip</dimen>
+<dimen name="Launcher_weather_icon_width">40dip</dimen>
+<dimen name="Launcher_weather_icon_height">40dip</dimen>
+<dimen name="Launcher_weather_tmp_ML">30dip</dimen>
+<dimen name="Launcher_weather_tmp_textsize">24sp</dimen>
+<dimen name="Launcher_today_weather_detail_textsize">18sp</dimen>
+<dimen name="Launcher_weather_divider_height">60dip</dimen>
+<dimen name="Launcher_weather_divider_ML">15dip</dimen>
+<dimen name="Launcher_weather_divider_MR">15dip</dimen>
+<dimen name="Launcher_tomorrow_detail_textsize">18sp</dimen>
+<dimen name="Launcher_video_layout_MLR">5dip</dimen>
+<dimen name="Launcher_video_view_margin">5dip</dimen>
+<dimen name="Launcher_preview_layout_MLR">5dip</dimen>
+<dimen name="Launcher_preview_title_textsize">18sp</dimen>
+<dimen name="Launcher_channel_title_textsize">20sp</dimen>
     <!-- DetailAttributeContainer -->
 <dimen name="DetailAttributeContainer_Layout_W">314dip</dimen>
 </resources>
