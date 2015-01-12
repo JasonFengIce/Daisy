@@ -2,7 +2,6 @@ package tv.ismar.daisy.core;
 
 import android.content.Context;
 import tv.ismar.daisy.R;
-import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.models.Item;
 
 public class FinshedImageService {

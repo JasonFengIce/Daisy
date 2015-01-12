@@ -2,7 +2,6 @@ package tv.ismar.daisy.views;
 
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
-import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
 import android.content.Context;
@@ -10,7 +9,6 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;

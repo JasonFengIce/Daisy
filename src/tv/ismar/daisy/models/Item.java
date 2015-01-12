@@ -2,10 +2,6 @@ package tv.ismar.daisy.models;
 
 import java.io.Serializable;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-
 public class Item implements Serializable {
 	
 	private static final long serialVersionUID = 5414782976396856671L;

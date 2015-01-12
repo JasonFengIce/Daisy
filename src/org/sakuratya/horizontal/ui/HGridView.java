@@ -3,7 +3,6 @@ package org.sakuratya.horizontal.ui;
 import java.util.ArrayList;
 import java.util.Arrays;
 import tv.ismar.daisy.R;
-import tv.ismar.daisy.core.DaisyUtils;
 import org.sakuratya.horizontal.adapter.HGridAdapter;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -19,13 +18,11 @@ import android.util.FloatMath;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ListView;
 
 /**
@@ -198,7 +195,6 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	public boolean onTouchEvent(MotionEvent event) {
 		// TODO Auto-generated method stub
 		final float x1 = event.getX();
-		final float y1 = event.getY();
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
 			mLastMotionX = event.getX();
@@ -1743,7 +1739,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 				// textLeft += 24;
 				// }
 				for (int j = 0; j < labelText.length(); j++) {
-					int chr = labelText.charAt(j);
+				
 					// if(chr>=48&&chr<=57){
 					// canvas.drawText(labelText, j, j+1, textLeft+5, textTop,
 					// mLabelTextPaint);
@@ -2022,7 +2018,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 
 		if (mAdapter != null && mAdapter.hasSection()
 				&& mLabelTextPaint != null) {
-			long startTime = System.currentTimeMillis();
+			
 			Rect measureRect = new Rect();
 			for (int i = 0; i < mAdapter.getTotalSectionNum(); i++) {
 				String text = mAdapter.getLabelText(i);
@@ -2037,7 +2033,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 					}
 				}
 			}
-			long timeCost = System.currentTimeMillis() - startTime;
+			
 			// Log.d(TAG, "time cost :" + timeCost);
 			// Log.d(TAG, "min dimension is " +"w:"+ mMinSingleTextWidth + " h:"
 			// +mMinSingleTextHeight);

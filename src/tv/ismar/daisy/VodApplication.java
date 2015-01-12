@@ -5,17 +5,14 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import tv.ismar.daisy.core.ImageCache;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.models.ContentModel;
 import tv.ismar.daisy.models.ContentModelList;
@@ -31,7 +28,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.AssetManager;
 import android.os.Build;
-import android.os.Handler;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -67,7 +63,6 @@ public class VodApplication extends Application {
 	private ConcurrentHashMap<String, Activity> mActivityPool;
 	
 	private boolean isFinish = true;
-	private TelephonyManager tm;
 	public void removeActivtyFromPool(String tag) {
 		Activity a = mActivityPool.remove(tag);
 		Log.d(TAG, "remove activity: "+a);

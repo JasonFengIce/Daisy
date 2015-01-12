@@ -5,8 +5,6 @@ import java.util.Map;
 
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
-import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.models.ContentModel;
 import android.content.Context;
 import android.text.TextUtils.TruncateAt;

@@ -9,7 +9,6 @@ import tv.ismar.daisy.core.ImageUtils;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.VodUserAgent;
-import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.models.Clip;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
@@ -21,7 +20,6 @@ import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.player.ISTVVodMenu;
 import tv.ismar.daisy.player.ISTVVodMenuItem;
 import tv.ismar.daisy.views.IsmatvVideoView;
-import tv.ismar.player.SmartPlayer;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -35,14 +33,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.Display;
 import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -617,7 +612,7 @@ public class PlayerActivity extends Activity implements OnGestureListener {
 								@Override
 								public void onCompletion(MediaPlayer mp) {
 									Log.d(TAG, "mVideoView  Completion");
-									gotoFinishPage();
+									//gotoFinishPage();
 								}
 							});
 

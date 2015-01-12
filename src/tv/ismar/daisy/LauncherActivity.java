@@ -21,6 +21,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -204,6 +205,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 				FrontPageEntity.class);
 		final Uri uri = Uri.parse(frontBeans.getVideos().get(0).getVideo_url());
 		videoView.setVideoURI(uri);
+		videoView.setKeepScreenOn(true);
 		videoView.start();
 		videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 
