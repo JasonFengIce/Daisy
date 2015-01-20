@@ -2,7 +2,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <style name="tv_search_text" parent="android:Widget.TextView">
         <item name="android:textColor">@color/search_text_result</item>
-        <item name="android:textSize">30dp</item>
+         <item name="android:textSize">@dimen/search_btnHotWords_textsize</item>
         <item name="android:textStyle">normal</item>
         <item name="android:typeface">sans</item>
     </style>

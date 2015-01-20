@@ -56,7 +56,14 @@ public class ChannelListActivity extends Activity {
 			} else if(channel.equals("$histories")) {
 				Fragment historyFragment = new HistoryFragment();
 				fragmentTransaction.add(R.id.fragment_container, historyFragment);
-			} else {
+			} 
+			else if(channel.equals("search")){
+				Intent searchIntent = new Intent();
+				searchIntent.setClass(ChannelListActivity.this, SearchActivity.class);
+				startActivity(searchIntent);
+				finish();
+			}
+			else {
 				ChannelFragment channelFragment = new ChannelFragment();
 				channelFragment.mChannel = channel;
 				channelFragment.mTitle = title;

@@ -21,7 +21,9 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -162,7 +164,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 		recomends = new ImageView[] { (ImageView) findViewById(R.id.image_1),
 				(ImageView) findViewById(R.id.image_2),
 				(ImageView) findViewById(R.id.image_3) };
-
 	}
 
 	@Override
@@ -251,6 +252,34 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 			}
 			channelImtes[i].setTag(jsonObject.toString());
 			channelImtes[i].setOnClickListener(LauncherActivity.this);
+		}
+		if(channelBeans.length<channelTexts.length){
+			JSONObject jsonObject = new JSONObject();
+			try {
+				jsonObject.put("name", "");
+				jsonObject.put("url", "");
+				jsonObject.put("channel", "search");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			channelTexts[channelBeans.length].setText("搜索");
+			channelTexts[channelBeans.length].setTextColor(Color.WHITE);
+			channelImtes[channelBeans.length].setTag(jsonObject.toString());
+			channelImtes[channelBeans.length].setOnClickListener(LauncherActivity.this);
+		}
+		if(channelBeans.length==channelTexts.length){
+			JSONObject jsonObject = new JSONObject();
+			try {
+				jsonObject.put("name", "");
+				jsonObject.put("url", "");
+				jsonObject.put("channel", "search");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			channelTexts[channelBeans.length-1].setText("搜索");
+			channelTexts[channelBeans.length-1].setTextColor(Color.WHITE);
+			channelImtes[channelBeans.length-1].setTag(jsonObject.toString());
+			channelImtes[channelBeans.length-1].setOnClickListener(LauncherActivity.this);
 		}
 	}
 

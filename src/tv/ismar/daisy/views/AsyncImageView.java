@@ -131,11 +131,11 @@ public class AsyncImageView extends ImageView implements ImageRequestCallback {
             setDefaultImageDrawable(d);
         }
 
-        final int inDensity = a.getInt(R.styleable.AsyncImageView_inDensity, -1);
-        if (inDensity != -1) {
-            setInDensity(inDensity);
-        }
-
+//        final int inDensity = a.getInt(R.styleable.AsyncImageView_inDensity, -1);
+//        if (inDensity != -1) {
+//            setInDensity(inDensity);
+//        }
+        setInDensity(-1);
         setUrl(a.getString(R.styleable.AsyncImageView_url));
 
         a.recycle();
@@ -196,7 +196,7 @@ public class AsyncImageView extends ImageView implements ImageRequestCallback {
             mOptions.inTargetDensity = getContext().getResources().getDisplayMetrics().densityDpi;
         }
 
-        mOptions.inDensity = inDensity;
+        mOptions.inDensity = mOptions.inTargetDensity;
     }
 
     /**

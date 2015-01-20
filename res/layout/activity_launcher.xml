@@ -68,6 +68,14 @@
                     />
 
         </LinearLayout>
+<!--              <ImageButton -->
+<!--                     android:id="@+id/ibtn_search" -->
+<!--                     android:layout_width="wrap_content" -->
+<!--                     android:layout_height="wrap_content" -->
+<!--                     android:layout_marginLeft="@dimen/search_main_btn_search_marginL" -->
+<!--                     android:layout_marginTop="@dimen/search_main_btn_search_marginT" -->
+<!--                     android:background="@drawable/search_btn" -->
+<!--                     android:clickable="true" /> -->
     </LinearLayout>
 
     <LinearLayout

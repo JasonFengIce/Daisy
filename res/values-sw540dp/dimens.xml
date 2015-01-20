@@ -268,7 +268,7 @@
     <dimen name="related_view_list_marginleft">70dip</dimen>
     <dimen name="related_view_list_margintop">3dip</dimen>
     <dimen name="related_view_list_marginright">70dip</dimen>
-    <dimen name="related_view_list_horizontalspacing">40dip</dimen>
+    <dimen name="related_view_list_horizontalspacing">20dip</dimen>
     <dimen name="related_view_list_verticalspacing">0dip</dimen>
     <dimen name="related_view_list_columnwidth">174dip</dimen>
     <dimen name="related_view_title_marginTop">8dip</dimen>
@@ -367,12 +367,12 @@
     <dimen name="search_gridview_marginB">5dip</dimen>
     <dimen name="search_line_height">1dip</dimen>
     <dimen name="search_gridview_item_main_layout_W">120dip</dimen>
-    <dimen name="search_gridview_item_main_layout_marginB">5dip</dimen>
+    <dimen name="search_gridview_item_main_layout_marginB">10dip</dimen>
     <dimen name="search_gridview_item_main_layout_marginL">7dip</dimen>
     <dimen name="search_gridview_item_image_W">142dip</dimen>
     <dimen name="search_gridview_item_image_H">80dip</dimen>
     <dimen name="search_gridview_item_btn_type_W">53dip</dimen>
-    <dimen name="search_gridview_item_btn_type_H">28dip</dimen>
+    <dimen name="search_gridview_item_btn_type_H">29dip</dimen>
     <dimen name="search_gridview_item_btn_type_marginL">-10dip</dimen>
     <dimen name="search_gridview_item_btn_type_marginB">-3dip</dimen>
     <dimen name="search_gridview_item_btn_type_textsize">10dip</dimen>
@@ -384,6 +384,8 @@
     <dimen name="search_gridview_item_label_marginT">5dip</dimen>
     <dimen name="search_gridview_item_label_W">36dip</dimen>
     <dimen name="search_gridview_item_label_H">36dip</dimen>
+    <dimen name="search_btnHotWords_PLR">7dip</dimen>
+    <dimen name="search_btnHotWords_textsize">12sp</dimen>
     
     <!-- channel_section_tabs modified-->
     <!--  -->

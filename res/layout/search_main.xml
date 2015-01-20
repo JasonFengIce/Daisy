@@ -32,7 +32,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/serach_main_layout_marginL"
                 android:gravity="center_vertical"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                 >
 
                 <AutoCompleteTextView
                     android:id="@+id/act_autocomplete_country"
@@ -45,7 +46,8 @@
                     android:paddingLeft="@dimen/search_main_autocomplete_PL"
                     android:paddingRight="@dimen/search_main_autocomplete_PR"
                     android:singleLine="true"
-                    android:textSize="@dimen/search_main_autocomplete_textsize" />
+                    android:textSize="@dimen/search_main_autocomplete_textsize" 
+                    android:nextFocusRight="@+id/ibtn_search"/>
 
                 <ImageButton
                     android:id="@+id/ibtn_search"

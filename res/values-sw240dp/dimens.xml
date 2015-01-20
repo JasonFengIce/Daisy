@@ -381,6 +381,8 @@
     <dimen name="search_gridview_item_label_marginT">2dip</dimen>
     <dimen name="search_gridview_item_label_W">10dip</dimen>
     <dimen name="search_gridview_item_label_H">11dip</dimen>
+    <dimen name="search_btnHotWords_PLR">3dip</dimen>
+    <dimen name="search_btnHotWords_textsize">7sp</dimen>
     <!-- channel_section_tabs -->
     <dimen name="channel_section_tabs_W">67dip</dimen>
     <dimen name="channel_section_tabs_H">22dip</dimen>

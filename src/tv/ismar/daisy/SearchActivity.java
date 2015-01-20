@@ -38,6 +38,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 public class SearchActivity extends Activity implements OnClickListener, OnItemClickListener {
@@ -100,6 +101,8 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 		setContentView(R.layout.search_main);
 		movieList = new ArrayList<MovieBean>();
 		initViews();
+//		InputMethodManager m = (InputMethodManager) autoCompleteTextView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+//		m.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);	
 		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
 	}
 
@@ -222,7 +225,16 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 			public void afterTextChanged(Editable s) {
 			}
 		});
-
+		autoCompleteTextView.setOnEditorActionListener(new OnEditorActionListener() {
+			
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				// TODO Auto-generated method stub
+			return false;
+		}
+			
+		});
+		
 	}
 
 	@Override
@@ -263,7 +275,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 		case R.id.act_autocomplete_country:
 			// Toast.makeText(this, "is ok", Toast.LENGTH_LONG).show();
 			InputMethodManager m = (InputMethodManager) autoCompleteTextView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-			m.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+		//	m.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);			
 			autoCompleteTextView.showDropDown();
 			// autoCompleteTextView.onKeyDown(KeyEvent.KEYCODE_BACK, null);
 			break;
@@ -299,15 +311,12 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 				for (int j = 0; j < listHotWords.size(); j++) {
 					final Button btnHotWords = new Button(SearchActivity.this);
 					// final Button btnHotWords = (Button) findViewById(R.id.btn_words);
-					int H = DaisyUtils.getVodApplication(SearchActivity.this).getheightPixels(SearchActivity.this);
-					if(H==720){
-						btnHotWords.setPadding(10, 0, 10, 0);
-						btnHotWords.setTextSize(20);
-					}
-					else{
-						btnHotWords.setPadding(15, 0, 15, 0);
-						btnHotWords.setTextSize(30);
-					}
+					int mPaddingLR = getResources().getDimensionPixelSize(R.dimen.search_btnHotWords_PLR);
+					int mTextSize = (int) (getResources().getDimensionPixelSize(R.dimen.search_btnHotWords_textsize)/VodApplication.rate);				
+						btnHotWords.setPadding(mPaddingLR, 0, mPaddingLR, 0);
+						btnHotWords.setTextSize(mTextSize);
+			
+									
 					btnHotWords.setId(j);
 					// btnHotWords.setBackgroundColor(R.drawable.gridview_text_selector);
 					btnHotWords.setBackgroundResource(R.drawable.hotwords_selector);

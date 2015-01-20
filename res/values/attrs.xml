@@ -10,6 +10,7 @@
             <enum name="mdpi" value="160" />
             <enum name="hdpi" value="240" />
             <enum name="xhdpi" value="320" />
+            <enum name="xxhdpi" value="480"></enum>
         </attr>
     </declare-styleable>
     <declare-styleable name="HGridView">

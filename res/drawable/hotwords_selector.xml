@@ -6,5 +6,5 @@
     <!-- <item android:color="#000"/> -->
     <item android:drawable="@color/hotwords_test" android:state_window_focused="false"/>
     <item android:drawable="@color/hotwords_test_selected" android:state_focused="true" />
-
+    <item android:drawable="@color/hotwords_test_selected" android:state_pressed="true" />
 </selector>
