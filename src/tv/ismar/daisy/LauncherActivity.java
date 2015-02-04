@@ -1,19 +1,30 @@
 package tv.ismar.daisy;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.SimpleRestClient;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnErrorListener;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextPaint;
@@ -23,6 +34,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
+import android.webkit.URLUtil;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -71,7 +83,24 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 	private TextView tomorrowDetail;
 
 	private RelativeLayout[] homeItems;
+    private String mLocalPath;
+    private String mRemoteUrl;
+    private long readSize = 0;
+	private static final int READY_BUFF = 2000 * 1024;
+	private static final int CACHE_BUFF = 500 * 1024;
 
+	private boolean isready = false;
+	private boolean iserror = false;
+	private int errorCnt = 0;
+	private int curPosition = 0;
+	private long mediaLength = 0;
+
+	private final static int VIDEO_STATE_UPDATE = 0;
+	private final static int CACHE_VIDEO_READY = 1;
+	private final static int CACHE_VIDEO_UPDATE = 2;
+	private final static int CACHE_VIDEO_END = 3;
+
+	String url = "cord.tvxio.com/v2_0/A21/dto";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -201,33 +230,205 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 	}
 
 	private void setFrontPage(String content) {
-		Gson gson = new Gson();
-		FrontPageEntity frontBeans = gson.fromJson(content.toString(),
-				FrontPageEntity.class);
-		final Uri uri = Uri.parse(frontBeans.getVideos().get(0).getVideo_url());
-		videoView.setVideoURI(uri);
-		videoView.setKeepScreenOn(true);
-		videoView.start();
-		videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+		Log.i("hqiguai", content);
+		try{
+			Gson gson = new Gson();
+			FrontPageEntity frontBeans = gson.fromJson(content.toString(),
+					FrontPageEntity.class);
+			final Uri uri = Uri.parse(frontBeans.getVideos().get(0).getVideo_url());
+			mRemoteUrl = frontBeans.getVideos().get(0).getVideo_url();
+			//mRemoteUrl = "http://192.168.1.185:8099/shipinkefu/22.mp4";
+			int position = mRemoteUrl.lastIndexOf("/");
+			String fileName = mRemoteUrl.substring(position+1, mRemoteUrl.length());
+			String realname = fileName.substring(0, fileName.lastIndexOf("?"));
+			mLocalPath = Environment.getExternalStorageDirectory()
+					.getAbsolutePath()
+					+ "/VideoCache/"
+					+ realname;
+		//	videoView.setVideoPath(mLocalPath);
+			//videoView.start();
+			playvideo();
+			videoView.setKeepScreenOn(true);
 
-			@Override
-			public void onPrepared(MediaPlayer mp) {
-				mp.start();
-				mp.setLooping(true);
-			}
-		});
-		videoView
-				.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+			videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 
-					@Override
-					public void onCompletion(MediaPlayer mp) {
-						//videoView.setVideoURI(uri);
-						//videoView.start();
-					}
-				});
+				@Override
+				public void onPrepared(MediaPlayer mp) {
+					mp.start();
+					mp.setLooping(true);
+				}
+			});
+			videoView
+					.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+						@Override
+						public void onCompletion(MediaPlayer mp) {
+							//videoView.setVideoURI(uri);
+							//videoView.start();
+						}
+					});
+			videoView.setOnErrorListener(new OnErrorListener() {
+
+				public boolean onError(MediaPlayer mediaplayer, int i, int j) {
+					iserror = true;
+					errorCnt++;
+					videoView.pause();
+					return true;
+				}
+			});
+		}
+		catch(Exception e){
+			
+		}
+	
 
 	}
+	FileOutputStream out = null;
+	InputStream is = null;
+	private void playvideo(){
+		if (!URLUtil.isNetworkUrl(this.mRemoteUrl)) {
+			videoView.setVideoPath(this.mRemoteUrl);
+			videoView.start();
+			return;
+		}							
+		new Thread(new Runnable() {
 
+			@Override
+			public void run() {
+
+				try {						
+					File cacheFile = new File(mLocalPath);
+					if(!cacheFile.exists()){
+						cacheFile.getParentFile().mkdirs();						
+						String mLocalDir = Environment.getExternalStorageDirectory()
+								.getAbsolutePath()
+								+ "/VideoCache";						
+						File Dir = new File(mLocalDir);
+						for (String s : Dir.list()) {
+							File f = new File(s);
+							if(f.exists()){
+								f.delete();
+							}
+						}
+						cacheFile.createNewFile();
+					}
+					else{
+						long TotalFile = DaisyUtils.getVodApplication(LauncherActivity.this).getPreferences().getLong("TotalSize", 0);
+						long filesize = cacheFile.length();
+						if(filesize>=TotalFile&&filesize>0){
+							mHandler.sendEmptyMessage(CACHE_VIDEO_END);
+							return;
+						}
+					}
+				    readSize = cacheFile.length();
+					URL url = new URL(mRemoteUrl);
+					HttpURLConnection httpConnection = (HttpURLConnection) url
+							.openConnection();
+					System.out.println("localUrl: " + mLocalPath);
+					out = new FileOutputStream(cacheFile, true);
+
+					httpConnection.setRequestProperty("User-Agent", "NetFox");
+					httpConnection.setRequestProperty("RANGE", "bytes="
+							+ readSize + "-");				
+					is = httpConnection.getInputStream();
+					String contentrange =   httpConnection.getHeaderField("Content-Range");
+					long Totalsize = Long.parseLong(contentrange.substring(contentrange.lastIndexOf("/")+1, contentrange.length()));
+					DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putLong("TotalSize", Totalsize);
+					DaisyUtils.getVodApplication(LauncherActivity.this).save();
+					mediaLength = httpConnection.getContentLength();
+					if (mediaLength == -1) {
+						return;
+					}
+
+					mediaLength += readSize;
+
+					byte buf[] = new byte[4 * 1024];
+					int size = 0;
+					long lastReadSize = 0;
+
+					while ((size = is.read(buf)) != -1) {
+						try {
+							out.write(buf, 0, size);
+							Log.i("zjq", "write byte=="+size);
+							readSize += size;
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+
+						if (!isready) {
+							if ((readSize - lastReadSize) > READY_BUFF) {
+								lastReadSize = readSize;
+								mHandler.sendEmptyMessage(CACHE_VIDEO_READY);
+							}
+						} else {
+							if ((readSize - lastReadSize) > CACHE_BUFF
+									* (errorCnt + 1)) {
+								lastReadSize = readSize;
+								mHandler.sendEmptyMessage(CACHE_VIDEO_UPDATE);
+							}
+						}
+					}
+					Log.i("zjq", "download finish");
+					mHandler.sendEmptyMessage(CACHE_VIDEO_END);
+				} catch (Exception e) {
+					iserror = true;
+					mHandler.sendEmptyMessage(CACHE_VIDEO_END);
+					e.printStackTrace();
+				} finally {
+					if (out != null) {
+						try {
+							out.close();
+						} catch (IOException e) {
+							//
+						}
+					}
+
+					if (is != null) {
+						try {
+							is.close();
+						} catch (IOException e) {
+							//
+						}
+					}
+				}
+
+			}
+		}).start();
+	}
+	private final Handler mHandler = new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case VIDEO_STATE_UPDATE:
+		         
+				break;
+
+			case CACHE_VIDEO_READY:
+				isready = true;
+				videoView.setVideoPath(mLocalPath);
+				videoView.start();
+				break;
+
+			case CACHE_VIDEO_UPDATE:
+				    if(iserror){
+				    	videoView.setVideoPath(mLocalPath);
+				    	videoView.start();
+						iserror = false;
+				    }
+				break;
+
+			case CACHE_VIDEO_END:
+				if (iserror||!videoView.isPlaying()) {
+					videoView.setVideoPath(mLocalPath);
+					videoView.start();
+					iserror = false;
+				}			
+				break;
+			}
+
+			//super.handleMessage(msg);
+		}
+	};
 	private void setChannels(String content) {
 		Gson gson = new Gson();
 		ChannelEntity[] channelBeans = gson.fromJson(content.toString(),
@@ -248,6 +449,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 				jsonObject.put("url", channelBeans[i].getUrl());
 				jsonObject.put("channel", channelBeans[i].getChannel());
 			} catch (JSONException e) {
+				if(e!=null)
 				e.printStackTrace();
 			}
 			channelImtes[i].setTag(jsonObject.toString());
@@ -260,6 +462,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 				jsonObject.put("url", "");
 				jsonObject.put("channel", "search");
 			} catch (JSONException e) {
+				if(e!=null)
 				e.printStackTrace();
 			}
 			channelTexts[channelBeans.length].setText("搜索");
@@ -395,7 +598,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 				StringBuffer content = new StringBuffer();
 				try {
 					URL getUrl = new URL(
-							"http://cord.tvxio.com/api/tv/channels/");
+							SimpleRestClient.root_url+"/api/tv/channels/");
 					HttpURLConnection connection = (HttpURLConnection) getUrl
 							.openConnection();
 					connection.setReadTimeout(4000);
@@ -431,8 +634,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 				super.run();
 				StringBuffer content = new StringBuffer();
 				try {
+					Log.i("qqq", "url=="+SimpleRestClient.root_url);
 					URL getUrl = new URL(
-							"http://cord.tvxio.com/api/tv/frontpage/");
+							SimpleRestClient.root_url+"/api/tv/frontpage/");
+					Log.i("hqiguai", "url=="+SimpleRestClient.root_url+"/api/tv/frontpage/");
 					HttpURLConnection connection = (HttpURLConnection) getUrl
 							.openConnection();
 					connection.setReadTimeout(4000);
@@ -450,8 +655,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 					message.what = FETCHFRONTPAGE;
 					mainHandler.sendMessage(message);
 				} catch (MalformedURLException e) {
+					if(e!=null)
 					System.err.println(e.getMessage());
 				} catch (IOException e) {
+					if(e!=null)
 					System.err.println(e.getMessage());
 				}
 			}
@@ -467,7 +674,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 				StringBuffer content = new StringBuffer();
 				try {
 					URL getUrl = new URL(
-							"http://cord.tvxio.com/api/tv/section/tvhome/");
+							SimpleRestClient.root_url+"/api/tv/section/tvhome/");
 					HttpURLConnection connection = (HttpURLConnection) getUrl
 							.openConnection();
 					connection.setReadTimeout(9000);
@@ -485,8 +692,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 					message.what = FETCHTVHOME;
 					mainHandler.sendMessage(message);
 				} catch (MalformedURLException e) {
+					if(e!=null)
 					System.err.println(e.getMessage());
 				} catch (IOException e) {
+					if(e!=null)
 					System.err.println(e.getMessage());
 				}
 			}
@@ -502,7 +711,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 				StringBuffer content = new StringBuffer();
 				try {
 					URL getUrl = new URL(
-							"http://cord.tvxio.com/api/tv/section/xinpianshangxian/");
+							SimpleRestClient.root_url+"/api/tv/section/xinpianshangxian/");
 					HttpURLConnection connection = (HttpURLConnection) getUrl
 							.openConnection();
 					connection.setReadTimeout(19000);
@@ -520,6 +729,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 					message.what = FETCHLATEST;
 					mainHandler.sendMessage(message);
 				} catch (MalformedURLException e) {
+					if(e!=null)
 					System.err.println(e.getMessage());
 				} catch (IOException e) {
 					// System.err.println(e.getMessage());
@@ -555,8 +765,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 					message.what = FETCHWEATHER;
 					mainHandler.sendMessage(message);
 				} catch (MalformedURLException e) {
+					if(e!=null)
 					System.err.println(e.getMessage());
 				} catch (IOException e) {
+					if(e!=null)
 					System.err.println(e.getMessage());
 				}
 			}
@@ -568,7 +780,23 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
 		if(keyCode==KeyEvent.KEYCODE_BACK){
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {
+					//
+				}
+			}
+
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					//
+				}
+			}
 			videoView.stopPlayback();
+			mHandler.removeCallbacksAndMessages(null);
 			finish();
 		}
 		return super.onKeyDown(keyCode, event);

@@ -10,6 +10,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import tv.ismar.daisy.core.ImageCache;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -26,6 +30,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.os.Build;
 import android.telephony.TelephonyManager;
@@ -38,6 +43,8 @@ public class VodApplication extends Application {
 	private static final String TAG = "VodApplication";
 	
 	public static final String content_model_api = "/static/meta/content_model.json";
+	public static final String domain = "";
+	public static final String ad_domain="";
 	public ContentModel[] mContentModel;
 	
 	private static final int CORE_POOL_SIZE = 5;
@@ -48,7 +55,26 @@ public class VodApplication extends Application {
 	 */
 	private ImageCache mImageCache;
 	private ArrayList<WeakReference<OnLowMemoryListener>> mLowMemoryListeners;
-	
+	private  SharedPreferences mPreferences;
+	private  SharedPreferences.Editor mEditor;
+	private static final String PREFERENCE_FILE_NAME = "Daisy";
+	public SharedPreferences getPreferences(){
+		return mPreferences;
+	}
+	public SharedPreferences.Editor getEditor(){
+		return mEditor;
+	}
+	public  void load(Context a) {
+		try {
+			mPreferences = a.getSharedPreferences(PREFERENCE_FILE_NAME, 0);
+			mEditor = mPreferences.edit();
+		} catch (Exception e) {
+			System.out.println("load(Activity a)=" + e);
+		}
+	}
+	public boolean save() {
+		return mEditor.commit();
+	}
 	public VodApplication() {
 		mLowMemoryListeners = new ArrayList<WeakReference<OnLowMemoryListener>>();
 		mActivityPool = new ConcurrentHashMap<String, Activity>();
@@ -83,12 +109,77 @@ public class VodApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		load(this);
 		getContentModelFromAssets();
 		getNewContentModel();
 		registerReceiver(mCloseReceiver, new IntentFilter("com.amlogic.dvbplayer.homekey"));
 		registerReceiver(mSleepReceiver, new IntentFilter("com.alpha.lenovo.powerKey"));
+		String domain = mPreferences.getString("domain", "");
+		Log.i("qqq", "application oncreate");
+		if("".equals(domain))
+		    register();
+		else{
+			SimpleRestClient.root_url = domain;
+			SimpleRestClient.sRoot_url = domain;
+		}		
 	}
+	public static String getDeviceId(Context context) {
+		String deviceId = null;
+		try {
+			TelephonyManager tm = (TelephonyManager) context
+					.getSystemService(Context.TELEPHONY_SERVICE);
+			deviceId = tm.getDeviceId();
+			
+		} catch (Exception e) {
 
+			e.printStackTrace();
+		}
+		return deviceId;
+	}
+	String sn;
+	private void register(){
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				 sn = Build.SERIAL;
+			     if(sn==null||(sn!=null&&sn.equals("unknown"))){
+			        	sn = getDeviceId(VodApplication.this);
+			        }
+			     String responseCode = SimpleRestClient.readContentFromPost("register", sn);
+			     if(responseCode!=null&&responseCode.equals("200"))
+			    	 active();
+			}
+		}).start();
+	}
+	private void active(){
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				String content = SimpleRestClient.readContentFromPost("active", sn);
+				if(!"".equals(content)){
+					try {
+						JSONObject json = new JSONObject(content);
+						String domain = json.getString("domain");
+						
+						SimpleRestClient.root_url = "http://"+domain;
+						SimpleRestClient.sRoot_url = "http://"+domain;
+						SimpleRestClient.ad_domain = "http://"+json.getString("ad_domain");
+						mEditor.putString("domain", SimpleRestClient.root_url);
+						mEditor.putString("ad_domain", SimpleRestClient.ad_domain);
+						save();
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}).start();
+	}
+	
 	public void getContentModelFromAssets() {
 		AssetManager assetManager = getAssets();
 		SimpleRestClient restClient = new SimpleRestClient();
@@ -132,8 +223,8 @@ public class VodApplication extends Application {
 			// TODO Auto-generated method stub			
 			while(isFinish){		
 					try {
-						//Thread.sleep(900000);
-						Thread.sleep(90000);
+						Thread.sleep(900000);
+						//Thread.sleep(1000);
 						Log.i("zhangjiqiang", "upload123");
 						NetworkUtils.LogUpLoad(getApplicationContext());
 					} catch (InterruptedException e) {

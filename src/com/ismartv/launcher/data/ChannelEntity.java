@@ -8,7 +8,7 @@ public class ChannelEntity {
     private String url;
     private String icon_url;
     private String icon_focus_url;
-    private String chargeable;
+    private boolean chargeable;
     private String channel;
     private String template;
 
@@ -44,11 +44,11 @@ public class ChannelEntity {
         this.icon_focus_url = icon_focus_url;
     }
 
-    public String getChargeable() {
+    public boolean getChargeable() {
         return chargeable;
     }
 
-    public void setChargeable(String chargeable) {
+    public void setChargeable(boolean chargeable) {
         this.chargeable = chargeable;
     }
 

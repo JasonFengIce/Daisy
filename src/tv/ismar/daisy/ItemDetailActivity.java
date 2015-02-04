@@ -6,11 +6,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import com.google.gson.JsonSyntaxException;
+import com.ismartv.api.t.AccessProxy;
+import com.ismartv.bean.ClipInfo;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.ImageUtils;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.Attribute;
@@ -19,6 +22,7 @@ import tv.ismar.daisy.models.ContentModel;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.qiyimediaplayer.SdkVideo;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.DetailAttributeContainer;
 import tv.ismar.daisy.views.LoadingDialog;
@@ -30,6 +34,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,23 +48,23 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+public class ItemDetailActivity extends Activity implements
+		OnImageViewLoadListener {
 
-public class ItemDetailActivity extends Activity implements OnImageViewLoadListener {
-	
 	private static final String TAG = "ItemDetailActivity";
-	
+
 	public static final String action = "tv.ismar.daisy.Item";
-	
+
 	private SimpleRestClient mSimpleRestClient;
-	
+
 	private ContentModel mContentModel;
-	
+
 	private Item mItem;
-	
+
 	private Item[] mRelatedItem;
-	
+
 	private boolean isDrama = false;
-	
+
 	private RelativeLayout mDetailLeftContainer;
 	private TextView mDetailTitle;
 	private TextView mDetailIntro;
@@ -81,23 +86,24 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 	private History mHistory;
 
 	private ImageView mDetailQualityLabel;
-	
+
 	private GetItemTask mGetItemTask;
 	private GetRelatedTask mGetRelatedTask;
-	
+
 	private HashMap<String, Object> mDataCollectionProperties = new HashMap<String, Object>();
-	
+
 	private HashMap<AsyncImageView, Boolean> mLoadingImageQueue = new HashMap<AsyncImageView, Boolean>();
-	
-	private String mSection="";
+
+	private String mSection = "";
+
 	private void initViews() {
-		mDetailLeftContainer = (RelativeLayout)findViewById(R.id.detail_left_container);
+		mDetailLeftContainer = (RelativeLayout) findViewById(R.id.detail_left_container);
 		mDetailAttributeContainer = (DetailAttributeContainer) findViewById(R.id.detail_attribute_container);
 		mDetailTitle = (TextView) findViewById(R.id.detail_title);
 		mDetailIntro = (TextView) findViewById(R.id.detail_intro);
-		mDetailPreviewImg = (AsyncImageView)findViewById(R.id.detail_preview_img);
+		mDetailPreviewImg = (AsyncImageView) findViewById(R.id.detail_preview_img);
 		mDetailPreviewImg.setOnImageViewLoadListener(this);
-		mDetailQualityLabel = (ImageView)findViewById(R.id.detail_quality_label);
+		mDetailQualityLabel = (ImageView) findViewById(R.id.detail_quality_label);
 		mBtnLeft = (Button) findViewById(R.id.btn_left);
 		mBtnRight = (Button) findViewById(R.id.btn_right);
 		mBtnFill = (Button) findViewById(R.id.btn_fill);
@@ -105,14 +111,14 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 		mDetailRightContainer = (LinearLayout) findViewById(R.id.detail_right_container);
 		mRelatedVideoContainer = (LinearLayout) findViewById(R.id.related_video_container);
 		mMoreContent = (Button) findViewById(R.id.more_content);
-		
+
 		mMoreContent.setOnFocusChangeListener(mRelatedOnFocusChangeListener);
 		mBtnLeft.setOnFocusChangeListener(mLeftElementFocusChangeListener);
 		mBtnRight.setOnFocusChangeListener(mLeftElementFocusChangeListener);
 		mBtnFill.setOnFocusChangeListener(mLeftElementFocusChangeListener);
 		mBtnFill.setOnFocusChangeListener(mLeftElementFocusChangeListener);
 		mBtnFavorite.setOnFocusChangeListener(mLeftElementFocusChangeListener);
-		
+
 		mBtnLeft.setOnClickListener(mIdOnClickListener);
 		mBtnRight.setOnClickListener(mIdOnClickListener);
 		mBtnFill.setOnClickListener(mIdOnClickListener);
@@ -120,24 +126,24 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 		mMoreContent.setOnClickListener(mIdOnClickListener);
 	}
 
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.item_detail_layout);
 		mSimpleRestClient = new SimpleRestClient();
-//		Log.e("START", System.currentTimeMillis()+"");
-		mLoadingDialog = new LoadingDialog(this, getResources().getString(R.string.vod_loading));
+		// Log.e("START", System.currentTimeMillis()+"");
+		mLoadingDialog = new LoadingDialog(this, getResources().getString(
+				R.string.vod_loading));
 		mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
 		mLoadingDialog.show();
-		
+
 		initViews();
-		
+
 		Intent intent = getIntent();
-		if(intent!=null){
-			if(intent.getSerializableExtra("item")!=null){
+		if (intent != null) {
+			if (intent.getSerializableExtra("item") != null) {
 				mItem = (Item) intent.getSerializableExtra("item");
-				if(mItem!=null) {
+				if (mItem != null) {
 					try {
 						initLayout();
 					} catch (Exception e) {
@@ -147,31 +153,38 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 			} else {
 				String url = intent.getStringExtra("url");
 				mSection = intent.getStringExtra(EventProperty.SECTION);
-				if(url==null){
+				if (url == null) {
 					url = SimpleRestClient.sRoot_url + "/api/item/96538/";
 				}
 				mGetItemTask = new GetItemTask();
 				mGetItemTask.execute(url);
 			}
 		}
-		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
+		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(),
+				this);
 	}
-	
+
 	@Override
 	protected void onResume() {
-		if(isInitialized) {
-			if(isFavorite()){
-				mBtnFavorite.setText(getResources().getString(R.string.favorited));
+		if (isInitialized) {
+			if (isFavorite()) {
+				mBtnFavorite.setText(getResources().getString(
+						R.string.favorited));
 			} else {
-				mBtnFavorite.setText(getResources().getString(R.string.favorite));
-			} 
-			if(isDrama) {
-				String url = mItem.item_url==null ? mSimpleRestClient.root_url + "/api/item/" + mItem.pk + "/": mItem.item_url;
-				mHistory = DaisyUtils.getHistoryManager(this).getHistoryByUrl(url);
+				mBtnFavorite.setText(getResources()
+						.getString(R.string.favorite));
+			}
+			if (isDrama) {
+				String url = mItem.item_url == null ? mSimpleRestClient.root_url
+						+ "/api/item/" + mItem.pk + "/"
+						: mItem.item_url;
+				mHistory = DaisyUtils.getHistoryManager(this).getHistoryByUrl(
+						url);
 			}
 		}
-		for(HashMap.Entry<AsyncImageView, Boolean> entry: mLoadingImageQueue.entrySet()) {
-			if(!entry.getValue()) {
+		for (HashMap.Entry<AsyncImageView, Boolean> entry : mLoadingImageQueue
+				.entrySet()) {
+			if (!entry.getValue()) {
 				entry.getKey().setPaused(true);
 				entry.setValue(true);
 			}
@@ -181,19 +194,21 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 
 	@Override
 	protected void onPause() {
-		if(mLoadingDialog!=null && mLoadingDialog.isShowing()) {
+		if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
 			mLoadingDialog.dismiss();
 		}
-		for(HashMap.Entry<AsyncImageView, Boolean> entry: mLoadingImageQueue.entrySet()) {
-			if(entry.getValue()) {
+		for (HashMap.Entry<AsyncImageView, Boolean> entry : mLoadingImageQueue
+				.entrySet()) {
+			if (entry.getValue()) {
 				entry.getKey().setPaused(true);
 				entry.setValue(false);
 			}
 		}
-		if(mItem!=null) {
+		if (mItem != null) {
 			final HashMap<String, Object> properties = new HashMap<String, Object>();
 			properties.putAll(mDataCollectionProperties);
-			new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_DETAIL_OUT, properties);
+			new NetworkUtils.DataCollectionTask().execute(
+					NetworkUtils.VIDEO_DETAIL_OUT, properties);
 			mDataCollectionProperties.put(EventProperty.TITLE, mItem.title);
 			mDataCollectionProperties.put(EventProperty.ITEM, mItem.pk);
 			mDataCollectionProperties.put(EventProperty.TO, "return");
@@ -204,30 +219,35 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 
 	@Override
 	protected void onDestroy() {
-		if(mGetItemTask!=null && mGetItemTask.getStatus()!=AsyncTask.Status.FINISHED) {
+		if (mGetItemTask != null
+				&& mGetItemTask.getStatus() != AsyncTask.Status.FINISHED) {
 			mGetItemTask.cancel(true);
 		}
-		if(mGetRelatedTask!=null && mGetItemTask.getStatus()!=AsyncTask.Status.FINISHED) {
+		if (mGetRelatedTask != null
+				&& mGetItemTask.getStatus() != AsyncTask.Status.FINISHED) {
 			mGetItemTask.cancel(true);
 		}
-		
+
 		final HashMap<AsyncImageView, Boolean> loadingImageQueue = new HashMap<AsyncImageView, Boolean>();
 		loadingImageQueue.putAll(mLoadingImageQueue);
-		for(HashMap.Entry<AsyncImageView, Boolean> entry: loadingImageQueue.entrySet()) {
+		for (HashMap.Entry<AsyncImageView, Boolean> entry : loadingImageQueue
+				.entrySet()) {
 			entry.getKey().stopLoading();
 		}
 		loadingImageQueue.clear();
 		mLoadingImageQueue = null;
 		mLoadingDialog = null;
 		mRelatedItem = null;
-		DaisyUtils.getVodApplication(this).removeActivtyFromPool(this.toString());
+		DaisyUtils.getVodApplication(this).removeActivtyFromPool(
+				this.toString());
 		super.onDestroy();
 	}
-	
-	class GetItemTask extends AsyncTask<String, Void, Void>{
-		
+
+	class GetItemTask extends AsyncTask<String, Void, Void> {
+
 		int id = 0;
 		String url = null;
+
 		@Override
 		protected Void doInBackground(String... params) {
 			try {
@@ -237,23 +257,29 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 			} catch (ItemOfflineException e) {
 				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
 				exceptionProperties.put(EventProperty.CODE, "nodetail");
-				exceptionProperties.put(EventProperty.CONTENT, "no detail error : " + e.getUrl());
+				exceptionProperties.put(EventProperty.CONTENT,
+						"no detail error : " + e.getUrl());
 				exceptionProperties.put(EventProperty.ITEM, id);
-				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT, exceptionProperties);
+				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT,
+						exceptionProperties);
 				e.printStackTrace();
 			} catch (JsonSyntaxException e) {
 				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
 				exceptionProperties.put(EventProperty.CODE, "parsejsonerror");
-				exceptionProperties.put(EventProperty.CONTENT, e.getMessage() + " : "+url );
+				exceptionProperties.put(EventProperty.CONTENT, e.getMessage()
+						+ " : " + url);
 				exceptionProperties.put(EventProperty.ITEM, id);
-				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT, exceptionProperties);
+				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT,
+						exceptionProperties);
 				e.printStackTrace();
 			} catch (NetworkException e) {
 				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
 				exceptionProperties.put(EventProperty.CODE, "networkconnerror");
-				exceptionProperties.put(EventProperty.CONTENT, e.getMessage() + " : " + e.getUrl());
+				exceptionProperties.put(EventProperty.CONTENT, e.getMessage()
+						+ " : " + e.getUrl());
 				exceptionProperties.put(EventProperty.ITEM, id);
-				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT, exceptionProperties);
+				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT,
+						exceptionProperties);
 				e.printStackTrace();
 			}
 			return null;
@@ -261,7 +287,7 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 
 		@Override
 		protected void onPostExecute(Void result) {
-			if(mItem!=null){
+			if (mItem != null) {
 				try {
 					initLayout();
 				} catch (Exception e) {
@@ -269,24 +295,24 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 				}
 			}
 		}
-		
-		
+
 	}
-	
+
 	/*
 	 * Init layout elements when all data has been fetched.
 	 */
 	private void initLayout() {
 		mDataCollectionProperties.put(EventProperty.ITEM, mItem.pk);
 		mDataCollectionProperties.put(EventProperty.TITLE, mItem.title);
-		String subItemUrl = "http://cord.tvxio.com"
-				+ "/api/subitem/" + mItem.pk + "/";
+		String subItemUrl = SimpleRestClient.root_url + "/api/subitem/"
+				+ mItem.pk + "/";
 		SimpleRestClient simpleRestClient = new SimpleRestClient();
 		Item subItem;
 		try {
 			subItem = simpleRestClient.getItem(subItemUrl);
-			if(subItem!=null){
-				mDataCollectionProperties.put(EventProperty.SUBITEM, subItem.pk);
+			if (subItem != null) {
+				mDataCollectionProperties
+						.put(EventProperty.SUBITEM, subItem.pk);
 			}
 		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
@@ -299,11 +325,13 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 			e.printStackTrace();
 		}
 
-		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_DETAIL_IN, mDataCollectionProperties);
+		new NetworkUtils.DataCollectionTask().execute(
+				NetworkUtils.VIDEO_DETAIL_IN, mDataCollectionProperties);
 		/*
-		 * if this item is a drama , the button should split to two. otherwise. use one button.
+		 * if this item is a drama , the button should split to two. otherwise.
+		 * use one button.
 		 */
-		if(mItem.subitems==null || mItem.subitems.length==0) {
+		if (mItem.subitems == null || mItem.subitems.length == 0) {
 			isDrama = false;
 			mBtnFill.setVisibility(View.VISIBLE);
 			mBtnLeft.setVisibility(View.GONE);
@@ -316,91 +344,98 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 			mBtnRight.setVisibility(View.VISIBLE);
 			mBtnLeft.requestFocus();
 		}
-		
-		if(isDrama) {
-			String url = mItem.item_url==null ? SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk + "/": mItem.item_url;
+
+		if (isDrama) {
+			String url = mItem.item_url == null ? SimpleRestClient.sRoot_url
+					+ "/api/item/" + mItem.pk + "/" : mItem.item_url;
 			mHistory = DaisyUtils.getHistoryManager(this).getHistoryByUrl(url);
 		}
-		
+
 		mDetailTitle.setText(mItem.title);
-		
+
 		/*
-		 * Build detail attributes list using a given order according to ContentModel's define.
-		 * we also need to add some common attributes which are defined in ContentModel.
+		 * Build detail attributes list using a given order according to
+		 * ContentModel's define. we also need to add some common attributes
+		 * which are defined in ContentModel.
 		 */
-		if(mItem.attributes!=null && mItem.attributes.map!=null){
-			
-			for(ContentModel m:DaisyUtils.getVodApplication(this).mContentModel){
-				if(m.content_model.equals(mItem.content_model)){
+		if (mItem.attributes != null && mItem.attributes.map != null) {
+
+			for (ContentModel m : DaisyUtils.getVodApplication(this).mContentModel) {
+				if (m.content_model.equals(mItem.content_model)) {
 					mContentModel = m;
 				}
 			}
-			if(mContentModel.attributes.get("genre")==null){
-				mContentModel.attributes.put("genre", getResources().getString(R.string.genre));
+			if (mContentModel.attributes.get("genre") == null) {
+				mContentModel.attributes.put("genre",
+						getResources().getString(R.string.genre));
 			}
-			if(mContentModel.attributes.get("vendor")==null) {
-				mContentModel.attributes.put("vendor", getResources().getString(R.string.vendor));
+			if (mContentModel.attributes.get("vendor") == null) {
+				mContentModel.attributes.put("vendor", getResources()
+						.getString(R.string.vendor));
 			}
-			if(isDrama){
-				if(mContentModel.attributes.get("episodes")==null) {
-					mContentModel.attributes.put("episodes", getResources().getString(R.string.episodes));
+			if (isDrama) {
+				if (mContentModel.attributes.get("episodes") == null) {
+					mContentModel.attributes.put("episodes", getResources()
+							.getString(R.string.episodes));
 				}
 			}
-			if(mContentModel.attributes.get("length")==null) {
-				mContentModel.attributes.put("length", getResources().getString(R.string.length));
+			if (mContentModel.attributes.get("length") == null) {
+				mContentModel.attributes.put("length", getResources()
+						.getString(R.string.length));
 			}
-			//Used to store Attribute name and value from Item.attributes.map
+			// Used to store Attribute name and value from Item.attributes.map
 			LinkedHashMap<String, String> attributeMap = new LinkedHashMap<String, String>();
 			attributeMap.put("genre", null);
 			attributeMap.put("vendor", null);
 			attributeMap.put("length", null);
-			for(String key:mContentModel.attributes.keySet()){
+			for (String key : mContentModel.attributes.keySet()) {
 				attributeMap.put(key, null);
 			}
 			attributeMap.put("vendor", mItem.vendor);
-			if(isDrama){
+			if (isDrama) {
 				attributeMap.put("episodes", getEpisodes(mItem));
 			}
-			attributeMap.put("length", getClipLength(mItem.clip));//modify by zjq
+			attributeMap.put("length", getClipLength(mItem.clip));// modify by
+																	// zjq
 			Iterator iter = mItem.attributes.map.keySet().iterator();
-			while(iter.hasNext()){
+			while (iter.hasNext()) {
 				String key = (String) iter.next();
 				Object value = mItem.attributes.map.get(key);
-				if(value!=null) {
-					if(value.getClass().equals(String.class)){
-						attributeMap.put(key, (String)value);
-					} else if(value.getClass().equals(Attribute.Info.class)){
-						attributeMap.put(key, ((Attribute.Info)value).name);
-					} else if(value.getClass().equals(Attribute.Info[].class)){
+				if (value != null) {
+					if (value.getClass().equals(String.class)) {
+						attributeMap.put(key, (String) value);
+					} else if (value.getClass().equals(Attribute.Info.class)) {
+						attributeMap.put(key, ((Attribute.Info) value).name);
+					} else if (value.getClass().equals(Attribute.Info[].class)) {
 						StringBuffer sb = new StringBuffer();
-						for(Attribute.Info info: (Attribute.Info[])value){
+						for (Attribute.Info info : (Attribute.Info[]) value) {
 							sb.append(info.name);
 							sb.append(",");
 						}
-						attributeMap.put(key, sb.substring(0, sb.length()-1));
+						attributeMap.put(key, sb.substring(0, sb.length() - 1));
 					}
 				}
 			}
 			mDetailAttributeContainer.addAttribute(attributeMap, mContentModel);
 		}
-		//Set the content to Introduction View
+		// Set the content to Introduction View
 		mDetailIntro.setText(mItem.description);
-		//Set the favorite button's label.
-		if(isFavorite()){
+		// Set the favorite button's label.
+		if (isFavorite()) {
 			mBtnFavorite.setText(getResources().getString(R.string.favorited));
 		} else {
 			mBtnFavorite.setText(getResources().getString(R.string.favorite));
 		}
-		
-		if(mItem.poster_url!=null){
+
+		if (mItem.poster_url != null) {
 			mDetailPreviewImg.setTag(mItem.poster_url);
 			mDetailPreviewImg.setUrl(mItem.poster_url);
 		}
-		
+
 		mGetRelatedTask = new GetRelatedTask();
 		mGetRelatedTask.execute();
-		//label_uhd and label_hd has worry name. which label_uhd presents hd.
-		switch(mItem.quality) {
+		// label_uhd and label_hd has worry name. which label_uhd presents hd.
+		switch (mItem.quality) {
 		case 3:
 			mDetailQualityLabel.setImageResource(R.drawable.label_uhd);
 			break;
@@ -413,11 +448,12 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 		}
 		isInitialized = true;
 	}
-	
+
 	private String getClipLength(Clip clip) {
-		if(clip!=null){
-			if(clip.length>120) {
-				return clip.length/60 + getResources().getString(R.string.minute);
+		if (clip != null) {
+			if (clip.length > 120) {
+				return clip.length / 60
+						+ getResources().getString(R.string.minute);
 			} else {
 				return clip.length + getResources().getString(R.string.second);
 			}
@@ -425,10 +461,13 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 			return null;
 		}
 	}
-	
+
 	private String getEpisodes(Item item) {
-		if(item.subitems.length>0) {
-			return item.episode+"("+getResources().getString(R.string.update_to_episode).replace("#", ""+item.subitems.length)+")";
+		if (item.subitems.length > 0) {
+			return item.episode
+					+ "("
+					+ getResources().getString(R.string.update_to_episode)
+							.replace("#", "" + item.subitems.length) + ")";
 		} else {
 			return null;
 		}
@@ -438,48 +477,52 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 	 * get the favorite status of the item.
 	 */
 	private boolean isFavorite() {
-		if(mItem!=null) {
+		if (mItem != null) {
 			String url = mItem.item_url;
-			if(url==null && mItem.pk != 0) {
-				url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk + "/";
+			if (url == null && mItem.pk != 0) {
+				url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk
+						+ "/";
 			}
-			Favorite favorite = DaisyUtils.getFavoriteManager(this).getFavoriteByUrl(url);
-			if(favorite!=null) {
+			Favorite favorite = DaisyUtils.getFavoriteManager(this)
+					.getFavoriteByUrl(url);
+			if (favorite != null) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	class GetImageTask extends AsyncTask<ImageView, Void, Bitmap> {
-		
+
 		private ImageView imageView;
 
 		@Override
 		protected Bitmap doInBackground(ImageView... params) {
 			String url = (String) params[0].getTag();
 			imageView = params[0];
-			return ImageUtils.getBitmapFromInputStream(NetworkUtils.getInputStream(url), 476, 267);
+			return ImageUtils.getBitmapFromInputStream(
+					NetworkUtils.getInputStream(url), 476, 267);
 		}
 
 		@Override
 		protected void onPostExecute(Bitmap result) {
-			if(result!=null){
+			if (result != null) {
 				imageView.setImageBitmap(result);
 			} else {
-				
+
 			}
 		}
-		
+
 	}
-	
+
 	class GetRelatedTask extends AsyncTask<Void, Void, Void> {
 
 		@Override
 		protected Void doInBackground(Void... params) {
 			try {
-				mRelatedItem = mSimpleRestClient.getRelatedItem("/api/tv/relate/"+mItem.pk+"/");
+				mRelatedItem = mSimpleRestClient
+						.getRelatedItem("/api/tv/relate/" + mItem.pk + "/");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -488,35 +531,43 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 
 		@Override
 		protected void onPostExecute(Void result) {
-			if(mRelatedItem!=null && mRelatedItem.length>0){
+			if (mRelatedItem != null && mRelatedItem.length > 0) {
 				buildRelatedList();
 			}
-			if(mLoadingDialog.isShowing()){				
+			if (mLoadingDialog.isShowing()) {
 				mLoadingDialog.dismiss();
 				mDetailLeftContainer.setVisibility(View.VISIBLE);
 				mDetailRightContainer.setVisibility(View.VISIBLE);
 			}
 		}
-		
-		
+
 	}
-	
+
 	private void buildRelatedList() {
-		for(int i=0; i<4&&i<mRelatedItem.length; i++) {
-			RelativeLayout relatedHolder = (RelativeLayout) LayoutInflater.from(ItemDetailActivity.this).inflate(R.layout.related_item_layout, null);
-			
+		for (int i = 0; i < 4 && i < mRelatedItem.length; i++) {
+			RelativeLayout relatedHolder = (RelativeLayout) LayoutInflater
+					.from(ItemDetailActivity.this).inflate(
+							R.layout.related_item_layout, null);
+
 			LinearLayout.LayoutParams layoutParams;
-			layoutParams = new LinearLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.item_detail_related_W), 
-					getResources().getDimensionPixelSize(R.dimen.item_detail_related_H));
+			layoutParams = new LinearLayout.LayoutParams(getResources()
+					.getDimensionPixelSize(R.dimen.item_detail_related_W),
+					getResources().getDimensionPixelSize(
+							R.dimen.item_detail_related_H));
 			relatedHolder.setLayoutParams(layoutParams);
-			TextView titleView = (TextView) relatedHolder.findViewById(R.id.related_title);
-			AsyncImageView imgView = (AsyncImageView) relatedHolder.findViewById(R.id.related_preview_img);
+			TextView titleView = (TextView) relatedHolder
+					.findViewById(R.id.related_title);
+			AsyncImageView imgView = (AsyncImageView) relatedHolder
+					.findViewById(R.id.related_preview_img);
 			imgView.setOnImageViewLoadListener(this);
-			TextView focusView = (TextView) relatedHolder.findViewById(R.id.related_focus);
-			ImageView qualityLabel = (ImageView) relatedHolder.findViewById(R.id.related_quality_label);
-			if(mRelatedItem[i].quality==3) {
+			TextView focusView = (TextView) relatedHolder
+					.findViewById(R.id.related_focus);
+			ImageView qualityLabel = (ImageView) relatedHolder
+					.findViewById(R.id.related_quality_label);
+			if (mRelatedItem[i].quality == 3) {
 				qualityLabel.setImageResource(R.drawable.label_hd_small);
-			} else if(mRelatedItem[i].quality==4 || mRelatedItem[i].quality==5) {
+			} else if (mRelatedItem[i].quality == 4
+					|| mRelatedItem[i].quality == 5) {
 				qualityLabel.setImageResource(R.drawable.label_uhd_small);
 			}
 			imgView.setTag(mRelatedItem[i].adlet_url);
@@ -525,67 +576,77 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 			focusView.setText(mRelatedItem[i].focus);
 			relatedHolder.setTag(mRelatedItem[i].item_url);
 			mRelatedVideoContainer.addView(relatedHolder);
-			relatedHolder.setOnFocusChangeListener(mRelatedOnFocusChangeListener);
+			relatedHolder
+					.setOnFocusChangeListener(mRelatedOnFocusChangeListener);
 			relatedHolder.setOnClickListener(mRelatedClickListener);
 		}
 	}
-	
+
 	private OnFocusChangeListener mRelatedOnFocusChangeListener = new OnFocusChangeListener() {
-		
+
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
-			if(v.getParent()==mRelatedVideoContainer){
-				if(hasFocus) {
-					TextView title = (TextView) v.findViewById(R.id.related_title);
+			if (v.getParent() == mRelatedVideoContainer) {
+				if (hasFocus) {
+					TextView title = (TextView) v
+							.findViewById(R.id.related_title);
 					title.setTextColor(0xFFF8F8FF);
-					TextView focus = (TextView) v.findViewById(R.id.related_focus);
+					TextView focus = (TextView) v
+							.findViewById(R.id.related_focus);
 					focus.setTextColor(0xFFF8F8FF);
 					title.setSelected(true);
 					focus.setSelected(true);
 				} else {
-					TextView title = (TextView) v.findViewById(R.id.related_title);
+					TextView title = (TextView) v
+							.findViewById(R.id.related_title);
 					title.setTextColor(0xFFF8F8FF);
-					TextView focus = (TextView) v.findViewById(R.id.related_focus);
+					TextView focus = (TextView) v
+							.findViewById(R.id.related_focus);
 					focus.setTextColor(0xFFF8F8FF);
 					title.setSelected(false);
 					focus.setSelected(false);
 				}
 			}
-			if(hasFocus) {
-				mDetailRightContainer.setBackgroundResource(android.R.color.transparent);
-				mDetailLeftContainer.setBackgroundResource(R.drawable.left_bg_unfocused);
+			if (hasFocus) {
+				mDetailRightContainer
+						.setBackgroundResource(android.R.color.transparent);
+				mDetailLeftContainer
+						.setBackgroundResource(R.drawable.left_bg_unfocused);
 			}
 		}
 	};
-	
+
 	private OnFocusChangeListener mLeftElementFocusChangeListener = new OnFocusChangeListener() {
-		
+
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
-			if(hasFocus) {
-				mDetailRightContainer.setBackgroundResource(R.drawable.right_bg_normal);
-				mDetailLeftContainer.setBackgroundResource(android.R.color.transparent);
-				((Button)v).setTextColor(0xFFF8F8FF);
+			if (hasFocus) {
+				mDetailRightContainer
+						.setBackgroundResource(R.drawable.right_bg_normal);
+				mDetailLeftContainer
+						.setBackgroundResource(android.R.color.transparent);
+				((Button) v).setTextColor(0xFFF8F8FF);
 			} else {
-				((Button)v).setTextColor(0xffbbbbbb);
+				((Button) v).setTextColor(0xffbbbbbb);
 			}
 		}
 	};
-	
+
 	private OnClickListener mRelatedClickListener = new OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
 			String url = (String) v.getTag();
 			final Item[] relatedItem = mRelatedItem;
-			for(Item item: relatedItem) {
-				if(url.equals(item.item_url)) {
+			for (Item item : relatedItem) {
+				if (url.equals(item.item_url)) {
 					HashMap<String, Object> properties = new HashMap<String, Object>();
 					properties.put(EventProperty.ITEM, mItem.pk);
 					properties.put(EventProperty.TO_ITEM, item.pk);
 					properties.put(EventProperty.TO_TITLE, item.title);
 					properties.put(EventProperty.TO, "relate");
-					new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_RELATE, properties);
+					new NetworkUtils.DataCollectionTask().execute(
+							NetworkUtils.VIDEO_RELATE, properties);
 					break;
 				}
 			}
@@ -595,62 +656,147 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 			startActivity(intent);
 		}
 	};
-	
+	private SimpleRestClient simpleRestClient;
+    private Intent intent;
+
+	private void initClipInfo(Object item,String flag) {
+		simpleRestClient = new SimpleRestClient();
+		intent = new Intent();
+		Log.d(TAG, " initClipInfo ");
+		new ItemByUrlTask().execute(item,flag);
+	}
+
+	// 初始化播放地址url
+	private class ItemByUrlTask extends AsyncTask<Object, Void, String> {
+
+		@Override
+		protected void onPostExecute(String result) {
+			mLoadingDialog.dismiss();			
+			if(result.equals("iqiyi")){
+				intent.setAction("tv.ismar.daisy.qiyiPlay");
+				SdkVideo info = AccessProxy.getQiYiInfo();
+				intent.putExtra("iqiyi", info);		
+			}
+			else{
+				String ismartv = AccessProxy.getIsmartvClipInfo();
+				intent.setAction("tv.ismar.daisy.Play");
+				intent.putExtra("ismartv", ismartv);
+			}
+			if(!"".equals(result))
+			   startActivity(intent);
+		}
+		@Override
+		protected String doInBackground(Object... params) {
+
+			String sn = VodUserAgent.getMACAddress();
+			AccessProxy.init(VodUserAgent.deviceType,
+					VodUserAgent.deviceVersion, sn);
+            String flag = (String) params[1];
+            Item item = null;;
+            if(flag.equals("url")){
+            	try {
+					item = simpleRestClient.getItem((String) params[0]);
+				} catch (JsonSyntaxException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ItemOfflineException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NetworkException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+            else{
+            	item = (Item) params[0];
+            }
+            String info = "";
+            if(item!=null){
+            	Clip clip = item.clip;
+            	if(item.clip != null){
+                	intent.putExtra("item", item);
+    				info = AccessProxy.getVideoInfo(SimpleRestClient.root_url
+    						+ "/api/clip/" + clip.pk + "/",
+    						VodUserAgent.getAccessToken(sn));
+            	}
+            }
+			return info;
+
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			mLoadingDialog.show();
+			
+		}
+	}
+
 	private OnClickListener mIdOnClickListener = new OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
 			try {
 				int id = v.getId();
 				Intent intent = new Intent();
-				intent.putExtra(EventProperty.SECTION, mSection);
-				switch(id){
+				intent.putExtra(EventProperty.SECTION, mSection);  
+				switch (id) {
 				case R.id.btn_left:
 					String subUrl = null;
 					int sub_id = 0;
 					String title = mItem.title;
-					if(mHistory!=null && mHistory.is_continue) {
+					if (mHistory != null && mHistory.is_continue) {
 						subUrl = mHistory.sub_url;
-						for(Item item: mItem.subitems) {
-							if(item.url.equals(subUrl)) {
+						for (Item item : mItem.subitems) {
+							if (item.url.equals(subUrl)) {
 								sub_id = item.pk;
-								title += "("+item.episode+")";
+								title += "(" + item.episode + ")";
 								break;
 							}
 						}
 					} else {
 						subUrl = mItem.subitems[0].url;
 						sub_id = mItem.subitems[0].pk;
-						title += "("+mItem.subitems[0].episode+")";
+						title += "(" + mItem.subitems[0].episode + ")";
 					}
 					mDataCollectionProperties.put(EventProperty.TITLE, title);
-					mDataCollectionProperties.put(EventProperty.SUBITEM, sub_id);
+					mDataCollectionProperties
+							.put(EventProperty.SUBITEM, sub_id);
 					mDataCollectionProperties.put(EventProperty.TO, "play");
-					
-					intent.setAction("tv.ismar.daisy.Play");
-					intent.putExtra("url", subUrl);
-					startActivity(intent);
+
+
+					initClipInfo(subUrl,"url");
 					break;
 				case R.id.btn_right:
-					mDataCollectionProperties.put(EventProperty.TO_ITEM, "list");
-					intent.setClass(ItemDetailActivity.this, DramaListActivity.class);
+					mDataCollectionProperties
+							.put(EventProperty.TO_ITEM, "list");
+					intent.setClass(ItemDetailActivity.this,
+							DramaListActivity.class);
 					intent.putExtra(EventProperty.ITEM, mItem);
 					startActivity(intent);
 					break;
 				case R.id.btn_fill:
 					mDataCollectionProperties.put(EventProperty.TO, "play");
-					
-					intent.setAction("tv.ismar.daisy.Play");
-					intent.putExtra("item", mItem);
-					startActivity(intent);
+
+					// intent.setAction("tv.ismar.daisy.Play");
+					// intent.putExtra("item", mItem);
+
+					// intent.setClass(ItemDetailActivity.this,
+					// QiYiPlayActivity.class);
+					// startActivity(intent);
+					initClipInfo(mItem,"item");
 					break;
 				case R.id.btn_favorite:
-					if(isFavorite()) {
-						String url = SimpleRestClient.sRoot_url + "/api/item/"+mItem.pk+"/";
-						DaisyUtils.getFavoriteManager(ItemDetailActivity.this).deleteFavoriteByUrl(url);
-						showToast(getResources().getString(R.string.vod_bookmark_remove_success));
+					if (isFavorite()) {
+						String url = SimpleRestClient.sRoot_url + "/api/item/"
+								+ mItem.pk + "/";
+						DaisyUtils.getFavoriteManager(ItemDetailActivity.this)
+								.deleteFavoriteByUrl(url);
+						showToast(getResources().getString(
+								R.string.vod_bookmark_remove_success));
 					} else {
-						String url = SimpleRestClient.sRoot_url + "/api/item/"+mItem.pk+"/";
+						String url = SimpleRestClient.sRoot_url + "/api/item/"
+								+ mItem.pk + "/";
 						Favorite favorite = new Favorite();
 						favorite.title = mItem.title;
 						favorite.adlet_url = mItem.adlet_url;
@@ -658,24 +804,31 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 						favorite.url = url;
 						favorite.quality = mItem.quality;
 						favorite.is_complex = mItem.is_complex;
-						DaisyUtils.getFavoriteManager(ItemDetailActivity.this).addFavorite(favorite);
-//					mFavoriteManager.addFavorite(mItem.title, url, mItem.content_model);
-						showToast(getResources().getString(R.string.vod_bookmark_add_success));
+						DaisyUtils.getFavoriteManager(ItemDetailActivity.this)
+								.addFavorite(favorite);
+						// mFavoriteManager.addFavorite(mItem.title, url,
+						// mItem.content_model);
+						showToast(getResources().getString(
+								R.string.vod_bookmark_add_success));
 					}
-					if(isFavorite()) {
-						mBtnFavorite.setText(getResources().getString(R.string.favorited));
+					if (isFavorite()) {
+						mBtnFavorite.setText(getResources().getString(
+								R.string.favorited));
 					} else {
-						mBtnFavorite.setText(getResources().getString(R.string.favorite));
+						mBtnFavorite.setText(getResources().getString(
+								R.string.favorite));
 					}
 					break;
 				case R.id.more_content:
-					if(mRelatedItem!=null && mRelatedItem.length >0 ){
-						intent.putExtra("related_item", new ArrayList<Item>(Arrays.asList(mRelatedItem)));
+					if (mRelatedItem != null && mRelatedItem.length > 0) {
+						intent.putExtra("related_item", new ArrayList<Item>(
+								Arrays.asList(mRelatedItem)));
 					}
 					mDataCollectionProperties.put(EventProperty.TO, "relate");
-					
+
 					intent.putExtra("item", mItem);
-					intent.setClass(ItemDetailActivity.this, RelatedActivity.class);
+					intent.setClass(ItemDetailActivity.this,
+							RelatedActivity.class);
 					startActivity(intent);
 					break;
 				}
@@ -684,9 +837,9 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 			}
 		}
 	};
-	
+
 	private OnCancelListener mLoadingCancelListener = new OnCancelListener() {
-		
+
 		@Override
 		public void onCancel(DialogInterface dialog) {
 			ItemDetailActivity.this.finish();
@@ -696,30 +849,29 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 
 	@Override
 	public void onLoadingStarted(AsyncImageView imageView) {
-		if(mLoadingImageQueue!=null) {
+		if (mLoadingImageQueue != null) {
 			mLoadingImageQueue.put(imageView, true);
 		}
 	}
 
-
 	@Override
 	public void onLoadingEnded(AsyncImageView imageView, Bitmap image) {
-		if(mLoadingImageQueue != null) {
+		if (mLoadingImageQueue != null) {
 			mLoadingImageQueue.remove(imageView);
 		}
 	}
-
 
 	@Override
 	public void onLoadingFailed(AsyncImageView imageView, Throwable throwable) {
-		if(mLoadingImageQueue != null) {
+		if (mLoadingImageQueue != null) {
 			mLoadingImageQueue.remove(imageView);
 		}
 	}
-	
+
 	private void showToast(String text) {
 		LayoutInflater inflater = getLayoutInflater();
-		View layout = inflater.inflate(R.layout.simple_toast, (ViewGroup) findViewById(R.id.simple_toast_root));
+		View layout = inflater.inflate(R.layout.simple_toast,
+				(ViewGroup) findViewById(R.id.simple_toast_root));
 		TextView toastText = (TextView) layout.findViewById(R.id.toast_text);
 		toastText.setText(text);
 		Toast toast = new Toast(getApplicationContext());
@@ -728,5 +880,5 @@ public class ItemDetailActivity extends Activity implements OnImageViewLoadListe
 		toast.setView(layout);
 		toast.show();
 	}
-	
+
 }

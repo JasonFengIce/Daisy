@@ -378,21 +378,26 @@ public class HGridView extends AdapterView<HGridAdapter> {
 			mMaxColumn = getColumn(mAdapter.getCount() - 1);
 
 			if (mAdapter.hasSection()) {
-				final int totalSectionNum = mAdapter.getTotalSectionNum();
-				mSectionFirstColumns = new int[totalSectionNum];
-				mSectionLastColumns = new int[totalSectionNum - 1];
-				mSectionLabelRect = new Rect[totalSectionNum];
-				int columnCount = 0;
-				for (int i = 0; i < totalSectionNum; i++) {
-					mSectionLabelRect[i] = new Rect();
-					mSectionFirstColumns[i] = columnCount;
-					final int sectionCount = mAdapter.getSectionCount(i);
-					columnCount += (int) FloatMath.ceil((float) sectionCount
-							/ (float) mRows);
-					if (columnCount - 1 < mMaxColumn) {
-						mSectionLastColumns[i] = columnCount - 1;
+				try{
+					final int totalSectionNum = mAdapter.getTotalSectionNum();
+					mSectionFirstColumns = new int[totalSectionNum];
+					mSectionLastColumns = new int[totalSectionNum - 1];
+					mSectionLabelRect = new Rect[totalSectionNum];
+					int columnCount = 0;
+					for (int i = 0; i < totalSectionNum; i++) {
+						mSectionLabelRect[i] = new Rect();
+						mSectionFirstColumns[i] = columnCount;
+						final int sectionCount = mAdapter.getSectionCount(i);
+						columnCount += (int) FloatMath.ceil((float) sectionCount
+								/ (float) mRows);
+						if (columnCount - 1 < mMaxColumn) {
+							mSectionLastColumns[i] = columnCount - 1;
+						}
 					}
 				}
+				catch(Exception e){
+					e.printStackTrace();
+				}		
 				// measureMinSingleTextDimension();
 			}
 

@@ -1,6 +1,7 @@
 package tv.ismar.daisy;
 
 import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.views.ChannelFragment;
 import tv.ismar.daisy.views.FavoriteFragment;
 import tv.ismar.daisy.views.HistoryFragment;
@@ -38,7 +39,8 @@ public class ChannelListActivity extends Activity {
 			}
 		}
 		if(url==null) {
-			url = "http://cord.tvxio.com/api/tv/sections/chinesemovie/";
+			//url = "http://cord.tvxio.com/api/tv/sections/chinesemovie/";
+			url = SimpleRestClient.root_url+"/api/tv/sections/chinesemovie/";
 		//	url = "http://cord.tvxio.com/api/live/channel/movie/";
 		}
 		if(title==null) {

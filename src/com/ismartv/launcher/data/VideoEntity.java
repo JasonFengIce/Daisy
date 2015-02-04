@@ -6,39 +6,40 @@ import java.util.List;
  * Created by <huaijiefeng@gmail.com> on 9/2/14.
  */
 public class VideoEntity {
-    private String count;
-    private List<Object> objects;
-    private String num_pages;
+    private int count;
+    private List<Objects> objects;
+    private int num_pages;
 
-    public String getCount() {
+    public int getCount() {
         return count;
     }
 
-    public void setCount(String count) {
+    public void setCount(int count) {
         this.count = count;
     }
 
-    public List<Object> getObjects() {
+    public List<Objects> getObjects() {
         return objects;
     }
 
-    public void setObjects(List<Object> objects) {
+    public void setObjects(List<Objects> objects) {
         this.objects = objects;
     }
 
-    public String getNum_pages() {
+    public int getNum_pages() {
         return num_pages;
     }
 
-    public void setNum_pages(String num_pages) {
+    public void setNum_pages(int num_pages) {
         this.num_pages = num_pages;
     }
 
-    public static class Object {
+    public static class Objects {
         private String image;
         private String title;
         private String item_url;
         private boolean is_complex;
+        
         public boolean isIs_complex() {
 			return is_complex;
 		}

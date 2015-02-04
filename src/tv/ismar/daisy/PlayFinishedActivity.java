@@ -260,8 +260,7 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 				}
 				Intent intent = new Intent();
 				intent.putExtra("url", url);
-				intent.setAction("tv.ismar.daisy.Play");
-				
+				intent.setAction("tv.ismar.daisy.Play");			
 				try {
 					startActivity(intent);
 					finish();

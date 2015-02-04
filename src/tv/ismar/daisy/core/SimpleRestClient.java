@@ -1,7 +1,12 @@
 package tv.ismar.daisy.core;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import tv.ismar.daisy.exception.ItemOfflineException;
@@ -18,45 +23,100 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
 public class SimpleRestClient {
-//	public String root_url = "http://cord.tvxio.com";
-	//public String root_url = "http://127.0.0.1:21098/cord";
-	
-	//public static String sRoot_url = "http://127.0.0.1:21098/cord";
-	
-	
-	public String root_url = "http://cord.tvxio.com";
-    public static String sRoot_url = "http://cord.tvxio.com";
+	// public String root_url = "http://cord.tvxio.com";
+	// public String root_url = "http://127.0.0.1:21098/cord";
+
+	// public static String sRoot_url = "http://127.0.0.1:21098/cord";
+
+	public static String root_url = "http://cord.tvxio.com12";
+	public static String sRoot_url = "http://cord.tvxio.com12";
+    public static String ad_domain = "lilac.tvxio.com";
 	private Gson gson;
 
 	public SimpleRestClient() {
 		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(Attribute.class, new AttributeDeserializer());
+		gsonBuilder.registerTypeAdapter(Attribute.class,
+				new AttributeDeserializer());
 		gson = gsonBuilder.create();
 	}
-	
+
+	public static String readContentFromPost(String url,String sn){
+		StringBuffer response = new StringBuffer();
+		 try{
+	        URL postUrl = new URL("http://peach.tvxio.com/trust/"+url+"/");
+	        HttpURLConnection connection = (HttpURLConnection) postUrl
+	                .openConnection();
+	        connection.setDoOutput(true);
+	        connection.setDoInput(true);
+	        connection.setRequestMethod("POST");
+	        connection.setUseCaches(false);
+	        connection.setInstanceFollowRedirects(true);
+	        connection.setRequestProperty("Content-Type",
+	                "application/x-www-form-urlencoded");
+	        connection.setRequestProperty("Accept", "application/json");
+	        connection.connect();
+	        DataOutputStream out = new DataOutputStream(connection
+	                .getOutputStream());
+	        String content;
+	        if(url.equals("active"))
+	              content = "sn="+sn+"&kind=a21&"+"manufacture=lenovo&version=v2_0";
+	          else
+	        	  content = "sn="+sn+"&kind=a21&"+"manufacture=lenovo&api_version=v2_0";
+	        out.writeBytes(content);
+	        	        
+	        out.flush();
+	        out.close();
+	        int status = connection.getResponseCode();
+	        if(status==200){
+	            BufferedReader reader = new BufferedReader(new InputStreamReader(
+		                connection.getInputStream(),"UTF-8"));
+		        out.flush();
+		        out.close(); // flush and close
+		        String line;
+		        while ((line = reader.readLine()) != null) {
+		            response.append(line);
+		        }
+		        reader.close();
+		        if(url.equals("register")&&line==null)
+		        	return "200" ;
+	        }
+	        connection.disconnect();
+		 }
+		 catch(IOException e){
+			 e.printStackTrace();
+			 return "";
+		 }
+		 return response.toString();
+	   }
+
 	/**
-	 * Extract the item id from given url, check whether the given url is an subitem.
-	 * @param url is the valid url contains item id(or item pk)
-	 * @param isSubItem is an boolean array with a size of one, use to gain the result of subitem check.
+	 * Extract the item id from given url, check whether the given url is an
+	 * subitem.
+	 * 
+	 * @param url
+	 *            is the valid url contains item id(or item pk)
+	 * @param isSubItem
+	 *            is an boolean array with a size of one, use to gain the result
+	 *            of subitem check.
 	 * @return a item id.
 	 */
 	public static int getItemId(String url, boolean[] isSubItem) {
 		int id = 0;
 		try {
-			if(url.contains("/item/")) {
+			if (url.contains("/item/")) {
 				isSubItem[0] = false;
 			} else {
 				isSubItem[0] = true;
 			}
 			Pattern p = Pattern.compile("/(\\d+)/?$");
 			Matcher m = p.matcher(url);
-			if(m.find()) {
+			if (m.find()) {
 				String idStr = m.group(1);
-				if(idStr!=null) {
+				if (idStr != null) {
 					id = Integer.parseInt(idStr);
 				}
 			}
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return id;
@@ -78,16 +138,15 @@ public class SimpleRestClient {
 		}
 		return null;
 	}
-	
-	
+
 	public ContentModelList getContentModelList(InputStream in) {
 		return gson.fromJson(new InputStreamReader(in), ContentModelList.class);
 	}
-	
+
 	public ChannelList getChannelList() {
 		try {
 			String api = "/api/tv/channels/";
-			String jsonStr = NetworkUtils.getJsonStr(root_url+api);
+			String jsonStr = NetworkUtils.getJsonStr(root_url + api);
 			return gson.fromJson(jsonStr, ChannelList.class);
 		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
@@ -102,9 +161,10 @@ public class SimpleRestClient {
 		return null;
 	}
 
-	public SectionList getSectionsByChannel(String channel) throws NetworkException {
+	public SectionList getSectionsByChannel(String channel)
+			throws NetworkException {
 		try {
-			String url = root_url + "/api/tv/sections/"+channel+"/";
+			String url = root_url + "/api/tv/sections/" + channel + "/";
 			String jsonStr = NetworkUtils.getJsonStr(url);
 			SectionList list = gson.fromJson(jsonStr, SectionList.class);
 			return list;
@@ -117,8 +177,9 @@ public class SimpleRestClient {
 		}
 		return null;
 	}
-	
-	public SectionList getSections(String url) throws NetworkException, ItemOfflineException {
+
+	public SectionList getSections(String url) throws NetworkException,
+			ItemOfflineException {
 		try {
 			String jsonStr = NetworkUtils.getJsonStr(url);
 			SectionList list = gson.fromJson(jsonStr, SectionList.class);
@@ -130,7 +191,8 @@ public class SimpleRestClient {
 		return null;
 	}
 
-	public ItemList getItemList(String url) throws NetworkException, ItemOfflineException {
+	public ItemList getItemList(String url) throws NetworkException,
+			ItemOfflineException {
 		try {
 			String jsonStr = NetworkUtils.getJsonStr(url);
 			ItemList list = gson.fromJson(jsonStr, ItemList.class);
@@ -142,7 +204,8 @@ public class SimpleRestClient {
 		return null;
 	}
 
-	public Item getItem(String url) throws ItemOfflineException, NetworkException, JsonSyntaxException {
+	public Item getItem(String url) throws ItemOfflineException,
+			NetworkException, JsonSyntaxException {
 
 		String jsonStr = NetworkUtils.getJsonStr(url);
 		// Log.d("Item is", jsonStr);

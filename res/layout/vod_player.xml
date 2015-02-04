@@ -10,8 +10,19 @@
         android:id="@+id/video_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true" >
+        android:layout_centerInParent="true"
+        android:visibility="visible" >
     </tv.ismar.daisy.views.IsmatvVideoView>
+        
+     <FrameLayout
+         android:id="@+id/fl_videoview_container"
+         android:layout_height="match_parent"
+         android:layout_width="match_parent"
+         android:layout_centerInParent="true"
+         android:visibility="gone">
+         
+     </FrameLayout>
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -104,7 +115,7 @@
 
                     <TextView
                         android:id="@+id/QualityText"
-                        android:layout_width="@dimen/vod_player_qualitytext_W"
+                        android:layout_width="wrap_content"
                         android:layout_height="@dimen/vod_player_qualitytext_H"
                         android:layout_marginTop="@dimen/vod_player_qualitytext_margintop"
                         android:background="@drawable/rounded_edittext"

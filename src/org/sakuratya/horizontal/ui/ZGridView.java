@@ -13,15 +13,12 @@ import android.graphics.drawable.TransitionDrawable;
 import android.os.Debug;
 import android.os.Handler;
 import android.os.Parcelable;
-import android.os.StrictMode;
 import android.os.SystemClock;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.util.StateSet;
 import android.view.Gravity;
-import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SoundEffectConstants;
@@ -41,9 +38,8 @@ import android.widget.Checkable;
 import android.widget.EdgeEffect;
 import android.widget.ListAdapter;
 import android.widget.OverScroller;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AbsListView.RecyclerListener;
-import android.os.StrictMode;
+
 public class ZGridView extends AdapterView<ListAdapter> {
 
 	public static final int AUTO_FIT = -1;
@@ -153,9 +149,6 @@ public class ZGridView extends AdapterView<ListAdapter> {
 	 * The last selected position we used when notifying
 	 */
 	int mOldSelectedPosition = INVALID_POSITION;
-	// True when the popup should be hidden because of a call to
-	// dispatchDisplayHint()
-	private boolean mPopupHidden;
 	/**
 	 * The id of the last selected position we used when notifying
 	 */

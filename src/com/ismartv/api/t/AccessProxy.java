@@ -6,12 +6,16 @@ import android.util.Log;
 import com.ismartv.api.AESDemo;
 import com.ismartv.bean.ClipInfo;
 import com.pplive.android.player.PlayCodeUtil;
+import com.qiyi.video.player.data.Definition;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import tv.ismar.daisy.qiyimediaplayer.SdkVideo;
 
 public class AccessProxy {
 
@@ -32,14 +36,53 @@ public class AccessProxy {
 		if (sn != null)
 			mySN = sn;
 		userAgent = (new StringBuilder(String.valueOf(myDeviceType)))
-				.append("/").append(myDeviceVersion).append(" ").append(mySN).append(" thirdpartyid")
-				.toString();
+				.append("/").append(myDeviceVersion).append(" ").append(mySN)
+				.append(" thirdpartyid").toString();
 	}
 
 	public static ClipInfo parse(String clipUrl, String access_token,
 			Context context) {
 		getStream(getFullUrl(clipUrl, access_token));
 		return jsonToObject(result);
+	}
+
+	public static String getIsmartvClipInfo() {
+		return result;
+	}
+	public static ClipInfo getIsmartvClipInfo(String content) {
+		return jsonToObject(content);
+	}
+    public static SdkVideo getQiYiInfo( ){
+    	SdkVideo qiyiInfo = null;	
+    	JSONObject json;
+    	try {
+    		json = new JSONObject(result);
+			String info = json.getString("iqiyi_4_0");
+			String[] array = info.split(":");
+    		qiyiInfo = new SdkVideo(array[0], array[1], array[2],Definition.DEFINITON_1080P);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return qiyiInfo;
+    }
+	public static String getVideoInfo(String clipUrl, String access_token) {
+		getStream(getFullUrl(clipUrl, access_token));
+		JSONObject json;
+		String info="";
+		try {
+			json = new JSONObject(result);
+			if(json.has("iqiyi_4_0")){
+				return "iqiyi";
+			}
+			else{
+				info = "ismartv";
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return info;
 	}
 
 	public static void destroy() {
@@ -74,7 +117,7 @@ public class AccessProxy {
 						access_token.substring(0, 16));
 			}
 		} else {
-			result = AESDemo.encrypttoStr(contents, keyCrypt);
+			result = AESDemo.encrypttoStr(contents, keyCrypt);// 1422928853725001122334455
 		}
 		return result;
 	}

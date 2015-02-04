@@ -56,6 +56,7 @@ public class VodUserAgent {
 		    TelephonyManager tm = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
 	        String macAddr = "";
 	        try{
+	        	
 	            sn = tm.getSimSerialNumber();
 	        } catch (Exception e) {
 	            e.printStackTrace();

@@ -17,7 +17,6 @@ import java.net.URL;
  */
 public class HttpClient {
     private static final String TAG = "HttpClient";
-    public static final String HOST = "http://cord.tvxio.com";
     private static HttpClient instance;
 
     private HttpClient() {

@@ -212,11 +212,13 @@ public class NetworkUtils {
 		try {
 			
 			String jsonContent = getFileToString();
+			jsonContent = "1";
 			if(jsonContent == null){
 				return false;
 			}
 			Log.d(TAG,"base64 =="+jsonContent);
 			String url="http://a21.calla.tvxio.com/log";
+			//String url = "http://192.168.1.185:8099/shipinkefu/22.mp4";
 			java.net.URL connURL = new java.net.URL(url);
 			java.net.HttpURLConnection httpConn = (java.net.HttpURLConnection) connURL.openConnection();
 			httpConn.setRequestMethod("POST");
@@ -227,7 +229,7 @@ public class NetworkUtils {
 	        httpConn.setDoInput(true); 
 			httpConn.setRequestProperty("Accept", "*/*");
             httpConn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-			httpConn.setRequestProperty("Host", "a21.calla.tvxio.com");
+//			httpConn.setRequestProperty("Host", "a21.calla.tvxio.com");
 			httpConn.setRequestProperty("Connection", "Keep-Alive");
 			//httpConn.setRequestProperty("User-Agent", "ideatv_A21/S0054.38 TD04007053");
 			httpConn.setRequestProperty("User-Agent", VodUserAgent.getUserAgent(VodUserAgent.getMACAddress()));
