@@ -111,17 +111,9 @@ public class VodApplication extends Application {
 		super.onCreate();
 		load(this);
 		getContentModelFromAssets();
-		getNewContentModel();
 		registerReceiver(mCloseReceiver, new IntentFilter("com.amlogic.dvbplayer.homekey"));
 		registerReceiver(mSleepReceiver, new IntentFilter("com.alpha.lenovo.powerKey"));
-		String domain = mPreferences.getString("domain", "");
-		Log.i("qqq", "application oncreate");
-		if("".equals(domain))
-		    register();
-		else{
-			SimpleRestClient.root_url = domain;
-			SimpleRestClient.sRoot_url = domain;
-		}		
+		
 	}
 	public static String getDeviceId(Context context) {
 		String deviceId = null;
@@ -164,7 +156,12 @@ public class VodApplication extends Application {
 					try {
 						JSONObject json = new JSONObject(content);
 						String domain = json.getString("domain");
-						
+						try {
+							Thread.sleep(10000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						SimpleRestClient.root_url = "http://"+domain;
 						SimpleRestClient.sRoot_url = "http://"+domain;
 						SimpleRestClient.ad_domain = "http://"+json.getString("ad_domain");

@@ -1,7 +1,5 @@
 package tv.ismar.daisy.qiyimediaplayer;
 
-import java.io.Serializable;
-
 import com.qiyi.video.player.data.Definition;
 import com.qiyi.video.player.data.IPlaybackInfo;
 import com.qiyi.video.utils.LogUtils;
@@ -10,7 +8,7 @@ import com.qiyi.video.utils.LogUtils;
  * Reference implementation of IPlaybackInfo
  */
 
-public class SdkVideo implements IPlaybackInfo,Serializable {
+public class SdkVideo implements IPlaybackInfo {
 
 	private static final long serialVersionUID = -7717185072913133522L;
 	private static final String TAG = "SdkVideo";

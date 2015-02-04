@@ -674,11 +674,11 @@ public class ItemDetailActivity extends Activity implements
 			mLoadingDialog.dismiss();			
 			if(result.equals("iqiyi")){
 				intent.setAction("tv.ismar.daisy.qiyiPlay");
-				SdkVideo info = AccessProxy.getQiYiInfo();
+				String info = AccessProxy.getvVideoClipInfo();
 				intent.putExtra("iqiyi", info);		
 			}
 			else{
-				String ismartv = AccessProxy.getIsmartvClipInfo();
+				String ismartv = AccessProxy.getvVideoClipInfo();
 				intent.setAction("tv.ismar.daisy.Play");
 				intent.putExtra("ismartv", ismartv);
 			}

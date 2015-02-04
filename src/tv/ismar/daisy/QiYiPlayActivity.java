@@ -4,8 +4,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import tv.ismar.daisy.PlayerActivity.SeekBarChangeEvent;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.Clip;
@@ -16,8 +14,10 @@ import tv.ismar.daisy.persistence.FavoriteManager;
 import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.player.ISTVVodMenu;
-import tv.ismar.daisy.qiyimediaplayer.FakeVideoFactory;
+import tv.ismar.daisy.qiyimediaplayer.SdkVideo;
 import tv.ismar.daisy.views.IsmatvVideoView;
+
+import com.ismartv.api.t.AccessProxy;
 import com.ismartv.bean.ClipInfo;
 import com.qiyi.video.player.IVideoStateListener;
 import com.qiyi.video.player.QiyiVideoPlayer;
@@ -266,8 +266,8 @@ public class QiYiPlayActivity extends Activity {
 		frameContainer.setVisibility(View.VISIBLE);
 		mPlayer = QiyiVideoPlayer.createVideoPlayer(this, frameContainer,
 				flParams, /* bundle */null, mVideoStateListener);
-		
-		mPlayer.setVideo((IPlaybackInfo) bundle.get("iqiyi"));
+		String info =  (String) bundle.get("iqiyi");
+		mPlayer.setVideo(AccessProxy.getQiYiInfo(info));
 		mPlayer.start();
 	}
 

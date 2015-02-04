@@ -46,17 +46,17 @@ public class AccessProxy {
 		return jsonToObject(result);
 	}
 
-	public static String getIsmartvClipInfo() {
+	public static String getvVideoClipInfo() {
 		return result;
 	}
 	public static ClipInfo getIsmartvClipInfo(String content) {
 		return jsonToObject(content);
 	}
-    public static SdkVideo getQiYiInfo( ){
+    public static SdkVideo getQiYiInfo(String content){
     	SdkVideo qiyiInfo = null;	
     	JSONObject json;
     	try {
-    		json = new JSONObject(result);
+    		json = new JSONObject(content);
 			String info = json.getString("iqiyi_4_0");
 			String[] array = info.split(":");
     		qiyiInfo = new SdkVideo(array[0], array[1], array[2],Definition.DEFINITON_1080P);
