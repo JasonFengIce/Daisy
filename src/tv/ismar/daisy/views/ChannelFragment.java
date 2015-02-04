@@ -19,6 +19,8 @@ import tv.ismar.daisy.models.ItemCollection;
 import tv.ismar.daisy.models.ItemList;
 import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
+import tv.ismar.daisy.player.InitPlayerTool;
+import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -468,19 +470,35 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 			mSectionProperties.put(EventProperty.TO_ITEM, item.pk);
 			mSectionProperties.put(EventProperty.TO_TITLE, item.title);
 			mSectionProperties.put(EventProperty.POSITION, position);
+			int sectionIndex = mHGridAdapter.getSectionIndex(position);
+			final Section s = mSectionList.get(sectionIndex);
+			mSectionProperties.put(EventProperty.TITLE, s.title);
+			mSectionProperties.put(EventProperty.SECTION, s.slug);
 			Intent intent = new Intent();
 			if(item.is_complex) {
 				intent.setAction("tv.ismar.daisy.Item");
+				intent.putExtra("url", item.url);
+				intent.putExtra(EventProperty.SECTION, s.slug);
+				startActivity(intent);
 			} else {
-				intent.setAction("tv.ismar.daisy.Play");
+				InitPlayerTool tool = new InitPlayerTool(getActivity());
+				tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
+					
+					@Override
+					public void onPreExecute(Intent intent) {
+						// TODO Auto-generated method stub
+						intent.putExtra(EventProperty.SECTION, s.slug);
+			            mLoadingDialog.show();
+					}
+					
+					@Override
+					public void onPostExecute() {
+						// TODO Auto-generated method stub
+						mLoadingDialog.dismiss();
+					}
+				});
+				tool.initClipInfo(item.url, InitPlayerTool.FLAG_URL);
 			}
-			int sectionIndex = mHGridAdapter.getSectionIndex(position);
-			Section s = mSectionList.get(sectionIndex);
-			mSectionProperties.put(EventProperty.TITLE, s.title);
-			mSectionProperties.put(EventProperty.SECTION, s.slug);
-			intent.putExtra("url", item.url);
-			intent.putExtra(EventProperty.SECTION, s.slug);
-			startActivity(intent);
 		}
 		
 	}

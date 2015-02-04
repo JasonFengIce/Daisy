@@ -15,6 +15,8 @@ import tv.ismar.daisy.core.SearchMovieService;
 import tv.ismar.daisy.core.SearchPromptDialog;
 import tv.ismar.daisy.core.SortMovieUtils;
 import tv.ismar.daisy.models.MovieBean;
+import tv.ismar.daisy.player.InitPlayerTool;
+import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
 import tv.ismar.daisy.views.LoadingDialog;
 import android.app.Activity;
 import android.content.Context;
@@ -429,17 +431,29 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 				hashLog.clear();
 			}
 		}){}.start();
-		if (movieList.get(position).is_complex) {
-			bundle.putString("url", movieList.get(position).url);
-			intent.setAction("tv.ismar.daisy.Item");
-			intent.putExtras(bundle);
-		} else {
-			intent.setAction("tv.ismar.daisy.Play");
-			intent.putExtra("url", movieList.get(position).url);
-		}
 		try {
-			// intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
+			if (movieList.get(position).is_complex) {
+				bundle.putString("url", movieList.get(position).url);
+				intent.setAction("tv.ismar.daisy.Item");
+				intent.putExtras(bundle);
+				startActivity(intent);
+			} else {
+				InitPlayerTool tool = new InitPlayerTool(SearchActivity.this);
+				tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
+					
+					@Override
+					public void onPreExecute(Intent intent) {
+						// TODO Auto-generated method stub
+						loadDialogShow();
+					}					
+					@Override
+					public void onPostExecute() {
+						// TODO Auto-generated method stub
+						loadDialogShow();
+					}
+				});
+				tool.initClipInfo(movieList.get(position).url, InitPlayerTool.FLAG_URL);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

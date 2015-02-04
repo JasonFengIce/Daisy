@@ -25,6 +25,8 @@ import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemCollection;
 import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
+import tv.ismar.daisy.player.InitPlayerTool;
+import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
 import tv.ismar.daisy.views.MenuFragment.MenuItem;
 import tv.ismar.daisy.views.MenuFragment.OnMenuItemClickedListener;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
@@ -366,11 +368,26 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 				Intent intent = new Intent();
 				if(item.is_complex) {
 					intent.setAction("tv.ismar.daisy.Item");
+					intent.putExtra("url", url);
+					startActivity(intent);
 				} else {
-					intent.setAction("tv.ismar.daisy.Play");
+					InitPlayerTool tool = new InitPlayerTool(getActivity());
+					tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
+						
+						@Override
+						public void onPreExecute(Intent intent) {
+							// TODO Auto-generated method stub
+							mLoadingDialog.show();
+						}
+						
+						@Override
+						public void onPostExecute() {
+							// TODO Auto-generated method stub
+							mLoadingDialog.dismiss();
+						}
+					});
+					tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
 				}
-				intent.putExtra("url", url);
-				startActivity(intent);
 			}
 			if(mLoadingDialog!=null && mLoadingDialog.isShowing()) {
 				mLoadingDialog.dismiss();

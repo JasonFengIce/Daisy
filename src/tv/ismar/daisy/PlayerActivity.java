@@ -1772,6 +1772,7 @@ public class PlayerActivity extends Activity implements OnGestureListener {
 		mHandler.removeCallbacks(mUpdateTimeTask);
 		mCheckHandler.removeCallbacks(checkStatus);
 		hidePanelHandler.removeCallbacks(hidePanelRunnable);
+		mHandler.removeCallbacksAndMessages(null);
 	}
 
 	@Override

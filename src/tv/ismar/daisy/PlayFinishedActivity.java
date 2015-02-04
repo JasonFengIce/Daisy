@@ -11,6 +11,8 @@ import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.persistence.FavoriteManager;
 import tv.ismar.daisy.persistence.HistoryManager;
+import tv.ismar.daisy.player.InitPlayerTool;
+import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
 import tv.ismar.daisy.views.AlertDialogFragment;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.LoadingDialog;
@@ -257,13 +259,25 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 					if(history.sub_url!=null) {
 						url = history.sub_url;
 					}
-				}
-				Intent intent = new Intent();
-				intent.putExtra("url", url);
-				intent.setAction("tv.ismar.daisy.Play");			
+				}			
 				try {
-					startActivity(intent);
-					finish();
+					InitPlayerTool tool = new InitPlayerTool(PlayFinishedActivity.this);
+					tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
+						
+						@Override
+						public void onPreExecute(Intent intent) {
+							// TODO Auto-generated method stub
+							loadDialog.show();
+						}
+						
+						@Override
+						public void onPostExecute() {
+							// TODO Auto-generated method stub
+							loadDialog.dismiss();
+							finish();
+						}
+					});
+					tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

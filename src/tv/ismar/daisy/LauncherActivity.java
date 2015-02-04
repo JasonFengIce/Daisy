@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.player.InitPlayerTool;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -102,7 +103,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 	private final static int CACHE_VIDEO_END = 3;
 	private boolean isfinished = false;
 	String url = "cord.tvxio.com/v2_0/A21/dto";
-
+	private SimpleRestClient simpleRestClient;
+	String sn;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -126,7 +128,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 		}
 	}
 
-	String sn;
 	private void register(){
 		new Thread(new Runnable() {
 			
@@ -246,7 +247,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 
 	@Override
 	public void onClick(View view) {
-		Intent intent = new Intent();
+	    intent = new Intent();
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		String content = (String) view.getTag();
 		JSONObject jsonObject;
@@ -264,20 +265,23 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 	}
 
 	public void pickHomeItem(RelativeLayout view) {
-		Intent intent = new Intent();
+	    intent = new Intent();
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		String values[] = view.getTag().toString().split(",");
-		if (values[1].equals("item"))
+		if (values[1].equals("item")){
 			intent.setClassName("tv.ismar.daisy",
 					"tv.ismar.daisy.ItemDetailActivity");
-		else
-			intent.setClassName("tv.ismar.daisy",
-					"tv.ismar.daisy.PlayerActivity");
+			intent.putExtra("url", values[0]);
+			startActivity(intent);
+		}
 
-		intent.putExtra("url", values[0]);
-		startActivity(intent);
+		else{
+			InitPlayerTool tool = new InitPlayerTool(LauncherActivity.this);
+			tool.initClipInfo(InitPlayerTool.FLAG_URL, values[0]);
+		}
 	}
 
+	private Intent intent;
 	private void setFrontPage(String content) {
 		Log.i("hqiguai", content);
 		try {
@@ -611,20 +615,21 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 	View.OnClickListener viewItemClickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View view) {
-			Intent intent = new Intent();
+		    intent = new Intent();
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			String[] values = view.getTag().toString().split(",");
-			if (values[1].equals("item"))
+			if (values[1].equals("item")){
 				intent.setClassName("tv.ismar.daisy",
 						"tv.ismar.daisy.ItemDetailActivity");
-			else
-				intent.setClassName("tv.ismar.daisy",
-						"tv.ismar.daisy.PlayerActivity");
-			intent.putExtra("url", values[0]);
-			startActivity(intent);
+				intent.putExtra("url", values[0]);
+				startActivity(intent);
+			}
+			else{
+				InitPlayerTool tool = new InitPlayerTool(LauncherActivity.this);
+				tool.initClipInfo(values[0], InitPlayerTool.FLAG_URL);
+			}
 		}
 	};
-
 	private Handler mainHandler = new Handler() {
 
 		@Override

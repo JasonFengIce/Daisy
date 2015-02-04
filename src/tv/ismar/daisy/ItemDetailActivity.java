@@ -22,6 +22,8 @@ import tv.ismar.daisy.models.ContentModel;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.player.InitPlayerTool;
+import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
 import tv.ismar.daisy.qiyimediaplayer.SdkVideo;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.DetailAttributeContainer;
@@ -656,82 +658,6 @@ public class ItemDetailActivity extends Activity implements
 			startActivity(intent);
 		}
 	};
-	private SimpleRestClient simpleRestClient;
-    private Intent intent;
-
-	private void initClipInfo(Object item,String flag) {
-		simpleRestClient = new SimpleRestClient();
-		intent = new Intent();
-		Log.d(TAG, " initClipInfo ");
-		new ItemByUrlTask().execute(item,flag);
-	}
-
-	// 初始化播放地址url
-	private class ItemByUrlTask extends AsyncTask<Object, Void, String> {
-
-		@Override
-		protected void onPostExecute(String result) {
-			mLoadingDialog.dismiss();			
-			if(result.equals("iqiyi")){
-				intent.setAction("tv.ismar.daisy.qiyiPlay");
-				String info = AccessProxy.getvVideoClipInfo();
-				intent.putExtra("iqiyi", info);		
-			}
-			else{
-				String ismartv = AccessProxy.getvVideoClipInfo();
-				intent.setAction("tv.ismar.daisy.Play");
-				intent.putExtra("ismartv", ismartv);
-			}
-			if(!"".equals(result))
-			   startActivity(intent);
-		}
-		@Override
-		protected String doInBackground(Object... params) {
-
-			String sn = VodUserAgent.getMACAddress();
-			AccessProxy.init(VodUserAgent.deviceType,
-					VodUserAgent.deviceVersion, sn);
-            String flag = (String) params[1];
-            Item item = null;;
-            if(flag.equals("url")){
-            	try {
-					item = simpleRestClient.getItem((String) params[0]);
-				} catch (JsonSyntaxException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ItemOfflineException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NetworkException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-            }
-            else{
-            	item = (Item) params[0];
-            }
-            String info = "";
-            if(item!=null){
-            	Clip clip = item.clip;
-            	if(item.clip != null){
-                	intent.putExtra("item", item);
-    				info = AccessProxy.getVideoInfo(SimpleRestClient.root_url
-    						+ "/api/clip/" + clip.pk + "/",
-    						VodUserAgent.getAccessToken(sn));
-            	}
-            }
-			return info;
-
-		}
-
-		@Override
-		protected void onPreExecute() {
-			// TODO Auto-generated method stub
-			mLoadingDialog.show();
-			
-		}
-	}
-
 	private OnClickListener mIdOnClickListener = new OnClickListener() {
 
 		@Override
@@ -739,7 +665,22 @@ public class ItemDetailActivity extends Activity implements
 			try {
 				int id = v.getId();
 				Intent intent = new Intent();
-				intent.putExtra(EventProperty.SECTION, mSection);  
+				intent.putExtra(EventProperty.SECTION, mSection);
+				InitPlayerTool tool = new InitPlayerTool(ItemDetailActivity.this);
+				tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
+					
+					@Override
+					public void onPreExecute(Intent intent) {
+						// TODO Auto-generated method stub
+						mLoadingDialog.show();
+					}
+					
+					@Override
+					public void onPostExecute() {
+						// TODO Auto-generated method stub
+						mLoadingDialog.dismiss();
+					}
+				});
 				switch (id) {
 				case R.id.btn_left:
 					String subUrl = null;
@@ -762,10 +703,8 @@ public class ItemDetailActivity extends Activity implements
 					mDataCollectionProperties.put(EventProperty.TITLE, title);
 					mDataCollectionProperties
 							.put(EventProperty.SUBITEM, sub_id);
-					mDataCollectionProperties.put(EventProperty.TO, "play");
-
-
-					initClipInfo(subUrl,"url");
+					mDataCollectionProperties.put(EventProperty.TO, "play");					
+					tool.initClipInfo(subUrl,InitPlayerTool.FLAG_URL);
 					break;
 				case R.id.btn_right:
 					mDataCollectionProperties
@@ -784,7 +723,7 @@ public class ItemDetailActivity extends Activity implements
 					// intent.setClass(ItemDetailActivity.this,
 					// QiYiPlayActivity.class);
 					// startActivity(intent);
-					initClipInfo(mItem,"item");
+					tool.initClipInfo(mItem,InitPlayerTool.FLAG_ITEM);
 					break;
 				case R.id.btn_favorite:
 					if (isFavorite()) {

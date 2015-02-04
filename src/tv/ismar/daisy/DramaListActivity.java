@@ -8,6 +8,8 @@ import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.player.InitPlayerTool;
+import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.LoadingDialog;
 import android.app.Activity;
@@ -170,15 +172,23 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 		mDataCollectionProperties.put("subitem", sub_id);
 		mDataCollectionProperties.put("title", title);
 		mDataCollectionProperties.put("to", "play");
-		Intent intent = new Intent();
-		Bundle bundle = new Bundle();
-//		bundle.putInt("itemPK", mSubItem.pk);
-//		bundle.putInt("subItemPK", mSubItem.item_pk);
-		bundle.putString("url", mSubItem.url);
-		intent.setAction("tv.ismar.daisy.Play");
-		intent.putExtras(bundle);
 		try {
-			startActivity(intent);
+			InitPlayerTool tool = new InitPlayerTool(DramaListActivity.this);
+			tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
+				
+				@Override
+				public void onPreExecute(Intent intent) {
+					// TODO Auto-generated method stub
+					loadDialog.show();
+				}
+				
+				@Override
+				public void onPostExecute() {
+					// TODO Auto-generated method stub
+					loadDialog.dismiss();
+				}
+			});
+			tool.initClipInfo(mSubItem.url, InitPlayerTool.FLAG_URL);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
