@@ -9,47 +9,68 @@
 <!--         android:layout_marginRight="@dimen/search_gridview_marginR" -->
 <!--         android:scrollbars="vertical" -->
 <!--         android:scrollbarDefaultDelayBeforeFade="60000" -->
-<!--         android:scrollbarThumbVertical="@drawable/srollbar" -->
-<!--         android:scrollbarTrackVertical="@drawable/srollbar_backgroud" -->
-<!--         android:scrollbarStyle="outsideInset" -->
+    
 <!--         android:verticalSpacing="@dimen/search_gridview_verticalspacing" -->
+<!--         android:horizontalSpacing="@dimen/related_view_list_horizontalspacing" -->
 <!--         android:numColumns="6" -->
 <!--         android:listSelector="@drawable/grid_selector" -->
 <!--          /> -->
 
 
-    <org.sakuratya.horizontal.ui.ZGridView
+<!--     <org.sakuratya.horizontal.ui.ZGridView -->
+<!--         xmlns:android="http://schemas.android.com/apk/res/android" -->
+<!--         xmlns:sakura="http://schemas.android.com/apk/res/tv.ismar.daisy" -->
+<!--         android:id="@+id/serarc_gridview" -->
+<!--         android:layout_width="wrap_content" -->
+<!--         android:layout_height="match_parent" -->
+<!--         android:layout_marginLeft="@dimen/search_gridview_marginL"  -->
+<!--         android:layout_marginTop="@dimen/search_gridview_marginT" -->
+<!--         android:layout_marginBottom="@dimen/search_gridview_marginB" -->
+<!--         android:layout_marginRight="@dimen/search_gridview_marginR" -->
+<!--         sakura:horizontalSpace="@dimen/related_view_list_horizontalspacing" -->
+<!--         sakura:listSelector="@drawable/vod_gv_selector" -->
+<!--         sakura:numColumns="6" -->
+<!--         sakura:stretchMode="columnWidth" -->
+<!--         sakura:verticalSpace="@dimen/search_gridview_verticalspacing" -->
+<!--         sakura:selectorLeftPadding="@dimen/ZGridView_search_selectorLeftPadding" -->
+<!--         sakura:selectorTopPadding="@dimen/ZGridView_search_selectorTopPadding" -->
+<!--         sakura:selectorRightPadding="@dimen/ZGridView_search_selectorRight" -->
+<!--         sakura:selectorBottomPadding="@dimen/ZGridView_search_selectorBottom" -->
+<!--         android:scrollbars="vertical" -->
+<!--         android:scrollbarDefaultDelayBeforeFade="60000" -->
+<!--         android:scrollbarThumbVertical="@drawable/srollbar" -->
+<!--         android:scrollbarTrackVertical="@drawable/srollbar_backgroud" -->
+<!--         android:scrollbarStyle="outsideInset"  -->
+<!--         > -->
+<!--     </org.sakuratya.horizontal.ui.ZGridView> -->
+
+
+
+
+
+
+    <org.sakuratya.horizontal.ui.HGridView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:sakura="http://schemas.android.com/apk/res/tv.ismar.daisy"
-        android:id="@+id/serarc_gridview"
-        android:layout_width="wrap_content"
+       android:id="@+id/serarc_gridview"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fadingEdge="horizontal"
         android:layout_marginLeft="@dimen/search_gridview_marginL" 
         android:layout_marginTop="@dimen/search_gridview_marginT"
         android:layout_marginBottom="@dimen/search_gridview_marginB"
         android:layout_marginRight="@dimen/search_gridview_marginR"
-        sakura:horizontalSpace="@dimen/related_view_list_horizontalspacing"
-        sakura:listSelector="@drawable/vod_gv_selector"
-        sakura:numColumns="6"
-        sakura:stretchMode="columnWidth"
-        sakura:verticalSpace="@dimen/search_gridview_verticalspacing"
-        sakura:selectorLeftPadding="@dimen/ZGridView_search_selectorLeftPadding"
-        sakura:selectorTopPadding="@dimen/ZGridView_search_selectorTopPadding"
-        sakura:selectorRightPadding="@dimen/ZGridView_search_selectorRight"
-        sakura:selectorBottomPadding="@dimen/ZGridView_search_selectorBottom"
-        android:scrollbars="vertical"
-        android:scrollbarDefaultDelayBeforeFade="60000"
-        android:scrollbarThumbVertical="@drawable/srollbar"
-        android:scrollbarTrackVertical="@drawable/srollbar_backgroud"
-        android:scrollbarStyle="outsideInset" 
-        >
-    </org.sakuratya.horizontal.ui.ZGridView>
-
-
-
-
-
-
+        android:fadingEdgeLength="@dimen/gridview_main_panel_fadingEdgeLength"
+        sakura:horizontalSpacing="@dimen/related_view_list_horizontalspacing"
+        sakura:numRows="2"
+        sakura:rowHeight="@dimen/gridview_main_panel_rowHeight"
+        sakura:selectorDrawable="@drawable/vod_gv_selector"
+        sakura:verticalSpacing="@dimen/search_gridview_verticalspacing"
+        sakura:selectionLeftPadding="@dimen/ZGridView_search_selectorLeftPadding"
+        sakura:selectionTopPadding="@dimen/ZGridView_search_selectorTopPadding"
+        sakura:selectionRightPadding="@dimen/ZGridView_search_selectorRight"
+        sakura:selectionBottomPadding="@dimen/ZGridView_search_selectorBottom">
+    </org.sakuratya.horizontal.ui.HGridView>
 
 
 

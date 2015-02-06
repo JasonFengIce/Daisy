@@ -1,5 +1,4 @@
 <resources>
-    <!-- item detail page-->
     <dimen name="item_detail_detail_left_container_width">854dp</dimen>
     <dimen name="item_detail_vod_watermark_width">446dip</dimen>
     <dimen name="item_detail_vod_watermark_height">103dip</dimen>
@@ -69,7 +68,7 @@
     <dimen name="item_detail_related_W">426dip</dimen>
     <dimen name="item_detail_btn_layout_marginB">8dip</dimen>
     <dimen name="item_detail_Btn_Layout_marginT">12dip</dimen>
-    <!-- grid listview page-->
+    <!-- grid listview page -->
     <dimen name="gridview_channel_panel_height">60dip</dimen>
     <dimen name="gridview_channel_panel_marginBottom">13dp</dimen>
     <dimen name="gridview_channel_label_width">250dip</dimen>
@@ -136,7 +135,6 @@
     <dimen name="popup_dialog_lbutton_width">293dip</dimen>
     <dimen name="popup_dialog_rbutton_width">214dip</dimen>
     <dimen name="popup_dialog_button_textsize">27sp</dimen>
-
 
     <!-- related_item -->
     <dimen name="related_item_layout_H">119dip</dimen>
@@ -461,4 +459,54 @@
 
     <!-- advertisement-->
     <dimen name="adver_timer_textsize">32sp</dimen>
+
+
+    <!-- package detail -->
+    <dimen name="ZGridView_packagedetail_selectorLeftPadding">3dip</dimen>
+    <dimen name="ZGridView_packagedetail_selectorTopPadding">1dip</dimen>
+    <dimen name="ZGridView_packagedetail_selectorRight">2dip</dimen>
+    <dimen name="ZGridView_packagedetail_selectorBottom">-22dip</dimen>
+    <dimen name="vod_payment_package_details_container_ML">80dip</dimen>
+    <dimen name="vod_payment_package_details_container_MT">100dip</dimen>
+    <dimen name="package_detail_divider_W">1152dip</dimen>
+    <dimen name="package_detail_divider_H">1dip</dimen>
+    <dimen name="package_detail_divider_MT">42dip</dimen>
+    <dimen name="package_detail_divider_cMT">598dip</dimen>
+    <dimen name="vod_payment_pacakge_title_MT">60dip</dimen>
+    <dimen name="vod_payment_packageDescribe_content_W">590dip</dimen>
+    <dimen name="vod_payment_packageDescribe_content_MT">15dip</dimen>
+    <dimen name="vod_payment_package_posterAndBuyBotton_container_W">480dip</dimen>
+    <dimen name="vod_payment_package_posterAndBuyBotton_container_H">272dip</dimen>
+    <dimen name="vod_payment_package_posterAndBuyBotton_container_ML">752dip</dimen>
+    <dimen name="vod_payment_package_posterAndBuyBotton_container_MT">163dip</dimen>
+    <dimen name="vod_payment_poster_W">480dip</dimen>
+    <dimen name="vod_payment_poster_H">270dip</dimen>
+    <dimen name="vod_payment_poster_MLR">4dip</dimen>
+    <dimen name="vod_payment_price_MT">230dip</dimen>
+    <dimen name="vod_payment_price_textsize">24sp</dimen>
+    <dimen name="vod_payment_buyButton_W">460dip</dimen>
+    <dimen name="vod_payment_buyButton_H">72dip</dimen>
+    <dimen name="vod_payment_buyButton_ML">80dip</dimen>
+    <dimen name="vod_payment_buyButton_MT">450dip</dimen>
+    <dimen name="vod_payment_package_title_ML">80dip</dimen>
+    <dimen name="vod_payment_package_title_MT">556dip</dimen>
+    <dimen name="vod_payment_item_of_package_container_ML">40dip</dimen>
+    <dimen name="vod_payment_item_of_package_container_MT">630dip</dimen>
+    <dimen name="vod_payment_item_of_package_container_horizontalSpace">20dip</dimen>
+    <dimen name="vod_payment_item_more_W">221dip</dimen>
+    <dimen name="vod_payment_item_more_H">62dip</dimen>
+    <dimen name="vod_payment_item_more_ML">990dip</dimen>
+    <dimen name="vod_payment_item_more_MT">920dip</dimen>
+    <dimen name="vod_payment_packageDescribe_textsize">30sp</dimen>
+
+    <!-- package detail item -->
+    <dimen name="package_item_default_W">364dip</dimen>
+    <dimen name="package_item_default_H">224dip</dimen>
+    <dimen name="package_item_ItemImage_W">320dip</dimen>
+    <dimen name="package_item_ItemImage_H">180dip</dimen>
+    <dimen name="package_item_ItemImage_MT">22dip</dimen>
+    <dimen name="package_item_ItemText_MT">7dip</dimen>
+    <dimen name="package_item_ItemText_PLR">8dip</dimen>
+
 </resources>
+

@@ -19,6 +19,9 @@ import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemList;
 import tv.ismar.daisy.models.SectionList;
 
+import android.os.AsyncTask;
+import android.view.View;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -32,6 +35,9 @@ public class SimpleRestClient {
 	public static String root_url = "http://cord.tvxio.com/v2_0/A21/dto";
 	public static String sRoot_url = "http://cord.tvxio.com/v2_0/A21/dto";
     public static String ad_domain = "lilac.tvxio.com";
+    public static String log_domain = "cord.tvxio.com";
+    public static String device_token;
+    public static String sn_token;
 	private Gson gson;
 
 	public SimpleRestClient() {
@@ -236,4 +242,59 @@ public SectionList getsectionss(String content){
 		return null;
 	}
 
+	public void post(String url,String params,HttpPostRequestInterface l){
+		//NetworkUtils.getJsonStrByPost(url, "");
+		RequestParams q = new RequestParams();
+		handler = l;
+		q.url = root_url + url;
+		q.values = params;
+		new GetDataTask().execute(q);
+	}
+	
+	class GetDataTask extends AsyncTask<RequestParams, Void, String> {
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			if(handler!=null){
+				handler.onPrepare();
+			}
+		}
+		@Override
+		protected String doInBackground(RequestParams... params) {
+			String jsonStr = "";
+			try {
+				RequestParams p = params[0];
+				String url = p.url;
+				String values = p.values;
+				jsonStr = NetworkUtils.getJsonStrByPost(url, values);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return jsonStr;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			
+			if(handler!=null){
+				handler.onSuccess("");
+			}
+		}
+
+	}
+	public class RequestParams{
+		public String url;
+		public String values;
+	}
+	public void setHttpPostRequestInterface(HttpPostRequestInterface l){
+		handler = l;
+	}
+	private HttpPostRequestInterface handler;
+	public interface HttpPostRequestInterface{
+		public void onPrepare();
+		public void onSuccess(String info);
+		public void onFailed(String error);
+	} 
 }

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/person_center_bg"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="2dip"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="20dip"
+            android:background="@drawable/divider_person" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/divider"
+            android:layout_marginLeft="20dip"
+            android:gravity="left|center_vertical"
+            android:text="个人中心"
+            android:textColor="#FFF8F8FF"
+            android:textSize="60sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_marginTop="4dip"
+        android:layout_weight="5"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="90dip" >
+
+            <Button
+                android:layout_width="400dip"
+                android:layout_height="80dip"
+                android:background="@drawable/person_btn_selector"
+                android:gravity="center"
+                android:text=" 个人信息"
+                android:textColor="#FFF8F8FF"
+                android:textSize="35.0sp" />
+
+            <Button
+                android:layout_width="400dip"
+                android:layout_height="80dip"
+                android:layout_marginTop="35dip"
+                android:background="@drawable/person_btn_selector"
+                android:gravity="center"
+                android:text="登录/注册"
+                android:textColor="#FFF8F8FF"
+                android:textSize="35.0sp" />
+
+            <Button
+                android:layout_width="400dip"
+                android:layout_height="80dip"
+                android:layout_marginTop="35dip"
+                android:background="@drawable/person_btn_selector"
+                android:gravity="center"
+                android:text="客服中心"
+                android:textColor="#FFF8F8FF"
+                android:textSize="35.0sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/divider2"
+            android:layout_width="2dip"
+            android:layout_height="match_parent"
+            android:background="@drawable/portrait_divider_person" />
+
+        <LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="5" >
+
+            <include
+                android:id="@+id/info"
+                layout="@layout/person_info_layout" 
+                android:visibility="gone"/>
+               <include
+                android:id="@+id/login"
+                layout="@layout/person_center_login"
+                android:visibility="gone" />
+               <tv.ismar.daisy.views.LoginPanelView
+                   android:id="@+id/login_layout" 
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent">
+                   
+               </tv.ismar.daisy.views.LoginPanelView>
+        </LinearLayout>
+    </LinearLayout>
+    <TextView 
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1.9"
+            android:visibility="invisible"/>
+</LinearLayout>

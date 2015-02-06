@@ -34,18 +34,23 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.View.OnGenericMotionListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -75,10 +80,13 @@ public class ItemDetailActivity extends Activity implements
 	private Button mBtnRight;
 	private Button mBtnFill;
 	private Button mBtnFavorite;
+	private Button mBtnLeftBuy;
+	private Button mBtnFillBuy;
 	private LinearLayout mDetailRightContainer;
 	private LinearLayout mRelatedVideoContainer;
 	private Button mMoreContent;
-
+    private TextView detail_price_txt;
+    private TextView detail_duration_txt;
 	private DetailAttributeContainer mDetailAttributeContainer;
 
 	private LoadingDialog mLoadingDialog;
@@ -98,7 +106,7 @@ public class ItemDetailActivity extends Activity implements
 
 	private String mSection = "";
 
-	private void initViews() {
+	private void initViews() {	
 		mDetailLeftContainer = (RelativeLayout) findViewById(R.id.detail_left_container);
 		mDetailAttributeContainer = (DetailAttributeContainer) findViewById(R.id.detail_attribute_container);
 		mDetailTitle = (TextView) findViewById(R.id.detail_title);
@@ -110,22 +118,25 @@ public class ItemDetailActivity extends Activity implements
 		mBtnRight = (Button) findViewById(R.id.btn_right);
 		mBtnFill = (Button) findViewById(R.id.btn_fill);
 		mBtnFavorite = (Button) findViewById(R.id.btn_favorite);
+		mBtnFillBuy = (Button)findViewById(R.id.btn_fill_buy);
 		mDetailRightContainer = (LinearLayout) findViewById(R.id.detail_right_container);
 		mRelatedVideoContainer = (LinearLayout) findViewById(R.id.related_video_container);
 		mMoreContent = (Button) findViewById(R.id.more_content);
-
+		detail_price_txt = (TextView)findViewById(R.id.detail_price_txt);
+		detail_duration_txt = (TextView)findViewById(R.id.detail_duration_txt);
 		mMoreContent.setOnFocusChangeListener(mRelatedOnFocusChangeListener);
 		mBtnLeft.setOnFocusChangeListener(mLeftElementFocusChangeListener);
 		mBtnRight.setOnFocusChangeListener(mLeftElementFocusChangeListener);
 		mBtnFill.setOnFocusChangeListener(mLeftElementFocusChangeListener);
 		mBtnFill.setOnFocusChangeListener(mLeftElementFocusChangeListener);
 		mBtnFavorite.setOnFocusChangeListener(mLeftElementFocusChangeListener);
-
+        
 		mBtnLeft.setOnClickListener(mIdOnClickListener);
 		mBtnRight.setOnClickListener(mIdOnClickListener);
 		mBtnFill.setOnClickListener(mIdOnClickListener);
 		mBtnFavorite.setOnClickListener(mIdOnClickListener);
 		mMoreContent.setOnClickListener(mIdOnClickListener);
+		mBtnFillBuy.setOnClickListener(mIdOnClickListener);
 	}
 
 	@Override
@@ -333,6 +344,13 @@ public class ItemDetailActivity extends Activity implements
 		 * if this item is a drama , the button should split to two. otherwise.
 		 * use one button.
 		 */
+
+
+		if (isDrama) {
+			String url = mItem.item_url == null ? SimpleRestClient.sRoot_url
+					+ "/api/item/" + mItem.pk + "/" : mItem.item_url;
+			mHistory = DaisyUtils.getHistoryManager(this).getHistoryByUrl(url);
+		}
 		if (mItem.subitems == null || mItem.subitems.length == 0) {
 			isDrama = false;
 			mBtnFill.setVisibility(View.VISIBLE);
@@ -346,15 +364,21 @@ public class ItemDetailActivity extends Activity implements
 			mBtnRight.setVisibility(View.VISIBLE);
 			mBtnLeft.requestFocus();
 		}
-
-		if (isDrama) {
-			String url = mItem.item_url == null ? SimpleRestClient.sRoot_url
-					+ "/api/item/" + mItem.pk + "/" : mItem.item_url;
-			mHistory = DaisyUtils.getHistoryManager(this).getHistoryByUrl(url);
-		}
-
 		mDetailTitle.setText(mItem.title);
+		if(mItem.expense!=null){
+			detail_price_txt.setText("￥"+mItem.expense.price);
+			detail_duration_txt.setText("有效期"+mItem.expense.duration+"天");
+			detail_price_txt.setVisibility(View.VISIBLE);
+			detail_duration_txt.setVisibility(View.VISIBLE);
+			if(mItem.subitems == null || mItem.subitems.length == 0){
+				mBtnFill.setVisibility(View.GONE);
+				mBtnFillBuy.setText(R.string.buy_video);
+				mBtnFillBuy.setVisibility(View.VISIBLE);
+			}
+		}
+		else{
 
+		}
 		/*
 		 * Build detail attributes list using a given order according to
 		 * ContentModel's define. we also need to add some common attributes
@@ -566,6 +590,11 @@ public class ItemDetailActivity extends Activity implements
 					.findViewById(R.id.related_focus);
 			ImageView qualityLabel = (ImageView) relatedHolder
 					.findViewById(R.id.related_quality_label);
+			TextView related_price_txt = (TextView)relatedHolder.findViewById(R.id.related_price_txt);
+			if(mRelatedItem[i].expense!=null){
+				related_price_txt.setVisibility(View.VISIBLE);
+				related_price_txt.setText("￥"+mRelatedItem[i].expense.price);
+			}
 			if (mRelatedItem[i].quality == 3) {
 				qualityLabel.setImageResource(R.drawable.label_hd_small);
 			} else if (mRelatedItem[i].quality == 4
@@ -637,7 +666,7 @@ public class ItemDetailActivity extends Activity implements
 	private OnClickListener mRelatedClickListener = new OnClickListener() {
 
 		@Override
-		public void onClick(View v) {
+		public void onClick(View v) {			
 			String url = (String) v.getTag();
 			final Item[] relatedItem = mRelatedItem;
 			for (Item item : relatedItem) {
@@ -656,8 +685,10 @@ public class ItemDetailActivity extends Activity implements
 			intent.setAction(action);
 			intent.putExtra("url", url);
 			startActivity(intent);
+			
 		}
 	};
+	
 	private OnClickListener mIdOnClickListener = new OnClickListener() {
 
 		@Override
@@ -769,6 +800,17 @@ public class ItemDetailActivity extends Activity implements
 					intent.setClass(ItemDetailActivity.this,
 							RelatedActivity.class);
 					startActivity(intent);
+					break;
+				case R.id.btn_fill_buy:
+					//
+//					 LayoutInflater mLayoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);  
+//					    View menuView = (View) mLayoutInflater.inflate(  
+//					            R.layout.payment_pay_main, null, true);  
+//					    PopupWindow pw = new PopupWindow(menuView, LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT,  
+//					            true); 
+//					    pw.setBackgroundDrawable(new ColorDrawable(0x99000000));   
+//					    pw.setOutsideTouchable(true); // 设置是否允许在外点击使其消失，到底有用没？  
+//					    pw.showAtLocation(mBtnFillBuy, Gravity.CENTER, 0, 0) ;
 					break;
 				}
 			} catch (Exception e) {

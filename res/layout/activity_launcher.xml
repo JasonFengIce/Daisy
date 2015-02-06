@@ -68,14 +68,15 @@
                     />
 
         </LinearLayout>
-<!--              <ImageButton -->
-<!--                     android:id="@+id/ibtn_search" -->
-<!--                     android:layout_width="wrap_content" -->
-<!--                     android:layout_height="wrap_content" -->
-<!--                     android:layout_marginLeft="@dimen/search_main_btn_search_marginL" -->
-<!--                     android:layout_marginTop="@dimen/search_main_btn_search_marginT" -->
-<!--                     android:background="@drawable/search_btn" -->
-<!--                     android:clickable="true" /> -->
+             <Button
+                    android:text="用户中心"
+                    android:id="@+id/btn_personcenter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/search_main_btn_search_marginL"
+                    android:layout_marginTop="@dimen/search_main_btn_search_marginT"
+                    android:background="@android:color/holo_orange_dark"
+                    android:clickable="true" />
     </LinearLayout>
 
     <LinearLayout
