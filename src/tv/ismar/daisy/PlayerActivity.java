@@ -65,7 +65,7 @@ import com.qiyi.video.player.player.PlayerError;
 import com.qiyi.video.utils.LogUtils;
 import android.view.GestureDetector.OnGestureListener;
 
-public class PlayerActivity extends Activity implements OnGestureListener {
+public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 
 	@SuppressWarnings("unused")
 	private static final String SAMPLE = "http://114.80.0.33/qyrrs?url=http%3A%2F%2Fjq.v.tvxio.com%2Fcdn%2F0%2F7b%2F78fadc2ffa42309bda633346871f26%2Fhigh%2Fslice%2Findex.m3u8&quality=high&sn=weihongchang_s52&clipid=779521&sid=85d3f919a918460d9431136d75db17f03&sign=08a868ad3c4e3b37537a13321a6f9d4b";
@@ -1568,11 +1568,9 @@ public class PlayerActivity extends Activity implements OnGestureListener {
 					timeBar.setProgress(progress);
 					Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
 				}
-
+				showPanel();
 				updataTimeText();
-
 			}
-
 		}
 
 		@Override
