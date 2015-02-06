@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import tv.ismar.daisy.exception.ItemOfflineException;
@@ -28,8 +29,8 @@ public class SimpleRestClient {
 
 	// public static String sRoot_url = "http://127.0.0.1:21098/cord";
 
-	public static String root_url = "http://cord.tvxio.com12";
-	public static String sRoot_url = "http://cord.tvxio.com12";
+	public static String root_url = "http://cord.tvxio.com/v2_0/A21/dto";
+	public static String sRoot_url = "http://cord.tvxio.com/v2_0/A21/dto";
     public static String ad_domain = "lilac.tvxio.com";
 	private Gson gson;
 
@@ -77,10 +78,15 @@ public class SimpleRestClient {
 		            response.append(line);
 		        }
 		        reader.close();
-		        if(url.equals("register")&&line==null)
+		        if(url.equals("register")&&line==null){
+			        connection.disconnect();
 		        	return "200" ;
+		        }		        	
 	        }
-	        connection.disconnect();
+	        else{
+	        	connection.disconnect();
+	        	return "";
+	        }
 		 }
 		 catch(IOException e){
 			 e.printStackTrace();
@@ -190,7 +196,10 @@ public class SimpleRestClient {
 		}
 		return null;
 	}
-
+public SectionList getsectionss(String content){
+	SectionList list = gson.fromJson(content, SectionList.class);
+	return list;
+}
 	public ItemList getItemList(String url) throws NetworkException,
 			ItemOfflineException {
 		try {

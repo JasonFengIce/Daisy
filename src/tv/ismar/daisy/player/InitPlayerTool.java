@@ -26,7 +26,6 @@ public class InitPlayerTool {
 	
 	public void initClipInfo(Object item,String flag) {
 		simpleRestClient = new SimpleRestClient();
-		intent = new Intent();
 		new ItemByUrlTask().execute(item,flag);
 	}
 

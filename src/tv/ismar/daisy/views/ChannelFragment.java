@@ -158,6 +158,17 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 				}
 				if(mSectionList==null && !isCancelled()){
 					mSectionList = mRestClient.getSections(url);
+//					try{ 
+//						HttpClient httpClient = new DefaultHttpClient(); 
+//						//仿地址链接直接跟参数，如：http://127.0.0.1:8080/test/test.php?name=; 
+//						HttpGet httpGet = new HttpGet(url); 
+//						HttpResponse httpResponse = httpClient.execute(httpGet); 
+//						if(httpResponse.getStatusLine().getStatusCode()==200){ 
+//						String result = EntityUtils.toString(httpResponse.getEntity(),"UTF-8"); 
+//						Log.i("qqq", "result="+result);
+//						mSectionList = mRestClient.getsectionss(result);
+//						} 
+//						}catch(Exception e){} 
 				}
 				if(mSectionList!=null) {
 					mItemCollections = new ArrayList<ItemCollection>();

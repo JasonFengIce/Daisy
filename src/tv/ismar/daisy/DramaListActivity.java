@@ -185,7 +185,8 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 				@Override
 				public void onPostExecute() {
 					// TODO Auto-generated method stub
-					loadDialog.dismiss();
+					if(loadDialog!=null)
+					  loadDialog.dismiss();
 				}
 			});
 			tool.initClipInfo(mSubItem.url, InitPlayerTool.FLAG_URL);

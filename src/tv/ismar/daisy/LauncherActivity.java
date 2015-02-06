@@ -14,9 +14,15 @@ import org.json.JSONObject;
 
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.exception.ItemOfflineException;
+import tv.ismar.daisy.exception.NetworkException;
+import tv.ismar.daisy.models.SectionList;
 import tv.ismar.daisy.player.InitPlayerTool;
+import tv.ismar.daisy.views.CustomDialog;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -41,7 +47,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.google.gson.Gson;
 import com.ismartv.launcher.data.ChannelEntity;
 import com.ismartv.launcher.data.FrontPageEntity;
@@ -114,20 +119,49 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 		getWindowManager().getDefaultDisplay().getMetrics(metric);
 		int height = metric.heightPixels; // 屏幕高度（像素）
 		int densityDpi = metric.densityDpi; // 屏幕密度DPI（120 / 160 / 240）
-		Log.i("zjq", "densityDpi==" + densityDpi + "heightPixels=" + height);
 		float rate = (float) densityDpi / (float) 160;
 		VodApplication.rate = rate;
 		String domain = DaisyUtils.getVodApplication(this).getPreferences().getString("domain", "");
-		Log.i("qqq", "application oncreate");
 		if("".equals(domain))
 		    register();
 		else{
 			SimpleRestClient.root_url = domain;
 			SimpleRestClient.sRoot_url = domain;
 			mainHandler.sendEmptyMessage(GETDOMAIN);
-		}
+		}	
+		 String sn = Build.SERIAL;
+		 Log.i("qqq", "sn=="+sn);
 	}
-
+	Dialog dialog = null;;
+	private DialogInterface.OnClickListener mPositiveListener;
+	private DialogInterface.OnClickListener mNegativeListener;
+	
+	private void showDialog(){
+		if(dialog==null){
+		       mPositiveListener = new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						// TODO Auto-generated method stub
+						dialog.dismiss();
+						register();
+					}
+				};
+				mNegativeListener = new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						// TODO Auto-generated method stub
+						dialog.dismiss();
+					}
+				};
+			 dialog = new CustomDialog.Builder(this)
+				.setMessage(R.string.vod_get_data_error)
+				.setPositiveButton(R.string.vod_retry, mPositiveListener)
+				.setNegativeButton(R.string.vod_ok, mNegativeListener).create();
+		}
+		dialog.show();
+	}
 	private void register(){
 		new Thread(new Runnable() {
 			
@@ -141,7 +175,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 			     String responseCode = SimpleRestClient.readContentFromPost("register", sn);
 			     if(responseCode!=null&&responseCode.equals("200")){
 			    	 active();
-			    	 mainHandler.sendEmptyMessage(GETDOMAIN);
 			     }
 			}
 		}).start();
@@ -152,22 +185,20 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 			try {
 				JSONObject json = new JSONObject(content);
 				String domain = json.getString("domain");
-				try {
-					Thread.sleep(10000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 				SimpleRestClient.root_url = "http://"+domain;
 				SimpleRestClient.sRoot_url = "http://"+domain;
 				SimpleRestClient.ad_domain = "http://"+json.getString("ad_domain");
 				DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString("domain", SimpleRestClient.root_url);
 				DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString("ad_domain", SimpleRestClient.ad_domain);
 				DaisyUtils.getVodApplication(LauncherActivity.this).save();
+		    	mainHandler.sendEmptyMessage(GETDOMAIN);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+		else{
+			showDialog();
 		}
 	}
 	private void initViews() {
@@ -283,7 +314,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 
 	private Intent intent;
 	private void setFrontPage(String content) {
-		Log.i("hqiguai", content);
 		try {
 			Gson gson = new Gson();
 			FrontPageEntity frontBeans = gson.fromJson(content.toString(),
@@ -300,6 +330,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 					.getAbsolutePath() + "/VideoCache/" + realname;
 			// videoView.setVideoPath(mLocalPath);
 			// videoView.start();
+			//mRemoteUrl = mRemoteUrl.substring(0, mRemoteUrl.lastIndexOf("?"));
+			//mRemoteUrl  = mRemoteUrl + "?" + "sn=" + Build.SERIAL;
 			playvideo();
 			videoView.setKeepScreenOn(true);
 
@@ -492,7 +524,15 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 			// super.handleMessage(msg);
 		}
 	};
-
+    private void startPlayVideo(String path){
+    	try{
+    		videoView.setVideoPath(mLocalPath);
+    		videoView.start();
+    	}
+    	catch(Exception e){
+    		
+    	}
+    }
 	private void setChannels(String content) {
 		Gson gson = new Gson();
 		ChannelEntity[] channelBeans = gson.fromJson(content.toString(),
@@ -679,7 +719,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 					connection.setReadTimeout(4000);
 					connection.connect();
 					BufferedReader reader = new BufferedReader(
-							new InputStreamReader(connection.getInputStream()));
+							new InputStreamReader(connection.getInputStream(),"UTF-8"));
 					String lines;
 					while ((lines = reader.readLine()) != null) {
 						content.append(lines);
@@ -709,17 +749,14 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 				super.run();
 				StringBuffer content = new StringBuffer();
 				try {
-					Log.i("qqq", "url==" + SimpleRestClient.root_url);
 					URL getUrl = new URL(SimpleRestClient.root_url
-							+ "/api/tv/frontpage/");
-					Log.i("hqiguai", "url==" + SimpleRestClient.root_url
 							+ "/api/tv/frontpage/");
 					HttpURLConnection connection = (HttpURLConnection) getUrl
 							.openConnection();
 					connection.setReadTimeout(4000);
 					connection.connect();
 					BufferedReader reader = new BufferedReader(
-							new InputStreamReader(connection.getInputStream()));
+							new InputStreamReader(connection.getInputStream(),"UTF-8"));
 					String lines;
 					while ((lines = reader.readLine()) != null) {
 						content.append(lines);
@@ -756,7 +793,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 					connection.setReadTimeout(9000);
 					connection.connect();
 					BufferedReader reader = new BufferedReader(
-							new InputStreamReader(connection.getInputStream()));
+							new InputStreamReader(connection.getInputStream(),"UTF-8"));
 					String lines;
 					while ((lines = reader.readLine()) != null) {
 						content.append(lines);
@@ -793,7 +830,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 					connection.setReadTimeout(19000);
 					connection.connect();
 					BufferedReader reader = new BufferedReader(
-							new InputStreamReader(connection.getInputStream()));
+							new InputStreamReader(connection.getInputStream(),"UTF-8"));
 					String lines;
 					while ((lines = reader.readLine()) != null) {
 						content.append(lines);
@@ -829,7 +866,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 					connection.setReadTimeout(4000);
 					connection.connect();
 					BufferedReader reader = new BufferedReader(
-							new InputStreamReader(connection.getInputStream()));
+							new InputStreamReader(connection.getInputStream(),"UTF-8"));
 					String lines;
 					while ((lines = reader.readLine()) != null) {
 						content.append(lines);

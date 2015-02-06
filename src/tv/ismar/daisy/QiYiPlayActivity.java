@@ -161,7 +161,6 @@ public class QiYiPlayActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.vod_player);
         initView();
-        Log.i("qqq12", "iqiyi");
 	}
 
 	public void initView() {
@@ -253,7 +252,10 @@ public class QiYiPlayActivity extends Activity {
 		DaisyUtils.getVodApplication(this).addActivityToPool(
 		this.toString(), this);
 		bundle = getIntent().getExtras();
-		
+		item = (Item) bundle.get("item");
+		if(item!=null){
+			Log.i("qq123", "pk");
+		}
 		showBuffer();
 		initQiyiVideoPlayer();
 	}

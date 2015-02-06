@@ -153,14 +153,16 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 		// This ItemCollection's currentIndex has been filled.
 		if(mList.get(sectionIndex).isItemReady(indexOfCurrentSection)) {
 			final Item item = mList.get(sectionIndex).objects.get(indexOfCurrentSection);
-			holder.title.setText(item.title);
-			holder.previewImage.setUrl(item.adlet_url);
-			if(item.quality==3) {
-				holder.qualityLabel.setImageResource(R.drawable.label_hd_small);
-			} else if(item.quality==4 || item.quality==5) {
-				holder.qualityLabel.setImageResource(R.drawable.label_uhd_small);
-			} else {
-				holder.qualityLabel.setImageDrawable(null);
+			if(item!=null){
+				holder.title.setText(item.title);
+				holder.previewImage.setUrl(item.adlet_url);
+				if(item.quality==3) {
+					holder.qualityLabel.setImageResource(R.drawable.label_hd_small);
+				} else if(item.quality==4 || item.quality==5) {
+					holder.qualityLabel.setImageResource(R.drawable.label_uhd_small);
+				} else {
+					holder.qualityLabel.setImageDrawable(null);
+				}
 			}
 		} else {
 			// This ItemCollection's currentIndex has not filled yet.

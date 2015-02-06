@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -16,7 +17,11 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.zip.GZIPInputStream;
 
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,20 +47,32 @@ public class NetworkUtils {
 		try {
 			URL url = new URL(urlStr);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
 			StringBuffer sb = new StringBuffer();
-//			conn.addRequestProperty("User-Agent", UA);
-//			conn.addRequestProperty("Accept", "application/json");
+			//conn.addRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.94 Safari/537.36");
+//			conn.addRequestProperty("Accept", "*/*");
+//			conn.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			//conn.addRequestProperty("Accept-Encoding", "gzip,deflate,sdch");
+			conn.setUseCaches(false);
+			conn.connect();
 			int resCode = conn.getResponseCode();
+			GZIPInputStream is = null;
+			BufferedReader buff ;
+			String encoding = conn.getContentEncoding();
+//			 if(encoding!=null && encoding.contains("gzip")){//首先判断服务器返回的数据是否支持gzip压缩，
+//					is = new GZIPInputStream(conn.getInputStream());
+//					buff = new BufferedReader(new InputStreamReader(is,"UTF-8")); //如果支持则应该使用GZIPInputStream解压，否则会出现乱码无效数据
+//				}
+//			 else{
+//				 buff = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
+//			 }
+			 buff = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
 			switch(resCode) {
 			case 404:
 				throw new ItemOfflineException(urlStr);
 			case 599:
 				throw new NetworkException(urlStr);
-			}
-				
-			
-			InputStream in = conn.getInputStream();
-			BufferedReader buff = new BufferedReader(new InputStreamReader(in));
+			}							          			 
 			String line = null;
 			while((line=buff.readLine())!=null) {
 				sb.append(line);
@@ -72,7 +89,6 @@ public class NetworkUtils {
 		}
 		return null;
 	}
-	
 	public static InputStream getInputStream(String target) {
 		String urlStr = target;
 		try {
