@@ -27,6 +27,7 @@ import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -92,22 +93,26 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		mChannelLabel = (TextView) fragmentView.findViewById(R.id.channel_label);
 		mChannelLabel.setText(mTitle);
 	}
-
+	View fragmentView;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		mLoadingDialog = new LoadingDialog(getActivity(), getResources().getString(R.string.loading));
-		mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
-		View fragmentView = inflater.inflate(R.layout.list_view, container, false);
-		initViews(fragmentView);
-		mInitTask = new InitTask();
-		mInitTask.execute(mUrl, mChannel);
-		// Add data collection.
-		HashMap<String, Object> properties = new HashMap<String, Object>();
-		properties.put(EventProperty.CATEGORY, mChannel);
-		properties.put(EventProperty.TITLE, mTitle);
-		
-		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_CHANNEL_IN, properties);
+		if(fragmentView==null){
+			Log.i("zhangjq123","onCreateView");
+			mLoadingDialog = new LoadingDialog(getActivity(), getResources().getString(R.string.loading));
+			mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
+			fragmentView = inflater.inflate(R.layout.list_view, container, false);
+			initViews(fragmentView);
+			mInitTask = new InitTask();
+			mInitTask.execute(mUrl, mChannel);
+			// Add data collection.
+			HashMap<String, Object> properties = new HashMap<String, Object>();
+			properties.put(EventProperty.CATEGORY, mChannel);
+			properties.put(EventProperty.TITLE, mTitle);
+			
+			new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_CHANNEL_IN, properties);
+		}
+
 		return fragmentView;
 	}
 	
@@ -192,6 +197,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 
 		@Override
 		protected void onPostExecute(Integer result) {
+			Log.i("zhangjq123","onPostExecute");
 			if(mLoadingDialog!=null && mLoadingDialog.isShowing()) {
 				mLoadingDialog.dismiss();
 			}
@@ -200,23 +206,31 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, (mInitTask = new InitTask()), new String[]{url, channel});
 				return;
 			}
-			if(mSectionList!=null ) {
-				if(mSectionList.size()>5)
-				  leftarrow.setVisibility(View.VISIBLE);
-				mScrollableSectionList.init(mSectionList, getResources().getDimensionPixelSize(R.dimen.gridview_channel_section_tabs_width),false);
-				mHGridAdapter = new HGridAdapterImpl(getActivity(), mItemCollections);
-				mHGridAdapter.setList(mItemCollections);
-				mHGridView.setAdapter(mHGridAdapter);
-				mHGridView.setFocusable(true);
-				mHGridView.setHorizontalFadingEdgeEnabled(true);
-				mHGridView.setFadingEdgeLength(144);
-				mHGridAdapter.hg = mHGridView;
-				int num_rows = mHGridView.getRows();
-				int totalColumnsOfSectionX = (int) FloatMath.ceil((float)mItemCollections.get(nextSection).count / (float) num_rows);
-				mScrollableSectionList.setPercentage(nextSection, (int)(1f/(float)totalColumnsOfSectionX*100f));
-				checkSectionChanged(nextSection);
-			} else {
-				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, (mInitTask = new InitTask()), new String[]{url, channel});
+			try{
+				if(mSectionList!=null ) {
+					if(mSectionList.size()>5)
+					  leftarrow.setVisibility(View.VISIBLE);
+					mScrollableSectionList.init(mSectionList, getResources().getDimensionPixelSize(R.dimen.gridview_channel_section_tabs_width),false);
+					mHGridAdapter = new HGridAdapterImpl(getActivity(), mItemCollections);
+					mHGridAdapter.setList(mItemCollections);
+					if(mHGridAdapter.getCount()>0){
+						mHGridView.setAdapter(mHGridAdapter);
+						mHGridView.setFocusable(true);
+						mHGridView.setHorizontalFadingEdgeEnabled(true);
+						mHGridView.setFadingEdgeLength(144);
+						mHGridAdapter.hg = mHGridView;
+						int num_rows = mHGridView.getRows();
+						int totalColumnsOfSectionX = (int) FloatMath.ceil((float)mItemCollections.get(nextSection).count / (float) num_rows);
+						mScrollableSectionList.setPercentage(nextSection, (int)(1f/(float)totalColumnsOfSectionX*100f));
+						checkSectionChanged(nextSection);
+					}
+
+				} else {
+					showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, (mInitTask = new InitTask()), new String[]{url, channel});
+				}
+			}
+			catch(Exception e){
+				e.printStackTrace();
 			}
 //			new GetItemListTask().execute();
 			super.onPostExecute(result);
@@ -269,7 +283,6 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 					NetworkUtils.SaveLogToLocal(NetworkUtils.CATEGORY_EXCEPT, exceptionProperties);
 				}
 				e.printStackTrace();
-				getActivity();
 				return null;
 			}
 		}
@@ -289,7 +302,6 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		}
 		
 	}
-	
 	private OnSectionSelectChangedListener mOnSectionSelectChangedListener = new OnSectionSelectChangedListener() {
 		
 		@Override
