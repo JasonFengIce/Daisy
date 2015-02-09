@@ -3,6 +3,7 @@ package tv.ismar.daisy;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.ImageUtils;
@@ -20,7 +21,6 @@ import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.player.ISTVVodMenu;
 import tv.ismar.daisy.player.ISTVVodMenuItem;
 import tv.ismar.daisy.views.IsmatvVideoView;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -32,11 +32,9 @@ import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 import android.view.GestureDetector;
-import android.view.Gravity;
+import android.view.GestureDetector.OnGestureListener;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -48,22 +46,15 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.ismartv.api.t.AccessProxy;
 import com.ismartv.bean.ClipInfo;
-import com.qiyi.video.player.IVideoStateListener;
 import com.qiyi.video.player.QiyiVideoPlayer;
-import com.qiyi.video.player.data.Definition;
-import com.qiyi.video.player.data.IPlaybackInfo;
-import com.qiyi.video.player.player.PlayerError;
-import com.qiyi.video.utils.LogUtils;
-import android.view.GestureDetector.OnGestureListener;
 
 public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 

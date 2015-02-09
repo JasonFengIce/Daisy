@@ -56,7 +56,7 @@ import com.qiyi.video.utils.LogUtils;
 public class QiYiPlayActivity extends VodMenuAction {
 	private static final int MSG_AD_COUNTDOWN = 100;
 	private static final int MSG_PLAY_TIME = 101;
-	private static final int SEEK_STEP = 5000;
+	private static final int SEEK_STEP = 30000;
 	private static final HashMap<Definition, String> DEFINITION_NAMES;
 	@SuppressWarnings("unused")
 	private static final String SAMPLE = "http://114.80.0.33/qyrrs?url=http%3A%2F%2Fjq.v.tvxio.com%2Fcdn%2F0%2F7b%2F78fadc2ffa42309bda633346871f26%2Fhigh%2Fslice%2Findex.m3u8&quality=high&sn=weihongchang_s52&clipid=779521&sid=85d3f919a918460d9431136d75db17f03&sign=08a868ad3c4e3b37537a13321a6f9d4b";
@@ -77,8 +77,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 	private boolean isBuffer = true;
 	private boolean isSeekBuffer = false;
 	private boolean panelShow = false;
-	private int currQuality = 0;
-	private String urls[] = new String[6];
+	private int currQuality = 0;// 0: normal 1: 720P 2:1080P
 	private Animation panelShowAnimation;
 	private Animation panelHideAnimation;
 	private Definition currentDefinition;
@@ -132,6 +131,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 	private GestureDetector mGestureDetector; // 手势监测器
 	private boolean live_video = false;
 	private List<Definition> mBitStreamList = new ArrayList<Definition>();
+	private boolean[] avalibleRate = { false, false, false };
 	static {
 		DEFINITION_NAMES = new HashMap<Definition, String>();
 		DEFINITION_NAMES.put(Definition.DEFINITON_HIGH, "高清");
@@ -154,7 +154,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.vod_player);
-        initView();
+		initView();
 	}
 
 	public void initView() {
@@ -194,7 +194,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 		itemUrl = item.clip.url;
 		titleText.setText(item.title);
 		showBuffer();
-//		new initPlayTask().execute();
+		// new initPlayTask().execute();
 		initQiyiVideoPlayer();
 	}
 
@@ -265,6 +265,15 @@ public class QiYiPlayActivity extends VodMenuAction {
 		@Override
 		public void onBitStreamListReady(final List<Definition> definitionList) {
 			mBitStreamList = definitionList;
+			for (Definition d : definitionList) {
+				if (d.equals(Definition.DEFINITON_HIGH)) {
+					avalibleRate[0] = true;
+				} else if (d.equals(Definition.DEFINITON_720P)) {
+					avalibleRate[1] = true;
+				} else if (d.equals(Definition.DEFINITON_1080P)) {
+					avalibleRate[2] = true;
+				}
+			}
 		}
 
 		@Override
@@ -288,23 +297,20 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onHeaderTailerInfoReady(int arg0, int arg1) {
-
 		}
 
 		@Override
 		public void onMovieComplete() {
-
 		}
 
 		@Override
 		public void onMoviePause() {
-
 		}
 
 		@Override
 		public void onMovieStart() {
 			isBuffer = false;
-			if(seekPostion >0)
+			if (seekPostion > 0)
 				mPlayer.seekTo(seekPostion);
 			hideBuffer();
 			showPanel();
@@ -343,7 +349,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onVideoSizeChange(int arg0, int arg1) {
-
 		}
 
 	};
@@ -391,11 +396,11 @@ public class QiYiPlayActivity extends VodMenuAction {
 						/ 100;
 				timeBar.setProgress(curPos);
 				timeBar.setSecondaryProgress(secondaryProgress);
-//				if (Math.abs(secondaryProgress - curPos) != 0) {
-//					hideBuffer();
-//				} else {
-//					showBuffer();
-//				}
+				// if (Math.abs(secondaryProgress - curPos) != 0) {
+				// hideBuffer();
+				// } else {
+				// showBuffer();
+				// }
 				sendEmptyMessageDelayed(MSG_PLAY_TIME, 1000);
 				if (LogUtils.mIsDebug)
 					LogUtils.d(TAG,
@@ -409,17 +414,17 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 	public boolean onVodMenuOpened(ISTVVodMenu menu) {
 
-		if (mBitStreamList.contains(Definition.DEFINITON_HIGH)) {
+		if (avalibleRate[0]) {
 			menu.findItem(1).enable();
 		} else {
 			menu.findItem(1).disable();
 		}
-		if (mBitStreamList.contains(Definition.DEFINITON_720P)) {
+		if (avalibleRate[1]) {
 			menu.findItem(2).enable();
 		} else {
 			menu.findItem(2).disable();
 		}
-		if (mBitStreamList.contains(Definition.DEFINITON_1080P)) {
+		if (avalibleRate[2]) {
 			menu.findItem(3).enable();
 		} else {
 			menu.findItem(3).disable();
@@ -565,8 +570,8 @@ public class QiYiPlayActivity extends VodMenuAction {
 	}
 
 	private void showPanel() {
-		 if (isVodMenuVisible())
-		 return;
+		if (isVodMenuVisible())
+			return;
 		if (!panelShow) {
 			panelLayout.startAnimation(panelShowAnimation);
 			panelLayout.setVisibility(View.VISIBLE);
@@ -857,7 +862,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 				getResources().getString(R.string.vod_player_continue_off));
 		return true;
 	}
-	
+
 	private void updataTimeText() {
 		String text = getTimeString(currPosition) + "/"
 				+ getTimeString(clipLength);
@@ -865,7 +870,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 	}
 
 	private void initQualtiyText() {
-
 		switch (currQuality) {
 		case 0:
 			qualityText
@@ -894,13 +898,13 @@ public class QiYiPlayActivity extends VodMenuAction {
 	public boolean onVodMenuClicked(ISTVVodMenu menu, int id) {
 		if (id > 0 && id < 5) {
 			int pos = id - 1;
-			if (urls[pos] != null && currQuality != pos) {
+			if (currQuality != pos) {
 				try {
 					timeTaskPause();
 					checkTaskPause();
 					paused = false;
-					 playPauseImage
-					 .setImageResource(R.drawable.vod_player_pause);
+					playPauseImage
+							.setImageResource(R.drawable.vod_player_pause);
 					playPauseImage
 							.setImageResource(R.drawable.vodplayer_controller_pause);
 					isBuffer = true;
@@ -914,9 +918,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 					if (id == 3) {
 						mPlayer.switchBitStream(Definition.DEFINITON_1080P);
 					}
-					historyManager.addOrUpdateQuality(new Quality(0,
-							urls[currQuality], currQuality));
-					mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
 					// if (subItem != null)
 					// callaPlay.videoSwitchStream(item.pk, subItem.pk,
 					// item.title, clip.pk, currQuality, "manual",
@@ -999,7 +1000,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 			history.last_position = last_position;
 			history.last_quality = currQuality;
 			history.url = itemUrl;
-//			history.sub_url = subItemUrl;
 			history.is_continue = isContinue;
 			historyManager.addHistory(history);
 		}
@@ -1007,40 +1007,27 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 	private Runnable checkStatus = new Runnable() {
 		public void run() {
-			if (mPlayer != null) {
-				// Log.d(TAG,
-				// "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
-				if (mPlayer.isPlaying()
-						&& Math.abs(mPlayer.getCurrentPosition() - seekPostion) > 0) {
-					// if (isBuffer || bufferLayout.isShown()) {
-					// //isBuffer = false;
-					// //hideBuffer();
-					// } else {
-					if (live_video && (isBuffer || bufferLayout.isShown())) {
-						isBuffer = false;
-						hideBuffer();
-					}
-					// if (mPlayer.getAlpha() < 1) {
-					// mVideoView.setAlpha(1);
-					// bufferText.setText(BUFFERING);
-					// }
-
-					// }
-					if (!isSeek && !isBuffer && !live_video) {
-						currPosition = mPlayer.getCurrentPosition();
-						timeBar.setProgress(currPosition);
-					}
-				} else {
-					if (!paused && !isBuffer) {
-						seekPostion = mPlayer.getCurrentPosition();
-					}
+			if (mPlayer.isPlaying()
+					&& Math.abs(mPlayer.getCurrentPosition() - seekPostion) > 0) {
+				if (isBuffer || bufferLayout.isShown()) {
+					isBuffer = false;
+					hideBuffer();
 				}
-				mCheckHandler.postDelayed(checkStatus, 300);
+				if (live_video && (isBuffer || bufferLayout.isShown())) {
+					isBuffer = false;
+					hideBuffer();
+				}
+				bufferText.setText(BUFFERING);
+				if (!isSeek && !isBuffer && !live_video) {
+					currPosition = mPlayer.getCurrentPosition();
+					timeBar.setProgress(currPosition);
+				}
 			} else {
-				Log.d(TAG, "mVideoView ====== null or err");
-				checkTaskPause();
+				if (!paused && !isBuffer) {
+					seekPostion = mPlayer.getCurrentPosition();
+				}
 			}
-
+			mCheckHandler.postDelayed(checkStatus, 300);
 		}
 
 	};
@@ -1054,7 +1041,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 		public void run() {
 			mHandler.removeCallbacks(finishPlayerActivity);
 			QiYiPlayActivity.this.finish();
-
 		}
 	};
 
