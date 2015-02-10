@@ -3,6 +3,7 @@ package tv.ismar.daisy;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.ImageUtils;
@@ -20,7 +21,6 @@ import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.player.ISTVVodMenu;
 import tv.ismar.daisy.player.ISTVVodMenuItem;
 import tv.ismar.daisy.views.IsmatvVideoView;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -32,11 +32,9 @@ import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 import android.view.GestureDetector;
-import android.view.Gravity;
+import android.view.GestureDetector.OnGestureListener;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -48,24 +46,17 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.ismartv.api.t.AccessProxy;
 import com.ismartv.bean.ClipInfo;
-import com.qiyi.video.player.IVideoStateListener;
 import com.qiyi.video.player.QiyiVideoPlayer;
-import com.qiyi.video.player.data.Definition;
-import com.qiyi.video.player.data.IPlaybackInfo;
-import com.qiyi.video.player.player.PlayerError;
-import com.qiyi.video.utils.LogUtils;
-import android.view.GestureDetector.OnGestureListener;
 
-public class PlayerActivity extends Activity implements OnGestureListener {
+public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 
 	@SuppressWarnings("unused")
 	private static final String SAMPLE = "http://114.80.0.33/qyrrs?url=http%3A%2F%2Fjq.v.tvxio.com%2Fcdn%2F0%2F7b%2F78fadc2ffa42309bda633346871f26%2Fhigh%2Fslice%2Findex.m3u8&quality=high&sn=weihongchang_s52&clipid=779521&sid=85d3f919a918460d9431136d75db17f03&sign=08a868ad3c4e3b37537a13321a6f9d4b";
@@ -1568,11 +1559,9 @@ public class PlayerActivity extends Activity implements OnGestureListener {
 					timeBar.setProgress(progress);
 					Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
 				}
-
+				showPanel();
 				updataTimeText();
-
 			}
-
 		}
 
 		@Override

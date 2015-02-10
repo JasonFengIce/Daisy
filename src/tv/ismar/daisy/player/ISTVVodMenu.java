@@ -1,7 +1,7 @@
 package tv.ismar.daisy.player;
 
-import tv.ismar.daisy.PlayerActivity;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.VodMenuAction;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 public class ISTVVodMenu extends ISTVVodMenuItem{
 	private static final String TAG="ISTVVodMenu";
-	private PlayerActivity activity;
+	private VodMenuAction activity;
 	private Animation showAnimation;
 	private Animation hideAnimation;
 	private ListView view;
@@ -28,7 +28,7 @@ public class ISTVVodMenu extends ISTVVodMenuItem{
 	private ISTVVodMenuItem menuStack[]=new ISTVVodMenuItem[10];
 	private int menuStackTop=0;
 
-	public ISTVVodMenu(PlayerActivity act){
+	public ISTVVodMenu(VodMenuAction act){
 		super(-1, "");
 		activity = act;
 
