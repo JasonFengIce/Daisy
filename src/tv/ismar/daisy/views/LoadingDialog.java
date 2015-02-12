@@ -3,6 +3,7 @@ package tv.ismar.daisy.views;
 import tv.ismar.daisy.R;
 import android.app.Dialog;
 import android.content.Context;
+import android.view.MotionEvent;
 import android.widget.TextView;
 
 /**
@@ -39,5 +40,10 @@ public class LoadingDialog extends Dialog {
 		if (null != tvTextName) {
 			tvLoading.setText(tvTextName);
 		}
+	}
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

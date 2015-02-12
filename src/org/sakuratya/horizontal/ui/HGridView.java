@@ -240,8 +240,10 @@ public class HGridView extends AdapterView<HGridAdapter> {
 					final int x = (int) event.getX();
 					final int y = (int) event.getY();
 					int motionPosition = pointToPosition(x, y);
-					final View v = getChildAt(motionPosition - mFirstPosition);
-					performItemClick(v, motionPosition, 0);
+					if(motionPosition>=0){
+						final View v = getChildAt(motionPosition - mFirstPosition);
+						performItemClick(v, motionPosition, 0);
+					}
 				}
 
 			}
