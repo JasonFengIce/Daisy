@@ -187,7 +187,32 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		setAlwaysDrawnWithCacheEnabled(false);
 
 	}
+	private boolean hover = false;
 
+@Override
+protected boolean dispatchHoverEvent(MotionEvent event) {
+	// TODO Auto-generated method stub
+switch (event.getAction()) {
+case MotionEvent.ACTION_HOVER_ENTER:
+
+	break;
+case MotionEvent.ACTION_HOVER_MOVE:  //鼠标在view上 
+	int position1 = pointToPosition((int) event.getX(), (int) event.getY());
+	if(position1>=0){
+		setFocusable(true);
+	    requestFocus();
+	    hover = true;
+		setSelection(position1);	
+	}
+	 hover = true;
+    break; 
+case MotionEvent.ACTION_HOVER_EXIT:  //鼠标离开view 
+	 hover = false;
+	 clearFocus();
+    break; 
+}
+   return false;    
+}
 	private float mLastMotionX;
 	private int TOUCH_STATE = -1;
 
@@ -199,41 +224,16 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		case MotionEvent.ACTION_DOWN:
 			mLastMotionX = event.getX();
 			break;
-//		case MotionEvent.ACTION_MOVE:
-//			int deltaX = (int) (mLastMotionX - x1);
-//			mLastMotionX = x1;
-//
-//			// scrollBy(deltaX, 0);
-//			if (deltaX > 50) {
-//				pageScroll(FOCUS_RIGHT);
-//				TOUCH_STATE = FOCUS_RIGHT;
-//				//checkScrollState(OnScrollListener.SCROLL_STATE_FOCUS_MOVING);
-//				//checkScrollState(OnScrollListener.SCROLL_STATE_IDLE);
-//			} else if (deltaX < -50) {
-//				pageScroll(FOCUS_LEFT);
-//				TOUCH_STATE = FOCUS_LEFT;
-//				//checkScrollState(OnScrollListener.SCROLL_STATE_FOCUS_MOVING);
-//				//checkScrollState(OnScrollListener.SCROLL_STATE_IDLE);
-//
-//			}
-//			break;
 		case MotionEvent.ACTION_UP:
 			int deltaX = (int) (mLastMotionX - x1);
 			mLastMotionX = x1;
-
-			// scrollBy(deltaX, 0);
 			if (deltaX > 50) {
 				pageScroll(FOCUS_RIGHT);
 				TOUCH_STATE = FOCUS_RIGHT;
-				//checkScrollState(OnScrollListener.SCROLL_STATE_FOCUS_MOVING);
-				//checkScrollState(OnScrollListener.SCROLL_STATE_IDLE);
 			} 
 			if (deltaX < -50) {
 				pageScroll(FOCUS_LEFT);
 				TOUCH_STATE = FOCUS_LEFT;
-				//checkScrollState(OnScrollListener.SCROLL_STATE_FOCUS_MOVING);
-				//checkScrollState(OnScrollListener.SCROLL_STATE_IDLE);
-
 			}
 			if (TOUCH_STATE != FOCUS_LEFT && TOUCH_STATE != FOCUS_RIGHT) {
 				if(Math.abs(deltaX)<50){
@@ -443,8 +443,8 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		setNextSelectedPositionInt(position);
 		mLayoutMode = LAYOUT_SET_SELECTION;
 		layoutChildren();
+			
 	}
-
 	public void jumpToSection(int sectionIndex) {
 		int itemCount = 0;
 		for (int i = 0; i < sectionIndex; i++) {
@@ -586,10 +586,10 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		mFirstPosition = getPositionRangeByColumn(column)[0];
 		referenceView = mReferenceView;
 
-		adjustForLeftFadingEdge(referenceView, leftSelectionPixel,
-				rightSelectionPixel);
-		adjustForRightFadingEdge(referenceView, leftSelectionPixel,
-				rightSelectionPixel);
+//		adjustForLeftFadingEdge(referenceView, leftSelectionPixel,
+//				rightSelectionPixel);
+//		adjustForRightFadingEdge(referenceView, leftSelectionPixel,
+//				rightSelectionPixel);
 
 		int columnLeft = column - 1;
 		if (columnLeft >= 0) {
@@ -1124,8 +1124,10 @@ public class HGridView extends AdapterView<HGridAdapter> {
 
 	private void resetLabel() {
 		if (mAdapter != null && mAdapter.hasSection()) {
-			for (Rect rect : mSectionLabelRect) {
-				rect.setEmpty();
+			if(mSectionLabelRect!=null){
+				for (Rect rect : mSectionLabelRect) {
+					rect.setEmpty();
+				}
 			}
 		}
 	}
@@ -1795,10 +1797,12 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	}
 
 	private void drawSelector(Canvas canvas) {
-		if (shouldShowSelector() && mSelector != null
-				&& !mSelectorRect.isEmpty()) {
+		if ((shouldShowSelector()&&mSelector != null
+				&& !mSelectorRect.isEmpty())||(hover&&mSelector != null
+						&& !mSelectorRect.isEmpty())) {
 			final Drawable selector = mSelector;
 			selector.setBounds(mSelectorRect);
+			Log.i("qq12345", "draw selector rect = "+mSelectorRect.left+";"+mSelectorRect.top+";"+mSelectorRect.right+";"+mSelectorRect.bottom);
 			selector.draw(canvas);
 		}
 	}
@@ -1807,7 +1811,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	public void requestLayout() {
 		if (!isInLayout) {
 			super.requestLayout();
-		}
+		}		
 	}
 
 	private boolean isCandidateSelection(int childIndex, int direction) {

@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.os.Parcelable;
 import android.os.SystemClock;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.util.StateSet;
@@ -1623,9 +1624,6 @@ public class ZGridView extends AdapterView<ListAdapter> {
 		}
 
 		View selectedView = null;
-
-		final boolean hasFocus = shouldShowSelector();
-		final boolean inClick = touchModeDrawsInPressedState();
 		final int selectedPosition = mSelectedPosition;
 
 		View child = null;
@@ -1642,7 +1640,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 				nextLeft += horizontalSpacing;
 			}
 
-			if (selected && (hasFocus || inClick)) {
+			if (selected ) {
 				selectedView = child;
 			}
 		}
@@ -2188,21 +2186,21 @@ public class ZGridView extends AdapterView<ListAdapter> {
 		mFirstPosition = rowStart;
 
 		referenceView = mReferenceView;
-		adjustForTopFadingEdge(referenceView, topSelectionPixel,
-				bottomSelectionPixel);
-		adjustForBottomFadingEdge(referenceView, topSelectionPixel,
-				bottomSelectionPixel);
+//		adjustForTopFadingEdge(referenceView, topSelectionPixel,
+//				bottomSelectionPixel);
+//		adjustForBottomFadingEdge(referenceView, topSelectionPixel,
+//				bottomSelectionPixel);
 
 		if (!mStackFromBottom) {
 			fillUp(rowStart - numColumns, referenceView.getTop()
 					- verticalSpacing);
-			adjustViewsUpOrDown();
+			//adjustViewsUpOrDown();
 			fillDown(rowStart + numColumns, referenceView.getBottom()
 					+ verticalSpacing);
 		} else {
 			fillDown(rowEnd + numColumns, referenceView.getBottom()
 					+ verticalSpacing);
-			adjustViewsUpOrDown();
+			//adjustViewsUpOrDown();
 			fillUp(rowStart - 1, referenceView.getTop() - verticalSpacing);
 		}
 
@@ -2473,6 +2471,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 	boolean shouldShowSelector() {
 		return (hasFocus() && !isInTouchMode())
 				|| touchModeDrawsInPressedState();
+	
 	}
 
 	// protected boolean shouldShowSelector() {
@@ -2483,8 +2482,9 @@ public class ZGridView extends AdapterView<ListAdapter> {
 	}
 
 	private void drawSelector(Canvas canvas) {
-		if (shouldShowSelector() && mSelector != null
-				&& !mSelectorRect.isEmpty()) {
+		if ((shouldShowSelector()&&mSelector != null
+				&& !mSelectorRect.isEmpty())||(hover&&mSelector != null
+						&& !mSelectorRect.isEmpty())){
 			final Drawable selector = mSelector;
 			selector.setBounds(mSelectorRect);
 			selector.draw(canvas);
@@ -2597,7 +2597,6 @@ public class ZGridView extends AdapterView<ListAdapter> {
 		setWillNotDraw(false);
 		setAlwaysDrawnWithCacheEnabled(false);
 		setScrollingCacheEnabled(true);
-
 //		 mGroupFlags |= FLAG_CLIP_CHILDREN;
 //		 mGroupFlags |= FLAG_CLIP_TO_PADDING;
 //		 mGroupFlags |= FLAG_ANIMATION_DONE;
@@ -2718,10 +2717,10 @@ public class ZGridView extends AdapterView<ListAdapter> {
 		mNextSelectedPosition = position;
 		mNextSelectedRowId = getItemIdAtPosition(position);
 		// If we are trying to sync to the selection, update that too
-		if (mNeedSync && mSyncMode == SYNC_SELECTED_POSITION && position >= 0) {
-			mSyncPosition = position;
-			mSyncRowId = mNextSelectedRowId;
-		}
+//		if (mNeedSync && mSyncMode == SYNC_SELECTED_POSITION && position >= 0) {
+//			mSyncPosition = position;
+//			mSyncRowId = mNextSelectedRowId;
+//		}
 	}
 
 	@Override
@@ -2816,11 +2815,8 @@ public class ZGridView extends AdapterView<ListAdapter> {
 	@Override
 	public void setSelection(int position) {
 		// TODO Auto-generated method stub
-		if (!isInTouchMode()) {
-			setNextSelectedPositionInt(position);
-		} else {
-			mResurrectToPosition = position;
-		}
+
+		setNextSelectedPositionInt(position);
 		mLayoutMode = LAYOUT_SET_SELECTION;
 
 		requestLayout();
@@ -3768,306 +3764,40 @@ public class ZGridView extends AdapterView<ListAdapter> {
         }
         return false;
     }
-//    @Override
-//    public boolean onTouchEvent(MotionEvent ev) {
-//        if (!isEnabled()) {
-//            // A disabled view that is clickable still consumes the touch
-//            // events, it just doesn't respond to them.
-//            return isClickable() || isLongClickable();
-//        }
-//       
-//        // AbsListView 绘制与控制手指快速滚动的辅助类
-////        if (mFastScroller != null) {
-////            boolean intercepted = mFastScroller.onTouchEvent(ev);
-////            if (intercepted) {
-////                return true;
-////            }
-////        }
-//
-//        final int action = ev.getAction();
-//
-//        View v;
-//        int deltaY;
-//
-//         // 获取触摸滚动时的速率
-//        if (mVelocityTracker == null) {
-//            mVelocityTracker = VelocityTracker.obtain();
-//        }
-//        mVelocityTracker.addMovement(ev);
-//
-//        // ListView触屏事件主要从ACTION操作划分
-//        switch (action & MotionEvent.ACTION_MASK) {
-//        case MotionEvent.ACTION_DOWN: {
-//               mActivePointerId = ev.getPointerId(0);
-//            final int x = (int) ev.getX();
-//            final int y = (int) ev.getY();
-//           
-//             // 手指按下时x,y坐标，获取当前选中的item
-//            int motionPosition = pointToPosition(x, y);
-//            // 如果ListView 数据未发生变化
-//            if (!mDataChanged) {
-//                if ((mTouchMode != TOUCH_MODE_FLING) && (motionPosition >= 0)
-//                        && (getAdapter().isEnabled(motionPosition))) {
-//                    // User clicked on an actual view (and was not stopping a fling). It might be a
-//                    // click or a scroll. Assume it is a click until proven otherwise
-//                    mTouchMode = TOUCH_MODE_DOWN;
-//                   
-//                    // TAP机制，主要是用于去除手指点击抖动
-//                    // 使Item处于按下状态
-//                    if (mPendingCheckForTap == null) {
-//                        mPendingCheckForTap = new CheckForTap();
-//                    }
-//                    // 添加到消息队列并延时ViewConfiguration.getTapTimeout()执行此runnable
-//                    postDelayed(mPendingCheckForTap, ViewConfiguration.getTapTimeout());
-//                } else {
-//                    if (ev.getEdgeFlags() != 0 && motionPosition < 0) {
-//                        // If we couldn't find a view to click on, but the down event was touching
-//                        // the edge, we will bail out and try again. This allows the edge correcting
-//                        // code in ViewRoot to try to find a nearby view to select
-//                        return false;
-//                    }
-//
-//                      // 之前处于Fling模式
-//                    if (mTouchMode == TOUCH_MODE_FLING) {
-//                        // Stopped a fling. It is a scroll.
-//                        createScrollingCache();
-//                        // 更改为scroll
-//                        mTouchMode = TOUCH_MODE_SCROLL;
-//                        mMotionCorrection = 0;
-//                        motionPosition = findMotionRow(y);
-//                        reportScrollStateChange(OnScrollListener.SCROLL_STATE_TOUCH_SCROLL);
-//                    }
-//                }
-//            }
-//
-//             // 对于ACTION_MOVE,ACTION_UP会使用的触屏位置信息进行记录
-//            if (motionPosition >= 0) {
-//                // Remember where the motion event started
-//                v = getChildAt(motionPosition - mFirstPosition);
-//                mMotionViewOriginalTop = v.getTop();
-//            }
-//            mMotionX = x;
-//            mMotionY = y;
-//            mMotionPosition = motionPosition;
-//            mLastY = Integer.MIN_VALUE;
-//            break;
-//        }
-//        case MotionEvent.ACTION_MOVE: {
-//               final int pointerIndex = ev.findPointerIndex(mActivePointerId);
-//            final int y = (int) ev.getY(pointerIndex);
-//            // 获取y轴当前与前一次的偏移值
-//            deltaY = y - mMotionY;
-//            switch (mTouchMode) {
-//            case TOUCH_MODE_DOWN:
-//            case TOUCH_MODE_TAP:
-//            case TOUCH_MODE_DONE_WAITING:
-//                // 必须移动一段距离后才会执行滚动
-//                startScrollIfNeeded(deltaY);
-//                break;
-//            case TOUCH_MODE_SCROLL:
-//                if (PROFILE_SCROLLING) {
-//                    if (!mScrollProfilingStarted) {
-//                        Debug.startMethodTracing("AbsListViewScroll");
-//                        mScrollProfilingStarted = true;
-//                    }
-//                }
-//
-//                 // 手指移动
-//                if (y != mLastY) {
-//                    deltaY -= mMotionCorrection;
-//                    int incrementalDeltaY = mLastY != Integer.MIN_VALUE ? y - mLastY : deltaY;
-//                   
-//                    // No need to do all this work if we're not going to move anyway
-//                    boolean atEdge = false;
-//                    if (incrementalDeltaY != 0) {
-//                      // 滚动的重要方法，滚动的具体处理就是这里
-//                        atEdge = trackMotionScroll(deltaY, incrementalDeltaY);
-//                    }
-//
-//                    // ListView滚动到边界后不不能再进行移动
-//                    if (atEdge && getChildCount() > 0) {
-//                        // Treat this like we're starting a new scroll from the current
-//                        // position. This will let the user start scrolling back into
-//                        // content immediately rather than needing to scroll back to the
-//                        // point where they hit the limit first.
-//                        int motionPosition = findMotionRow(y);
-//                        if (motionPosition >= 0) {
-//                            final View motionView = getChildAt(motionPosition - mFirstPosition);
-//                            mMotionViewOriginalTop = motionView.getTop();
-//                        }
-//                        mMotionY = y;
-//                        mMotionPosition = motionPosition;
-//                        invalidate();
-//                    }
-//                    // 记录当前Y值，用于下次计算偏移量
-//                    mLastY = y;
-//                }
-//                break;
-//            }
-//
-//            break;
-//        }
-//
-//        case MotionEvent.ACTION_UP: {
-//            switch (mTouchMode) {
-//            case TOUCH_MODE_DOWN:
-//            case TOUCH_MODE_TAP:
-//            case TOUCH_MODE_DONE_WAITING:
-//                final int motionPosition = mMotionPosition;
-//                final View child = getChildAt(motionPosition - mFirstPosition);
-//                if (child != null && !child.hasFocusable()) {
-//                    // 清理Item按下状态
-//                    if (mTouchMode != TOUCH_MODE_DOWN) {
-//                        child.setPressed(false);
-//                    }
-//
-//                      // 执行Item Click
-//                    if (mPerformClick == null) {
-//                        mPerformClick = new PerformClick();
-//                    }
-//
-//                    final ZGridView.PerformClick performClick = mPerformClick;
-//                   
-//                    performClick.mClickMotionPosition = motionPosition;
-//                    performClick.rememberWindowAttachCount();
-//
-//                    mResurrectToPosition = motionPosition;
-////                  if (mTouchMode == TOUCH_MODE_DOWN || mTouchMode == TOUCH_MODE_TAP) {
-////                  final Handler handler = getHandler();
-////                  if (handler != null) {
-////                  	if(mTouchMode == TOUCH_MODE_DOWN){
-////                  		handler.removeCallbacks(mPendingCheckForTap);
-////                  	}
-////                      
-////                  }
-//                    if (mTouchMode == TOUCH_MODE_DOWN || mTouchMode == TOUCH_MODE_TAP) {
-//                        final Handler handler = getHandler();
-//                        if (handler != null) {
-//                        	if(mTouchMode == TOUCH_MODE_DOWN){
-//                      		handler.removeCallbacks(mPendingCheckForTap);
-//                      	}
-//                        }
-//                        mLayoutMode = LAYOUT_NORMAL;
-//                        if (!mDataChanged && mAdapter.isEnabled(motionPosition)) {
-//                            mTouchMode = TOUCH_MODE_TAP;
-//                            setSelectedPositionInt(mMotionPosition);
-//                            layoutChildren();
-//                            child.setPressed(true);
-//                           // positionSelector(child);
-//                            setPressed(true);
-//                            if (mSelector != null) {
-//                                Drawable d = mSelector.getCurrent();
-//                                if (d != null && d instanceof TransitionDrawable) {
-//                                    ((TransitionDrawable) d).resetTransition();
-//                                }
-//                            }
-//                            postDelayed(new Runnable() {
-//                                public void run() {
-//                                    child.setPressed(false);
-//                                    setPressed(false);
-//                                    if (!mDataChanged) {
-//                                        post(performClick);
-//                                    }
-//                                    mTouchMode = TOUCH_MODE_REST;
-//                                }
-//                            }, ViewConfiguration.getPressedStateDuration());
-//                        } else {
-//                            mTouchMode = TOUCH_MODE_REST;
-//                        }
-//                        return true;
-//                    } else if (!mDataChanged && mAdapter.isEnabled(motionPosition)) {
-//                        post(performClick);
-//                    }
-//                }
-//                mTouchMode = TOUCH_MODE_REST;
-//                break;
-//            case TOUCH_MODE_SCROLL:
-//                final int childCount = getChildCount();
-//                if (childCount > 0) {
-//                    if (mFirstPosition == 0 && getChildAt(0).getTop() >= mListPadding.top &&
-//                            mFirstPosition + childCount < mItemCount &&
-//                            getChildAt(childCount - 1).getBottom() <=
-//                                    getHeight() - mListPadding.bottom) {
-//                        mTouchMode = TOUCH_MODE_REST;
-//                        reportScrollStateChange(OnScrollListener.SCROLL_STATE_IDLE);
-//                    } else {
-//                        // 是否执行ListView Scroll Fling
-//                        final VelocityTracker velocityTracker = mVelocityTracker;
-//                        velocityTracker.computeCurrentVelocity(1000, mMaximumVelocity);
-//                        // 获取当前触屏滚动速率
-//                        final int initialVelocity = (int) velocityTracker.getYVelocity(mActivePointerId);
-//   
-//                        if (Math.abs(initialVelocity) > mMinimumVelocity) {
-//                            if (mFlingRunnable == null) {
-//                                mFlingRunnable = new FlingRunnable();
-//                            }
-//                            reportScrollStateChange(OnScrollListener.SCROLL_STATE_FLING);
-//                           
-//                            // 执行ListView 快速滚动（Scroll Fling）
-//                            mFlingRunnable.start(-initialVelocity);
-//                        } else {
-//                            mTouchMode = TOUCH_MODE_REST;
-//                            reportScrollStateChange(OnScrollListener.SCROLL_STATE_IDLE);
-//                        }
-//                    }
-//                } else {
-//                    mTouchMode = TOUCH_MODE_REST;
-//                    reportScrollStateChange(OnScrollListener.SCROLL_STATE_IDLE);
-//                }
-//                break;
-//            }
-//
-//            setPressed(false);
-//
-//            // Need to redraw since we probably aren't drawing the selector anymore
-//            invalidate();
-//
-////            final Handler handler = getHandler();
-////            if (handler != null) {
-////                handler.removeCallbacks(mPendingCheckForLongPress);
-////            }
-//
-//            if (mVelocityTracker != null) {
-//                mVelocityTracker.recycle();
-//                mVelocityTracker = null;
-//            }
-//           
-//            mActivePointerId = INVALID_POINTER;
-//
-//            if (PROFILE_SCROLLING) {
-//                if (mScrollProfilingStarted) {
-//                    Debug.stopMethodTracing();
-//                    mScrollProfilingStarted = false;
-//                }
-//            }
-//            break;
-//        }
-//
-//       
-//        }
-//
-//        return true;
-//    }
+	private boolean  hover = false;
+
+@Override
+protected boolean dispatchHoverEvent(MotionEvent event) {
+	// TODO Auto-generated method stub
+switch (event.getAction()) {
+case MotionEvent.ACTION_HOVER_ENTER:
+	break;
+case MotionEvent.ACTION_HOVER_MOVE:  //鼠标在view上 
+	int position1 = pointToPosition((int) event.getX(), (int) event.getY());
+	if(position1>=0){
+	    hover = true;
+		setFocusable(true);
+	    requestFocus();
+		setSelection(position1);	
+	}
+    break; 
+case MotionEvent.ACTION_HOVER_EXIT:  //鼠标离开view 
+	 hover = false;
+	 clearFocus();
+    break; 
+}
+   return false;    
+}
+
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         if (!isEnabled()) {
-            // A disabled view that is clickable still consumes the touch
-            // events, it just doesn't respond to them.
             return isClickable() || isLongClickable();
         }
 
         if (mPositionScroller != null) {
             mPositionScroller.stop();
         }
-
-
-
-//        if (mFastScroller != null) {
-//            boolean intercepted = mFastScroller.onTouchEvent(ev);
-//            if (intercepted) {
-//                return true;
-//            }
-//        }
 
         final int action = ev.getAction();
 
@@ -4101,11 +3831,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
                 if (!mDataChanged) {
                     if ((mTouchMode != TOUCH_MODE_FLING) && (motionPosition >= 0)
                             && (getAdapter().isEnabled(motionPosition))) {
-                        // User clicked on an actual view (and was not stopping a fling).
-                        // It might be a click or a scroll. Assume it is a click until
-                        // proven otherwise
                         mTouchMode = TOUCH_MODE_DOWN;
-                        // FIXME Debounce
                         if (mPendingCheckForTap == null) {
                             mPendingCheckForTap = new CheckForTap();
                        
@@ -4113,7 +3839,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
                         postDelayed(mPendingCheckForTap, ViewConfiguration.getTapTimeout());
                     } else {
                         if (mTouchMode == TOUCH_MODE_FLING) {
-                            // Stopped a fling. It is a scroll.
+
                             createScrollingCache();
                             mTouchMode = TOUCH_MODE_SCROLL;
                             mMotionCorrection = 0;
@@ -4124,7 +3850,6 @@ public class ZGridView extends AdapterView<ListAdapter> {
                 }
 
                 if (motionPosition >= 0) {
-                    // Remember where the motion event started
                     v = getChildAt(motionPosition - mFirstPosition);
                     mMotionViewOriginalTop = v.getTop();
                 }
@@ -4153,8 +3878,6 @@ public class ZGridView extends AdapterView<ListAdapter> {
             final int y = (int) ev.getY(pointerIndex);
 
             if (mDataChanged) {
-                // Re-sync everything if data has been changed
-                // since the scroll operation can query the adapter.
                 layoutChildren();
             }
 
@@ -4162,8 +3885,6 @@ public class ZGridView extends AdapterView<ListAdapter> {
             case TOUCH_MODE_DOWN:
             case TOUCH_MODE_TAP:
             case TOUCH_MODE_DONE_WAITING:
-                // Check if we have moved far enough that it looks more like a
-                // scroll than a tap
                 startScrollIfNeeded(y);
                 break;
             case TOUCH_MODE_SCROLL:
@@ -4268,10 +3989,6 @@ public class ZGridView extends AdapterView<ListAdapter> {
 
                         final int initialVelocity = (int)
                                 (velocityTracker.getYVelocity(mActivePointerId) * mVelocityScale);
-                        // Fling if we have enough velocity and we aren't at a boundary.
-                        // Since we can potentially overfling more than we can overscroll, don't
-                        // allow the weird behavior where you can scroll to a boundary then
-                        // fling further.
                         if (Math.abs(initialVelocity) > mMinimumVelocity &&
                                 !((mFirstPosition == 0 &&
                                         firstChildTop == contentTop - mOverscrollDistance) ||
@@ -4324,15 +4041,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
                 mEdgeGlowTop.onRelease();
                 mEdgeGlowBottom.onRelease();
             }
-
-            // Need to redraw since we probably aren't drawing the selector anymore
             invalidate();
-
-//            final Handler handler = getHandler();
-//            if (handler != null) {
-//                handler.removeCallbacks(mPendingCheckForLongPress);
-//            }
-
             recycleVelocityTracker();
 
             mActivePointerId = INVALID_POINTER;
@@ -4343,11 +4052,6 @@ public class ZGridView extends AdapterView<ListAdapter> {
                     mScrollProfilingStarted = false;
                 }
             }
-
-//            if (mScrollStrictSpan != null) {
-//                mScrollStrictSpan.finish();
-//                mScrollStrictSpan = null;
-//            }
             break;
         }
 
@@ -4359,9 +4063,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
                 }
                 mFlingRunnable.startSpringback();
                 break;
-
             case TOUCH_MODE_OVERFLING:
-                // Do nothing - let it play out.
                 break;
 
             default:
@@ -4372,12 +4074,6 @@ public class ZGridView extends AdapterView<ListAdapter> {
                     motionView.setPressed(false);
                 }
                 clearScrollingCache();
-
-//                final Handler handler = getHandler();
-//                if (handler != null) {
-//                    handler.removeCallbacks(mPendingCheckForLongPress);
-//                }
-
                 recycleVelocityTracker();
             }
 
@@ -4395,7 +4091,6 @@ public class ZGridView extends AdapterView<ListAdapter> {
             final int y = mMotionY;
             final int motionPosition = pointToPosition(x, y);
             if (motionPosition >= 0) {
-                // Remember where the motion event started
                 v = getChildAt(motionPosition - mFirstPosition);
                 mMotionViewOriginalTop = v.getTop();
                 mMotionPosition = motionPosition;
@@ -4405,7 +4100,6 @@ public class ZGridView extends AdapterView<ListAdapter> {
         }
 
         case MotionEvent.ACTION_POINTER_DOWN: {
-            // New pointers take over dragging duties
             final int index = ev.getActionIndex();
             final int id = ev.getPointerId(index);
             final int x = (int) ev.getX(index);
@@ -4416,7 +4110,6 @@ public class ZGridView extends AdapterView<ListAdapter> {
             mMotionY = y;
             final int motionPosition = pointToPosition(x, y);
             if (motionPosition >= 0) {
-                // Remember where the motion event started
                 v = getChildAt(motionPosition - mFirstPosition);
                 mMotionViewOriginalTop = v.getTop();
                 mMotionPosition = motionPosition;
