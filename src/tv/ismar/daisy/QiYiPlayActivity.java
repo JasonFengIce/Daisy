@@ -6,12 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.models.Clip;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
-import tv.ismar.daisy.models.Quality;
 import tv.ismar.daisy.persistence.FavoriteManager;
 import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.player.ISTVVodMenu;
@@ -239,6 +237,15 @@ public class QiYiPlayActivity extends VodMenuAction {
 			isContinue = mHistory.is_continue;
 			tempOffset = (int) mHistory.last_position;
 		}
+
+		if (tempOffset > 0 && isContinue == true && !live_video) {
+			bufferText.setText("  " + BUFFERCONTINUE
+					+ getTimeString(tempOffset));
+		} else {
+			bufferText.setText(PlAYSTART + "《" + titleText.getText() + "》");
+		}
+		isBuffer = false;
+        showBuffer();
 		if (tempOffset > 0 && isContinue) {
 			currPosition = tempOffset;
 			seekPostion = tempOffset;
@@ -278,20 +285,20 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onBufferEnd() {
-			isBuffer = false;
 			hideBuffer();
 			checkTaskStart();
 		}
 
 		@Override
 		public void onBufferStart() {
-			isBuffer = true;
 			showBuffer();
 		}
 
 		@Override
 		public boolean onError(IPlaybackInfo arg0, int arg1, String arg2,
 				String arg3) {
+			addHistory(currPosition);
+			ExToClosePlayer("error", arg1 + " " + arg2);
 			return false;
 		}
 
@@ -309,6 +316,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onMovieStart() {
+			clipLength = mPlayer.getDuration();
 			isBuffer = false;
 			if (seekPostion > 0)
 				mPlayer.seekTo(seekPostion);
@@ -539,15 +547,10 @@ public class QiYiPlayActivity extends VodMenuAction {
 		if (hour > 0) {
 			minute %= 60;
 		}
-
 		String hourStr = String.format("%02d", hour);
 		String minStr = String.format("%02d", minute);
 		String secStr = String.format("%02d", second);
 		String ret = hourStr + ":" + minStr + ":" + secStr;
-		if (LogUtils.mIsDebug)
-			LogUtils.d("1", "getPlaybackTimeString(" + timeInMs + "): hour="
-					+ hour + ", minute=" + minute + ", second=" + second
-					+ ", result=" + ret);
 		return ret;
 	}
 
@@ -609,12 +612,53 @@ public class QiYiPlayActivity extends VodMenuAction {
 		mHandler.removeCallbacks(mUpdateTimeTask);
 	}
 
+	private void ExToClosePlayer(String code, String content) {
+		if (bufferText != null) {
+			bufferText.setText(EXTOCLOSE);
+//			if (code == "url") {
+//				try {
+//					if (subItem != null)
+//						callaPlay.videoExcept("noplayaddress", content,
+//								item.pk, subItem.pk, item.title, clip.pk,
+//								currQuality, 0);
+//					else
+//						callaPlay.videoExcept("noplayaddress", content,
+//								item.pk, null, item.title, clip.pk,
+//								currQuality, 0);
+//				} catch (Exception e) {
+//					Log.e(TAG,
+//							" Sender log videoExcept noplayaddress "
+//									+ e.toString());
+//				}
+//			}
+//			if (code == "error") {
+//				try {
+//					if (subItem != null)
+//						callaPlay.videoExcept("mediaexception", content,
+//								item.pk, subItem.pk, item.title, clip.pk,
+//								currQuality, currPosition);
+//					else
+//						callaPlay.videoExcept("mediaexception", content,
+//								item.pk, null, item.title, clip.pk,
+//								currQuality, currPosition);
+//				} catch (Exception e) {
+//					Log.e(TAG,
+//							" Sender log videoExcept noplayaddress "
+//									+ e.toString());
+//				}
+//			}
+
+		}
+		mHandler.postDelayed(finishPlayerActivity, 3000);
+	}
+
 	private Runnable mUpdateTimeTask = new Runnable() {
 		@Override
 		public void run() {
 			if (mPlayer != null) {
 				if (mPlayer.isPlaying()) {
 					seekPostion = mPlayer.getCurrentPosition();
+					currPosition = seekPostion;
 				}
 				mHandler.postDelayed(mUpdateTimeTask, 500);
 			} else {
@@ -722,6 +766,20 @@ public class QiYiPlayActivity extends VodMenuAction {
 					menu.show();
 					hideMenuHandler.postDelayed(hideMenuRunnable, 10000);
 				}
+				break;
+
+			case KeyEvent.KEYCODE_BACK:
+				if (panelShow) {
+					hidePanel();
+					ret = true;
+				} else {
+					showPopupDialog(
+							DIALOG_OK_CANCEL,
+							getResources().getString(
+									R.string.vod_player_exit_dialog));
+					ret = true;
+				}
+
 				break;
 			default:
 				break;
