@@ -21,6 +21,7 @@ import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.player.ISTVVodMenu;
 import tv.ismar.daisy.player.ISTVVodMenuItem;
 import tv.ismar.daisy.views.IsmatvVideoView;
+import tv.ismar.player.SmartPlayer;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -287,7 +288,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 			bundle = intent.getExtras();
 			item = (Item) bundle.get("item");
 			clip = item.clip;
-			live_video = item.live_video;
+			live_video = item.live_video; 
 			// use to get mUrl, and registerActivity
 			DaisyUtils.getVodApplication(this).addActivityToPool(
 					this.toString(), this);
@@ -573,6 +574,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 				if (urls != null && mVideoView != null) {
 					TaskStart();// cmstest.tvxio.com
 					mVideoView.setVideoPath(urls[currQuality]);
+					Log.i("zhuabao", "play url=="+urls[currQuality]);
 					sid = VodUserAgent.getSid(urls[currQuality]);
 					mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
 					// mVideoView.setOnInfoListener(new
@@ -593,9 +595,9 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 					// }
 					// });
 					mVideoView
-							.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+							.setOnPreparedListener(new SmartPlayer.OnPreparedListener() {
 								@Override
-								public void onPrepared(MediaPlayer mp) {
+								public void onPrepared(SmartPlayer mp) {
 
 									Log.d(TAG,
 											"mVideoView onPrepared tempOffset =="
@@ -649,9 +651,9 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 								}
 							});
 					mVideoView
-							.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+							.setOnErrorListener(new SmartPlayer.OnErrorListener() {
 								@Override
-								public boolean onError(MediaPlayer mp,
+								public boolean onError(SmartPlayer mp,
 										int what, int extra) {
 									Log.d(TAG,
 											"mVideoView  Error setVideoPath urls[currQuality] ");
@@ -662,20 +664,20 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 							});
 
 					mVideoView
-							.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+							.setOnCompletionListener(new SmartPlayer.OnCompletionListener() {
 
 								@Override
-								public void onCompletion(MediaPlayer mp) {
+								public void onCompletion(SmartPlayer mp) {
 									Log.d(TAG, "mVideoView  Completion");
 									gotoFinishPage();
 								}
 							});
 
 					mVideoView
-							.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
+							.setOnSeekCompleteListener(new SmartPlayer.OnSeekCompleteListener() {
 
 								@Override
-								public void onSeekComplete(MediaPlayer mp) {
+								public void onSeekComplete(SmartPlayer mp) {
 									// TODO Auto-generated method stub
 									isBuffer = false;
 									hideBuffer();
@@ -1392,7 +1394,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 		}
 		return menu.isVisible();
 	}
-
 	private void showBuffer() {
 		if (isBuffer && !bufferLayout.isShown()) {
 			bufferLayout.setVisibility(View.VISIBLE);
@@ -1559,7 +1560,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 					timeBar.setProgress(progress);
 					Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
 				}
-				showPanel();
 				updataTimeText();
 			}
 		}
