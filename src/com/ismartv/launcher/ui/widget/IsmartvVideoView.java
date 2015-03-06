@@ -1,12 +1,12 @@
 package com.ismartv.launcher.ui.widget;
 
+import tv.ismar.daisy.R;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.widget.VideoView;
 
-/**
- * Created by <huaijiefeng@gmail.com> on 9/9/14.
- */
+
 public class IsmartvVideoView extends VideoView {
 
     public IsmartvVideoView(Context context) {
@@ -26,5 +26,23 @@ public class IsmartvVideoView extends VideoView {
         int width = getDefaultSize(0, widthMeasureSpec);
         int height = getDefaultSize(0, heightMeasureSpec);
         setMeasuredDimension(width, height);
+    }
+    @Override
+    protected boolean dispatchHoverEvent(MotionEvent event) {
+    	// TODO Auto-generated method stub
+    	   if ((event.getAction() == MotionEvent.ACTION_HOVER_ENTER ) || (event.getAction() == MotionEvent.ACTION_HOVER_MOVE )) {
+
+               setFocusableInTouchMode(true);
+               setFocusable(true);
+               requestFocusFromTouch();
+               requestFocus();
+               setBackgroundResource(R.drawable.launcher_item_focus);
+
+           } else {
+               clearFocus();
+               setBackgroundResource(android.R.color.transparent);
+           }
+          
+    	return true;
     }
 }

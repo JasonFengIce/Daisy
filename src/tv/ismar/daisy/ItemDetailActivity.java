@@ -536,7 +536,7 @@ public class ItemDetailActivity extends Activity implements
 			if (mRelatedItem != null && mRelatedItem.length > 0) {
 				buildRelatedList();
 			}
-			if (mLoadingDialog.isShowing()) {
+			if (mLoadingDialog!=null&&mLoadingDialog.isShowing()) {
 				mLoadingDialog.dismiss();
 				mDetailLeftContainer.setVisibility(View.VISIBLE);
 				mDetailRightContainer.setVisibility(View.VISIBLE);
