@@ -13,3 +13,5 @@ proguard-android.txt
 proguard-project.txt
 .gitigonre
 /proguard
+.idea/
+*.iml
