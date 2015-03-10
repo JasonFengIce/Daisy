@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:gravity="center"
+              android:background="@drawable/background"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_marginRight="60dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:clickable="true"
+            android:focusable="true"
+
+            android:id="@+id/tab_speed"
+            android:src="@drawable/selector_indactor_cdn"
+            android:layout_width="200dp"
+            android:layout_centerHorizontal="true"
+            android:layout_height="200dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="#ffffff"
+            android:layout_height="wrap_content"
+            android:text="@string/switch_cdn"
+            android:layout_below="@id/tab_speed"
+            android:layout_marginTop="20dp"
+            android:textSize="@dimen/CustomerLaunch_tab_size"
+            android:layout_centerHorizontal="true"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="60dp"
+        android:layout_marginLeft="60dp"
+        >
+
+        <ImageView
+            android:clickable="true"
+            android:focusable="true"
+
+            android:id="@+id/tab_help"
+            android:src="@drawable/selector_indactor_feedback"
+            android:layout_width="200dp"
+            android:layout_centerHorizontal="true"
+            android:layout_height="200dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="#ffffff"
+            android:layout_height="wrap_content"
+            android:text="@string/feedback_problem"
+            android:layout_below="@id/tab_help"
+            android:layout_marginTop="20dp"
+            android:textSize="@dimen/CustomerLaunch_tab_size"
+            android:layout_centerHorizontal="true"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:clickable="true"
+            android:layout_centerHorizontal="true"
+            android:focusable="true"
+
+            android:src="@drawable/selector_indactor_help"
+            android:id="@+id/tab_feedback"
+            android:layout_width="200dp"
+            android:layout_height="200dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="#ffffff"
+            android:layout_height="wrap_content"
+            android:text="@string/customer_help"
+            android:layout_below="@id/tab_feedback"
+            android:layout_marginTop="20dp"
+            android:textSize="@dimen/CustomerLaunch_tab_size"
+            android:layout_centerHorizontal="true"
+            />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

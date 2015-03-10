@@ -25,31 +25,34 @@ import java.security.MessageDigest;
 /**
  * Created by huaijie on 3/9/15.
  */
-public class UpdateUtils {
+public class AppUpdateUtils {
 
-    private static final String TAG = "UpdateUtils";
+    private static final String TAG = "AppUpdateUtils";
     private static final String SELF_APP_NAME = "Daisy.apk";
 
-    private static UpdateUtils instance;
-    private static Context mContext;
+    private static AppUpdateUtils instance;
 
-    private UpdateUtils() {
+    private String path;
+
+    private AppUpdateUtils() {
 
     }
 
-    public static UpdateUtils getInstance(Context context) {
+    public static AppUpdateUtils getInstance() {
         if (instance == null) {
-            instance = new UpdateUtils();
-            mContext = context;
+            instance = new AppUpdateUtils();
         }
         return instance;
     }
 
 
-    public void fetchUpdate() {
+    public void fetchUpdate(final Context mContext) {
+
+        path = "/sdcard";
+
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setLogLevel(AppConstant.LOG_LEVEL)
-                .setEndpoint(AppConstant.API_HOST)
+                .setEndpoint(AppConstant.APP_UPDATE_HOST)
                 .build();
 
         ClientApi.AppVersionInfo client = restAdapter.create(ClientApi.AppVersionInfo.class);
@@ -68,11 +71,9 @@ public class UpdateUtils {
                         Log.d(TAG, "local app version ---> " + packageInfo.versionCode);
                         Log.d(TAG, "server app version ---> " + versionInfoEntity.getVersion());
                     }
-
-                    ////////////////////////////////////////////////////////////////////////////////////
-                    //If Local Version Less
-                    ////////////////////////////////////////////////////////////////////////////////////
-                    downloadAPK(versionInfoEntity.getDownloadurl(), versionInfoEntity.getMd5());
+                    String downloadUrl = versionInfoEntity.getDownloadurl();
+                    String serverMd5 = versionInfoEntity.getMd5();
+                    downloadAPK(mContext, downloadUrl, serverMd5);
                 }
             }
 
@@ -83,27 +84,29 @@ public class UpdateUtils {
         });
     }
 
-    private void downloadAPK(final String downloadUrl, final String md5) {
+    private void downloadAPK(final Context mContext, final String downloadUrl, final String md5) {
         new Thread() {
             @Override
             public void run() {
+                Log.d(TAG, "downloadAPK is running...");
                 File fileName = null;
                 try {
                     int byteread;
                     URL url = new URL(downloadUrl);
-                    fileName = new File(getSDPath(), SELF_APP_NAME);
+                    fileName = new File(path, SELF_APP_NAME);
                     if (!fileName.exists())
                         fileName.createNewFile();
                     URLConnection conn = url.openConnection();
                     InputStream inStream = conn.getInputStream();
-                    FileOutputStream fs = mContext.openFileOutput(SELF_APP_NAME, Context.MODE_WORLD_WRITEABLE);
+                    FileOutputStream fs = new FileOutputStream(new File(path, SELF_APP_NAME));
                     byte[] buffer = new byte[1024];
                     while ((byteread = inStream.read(buffer)) != -1) {
                         fs.write(buffer, 0, byteread);
                     }
+                    inStream.close();
                     fs.flush();
                     fs.close();
-                    inStream.close();
+
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -112,8 +115,8 @@ public class UpdateUtils {
 
                 String MD5Value = getMd5ByFile(fileName);
                 if (md5.equals(MD5Value)) {
-                    Log.d(TAG, "md5: " + md5 + " | " + "md5: " + MD5Value);
-                    installApk();
+                    Log.d(TAG, "server md5: " + md5 + " | " + "local md5: " + MD5Value);
+                    installApk(mContext);
                 }
             }
         }.start();
@@ -156,50 +159,16 @@ public class UpdateUtils {
     }
 
 
-    private void installApk() {
+    public void installApk(Context mContext) {
 
-
-        Uri uri = Uri.fromFile(new File(getSDPath(), SELF_APP_NAME));
+        Uri uri = Uri.parse("file://" + new File(path, SELF_APP_NAME).getAbsolutePath());
         if (AppConstant.DEBUG)
             Log.d(TAG, uri.toString());
-
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setDataAndType(uri, "application/vnd.android.package-archive");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
-
-
-//        File apkfile = new File(mContext.getFilesDir(), SELF_APP_NAME);
-//        if (!apkfile.exists()) {
-//            return;
-//        }
-//        Intent i = new Intent(Intent.ACTION_VIEW);
-//        i.setDataAndType(Uri.parse("file://" + apkfile.toString()), "application/vnd.android.package-archive");
-//        mContext.startActivity(i);
-
-
     }
 
-
-//    private void deleteApk(final Context context) {
-//        new Thread() {
-//            @Override
-//            public void run() {
-//                try {
-//                    sleep(120000);
-//                    File file = new File(context.getFilesDir(), BootInstallTask.SELF_APP_NAME);
-//                    if (null != file)
-//                        file.delete();
-//                    file = new File(context.getFilesDir(), BootInstallTask.VOD_APP_NAME);
-//                    if (null != file)
-//                        file.delete();
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }.start();
-
-
-//    }
 
 }

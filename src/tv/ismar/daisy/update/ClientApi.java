@@ -9,7 +9,7 @@ import retrofit.http.GET;
 public class ClientApi {
 
     public interface AppVersionInfo {
-        @GET("/shipinkefu/getCdninfo?actiontype=getLatestAppVersion")
+        @GET("/api/upgrade/application/ismartvod/")
         void excute(
                 Callback<VersionInfoEntity> callback
         );
