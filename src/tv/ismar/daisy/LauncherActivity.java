@@ -128,18 +128,18 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 			SimpleRestClient.root_url = domain;
 			SimpleRestClient.sRoot_url = domain;
 			mainHandler.sendEmptyMessage(GETDOMAIN);
-		}	
+		}
 		 String sn = Build.SERIAL;
 		 Log.i("qqq", "sn=="+sn);
 	}
 	Dialog dialog = null;;
 	private DialogInterface.OnClickListener mPositiveListener;
 	private DialogInterface.OnClickListener mNegativeListener;
-	
+
 	private void showDialog(){
 		if(dialog==null){
 		       mPositiveListener = new DialogInterface.OnClickListener() {
-					
+
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
 						// TODO Auto-generated method stub
@@ -148,7 +148,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 					}
 				};
 				mNegativeListener = new DialogInterface.OnClickListener() {
-					
+
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
 						// TODO Auto-generated method stub
@@ -164,7 +164,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 	}
 	private void register(){
 		new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
@@ -530,7 +530,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
     		videoView.start();
     	}
     	catch(Exception e){
-    		
+
     	}
     }
 	private void setChannels(String content) {
