@@ -1,10 +1,13 @@
 package tv.ismar.daisy.update;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import retrofit.Callback;
@@ -26,16 +29,17 @@ import java.security.MessageDigest;
  * Created by huaijie on 3/9/15.
  */
 public class AppUpdateUtils {
-
     private static final String TAG = "AppUpdateUtils";
     private static final String SELF_APP_NAME = "Daisy.apk";
 
+    private static final String PLAYER_ACTIVITY_NAME = "tv.ismar.daisy.PlayerActivity";
+
     private static AppUpdateUtils instance;
 
-    private String path;
+    private final String path;
 
     private AppUpdateUtils() {
-
+        path = "/sdcard";
     }
 
     public static AppUpdateUtils getInstance() {
@@ -45,11 +49,7 @@ public class AppUpdateUtils {
         return instance;
     }
 
-
-    public void fetchUpdate(final Context mContext) {
-
-        path = "/sdcard";
-
+    public void checkUpdate(final Context mContext) {
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setLogLevel(AppConstant.LOG_LEVEL)
                 .setEndpoint(AppConstant.APP_UPDATE_HOST)
@@ -59,21 +59,30 @@ public class AppUpdateUtils {
         client.excute(new Callback<VersionInfoEntity>() {
             @Override
             public void success(VersionInfoEntity versionInfoEntity, Response response) {
-                PackageInfo packageInfo = null;
-                try {
-                    packageInfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
-                } catch (PackageManager.NameNotFoundException e) {
-                    Log.e(TAG, "can't find this application!!!");
-                }
-                if (packageInfo.versionCode < Integer.parseInt(versionInfoEntity.getVersion())) {
-                    if (AppConstant.DEBUG) {
-                        Log.d(TAG, "download url: " + versionInfoEntity.getDownloadurl());
-                        Log.d(TAG, "local app version ---> " + packageInfo.versionCode);
-                        Log.d(TAG, "server app version ---> " + versionInfoEntity.getVersion());
+                File apkFile = new File(path, SELF_APP_NAME);
+                if (apkFile.exists()) {
+                    String serverMd5Code = versionInfoEntity.getMd5();
+                    String localMd5Code = getMd5ByFile(apkFile);
+                    String currentActivityName = getCurrentActivityName(mContext);
+                    if (serverMd5Code.equals(localMd5Code) && !currentActivityName.equals(PLAYER_ACTIVITY_NAME)) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("title", versionInfoEntity.getUpdate_title());
+                        bundle.putStringArrayList("msgs", versionInfoEntity.getUpdate_msg());
+                        bundle.putString("path", apkFile.getAbsolutePath());
+                        sendUpdateBroadcast(mContext, bundle);
                     }
-                    String downloadUrl = versionInfoEntity.getDownloadurl();
-                    String serverMd5 = versionInfoEntity.getMd5();
-                    downloadAPK(mContext, downloadUrl, serverMd5);
+                } else {
+                    PackageInfo packageInfo = null;
+                    try {
+                        packageInfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
+                    } catch (PackageManager.NameNotFoundException e) {
+                        Log.e(TAG, "can't find this application!!!");
+                    }
+                    if (packageInfo.versionCode < Integer.parseInt(versionInfoEntity.getVersion())) {
+                        String downloadUrl = versionInfoEntity.getDownloadurl();
+                        String serverMd5 = versionInfoEntity.getMd5();
+                        downloadAPK(mContext, downloadUrl, serverMd5);
+                    }
                 }
             }
 
@@ -113,11 +122,8 @@ public class AppUpdateUtils {
                     e.printStackTrace();
                 }
 
-                String MD5Value = getMd5ByFile(fileName);
-                if (md5.equals(MD5Value)) {
-                    Log.d(TAG, "server md5: " + md5 + " | " + "local md5: " + MD5Value);
-                    installApk(mContext);
-                }
+                checkUpdate(mContext);
+
             }
         }.start();
     }
@@ -158,17 +164,36 @@ public class AppUpdateUtils {
         return sdDir.toString();
     }
 
-
-    public void installApk(Context mContext) {
-
-        Uri uri = Uri.parse("file://" + new File(path, SELF_APP_NAME).getAbsolutePath());
-        if (AppConstant.DEBUG)
-            Log.d(TAG, uri.toString());
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(uri, "application/vnd.android.package-archive");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mContext.startActivity(intent);
+    private void sendUpdateBroadcast(Context context, Bundle bundle) {
+        Intent intent = new Intent();
+        intent.setAction(AppConstant.APP_UPDATE_ACTION);
+        intent.putExtra("data", bundle);
+        context.sendBroadcast(intent);
     }
 
+    /**
+     * get current activity task the top activity
+     *
+     * @param context
+     * @return
+     */
+    public String getCurrentActivityName(Context context) {
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+        Log.i(TAG, "getCurrentActivityName : pkg --->" + cn.getPackageName());
+        Log.i(TAG, "getCurrentActivityName : cls ---> " + cn.getClassName());
+        return cn.getClassName();
+    }
 
+    public void modifyUpdatePreferences(Context context, boolean update) {
+        SharedPreferences.Editor editor = context.getSharedPreferences("app_update", Context.MODE_PRIVATE).edit();
+        editor.putBoolean("update", update);
+        editor.apply();
+    }
+
+    public boolean getUpdatePreferences(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("app_update", Context.MODE_PRIVATE);
+        boolean update = sharedPreferences.getBoolean("update", false);
+        return update;
+    }
 }

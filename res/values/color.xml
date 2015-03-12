@@ -46,4 +46,8 @@
     <color name="progress_color_start">#407e8f</color>
     <color name="progress_bg_color">#005c85</color>
     <color name="secondary_progress_color">#407e8f</color>
+
+    <!-- update -->
+    <color name="bg_update_bt_focus">#f27f0a</color>
+    <color name="bg_update_bt_normal">#3aa0eb</color>
 </resources>

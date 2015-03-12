@@ -1,6 +1,6 @@
 package tv.ismar.daisy.update;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by huaijie on 3/9/15.
@@ -12,7 +12,7 @@ public class VersionInfoEntity {
     private String md5;
     private String downloadurl;
     private String update_title;
-    private List<String> update_msg;
+    private ArrayList<String> update_msg;
 
     public String getVersion() {
         return version;
@@ -62,11 +62,11 @@ public class VersionInfoEntity {
         this.update_title = update_title;
     }
 
-    public List<String> getUpdate_msg() {
+    public ArrayList<String> getUpdate_msg() {
         return update_msg;
     }
 
-    public void setUpdate_msg(List<String> update_msg) {
+    public void setUpdate_msg(ArrayList<String> update_msg) {
         this.update_msg = update_msg;
     }
 }

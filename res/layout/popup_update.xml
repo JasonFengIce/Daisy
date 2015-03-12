@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/update_notice"
+        android:layout_marginTop="60dp"
+        android:textSize="@dimen/update_notice_textsize"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/update_notice"
+        />
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/update_notice"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:textSize="@dimen/update_title_textsize"
+        android:id="@+id/update_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_below="@id/update_title"
+        android:orientation="vertical"
+        android:id="@+id/update_msg_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:id="@+id/update_button_layout"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <tv.ismar.daisy.ui.widget.DaisyButton
+            android:clickable="true"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/update_msg_textsize"
+            android:layout_marginRight="30dp"
+            android:id="@+id/update_now_bt"
+            android:text="@string/update_now"
+            android:background="@drawable/selector_update_bt"
+            android:layout_width="250dp"
+            android:layout_height="60dp"/>
+
+        <tv.ismar.daisy.ui.widget.DaisyButton
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/update_msg_textsize"
+            android:layout_marginLeft="30dp"
+            android:id="@+id/update_next_bt"
+            android:text="@string/update_next_time"
+            android:background="@drawable/selector_update_bt"
+            android:layout_width="250dp"
+            android:layout_height="60dp"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:id="@+id/update_method"
+        android:layout_above="@id/update_button_layout"
+        android:layout_marginBottom="20dp"
+        android:textSize="@dimen/update_title_textsize"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/update_method"
+        />
+</RelativeLayout>

@@ -12,6 +12,8 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.GET_TASKS"></uses-permission>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>
 
     <application
         android:name=".VodApplication"
@@ -49,6 +51,7 @@
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
@@ -133,9 +136,17 @@
             android:exported="false"
             android:name="com.activeandroid.content.ContentProvider"/>
 
-        <receiver android:name=".core.receiver.PlayCompleteReveiver">
+        <!-- receiver-->
+        <receiver android:name=".core.receiver.PlayCompleteReceiver">
             <intent-filter>
                 <action android:name="cn.ismartv.vod.action.PLAY_COMPLETE"></action>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".core.receiver.BootCompleteReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+                <category android:name="android.intent.category.HOME"></category>
             </intent-filter>
         </receiver>
 

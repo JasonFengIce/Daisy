@@ -118,4 +118,10 @@
     <string name="switch_cdn">切换视频源</string>
     <string name="feedback_problem">问题反馈</string>
     <string name="customer_help">客服帮助</string>
+
+    <!--- update -->
+    <string name="update_notice">升级公告</string>
+    <string name="update_method">请选择升级方式,谢谢!</string>
+    <string name="update_now">现在升级</string>
+    <string name="update_next_time">下次启动时升级</string>
 </resources>

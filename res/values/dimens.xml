@@ -454,4 +454,9 @@
     <!-- customer launch activity-->
     <dimen name="CustomerLaunch_tab_size">38sp</dimen>
 
+    <!--update-->
+    <dimen name="update_notice_textsize">40sp</dimen>
+    <dimen name="update_title_textsize">32sp</dimen>
+    <dimen name="update_msg_textsize">28sp</dimen>
+
 </resources>
