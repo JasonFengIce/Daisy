@@ -7,6 +7,8 @@ import retrofit.http.Query;
 import tv.ismar.daisy.core.advertisement.AdvertisementInfoEntity;
 import tv.ismar.daisy.core.update.VersionInfoEntity;
 
+import java.util.ArrayList;
+
 /**
  * Created by huaijie on 3/9/15.
  */
@@ -33,7 +35,7 @@ public class ClientApi {
         @GET("/api/power/")
         void excute(
                 @Query("device_id") String deviceId,
-                Callback<AdvertisementInfoEntity> callback
+                Callback<ArrayList<AdvertisementInfoEntity>> callback
         );
     }
 }

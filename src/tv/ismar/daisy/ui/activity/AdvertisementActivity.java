@@ -18,6 +18,8 @@ import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.advertisement.AdvertisementInfoEntity;
 import tv.ismar.daisy.utils.DeviceUtils;
 
+import java.util.ArrayList;
+
 /**
  * Created by huaijie on 3/10/15.
  */
@@ -94,10 +96,10 @@ public class AdvertisementActivity extends Activity {
                 restAdapter.create(tv.ismar.daisy.core.client.ClientApi.AdvertisementInfo.class);
         String deviceId = DeviceUtils.getDeviceSN();
 
-        client.excute(deviceId, new Callback<AdvertisementInfoEntity>() {
+        client.excute(deviceId, new Callback<ArrayList<AdvertisementInfoEntity>>() {
             @Override
-            public void success(AdvertisementInfoEntity advertisementInfoEntity, Response response) {
-                String url = advertisementInfoEntity.getUrl();
+            public void success(ArrayList<AdvertisementInfoEntity> advertisementInfoEntities, Response response) {
+                String url = advertisementInfoEntities.get(0).getUrl();
                 Log.i(TAG, "fetchAdvertisementInfo: adver pic url ---> " + url);
                 Picasso.with(AdvertisementActivity.this)
                         .load(url)
@@ -108,8 +110,9 @@ public class AdvertisementActivity extends Activity {
 
             @Override
             public void failure(RetrofitError retrofitError) {
-
+                Log.e(TAG, "fetchAdvertisementInfo failed!!!");
             }
         });
+
     }
 }

@@ -90,7 +90,7 @@ public class AppUpdateUtils {
                     } else {
                         String downloadUrl = versionInfoEntity.getDownloadurl();
                         String serverMd5 = versionInfoEntity.getMd5();
-                        downloadAPK(mContext, downloadUrl, serverMd5);
+                        downloadAPK(mContext, downloadUrl);
                     }
                 } else {
                     if (apkFile.exists()) {
@@ -106,7 +106,7 @@ public class AppUpdateUtils {
         });
     }
 
-    private void downloadAPK(final Context mContext, final String downloadUrl, final String md5) {
+    private void downloadAPK(final Context mContext, final String downloadUrl) {
         new Thread() {
             @Override
             public void run() {
