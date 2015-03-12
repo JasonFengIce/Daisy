@@ -124,4 +124,5 @@
     <string name="update_method">请选择升级方式,谢谢!</string>
     <string name="update_now">现在升级</string>
     <string name="update_next_time">下次启动时升级</string>
+    <string name="insert_sdcard">没有发现SD卡,无法实现更新!!!</string>
 </resources>

@@ -1,4 +1,4 @@
-package tv.ismar.daisy.update;
+package tv.ismar.daisy.core.update;
 
 import android.app.ActivityManager;
 import android.content.ComponentName;
@@ -10,11 +10,14 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import tv.ismar.daisy.AppConstant;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.client.ClientApi;
 
 import java.io.*;
 import java.math.BigInteger;
@@ -36,10 +39,10 @@ public class AppUpdateUtils {
 
     private static AppUpdateUtils instance;
 
-    private final String path;
+    private String path;
 
     private AppUpdateUtils() {
-        path = "/sdcard";
+
     }
 
     public static AppUpdateUtils getInstance() {
@@ -50,9 +53,11 @@ public class AppUpdateUtils {
     }
 
     public void checkUpdate(final Context mContext) {
+        path = getSDPath(mContext);
+//        path = "/sdcard";
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setLogLevel(AppConstant.LOG_LEVEL)
-                .setEndpoint(AppConstant.APP_UPDATE_HOST)
+                .setEndpoint(ClientApi.APP_UPDATE_HOST)
                 .build();
 
         ClientApi.AppVersionInfo client = restAdapter.create(ClientApi.AppVersionInfo.class);
@@ -60,28 +65,36 @@ public class AppUpdateUtils {
             @Override
             public void success(VersionInfoEntity versionInfoEntity, Response response) {
                 File apkFile = new File(path, SELF_APP_NAME);
-                if (apkFile.exists()) {
-                    String serverMd5Code = versionInfoEntity.getMd5();
-                    String localMd5Code = getMd5ByFile(apkFile);
-                    String currentActivityName = getCurrentActivityName(mContext);
-                    if (serverMd5Code.equals(localMd5Code) && !currentActivityName.equals(PLAYER_ACTIVITY_NAME)) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString("title", versionInfoEntity.getUpdate_title());
-                        bundle.putStringArrayList("msgs", versionInfoEntity.getUpdate_msg());
-                        bundle.putString("path", apkFile.getAbsolutePath());
-                        sendUpdateBroadcast(mContext, bundle);
-                    }
-                } else {
-                    PackageInfo packageInfo = null;
-                    try {
-                        packageInfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
-                    } catch (PackageManager.NameNotFoundException e) {
-                        Log.e(TAG, "can't find this application!!!");
-                    }
-                    if (packageInfo.versionCode < Integer.parseInt(versionInfoEntity.getVersion())) {
+                PackageInfo packageInfo = null;
+                try {
+                    packageInfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
+                } catch (PackageManager.NameNotFoundException e) {
+                    Log.e(TAG, "can't find this application!!!");
+                }
+                if (packageInfo.versionCode < Integer.parseInt(versionInfoEntity.getVersion())) {
+                    if (apkFile.exists()) {
+                        String serverMd5Code = versionInfoEntity.getMd5();
+                        String localMd5Code = getMd5ByFile(apkFile);
+                        String currentActivityName = getCurrentActivityName(mContext);
+
+                        int apkVersionCode = getApkVersionCode(mContext, apkFile.getAbsolutePath());
+                        int serverVersionCode = Integer.parseInt(versionInfoEntity.getVersion());
+                        if (serverMd5Code.equals(localMd5Code) && !currentActivityName.equals(PLAYER_ACTIVITY_NAME)
+                                && apkVersionCode == serverVersionCode) {
+                            Bundle bundle = new Bundle();
+                            bundle.putString("title", versionInfoEntity.getUpdate_title());
+                            bundle.putStringArrayList("msgs", versionInfoEntity.getUpdate_msg());
+                            bundle.putString("path", apkFile.getAbsolutePath());
+                            sendUpdateBroadcast(mContext, bundle);
+                        }
+                    } else {
                         String downloadUrl = versionInfoEntity.getDownloadurl();
                         String serverMd5 = versionInfoEntity.getMd5();
                         downloadAPK(mContext, downloadUrl, serverMd5);
+                    }
+                } else {
+                    if (apkFile.exists()) {
+                        apkFile.delete();
                     }
                 }
             }
@@ -107,7 +120,7 @@ public class AppUpdateUtils {
                         fileName.createNewFile();
                     URLConnection conn = url.openConnection();
                     InputStream inStream = conn.getInputStream();
-                    FileOutputStream fs = new FileOutputStream(new File(path, SELF_APP_NAME));
+                    FileOutputStream fs = new FileOutputStream(fileName);
                     byte[] buffer = new byte[1024];
                     while ((byteread = inStream.read(buffer)) != -1) {
                         fs.write(buffer, 0, byteread);
@@ -121,9 +134,7 @@ public class AppUpdateUtils {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
                 checkUpdate(mContext);
-
             }
         }.start();
     }
@@ -153,14 +164,16 @@ public class AppUpdateUtils {
         return value;
     }
 
-    public String getSDPath() {
+    public String getSDPath(Context context) {
         File sdDir = null;
         boolean sdCardExist = Environment.getExternalStorageState()
-                .equals(Environment.MEDIA_MOUNTED);   //判断sd卡是否存在
+                .equals(Environment.MEDIA_MOUNTED);
         if (sdCardExist) {
-            sdDir = Environment.getExternalStorageDirectory();//获取跟目录
+            sdDir = Environment.getExternalStorageDirectory();
+            Log.d(TAG, "sdcard path " + sdDir.getAbsolutePath());
+        } else {
+            Toast.makeText(context, R.string.insert_sdcard, Toast.LENGTH_LONG).show();
         }
-        Log.d(TAG, sdDir.toString());
         return sdDir.toString();
     }
 
@@ -196,4 +209,12 @@ public class AppUpdateUtils {
         boolean update = sharedPreferences.getBoolean("update", false);
         return update;
     }
+
+    private int getApkVersionCode(Context context, String path) {
+        final PackageManager pm = context.getPackageManager();
+        PackageInfo info = pm.getPackageArchiveInfo(path, 0);
+        return info.versionCode;
+    }
+
+
 }

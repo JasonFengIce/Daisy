@@ -1,4 +1,4 @@
-package tv.ismar.daisy.update;
+package tv.ismar.daisy.core.update;
 
 import java.util.ArrayList;
 

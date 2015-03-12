@@ -3,7 +3,7 @@ package tv.ismar.daisy.core.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import tv.ismar.daisy.update.AppUpdateUtils;
+import tv.ismar.daisy.core.update.AppUpdateUtils;
 
 /**
  * Created by huaijie on 3/12/15.

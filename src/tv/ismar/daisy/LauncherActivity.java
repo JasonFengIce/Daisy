@@ -30,7 +30,7 @@ import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.ui.widget.DaisyButton;
-import tv.ismar.daisy.update.AppUpdateUtils;
+import tv.ismar.daisy.core.update.AppUpdateUtils;
 import tv.ismar.daisy.views.CustomDialog;
 
 import java.io.*;
@@ -977,6 +977,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
         updateNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AppUpdateUtils.getInstance().modifyUpdatePreferences(context, false);
                 popupWindow.dismiss();
             }
         });
