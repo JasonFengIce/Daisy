@@ -1,14 +1,13 @@
 package tv.ismar.daisy;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.*;
 import android.content.res.AssetManager;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import com.activeandroid.ActiveAndroid;
-import com.activeandroid.app.Application;
 import org.json.JSONException;
 import org.json.JSONObject;
 import tv.ismar.daisy.core.ImageCache;
@@ -58,7 +57,6 @@ public class VodApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        ActiveAndroid.initialize(this);
         load(this);
         getContentModelFromAssets();
         registerReceiver(mCloseReceiver, new IntentFilter("com.amlogic.dvbplayer.homekey"));

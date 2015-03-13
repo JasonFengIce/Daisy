@@ -901,6 +901,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
         return super.onKeyDown(keyCode, event);
     }
 
+
+
     @Override
     protected void onDestroy() {
         unregisterReceiver(appUpdateReceiver);

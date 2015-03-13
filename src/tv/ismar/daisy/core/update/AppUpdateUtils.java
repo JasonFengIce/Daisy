@@ -8,15 +8,12 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import tv.ismar.daisy.AppConstant;
-import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.ClientApi;
 
 import java.io.*;
@@ -53,7 +50,7 @@ public class AppUpdateUtils {
     }
 
     public void checkUpdate(final Context mContext) {
-        path = getSDPath(mContext);
+        path = mContext.getFilesDir().getAbsolutePath();
 //        path = "/sdcard";
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setLogLevel(AppConstant.LOG_LEVEL)
@@ -101,7 +98,7 @@ public class AppUpdateUtils {
 
             @Override
             public void failure(RetrofitError retrofitError) {
-
+                Log.e(TAG, "checkUpdate failed !!!");
             }
         });
     }
@@ -120,7 +117,7 @@ public class AppUpdateUtils {
                         fileName.createNewFile();
                     URLConnection conn = url.openConnection();
                     InputStream inStream = conn.getInputStream();
-                    FileOutputStream fs = new FileOutputStream(fileName);
+                    FileOutputStream fs = mContext.openFileOutput(SELF_APP_NAME, Context.MODE_WORLD_READABLE);
                     byte[] buffer = new byte[1024];
                     while ((byteread = inStream.read(buffer)) != -1) {
                         fs.write(buffer, 0, byteread);
@@ -162,19 +159,6 @@ public class AppUpdateUtils {
             }
         }
         return value;
-    }
-
-    public String getSDPath(Context context) {
-        File sdDir = null;
-        boolean sdCardExist = Environment.getExternalStorageState()
-                .equals(Environment.MEDIA_MOUNTED);
-        if (sdCardExist) {
-            sdDir = Environment.getExternalStorageDirectory();
-            Log.d(TAG, "sdcard path " + sdDir.getAbsolutePath());
-        } else {
-            Toast.makeText(context, R.string.insert_sdcard, Toast.LENGTH_LONG).show();
-        }
-        return sdDir.toString();
     }
 
     private void sendUpdateBroadcast(Context context, Bundle bundle) {

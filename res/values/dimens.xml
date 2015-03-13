@@ -459,4 +459,6 @@
     <dimen name="update_title_textsize">32sp</dimen>
     <dimen name="update_msg_textsize">28sp</dimen>
 
+    <!-- advertisement-->
+    <dimen name="adver_timer_textsize">32sp</dimen>
 </resources>
