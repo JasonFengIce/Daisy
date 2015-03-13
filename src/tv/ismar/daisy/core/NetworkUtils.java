@@ -233,7 +233,7 @@ public class NetworkUtils {
 				return false;
 			}
 			Log.d(TAG,"base64 =="+jsonContent);
-			String url="http://a21.calla.tvxio.com/log";
+			String url="http://ismartv.calla.tvxio.com/log";
 			//String url = "http://192.168.1.185:8099/shipinkefu/22.mp4";
 			java.net.URL connURL = new java.net.URL(url);
 			java.net.HttpURLConnection httpConn = (java.net.HttpURLConnection) connURL.openConnection();

@@ -1499,6 +1499,18 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
                 .getString(R.string.vod_player_continue_on));
         sub.addItem(9,
                 getResources().getString(R.string.vod_player_continue_off));
+
+        sub = menu.addSubMenu(10,getResources().getString(R.string.serie_switch));
+		for (Item i : listItems) {
+            String tempurl = simpleRestClient.root_url + "/api/subitem/"
+                    + i.pk + "/";
+			if (subItemUrl.equalsIgnoreCase(tempurl)) {
+				sub.addItem(i.pk, i.title, true, true);
+			} else {
+				sub.addItem(i.pk, i.title, true, false);
+			}
+		}
+
         return true;
     }
 
@@ -1669,6 +1681,21 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
             addHistory(seekPostion);
             return true;
         }
+
+        if(id > 10){
+            subItemUrl = simpleRestClient.root_url + "/api/subitem/"
+                    + id + "/";
+            bundle.remove("url");
+            bundle.putString("url", subItemUrl);
+            addHistory(0);
+            if (mVideoView != null) {
+                mVideoView.setAlpha(0);
+            }
+            isBuffer = true;
+            showBuffer();
+            new ItemByUrlTask().execute();
+        }
+
         return true;
     }
 
