@@ -141,12 +141,31 @@ public class NetworkUtils {
 	                "application/x-www-form-urlencoded");
 	        connection.setRequestProperty("Accept", "application/json");
 	        connection.connect();
+	        DataOutputStream out = new DataOutputStream(connection
+	                .getOutputStream());
+	      //  OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream(), "utf-8");
+	        String content;
+	        out.writeBytes(values);
+	        out.flush();
+	        out.close();
 	        int status = connection.getResponseCode();
+
+	       
+	        if(status==200){
+	            BufferedReader reader = new BufferedReader(new InputStreamReader(
+		                connection.getInputStream(),"UTF-8"));
+		        String line;
+		        while ((line = reader.readLine()) != null) {
+		            response.append(line);
+		        }
+		        if(response.toString().equals("")){
+		        	reader.close();	
+		        	return "200";
+		        }
+		        reader.close();		        	
+	        }
+	        else{
 				switch(status) {
-				case 404:
-					throw new ItemOfflineException(url);
-				case 599:
-					throw new NetworkException(url);
 				case 400:
 					response.append("参数不对");
 					return "400";
@@ -154,29 +173,6 @@ public class NetworkUtils {
 					response.append("device_token非标准格式");
 					return "406";
 				}
-	        DataOutputStream out = new DataOutputStream(connection
-	                .getOutputStream());
-	        String content;
-//	        if(url.equals("active"))
-//	              content = "sn="+sn+"&kind=a21&"+"manufacture=lenovo&version=v2_0";
-//	          else
-//	        	  content = "sn="+sn+"&kind=a21&"+"manufacture=lenovo&api_version=v2_0";
-	        out.writeBytes(values);
-	        	        
-	        out.flush();
-	        out.close();
-	        if(status==200){
-	            BufferedReader reader = new BufferedReader(new InputStreamReader(
-		                connection.getInputStream(),"UTF-8"));
-		        out.flush();
-		        out.close(); // flush and close
-		        String line;
-		        while ((line = reader.readLine()) != null) {
-		            response.append(line);
-		        }
-		        reader.close();		        	
-	        }
-	        else{
 	        	connection.disconnect();
 	        	return "";
 	        }

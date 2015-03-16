@@ -25,7 +25,10 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="40dip"
             android:background="@drawable/edit_selector"
-            />
+            android:textColor="#FFF8F8FF"
+            android:textSize="30sp"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dip"/>
 
         <Button
             android:id="@+id/identifyCodeBtn"
@@ -65,7 +68,12 @@
             android:id="@+id/edit_identifycode"
             android:layout_width="600dip"
             android:layout_height="match_parent"
-            android:layout_marginLeft="40dip" />
+            android:layout_marginLeft="40dip" 
+            android:background="@drawable/edit_selector"
+            android:textColor="#FFF8F8FF"
+            android:textSize="30sp"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dip"/>
     </LinearLayout>
 
     <Button

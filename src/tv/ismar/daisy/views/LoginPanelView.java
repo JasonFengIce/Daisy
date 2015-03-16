@@ -3,59 +3,149 @@ package tv.ismar.daisy.views;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.json.JSONException;
+
+import com.alibaba.fastjson.JSONObject;
+
+import tv.ismar.daisy.LauncherActivity;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.VodApplication;
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class LoginPanelView extends LinearLayout {
     
 	private Button identifyCodeBtn;
-	private SimpleRestClient mSimpleRestClient; 
+	private SimpleRestClient mSimpleRestClient;
+	private DialogInterface.OnClickListener mPositiveListener;
+	private DialogInterface.OnClickListener mNegativeListener;
+	private Dialog dialog = null;
+	private EditText edit_identifycode;
+	private Button btn_submit;
+	private EditText edit_mobile;
+	private TextView count_tip;
 	public LoginPanelView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 		 LayoutInflater mInflater = LayoutInflater.from(context);
 		 View myView = mInflater.inflate(R.layout.person_center_login, null);
 		 setOrientation(LinearLayout.VERTICAL);
+		 mSimpleRestClient = new SimpleRestClient();
 		 addView(myView);
          initView();
-         mSimpleRestClient = new SimpleRestClient();
+     
 	}
 
     private void initView(){
+    	count_tip = (TextView)findViewById(R.id.count_tip);
+    	edit_mobile = (EditText)findViewById(R.id.edit_mobile);
+    	edit_identifycode = (EditText)findViewById(R.id.edit_identifycode);
     	identifyCodeBtn = (Button)findViewById(R.id.identifyCodeBtn);
+    	btn_submit = (Button)findViewById(R.id.btn_submit);
+    	btn_submit.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				String identifyCode = edit_identifycode.getText().toString();
+				if("".equals(identifyCode)){
+					showDialog("验证码不能为空!");
+					return;
+				}
+				mSimpleRestClient.post("/accounts/login/" , "device_token=="+SimpleRestClient.device_token+
+						"&username="+edit_mobile.getText().toString()+"&auth_number="+identifyCode, new HttpPostRequestInterface(){
+
+							@Override
+							public void onPrepare() {
+								// TODO Auto-generated method stub
+								
+							}
+
+							@Override
+							public void onSuccess(String info) {
+								// TODO Auto-generated method stub
+								DaisyUtils.getVodApplication(getContext()).getEditor().
+								putInt(VodApplication.LOGIN_STATE, 1);
+								DaisyUtils.getVodApplication(getContext()).getPreferences().getInt(VodApplication.LOGIN_STATE, -1);
+								try {
+									org.json.JSONObject json = new org.json.JSONObject(info);
+									String auth_token = json.getString(VodApplication.AUTH_TOKEN);
+									DaisyUtils.getVodApplication(getContext()).getEditor().putString(VodApplication.AUTH_TOKEN, auth_token);
+									if(callback!=null){
+										callback.onSuccess(auth_token);
+									}
+								} catch (JSONException e) {
+									// TODO Auto-generated catch block
+									callback.onFailed(e.toString());
+									e.printStackTrace();
+								}
+							}
+
+							@Override
+							public void onFailed(String error) {
+								// TODO Auto-generated method stub
+								callback.onFailed(error);
+								showDialog(error);
+							}
+					
+				});
+			}
+		});
     	identifyCodeBtn.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				callback.onSuccess("123");
-				IsmartCountTimer timeCount = new IsmartCountTimer(identifyCodeBtn, R.drawable.btn_normal_bg, R.drawable.btn_disabled_bg);//������������ɫֵ
-				//timeCount.start();
-				mSimpleRestClient.post("/accounts/auth/", "device_token=="+SimpleRestClient.device_token+"&username=13120689235",new HttpPostRequestInterface() {
+				if("".equals(edit_mobile.getText().toString())){
+					showDialog("请输入手机号");
+					return;
+				}
+				boolean ismobile = isMobileNumber(edit_mobile.getText().toString());
+				if(!ismobile){
+					showDialog("不是手机号码");
+					return;
+				}
+				final IsmartCountTimer timeCount = new IsmartCountTimer(identifyCodeBtn, R.drawable.btn_normal_bg, R.drawable.btn_disabled_bg);
+				timeCount.start();
+				count_tip.setVisibility(View.VISIBLE);
+				mSimpleRestClient.post("/accounts/auth/", "device_token=="+SimpleRestClient.device_token+"&username="+edit_mobile.getText().toString(),new HttpPostRequestInterface(){
 					
 					@Override
 					public void onSuccess(String info) {
 						// TODO Auto-generated method stub
-						
+						//timeCount.cancel();
+						//identifyCodeBtn.setEnabled(true);
+						//identifyCodeBtn.setBackgroundResource(R.drawable.btn_normal_bg);
+						//identifyCodeBtn.setText("获取验证码");
+						count_tip.setText("获取验证码成功，请提交!");
 					}
 					
 					@Override
 					public void onPrepare() {
 						// TODO Auto-generated method stub
-						
+						count_tip.setText("60秒后可再次点击获取验证码");
 					}
 					
 					@Override
 					public void onFailed(String error) {
 						// TODO Auto-generated method stub
-						
+						timeCount.cancel();
+						identifyCodeBtn.setEnabled(true);
+						identifyCodeBtn.setBackgroundResource(R.drawable.btn_normal_bg);
+						identifyCodeBtn.setText("获取验证码");
+						count_tip.setText("获取验证码:\n"+error);
+						//showDialog(error);
 					}
 				});
 			}
@@ -74,5 +164,34 @@ public class LoginPanelView extends LinearLayout {
 		public void onSuccess(String info);
 		public void onFailed(String error);
 	}
+	private void showDialog(String info){
+//		       mPositiveListener = new DialogInterface.OnClickListener() {
+//					
+//					@Override
+//					public void onClick(DialogInterface arg0, int arg1) {
+//						// TODO Auto-generated method stub
+//						dialog.dismiss();
+//					}
+//				};
+				mNegativeListener = new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						// TODO Auto-generated method stub
+						dialog.dismiss();
+					}
+				};
+		
 
+			 dialog = new CustomDialog.Builder(getContext())
+				.setMessage(info)
+				//.setPositiveButton(R.string.vod_retry, mPositiveListener)
+				.setNegativeButton(R.string.vod_ok, mNegativeListener).create();
+		
+		dialog.show();
+	}
+	
+	public String getMobileNumber(){
+		return edit_mobile.getText().toString();
+	}
 }

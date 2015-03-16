@@ -12,13 +12,17 @@ import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class PersonCenterActivity extends Activity {
 	private ListView mListView;
 	private LoginPanelView login_layout;
+	private View mPersoninfoLayout;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -47,6 +51,7 @@ public class PersonCenterActivity extends Activity {
 		Toast.makeText(this, "onsuccess", Toast.LENGTH_SHORT).show();
 	}
 	private void initView(){
+		mPersoninfoLayout = (View)findViewById(R.id.info);
 		login_layout = (LoginPanelView)findViewById(R.id.login_layout);
 		login_layout.setLoginListener(new LoginInterface() {
 			
@@ -54,6 +59,10 @@ public class PersonCenterActivity extends Activity {
 			public void onSuccess(String info) {
 				// TODO Auto-generated method stub
 				showToast();
+				login_layout.setVisibility(View.GONE);
+				mPersoninfoLayout.setVisibility(View.VISIBLE);
+				TextView mobile = (TextView) mPersoninfoLayout.findViewById(R.id.mobile_txt);
+				Button exit = (Button)mPersoninfoLayout.findViewById(R.id.exit_btn);
 			}
 			
 			@Override
