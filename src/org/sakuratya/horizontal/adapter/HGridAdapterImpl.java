@@ -27,7 +27,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 	private final static String TAG = "HGridAdapterImpl";
 	
 	private Context mContext;
-	
+	private boolean mHasSection = true;
 	private int mSize = 0;
 	public HGridView hg;
 	private HashSet<AsyncImageView> mOnLoadingImageQueue = new HashSet<AsyncImageView>();
@@ -42,7 +42,16 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 		}
 		
 	}
-	
+	public HGridAdapterImpl(Context context, ArrayList<ItemCollection> list,boolean hasSection) {
+		mContext = context;
+		if(list != null && list.size()>0) {
+			mList = list;
+			for(int i=0;i < list.size(); i++) {
+				mSize +=list.get(i).count;
+			}
+		}
+		this.mHasSection = hasSection;
+	}
 	@Override
 	public void setList(ArrayList<ItemCollection> list) {
 		mSize = 0;
@@ -88,6 +97,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 			holder.previewImage = (AsyncImageView) convertView.findViewById(R.id.list_item_preview_img);
 			holder.qualityLabel = (ImageView) convertView.findViewById(R.id.list_item_quality_label);
 			holder.listLayout = (RelativeLayout)convertView.findViewById(R.id.list_item_layout);
+			holder.price = (TextView)convertView.findViewById(R.id.expense_txt);
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();
@@ -148,6 +158,10 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 		if(mList.get(sectionIndex).isItemReady(indexOfCurrentSection)) {
 			final Item item = mList.get(sectionIndex).objects.get(indexOfCurrentSection);
 			if(item!=null){
+				if(item.expense!=null){
+					holder.price.setText("￥"+item.expense.price);
+					holder.price.setVisibility(View.VISIBLE);
+				}
 				holder.title.setText(item.title);
 				holder.previewImage.setUrl(item.adlet_url);
 				if(item.quality==3) {
@@ -171,6 +185,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 	static class Holder {
 		AsyncImageView previewImage;
 		TextView title;
+		TextView price;
 		ImageView qualityLabel;
 		RelativeLayout listLayout;
 	}
@@ -189,7 +204,10 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 	
 	@Override
 	public boolean hasSection() {
-		return true;
+		if(this.mHasSection)
+		    return true;
+		else
+			return false;
 	}
 
 	@Override
@@ -199,7 +217,10 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 
 	@Override
 	public String getLabelText(int sectionIndex) {
-		return mList.get(sectionIndex).title;
+		if(this.mHasSection)
+		    return mList.get(sectionIndex).title;
+		else
+			return "";
 	}
 	
 	public void cancel() {

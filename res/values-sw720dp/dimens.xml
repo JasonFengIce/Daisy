@@ -450,4 +450,50 @@
 <dimen name="Launcher_channel_title_textsize">20sp</dimen>
 <!-- DetailAttributeContainer -->
 <dimen name="DetailAttributeContainer_Layout_W">314dip</dimen>
+    <!-- package detail -->
+    <dimen name="ZGridView_packagedetail_selectorLeftPadding">5dip</dimen>
+    <dimen name="ZGridView_packagedetail_selectorTopPadding">2dip</dimen>
+    <dimen name="ZGridView_packagedetail_selectorRight">3dip</dimen>
+    <dimen name="ZGridView_packagedetail_selectorBottom">-15dip</dimen>
+    <dimen name="vod_payment_package_details_container_ML">53dip</dimen>
+    <dimen name="vod_payment_package_details_container_MT">67dip</dimen>
+    <dimen name="package_detail_divider_W">768dip</dimen>
+    <dimen name="package_detail_divider_H">1dip</dimen>
+    <dimen name="package_detail_divider_MT">28dip</dimen>
+    <dimen name="package_detail_divider_cMT">399dip</dimen>
+    <dimen name="vod_payment_pacakge_title_MT">40dip</dimen>
+    <dimen name="vod_payment_packageDescribe_content_W">394dip</dimen>
+    <dimen name="vod_payment_packageDescribe_content_MT">10dip</dimen>
+    <dimen name="vod_payment_package_posterAndBuyBotton_container_W">320dip</dimen>
+    <dimen name="vod_payment_package_posterAndBuyBotton_container_H">181dip</dimen>
+    <dimen name="vod_payment_package_posterAndBuyBotton_container_ML">501dip</dimen>
+    <dimen name="vod_payment_package_posterAndBuyBotton_container_MT">109dip</dimen>
+    <dimen name="vod_payment_poster_W">320dip</dimen>
+    <dimen name="vod_payment_poster_H">180dip</dimen>
+    <dimen name="vod_payment_poster_MLR">3dip</dimen>
+    <dimen name="vod_payment_price_MT">153dip</dimen>
+    <dimen name="vod_payment_price_textsize">16sp</dimen>
+    <dimen name="vod_payment_buyButton_W">307dip</dimen>
+    <dimen name="vod_payment_buyButton_H">48dip</dimen>
+    <dimen name="vod_payment_buyButton_ML">53dip</dimen>
+    <dimen name="vod_payment_buyButton_MT">300dip</dimen>
+    <dimen name="vod_payment_package_title_ML">53dip</dimen>
+    <dimen name="vod_payment_package_title_MT">371dip</dimen>
+    <dimen name="vod_payment_item_of_package_container_ML">27dip</dimen>
+    <dimen name="vod_payment_item_of_package_container_MT">420dip</dimen>
+    <dimen name="vod_payment_item_of_package_container_horizontalSpace">13dip</dimen>
+    <dimen name="vod_payment_item_more_W">148dip</dimen>
+    <dimen name="vod_payment_item_more_H">42dip</dimen>
+    <dimen name="vod_payment_item_more_ML">660dip</dimen>
+    <dimen name="vod_payment_item_more_MT">613dip</dimen>
+    <dimen name="vod_payment_packageDescribe_textsize">20sp</dimen>
+
+    <!-- package detail item -->
+    <dimen name="package_item_default_W">243dip</dimen>
+    <dimen name="package_item_default_H">150dip</dimen>
+    <dimen name="package_item_ItemImage_W">214dip</dimen>
+    <dimen name="package_item_ItemImage_H">120dip</dimen>
+    <dimen name="package_item_ItemImage_MT">15dip</dimen>
+    <dimen name="package_item_ItemText_MT">5dip</dimen>
+    <dimen name="package_item_ItemText_PLR">5dip</dimen>
 </resources>

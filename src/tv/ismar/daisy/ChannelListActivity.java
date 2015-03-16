@@ -68,7 +68,7 @@ public class ChannelListActivity extends Activity {
 			else {
 				ChannelFragment channelFragment = new ChannelFragment();
 				channelFragment.mChannel = channel;
-				channelFragment.mTitle = title;
+				channelFragment.mTitle = title;  //chinesemovie
 				channelFragment.mUrl = url;
 				fragmentTransaction.add(R.id.fragment_container, channelFragment);
 			}

@@ -5,5 +5,4 @@
 
     <item android:drawable="@color/autocomplete_back_color_selector" android:state_selected="true"/>
     <item android:drawable="@color/hotwords_text_color" android:state_window_focused="false"/>
-
 </selector>

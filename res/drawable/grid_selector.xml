@@ -3,5 +3,5 @@
 
     <item android:drawable="@drawable/search_gridview_back" android:state_pressed="true"/>
     <item android:drawable="@drawable/on_selected_back" android:state_window_focused="false"/>
-
+<item android:drawable="@drawable/vod_gv_selector" android:state_hovered="true"/>
 </selector>

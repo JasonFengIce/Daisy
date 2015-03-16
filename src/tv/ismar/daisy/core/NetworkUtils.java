@@ -16,6 +16,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.zip.GZIPInputStream;
 
@@ -44,36 +46,71 @@ public class NetworkUtils {
 	DataCollectionTask mDataCollectionTask;
 	public static String getJsonStr(String target) throws ItemOfflineException, NetworkException {
 		String urlStr = target;
+		Log.i("zhuabao", "url=="+urlStr);
 		try {
-			URL url = new URL(urlStr);
+			URL url = new URL(urlStr+"?device_token="+SimpleRestClient.device_token);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			StringBuffer sb = new StringBuffer();
 			//conn.addRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.94 Safari/537.36");
 //			conn.addRequestProperty("Accept", "*/*");
-//			conn.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-			//conn.addRequestProperty("Accept-Encoding", "gzip,deflate,sdch");
-			conn.setUseCaches(false);
+			//conn.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			conn.addRequestProperty("Accept-Encoding", "gzip,deflate,sdch");
+			conn.setIfModifiedSince(System.currentTimeMillis());
+			//conn.setUseCaches(false);
 			conn.connect();
 			int resCode = conn.getResponseCode();
 			GZIPInputStream is = null;
 			BufferedReader buff ;
 			String encoding = conn.getContentEncoding();
-//			 if(encoding!=null && encoding.contains("gzip")){//首先判断服务器返回的数据是否支持gzip压缩，
-//					is = new GZIPInputStream(conn.getInputStream());
-//					buff = new BufferedReader(new InputStreamReader(is,"UTF-8")); //如果支持则应该使用GZIPInputStream解压，否则会出现乱码无效数据
-//				}
-//			 else{
-//				 buff = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
-//			 }
-			 buff = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
+			 if(encoding!=null && encoding.contains("gzip")){//首先判断服务器返回的数据是否支持gzip压缩，
+					is = new GZIPInputStream(conn.getInputStream());
+					buff = new BufferedReader(new InputStreamReader(is,"UTF-8")); //如果支持则应该使用GZIPInputStream解压，否则会出现乱码无效数据
+				}
+			 else{
+				 buff = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
+			 }
+			// buff = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
 			switch(resCode) {
 			case 404:
 				throw new ItemOfflineException(urlStr);
 			case 599:
 				throw new NetworkException(urlStr);
+			case 400:
+				sb.append("参数不对");
+				return sb.toString();
+			case 406:
+				sb.append("device_token非标准格式");
+				return sb.toString();
 			}							          			 
 			String line = null;
+			
+			  try {
+				     
+	                Map<String, List<String>> map = conn.getHeaderFields();
+	     
+	                System.out.println("显示响应Header信息...\n");
+	     
+	                for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+	                        System.out.println("Key : " + entry.getKey() + 
+	                                           " ,Value : " + entry.getValue());
+	                }
+	     
+	                System.out.println("\n使用key获得响应Header信息 \n");
+	                List<String> server = map.get("Server");
+	     
+	                if (server == null) {
+	                        System.out.println("Key 'Server' is not found!");
+	                } else {
+	                        for (String values : server) {
+	                                System.out.println(values);
+	                        }
+	                }
+	     
+	        } catch (Exception e) {
+	                e.printStackTrace();
+	        }
+			  
 			while((line=buff.readLine())!=null) {
 				sb.append(line);
 			}
@@ -89,6 +126,71 @@ public class NetworkUtils {
 		}
 		return null;
 	}
+	public static String getJsonStrByPost(String url,String values) throws ItemOfflineException, NetworkException{
+		StringBuffer response = new StringBuffer();
+		 try{
+	        URL postUrl = new URL(url);
+	        HttpURLConnection connection = (HttpURLConnection) postUrl
+	                .openConnection();
+	        connection.setDoOutput(true);
+	        connection.setDoInput(true);
+	        connection.setRequestMethod("POST");
+	        connection.setUseCaches(false);
+	        connection.setInstanceFollowRedirects(true);
+	        connection.setRequestProperty("Content-Type",
+	                "application/x-www-form-urlencoded");
+	        connection.setRequestProperty("Accept", "application/json");
+	        connection.connect();
+	        int status = connection.getResponseCode();
+				switch(status) {
+				case 404:
+					throw new ItemOfflineException(url);
+				case 599:
+					throw new NetworkException(url);
+				case 400:
+					response.append("参数不对");
+					return "400";
+				case 406:
+					response.append("device_token非标准格式");
+					return "406";
+				}
+	        DataOutputStream out = new DataOutputStream(connection
+	                .getOutputStream());
+	        String content;
+//	        if(url.equals("active"))
+//	              content = "sn="+sn+"&kind=a21&"+"manufacture=lenovo&version=v2_0";
+//	          else
+//	        	  content = "sn="+sn+"&kind=a21&"+"manufacture=lenovo&api_version=v2_0";
+	        out.writeBytes(values);
+	        	        
+	        out.flush();
+	        out.close();
+	        if(status==200){
+	            BufferedReader reader = new BufferedReader(new InputStreamReader(
+		                connection.getInputStream(),"UTF-8"));
+		        out.flush();
+		        out.close(); // flush and close
+		        String line;
+		        while ((line = reader.readLine()) != null) {
+		            response.append(line);
+		        }
+		        reader.close();		        	
+	        }
+	        else{
+	        	connection.disconnect();
+	        	return "";
+	        }
+	        connection.disconnect();
+		 }
+		 catch(Exception e) {
+				if(e instanceof ItemOfflineException) {
+					throw (ItemOfflineException)e;
+				} else if(e instanceof NetworkException) {
+					throw (NetworkException)e;
+				}
+			}
+		 return response.toString();
+	   }
 	public static InputStream getInputStream(String target) {
 		String urlStr = target;
 		try {
@@ -233,7 +335,7 @@ public class NetworkUtils {
 				return false;
 			}
 			Log.d(TAG,"base64 =="+jsonContent);
-			String url="http://a21.calla.tvxio.com/log";
+			String url="http://ismartv.calla.tvxio.com/log";
 			//String url = "http://192.168.1.185:8099/shipinkefu/22.mp4";
 			java.net.URL connURL = new java.net.URL(url);
 			java.net.HttpURLConnection httpConn = (java.net.HttpURLConnection) connURL.openConnection();

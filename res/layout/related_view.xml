@@ -46,21 +46,21 @@
             android:background="@drawable/vod_arrow_right_normal"
             android:visibility="gone" />
     </LinearLayout>
-    <!-- <GridView -->
-    <!-- android:id="@+id/related_list" -->
-    <!-- android:layout_width="match_parent" -->
-    <!-- android:layout_height="match_parent" -->
-    <!-- android:layout_marginLeft="@dimen/related_view_list_marginleft" -->
-    <!-- android:layout_marginRight="@dimen/related_view_list_marginright" -->
-    <!-- android:layout_marginTop="@dimen/related_view_list_margintop" -->
-    <!-- android:numColumns="4" -->
-    <!-- android:horizontalSpacing="@dimen/related_view_list_horizontalspacing" -->
-    <!-- android:verticalSpacing="@dimen/related_view_list_verticalspacing" -->
-    <!-- android:stretchMode="columnWidth" -->
-    <!-- android:columnWidth="@dimen/related_view_list_columnwidth" -->
-    <!-- android:listSelector="#00000000" -->
-    <!-- > -->
-    <!-- </GridView> -->
+<!--     <GridView -->
+<!--     android:id="@+id/related_list" -->
+<!--     android:layout_width="match_parent" -->
+<!--     android:layout_height="match_parent" -->
+<!--     android:layout_marginLeft="@dimen/related_view_list_marginleft" -->
+<!--     android:layout_marginRight="@dimen/related_view_list_marginright" -->
+<!--     android:layout_marginTop="@dimen/related_view_list_margintop" -->
+<!--     android:numColumns="4" -->
+<!--     android:horizontalSpacing="@dimen/related_view_list_horizontalspacing" -->
+<!--     android:verticalSpacing="@dimen/related_view_list_verticalspacing" -->
+<!--     android:stretchMode="columnWidth" -->
+<!--     android:columnWidth="@dimen/related_view_list_columnwidth" -->
+    
+<!--     android:listSelector="@drawable/channel_item_selector"> -->
+<!--     </GridView> -->
 
     <org.sakuratya.horizontal.ui.ZGridView
         android:id="@+id/related_list"

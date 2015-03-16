@@ -8,12 +8,16 @@ import java.util.regex.Pattern;
 import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
 import org.sakuratya.horizontal.ui.HGridView;
 import org.sakuratya.horizontal.ui.HGridView.OnScrollListener;
+
+import tv.ismar.daisy.DramaListActivity;
+import tv.ismar.daisy.ItemDetailActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
+import tv.ismar.daisy.models.Expense;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemCollection;
 import tv.ismar.daisy.models.ItemList;
@@ -98,7 +102,6 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		if(fragmentView==null){
-			Log.i("zhangjq123","onCreateView");
 			mLoadingDialog = new LoadingDialog(getActivity(), getResources().getString(R.string.loading));
 			mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
 			fragmentView = inflater.inflate(R.layout.list_view, container, false);
@@ -489,41 +492,51 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		Item item = mHGridAdapter.getItem(position);
-		if(item!=null) {
-			mSectionProperties.put(EventProperty.TO_ITEM, item.pk);
-			mSectionProperties.put(EventProperty.TO_TITLE, item.title);
-			mSectionProperties.put(EventProperty.POSITION, position);
-			int sectionIndex = mHGridAdapter.getSectionIndex(position);
-			final Section s = mSectionList.get(sectionIndex);
-			mSectionProperties.put(EventProperty.TITLE, s.title);
-			mSectionProperties.put(EventProperty.SECTION, s.slug);
-			Intent intent = new Intent();
-			if(item.is_complex) {
-				intent.setAction("tv.ismar.daisy.Item");
+		if(item!=null){
+			if(item.model_name.equals("package")){
+				Intent intent = new Intent();
+				intent.setAction("tv.ismar.daisy.packageitem");
 				intent.putExtra("url", item.url);
-				intent.putExtra(EventProperty.SECTION, s.slug);
 				startActivity(intent);
-			} else {
-				InitPlayerTool tool = new InitPlayerTool(getActivity());
-				tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
-					
-					@Override
-					public void onPreExecute(Intent intent) {
-						// TODO Auto-generated method stub
+			}
+			else{
+				if(item!=null) {
+					mSectionProperties.put(EventProperty.TO_ITEM, item.pk);
+					mSectionProperties.put(EventProperty.TO_TITLE, item.title);
+					mSectionProperties.put(EventProperty.POSITION, position);
+					int sectionIndex = mHGridAdapter.getSectionIndex(position);
+					final Section s = mSectionList.get(sectionIndex);
+					mSectionProperties.put(EventProperty.TITLE, s.title);
+					mSectionProperties.put(EventProperty.SECTION, s.slug);
+					Intent intent = new Intent();
+					if(item.is_complex) {
+						Expense f = item.expense;
+						intent.setAction("tv.ismar.daisy.Item");
+						intent.putExtra("url", item.url);
 						intent.putExtra(EventProperty.SECTION, s.slug);
-			            mLoadingDialog.show();
+						startActivity(intent);
+					} else {
+						InitPlayerTool tool = new InitPlayerTool(getActivity());
+						tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
+							
+							@Override
+							public void onPreExecute(Intent intent) {
+								// TODO Auto-generated method stub
+								intent.putExtra(EventProperty.SECTION, s.slug);
+					            mLoadingDialog.show();
+							}
+							
+							@Override
+							public void onPostExecute() {
+								// TODO Auto-generated method stub
+								mLoadingDialog.dismiss();
+							}
+						});
+						tool.initClipInfo(item.url, InitPlayerTool.FLAG_URL);
 					}
-					
-					@Override
-					public void onPostExecute() {
-						// TODO Auto-generated method stub
-						mLoadingDialog.dismiss();
-					}
-				});
-				tool.initClipInfo(item.url, InitPlayerTool.FLAG_URL);
+				}
 			}
 		}
-		
 	}
 	
 	@Override

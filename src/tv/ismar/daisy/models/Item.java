@@ -1,6 +1,7 @@
 package tv.ismar.daisy.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Item implements Serializable {
 	
@@ -42,4 +43,5 @@ public class Item implements Serializable {
     public int position;
     public String url;
     public boolean live_video;
+    public ArrayList<Item> items;
 }

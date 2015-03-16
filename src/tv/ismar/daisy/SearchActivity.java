@@ -5,8 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.sakuratya.horizontal.ui.HGridView;
 import org.sakuratya.horizontal.ui.ZGridView;
 import tv.ismar.daisy.adapter.ImageCacheAdapter;
+import tv.ismar.daisy.adapter.ImageCacheAdapter1;
 import tv.ismar.daisy.core.ConnectionHelper;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
@@ -21,6 +24,7 @@ import tv.ismar.daisy.views.LoadingDialog;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -37,6 +41,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -48,10 +53,10 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	// 搜索
 	ImageButton ibtnSearch;
 	// 缓存适配器android:minSdkVersion
-	ImageCacheAdapter imageAdapter;
+	ImageCacheAdapter1 imageAdapter;
 	// CacheAdapter cacheAdapter;
 	// ViewHolderAdapter holderAdapter;
-	ZGridView gridView;
+	HGridView gridView;
 	// 搜索结果数
 	TextView tvSearchCount;
 	// 搜索结果linear
@@ -171,13 +176,13 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 		}) {
 		}.start();
 	}
-
+//-partition-size 2048 -
 	public void initViews() {
-		gridView = (ZGridView) findViewById(R.id.serarc_gridview);
-		gridView.setNumColumns(6);
+		gridView = (HGridView) findViewById(R.id.serarc_gridview);
+		//gridView.setNumColumns(6);
 	//	gridView.setVerticalSpacing(5);
 		gridView.setOnItemClickListener(SearchActivity.this);
-		imageAdapter = new ImageCacheAdapter(SearchActivity.this, R.layout.search_grid_view_item);
+		imageAdapter = new ImageCacheAdapter1(SearchActivity.this, R.layout.search_grid_view_item);
 		ibtnSearch = (ImageButton) findViewById(R.id.ibtn_search);
 		ibtnSearch.setOnClickListener(this);
 		tvSearchCount = (TextView) findViewById(R.id.tv_search_count);
@@ -277,7 +282,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 		case R.id.act_autocomplete_country:
 			// Toast.makeText(this, "is ok", Toast.LENGTH_LONG).show();
 			InputMethodManager m = (InputMethodManager) autoCompleteTextView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-			m.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);			
+			//m.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);			
 			autoCompleteTextView.showDropDown();
 			// autoCompleteTextView.onKeyDown(KeyEvent.KEYCODE_BACK, null);
 			break;
@@ -376,8 +381,9 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	 */
 	private void setImageAdapter(List<MovieBean> movieList) {
 		imageAdapter.cancelAsync();
-		imageAdapter = new ImageCacheAdapter(SearchActivity.this, movieList, R.layout.search_grid_view_item);
+		imageAdapter = new ImageCacheAdapter1(SearchActivity.this, movieList, R.layout.search_grid_view_item);
 		gridView.setAdapter(imageAdapter);
+		imageAdapter.setList((ArrayList<MovieBean>) movieList);
 		gridView.setFocusable(true);
 	};
 	/**
