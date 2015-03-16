@@ -76,7 +76,7 @@ public class AppUpdateUtils {
 
                         int apkVersionCode = getApkVersionCode(mContext, apkFile.getAbsolutePath());
                         int serverVersionCode = Integer.parseInt(versionInfoEntity.getVersion());
-                        if (serverMd5Code.equals(localMd5Code) && !currentActivityName.equals(PLAYER_ACTIVITY_NAME)
+                        if (serverMd5Code.equalsIgnoreCase(localMd5Code) && !currentActivityName.equals(PLAYER_ACTIVITY_NAME)
                                 && apkVersionCode == serverVersionCode) {
                             Bundle bundle = new Bundle();
                             bundle.putString("title", versionInfoEntity.getUpdate_title());
