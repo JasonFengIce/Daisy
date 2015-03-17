@@ -35,6 +35,7 @@ public class LoginPanelView extends LinearLayout {
 	private Button btn_submit;
 	private EditText edit_mobile;
 	private TextView count_tip;
+	private IsmartCountTimer timeCount;
 	public LoginPanelView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
@@ -60,7 +61,7 @@ public class LoginPanelView extends LinearLayout {
 				// TODO Auto-generated method stub
 				String identifyCode = edit_identifycode.getText().toString();
 				if("".equals(identifyCode)){
-					showDialog("验证码不能为空!");
+					count_tip.setText("验证码不能为空!");
 					return;
 				}
 				mSimpleRestClient.post("/accounts/login/" , "device_token=="+SimpleRestClient.device_token+
@@ -75,13 +76,12 @@ public class LoginPanelView extends LinearLayout {
 							@Override
 							public void onSuccess(String info) {
 								// TODO Auto-generated method stub
-								DaisyUtils.getVodApplication(getContext()).getEditor().
-								putInt(VodApplication.LOGIN_STATE, 1);
-								DaisyUtils.getVodApplication(getContext()).getPreferences().getInt(VodApplication.LOGIN_STATE, -1);
 								try {
 									org.json.JSONObject json = new org.json.JSONObject(info);
 									String auth_token = json.getString(VodApplication.AUTH_TOKEN);
 									DaisyUtils.getVodApplication(getContext()).getEditor().putString(VodApplication.AUTH_TOKEN, auth_token);
+									DaisyUtils.getVodApplication(getContext()).save();
+									SimpleRestClient.access_token = auth_token;
 									if(callback!=null){
 										callback.onSuccess(auth_token);
 									}
@@ -96,7 +96,7 @@ public class LoginPanelView extends LinearLayout {
 							public void onFailed(String error) {
 								// TODO Auto-generated method stub
 								callback.onFailed(error);
-								showDialog(error);
+								count_tip.setText(error);
 							}
 					
 				});
@@ -108,15 +108,15 @@ public class LoginPanelView extends LinearLayout {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				if("".equals(edit_mobile.getText().toString())){
-					showDialog("请输入手机号");
+					count_tip.setText("请输入手机号");
 					return;
 				}
 				boolean ismobile = isMobileNumber(edit_mobile.getText().toString());
 				if(!ismobile){
-					showDialog("不是手机号码");
+					count_tip.setText("不是手机号码");
 					return;
 				}
-				final IsmartCountTimer timeCount = new IsmartCountTimer(identifyCodeBtn, R.drawable.btn_normal_bg, R.drawable.btn_disabled_bg);
+				timeCount = new IsmartCountTimer(identifyCodeBtn, R.drawable.btn_normal_bg, R.drawable.btn_disabled_bg);
 				timeCount.start();
 				count_tip.setVisibility(View.VISIBLE);
 				mSimpleRestClient.post("/accounts/auth/", "device_token=="+SimpleRestClient.device_token+"&username="+edit_mobile.getText().toString(),new HttpPostRequestInterface(){
@@ -165,14 +165,14 @@ public class LoginPanelView extends LinearLayout {
 		public void onFailed(String error);
 	}
 	private void showDialog(String info){
-//		       mPositiveListener = new DialogInterface.OnClickListener() {
-//					
-//					@Override
-//					public void onClick(DialogInterface arg0, int arg1) {
-//						// TODO Auto-generated method stub
-//						dialog.dismiss();
-//					}
-//				};
+		       mPositiveListener = new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						// TODO Auto-generated method stub
+						dialog.dismiss();
+					}
+				};
 				mNegativeListener = new DialogInterface.OnClickListener() {
 					
 					@Override
@@ -185,7 +185,7 @@ public class LoginPanelView extends LinearLayout {
 
 			 dialog = new CustomDialog.Builder(getContext())
 				.setMessage(info)
-				//.setPositiveButton(R.string.vod_retry, mPositiveListener)
+				.setPositiveButton(R.string.vod_retry, mPositiveListener)
 				.setNegativeButton(R.string.vod_ok, mNegativeListener).create();
 		
 		dialog.show();
@@ -193,5 +193,16 @@ public class LoginPanelView extends LinearLayout {
 	
 	public String getMobileNumber(){
 		return edit_mobile.getText().toString();
+	}
+	public void clearLayout(){
+		count_tip.setVisibility(View.INVISIBLE);
+		edit_identifycode.setText("");
+		edit_mobile.setText("");
+		identifyCodeBtn.setEnabled(true);
+		identifyCodeBtn.setBackgroundResource(R.drawable.btn_normal_bg);
+		identifyCodeBtn.setText("获取验证码");
+        if(timeCount!=null){
+        	timeCount.cancel();
+        }
 	}
 }

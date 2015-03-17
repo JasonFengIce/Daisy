@@ -955,6 +955,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener ,
 //			DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString("domain", SimpleRestClient.root_url);
 //			DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString("ad_domain", SimpleRestClient.ad_domain);
 //			DaisyUtils.getVodApplication(LauncherActivity.this).save();
+                        SimpleRestClient.access_token = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.AUTH_TOKEN, "");
 	    	mainHandler.sendEmptyMessage(GETDOMAIN);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

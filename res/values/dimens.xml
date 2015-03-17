@@ -554,5 +554,9 @@
     <dimen name="pay_paymentselect_main_marginright">30dp</dimen>
     <dimen name="pay_paymentselect_main_margintop">30dp</dimen>
     <dimen name="pay_paymentselect_vseparate_width">2dp</dimen>
+       <!-- personal center -->
+    <dimen name="personal_center_divider_H">2dip</dimen>
+    <dimen name="personal_center_divider_ML">20dip</dimen>
+    <dimen name="person_center_textsize">60sp</dimen>
 </resources>
 

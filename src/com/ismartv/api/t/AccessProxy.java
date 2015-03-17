@@ -15,6 +15,7 @@ import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.qiyimediaplayer.SdkVideo;
 
 public class AccessProxy {
@@ -90,13 +91,18 @@ public class AccessProxy {
 	}
 
 	private static String getFullUrl(String url, String access_token) {
-		String full_url = (new StringBuilder(String.valueOf(url))).append(mySN)
-				.append("/").toString();
-		if (access_token != null)
-			full_url = (new StringBuilder(String.valueOf(full_url)))
-					.append("?access_token=").append(access_token)
-					.append("&sign=").append(getAES(access_token)).toString();
-		return full_url;
+//		String full_url = (new StringBuilder(String.valueOf(url))).append(mySN)
+//				.append("/").toString();
+//		if (access_token != null)
+//			full_url = (new StringBuilder(String.valueOf(full_url)))
+//					.append("?access_token=").append(SimpleRestClient.access_token)
+//					.append("&device_token=").append(SimpleRestClient.device_token)
+//					.append("&sign=").append(getAES(access_token)).toString();
+	          StringBuffer buffer = new StringBuffer(String.valueOf(url));
+	          buffer.append("?access_token=").append(SimpleRestClient.access_token)
+				.append("&device_token=").append(SimpleRestClient.device_token)
+				.append("&sign=").append(getAES(access_token)).toString();
+		return buffer.toString();
 	}
 
 	private static String getAES(String access_token) {
