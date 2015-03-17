@@ -4,14 +4,17 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.Clip;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.models.Quality;
 import tv.ismar.daisy.persistence.FavoriteManager;
 import tv.ismar.daisy.persistence.HistoryManager;
+import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.player.ISTVVodMenu;
 import tv.ismar.daisy.player.ISTVVodMenuItem;
 import android.app.Dialog;
@@ -43,6 +46,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
 import com.ismartv.api.t.AccessProxy;
 import com.ismartv.bean.ClipInfo;
 import com.qiyi.video.player.IVideoStateListener;
@@ -107,6 +111,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 	private History mHistory;
 	private SimpleRestClient simpleRestClient;
 	private String itemUrl;
+	private String subItemUrl;
 	private int seekPostion = 0;
 	private boolean isSeek = false;
 	private FavoriteManager favoriteManager;
@@ -118,7 +123,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 	private TextView bufferText;
 	private long bufferDuration = 0;
 	private long startDuration = 0;
-	// private CallaPlay callaPlay = new CallaPlay();
+	private CallaPlay callaPlay = new CallaPlay();
 	AudioManager am;
 	private String mSection;
 	private String sid = "";
@@ -192,7 +197,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 		itemUrl = item.clip.url;
 		titleText.setText(item.title);
 		showBuffer();
-		// new initPlayTask().execute();
+		new initPlayTask().execute();
 		initQiyiVideoPlayer();
 	}
 
@@ -200,24 +205,45 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		protected void onPostExecute(Void result) {
+			// TODO Auto-generated method stub
 			// initPlayer();
 		}
 
 		@Override
 		protected Void doInBackground(String... params) {
+			// TODO Auto-generated method stub
 			try {
 				if (item != null) {
 					if (item.item_pk != item.pk) {
 						currNum = item.position;
+						Log.d(TAG, "currNum ===" + currNum);
+						subItemUrl = SimpleRestClient.root_url
+								+ "/api/subitem/" + item.pk + "/";
+						subItem = simpleRestClient.getItem(subItemUrl);
 						itemUrl = SimpleRestClient.root_url + "/api/item/"
 								+ item.item_pk + "/";
+						item = simpleRestClient.getItem(itemUrl);
+						if (item != null && item.subitems != null) {
+
+							listItems = new ArrayList<Item>();
+
+							for (int i = 0; i < item.subitems.length; i++) {
+								listItems.add(item.subitems[i]);
+							}
+						}
+					} else {
+						itemUrl = SimpleRestClient.root_url + "/api/item/"
+								+ item.item_pk + "/";
+						// Item item1 = simpleRestClient.getItem(itemUrl);
 					}
+
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			return null;
 		}
+
 	}
 
 	public void initQiyiVideoPlayer() {
@@ -233,6 +259,10 @@ public class QiYiPlayActivity extends VodMenuAction {
 		historyManager = DaisyUtils.getHistoryManager(this);
 		mHistory = historyManager.getHistoryByUrl(itemUrl);
 		favorite = favoriteManager.getFavoriteByUrl(itemUrl);
+		Quality quality = historyManager.getQuality();
+		if (quality != null) {
+			currQuality = quality.quality;
+		}
 		if (mHistory != null) {
 			isContinue = mHistory.is_continue;
 			tempOffset = (int) mHistory.last_position;
@@ -245,7 +275,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 			bufferText.setText(PlAYSTART + "《" + titleText.getText() + "》");
 		}
 		isBuffer = false;
-        showBuffer();
+		showBuffer();
 		if (tempOffset > 0 && isContinue) {
 			currPosition = tempOffset;
 			seekPostion = tempOffset;
@@ -255,6 +285,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 		}
 		mPlayer.setVideo(AccessProxy.getQiYiInfo(info));
 		mPlayer.start();
+		initQualtiyText();
 	}
 
 	private IVideoStateListener mVideoStateListener = new IVideoStateListener() {
@@ -338,7 +369,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 				@Override
 				public void run() {
 					qualityText.setVisibility(View.VISIBLE);
-					qualityText.setText(DEFINITION_NAMES.get(definition));
+//					qualityText.setText(DEFINITION_NAMES.get(definition));
 				}
 			});
 			currentDefinition = definition;
@@ -369,7 +400,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 	}
 
 	private void showBuffer() {
-		if (!isBuffer && !bufferLayout.isShown()) {
+		if (isBuffer && !bufferLayout.isShown()) {
 			bufferLayout.setVisibility(View.VISIBLE);
 			bufferDuration = System.currentTimeMillis();
 			isBuffer = true;
@@ -377,7 +408,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 	}
 
 	private void hideBuffer() {
-		if (isBuffer && bufferLayout.isShown()) {
+		if (!isBuffer && bufferLayout.isShown()) {
 			bufferText.setText(BUFFERING);
 			bufferLayout.setVisibility(View.GONE);
 			isBuffer = false;
@@ -404,11 +435,11 @@ public class QiYiPlayActivity extends VodMenuAction {
 						/ 100;
 				timeBar.setProgress(curPos);
 				timeBar.setSecondaryProgress(secondaryProgress);
-				// if (Math.abs(secondaryProgress - curPos) != 0) {
-				// hideBuffer();
-				// } else {
-				// showBuffer();
-				// }
+				if (Math.abs(secondaryProgress - curPos) != 0) {
+					hideBuffer();
+				} else {
+					showBuffer();
+				}
 				sendEmptyMessageDelayed(MSG_PLAY_TIME, 1000);
 				if (LogUtils.mIsDebug)
 					LogUtils.d(TAG,
@@ -593,12 +624,12 @@ public class QiYiPlayActivity extends VodMenuAction {
 		if (mPlayer.isPlaying())
 			mPlayer.pause();
 		paused = true;
-		// if (subItem != null)
-		// callaPlay.videoPlayPause(item.pk, subItem.pk, item.title, clip.pk,
-		// currQuality, 0, currPosition, sid);
-		// else
-		// callaPlay.videoPlayPause(item.pk, null, item.title, clip.pk,
-		// currQuality, 0, currPosition, sid);
+		if (subItem != null)
+			callaPlay.videoPlayPause(item.pk, subItem.pk, item.title, clip.pk,
+					currQuality, 0, currPosition, sid);
+		else
+			callaPlay.videoPlayPause(item.pk, null, item.title, clip.pk,
+					currQuality, 0, currPosition, sid);
 
 	}
 
@@ -615,38 +646,38 @@ public class QiYiPlayActivity extends VodMenuAction {
 	private void ExToClosePlayer(String code, String content) {
 		if (bufferText != null) {
 			bufferText.setText(EXTOCLOSE);
-//			if (code == "url") {
-//				try {
-//					if (subItem != null)
-//						callaPlay.videoExcept("noplayaddress", content,
-//								item.pk, subItem.pk, item.title, clip.pk,
-//								currQuality, 0);
-//					else
-//						callaPlay.videoExcept("noplayaddress", content,
-//								item.pk, null, item.title, clip.pk,
-//								currQuality, 0);
-//				} catch (Exception e) {
-//					Log.e(TAG,
-//							" Sender log videoExcept noplayaddress "
-//									+ e.toString());
-//				}
-//			}
-//			if (code == "error") {
-//				try {
-//					if (subItem != null)
-//						callaPlay.videoExcept("mediaexception", content,
-//								item.pk, subItem.pk, item.title, clip.pk,
-//								currQuality, currPosition);
-//					else
-//						callaPlay.videoExcept("mediaexception", content,
-//								item.pk, null, item.title, clip.pk,
-//								currQuality, currPosition);
-//				} catch (Exception e) {
-//					Log.e(TAG,
-//							" Sender log videoExcept noplayaddress "
-//									+ e.toString());
-//				}
-//			}
+			if (code == "url") {
+				try {
+					if (subItem != null)
+						callaPlay.videoExcept("noplayaddress", content,
+								item.pk, subItem.pk, item.title, clip.pk,
+								currQuality, 0);
+					else
+						callaPlay.videoExcept("noplayaddress", content,
+								item.pk, null, item.title, clip.pk,
+								currQuality, 0);
+				} catch (Exception e) {
+					Log.e(TAG,
+							" Sender log videoExcept noplayaddress "
+									+ e.toString());
+				}
+			}
+			if (code == "error") {
+				try {
+					if (subItem != null)
+						callaPlay.videoExcept("mediaexception", content,
+								item.pk, subItem.pk, item.title, clip.pk,
+								currQuality, currPosition);
+					else
+						callaPlay.videoExcept("mediaexception", content,
+								item.pk, null, item.title, clip.pk,
+								currQuality, currPosition);
+				} catch (Exception e) {
+					Log.e(TAG,
+							" Sender log videoExcept noplayaddress "
+									+ e.toString());
+				}
+			}
 
 		}
 		mHandler.postDelayed(finishPlayerActivity, 3000);
@@ -674,12 +705,12 @@ public class QiYiPlayActivity extends VodMenuAction {
 		hideBuffer();
 		Log.d(TAG, "resume");
 		mPlayer.start();
-		// if (subItem != null)
-		// callaPlay.videoPlayContinue(item.pk, subItem.pk, item.title,
-		// clip.pk, currQuality, 0, currPosition, sid);
-		// else
-		// callaPlay.videoPlayContinue(item.pk, null, item.title, clip.pk,
-		// currQuality, 0, currPosition, sid);
+		if (subItem != null)
+			callaPlay.videoPlayContinue(item.pk, subItem.pk, item.title,
+					clip.pk, currQuality, 0, currPosition, sid);
+		else
+			callaPlay.videoPlayContinue(item.pk, null, item.title, clip.pk,
+					currQuality, 0, currPosition, sid);
 		if (!isBuffer) {
 			timeTaskStart();
 		}
@@ -697,13 +728,13 @@ public class QiYiPlayActivity extends VodMenuAction {
 					showPanel();
 					showBuffer();
 					mPlayer.seek(-SEEK_STEP);
-					// if (subItem != null)
-					// callaPlay.videoPlaySeek(item.pk, subItem.pk,
-					// item.title, clip.pk, currQuality, 0,
-					// currPosition, sid);
-					// else
-					// callaPlay.videoPlayContinue(item.pk, null, item.title,
-					// clip.pk, currQuality, 0, currPosition, sid);
+					if (subItem != null)
+						callaPlay.videoPlaySeek(item.pk, subItem.pk,
+								item.title, clip.pk, currQuality, 0,
+								currPosition, sid);
+					else
+						callaPlay.videoPlayContinue(item.pk, null, item.title,
+								clip.pk, currQuality, 0, currPosition, sid);
 					isSeekBuffer = true;
 					ret = true;
 					isSeek = false;
@@ -718,13 +749,13 @@ public class QiYiPlayActivity extends VodMenuAction {
 					showPanel();
 					showBuffer();
 					mPlayer.seek(SEEK_STEP);
-					// if (subItem != null)
-					// callaPlay.videoPlaySeek(item.pk, subItem.pk,
-					// item.title, clip.pk, currQuality, 0,
-					// currPosition, sid);
-					// else
-					// callaPlay.videoPlayContinue(item.pk, null, item.title,
-					// clip.pk, currQuality, 0, currPosition, sid);
+					if (subItem != null)
+						callaPlay.videoPlaySeek(item.pk, subItem.pk,
+								item.title, clip.pk, currQuality, 0,
+								currPosition, sid);
+					else
+						callaPlay.videoPlayContinue(item.pk, null, item.title,
+								clip.pk, currQuality, 0, currPosition, sid);
 					isSeekBuffer = true;
 					ret = true;
 					isSeek = false;
@@ -890,11 +921,14 @@ public class QiYiPlayActivity extends VodMenuAction {
 		sub = menu.addSubMenu(0,
 				getResources().getString(R.string.vod_player_quality_setting));
 		sub.addItem(1,
-				getResources().getString(R.string.vod_player_quality_medium));
+				getResources().getString(R.string.vod_player_quality_medium),
+				true, currQuality == 0);
 		sub.addItem(2,
-				getResources().getString(R.string.vod_player_quality_high));
+				getResources().getString(R.string.vod_player_quality_high),
+				true, currQuality == 1);
 		sub.addItem(3,
-				getResources().getString(R.string.vod_player_quality_ultra));
+				getResources().getString(R.string.vod_player_quality_ultra),
+				true, currQuality == 2);
 		sub.addItem(4,
 				getResources().getString(R.string.vod_player_quality_adaptive));
 		if (itemUrl != null && favoriteManager != null
@@ -976,14 +1010,14 @@ public class QiYiPlayActivity extends VodMenuAction {
 					if (id == 3) {
 						mPlayer.switchBitStream(Definition.DEFINITON_1080P);
 					}
-					// if (subItem != null)
-					// callaPlay.videoSwitchStream(item.pk, subItem.pk,
-					// item.title, clip.pk, currQuality, "manual",
-					// null, null, mediaip, sid);
-					// else
-					// callaPlay.videoSwitchStream(item.pk, null, item.title,
-					// clip.pk, currQuality, "manual", null, null,
-					// mediaip, sid);
+					if (subItem != null)
+						callaPlay.videoSwitchStream(item.pk, subItem.pk,
+								item.title, clip.pk, currQuality, "manual",
+								null, null, mediaip, sid);
+					else
+						callaPlay.videoSwitchStream(item.pk, null, item.title,
+								clip.pk, currQuality, "manual", null, null,
+								mediaip, sid);
 					initQualtiyText();
 					return true;
 				} catch (Exception e) {
@@ -1051,13 +1085,18 @@ public class QiYiPlayActivity extends VodMenuAction {
 	private void addHistory(int last_position) {
 		if (item != null && historyManager != null) {
 			History history = new History();
-			history.title = item.title;
+			if (subItem != null && subItem.title != null) {
+				history.title = subItem.title;
+			} else {
+				history.title = item.title;
+			}
 			history.adlet_url = item.adlet_url;
 			history.content_model = item.content_model;
 			history.is_complex = item.is_complex;
 			history.last_position = last_position;
 			history.last_quality = currQuality;
 			history.url = itemUrl;
+			history.sub_url = subItemUrl;
 			history.is_continue = isContinue;
 			historyManager.addHistory(history);
 		}
