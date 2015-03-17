@@ -1,0 +1,59 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/weixin"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/pay_channel_weixin_height"
+        android:layout_marginLeft="@dimen/pay_channel_weixin_marginleft"
+        android:layout_marginRight="@dimen/pay_channel_weixin_marginright"
+        android:layout_marginTop="@dimen/pay_channel_weixin_margintop"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/pay_channel_weixin_textsize"
+        android:background="@drawable/person_btn_selector"
+        android:text="@string/weixinpay_button_title" />
+
+    <Button
+        android:id="@+id/videocard"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/pay_channel_weixin_height"
+        android:layout_below="@id/weixin"
+        android:layout_marginLeft="@dimen/pay_channel_weixin_marginleft"
+        android:layout_marginRight="@dimen/pay_channel_weixin_marginright"
+        android:layout_marginTop="@dimen/pay_channel_weixin_margintop"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/pay_channel_weixin_textsize"
+        android:background="@drawable/person_btn_selector"
+        android:text="@string/guanyingcard_pay_button_title" />
+
+    <Button
+        android:id="@+id/zhifubao"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/pay_channel_weixin_height"
+        android:layout_below="@id/videocard"
+        android:layout_marginLeft="@dimen/pay_channel_weixin_marginleft"
+        android:layout_marginRight="@dimen/pay_channel_weixin_marginright"
+        android:layout_marginTop="@dimen/pay_channel_weixin_margintop"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/pay_channel_weixin_textsize"
+        android:background="@drawable/person_btn_selector"
+        android:text="@string/zhifubao_pay_button_title" />
+
+    <Button
+        android:id="@+id/balance_pay"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/pay_channel_weixin_height"
+        android:layout_below="@id/zhifubao"
+        android:layout_marginLeft="@dimen/pay_channel_weixin_marginleft"
+        android:layout_marginRight="@dimen/pay_channel_weixin_marginright"
+        android:layout_marginTop="@dimen/pay_channel_weixin_margintop"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/pay_channel_weixin_textsize"
+        android:background="@drawable/person_btn_selector"
+        android:text="@string/yu_e_pay_button_title" />
+
+</RelativeLayout>
