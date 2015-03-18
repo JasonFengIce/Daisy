@@ -58,13 +58,14 @@ public class AdvertisementActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_advertisement);
         initViews();
-        if (AppUpdateUtils.getInstance().getUpdatePreferences(this)) {
+        File apkFile = new File(getFilesDir().getAbsolutePath(), AppUpdateUtils.SELF_APP_NAME);
+        if (AppUpdateUtils.getInstance().getUpdatePreferences(this) && apkFile.exists()) {
             AppUpdateUtils.getInstance().modifyUpdatePreferences(this, false);
             Picasso.with(AdvertisementActivity.this)
                     .load(R.drawable.bg_update_prompt)
                     .into(adverPic);
-            String path = new File(getFilesDir().getAbsolutePath(), AppUpdateUtils.SELF_APP_NAME).getAbsolutePath();
-            execInstallCmd(path);
+            AppUpdateUtils.getInstance().execCmd("adb connect 127.0.0.1");
+            AppUpdateUtils.getInstance().execCmd("adb install -r " + apkFile.getAbsolutePath());
         } else {
             advertisePicCacheDir = getFilesDir().getAbsolutePath();
             placeAdvertisementPic(new File(advertisePicCacheDir, ADVERTISE_POSTER_NAME).getAbsolutePath());
@@ -284,27 +285,20 @@ public class AdvertisementActivity extends Activity {
         }
     }
 
-    private void execInstallCmd(final String path) {
-        new Thread() {
-            @Override
-            public void run() {
-                Log.i(TAG, "execInstallCmd  is running ...");
-                int result = -1;
-                try {
-                    String installCmd = "adb install -r " + path;
-                    Process localProcess = Runtime.getRuntime().exec(installCmd);
-                    Object localObject = localProcess.getOutputStream();
-                    DataOutputStream localDataOutputStream = new DataOutputStream(
-                            (OutputStream) localObject);
-                    localDataOutputStream.writeBytes("exit\n");
-                    localDataOutputStream.flush();
-                    localProcess.waitFor();
-                    result = localProcess.exitValue();
-                } catch (Exception localException) {
-                    localException.printStackTrace();
-                }
-            }
-        }.start();
-
+    private int execInstallCmd(final String params) {
+        int result = -1;
+        try {
+            Process localProcess = Runtime.getRuntime().exec(params);
+            Object localObject = localProcess.getOutputStream();
+            DataOutputStream localDataOutputStream = new DataOutputStream(
+                    (OutputStream) localObject);
+            localDataOutputStream.writeBytes("exit\n");
+            localDataOutputStream.flush();
+            localProcess.waitFor();
+            result = localProcess.exitValue();
+        } catch (Exception localException) {
+            localException.printStackTrace();
+        }
+        return result;
     }
 }

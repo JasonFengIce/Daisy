@@ -38,6 +38,7 @@ public class SimpleRestClient {
     public static String log_domain = "cord.tvxio.com";
     public static String device_token;
     public static String sn_token;
+    public static String access_token="";
 	private Gson gson;
 
 	public SimpleRestClient() {

@@ -3,12 +3,10 @@ package tv.ismar.daisy;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.*;
-import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnErrorListener;
 import android.net.Uri;
 import android.os.*;
-import android.text.TextPaint;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -18,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.URLUtil;
 import android.widget.*;
+import android.widget.AdapterView.OnItemClickListener;
 import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
 import com.google.gson.Gson;
@@ -33,6 +32,7 @@ import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.update.AppUpdateUtils;
 import tv.ismar.daisy.player.InitPlayerTool;
+import tv.ismar.daisy.ui.adapter.ChannelAdapter;
 import tv.ismar.daisy.ui.widget.DaisyButton;
 import tv.ismar.daisy.ui.widget.DaisyImageView;
 import tv.ismar.daisy.views.CustomDialog;
@@ -43,7 +43,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class LauncherActivity extends Activity implements View.OnClickListener, Activator.OnComplete {
+public class LauncherActivity extends Activity implements View.OnClickListener, Activator.OnComplete, OnItemClickListener {
     private static final String TAG = "LauncherActivity";
     private AppUpdateReceiver appUpdateReceiver;
     private static final int NAME = 1;
@@ -60,9 +60,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private ImageView[] homeImages;
     private TextView[] homeTitles;
 
-    private ImageView[] channelImages;
-
-    private TextView[] channelTexts;
 
     private RelativeLayout[] channelImtes;
 
@@ -105,6 +102,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private DaisyImageView btn_personcenter;
 
     PopupWindow popupWindow;
+
+    private GridView channelGrid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -249,46 +248,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 (TextView) findViewById(R.id.home_title_5),
                 (TextView) findViewById(R.id.home_title_6)};
 
-        channelImages = new ImageView[]{
-                (ImageView) findViewById(R.id.channel_iv_1),
-                (ImageView) findViewById(R.id.channel_iv_2),
-                (ImageView) findViewById(R.id.channel_iv_3),
-                (ImageView) findViewById(R.id.channel_iv_4),
-                (ImageView) findViewById(R.id.channel_iv_5),
-                (ImageView) findViewById(R.id.channel_iv_6),
-                (ImageView) findViewById(R.id.channel_iv_7),
-                (ImageView) findViewById(R.id.channel_iv_8),
-                (ImageView) findViewById(R.id.channel_iv_9),
-                (ImageView) findViewById(R.id.channel_iv_10),
-                (ImageView) findViewById(R.id.channel_iv_11),
-                (ImageView) findViewById(R.id.channel_iv_12)};
-        channelTexts = new TextView[]{
-                (TextView) findViewById(R.id.channel_tv_1),
-                (TextView) findViewById(R.id.channel_tv_2),
-                (TextView) findViewById(R.id.channel_tv_3),
-                (TextView) findViewById(R.id.channel_tv_4),
-                (TextView) findViewById(R.id.channel_tv_5),
-                (TextView) findViewById(R.id.channel_tv_6),
-                (TextView) findViewById(R.id.channel_tv_7),
-                (TextView) findViewById(R.id.channel_tv_8),
-                (TextView) findViewById(R.id.channel_tv_9),
-                (TextView) findViewById(R.id.channel_tv_10),
-                (TextView) findViewById(R.id.channel_tv_11),
-                (TextView) findViewById(R.id.channel_tv_12)};
+        channelGrid = (GridView) findViewById(R.id.channel_grid);
+        channelGrid.setOnItemClickListener(this);
 
-        channelImtes = new RelativeLayout[]{
-                (RelativeLayout) findViewById(R.id.channel_item_1),
-                (RelativeLayout) findViewById(R.id.channel_item_2),
-                (RelativeLayout) findViewById(R.id.channel_item_3),
-                (RelativeLayout) findViewById(R.id.channel_item_4),
-                (RelativeLayout) findViewById(R.id.channel_item_5),
-                (RelativeLayout) findViewById(R.id.channel_item_6),
-                (RelativeLayout) findViewById(R.id.channel_item_7),
-                (RelativeLayout) findViewById(R.id.channel_item_8),
-                (RelativeLayout) findViewById(R.id.channel_item_9),
-                (RelativeLayout) findViewById(R.id.channel_item_10),
-                (RelativeLayout) findViewById(R.id.channel_item_11),
-                (RelativeLayout) findViewById(R.id.channel_item_12),};
+
         recomends = new ImageView[]{(ImageView) findViewById(R.id.image_1),
                 (ImageView) findViewById(R.id.image_2),
                 (ImageView) findViewById(R.id.image_3)};
@@ -555,59 +518,26 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         Gson gson = new Gson();
         ChannelEntity[] channelBeans = gson.fromJson(content.toString(),
                 ChannelEntity[].class);
-        for (int i = 0; i < channelBeans.length; i++) {
-            channelTexts[i].setText(channelBeans[i].getName());
-            channelTexts[i].setTextColor(Color.WHITE);
-            TextPaint tp = channelTexts[i].getPaint();
-            tp.setFakeBoldText(true);
-            // HashMap<Integer, String> hashMap = new HashMap<Integer,
-            // String>();
-            // hashMap.put(1, channelBeans[i].getName());
-            // hashMap.put(2, channelBeans[i].getUrl());
-            // hashMap.put(3, channelBeans[i].getChannel());
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.put("name", channelBeans[i].getName());
-                jsonObject.put("url", channelBeans[i].getUrl());
-                jsonObject.put("channel", channelBeans[i].getChannel());
-            } catch (JSONException e) {
-                if (e != null)
-                    e.printStackTrace();
-            }
-            channelImtes[i].setTag(jsonObject.toString());
-            channelImtes[i].setOnClickListener(LauncherActivity.this);
-        }
-//		if (channelBeans.length < channelTexts.length) {
-//			JSONObject jsonObject = new JSONObject();
-//			try {
-//				jsonObject.put("name", "");
-//				jsonObject.put("url", "");
-//				jsonObject.put("channel", "search");
-//			} catch (JSONException e) {
-//				if (e != null)
-//					e.printStackTrace();
-//			}
-//			channelTexts[channelBeans.length].setText("搜索");
-//			channelTexts[channelBeans.length].setTextColor(Color.WHITE);
-//			channelImtes[channelBeans.length].setTag(jsonObject.toString());
-//			channelImtes[channelBeans.length]
-//					.setOnClickListener(LauncherActivity.this);
-//		}
-//		if (channelBeans.length == channelTexts.length) {
-//			JSONObject jsonObject = new JSONObject();
-//			try {
-//				jsonObject.put("name", "");
-//				jsonObject.put("url", "");
-//				jsonObject.put("channel", "search");
-//			} catch (JSONException e) {
-//				e.printStackTrace();
-//			}
-//			channelTexts[channelBeans.length - 1].setText("搜索");
-//			channelTexts[channelBeans.length - 1].setTextColor(Color.WHITE);
-//			channelImtes[channelBeans.length - 1].setTag(jsonObject.toString());
-//			channelImtes[channelBeans.length - 1]
-//					.setOnClickListener(LauncherActivity.this);
-//		}
+        ChannelAdapter channelAdapter = new ChannelAdapter(this, channelBeans);
+        channelGrid.setAdapter(channelAdapter);
+
+//        for (int i = 0; i < channelBeans.length; i++) {
+//            channelTexts[i].setText(channelBeans[i].getName());
+//            channelTexts[i].setTextColor(Color.WHITE);
+//            TextPaint tp = channelTexts[i].getPaint();
+//            tp.setFakeBoldText(true);
+//            JSONObject jsonObject = new JSONObject();
+//            try {
+//                jsonObject.put("name", channelBeans[i].getName());
+//                jsonObject.put("url", channelBeans[i].getUrl());
+//                jsonObject.put("channel", channelBeans[i].getChannel());
+//            } catch (JSONException e) {
+//                if (e != null)
+//                    e.printStackTrace();
+//            }
+//            channelImtes[i].setTag(jsonObject.toString());
+//            channelImtes[i].setOnClickListener(LauncherActivity.this);
+//        }
     }
 
     private void setTvHome(String content) {
@@ -931,6 +861,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 //			DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString("domain", SimpleRestClient.root_url);
 //			DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString("ad_domain", SimpleRestClient.ad_domain);
 //			DaisyUtils.getVodApplication(LauncherActivity.this).save();
+            SimpleRestClient.access_token = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.AUTH_TOKEN, "");
             mainHandler.sendEmptyMessage(GETDOMAIN);
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -952,6 +883,25 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         }
 
         super.onDestroy();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        intent = new Intent();
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        String content = (String) view.findViewById(R.id.channel_img).getTag();
+        JSONObject jsonObject;
+        try {
+            jsonObject = new JSONObject(content);
+            intent.putExtra("title", jsonObject.getString("name"));
+            intent.putExtra("url", jsonObject.getString("url"));
+            intent.putExtra("channel", jsonObject.getString("channel"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        intent.setClassName("tv.ismar.daisy",
+                "tv.ismar.daisy.ChannelListActivity");
+        this.startActivity(intent);
     }
 
     /**

@@ -219,5 +219,25 @@ public class AppUpdateUtils {
         return versionCode;
     }
 
+    public void execCmd(final String cmd) {
+        new Thread() {
+            @Override
+            public void run() {
+                int result = -1;
+                try {
+                    Process localProcess = Runtime.getRuntime().exec(cmd);
+                    Object localObject = localProcess.getOutputStream();
+                    DataOutputStream localDataOutputStream = new DataOutputStream(
+                            (OutputStream) localObject);
+                    localDataOutputStream.writeBytes("exit\n");
+                    localDataOutputStream.flush();
+                    localProcess.waitFor();
+                    result = localProcess.exitValue();
+                } catch (Exception localException) {
+                    localException.printStackTrace();
+                }
+            }
+        }.start();
 
+    }
 }

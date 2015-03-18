@@ -99,7 +99,7 @@
     <dimen name="gridview_main_panel_labelTextMarginBottom">20dip</dimen>
     <dimen name="gridview_main_panel_labelTextMarginRight">10dip</dimen>
     <dimen name="gridview_no_video_container_width">1480dip</dimen>
-    <dimen name="gridview_no_video_container_height">681dip</dimen>
+    <dimen name="gridview_no_video_container_height">701dip</dimen>
     <dimen name="gridview_no_video_container_marginLeft">280dip</dimen>
     <dimen name="gridview_item_image_PaddingL">1dip</dimen>
     <dimen name="gridview_item_image_PaddingT">1dip</dimen>
@@ -499,4 +499,7 @@
 <dimen name="package_item_ItemImage_MT">22dip</dimen>
 <dimen name="package_item_ItemText_MT">7dip</dimen>
 <dimen name="package_item_ItemText_PLR">8dip</dimen>
+
+<!-- personal center -->
+
 </resources>

@@ -134,4 +134,24 @@
     <string name="search_text">搜索</string>
     <string name="user_center">用户中心</string>
 
+
+        <!-- pay panel -->
+    <string name="weixinpay_button_title">微信支付</string>
+    <string name="guanyingcard_pay_button_title">观影卡</string>
+    <string name="zhifubao_pay_button_title">支付宝支付</string>
+    <string name="yu_e_pay_button_title">余额支付</string>
+    <string name="pay_panel_label">微信支付无需登陆，扫描二维码，即可畅享在线大片(仅限当前设备)</string>
+    <string name="pay_warntitle">您的账户关联到当前设备，设备损坏或更换时余额及权限将清零。</string>
+    <string name="pay_top_login_label">登陆/注册</string>
+    <string name="pay_top_welocome_tip">您好 : %1$s</string>
+    <string name="pay_card_balance_title_label">您的观影卡余额: ￥%1$.2f</string>
+    <string name="pay_package_price">价格: ￥%1$.2f 有效期: %2$d天</string>
+    <string name="package_exprice_label">购买后可以在有效期内观看</string>
+    <string name="card_balance_submit">确定购买</string>
+    <string name="card_balance_cancel">取消</string>
+    <string name="pay_shiyuncard_account_label">持有实体视云观影卡的用户，请输入16位观影卡密码充值</string>
+    <string name="pay_shiyuncard_submit_label">提交</string>
+    <string name="pay_payinfo_price_label">价格 : %1$s</string>
+    <string name="pay_payinfo_exprice_label">有效期 : %1$s天</string>
+    <string name="pay_payinfo_introduce_label">购买后可以在有效期内观看</string>
 </resources>

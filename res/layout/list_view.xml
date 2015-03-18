@@ -87,6 +87,18 @@
         android:layout_height="@dimen/gridview_no_video_container_height"
         android:layout_marginLeft="@dimen/gridview_no_video_container_marginLeft"
         android:visibility="gone">
+
+        <TextView
+            android:id="@+id/collect_or_history_txt"
+            android:layout_height="100dip"
+            android:layout_width="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="15dip"
+            android:text="没有收藏记录"
+            android:textColor="#FFBBBBBB"
+            android:textSize="60sp"/>
+        <!--         <TextView  -->
+        <!--             android:id="@+id/recommend_txt"/> -->
     </RelativeLayout>
 
 </LinearLayout>

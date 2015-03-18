@@ -5,15 +5,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import com.google.gson.JsonSyntaxException;
-import com.ismartv.api.t.AccessProxy;
-import com.ismartv.bean.ClipInfo;
+
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.ImageUtils;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.Attribute;
@@ -24,36 +21,34 @@ import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
-import tv.ismar.daisy.qiyimediaplayer.SdkVideo;
 import tv.ismar.daisy.views.AsyncImageView;
+import tv.ismar.daisy.views.AsyncImageView.OnImageViewLoadListener;
 import tv.ismar.daisy.views.DetailAttributeContainer;
 import tv.ismar.daisy.views.LoadingDialog;
-import tv.ismar.daisy.views.AsyncImageView.OnImageViewLoadListener;
+import tv.ismar.daisy.views.PaymentDialog;
 import android.app.Activity;
-import android.content.DialogInterface.OnCancelListener;
+import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.View.OnGenericMotionListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.gson.JsonSyntaxException;
+import com.qiyi.video.logger.MainActivity;
 
 public class ItemDetailActivity extends Activity implements
 		OnImageViewLoadListener {
@@ -811,6 +806,9 @@ public class ItemDetailActivity extends Activity implements
 //					    pw.setBackgroundDrawable(new ColorDrawable(0x99000000));   
 //					    pw.setOutsideTouchable(true); // 设置是否允许在外点击使其消失，到底有用没？  
 //					    pw.showAtLocation(mBtnFillBuy, Gravity.CENTER, 0, 0) ;
+					Dialog dialog = new PaymentDialog(ItemDetailActivity.this,
+		                    R.style.PaymentDialog);
+					dialog.show();
 					break;
 				}
 			} catch (Exception e) {

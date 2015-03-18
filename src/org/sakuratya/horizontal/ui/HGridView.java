@@ -1802,7 +1802,6 @@ case MotionEvent.ACTION_HOVER_EXIT:  //鼠标离开view
 						&& !mSelectorRect.isEmpty())) {
 			final Drawable selector = mSelector;
 			selector.setBounds(mSelectorRect);
-			Log.i("qq12345", "draw selector rect = "+mSelectorRect.left+";"+mSelectorRect.top+";"+mSelectorRect.right+";"+mSelectorRect.bottom);
 			selector.draw(canvas);
 		}
 	}

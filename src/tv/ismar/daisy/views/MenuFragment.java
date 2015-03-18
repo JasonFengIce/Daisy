@@ -54,16 +54,26 @@ public class MenuFragment extends DialogFragment implements OnItemClickListener 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mMenuList = new ArrayList<MenuFragment.MenuItem>();
-		MenuItem deleteItem = new MenuItem();
-		deleteItem.id = 1;
-		deleteItem.isEnable = true;
-		deleteItem.title = getResources().getString(R.string.delete_history);
-		mMenuList.add(deleteItem);
+//		MenuItem deleteItem = new MenuItem();
+//		deleteItem.id = 1;
+//		deleteItem.isEnable = true;
+//		deleteItem.title = getResources().getString(R.string.delete_history);
+//		mMenuList.add(deleteItem);
 		MenuItem clearItem = new MenuItem();
 		clearItem.id = 2;
 		clearItem.isEnable = true;
 		clearItem.title = getResources().getString(R.string.clear_history);
 		mMenuList.add(clearItem);
+		MenuItem kefu = new MenuItem();
+		kefu.id = 3;
+		kefu.isEnable = true;
+		kefu.title = "客服中心";
+		mMenuList.add(kefu);
+		MenuItem ordingmenu = new MenuItem();
+		ordingmenu.id = 4;
+		ordingmenu.isEnable = true;
+		ordingmenu.title = "订购列表";
+		mMenuList.add(ordingmenu);
 	}
 
 	

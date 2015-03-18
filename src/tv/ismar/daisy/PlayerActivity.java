@@ -1467,6 +1467,20 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
     public boolean createMenu(ISTVVodMenu menu) {
         ISTVVodMenuItem sub;
 
+        if (listItems != null && listItems.size() > 0) {
+			sub = menu.addSubMenu(100,
+					getResources().getString(R.string.serie_switch));
+			for (Item i : listItems) {
+				String tempurl = simpleRestClient.root_url + "/api/subitem/"
+						+ i.pk + "/";
+				if (subItemUrl.equalsIgnoreCase(tempurl)) {
+					sub.addItem(i.pk, i.title, true, true);
+				} else {
+					sub.addItem(i.pk, i.title, true, false);
+				}
+			}
+		}
+
         sub = menu.addSubMenu(0,
                 getResources().getString(R.string.vod_player_quality_setting));
         sub.addItem(1,
@@ -1477,39 +1491,29 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
                 getResources().getString(R.string.vod_player_quality_ultra));
         sub.addItem(4,
                 getResources().getString(R.string.vod_player_quality_adaptive));
-
-        if (itemUrl != null && favoriteManager != null
-                && favoriteManager.getFavoriteByUrl(itemUrl) == null) {
-            menu.addItem(
-                    5,
-                    getResources().getString(
-                            R.string.vod_player_bookmark_setting));
-        } else {
-            menu.addItem(
-                    5,
-                    getResources().getString(
-                            R.string.vod_bookmark_remove_bookmark_setting));
-        }
-        menu.addItem(6,
-                getResources().getString(R.string.vod_player_related_setting));
-
-        sub = menu.addSubMenu(7,
-                getResources().getString(R.string.vod_player_continue_setting));
-        sub.addItem(8, getResources()
-                .getString(R.string.vod_player_continue_on));
-        sub.addItem(9,
-                getResources().getString(R.string.vod_player_continue_off));
-
-        sub = menu.addSubMenu(10,getResources().getString(R.string.serie_switch));
-		for (Item i : listItems) {
-            String tempurl = simpleRestClient.root_url + "/api/subitem/"
-                    + i.pk + "/";
-			if (subItemUrl.equalsIgnoreCase(tempurl)) {
-				sub.addItem(i.pk, i.title, true, true);
-			} else {
-				sub.addItem(i.pk, i.title, true, false);
-			}
-		}
+		menu.addItem(20, "客服中心");
+		menu.addItem(30, "从头播放");
+//        if (itemUrl != null && favoriteManager != null
+//                && favoriteManager.getFavoriteByUrl(itemUrl) == null) {
+//            menu.addItem(
+//                    5,
+//                    getResources().getString(
+//                            R.string.vod_player_bookmark_setting));
+//        } else {
+//            menu.addItem(
+//                    5,
+//                    getResources().getString(
+//                            R.string.vod_bookmark_remove_bookmark_setting));
+//        }
+//        menu.addItem(6,
+//                getResources().getString(R.string.vod_player_related_setting));
+//
+//        sub = menu.addSubMenu(7,
+//                getResources().getString(R.string.vod_player_continue_setting));
+//        sub.addItem(8, getResources()
+//                .getString(R.string.vod_player_continue_on));
+//        sub.addItem(9,
+//                getResources().getString(R.string.vod_player_continue_off));
 
         return true;
     }
@@ -1534,13 +1538,13 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
             hidePanel();
         }
 
-        if (isContinue) {
-            menu.findItem(8).select();
-            menu.findItem(9).unselect();
-        } else {
-            menu.findItem(8).unselect();
-            menu.findItem(9).select();
-        }
+//        if (isContinue) {
+//            menu.findItem(8).select();
+//            menu.findItem(9).unselect();
+//        } else {
+//            menu.findItem(8).unselect();
+//            menu.findItem(9).select();
+//        }
 
         return true;
     }
@@ -1682,7 +1686,19 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
             return true;
         }
 
-        if(id > 10){
+		// 客服按钮
+		if (id == 20) {
+			return true;
+		}
+		// 从头播放
+		if (id == 30) {
+			currPosition = 0;
+			mVideoView.seekTo(currPosition);
+			showBuffer();
+			return true;
+		}
+
+        if(id > 100){
             subItemUrl = simpleRestClient.root_url + "/api/subitem/"
                     + id + "/";
             bundle.remove("url");
