@@ -806,8 +806,9 @@ public class ItemDetailActivity extends Activity implements
 //					    pw.setBackgroundDrawable(new ColorDrawable(0x99000000));   
 //					    pw.setOutsideTouchable(true); // 设置是否允许在外点击使其消失，到底有用没？  
 //					    pw.showAtLocation(mBtnFillBuy, Gravity.CENTER, 0, 0) ;
-					Dialog dialog = new PaymentDialog(ItemDetailActivity.this,
+					PaymentDialog dialog = new PaymentDialog(ItemDetailActivity.this,
 		                    R.style.PaymentDialog);
+					dialog.setItem(mItem);
 					dialog.show();
 					break;
 				}

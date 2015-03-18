@@ -67,12 +67,12 @@ public class MenuFragment extends DialogFragment implements OnItemClickListener 
 		MenuItem kefu = new MenuItem();
 		kefu.id = 3;
 		kefu.isEnable = true;
-		kefu.title = "客服中心";
+		kefu.title = getResources().getString(R.string.kefucentertitle);
 		mMenuList.add(kefu);
 		MenuItem ordingmenu = new MenuItem();
 		ordingmenu.id = 4;
 		ordingmenu.isEnable = true;
-		ordingmenu.title = "订购列表";
+		ordingmenu.title = getResources().getString(R.string.playfromstarttitle);
 		mMenuList.add(ordingmenu);
 	}
 

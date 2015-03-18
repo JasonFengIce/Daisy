@@ -3,6 +3,7 @@
     android:id="@+id/top_panel"
     android:layout_width="match_parent"
     android:layout_height="0dp"
+    android:layout_marginTop="20dp"
     android:layout_marginLeft="@dimen/pay_top_panel_merginleft"
     android:layout_weight="1.3" >
 
@@ -15,21 +16,20 @@
         android:layout_weight="6" >
 
         <TextView
+            android:id="@+id/videotitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:text="归来"
+            android:textSize="@dimen/pay_top_panel_videotitle_textsieze" />
+
+        <TextView
             android:id="@+id/panel_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:text="@string/pay_panel_label"
             android:textSize="@dimen/pay_top_panel_panel_label_textsieze" />
-
-        <TextView
-            android:id="@+id/videotitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/panel_label"
-            android:layout_marginBottom="30dp"
-            android:text="归来"
-            android:textSize="@dimen/pay_top_panel_videotitle_textsieze" />
     </RelativeLayout>
 
     <!-- top login panel -->
@@ -38,40 +38,38 @@
         android:id="@+id/top_login_panel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="4" 
-        android:visibility="gone"
-        >
+        android:layout_weight="4" >
+
+        <Button
+            android:id="@+id/top_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/person_btn_selector"
+            android:text="@string/pay_top_login_label"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/pay_top_panel_top_login_textsieze" />
 
         <TextView
             android:id="@+id/warntitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
             android:text="@string/pay_warntitle"
+            android:textColor="#fe8109"
             android:textSize="@dimen/pay_top_panel_warntitle_textsieze" />
-
-        <Button
-            android:id="@+id/top_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/warntitle"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="30dp"
-            android:background="@drawable/person_btn_selector"
-            android:text="@string/pay_top_login_label"
-            android:textSize="@dimen/pay_top_panel_top_login_textsieze" />
     </RelativeLayout>
 
     <TextView
         android:id="@+id/welocome_tip"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="4" 
+        android:layout_gravity="right|bottom"
+        android:layout_weight="4"
+        android:gravity="right"
         android:text="您好 : 1335478922"
         android:textSize="@dimen/pay_top_panel_welocome_tip_textsieze"
-        android:layout_gravity="right|bottom"
-        android:gravity="right"
-         />
+        android:visibility="gone" />
 
 </LinearLayout>
