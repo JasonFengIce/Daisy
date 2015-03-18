@@ -4,23 +4,23 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.widget.Button;
+import android.widget.ImageView;
 
 /**
- * Created by huaijie on 1/9/15.
+ * Created by huaijie on 3/17/15.
  */
-public class DaisyButton extends Button {
-    private static final String TAG = "SakuraButton";
+public class DaisyImageView extends ImageView {
+    private static final String TAG = "DaisyImageView";
 
-    public DaisyButton(Context context) {
+    public DaisyImageView(Context context) {
         super(context);
     }
 
-    public DaisyButton(Context context, AttributeSet attrs) {
+    public DaisyImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public DaisyButton(Context context, AttributeSet attrs, int defStyle) {
+    public DaisyImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 

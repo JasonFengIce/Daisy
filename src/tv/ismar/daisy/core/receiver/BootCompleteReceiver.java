@@ -11,6 +11,6 @@ import tv.ismar.daisy.core.update.AppUpdateUtils;
 public class BootCompleteReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        AppUpdateUtils.getInstance().modifyUpdatePreferences(context, true);
+//        AppUpdateUtils.getInstance().modifyUpdatePreferences(context, true);
     }
 }

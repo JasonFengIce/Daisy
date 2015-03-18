@@ -30,7 +30,7 @@ import java.security.MessageDigest;
  */
 public class AppUpdateUtils {
     private static final String TAG = "AppUpdateUtils";
-    private static final String SELF_APP_NAME = "Daisy.apk";
+    public static final String SELF_APP_NAME = "Daisy.apk";
 
     private static final String PLAYER_ACTIVITY_NAME = "tv.ismar.daisy.PlayerActivity";
 
@@ -61,6 +61,7 @@ public class AppUpdateUtils {
         client.excute(new Callback<VersionInfoEntity>() {
             @Override
             public void success(VersionInfoEntity versionInfoEntity, Response response) {
+                Log.i(TAG, "server version code ---> " + versionInfoEntity.getVersion());
                 File apkFile = new File(path, SELF_APP_NAME);
                 PackageInfo packageInfo = null;
                 try {
@@ -68,25 +69,37 @@ public class AppUpdateUtils {
                 } catch (PackageManager.NameNotFoundException e) {
                     Log.e(TAG, "can't find this application!!!");
                 }
+                Log.i(TAG, "local version code ---> " + packageInfo.versionCode);
                 if (packageInfo.versionCode < Integer.parseInt(versionInfoEntity.getVersion())) {
                     if (apkFile.exists()) {
                         String serverMd5Code = versionInfoEntity.getMd5();
                         String localMd5Code = getMd5ByFile(apkFile);
+                        Log.d(TAG, "local md5 ---> " + localMd5Code);
+                        Log.d(TAG, "server md5 ---> " + serverMd5Code);
                         String currentActivityName = getCurrentActivityName(mContext);
 
                         int apkVersionCode = getApkVersionCode(mContext, apkFile.getAbsolutePath());
                         int serverVersionCode = Integer.parseInt(versionInfoEntity.getVersion());
                         if (serverMd5Code.equalsIgnoreCase(localMd5Code) && !currentActivityName.equals(PLAYER_ACTIVITY_NAME)
                                 && apkVersionCode == serverVersionCode) {
+                            Log.i(TAG, "send install broadcast ...");
                             Bundle bundle = new Bundle();
                             bundle.putString("title", versionInfoEntity.getUpdate_title());
                             bundle.putStringArrayList("msgs", versionInfoEntity.getUpdate_msg());
                             bundle.putString("path", apkFile.getAbsolutePath());
                             sendUpdateBroadcast(mContext, bundle);
+                        } else {
+                            if (apkFile.exists()) {
+                                apkFile.delete();
+                            }
+                            String downloadUrl = versionInfoEntity.getDownloadurl();
+                            downloadAPK(mContext, downloadUrl);
                         }
                     } else {
+                        if (apkFile.exists()) {
+                            apkFile.delete();
+                        }
                         String downloadUrl = versionInfoEntity.getDownloadurl();
-                        String serverMd5 = versionInfoEntity.getMd5();
                         downloadAPK(mContext, downloadUrl);
                     }
                 } else {
@@ -197,7 +210,13 @@ public class AppUpdateUtils {
     private int getApkVersionCode(Context context, String path) {
         final PackageManager pm = context.getPackageManager();
         PackageInfo info = pm.getPackageArchiveInfo(path, 0);
-        return info.versionCode;
+        int versionCode;
+        try {
+            versionCode = info.versionCode;
+        } catch (Exception e) {
+            versionCode = 0;
+        }
+        return versionCode;
     }
 
 

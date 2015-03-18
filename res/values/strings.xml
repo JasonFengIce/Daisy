@@ -128,4 +128,10 @@
     <string name="serie_switch">剧集选择</string>
     <string name="buy_video">购买</string>
     <string name="active_fail">激活认证失败！</string>
+
+
+    <!-- launcher -->
+    <string name="search_text">搜索</string>
+    <string name="user_center">用户中心</string>
+
 </resources>

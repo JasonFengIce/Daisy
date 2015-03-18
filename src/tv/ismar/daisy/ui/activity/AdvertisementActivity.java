@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,12 +23,10 @@ import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.LauncherActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.advertisement.AdvertisementInfoEntity;
+import tv.ismar.daisy.core.update.AppUpdateUtils;
 import tv.ismar.daisy.utils.DeviceUtils;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -36,6 +37,7 @@ import java.util.ArrayList;
  */
 public class AdvertisementActivity extends Activity {
     private static final String TAG = "AdvertisementActivity";
+
 
     private String advertisePicCacheDir;
     private String ADVERTISE_POSTER_NAME = "poster.png";
@@ -54,13 +56,22 @@ public class AdvertisementActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        advertisePicCacheDir = getFilesDir().getAbsolutePath();
-
         setContentView(R.layout.activity_advertisement);
         initViews();
-        placeAdvertisementPic(new File(advertisePicCacheDir, ADVERTISE_POSTER_NAME).getAbsolutePath());
+        if (AppUpdateUtils.getInstance().getUpdatePreferences(this)) {
+            AppUpdateUtils.getInstance().modifyUpdatePreferences(this, false);
+            Picasso.with(AdvertisementActivity.this)
+                    .load(R.drawable.bg_update_prompt)
+                    .into(adverPic);
+            String path = new File(getFilesDir().getAbsolutePath(), AppUpdateUtils.SELF_APP_NAME).getAbsolutePath();
+            execInstallCmd(path);
+        } else {
+            advertisePicCacheDir = getFilesDir().getAbsolutePath();
+            placeAdvertisementPic(new File(advertisePicCacheDir, ADVERTISE_POSTER_NAME).getAbsolutePath());
 //        fetchCdnChangeTag();
-        messageHandler = new MessageHandler();
+            messageHandler = new MessageHandler();
+        }
+
     }
 
     private void initViews() {
@@ -127,6 +138,7 @@ public class AdvertisementActivity extends Activity {
                 });
     }
 
+
     private void fetchAdvertisementInfo() {
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setLogLevel(AppConstant.LOG_LEVEL)
@@ -191,6 +203,20 @@ public class AdvertisementActivity extends Activity {
         return image;
     }
 
+
+    private Bitmap getBitmapFromAssetsFile(String fileName) {
+        Bitmap image = null;
+        AssetManager am = getResources().getAssets();
+        try {
+            InputStream is = am.open(fileName);
+            image = BitmapFactory.decodeStream(is);
+            is.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return image;
+    }
+
     private void showCountTime(int second) {
         timerText.setImageResource(secondsResId[second]);
         if (second == 0) {
@@ -244,5 +270,41 @@ public class AdvertisementActivity extends Activity {
                 Log.d(TAG, "downloadPic is end...");
             }
         }.start();
+    }
+
+    public void installApk(Context mContext, String path) {
+        if (new File(path).exists()) {
+            Log.i(TAG, "install update apk ...");
+            Uri uri = Uri.parse("file://" + path);
+            Log.i(TAG, uri.toString());
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(uri, "application/vnd.android.package-archive");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+        }
+    }
+
+    private void execInstallCmd(final String path) {
+        new Thread() {
+            @Override
+            public void run() {
+                Log.i(TAG, "execInstallCmd  is running ...");
+                int result = -1;
+                try {
+                    String installCmd = "adb install -r " + path;
+                    Process localProcess = Runtime.getRuntime().exec(installCmd);
+                    Object localObject = localProcess.getOutputStream();
+                    DataOutputStream localDataOutputStream = new DataOutputStream(
+                            (OutputStream) localObject);
+                    localDataOutputStream.writeBytes("exit\n");
+                    localDataOutputStream.flush();
+                    localProcess.waitFor();
+                    result = localProcess.exitValue();
+                } catch (Exception localException) {
+                    localException.printStackTrace();
+                }
+            }
+        }.start();
+
     }
 }
