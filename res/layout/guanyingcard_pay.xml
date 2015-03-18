@@ -20,7 +20,9 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:text="@string/pay_card_balance_title_label"
-            android:textSize="@dimen/pay_guanyingcard_card_balance_title_textsize" />
+            android:textSize="@dimen/pay_guanyingcard_card_balance_title_textsize" 
+            android:textColor="#a6d4f5"
+            />
 <!-- 
         <TextView
             android:id="@+id/card_balance_value"
@@ -81,6 +83,7 @@
             android:layout_height="wrap_content"
             android:text="@string/card_balance_submit"
             android:background="@drawable/person_btn_selector"
+            android:textColor="#FFF8F8FF"
             android:textSize="@dimen/pay_guanyingcard_card_balance_submit_textsize" />
 
         <Button
@@ -91,6 +94,7 @@
             android:layout_marginLeft="@dimen/pay_guanyingcard_card_balance_cancel_marginleft"
             android:text="@string/card_balance_cancel"
             android:background="@drawable/person_btn_selector"
+            android:textColor="#FFF8F8FF"
             android:textSize="@dimen/pay_guanyingcard_card_balance_cancel_textsize" />
     </RelativeLayout>
 

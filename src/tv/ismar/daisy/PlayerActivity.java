@@ -1491,8 +1491,8 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
                 getResources().getString(R.string.vod_player_quality_ultra));
         sub.addItem(4,
                 getResources().getString(R.string.vod_player_quality_adaptive));
-		menu.addItem(20, "客服中心");
-		menu.addItem(30, "从头播放");
+		menu.addItem(20, getResources().getString(R.string.kefucentertitle));
+		menu.addItem(30, getResources().getString(R.string.playfromstarttitle));
 //        if (itemUrl != null && favoriteManager != null
 //                && favoriteManager.getFavoriteByUrl(itemUrl) == null) {
 //            menu.addItem(

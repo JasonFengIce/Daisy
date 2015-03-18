@@ -139,13 +139,17 @@
     <string name="pay_top_login_label">登陆/注册</string>
     <string name="pay_top_welocome_tip">您好 : %1$s</string>
     <string name="pay_card_balance_title_label">您的观影卡余额: ￥%1$.2f</string>
-    <string name="pay_package_price">价格: ￥%1$.2f 有效期: %2$d天</string>
+    <string name="pay_package_price">价格: ￥%1$.2f   有效期: %2$d天</string>
     <string name="package_exprice_label">购买后可以在有效期内观看</string>
     <string name="card_balance_submit">确定购买</string>
     <string name="card_balance_cancel">取消</string>
     <string name="pay_shiyuncard_account_label">持有实体视云观影卡的用户，请输入16位观影卡密码充值</string>
     <string name="pay_shiyuncard_submit_label">提交</string>
-    <string name="pay_payinfo_price_label">价格 : %1$s</string>
-    <string name="pay_payinfo_exprice_label">有效期 : %1$s天</string>
+    <string name="pay_payinfo_price_label">价格 : %1$.2f</string>
+    <string name="pay_payinfo_exprice_label">有效期 : %1$d天</string>
     <string name="pay_payinfo_introduce_label">购买后可以在有效期内观看</string>
+    <!-- menu title -->
+    <string name="kefucentertitle">客服中心</string>
+    <string name="orderlisttitle">订购列表</string>
+    <string name="playfromstarttitle">从头播放</string>
 </resources>

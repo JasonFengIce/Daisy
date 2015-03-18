@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.models.Item;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -19,10 +20,11 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class PaymentDialog extends Dialog {
 
+	private Context mycontext;
 	private int width;
 	private int height;
 	private Button weixinpay_button;
@@ -40,8 +42,13 @@ public class PaymentDialog extends Dialog {
 	private LinearLayout login_panel;
 	private LinearLayout qrcode_pay;
 	private LinearLayout shiyuncard_panel;
-
 	private ImageView qrcodeview;
+
+	private TextView payinfo_price;
+	private TextView payinfo_exprice;
+	private TextView package_price;
+
+	private Item mItem;
 
 	public PaymentDialog(Context context) {
 		super(context);
@@ -53,6 +60,7 @@ public class PaymentDialog extends Dialog {
 				Context.WINDOW_SERVICE);
 		width = wm.getDefaultDisplay().getWidth();
 		height = wm.getDefaultDisplay().getHeight();
+		mycontext = context;
 	}
 
 	@Override
@@ -61,6 +69,10 @@ public class PaymentDialog extends Dialog {
 		this.setContentView(R.layout.paymentselect);
 		initView();
 		resizeWindow();
+	}
+
+	public void setItem(Item item) {
+		mItem = item;
 	}
 
 	private void resizeWindow() {
@@ -99,6 +111,12 @@ public class PaymentDialog extends Dialog {
 		shiyuncard_panel = (LinearLayout) findViewById(R.id.shiyuncard_panel);
 
 		qrcodeview = (ImageView) findViewById(R.id.qrcodeview);
+
+		payinfo_price = (TextView) findViewById(R.id.payinfo_price);
+		payinfo_exprice = (TextView) findViewById(R.id.payinfo_exprice);
+		package_price =(TextView) findViewById(R.id.package_price);
+		setPackageInfo();
+		changeQrcodePayPanelState(true,true);
 	}
 
 	private View.OnClickListener buttonClick = new View.OnClickListener() {
@@ -206,6 +224,7 @@ public class PaymentDialog extends Dialog {
 			HttpURLConnection conn = (HttpURLConnection) myFileUrl
 					.openConnection();
 			conn.setDoInput(true);
+			// conn.setRequestMethod();
 			conn.connect();
 			InputStream is = conn.getInputStream();
 			bitmap = BitmapFactory.decodeStream(is);
@@ -216,4 +235,12 @@ public class PaymentDialog extends Dialog {
 		return bitmap;
 	}
 
+	private void setPackageInfo(){
+		String price=mycontext.getResources().getString(R.string.pay_payinfo_price_label);
+		String exprice=mycontext.getResources().getString(R.string.pay_payinfo_exprice_label);
+		String package_info =mycontext.getResources().getString(R.string.pay_package_price);
+		payinfo_price.setText(String.format(price,mItem.expense.price));
+		payinfo_exprice.setText(String.format(exprice,mItem.expense.duration));
+		package_price.setText(String.format(package_info,mItem.expense.price,mItem.expense.duration));
+	}
 }

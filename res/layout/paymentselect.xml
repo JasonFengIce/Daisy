@@ -40,11 +40,12 @@
        
         <include
             layout="@layout/pay_person_login"
+            android:visibility="gone"
             />
         
         <include
             layout="@layout/qrcode_pay_panel"
-            android:visibility="gone" />
+             />
 
         <include
             layout="@layout/shiyuncard_pay"
