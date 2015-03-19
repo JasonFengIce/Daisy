@@ -20,9 +20,11 @@ import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
 import tv.ismar.daisy.views.AsyncImageView;
+import tv.ismar.daisy.views.CustomDialog;
 import tv.ismar.daisy.views.AsyncImageView.OnImageViewLoadListener;
 import tv.ismar.daisy.views.LoadingDialog;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -60,6 +62,9 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 	private Button vod_payment_item_more;
 	private RelativeLayout detail_left_container;
 	private LinearLayout detail_right_container;
+	Dialog dialog = null;
+	private DialogInterface.OnClickListener mPositiveListener;
+	private DialogInterface.OnClickListener mNegativeListener;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -167,6 +172,8 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 						.getRelatedItem("/api/package/relate/" + mItem.pk + "/");
 			} catch (Exception e) {
 				e.printStackTrace();
+				mLoadingDialog.dismiss();
+				showDialog(new GetRelatedTask(), params);
 			}
 			return null;
 		}
@@ -204,6 +211,9 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 				e.printStackTrace();
 			} catch (NetworkException e) {
 				// TODO Auto-generated catch block
+				mLoadingDialog.dismiss();
+				showDialog(new GetItemTask(),params);
+			    cancel(true);
 				e.printStackTrace();
 			}
 			return null;
@@ -346,4 +356,31 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 			
 		}
 	};
+	private void showDialog(final AsyncTask task, final Object[] params){
+		if(dialog==null){
+		       mPositiveListener = new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						// TODO Auto-generated method stub
+						dialog.dismiss();
+						task.execute(params);
+					}
+				};
+				mNegativeListener = new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						// TODO Auto-generated method stub
+						dialog.dismiss();
+						PackageDetailActivity.this.finish();
+					}
+				};
+			 dialog = new CustomDialog.Builder(this)
+				.setMessage(R.string.vod_get_data_error)
+				.setPositiveButton(R.string.vod_retry, mPositiveListener)
+				.setNegativeButton(R.string.vod_ok, mNegativeListener).create();
+		}
+		dialog.show();
+	}
 }

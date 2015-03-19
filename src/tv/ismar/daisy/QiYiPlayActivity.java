@@ -158,6 +158,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.vod_player);
 		initView();
+
 	}
 
 	public void initView() {
@@ -196,6 +197,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 		live_video = item.live_video;
 		itemUrl = item.clip.url;
 		titleText.setText(item.title);
+		simpleRestClient = new SimpleRestClient();
 		showBuffer();
 		new initPlayTask().execute();
 		initQiyiVideoPlayer();
@@ -209,7 +211,12 @@ public class QiYiPlayActivity extends VodMenuAction {
 			// initPlayer();
 		}
 
-		@Override
+        @Override
+        protected void onCancelled(Void aVoid) {
+            super.onCancelled(aVoid);
+        }
+
+        @Override
 		protected Void doInBackground(String... params) {
 			// TODO Auto-generated method stub
 			try {

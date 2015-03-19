@@ -38,14 +38,19 @@
             android:layout_height="match_parent"
             android:src="@drawable/portrait_divider_person" />
        
-        <include
-            layout="@layout/pay_person_login"
-            android:visibility="gone"
-            />
-        
+<!--         <include -->
+<!--             layout="@layout/pay_person_login" -->
+<!--             /> -->
+           <tv.ismar.daisy.views.LoginPanelView
+             xmlns:login="http://schemas.android.com/apk/res/tv.ismar.daisy"
+             android:id="@+id/login_layout" 
+             android:layout_width="0dip"
+             android:layout_height="wrap_content"
+             login:suspension_window="true"
+             android:layout_weight="2.1"/>
         <include
             layout="@layout/qrcode_pay_panel"
-             />
+            android:visibility="gone" />
 
         <include
             layout="@layout/shiyuncard_pay"

@@ -1,5 +1,11 @@
 package tv.ismar.daisy.views;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -7,13 +13,19 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
 import org.sakuratya.horizontal.ui.HGridView;
+import org.sakuratya.horizontal.ui.ZGridView;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.ismartv.launcher.data.VideoEntity;
+import com.squareup.picasso.Picasso;
 
 import tv.ismar.daisy.ChannelListActivity.OnMenuToggleListener;
 import tv.ismar.daisy.ChannelListActivity;
+import tv.ismar.daisy.LauncherActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
+import tv.ismar.daisy.adapter.RecommecdItemAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -35,6 +47,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.FloatMath;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,6 +97,11 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	
 	private ConcurrentHashMap<String, FavoriteFragment.GetItemTask> mCurrentGetItemTask = new ConcurrentHashMap<String, FavoriteFragment.GetItemTask>();
 	
+	private ZGridView recommend_gridview;
+    private View divider;
+    private TextView recommend_txt;
+    private TextView collect_or_history_txt;
+    private VideoEntity tvHome;
 	private void initViews(View fragmentView) {
 		
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
@@ -95,6 +114,11 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		mChannelLabel.setText(getResources().getString(R.string.favorite));
 		
 		mNoVideoContainer = (RelativeLayout) fragmentView.findViewById(R.id.no_video_container);
+		recommend_gridview = (ZGridView)fragmentView.findViewById(R.id.recommend_gridview);
+		divider = (View)fragmentView.findViewById(R.id.divider);
+		divider.setVisibility(View.VISIBLE);
+		recommend_txt = (TextView)fragmentView.findViewById(R.id.recommend_txt);
+		collect_or_history_txt = (TextView)fragmentView.findViewById(R.id.collect_or_history_txt);
 	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -330,9 +354,11 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	
 	private void no_video() {
 		mNoVideoContainer.setVisibility(View.VISIBLE);
-		mNoVideoContainer.setBackgroundResource(R.drawable.favorite_no_video);
+		mNoVideoContainer.setBackgroundResource(R.drawable.no_record);
 		mScrollableSectionList.setVisibility(View.GONE);
 		mHGridView.setVisibility(View.GONE);
+		collect_or_history_txt.setText(getResources().getString(R.string.no_collect_record));
+		getTvHome();
 	}
 	
 	private void showDialog(final int dialogType, final AsyncTask task, final Object[] params)  {
@@ -422,9 +448,26 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		Item item = mHGridAdapter.getItem(position);
-		new GetItemTask().execute(item);
-		
+		switch (parent.getId()) {
+		case R.id.h_grid_view:
+			Item item = mHGridAdapter.getItem(position);
+			new GetItemTask().execute(item);
+			break;
+
+		case R.id.recommend_gridview:
+			Intent intent= new Intent();
+			if(tvHome.getObjects().get(position).isIs_complex()){
+				intent.setClassName("tv.ismar.daisy",
+						"tv.ismar.daisy.ItemDetailActivity");
+				intent.putExtra("url", tvHome.getObjects().get(position).getItem_url());
+				startActivity(intent);
+			}
+			else{
+				InitPlayerTool tool = new InitPlayerTool(getActivity());
+				tool.initClipInfo(tvHome.getObjects().get(position).getItem_url(), InitPlayerTool.FLAG_URL);
+			}
+			break;
+		}
 	}
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
@@ -448,5 +491,65 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	public void onNothingSelected(AdapterView<?> parent) {
 		mSelectedPosition = INVALID_POSITION;
 	}
-	
+	private Handler mainHandler = new Handler() {
+
+		@Override
+		public void handleMessage(Message msg) {
+			Bundle dataBundle = msg.getData();
+				setTvHome(dataBundle.getString("content"));
+			}
+		};
+		private void setTvHome(String content) {
+			try{
+				Gson gson = new Gson();
+				tvHome = gson.fromJson(content.toString(),
+						VideoEntity.class);
+				if(tvHome.getObjects()!=null&&tvHome.getObjects().size()>0){
+					RecommecdItemAdapter recommendAdapter = new RecommecdItemAdapter(getActivity(), tvHome);
+					recommend_gridview.setAdapter(recommendAdapter);
+					recommend_gridview.setFocusable(true);	
+					recommend_gridview.setOnItemClickListener(this);
+				}
+			}catch(Exception e){
+				recommend_txt.setVisibility(View.INVISIBLE);
+				e.printStackTrace();
+			}
+		}
+	private void getTvHome() {
+		new Thread() {
+			@Override
+			public void run() {
+				super.run();
+				StringBuffer content = new StringBuffer();
+				try {
+					URL getUrl = new URL(SimpleRestClient.root_url
+							+ "/api/tv/section/tvhome/"+"?device_token="+SimpleRestClient.device_token);
+					HttpURLConnection connection = (HttpURLConnection) getUrl
+							.openConnection();
+					connection.setReadTimeout(9000);
+					connection.connect();
+					BufferedReader reader = new BufferedReader(
+							new InputStreamReader(connection.getInputStream(),"UTF-8"));
+					String lines;
+					while ((lines = reader.readLine()) != null) {
+						content.append(lines);
+					}
+					Message message = new Message();
+					Bundle data = new Bundle();
+					data.putString("content", content.toString());
+					message.setData(data);
+					mainHandler.sendMessage(message);
+				} catch (MalformedURLException e) {
+					recommend_txt.setVisibility(View.INVISIBLE);
+					if (e != null)
+						System.err.println(e.getMessage());
+				} catch (IOException e) {
+					recommend_txt.setVisibility(View.INVISIBLE);
+					if (e != null)
+						System.err.println(e.getMessage());
+				}
+			}
+
+		}.start();
+	}
 }

@@ -14,13 +14,13 @@ import android.os.Environment;
 public class SystemFileUtil {
 
 
-    public static String LogPath;
-    
+    public static String LogPath="";
+    public static String appPath="";
     static{
 		String LOGLOCALPATH = "vodlog.txt";
 	    String LOCALLOGDIR = "/tv/ismar/daisy";
-		File sdCardDir = Environment.getExternalStorageDirectory();
-	    LogPath = sdCardDir+File.separator+LOCALLOGDIR+File.separator+LOGLOCALPATH;
+		//File sdCardDir = Environment.getExternalStorageDirectory();
+	    //LogPath = sdCardDir+File.separator+LOCALLOGDIR+File.separator+LOGLOCALPATH;
     };
 	public static void readFile(String filePath, Context context) {
 
@@ -87,17 +87,14 @@ public class SystemFileUtil {
 	}
 
 	public static void writeLogToLocal(String content) {
-		if (Environment.getExternalStorageState().equals(
-				Environment.MEDIA_MOUNTED)) {
 			String LOGLOCALPATH = "vodlog.txt";
-		    String LOCALLOGDIR = "/tv/ismar/daisy";
-			File sdCardDir = Environment.getExternalStorageDirectory();
-		    LogPath = sdCardDir+File.separator+LOCALLOGDIR+File.separator+LOGLOCALPATH;
-			File Dir = new File(sdCardDir+File.separator+LOCALLOGDIR);
+		    String LOCALLOGDIR = "tv/ismar/daisy/";
+		    LogPath = appPath+LOGLOCALPATH;
+			File Dir = new File(appPath);
 			if(!Dir.exists())
 				Dir.mkdirs();
 			
-			File saveFile = new File(sdCardDir+File.separator+LOCALLOGDIR+File.separator+LOGLOCALPATH);
+			File saveFile = new File(LogPath);
 			if (!saveFile.exists()) {
 				try {
 					saveFile.createNewFile();
@@ -117,8 +114,7 @@ public class SystemFileUtil {
 					System.out.println(EX.toString());
 				} finally {
 					streamWriter.close();
-				}			
-		}
+				}				
 	}
     public static void delete(){
 	   File f = new File(LogPath);

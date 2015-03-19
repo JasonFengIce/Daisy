@@ -30,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.SystemFileUtil;
 import tv.ismar.daisy.core.update.AppUpdateUtils;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.ui.adapter.ChannelAdapter;
@@ -110,6 +111,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         super.onCreate(savedInstanceState);
         registerUpdateReceiver();
         AppUpdateUtils.getInstance().checkUpdate(this);
+        String path = getFilesDir().getAbsolutePath();
+        SystemFileUtil.appPath = path;
+        DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
         mView = LayoutInflater.from(this).inflate(R.layout.activity_launcher, null);
         setContentView(mView);
         setContentView(R.layout.activity_launcher);
@@ -134,7 +138,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     Dialog dialog = null;
-    ;
     private DialogInterface.OnClickListener mPositiveListener;
     private DialogInterface.OnClickListener mNegativeListener;
     public static final int NETWORK_ACTIVE_FAILED = 1;
@@ -540,27 +543,30 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 //        }
     }
 
-    private void setTvHome(String content) {
-        Gson gson = new Gson();
-        VideoEntity tvHome = gson.fromJson(content.toString(),
-                VideoEntity.class);
-        for (int i = 0; i < 6; i++) {
-            homeTitles[i].setText(tvHome.getObjects().get(i).getTitle());
-            Picasso.with(LauncherActivity.this)
-                    .load(tvHome.getObjects().get(i).getImage())
-                    .placeholder(R.drawable.preview).error(R.drawable.preview)
-                    .into(homeImages[i]);
-            boolean is_complex = tvHome.getObjects().get(i).isIs_complex();
-            if (is_complex)
-                homeItems[i].setTag(tvHome.getObjects().get(i).getItem_url()
-                        + "," + "item");
-            else
-                homeItems[i].setTag(tvHome.getObjects().get(i).getItem_url()
-                        + "," + "play");
-            homeItems[i].setOnClickListener(viewItemClickListener);
-        }
-
-    }
+	private void setTvHome(String content) {
+		try{
+			Gson gson = new Gson();
+			VideoEntity tvHome = gson.fromJson(content.toString(),
+					VideoEntity.class);
+			for (int i = 0; i < 6; i++) {
+				homeTitles[i].setText(tvHome.getObjects().get(i).getTitle());
+				Picasso.with(LauncherActivity.this)
+						.load(tvHome.getObjects().get(i).getImage())
+						.placeholder(R.drawable.preview).error(R.drawable.preview)
+						.into(homeImages[i]);
+				boolean is_complex = tvHome.getObjects().get(i).isIs_complex();
+				if (is_complex)
+					homeItems[i].setTag(tvHome.getObjects().get(i).getItem_url()
+							+ "," + "item");
+				else
+					homeItems[i].setTag(tvHome.getObjects().get(i).getItem_url()
+							+ "," + "play");
+				homeItems[i].setOnClickListener(viewItemClickListener);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 
     private void setLatest(String content) {
         Gson gson = new Gson();
@@ -664,27 +670,28 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                     HttpURLConnection connection = (HttpURLConnection) getUrl
                             .openConnection();
                     connection.setReadTimeout(4000);
-                    connection.connect();
-                    BufferedReader reader = new BufferedReader(
-                            new InputStreamReader(connection.getInputStream(), "UTF-8"));
-                    String lines;
-                    while ((lines = reader.readLine()) != null) {
-                        content.append(lines);
-                    }
-                    Message message = new Message();
-                    Bundle data = new Bundle();
-                    data.putString("content", content.toString());
-                    message.setData(data);
-                    message.what = FETCHCHANNEL;
-                    mainHandler.sendMessage(message);
-                } catch (MalformedURLException e) {
-                    if (e != null)
-                        System.err.println(e.getMessage());
-                } catch (IOException e) {
-                    if (e != null)
-                        System.err.println(e.getMessage());
-                }
-            }
+					connection.setUseCaches(false);
+					connection.connect();
+					BufferedReader reader = new BufferedReader(
+							new InputStreamReader(connection.getInputStream(),"UTF-8"));
+					String lines;
+					while ((lines = reader.readLine()) != null) {
+						content.append(lines);
+					}
+					Message message = new Message();
+					Bundle data = new Bundle();
+					data.putString("content", content.toString());
+					message.setData(data);
+					message.what = FETCHCHANNEL;
+					mainHandler.sendMessage(message);
+				} catch (MalformedURLException e) {
+					if (e != null)
+						System.err.println(e.getMessage());
+				} catch (IOException e) {
+					if (e != null)
+						System.err.println(e.getMessage());
+				}
+			}
 
         }.start();
     }
@@ -700,6 +707,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                             + "/api/tv/frontpage/" + "?device_token=" + SimpleRestClient.device_token);
                     HttpURLConnection connection = (HttpURLConnection) getUrl
                             .openConnection();
+					connection.setUseCaches(false);
                     connection.setReadTimeout(4000);
                     connection.connect();
                     BufferedReader reader = new BufferedReader(
@@ -738,6 +746,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                     HttpURLConnection connection = (HttpURLConnection) getUrl
                             .openConnection();
                     connection.setReadTimeout(9000);
+					connection.setUseCaches(false);
                     connection.connect();
                     BufferedReader reader = new BufferedReader(
                             new InputStreamReader(connection.getInputStream(), "UTF-8"));
@@ -774,6 +783,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                             + "/api/tv/section/xinpianshangxian/" + "?device_token=" + SimpleRestClient.device_token);
                     HttpURLConnection connection = (HttpURLConnection) getUrl
                             .openConnection();
+					connection.setUseCaches(false);
                     connection.setReadTimeout(19000);
                     connection.connect();
                     BufferedReader reader = new BufferedReader(
@@ -861,6 +871,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 //			DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString("domain", SimpleRestClient.root_url);
 //			DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString("ad_domain", SimpleRestClient.ad_domain);
 //			DaisyUtils.getVodApplication(LauncherActivity.this).save();
+			SimpleRestClient.mobile_number = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.MOBILE_NUMBER, "");
             SimpleRestClient.access_token = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.AUTH_TOKEN, "");
             mainHandler.sendEmptyMessage(GETDOMAIN);
         } catch (Exception e) {
@@ -877,6 +888,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     @Override
     protected void onDestroy() {
+    	DaisyUtils.getVodApplication(this).removeActivtyFromPool(this.toString());
         unregisterReceiver(appUpdateReceiver);
         if (popupWindow != null && popupWindow.isShowing()) {
             popupWindow.dismiss();

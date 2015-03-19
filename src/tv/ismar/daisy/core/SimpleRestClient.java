@@ -39,6 +39,7 @@ public class SimpleRestClient {
     public static String device_token;
     public static String sn_token;
     public static String access_token="";
+    public static String mobile_number="";
 	private Gson gson;
 
 	public SimpleRestClient() {
@@ -242,7 +243,6 @@ public SectionList getsectionss(String content){
 		}
 		return null;
 	}
-
 	public void post(String url,String params,HttpPostRequestInterface l){
 		//NetworkUtils.getJsonStrByPost(url, "");
 		RequestParams q = new RequestParams();
@@ -265,22 +265,49 @@ public SectionList getsectionss(String content){
 		@Override
 		protected String doInBackground(RequestParams... params) {
 			String jsonStr = "";
-			try {
+			
 				RequestParams p = params[0];
 				String url = p.url;
 				String values = p.values;
-				jsonStr = NetworkUtils.getJsonStrByPost(url, values);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+				try {
+					jsonStr = NetworkUtils.getJsonStrByPost(url, values);
+				} catch (ItemOfflineException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					jsonStr = e.getUrl();
+				} catch (NetworkException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					jsonStr = e.getUrl();
+				}
+			
 			return jsonStr;
 		}
 
 		@Override
 		protected void onPostExecute(String result) {
-			
 			if(handler!=null){
-				handler.onSuccess("");
+				if("".equals(result)){
+					handler.onFailed("网络异常");
+				}
+				else if(result.equals("200")){
+					handler.onSuccess(result);
+				}
+				else if("406".equals(result)){
+					handler.onFailed("device_token非标准格式 ");
+				}
+				else if("400".equals(result)){
+					handler.onFailed("参数不对 ");
+				}
+				else if("404".equals(result)){
+					handler.onFailed("404 NOT FOUND");
+				}
+				else if("599".equals(result)){
+					handler.onFailed("599 连接错误");
+				}
+				else if(!"".equals(result)){
+					handler.onSuccess(result);
+				}
 			}
 		}
 

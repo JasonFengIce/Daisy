@@ -44,6 +44,7 @@ public class PersonCenterActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.person_center_layout);
+		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
         initView();
         if( DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.AUTH_TOKEN, "").equals("")){
         	//login out
@@ -107,6 +108,8 @@ public class PersonCenterActivity extends Activity {
 				mPersoninfoLayout.setVisibility(View.VISIBLE);
 				login_or_out_btn.setBackgroundResource(R.drawable.btn_disabled_bg);
 				login_or_out_btn.setEnabled(false);
+				mobile_or_sn_value.setText(login_layout.getMobileNumber());
+				isLogin = true;
 				//load personal info
 				login_layout.clearLayout();
 				loadDataLogin();
@@ -130,6 +133,7 @@ public class PersonCenterActivity extends Activity {
 				SimpleRestClient.access_token = "";
 				DaisyUtils.getVodApplication(PersonCenterActivity.this).getEditor().putString(VodApplication.AUTH_TOKEN, "");
 				loadDataLoginOut();
+				isLogin = false;
 				login_or_out_btn.setEnabled(true);
 				login_or_out_btn.setBackgroundResource(R.drawable.person_btn_selector);
 				
@@ -228,14 +232,16 @@ public class PersonCenterActivity extends Activity {
 //		mListView.setAdapter(adapter);
 //	}
 	private void loadDataLogin(){
+		login_or_out_btn.setVisibility(View.VISIBLE);
 		no_privilegelist_txt.setVisibility(View.VISIBLE);
 		privilegelist.setVisibility(View.GONE);
 		mobile_or_sn_txt.setText("手机号:");
-		mobile_or_sn_value.setText(login_layout.getMobileNumber());
+		mobile_or_sn_value.setText(SimpleRestClient.mobile_number);
 		warn_info_txt.setVisibility(View.GONE);
 		sn_txt_value.setText(SimpleRestClient.sn_token);
 		sn_txt.setVisibility(View.VISIBLE);
 		sn_txt_value.setVisibility(View.VISIBLE);
+		exit_btn.setVisibility(View.VISIBLE);
 		
 	}
 	private void loadDataLoginOut(){
@@ -246,5 +252,12 @@ public class PersonCenterActivity extends Activity {
 		warn_info_txt.setVisibility(View.VISIBLE);
 		sn_txt_value.setVisibility(View.GONE);
 		sn_txt.setVisibility(View.GONE);
+		exit_btn.setVisibility(View.GONE);
+	}
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		DaisyUtils.getVodApplication(this).removeActivtyFromPool(this.toString());
+		super.onDestroy();
 	}
 }
