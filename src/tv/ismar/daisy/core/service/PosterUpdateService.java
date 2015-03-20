@@ -11,6 +11,8 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import tv.ismar.daisy.AppConstant;
+import tv.ismar.daisy.VodApplication;
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.advertisement.AdvertisementInfoEntity;
 import tv.ismar.daisy.core.update.AppUpdateUtils;
 import tv.ismar.daisy.utils.DeviceUtils;
@@ -71,16 +73,24 @@ public class PosterUpdateService extends Service {
                 if (isPosterExpire() && posterFile.exists()) {
                     posterFile.delete();
                 }
-                fetchAdvertisementInfo();
+                String host = getPosterDomain();
+
+                if (null != host && !"".equals(host)) {
+                    fetchAdvertisementInfo(host);
+                }
+
             }
         };
+//        timer.schedule(tt, 3000, 30 * 1000);
         timer.schedule(tt, 3000, 15 * 60 * 1000);
     }
 
-    private void fetchAdvertisementInfo() {
+    private void fetchAdvertisementInfo(String host) {
+
+
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setLogLevel(AppConstant.LOG_LEVEL)
-                .setEndpoint(tv.ismar.daisy.core.client.ClientApi.ADVERTISEMENT_HOST)
+                .setEndpoint(host)
                 .build();
         tv.ismar.daisy.core.client.ClientApi.AdvertisementInfo client =
                 restAdapter.create(tv.ismar.daisy.core.client.ClientApi.AdvertisementInfo.class);
@@ -117,6 +127,7 @@ public class PosterUpdateService extends Service {
                 try {
                     int byteread;
                     URL url = new URL(advertisementInfoEntity.getUrl());
+                    Log.i(TAG, "downloadPic ---> " + url);
                     if (!posterTmpFile.exists())
                         posterTmpFile.createNewFile();
                     URLConnection conn = url.openConnection();
@@ -167,5 +178,10 @@ public class PosterUpdateService extends Service {
         SharedPreferences preferences = getSharedPreferences("poster", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("end_time", timestamp.toString());
+    }
+
+    private String getPosterDomain() {
+        String defaultPosterDomain = tv.ismar.daisy.core.client.ClientApi.ADVERTISEMENT_HOST;
+        return DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.ad_domain, "");
     }
 }

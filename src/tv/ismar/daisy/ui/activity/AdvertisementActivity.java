@@ -49,9 +49,7 @@ public class AdvertisementActivity extends Activity {
 //        fetchCdnChangeTag();
         messageHandler = new MessageHandler();
 
-        Intent intent = new Intent();
-        intent.setClass(this, PosterUpdateService.class);
-        startService(intent);
+
     }
 
     private void initViews() {

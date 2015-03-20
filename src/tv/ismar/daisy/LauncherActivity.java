@@ -31,6 +31,7 @@ import org.json.JSONObject;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SystemFileUtil;
+import tv.ismar.daisy.core.service.PosterUpdateService;
 import tv.ismar.daisy.core.update.AppUpdateUtils;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.ui.adapter.ChannelAdapter;
@@ -220,7 +221,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         btn_search = (DaisyImageView)findViewById(R.id.search);
         btn_personcenter = (DaisyImageView) findViewById(R.id.user_center);
         btn_search.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -659,6 +660,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                     break;
                 case GETDOMAIN:
                     DaisyUtils.getVodApplication(LauncherActivity.this).getNewContentModel();
+                    updatePoster();
                     getFrontPage();
                     getTvHome();
                     getChannels();
@@ -882,7 +884,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString(VodApplication.ad_domain, SimpleRestClient.ad_domain);
 //			DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString("domain", SimpleRestClient.root_url);
 //			DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString("ad_domain", SimpleRestClient.ad_domain);
-//			DaisyUtils.getVodApplication(LauncherActivity.this).save();
+			DaisyUtils.getVodApplication(LauncherActivity.this).save();
 			SimpleRestClient.mobile_number = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.MOBILE_NUMBER, "");
             SimpleRestClient.access_token = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.AUTH_TOKEN, "");
             mainHandler.sendEmptyMessage(GETDOMAIN);
@@ -1012,5 +1014,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         intent.setDataAndType(uri, "application/vnd.android.package-archive");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
+    }
+
+    private void updatePoster(){
+        Intent intent = new Intent();
+        intent.setClass(this, PosterUpdateService.class);
+        startService(intent);
     }
 }

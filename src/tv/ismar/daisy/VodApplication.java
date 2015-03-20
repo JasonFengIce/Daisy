@@ -41,10 +41,10 @@ import android.util.Log;
 public class VodApplication extends Application {
 
 	private static final String TAG = "VodApplication";
-	
+
 	public static final String content_model_api = "/static/meta/content_model.json";
 	public static final String domain = "";
-	public static final String ad_domain="";
+	public static final String ad_domain = "ad_domain";
 	public ContentModel[] mContentModel;
 	public static final String LOGIN_STATE = "loginstate";
 	public static String AUTH_TOKEN = "auth_token";
@@ -81,15 +81,15 @@ public class VodApplication extends Application {
 		mLowMemoryListeners = new ArrayList<WeakReference<OnLowMemoryListener>>();
 		mActivityPool = new ConcurrentHashMap<String, Activity>();
 	}
-	
+
 	private HistoryManager mHistoryManager;
-	
+
 	private FavoriteManager mFavoriteManager;
-	
+
 	private DBHelper mDBHelper;
-	
+
 	private ConcurrentHashMap<String, Activity> mActivityPool;
-	
+
 	private boolean isFinish = true;
 	public void removeActivtyFromPool(String tag) {
 		Activity a = mActivityPool.remove(tag);
@@ -98,7 +98,7 @@ public class VodApplication extends Application {
 			isFinish = false;
 		}
 	}
-	
+
 	public void addActivityToPool(String tag, Activity activity) {
 		Log.d(TAG, "add activity: "+activity);
 		mActivityPool.put(tag, activity);
@@ -107,7 +107,7 @@ public class VodApplication extends Application {
 			isFinish = true;
 		}
 	}
-	
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -115,7 +115,7 @@ public class VodApplication extends Application {
 		getContentModelFromAssets();
 		registerReceiver(mCloseReceiver, new IntentFilter("com.amlogic.dvbplayer.homekey"));
 		registerReceiver(mSleepReceiver, new IntentFilter("com.alpha.lenovo.powerKey"));
-		
+
 	}
 	public static String getDeviceId(Context context) {
 		String deviceId = null;
@@ -123,7 +123,7 @@ public class VodApplication extends Application {
 			TelephonyManager tm = (TelephonyManager) context
 					.getSystemService(Context.TELEPHONY_SERVICE);
 			deviceId = tm.getDeviceId();
-			
+
 		} catch (Exception e) {
 
 			e.printStackTrace();
@@ -133,7 +133,7 @@ public class VodApplication extends Application {
 	String sn;
 	private void register(){
 		new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
@@ -149,7 +149,7 @@ public class VodApplication extends Application {
 	}
 	private void active(){
 		new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
@@ -178,7 +178,7 @@ public class VodApplication extends Application {
 			}
 		}).start();
 	}
-	
+
 	public void getContentModelFromAssets() {
 		AssetManager assetManager = getAssets();
 		SimpleRestClient restClient = new SimpleRestClient();
@@ -192,35 +192,35 @@ public class VodApplication extends Application {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	public void getNewContentModel(){
-		
+
 		new Thread(mGetNewContentModelTask).start();
 		new Thread(mUpLoadLogRunnable).start();
 	}
-	
+
 	private Runnable mGetNewContentModelTask = new Runnable() {
-		
+
 		@Override
 		public void run() {
 			SimpleRestClient restClient = new SimpleRestClient();
-			
+
 			ContentModelList contentModelList = restClient.getContentModelLIst(content_model_api);
 			if(contentModelList!=null){
 				mContentModel = contentModelList.zh_CN;
 			}
-			
+
 		}
 	};
-	
-	
+
+
 	private Runnable mUpLoadLogRunnable = new Runnable(){
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub			
-			while(isFinish){		
+			// TODO Auto-generated method stub
+			while(isFinish){
 					try {
 						Thread.sleep(900000);
 						//Thread.sleep(1000);
@@ -229,10 +229,10 @@ public class VodApplication extends Application {
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-				}				
+				}
 			}
 		}
-		
+
 	};
 
 	/**
@@ -245,7 +245,7 @@ public class VodApplication extends Application {
 		}
 		return mDBHelper;
 	}
-	
+
 	/**
 	 * Return this application {@link HistoryManager}
 	 * @return The application {@link HistoryManager}
@@ -256,14 +256,14 @@ public class VodApplication extends Application {
 		}
 		return mHistoryManager;
 	}
-	
+
 	public FavoriteManager getFavoriteManager() {
 		if(mFavoriteManager == null) {
 			mFavoriteManager = new LocalFavoriteManager(this);
 		}
 		return mFavoriteManager;
 	}
-	
+
 	private static final ThreadFactory sThreadFactory = new ThreadFactory() {
         private final AtomicInteger mCount = new AtomicInteger(1);
 
@@ -274,7 +274,7 @@ public class VodApplication extends Application {
 	/**
      * Return an ExecutorService (global to the entire application) that may be
      * used by clients when running long tasks in the background.
-     * 
+     *
      * @return An ExecutorService to used when processing long running tasks
      */
     public ExecutorService getExecutor() {
@@ -283,10 +283,10 @@ public class VodApplication extends Application {
         }
         return mExecutorService;
     }
-    
+
     /**
      * Return this application {@link ImageCache}.
-     * 
+     *
      * @return The application {@link ImageCache}
      */
     public ImageCache getImageCache() {
@@ -299,22 +299,22 @@ public class VodApplication extends Application {
      * Used for receiving low memory system notification. You should definitely
      * use it in order to clear caches and not important data every time the
      * system needs memory.
-     * 
+     *
      * @author Cyril Mottier
      * @see GDApplication#registerOnLowMemoryListener(OnLowMemoryListener)
      * @see GDApplication#unregisterOnLowMemoryListener(OnLowMemoryListener)
      */
     public static interface OnLowMemoryListener {
-        
+
         /**
          * Callback to be invoked when the system needs memory.
          */
         public void onLowMemoryReceived();
     }
-    
+
     /**
      * Add a new listener to registered {@link OnLowMemoryListener}.
-     * 
+     *
      * @param listener The listener to unregister
      * @see OnLowMemoryListener
      */
@@ -326,7 +326,7 @@ public class VodApplication extends Application {
 
     /**
      * Remove a previously registered listener
-     * 
+     *
      * @param listener The listener to unregister
      * @see OnLowMemoryListener
      */
@@ -368,7 +368,7 @@ public class VodApplication extends Application {
 		// TODO Auto-generated method stub
 		super.onTrimMemory(level);
 	}
-	
+
 	private BroadcastReceiver mCloseReceiver = new BroadcastReceiver() {
 
 		@Override
@@ -376,9 +376,9 @@ public class VodApplication extends Application {
 			Log.d(TAG, "Home key is pressed!");
 			finishVOD();
 		}
-		
+
 	};
-	
+
 	private void finishVOD() {
 		ConcurrentHashMap<String, Activity> activityPool =(ConcurrentHashMap<String, Activity>)mActivityPool;
 		for(String tag: activityPool.keySet()) {
@@ -389,9 +389,9 @@ public class VodApplication extends Application {
 		}
 		activityPool.clear();
 	}
-	
+
 	private BroadcastReceiver mSleepReceiver = new BroadcastReceiver() {
-		
+
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			finishVOD();
@@ -403,7 +403,7 @@ public class VodApplication extends Application {
 //	   ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(mDisplayMetrics);
 //	   H = mDisplayMetrics.heightPixels;
 	   int ver = Build.VERSION.SDK_INT;
-	   DisplayMetrics dm = new DisplayMetrics(); 
+	   DisplayMetrics dm = new DisplayMetrics();
 	   android.view.Display display = ((Activity)context).getWindowManager().getDefaultDisplay();
 	   display.getMetrics(dm);
 	   if(ver<13){
@@ -417,20 +417,20 @@ public class VodApplication extends Application {
 			// TODO Auto-generated catch block
 			H = dm.heightPixels;
 			e.printStackTrace();
-		} 
+		}
 	   }
 	   else if(ver>13){
            try {
 			Method mt = display.getClass().getMethod("getRawHeight");
-	        H = (Integer) mt.invoke(display); 
+	        H = (Integer) mt.invoke(display);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			H = dm.heightPixels;
 			e.printStackTrace();
-		}   
+		}
 	   }
 	   return H;
    }
-   
+
 
 }
