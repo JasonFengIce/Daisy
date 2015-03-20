@@ -101,7 +101,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private View mView;
     Activator activator;
     private DaisyImageView btn_personcenter;
-
+    private DaisyImageView btn_search;
     PopupWindow popupWindow;
 
     private GridView channelGrid;
@@ -217,7 +217,18 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         todayWeatherDetail = (TextView) findViewById(R.id.today_weather_detail);
         tomorrowDetail = (TextView) findViewById(R.id.tomorrow_detail);
         videoView = (IsmartvVideoView) findViewById(R.id.video_view);
+        btn_search = (DaisyImageView)findViewById(R.id.search);
         btn_personcenter = (DaisyImageView) findViewById(R.id.user_center);
+        btn_search.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent searchIntent = new Intent();
+				searchIntent.setClass(LauncherActivity.this, SearchActivity.class);
+				startActivity(searchIntent);
+			}
+		});
         btn_personcenter.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -868,6 +879,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             SimpleRestClient.log_domain = "http://" + result.getLog_Domain();
             SimpleRestClient.device_token = result.getDevice_token();
             SimpleRestClient.sn_token = result.getSn_Token();
+            DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString(VodApplication.ad_domain, SimpleRestClient.ad_domain);
 //			DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString("domain", SimpleRestClient.root_url);
 //			DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString("ad_domain", SimpleRestClient.ad_domain);
 //			DaisyUtils.getVodApplication(LauncherActivity.this).save();

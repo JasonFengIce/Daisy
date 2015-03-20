@@ -113,7 +113,8 @@ public class SystemFileUtil {
 				} catch (IOException EX) {
 					System.out.println(EX.toString());
 				} finally {
-					streamWriter.close();
+					if(streamWriter!=null)
+					   streamWriter.close();
 				}				
 	}
     public static void delete(){

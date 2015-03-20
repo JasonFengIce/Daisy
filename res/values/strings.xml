@@ -164,4 +164,7 @@
     <string name="no_collect_record">没有收藏记录</string>
     <string name="no_history_record">没有历史记录</string>
     <string name="interested_video">您可能对这些影片感兴趣</string>
+    
+    <!-- item detail -->
+    <string name="preview_video">预告片</string>
 </resources>
