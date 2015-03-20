@@ -28,8 +28,6 @@ public class ClientApi {
     /**
      * advertisement
      */
-
-
     public interface AdvertisementInfo {
         @Headers("Accpt: application/json")
         @GET("/api/power/")

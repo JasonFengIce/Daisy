@@ -1,5 +1,7 @@
 package tv.ismar.daisy.core.advertisement;
 
+import java.sql.Timestamp;
+
 /**
  * Created by huaijie on 3/12/15.
  */
@@ -11,7 +13,37 @@ public class AdvertisementInfoEntity {
     private long id;
     private String end_time;
     private String start_date;
+    private String md5;
 
+    private Timestamp endTimeStamp;
+    private Timestamp startTimeStamp;
+
+    public Timestamp getEndTimeStamp() {
+        return Timestamp.valueOf(end_date + " " + end_time);
+
+    }
+
+    public void setEndTimeStamp(Timestamp endTimeStamp) {
+        this.endTimeStamp = endTimeStamp;
+
+
+    }
+
+    public Timestamp getStartTimeStamp() {
+        return Timestamp.valueOf(start_date + " " + start_time);
+    }
+
+    public void setStartTimeStamp(Timestamp startTimeStamp) {
+        this.startTimeStamp = startTimeStamp;
+    }
+
+    public String getMd5() {
+        return md5;
+    }
+
+    public void setMd5(String md5) {
+        this.md5 = md5;
+    }
 
     public int getCustomer() {
         return customer;

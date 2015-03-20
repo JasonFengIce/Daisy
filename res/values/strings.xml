@@ -124,7 +124,8 @@
     <string name="update_method">请选择升级方式,谢谢!</string>
     <string name="update_now">现在升级</string>
     <string name="update_next_time">下次启动时升级</string>
-    <string name="insert_sdcard">没有发现SD卡,无法实现更新!!!</string>
+    <string name="app_update_now_wait">软件正在升级,请耐心等待......</string>
+
     <string name="serie_switch">剧集选择</string>
     <string name="buy_video">购买</string>
     <string name="active_fail">激活认证失败！</string>
@@ -135,7 +136,7 @@
     <string name="user_center">用户中心</string>
 
 
-        <!-- pay panel -->
+    <!-- pay panel -->
     <string name="weixinpay_button_title">微信支付</string>
     <string name="guanyingcard_pay_button_title">观影卡</string>
     <string name="zhifubao_pay_button_title">支付宝支付</string>

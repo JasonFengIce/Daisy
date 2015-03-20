@@ -150,7 +150,7 @@ public class AppUpdateUtils {
     }
 
 
-    private static String getMd5ByFile(File file) {
+    public String getMd5ByFile(File file) {
         String value = null;
         FileInputStream in = null;
         try {
@@ -229,7 +229,7 @@ public class AppUpdateUtils {
                     Object localObject = localProcess.getOutputStream();
                     DataOutputStream localDataOutputStream = new DataOutputStream(
                             (OutputStream) localObject);
-                    localDataOutputStream.writeBytes("exit\n");
+//                    localDataOutputStream.writeBytes("exit\n");
                     localDataOutputStream.flush();
                     localProcess.waitFor();
                     result = localProcess.exitValue();
