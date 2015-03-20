@@ -43,11 +43,14 @@
 <!--             /> -->
            <tv.ismar.daisy.views.LoginPanelView
              xmlns:login="http://schemas.android.com/apk/res/tv.ismar.daisy"
-             android:id="@+id/login_layout" 
+             android:id="@+id/login_panel"
              android:layout_width="0dip"
              android:layout_height="wrap_content"
+             android:layout_marginTop="@dimen/pay_qrcode_pay_panel_margintop"
              login:suspension_window="true"
-             android:layout_weight="2.1"/>
+             android:layout_weight="2.2"
+             android:visibility="gone"
+             />
         <include
             layout="@layout/qrcode_pay_panel"
             android:visibility="gone" />

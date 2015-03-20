@@ -16,6 +16,15 @@
         android:text="@string/pay_shiyuncard_account_label"
         android:textSize="@dimen/pay_shiyuncard_account_label_textsize" />
 
+    <TextView
+        android:id="@+id/recharge_error_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#fe8109"
+        android:visibility="gone"
+        android:textSize="@dimen/pay_shiyuncard_account_label_textsize" />
+
     <EditText
         android:id="@+id/shiyuncard_input"
         android:layout_width="match_parent"

@@ -155,6 +155,7 @@
     <string name="pay_payinfo_price_label">价格 : %1$.2f</string>
     <string name="pay_payinfo_exprice_label">有效期 : %1$d天</string>
     <string name="pay_payinfo_introduce_label">购买后可以在有效期内观看</string>
+    <string name="welocome_tip">您好 : %1$s</string>
     <!-- menu title -->
     <string name="kefucentertitle">客服中心</string>
     <string name="orderlisttitle">订购列表</string>

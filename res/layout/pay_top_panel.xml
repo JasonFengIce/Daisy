@@ -68,7 +68,7 @@
         android:layout_gravity="right|bottom"
         android:layout_weight="4"
         android:gravity="right"
-        android:text="您好 : 1335478922"
+        android:text="@string/welocome_tip"
         android:textSize="@dimen/pay_top_panel_welocome_tip_textsieze"
         android:visibility="gone" />
 
