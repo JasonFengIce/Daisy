@@ -99,8 +99,8 @@
     <dimen name="gridview_main_panel_labelTextMarginBottom">20dip</dimen>
     <dimen name="gridview_main_panel_labelTextMarginRight">10dip</dimen>
     <dimen name="gridview_no_video_container_width">1480dip</dimen>
-    <dimen name="gridview_no_video_container_height">701dip</dimen>
-    <dimen name="gridview_no_video_container_marginLeft">280dip</dimen>
+    <dimen name="gridview_no_video_container_height">711dip</dimen>
+    <dimen name="gridview_no_video_container_marginLeft">192dip</dimen>
     <dimen name="gridview_item_image_PaddingL">1dip</dimen>
     <dimen name="gridview_item_image_PaddingT">1dip</dimen>
     <dimen name="gridview_item_image_PaddingR">1dip</dimen>
@@ -118,10 +118,11 @@
     <dimen name="gridview_item_container_PB">18dip</dimen>
     <dimen name="ScrollableSectionList_item_PB">0dip</dimen>
     <dimen name="gridview_main_gridview_line_W">3dip</dimen>
-    <dimen name="gridview_main_gridview_line_H">180dip</dimen>
+    <dimen name="gridview_main_gridview_line_H">120dip</dimen>
     <dimen name="grid_view_main_arrow_left_W">30dip</dimen>
     <dimen name="grid_view_main_arrow_left_H">46dip</dimen>
-    <dimen name="grid_view_main_arrow_left_marginT">29dip</dimen>
+    <dimen name="grid_view_main_arrow_left_marginT">33dip</dimen>
+    <dimen name="gridview_line_ML">30dip</dimen>
     <!-- popup_2btn -->
     <dimen name="popup_dialog_width">806dip</dimen>
     <dimen name="popup_dialog_height">444dip</dimen>
@@ -419,6 +420,11 @@
     <dimen name="ZGridView_packagedetail_selectorTopPadding">0dip</dimen>
     <dimen name="ZGridView_packagedetail_selectorRight">1dip</dimen>
     <dimen name="ZGridView_packagedetail_selectorBottom">-22dip</dimen>
+    
+    <dimen name="ZGridView_recommend_selectorLeftPadding">21dip</dimen>
+    <dimen name="ZGridView_recommend_selectorTopPadding">0dip</dimen>
+    <dimen name="ZGridView_recommend_selectorRightPadding">21dip</dimen>
+    <dimen name="ZGridView_recommend_selectorBottomPadding">-30dip</dimen>
     
     <!-- HGridView -->
     <dimen name="HGridView_related_selectionLeftPadding">20dip</dimen>

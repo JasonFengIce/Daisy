@@ -48,6 +48,7 @@ public class VodApplication extends Application {
 	public ContentModel[] mContentModel;
 	public static final String LOGIN_STATE = "loginstate";
 	public static String AUTH_TOKEN = "auth_token";
+	public static String MOBILE_NUMBER = "mobile_number";
 	private static final int CORE_POOL_SIZE = 5;
 	private ExecutorService mExecutorService;
 	public static float rate = 1;

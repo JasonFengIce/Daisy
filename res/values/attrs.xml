@@ -111,7 +111,7 @@
     </declare-styleable>
 
     <declare-styleable name="DaisyButton"></declare-styleable>
-
-    <declare-styleable name="DaisyImageView"/>
-
+<declare-styleable name="LoginPanelView">
+    <attr name="suspension_window" format="boolean"/>
+</declare-styleable>
 </resources>

@@ -1,12 +1,17 @@
 package tv.ismar.daisy.views;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.Item;
 import android.app.Dialog;
 import android.content.Context;
@@ -24,6 +29,7 @@ import android.widget.TextView;
 
 public class PaymentDialog extends Dialog {
 
+	private static final String QRCODE_BASE_URL = "http://sky.tvxio.com/api/qrcode/create/";
 	private Context mycontext;
 	private int width;
 	private int height;
@@ -47,6 +53,7 @@ public class PaymentDialog extends Dialog {
 	private TextView payinfo_price;
 	private TextView payinfo_exprice;
 	private TextView package_price;
+	private TextView videotitle;
 
 	private Item mItem;
 
@@ -114,9 +121,11 @@ public class PaymentDialog extends Dialog {
 
 		payinfo_price = (TextView) findViewById(R.id.payinfo_price);
 		payinfo_exprice = (TextView) findViewById(R.id.payinfo_exprice);
-		package_price =(TextView) findViewById(R.id.package_price);
+		package_price = (TextView) findViewById(R.id.package_price);
+		videotitle = (TextView) findViewById(R.id.videotitle);
+
 		setPackageInfo();
-		changeQrcodePayPanelState(true,true);
+		changeQrcodePayPanelState(true, true);
 	}
 
 	private View.OnClickListener buttonClick = new View.OnClickListener() {
@@ -185,16 +194,23 @@ public class PaymentDialog extends Dialog {
 			final boolean isweixin) {
 		if (visible) {
 			qrcode_pay.setVisibility(View.VISIBLE);
-			urlHandler.sendEmptyMessage(0);
 			new Thread() {
 
 				@Override
 				public void run() {
 					super.run();
 					if (isweixin) {
-						qrcodeBitmap = returnBitMap("http://cmstest.tvxio.com/page/qrcode/display/weixin/?username=15300320422&user_id=48519&sid=20338998aa36495a92aff4730bb8a587&wares_type=package&wares_id=33&devide_id=");
+						qrcodeBitmap = returnBitMap(QRCODE_BASE_URL,
+								"wares_id=" + mItem.pk + "&wares_type="
+										+ "item" + "&device_token="
+										+ SimpleRestClient.device_token
+										+ "&source=weixin");
 					} else {
-						qrcodeBitmap = returnBitMap("http://tfsimg.alipay.com/images/mobilecodec/T19tNfXo0nXXXXXXXX");
+						qrcodeBitmap = returnBitMap(QRCODE_BASE_URL,
+								"wares_id=" + mItem.pk + "&wares_type="
+										+ "item" + "&device_token="
+										+ SimpleRestClient.device_token
+										+ "&source=alipay");
 					}
 					urlHandler.sendEmptyMessage(0);
 				}
@@ -212,35 +228,97 @@ public class PaymentDialog extends Dialog {
 			shiyuncard_panel.setVisibility(View.GONE);
 	}
 
-	private Bitmap returnBitMap(String url) {
+	private Bitmap returnBitMap(String url, String params) {
 		URL myFileUrl = null;
 		Bitmap bitmap = null;
 		try {
 			myFileUrl = new URL(url);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-		try {
-			HttpURLConnection conn = (HttpURLConnection) myFileUrl
+			HttpURLConnection connection = (HttpURLConnection) myFileUrl
 					.openConnection();
-			conn.setDoInput(true);
-			// conn.setRequestMethod();
-			conn.connect();
-			InputStream is = conn.getInputStream();
+			connection.setDoOutput(true);
+			connection.setDoInput(true);
+			connection.setRequestMethod("POST");
+			connection.setUseCaches(false);
+			connection.setInstanceFollowRedirects(false);
+			connection.setRequestProperty("Content-Type",
+					"application/x-www-form-urlencoded");
+			connection.connect();
+			DataOutputStream out = new DataOutputStream(
+					connection.getOutputStream());
+			out.writeBytes(params);
+			out.flush();
+			out.close();
+			int code = connection.getResponseCode();
+			if (code == 302) {
+				String redirectlocation = connection.getHeaderField("Location");
+				myFileUrl = new URL(redirectlocation);
+				connection = (HttpURLConnection) myFileUrl.openConnection();
+				connection.setRequestMethod("GET");
+				connection.connect();
+				connection.getResponseCode();
+			}
+			InputStream is = connection.getInputStream();
 			bitmap = BitmapFactory.decodeStream(is);
 			is.close();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return bitmap;
 	}
 
-	private void setPackageInfo(){
-		String price=mycontext.getResources().getString(R.string.pay_payinfo_price_label);
-		String exprice=mycontext.getResources().getString(R.string.pay_payinfo_exprice_label);
-		String package_info =mycontext.getResources().getString(R.string.pay_package_price);
-		payinfo_price.setText(String.format(price,mItem.expense.price));
-		payinfo_exprice.setText(String.format(exprice,mItem.expense.duration));
-		package_price.setText(String.format(package_info,mItem.expense.price,mItem.expense.duration));
+	private void setPackageInfo() {
+		videotitle.setText(mItem.title);
+		String price = mycontext.getResources().getString(
+				R.string.pay_payinfo_price_label);
+		String exprice = mycontext.getResources().getString(
+				R.string.pay_payinfo_exprice_label);
+		String package_info = mycontext.getResources().getString(
+				R.string.pay_package_price);
+		payinfo_price.setText(String.format(price, mItem.expense.price));
+		payinfo_exprice.setText(String.format(exprice, mItem.expense.duration));
+		package_price.setText(String.format(package_info, mItem.expense.price,
+				mItem.expense.duration));
+	}
+
+	private void card_recharge(String cardNumber) {
+		String pwd_prefix = cardNumber.substring(0, 10);
+		String sur_prefix = cardNumber.substring(0, 10);
+		long timestamp = System.currentTimeMillis();
+		String sid = "41e124ba796b43028aee00ccb8c15552";
+		String user = "13651676936";
+		String user_id = "318608";
+		String app_name = "a11";
+		String sn = SimpleRestClient.sn_token;
+		try {
+			String card_secret = SHA1(user + sur_prefix + timestamp);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private String convertToHex(byte[] data) {
+		StringBuilder buf = new StringBuilder();
+		for (byte b : data) {
+			int halfbyte = (b >>> 4) & 0x0F;
+			int two_halfs = 0;
+			do {
+				buf.append((0 <= halfbyte) && (halfbyte <= 9) ? (char) ('0' + halfbyte)
+						: (char) ('a' + (halfbyte - 10)));
+				halfbyte = b & 0x0F;
+			} while (two_halfs++ < 1);
+		}
+		return buf.toString();
+	}
+
+	private String SHA1(String text) throws NoSuchAlgorithmException,
+			UnsupportedEncodingException {
+		MessageDigest md = MessageDigest.getInstance("SHA-1");
+		md.update(text.getBytes("iso-8859-1"), 0, text.length());
+		byte[] sha1hash = md.digest();
+		return convertToHex(sha1hash);
 	}
 }

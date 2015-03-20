@@ -85,31 +85,31 @@ public class NetworkUtils {
 			}							          			 
 			String line = null;
 			
-			  try {
-				     
-	                Map<String, List<String>> map = conn.getHeaderFields();
-	     
-	                System.out.println("显示响应Header信息...\n");
-	     
-	                for (Map.Entry<String, List<String>> entry : map.entrySet()) {
-	                        System.out.println("Key : " + entry.getKey() + 
-	                                           " ,Value : " + entry.getValue());
-	                }
-	     
-	                System.out.println("\n使用key获得响应Header信息 \n");
-	                List<String> server = map.get("Server");
-	     
-	                if (server == null) {
-	                        System.out.println("Key 'Server' is not found!");
-	                } else {
-	                        for (String values : server) {
-	                                System.out.println(values);
-	                        }
-	                }
-	     
-	        } catch (Exception e) {
-	                e.printStackTrace();
-	        }
+//			  try {
+//				     
+//	                Map<String, List<String>> map = conn.getHeaderFields();
+//	     
+//	                System.out.println("显示响应Header信息...\n");
+//	     
+//	                for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+//	                        System.out.println("Key : " + entry.getKey() + 
+//	                                           " ,Value : " + entry.getValue());
+//	                }
+//	     
+//	                System.out.println("\n使用key获得响应Header信息 \n");
+//	                List<String> server = map.get("Server");
+//	     
+//	                if (server == null) {
+//	                        System.out.println("Key 'Server' is not found!");
+//	                } else {
+//	                        for (String values : server) {
+//	                                System.out.println(values);
+//	                        }
+//	                }
+//	     
+//	        } catch (Exception e) {
+//	                e.printStackTrace();
+//	        }
 			  
 			while((line=buff.readLine())!=null) {
 				sb.append(line);
@@ -144,7 +144,6 @@ public class NetworkUtils {
 	        DataOutputStream out = new DataOutputStream(connection
 	                .getOutputStream());
 	      //  OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream(), "utf-8");
-	        String content;
 	        out.writeBytes(values);
 	        out.flush();
 	        out.close();
@@ -166,15 +165,16 @@ public class NetworkUtils {
 	        }
 	        else{
 				switch(status) {
+				case 404:
+					throw new NetworkException("404");
+				case 599:
+					throw new NetworkException("599");
 				case 400:
-					response.append("参数不对");
-					return "400";
+					throw new NetworkException("400");
 				case 406:
-					response.append("device_token非标准格式");
-					return "406";
+					throw new NetworkException("406");
 				}
 	        	connection.disconnect();
-	        	return "";
 	        }
 	        connection.disconnect();
 		 }
@@ -323,10 +323,9 @@ public class NetworkUtils {
 	 * 
 	 */
 	public static Boolean LogUpLoad(Context context) {
+		java.net.HttpURLConnection httpConn = null;
 		try {
-			
 			String jsonContent = getFileToString();
-			jsonContent = "1";
 			if(jsonContent == null){
 				return false;
 			}
@@ -334,7 +333,7 @@ public class NetworkUtils {
 			String url="http://ismartv.calla.tvxio.com/log";
 			//String url = "http://192.168.1.185:8099/shipinkefu/22.mp4";
 			java.net.URL connURL = new java.net.URL(url);
-			java.net.HttpURLConnection httpConn = (java.net.HttpURLConnection) connURL.openConnection();
+			httpConn = (java.net.HttpURLConnection) connURL.openConnection();
 			httpConn.setRequestMethod("POST");
 			httpConn.setConnectTimeout(10000);
 			httpConn.setReadTimeout(10000); 
@@ -349,9 +348,9 @@ public class NetworkUtils {
 			httpConn.setRequestProperty("User-Agent", VodUserAgent.getUserAgent(VodUserAgent.getMACAddress()));
 			httpConn.setRequestProperty("Pragma:", "no-cache");  
 			httpConn.setRequestProperty("Cache-Control", "no-cache");
-			boolean isSupport = isSupportGzip();
-			if(isSupport)
-			  httpConn.setRequestProperty("Accept-Encoding","gzip");
+//			boolean isSupport = isSupportGzip();
+//			if(isSupport)
+//			  httpConn.setRequestProperty("Accept-Encoding","gzip");
 			httpConn.setUseCaches(false);
 			//String gzip1 = httpConn.getContentEncoding();
 			//Log.i("zjq", "gzip1=="+gzip1);
@@ -397,12 +396,18 @@ public class NetworkUtils {
 			return true;
 		} catch (MalformedURLException e) {
 			Log.e(TAG, "event" +" MalformedURLException "+e.toString());
+			if(httpConn!=null)
+			   httpConn.disconnect();
 			return false;
 		} catch (IOException e) {
 			Log.e(TAG, "event" +" IOException "+e.toString());
+			if(httpConn!=null)
+				   httpConn.disconnect();
 			return false;
 		} catch (Exception e) {
 			e.printStackTrace();
+			if(httpConn!=null)
+				   httpConn.disconnect();
 			Log.e(TAG, "event" +" Exception "+e.toString());
 			return false;
 		}
