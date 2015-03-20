@@ -447,10 +447,10 @@ public class NetworkUtils {
         Log.d(TAG," Log data For Test === " + logJson.toString());
         return base64Code(logJson.toString());
 	}
-	
+
 	private static String base64Code(String date){
 		try {
-			return Base64.encodeToString(date.getBytes("UTF-8"),Base64.NO_WRAP|Base64.URL_SAFE);
+			return Base64.encodeToString(date.getBytes("UTF-8"),Base64.DEFAULT);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			return null;

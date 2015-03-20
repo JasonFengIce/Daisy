@@ -243,12 +243,13 @@ public SectionList getsectionss(String content){
 		}
 		return null;
 	}
-	public void post(String url,String params,HttpPostRequestInterface l){
+	public void doSendRequest(String url,String method,String params,HttpPostRequestInterface l){
 		//NetworkUtils.getJsonStrByPost(url, "");
 		RequestParams q = new RequestParams();
 		handler = l;
 		q.url = root_url + url;
 		q.values = params;
+		q.method = method;
 		new GetDataTask().execute(q);
 	}
 	
@@ -269,8 +270,13 @@ public SectionList getsectionss(String content){
 				RequestParams p = params[0];
 				String url = p.url;
 				String values = p.values;
+				String method = p.method;
 				try {
+					if("post".equalsIgnoreCase(method)){
 					jsonStr = NetworkUtils.getJsonStrByPost(url, values);
+					}else{
+						jsonStr = NetworkUtils.getJsonStr(url);	
+					}
 				} catch (ItemOfflineException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -315,6 +321,7 @@ public SectionList getsectionss(String content){
 	public class RequestParams{
 		public String url;
 		public String values;
+		public String method;
 	}
 	public void setHttpPostRequestInterface(HttpPostRequestInterface l){
 		handler = l;

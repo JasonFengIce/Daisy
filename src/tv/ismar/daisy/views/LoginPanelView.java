@@ -86,7 +86,7 @@ public class LoginPanelView extends LinearLayout {
 					setcount_tipText("不是手机号码");
 					return;
 				}
-				mSimpleRestClient.post("/accounts/login/" , "device_token="+SimpleRestClient.device_token+
+				mSimpleRestClient.doSendRequest("/accounts/login/" ,"post", "device_token="+SimpleRestClient.device_token+
 						"&username="+edit_mobile.getText().toString()+"&auth_number="+identifyCode, new HttpPostRequestInterface(){
 
 							@Override
@@ -146,7 +146,7 @@ public class LoginPanelView extends LinearLayout {
 				timeCount = new IsmartCountTimer(identifyCodeBtn, R.drawable.btn_normal_bg, R.drawable.btn_disabled_bg);
 				timeCount.start();
 				count_tip.setVisibility(View.VISIBLE);
-				mSimpleRestClient.post("/accounts/auth/", "device_token="+SimpleRestClient.device_token+"&username="+edit_mobile.getText().toString(),new HttpPostRequestInterface(){
+				mSimpleRestClient.doSendRequest("/accounts/auth/","post", "device_token="+SimpleRestClient.device_token+"&username="+edit_mobile.getText().toString(),new HttpPostRequestInterface(){
 					
 					@Override
 					public void onSuccess(String info) {
