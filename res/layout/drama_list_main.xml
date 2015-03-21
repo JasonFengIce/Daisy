@@ -11,13 +11,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="0dp"
+        android:layout_weight="1" >
 
         <RelativeLayout
             android:layout_width="@dimen/drama_main_img_layout_W"
-            android:layout_height="@dimen/drama_main_img_layout_H"
+            android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/drama_main_img_layout_marginleft"
-            android:background="@drawable/preview_img_bg" >
+            >
 
             <tv.ismar.daisy.views.AsyncImageView
                 android:id="@+id/image_daram_back"
@@ -35,6 +36,18 @@
                 android:layout_alignTop="@+id/image_daram_back"
                 android:layout_marginRight="@dimen/drama_main_image_daram_label_MR"
                 android:layout_marginTop="@dimen/drama_main_image_daram_label_MT" />
+
+            <Button
+                android:id="@+id/orderAll_drama"
+                android:layout_width="@dimen/drama_main_image_daram_back_W"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/image_daram_back"
+                android:layout_marginTop="60dp"
+                android:background="@drawable/person_btn_selector"
+                android:text="@string/orderAll_drama"
+                android:textColor="#FFF8F8FF"
+                android:visibility="gone"
+                android:textSize="@dimen/pay_shiyuncard_submit_textsize" />
         </RelativeLayout>
 
         <LinearLayout
@@ -66,14 +79,26 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/drama_main_tv_daram_marginleft"
+                    android:layout_marginTop="50dp"
                     android:textSize="@dimen/drama_main_tv_daram_textsize" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/one_drama_order_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:text="@string/one_drama_order_info"
+                android:textSize="38sp"
+                android:visibility="gone"
+                 />
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="0dp"
+        android:layout_weight="1" >
 
         <include
             android:id="@+id/drama_gridview"

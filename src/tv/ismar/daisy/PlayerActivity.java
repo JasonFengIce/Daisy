@@ -1373,7 +1373,9 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
         @Override
         public void run() {
             if (menu != null) {
-                menu.hide();
+				menu.hide();
+				menu.clear();
+				menu = null;
             }
             hideMenuHandler.removeCallbacks(hideMenuRunnable);
         }
@@ -1502,27 +1504,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
                 getResources().getString(R.string.vod_player_quality_adaptive));
 		menu.addItem(20, getResources().getString(R.string.kefucentertitle));
 		menu.addItem(30, getResources().getString(R.string.playfromstarttitle));
-//        if (itemUrl != null && favoriteManager != null
-//                && favoriteManager.getFavoriteByUrl(itemUrl) == null) {
-//            menu.addItem(
-//                    5,
-//                    getResources().getString(
-//                            R.string.vod_player_bookmark_setting));
-//        } else {
-//            menu.addItem(
-//                    5,
-//                    getResources().getString(
-//                            R.string.vod_bookmark_remove_bookmark_setting));
-//        }
-//        menu.addItem(6,
-//                getResources().getString(R.string.vod_player_related_setting));
-//
-//        sub = menu.addSubMenu(7,
-//                getResources().getString(R.string.vod_player_continue_setting));
-//        sub.addItem(8, getResources()
-//                .getString(R.string.vod_player_continue_on));
-//        sub.addItem(9,
-//                getResources().getString(R.string.vod_player_continue_off));
 
         return true;
     }

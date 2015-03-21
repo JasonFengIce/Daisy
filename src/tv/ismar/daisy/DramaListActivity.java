@@ -12,6 +12,7 @@ import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.LoadingDialog;
+import tv.ismar.daisy.views.PaymentDialog;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,14 +21,16 @@ import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class DramaListActivity extends Activity implements OnItemSelectedListener, OnItemClickListener, OnFocusChangeListener {
-	
+public class DramaListActivity extends Activity implements
+		OnItemSelectedListener, OnItemClickListener, OnFocusChangeListener {
+
 	private static final String TAG = "DramaListActivity";
-	
+
 	private Item mItem = new Item();
 	private List<Item> mList = new ArrayList<Item>();
 	private DaramAdapter mDramaAdapter;
@@ -38,23 +41,27 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 	private TextView mTvDramaName;
 	private TextView mTvDramaAll;
 	private TextView mTvDramaType;
-//	private Bitmap bitmap;
+	private TextView one_drama_order_info;
+	private Button orderAll_drama;
+
+	// private Bitmap bitmap;
 	private LoadingDialog loadDialog;
-	
+
 	private HashMap<String, Object> mDataCollectionProperties = new HashMap<String, Object>();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.drama_list_main);
 		initViews();
-		if(loadDialog!=null && !loadDialog.isShowing()) {
+		if (loadDialog != null && !loadDialog.isShowing()) {
 			loadDialog.show();
 		}
-		
+
 		Bundle bundle = getIntent().getExtras();
-		if (null == bundle) 
+		if (null == bundle)
 			return;
-		mItem  = (Item) bundle.get("item");
+		mItem = (Item) bundle.get("item");
 		for (int i = 0; i < mItem.subitems.length; i++) {
 			mSubItem = mItem.subitems[i];
 			mList.add(mSubItem);
@@ -62,16 +69,20 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 		mDataCollectionProperties.put(EventProperty.ITEM, mItem.pk);
 		mDataCollectionProperties.put("title", mItem.title);
 		mDataCollectionProperties.put("to", "return");
-		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_DRAMALIST_IN, mDataCollectionProperties);
-		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
-//		new Thread(new Runnable() {
-//			@Override
-//			public void run() {
-//				bitmap = ImageUtils.getBitmapFromInputStream(NetworkUtils.getInputStream(mItem.poster_url), 480, 270);
-//				mHandle.sendEmptyMessage(UPDATE);
-//			}
-//		}) {
-//		}.start();
+		new NetworkUtils.DataCollectionTask().execute(
+				NetworkUtils.VIDEO_DRAMALIST_IN, mDataCollectionProperties);
+		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(),
+				this);
+		// new Thread(new Runnable() {
+		// @Override
+		// public void run() {
+		// bitmap =
+		// ImageUtils.getBitmapFromInputStream(NetworkUtils.getInputStream(mItem.poster_url),
+		// 480, 270);
+		// mHandle.sendEmptyMessage(UPDATE);
+		// }
+		// }) {
+		// }.start();
 		initLayout();
 	}
 
@@ -87,47 +98,69 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 		mTvDramaName = (TextView) findViewById(R.id.tv_drama_name);
 		mTvDramaAll = (TextView) findViewById(R.id.tv_daram_all);
 		mTvDramaType = (TextView) findViewById(R.id.tv_daram_type);
+		one_drama_order_info = (TextView) findViewById(R.id.one_drama_order_info);
+		orderAll_drama = (Button) findViewById(R.id.orderAll_drama);
+		orderAll_drama.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				PaymentDialog dialog = new PaymentDialog(
+						DramaListActivity.this, R.style.PaymentDialog);
+				dialog.setItem(mItem);
+				dialog.show();
+			}
+		});
 		loadDialog = new LoadingDialog(this, getString(R.string.vod_loading));
 	}
 
-//	private Handler mHandle = new Handler() {
-//		public void handleMessage(Message msg) {
-//			super.handleMessage(msg);
-//			switch (msg.what) {
-//			case UPDATE:
-//				// 名称
-//				mTvDramaName.setText(mItem.title);
-//				// 集数
-//				mTvDramaAll.setText(mItem.episode + getString(R.string.daram_ji) + getString(R.string.daram_all) + "  /");
-//				// 显示图片
-//				mImageBackground.setImageBitmap(bitmap);
-//				switch (mItem.quality) {
-//				case 3:
-//					mDramaImageLabel.setBackgroundResource(R.drawable.label_uhd);
-//					break;
-//				case 4:
-//					mDramaImageLabel.setBackgroundResource(R.drawable.label_hd);
-//					break;
-//				default:
-//					mDramaImageLabel.setVisibility(View.GONE);
-//					break;
-//				}
-//				mDramaAdapter = new DaramAdapter(DramaListActivity.this, mList, R.layout.drama_gridview_item);
-//				mDramaView.setAdapter(mDramaAdapter);
-//				loadDialogShow();
-//				break;
-//			}
-//		}
-//	};
-	
+	// private Handler mHandle = new Handler() {
+	// public void handleMessage(Message msg) {
+	// super.handleMessage(msg);
+	// switch (msg.what) {
+	// case UPDATE:
+	// // 名称
+	// mTvDramaName.setText(mItem.title);
+	// // 集数
+	// mTvDramaAll.setText(mItem.episode + getString(R.string.daram_ji) +
+	// getString(R.string.daram_all) + "  /");
+	// // 显示图片
+	// mImageBackground.setImageBitmap(bitmap);
+	// switch (mItem.quality) {
+	// case 3:
+	// mDramaImageLabel.setBackgroundResource(R.drawable.label_uhd);
+	// break;
+	// case 4:
+	// mDramaImageLabel.setBackgroundResource(R.drawable.label_hd);
+	// break;
+	// default:
+	// mDramaImageLabel.setVisibility(View.GONE);
+	// break;
+	// }
+	// mDramaAdapter = new DaramAdapter(DramaListActivity.this, mList,
+	// R.layout.drama_gridview_item);
+	// mDramaView.setAdapter(mDramaAdapter);
+	// loadDialogShow();
+	// break;
+	// }
+	// }
+	// };
+
 	private void initLayout() {
-		if(mItem.poster_url != null) {
+		if (mItem.expense != null) {
+			String expensevalue = getResources().getString(
+					R.string.one_drama_order_info);
+			one_drama_order_info.setText(String.format(expensevalue,
+					mItem.expense.subprice, mItem.expense.duration));
+			one_drama_order_info.setVisibility(View.VISIBLE);
+			orderAll_drama.setVisibility(View.VISIBLE);
+		}
+		if (mItem.poster_url != null) {
 			mImageBackground.setUrl(mItem.poster_url);
 		}
 		// 名称
 		mTvDramaName.setText(mItem.title);
 		// 集数
-		mTvDramaAll.setText(mItem.episode + getString(R.string.daram_ji) + getString(R.string.daram_all) + "  /");
+		mTvDramaAll.setText(mItem.episode + getString(R.string.daram_ji)
+				+ getString(R.string.daram_all) + "  /");
 		// 显示图片
 		switch (mItem.quality) {
 		case 3:
@@ -140,9 +173,10 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 			mDramaImageLabel.setVisibility(View.GONE);
 			break;
 		}
-		mDramaAdapter = new DaramAdapter(DramaListActivity.this, mList, R.layout.drama_gridview_item);
+		mDramaAdapter = new DaramAdapter(DramaListActivity.this, mList,
+				R.layout.drama_gridview_item);
 		mDramaView.setAdapter(mDramaAdapter);
-		if(loadDialog!=null && loadDialog.isShowing()) {
+		if (loadDialog != null && loadDialog.isShowing()) {
 			loadDialog.dismiss();
 		}
 	}
@@ -154,7 +188,8 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 	}
 
 	@Override
-	public void onItemSelected(AdapterView<?> adapterView, View view, int postion, long arg3) {
+	public void onItemSelected(AdapterView<?> adapterView, View view,
+			int postion, long arg3) {
 		mSubItem = mList.get(postion);
 		// 分类
 		mTvDramaType.setText(mSubItem.title);
@@ -165,28 +200,29 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> adapterView, View view, int postion, long postions) {
+	public void onItemClick(AdapterView<?> adapterView, View view, int postion,
+			long postions) {
 		mSubItem = mList.get(postion);
 		int sub_id = mSubItem.pk;
-		String title = mItem.title + "("+mSubItem.episode + ")";
+		String title = mItem.title + "(" + mSubItem.episode + ")";
 		mDataCollectionProperties.put("subitem", sub_id);
 		mDataCollectionProperties.put("title", title);
 		mDataCollectionProperties.put("to", "play");
 		try {
 			InitPlayerTool tool = new InitPlayerTool(DramaListActivity.this);
 			tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
-				
+
 				@Override
 				public void onPreExecute(Intent intent) {
 					// TODO Auto-generated method stub
 					loadDialog.show();
 				}
-				
+
 				@Override
 				public void onPostExecute() {
 					// TODO Auto-generated method stub
-					if(loadDialog!=null)
-					  loadDialog.dismiss();
+					if (loadDialog != null)
+						loadDialog.dismiss();
 				}
 			});
 			tool.initClipInfo(mSubItem.url, InitPlayerTool.FLAG_URL);
@@ -198,13 +234,13 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 	/**
 	 * 显示自定义Dialog
 	 */
-//	private void loadDialogShow() {
-//		if (loadDialog.isShowing()) {
-//			loadDialog.dismiss();
-//		} else {
-//			loadDialog.show();
-//		}
-//	}
+	// private void loadDialogShow() {
+	// if (loadDialog.isShowing()) {
+	// loadDialog.dismiss();
+	// } else {
+	// loadDialog.show();
+	// }
+	// }
 
 	@Override
 	protected void onDestroy() {
@@ -213,19 +249,21 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 		mDramaAdapter = null;
 		mSubItem = null;
 		loadDialog = null;
-		DaisyUtils.getVodApplication(this).removeActivtyFromPool(this.toString());
+		DaisyUtils.getVodApplication(this).removeActivtyFromPool(
+				this.toString());
 		super.onDestroy();
 	}
 
 	@Override
 	protected void onPause() {
-		if(loadDialog!=null && loadDialog.isShowing()) {
+		if (loadDialog != null && loadDialog.isShowing()) {
 			loadDialog.dismiss();
 		}
-		if(mItem!=null) {
+		if (mItem != null) {
 			HashMap<String, Object> properties = new HashMap<String, Object>();
 			properties.putAll(mDataCollectionProperties);
-			new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_DRAMALIST_OUT, properties);
+			new NetworkUtils.DataCollectionTask().execute(
+					NetworkUtils.VIDEO_DRAMALIST_OUT, properties);
 			mDataCollectionProperties.put("title", mItem.title);
 			mDataCollectionProperties.put("to", "return");
 			mDataCollectionProperties.remove("subitem");
@@ -233,5 +271,4 @@ public class DramaListActivity extends Activity implements OnItemSelectedListene
 		super.onPause();
 	}
 
-	
 }

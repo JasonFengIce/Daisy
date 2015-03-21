@@ -289,7 +289,7 @@
     
     <!-- dramaList -->
     <dimen name="drama_main_layout_PL">260dip</dimen>
-    <dimen name="drama_main_layout_PT">200dip</dimen>
+    <dimen name="drama_main_layout_PT">100dip</dimen>
     <dimen name="drama_main_layout_PR">260dip</dimen>
     <dimen name="drama_main_layout_PB">100dip</dimen>
     <dimen name="drama_main_img_layout_W">480dip</dimen>
@@ -303,7 +303,7 @@
     <dimen name="drama_main_image_daram_label_MT">-3dip</dimen>
     <dimen name="drama_main_content_layout_ML">100dip</dimen>
     <dimen name="drama_main_tv_drama_name_textsize">55sp</dimen>
-    <dimen name="drama_main_sub_content_layout_MT">50dip</dimen>
+    <dimen name="drama_main_sub_content_layout_MT">20dip</dimen>
     <dimen name="drama_main_tv_daram_textsize">36sp</dimen>
     <dimen name="drama_main_tv_daram_marginleft">20dip</dimen>
     <dimen name="drama_gridview_margintop">100dip</dimen>
