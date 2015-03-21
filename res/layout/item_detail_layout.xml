@@ -16,7 +16,8 @@
             android:layout_height="@dimen/item_detail_vod_watermark_height"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:src="@drawable/vod_watermark" />
+            android:src="@drawable/vod_watermark"
+            android:visibility="gone" />
         <TextView
             android:id="@+id/detail_title"
             android:layout_width="@dimen/item_detail_detail_title_width"
@@ -179,11 +180,7 @@
                 android:layout_height="@dimen/item_detail_btn_left_height"
                 android:layout_marginLeft="@dimen/item_detail_btn_marginleft"                
                 android:background="@drawable/collect_btn_bg_selector"
-                android:visibility="visible" />
->
-            
-            
-           
+                android:visibility="visible" />                        
         </LinearLayout>
         
         
@@ -292,10 +289,8 @@
             android:layout_width="@dimen/item_detail_more_content_width"
             android:layout_height="@dimen/item_detail_more_content_height"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/vod_detail_relatemore_button_selector"
-            android:textColor="#FFF8F8FF"
+            android:background="@drawable/more_content_btn_bg_selector"
             android:textSize="@dimen/item_detail_more_content_textsize" 
-            android:text="@string/video_Detail_MoreContent"
             android:layout_marginTop="@dimen/item_detail_btn_layout_marginB"/>
     </LinearLayout>
 

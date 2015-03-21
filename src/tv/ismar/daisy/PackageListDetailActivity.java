@@ -138,7 +138,6 @@ public class PackageListDetailActivity extends Activity implements OnItemSelecte
 				    int num_pages = (int) FloatMath.ceil((float)items.count / (float)ItemCollection.NUM_PER_PAGE);
 					ItemCollection itemCollection = new ItemCollection(num_pages, items.count, "1", "1");
 					mItemCollections.add(itemCollection);
-					
 				}
 				if(isCancelled()) {
 					return RESUTL_CANCELED;
@@ -171,6 +170,8 @@ public class PackageListDetailActivity extends Activity implements OnItemSelecte
 						mHGridView.setFocusable(true);
 						mHGridView.setHorizontalFadingEdgeEnabled(true);
 						mHGridView.setFadingEdgeLength(144);
+						mItemCollections.get(0).fillItems(0, items.objects);
+						mHGridAdapter.setList(mItemCollections);
 					}
 
 				} else {
