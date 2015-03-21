@@ -19,7 +19,6 @@ import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.Expense;
 import tv.ismar.daisy.models.Item;
-import tv.ismar.daisy.models.Item1;
 import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.CustomDialog;

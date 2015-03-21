@@ -427,7 +427,7 @@ public class ItemDetailActivity extends Activity implements
 		 */
 		if(isFree()){
 			//免费
-			if(!isDrama){
+			if(!isDrama()){
 				//电影
         		mLeftBtn.setBackgroundResource(R.drawable.play_btn_bg_selector);
         		mLeftBtn.setTag(PLAY_VIDEO);
@@ -851,6 +851,13 @@ public class ItemDetailActivity extends Activity implements
         dialog.setItem(mItem);
         dialog.show();
 	}
+	private void startDramaListActivity(){
+		Intent intent = new Intent();
+        mDataCollectionProperties.put("to", "list");
+		intent.setClass(ItemDetailActivity.this, DramaListActivity.class);
+		intent.putExtra("item", mItem);
+		startActivity(intent);
+	}
 	private OnClickListener mIdOnClickListener = new OnClickListener() {
 
 		@Override
@@ -876,8 +883,8 @@ public class ItemDetailActivity extends Activity implements
 				});			
 				switch (id) {
 				case R.id.btn_left:	
+					String subUrl = null;
 					if(isDrama()){
-						String subUrl = null;
 						int sub_id = 0;
 						String title = mItem.title;
 						if (mHistory != null && mHistory.is_continue) {
@@ -906,7 +913,10 @@ public class ItemDetailActivity extends Activity implements
 					}
 					else if(identify.equals(PLAY_VIDEO)){
 						//播放
-						tool.initClipInfo(mItem,InitPlayerTool.FLAG_ITEM);
+						if(isDrama())
+							tool.initClipInfo(subUrl,InitPlayerTool.FLAG_URL);
+						else							
+						    tool.initClipInfo(mItem,InitPlayerTool.FLAG_ITEM);
 					}
 				
 					//tool.initClipInfo(subUrl,InitPlayerTool.FLAG_URL);
@@ -915,7 +925,12 @@ public class ItemDetailActivity extends Activity implements
 					identify = (String) v.getTag();
 					if(identify.equals(BUY_VIDEO)){
 						//购买
-						buyVideo();
+						if(isDrama()){
+							startDramaListActivity();
+						}
+						else{
+							buyVideo();
+						}
 					}
 					else if(identify.equals(COLLECT_VIDEO)){
 						addFavorite();
@@ -936,13 +951,11 @@ public class ItemDetailActivity extends Activity implements
 							v.setBackgroundResource(R.drawable.collect_btn_bg_selector);
 						}
 					}
-					else if(identify.equals(DRAMA_VIDEO)){
-						mDataCollectionProperties
-					    .put(EventProperty.TO_ITEM, "list");
-				        intent.setClass(ItemDetailActivity.this,
-						DramaListActivity.class);
-				        intent.putExtra(EventProperty.ITEM, mItem);
-				        startActivity(intent);
+					else if(identify.equals(DRAMA_VIDEO)){			        
+				        mDataCollectionProperties.put("to", "list");
+						intent.setClass(ItemDetailActivity.this, DramaListActivity.class);
+						intent.putExtra("item", mItem);
+						startActivity(intent);
 					}
 					break;
 //				case R.id.btn_fill:
