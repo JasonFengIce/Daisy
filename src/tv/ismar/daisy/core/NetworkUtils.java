@@ -48,7 +48,7 @@ public class NetworkUtils {
 		String urlStr = target;
 		Log.i("zhuabao", "url=="+urlStr);
 		try {
-			URL url = new URL(urlStr+"?device_token="+SimpleRestClient.device_token);
+			URL url = new URL(urlStr+"?device_token="+SimpleRestClient.device_token+"&access_token="+SimpleRestClient.access_token);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			StringBuffer sb = new StringBuffer();

@@ -20,6 +20,7 @@ import tv.ismar.daisy.models.ItemCollection;
 import tv.ismar.daisy.models.ItemList;
 import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
+import tv.ismar.daisy.ui.widget.DaisyImageView;
 import tv.ismar.daisy.views.AlertDialogFragment;
 import tv.ismar.daisy.views.LoadingDialog;
 import tv.ismar.daisy.views.ScrollableSectionList;
@@ -33,9 +34,11 @@ import android.os.Bundle;
 import android.util.FloatMath;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class PackageListDetailActivity extends Activity implements OnItemSelectedListener, OnItemClickListener, OnScrollListener{
@@ -58,6 +61,7 @@ public class PackageListDetailActivity extends Activity implements OnItemSelecte
 	private ConcurrentHashMap<Integer, GetItemListTask> mCurrentLoadingTask = new ConcurrentHashMap<Integer, PackageListDetailActivity.GetItemListTask>();
 	private boolean mIsBusy = false;
 	private TextView channel_label;
+	private Button btn_search;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -83,6 +87,17 @@ public class PackageListDetailActivity extends Activity implements OnItemSelecte
 				mHGridView.setOnItemClickListener(this);
 				mHGridView.setOnItemSelectedListener(this);
 				mHGridView.setOnScrollListener(this);
+				btn_search = (Button)findViewById(R.id.search);
+				btn_search.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							Intent searchIntent = new Intent();
+							searchIntent.setClass(PackageListDetailActivity.this, SearchActivity.class);
+							startActivity(searchIntent);
+						}
+					});
 	}
 	private void getData(){
 		pk = getIntent().getIntExtra("pk", -1);

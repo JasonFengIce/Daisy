@@ -273,7 +273,7 @@ public SectionList getsectionss(String content){
 				String method = p.method;
 				try {
 					if("post".equalsIgnoreCase(method)){
-					jsonStr = NetworkUtils.getJsonStrByPost(url, values);
+					    jsonStr = NetworkUtils.getJsonStrByPost(url, values);
 					}else{
 						jsonStr = NetworkUtils.getJsonStr(url);	
 					}

@@ -7,8 +7,12 @@ import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.views.LoginPanelView;
 import tv.ismar.daisy.views.LoginPanelView.LoginInterface;
 import android.app.Activity;
@@ -39,6 +43,7 @@ public class PersonCenterActivity extends Activity {
 	private Button personal_info_btn;
 	private Button login_or_out_btn;
 	private boolean isLogin = false;
+	private  SimpleRestClient mSimpleRestClient;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -46,6 +51,8 @@ public class PersonCenterActivity extends Activity {
 		setContentView(R.layout.person_center_layout);
 		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
         initView();
+        mSimpleRestClient = new SimpleRestClient();
+        getBalance();
         if( DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.AUTH_TOKEN, "").equals("")){
         	//login out
         	loadDataLoginOut();
@@ -64,17 +71,6 @@ public class PersonCenterActivity extends Activity {
         	isLogin = true;
         }
 	}
-	public static int daysBetween(String startdate,String enddate) throws ParseException{
-    	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Calendar cal = Calendar.getInstance();  
-        cal.setTime(sdf.parse(startdate));  
-        long time1 = cal.getTimeInMillis();               
-        cal.setTime(sdf.parse(enddate));  
-        long time2 = cal.getTimeInMillis();       
-        long between_days=(time2-time1)/(1000*3600*24);
-          
-       return Integer.parseInt(String.valueOf(between_days));   
-    }
 	public static boolean isMobileNumber(String mobiles){
 		Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
 		Matcher m = p.matcher(mobiles);
@@ -82,6 +78,35 @@ public class PersonCenterActivity extends Activity {
 	}
 	private void showToast(){
 		Toast.makeText(this, "onsuccess", Toast.LENGTH_SHORT).show();
+	}
+	private void getBalance(){
+		mSimpleRestClient.doSendRequest("/accounts/balance/", "get", "", new HttpPostRequestInterface() {
+			
+			@Override
+			public void onSuccess(String info) {
+				// TODO Auto-generated method stub
+				try {
+					JSONObject json = new JSONObject(info);
+					remain_money_value.setText(json.getString("balance"));
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					remain_money_value.setText("0");
+					e.printStackTrace();
+				}
+			}
+			
+			@Override
+			public void onPrepare() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onFailed(String error) {
+				// TODO Auto-generated method stub
+				remain_money_value.setText("0");
+			}
+		});
 	}
 	private void initView(){
 		mPersoninfoLayout = (View)findViewById(R.id.info);

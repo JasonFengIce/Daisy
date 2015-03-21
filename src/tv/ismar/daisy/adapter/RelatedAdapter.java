@@ -79,18 +79,23 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 		holder.previewImage.setUrl(mItemList.get(position).adlet_url);
 		holder.title.setText(mItemList.get(position).title);
 		holder.qualityLabel = (ImageView) convertView.findViewById(R.id.list_item_quality_label);
+		holder.ItemBeanScore = (TextView)convertView.findViewById(R.id.ItemBeanScore);
+		if(mItemList.get(position).bean_score>0){
+			holder.ItemBeanScore.setText(""+mItemList.get(position).bean_score);
+			holder.ItemBeanScore.setVisibility(View.VISIBLE);
+		}
 		//holder.previewImage.setBackgroundResource(R.drawable.video_item_selector);
-		if(mItemList.get(position).quality==3) {
-			holder.qualityLabel.setImageResource(R.drawable.label_hd_small);
-		} else if(mItemList.get(position).quality==4 || mItemList.get(position).quality==5) {
-			holder.qualityLabel.setImageResource(R.drawable.label_uhd_small);
-		}
+//		if(mItemList.get(position).quality==3) {
+//			holder.qualityLabel.setImageResource(R.drawable.label_hd_small);
+//		} else if(mItemList.get(position).quality==4 || mItemList.get(position).quality==5) {
+//			holder.qualityLabel.setImageResource(R.drawable.label_uhd_small);
+//		}
 		int H = DaisyUtils.getVodApplication(mContext).getheightPixels(mContext);
-		if(H==720||(H>720&&H<1080)){
-			LayoutParams f = (LayoutParams)holder.qualityLabel.getLayoutParams();
-			f.setMargins(f.leftMargin, -1, -1, f.bottomMargin);
-			holder.qualityLabel.setLayoutParams(f);
-		}
+//		if(H==720||(H>720&&H<1080)){
+//			LayoutParams f = (LayoutParams)holder.qualityLabel.getLayoutParams();
+//			f.setMargins(f.leftMargin, -1, -1, f.bottomMargin);
+//			holder.qualityLabel.setLayoutParams(f);
+//		}
 		return convertView;
 	}
 	
@@ -98,6 +103,7 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 		AsyncImageView previewImage;
 		TextView title;
 		ImageView qualityLabel;
+		TextView ItemBeanScore;
 	}
 	
 	public void cancel() {

@@ -98,6 +98,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 			holder.qualityLabel = (ImageView) convertView.findViewById(R.id.list_item_quality_label);
 			holder.listLayout = (RelativeLayout)convertView.findViewById(R.id.list_item_layout);
 			holder.price = (TextView)convertView.findViewById(R.id.expense_txt);
+			holder.ItemBeanScore = (TextView)convertView.findViewById(R.id.ItemBeanScore);
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();
@@ -164,20 +165,23 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 				}
 				holder.title.setText(item.title);
 				holder.previewImage.setUrl(item.adlet_url);
-				if(item.quality==3) {
-					holder.qualityLabel.setImageResource(R.drawable.label_hd_small);
-				} else if(item.quality==4 || item.quality==5) {
-					holder.qualityLabel.setImageResource(R.drawable.label_uhd_small);
-				} else {
-					holder.qualityLabel.setImageDrawable(null);
-				}
+				if(item.bean_score>0)
+				   holder.ItemBeanScore.setVisibility(View.VISIBLE);
+				   holder.ItemBeanScore.setText(item.bean_score+"");
+//				if(item.quality==3) {
+//					holder.qualityLabel.setImageResource(R.drawable.label_hd_small);
+//				} else if(item.quality==4 || item.quality==5) {
+//					holder.qualityLabel.setImageResource(R.drawable.label_uhd_small);
+//				} else {
+//					holder.qualityLabel.setImageDrawable(null);
+//				}
 			}
 		} else {
 			// This ItemCollection's currentIndex has not filled yet.
 			// Show the default info.
 			holder.title.setText(mContext.getResources().getString(R.string.onload));
 			holder.previewImage.setUrl(null);
-			holder.qualityLabel.setImageDrawable(null);
+			//holder.qualityLabel.setImageDrawable(null);
 		}
 		return convertView;
 	}
@@ -188,6 +192,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 		TextView price;
 		ImageView qualityLabel;
 		RelativeLayout listLayout;
+		TextView ItemBeanScore;
 	}
 
 	@Override
