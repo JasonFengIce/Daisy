@@ -98,16 +98,20 @@ public class PosterUpdateService extends Service {
         client.excute(deviceId, new Callback<ArrayList<AdvertisementInfoEntity>>() {
             @Override
             public void success(ArrayList<AdvertisementInfoEntity> advertisementInfoEntities, Response response) {
-                AdvertisementInfoEntity adverInfo = advertisementInfoEntities.get(0);
-                String url = adverInfo.getUrl();
+                if (advertisementInfoEntities != null && !advertisementInfoEntities.isEmpty()) {
 
-                Timestamp endTimeStamp = adverInfo.getEndTimeStamp();
-                Log.i(TAG, "fetchAdvertisementInfo: adver pic url ---> " + url);
 
-                java.util.Date utilDate = new java.util.Date();
-                Timestamp timestamp = new Timestamp(utilDate.getTime());
-                if (endTimeStamp.after(timestamp)) {
-                    downloadPic(adverInfo);
+                    AdvertisementInfoEntity adverInfo = advertisementInfoEntities.get(0);
+                    String url = adverInfo.getUrl();
+
+                    Timestamp endTimeStamp = adverInfo.getEndTimeStamp();
+                    Log.i(TAG, "fetchAdvertisementInfo: adver pic url ---> " + url);
+
+                    java.util.Date utilDate = new java.util.Date();
+                    Timestamp timestamp = new Timestamp(utilDate.getTime());
+                    if (endTimeStamp.after(timestamp)) {
+                        downloadPic(adverInfo);
+                    }
                 }
             }
 
