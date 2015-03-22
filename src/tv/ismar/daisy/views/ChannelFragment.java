@@ -11,7 +11,9 @@ import org.sakuratya.horizontal.ui.HGridView.OnScrollListener;
 
 import tv.ismar.daisy.DramaListActivity;
 import tv.ismar.daisy.ItemDetailActivity;
+import tv.ismar.daisy.LauncherActivity;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.SearchActivity;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -25,6 +27,7 @@ import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
+import tv.ismar.daisy.ui.widget.DaisyImageView;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -40,9 +43,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -86,6 +91,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 	
 	private ImageView leftarrow;
 	
+	private Button btn_search;
 	private void initViews(View fragmentView) {
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
 		mHGridView.setOnItemClickListener(this);
@@ -96,6 +102,17 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		leftarrow = (ImageView)fragmentView.findViewById(R.id.arrow_left);
 		mChannelLabel = (TextView) fragmentView.findViewById(R.id.channel_label);
 		mChannelLabel.setText(mTitle);
+		btn_search = (Button)fragmentView.findViewById(R.id.search);
+		btn_search.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Intent searchIntent = new Intent();
+					searchIntent.setClass(getActivity(), SearchActivity.class);
+					startActivity(searchIntent);
+				}
+			});
 	}
 	View fragmentView;
 	@Override

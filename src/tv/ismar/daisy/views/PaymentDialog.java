@@ -14,8 +14,12 @@ import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.models.Item;
 import android.app.Dialog;
 import android.content.Context;
@@ -37,7 +41,11 @@ import android.widget.TextView;
 public class PaymentDialog extends Dialog {
 
 	private static final String QRCODE_BASE_URL = "http://sky.tvxio.com/api/order/create/";
-	private static final String CARDRECHARGE_BASE_URL = "http://card.t.tvxio.com/api/pay/verify/";
+	private static final String BALANCEPAY_BASE_URL = "/api/order/create/";
+	private static final String GETBALANCE_BASE_URL = "/accounts/balance/";
+	private static final String CARDRECHARGE_BASE_URL = "/api/pay/verify/";
+	private static final String ORDER_CHECK_BASE_URL = "/api/order/check/";
+
 	private Context mycontext;
 	private int width;
 	private int height;
@@ -64,6 +72,7 @@ public class PaymentDialog extends Dialog {
 	private TextView videotitle;
 	private TextView recharge_error_msg;
 	private TextView welocome_tip;
+	private TextView card_balance_title_label;
 
 	private EditText shiyuncard_input;
 
@@ -136,6 +145,7 @@ public class PaymentDialog extends Dialog {
 		videotitle = (TextView) findViewById(R.id.videotitle);
 		recharge_error_msg = (TextView) findViewById(R.id.recharge_error_msg);
 		welocome_tip = (TextView) findViewById(R.id.welocome_tip);
+		card_balance_title_label = (TextView) findViewById(R.id.card_balance_title_label);
 
 		shiyuncard_input = (EditText) findViewById(R.id.shiyuncard_input);
 		if (SimpleRestClient.mobile_number != null
@@ -192,13 +202,23 @@ public class PaymentDialog extends Dialog {
 				break;
 
 			case R.id.shiyuncard_submit: {
-				String inputValue = shiyuncard_input.getText().toString();
-				if (inputValue.length() > 16 && isNumeric(inputValue)) {
+				// String inputValue = shiyuncard_input.getText().toString();
+				String inputValue = "1099318872707379";
+				if (inputValue.length() == 16 && isNumeric(inputValue)) {
 					card_recharge(inputValue);
 				} else {
 					recharge_error_msg.setVisibility(View.VISIBLE);
 					recharge_error_msg.setText("错误的观影卡密码");
 				}
+			}
+				break;
+
+			case R.id.card_balance_submit: {
+				SimpleRestClient client = new SimpleRestClient();
+				client.doSendRequest(BALANCEPAY_BASE_URL, "post", "wares_id="
+						+ mItem.pk + "&wares_type=" + "item" + "&device_token="
+						+ SimpleRestClient.device_token + "&source=sky",
+						balancePay);
 			}
 				break;
 			}
@@ -207,6 +227,9 @@ public class PaymentDialog extends Dialog {
 
 	private void changeYuePayPanelState(boolean visible) {
 		if (visible) {
+			SimpleRestClient client = new SimpleRestClient();
+			client.doSendRequest(GETBALANCE_BASE_URL, "get", "",
+					fetchBalancerResult);
 			guanyingcard_pay_panel.setVisibility(View.VISIBLE);
 		} else {
 			guanyingcard_pay_panel.setVisibility(View.GONE);
@@ -329,7 +352,8 @@ public class PaymentDialog extends Dialog {
 		String sur_prefix = cardNumber.substring(10, 16);
 		String timestamp = System.currentTimeMillis() + "";
 		String sid = "sid";
-		String user = SimpleRestClient.mobile_number;
+		String user = SimpleRestClient.access_token.length() > 0 ? SimpleRestClient.mobile_number
+				: SimpleRestClient.sn_token;
 		String user_id = "0";
 		String app_name = "sky";
 		String sn = SimpleRestClient.sn_token;
@@ -351,7 +375,11 @@ public class PaymentDialog extends Dialog {
 
 		String params = card_secret + app_name + user + user_id + timestamp
 				+ sid + sn;
+
 		sendRechargeRequest(CARDRECHARGE_BASE_URL, params);
+		SimpleRestClient client = new SimpleRestClient();
+		client.doSendRequest(CARDRECHARGE_BASE_URL, "post", params,
+				rechargeResult);
 	}
 
 	private String convertToHex(byte[] data) {
@@ -432,4 +460,102 @@ public class PaymentDialog extends Dialog {
 		}
 		return true;
 	}
+
+	private HttpPostRequestInterface fetchBalancerResult = new HttpPostRequestInterface() {
+
+		@Override
+		public void onPrepare() {
+		}
+
+		@Override
+		public void onSuccess(String info) {
+			try {
+				JSONObject object = new JSONObject(info);
+				String balance = object.getString("balance");
+				float balancefloat = Float.parseFloat(balance);
+				String balancevalue = mycontext.getResources().getString(
+						R.string.pay_card_balance_title_label);
+				card_balance_title_label.setText(String.format(balancevalue,
+						balancefloat));
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public void onFailed(String error) {
+			Log.v("aaaa", error);
+		}
+	};
+
+	private HttpPostRequestInterface balancePay = new HttpPostRequestInterface() {
+
+		@Override
+		public void onPrepare() {
+
+		}
+
+		@Override
+		public void onSuccess(String info) {
+			try {
+				JSONObject object = new JSONObject(info);
+				String balance = object.getString("balance");
+				float balancefloat = Float.parseFloat(balance);
+				String balancevalue = mycontext.getResources().getString(
+						R.string.pay_card_balance_title_label);
+				card_balance_title_label.setText(String.format(balancevalue,
+						balancefloat));
+				orderCheck();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public void onFailed(String error) {
+			Log.v("aaaa", error);
+		}
+	};
+
+	private HttpPostRequestInterface rechargeResult = new HttpPostRequestInterface() {
+
+		@Override
+		public void onPrepare() {
+
+		}
+
+		@Override
+		public void onSuccess(String info) {
+			Log.v("aaaa", info);
+		}
+
+		@Override
+		public void onFailed(String error) {
+			Log.v("aaaa", error);
+		}
+	};
+
+	private void orderCheck() {
+		SimpleRestClient client = new SimpleRestClient();
+		client.doSendRequest(ORDER_CHECK_BASE_URL, "post", "item=" + mItem.pk
+				+ "&device_token=" + SimpleRestClient.device_token, orderCheck);
+	}
+
+	private HttpPostRequestInterface orderCheck = new HttpPostRequestInterface() {
+
+		@Override
+		public void onPrepare() {
+
+		}
+
+		@Override
+		public void onSuccess(String info) {
+			Log.v("aaaa", info);
+		}
+
+		@Override
+		public void onFailed(String error) {
+			Log.v("aaaa", error);
+		}
+	};
 }

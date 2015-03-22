@@ -888,6 +888,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 			SimpleRestClient.mobile_number = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.MOBILE_NUMBER, "");
             SimpleRestClient.access_token = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.AUTH_TOKEN, "");
             mainHandler.sendEmptyMessage(GETDOMAIN);
+            Log.i("zjqactivator", "device_token="+SimpleRestClient.device_token+"///"
+            +"access_token="+SimpleRestClient.access_token+"ad_domain=="+SimpleRestClient.ad_domain+"domain=="+SimpleRestClient.root_url);
+            
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

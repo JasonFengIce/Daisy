@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Item implements Serializable {
 	
 	private static final long serialVersionUID = 5414782976396856671L;
-	
+	public float bean_score;
 	public String adlet_url;
     public Attribute attributes;
     public String caption;
@@ -44,4 +44,5 @@ public class Item implements Serializable {
     public String url;
     public boolean live_video;
     public ArrayList<Item> items;
+    public boolean isPreview;
 }

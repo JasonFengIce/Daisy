@@ -196,6 +196,7 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		mAdapter = new RelatedAdapter(this, mRelatedItem);
 		//mAdapter.setList(mRelatedItem);
 		mItemListGrid.setAdapter(mAdapter);
+		mItemListGrid.setNumColumns(4);
 		mItemListGrid.setFocusable(true);
 		mItemListGrid.setHorizontalFadingEdgeEnabled(true);
 		mItemListGrid.setFadingEdgeLength(144);

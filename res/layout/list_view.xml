@@ -28,6 +28,17 @@
         android:layout_height="@dimen/gridview_main_gridview_line_H"
         android:background="@drawable/listview_p_divider"
         android:visibility="visible" />
+    
+         <Button
+            android:id="@+id/search"
+            android:focusable="true"
+            android:clickable="true"
+            android:src="@android:color/transparent"
+            android:background="@drawable/search_btn_bg_selector"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginLeft="1100dip"
+            android:layout_gravity="center_vertical"/>
 </LinearLayout>
 
     <ImageView

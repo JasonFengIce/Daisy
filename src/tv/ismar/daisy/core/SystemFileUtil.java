@@ -88,8 +88,7 @@ public class SystemFileUtil {
 
 	public static void writeLogToLocal(String content) {
 			String LOGLOCALPATH = "vodlog.txt";
-		    String LOCALLOGDIR = "tv/ismar/daisy/";
-		    LogPath = appPath+LOGLOCALPATH;
+		    LogPath = appPath+"/"+LOGLOCALPATH;
 			File Dir = new File(appPath);
 			if(!Dir.exists())
 				Dir.mkdirs();

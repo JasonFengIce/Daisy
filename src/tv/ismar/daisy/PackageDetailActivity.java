@@ -1,27 +1,27 @@
 package tv.ismar.daisy;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.sakuratya.horizontal.ui.ZGridView;
 
-import com.google.gson.JsonSyntaxException;
-
-import tv.ismar.daisy.adapter.DaramAdapter.ViewHolder;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.Expense;
 import tv.ismar.daisy.models.Item;
-import tv.ismar.daisy.player.InitPlayerTool;
-import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
+import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.CustomDialog;
-import tv.ismar.daisy.views.AsyncImageView.OnImageViewLoadListener;
 import tv.ismar.daisy.views.LoadingDialog;
 import android.app.Activity;
 import android.app.Dialog;
@@ -29,22 +29,24 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.google.gson.JsonSyntaxException;
 
 public class PackageDetailActivity extends Activity implements OnItemClickListener{
  
@@ -65,6 +67,7 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 	Dialog dialog = null;
 	private DialogInterface.OnClickListener mPositiveListener;
 	private DialogInterface.OnClickListener mNegativeListener;
+	private int remainDay = -1;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -171,9 +174,11 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 				mRelatedItem = mSimpleRestClient
 						.getRelatedItem("/api/package/relate/" + mItem.pk + "/");
 			} catch (Exception e) {
-				e.printStackTrace();
-				mLoadingDialog.dismiss();
-				showDialog(new GetRelatedTask(), params);
+				Message msg = new Message();
+				msg.what = GETRELATED_FAIL;
+				msg.obj = params;
+				mainHandler.sendMessage(msg);
+				cancel(true);
 			}
 			return null;
 		}
@@ -190,7 +195,24 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 			}
 		}
 
-	} 
+	}
+	public static final int GETITEM_FAIL = 1;
+	public static final int GETRELATED_FAIL = 2;
+	private Handler mainHandler = new Handler() {
+
+		@Override
+		public void handleMessage(Message msg) {
+		    switch (msg.what) {
+			case GETITEM_FAIL:
+				showDialog(new GetItemTask(), (Object[]) msg.obj);
+				break;
+			case GETRELATED_FAIL:
+				detail_left_container.setVisibility(View.VISIBLE);
+				showDialog(new GetRelatedTask(), (Object[]) msg.obj);
+				break;
+			}
+			}
+		};
 	class GetItemTask extends AsyncTask<String, Void, Void>{
 
 		@Override
@@ -203,18 +225,28 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 			// TODO Auto-generated method stub
 			try {
 				mItem = mSimpleRestClient.getItem(params[0]);
+				
 			} catch (JsonSyntaxException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Message msg = new Message();
+				msg.what = GETITEM_FAIL;
+				msg.obj = params;
+				mainHandler.sendMessage(msg);
+				cancel(true);
 			} catch (ItemOfflineException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Message msg = new Message();
+				msg.what = GETITEM_FAIL;
+				msg.obj = params;
+				mainHandler.sendMessage(msg);
+				cancel(true);
 			} catch (NetworkException e) {
 				// TODO Auto-generated catch block
-				mLoadingDialog.dismiss();
-				showDialog(new GetItemTask(),params);
-			    cancel(true);
-				e.printStackTrace();
+				Message msg = new Message();
+				msg.what = GETITEM_FAIL;
+				msg.obj = params;
+				mainHandler.sendMessage(msg);
+				cancel(true);
 			}
 			return null;
 		}
@@ -227,18 +259,75 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 				vod_payment_item_of_package_container.setAdapter(adaptet);
 				vod_payment_item_of_package_container.setFocusable(true);
 				if(mItem.expense!=null){
-					vod_payment_duration.setText("有效期"+mItem.expense.duration+"天");
-					vod_payment_price.setText("￥"+mItem.expense.price+"元");
-					vod_payment_duration.setBackgroundResource(R.drawable.vod_detail_unpayment_duration);
-					vod_payment_price.setBackgroundResource(R.drawable.vod_detail_unpayment_price);
+					//收费
+                    isbuy();
 				}
 				vod_payment_poster.setUrl(mItem.adlet_url);
-				//mLoadingDialog.dismiss();
 				new GetRelatedTask().execute();
 			}
 		}
 	}
 	ViewHolder holder;
+	  private void isbuy(){
+		  SimpleRestClient simpleRestClient = new SimpleRestClient();
+		  simpleRestClient.doSendRequest("/api/order/check/","post", "device_token="+SimpleRestClient.device_token+"&access_token="
+		  +SimpleRestClient.access_token+"&package="+ mItem.pk, new HttpPostRequestInterface() {
+			//subitem=214277
+			@Override
+			public void onSuccess(String info) {
+				// TODO Auto-generated method stub
+				if("0".equals(info)){
+				}
+				else{
+					JSONArray jsonArray;
+					try {
+						jsonArray = new JSONArray(info);
+						JSONObject json = jsonArray.getJSONObject(0);
+						if(json.has("max_expiry_date")){
+	                      //电视剧部分购买
+							//暂时无法处理
+						}
+						else{
+							//电影或者电视剧或者产品包整部购买
+							try {
+								remainDay = Util.daysBetween(Util.getTime(), info);	
+								if(remainDay==0){//过期了。认为没购买
+								    remainDay = -1;
+									vod_payment_duration.setText("有效期"+mItem.expense.duration+"天");
+									vod_payment_price.setText("￥"+mItem.expense.price+"元");
+									vod_payment_duration.setBackgroundResource(R.drawable.vod_detail_unpayment_duration);
+									vod_payment_price.setBackgroundResource(R.drawable.vod_detail_unpayment_price);
+								}
+								else{
+									//购买了，剩余天数大于0
+									vod_payment_duration.setText("剩余"+remainDay+"天");
+									vod_payment_price.setText("已付费");
+									vod_payment_duration.setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
+									vod_payment_price.setBackgroundResource(R.drawable.vod_detail_already_payment_price);
+								}
+							} catch (ParseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+			
+			@Override
+			public void onPrepare() {
+				// TODO Auto-generated method stub
+			}
+			
+			@Override
+			public void onFailed(String error) {
+				// TODO Auto-generated method stub
+			}
+		});
+	  }
 	public class ItemAdapter extends BaseAdapter {
 		ArrayList<Item> items;
 		ArrayList<Item> tmpItems;

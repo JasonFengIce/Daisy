@@ -48,7 +48,7 @@ public class NetworkUtils {
 		String urlStr = target;
 		Log.i("zhuabao", "url=="+urlStr);
 		try {
-			URL url = new URL(urlStr+"?device_token="+SimpleRestClient.device_token);
+			URL url = new URL(urlStr+"?device_token="+SimpleRestClient.device_token+"&access_token="+SimpleRestClient.access_token);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			StringBuffer sb = new StringBuffer();
@@ -447,10 +447,10 @@ public class NetworkUtils {
         Log.d(TAG," Log data For Test === " + logJson.toString());
         return base64Code(logJson.toString());
 	}
-	
+
 	private static String base64Code(String date){
 		try {
-			return Base64.encodeToString(date.getBytes("UTF-8"),Base64.NO_WRAP|Base64.URL_SAFE);
+			return Base64.encodeToString(date.getBytes("UTF-8"),Base64.DEFAULT);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			return null;

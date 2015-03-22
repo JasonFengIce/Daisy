@@ -33,7 +33,8 @@
         android:layout_marginTop="@dimen/pay_shiyuncard_input_margintop"
         android:background="@drawable/edit_selector"
         android:singleLine="true"
-        android:textColorHint="#AAAAAA" />
+        android:textColor="#FFF8F8FF"
+         />
 
     <Button
         android:id="@+id/shiyuncard_submit"

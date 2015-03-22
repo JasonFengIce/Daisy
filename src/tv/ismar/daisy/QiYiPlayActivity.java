@@ -211,12 +211,12 @@ public class QiYiPlayActivity extends VodMenuAction {
 			// initPlayer();
 		}
 
-        @Override
-        protected void onCancelled(Void aVoid) {
-            super.onCancelled(aVoid);
-        }
+		@Override
+		protected void onCancelled(Void aVoid) {
+			super.onCancelled(aVoid);
+		}
 
-        @Override
+		@Override
 		protected Void doInBackground(String... params) {
 			// TODO Auto-generated method stub
 			try {
@@ -313,12 +313,16 @@ public class QiYiPlayActivity extends VodMenuAction {
 			for (Definition d : definitionList) {
 				if (d.equals(Definition.DEFINITON_HIGH)) {
 					avalibleRate[0] = true;
+					currQuality = 0;
 				} else if (d.equals(Definition.DEFINITON_720P)) {
 					avalibleRate[1] = true;
+					currQuality = 1;
 				} else if (d.equals(Definition.DEFINITON_1080P)) {
 					avalibleRate[2] = true;
+					currQuality = 2;
 				}
 			}
+			initQualtiyText();
 		}
 
 		@Override
@@ -376,7 +380,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 				@Override
 				public void run() {
 					qualityText.setVisibility(View.VISIBLE);
-//					qualityText.setText(DEFINITION_NAMES.get(definition));
+					// qualityText.setText(DEFINITION_NAMES.get(definition));
 				}
 			});
 			currentDefinition = definition;
@@ -478,14 +482,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 		menu.findItem(4).disable();
 		if (panelShow) {
 			hidePanel();
-		}
-
-		if (isContinue) {
-			menu.findItem(8).select();
-			menu.findItem(9).unselect();
-		} else {
-			menu.findItem(8).unselect();
-			menu.findItem(9).select();
 		}
 
 		return true;
@@ -902,6 +898,8 @@ public class QiYiPlayActivity extends VodMenuAction {
 		public void run() {
 			if (menu != null) {
 				menu.hide();
+				menu.clear();
+				menu = null;
 			}
 			hideMenuHandler.removeCallbacks(hideMenuRunnable);
 		}
@@ -925,6 +923,20 @@ public class QiYiPlayActivity extends VodMenuAction {
 	public boolean createMenu(ISTVVodMenu menu) {
 		ISTVVodMenuItem sub;
 
+		if (listItems != null && listItems.size() > 0) {
+			sub = menu.addSubMenu(100,
+					getResources().getString(R.string.serie_switch));
+			for (Item i : listItems) {
+				String tempurl = simpleRestClient.root_url + "/api/subitem/"
+						+ i.pk + "/";
+				if (subItemUrl.equalsIgnoreCase(tempurl)) {
+					sub.addItem(i.pk, i.title, true, true);
+				} else {
+					sub.addItem(i.pk, i.title, true, false);
+				}
+			}
+		}
+
 		sub = menu.addSubMenu(0,
 				getResources().getString(R.string.vod_player_quality_setting));
 		sub.addItem(1,
@@ -938,27 +950,30 @@ public class QiYiPlayActivity extends VodMenuAction {
 				true, currQuality == 2);
 		sub.addItem(4,
 				getResources().getString(R.string.vod_player_quality_adaptive));
-		if (itemUrl != null && favoriteManager != null
-				&& favoriteManager.getFavoriteByUrl(itemUrl) == null) {
-			menu.addItem(
-					5,
-					getResources().getString(
-							R.string.vod_player_bookmark_setting));
-		} else {
-			menu.addItem(
-					5,
-					getResources().getString(
-							R.string.vod_bookmark_remove_bookmark_setting));
-		}
-		menu.addItem(6,
-				getResources().getString(R.string.vod_player_related_setting));
+		menu.addItem(20, getResources().getString(R.string.kefucentertitle));
+		menu.addItem(30, getResources().getString(R.string.playfromstarttitle));
+		// if (itemUrl != null && favoriteManager != null
+		// && favoriteManager.getFavoriteByUrl(itemUrl) == null) {
+		// menu.addItem(
+		// 5,
+		// getResources().getString(
+		// R.string.vod_player_bookmark_setting));
+		// } else {
+		// menu.addItem(
+		// 5,
+		// getResources().getString(
+		// R.string.vod_bookmark_remove_bookmark_setting));
+		// }
+		// menu.addItem(6,
+		// getResources().getString(R.string.vod_player_related_setting));
+		//
+		// sub = menu.addSubMenu(7,
+		// getResources().getString(R.string.vod_player_continue_setting));
+		// sub.addItem(8, getResources()
+		// .getString(R.string.vod_player_continue_on));
+		// sub.addItem(9,
+		// getResources().getString(R.string.vod_player_continue_off));
 
-		sub = menu.addSubMenu(7,
-				getResources().getString(R.string.vod_player_continue_setting));
-		sub.addItem(8, getResources()
-				.getString(R.string.vod_player_continue_on));
-		sub.addItem(9,
-				getResources().getString(R.string.vod_player_continue_off));
 		return true;
 	}
 
@@ -1002,21 +1017,22 @@ public class QiYiPlayActivity extends VodMenuAction {
 					timeTaskPause();
 					checkTaskPause();
 					paused = false;
-					playPauseImage
-							.setImageResource(R.drawable.vod_player_pause);
+					// playPauseImage
+					// .setImageResource(R.drawable.vod_player_pause);
 					playPauseImage
 							.setImageResource(R.drawable.vodplayer_controller_pause);
 					isBuffer = true;
 					currQuality = pos;
-					if (id == 1) {
+					if (currQuality == 0) {
 						mPlayer.switchBitStream(Definition.DEFINITON_HIGH);
-					}
-					if (id == 2) {
+					} else if (currQuality == 1) {
 						mPlayer.switchBitStream(Definition.DEFINITON_720P);
-					}
-					if (id == 3) {
+					} else {
 						mPlayer.switchBitStream(Definition.DEFINITON_1080P);
 					}
+					// historyManager.addOrUpdateQuality(new Quality(0,
+					// urls[currQuality], currQuality));
+					mediaip = "127.0.0.1";
 					if (subItem != null)
 						callaPlay.videoSwitchStream(item.pk, subItem.pk,
 								item.title, clip.pk, currQuality, "manual",
@@ -1073,6 +1089,29 @@ public class QiYiPlayActivity extends VodMenuAction {
 			addHistory(seekPostion);
 			return true;
 		}
+
+		// 客服按钮
+		if (id == 20) {
+			return true;
+		}
+		// 从头播放
+		if (id == 30) {
+			currPosition = 0;
+			mPlayer.seekTo(currPosition);
+			showBuffer();
+			return true;
+		}
+
+		if (id > 100) {
+			subItemUrl = simpleRestClient.root_url + "/api/subitem/" + id + "/";
+			bundle.remove("url");
+			bundle.putString("url", subItemUrl);
+			addHistory(0);
+			isBuffer = true;
+			showBuffer();
+			// new ItemByUrlTask().execute();
+		}
+
 		return true;
 	}
 

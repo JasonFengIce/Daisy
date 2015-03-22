@@ -286,7 +286,7 @@
     
     <!-- dramaList -->
     <dimen name="drama_main_layout_PL">58dip</dimen>
-    <dimen name="drama_main_layout_PT">44dip</dimen>
+    <dimen name="drama_main_layout_PT">4dip</dimen>
     <dimen name="drama_main_layout_PR">58dip</dimen>
     <dimen name="drama_main_layout_PB">22dip</dimen>
     <dimen name="drama_main_img_layout_W">107dip</dimen>

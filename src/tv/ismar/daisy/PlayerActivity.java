@@ -28,6 +28,7 @@ import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.player.ISTVVodMenu;
 import tv.ismar.daisy.player.ISTVVodMenuItem;
 import tv.ismar.daisy.views.IsmatvVideoView;
+import tv.ismar.daisy.views.PaymentDialog;
 import tv.ismar.player.SmartPlayer;
 
 import java.io.InputStream;
@@ -111,7 +112,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
     private boolean isHideControlPanel = true;
     private GestureDetector mGestureDetector; // 手势监测器
     private boolean live_video = false;
-
+    private boolean isPreview = false;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -266,6 +267,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
             item = (Item) bundle.get("item");
             clip = item.clip;
             live_video = item.live_video;
+            isPreview = item.isPreview;
             // use to get mUrl, and registerActivity
             DaisyUtils.getVodApplication(this).addActivityToPool(
                     this.toString(), this);
@@ -647,7 +649,14 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
                                 @Override
                                 public void onCompletion(SmartPlayer mp) {
                                     Log.d(TAG, "mVideoView  Completion");
-                                    gotoFinishPage();
+                                    if(item.isPreview){
+                                		PaymentDialog dialog = new PaymentDialog(PlayerActivity.this,
+                                		        R.style.PaymentDialog);
+                                		        dialog.setItem(item);
+                                		        dialog.show();
+                                    }
+                                    else
+                                       gotoFinishPage();
                                 }
                             });
 
@@ -1364,7 +1373,9 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
         @Override
         public void run() {
             if (menu != null) {
-                menu.hide();
+				menu.hide();
+				menu.clear();
+				menu = null;
             }
             hideMenuHandler.removeCallbacks(hideMenuRunnable);
         }
@@ -1493,27 +1504,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
                 getResources().getString(R.string.vod_player_quality_adaptive));
 		menu.addItem(20, getResources().getString(R.string.kefucentertitle));
 		menu.addItem(30, getResources().getString(R.string.playfromstarttitle));
-//        if (itemUrl != null && favoriteManager != null
-//                && favoriteManager.getFavoriteByUrl(itemUrl) == null) {
-//            menu.addItem(
-//                    5,
-//                    getResources().getString(
-//                            R.string.vod_player_bookmark_setting));
-//        } else {
-//            menu.addItem(
-//                    5,
-//                    getResources().getString(
-//                            R.string.vod_bookmark_remove_bookmark_setting));
-//        }
-//        menu.addItem(6,
-//                getResources().getString(R.string.vod_player_related_setting));
-//
-//        sub = menu.addSubMenu(7,
-//                getResources().getString(R.string.vod_player_continue_setting));
-//        sub.addItem(8, getResources()
-//                .getString(R.string.vod_player_continue_on));
-//        sub.addItem(9,
-//                getResources().getString(R.string.vod_player_continue_off));
 
         return true;
     }

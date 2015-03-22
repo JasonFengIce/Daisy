@@ -18,6 +18,7 @@ public class InitPlayerTool {
     private SimpleRestClient simpleRestClient;
     public final static String FLAG_URL = "url";
     public final static String FLAG_ITEM = "item";
+    private boolean mIsPreviewVideo = false;
 	public InitPlayerTool(Context context){
 		this.mContext = context;
 		intent = new Intent();
@@ -28,7 +29,11 @@ public class InitPlayerTool {
 		simpleRestClient = new SimpleRestClient();
 		new ItemByUrlTask().execute(item,flag);
 	}
-
+	public void initClipInfo(Object item,String flag,boolean isPreviewVideo) {
+		simpleRestClient = new SimpleRestClient();
+		this.mIsPreviewVideo = isPreviewVideo;
+		new ItemByUrlTask().execute(item,flag);
+	}
 	// 初始化播放地址url
 	private class ItemByUrlTask extends AsyncTask<Object, Void, String> {
 
@@ -76,8 +81,14 @@ public class InitPlayerTool {
             }
             String info = "";
             if(item!=null){
-            	Clip clip = item.clip;
-            	if(item.clip != null){
+            	Clip clip;
+            	if(!mIsPreviewVideo)
+            	    clip = item.clip;
+            	else{
+            		clip = item.preview;
+            		item.isPreview = true;
+            	}
+            	if(item.clip != null&&clip!=null){
                 	intent.putExtra("item", item);
     				info = AccessProxy.getVideoInfo(SimpleRestClient.root_url
     						+ "/api/clip/" + clip.pk + "/",

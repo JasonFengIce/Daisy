@@ -167,4 +167,7 @@
     
     <!-- item detail -->
     <string name="preview_video">预告片</string>
+    <!-- drama page -->
+    <string name="orderAll_drama">订购全剧</string>
+    <string name="one_drama_order_info">%1$.1f元,   有效期: %2$d天</string>
 </resources>
