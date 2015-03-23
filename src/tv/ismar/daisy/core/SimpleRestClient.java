@@ -247,12 +247,16 @@ public SectionList getsectionss(String content){
 		//NetworkUtils.getJsonStrByPost(url, "");
 		RequestParams q = new RequestParams();
 		handler = l;
-		q.url = root_url + url;
+		if (!(url.contains("https") || url.contains("http"))){
+			q.url = root_url + url;
+		}else{
+			q.url = url;
+		}
 		q.values = params;
 		q.method = method;
 		new GetDataTask().execute(q);
 	}
-	
+
 	class GetDataTask extends AsyncTask<RequestParams, Void, String> {
 
 		@Override
@@ -273,7 +277,11 @@ public SectionList getsectionss(String content){
 				String method = p.method;
 				try {
 					if("post".equalsIgnoreCase(method)){
-					    jsonStr = NetworkUtils.getJsonStrByPost(url, values);
+					if (url.contains("https")) {
+						jsonStr = NetworkUtils.httpsRequestHttps(url, values);
+					} else {
+						jsonStr = NetworkUtils.getJsonStrByPost(url, values);
+					}
 					}else{
 						jsonStr = NetworkUtils.getJsonStr(url);	
 					}

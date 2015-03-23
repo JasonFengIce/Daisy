@@ -41,7 +41,7 @@ public class PaymentDialog extends Dialog {
 	private static final String QRCODE_BASE_URL = "http://sky.tvxio.com/api/order/create/";
 	private static final String BALANCEPAY_BASE_URL = "/api/order/create/";
 	private static final String GETBALANCE_BASE_URL = "/accounts/balance/";
-	private static final String CARDRECHARGE_BASE_URL = "/api/pay/verify/";
+	private static final String CARDRECHARGE_BASE_URL = "https://order.tvxio.com/api/pay/verify/";
 	private static final String ORDER_CHECK_BASE_URL = "/api/order/check/";
 
 	private static final int REFRESH_PAY_STATUS = 0x10;
@@ -207,7 +207,7 @@ public class PaymentDialog extends Dialog {
 
 			case R.id.shiyuncard_submit: {
 				// String inputValue = shiyuncard_input.getText().toString();
-				String inputValue = "1430245261634360";
+				String inputValue = "1010413607290854";
 				if (inputValue.length() == 16 && isNumeric(inputValue)) {
 					card_recharge(inputValue);
 				} else {
@@ -389,8 +389,6 @@ public class PaymentDialog extends Dialog {
 
 		String params = card_secret + app_name + user + user_id + timestamp
 				+ sid + sn;
-
-		sendRechargeRequest(CARDRECHARGE_BASE_URL, params);
 		SimpleRestClient client = new SimpleRestClient();
 		client.doSendRequest(CARDRECHARGE_BASE_URL, "post", params,
 				rechargeResult);
@@ -535,17 +533,31 @@ public class PaymentDialog extends Dialog {
 
 		@Override
 		public void onPrepare() {
-
 		}
 
 		@Override
 		public void onSuccess(String info) {
-			Log.v("aaaa", info);
+			try {
+				JSONObject object = new JSONObject(info);
+				String statusString = object.getString("status");
+				String errmsg = object.getString("err_desc");
+				recharge_error_msg.setVisibility(View.VISIBLE);
+				if ("S".equalsIgnoreCase(statusString)) {
+					recharge_error_msg.setText("充值成功,系统将自动为您购买,6s后返回");
+				} else if ("T".equalsIgnoreCase(statusString)) {
+					recharge_error_msg.setText("充值成功,系统将在第二天8点为您购买,10s后返回");
+				} else {
+					recharge_error_msg.setText(errmsg);
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 		}
 
 		@Override
 		public void onFailed(String error) {
-			Log.v("aaaa", error);
+			recharge_error_msg.setVisibility(View.VISIBLE);
+			recharge_error_msg.setText("错误的观影卡密码");
 		}
 	};
 
