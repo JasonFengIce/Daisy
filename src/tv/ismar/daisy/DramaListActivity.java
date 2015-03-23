@@ -104,7 +104,7 @@ public class DramaListActivity extends Activity implements
 			@Override
 			public void onClick(View v) {
 				PaymentDialog dialog = new PaymentDialog(
-						DramaListActivity.this, R.style.PaymentDialog);
+						DramaListActivity.this, R.style.PaymentDialog,ordercheckListener);
 				dialog.setItem(mItem);
 				dialog.show();
 			}
@@ -270,5 +270,13 @@ public class DramaListActivity extends Activity implements
 		}
 		super.onPause();
 	}
+
+	private PaymentDialog.OrderResultListener ordercheckListener = new PaymentDialog.OrderResultListener() {
+
+		@Override
+		public void payResult(boolean result) {
+		}
+
+	};
 
 }

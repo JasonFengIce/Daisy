@@ -87,7 +87,7 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 	}
 	private void buyVideo(){
 		PaymentDialog dialog = new PaymentDialog(this,
-        R.style.PaymentDialog);
+        R.style.PaymentDialog,ordercheckListener);
 		mItem.model_name="package";
         dialog.setItem(mItem);
         dialog.show();
@@ -519,4 +519,13 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 		}
 		dialog.show();
 	}
+
+	private PaymentDialog.OrderResultListener ordercheckListener = new PaymentDialog.OrderResultListener() {
+
+		@Override
+		public void payResult(boolean result) {
+			
+		}
+
+	};
 }

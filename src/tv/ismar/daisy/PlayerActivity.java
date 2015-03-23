@@ -651,7 +651,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
                                     Log.d(TAG, "mVideoView  Completion");
                                     if(item.isPreview){
                                 		PaymentDialog dialog = new PaymentDialog(PlayerActivity.this,
-                                		        R.style.PaymentDialog);
+                                		        R.style.PaymentDialog,ordercheckListener);
                                 		        dialog.setItem(item);
                                 		        dialog.show();
                                     }
@@ -1910,4 +1910,11 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
         sendBroadcast(intent);
     }
 
+	private PaymentDialog.OrderResultListener ordercheckListener = new PaymentDialog.OrderResultListener() {
+
+		@Override
+		public void payResult(boolean result) {
+		}
+
+	};
 }

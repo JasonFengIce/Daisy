@@ -730,7 +730,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 					fbImage.setImageResource(R.drawable.vodplayer_controller_rew);
 					showPanel();
 					showBuffer();
-					mPlayer.seek(-SEEK_STEP);
+					mPlayer.seekTo(-SEEK_STEP);
 					if (subItem != null)
 						callaPlay.videoPlaySeek(item.pk, subItem.pk,
 								item.title, clip.pk, currQuality, 0,
@@ -751,7 +751,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 					ffImage.setImageResource(R.drawable.vodplayer_controller_ffd);
 					showPanel();
 					showBuffer();
-					mPlayer.seek(SEEK_STEP);
+					mPlayer.seekTo(SEEK_STEP);
 					if (subItem != null)
 						callaPlay.videoPlaySeek(item.pk, subItem.pk,
 								item.title, clip.pk, currQuality, 0,
