@@ -51,11 +51,11 @@ public class PosterUpdateService extends Service {
         super.onCreate();
         posterFile = new File(getFilesDir(), POSTER_NAME);
         posterTmpFile = new File(getFilesDir(), POSTER_TMP_NAME);
+        posterUpdateTask();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        posterUpdateTask();
         return super.onStartCommand(intent, flags, startId);
     }
 
