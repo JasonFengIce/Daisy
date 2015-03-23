@@ -216,7 +216,7 @@ public class PaymentDialog extends Dialog {
 			case R.id.card_balance_submit: {
 				SimpleRestClient client = new SimpleRestClient();
 				client.doSendRequest(BALANCEPAY_BASE_URL, "post", "wares_id="
-						+ mItem.pk + "&wares_type=" + "item" + "&device_token="
+						+ mItem.pk + "&wares_type=" + mItem.model_name + "&device_token="
 						+ SimpleRestClient.device_token + "&source=sky",
 						balancePay);
 			}
@@ -260,13 +260,13 @@ public class PaymentDialog extends Dialog {
 					if (isweixin) {
 						qrcodeBitmap = returnBitMap(QRCODE_BASE_URL,
 								"wares_id=" + mItem.pk + "&wares_type="
-										+ "item" + "&device_token="
+										+  mItem.model_name + "&device_token="
 										+ SimpleRestClient.device_token
 										+ "&source=weixin");
 					} else {
 						qrcodeBitmap = returnBitMap(QRCODE_BASE_URL,
 								"wares_id=" + mItem.pk + "&wares_type="
-										+ "item" + "&device_token="
+										+  mItem.model_name + "&device_token="
 										+ SimpleRestClient.device_token
 										+ "&source=alipay");
 					}
