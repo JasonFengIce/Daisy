@@ -365,6 +365,19 @@ public class ItemDetailActivity extends Activity implements
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
+					info = info.substring(1, info.length()-1);
+					try {
+						remainDay = Util.daysBetween(Util.getTime(), info);	
+						if(remainDay==0){
+						    isBuy = false;//过期了。认为没购买
+						    remainDay = -1;
+						}
+						else
+							isBuy = true;//购买了，剩余天数大于0
+					} catch (ParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					e.printStackTrace();
 				}
 			}
@@ -476,20 +489,21 @@ public class ItemDetailActivity extends Activity implements
 	        	//已经购买
 	        	if(!isDrama()){
 	        		//电影
-	        		mLeftBtn.setBackgroundResource(R.drawable.preview_video_btn_bg_selector);
-	        		mLeftBtn.setTag(PREVIEW_VIDEO);
-	        		mMiddleBtn.setBackgroundResource(R.drawable.buy_video_btn_bg_selector);
-	        		mMiddleBtn.setTag(BUY_VIDEO);
-	        		mRightBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
-	        		mRightBtn.setTag(COLLECT_VIDEO);
+	        		mLeftBtn.setBackgroundResource(R.drawable.play_btn_bg_selector);
+	        		mLeftBtn.setTag(PLAY_VIDEO);
+	        		mMiddleBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+	        		mMiddleBtn.setTag(COLLECT_VIDEO);
+	        		mRightBtn.setVisibility(View.GONE);
+	        		//mRightBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+	        		//mRightBtn.setTag(COLLECT_VIDEO);
 	        	}
 	        	else{
 	        		//电视剧
-	        		mLeftBtn.setBackgroundResource(R.drawable.preview_video_btn_bg_selector);
-	        		mLeftBtn.setTag(PREVIEW_VIDEO);
-	        		mMiddleBtn.setBackgroundResource(R.drawable.buy_video_btn_bg_selector);
-	        		mMiddleBtn.setTag(BUY_VIDEO);
-	        		mRightBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+	        		mLeftBtn.setBackgroundResource(R.drawable.play_btn_bg_selector);
+	        		mLeftBtn.setTag(PLAY_VIDEO);
+	        		mMiddleBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+	        		mMiddleBtn.setTag(COLLECT_VIDEO);
+	        		mRightBtn.setBackgroundResource(R.drawable.drama_btn_bg_selector);
 	        		mRightBtn.setTag(COLLECT_VIDEO);
 	        	}
 	        	detail_price_txt.setText("已付费");
@@ -848,6 +862,7 @@ public class ItemDetailActivity extends Activity implements
 	private void buyVideo(){
 		PaymentDialog dialog = new PaymentDialog(ItemDetailActivity.this,
         R.style.PaymentDialog);
+		mItem.model_name = "item";
         dialog.setItem(mItem);
         dialog.show();
 	}

@@ -23,6 +23,7 @@ import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.CustomDialog;
 import tv.ismar.daisy.views.LoadingDialog;
+import tv.ismar.daisy.views.PaymentDialog;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -62,6 +63,7 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 	private TextView vod_payment_price;
 	private TextView vod_payment_duration;
 	private Button vod_payment_item_more;
+	private Button vod_payment_buyButton;
 	private RelativeLayout detail_left_container;
 	private LinearLayout detail_right_container;
 	Dialog dialog = null;
@@ -83,6 +85,13 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 		DaisyUtils.getVodApplication(this).removeActivtyFromPool(this.toString());
 		super.onDestroy();
 	}
+	private void buyVideo(){
+		PaymentDialog dialog = new PaymentDialog(this,
+        R.style.PaymentDialog);
+		mItem.model_name="package";
+        dialog.setItem(mItem);
+        dialog.show();
+	}
 	private void initView(){
 		detail_left_container = (RelativeLayout)findViewById(R.id.detail_left_container);
 		detail_right_container = (LinearLayout)findViewById(R.id.detail_right_container);
@@ -96,7 +105,16 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 		vod_payment_poster = (AsyncImageView)findViewById(R.id.vod_payment_poster);
 		vod_payment_price = (TextView)findViewById(R.id.vod_payment_price);
 		vod_payment_duration = (TextView)findViewById(R.id.vod_payment_duration);
+		vod_payment_buyButton = (Button)findViewById(R.id.vod_payment_buyButton);
 		vod_payment_item_more = (Button)findViewById(R.id.vod_payment_item_more);
+		vod_payment_buyButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				buyVideo();
+			}
+		});
 		vod_payment_item_more.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -277,6 +295,12 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 			public void onSuccess(String info) {
 				// TODO Auto-generated method stub
 				if("0".equals(info)){
+					//未购买
+				    remainDay = -1;
+					vod_payment_duration.setText("有效期"+mItem.expense.duration+"天");
+					vod_payment_price.setText("￥"+mItem.expense.price+"元");
+					vod_payment_duration.setBackgroundResource(R.drawable.vod_detail_unpayment_duration);
+					vod_payment_price.setBackgroundResource(R.drawable.vod_detail_unpayment_price);
 				}
 				else{
 					JSONArray jsonArray;
@@ -313,6 +337,29 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+						//电影或者电视剧或者产品包整部购买
+						try {
+							info = info.substring(1, info.length()-1);
+							remainDay = Util.daysBetween(Util.getTime(), info);	
+							if(remainDay==0){//过期了。认为没购买
+							    remainDay = -1;
+								vod_payment_duration.setText("有效期"+mItem.expense.duration+"天");
+								vod_payment_price.setText("￥"+mItem.expense.price+"元");
+								vod_payment_duration.setBackgroundResource(R.drawable.vod_detail_unpayment_duration);
+								vod_payment_price.setBackgroundResource(R.drawable.vod_detail_unpayment_price);
+							}
+							else{
+								//购买了，剩余天数大于0
+								vod_payment_duration.setText("剩余"+remainDay+"天");
+								vod_payment_price.setText("已付费");
+								vod_payment_duration.setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
+								vod_payment_price.setBackgroundResource(R.drawable.vod_detail_already_payment_price);
+								vod_payment_buyButton.setEnabled(false);
+							}
+						} catch (ParseException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					}
 				}
 			}
