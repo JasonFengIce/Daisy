@@ -7,6 +7,7 @@ import java.util.List;
 
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.models.Clip;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
@@ -552,11 +553,13 @@ public class QiYiPlayActivity extends VodMenuAction {
 	@Override
 	public void onPause() {
 		try {
+			createHistory(seekPostion);
 			addHistory(seekPostion);
 			checkTaskPause();
 			timeTaskPause();
 			removeAllHandler();
 			mPlayer.stop();
+			mPlayer = null;
 		} catch (Exception e) {
 			Log.d(TAG, "Player close to Home");
 		}
@@ -1147,7 +1150,43 @@ public class QiYiPlayActivity extends VodMenuAction {
 			historyManager.addHistory(history);
 		}
 	}
-
+	private void createHistory(int length){
+		if("".equals(SimpleRestClient.access_token)){
+			return;//不登录不必上传
+		}
+		int offset = length;
+		if(length==clipLength){
+			offset = -1;
+		}
+		String params = "access_token="+SimpleRestClient.access_token+"&device_token="+SimpleRestClient.device_token
+				+"&offset="+offset;
+		if(subItem!=null){
+			params = params + "&subitem="+subItem.pk;
+		}
+		else{
+			params = params + "&item="+item.item_pk;
+		}
+		simpleRestClient.doSendRequest("/api/histories/create/", "post", params, new HttpPostRequestInterface() {
+			
+			@Override
+			public void onSuccess(String info) {
+				// TODO Auto-generated method stub
+				Log.i("BAIDU", info);
+			}
+			
+			@Override
+			public void onPrepare() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onFailed(String error) {
+				// TODO Auto-generated method stub
+				Log.i("BAIDU", error);
+			}
+		});
+	}
 	private Runnable checkStatus = new Runnable() {
 		public void run() {
 			if (mPlayer.isPlaying()

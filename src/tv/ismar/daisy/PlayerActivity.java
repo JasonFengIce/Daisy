@@ -21,6 +21,7 @@ import com.ismartv.api.t.AccessProxy;
 import com.ismartv.bean.ClipInfo;
 import com.qiyi.video.player.QiyiVideoPlayer;
 import tv.ismar.daisy.core.*;
+import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.models.*;
 import tv.ismar.daisy.persistence.FavoriteManager;
 import tv.ismar.daisy.persistence.HistoryManager;
@@ -958,7 +959,43 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
             historyManager.addHistory(history);
         }
     }
-
+private void createHistory(int length){
+	if("".equals(SimpleRestClient.access_token)){
+		return;//不登录不必上传
+	}
+	int offset = length;
+	if(length==clipLength){
+		offset = -1;
+	}
+	String params = "access_token="+SimpleRestClient.access_token+"&device_token="+SimpleRestClient.device_token
+			+"&offset="+offset;
+	if(subItem!=null){
+		params = params + "&subitem="+subItem.item_pk;
+	}
+	else{
+		params = params + "&item="+item.item_pk;
+	}
+	simpleRestClient.doSendRequest("/api/histories/create/", "post", params, new HttpPostRequestInterface() {
+		
+		@Override
+		public void onSuccess(String info) {
+			// TODO Auto-generated method stub
+			Log.i("BAIDU", info);
+		}
+		
+		@Override
+		public void onPrepare() {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void onFailed(String error) {
+			// TODO Auto-generated method stub
+			Log.i("BAIDU", error);
+		}
+	});
+}
     private void showPanel() {
         if (isVodMenuVisible())
             return;
@@ -1746,6 +1783,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
     @Override
     protected void onPause() {
         try {
+        	createHistory(seekPostion);
             addHistory(seekPostion);
             checkTaskPause();
             timeTaskPause();

@@ -19,6 +19,7 @@ import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
@@ -49,7 +50,6 @@ public class PersonCenterActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.person_center_layout);
-		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
         initView();
         mSimpleRestClient = new SimpleRestClient();
         getBalance();
@@ -70,6 +70,7 @@ public class PersonCenterActivity extends Activity {
         	login_or_out_btn.setEnabled(false);
         	isLogin = true;
         }
+		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
 	}
 	public static boolean isMobileNumber(String mobiles){
 		Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
@@ -156,7 +157,9 @@ public class PersonCenterActivity extends Activity {
 				login_layout.setVisibility(View.GONE);
 				login_layout.clearLayout();
 				SimpleRestClient.access_token = "";
+				SimpleRestClient.mobile_number = "";
 				DaisyUtils.getVodApplication(PersonCenterActivity.this).getEditor().putString(VodApplication.AUTH_TOKEN, "");
+				DaisyUtils.getVodApplication(PersonCenterActivity.this).getEditor().putString(VodApplication.MOBILE_NUMBER, "");
 				loadDataLoginOut();
 				isLogin = false;
 				login_or_out_btn.setEnabled(true);
@@ -278,6 +281,14 @@ public class PersonCenterActivity extends Activity {
 		sn_txt_value.setVisibility(View.GONE);
 		sn_txt.setVisibility(View.GONE);
 		exit_btn.setVisibility(View.GONE);
+	}
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		if(keyCode==KeyEvent.KEYCODE_BACK){
+			finish();
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 	@Override
 	protected void onDestroy() {

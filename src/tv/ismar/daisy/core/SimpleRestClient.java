@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import tv.ismar.daisy.exception.ItemOfflineException;
@@ -48,7 +49,10 @@ public class SimpleRestClient {
 				new AttributeDeserializer());
 		gson = gsonBuilder.create();
 	}
-
+    public Item[] getItems(String str){
+    	return gson.fromJson(str, Item[].class);
+    	
+    }
 	public static String readContentFromPost(String url,String sn){
 		StringBuffer response = new StringBuffer();
 		 try{

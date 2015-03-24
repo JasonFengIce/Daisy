@@ -172,6 +172,13 @@ public class NetworkUtils {
 		        }
 		        reader.close();		        	
 	        }
+	        else if(status==201){
+	        	//历史记录创建成功
+	        	return "200";
+	        }
+	        else if(status==202){
+	        	return "200";
+	        }
 	        else{
 				switch(status) {
 				case 404:
