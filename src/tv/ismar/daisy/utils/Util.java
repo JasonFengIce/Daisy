@@ -585,7 +585,7 @@ public class Util {
         int second = c.get(Calendar.SECOND);
         
         String year = null, month = null, day = null;
-        
+        String h = null, min = null, sec = null;
         year = String.valueOf(y);
         if(m<10){
         	month = "0"+m;
@@ -597,9 +597,23 @@ public class Util {
 		} else {
         	day = ""+d;
         }
-
-		String strDate = year + "-" + month + "-" + day + " " + hour + ":"
-				+ minute + ":" + second;
+        if(hour<10){
+        	h = "0"+hour;
+        }else{
+        	h = ""+hour;
+        }
+        if(minute<10){
+        	min = "0"+minute;
+        }else{
+        	min = ""+minute;
+        }
+        if(second<10){
+        	sec = "0"+second;
+        }else{
+        	sec = ""+second;
+        }
+		String strDate = year + "-" + month + "-" + day + " " + h + ":"
+				+ min + ":" + sec;
         return strDate;
 	}
 

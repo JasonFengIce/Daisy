@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import tv.ismar.daisy.exception.ItemOfflineException;
@@ -48,7 +49,10 @@ public class SimpleRestClient {
 				new AttributeDeserializer());
 		gson = gsonBuilder.create();
 	}
-
+    public Item[] getItems(String str){
+    	return gson.fromJson(str, Item[].class);
+    	
+    }
 	public static String readContentFromPost(String url,String sn){
 		StringBuffer response = new StringBuffer();
 		 try{
@@ -247,12 +251,16 @@ public SectionList getsectionss(String content){
 		//NetworkUtils.getJsonStrByPost(url, "");
 		RequestParams q = new RequestParams();
 		handler = l;
-		q.url = root_url + url;
+		if (!(url.contains("https") || url.contains("http"))){
+			q.url = root_url + url;
+		}else{
+			q.url = url;
+		}
 		q.values = params;
 		q.method = method;
 		new GetDataTask().execute(q);
 	}
-	
+
 	class GetDataTask extends AsyncTask<RequestParams, Void, String> {
 
 		@Override
@@ -273,7 +281,11 @@ public SectionList getsectionss(String content){
 				String method = p.method;
 				try {
 					if("post".equalsIgnoreCase(method)){
-					    jsonStr = NetworkUtils.getJsonStrByPost(url, values);
+					if (url.contains("https")) {
+						jsonStr = NetworkUtils.httpsRequestHttps(url, values);
+					} else {
+						jsonStr = NetworkUtils.getJsonStrByPost(url, values);
+					}
 					}else{
 						jsonStr = NetworkUtils.getJsonStr(url);	
 					}

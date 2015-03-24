@@ -13,10 +13,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
@@ -43,8 +41,11 @@ public class PaymentDialog extends Dialog {
 	private static final String QRCODE_BASE_URL = "http://sky.tvxio.com/api/order/create/";
 	private static final String BALANCEPAY_BASE_URL = "/api/order/create/";
 	private static final String GETBALANCE_BASE_URL = "/accounts/balance/";
-	private static final String CARDRECHARGE_BASE_URL = "/api/pay/verify/";
+	private static final String CARDRECHARGE_BASE_URL = "https://order.tvxio.com/api/pay/verify/";
 	private static final String ORDER_CHECK_BASE_URL = "/api/order/check/";
+
+	private static final int REFRESH_PAY_STATUS = 0x10;
+	private static final int SETQRCODE_VIEW = 0x11;
 
 	private Context mycontext;
 	private int width;
@@ -77,18 +78,21 @@ public class PaymentDialog extends Dialog {
 	private EditText shiyuncard_input;
 
 	private Item mItem;
+	private OrderResultListener paylistener;
 
 	public PaymentDialog(Context context) {
 		super(context);
 	}
 
-	public PaymentDialog(Context context, int theme) {
+	public PaymentDialog(Context context, int theme,
+			OrderResultListener paylistener) {
 		super(context, theme);
 		WindowManager wm = (WindowManager) getContext().getSystemService(
 				Context.WINDOW_SERVICE);
 		width = wm.getDefaultDisplay().getWidth();
 		height = wm.getDefaultDisplay().getHeight();
 		mycontext = context;
+		this.paylistener = paylistener;
 	}
 
 	@Override
@@ -203,7 +207,7 @@ public class PaymentDialog extends Dialog {
 
 			case R.id.shiyuncard_submit: {
 				// String inputValue = shiyuncard_input.getText().toString();
-				String inputValue = "1099318872707379";
+				String inputValue = "1010413607290854";
 				if (inputValue.length() == 16 && isNumeric(inputValue)) {
 					card_recharge(inputValue);
 				} else {
@@ -216,9 +220,10 @@ public class PaymentDialog extends Dialog {
 			case R.id.card_balance_submit: {
 				SimpleRestClient client = new SimpleRestClient();
 				client.doSendRequest(BALANCEPAY_BASE_URL, "post", "wares_id="
-						+ mItem.pk + "&wares_type=" + "item" + "&device_token="
-						+ SimpleRestClient.device_token + "&source=sky",
-						balancePay);
+						+ mItem.pk + "&wares_type=" + mItem.model_name
+						+ "&device_token=" + SimpleRestClient.device_token
+						+ "&access_token=" + SimpleRestClient.access_token
+						+ "&source=sky", balancePay);
 			}
 				break;
 			}
@@ -242,9 +247,18 @@ public class PaymentDialog extends Dialog {
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
-			qrcodeview.setImageBitmap(qrcodeBitmap);
-			if (qrcodeBitmap != null && qrcodeBitmap.isRecycled())
-				qrcodeBitmap.recycle();
+			switch (msg.what) {
+			case SETQRCODE_VIEW: {
+				qrcodeview.setImageBitmap(qrcodeBitmap);
+				if (qrcodeBitmap != null && qrcodeBitmap.isRecycled())
+					qrcodeBitmap.recycle();
+				break;
+			}
+			case REFRESH_PAY_STATUS: {
+				paylistener.payResult(true);
+				break;
+			}
+			}
 		}
 	};
 
@@ -260,17 +274,17 @@ public class PaymentDialog extends Dialog {
 					if (isweixin) {
 						qrcodeBitmap = returnBitMap(QRCODE_BASE_URL,
 								"wares_id=" + mItem.pk + "&wares_type="
-										+ "item" + "&device_token="
+										+ mItem.model_name + "&device_token="
 										+ SimpleRestClient.device_token
 										+ "&source=weixin");
 					} else {
 						qrcodeBitmap = returnBitMap(QRCODE_BASE_URL,
 								"wares_id=" + mItem.pk + "&wares_type="
-										+ "item" + "&device_token="
+										+ mItem.model_name + "&device_token="
 										+ SimpleRestClient.device_token
 										+ "&source=alipay");
 					}
-					urlHandler.sendEmptyMessage(0);
+					urlHandler.sendEmptyMessage(SETQRCODE_VIEW);
 				}
 
 			}.start();
@@ -375,8 +389,6 @@ public class PaymentDialog extends Dialog {
 
 		String params = card_secret + app_name + user + user_id + timestamp
 				+ sid + sn;
-
-		sendRechargeRequest(CARDRECHARGE_BASE_URL, params);
 		SimpleRestClient client = new SimpleRestClient();
 		client.doSendRequest(CARDRECHARGE_BASE_URL, "post", params,
 				rechargeResult);
@@ -521,24 +533,40 @@ public class PaymentDialog extends Dialog {
 
 		@Override
 		public void onPrepare() {
-
 		}
 
 		@Override
 		public void onSuccess(String info) {
-			Log.v("aaaa", info);
+			try {
+				JSONObject object = new JSONObject(info);
+				String statusString = object.getString("status");
+				String errmsg = object.getString("err_desc");
+				recharge_error_msg.setVisibility(View.VISIBLE);
+				if ("S".equalsIgnoreCase(statusString)) {
+					recharge_error_msg.setText("充值成功,系统将自动为您购买,6s后返回");
+				} else if ("T".equalsIgnoreCase(statusString)) {
+					recharge_error_msg.setText("充值成功,系统将在第二天8点为您购买,10s后返回");
+				} else {
+					recharge_error_msg.setText(errmsg);
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 		}
 
 		@Override
 		public void onFailed(String error) {
-			Log.v("aaaa", error);
+			recharge_error_msg.setVisibility(View.VISIBLE);
+			recharge_error_msg.setText("错误的观影卡密码");
 		}
 	};
 
 	private void orderCheck() {
 		SimpleRestClient client = new SimpleRestClient();
-		client.doSendRequest(ORDER_CHECK_BASE_URL, "post", "item=" + mItem.pk
-				+ "&device_token=" + SimpleRestClient.device_token, orderCheck);
+		client.doSendRequest(ORDER_CHECK_BASE_URL, "post", "device_token="
+				+ SimpleRestClient.device_token + "&access_token="
+				+ SimpleRestClient.access_token + "&item=" + mItem.pk,
+				orderCheck);
 	}
 
 	private HttpPostRequestInterface orderCheck = new HttpPostRequestInterface() {
@@ -551,6 +579,8 @@ public class PaymentDialog extends Dialog {
 		@Override
 		public void onSuccess(String info) {
 			Log.v("aaaa", info);
+			if (info != null && !"0".equals(info))
+				urlHandler.sendEmptyMessage(REFRESH_PAY_STATUS);
 		}
 
 		@Override
@@ -558,4 +588,9 @@ public class PaymentDialog extends Dialog {
 			Log.v("aaaa", error);
 		}
 	};
+
+	public interface OrderResultListener {
+		public void payResult(boolean result);
+	}
+
 }

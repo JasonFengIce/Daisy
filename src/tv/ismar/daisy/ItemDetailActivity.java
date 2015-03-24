@@ -41,6 +41,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,7 +55,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.gson.JsonSyntaxException;
-
 
 public class ItemDetailActivity extends Activity implements
 		OnImageViewLoadListener {
@@ -77,17 +77,17 @@ public class ItemDetailActivity extends Activity implements
 	private TextView mDetailTitle;
 	private TextView mDetailIntro;
 	private AsyncImageView mDetailPreviewImg;
-//	private Button mBtnLeft;
-//	private Button mBtnRight;
-//	private Button mBtnFill;
-//	private Button mBtnFavorite;
-//	private Button mBtnLeftBuy;
-//	private Button mBtnFillBuy;
+	// private Button mBtnLeft;
+	// private Button mBtnRight;
+	// private Button mBtnFill;
+	// private Button mBtnFavorite;
+	// private Button mBtnLeftBuy;
+	// private Button mBtnFillBuy;
 	private LinearLayout mDetailRightContainer;
 	private LinearLayout mRelatedVideoContainer;
 	private Button mMoreContent;
-    private TextView detail_price_txt;
-    private TextView detail_duration_txt;
+	private TextView detail_price_txt;
+	private TextView detail_duration_txt;
 	private DetailAttributeContainer mDetailAttributeContainer;
 
 	private LoadingDialog mLoadingDialog;
@@ -117,8 +117,9 @@ public class ItemDetailActivity extends Activity implements
 	private final String DRAMA_VIDEO = "drama";
 	private boolean isBuy = false;
 	private int remainDay = -1;
-	private String identify="";
-	private void initViews() {	
+	private String identify = "";
+
+	private void initViews() {
 		mDetailLeftContainer = (RelativeLayout) findViewById(R.id.detail_left_container);
 		mDetailAttributeContainer = (DetailAttributeContainer) findViewById(R.id.detail_attribute_container);
 		mDetailTitle = (TextView) findViewById(R.id.detail_title);
@@ -127,29 +128,29 @@ public class ItemDetailActivity extends Activity implements
 		mDetailPreviewImg.setOnImageViewLoadListener(this);
 		mDetailQualityLabel = (ImageView) findViewById(R.id.detail_quality_label);
 		mLeftBtn = (Button) findViewById(R.id.btn_left);
-		mMiddleBtn = (Button)findViewById(R.id.middle_btn);
+		mMiddleBtn = (Button) findViewById(R.id.middle_btn);
 		mRightBtn = (Button) findViewById(R.id.btn_right);
-		//mBtnFill = (Button) findViewById(R.id.btn_fill);
-		//mBtnFavorite = (Button) findViewById(R.id.btn_favorite);
-		//mBtnFillBuy = (Button)findViewById(R.id.btn_fill_buy);
+		// mBtnFill = (Button) findViewById(R.id.btn_fill);
+		// mBtnFavorite = (Button) findViewById(R.id.btn_favorite);
+		// mBtnFillBuy = (Button)findViewById(R.id.btn_fill_buy);
 		mDetailRightContainer = (LinearLayout) findViewById(R.id.detail_right_container);
 		mRelatedVideoContainer = (LinearLayout) findViewById(R.id.related_video_container);
 		mMoreContent = (Button) findViewById(R.id.more_content);
-		detail_price_txt = (TextView)findViewById(R.id.detail_price_txt);
-		detail_duration_txt = (TextView)findViewById(R.id.detail_duration_txt);
+		detail_price_txt = (TextView) findViewById(R.id.detail_price_txt);
+		detail_duration_txt = (TextView) findViewById(R.id.detail_duration_txt);
 		mMoreContent.setOnFocusChangeListener(mRelatedOnFocusChangeListener);
-//		mBtnLeft.setOnFocusChangeListener(mLeftElementFocusChangeListener);
-//		mBtnRight.setOnFocusChangeListener(mLeftElementFocusChangeListener);
-//		mBtnFill.setOnFocusChangeListener(mLeftElementFocusChangeListener);
-//		mBtnFill.setOnFocusChangeListener(mLeftElementFocusChangeListener);
-//		mBtnFavorite.setOnFocusChangeListener(mLeftElementFocusChangeListener);
-//        
+		// mBtnLeft.setOnFocusChangeListener(mLeftElementFocusChangeListener);
+		// mBtnRight.setOnFocusChangeListener(mLeftElementFocusChangeListener);
+		// mBtnFill.setOnFocusChangeListener(mLeftElementFocusChangeListener);
+		// mBtnFill.setOnFocusChangeListener(mLeftElementFocusChangeListener);
+		// mBtnFavorite.setOnFocusChangeListener(mLeftElementFocusChangeListener);
+		//
 		mLeftBtn.setOnClickListener(mIdOnClickListener);
 		mMiddleBtn.setOnClickListener(mIdOnClickListener);
 		mRightBtn.setOnClickListener(mIdOnClickListener);
 		mMoreContent.setOnClickListener(mIdOnClickListener);
-//		mBtnFavorite.setOnClickListener(mIdOnClickListener);
-//		mBtnFillBuy.setOnClickListener(mIdOnClickListener);
+		// mBtnFavorite.setOnClickListener(mIdOnClickListener);
+		// mBtnFillBuy.setOnClickListener(mIdOnClickListener);
 	}
 
 	@Override
@@ -170,9 +171,9 @@ public class ItemDetailActivity extends Activity implements
 				mItem = (Item) intent.getSerializableExtra("item");
 				if (mItem != null) {
 					try {
-						//initLayout();
-						if(!isFree())
-						    isbuy();
+						// initLayout();
+						if (!isFree())
+							isbuy();
 						else
 							initLayout();
 					} catch (Exception e) {
@@ -189,10 +190,11 @@ public class ItemDetailActivity extends Activity implements
 				mGetItemTask.execute(url);
 			}
 		}
-		
+
 		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(),
 				this);
 	}
+
 	@Override
 	protected void onResume() {
 		if (isInitialized) {
@@ -311,8 +313,8 @@ public class ItemDetailActivity extends Activity implements
 		protected void onPostExecute(Void result) {
 			if (mItem != null) {
 				try {
-					if(!isFree())
-					   isbuy();
+					if (!isFree())
+						isbuy();
 					else
 						initLayout();
 				} catch (Exception e) {
@@ -321,77 +323,94 @@ public class ItemDetailActivity extends Activity implements
 			}
 		}
 
-	} 
-  private boolean isFree(){
-	  if(mItem.expense!=null){
-		  return false;
-	  }
-	  return true;
-  }
-  private void isbuy(){
-	  SimpleRestClient simpleRestClient = new SimpleRestClient();
-	  simpleRestClient.doSendRequest("/api/order/check/","post", "device_token="+SimpleRestClient.device_token+"&access_token="
-	  +SimpleRestClient.access_token+"&item="+ mItem.pk, new HttpPostRequestInterface() {
-		//subitem=214277
-		@Override
-		public void onSuccess(String info) {
-			// TODO Auto-generated method stub
-			if("0".equals(info)){
-				isBuy = false;
-			}
-			else{
-				JSONArray jsonArray;
-				try {
-					jsonArray = new JSONArray(info);
-					JSONObject json = jsonArray.getJSONObject(0);
-					if(json.has("max_expiry_date")){
-                      //电视剧部分购买
-						isBuy = false;//暂时无法处理
-					}
-					else{
-						//电影或者电视剧整部购买
-						try {
-							remainDay = Util.daysBetween(Util.getTime(), info);	
-							if(remainDay==0){
-							    isBuy = false;//过期了。认为没购买
-							    remainDay = -1;
+	}
+
+	private boolean isFree() {
+		if (mItem.expense != null) {
+			return false;
+		}
+		return true;
+	}
+
+	private void isbuy() {
+		SimpleRestClient simpleRestClient = new SimpleRestClient();
+		simpleRestClient.doSendRequest("/api/order/check/", "post",
+				"device_token=" + SimpleRestClient.device_token
+						+ "&access_token=" + SimpleRestClient.access_token
+						+ "&item=" + mItem.pk, new HttpPostRequestInterface() {
+					// subitem=214277
+					@Override
+					public void onSuccess(String info) {
+						// TODO Auto-generated method stub
+						if ("0".equals(info)) {
+							isBuy = false;
+						} else {
+							JSONArray jsonArray;
+							try {
+								jsonArray = new JSONArray(info);
+								JSONObject json = jsonArray.getJSONObject(0);
+								if (json.has("max_expiry_date")) {
+									// 电视剧部分购买
+									isBuy = false;// 暂时无法处理
+								} else {
+									// 电影或者电视剧整部购买
+									try {
+										remainDay = Util.daysBetween(
+												Util.getTime(), info);
+										if (remainDay == 0) {
+											isBuy = false;// 过期了。认为没购买
+											remainDay = -1;
+										} else
+											isBuy = true;// 购买了，剩余天数大于0
+									} catch (ParseException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								info = info.substring(1, info.length() - 1);
+								try {
+									remainDay = Util.daysBetween(
+											Util.getTime(), info);
+									if (remainDay == 0) {
+										isBuy = false;// 过期了。认为没购买
+										remainDay = -1;
+									} else
+										isBuy = true;// 购买了，剩余天数大于0
+								} catch (ParseException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+								e.printStackTrace();
 							}
-							else
-								isBuy = true;//购买了，剩余天数大于0
-						} catch (ParseException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
 						}
+						initLayout();
 					}
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			initLayout();
-		}
-		
-		@Override
-		public void onPrepare() {
-			// TODO Auto-generated method stub
-		}
-		
-		@Override
-		public void onFailed(String error) {
-			// TODO Auto-generated method stub
-			isBuy = false;
-			initLayout();
-		}
-	});
-  }
-  private boolean isDrama(){
-	  if (mItem.subitems == null || mItem.subitems.length == 0) {
+
+					@Override
+					public void onPrepare() {
+						// TODO Auto-generated method stub
+					}
+
+					@Override
+					public void onFailed(String error) {
+						// TODO Auto-generated method stub
+						isBuy = false;
+						initLayout();
+					}
+				});
+	}
+
+	private boolean isDrama() {
+		if (mItem.subitems == null || mItem.subitems.length == 0) {
 			isDrama = false;
 		} else {
 			isDrama = true;
 		}
-	  return isDrama;
-  }
+		return isDrama;
+	}
+
 	/*
 	 * Init layout elements when all data has been fetched.
 	 */
@@ -425,81 +444,7 @@ public class ItemDetailActivity extends Activity implements
 		 * if this item is a drama , the button should split to two. otherwise.
 		 * use one button.
 		 */
-		if(isFree()){
-			//免费
-			if(!isDrama()){
-				//电影
-        		mLeftBtn.setBackgroundResource(R.drawable.play_btn_bg_selector);
-        		mLeftBtn.setTag(PLAY_VIDEO);
-        		mMiddleBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
-        		mMiddleBtn.setTag(COLLECT_VIDEO);
-        		mRightBtn.setVisibility(View.GONE);
-			}
-			else{
-        		//电视剧
-        		mLeftBtn.setBackgroundResource(R.drawable.play_btn_bg_selector);
-        		mLeftBtn.setTag(PLAY_VIDEO);
-        		mMiddleBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
-        		mMiddleBtn.setTag(COLLECT_VIDEO);
-        		mRightBtn.setBackgroundResource(R.drawable.drama_btn_bg_selector);
-        		mRightBtn.setTag(DRAMA_VIDEO);
-			}
-		}
-		else{
-			//收费
-	        if(!isBuy){
-	        	//未购买
-	        	if(!isDrama()){
-	        		//电影
-	        		mLeftBtn.setBackgroundResource(R.drawable.preview_video_btn_bg_selector);
-	        		mLeftBtn.setTag(PREVIEW_VIDEO);
-	        		mMiddleBtn.setBackgroundResource(R.drawable.buy_video_btn_bg_selector);
-	        		mMiddleBtn.setTag(BUY_VIDEO);
-	        		mRightBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
-	        		mRightBtn.setTag(COLLECT_VIDEO);        		
-	        	}
-	        	else{
-	        		//电视剧
-	        		mLeftBtn.setBackgroundResource(R.drawable.preview_video_btn_bg_selector);
-	        		mLeftBtn.setTag(PREVIEW_VIDEO);
-	        		mMiddleBtn.setBackgroundResource(R.drawable.buy_video_btn_bg_selector);
-	        		mMiddleBtn.setTag(BUY_VIDEO);
-	        		mRightBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
-	        		mRightBtn.setTag(COLLECT_VIDEO);
-	        	}
-	        	detail_price_txt.setText("￥"+mItem.expense.price);
-				detail_duration_txt.setText("有效期"+mItem.expense.duration+"天");
-				detail_price_txt.setVisibility(View.VISIBLE);
-				detail_duration_txt.setVisibility(View.VISIBLE);
-	        }
-	        else{
-	        	//已经购买
-	        	if(!isDrama()){
-	        		//电影
-	        		mLeftBtn.setBackgroundResource(R.drawable.preview_video_btn_bg_selector);
-	        		mLeftBtn.setTag(PREVIEW_VIDEO);
-	        		mMiddleBtn.setBackgroundResource(R.drawable.buy_video_btn_bg_selector);
-	        		mMiddleBtn.setTag(BUY_VIDEO);
-	        		mRightBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
-	        		mRightBtn.setTag(COLLECT_VIDEO);
-	        	}
-	        	else{
-	        		//电视剧
-	        		mLeftBtn.setBackgroundResource(R.drawable.preview_video_btn_bg_selector);
-	        		mLeftBtn.setTag(PREVIEW_VIDEO);
-	        		mMiddleBtn.setBackgroundResource(R.drawable.buy_video_btn_bg_selector);
-	        		mMiddleBtn.setTag(BUY_VIDEO);
-	        		mRightBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
-	        		mRightBtn.setTag(COLLECT_VIDEO);
-	        	}
-	        	detail_price_txt.setText("已付费");
-				detail_duration_txt.setText("剩余"+remainDay+"天");
-				detail_price_txt.setVisibility(View.VISIBLE);
-				detail_duration_txt.setVisibility(View.VISIBLE);
-				detail_duration_txt.setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
-				detail_price_txt.setBackgroundResource(R.drawable.vod_detail_already_payment_price);
-	        }
-		}		
+		setExpenseStatus();
 		if (isDrama()) {
 			String url = mItem.item_url == null ? SimpleRestClient.sRoot_url
 					+ "/api/item/" + mItem.pk + "/" : mItem.item_url;
@@ -576,9 +521,9 @@ public class ItemDetailActivity extends Activity implements
 		mDetailIntro.setText(mItem.description);
 		// Set the favorite button's label.
 		if (isFavorite()) {
-			//mBtnFavorite.setText(getResources().getString(R.string.favorited));
+			// mBtnFavorite.setText(getResources().getString(R.string.favorited));
 		} else {
-			//mBtnFavorite.setText(getResources().getString(R.string.favorite));
+			// mBtnFavorite.setText(getResources().getString(R.string.favorite));
 		}
 
 		if (mItem.poster_url != null) {
@@ -688,7 +633,7 @@ public class ItemDetailActivity extends Activity implements
 			if (mRelatedItem != null && mRelatedItem.length > 0) {
 				buildRelatedList();
 			}
-			if (mLoadingDialog!=null&&mLoadingDialog.isShowing()) {
+			if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
 				mLoadingDialog.dismiss();
 				mDetailLeftContainer.setVisibility(View.VISIBLE);
 				mDetailRightContainer.setVisibility(View.VISIBLE);
@@ -718,22 +663,24 @@ public class ItemDetailActivity extends Activity implements
 					.findViewById(R.id.related_focus);
 			ImageView qualityLabel = (ImageView) relatedHolder
 					.findViewById(R.id.related_quality_label);
-			TextView related_price_txt = (TextView)relatedHolder.findViewById(R.id.related_price_txt);
-			TextView ItemBeanScore = (TextView)relatedHolder.findViewById(R.id.ItemBeanScore);
-			if(mRelatedItem[i].bean_score>0){
-				ItemBeanScore.setText(mRelatedItem[i].bean_score+"");
+			TextView related_price_txt = (TextView) relatedHolder
+					.findViewById(R.id.related_price_txt);
+			TextView ItemBeanScore = (TextView) relatedHolder
+					.findViewById(R.id.ItemBeanScore);
+			if (mRelatedItem[i].bean_score > 0) {
+				ItemBeanScore.setText(mRelatedItem[i].bean_score + "");
 				ItemBeanScore.setVisibility(View.VISIBLE);
-			}				
-			if(mRelatedItem[i].expense!=null){
-				related_price_txt.setVisibility(View.VISIBLE);
-				related_price_txt.setText("￥"+mRelatedItem[i].expense.price);
 			}
-//			if (mRelatedItem[i].quality == 3) {
-//				qualityLabel.setImageResource(R.drawable.label_hd_small);
-//			} else if (mRelatedItem[i].quality == 4
-//					|| mRelatedItem[i].quality == 5) {
-//				qualityLabel.setImageResource(R.drawable.label_uhd_small);
-//			}
+			if (mRelatedItem[i].expense != null) {
+				related_price_txt.setVisibility(View.VISIBLE);
+				related_price_txt.setText("￥" + mRelatedItem[i].expense.price);
+			}
+			// if (mRelatedItem[i].quality == 3) {
+			// qualityLabel.setImageResource(R.drawable.label_hd_small);
+			// } else if (mRelatedItem[i].quality == 4
+			// || mRelatedItem[i].quality == 5) {
+			// qualityLabel.setImageResource(R.drawable.label_uhd_small);
+			// }
 			imgView.setTag(mRelatedItem[i].adlet_url);
 			imgView.setUrl(mRelatedItem[i].adlet_url);
 			titleView.setText(mRelatedItem[i].title);
@@ -799,7 +746,7 @@ public class ItemDetailActivity extends Activity implements
 	private OnClickListener mRelatedClickListener = new OnClickListener() {
 
 		@Override
-		public void onClick(View v) {			
+		public void onClick(View v) {
 			String url = (String) v.getTag();
 			final Item[] relatedItem = mRelatedItem;
 			for (Item item : relatedItem) {
@@ -818,46 +765,51 @@ public class ItemDetailActivity extends Activity implements
 			intent.setAction(action);
 			intent.putExtra("url", url);
 			startActivity(intent);
-			
+
 		}
 	};
-	private void addFavorite(){
+
+	private void addFavorite() {
 		if (isFavorite()) {
-		String url = SimpleRestClient.sRoot_url + "/api/item/"
-				+ mItem.pk + "/";
-		DaisyUtils.getFavoriteManager(ItemDetailActivity.this)
-				.deleteFavoriteByUrl(url);
-		showToast(getResources().getString(
-				R.string.vod_bookmark_remove_success));
-	} else {
-		String url = SimpleRestClient.sRoot_url + "/api/item/"
-				+ mItem.pk + "/";
-		Favorite favorite = new Favorite();
-		favorite.title = mItem.title;
-		favorite.adlet_url = mItem.adlet_url;
-		favorite.content_model = mItem.content_model;
-		favorite.url = url;
-		favorite.quality = mItem.quality;
-		favorite.is_complex = mItem.is_complex;
-		DaisyUtils.getFavoriteManager(ItemDetailActivity.this)
-				.addFavorite(favorite);
-		showToast(getResources().getString(
-				R.string.vod_bookmark_add_success));
+			String url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk
+					+ "/";
+			DaisyUtils.getFavoriteManager(ItemDetailActivity.this)
+					.deleteFavoriteByUrl(url);
+			showToast(getResources().getString(
+					R.string.vod_bookmark_remove_success));
+		} else {
+			String url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk
+					+ "/";
+			Favorite favorite = new Favorite();
+			favorite.title = mItem.title;
+			favorite.adlet_url = mItem.adlet_url;
+			favorite.content_model = mItem.content_model;
+			favorite.url = url;
+			favorite.quality = mItem.quality;
+			favorite.is_complex = mItem.is_complex;
+			DaisyUtils.getFavoriteManager(ItemDetailActivity.this).addFavorite(
+					favorite);
+			showToast(getResources().getString(
+					R.string.vod_bookmark_add_success));
+		}
 	}
-  }
-	private void buyVideo(){
+
+	private void buyVideo() {
 		PaymentDialog dialog = new PaymentDialog(ItemDetailActivity.this,
-        R.style.PaymentDialog);
-        dialog.setItem(mItem);
-        dialog.show();
+				R.style.PaymentDialog, ordercheckListener);
+		mItem.model_name = "item";
+		dialog.setItem(mItem);
+		dialog.show();
 	}
-	private void startDramaListActivity(){
+
+	private void startDramaListActivity() {
 		Intent intent = new Intent();
-        mDataCollectionProperties.put("to", "list");
+		mDataCollectionProperties.put("to", "list");
 		intent.setClass(ItemDetailActivity.this, DramaListActivity.class);
 		intent.putExtra("item", mItem);
 		startActivity(intent);
 	}
+
 	private OnClickListener mIdOnClickListener = new OnClickListener() {
 
 		@Override
@@ -866,25 +818,26 @@ public class ItemDetailActivity extends Activity implements
 				int id = v.getId();
 				Intent intent = new Intent();
 				intent.putExtra(EventProperty.SECTION, mSection);
-				InitPlayerTool tool = new InitPlayerTool(ItemDetailActivity.this);
+				InitPlayerTool tool = new InitPlayerTool(
+						ItemDetailActivity.this);
 				tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
-					
+
 					@Override
 					public void onPreExecute(Intent intent) {
 						// TODO Auto-generated method stub
 						mLoadingDialog.show();
 					}
-					
+
 					@Override
 					public void onPostExecute() {
 						// TODO Auto-generated method stub
 						mLoadingDialog.dismiss();
 					}
-				});			
+				});
 				switch (id) {
-				case R.id.btn_left:	
+				case R.id.btn_left:
 					String subUrl = null;
-					if(isDrama()){
+					if (isDrama()) {
 						int sub_id = 0;
 						String title = mItem.title;
 						if (mHistory != null && mHistory.is_continue) {
@@ -901,38 +854,36 @@ public class ItemDetailActivity extends Activity implements
 							sub_id = mItem.subitems[0].pk;
 							title += "(" + mItem.subitems[0].episode + ")";
 						}
-						mDataCollectionProperties.put(EventProperty.TITLE, title);
-						mDataCollectionProperties
-								.put(EventProperty.SUBITEM, sub_id);
+						mDataCollectionProperties.put(EventProperty.TITLE,
+								title);
+						mDataCollectionProperties.put(EventProperty.SUBITEM,
+								sub_id);
 					}
-					mDataCollectionProperties.put(EventProperty.TO, "play");	
+					mDataCollectionProperties.put(EventProperty.TO, "play");
 					identify = (String) v.getTag();
-					if(identify.equals(PREVIEW_VIDEO)){
-						//预告
-						tool.initClipInfo(mItem,InitPlayerTool.FLAG_ITEM,true);
+					if (identify.equals(PREVIEW_VIDEO)) {
+						// 预告
+						tool.initClipInfo(mItem, InitPlayerTool.FLAG_ITEM, true);
+					} else if (identify.equals(PLAY_VIDEO)) {
+						// 播放
+						if (isDrama())
+							tool.initClipInfo(subUrl, InitPlayerTool.FLAG_URL);
+						else
+							tool.initClipInfo(mItem, InitPlayerTool.FLAG_ITEM);
 					}
-					else if(identify.equals(PLAY_VIDEO)){
-						//播放
-						if(isDrama())
-							tool.initClipInfo(subUrl,InitPlayerTool.FLAG_URL);
-						else							
-						    tool.initClipInfo(mItem,InitPlayerTool.FLAG_ITEM);
-					}
-				
-					//tool.initClipInfo(subUrl,InitPlayerTool.FLAG_URL);
+
+					// tool.initClipInfo(subUrl,InitPlayerTool.FLAG_URL);
 					break;
 				case R.id.middle_btn:
 					identify = (String) v.getTag();
-					if(identify.equals(BUY_VIDEO)){
-						//购买
-						if(isDrama()){
+					if (identify.equals(BUY_VIDEO)) {
+						// 购买
+						if (isDrama()) {
 							startDramaListActivity();
-						}
-						else{
+						} else {
 							buyVideo();
 						}
-					}
-					else if(identify.equals(COLLECT_VIDEO)){
+					} else if (identify.equals(COLLECT_VIDEO)) {
 						addFavorite();
 						if (isFavorite()) {
 							v.setBackgroundResource(R.drawable.collected_btn_bg_selector);
@@ -943,65 +894,65 @@ public class ItemDetailActivity extends Activity implements
 					break;
 				case R.id.btn_right:
 					identify = (String) v.getTag();
-					if(identify.equals(COLLECT_VIDEO)){
+					if (identify.equals(COLLECT_VIDEO)) {
 						addFavorite();
 						if (isFavorite()) {
 							v.setBackgroundResource(R.drawable.collected_btn_bg_selector);
 						} else {
 							v.setBackgroundResource(R.drawable.collect_btn_bg_selector);
 						}
-					}
-					else if(identify.equals(DRAMA_VIDEO)){			        
-				        mDataCollectionProperties.put("to", "list");
-						intent.setClass(ItemDetailActivity.this, DramaListActivity.class);
+					} else if (identify.equals(DRAMA_VIDEO)) {
+						mDataCollectionProperties.put("to", "list");
+						intent.setClass(ItemDetailActivity.this,
+								DramaListActivity.class);
 						intent.putExtra("item", mItem);
 						startActivity(intent);
 					}
 					break;
-//				case R.id.btn_fill:
-//					mDataCollectionProperties.put(EventProperty.TO, "play");
-//
-//					// intent.setAction("tv.ismar.daisy.Play");
-//					// intent.putExtra("item", mItem);
-//
-//					// intent.setClass(ItemDetailActivity.this,
-//					// QiYiPlayActivity.class);
-//					// startActivity(intent);
-//					tool.initClipInfo(mItem,InitPlayerTool.FLAG_ITEM);
-//					break;
-//				case R.id.btn_favorite:
-//					if (isFavorite()) {
-//						String url = SimpleRestClient.sRoot_url + "/api/item/"
-//								+ mItem.pk + "/";
-//						DaisyUtils.getFavoriteManager(ItemDetailActivity.this)
-//								.deleteFavoriteByUrl(url);
-//						showToast(getResources().getString(
-//								R.string.vod_bookmark_remove_success));
-//					} else {
-//						String url = SimpleRestClient.sRoot_url + "/api/item/"
-//								+ mItem.pk + "/";
-//						Favorite favorite = new Favorite();
-//						favorite.title = mItem.title;
-//						favorite.adlet_url = mItem.adlet_url;
-//						favorite.content_model = mItem.content_model;
-//						favorite.url = url;
-//						favorite.quality = mItem.quality;
-//						favorite.is_complex = mItem.is_complex;
-//						DaisyUtils.getFavoriteManager(ItemDetailActivity.this)
-//								.addFavorite(favorite);
-//						// mFavoriteManager.addFavorite(mItem.title, url,
-//						// mItem.content_model);
-//						showToast(getResources().getString(
-//								R.string.vod_bookmark_add_success));
-//					}
-//					if (isFavorite()) {
-//						mBtnFavorite.setText(getResources().getString(
-//								R.string.favorited));
-//					} else {
-//						mBtnFavorite.setText(getResources().getString(
-//								R.string.favorite));
-//					}
-//					break;
+				// case R.id.btn_fill:
+				// mDataCollectionProperties.put(EventProperty.TO, "play");
+				//
+				// // intent.setAction("tv.ismar.daisy.Play");
+				// // intent.putExtra("item", mItem);
+				//
+				// // intent.setClass(ItemDetailActivity.this,
+				// // QiYiPlayActivity.class);
+				// // startActivity(intent);
+				// tool.initClipInfo(mItem,InitPlayerTool.FLAG_ITEM);
+				// break;
+				// case R.id.btn_favorite:
+				// if (isFavorite()) {
+				// String url = SimpleRestClient.sRoot_url + "/api/item/"
+				// + mItem.pk + "/";
+				// DaisyUtils.getFavoriteManager(ItemDetailActivity.this)
+				// .deleteFavoriteByUrl(url);
+				// showToast(getResources().getString(
+				// R.string.vod_bookmark_remove_success));
+				// } else {
+				// String url = SimpleRestClient.sRoot_url + "/api/item/"
+				// + mItem.pk + "/";
+				// Favorite favorite = new Favorite();
+				// favorite.title = mItem.title;
+				// favorite.adlet_url = mItem.adlet_url;
+				// favorite.content_model = mItem.content_model;
+				// favorite.url = url;
+				// favorite.quality = mItem.quality;
+				// favorite.is_complex = mItem.is_complex;
+				// DaisyUtils.getFavoriteManager(ItemDetailActivity.this)
+				// .addFavorite(favorite);
+				// // mFavoriteManager.addFavorite(mItem.title, url,
+				// // mItem.content_model);
+				// showToast(getResources().getString(
+				// R.string.vod_bookmark_add_success));
+				// }
+				// if (isFavorite()) {
+				// mBtnFavorite.setText(getResources().getString(
+				// R.string.favorited));
+				// } else {
+				// mBtnFavorite.setText(getResources().getString(
+				// R.string.favorite));
+				// }
+				// break;
 				case R.id.more_content:
 					if (mRelatedItem != null && mRelatedItem.length > 0) {
 						intent.putExtra("related_item", new ArrayList<Item>(
@@ -1014,15 +965,16 @@ public class ItemDetailActivity extends Activity implements
 							RelatedActivity.class);
 					startActivity(intent);
 					break;
-//				case R.id.btn_fill_buy:
-//
-//					PaymentDialog dialog = new PaymentDialog(ItemDetailActivity.this,
-//		                    R.style.PaymentDialog);
-//					dialog.setItem(mItem);
-//					//dialog.show();
-//					
-//					tool.initClipInfo(mItem,InitPlayerTool.FLAG_ITEM,true);
-//					break;
+				// case R.id.btn_fill_buy:
+				//
+				// PaymentDialog dialog = new
+				// PaymentDialog(ItemDetailActivity.this,
+				// R.style.PaymentDialog);
+				// dialog.setItem(mItem);
+				// //dialog.show();
+				//
+				// tool.initClipInfo(mItem,InitPlayerTool.FLAG_ITEM,true);
+				// break;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -1073,4 +1025,105 @@ public class ItemDetailActivity extends Activity implements
 		toast.show();
 	}
 
+	private void setExpenseStatus() {
+		/*
+		 * if this item is a drama , the button should split to two. otherwise.
+		 * use one button.
+		 */
+		if (isFree()) {
+			// 免费
+			if (!isDrama()) {
+				// 电影
+				mLeftBtn.setBackgroundResource(R.drawable.play_btn_bg_selector);
+				mLeftBtn.setTag(PLAY_VIDEO);
+				mMiddleBtn
+						.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+				mMiddleBtn.setTag(COLLECT_VIDEO);
+				mRightBtn.setVisibility(View.GONE);
+			} else {
+				// 电视剧
+				mLeftBtn.setBackgroundResource(R.drawable.play_btn_bg_selector);
+				mLeftBtn.setTag(PLAY_VIDEO);
+				mMiddleBtn
+						.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+				mMiddleBtn.setTag(COLLECT_VIDEO);
+				mRightBtn
+						.setBackgroundResource(R.drawable.drama_btn_bg_selector);
+				mRightBtn.setTag(DRAMA_VIDEO);
+			}
+		} else {
+			// 收费
+			if (!isBuy) {
+				// 未购买
+				if (!isDrama()) {
+					// 电影
+					mLeftBtn.setBackgroundResource(R.drawable.preview_video_btn_bg_selector);
+					mLeftBtn.setTag(PREVIEW_VIDEO);
+					mMiddleBtn
+							.setBackgroundResource(R.drawable.buy_video_btn_bg_selector);
+					mMiddleBtn.setTag(BUY_VIDEO);
+					mRightBtn
+							.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+					mRightBtn.setTag(COLLECT_VIDEO);
+				} else {
+					// 电视剧
+					mLeftBtn.setBackgroundResource(R.drawable.preview_video_btn_bg_selector);
+					mLeftBtn.setTag(PREVIEW_VIDEO);
+					mMiddleBtn
+							.setBackgroundResource(R.drawable.buy_video_btn_bg_selector);
+					mMiddleBtn.setTag(BUY_VIDEO);
+					mRightBtn
+							.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+					mRightBtn.setTag(COLLECT_VIDEO);
+				}
+				detail_price_txt.setText("￥" + mItem.expense.price);
+				detail_duration_txt.setText("有效期" + mItem.expense.duration
+						+ "天");
+				detail_price_txt.setVisibility(View.VISIBLE);
+				detail_duration_txt.setVisibility(View.VISIBLE);
+				remainDay = mItem.expense.duration;
+			} else {
+				// 已经购买
+				if (!isDrama()) {
+					// 电影
+					mLeftBtn.setBackgroundResource(R.drawable.play_btn_bg_selector);
+					mLeftBtn.setTag(PLAY_VIDEO);
+					mMiddleBtn
+							.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+					mMiddleBtn.setTag(COLLECT_VIDEO);
+					mRightBtn.setVisibility(View.GONE);
+					// mRightBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+					// mRightBtn.setTag(COLLECT_VIDEO);
+				} else {
+					// 电视剧
+					mLeftBtn.setBackgroundResource(R.drawable.play_btn_bg_selector);
+					mLeftBtn.setTag(PLAY_VIDEO);
+					mMiddleBtn
+							.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+					mMiddleBtn.setTag(COLLECT_VIDEO);
+					mRightBtn
+							.setBackgroundResource(R.drawable.drama_btn_bg_selector);
+					mRightBtn.setTag(COLLECT_VIDEO);
+				}
+				detail_price_txt.setText("已付费");
+				detail_duration_txt.setText("剩余" + remainDay + "天");
+				detail_price_txt.setVisibility(View.VISIBLE);
+				detail_duration_txt.setVisibility(View.VISIBLE);
+				detail_duration_txt
+						.setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
+				detail_price_txt
+						.setBackgroundResource(R.drawable.vod_detail_already_payment_price);
+			}
+		}
+	}
+
+	private PaymentDialog.OrderResultListener ordercheckListener = new PaymentDialog.OrderResultListener() {
+
+		@Override
+		public void payResult(boolean result) {
+			isBuy = true;
+			setExpenseStatus();
+		}
+
+	};
 }

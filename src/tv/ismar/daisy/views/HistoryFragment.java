@@ -22,12 +22,14 @@ import com.google.gson.JsonSyntaxException;
 import com.ismartv.launcher.data.VideoEntity;
 
 import tv.ismar.daisy.ChannelListActivity;
+import tv.ismar.daisy.PackageListDetailActivity;
 import tv.ismar.daisy.ChannelListActivity.OnMenuToggleListener;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.adapter.RecommecdItemAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.History;
@@ -49,6 +51,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.FloatMath;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,6 +106,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 	private TextView channel_label;
 	private TextView collect_or_history_txt;
 	private VideoEntity tvHome;
+	private Item[] mHistoriesByNet;
 	private long getTodayStartPoint() {
 		long currentTime = System.currentTimeMillis();
 		GregorianCalendar currentCalendar = new GregorianCalendar();
@@ -160,11 +164,89 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 			Bundle savedInstanceState) {
 		View fragmentView = inflater.inflate(R.layout.list_view, container, false);
 		initViews(fragmentView);
-		mGetHistoryTask = new GetHistoryTask();
-		mGetHistoryTask.execute();
+		if("".equals(SimpleRestClient.access_token)){
+			mGetHistoryTask = new GetHistoryTask();
+			mGetHistoryTask.execute(); //没有登录，取本地设备信息
+		}
+		else{
+			//登录，网络获取
+			getHistoryByNet();
+		}
 		return fragmentView;
 	}
-	
+	private ArrayList<ItemCollection> mItemCollections;
+	private void getHistoryByNet(){
+		SimpleRestClient post = new SimpleRestClient();
+		mRestClient.doSendRequest("/api/histories/", "get", "", new HttpPostRequestInterface() {
+			
+			@Override
+			public void onSuccess(String info) {
+				// TODO Auto-generated method stub
+				//Log.i(tag, msg);
+				mLoadingDialog.dismiss();
+				//解析json
+				mHistoriesByNet = mRestClient.getItems(info);
+				if(mHistoriesByNet!=null){
+					mItemCollections = new ArrayList<ItemCollection>();
+				    int num_pages = (int) FloatMath.ceil((float)mHistoriesByNet.length / (float)ItemCollection.NUM_PER_PAGE);
+					ItemCollection itemCollection = new ItemCollection(num_pages, mHistoriesByNet.length, "1", "1");
+					mItemCollections.add(itemCollection);
+					mHGridAdapter = new HGridAdapterImpl(getActivity(), mItemCollections,false);
+					mHGridAdapter.setList(mItemCollections);
+					if(mHGridAdapter.getCount()>0){
+						mHGridView.setAdapter(mHGridAdapter);
+						mHGridView.setFocusable(true);
+						mHGridView.setHorizontalFadingEdgeEnabled(true);
+						mHGridView.setFadingEdgeLength(144);
+						ArrayList<Item> items  = new ArrayList<Item>();
+						for(Item i:mHistoriesByNet){
+							items.add(i);
+						}
+						mItemCollections.get(0).fillItems(0, items);
+						mHGridAdapter.setList(mItemCollections);
+					}
+				}
+			}
+			
+			@Override
+			public void onPrepare() {
+				// TODO Auto-generated method stub
+				mLoadingDialog.show();
+			}
+			
+			@Override
+			public void onFailed(String error) {
+				// TODO Auto-generated method stub
+				//Log.i(tag, msg);
+				mLoadingDialog.dismiss();
+			}
+		});
+	}
+	private void EmptyAllHistory(){
+		if(!"".equals(SimpleRestClient.access_token)){
+			//清空历史记录
+			mRestClient.doSendRequest("/api/histories/empty/", "post", "access_token="+SimpleRestClient.access_token, new HttpPostRequestInterface() {
+				
+				@Override
+				public void onSuccess(String info) {
+					// TODO Auto-generated method stub
+					Log.i("", info);
+				}
+				
+				@Override
+				public void onPrepare() {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onFailed(String error) {
+					// TODO Auto-generated method stub
+					Log.i("", error);
+				}
+			});
+		}
+	}
 	class GetHistoryTask extends AsyncTask<Void, Void, Void> {
 
 		@Override
@@ -496,6 +578,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		case 2:
 			if(mHGridAdapter!=null) {
 				if(!isInGetHistoryTask) {
+					EmptyAllHistory();
 					DaisyUtils.getHistoryManager(getActivity()).deleteAll();
 					reset();
 				}
@@ -504,6 +587,9 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		}
 	}
 
+	private void RemoveHistoriesByNet(){
+		
+	}
 	@Override
 	public void onDetach() {
 		if(mLoadingDialog.isShowing()){
@@ -521,19 +607,21 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
-		mSelectedPosition = position;
-		// When selected column has changed, we need to update the ScrollableSectionList
-		int sectionIndex = mHGridAdapter.getSectionIndex(position);
-		int rows = mHGridView.getRows();
-		int itemCount = 0;
-		for(int i=0; i < sectionIndex; i++) {
-			itemCount += mHGridAdapter.getSectionCount(i);
-			
+		if("".equals(SimpleRestClient.access_token)){
+			mSelectedPosition = position;
+			// When selected column has changed, we need to update the ScrollableSectionList
+			int sectionIndex = mHGridAdapter.getSectionIndex(position);
+			int rows = mHGridView.getRows();
+			int itemCount = 0;
+			for(int i=0; i < sectionIndex; i++) {
+				itemCount += mHGridAdapter.getSectionCount(i);
+				
+			}
+			int columnOfX = (position - itemCount) / rows + 1;
+			int totalColumnOfSectionX = (int)(FloatMath.ceil((float)mHGridAdapter.getSectionCount(sectionIndex) / (float) rows)); 
+			int percentage = (int) ((float)columnOfX / (float)totalColumnOfSectionX * 100f);
+			mScrollableSectionList.setPercentage(sectionIndex, percentage);
 		}
-		int columnOfX = (position - itemCount) / rows + 1;
-		int totalColumnOfSectionX = (int)(FloatMath.ceil((float)mHGridAdapter.getSectionCount(sectionIndex) / (float) rows)); 
-		int percentage = (int) ((float)columnOfX / (float)totalColumnOfSectionX * 100f);
-		mScrollableSectionList.setPercentage(sectionIndex, percentage);
 	}
 
 	@Override

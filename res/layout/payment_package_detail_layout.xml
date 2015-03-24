@@ -85,7 +85,16 @@
             android:focusable="false"
             android:scaleType="fitXY"
             />
-
+            <ImageView
+                android:id="@+id/isbuy_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/vod_payment_poster"
+                android:layout_alignRight="@id/vod_payment_poster"              
+                android:layout_marginTop="@dimen/item_detail_detailquality_margintop"
+                android:layout_marginRight="@dimen/item_detail_detailquality_marginright"
+                android:background="@drawable/package_buyed_bg"
+                android:visibility="gone"/>
         <TextView
             android:id="@+id/vod_payment_price"
             android:layout_width="wrap_content"
