@@ -4,20 +4,19 @@
                 android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/advertisement_pic"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+            android:id="@+id/advertisement_pic"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
     <ImageView
-        android:gravity="center"
-        android:background="#AA000000"
-        android:id="@+id/adver_timer"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="50dp"
-        android:layout_marginRight="100dp"
-        />
+            android:gravity="center"
+            android:id="@+id/adver_timer"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="100dp"
+            />
 
 </RelativeLayout>

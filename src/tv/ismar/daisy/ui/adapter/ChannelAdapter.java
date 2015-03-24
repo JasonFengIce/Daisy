@@ -22,6 +22,9 @@ public class ChannelAdapter extends BaseAdapter {
     private Context context;
     private ChannelEntity[] channelEntities;
 
+    private View convertView;
+    private ViewGroup parent;
+
     int itemIconRes[] = {R.drawable.history, R.drawable.chinese, R.drawable.teleplay, R.drawable.ent, R.drawable.sport, R.drawable.life,
             R.drawable.my, R.drawable.oversea, R.drawable.child, R.drawable.vip, R.drawable.music, R.drawable.icon_toplist
     };
@@ -38,7 +41,7 @@ public class ChannelAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return position;
+        return getItemId(position);
     }
 
     @Override
@@ -48,6 +51,7 @@ public class ChannelAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
 
         ViewHolder holder;
         if (convertView != null) {
@@ -76,6 +80,8 @@ public class ChannelAdapter extends BaseAdapter {
         }
         holder.itemImage.setTag(jsonObject.toString());
 
+        this.convertView = convertView;
+        this.parent = parent;
         return convertView;
     }
 

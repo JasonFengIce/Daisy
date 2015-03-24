@@ -14,7 +14,7 @@ import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.advertisement.AdvertisementInfoEntity;
-import tv.ismar.daisy.core.update.AppUpdateUtils;
+import tv.ismar.daisy.utils.AppUtils;
 import tv.ismar.daisy.utils.DeviceUtils;
 
 import java.io.File;
@@ -100,16 +100,15 @@ public class PosterUpdateService extends Service {
             public void success(ArrayList<AdvertisementInfoEntity> advertisementInfoEntities, Response response) {
                 if (advertisementInfoEntities != null && !advertisementInfoEntities.isEmpty()) {
 
-
                     AdvertisementInfoEntity adverInfo = advertisementInfoEntities.get(0);
-                    String url = adverInfo.getUrl();
-
-                    Timestamp endTimeStamp = adverInfo.getEndTimeStamp();
-                    Log.i(TAG, "fetchAdvertisementInfo: adver pic url ---> " + url);
-
-                    java.util.Date utilDate = new java.util.Date();
-                    Timestamp timestamp = new Timestamp(utilDate.getTime());
-                    if (endTimeStamp.after(timestamp)) {
+                    Log.i(TAG, "fetchAdvertisementInfo: adver pic url ---> " + adverInfo.getUrl());
+                    if (getLocalPosterFile().exists()) {
+                        String localMd5 = AppUtils.getMd5ByFile(getLocalPosterFile());
+                        String serverMd5 = adverInfo.getMd5();
+                        if (!localMd5.equalsIgnoreCase(serverMd5)) {
+                            downloadPic(adverInfo);
+                        }
+                    } else {
                         downloadPic(adverInfo);
                     }
                 }
@@ -159,8 +158,9 @@ public class PosterUpdateService extends Service {
 
     private void updateLocalPoster(AdvertisementInfoEntity advertisementInfoEntity) {
         Log.i(TAG, "updateLocalPoster is running...");
+        String cacheFileMd5 = AppUtils.getMd5ByFile(posterTmpFile);
         if (posterTmpFile.exists() &&
-                AppUpdateUtils.getInstance().getMd5ByFile(posterTmpFile).equals(advertisementInfoEntity.getMd5())) {
+                cacheFileMd5.equalsIgnoreCase(advertisementInfoEntity.getMd5())) {
             Log.i(TAG, "replace local poster png");
             posterTmpFile.renameTo(posterFile);
             modifyPosterPreference(advertisementInfoEntity.getEndTimeStamp());
@@ -185,7 +185,10 @@ public class PosterUpdateService extends Service {
     }
 
     private String getPosterDomain() {
-        String defaultPosterDomain = tv.ismar.daisy.core.client.ClientApi.ADVERTISEMENT_HOST;
         return DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.ad_domain, "");
+    }
+
+    private File getLocalPosterFile() {
+        return getFileStreamPath(POSTER_NAME);
     }
 }

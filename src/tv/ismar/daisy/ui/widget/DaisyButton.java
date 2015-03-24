@@ -38,28 +38,4 @@ public class DaisyButton extends Button {
         return false;
     }
 
-
-    public void dispatchHoverEvent(MotionEvent event, boolean clearFocus) {
-        if (isEnabled()) {
-
-            if (clearFocus) {
-                clearFocus();
-            } else {
-                dispatchHoverEvent(event);
-            }
-        }
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
-        if (isEnabled()) {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    performClick();
-                    break;
-            }
-        }
-
-        return super.dispatchTouchEvent(event);
-    }
 }
