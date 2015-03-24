@@ -1,10 +1,8 @@
 package tv.ismar.daisy.views;
 
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -13,8 +11,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
@@ -42,10 +42,12 @@ public class PaymentDialog extends Dialog {
 	private static final String BALANCEPAY_BASE_URL = "/api/order/create/";
 	private static final String GETBALANCE_BASE_URL = "/accounts/balance/";
 	private static final String CARDRECHARGE_BASE_URL = "https://order.tvxio.com/api/pay/verify/";
-	private static final String ORDER_CHECK_BASE_URL = "/api/order/check/";
+	public static final String ORDER_CHECK_BASE_URL = "/api/order/check/";
 
 	private static final int REFRESH_PAY_STATUS = 0x10;
 	private static final int SETQRCODE_VIEW = 0x11;
+	private static final int ORDER_CHECK_RESULT = 0x12;
+	private static final int ORDER_CHECK_INTERVAL = 10000;
 
 	private Context mycontext;
 	private int width;
@@ -79,6 +81,7 @@ public class PaymentDialog extends Dialog {
 
 	private Item mItem;
 	private OrderResultListener paylistener;
+	private int ordercheckcount;
 
 	public PaymentDialog(Context context) {
 		super(context);
@@ -101,6 +104,12 @@ public class PaymentDialog extends Dialog {
 		this.setContentView(R.layout.paymentselect);
 		initView();
 		resizeWindow();
+	}
+
+	@Override
+	public void dismiss() {
+		super.dismiss();
+
 	}
 
 	public void setItem(Item item) {
@@ -163,6 +172,7 @@ public class PaymentDialog extends Dialog {
 		}
 		setPackageInfo();
 		changeQrcodePayPanelState(true, true);
+		urlHandler.sendEmptyMessageDelayed(ORDER_CHECK_RESULT, 30000);
 	}
 
 	private View.OnClickListener buttonClick = new View.OnClickListener() {
@@ -206,8 +216,8 @@ public class PaymentDialog extends Dialog {
 				break;
 
 			case R.id.shiyuncard_submit: {
-				// String inputValue = shiyuncard_input.getText().toString();
-				String inputValue = "1010413607290854";
+				String inputValue = shiyuncard_input.getText().toString();
+				inputValue = "1044418176805411";
 				if (inputValue.length() == 16 && isNumeric(inputValue)) {
 					card_recharge(inputValue);
 				} else {
@@ -224,6 +234,11 @@ public class PaymentDialog extends Dialog {
 						+ "&device_token=" + SimpleRestClient.device_token
 						+ "&access_token=" + SimpleRestClient.access_token
 						+ "&source=sky", balancePay);
+			}
+				break;
+
+			case R.id.card_balance_cancel: {
+				dismiss();
 			}
 				break;
 			}
@@ -256,6 +271,11 @@ public class PaymentDialog extends Dialog {
 			}
 			case REFRESH_PAY_STATUS: {
 				paylistener.payResult(true);
+				dismiss();
+				break;
+			}
+			case ORDER_CHECK_RESULT: {
+				orderCheck();
 				break;
 			}
 			}
@@ -355,9 +375,15 @@ public class PaymentDialog extends Dialog {
 				R.string.pay_payinfo_exprice_label);
 		String package_info = mycontext.getResources().getString(
 				R.string.pay_package_price);
-		payinfo_price.setText(String.format(price, mItem.expense.price));
+		float itemprice = 0;
+		if ("subitem".equalsIgnoreCase(mItem.model_name)) {
+			itemprice = mItem.expense.subprice;
+		} else if ("item".equalsIgnoreCase(mItem.model_name)) {
+			itemprice = mItem.expense.price;
+		}
+		payinfo_price.setText(String.format(price, itemprice));
 		payinfo_exprice.setText(String.format(exprice, mItem.expense.duration));
-		package_price.setText(String.format(package_info, mItem.expense.price,
+		package_price.setText(String.format(package_info, itemprice,
 				mItem.expense.duration));
 	}
 
@@ -416,53 +442,54 @@ public class PaymentDialog extends Dialog {
 		return convertToHex(sha1hash);
 	}
 
-	private String sendRechargeRequest(String url, String params) {
-		StringBuffer response = new StringBuffer();
-		try {
-			URL postUrl = new URL(url);
-			HttpURLConnection connection = (HttpURLConnection) postUrl
-					.openConnection();
-			connection.setDoOutput(true);
-			connection.setDoInput(true);
-			connection.setRequestMethod("POST");
-			connection.setUseCaches(false);
-			connection.setInstanceFollowRedirects(true);
-			connection.setRequestProperty("Content-Type",
-					"application/x-www-form-urlencoded");
-			connection.setRequestProperty("Accept", "application/json");
-			connection.connect();
-			DataOutputStream out = new DataOutputStream(
-					connection.getOutputStream());
-			out.writeBytes(params);
-			out.flush();
-			out.close();
-			int status = connection.getResponseCode();
-			if (status == 200) {
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(connection.getInputStream(),
-								"UTF-8"));
-				out.flush();
-				out.close(); // flush and close
-				String line;
-				while ((line = reader.readLine()) != null) {
-					response.append(line);
-				}
-				Log.v("aaaa", response.toString());
-				reader.close();
-				if (url.equals("register") && line == null) {
-					connection.disconnect();
-					return "200";
-				}
-			} else {
-				connection.disconnect();
-				return "";
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-			return "";
-		}
-		return response.toString();
-	}
+	// for test
+	// private String sendRechargeRequest(String url, String params) {
+	// StringBuffer response = new StringBuffer();
+	// try {
+	// URL postUrl = new URL(url);
+	// HttpURLConnection connection = (HttpURLConnection) postUrl
+	// .openConnection();
+	// connection.setDoOutput(true);
+	// connection.setDoInput(true);
+	// connection.setRequestMethod("POST");
+	// connection.setUseCaches(false);
+	// connection.setInstanceFollowRedirects(true);
+	// connection.setRequestProperty("Content-Type",
+	// "application/x-www-form-urlencoded");
+	// connection.setRequestProperty("Accept", "application/json");
+	// connection.connect();
+	// DataOutputStream out = new DataOutputStream(
+	// connection.getOutputStream());
+	// out.writeBytes(params);
+	// out.flush();
+	// out.close();
+	// int status = connection.getResponseCode();
+	// if (status == 200) {
+	// BufferedReader reader = new BufferedReader(
+	// new InputStreamReader(connection.getInputStream(),
+	// "UTF-8"));
+	// out.flush();
+	// out.close(); // flush and close
+	// String line;
+	// while ((line = reader.readLine()) != null) {
+	// response.append(line);
+	// }
+	// Log.v("aaaa", response.toString());
+	// reader.close();
+	// if (url.equals("register") && line == null) {
+	// connection.disconnect();
+	// return "200";
+	// }
+	// } else {
+	// connection.disconnect();
+	// return "";
+	// }
+	// } catch (IOException e) {
+	// e.printStackTrace();
+	// return "";
+	// }
+	// return response.toString();
+	// }
 
 	private boolean isNumeric(String str) {
 		Pattern pattern = Pattern.compile("[0-9]*");
@@ -504,7 +531,6 @@ public class PaymentDialog extends Dialog {
 
 		@Override
 		public void onPrepare() {
-
 		}
 
 		@Override
@@ -538,6 +564,7 @@ public class PaymentDialog extends Dialog {
 		@Override
 		public void onSuccess(String info) {
 			try {
+				Log.v("aaaa", info);
 				JSONObject object = new JSONObject(info);
 				String statusString = object.getString("status");
 				String errmsg = object.getString("err_desc");
@@ -563,29 +590,42 @@ public class PaymentDialog extends Dialog {
 
 	private void orderCheck() {
 		SimpleRestClient client = new SimpleRestClient();
+		String typePara = "&item=" + mItem.pk;
+		if ("package".equalsIgnoreCase(mItem.model_name)) {
+			typePara = "&package=" + mItem.pk;
+		} else if ("subitem".equalsIgnoreCase(mItem.model_name)) {
+			typePara = "&subitem=" + mItem.pk;
+		}
 		client.doSendRequest(ORDER_CHECK_BASE_URL, "post", "device_token="
 				+ SimpleRestClient.device_token + "&access_token="
-				+ SimpleRestClient.access_token + "&item=" + mItem.pk,
-				orderCheck);
+				+ SimpleRestClient.access_token + typePara, orderCheck);
 	}
 
 	private HttpPostRequestInterface orderCheck = new HttpPostRequestInterface() {
 
 		@Override
 		public void onPrepare() {
-
 		}
 
 		@Override
 		public void onSuccess(String info) {
-			Log.v("aaaa", info);
-			if (info != null && !"0".equals(info))
+			if (info != null && !"0".equals(info)) {
 				urlHandler.sendEmptyMessage(REFRESH_PAY_STATUS);
+			} else {
+				ordercheckcount++;
+				if (ordercheckcount < 60)
+					urlHandler.sendEmptyMessageDelayed(ORDER_CHECK_RESULT,
+							ORDER_CHECK_INTERVAL);
+			}
 		}
 
 		@Override
 		public void onFailed(String error) {
 			Log.v("aaaa", error);
+			ordercheckcount++;
+			if (ordercheckcount < 60)
+				urlHandler.sendEmptyMessageDelayed(ORDER_CHECK_RESULT,
+						ORDER_CHECK_INTERVAL);
 		}
 	};
 
