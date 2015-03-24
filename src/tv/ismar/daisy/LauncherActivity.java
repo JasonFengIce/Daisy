@@ -970,7 +970,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
         DaisyButton updateNow = (DaisyButton) contentView.findViewById(R.id.update_now_bt);
-        DaisyButton updateNext = (DaisyButton) contentView.findViewById(R.id.update_next_bt);
 
         TextView updateTitle = (TextView) contentView.findViewById(R.id.update_title);
         LinearLayout updateMsgLayout = (LinearLayout) contentView.findViewById(R.id.update_msg_layout);
@@ -998,14 +997,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             public void onClick(View v) {
                 popupWindow.dismiss();
                 installApk(context, path);
-            }
-        });
-
-        updateNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AppUpdateUtils.getInstance().modifyUpdatePreferences(context, true);
-                popupWindow.dismiss();
             }
         });
     }

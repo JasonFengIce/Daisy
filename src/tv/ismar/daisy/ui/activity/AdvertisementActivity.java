@@ -101,6 +101,7 @@ public class AdvertisementActivity extends Activity {
         Picasso.with(AdvertisementActivity.this)
                 .load("file://" + path)
                 .error(getImageFromAssetsFile("poster.png"))
+                .skipMemoryCache()
                 .into(adverPic, new com.squareup.picasso.Callback() {
                     @Override
                     public void onSuccess() {

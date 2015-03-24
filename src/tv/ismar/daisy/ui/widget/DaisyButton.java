@@ -2,7 +2,6 @@ package tv.ismar.daisy.ui.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.Button;
 
@@ -34,6 +33,8 @@ public class DaisyButton extends Button {
             setFocusable(true);
             requestFocusFromTouch();
             requestFocus();
+        } else {
+            clearFocus();
         }
         return false;
     }

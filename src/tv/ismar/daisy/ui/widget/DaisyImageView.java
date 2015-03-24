@@ -57,5 +57,15 @@ public class DaisyImageView extends ImageView {
         }
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                performClick();
+                return true;
+            default:
+                return super.dispatchTouchEvent(event);
+        }
 
+    }
 }
