@@ -863,7 +863,12 @@ public class ItemDetailActivity extends Activity implements
 					identify = (String) v.getTag();
 					if (identify.equals(PREVIEW_VIDEO)) {
 						// 预告
-						tool.initClipInfo(mItem, InitPlayerTool.FLAG_ITEM, true);
+						if(isDrama()){
+							tool.initClipInfo(subUrl, InitPlayerTool.FLAG_URL);
+						}
+						else{
+							tool.initClipInfo(mItem, InitPlayerTool.FLAG_ITEM, true);
+						}
 					} else if (identify.equals(PLAY_VIDEO)) {
 						// 播放
 						if (isDrama())
