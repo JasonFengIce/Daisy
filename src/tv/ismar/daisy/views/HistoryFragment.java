@@ -231,6 +231,8 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 				public void onSuccess(String info) {
 					// TODO Auto-generated method stub
 					Log.i("", info);
+					mItemCollections.clear();
+					mHGridAdapter.setList(mItemCollections);
 				}
 				
 				@Override
@@ -578,9 +580,13 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		case 2:
 			if(mHGridAdapter!=null) {
 				if(!isInGetHistoryTask) {
+					if("".equals(SimpleRestClient.access_token)){
+						DaisyUtils.getHistoryManager(getActivity()).deleteAll();
+						reset();
+					}
+				}
+				else{
 					EmptyAllHistory();
-					DaisyUtils.getHistoryManager(getActivity()).deleteAll();
-					reset();
 				}
 			}
 			break;
