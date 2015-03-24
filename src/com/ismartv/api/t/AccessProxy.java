@@ -3,6 +3,8 @@ package com.ismartv.api.t;
 import android.content.Context;
 import android.util.Log;
 
+import cn.ismartv.activator.core.rsa.AESOperator;
+
 import com.ismartv.api.AESDemo;
 import com.ismartv.bean.ClipInfo;
 import com.pplive.android.player.PlayCodeUtil;
@@ -175,18 +177,50 @@ public class AccessProxy {
 		try {
 			jsonObject = new JSONObject(myjson);
 			ci = new ClipInfo();
-			ci.setAdaptive(getURLStr(jsonObject.getString("adaptive")));
-			ci.setHigh(getURLStr(jsonObject.getString("high")));
-			ci.setLow(getURLStr(jsonObject.getString("low")));
-			ci.setUltra(getURLStr(jsonObject.getString("ultra")));
-			ci.setMedium(getURLStr(jsonObject.getString("medium")));
-			ci.setNormal(getURLStr(jsonObject.getString("normal")));
+			String adaptive = "";
+			String high = "";
+			String low = "";
+			String ultra = "";
+			String medium = "";
+			String normal = "";
+			adaptive = jsonObject.getString("adaptive");
+			high = jsonObject.getString("high");
+			low = jsonObject.getString("low");
+			ultra = jsonObject.getString("ultra");
+			medium = jsonObject.getString("medium");
+			normal = jsonObject.getString("normal");
+			if(adaptive!="null"){
+				adaptive = AES_decrypt(adaptive);
+			}
+			if(high!="null"){
+				high = AES_decrypt(high);
+			}
+            if(low!="null"){
+            	low = AES_decrypt(low);
+            }
+			if(ultra!="null"){
+				ultra = AES_decrypt(ultra);
+			}
+			if(medium!="null"){
+				medium = AES_decrypt(medium);
+			}
+			if(normal!="null"){
+				normal = AES_decrypt(normal);
+			}
+			ci.setAdaptive(getURLStr(adaptive));
+			ci.setHigh(getURLStr(high));
+			ci.setLow(getURLStr(low));
+			ci.setUltra(getURLStr(ultra));
+			ci.setMedium(getURLStr(medium));
+			ci.setNormal(getURLStr(normal));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return ci;
 	}
-
+	private static String AES_decrypt(String url){
+		return AESOperator.getInstance().AES_decrypt(SimpleRestClient.device_token, url);
+	}
 	private static String getURLStr(String url) {
 		if (url != null && url != "null") {
 			if (url.startsWith("ppvod")) {
