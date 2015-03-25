@@ -63,19 +63,12 @@ public class QiYiPlayActivity extends VodMenuAction {
 	private static final int MSG_PLAY_TIME = 101;
 	private static final int SEEK_STEP = 30000;
 	private static final HashMap<Definition, String> DEFINITION_NAMES;
-	@SuppressWarnings("unused")
-	private static final String SAMPLE = "http://114.80.0.33/qyrrs?url=http%3A%2F%2Fjq.v.tvxio.com%2Fcdn%2F0%2F7b%2F78fadc2ffa42309bda633346871f26%2Fhigh%2Fslice%2Findex.m3u8&quality=high&sn=weihongchang_s52&clipid=779521&sid=85d3f919a918460d9431136d75db17f03&sign=08a868ad3c4e3b37537a13321a6f9d4b";
 	private QiyiVideoPlayer mPlayer;
-	private static final String PREFS_NAME = "tv.ismar.daisy";
 	private static final String TAG = "PLAYER";
 	private static final String BUFFERCONTINUE = " 上次放映：";
 	private static final String PlAYSTART = " 即将放映：";
 	private static final String BUFFERING = " 正在加载 ";
 	private static final String EXTOCLOSE = " 网络数据异常，即将退出播放器";
-	@SuppressWarnings("unused")
-	private static final String HOST = "cord.tvxio.com";
-
-	private static final int SHORT_STEP = 1;
 	private static final int DIALOG_OK_CANCEL = 0;
 
 	private boolean paused = false;
@@ -334,7 +327,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 			bufferText.setText(PlAYSTART + "《" + titleText.getText() + "》");
 		}
 		String info = (String) bundle.get("iqiyi");
-		isBuffer = false;
 		showBuffer();
 		if (tempOffset > 0 && isContinue) {
 			currPosition = tempOffset;
@@ -393,7 +385,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onBufferStart() {
-			showBuffer();
 		}
 
 		@Override
@@ -421,7 +412,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 			clipLength = mPlayer.getDuration();
 			isBuffer = false;
 			if (seekPostion > 0)
-				mPlayer.seekTo(seekPostion);
+				mPlayer.seek(seekPostion);
 			hideBuffer();
 			showPanel();
 			timeTaskStart();
@@ -453,7 +444,8 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onSeekComplete() {
-			timeTaskStart();
+//			timeTaskStart();
+			checkTaskStart();
 			hideBuffer();
 		}
 
@@ -474,7 +466,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 		if (isBuffer && !bufferLayout.isShown()) {
 			bufferLayout.setVisibility(View.VISIBLE);
 			bufferDuration = System.currentTimeMillis();
-			isBuffer = true;
 		}
 	}
 
@@ -483,7 +474,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 			bufferText.setText(BUFFERING);
 			bufferLayout.setVisibility(View.GONE);
 			isBuffer = false;
-			isSeekBuffer = false;
 		}
 	}
 
@@ -494,27 +484,27 @@ public class QiYiPlayActivity extends VodMenuAction {
 				sendEmptyMessageDelayed(MSG_AD_COUNTDOWN, 1000);
 				break;
 			case MSG_PLAY_TIME:
-				String playTime;
-				int curPos = mPlayer.getCurrentPosition();
-				int duration = mPlayer.getDuration();
-				playTime = getPlaybackTimeString(curPos);
-				playTime += " / ";
-				playTime += getPlaybackTimeString(duration);
-				timeText.setText(playTime);
-				timeBar.setMax(duration);
-				int secondaryProgress = mPlayer.getCachePercent() * duration
-						/ 100;
-				timeBar.setProgress(curPos);
-				timeBar.setSecondaryProgress(secondaryProgress);
-				if (Math.abs(secondaryProgress - curPos) != 0) {
-					hideBuffer();
-				} else {
-					showBuffer();
-				}
-				sendEmptyMessageDelayed(MSG_PLAY_TIME, 1000);
-				if (LogUtils.mIsDebug)
-					LogUtils.d(TAG,
-							"MSG_PLAY_TIME: isPlaying=" + mPlayer.isPlaying());
+//				String playTime;
+//				int curPos = mPlayer.getCurrentPosition();
+//				int duration = mPlayer.getDuration();
+//				playTime = getPlaybackTimeString(curPos);
+//				playTime += " / ";
+//				playTime += getPlaybackTimeString(duration);
+//				timeText.setText(playTime);
+//				timeBar.setMax(duration);
+//				int secondaryProgress = mPlayer.getCachePercent() * duration
+//						/ 100;
+//				timeBar.setProgress(curPos);
+//				timeBar.setSecondaryProgress(secondaryProgress);
+//				if (Math.abs(secondaryProgress - curPos) != 0) {
+//					hideBuffer();
+//				} else {
+//					showBuffer();
+//				}
+//				sendEmptyMessageDelayed(MSG_PLAY_TIME, 1000);
+//				if (LogUtils.mIsDebug)
+//					LogUtils.d(TAG,
+//							"MSG_PLAY_TIME: isPlaying=" + mPlayer.isPlaying());
 
 			default:
 				break;
@@ -791,8 +781,9 @@ public class QiYiPlayActivity extends VodMenuAction {
 				if (!live_video) {
 					fbImage.setImageResource(R.drawable.vodplayer_controller_rew);
 					showPanel();
+					isBuffer = true;
 					showBuffer();
-					mPlayer.seekTo(-SEEK_STEP);
+					mPlayer.seek(-SEEK_STEP);
 					if (subItem != null)
 						callaPlay.videoPlaySeek(item.pk, subItem.pk,
 								item.title, clip.pk, currQuality, 0,
@@ -812,8 +803,9 @@ public class QiYiPlayActivity extends VodMenuAction {
 				if (!live_video) {
 					ffImage.setImageResource(R.drawable.vodplayer_controller_ffd);
 					showPanel();
+					isBuffer = true;
 					showBuffer();
-					mPlayer.seekTo(SEEK_STEP);
+					mPlayer.seek(SEEK_STEP);
 					if (subItem != null)
 						callaPlay.videoPlaySeek(item.pk, subItem.pk,
 								item.title, clip.pk, currQuality, 0,

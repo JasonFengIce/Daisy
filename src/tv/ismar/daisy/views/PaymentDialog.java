@@ -12,9 +12,10 @@ import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.security.auth.PrivateCredentialPermission;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
@@ -79,9 +80,11 @@ public class PaymentDialog extends Dialog {
 
 	private EditText shiyuncard_input;
 
+	private Bitmap qrcodeBitmap;
 	private Item mItem;
 	private OrderResultListener paylistener;
 	private int ordercheckcount;
+	private boolean flag = true;
 
 	public PaymentDialog(Context context) {
 		super(context);
@@ -95,6 +98,7 @@ public class PaymentDialog extends Dialog {
 		width = wm.getDefaultDisplay().getWidth();
 		height = wm.getDefaultDisplay().getHeight();
 		mycontext = context;
+		getBalanceByToken();
 		this.paylistener = paylistener;
 	}
 
@@ -173,6 +177,7 @@ public class PaymentDialog extends Dialog {
 		setPackageInfo();
 		changeQrcodePayPanelState(true, true);
 		urlHandler.sendEmptyMessageDelayed(ORDER_CHECK_RESULT, 30000);
+		login_panel.setLoginListener(loginInterFace);
 	}
 
 	private View.OnClickListener buttonClick = new View.OnClickListener() {
@@ -208,6 +213,7 @@ public class PaymentDialog extends Dialog {
 			}
 				break;
 			case R.id.top_login: {
+				flag = true;
 				changeQrcodePayPanelState(false, false);
 				changeLoginPanelState(true);
 				changeYuePayPanelState(false);
@@ -247,16 +253,19 @@ public class PaymentDialog extends Dialog {
 
 	private void changeYuePayPanelState(boolean visible) {
 		if (visible) {
-			SimpleRestClient client = new SimpleRestClient();
-			client.doSendRequest(GETBALANCE_BASE_URL, "get", "",
-					fetchBalancerResult);
+			getBalanceByToken();
 			guanyingcard_pay_panel.setVisibility(View.VISIBLE);
 		} else {
 			guanyingcard_pay_panel.setVisibility(View.GONE);
 		}
 	}
 
-	private Bitmap qrcodeBitmap;
+	private void getBalanceByToken() {
+		SimpleRestClient client = new SimpleRestClient();
+		client.doSendRequest(GETBALANCE_BASE_URL, "get", "",
+				fetchBalancerResult);
+	}
+
 	private android.os.Handler urlHandler = new android.os.Handler() {
 
 		@Override
@@ -442,55 +451,6 @@ public class PaymentDialog extends Dialog {
 		return convertToHex(sha1hash);
 	}
 
-	// for test
-	// private String sendRechargeRequest(String url, String params) {
-	// StringBuffer response = new StringBuffer();
-	// try {
-	// URL postUrl = new URL(url);
-	// HttpURLConnection connection = (HttpURLConnection) postUrl
-	// .openConnection();
-	// connection.setDoOutput(true);
-	// connection.setDoInput(true);
-	// connection.setRequestMethod("POST");
-	// connection.setUseCaches(false);
-	// connection.setInstanceFollowRedirects(true);
-	// connection.setRequestProperty("Content-Type",
-	// "application/x-www-form-urlencoded");
-	// connection.setRequestProperty("Accept", "application/json");
-	// connection.connect();
-	// DataOutputStream out = new DataOutputStream(
-	// connection.getOutputStream());
-	// out.writeBytes(params);
-	// out.flush();
-	// out.close();
-	// int status = connection.getResponseCode();
-	// if (status == 200) {
-	// BufferedReader reader = new BufferedReader(
-	// new InputStreamReader(connection.getInputStream(),
-	// "UTF-8"));
-	// out.flush();
-	// out.close(); // flush and close
-	// String line;
-	// while ((line = reader.readLine()) != null) {
-	// response.append(line);
-	// }
-	// Log.v("aaaa", response.toString());
-	// reader.close();
-	// if (url.equals("register") && line == null) {
-	// connection.disconnect();
-	// return "200";
-	// }
-	// } else {
-	// connection.disconnect();
-	// return "";
-	// }
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// return "";
-	// }
-	// return response.toString();
-	// }
-
 	private boolean isNumeric(String str) {
 		Pattern pattern = Pattern.compile("[0-9]*");
 		Matcher isNum = pattern.matcher(str);
@@ -501,7 +461,6 @@ public class PaymentDialog extends Dialog {
 	}
 
 	private HttpPostRequestInterface fetchBalancerResult = new HttpPostRequestInterface() {
-
 		@Override
 		public void onPrepare() {
 		}
@@ -516,6 +475,20 @@ public class PaymentDialog extends Dialog {
 						R.string.pay_card_balance_title_label);
 				card_balance_title_label.setText(String.format(balancevalue,
 						balancefloat));
+				if (flag) {
+					if (balancefloat > mItem.expense.price) {
+						guanyingcard_pay_panel.setVisibility(View.VISIBLE);
+						changeQrcodePayPanelState(false, false);
+						changeLoginPanelState(false);
+						changeshiyuncardPanelState(false);
+					} else {
+						changeQrcodePayPanelState(true, true);
+						changeLoginPanelState(false);
+						changeYuePayPanelState(false);
+						changeshiyuncardPanelState(false);
+					}
+				}
+				flag = false;
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -523,7 +496,6 @@ public class PaymentDialog extends Dialog {
 
 		@Override
 		public void onFailed(String error) {
-			Log.v("aaaa", error);
 		}
 	};
 
@@ -551,7 +523,6 @@ public class PaymentDialog extends Dialog {
 
 		@Override
 		public void onFailed(String error) {
-			Log.v("aaaa", error);
 		}
 	};
 
@@ -621,12 +592,24 @@ public class PaymentDialog extends Dialog {
 
 		@Override
 		public void onFailed(String error) {
-			Log.v("aaaa", error);
 			ordercheckcount++;
 			if (ordercheckcount < 60)
 				urlHandler.sendEmptyMessageDelayed(ORDER_CHECK_RESULT,
 						ORDER_CHECK_INTERVAL);
 		}
+	};
+
+	private LoginPanelView.LoginInterface loginInterFace = new LoginPanelView.LoginInterface() {
+
+		@Override
+		public void onSuccess(String info) {
+			getBalanceByToken();
+		}
+
+		@Override
+		public void onFailed(String error) {
+		}
+
 	};
 
 	public interface OrderResultListener {
