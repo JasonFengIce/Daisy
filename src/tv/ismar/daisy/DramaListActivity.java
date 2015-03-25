@@ -65,7 +65,6 @@ public class DramaListActivity extends Activity implements
 		if (loadDialog != null && !loadDialog.isShowing()) {
 			loadDialog.show();
 		}
-
 		Bundle bundle = getIntent().getExtras();
 		if (null == bundle)
 			return;

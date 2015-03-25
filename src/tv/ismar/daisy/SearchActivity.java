@@ -53,10 +53,10 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	// 搜索
 	ImageButton ibtnSearch;
 	// 缓存适配器android:minSdkVersion
-	ImageCacheAdapter1 imageAdapter;
+	ImageCacheAdapter imageAdapter;
 	// CacheAdapter cacheAdapter;
 	// ViewHolderAdapter holderAdapter;
-	HGridView gridView;
+	ZGridView gridView;
 	// 搜索结果数
 	TextView tvSearchCount;
 	// 搜索结果linear
@@ -178,11 +178,11 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	}
 //-partition-size 2048 -
 	public void initViews() {
-		gridView = (HGridView) findViewById(R.id.serarc_gridview);
+		gridView = (ZGridView) findViewById(R.id.serarc_gridview);
 		//gridView.setNumColumns(6);
 	//	gridView.setVerticalSpacing(5);
 		gridView.setOnItemClickListener(SearchActivity.this);
-		imageAdapter = new ImageCacheAdapter1(SearchActivity.this, R.layout.search_grid_view_item);
+		imageAdapter = new ImageCacheAdapter(SearchActivity.this, R.layout.search_grid_view_item);
 		ibtnSearch = (ImageButton) findViewById(R.id.ibtn_search);
 		ibtnSearch.setOnClickListener(this);
 		tvSearchCount = (TextView) findViewById(R.id.tv_search_count);
@@ -381,9 +381,9 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	 */
 	private void setImageAdapter(List<MovieBean> movieList) {
 		imageAdapter.cancelAsync();
-		imageAdapter = new ImageCacheAdapter1(SearchActivity.this, movieList, R.layout.search_grid_view_item);
+		imageAdapter = new ImageCacheAdapter(SearchActivity.this, movieList, R.layout.search_grid_view_item);
 		gridView.setAdapter(imageAdapter);
-		imageAdapter.setList((ArrayList<MovieBean>) movieList);
+		//imageAdapter.setList((ArrayList<MovieBean>) movieList);
 		gridView.setFocusable(true);
 	};
 	/**

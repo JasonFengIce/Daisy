@@ -118,7 +118,7 @@ public class ItemDetailActivity extends Activity implements
 	private boolean isBuy = false;
 	private int remainDay = -1;
 	private String identify = "";
-
+	private Button mCollectBtn;
 	private void initViews() {
 		mDetailLeftContainer = (RelativeLayout) findViewById(R.id.detail_left_container);
 		mDetailAttributeContainer = (DetailAttributeContainer) findViewById(R.id.detail_attribute_container);
@@ -521,9 +521,9 @@ public class ItemDetailActivity extends Activity implements
 		mDetailIntro.setText(mItem.description);
 		// Set the favorite button's label.
 		if (isFavorite()) {
-			// mBtnFavorite.setText(getResources().getString(R.string.favorited));
+			mCollectBtn.setBackgroundResource(R.drawable.collected_btn_bg_selector);
 		} else {
-			// mBtnFavorite.setText(getResources().getString(R.string.favorite));
+			mCollectBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
 		}
 
 		if (mItem.poster_url != null) {
@@ -582,8 +582,15 @@ public class ItemDetailActivity extends Activity implements
 				url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk
 						+ "/";
 			}
-			Favorite favorite = DaisyUtils.getFavoriteManager(this)
-					.getFavoriteByUrl(url);
+			Favorite favorite = null;
+			if(!SimpleRestClient.isLogin()){
+				 favorite = DaisyUtils.getFavoriteManager(this)
+						.getFavoriteByUrl(url,"no");
+			}
+			else{
+				 favorite = DaisyUtils.getFavoriteManager(this)
+							.getFavoriteByUrl(url,"yes");
+			}
 			if (favorite != null) {
 				return true;
 			}
@@ -773,8 +780,16 @@ public class ItemDetailActivity extends Activity implements
 		if (isFavorite()) {
 			String url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk
 					+ "/";
+			String isnet = "";
+			if(SimpleRestClient.isLogin()){
+				isnet = "yes";
+				deleteFavoriteByNet();
+			}
+			else{
+				isnet = "no";
+			}
 			DaisyUtils.getFavoriteManager(ItemDetailActivity.this)
-					.deleteFavoriteByUrl(url);
+					.deleteFavoriteByUrl(url,isnet);
 			showToast(getResources().getString(
 					R.string.vod_bookmark_remove_success));
 		} else {
@@ -787,8 +802,15 @@ public class ItemDetailActivity extends Activity implements
 			favorite.url = url;
 			favorite.quality = mItem.quality;
 			favorite.is_complex = mItem.is_complex;
+			if(SimpleRestClient.isLogin()){
+				favorite.isnet = "yes";
+				createFavoriteByNet();
+			}
+			else{
+				favorite.isnet = "no";
+			}
 			DaisyUtils.getFavoriteManager(ItemDetailActivity.this).addFavorite(
-					favorite);
+					favorite,favorite.isnet);
 			showToast(getResources().getString(
 					R.string.vod_bookmark_add_success));
 		}
@@ -1056,6 +1078,7 @@ public class ItemDetailActivity extends Activity implements
 						.setBackgroundResource(R.drawable.drama_btn_bg_selector);
 				mRightBtn.setTag(DRAMA_VIDEO);
 			}
+			mCollectBtn = mMiddleBtn;
 		} else {
 			// 收费
 			if (!isBuy) {
@@ -1087,6 +1110,7 @@ public class ItemDetailActivity extends Activity implements
 				detail_price_txt.setVisibility(View.VISIBLE);
 				detail_duration_txt.setVisibility(View.VISIBLE);
 				remainDay = mItem.expense.duration;
+				mCollectBtn = mRightBtn;
 			} else {
 				// 已经购买
 				if (!isDrama()) {
@@ -1118,6 +1142,7 @@ public class ItemDetailActivity extends Activity implements
 						.setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
 				detail_price_txt
 						.setBackgroundResource(R.drawable.vod_detail_already_payment_price);
+				mCollectBtn = mMiddleBtn;
 			}
 		}
 	}
@@ -1131,4 +1156,60 @@ public class ItemDetailActivity extends Activity implements
 		}
 
 	};
+	
+	private void deleteFavoriteByNet(){
+		mSimpleRestClient.doSendRequest("/api/bookmark/remove/", "post", "access_token="+
+	    SimpleRestClient.access_token+"&device_token="+SimpleRestClient.device_token+"&item="+mItem.pk, new HttpPostRequestInterface() {
+			
+			@Override
+			public void onSuccess(String info) {
+				// TODO Auto-generated method stub
+				if("200".equals(info)){
+					mCollectBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+//					showToast(getResources().getString(
+//							R.string.vod_bookmark_remove_success));
+				}
+			}
+			
+			@Override
+			public void onPrepare() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onFailed(String error) {
+				// TODO Auto-generated method stub
+				mCollectBtn.setBackgroundResource(R.drawable.collected_btn_bg_selector);
+//				showToast(getResources().getString(
+//						R.string.vod_bookmark_remove_unsuccess));
+			}
+		});
+	}
+	private void createFavoriteByNet(){
+		mSimpleRestClient.doSendRequest("/api/bookmarks/create/", "post", "access_token="+SimpleRestClient.access_token+"&device_token="+SimpleRestClient.device_token+"&item="+mItem.pk, new HttpPostRequestInterface() {
+			
+			@Override
+			public void onSuccess(String info) {
+				// TODO Auto-generated method stub
+				mCollectBtn.setBackgroundResource(R.drawable.collected_btn_bg_selector);
+//				showToast(getResources().getString(
+//						R.string.vod_bookmark_add_success));
+			}
+			
+			@Override
+			public void onPrepare() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onFailed(String error) {
+				// TODO Auto-generated method stub
+				mCollectBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+//				showToast(getResources().getString(
+//						R.string.vod_bookmark_add_unsuccess));
+			}
+		});
+	}
 }

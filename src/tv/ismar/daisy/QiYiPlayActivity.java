@@ -306,7 +306,13 @@ public class QiYiPlayActivity extends VodMenuAction {
 		favoriteManager = DaisyUtils.getFavoriteManager(this);
 		historyManager = DaisyUtils.getHistoryManager(this);
 		mHistory = historyManager.getHistoryByUrl(itemUrl);
-		favorite = favoriteManager.getFavoriteByUrl(itemUrl);
+		if(SimpleRestClient.isLogin()){
+			favorite = favoriteManager.getFavoriteByUrl(itemUrl,"yes");
+		}
+		else{
+			favorite = favoriteManager.getFavoriteByUrl(itemUrl,"no");
+		}
+
 		Quality quality = historyManager.getQuality();
 		if (quality != null) {
 			currQuality = quality.quality;
@@ -842,8 +848,15 @@ public class QiYiPlayActivity extends VodMenuAction {
 					menu = new ISTVVodMenu(this);
 					ret = createMenu(menu);
 				}
+				String isnet = "";
+				if(SimpleRestClient.isLogin()){
+					isnet = "yes";
+				}
+				else{
+					isnet = "no";
+				}
 				if (itemUrl != null && favoriteManager != null
-						&& favoriteManager.getFavoriteByUrl(itemUrl) != null) {
+						&& favoriteManager.getFavoriteByUrl(itemUrl,isnet) != null) {
 					menu.findItem(5)
 							.setTitle(
 									getResources()
@@ -1084,9 +1097,19 @@ public class QiYiPlayActivity extends VodMenuAction {
 			return true;
 		}
 		if (id == 5) {
+			String isnet = "";
+			if(SimpleRestClient.isLogin()){
+				isnet = "yes";
+			}
+			else{
+				isnet = "no";
+			}
 			if (itemUrl != null && favoriteManager != null
-					&& favoriteManager.getFavoriteByUrl(itemUrl) != null) {
-				favoriteManager.deleteFavoriteByUrl(itemUrl);
+					&& favoriteManager.getFavoriteByUrl(itemUrl,isnet) != null) {
+				if(isnet.equals("yes")){
+					deleteFavoriteByNet();
+				}
+				favoriteManager.deleteFavoriteByUrl(itemUrl,isnet);
 				menu.findItem(5).setTitle(
 						getResources().getString(
 								R.string.vod_player_bookmark_setting));
@@ -1098,7 +1121,11 @@ public class QiYiPlayActivity extends VodMenuAction {
 					favorite.is_complex = item.is_complex;
 					favorite.title = item.title;
 					favorite.url = itemUrl;
-					favoriteManager.addFavorite(favorite);
+					favorite.isnet = isnet;
+					if(isnet.equals("yes")){
+						createFavoriteByNet();
+					}
+					favoriteManager.addFavorite(favorite,isnet);
 					menu.findItem(5)
 							.setTitle(
 									getResources()
@@ -1147,7 +1174,53 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		return true;
 	}
-
+	private void deleteFavoriteByNet(){
+		simpleRestClient.doSendRequest("/api/bookmark/remove/", "post", "access_token="+
+	    SimpleRestClient.access_token+"&device_token="+SimpleRestClient.device_token+"&item="+item.pk, new HttpPostRequestInterface() {
+			
+			@Override
+			public void onSuccess(String info) {
+				// TODO Auto-generated method stub
+				if("200".equals(info)){
+	
+				}
+			}
+			
+			@Override
+			public void onPrepare() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onFailed(String error) {
+				// TODO Auto-generated method stub
+	
+			}
+		});
+	}
+	private void createFavoriteByNet(){
+		simpleRestClient.doSendRequest("/api/bookmarks/create/", "post", "access_token="+SimpleRestClient.access_token+"&device_token="+SimpleRestClient.device_token+"&item="+item.pk, new HttpPostRequestInterface() {
+			
+			@Override
+			public void onSuccess(String info) {
+				// TODO Auto-generated method stub
+		
+			}
+			
+			@Override
+			public void onPrepare() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onFailed(String error) {
+				// TODO Auto-generated method stub
+	
+			}
+		});
+	}
 	private void gotoRelatePage() {
 		Intent intent = new Intent();
 		intent.setClass(QiYiPlayActivity.this,

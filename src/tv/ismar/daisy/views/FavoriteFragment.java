@@ -29,6 +29,7 @@ import tv.ismar.daisy.adapter.RecommecdItemAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.ContentModel;
@@ -102,6 +103,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
     private TextView recommend_txt;
     private TextView collect_or_history_txt;
     private VideoEntity tvHome;
+    private Item[] FavoriteList;
 	private void initViews(View fragmentView) {
 		
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
@@ -125,7 +127,10 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			Bundle savedInstanceState) {
 		View fragmentView = inflater.inflate(R.layout.list_view, container, false);
 		initViews(fragmentView);
-		new GetFavoriteTask().execute();
+		if("".equals(SimpleRestClient.access_token))
+		   new GetFavoriteTask().execute();
+		else
+			GetFavoriteByNet();
 		return fragmentView;
 	}
 	
@@ -139,7 +144,54 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		mLoadingDialog = new LoadingDialog(getActivity(), getResources().getString(R.string.loading));
 		createMenu();
 	}
-	
+	private void GetFavoriteByNet(){
+		mRestClient.doSendRequest("/api/bookmarks/", "get", "", new HttpPostRequestInterface() {
+			
+			@Override
+			public void onSuccess(String info) {
+				// TODO Auto-generated method stub
+				//解析json
+				FavoriteList = mRestClient.getItems(info);
+				if(FavoriteList!=null&&FavoriteList.length>0){
+					mItemCollections = new ArrayList<ItemCollection>();
+				    int num_pages = (int) FloatMath.ceil((float)FavoriteList.length / (float)ItemCollection.NUM_PER_PAGE);
+					ItemCollection itemCollection = new ItemCollection(num_pages, FavoriteList.length, "1", "1");
+					mItemCollections.add(itemCollection);
+					mHGridAdapter = new HGridAdapterImpl(getActivity(), mItemCollections,false);
+					mHGridAdapter.setList(mItemCollections);
+					if(mHGridAdapter.getCount()>0){
+						mHGridView.setAdapter(mHGridAdapter);
+						mHGridView.setFocusable(true);
+						mHGridView.setHorizontalFadingEdgeEnabled(true);
+						mHGridView.setFadingEdgeLength(144);
+						ArrayList<Item> items  = new ArrayList<Item>();
+						for(Item i:FavoriteList){
+							items.add(i);
+						}
+						mItemCollections.get(0).fillItems(0, items);
+						mHGridAdapter.setList(mItemCollections);
+					}
+				}
+				else{
+					no_video();
+				}
+				mLoadingDialog.dismiss();
+			}
+			
+			@Override
+			public void onPrepare() {
+				// TODO Auto-generated method stub
+				mLoadingDialog.show();
+			}
+			
+			@Override
+			public void onFailed(String error) {
+				// TODO Auto-generated method stub
+				no_video();
+				mLoadingDialog.dismiss();
+			}
+		});
+	}
 	class GetFavoriteTask extends AsyncTask<Void, Void, Void> {
 
 		@Override
@@ -152,7 +204,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			ArrayList<Favorite> favorites = DaisyUtils.getFavoriteManager(getActivity()).getAllFavorites();
+			ArrayList<Favorite> favorites = DaisyUtils.getFavoriteManager(getActivity()).getAllFavorites("no");			
 			mSectionList = new SectionList();
 			HashMap<String, ItemCollection> itemCollectionMap = new HashMap<String, ItemCollection>();
 			for(Favorite favorite: favorites) {
@@ -370,7 +422,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 				if(dialogType==AlertDialogFragment.NETWORK_EXCEPTION_DIALOG && !isInGetItemTask) {
 					task.execute(params);
 				} else if(!isInGetFavoriteTask) {
-					DaisyUtils.getFavoriteManager(getActivity()).deleteFavoriteByUrl((String)params[0]);
+					DaisyUtils.getFavoriteManager(getActivity()).deleteFavoriteByUrl((String)params[0],"no");
 					reset();
 				}
 				dialog.dismiss();
@@ -404,7 +456,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 				if(mSelectedPosition!=INVALID_POSITION) {
 					Item selectedItem = mHGridAdapter.getItem(mSelectedPosition);
 					if(!isInGetFavoriteTask && selectedItem!=null && selectedItem.url!=null) {
-						DaisyUtils.getFavoriteManager(getActivity()).deleteFavoriteByUrl(selectedItem.url);
+						DaisyUtils.getFavoriteManager(getActivity()).deleteFavoriteByUrl(selectedItem.url,"no");
 						reset();
 					}
 				}
@@ -413,14 +465,41 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		case 2:
 			if(mHGridAdapter!=null) {
 				if(!isInGetFavoriteTask) {
-					DaisyUtils.getFavoriteManager(getActivity()).deleteAll();
-					reset();
+					if("".equals(SimpleRestClient.access_token)){
+						DaisyUtils.getFavoriteManager(getActivity()).deleteAll("no");
+						reset();
+					}
+					else{
+						DaisyUtils.getFavoriteManager(getActivity()).deleteAll("yes");
+						EmptyAllFavorite();
+					}
 				}
 			}
 			break;
 		}
 	}
-	
+	private void EmptyAllFavorite(){
+		mRestClient.doSendRequest("/api/bookmarks/empty/", "post", "access_token="+SimpleRestClient.access_token+"&device_token="+SimpleRestClient.device_token, new HttpPostRequestInterface() {
+			
+			@Override
+			public void onSuccess(String info) {
+				// TODO Auto-generated method stub
+				no_video();
+			}
+			
+			@Override
+			public void onPrepare() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onFailed(String error) {
+				// TODO Auto-generated method stub
+				no_video();
+			}
+		});
+	}
 	@Override
 	public void OnMenuToggle() {
 		if(mMenuFragment==null) {
@@ -472,20 +551,21 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
-		mSelectedPosition = position;
-		// When selected column has changed, we need to update the ScrollableSectionList
-		int sectionIndex = mHGridAdapter.getSectionIndex(position);
-		int rows = mHGridView.getRows();
-		int itemCount = 0;
-		for(int i=0; i < sectionIndex; i++) {
-			itemCount += mHGridAdapter.getSectionCount(i);
-			
-		}
-		int columnOfX = (position - itemCount) / rows + 1;
-		int totalColumnOfSectionX = (int)(FloatMath.ceil((float)mHGridAdapter.getSectionCount(sectionIndex) / (float) rows)); 
-		int percentage = (int) ((float)columnOfX / (float)totalColumnOfSectionX * 100f);
-		mScrollableSectionList.setPercentage(sectionIndex, percentage);
-		
+		if(!SimpleRestClient.isLogin()){
+			mSelectedPosition = position;
+			// When selected column has changed, we need to update the ScrollableSectionList
+			int sectionIndex = mHGridAdapter.getSectionIndex(position);
+			int rows = mHGridView.getRows();
+			int itemCount = 0;
+			for(int i=0; i < sectionIndex; i++) {
+				itemCount += mHGridAdapter.getSectionCount(i);
+				
+			}
+			int columnOfX = (position - itemCount) / rows + 1;
+			int totalColumnOfSectionX = (int)(FloatMath.ceil((float)mHGridAdapter.getSectionCount(sectionIndex) / (float) rows)); 
+			int percentage = (int) ((float)columnOfX / (float)totalColumnOfSectionX * 100f);
+			mScrollableSectionList.setPercentage(sectionIndex, percentage);
+		}		
 	}
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {

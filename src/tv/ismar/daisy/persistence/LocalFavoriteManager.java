@@ -22,11 +22,11 @@ public class LocalFavoriteManager implements FavoriteManager {
 	private DBHelper mDBHelper;
 	public LocalFavoriteManager(Context context) {
 		mDBHelper = DaisyUtils.getDBHelper(context);
-		mFavorites = mDBHelper.getAllFavorites();
+		mFavorites = mDBHelper.getAllFavorites("no");
 	}
 
 	@Override
-	public void addFavorite(String title, String url, String content_model) {
+	public void addFavorite(String title, String url, String content_model,String isnet) {
 		if(url==null || title==null) {
 			throw new RuntimeException("title and url cannot be null");
 		}
@@ -44,12 +44,12 @@ public class LocalFavoriteManager implements FavoriteManager {
 			cv.put(DBFields.FavoriteTable.URL, url);
 			cv.put(DBFields.FavoriteTable.CONTENT_MODEL, content_model);
 			mDBHelper.insert(cv, DBFields.FavoriteTable.TABLE_NAME, 0);
-			mFavorites = mDBHelper.getAllFavorites();
+			mFavorites = mDBHelper.getAllFavorites(isnet);
 		}
 	}
 
 	@Override
-	public Favorite getFavoriteByUrl(String url) {
+	public Favorite getFavoriteByUrl(String url,String isnet) {
 		if(url==null) {
 			throw new RuntimeException("url cannot be null");
 		}
@@ -65,7 +65,7 @@ public class LocalFavoriteManager implements FavoriteManager {
 			}
 		}
 		if(favorite==null) {
-			favorite = mDBHelper.queryFavoriteByUrl(url);
+			favorite = mDBHelper.queryFavoriteByUrl(url,isnet);
 			if(favorite!=null) {
 				mFavorites.add(favorite);
 			}
@@ -74,40 +74,42 @@ public class LocalFavoriteManager implements FavoriteManager {
 	}
 
 	@Override
-	public ArrayList<Favorite> getAllFavorites() {
+	public ArrayList<Favorite> getAllFavorites(String isent) {
 		if(mFavorites == null) {
 			mFavorites = new ArrayList<Favorite>();
 		}
+	    mFavorites = mDBHelper.getAllFavorites(isent);
 		return mFavorites;
 	}
 
 	@Override
-	public void deleteFavoriteByUrl(String url) {
+	public void deleteFavoriteByUrl(String url,String isnet) {
 		if(url==null) {
 			throw new RuntimeException("url cannot be null");
 		}
-		mDBHelper.delete(DBFields.FavoriteTable.TABLE_NAME, url);
-		mFavorites = mDBHelper.getAllFavorites();
+		mDBHelper.delete(DBFields.FavoriteTable.TABLE_NAME, url,isnet);
+		mFavorites = mDBHelper.getAllFavorites(isnet);
 	}
 
 	@Override
-	public void deleteAll() {
-		mDBHelper.delete(DBFields.FavoriteTable.TABLE_NAME, null);
+	public void deleteAll(String isnet) {
+		mDBHelper.delete(DBFields.FavoriteTable.TABLE_NAME, null,isnet);
 		mFavorites.clear();
 	}
 
 	@Override
-	public void addFavorite(Favorite favorite) {
+	public void addFavorite(Favorite favorite,String isnet) {
 		if(favorite==null || favorite.url==null || favorite.title==null || favorite.content_model==null) {
 			throw new RuntimeException("favorite or favorite fields cannot be null");
 		}
-		Favorite f = getFavoriteByUrl(favorite.url);
+		Favorite f = getFavoriteByUrl(favorite.url,isnet);
 		if(f!=null) {
 			f.title = favorite.title;
 			f.content_model = favorite.content_model;
 			f.adlet_url = favorite.adlet_url;
 			f.quality = favorite.quality;
 			f.is_complex = favorite.is_complex;
+			f.isnet = isnet;
 			mDBHelper.updateFavorite(favorite);
 		}  else {
 			ContentValues cv = new ContentValues();
@@ -117,8 +119,9 @@ public class LocalFavoriteManager implements FavoriteManager {
 			cv.put(DBFields.FavoriteTable.ADLET_URL, favorite.adlet_url);
 			cv.put(DBFields.FavoriteTable.QUALITY, favorite.quality);
 			cv.put(DBFields.FavoriteTable.IS_COMPLEX, favorite.is_complex?1:0);
+			cv.put(DBFields.FavoriteTable.ISNET, isnet);
 			long result = mDBHelper.insert(cv, DBFields.FavoriteTable.TABLE_NAME, 0);
-			mFavorites = mDBHelper.getAllFavorites();
+			mFavorites = mDBHelper.getAllFavorites(isnet);
 			if(result>=0) {
 				new DataUploadTask().execute(favorite);
 			}

@@ -5,6 +5,7 @@ import org.sakuratya.horizontal.ui.ZGridView;
 import tv.ismar.daisy.adapter.PlayFinishedAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
@@ -284,9 +285,23 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 			}
 			break;
 		case R.id.btn_favorites:
+			String isnet = "";
+			if(SimpleRestClient.isLogin()){
+				isnet = "yes";
+			}
+			else{
+				isnet = "true";
+			}
 			if (isFavorite()) {
 				String url = simpleRest.root_url + "/api/item/" + item.pk + "/";
-				mFavoriteManager.deleteFavoriteByUrl(url);
+				if(SimpleRestClient.isLogin()){
+					deleteFavoriteByNet();
+					mFavoriteManager.deleteFavoriteByUrl(url,"yes");
+				}
+				else{
+					mFavoriteManager.deleteFavoriteByUrl(url,"no");
+				}
+
 				showToast(getResources().getString(R.string.vod_bookmark_remove_success));
 			} else {
 				String url = simpleRest.root_url + "/api/item/" + item.pk + "/";
@@ -297,7 +312,11 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 				favorite.url = url;
 				favorite.quality = item.quality;
 				favorite.is_complex = item.is_complex;
-				mFavoriteManager.addFavorite(favorite);
+				favorite.isnet = isnet;
+				if(isnet.equals("yes")){
+					createFavoriteByNet();
+				}
+				mFavoriteManager.addFavorite(favorite,isnet);
 				// mFavoriteManager.addFavorite(item.title, url, mItem.content_model);
 				showToast(getResources().getString(R.string.vod_bookmark_add_success));
 			}
@@ -312,7 +331,53 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		}
 
 	}
-
+	private void deleteFavoriteByNet(){
+		simpleRest.doSendRequest("/api/bookmark/remove/", "post", "access_token="+
+	    SimpleRestClient.access_token+"&device_token="+SimpleRestClient.device_token+"&item="+item.pk, new HttpPostRequestInterface() {
+			
+			@Override
+			public void onSuccess(String info) {
+				// TODO Auto-generated method stub
+				if("200".equals(info)){
+	
+				}
+			}
+			
+			@Override
+			public void onPrepare() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onFailed(String error) {
+				// TODO Auto-generated method stub
+	
+			}
+		});
+	}
+	private void createFavoriteByNet(){
+		simpleRest.doSendRequest("/api/bookmarks/create/", "post", "access_token="+SimpleRestClient.access_token+"&device_token="+SimpleRestClient.device_token+"&item="+item.pk, new HttpPostRequestInterface() {
+			
+			@Override
+			public void onSuccess(String info) {
+				// TODO Auto-generated method stub
+		
+			}
+			
+			@Override
+			public void onPrepare() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onFailed(String error) {
+				// TODO Auto-generated method stub
+	
+			}
+		});
+	}
 	/**
 	 * 显示自定义Dialog
 	 */
@@ -333,7 +398,13 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 			if (url == null && item.pk != 0) {
 				url = simpleRest.root_url + "/api/item/" + item.pk + "/";
 			}
-			Favorite favorite = mFavoriteManager.getFavoriteByUrl(url);
+			Favorite favorite;
+			if(SimpleRestClient.isLogin()){
+				favorite = mFavoriteManager.getFavoriteByUrl(url,"yes");
+			}
+			else{
+				favorite = mFavoriteManager.getFavoriteByUrl(url,"no");
+			}
 			if (favorite != null) {
 				return true;
 			}

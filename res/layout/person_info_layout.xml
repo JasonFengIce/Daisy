@@ -105,7 +105,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:text="50元"
             android:textColor="#FFF8F8FF"
             android:textSize="35sp" />
     </LinearLayout>
