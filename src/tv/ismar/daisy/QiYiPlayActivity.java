@@ -7,6 +7,7 @@ import java.util.List;
 
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.models.Clip;
 import tv.ismar.daisy.models.Favorite;
@@ -18,6 +19,7 @@ import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.player.ISTVVodMenu;
 import tv.ismar.daisy.player.ISTVVodMenuItem;
+import tv.ismar.daisy.qiyimediaplayer.SdkVideo;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -199,7 +201,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 		itemUrl = item.clip.url;
 		titleText.setText(item.title);
 		simpleRestClient = new SimpleRestClient();
-		showBuffer();
 		new initPlayTask().execute();
 		initQiyiVideoPlayer();
 	}
@@ -232,9 +233,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 								+ item.item_pk + "/";
 						item = simpleRestClient.getItem(itemUrl);
 						if (item != null && item.subitems != null) {
-
 							listItems = new ArrayList<Item>();
-
 							for (int i = 0; i < item.subitems.length; i++) {
 								listItems.add(item.subitems[i]);
 							}
@@ -244,7 +243,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 								+ item.item_pk + "/";
 						// Item item1 = simpleRestClient.getItem(itemUrl);
 					}
-
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -252,6 +250,56 @@ public class QiYiPlayActivity extends VodMenuAction {
 			return null;
 		}
 
+	}
+
+	// 初始化播放地址url
+	private class ItemByUrlTask extends AsyncTask<String, Void, ClipInfo> {
+
+		@Override
+		protected void onPostExecute(ClipInfo result) {
+			if (result != null) {
+//				initPlayer();
+			} else {
+				// ExToClosePlayer("url"," m3u8 quality is null ,or get m3u8 err");
+			}
+		}
+
+		@Override
+		protected ClipInfo doInBackground(String... params) {
+			Object obj = bundle.get("url");
+			Log.d(TAG, "init player bundle url === " + obj);
+			String sn = VodUserAgent.getMACAddress();
+			AccessProxy.init(VodUserAgent.deviceType,
+					VodUserAgent.deviceVersion, sn);
+			try {
+				if (obj != null) {
+					item = simpleRestClient.getItem((String) obj);
+					if (item != null) {
+						clip = item.clip;
+						urlInfo = AccessProxy.parse(SimpleRestClient.root_url
+								+ "/api/clip/" + clip.pk + "/",
+								VodUserAgent.getAccessToken(sn),
+								QiYiPlayActivity.this);
+						if (urlInfo.getIqiyi_4_0().length() == 0) {
+							Intent intent = new Intent();
+							intent.setAction("tv.ismar.daisy.Play");
+							intent.putExtra("ismartv", AccessProxy.getvVideoClipInfo());
+							startActivity(intent);
+							QiYiPlayActivity.this.finish();
+							return null;
+						}else{
+
+						}
+					}
+				}
+			} catch (Exception e) {
+				Log.e(TAG, e.toString());
+				// ExToClosePlayer("url","m3u8 quality is null ,or get m3u8 err /n"+e.toString());
+				return null;
+			}
+			return urlInfo;
+
+		}
 	}
 
 	public void initQiyiVideoPlayer() {
@@ -262,7 +310,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 		frameContainer.setVisibility(View.VISIBLE);
 		mPlayer = QiyiVideoPlayer.createVideoPlayer(this, frameContainer,
 				flParams, /* bundle */null, mVideoStateListener);
-		String info = (String) bundle.get("iqiyi");
 		favoriteManager = DaisyUtils.getFavoriteManager(this);
 		historyManager = DaisyUtils.getHistoryManager(this);
 		mHistory = historyManager.getHistoryByUrl(itemUrl);
@@ -276,12 +323,17 @@ public class QiYiPlayActivity extends VodMenuAction {
 			tempOffset = (int) mHistory.last_position;
 		}
 
+		setQiyiVideo();
+	}
+
+	private void setQiyiVideo() {
 		if (tempOffset > 0 && isContinue == true && !live_video) {
 			bufferText.setText("  " + BUFFERCONTINUE
 					+ getTimeString(tempOffset));
 		} else {
 			bufferText.setText(PlAYSTART + "《" + titleText.getText() + "》");
 		}
+		String info = (String) bundle.get("iqiyi");
 		isBuffer = false;
 		showBuffer();
 		if (tempOffset > 0 && isContinue) {
@@ -291,7 +343,14 @@ public class QiYiPlayActivity extends VodMenuAction {
 			currPosition = 0;
 			seekPostion = 0;
 		}
-		mPlayer.setVideo(AccessProxy.getQiYiInfo(info));
+		if (info != null && info.contains("iqiyi_4_0")) {
+			mPlayer.setVideo(AccessProxy.getQiYiInfo(info));
+		} else {
+			String[] array = info.split(":");
+			SdkVideo qiyiInfo = new SdkVideo(array[0], array[1], array[2],
+					Definition.DEFINITON_1080P);
+			mPlayer.setVideo(qiyiInfo);
+		}
 		mPlayer.start();
 		initQualtiyText();
 	}
@@ -955,27 +1014,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 				getResources().getString(R.string.vod_player_quality_adaptive));
 		menu.addItem(20, getResources().getString(R.string.kefucentertitle));
 		menu.addItem(30, getResources().getString(R.string.playfromstarttitle));
-		// if (itemUrl != null && favoriteManager != null
-		// && favoriteManager.getFavoriteByUrl(itemUrl) == null) {
-		// menu.addItem(
-		// 5,
-		// getResources().getString(
-		// R.string.vod_player_bookmark_setting));
-		// } else {
-		// menu.addItem(
-		// 5,
-		// getResources().getString(
-		// R.string.vod_bookmark_remove_bookmark_setting));
-		// }
-		// menu.addItem(6,
-		// getResources().getString(R.string.vod_player_related_setting));
-		//
-		// sub = menu.addSubMenu(7,
-		// getResources().getString(R.string.vod_player_continue_setting));
-		// sub.addItem(8, getResources()
-		// .getString(R.string.vod_player_continue_on));
-		// sub.addItem(9,
-		// getResources().getString(R.string.vod_player_continue_off));
 
 		return true;
 	}
@@ -1150,43 +1188,46 @@ public class QiYiPlayActivity extends VodMenuAction {
 			historyManager.addHistory(history);
 		}
 	}
-	private void createHistory(int length){
-		if("".equals(SimpleRestClient.access_token)){
-			return;//不登录不必上传
+
+	private void createHistory(int length) {
+		if ("".equals(SimpleRestClient.access_token)) {
+			return;// 不登录不必上传
 		}
 		int offset = length;
-		if(length==clipLength){
+		if (length == clipLength) {
 			offset = -1;
 		}
-		String params = "access_token="+SimpleRestClient.access_token+"&device_token="+SimpleRestClient.device_token
-				+"&offset="+offset;
-		if(subItem!=null){
-			params = params + "&subitem="+subItem.pk;
+		String params = "access_token=" + SimpleRestClient.access_token
+				+ "&device_token=" + SimpleRestClient.device_token + "&offset="
+				+ offset;
+		if (subItem != null) {
+			params = params + "&subitem=" + subItem.pk;
+		} else {
+			params = params + "&item=" + item.item_pk;
 		}
-		else{
-			params = params + "&item="+item.item_pk;
-		}
-		simpleRestClient.doSendRequest("/api/histories/create/", "post", params, new HttpPostRequestInterface() {
-			
-			@Override
-			public void onSuccess(String info) {
-				// TODO Auto-generated method stub
-				Log.i("BAIDU", info);
-			}
-			
-			@Override
-			public void onPrepare() {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onFailed(String error) {
-				// TODO Auto-generated method stub
-				Log.i("BAIDU", error);
-			}
-		});
+		simpleRestClient.doSendRequest("/api/histories/create/", "post",
+				params, new HttpPostRequestInterface() {
+
+					@Override
+					public void onSuccess(String info) {
+						// TODO Auto-generated method stub
+						Log.i("BAIDU", info);
+					}
+
+					@Override
+					public void onPrepare() {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onFailed(String error) {
+						// TODO Auto-generated method stub
+						Log.i("BAIDU", error);
+					}
+				});
 	}
+
 	private Runnable checkStatus = new Runnable() {
 		public void run() {
 			if (mPlayer.isPlaying()

@@ -349,16 +349,19 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
                     item = simpleRestClient.getItem((String) obj);
                     if (item != null) {
                         clip = item.clip;
-
-                        // try {
-                        // host = (new URL((String)obj)).getHost();
-                        // } catch (MalformedURLException e) {
-                        // e.printStackTrace();
-                        // }http://127.0.0.1:21098/cord
                         urlInfo = AccessProxy.parse(SimpleRestClient.root_url
                                         + "/api/clip/" + clip.pk + "/",
                                 VodUserAgent.getAccessToken(sn),
                                 PlayerActivity.this);
+						if (urlInfo.getIqiyi_4_0().length() > 0) {
+							Intent intent = new Intent();
+							intent.setAction("tv.ismar.daisy.qiyiPlay");
+							intent.putExtra("iqiyi", urlInfo.getIqiyi_4_0());
+							intent.putExtra("item", item);
+							startActivity(intent);
+							PlayerActivity.this.finish();
+							return null;
+						}
                     }
                 } else {
                     obj = bundle.get("item");
@@ -367,12 +370,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
                         live_video = item.live_video;
                         if (item.clip != null) {
                             clip = item.clip;
-
-                            // try {
-                            // host = (new URL((String)obj)).getHost();
-                            // } catch (MalformedURLException e) {
-                            // e.printStackTrace();
-                            // }http://127.0.0.1:21098/cord
                             urlInfo = AccessProxy.parse(
                                     SimpleRestClient.root_url + "/api/clip/"
                                             + clip.pk + "/",
@@ -541,40 +538,12 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
                 }
 
                 Log.d(TAG, "RES_INT_OFFSET currPosition=" + currPosition);
-
-                // mVideoView.setVideoPath(urls[currQuality]);
-                // mVideoView.setOnPreparedListener(new
-                // SmartPlayer.OnPreparedListener(){
-                //
-                // @Override
-                // public void onPrepared(SmartPlayer arg0) {
-                //
-                // arg0.start();
-                // checkTaskStart();
-                // }});
                 if (urls != null && mVideoView != null) {
                     TaskStart();// cmstest.tvxio.com
                     mVideoView.setVideoPath(urls[currQuality]);
                     Log.i("zhuabao", "play url==" + urls[currQuality]);
                     sid = VodUserAgent.getSid(urls[currQuality]);
                     mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
-                    // mVideoView.setOnInfoListener(new
-                    // SmartPlayer.OnInfoListener() {
-                    //
-                    // @Override
-                    // public boolean onInfo(SmartPlayer arg0, int arg1, int
-                    // arg2) {
-                    // // TODO Auto-generated method stub
-                    // mCurrentSeed = arg1/8;
-                    // if(subItem != null)
-                    // callaPlay.videoPlaySpeed(item.pk, subItem.pk, item.title,
-                    // clip.pk, currQuality, mCurrentSeed, mediaip, sid);
-                    // else
-                    // callaPlay.videoPlaySpeed(item.pk, null, item.title,
-                    // clip.pk, currQuality, mCurrentSeed, mediaip, sid);
-                    // return false;
-                    // }
-                    // });
                     mVideoView
                             .setOnPreparedListener(new SmartPlayer.OnPreparedListener() {
                                 @Override
