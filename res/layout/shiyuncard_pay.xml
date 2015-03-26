@@ -33,6 +33,8 @@
         android:layout_marginTop="@dimen/pay_shiyuncard_input_margintop"
         android:background="@drawable/edit_selector"
         android:singleLine="true"
+        android:paddingLeft="10dip"
+        android:textSize="30sp"
         android:textColor="#FFF8F8FF"
          />
 
@@ -44,6 +46,7 @@
         android:layout_marginTop="@dimen/pay_shiyuncard_submit_margintop"
         android:background="@drawable/person_btn_selector"
         android:text="@string/pay_shiyuncard_submit_label"
+        android:textColor="#FFF8F8FF"
         android:textSize="@dimen/pay_shiyuncard_submit_textsize" />
 
 </LinearLayout>
