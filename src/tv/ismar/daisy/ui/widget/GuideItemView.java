@@ -16,20 +16,20 @@ import java.util.ArrayList;
 /**
  * Created by huaijie on 2015/3/25.
  */
-public class GuideItem extends LinearLayout {
+public class GuideItemView extends LinearLayout {
     private Context context;
 
-    public GuideItem(Context context) {
+    public GuideItemView(Context context) {
         super(context);
         this.context = context;
     }
 
-    public GuideItem(Context context, AttributeSet attrs) {
+    public GuideItemView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
     }
 
-    public GuideItem(Context context, AttributeSet attrs, int defStyleAttr) {
+    public GuideItemView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
     }
