@@ -7,6 +7,8 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.sakuratya.horizontal.ui.ZGridView;
+
 import tv.ismar.daisy.adapter.DaramAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
@@ -24,6 +26,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -43,7 +46,7 @@ public class DramaListActivity extends Activity implements
 	private List<Item> mList = new ArrayList<Item>();
 	private DaramAdapter mDramaAdapter;
 	private Item mSubItem;
-	private GridView mDramaView;
+	private ZGridView mDramaView;
 	private AsyncImageView mImageBackground;
 	private ImageView mDramaImageLabel;
 	private TextView mTvDramaName;
@@ -51,7 +54,8 @@ public class DramaListActivity extends Activity implements
 	private TextView mTvDramaType;
 	private TextView one_drama_order_info;
 	private Button orderAll_drama;
-
+    private Button down_btn;
+    private Button up_btn;
 	// private Bitmap bitmap;
 	private LoadingDialog loadDialog;
 
@@ -92,10 +96,31 @@ public class DramaListActivity extends Activity implements
 		// }) {
 		// }.start();
 		initLayout();
+		down_btn = (Button)findViewById(R.id.down_btn);
+		up_btn = (Button)findViewById(R.id.up_btn);
+		down_btn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				//mDramaView.arrowScroll(View.FOCUS_DOWN);
+				mDramaView.pageScroll(View.FOCUS_DOWN);
+			}
+		});
+		up_btn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				//mDramaView.arrowScroll(View.FOCUS_UP);
+				mDramaView.pageScroll(View.FOCUS_UP);
+			}
+		});
 	}
 
 	private void initViews() {
-		mDramaView = (GridView) findViewById(R.id.drama_gridview);
+		View v = (View)findViewById(R.id.drama_gridview);
+		mDramaView = (ZGridView) v.findViewById(R.id.drama_zgridview);
 		mDramaView.setOnItemSelectedListener(this);
 		mDramaView.setOnItemClickListener(this);
 		mDramaView.setNumColumns(10);

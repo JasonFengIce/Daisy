@@ -7,6 +7,13 @@ public class PrivilegeItem {
   private String type;
   private String buydate;
   private String exceeddate;
+  private boolean iseffective;
+public boolean isIseffective() {
+	return iseffective;
+}
+public void setIseffective(boolean iseffective) {
+	this.iseffective = iseffective;
+}
 public String getType() {
 	return type;
 }

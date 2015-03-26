@@ -131,12 +131,12 @@
             android:layout_height="match_parent"
             android:scrollbarTrackVertical="@drawable/listview_scroll_bg"
             android:divider="@android:color/transparent"
-            android:listSelector="@android:color/transparent"
             android:scrollbarThumbVertical="@drawable/listview_thumb_bg"
             android:scrollbars="vertical"
             android:scrollbarSize="30dip"
             android:scrollbarStyle="outsideInset"
-            >
+            android:scrollbarFadeDuration="0"
+            android:fadeScrollbars="false" >
         </ListView>
         <TextView 
             android:id="@+id/no_privilegelist_txt"

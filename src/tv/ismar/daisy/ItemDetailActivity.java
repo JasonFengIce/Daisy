@@ -119,7 +119,9 @@ public class ItemDetailActivity extends Activity implements
 	private int remainDay = -1;
 	private String identify = "";
 	private Button mCollectBtn;
+	private ImageView isbuy_label;
 	private void initViews() {
+		isbuy_label = (ImageView)findViewById(R.id.isbuy_label);
 		mDetailLeftContainer = (RelativeLayout) findViewById(R.id.detail_left_container);
 		mDetailAttributeContainer = (DetailAttributeContainer) findViewById(R.id.detail_attribute_container);
 		mDetailTitle = (TextView) findViewById(R.id.detail_title);
@@ -1114,6 +1116,8 @@ public class ItemDetailActivity extends Activity implements
 				mCollectBtn = mRightBtn;
 			} else {
 				// 已经购买
+				isbuy_label.setVisibility(View.VISIBLE);
+				mDetailQualityLabel.setVisibility(View.GONE);
 				if (!isDrama()) {
 					// 电影
 					mLeftBtn.setBackgroundResource(R.drawable.play_btn_bg_selector);

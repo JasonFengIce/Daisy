@@ -12,13 +12,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.PrivilegeItem;
+import tv.ismar.daisy.player.InitPlayerTool;
+import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
 import tv.ismar.daisy.ui.adapter.PrivilegeAdapter;
+import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.LoadingDialog;
 import tv.ismar.daisy.views.LoginPanelView;
+import tv.ismar.daisy.views.PaymentDialog;
 import tv.ismar.daisy.views.LoginPanelView.LoginInterface;
 import android.app.Activity;
 import android.content.Intent;
@@ -125,50 +130,20 @@ public class PersonCenterActivity extends Activity {
 			}
 		});
 	}
-//	  private class initPlayTask extends AsyncTask<String, Void, Void> {
-//
-//	        @Override
-//	        protected void onPostExecute(Void result) {
-//	            // TODO Auto-generated method stub
-//	           
-//	        }
-//
-//	        @Override
-//	        protected Void doInBackground(String... params) {
-//	            // TODO Auto-generated method stub
-//	            try {
-//	                if (item != null) {
-//	                    if (item.item_pk != item.pk) {
-//	                        currNum = item.position;
-//	                        Log.d(TAG, "currNum ===" + currNum);
-//	                        subItemUrl = SimpleRestClient.root_url
-//	                                + "/api/subitem/" + item.pk + "/";
-//	                        subItem = simpleRestClient.getItem(subItemUrl);
-//	                        itemUrl = SimpleRestClient.root_url + "/api/item/"
-//	                                + item.item_pk + "/";
-//	                        item = simpleRestClient.getItem(itemUrl);
-//	                        if (item != null && item.subitems != null) {
-//
-//	                            listItems = new ArrayList<Item>();
-//
-//	                            for (int i = 0; i < item.subitems.length; i++) {
-//	                                listItems.add(item.subitems[i]);
-//	                            }
-//	                        }
-//	                    } else {
-//	                        itemUrl = SimpleRestClient.root_url + "/api/item/"
-//	                                + item.item_pk + "/";
-//	                        // Item item1 = simpleRestClient.getItem(itemUrl);
-//	                    }
-//
-//	                }
-//	            } catch (Exception e) {
-//	                e.printStackTrace();
-//	            }
-//	            return null;
-//	        }
-//
-//	    }
+	private PaymentDialog.OrderResultListener ordercheckListener = new PaymentDialog.OrderResultListener() {
+
+		@Override
+		public void payResult(boolean result) {
+		}
+
+	};
+	private void buyVideo(Item item) {
+		PaymentDialog dialog = new PaymentDialog(PersonCenterActivity.this,
+				R.style.PaymentDialog, ordercheckListener);
+		item.model_name = "item";
+		dialog.setItem(item);
+		dialog.show();
+	}
 	private void initView(){
 		mPersoninfoLayout = (View)findViewById(R.id.info);
 		privilege_txt = (TextView)mPersoninfoLayout.findViewById(R.id.privilege_txt);
@@ -191,23 +166,136 @@ public class PersonCenterActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View v, int position,
 					long id) {
 				// TODO Auto-generated method stub
-				PrivilegeItem item = mList.get(position);
-				if(item!=null){
-					if(item.getType().equals("package")){
-						Intent intent = new Intent();
-						intent.setAction("tv.ismar.daisy.packageitem");
-						intent.putExtra("url", SimpleRestClient.root_url+"/api/package/"+item.getItem_pk()+"/");
-						startActivity(intent);
+				final PrivilegeItem privilegeitem = mList.get(position);
+				if(privilegeitem!=null){
+					if(privilegeitem.getType().equals("package")){
+							Intent intent = new Intent();
+							intent.setAction("tv.ismar.daisy.packageitem");
+							intent.putExtra("url", SimpleRestClient.root_url+"/api/package/"+privilegeitem.getItem_pk()+"/");
+							startActivity(intent);					
 					}
 					else{
-						if(item.getType().equals("item")){
-							String url = "/api/item/"+item.getItem_pk()+"/";
+						if(privilegeitem.getType().equals("item")){
+							final String url = "/api/item/"+privilegeitem.getItem_pk()+"/";
 							mSimpleRestClient.doSendRequest(url, "get", "", new HttpPostRequestInterface() {
 								
 								@Override
 								public void onSuccess(String info) {
 									// TODO Auto-generated method stub
 									Item item = mSimpleRestClient.getItemRecord(info);
+									if(item!=null){
+										Intent intent = new Intent();
+										if(item.is_complex) {
+											intent.setAction("tv.ismar.daisy.Item");
+											intent.putExtra("url", SimpleRestClient.root_url + url);
+											startActivity(intent);
+										} else {
+											if(privilegeitem.isIseffective()){
+												InitPlayerTool tool = new InitPlayerTool(PersonCenterActivity.this);
+												tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
+													
+													@Override
+													public void onPreExecute(Intent intent) {
+														// TODO Auto-generated method stub
+											            mLoadingDialog.show();
+													}
+													
+													@Override
+													public void onPostExecute() {
+														// TODO Auto-generated method stub
+														mLoadingDialog.dismiss();
+													}
+												});
+												tool.initClipInfo(item.url, InitPlayerTool.FLAG_URL);
+											}
+											else{
+												//
+											   item.model_name = "item";
+                                               buyVideo(item);
+											}
+										}
+									}
+								}
+								
+								@Override
+								public void onPrepare() {
+									// TODO Auto-generated method stub
+									
+								}
+								
+								@Override
+								public void onFailed(String error) {
+									// TODO Auto-generated method stub
+									
+								}
+							});
+						}
+						else if(privilegeitem.getType().equals("subitem")){
+							String subitem_url = "/api/subitem/"+privilegeitem.getItem_pk()+"/";
+							mSimpleRestClient.doSendRequest(subitem_url, "get", "", new HttpPostRequestInterface() {
+								
+								@Override
+								public void onSuccess(String info) {
+									// TODO Auto-generated method stub
+									final Item subitem = mSimpleRestClient.getItemRecord(info);
+									if(subitem!=null){
+										if(subitem.is_complex){
+											Intent intent = new Intent();
+											intent.setAction("tv.ismar.daisy.Item");
+											String url = "/api/item/"+subitem.item_pk+"/";
+											intent.putExtra("url", SimpleRestClient.root_url+url);
+											startActivity(intent);
+										}
+										else{
+											if(privilegeitem.isIseffective()){
+												InitPlayerTool tool = new InitPlayerTool(PersonCenterActivity.this);
+												tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
+													
+													@Override
+													public void onPreExecute(Intent intent) {
+														// TODO Auto-generated method stub
+											            mLoadingDialog.show();
+													}
+													
+													@Override
+													public void onPostExecute() {
+														// TODO Auto-generated method stub
+														mLoadingDialog.dismiss();
+													}
+												});
+												tool.initClipInfo(subitem, InitPlayerTool.FLAG_ITEM);
+											}
+											else{
+												//
+												String item_url = "/api/item/"+subitem.item_pk+"/";
+												mSimpleRestClient.doSendRequest(item_url, "get", "", new HttpPostRequestInterface() {
+													
+													@Override
+													public void onSuccess(String info) {
+														// TODO Auto-generated method stub
+														Item item = mSimpleRestClient.getItemRecord(info);
+														if(item!=null){
+															subitem.model_name = "subitem";
+															subitem.expense.subprice = subitem.expense.subprice;
+															buyVideo(subitem);
+														}
+													}
+													
+													@Override
+													public void onPrepare() {
+														// TODO Auto-generated method stub
+														
+													}
+													
+													@Override
+													public void onFailed(String error) {
+														// TODO Auto-generated method stub
+														
+													}
+												});
+											}
+										}
+									}
 								}
 								
 								@Override
@@ -344,6 +432,7 @@ public class PersonCenterActivity extends Activity {
 							item.setType(type);
 							int item_pk = effective.getJSONArray(i).getInt(4);
 							item.setItem_pk(item_pk);
+							item.setIseffective(true);
 							mList.add(item);
 						}
 					}
@@ -361,6 +450,7 @@ public class PersonCenterActivity extends Activity {
 							item.setType(type);
 							int item_pk = ineffective.getJSONArray(i).getInt(4);
 							item.setItem_pk(item_pk);
+							item.setIseffective(false);
 							mList.add(item);
 						}
 					}
