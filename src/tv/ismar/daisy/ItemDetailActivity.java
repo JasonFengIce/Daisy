@@ -563,10 +563,11 @@ public class ItemDetailActivity extends Activity implements
 
 	private String getEpisodes(Item item) {
 		if (item.subitems.length > 0) {
-			return item.episode
-					+ "("
-					+ getResources().getString(R.string.update_to_episode)
-							.replace("#", "" + item.subitems.length) + ")";
+			String update_to_episode = getResources().getString(
+					R.string.update_to_episode);
+			return item.episode + "("
+					+ String.format(update_to_episode, item.subitems.length)
+					+ ")";
 		} else {
 			return null;
 		}
