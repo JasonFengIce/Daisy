@@ -359,6 +359,15 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
                                         + "/api/clip/" + clip.pk + "/",
                                 VodUserAgent.getAccessToken(sn),
                                 PlayerActivity.this);
+						if (urlInfo.getIqiyi_4_0().length() > 0) {
+							Intent intent = new Intent();
+							intent.setAction("tv.ismar.daisy.qiyiPlay");
+							intent.putExtra("iqiyi", urlInfo.getIqiyi_4_0());
+							intent.putExtra("item", item);
+							startActivity(intent);
+							PlayerActivity.this.finish();
+							return null;
+						}
                     }
                 } else {
                     obj = bundle.get("item");
@@ -478,11 +487,21 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
                 if (item != null) {
                     if (subItem != null && subItem.item_pk != subItem.pk) {
                         mHistory = historyManager.getHistoryByUrl(itemUrl);
-                        favorite = favoriteManager.getFavoriteByUrl(itemUrl);
+                        if(SimpleRestClient.isLogin()){
+                            favorite = favoriteManager.getFavoriteByUrl(itemUrl,"yes");
+                        }
+                        else{
+                        	favorite = favoriteManager.getFavoriteByUrl(itemUrl,"no");
+                        }
                         titleText.setText(subItem.title);
                     } else {
                         mHistory = historyManager.getHistoryByUrl(itemUrl);
-                        favorite = favoriteManager.getFavoriteByUrl(itemUrl);
+                        if(SimpleRestClient.isLogin()){
+                            favorite = favoriteManager.getFavoriteByUrl(itemUrl,"yes");
+                        }
+                        else{
+                        	favorite = favoriteManager.getFavoriteByUrl(itemUrl,"no");
+                        }
                         titleText.setText(item.title);
                     }
                     if (mHistory != null) {
@@ -1202,8 +1221,15 @@ private void createHistory(int length){
                         menu = new ISTVVodMenu(this);
                         ret = createMenu(menu);
                     }
+                    String net = "";
+                    if(SimpleRestClient.isLogin()){
+                    	net = "yes";
+                    }
+                    else{
+                    	net = "no";
+                    }
                     if (itemUrl != null && favoriteManager != null
-                            && favoriteManager.getFavoriteByUrl(itemUrl) != null) {
+                            && favoriteManager.getFavoriteByUrl(itemUrl,net) != null) {
                         menu.findItem(5)
                                 .setTitle(
                                         getResources()
@@ -1631,7 +1657,53 @@ private void createHistory(int length){
     }
 
     // reset()-->setDataSource(path)-->prepare()-->start()-->stop()--reset()-->
-
+	private void deleteFavoriteByNet(){
+		simpleRestClient.doSendRequest("/api/bookmark/remove/", "post", "access_token="+
+	    SimpleRestClient.access_token+"&device_token="+SimpleRestClient.device_token+"&item="+item.pk, new HttpPostRequestInterface() {
+			
+			@Override
+			public void onSuccess(String info) {
+				// TODO Auto-generated method stub
+				if("200".equals(info)){
+	
+				}
+			}
+			
+			@Override
+			public void onPrepare() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onFailed(String error) {
+				// TODO Auto-generated method stub
+	
+			}
+		});
+	}
+	private void createFavoriteByNet(){
+		simpleRestClient.doSendRequest("/api/bookmarks/create/", "post", "access_token="+SimpleRestClient.access_token+"&device_token="+SimpleRestClient.device_token+"&item="+item.pk, new HttpPostRequestInterface() {
+			
+			@Override
+			public void onSuccess(String info) {
+				// TODO Auto-generated method stub
+		
+			}
+			
+			@Override
+			public void onPrepare() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onFailed(String error) {
+				// TODO Auto-generated method stub
+	
+			}
+		});
+	}
     /**
      * @param menu
      * @param id
@@ -1674,9 +1746,19 @@ private void createHistory(int length){
             return true;
         }
         if (id == 5) {
+        	String isnet = "";
+        	if(SimpleRestClient.isLogin()){
+        		isnet = "yes";
+        	}
+        	else{
+        		isnet = "no";
+        	}
             if (itemUrl != null && favoriteManager != null
-                    && favoriteManager.getFavoriteByUrl(itemUrl) != null) {
-                favoriteManager.deleteFavoriteByUrl(itemUrl);
+                    && favoriteManager.getFavoriteByUrl(itemUrl,isnet) != null) {
+            	if(isnet.equals("yes")){
+            		deleteFavoriteByNet();
+            	}
+                favoriteManager.deleteFavoriteByUrl(itemUrl,isnet);
                 menu.findItem(5).setTitle(
                         getResources().getString(
                                 R.string.vod_player_bookmark_setting));
@@ -1688,7 +1770,11 @@ private void createHistory(int length){
                     favorite.is_complex = item.is_complex;
                     favorite.title = item.title;
                     favorite.url = itemUrl;
-                    favoriteManager.addFavorite(favorite);
+                    favorite.isnet = isnet;
+                    if(isnet.equals("yes")){
+                    	createFavoriteByNet();
+                    }
+                    favoriteManager.addFavorite(favorite,isnet);
                     menu.findItem(5)
                             .setTitle(
                                     getResources()

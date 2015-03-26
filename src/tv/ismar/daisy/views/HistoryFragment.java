@@ -186,7 +186,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 				mLoadingDialog.dismiss();
 				//解析json
 				mHistoriesByNet = mRestClient.getItems(info);
-				if(mHistoriesByNet!=null){
+				if(mHistoriesByNet!=null&&mHistoriesByNet.length>0){
 					mItemCollections = new ArrayList<ItemCollection>();
 				    int num_pages = (int) FloatMath.ceil((float)mHistoriesByNet.length / (float)ItemCollection.NUM_PER_PAGE);
 					ItemCollection itemCollection = new ItemCollection(num_pages, mHistoriesByNet.length, "1", "1");
@@ -206,6 +206,9 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 						mHGridAdapter.setList(mItemCollections);
 					}
 				}
+				else{
+					no_video();
+				}
 			}
 			
 			@Override
@@ -219,20 +222,21 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 				// TODO Auto-generated method stub
 				//Log.i(tag, msg);
 				mLoadingDialog.dismiss();
+				no_video();
 			}
 		});
 	}
 	private void EmptyAllHistory(){
 		if(!"".equals(SimpleRestClient.access_token)){
 			//清空历史记录
-			mRestClient.doSendRequest("/api/histories/empty/", "post", "access_token="+SimpleRestClient.access_token, new HttpPostRequestInterface() {
+			mRestClient.doSendRequest("/api/histories/empty/", "post", "access_token="+SimpleRestClient.access_token+"&device_token="+SimpleRestClient.device_token, 
+					new HttpPostRequestInterface() {
 				
 				@Override
 				public void onSuccess(String info) {
 					// TODO Auto-generated method stub
 					Log.i("", info);
-					mItemCollections.clear();
-					mHGridAdapter.setList(mItemCollections);
+					no_video();
 				}
 				
 				@Override
@@ -244,6 +248,8 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 				@Override
 				public void onFailed(String error) {
 					// TODO Auto-generated method stub
+					//mItemCollections
+					no_video();
 					Log.i("", error);
 				}
 			});
@@ -584,9 +590,9 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 						DaisyUtils.getHistoryManager(getActivity()).deleteAll();
 						reset();
 					}
-				}
-				else{
-					EmptyAllHistory();
+					else{
+						EmptyAllHistory();
+					}
 				}
 			}
 			break;

@@ -3,5 +3,7 @@
 
     <item android:drawable="@drawable/preview_video_pressed_bg" android:state_pressed="true"/>
     <item android:drawable="@drawable/preview_video_pressed_bg" android:state_hovered="true"/>
+    <item android:drawable="@drawable/preview_video_pressed_bg" android:state_selected="true"/>
+    <item android:drawable="@drawable/preview_video_pressed_bg" android:state_focused="true"/>
     <item android:drawable="@drawable/preview_video_normal_bg" />
 </selector>

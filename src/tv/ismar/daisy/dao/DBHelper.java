@@ -36,7 +36,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			"'last_quality' INTEGER DEFAULT(1), 'is_complex' INTEGER DEFAULT(0), 'is_continue' INTEGER DEFAULT(0), 'sub_url' TEXT)";
 	private static final String CREATE_FAVORITE_TABLE = "CREATE TABLE IF NOT EXISTS 'favorite_table' " +
 			"('_id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'title' TEXT NOT NULL, 'url' TEXT NOT NULL, 'content_model' TEXT, " +
-			"'adlet_url' TEXT, 'quality' INTEGER DEFAULT(1), 'is_complex' INTEGER DEFAULT(0))";
+			"'adlet_url' TEXT, 'quality' INTEGER DEFAULT(1), 'is_complex' INTEGER DEFAULT(0),'isnet' TEXT NOT NULL)";
 	private static final String CREATE_QUALITY_TABLE = "CREATE TABLE IF NOT EXISTS 'quality_table' " +
 			"('_id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'url' TEXT NOT NULL,  'quality' INTEGER DEFAULT(1))";
 	
@@ -67,6 +67,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			public static final String IS_COMPLEX = "is_complex";
 			public static final String QUALITY = "quality";
 			public static final String CONTENT_MODEL = "content_model";
+			public static final String ISNET = "isnet";
 		}
 		
 		public static interface QualityTable extends BaseColumns {
@@ -126,9 +127,10 @@ public class DBHelper extends SQLiteOpenHelper {
 	 * Use to query all favorite record.
 	 * @return an ArrayList contains all Favorite objects. 
 	 */
-	public ArrayList<Favorite> getAllFavorites() {
+	public ArrayList<Favorite> getAllFavorites(String isnet) {
+		//Cursor cur = db.query(DBFields.FavoriteTable.TABLE_NAME, null, DBFields.FavoriteTable.URL + " = ? and " + DBFields.FavoriteTable.ISNET + "= ?", new String[]{url,isnet}, null, null, " _id desc");
 		ArrayList<Favorite> favoriteList = new ArrayList<Favorite>();
-		Cursor cur = db.query(DBFields.FavoriteTable.TABLE_NAME, null, null, null, null, null, " _id desc");
+		Cursor cur = db.query(DBFields.FavoriteTable.TABLE_NAME, null, DBFields.FavoriteTable.ISNET + "= ?", new String[]{isnet}, null, null, " _id desc");
 		if(cur!=null) {
 			if(cur.moveToFirst()) {
 				do {
@@ -201,7 +203,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		cv.put(DBFields.FavoriteTable.QUALITY, favorite.quality);
 		cv.put(DBFields.FavoriteTable.IS_COMPLEX, favorite.is_complex?1:0);
 		cv.put(DBFields.FavoriteTable.CONTENT_MODEL, favorite.content_model);
-		
+		cv.put(DBFields.FavoriteTable.ISNET, favorite.isnet);
 		db.update(DBFields.FavoriteTable.TABLE_NAME, cv, " _id = ?", new String[]{String.valueOf(favorite.id)});
 	}
 	
@@ -227,9 +229,9 @@ public class DBHelper extends SQLiteOpenHelper {
 		return history;
 	}
 	
-	public Favorite queryFavoriteByUrl(String url) {
+	public Favorite queryFavoriteByUrl(String url,String isnet) {
 		Favorite favorite = null;
-		Cursor cur = db.query(DBFields.FavoriteTable.TABLE_NAME, null, DBFields.FavoriteTable.URL + " = ?", new String[]{url}, null, null, " _id desc");
+		Cursor cur = db.query(DBFields.FavoriteTable.TABLE_NAME, null, DBFields.FavoriteTable.URL + " = ? and " + DBFields.FavoriteTable.ISNET + "= ?", new String[]{url,isnet}, null, null, " _id desc");
 		if(cur!=null) {
 			if(cur.moveToFirst()) {
 				favorite = new Favorite(cur);
@@ -252,13 +254,18 @@ public class DBHelper extends SQLiteOpenHelper {
 		}
 		return quality;
 	}
-	public int delete(String table, String url) {
+	public int delete(String table, String url,String isnet) {
+		if(url==null) {
+			return db.delete(table, null, null);
+		}
+		return db.delete(table, " url = ? and " + DBFields.FavoriteTable.ISNET + "=?", new String[]{url,isnet});
+	}
+	public int deleteHistory(String table, String url ) {
 		if(url==null) {
 			return db.delete(table, null, null);
 		}
 		return db.delete(table, " url = ?", new String[]{url});
 	}
-	
 	public void releaseDB() {
 		db.close();
 		db = null;

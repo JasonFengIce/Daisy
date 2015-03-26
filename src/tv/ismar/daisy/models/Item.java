@@ -45,4 +45,6 @@ public class Item implements Serializable {
     public boolean live_video;
     public ArrayList<Item> items;
     public boolean isPreview;
+    //used only for daram seria and expense page
+    public int remainDay;
 }

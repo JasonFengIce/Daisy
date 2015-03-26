@@ -7,12 +7,15 @@ import org.json.JSONException;
 
 import com.alibaba.fastjson.JSONObject;
 
+import tv.ismar.daisy.ItemDetailActivity;
 import tv.ismar.daisy.LauncherActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
+import tv.ismar.daisy.models.Favorite;
+import tv.ismar.daisy.models.Item;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -106,6 +109,7 @@ public class LoginPanelView extends LinearLayout {
 									DaisyUtils.getVodApplication(getContext()).save();
 									SimpleRestClient.access_token = auth_token;
 									SimpleRestClient.mobile_number = edit_mobile.getText().toString();
+									GetFavoriteByNet();
 									if(callback!=null){
 										callback.onSuccess(auth_token);
 									}
@@ -239,4 +243,73 @@ public class LoginPanelView extends LinearLayout {
 		count_tip.setText(str);
 		count_tip.setVisibility(View.VISIBLE);
 	}
+	private void GetFavoriteByNet(){
+		mSimpleRestClient.doSendRequest("/api/bookmarks/", "get", "", new HttpPostRequestInterface() {
+			
+			@Override
+			public void onSuccess(String info) {
+				// TODO Auto-generated method stub
+				FavoriteList = mSimpleRestClient.getItems(info);
+				if(FavoriteList!=null){
+					//添加记录到本地
+					for(Item i:FavoriteList){
+						addFavorite(i);
+					}
+				}
+			}
+			
+			@Override
+			public void onPrepare() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onFailed(String error) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
+	
+	private void addFavorite(Item mItem) {
+		if (isFavorite(mItem)) {
+			String url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk
+					+ "/";
+//			DaisyUtils.getFavoriteManager(getContext())
+//					.deleteFavoriteByUrl(url,"yes");         
+		} else {
+			String url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk
+					+ "/";
+			Favorite favorite = new Favorite();
+			favorite.title = mItem.title;
+			favorite.adlet_url = mItem.adlet_url;
+			favorite.content_model = mItem.content_model;
+			favorite.url = url;
+			favorite.quality = mItem.quality;
+			favorite.is_complex = mItem.is_complex;
+			favorite.isnet = "yes";
+			DaisyUtils.getFavoriteManager(getContext()).addFavorite(
+					favorite,favorite.isnet);
+		}
+	}
+	
+	private boolean isFavorite(Item mItem) {
+		if (mItem != null) {
+			String url = mItem.item_url;
+			if (url == null && mItem.pk != 0) {
+				url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk
+						+ "/";
+			}
+			Favorite favorite = null;
+			favorite = DaisyUtils.getFavoriteManager(getContext())
+					.getFavoriteByUrl(url,"yes");
+			if (favorite != null) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+	private Item[] FavoriteList;
 }

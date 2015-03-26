@@ -139,14 +139,14 @@ public class LocalHistoryManager implements HistoryManager {
 		if(url==null) {
 			throw new RuntimeException("url should not be null");
 		}
-		int rowsAffected = mDBHelper.delete(DBFields.HistroyTable.TABLE_NAME, url);
+		int rowsAffected = mDBHelper.deleteHistory(DBFields.HistroyTable.TABLE_NAME, url);
 		Log.d("LocalHistoryManager", rowsAffected + "records delete");
 		mHistories = mDBHelper.getAllHistories();
 	}
 
 	@Override
 	public void deleteAll() {
-		mDBHelper.delete(DBFields.HistroyTable.TABLE_NAME, null);
+		mDBHelper.deleteHistory(DBFields.HistroyTable.TABLE_NAME, null);
 		mHistories.clear();
 	}
 	

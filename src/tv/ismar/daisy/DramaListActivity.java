@@ -1,15 +1,22 @@
 package tv.ismar.daisy;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import tv.ismar.daisy.adapter.DaramAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.NetworkUtils;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
+import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.LoadingDialog;
 import tv.ismar.daisy.views.PaymentDialog;
@@ -25,6 +32,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import static tv.ismar.daisy.views.PaymentDialog.ORDER_CHECK_BASE_URL;
 
 public class DramaListActivity extends Activity implements
 		OnItemSelectedListener, OnItemClickListener, OnFocusChangeListener {
@@ -57,7 +65,6 @@ public class DramaListActivity extends Activity implements
 		if (loadDialog != null && !loadDialog.isShowing()) {
 			loadDialog.show();
 		}
-
 		Bundle bundle = getIntent().getExtras();
 		if (null == bundle)
 			return;
@@ -66,6 +73,7 @@ public class DramaListActivity extends Activity implements
 			mSubItem = mItem.subitems[i];
 			mList.add(mSubItem);
 		}
+		orderCheck();
 		mDataCollectionProperties.put(EventProperty.ITEM, mItem.pk);
 		mDataCollectionProperties.put("title", mItem.title);
 		mDataCollectionProperties.put("to", "return");
@@ -104,7 +112,9 @@ public class DramaListActivity extends Activity implements
 			@Override
 			public void onClick(View v) {
 				PaymentDialog dialog = new PaymentDialog(
-						DramaListActivity.this, R.style.PaymentDialog,ordercheckListener);
+						DramaListActivity.this, R.style.PaymentDialog,
+						ordercheckListener);
+				mItem.model_name = "item";
 				dialog.setItem(mItem);
 				dialog.show();
 			}
@@ -173,8 +183,8 @@ public class DramaListActivity extends Activity implements
 			mDramaImageLabel.setVisibility(View.GONE);
 			break;
 		}
-		mDramaAdapter = new DaramAdapter(DramaListActivity.this, mList,
-				R.layout.drama_gridview_item);
+		mDramaAdapter = new DaramAdapter(DramaListActivity.this, mList, mItem,
+				ordercheckListener, R.layout.drama_gridview_item);
 		mDramaView.setAdapter(mDramaAdapter);
 		if (loadDialog != null && loadDialog.isShowing()) {
 			loadDialog.dismiss();
@@ -279,4 +289,59 @@ public class DramaListActivity extends Activity implements
 
 	};
 
+	private void orderCheck() {
+		SimpleRestClient client = new SimpleRestClient();
+		String typePara = "&item=" + mItem.pk;
+		client.doSendRequest(ORDER_CHECK_BASE_URL, "post", "device_token="
+				+ SimpleRestClient.device_token + "&access_token="
+				+ SimpleRestClient.access_token + typePara, orderCheck);
+	}
+
+	private HttpPostRequestInterface orderCheck = new HttpPostRequestInterface() {
+
+		@Override
+		public void onPrepare() {
+		}
+
+		@Override
+		public void onSuccess(String info) {
+			if (info != null && "0".equals(info)) {
+			} else {
+				String currentDayString = Util.getTime();
+				int remainDay;
+				try {
+					JSONArray array = new JSONArray(info);
+					HashMap<Integer, String> element = new HashMap<Integer, String>();
+					for (int i = 0; i < array.length(); i++) {
+						JSONObject seria = array.getJSONObject(i);
+						int pk = seria.getInt("object_pk");
+						String expireDay = seria.getString("max_expiry_date");
+						element.put(pk, expireDay);
+					}
+					for (Item item : mList) {
+						if (element.containsKey(item.pk)) {
+							remainDay = Util.daysBetween(currentDayString,
+									element.get(item.pk));
+							item.remainDay = remainDay;
+						}
+					}
+				} catch (JSONException e) {
+					try {
+						remainDay = Util.daysBetween(currentDayString, info);
+						for (Item item : mList) {
+							item.remainDay = remainDay;
+						}
+					} catch (ParseException e1) {
+					}
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
+				mDramaAdapter.notifyDataSetChanged();
+			}
+		}
+
+		@Override
+		public void onFailed(String error) {
+		}
+	};
 }

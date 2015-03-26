@@ -7,22 +7,31 @@ import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
+import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.models.PrivilegeItem;
+import tv.ismar.daisy.ui.adapter.PrivilegeAdapter;
+import tv.ismar.daisy.views.LoadingDialog;
 import tv.ismar.daisy.views.LoginPanelView;
 import tv.ismar.daisy.views.LoginPanelView.LoginInterface;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -45,6 +54,9 @@ public class PersonCenterActivity extends Activity {
 	private Button login_or_out_btn;
 	private boolean isLogin = false;
 	private  SimpleRestClient mSimpleRestClient;
+	private ArrayList<PrivilegeItem> mList;
+	private LoadingDialog mLoadingDialog;
+	private PrivilegeAdapter mAdapter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -52,7 +64,11 @@ public class PersonCenterActivity extends Activity {
 		setContentView(R.layout.person_center_layout);
         initView();
         mSimpleRestClient = new SimpleRestClient();
+		mLoadingDialog = new LoadingDialog(this, getResources().getString(
+				R.string.vod_loading));
+		mLoadingDialog.show();
         getBalance();
+        getPrivilegeData();
         if( DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.AUTH_TOKEN, "").equals("")){
         	//login out
         	loadDataLoginOut();
@@ -109,6 +125,50 @@ public class PersonCenterActivity extends Activity {
 			}
 		});
 	}
+//	  private class initPlayTask extends AsyncTask<String, Void, Void> {
+//
+//	        @Override
+//	        protected void onPostExecute(Void result) {
+//	            // TODO Auto-generated method stub
+//	           
+//	        }
+//
+//	        @Override
+//	        protected Void doInBackground(String... params) {
+//	            // TODO Auto-generated method stub
+//	            try {
+//	                if (item != null) {
+//	                    if (item.item_pk != item.pk) {
+//	                        currNum = item.position;
+//	                        Log.d(TAG, "currNum ===" + currNum);
+//	                        subItemUrl = SimpleRestClient.root_url
+//	                                + "/api/subitem/" + item.pk + "/";
+//	                        subItem = simpleRestClient.getItem(subItemUrl);
+//	                        itemUrl = SimpleRestClient.root_url + "/api/item/"
+//	                                + item.item_pk + "/";
+//	                        item = simpleRestClient.getItem(itemUrl);
+//	                        if (item != null && item.subitems != null) {
+//
+//	                            listItems = new ArrayList<Item>();
+//
+//	                            for (int i = 0; i < item.subitems.length; i++) {
+//	                                listItems.add(item.subitems[i]);
+//	                            }
+//	                        }
+//	                    } else {
+//	                        itemUrl = SimpleRestClient.root_url + "/api/item/"
+//	                                + item.item_pk + "/";
+//	                        // Item item1 = simpleRestClient.getItem(itemUrl);
+//	                    }
+//
+//	                }
+//	            } catch (Exception e) {
+//	                e.printStackTrace();
+//	            }
+//	            return null;
+//	        }
+//
+//	    }
 	private void initView(){
 		mPersoninfoLayout = (View)findViewById(R.id.info);
 		privilege_txt = (TextView)mPersoninfoLayout.findViewById(R.id.privilege_txt);
@@ -125,6 +185,50 @@ public class PersonCenterActivity extends Activity {
 		personal_info_btn = (Button)findViewById(R.id.personal_info_btn);
 		login_or_out_btn = (Button)findViewById(R.id.login_or_out_btn);
 		login_layout = (LoginPanelView)findViewById(R.id.login_layout);
+         privilegelist.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View v, int position,
+					long id) {
+				// TODO Auto-generated method stub
+				PrivilegeItem item = mList.get(position);
+				if(item!=null){
+					if(item.getType().equals("package")){
+						Intent intent = new Intent();
+						intent.setAction("tv.ismar.daisy.packageitem");
+						intent.putExtra("url", SimpleRestClient.root_url+"/api/package/"+item.getItem_pk()+"/");
+						startActivity(intent);
+					}
+					else{
+						if(item.getType().equals("item")){
+							String url = "/api/item/"+item.getItem_pk()+"/";
+							mSimpleRestClient.doSendRequest(url, "get", "", new HttpPostRequestInterface() {
+								
+								@Override
+								public void onSuccess(String info) {
+									// TODO Auto-generated method stub
+									Item item = mSimpleRestClient.getItemRecord(info);
+								}
+								
+								@Override
+								public void onPrepare() {
+									// TODO Auto-generated method stub
+									
+								}
+								
+								@Override
+								public void onFailed(String error) {
+									// TODO Auto-generated method stub
+									
+								}
+							});
+						}
+					}
+				}
+			}
+        	 
+        	 
+		});
 		login_layout.setLoginListener(new LoginInterface() {
 			
 			@Override
@@ -190,7 +294,7 @@ public class PersonCenterActivity extends Activity {
 				login_layout.setVisibility(View.VISIBLE);
 			}
 		});
-		//mListView = (ListView)findViewById(R.id.privilegelist);
+		privilegelist = (ListView)findViewById(R.id.privilegelist);
 		
 //		  try {
 //				Field f = AbsListView.class.getDeclaredField("mFastScroller");
@@ -214,55 +318,92 @@ public class PersonCenterActivity extends Activity {
 //				e.printStackTrace();
 //			}
 	}
-//	private void getData(){
-//		ArrayList<PrivilegeItem> list = new ArrayList<PrivilegeItem>();
-//		PrivilegeItem item1 = new PrivilegeItem();
-//		PrivilegeItem item2 = new PrivilegeItem();
-//		PrivilegeItem item3 = new PrivilegeItem();
-//		PrivilegeItem item4 = new PrivilegeItem();
-//		PrivilegeItem item5 = new PrivilegeItem();
-//		PrivilegeItem item6 = new PrivilegeItem();
-//		PrivilegeItem item7 = new PrivilegeItem();
-//		PrivilegeItem item8 = new PrivilegeItem();
-//		PrivilegeItem item9 = new PrivilegeItem();
-//		PrivilegeItem item10 = new PrivilegeItem();
-//		item1.setType("NBA���꿨");
-//		item2.setType("NBA���꿨");
-//		item3.setType("NBA���꿨");
-//		item4.setType("NBA���꿨");
-//		item5.setType("NBA���꿨");
-//		item6.setType("NBA���꿨");
-//		item7.setType("NBA���꿨");
-//		item8.setType("NBA���꿨");
-//		item9.setType("NBA���꿨");
-//		item10.setType("NBA���꿨");
-//		item1.setDuration("ʣ��289��");
-//		item2.setDuration("�ѵ�������ʱ���");
-//		item3.setDuration("ʣ��285��");
-//		item4.setDuration("ʣ��283��");
-//		item5.setDuration("�ѵ�������ʱ���");
-//		item6.setDuration("ʣ��289��");
-//		item7.setDuration("�ѵ�������ʱ���");
-//		item8.setDuration("ʣ��285��");
-//		item9.setDuration("ʣ��283��");
-//		item10.setDuration("�ѵ�������ʱ���");
-//		list.add(item1);
-//		list.add(item2);
-//		list.add(item3);
-//		list.add(item4);
-//		list.add(item5);
-//		list.add(item6);
-//		list.add(item7);
-//		list.add(item8);
-//		list.add(item9);
-//		list.add(item10);
+	private void getPrivilegeData(){
+	
+		mSimpleRestClient.doSendRequest("/accounts/orders/", "get", "", new HttpPostRequestInterface() {
+			
+			@Override
+			public void onSuccess(String info) {
+				// TODO Auto-generated method stub
+				try {
+					JSONObject json = new JSONObject(info);
+					mList = new ArrayList<PrivilegeItem>();
+					JSONArray ineffective = json.getJSONArray("ineffective");
+					JSONArray effective = json.getJSONArray("effective");
+					if(effective.length()>0){
+						int length = effective.length();
+						for(int i=0;i<length;i++){
+							PrivilegeItem item = new PrivilegeItem();
+							String title = effective.getJSONArray(i).getString(0);
+							item.setTitle(title);
+							String buydate = effective.getJSONArray(i).getString(1);
+							item.setBuydate(buydate);
+							String exceedDate = effective.getJSONArray(i).getString(2);
+							item.setExceeddate(exceedDate);
+							String type = effective.getJSONArray(i).getString(3);
+							item.setType(type);
+							int item_pk = effective.getJSONArray(i).getInt(4);
+							item.setItem_pk(item_pk);
+							mList.add(item);
+						}
+					}
+					if(ineffective.length()>0){
+						int length = ineffective.length();
+						for(int i=0;i<length;i++){
+							PrivilegeItem item = new PrivilegeItem();
+							String title = ineffective.getJSONArray(i).getString(0);
+							item.setTitle(title);
+							String buydate = ineffective.getJSONArray(i).getString(1);
+							item.setBuydate(buydate);
+							String exceedDate = ineffective.getJSONArray(i).getString(2);
+							item.setExceeddate(exceedDate);
+							String type = ineffective.getJSONArray(i).getString(3);
+							item.setType(type);
+							int item_pk = ineffective.getJSONArray(i).getInt(4);
+							item.setItem_pk(item_pk);
+							mList.add(item);
+						}
+					}
+					mAdapter= new PrivilegeAdapter(PersonCenterActivity.this,mList);
+					privilegelist.setAdapter(mAdapter);
+			
+					if(mAdapter.getCount()>0){
+						no_privilegelist_txt.setVisibility(View.GONE);
+						privilegelist.setVisibility(View.VISIBLE);
+						privilege_txt.setVisibility(View.VISIBLE);
+					}
+					else{
+						no_privilegelist_txt.setVisibility(View.VISIBLE);
+						privilegelist.setVisibility(View.GONE);
+						privilege_txt.setVisibility(View.GONE);
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				mLoadingDialog.dismiss();
+			}
+			
+			@Override
+			public void onPrepare() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onFailed(String error) {
+				// TODO Auto-generated method stub
+				mLoadingDialog.dismiss();
+			}
+		});
+		//curl "http://sky.tvxio.com/accounts/orders/?device_token=6xeQV4Vpb4khaTvDSvVJ2Q==" 
 //		PrivilegeAdapter adapter= new PrivilegeAdapter(this,list);
 //		mListView.setAdapter(adapter);
-//	}
+	}
 	private void loadDataLogin(){
 		login_or_out_btn.setVisibility(View.VISIBLE);
-		no_privilegelist_txt.setVisibility(View.VISIBLE);
-		privilegelist.setVisibility(View.GONE);
+		//no_privilegelist_txt.setVisibility(View.VISIBLE);
+		//privilegelist.setVisibility(View.GONE);
 		mobile_or_sn_txt.setText("手机号:");
 		mobile_or_sn_value.setText(SimpleRestClient.mobile_number);
 		warn_info_txt.setVisibility(View.GONE);
@@ -273,8 +414,8 @@ public class PersonCenterActivity extends Activity {
 		
 	}
 	private void loadDataLoginOut(){
-		no_privilegelist_txt.setVisibility(View.VISIBLE);
-		privilegelist.setVisibility(View.GONE);
+		//no_privilegelist_txt.setVisibility(View.VISIBLE);
+		//privilegelist.setVisibility(View.GONE);
 		mobile_or_sn_txt.setText("SN:");
 		mobile_or_sn_value.setText(SimpleRestClient.sn_token);
 		warn_info_txt.setVisibility(View.VISIBLE);

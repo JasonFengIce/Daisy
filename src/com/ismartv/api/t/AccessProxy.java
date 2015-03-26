@@ -52,34 +52,38 @@ public class AccessProxy {
 	public static String getvVideoClipInfo() {
 		return result;
 	}
+
 	public static ClipInfo getIsmartvClipInfo(String content) {
 		return jsonToObject(content);
 	}
-    public static SdkVideo getQiYiInfo(String content){
-    	SdkVideo qiyiInfo = null;	
-    	JSONObject json;
-    	try {
-    		json = new JSONObject(content);
+
+	public static SdkVideo getQiYiInfo(String content) {
+		SdkVideo qiyiInfo = null;
+		JSONObject json;
+		try {
+			json = new JSONObject(content);
 			String info = json.getString("iqiyi_4_0");
 			String[] array = info.split(":");
-    		qiyiInfo = new SdkVideo(array[0], array[1], array[2],Definition.DEFINITON_1080P);
-    		//qiyiInfo = new SdkVideo("202153901", "308529000", "8d301d7723586e7a0e1ecb778ada0cb5",Definition.DEFINITON_1080P);
+			qiyiInfo = new SdkVideo(array[0], array[1], array[2],
+					Definition.DEFINITON_1080P);
+			// qiyiInfo = new SdkVideo("202153901", "308529000",
+			// "8d301d7723586e7a0e1ecb778ada0cb5",Definition.DEFINITON_1080P);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	return qiyiInfo;
-    }
+		return qiyiInfo;
+	}
+
 	public static String getVideoInfo(String clipUrl, String access_token) {
 		getStream(getFullUrl(clipUrl, access_token));
 		JSONObject json;
-		String info="";
+		String info = "";
 		try {
 			json = new JSONObject(result);
-			if(json.has("iqiyi_4_0")){
+			if (json.has("iqiyi_4_0")) {
 				return "iqiyi";
-			}
-			else{
+			} else {
 				info = "ismartv";
 			}
 		} catch (JSONException e) {
@@ -93,15 +97,16 @@ public class AccessProxy {
 	}
 
 	private static String getFullUrl(String url, String access_token) {
-//		String full_url = (new StringBuilder(String.valueOf(url))).append(mySN)
-//				.append("/").toString();
-//		if (access_token != null)
-//			full_url = (new StringBuilder(String.valueOf(full_url)))
-//					.append("?access_token=").append(SimpleRestClient.access_token)
-//					.append("&device_token=").append(SimpleRestClient.device_token)
-//					.append("&sign=").append(getAES(access_token)).toString();
-	          StringBuffer buffer = new StringBuffer(String.valueOf(url));
-	          buffer.append("?access_token=").append(SimpleRestClient.access_token)
+		// String full_url = (new
+		// StringBuilder(String.valueOf(url))).append(mySN)
+		// .append("/").toString();
+		// if (access_token != null)
+		// full_url = (new StringBuilder(String.valueOf(full_url)))
+		// .append("?access_token=").append(SimpleRestClient.access_token)
+		// .append("&device_token=").append(SimpleRestClient.device_token)
+		// .append("&sign=").append(getAES(access_token)).toString();
+		StringBuffer buffer = new StringBuffer(String.valueOf(url));
+		buffer.append("?access_token=").append(SimpleRestClient.access_token)
 				.append("&device_token=").append(SimpleRestClient.device_token)
 				.append("&sign=").append(getAES(access_token)).toString();
 		return buffer.toString();
@@ -183,28 +188,37 @@ public class AccessProxy {
 			String ultra = "";
 			String medium = "";
 			String normal = "";
-			adaptive = jsonObject.getString("adaptive");
-			high = jsonObject.getString("high");
-			low = jsonObject.getString("low");
-			ultra = jsonObject.getString("ultra");
-			medium = jsonObject.getString("medium");
-			normal = jsonObject.getString("normal");
-			if(adaptive!="null"){
+			String iqiyi_4_0 = "";
+			if (jsonObject.has("adaptive"))
+				adaptive = jsonObject.getString("adaptive");
+			if (jsonObject.has("high"))
+				high = jsonObject.getString("high");
+			if (jsonObject.has("low"))
+				low = jsonObject.getString("low");
+			if (jsonObject.has("ultra"))
+				ultra = jsonObject.getString("ultra");
+			if (jsonObject.has("medium"))
+				medium = jsonObject.getString("medium");
+			if (jsonObject.has("normal"))
+				normal = jsonObject.getString("normal");
+			if (jsonObject.has("iqiyi_4_0"))
+				iqiyi_4_0 = jsonObject.getString("iqiyi_4_0");
+			if (adaptive != "null") {
 				adaptive = AES_decrypt(adaptive);
 			}
-			if(high!="null"){
+			if (high != "null") {
 				high = AES_decrypt(high);
 			}
-            if(low!="null"){
-            	low = AES_decrypt(low);
-            }
-			if(ultra!="null"){
+			if (low != "null") {
+				low = AES_decrypt(low);
+			}
+			if (ultra != "null") {
 				ultra = AES_decrypt(ultra);
 			}
-			if(medium!="null"){
+			if (medium != "null") {
 				medium = AES_decrypt(medium);
 			}
-			if(normal!="null"){
+			if (normal != "null") {
 				normal = AES_decrypt(normal);
 			}
 			ci.setAdaptive(getURLStr(adaptive));
@@ -213,14 +227,18 @@ public class AccessProxy {
 			ci.setUltra(getURLStr(ultra));
 			ci.setMedium(getURLStr(medium));
 			ci.setNormal(getURLStr(normal));
+			ci.setIqiyi_4_0(iqiyi_4_0);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return ci;
 	}
-	private static String AES_decrypt(String url){
-		return AESOperator.getInstance().AES_decrypt(SimpleRestClient.device_token, url);
+
+	private static String AES_decrypt(String url) {
+		return AESOperator.getInstance().AES_decrypt(
+				SimpleRestClient.device_token, url);
 	}
+
 	private static String getURLStr(String url) {
 		if (url != null && url != "null") {
 			if (url.startsWith("ppvod")) {

@@ -4,9 +4,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.models.Clip;
 import tv.ismar.daisy.models.Favorite;
@@ -18,6 +18,7 @@ import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.player.ISTVVodMenu;
 import tv.ismar.daisy.player.ISTVVodMenuItem;
+import tv.ismar.daisy.qiyimediaplayer.SdkVideo;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -54,26 +55,18 @@ import com.qiyi.video.player.IVideoStateListener;
 import com.qiyi.video.player.QiyiVideoPlayer;
 import com.qiyi.video.player.data.Definition;
 import com.qiyi.video.player.data.IPlaybackInfo;
-import com.qiyi.video.utils.LogUtils;
 
 public class QiYiPlayActivity extends VodMenuAction {
 	private static final int MSG_AD_COUNTDOWN = 100;
 	private static final int MSG_PLAY_TIME = 101;
 	private static final int SEEK_STEP = 30000;
 	private static final HashMap<Definition, String> DEFINITION_NAMES;
-	@SuppressWarnings("unused")
-	private static final String SAMPLE = "http://114.80.0.33/qyrrs?url=http%3A%2F%2Fjq.v.tvxio.com%2Fcdn%2F0%2F7b%2F78fadc2ffa42309bda633346871f26%2Fhigh%2Fslice%2Findex.m3u8&quality=high&sn=weihongchang_s52&clipid=779521&sid=85d3f919a918460d9431136d75db17f03&sign=08a868ad3c4e3b37537a13321a6f9d4b";
 	private QiyiVideoPlayer mPlayer;
-	private static final String PREFS_NAME = "tv.ismar.daisy";
 	private static final String TAG = "PLAYER";
 	private static final String BUFFERCONTINUE = " 上次放映：";
 	private static final String PlAYSTART = " 即将放映：";
 	private static final String BUFFERING = " 正在加载 ";
 	private static final String EXTOCLOSE = " 网络数据异常，即将退出播放器";
-	@SuppressWarnings("unused")
-	private static final String HOST = "cord.tvxio.com";
-
-	private static final int SHORT_STEP = 1;
 	private static final int DIALOG_OK_CANCEL = 0;
 
 	private boolean paused = false;
@@ -199,7 +192,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 		itemUrl = item.clip.url;
 		titleText.setText(item.title);
 		simpleRestClient = new SimpleRestClient();
-		showBuffer();
 		new initPlayTask().execute();
 		initQiyiVideoPlayer();
 	}
@@ -232,9 +224,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 								+ item.item_pk + "/";
 						item = simpleRestClient.getItem(itemUrl);
 						if (item != null && item.subitems != null) {
-
 							listItems = new ArrayList<Item>();
-
 							for (int i = 0; i < item.subitems.length; i++) {
 								listItems.add(item.subitems[i]);
 							}
@@ -244,7 +234,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 								+ item.item_pk + "/";
 						// Item item1 = simpleRestClient.getItem(itemUrl);
 					}
-
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -252,6 +241,58 @@ public class QiYiPlayActivity extends VodMenuAction {
 			return null;
 		}
 
+	}
+
+	// 初始化播放地址url
+	private class ItemByUrlTask extends AsyncTask<String, Void, ClipInfo> {
+
+		@Override
+		protected void onPostExecute(ClipInfo result) {
+			if (result != null) {
+				setQiyiVideo();
+			} else {
+				// ExToClosePlayer("url"," m3u8 quality is null ,or get m3u8 err");
+			}
+		}
+
+		@Override
+		protected ClipInfo doInBackground(String... params) {
+			Object obj = bundle.get("url");
+			Log.d(TAG, "init player bundle url === " + obj);
+			String sn = VodUserAgent.getMACAddress();
+			AccessProxy.init(VodUserAgent.deviceType,
+					VodUserAgent.deviceVersion, sn);
+			try {
+				if (obj != null) {
+					item = simpleRestClient.getItem((String) obj);
+					if (item != null) {
+						clip = item.clip;
+						urlInfo = AccessProxy.parse(SimpleRestClient.root_url
+								+ "/api/clip/" + clip.pk + "/",
+								VodUserAgent.getAccessToken(sn),
+								QiYiPlayActivity.this);
+						if (urlInfo.getIqiyi_4_0().length() == 0) {
+							Intent intent = new Intent();
+							intent.setAction("tv.ismar.daisy.Play");
+							intent.putExtra("item", item);
+							intent.putExtra("ismartv",
+									AccessProxy.getvVideoClipInfo());
+							startActivity(intent);
+							QiYiPlayActivity.this.finish();
+							return null;
+						} else {
+							bundle.putString("iqiyi", urlInfo.getIqiyi_4_0());
+						}
+					}
+				}
+			} catch (Exception e) {
+				Log.e(TAG, e.toString());
+				// ExToClosePlayer("url","m3u8 quality is null ,or get m3u8 err /n"+e.toString());
+				return null;
+			}
+			return urlInfo;
+
+		}
 	}
 
 	public void initQiyiVideoPlayer() {
@@ -262,11 +303,16 @@ public class QiYiPlayActivity extends VodMenuAction {
 		frameContainer.setVisibility(View.VISIBLE);
 		mPlayer = QiyiVideoPlayer.createVideoPlayer(this, frameContainer,
 				flParams, /* bundle */null, mVideoStateListener);
-		String info = (String) bundle.get("iqiyi");
 		favoriteManager = DaisyUtils.getFavoriteManager(this);
 		historyManager = DaisyUtils.getHistoryManager(this);
 		mHistory = historyManager.getHistoryByUrl(itemUrl);
-		favorite = favoriteManager.getFavoriteByUrl(itemUrl);
+		if(SimpleRestClient.isLogin()){
+			favorite = favoriteManager.getFavoriteByUrl(itemUrl,"yes");
+		}
+		else{
+			favorite = favoriteManager.getFavoriteByUrl(itemUrl,"no");
+		}
+
 		Quality quality = historyManager.getQuality();
 		if (quality != null) {
 			currQuality = quality.quality;
@@ -276,13 +322,18 @@ public class QiYiPlayActivity extends VodMenuAction {
 			tempOffset = (int) mHistory.last_position;
 		}
 
+		setQiyiVideo();
+	}
+
+	private void setQiyiVideo() {
+		titleText.setText(item.title);
 		if (tempOffset > 0 && isContinue == true && !live_video) {
 			bufferText.setText("  " + BUFFERCONTINUE
 					+ getTimeString(tempOffset));
 		} else {
 			bufferText.setText(PlAYSTART + "《" + titleText.getText() + "》");
 		}
-		isBuffer = false;
+		String info = (String) bundle.get("iqiyi");
 		showBuffer();
 		if (tempOffset > 0 && isContinue) {
 			currPosition = tempOffset;
@@ -291,7 +342,14 @@ public class QiYiPlayActivity extends VodMenuAction {
 			currPosition = 0;
 			seekPostion = 0;
 		}
-		mPlayer.setVideo(AccessProxy.getQiYiInfo(info));
+		if (info != null && info.contains("iqiyi_4_0")) {
+			mPlayer.setVideo(AccessProxy.getQiYiInfo(info));
+		} else {
+			String[] array = info.split(":");
+			SdkVideo qiyiInfo = new SdkVideo(array[0], array[1], array[2],
+					Definition.DEFINITON_1080P);
+			mPlayer.setVideo(qiyiInfo);
+		}
 		mPlayer.start();
 		initQualtiyText();
 	}
@@ -334,7 +392,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onBufferStart() {
-			showBuffer();
 		}
 
 		@Override
@@ -351,6 +408,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onMovieComplete() {
+			gotoFinishPage();
 		}
 
 		@Override
@@ -362,7 +420,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 			clipLength = mPlayer.getDuration();
 			isBuffer = false;
 			if (seekPostion > 0)
-				mPlayer.seekTo(seekPostion);
+				mPlayer.seek(seekPostion);
 			hideBuffer();
 			showPanel();
 			timeTaskStart();
@@ -381,7 +439,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 				@Override
 				public void run() {
 					qualityText.setVisibility(View.VISIBLE);
-					// qualityText.setText(DEFINITION_NAMES.get(definition));
 				}
 			});
 			currentDefinition = definition;
@@ -394,7 +451,8 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onSeekComplete() {
-			timeTaskStart();
+			// timeTaskStart();
+			checkTaskStart();
 			hideBuffer();
 		}
 
@@ -415,7 +473,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 		if (isBuffer && !bufferLayout.isShown()) {
 			bufferLayout.setVisibility(View.VISIBLE);
 			bufferDuration = System.currentTimeMillis();
-			isBuffer = true;
 		}
 	}
 
@@ -424,7 +481,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 			bufferText.setText(BUFFERING);
 			bufferLayout.setVisibility(View.GONE);
 			isBuffer = false;
-			isSeekBuffer = false;
 		}
 	}
 
@@ -434,29 +490,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 			case MSG_AD_COUNTDOWN:
 				sendEmptyMessageDelayed(MSG_AD_COUNTDOWN, 1000);
 				break;
-			case MSG_PLAY_TIME:
-				String playTime;
-				int curPos = mPlayer.getCurrentPosition();
-				int duration = mPlayer.getDuration();
-				playTime = getPlaybackTimeString(curPos);
-				playTime += " / ";
-				playTime += getPlaybackTimeString(duration);
-				timeText.setText(playTime);
-				timeBar.setMax(duration);
-				int secondaryProgress = mPlayer.getCachePercent() * duration
-						/ 100;
-				timeBar.setProgress(curPos);
-				timeBar.setSecondaryProgress(secondaryProgress);
-				if (Math.abs(secondaryProgress - curPos) != 0) {
-					hideBuffer();
-				} else {
-					showBuffer();
-				}
-				sendEmptyMessageDelayed(MSG_PLAY_TIME, 1000);
-				if (LogUtils.mIsDebug)
-					LogUtils.d(TAG,
-							"MSG_PLAY_TIME: isPlaying=" + mPlayer.isPlaying());
-
 			default:
 				break;
 			}
@@ -507,7 +540,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 		public void onStartTrackingTouch(SeekBar seekBar) {
 			Log.d(TAG, "onStartTrackingTouch" + seekBar.getProgress());
 			if (!live_video) {
-
 			}
 
 		}
@@ -516,7 +548,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 		public void onStopTrackingTouch(SeekBar seekBar) {
 			Log.d(TAG, "onStopTrackingTouch" + seekBar.getProgress());
 			if (!live_video) {
-
 			}
 
 		}
@@ -572,23 +603,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 			mPlayer.releasePlayer();
 		}
 		mPlayer = null;
-	}
-
-	private static String getPlaybackTimeString(int timeInMs) {
-		int second = timeInMs / 1000;
-		int minute = second / 60;
-		if (minute > 0) {
-			second %= 60;
-		}
-		int hour = minute / 60;
-		if (hour > 0) {
-			minute %= 60;
-		}
-		String hourStr = String.format("%02d", hour);
-		String minStr = String.format("%02d", minute);
-		String secStr = String.format("%02d", second);
-		String ret = hourStr + ":" + minStr + ":" + secStr;
-		return ret;
 	}
 
 	private Handler hidePanelHandler = new Handler();
@@ -732,8 +746,9 @@ public class QiYiPlayActivity extends VodMenuAction {
 				if (!live_video) {
 					fbImage.setImageResource(R.drawable.vodplayer_controller_rew);
 					showPanel();
+					isBuffer = true;
 					showBuffer();
-					mPlayer.seekTo(-SEEK_STEP);
+					mPlayer.seek(-SEEK_STEP);
 					if (subItem != null)
 						callaPlay.videoPlaySeek(item.pk, subItem.pk,
 								item.title, clip.pk, currQuality, 0,
@@ -753,8 +768,9 @@ public class QiYiPlayActivity extends VodMenuAction {
 				if (!live_video) {
 					ffImage.setImageResource(R.drawable.vodplayer_controller_ffd);
 					showPanel();
+					isBuffer = true;
 					showBuffer();
-					mPlayer.seekTo(SEEK_STEP);
+					mPlayer.seek(SEEK_STEP);
 					if (subItem != null)
 						callaPlay.videoPlaySeek(item.pk, subItem.pk,
 								item.title, clip.pk, currQuality, 0,
@@ -791,8 +807,15 @@ public class QiYiPlayActivity extends VodMenuAction {
 					menu = new ISTVVodMenu(this);
 					ret = createMenu(menu);
 				}
+				String isnet = "";
+				if(SimpleRestClient.isLogin()){
+					isnet = "yes";
+				}
+				else{
+					isnet = "no";
+				}
 				if (itemUrl != null && favoriteManager != null
-						&& favoriteManager.getFavoriteByUrl(itemUrl) != null) {
+						&& favoriteManager.getFavoriteByUrl(itemUrl,isnet) != null) {
 					menu.findItem(5)
 							.setTitle(
 									getResources()
@@ -955,27 +978,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 				getResources().getString(R.string.vod_player_quality_adaptive));
 		menu.addItem(20, getResources().getString(R.string.kefucentertitle));
 		menu.addItem(30, getResources().getString(R.string.playfromstarttitle));
-		// if (itemUrl != null && favoriteManager != null
-		// && favoriteManager.getFavoriteByUrl(itemUrl) == null) {
-		// menu.addItem(
-		// 5,
-		// getResources().getString(
-		// R.string.vod_player_bookmark_setting));
-		// } else {
-		// menu.addItem(
-		// 5,
-		// getResources().getString(
-		// R.string.vod_bookmark_remove_bookmark_setting));
-		// }
-		// menu.addItem(6,
-		// getResources().getString(R.string.vod_player_related_setting));
-		//
-		// sub = menu.addSubMenu(7,
-		// getResources().getString(R.string.vod_player_continue_setting));
-		// sub.addItem(8, getResources()
-		// .getString(R.string.vod_player_continue_on));
-		// sub.addItem(9,
-		// getResources().getString(R.string.vod_player_continue_off));
 
 		return true;
 	}
@@ -1054,9 +1056,19 @@ public class QiYiPlayActivity extends VodMenuAction {
 			return true;
 		}
 		if (id == 5) {
+			String isnet = "";
+			if(SimpleRestClient.isLogin()){
+				isnet = "yes";
+			}
+			else{
+				isnet = "no";
+			}
 			if (itemUrl != null && favoriteManager != null
-					&& favoriteManager.getFavoriteByUrl(itemUrl) != null) {
-				favoriteManager.deleteFavoriteByUrl(itemUrl);
+					&& favoriteManager.getFavoriteByUrl(itemUrl,isnet) != null) {
+				if(isnet.equals("yes")){
+					deleteFavoriteByNet();
+				}
+				favoriteManager.deleteFavoriteByUrl(itemUrl,isnet);
 				menu.findItem(5).setTitle(
 						getResources().getString(
 								R.string.vod_player_bookmark_setting));
@@ -1068,7 +1080,11 @@ public class QiYiPlayActivity extends VodMenuAction {
 					favorite.is_complex = item.is_complex;
 					favorite.title = item.title;
 					favorite.url = itemUrl;
-					favoriteManager.addFavorite(favorite);
+					favorite.isnet = isnet;
+					if(isnet.equals("yes")){
+						createFavoriteByNet();
+					}
+					favoriteManager.addFavorite(favorite,isnet);
 					menu.findItem(5)
 							.setTitle(
 									getResources()
@@ -1112,12 +1128,58 @@ public class QiYiPlayActivity extends VodMenuAction {
 			addHistory(0);
 			isBuffer = true;
 			showBuffer();
-			// new ItemByUrlTask().execute();
+			new ItemByUrlTask().execute();
 		}
 
 		return true;
 	}
-
+	private void deleteFavoriteByNet(){
+		simpleRestClient.doSendRequest("/api/bookmark/remove/", "post", "access_token="+
+	    SimpleRestClient.access_token+"&device_token="+SimpleRestClient.device_token+"&item="+item.pk, new HttpPostRequestInterface() {
+			
+			@Override
+			public void onSuccess(String info) {
+				// TODO Auto-generated method stub
+				if("200".equals(info)){
+	
+				}
+			}
+			
+			@Override
+			public void onPrepare() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onFailed(String error) {
+				// TODO Auto-generated method stub
+	
+			}
+		});
+	}
+	private void createFavoriteByNet(){
+		simpleRestClient.doSendRequest("/api/bookmarks/create/", "post", "access_token="+SimpleRestClient.access_token+"&device_token="+SimpleRestClient.device_token+"&item="+item.pk, new HttpPostRequestInterface() {
+			
+			@Override
+			public void onSuccess(String info) {
+				// TODO Auto-generated method stub
+		
+			}
+			
+			@Override
+			public void onPrepare() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onFailed(String error) {
+				// TODO Auto-generated method stub
+	
+			}
+		});
+	}
 	private void gotoRelatePage() {
 		Intent intent = new Intent();
 		intent.setClass(QiYiPlayActivity.this,
@@ -1150,43 +1212,46 @@ public class QiYiPlayActivity extends VodMenuAction {
 			historyManager.addHistory(history);
 		}
 	}
-	private void createHistory(int length){
-		if("".equals(SimpleRestClient.access_token)){
-			return;//不登录不必上传
+
+	private void createHistory(int length) {
+		if ("".equals(SimpleRestClient.access_token)) {
+			return;// 不登录不必上传
 		}
 		int offset = length;
-		if(length==clipLength){
+		if (length == clipLength) {
 			offset = -1;
 		}
-		String params = "access_token="+SimpleRestClient.access_token+"&device_token="+SimpleRestClient.device_token
-				+"&offset="+offset;
-		if(subItem!=null){
-			params = params + "&subitem="+subItem.pk;
+		String params = "access_token=" + SimpleRestClient.access_token
+				+ "&device_token=" + SimpleRestClient.device_token + "&offset="
+				+ offset;
+		if (subItem != null) {
+			params = params + "&subitem=" + subItem.pk;
+		} else {
+			params = params + "&item=" + item.item_pk;
 		}
-		else{
-			params = params + "&item="+item.item_pk;
-		}
-		simpleRestClient.doSendRequest("/api/histories/create/", "post", params, new HttpPostRequestInterface() {
-			
-			@Override
-			public void onSuccess(String info) {
-				// TODO Auto-generated method stub
-				Log.i("BAIDU", info);
-			}
-			
-			@Override
-			public void onPrepare() {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onFailed(String error) {
-				// TODO Auto-generated method stub
-				Log.i("BAIDU", error);
-			}
-		});
+		simpleRestClient.doSendRequest("/api/histories/create/", "post",
+				params, new HttpPostRequestInterface() {
+
+					@Override
+					public void onSuccess(String info) {
+						// TODO Auto-generated method stub
+						Log.i("BAIDU", info);
+					}
+
+					@Override
+					public void onPrepare() {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onFailed(String error) {
+						// TODO Auto-generated method stub
+						Log.i("BAIDU", error);
+					}
+				});
 	}
+
 	private Runnable checkStatus = new Runnable() {
 		public void run() {
 			if (mPlayer.isPlaying()
@@ -1230,4 +1295,66 @@ public class QiYiPlayActivity extends VodMenuAction {
 		mCheckHandler.removeCallbacks(checkStatus);
 	}
 
+	private void gotoFinishPage() {
+		timeTaskPause();
+		checkTaskPause();
+		if (mPlayer != null) {
+			if (listItems != null && listItems.size() > 0
+					&& currNum < (listItems.size() - 1)) {
+				subItem = listItems.get(currNum + 1);
+				subItemUrl = simpleRestClient.root_url + "/api/subitem/"
+						+ subItem.pk + "/";
+				bundle.remove("url");
+				bundle.putString("url", subItemUrl);
+				addHistory(0);
+				isBuffer = true;
+				showBuffer();
+				new ItemByUrlTask().execute();
+			} else {
+				Intent intent = new Intent("tv.ismar.daisy.PlayFinished");
+				intent.putExtra("item", item);
+				startActivity(intent);
+				seekPostion = 0;
+				currPosition = 0;
+				mPlayer.stop();
+				mPlayer.releasePlayer();
+				// mPlayer = null;
+				addHistory(0);
+				try {
+					if (subItem != null)
+						callaPlay
+								.videoExit(
+										item.pk,
+										subItem.pk,
+										item.title,
+										clip.pk,
+										currQuality,
+										0,
+										"end",
+										currPosition,
+										(System.currentTimeMillis() - startDuration) / 1000,
+										mSection, sid, "list",
+										item.content_model);// String
+					else
+						callaPlay
+								.videoExit(
+										item.pk,
+										null,
+										item.title,
+										clip.pk,
+										currQuality,
+										0,
+										"end",
+										currPosition,
+										(System.currentTimeMillis() - startDuration) / 1000,
+										mSection, sid, "list",
+										item.content_model);
+				} catch (Exception e) {
+					Log.e(TAG, " log Sender videoExit end " + e.toString());
+				}
+				QiYiPlayActivity.this.finish();
+			}
+		}
+
+	}
 }

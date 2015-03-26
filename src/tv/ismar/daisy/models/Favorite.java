@@ -15,6 +15,7 @@ public class Favorite implements Serializable {
 	public String adlet_url;
 	public int quality;
 	public boolean is_complex;
+	public String isnet;
 	public String content_model;
 	
 	public Favorite() {
@@ -22,7 +23,7 @@ public class Favorite implements Serializable {
 	}
 	
 	public Favorite(long id, String title, String url, String adlet_url,
-			int quality, boolean is_complex, String content_model) {
+			int quality, boolean is_complex, String content_model,String isNet) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -31,6 +32,7 @@ public class Favorite implements Serializable {
 		this.quality = quality;
 		this.is_complex = is_complex;
 		this.content_model = content_model;
+		this.isnet = isNet;
 	}
 
 
@@ -43,6 +45,7 @@ public class Favorite implements Serializable {
 		quality = c.getInt(c.getColumnIndex(DBFields.FavoriteTable.QUALITY));
 		is_complex = c.getInt(c.getColumnIndex(DBFields.FavoriteTable.IS_COMPLEX))==0 ? false: true; 
 		content_model = c.getString(c.getColumnIndex(DBFields.FavoriteTable.CONTENT_MODEL));
+		isnet = c.getString(c.getColumnIndex(DBFields.FavoriteTable.ISNET));
 	}
 	
 }

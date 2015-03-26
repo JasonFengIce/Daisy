@@ -527,7 +527,6 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 					mSectionProperties.put(EventProperty.SECTION, s.slug);
 					Intent intent = new Intent();
 					if(item.is_complex) {
-						Expense f = item.expense;
 						intent.setAction("tv.ismar.daisy.Item");
 						intent.putExtra("url", item.url);
 						intent.putExtra(EventProperty.SECTION, s.slug);

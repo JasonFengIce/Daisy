@@ -53,6 +53,9 @@ public class SimpleRestClient {
     	return gson.fromJson(str, Item[].class);
     	
     }
+    public Item getItemRecord(String str){
+    	return gson.fromJson(str, Item.class);
+    }
 	public static String readContentFromPost(String url,String sn){
 		StringBuffer response = new StringBuffer();
 		 try{
@@ -344,4 +347,11 @@ public SectionList getsectionss(String content){
 		public void onSuccess(String info);
 		public void onFailed(String error);
 	} 
+	
+	public static  boolean isLogin(){
+		if("".equals(SimpleRestClient.access_token)){
+			return false;
+		}
+		return true;
+	}
 }
