@@ -4,7 +4,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.VodUserAgent;
@@ -56,7 +55,6 @@ import com.qiyi.video.player.IVideoStateListener;
 import com.qiyi.video.player.QiyiVideoPlayer;
 import com.qiyi.video.player.data.Definition;
 import com.qiyi.video.player.data.IPlaybackInfo;
-import com.qiyi.video.utils.LogUtils;
 
 public class QiYiPlayActivity extends VodMenuAction {
 	private static final int MSG_AD_COUNTDOWN = 100;
@@ -251,7 +249,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 		@Override
 		protected void onPostExecute(ClipInfo result) {
 			if (result != null) {
-//				initPlayer();
+				setQiyiVideo();
 			} else {
 				// ExToClosePlayer("url"," m3u8 quality is null ,or get m3u8 err");
 			}
@@ -276,12 +274,14 @@ public class QiYiPlayActivity extends VodMenuAction {
 						if (urlInfo.getIqiyi_4_0().length() == 0) {
 							Intent intent = new Intent();
 							intent.setAction("tv.ismar.daisy.Play");
-							intent.putExtra("ismartv", AccessProxy.getvVideoClipInfo());
+							intent.putExtra("item", item);
+							intent.putExtra("ismartv",
+									AccessProxy.getvVideoClipInfo());
 							startActivity(intent);
 							QiYiPlayActivity.this.finish();
 							return null;
-						}else{
-
+						} else {
+							bundle.putString("iqiyi", urlInfo.getIqiyi_4_0());
 						}
 					}
 				}
@@ -326,6 +326,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 	}
 
 	private void setQiyiVideo() {
+		titleText.setText(item.title);
 		if (tempOffset > 0 && isContinue == true && !live_video) {
 			bufferText.setText("  " + BUFFERCONTINUE
 					+ getTimeString(tempOffset));
@@ -407,6 +408,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onMovieComplete() {
+			gotoFinishPage();
 		}
 
 		@Override
@@ -437,7 +439,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 				@Override
 				public void run() {
 					qualityText.setVisibility(View.VISIBLE);
-					// qualityText.setText(DEFINITION_NAMES.get(definition));
 				}
 			});
 			currentDefinition = definition;
@@ -450,7 +451,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onSeekComplete() {
-//			timeTaskStart();
+			// timeTaskStart();
 			checkTaskStart();
 			hideBuffer();
 		}
@@ -489,29 +490,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 			case MSG_AD_COUNTDOWN:
 				sendEmptyMessageDelayed(MSG_AD_COUNTDOWN, 1000);
 				break;
-			case MSG_PLAY_TIME:
-//				String playTime;
-//				int curPos = mPlayer.getCurrentPosition();
-//				int duration = mPlayer.getDuration();
-//				playTime = getPlaybackTimeString(curPos);
-//				playTime += " / ";
-//				playTime += getPlaybackTimeString(duration);
-//				timeText.setText(playTime);
-//				timeBar.setMax(duration);
-//				int secondaryProgress = mPlayer.getCachePercent() * duration
-//						/ 100;
-//				timeBar.setProgress(curPos);
-//				timeBar.setSecondaryProgress(secondaryProgress);
-//				if (Math.abs(secondaryProgress - curPos) != 0) {
-//					hideBuffer();
-//				} else {
-//					showBuffer();
-//				}
-//				sendEmptyMessageDelayed(MSG_PLAY_TIME, 1000);
-//				if (LogUtils.mIsDebug)
-//					LogUtils.d(TAG,
-//							"MSG_PLAY_TIME: isPlaying=" + mPlayer.isPlaying());
-
 			default:
 				break;
 			}
@@ -562,7 +540,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 		public void onStartTrackingTouch(SeekBar seekBar) {
 			Log.d(TAG, "onStartTrackingTouch" + seekBar.getProgress());
 			if (!live_video) {
-
 			}
 
 		}
@@ -571,7 +548,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 		public void onStopTrackingTouch(SeekBar seekBar) {
 			Log.d(TAG, "onStopTrackingTouch" + seekBar.getProgress());
 			if (!live_video) {
-
 			}
 
 		}
@@ -627,23 +603,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 			mPlayer.releasePlayer();
 		}
 		mPlayer = null;
-	}
-
-	private static String getPlaybackTimeString(int timeInMs) {
-		int second = timeInMs / 1000;
-		int minute = second / 60;
-		if (minute > 0) {
-			second %= 60;
-		}
-		int hour = minute / 60;
-		if (hour > 0) {
-			minute %= 60;
-		}
-		String hourStr = String.format("%02d", hour);
-		String minStr = String.format("%02d", minute);
-		String secStr = String.format("%02d", second);
-		String ret = hourStr + ":" + minStr + ":" + secStr;
-		return ret;
 	}
 
 	private Handler hidePanelHandler = new Handler();
@@ -1169,7 +1128,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 			addHistory(0);
 			isBuffer = true;
 			showBuffer();
-			// new ItemByUrlTask().execute();
+			new ItemByUrlTask().execute();
 		}
 
 		return true;
@@ -1336,4 +1295,66 @@ public class QiYiPlayActivity extends VodMenuAction {
 		mCheckHandler.removeCallbacks(checkStatus);
 	}
 
+	private void gotoFinishPage() {
+		timeTaskPause();
+		checkTaskPause();
+		if (mPlayer != null) {
+			if (listItems != null && listItems.size() > 0
+					&& currNum < (listItems.size() - 1)) {
+				subItem = listItems.get(currNum + 1);
+				subItemUrl = simpleRestClient.root_url + "/api/subitem/"
+						+ subItem.pk + "/";
+				bundle.remove("url");
+				bundle.putString("url", subItemUrl);
+				addHistory(0);
+				isBuffer = true;
+				showBuffer();
+				new ItemByUrlTask().execute();
+			} else {
+				Intent intent = new Intent("tv.ismar.daisy.PlayFinished");
+				intent.putExtra("item", item);
+				startActivity(intent);
+				seekPostion = 0;
+				currPosition = 0;
+				mPlayer.stop();
+				mPlayer.releasePlayer();
+				// mPlayer = null;
+				addHistory(0);
+				try {
+					if (subItem != null)
+						callaPlay
+								.videoExit(
+										item.pk,
+										subItem.pk,
+										item.title,
+										clip.pk,
+										currQuality,
+										0,
+										"end",
+										currPosition,
+										(System.currentTimeMillis() - startDuration) / 1000,
+										mSection, sid, "list",
+										item.content_model);// String
+					else
+						callaPlay
+								.videoExit(
+										item.pk,
+										null,
+										item.title,
+										clip.pk,
+										currQuality,
+										0,
+										"end",
+										currPosition,
+										(System.currentTimeMillis() - startDuration) / 1000,
+										mSection, sid, "list",
+										item.content_model);
+				} catch (Exception e) {
+					Log.e(TAG, " log Sender videoExit end " + e.toString());
+				}
+				QiYiPlayActivity.this.finish();
+			}
+		}
+
+	}
 }
