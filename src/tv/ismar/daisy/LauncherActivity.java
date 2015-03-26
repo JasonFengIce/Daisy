@@ -39,10 +39,7 @@ import tv.ismar.daisy.core.update.AppUpdateUtils;
 import tv.ismar.daisy.models.launcher.AttributeEntity;
 import tv.ismar.daisy.models.launcher.FrontPageEntity;
 import tv.ismar.daisy.player.InitPlayerTool;
-import tv.ismar.daisy.ui.widget.ChannelGridView;
-import tv.ismar.daisy.ui.widget.DaisyButton;
-import tv.ismar.daisy.ui.widget.DaisyImageView;
-import tv.ismar.daisy.ui.widget.GuideItemView;
+import tv.ismar.daisy.ui.widget.*;
 import tv.ismar.daisy.views.CustomDialog;
 
 import java.io.*;
@@ -71,7 +68,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private IsmartvVideoView videoView;
     private ImageView[] homeImages;
     private TextView[] homeTitles;
-    private GuideItemView linkedvideoGrid;
+
 
     private RelativeLayout[] channelImtes;
 
@@ -82,7 +79,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     private TextView tomorrowDetail;
 
-    private RelativeLayout[] homeItems;
     private String mLocalPath;
     private String mRemoteUrl;
     private long readSize = 0;
@@ -113,11 +109,15 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private DaisyImageView btn_personcenter;
     private DaisyImageView btn_search;
     PopupWindow popupWindow;
-
+    /**
+     * views
+     */
     private ChannelGridView channelGrid;
-
+    private VerticalGuideListView linkedvideoGrid;
+    private HorizontalGuideListView horizontalGuideListView;
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         registerUpdateReceiver();
@@ -243,33 +243,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 startActivity(intent);
             }
         });
-        homeItems = new RelativeLayout[]{
-                (RelativeLayout) findViewById(R.id.home_item_1),
-                (RelativeLayout) findViewById(R.id.home_item_2),
-                (RelativeLayout) findViewById(R.id.home_item_3),
-                (RelativeLayout) findViewById(R.id.home_item_4),
-                (RelativeLayout) findViewById(R.id.home_item_5),
-                (RelativeLayout) findViewById(R.id.home_item_6)};
 
-        homeImages = new ImageView[]{(ImageView) findViewById(R.id.home_1),
-                (ImageView) findViewById(R.id.home_2),
-                (ImageView) findViewById(R.id.home_3),
-                (ImageView) findViewById(R.id.home_4),
-                (ImageView) findViewById(R.id.home_5),
-                (ImageView) findViewById(R.id.home_6)};
-
-        homeTitles = new TextView[]{
-                (TextView) findViewById(R.id.home_title_1),
-                (TextView) findViewById(R.id.home_title_2),
-                (TextView) findViewById(R.id.home_title_3),
-                (TextView) findViewById(R.id.home_title_4),
-                (TextView) findViewById(R.id.home_title_5),
-                (TextView) findViewById(R.id.home_title_6)};
 
         channelGrid = (ChannelGridView) findViewById(R.id.channel_grid);
-
-        linkedvideoGrid = (GuideItemView) findViewById(R.id.grid_linkedvideo);
-
+        linkedvideoGrid = (VerticalGuideListView) findViewById(R.id.grid_linkedvideo);
+        horizontalGuideListView = (HorizontalGuideListView) findViewById(R.id.h_guide_View);
     }
 
     @Override
@@ -530,31 +508,31 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         }
     }
 
-
-    private void setTvHome(String content) {
-        try {
-            Gson gson = new Gson();
-            VideoEntity tvHome = gson.fromJson(content.toString(),
-                    VideoEntity.class);
-            for (int i = 0; i < 6; i++) {
-                homeTitles[i].setText(tvHome.getObjects().get(i).getTitle());
-                Picasso.with(LauncherActivity.this)
-                        .load(tvHome.getObjects().get(i).getImage())
-                        .placeholder(R.drawable.preview).error(R.drawable.preview)
-                        .into(homeImages[i]);
-                boolean is_complex = tvHome.getObjects().get(i).isIs_complex();
-                if (is_complex)
-                    homeItems[i].setTag(tvHome.getObjects().get(i).getItem_url()
-                            + "," + "item");
-                else
-                    homeItems[i].setTag(tvHome.getObjects().get(i).getItem_url()
-                            + "," + "play");
-                homeItems[i].setOnClickListener(viewItemClickListener);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//
+//    private void setTvHome(String content) {
+//        try {
+//            Gson gson = new Gson();
+//            VideoEntity tvHome = gson.fromJson(content.toString(),
+//                    VideoEntity.class);
+//            for (int i = 0; i < 6; i++) {
+//                homeTitles[i].setText(tvHome.getObjects().get(i).getTitle());
+//                Picasso.with(LauncherActivity.this)
+//                        .load(tvHome.getObjects().get(i).getImage())
+//                        .placeholder(R.drawable.preview).error(R.drawable.preview)
+//                        .into(homeImages[i]);
+//                boolean is_complex = tvHome.getObjects().get(i).isIs_complex();
+//                if (is_complex)
+//                    homeItems[i].setTag(tvHome.getObjects().get(i).getItem_url()
+//                            + "," + "item");
+//                else
+//                    homeItems[i].setTag(tvHome.getObjects().get(i).getItem_url()
+//                            + "," + "play");
+//                homeItems[i].setOnClickListener(viewItemClickListener);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
     private void setWeather(String content) {
@@ -607,13 +585,13 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 case FETCHLATEST:
                     break;
                 case FETCHTVHOME:
-                    setTvHome(dataBundle.getString("content"));
+//                    setTvHome(dataBundle.getString("content"));
                     break;
                 case GETDOMAIN:
                     DaisyUtils.getVodApplication(LauncherActivity.this).getNewContentModel();
                     updatePoster();
                     getFrontPage();
-                    getTvHome();
+                    fetchHorizontalGuide();
                     fetchChannels();
                     fetchWeather();
                     break;
@@ -683,6 +661,29 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             }
 
         }.start();
+    }
+
+
+    private void fetchHorizontalGuide() {
+        String deviceToken = SimpleRestClient.device_token;
+        String host = SimpleRestClient.root_url;
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setLogLevel(AppConstant.LOG_LEVEL)
+                .setEndpoint(host)
+                .build();
+        ClientApi.HorizontalGuide client = restAdapter.create(ClientApi.HorizontalGuide.class);
+        client.excute(deviceToken, new Callback<VideoEntity>() {
+            @Override
+            public void success(VideoEntity videoEntity, Response response) {
+                horizontalGuideListView.setAdapter(videoEntity);
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                Log.e(TAG, retrofitError.getMessage());
+            }
+        });
+
     }
 
     private void getTvHome() {

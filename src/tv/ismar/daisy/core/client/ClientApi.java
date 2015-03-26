@@ -1,6 +1,7 @@
 package tv.ismar.daisy.core.client;
 
 import com.ismartv.launcher.data.ChannelEntity;
+import com.ismartv.launcher.data.VideoEntity;
 import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Headers;
@@ -74,4 +75,17 @@ public class ClientApi {
                 Callback<ChannelEntity[]> callback
         );
     }
+
+    /**
+     * HorizontalGuide
+     */
+    public interface HorizontalGuide {
+        @GET("/api/tv/section/tvhome/")
+        void excute(
+                @Query("device_token") String deviceToken,
+                Callback<VideoEntity> callback
+        );
+
+    }
+
 }

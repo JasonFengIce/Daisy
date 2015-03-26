@@ -117,14 +117,17 @@
         <attr name="focus_bg" format="color|reference"></attr>
     </declare-styleable>
 
-    <declare-styleable name="DaisyGridView">
 
+    <declare-styleable name="VerticalGuideListView">
     </declare-styleable>
 
-    <declare-styleable name="GuideItemView">
+    <declare-styleable name="HorizontalGuideListView">
     </declare-styleable>
 
     <declare-styleable name="ChannelGridView">
+    </declare-styleable>
+
+    <declare-styleable name="ContainerLayout">
 
     </declare-styleable>
 

@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.ismartv.launcher.data.ChannelEntity;
 import tv.ismar.daisy.R;
@@ -65,12 +64,12 @@ public class ChannelGridView extends LinearLayout {
             LinearLayout lineLayout = new LinearLayout(context);
             for (int j = 0; j < 6; j++) {
                 View itemView = LayoutInflater.from(context).inflate(R.layout.item_channel, null);
-                RelativeLayout container = new RelativeLayout(context);
+                ContainerLayout container = new ContainerLayout(context);
 
                 container.setFocusable(true);
                 container.setFocusableInTouchMode(true);
                 container.setClickable(true);
-                container.setBackgroundResource(R.drawable.content_selector);
+                container.setBackgroundResource(R.drawable.launcher_selector);
                 container.setTag(channelEntities[count]);
                 container.setOnClickListener(itemClickListener);
 

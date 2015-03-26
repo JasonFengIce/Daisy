@@ -24,7 +24,6 @@ import java.io.InputStream;
 public class AdvertisementActivity extends Activity {
     private static final String TAG = "AdvertisementActivity";
     private static final int MSG_ADVER_TIMER = 0x0001;
-    private String advertisePicCacheDir;
 
     private static final int[] secondsResId = {R.drawable.second_1, R.drawable.second_2,
             R.drawable.second_3, R.drawable.second_4, R.drawable.second_5};
@@ -46,7 +45,6 @@ public class AdvertisementActivity extends Activity {
 
         File posterFile = new File(getFilesDir(), PosterUpdateService.POSTER_NAME);
         placeAdvertisementPic(posterFile.getAbsolutePath());
-//        fetchCdnChangeTag();
         messageHandler = new MessageHandler();
 
 
@@ -57,45 +55,6 @@ public class AdvertisementActivity extends Activity {
         timerText = (ImageView) findViewById(R.id.adver_timer);
     }
 
-//    private void fetchCdnChangeTag() {
-//        RestAdapter restAdapter = new RestAdapter.Builder()
-//                .setLogLevel(AppConstant.LOG_LEVEL)
-//                .setEndpoint(AppConstant.CDN_API_HOST)
-//                .build();
-//        ClientApi.CdnChangeTag client = restAdapter.create(ClientApi.CdnChangeTag.class);
-//        client.excute(new Callback<CdnChangeTagEntity>() {
-//            @Override
-//            public void success(CdnChangeTagEntity cdnChangeTagEntity, Response response) {
-//                fetchCdnList();
-//            }
-//
-//            @Override
-//            public void failure(RetrofitError retrofitError) {
-//                Log.e(TAG, "fetchCdnChangeTag failed !!! ");
-//                Log.e(TAG, retrofitError.getMessage());
-//            }
-//        });
-//    }
-
-//    private void fetchCdnList() {
-//        RestAdapter restAdapter = new RestAdapter.Builder()
-//                .setLogLevel(AppConstant.LOG_LEVEL)
-//                .setEndpoint(AppConstant.CDN_API_HOST)
-//                .build();
-//        ClientApi.CdnList client = restAdapter.create(ClientApi.CdnList.class);
-//        client.excute(new Callback<CdnListEntity>() {
-//            @Override
-//            public void success(CdnListEntity cdnListEntity, Response response) {
-//                CdnCacheManager.getInstance().saveCdnList(cdnListEntity);
-//            }
-//
-//            @Override
-//            public void failure(RetrofitError retrofitError) {
-//                Log.e(TAG, "fetchCdnList failed !!! ");
-//                Log.e(TAG, retrofitError.getMessage());
-//            }
-//        });
-//    }
 
     private void placeAdvertisementPic(String path) {
         Picasso.with(AdvertisementActivity.this)
