@@ -70,6 +70,7 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 	private DialogInterface.OnClickListener mPositiveListener;
 	private DialogInterface.OnClickListener mNegativeListener;
 	private int remainDay = -1;
+	private ImageView isbuy_label;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -93,6 +94,7 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
         dialog.show();
 	}
 	private void initView(){
+		isbuy_label = (ImageView)findViewById(R.id.isbuy_label);
 		detail_left_container = (RelativeLayout)findViewById(R.id.detail_left_container);
 		detail_right_container = (LinearLayout)findViewById(R.id.detail_right_container);
 		mLoadingDialog = new LoadingDialog(this, getResources().getString(R.string.loading));
@@ -328,6 +330,7 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 									vod_payment_price.setText("已付费");
 									vod_payment_duration.setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
 									vod_payment_price.setBackgroundResource(R.drawable.vod_detail_already_payment_price);
+									isbuy_label.setVisibility(View.VISIBLE);
 								}
 							} catch (ParseException e) {
 								// TODO Auto-generated catch block
@@ -355,6 +358,7 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 								vod_payment_duration.setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
 								vod_payment_price.setBackgroundResource(R.drawable.vod_detail_already_payment_price);
 								vod_payment_buyButton.setEnabled(false);
+								isbuy_label.setVisibility(View.VISIBLE);
 							}
 						} catch (ParseException e1) {
 							// TODO Auto-generated catch block

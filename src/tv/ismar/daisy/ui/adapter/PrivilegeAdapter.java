@@ -51,6 +51,7 @@ public class PrivilegeAdapter extends BaseAdapter {
 			convertView = LayoutInflater.from(mContext).inflate(R.layout.privilege_listview_item,null);
 			holder = new ViewHolder();
 			holder.title = (TextView) convertView.findViewById(R.id.title_txt);
+			holder.buydate_txt = (TextView)convertView.findViewById(R.id.buydate_txt);
 			convertView.setTag(holder);
 		}
 		else{
@@ -58,10 +59,12 @@ public class PrivilegeAdapter extends BaseAdapter {
 		}
 		PrivilegeItem item = mList.get(position);
 		holder.title.setText(item.getTitle());
+		holder.buydate_txt.setText(item.getBuydate());
 		return convertView;
 	}
 	public static class ViewHolder {
 		TextView title;
+		TextView buydate_txt;
 		//TextView duration;
 		//Button renew;
 	}

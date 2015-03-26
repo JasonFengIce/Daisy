@@ -3,5 +3,6 @@
 
     <item android:drawable="@drawable/more_content_pressed_btn_bg" android:state_pressed="true"/>
     <item android:drawable="@drawable/more_content_pressed_btn_bg" android:state_hovered="true"/>
+    <item android:drawable="@drawable/more_content_pressed_btn_bg" android:state_focused="true"></item>
     <item android:drawable="@drawable/more_content_normal_btn_bg" />
 </selector>

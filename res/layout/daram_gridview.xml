@@ -1,11 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drama_gridview"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/drama_gridview_margintop"
-    android:scrollbarDefaultDelayBeforeFade="60000"
-    android:scrollbarThumbVertical="@drawable/srollbar"
-    android:scrollbarTrackVertical="@drawable/srollbar_backgroud"
-    android:verticalSpacing="@dimen/drama_gridview_verticalspacing"
-    android:listSelector="#00000000"/>
+<RelativeLayout 
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_height="match_parent"
+     android:layout_width="match_parent">
+     
+   <Button 
+    android:id="@+id/down_btn"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/vod_arrow_down_selector"
+    android:layout_alignParentBottom="true"
+    android:layout_centerInParent="true"/>
+    <Button 
+    android:id="@+id/up_btn"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/vod_arrow_up_selector"
+    android:layout_centerInParent="true"
+    android:layout_alignParentTop="true"/>
+<!-- <GridView  -->
+<!--     android:id="@+id/drama_gridview" -->
+<!--     android:layout_above="@id/down_btn" -->
+<!--     android:layout_width="match_parent" -->
+<!--     android:layout_height="match_parent" -->
+<!--     android:layout_marginTop="@dimen/drama_gridview_margintop" -->
+<!--     android:scrollbarDefaultDelayBeforeFade="60000" -->
+<!--     android:scrollbarThumbVertical="@drawable/srollbar" -->
+<!--     android:scrollbarTrackVertical="@drawable/srollbar_backgroud" -->
+<!--     android:verticalSpacing="@dimen/drama_gridview_verticalspacing" -->
+<!--     android:listSelector="#00000000"/> -->
+
+
+    <org.sakuratya.horizontal.ui.ZGridView
+        xmlns:sakura="http://schemas.android.com/apk/res/tv.ismar.daisy"
+        android:layout_above="@id/down_btn"
+        android:layout_below="@id/up_btn"
+        android:id="@+id/drama_zgridview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dip"
+        sakura:listSelector="@android:color/transparent"
+        sakura:numColumns="10"
+        sakura:verticalSpace="@dimen/drama_gridview_verticalspacing"
+        android:scrollbars="vertical"
+        android:scrollbarDefaultDelayBeforeFade="60000"
+        android:scrollbarThumbVertical="@drawable/srollbar"
+        android:scrollbarTrackVertical="@drawable/srollbar_backgroud"
+        >
+    </org.sakuratya.horizontal.ui.ZGridView>
+
+</RelativeLayout>

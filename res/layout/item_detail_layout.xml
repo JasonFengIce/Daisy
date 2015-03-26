@@ -219,7 +219,18 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"               
                 android:layout_marginTop="@dimen/item_detail_detailquality_margintop"
-                android:layout_marginRight="@dimen/item_detail_detailquality_marginright"/>
+                android:layout_marginRight="@dimen/item_detail_detailquality_marginright"
+                android:visibility="visible"/>
+               <ImageView
+                android:id="@+id/isbuy_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/detail_preview_img"
+                android:layout_alignRight="@id/detail_preview_img"              
+                android:layout_marginTop="@dimen/item_detail_detailquality_margintop"
+                android:layout_marginRight="@dimen/item_detail_detailquality_marginright"
+                android:background="@drawable/package_buyed_bg"
+                android:visibility="gone"/>
           <TextView
               android:id="@+id/detail_price_txt"
               android:layout_width="wrap_content"  
