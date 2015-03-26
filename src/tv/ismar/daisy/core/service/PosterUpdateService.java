@@ -82,7 +82,7 @@ public class PosterUpdateService extends Service {
             }
         };
 //        timer.schedule(tt, 3000, 30 * 1000);
-        timer.schedule(tt, 3000, 1 * 60 * 1000);
+        timer.schedule(tt, 3000, 15 * 60 * 1000);
     }
 
     private void fetchAdvertisementInfo(String host) {

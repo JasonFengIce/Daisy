@@ -1,4 +1,4 @@
-package com.ismartv.launcher.data;
+package tv.ismar.daisy.models.launcher;
 
 import java.util.List;
 
