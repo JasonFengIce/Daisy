@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.URLUtil;
 import android.widget.*;
-import android.widget.AdapterView.OnItemClickListener;
 import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
 import com.google.gson.Gson;
@@ -40,11 +39,10 @@ import tv.ismar.daisy.core.update.AppUpdateUtils;
 import tv.ismar.daisy.models.launcher.AttributeEntity;
 import tv.ismar.daisy.models.launcher.FrontPageEntity;
 import tv.ismar.daisy.player.InitPlayerTool;
-import tv.ismar.daisy.ui.adapter.ChannelAdapter;
+import tv.ismar.daisy.ui.widget.ChannelGridView;
 import tv.ismar.daisy.ui.widget.DaisyButton;
-import tv.ismar.daisy.ui.widget.DaisyGridView;
 import tv.ismar.daisy.ui.widget.DaisyImageView;
-import tv.ismar.daisy.ui.widget.GuideItem;
+import tv.ismar.daisy.ui.widget.GuideItemView;
 import tv.ismar.daisy.views.CustomDialog;
 
 import java.io.*;
@@ -53,7 +51,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class LauncherActivity extends Activity implements View.OnClickListener, Activator.OnComplete, OnItemClickListener {
+public class LauncherActivity extends Activity implements View.OnClickListener, Activator.OnComplete {
     private static final String TAG = "LauncherActivity";
     private AppUpdateReceiver appUpdateReceiver;
     private static final int NAME = 1;
@@ -73,7 +71,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private IsmartvVideoView videoView;
     private ImageView[] homeImages;
     private TextView[] homeTitles;
-    private GuideItem linkedvideoGrid;
+    private GuideItemView linkedvideoGrid;
 
     private RelativeLayout[] channelImtes;
 
@@ -116,7 +114,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private DaisyImageView btn_search;
     PopupWindow popupWindow;
 
-    private DaisyGridView channelGrid;
+    private ChannelGridView channelGrid;
 
 
     @Override
@@ -268,10 +266,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 (TextView) findViewById(R.id.home_title_5),
                 (TextView) findViewById(R.id.home_title_6)};
 
-        channelGrid = (DaisyGridView) findViewById(R.id.channel_grid);
-        channelGrid.setOnItemClickListener(this);
+        channelGrid = (ChannelGridView) findViewById(R.id.channel_grid);
 
-        linkedvideoGrid = (GuideItem) findViewById(R.id.grid_linkedvideo);
+        linkedvideoGrid = (GuideItemView) findViewById(R.id.grid_linkedvideo);
 
     }
 
@@ -533,13 +530,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         }
     }
 
-    private void setChannels(String content) {
-        Gson gson = new Gson();
-        ChannelEntity[] channelBeans = gson.fromJson(content.toString(),
-                ChannelEntity[].class);
-        ChannelAdapter channelAdapter = new ChannelAdapter(this, channelBeans);
-        channelGrid.setAdapter(channelAdapter);
-    }
 
     private void setTvHome(String content) {
         try {
@@ -607,7 +597,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             Bundle dataBundle = msg.getData();
             switch (type) {
                 case FETCHCHANNEL:
-                    setChannels(dataBundle.getString("content"));
                     break;
                 case FETCHFRONTPAGE:
                     setFrontPage(dataBundle.getString("content"));
@@ -625,50 +614,38 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                     updatePoster();
                     getFrontPage();
                     getTvHome();
-                    getChannels();
+                    fetchChannels();
                     fetchWeather();
                     break;
             }
         }
     };
 
-    private void getChannels() {
-        new Thread() {
+
+    /**
+     * fetch channel
+     */
+    private void fetchChannels() {
+        String deviceToken = SimpleRestClient.device_token;
+        String host = SimpleRestClient.root_url;
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setLogLevel(AppConstant.LOG_LEVEL)
+                .setEndpoint(host)
+                .build();
+        ClientApi.Channels client = restAdapter.create(ClientApi.Channels.class);
+        client.excute(deviceToken, new Callback<ChannelEntity[]>() {
             @Override
-            public void run() {
-                super.run();
-                StringBuffer content = new StringBuffer();
-                try {
-                    URL getUrl = new URL(SimpleRestClient.root_url
-                            + "/api/tv/channels/" + "?device_token=" + SimpleRestClient.device_token);
-                    HttpURLConnection connection = (HttpURLConnection) getUrl
-                            .openConnection();
-                    connection.setReadTimeout(4000);
-                    connection.setUseCaches(false);
-                    connection.connect();
-                    BufferedReader reader = new BufferedReader(
-                            new InputStreamReader(connection.getInputStream(), "UTF-8"));
-                    String lines;
-                    while ((lines = reader.readLine()) != null) {
-                        content.append(lines);
-                    }
-                    Message message = new Message();
-                    Bundle data = new Bundle();
-                    data.putString("content", content.toString());
-                    message.setData(data);
-                    message.what = FETCHCHANNEL;
-                    mainHandler.sendMessage(message);
-                } catch (MalformedURLException e) {
-                    if (e != null)
-                        System.err.println(e.getMessage());
-                } catch (IOException e) {
-                    if (e != null)
-                        System.err.println(e.getMessage());
-                }
+            public void success(ChannelEntity[] channelEntities, Response response) {
+                channelGrid.setAdapter(channelEntities);
             }
 
-        }.start();
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                Log.e(TAG, retrofitError.getMessage());
+            }
+        });
     }
+
 
     private void getFrontPage() {
         new Thread() {
@@ -864,25 +841,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         }
 
         super.onDestroy();
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        intent = new Intent();
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        String content = (String) view.findViewById(R.id.channel_img).getTag();
-        JSONObject jsonObject;
-        try {
-            jsonObject = new JSONObject(content);
-            intent.putExtra("title", jsonObject.getString("name"));
-            intent.putExtra("url", jsonObject.getString("url"));
-            intent.putExtra("channel", jsonObject.getString("channel"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        intent.setClassName("tv.ismar.daisy",
-                "tv.ismar.daisy.ChannelListActivity");
-        this.startActivity(intent);
     }
 
     /**

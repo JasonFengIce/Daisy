@@ -1,5 +1,6 @@
 package tv.ismar.daisy.core.client;
 
+import com.ismartv.launcher.data.ChannelEntity;
 import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Headers;
@@ -62,4 +63,15 @@ public class ClientApi {
         );
     }
 
+    /**
+     * channel
+     */
+
+    public interface Channels {
+        @GET("/api/tv/channels/")
+        void excute(
+                @Query("device_token") String deviceToken,
+                Callback<ChannelEntity[]> callback
+        );
+    }
 }

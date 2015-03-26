@@ -121,7 +121,10 @@
 
     </declare-styleable>
 
-    <declare-styleable name="GuideItem">
+    <declare-styleable name="GuideItemView">
+    </declare-styleable>
+
+    <declare-styleable name="ChannelGridView">
 
     </declare-styleable>
 

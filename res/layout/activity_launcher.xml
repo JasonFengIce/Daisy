@@ -128,14 +128,14 @@
                 >
         </com.ismartv.launcher.ui.widget.IsmartvVideoView>
 
-        <tv.ismar.daisy.ui.widget.GuideItem
+        <tv.ismar.daisy.ui.widget.GuideItemView
                 android:id="@+id/grid_linkedvideo"
                 android:layout_width="0dp"
                 android:orientation="vertical"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 >
-        </tv.ismar.daisy.ui.widget.GuideItem>
+        </tv.ismar.daisy.ui.widget.GuideItemView>
 
     </LinearLayout>
 
@@ -310,16 +310,14 @@
 
     </LinearLayout>
 
-    <tv.ismar.daisy.ui.widget.DaisyGridView
-            android:horizontalSpacing="10dp"
-            android:verticalSpacing="10dp"
-            android:numColumns="6"
-            android:id="@+id/channel_grid"
+    <tv.ismar.daisy.ui.widget.ChannelGridView
             android:layout_width="match_parent"
+            android:orientation="vertical"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:listSelector="@drawable/content_selector"
+            android:id="@+id/channel_grid"
             >
-    </tv.ismar.daisy.ui.widget.DaisyGridView>
+
+    </tv.ismar.daisy.ui.widget.ChannelGridView>
 
 </LinearLayout>
