@@ -12,10 +12,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.security.auth.PrivateCredentialPermission;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
@@ -26,7 +25,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -222,8 +220,9 @@ public class PaymentDialog extends Dialog {
 				break;
 
 			case R.id.shiyuncard_submit: {
+				submit_cardpay.setClickable(false);
 				String inputValue = shiyuncard_input.getText().toString();
-				inputValue = "1044418176805411";
+				// inputValue = "9115134571196781";
 				if (inputValue.length() == 16 && isNumeric(inputValue)) {
 					card_recharge(inputValue);
 				} else {
@@ -234,6 +233,7 @@ public class PaymentDialog extends Dialog {
 				break;
 
 			case R.id.card_balance_submit: {
+				submit_yuepay.setClickable(false);
 				SimpleRestClient client = new SimpleRestClient();
 				client.doSendRequest(BALANCEPAY_BASE_URL, "post", "wares_id="
 						+ mItem.pk + "&wares_type=" + mItem.model_name
@@ -523,6 +523,7 @@ public class PaymentDialog extends Dialog {
 
 		@Override
 		public void onFailed(String error) {
+			submit_yuepay.setClickable(true);
 		}
 	};
 
@@ -535,13 +536,16 @@ public class PaymentDialog extends Dialog {
 		@Override
 		public void onSuccess(String info) {
 			try {
-				Log.v("aaaa", info);
 				JSONObject object = new JSONObject(info);
 				String statusString = object.getString("status");
 				String errmsg = object.getString("err_desc");
 				recharge_error_msg.setVisibility(View.VISIBLE);
 				if ("S".equalsIgnoreCase(statusString)) {
 					recharge_error_msg.setText("充值成功,系统将自动为您购买,6s后返回");
+					changeQrcodePayPanelState(false, false);
+					changeLoginPanelState(false);
+					changeYuePayPanelState(true);
+					changeshiyuncardPanelState(false);
 				} else if ("T".equalsIgnoreCase(statusString)) {
 					recharge_error_msg.setText("充值成功,系统将在第二天8点为您购买,10s后返回");
 				} else {
@@ -550,12 +554,14 @@ public class PaymentDialog extends Dialog {
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
+			submit_cardpay.setClickable(true);
 		}
 
 		@Override
 		public void onFailed(String error) {
 			recharge_error_msg.setVisibility(View.VISIBLE);
-			recharge_error_msg.setText("错误的观影卡密码");
+			recharge_error_msg.setText(error);
+			submit_cardpay.setClickable(true);
 		}
 	};
 

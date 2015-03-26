@@ -1,10 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="tv.ismar.daisy"
-          android:versionCode="34"
+          android:versionCode="360"
           android:versionName="3.4">
 
     <uses-sdk
-        android:minSdkVersion="16"
+        android:minSdkVersion="14"
         android:targetSdkVersion="14"/>
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -19,31 +19,17 @@
         android:name=".VodApplication"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name">
-
         <activity
-            android:name=".ui.activity.SelectorActivty"
+            android:name=".ui.activity.AdvertisementActivity"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".ui.activity.AppUpdateActivity"
-            android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-
-        </activity>
-
-        <activity
-            android:name=".ui.activity.AdvertisementActivity"
-            android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            >
 
         </activity>
 

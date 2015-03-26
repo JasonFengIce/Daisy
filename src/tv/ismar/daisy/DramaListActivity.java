@@ -194,8 +194,9 @@ public class DramaListActivity extends Activity implements
 		// 名称
 		mTvDramaName.setText(mItem.title);
 		// 集数
-		mTvDramaAll.setText(mItem.episode + getString(R.string.daram_ji)
-				+ getString(R.string.daram_all) + "  /");
+		String update_to_episode = getResources().getString(
+				R.string.update_to_episode);
+		mTvDramaAll.setText(String.format(update_to_episode, mItem.subitems.length)+ "  /");
 		// 显示图片
 		switch (mItem.quality) {
 		case 3:
@@ -310,6 +311,7 @@ public class DramaListActivity extends Activity implements
 
 		@Override
 		public void payResult(boolean result) {
+			orderCheck();
 		}
 
 	};

@@ -16,28 +16,33 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.URLUtil;
 import android.widget.*;
-import android.widget.AdapterView.OnItemClickListener;
 import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
 import com.google.gson.Gson;
 import com.ismartv.launcher.data.ChannelEntity;
-import com.ismartv.launcher.data.FrontPageEntity;
 import com.ismartv.launcher.data.VideoEntity;
 import com.ismartv.launcher.data.WeatherEntity;
 import com.ismartv.launcher.ui.widget.IsmartvVideoView;
 import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SystemFileUtil;
+import tv.ismar.daisy.core.client.ClientApi;
 import tv.ismar.daisy.core.service.PosterUpdateService;
 import tv.ismar.daisy.core.update.AppUpdateUtils;
+import tv.ismar.daisy.models.launcher.AttributeEntity;
+import tv.ismar.daisy.models.launcher.FrontPageEntity;
 import tv.ismar.daisy.player.InitPlayerTool;
-import tv.ismar.daisy.ui.adapter.ChannelAdapter;
+import tv.ismar.daisy.ui.widget.ChannelGridView;
 import tv.ismar.daisy.ui.widget.DaisyButton;
-import tv.ismar.daisy.ui.widget.DaisyGridView;
 import tv.ismar.daisy.ui.widget.DaisyImageView;
+import tv.ismar.daisy.ui.widget.GuideItemView;
 import tv.ismar.daisy.views.CustomDialog;
 
 import java.io.*;
@@ -46,7 +51,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class LauncherActivity extends Activity implements View.OnClickListener, Activator.OnComplete, OnItemClickListener {
+public class LauncherActivity extends Activity implements View.OnClickListener, Activator.OnComplete {
     private static final String TAG = "LauncherActivity";
     private AppUpdateReceiver appUpdateReceiver;
     private static final int NAME = 1;
@@ -58,15 +63,18 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private static final int FETCHLATEST = 0x04;
     private static final int FETCHTVHOME = 0x05;
     private static final int GETDOMAIN = 0x06;
-    private IsmartvVideoView videoView;
 
+
+    /**
+     * view
+     */
+    private IsmartvVideoView videoView;
     private ImageView[] homeImages;
     private TextView[] homeTitles;
-
+    private GuideItemView linkedvideoGrid;
 
     private RelativeLayout[] channelImtes;
 
-    private ImageView[] recomends;
 
     private ImageView weatherIcon;
     private TextView weatherTmp;
@@ -106,7 +114,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private DaisyImageView btn_search;
     PopupWindow popupWindow;
 
-    private DaisyGridView channelGrid;
+    private ChannelGridView channelGrid;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,13 +136,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         float rate = (float) densityDpi / (float) 160;
         VodApplication.rate = rate;
         String domain = DaisyUtils.getVodApplication(this).getPreferences().getString("domain", "");
-//		if("".equals(domain))
-//		    register();
-//		else{
-//			SimpleRestClient.root_url = domain;
-//			SimpleRestClient.sRoot_url = domain;
-//			mainHandler.sendEmptyMessage(GETDOMAIN);
-//		}
         activator = Activator.getInstance(this);
         activator.setOnCompleteListener(this);
         activator.active(MANUFACTURE, KIND, VERSION);
@@ -264,13 +266,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 (TextView) findViewById(R.id.home_title_5),
                 (TextView) findViewById(R.id.home_title_6)};
 
-        channelGrid = (DaisyGridView) findViewById(R.id.channel_grid);
-        channelGrid.setOnItemClickListener(this);
+        channelGrid = (ChannelGridView) findViewById(R.id.channel_grid);
 
+        linkedvideoGrid = (GuideItemView) findViewById(R.id.grid_linkedvideo);
 
-        recomends = new ImageView[]{(ImageView) findViewById(R.id.image_1),
-                (ImageView) findViewById(R.id.image_2),
-                (ImageView) findViewById(R.id.image_3)};
     }
 
     @Override
@@ -314,20 +313,22 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             Gson gson = new Gson();
             FrontPageEntity frontBeans = gson.fromJson(content.toString(),
                     FrontPageEntity.class);
+
+            /**
+             * linkedvideo
+             */
+            String videoId = frontBeans.getVideos().get(0).getVideo_id();
+            fetchLinkedvideo(Long.parseLong(videoId));
+
             final Uri uri = Uri.parse(frontBeans.getVideos().get(0)
                     .getVideo_url());
             mRemoteUrl = frontBeans.getVideos().get(0).getVideo_url();
-            // mRemoteUrl = "http://192.168.1.185:8099/shipinkefu/22.mp4";
             int position = mRemoteUrl.lastIndexOf("/");
             String fileName = mRemoteUrl.substring(position + 1,
                     mRemoteUrl.length());
             String realname = fileName.substring(0, fileName.lastIndexOf("?"));
             mLocalPath = Environment.getExternalStorageDirectory()
                     .getAbsolutePath() + "/VideoCache/" + realname;
-            // videoView.setVideoPath(mLocalPath);
-            // videoView.start();
-            //mRemoteUrl = mRemoteUrl.substring(0, mRemoteUrl.lastIndexOf("?"));
-            //mRemoteUrl  = mRemoteUrl + "?" + "sn=" + Build.SERIAL;
             playvideo();
             videoView.setKeepScreenOn(true);
 
@@ -517,7 +518,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                     break;
             }
 
-            // super.handleMessage(msg);
         }
     };
 
@@ -530,31 +530,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         }
     }
 
-    private void setChannels(String content) {
-        Gson gson = new Gson();
-        ChannelEntity[] channelBeans = gson.fromJson(content.toString(),
-                ChannelEntity[].class);
-        ChannelAdapter channelAdapter = new ChannelAdapter(this, channelBeans);
-        channelGrid.setAdapter(channelAdapter);
-
-//        for (int i = 0; i < channelBeans.length; i++) {
-//            channelTexts[i].setText(channelBeans[i].getName());
-//            channelTexts[i].setTextColor(Color.WHITE);
-//            TextPaint tp = channelTexts[i].getPaint();
-//            tp.setFakeBoldText(true);
-//            JSONObject jsonObject = new JSONObject();
-//            try {
-//                jsonObject.put("name", channelBeans[i].getName());
-//                jsonObject.put("url", channelBeans[i].getUrl());
-//                jsonObject.put("channel", channelBeans[i].getChannel());
-//            } catch (JSONException e) {
-//                if (e != null)
-//                    e.printStackTrace();
-//            }
-//            channelImtes[i].setTag(jsonObject.toString());
-//            channelImtes[i].setOnClickListener(LauncherActivity.this);
-//        }
-    }
 
     private void setTvHome(String content) {
         try {
@@ -581,29 +556,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         }
     }
 
-    private void setLatest(String content) {
-        Gson gson = new Gson();
-        VideoEntity videoEntity = gson.fromJson(content.toString(),
-                VideoEntity.class);
-        for (int i = 0; i < 3; i++) {
-
-            Picasso.with(LauncherActivity.this)
-                    .load(videoEntity.getObjects().get(i).getImage())
-                    .placeholder(R.drawable.preview).error(R.drawable.preview)
-                    .into(recomends[i]);
-            boolean is_complex = videoEntity.getObjects().get(i).isIs_complex();
-            if (is_complex)
-                recomends[i].setTag(videoEntity.getObjects().get(i)
-                        .getItem_url()
-                        + ",item");
-            else
-                recomends[i].setTag(videoEntity.getObjects().get(i)
-                        .getItem_url()
-                        + ",play");
-
-            recomends[i].setOnClickListener(viewItemClickListener);
-        }
-    }
 
     private void setWeather(String content) {
         Gson gson = new Gson();
@@ -645,7 +597,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             Bundle dataBundle = msg.getData();
             switch (type) {
                 case FETCHCHANNEL:
-                    setChannels(dataBundle.getString("content"));
                     break;
                 case FETCHFRONTPAGE:
                     setFrontPage(dataBundle.getString("content"));
@@ -654,7 +605,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                     setWeather(dataBundle.getString("content"));
                     break;
                 case FETCHLATEST:
-                    setLatest(dataBundle.getString("content"));
                     break;
                 case FETCHTVHOME:
                     setTvHome(dataBundle.getString("content"));
@@ -664,51 +614,38 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                     updatePoster();
                     getFrontPage();
                     getTvHome();
-                    getChannels();
-                    getLatest();
+                    fetchChannels();
                     fetchWeather();
                     break;
             }
         }
     };
 
-    private void getChannels() {
-        new Thread() {
+
+    /**
+     * fetch channel
+     */
+    private void fetchChannels() {
+        String deviceToken = SimpleRestClient.device_token;
+        String host = SimpleRestClient.root_url;
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setLogLevel(AppConstant.LOG_LEVEL)
+                .setEndpoint(host)
+                .build();
+        ClientApi.Channels client = restAdapter.create(ClientApi.Channels.class);
+        client.excute(deviceToken, new Callback<ChannelEntity[]>() {
             @Override
-            public void run() {
-                super.run();
-                StringBuffer content = new StringBuffer();
-                try {
-                    URL getUrl = new URL(SimpleRestClient.root_url
-                            + "/api/tv/channels/" + "?device_token=" + SimpleRestClient.device_token);
-                    HttpURLConnection connection = (HttpURLConnection) getUrl
-                            .openConnection();
-                    connection.setReadTimeout(4000);
-                    connection.setUseCaches(false);
-                    connection.connect();
-                    BufferedReader reader = new BufferedReader(
-                            new InputStreamReader(connection.getInputStream(), "UTF-8"));
-                    String lines;
-                    while ((lines = reader.readLine()) != null) {
-                        content.append(lines);
-                    }
-                    Message message = new Message();
-                    Bundle data = new Bundle();
-                    data.putString("content", content.toString());
-                    message.setData(data);
-                    message.what = FETCHCHANNEL;
-                    mainHandler.sendMessage(message);
-                } catch (MalformedURLException e) {
-                    if (e != null)
-                        System.err.println(e.getMessage());
-                } catch (IOException e) {
-                    if (e != null)
-                        System.err.println(e.getMessage());
-                }
+            public void success(ChannelEntity[] channelEntities, Response response) {
+                channelGrid.setAdapter(channelEntities);
             }
 
-        }.start();
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                Log.e(TAG, retrofitError.getMessage());
+            }
+        });
     }
+
 
     private void getFrontPage() {
         new Thread() {
@@ -786,42 +723,33 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         }.start();
     }
 
-    private void getLatest() {
-        new Thread() {
+    private void fetchLinkedvideo(long videoId) {
+        String deviceToken = SimpleRestClient.device_token;
+        String host = SimpleRestClient.root_url;
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setLogLevel(AppConstant.LOG_LEVEL)
+                .setEndpoint(host)
+                .build();
+        ClientApi.Linkedvideo client = restAdapter.create(ClientApi.Linkedvideo.class);
+        client.excute(videoId, deviceToken, new Callback<ArrayList<AttributeEntity>>() {
             @Override
-            public void run() {
-                super.run();
-                StringBuffer content = new StringBuffer();
-                try {
-                    URL getUrl = new URL(SimpleRestClient.root_url
-                            + "/api/tv/section/xinpianshangxian/" + "?device_token=" + SimpleRestClient.device_token);
-                    HttpURLConnection connection = (HttpURLConnection) getUrl
-                            .openConnection();
-                    connection.setUseCaches(false);
-                    connection.setReadTimeout(19000);
-                    connection.connect();
-                    BufferedReader reader = new BufferedReader(
-                            new InputStreamReader(connection.getInputStream(), "UTF-8"));
-                    String lines;
-                    while ((lines = reader.readLine()) != null) {
-                        content.append(lines);
-                    }
-                    Message message = new Message();
-                    Bundle data = new Bundle();
-                    data.putString("content", content.toString());
-                    message.setData(data);
-                    message.what = FETCHLATEST;
-                    mainHandler.sendMessage(message);
-                } catch (MalformedURLException e) {
-                    if (e != null)
-                        System.err.println(e.getMessage());
-                } catch (IOException e) {
-                    // System.err.println(e.getMessage());
-                }
+            public void success(ArrayList<AttributeEntity> attributeEntities, Response response) {
+                if (AppConstant.DEBUG)
+                    Log.d(TAG, "fetchLinkedvideo attributeEntities size ---> " + attributeEntities.size());
+
+                linkedvideoGrid.setAdapter(attributeEntities);
+//                LinkedVideoAdapter linkedVideoAdapter = new LinkedVideoAdapter(LauncherActivity.this, attributeEntities);
+//                linkedvideoGrid.setAdapter(linkedVideoAdapter);
             }
 
-        }.start();
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                Log.e(TAG, retrofitError.getMessage());
+            }
+        });
+
     }
+
 
     private void fetchWeather() {
         new Thread() {
@@ -913,25 +841,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         }
 
         super.onDestroy();
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        intent = new Intent();
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        String content = (String) view.findViewById(R.id.channel_img).getTag();
-        JSONObject jsonObject;
-        try {
-            jsonObject = new JSONObject(content);
-            intent.putExtra("title", jsonObject.getString("name"));
-            intent.putExtra("url", jsonObject.getString("url"));
-            intent.putExtra("channel", jsonObject.getString("channel"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        intent.setClassName("tv.ismar.daisy",
-                "tv.ismar.daisy.ChannelListActivity");
-        this.startActivity(intent);
     }
 
     /**
