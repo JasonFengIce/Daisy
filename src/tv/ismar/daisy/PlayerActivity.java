@@ -1,5 +1,29 @@
 package tv.ismar.daisy;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.EventProperty;
+import tv.ismar.daisy.core.ImageUtils;
+import tv.ismar.daisy.core.NetworkUtils;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
+import tv.ismar.daisy.core.VodUserAgent;
+import tv.ismar.daisy.models.Clip;
+import tv.ismar.daisy.models.Favorite;
+import tv.ismar.daisy.models.History;
+import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.models.Quality;
+import tv.ismar.daisy.persistence.FavoriteManager;
+import tv.ismar.daisy.persistence.HistoryManager;
+import tv.ismar.daisy.player.CallaPlay;
+import tv.ismar.daisy.player.ISTVVodMenu;
+import tv.ismar.daisy.player.ISTVVodMenuItem;
+import tv.ismar.daisy.views.IsmatvVideoView;
+import tv.ismar.daisy.views.PaymentDialog;
+import tv.ismar.player.SmartPlayer;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,354 +35,356 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.*;
+import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnHoverListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
+
 import com.ismartv.api.t.AccessProxy;
 import com.ismartv.bean.ClipInfo;
 import com.qiyi.video.player.QiyiVideoPlayer;
-import tv.ismar.daisy.core.*;
-import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
-import tv.ismar.daisy.models.*;
-import tv.ismar.daisy.persistence.FavoriteManager;
-import tv.ismar.daisy.persistence.HistoryManager;
-import tv.ismar.daisy.player.CallaPlay;
-import tv.ismar.daisy.player.ISTVVodMenu;
-import tv.ismar.daisy.player.ISTVVodMenuItem;
-import tv.ismar.daisy.views.IsmatvVideoView;
-import tv.ismar.daisy.views.PaymentDialog;
-import tv.ismar.player.SmartPlayer;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 
-    @SuppressWarnings("unused")
-    private static final String SAMPLE = "http://114.80.0.33/qyrrs?url=http%3A%2F%2Fjq.v.tvxio.com%2Fcdn%2F0%2F7b%2F78fadc2ffa42309bda633346871f26%2Fhigh%2Fslice%2Findex.m3u8&quality=high&sn=weihongchang_s52&clipid=779521&sid=85d3f919a918460d9431136d75db17f03&sign=08a868ad3c4e3b37537a13321a6f9d4b";
-    private QiyiVideoPlayer mPlayer;
-    private static final String PREFS_NAME = "tv.ismar.daisy";
-    private static final String TAG = "PLAYER";
-    private static final String BUFFERCONTINUE = " 上次放映：";
-    private static final String PlAYSTART = " 即将放映：";
-    private static final String BUFFERING = " 正在加载 ";
-    private static final String EXTOCLOSE = " 网络数据异常，即将退出播放器";
-    @SuppressWarnings("unused")
-    private static final String HOST = "cord.tvxio.com";
+	@SuppressWarnings("unused")
+	private static final String SAMPLE = "http://114.80.0.33/qyrrs?url=http%3A%2F%2Fjq.v.tvxio.com%2Fcdn%2F0%2F7b%2F78fadc2ffa42309bda633346871f26%2Fhigh%2Fslice%2Findex.m3u8&quality=high&sn=weihongchang_s52&clipid=779521&sid=85d3f919a918460d9431136d75db17f03&sign=08a868ad3c4e3b37537a13321a6f9d4b";
+	private QiyiVideoPlayer mPlayer;
+	private static final String PREFS_NAME = "tv.ismar.daisy";
+	private static final String TAG = "PLAYER";
+	private static final String BUFFERCONTINUE = " 上次放映：";
+	private static final String PlAYSTART = " 即将放映：";
+	private static final String BUFFERING = " 正在加载 ";
+	private static final String EXTOCLOSE = " 网络数据异常，即将退出播放器";
+	@SuppressWarnings("unused")
+	private static final String HOST = "cord.tvxio.com";
 
-    private static final int SHORT_STEP = 1;
-    private static final int DIALOG_OK_CANCEL = 0;
+	private static final int SHORT_STEP = 1;
+	private static final int DIALOG_OK_CANCEL = 0;
 
-    private boolean paused = false;
-    private boolean isBuffer = true;
-    private boolean isSeekBuffer = false;
-    private boolean panelShow = false;
-    private int currQuality = 0;
-    private String urls[] = new String[6];
-    private Animation panelShowAnimation;
-    private Animation panelHideAnimation;
-    // private Animation bufferHideAnimation;
-    private LinearLayout bufferLayout;
-    private ImageView logoImage;
-    private LinearLayout panelLayout;
-    private TextView titleText;
-    private TextView qualityText;
-    private TextView timeText;
-    private ImageView playPauseImage;
-    private ImageView ffImage;
-    private ImageView fbImage;
-    private int clipLength = 0;
-    private int currPosition = 0;
-    private boolean isContinue = true;
-    private ISTVVodMenu menu = null;
-    private ClipInfo urlInfo = new ClipInfo();
-    private Handler mHandler = new Handler();
-    private Handler mCheckHandler = new Handler();
-    private int tempOffset = 0;
-    private Item item;
-    private Item subItem;
-    private Clip clip;
-    private Bundle bundle;
-    private SeekBar timeBar;
-    private IsmatvVideoView mVideoView;
-    private Dialog popupDlg = null;
-    private InputStream logoInputStream;
-    private HistoryManager historyManager;
-    private History mHistory;
-    private SimpleRestClient simpleRestClient;
-    private String itemUrl;
-    private String subItemUrl;
-    private int seekPostion = 0;
-    private boolean isSeek = false;
-    private FavoriteManager favoriteManager;
-    private Favorite favorite;
-    private List<Item> listItems = new ArrayList<Item>();
-    private int currNum = 0;
-    private int offsets = 0;
-    private int offn = 1;
-    private TextView bufferText;
-    private long bufferDuration = 0;
-    private long startDuration = 0;
-    private CallaPlay callaPlay = new CallaPlay();
-    AudioManager am;
-    private String mSection;
-    private String sid = "";
-    private String mediaip;
-    private int mCurrentSeed = 0;
-    private RelativeLayout mRootLayout;
-    private boolean isHideControlPanel = true;
-    private GestureDetector mGestureDetector; // 手势监测器
-    private boolean live_video = false;
-    private boolean isPreview = false;
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mGestureDetector = new GestureDetector(this, this);
-        setView();
-    }
+	private boolean paused = false;
+	private boolean isBuffer = true;
+	private boolean isSeekBuffer = false;
+	private boolean panelShow = false;
+	private int currQuality = 0;
+	private String urls[] = new String[6];
+	private Animation panelShowAnimation;
+	private Animation panelHideAnimation;
+	// private Animation bufferHideAnimation;
+	private LinearLayout bufferLayout;
+	private ImageView logoImage;
+	private LinearLayout panelLayout;
+	private TextView titleText;
+	private TextView qualityText;
+	private TextView timeText;
+	private ImageView playPauseImage;
+	private ImageView ffImage;
+	private ImageView fbImage;
+	private int clipLength = 0;
+	private int currPosition = 0;
+	private boolean isContinue = true;
+	private ISTVVodMenu menu = null;
+	private ClipInfo urlInfo = new ClipInfo();
+	private Handler mHandler = new Handler();
+	private Handler mCheckHandler = new Handler();
+	private int tempOffset = 0;
+	private Item item;
+	private Item subItem;
+	private Clip clip;
+	private Bundle bundle;
+	private SeekBar timeBar;
+	private IsmatvVideoView mVideoView;
+	private Dialog popupDlg = null;
+	private InputStream logoInputStream;
+	private HistoryManager historyManager;
+	private History mHistory;
+	private SimpleRestClient simpleRestClient;
+	private String itemUrl;
+	private String subItemUrl;
+	private int seekPostion = 0;
+	private boolean isSeek = false;
+	private FavoriteManager favoriteManager;
+	private Favorite favorite;
+	private List<Item> listItems = new ArrayList<Item>();
+	private int currNum = 0;
+	private int offsets = 0;
+	private int offn = 1;
+	private TextView bufferText;
+	private long bufferDuration = 0;
+	private long startDuration = 0;
+	private CallaPlay callaPlay = new CallaPlay();
+	AudioManager am;
+	private String mSection;
+	private String sid = "";
+	private String mediaip;
+	private int mCurrentSeed = 0;
+	private RelativeLayout mRootLayout;
+	private boolean isHideControlPanel = true;
+	private GestureDetector mGestureDetector; // 手势监测器
+	private boolean live_video = false;
+	private boolean isPreview = false;
 
-    private void setView() {
-        panelShowAnimation = AnimationUtils.loadAnimation(this,
-                R.drawable.fly_up);
-        panelHideAnimation = AnimationUtils.loadAnimation(this,
-                R.drawable.fly_down);
-        // bufferHideAnimation =
-        // AnimationUtils.loadAnimation(this,R.drawable.fade_out);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        setContentView(R.layout.vod_player);
-        mVideoView = (IsmatvVideoView) findViewById(R.id.video_view);
-        panelLayout = (LinearLayout) findViewById(R.id.PanelLayout);
-        titleText = (TextView) findViewById(R.id.TitleText);
-        qualityText = (TextView) findViewById(R.id.QualityText);
-        timeText = (TextView) findViewById(R.id.TimeText);
-        timeBar = (SeekBar) findViewById(R.id.TimeSeekBar);
-        timeBar.setOnSeekBarChangeListener(new SeekBarChangeEvent());
-        playPauseImage = (ImageView) findViewById(R.id.PlayPauseImage);
-        ffImage = (ImageView) findViewById(R.id.FFImage);
-        fbImage = (ImageView) findViewById(R.id.FBImage);
-        bufferLayout = (LinearLayout) findViewById(R.id.BufferLayout);
-        bufferText = (TextView) findViewById(R.id.BufferText);
-        logoImage = (ImageView) findViewById(R.id.logo_image);
-        panelLayout.setVisibility(View.GONE);
-        bufferLayout.setVisibility(View.GONE);
-        qualityText.setVisibility(View.GONE);
-        am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        mRootLayout = (RelativeLayout) findViewById(R.id.RootRelativeLayout);
-        playPauseImage.setOnTouchListener(new OnTouchListener() {
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mGestureDetector = new GestureDetector(this, this);
+		setView();
+	}
 
-            @Override
-            public boolean onTouch(View v, MotionEvent keycode) {
-                // TODO Auto-generated method stub
-                switch (keycode.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        // if (mVideoView.getDuration() > 0) {
-                        if (!paused) {
-                            pauseItem();
-                            playPauseImage
-                                    .setImageResource(R.drawable.vod_pausebtn_selector);
-                        } else {
-                            resumeItem();
-                            playPauseImage
-                                    .setImageResource(R.drawable.vod_playbtn_selector);
-                        }
+	private void setView() {
+		panelShowAnimation = AnimationUtils.loadAnimation(this,
+				R.drawable.fly_up);
+		panelHideAnimation = AnimationUtils.loadAnimation(this,
+				R.drawable.fly_down);
+		// bufferHideAnimation =
+		// AnimationUtils.loadAnimation(this,R.drawable.fade_out);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		setContentView(R.layout.vod_player);
+		mVideoView = (IsmatvVideoView) findViewById(R.id.video_view);
+		panelLayout = (LinearLayout) findViewById(R.id.PanelLayout);
+		titleText = (TextView) findViewById(R.id.TitleText);
+		qualityText = (TextView) findViewById(R.id.QualityText);
+		timeText = (TextView) findViewById(R.id.TimeText);
+		timeBar = (SeekBar) findViewById(R.id.TimeSeekBar);
+		timeBar.setOnSeekBarChangeListener(new SeekBarChangeEvent());
+		playPauseImage = (ImageView) findViewById(R.id.PlayPauseImage);
+		ffImage = (ImageView) findViewById(R.id.FFImage);
+		fbImage = (ImageView) findViewById(R.id.FBImage);
+		bufferLayout = (LinearLayout) findViewById(R.id.BufferLayout);
+		bufferText = (TextView) findViewById(R.id.BufferText);
+		logoImage = (ImageView) findViewById(R.id.logo_image);
+		panelLayout.setVisibility(View.GONE);
+		bufferLayout.setVisibility(View.GONE);
+		qualityText.setVisibility(View.GONE);
+		am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+		mRootLayout = (RelativeLayout) findViewById(R.id.RootRelativeLayout);
+		playPauseImage.setOnTouchListener(new OnTouchListener() {
 
-                        // }
-                        break;
+			@Override
+			public boolean onTouch(View v, MotionEvent keycode) {
+				// TODO Auto-generated method stub
+				switch (keycode.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					// if (mVideoView.getDuration() > 0) {
+					if (!paused) {
+						pauseItem();
+						playPauseImage
+								.setImageResource(R.drawable.vod_pausebtn_selector);
+					} else {
+						resumeItem();
+						playPauseImage
+								.setImageResource(R.drawable.vod_playbtn_selector);
+					}
 
-                    default:
-                        break;
-                }
-                return false;
-            }
-        });
-        fbImage.setOnTouchListener(new OnTouchListener() {
+					// }
+					break;
 
-            @Override
-            public boolean onTouch(View v, MotionEvent keycode) {
-                // TODO Auto-generated method stub
-                switch (keycode.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        if (mVideoView.getDuration() > 0 && !live_video) {
-                            isSeek = true;
-                            showPanel();
-                            fbImage.setImageResource(R.drawable.vod_controlb_selector);
-                            isBuffer = true;
-                            showBuffer();
-                            fastBackward(SHORT_STEP);
-                            mVideoView.seekTo(currPosition);
-                            isSeekBuffer = true;
-                            Log.d(TAG, "LEFT seek to "
-                                    + getTimeString(currPosition));
-                            isSeek = false;
-                            offsets = 0;
-                            offn = 1;
-                        }
-                        break;
+				default:
+					break;
+				}
+				return false;
+			}
+		});
+		fbImage.setOnTouchListener(new OnTouchListener() {
 
-                    default:
-                        break;
-                }
-                return false;
-            }
-        });
-        ffImage.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent keycode) {
+				// TODO Auto-generated method stub
+				switch (keycode.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					if (mVideoView.getDuration() > 0 && !live_video) {
+						isSeek = true;
+						showPanel();
+						fbImage.setImageResource(R.drawable.vod_controlb_selector);
+						isBuffer = true;
+						showBuffer();
+						fastBackward(SHORT_STEP);
+						mVideoView.seekTo(currPosition);
+						isSeekBuffer = true;
+						Log.d(TAG, "LEFT seek to "
+								+ getTimeString(currPosition));
+						isSeek = false;
+						offsets = 0;
+						offn = 1;
+					}
+					break;
 
-            @Override
-            public boolean onTouch(View v, MotionEvent keycode) {
-                // TODO Auto-generated method stub
-                switch (keycode.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        if (mVideoView.getDuration() > 0 && !live_video) {
-                            isSeek = true;
-                            showPanel();
-                            ffImage.setImageResource(R.drawable.vod_controlf_selector);
-                            isBuffer = true;
-                            showBuffer();
-                            fastForward(SHORT_STEP);
-                            mVideoView.seekTo(currPosition);
-                            isSeekBuffer = true;
-                            Log.d(TAG, "RIGHT seek to"
-                                    + getTimeString(currPosition));
-                            isSeek = false;
-                            offsets = 0;
-                            offn = 1;
-                        }
-                        break;
+				default:
+					break;
+				}
+				return false;
+			}
+		});
+		ffImage.setOnTouchListener(new OnTouchListener() {
 
-                    default:
-                        break;
-                }
-                return false;
-            }
-        });
+			@Override
+			public boolean onTouch(View v, MotionEvent keycode) {
+				// TODO Auto-generated method stub
+				switch (keycode.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					if (mVideoView.getDuration() > 0 && !live_video) {
+						isSeek = true;
+						showPanel();
+						ffImage.setImageResource(R.drawable.vod_controlf_selector);
+						isBuffer = true;
+						showBuffer();
+						fastForward(SHORT_STEP);
+						mVideoView.seekTo(currPosition);
+						isSeekBuffer = true;
+						Log.d(TAG, "RIGHT seek to"
+								+ getTimeString(currPosition));
+						isSeek = false;
+						offsets = 0;
+						offn = 1;
+					}
+					break;
 
-        initClipInfo();
-    }
+				default:
+					break;
+				}
+				return false;
+			}
+		});
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        // TODO Auto-generated method stub
+		mVideoView.setOnHoverListener(onhoverlistener);
 
-        if (mGestureDetector.onTouchEvent(event)) {
-            return true;
-            // 处理手势结束
-        }
-        return super.onTouchEvent(event);
-    }
+		initClipInfo();
+	}
 
-    private void initClipInfo() {
-        simpleRestClient = new SimpleRestClient();
-        bufferText.setText(BUFFERING);
-        if (mVideoView != null) {
-            mVideoView.setAlpha(0);
-        }
-        showBuffer();
-        Log.d(TAG, " initClipInfo ");
-        Intent intent = getIntent();
-        if (intent != null) {
-            mSection = intent.getStringExtra(EventProperty.SECTION);
-            bundle = intent.getExtras();
-            item = (Item) bundle.get("item");
-            clip = item.clip;
-            live_video = item.live_video;
-            isPreview = item.isPreview;
-            // use to get mUrl, and registerActivity
-            DaisyUtils.getVodApplication(this).addActivityToPool(
-                    this.toString(), this);
-            // *********************
-            // new ItemByUrlTask().execute();
-            String info = bundle.getString("ismartv");
-            urlInfo = AccessProxy.getIsmartvClipInfo(info);
-            new initPlayTask().execute();
-        }
-    }
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		// TODO Auto-generated method stub
 
-    private class initPlayTask extends AsyncTask<String, Void, Void> {
+		if (mGestureDetector.onTouchEvent(event)) {
+			return true;
+			// 处理手势结束
+		}
+		return super.onTouchEvent(event);
+	}
 
-        @Override
-        protected void onPostExecute(Void result) {
-            // TODO Auto-generated method stub
-            initPlayer();
-        }
+	private void initClipInfo() {
+		simpleRestClient = new SimpleRestClient();
+		bufferText.setText(BUFFERING);
+		if (mVideoView != null) {
+			mVideoView.setAlpha(0);
+		}
+		showBuffer();
+		Log.d(TAG, " initClipInfo ");
+		Intent intent = getIntent();
+		if (intent != null) {
+			mSection = intent.getStringExtra(EventProperty.SECTION);
+			bundle = intent.getExtras();
+			item = (Item) bundle.get("item");
+			clip = item.clip;
+			live_video = item.live_video;
+			isPreview = item.isPreview;
+			// use to get mUrl, and registerActivity
+			DaisyUtils.getVodApplication(this).addActivityToPool(
+					this.toString(), this);
+			// *********************
+			// new ItemByUrlTask().execute();
+			String info = bundle.getString("ismartv");
+			urlInfo = AccessProxy.getIsmartvClipInfo(info);
+			new initPlayTask().execute();
+		}
+	}
 
-        @Override
-        protected Void doInBackground(String... params) {
-            // TODO Auto-generated method stub
-            try {
-                if (item != null) {
-                    if (item.item_pk != item.pk) {
-                        currNum = item.position;
-                        Log.d(TAG, "currNum ===" + currNum);
-                        subItemUrl = SimpleRestClient.root_url
-                                + "/api/subitem/" + item.pk + "/";
-                        subItem = simpleRestClient.getItem(subItemUrl);
-                        itemUrl = SimpleRestClient.root_url + "/api/item/"
-                                + item.item_pk + "/";
-                        item = simpleRestClient.getItem(itemUrl);
-                        if (item != null && item.subitems != null) {
+	private class initPlayTask extends AsyncTask<String, Void, Void> {
 
-                            listItems = new ArrayList<Item>();
+		@Override
+		protected void onPostExecute(Void result) {
+			// TODO Auto-generated method stub
+			initPlayer();
+		}
 
-                            for (int i = 0; i < item.subitems.length; i++) {
-                                listItems.add(item.subitems[i]);
-                            }
-                        }
-                    } else {
-                        itemUrl = SimpleRestClient.root_url + "/api/item/"
-                                + item.item_pk + "/";
-                        // Item item1 = simpleRestClient.getItem(itemUrl);
-                    }
+		@Override
+		protected Void doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			try {
+				if (item != null) {
+					if (item.item_pk != item.pk) {
+						currNum = item.position;
+						Log.d(TAG, "currNum ===" + currNum);
+						subItemUrl = SimpleRestClient.root_url
+								+ "/api/subitem/" + item.pk + "/";
+						subItem = simpleRestClient.getItem(subItemUrl);
+						itemUrl = SimpleRestClient.root_url + "/api/item/"
+								+ item.item_pk + "/";
+						item = simpleRestClient.getItem(itemUrl);
+						if (item != null && item.subitems != null) {
 
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
+							listItems = new ArrayList<Item>();
 
-    }
+							for (int i = 0; i < item.subitems.length; i++) {
+								listItems.add(item.subitems[i]);
+							}
+						}
+					} else {
+						itemUrl = SimpleRestClient.root_url + "/api/item/"
+								+ item.item_pk + "/";
+						// Item item1 = simpleRestClient.getItem(itemUrl);
+					}
 
-    // 初始化播放地址url
-    private class ItemByUrlTask extends AsyncTask<String, Void, ClipInfo> {
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
 
-        @Override
-        protected void onPostExecute(ClipInfo result) {
-            if (result != null) {
-                initPlayer();
-            } else {
-                // ExToClosePlayer("url"," m3u8 quality is null ,or get m3u8 err");
-            }
-        }
+	}
 
-        @Override
-        protected ClipInfo doInBackground(String... params) {
-            Object obj = bundle.get("url");
-            Log.d(TAG, "init player bundle url === " + obj);
-            String sn = VodUserAgent.getMACAddress();
-            AccessProxy.init(VodUserAgent.deviceType,
-                    VodUserAgent.deviceVersion, sn);
-            try {
-                if (obj != null) {
-                    item = simpleRestClient.getItem((String) obj);
-                    if (item != null) {
-                        clip = item.clip;
+	// 初始化播放地址url
+	private class ItemByUrlTask extends AsyncTask<String, Void, ClipInfo> {
 
-                        // try {
-                        // host = (new URL((String)obj)).getHost();
-                        // } catch (MalformedURLException e) {
-                        // e.printStackTrace();
-                        // }http://127.0.0.1:21098/cord
-                        urlInfo = AccessProxy.parse(SimpleRestClient.root_url
-                                        + "/api/clip/" + clip.pk + "/",
-                                VodUserAgent.getAccessToken(sn),
-                                PlayerActivity.this);
+		@Override
+		protected void onPostExecute(ClipInfo result) {
+			if (result != null) {
+				initPlayer();
+			} else {
+				// ExToClosePlayer("url"," m3u8 quality is null ,or get m3u8 err");
+			}
+		}
+
+		@Override
+		protected ClipInfo doInBackground(String... params) {
+			Object obj = bundle.get("url");
+			Log.d(TAG, "init player bundle url === " + obj);
+			String sn = VodUserAgent.getMACAddress();
+			AccessProxy.init(VodUserAgent.deviceType,
+					VodUserAgent.deviceVersion, sn);
+			try {
+				if (obj != null) {
+					item = simpleRestClient.getItem((String) obj);
+					if (item != null) {
+						clip = item.clip;
+
+						// try {
+						// host = (new URL((String)obj)).getHost();
+						// } catch (MalformedURLException e) {
+						// e.printStackTrace();
+						// }http://127.0.0.1:21098/cord
+						urlInfo = AccessProxy.parse(SimpleRestClient.root_url
+								+ "/api/clip/" + clip.pk + "/",
+								VodUserAgent.getAccessToken(sn),
+								PlayerActivity.this);
 						if (urlInfo.getIqiyi_4_0().length() > 0) {
 							Intent intent = new Intent();
 							intent.setAction("tv.ismar.daisy.qiyiPlay");
@@ -368,1180 +394,1186 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 							PlayerActivity.this.finish();
 							return null;
 						}
-                    }
-                } else {
-                    obj = bundle.get("item");
-                    if (obj != null) {
-                        item = (Item) obj;
-                        live_video = item.live_video;
-                        if (item.clip != null) {
-                            clip = item.clip;
+					}
+				} else {
+					obj = bundle.get("item");
+					if (obj != null) {
+						item = (Item) obj;
+						live_video = item.live_video;
+						if (item.clip != null) {
+							clip = item.clip;
 
-                            // try {
-                            // host = (new URL((String)obj)).getHost();
-                            // } catch (MalformedURLException e) {
-                            // e.printStackTrace();
-                            // }http://127.0.0.1:21098/cord
-                            urlInfo = AccessProxy.parse(
-                                    SimpleRestClient.root_url + "/api/clip/"
-                                            + clip.pk + "/",
-                                    VodUserAgent.getAccessToken(sn),
-                                    PlayerActivity.this);
-                        }
-                    } else {
-                        Log.e(TAG, "init player bundle item and url is null");
-                    }
-                }
-                // ////////////////////////////////////////
-                if (item != null) {
-                    if (item.item_pk != item.pk) {
-                        currNum = item.position;
-                        Log.d(TAG, "currNum ===" + currNum);
-                        subItemUrl = SimpleRestClient.root_url
-                                + "/api/subitem/" + item.pk + "/";
-                        subItem = simpleRestClient.getItem(subItemUrl);
-                        itemUrl = SimpleRestClient.root_url + "/api/item/"
-                                + item.item_pk + "/";
-                        item = simpleRestClient.getItem(itemUrl);
-                        if (item != null && item.subitems != null) {
+							// try {
+							// host = (new URL((String)obj)).getHost();
+							// } catch (MalformedURLException e) {
+							// e.printStackTrace();
+							// }http://127.0.0.1:21098/cord
+							urlInfo = AccessProxy.parse(
+									SimpleRestClient.root_url + "/api/clip/"
+											+ clip.pk + "/",
+									VodUserAgent.getAccessToken(sn),
+									PlayerActivity.this);
+						}
+					} else {
+						Log.e(TAG, "init player bundle item and url is null");
+					}
+				}
+				// ////////////////////////////////////////
+				if (item != null) {
+					if (item.item_pk != item.pk) {
+						currNum = item.position;
+						Log.d(TAG, "currNum ===" + currNum);
+						subItemUrl = SimpleRestClient.root_url
+								+ "/api/subitem/" + item.pk + "/";
+						subItem = simpleRestClient.getItem(subItemUrl);
+						itemUrl = SimpleRestClient.root_url + "/api/item/"
+								+ item.item_pk + "/";
+						item = simpleRestClient.getItem(itemUrl);
+						if (item != null && item.subitems != null) {
 
-                            listItems = new ArrayList<Item>();
+							listItems = new ArrayList<Item>();
 
-                            for (int i = 0; i < item.subitems.length; i++) {
-                                listItems.add(item.subitems[i]);
-                            }
-                        }
-                    } else {
-                        itemUrl = SimpleRestClient.root_url + "/api/item/"
-                                + item.item_pk + "/";
-                        item = simpleRestClient.getItem(itemUrl);
-                    }
+							for (int i = 0; i < item.subitems.length; i++) {
+								listItems.add(item.subitems[i]);
+							}
+						}
+					} else {
+						itemUrl = SimpleRestClient.root_url + "/api/item/"
+								+ item.item_pk + "/";
+						item = simpleRestClient.getItem(itemUrl);
+					}
 
-                }
-            } catch (Exception e) {
-                Log.e(TAG, e.toString());
-                // ExToClosePlayer("url","m3u8 quality is null ,or get m3u8 err /n"+e.toString());
-                return null;
-            }
-            return urlInfo;
+				}
+			} catch (Exception e) {
+				Log.e(TAG, e.toString());
+				// ExToClosePlayer("url","m3u8 quality is null ,or get m3u8 err /n"+e.toString());
+				return null;
+			}
+			return urlInfo;
 
-        }
-    }
-
-    // 初始化logo图片
-    private class LogoImageTask extends AsyncTask<String, Void, Bitmap> {
-
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            if (result != null) {
-                logoImage.setImageBitmap(result);
-            }
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... arg0) {
-            if (item.logo != null && item.logo.length() > 0)
-                if (NetworkUtils.getInputStream(item.logo) != null) {
-                    Log.d(TAG, "item.logo ===" + item.logo);
-                    logoInputStream = NetworkUtils.getInputStream(item.logo);
-                    if (logoInputStream != null) {
-                        Bitmap bitmap = ImageUtils.getBitmapFromInputStream(
-                                logoInputStream, 160, 50);
-                        return bitmap;
-                    }
-                }
-            return null;
-
-        }
-    }
-
-    private void initPlayer() {
-        try {
-            if (urlInfo != null) {
-                urls[0] = urlInfo.getNormal();
-                urls[1] = urlInfo.getMedium();
-                urls[2] = urlInfo.getHigh();
-                urls[3] = urlInfo.getAdaptive();
-                favoriteManager = DaisyUtils.getFavoriteManager(this);
-                historyManager = DaisyUtils.getHistoryManager(this);
-                Quality quality = historyManager.getQuality();
-                if (quality != null) {
-                    currQuality = quality.quality;
-                } else {
-                    for (int i = urls.length - 1; i > -1; i--) {
-                        if (urls[i] != null && !urls[i].isEmpty()) {
-                            currQuality = i;
-                            break;
-                        }
-                    }
-                }
-                if (urls[currQuality] == null || urls[currQuality].isEmpty()) {
-                    for (int i = urls.length - 1; i > -1; i--) {
-                        if (urls[i] != null && !urls[i].isEmpty()) {
-                            currQuality = i;
-                            break;
-                        }
-                    }
-                }
-                Log.d(TAG, "currQuality =====" + currQuality);
-                if (item != null) {
-                    if (subItem != null && subItem.item_pk != subItem.pk) {
-                        mHistory = historyManager.getHistoryByUrl(itemUrl);
-                        if(SimpleRestClient.isLogin()){
-                            favorite = favoriteManager.getFavoriteByUrl(itemUrl,"yes");
-                        }
-                        else{
-                        	favorite = favoriteManager.getFavoriteByUrl(itemUrl,"no");
-                        }
-                        titleText.setText(subItem.title);
-                    } else {
-                        mHistory = historyManager.getHistoryByUrl(itemUrl);
-                        if(SimpleRestClient.isLogin()){
-                            favorite = favoriteManager.getFavoriteByUrl(itemUrl,"yes");
-                        }
-                        else{
-                        	favorite = favoriteManager.getFavoriteByUrl(itemUrl,"no");
-                        }
-                        titleText.setText(item.title);
-                    }
-                    if (mHistory != null) {
-                        if (mHistory.is_continue) {
-                            if (mHistory.sub_url != null
-                                    && mHistory.sub_url.equals(subItemUrl)) {
-                                isContinue = mHistory.is_continue;
-                                tempOffset = (int) mHistory.last_position;
-                                if (urls[mHistory.last_quality] != null
-                                        && !urls[mHistory.last_quality]
-                                        .isEmpty()) {
-                                    currQuality = mHistory.last_quality;
-                                }
-                            } else if (mHistory.sub_url == null
-                                    && mHistory.url != null) {
-                                isContinue = mHistory.is_continue;
-                                tempOffset = (int) mHistory.last_position;
-                                if (urls[mHistory.last_quality] != null
-                                        && !urls[mHistory.last_quality]
-                                        .isEmpty()) {
-                                    currQuality = mHistory.last_quality;
-                                }
-                            }
-                        } else {
-                            if (urls[mHistory.last_quality] != null
-                                    && !urls[mHistory.last_quality].isEmpty()) {
-                                currQuality = mHistory.last_quality;
-                            }
-                            tempOffset = 0;
-                            isContinue = mHistory.is_continue;
-                        }
-                    } else {
-                        tempOffset = 0;
-                        isContinue = true;
-                    }
-                    initQualtiyText();
-                    qualityText.setVisibility(View.VISIBLE);
-                    titleText.setSelected(true);
-                    if (tempOffset > 0 && isContinue == true && !live_video) {
-                        bufferText.setText("  " + BUFFERCONTINUE
-                                + getTimeString(tempOffset));
-                    } else {
-                        bufferText.setText(PlAYSTART + "《"
-                                + titleText.getText() + "》");
-                    }
-                    new LogoImageTask().execute();
-
-                }
-
-                if (tempOffset > 0 && isContinue) {
-                    currPosition = tempOffset;
-                    seekPostion = tempOffset;
-                } else {
-                    currPosition = 0;
-                    seekPostion = 0;
-                }
-
-                Log.d(TAG, "RES_INT_OFFSET currPosition=" + currPosition);
-
-                // mVideoView.setVideoPath(urls[currQuality]);
-                // mVideoView.setOnPreparedListener(new
-                // SmartPlayer.OnPreparedListener(){
-                //
-                // @Override
-                // public void onPrepared(SmartPlayer arg0) {
-                //
-                // arg0.start();
-                // checkTaskStart();
-                // }});
-                if (urls != null && mVideoView != null) {
-                    TaskStart();// cmstest.tvxio.com
-                    mVideoView.setVideoPath(urls[currQuality]);
-                    Log.i("zhuabao", "play url==" + urls[currQuality]);
-                    sid = VodUserAgent.getSid(urls[currQuality]);
-                    mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
-                    // mVideoView.setOnInfoListener(new
-                    // SmartPlayer.OnInfoListener() {
-                    //
-                    // @Override
-                    // public boolean onInfo(SmartPlayer arg0, int arg1, int
-                    // arg2) {
-                    // // TODO Auto-generated method stub
-                    // mCurrentSeed = arg1/8;
-                    // if(subItem != null)
-                    // callaPlay.videoPlaySpeed(item.pk, subItem.pk, item.title,
-                    // clip.pk, currQuality, mCurrentSeed, mediaip, sid);
-                    // else
-                    // callaPlay.videoPlaySpeed(item.pk, null, item.title,
-                    // clip.pk, currQuality, mCurrentSeed, mediaip, sid);
-                    // return false;
-                    // }
-                    // });
-                    mVideoView
-                            .setOnPreparedListener(new SmartPlayer.OnPreparedListener() {
-                                @Override
-                                public void onPrepared(SmartPlayer mp) {
-
-                                    Log.d(TAG,
-                                            "mVideoView onPrepared tempOffset =="
-                                                    + tempOffset);
-                                    if (mVideoView != null) {
-                                        if (live_video) {
-                                            timeBar.setEnabled(false);
-
-                                        } else {
-                                            clipLength = mVideoView
-                                                    .getDuration();
-                                            timeBar.setMax(clipLength);
-                                            mp.seekTo(currPosition);
-                                            timeBar.setProgress(currPosition);
-                                            timeBar.setEnabled(true);
-                                        }
-                                        mp.start();
-                                        timeTaskStart();
-                                        checkTaskStart();
-                                        urls[0] = urlInfo.getNormal();
-                                        urls[1] = urlInfo.getMedium();
-                                        urls[2] = urlInfo.getHigh();
-                                        urls[3] = urlInfo.getAdaptive();
-                                        if (subItem != null) {
-                                            callaPlay
-                                                    .videoPlayLoad(
-                                                            item.pk,
-                                                            subItem.pk,
-                                                            item.title,
-                                                            clip.pk,
-                                                            currQuality,
-                                                            (System.currentTimeMillis() - startDuration) / 1000,
-                                                            0, null, sid);
-                                            callaPlay.videoPlayStart(item.pk,
-                                                    subItem.pk, item.title,
-                                                    clip.pk, currQuality, 0);
-                                        } else {
-                                            callaPlay.videoPlayLoad(
-                                                    item.pk,
-                                                    null,
-                                                    item.title,
-                                                    clip.pk,
-                                                    currQuality,
-                                                    (System.currentTimeMillis() - startDuration) / 1000,
-                                                    0, null, sid);
-                                            callaPlay.videoPlayStart(item.pk,
-                                                    null, item.title, clip.pk,
-                                                    currQuality, 0);
-                                        }
-                                    }
-                                }
-                            });
-                    mVideoView
-                            .setOnErrorListener(new SmartPlayer.OnErrorListener() {
-                                @Override
-                                public boolean onError(SmartPlayer mp,
-                                                       int what, int extra) {
-                                    Log.d(TAG,
-                                            "mVideoView  Error setVideoPath urls[currQuality] ");
-                                    addHistory(currPosition);
-                                    ExToClosePlayer("error", what + " " + extra);
-                                    return false;
-                                }
-                            });
-
-                    mVideoView
-                            .setOnCompletionListener(new SmartPlayer.OnCompletionListener() {
-
-                                @Override
-                                public void onCompletion(SmartPlayer mp) {
-                                    Log.d(TAG, "mVideoView  Completion");
-                                    if(item.isPreview){
-                                		PaymentDialog dialog = new PaymentDialog(PlayerActivity.this,
-                                		        R.style.PaymentDialog,ordercheckListener);
-                                		        dialog.setItem(item);
-                                		        dialog.show();
-                                    }
-                                    else
-                                       gotoFinishPage();
-                                }
-                            });
-
-                    mVideoView
-                            .setOnSeekCompleteListener(new SmartPlayer.OnSeekCompleteListener() {
-
-                                @Override
-                                public void onSeekComplete(SmartPlayer mp) {
-                                    // TODO Auto-generated method stub
-                                    isBuffer = false;
-                                    hideBuffer();
-                                }
-                            });
-                }
-
-            } else {
-                ExToClosePlayer("url", "m3u8 content error ,");
-            }
-        } catch (Exception e) {
-            Log.e(TAG, e.toString());
-            ExToClosePlayer("url", e.toString());
-        }
-    }
-
-    private Handler logHandler = new Handler();
-
-    private void TaskStart() {
-        logHandler.removeCallbacks(logTaskRunnable);
-        logHandler.post(logTaskRunnable);
-    }
-
-    private void timeTaskStop() {
-        logHandler.removeCallbacks(logTaskRunnable);
-    }
-
-    private Runnable logTaskRunnable = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                startDuration = System.currentTimeMillis();
-                if (subItem != null)
-                    callaPlay.videoStart(item, subItem.pk, subItem.title,
-                            currQuality, null, 0, mSection, sid);
-                else
-                    callaPlay.videoStart(item, null, item.title, currQuality,
-                            null, 0, mSection, sid);
-                timeTaskStop();
-            } catch (Exception e) {
-                Log.e(TAG, " Sender log videoPlayStart " + e.toString());
-            }
-        }
-    };
-
-    private void timeTaskStart() {
-        mHandler.removeCallbacks(mUpdateTimeTask);
-        mHandler.post(mUpdateTimeTask);
-
-    }
-
-    private void timeTaskPause() {
-        mHandler.removeCallbacks(mUpdateTimeTask);
-    }
-
-    private Runnable mUpdateTimeTask = new Runnable() {
-        @Override
-        public void run() {
-            if (mVideoView != null) {
-                if (mVideoView.isPlaying()) {
-                    seekPostion = mVideoView.getCurrentPosition();
-                }
-                mHandler.postDelayed(mUpdateTimeTask, 500);
-            } else {
-                Log.d(TAG, "mVideoView ======= null or err");
-                timeTaskPause();
-            }
-        }
-    };
-
-    private void ExToClosePlayer(String code, String content) {
-        if (bufferText != null) {
-            bufferText.setText(EXTOCLOSE);
-            if (code == "url") {
-                try {
-                    if (subItem != null)
-                        callaPlay.videoExcept("noplayaddress", content,
-                                item.pk, subItem.pk, item.title, clip.pk,
-                                currQuality, 0);
-                    else
-                        callaPlay.videoExcept("noplayaddress", content,
-                                item.pk, null, item.title, clip.pk,
-                                currQuality, 0);
-                } catch (Exception e) {
-                    Log.e(TAG,
-                            " Sender log videoExcept noplayaddress "
-                                    + e.toString());
-                }
-            }
-            if (code == "error") {
-                try {
-                    if (subItem != null)
-                        callaPlay.videoExcept("mediaexception", content,
-                                item.pk, subItem.pk, item.title, clip.pk,
-                                currQuality, currPosition);
-                    else
-                        callaPlay.videoExcept("mediaexception", content,
-                                item.pk, null, item.title, clip.pk,
-                                currQuality, currPosition);
-                } catch (Exception e) {
-                    Log.e(TAG,
-                            " Sender log videoExcept noplayaddress "
-                                    + e.toString());
-                }
-            }
-
-        }
-        mHandler.postDelayed(finishPlayerActivity, 3000);
-    }
-
-    private Runnable finishPlayerActivity = new Runnable() {
-        public void run() {
-            mHandler.removeCallbacks(finishPlayerActivity);
-            PlayerActivity.this.finish();
-
-        }
-    };
-
-    private void checkTaskStart() {
-        mCheckHandler.removeCallbacks(checkStatus);
-        mCheckHandler.post(checkStatus);
-    }
-
-    private void checkTaskPause() {
-        mCheckHandler.removeCallbacks(checkStatus);
-    }
-
-    private int i = 0;
-    private Runnable checkStatus = new Runnable() {
-        public void run() {
-            if (mVideoView != null) {
-                // Log.d(TAG,
-                // "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
-                if (mVideoView.isPlaying()
-                        && Math.abs(mVideoView.getCurrentPosition()
-                        - seekPostion) > 0) {
-                    // if (isBuffer || bufferLayout.isShown()) {
-                    // //isBuffer = false;
-                    // //hideBuffer();
-                    // } else {
-                    if (live_video && (isBuffer || bufferLayout.isShown())) {
-                        isBuffer = false;
-                        hideBuffer();
-                    }
-                    if (mVideoView.getAlpha() < 1) {
-                        mVideoView.setAlpha(1);
-                        bufferText.setText(BUFFERING);
-                    }
-
-                    // }
-                    if (!isSeek && !isBuffer && !live_video) {
-                        currPosition = mVideoView.getCurrentPosition();
-                        timeBar.setProgress(currPosition);
-                    }
-                    i = 0;
-                } else {
-                    if (!paused && !isBuffer) {
-                        i += 1;
-                        seekPostion = mVideoView.getCurrentPosition();
-                    }
-                }
-                mCheckHandler.postDelayed(checkStatus, 300);
-            } else {
-                Log.d(TAG, "mVideoView ====== null or err");
-                checkTaskPause();
-            }
-
-        }
-
-    };
-
-    private void gotoFinishPage() {
-        timeTaskPause();
-        checkTaskPause();
-        if (mVideoView != null) {
-            if (listItems != null && listItems.size() > 0
-                    && currNum < (listItems.size() - 1)) {
-                subItem = listItems.get(currNum + 1);
-                subItemUrl = simpleRestClient.root_url + "/api/subitem/"
-                        + subItem.pk + "/";
-                bundle.remove("url");
-                bundle.putString("url", subItemUrl);
-                addHistory(0);
-                if (mVideoView != null) {
-                    mVideoView.setAlpha(0);
-                }
-                isBuffer = true;
-                showBuffer();
-                new ItemByUrlTask().execute();
-            } else {
-                Intent intent = new Intent("tv.ismar.daisy.PlayFinished");
-                intent.putExtra("item", item);
-                startActivity(intent);
-                seekPostion = 0;
-                currPosition = 0;
-                mVideoView = null;
-                addHistory(0);
-                try {
-                    if (subItem != null)
-                        callaPlay
-                                .videoExit(
-                                        item.pk,
-                                        subItem.pk,
-                                        item.title,
-                                        clip.pk,
-                                        currQuality,
-                                        0,
-                                        "end",
-                                        currPosition,
-                                        (System.currentTimeMillis() - startDuration) / 1000,
-                                        mSection, sid, "list",
-                                        item.content_model);// String
-                        // section,String
-                        // sid,String
-                        // source,String
-                        // channel
-                    else
-                        callaPlay
-                                .videoExit(
-                                        item.pk,
-                                        null,
-                                        item.title,
-                                        clip.pk,
-                                        currQuality,
-                                        0,
-                                        "end",
-                                        currPosition,
-                                        (System.currentTimeMillis() - startDuration) / 1000,
-                                        mSection, sid, "list",
-                                        item.content_model);
-                } catch (Exception e) {
-                    Log.e(TAG, " log Sender videoExit end " + e.toString());
-                }
-                PlayerActivity.this.finish();
-
-            }
-        }
-
-    }
-
-    private void gotoRelatePage() {
-        Intent intent = new Intent();
-        intent.setClass(PlayerActivity.this,
-                tv.ismar.daisy.RelatedActivity.class);
-        intent.putExtra("item", item);
-        startActivity(intent);
-        addHistory(seekPostion);
-        checkTaskPause();
-        timeTaskPause();
-        mVideoView.stopPlayback();
-        try {
-            if (subItem != null)
-                callaPlay.videoExit(item.pk, subItem.pk, item.title, clip.pk,
-                        currQuality, 0, "relate", currPosition,
-                        (System.currentTimeMillis() - startDuration) / 1000,
-                        mSection, sid, "list", item.content_model);
-            else
-                callaPlay.videoExit(item.pk, null, item.title, clip.pk,
-                        currQuality, 0, "relate", currPosition,
-                        (System.currentTimeMillis() - startDuration) / 1000,
-                        mSection, sid, "list", item.content_model);
-            mVideoView.stopPlayback();
-        } catch (Exception e) {
-            Log.e(TAG, "log Sender videoExit relate " + e.toString());
-        }
-
-        PlayerActivity.this.finish();
-    }
-
-    private void addHistory(int last_position) {
-        if (item != null && historyManager != null) {
-            Log.d(TAG, "historyManager title ==" + item.title);
-            Log.d(TAG, "historyManager itemUrl ==" + itemUrl);
-            Log.d(TAG, "historyManager subItemUrl ==" + subItemUrl);
-            Log.d(TAG, "historyManager last_position ==" + last_position);
-            Log.d(TAG, "historyManager isContinue ==" + isContinue);
-            History history = new History();
-            if (subItem != null && subItem.title != null) {
-                history.title = subItem.title;
-            } else {
-                history.title = item.title;
-            }
-            history.adlet_url = item.adlet_url;
-            history.content_model = item.content_model;
-            history.is_complex = item.is_complex;
-            history.last_position = last_position;
-            history.last_quality = currQuality;
-            history.url = itemUrl;
-            history.sub_url = subItemUrl;
-            history.is_continue = isContinue;
-            historyManager.addHistory(history);
-        }
-    }
-private void createHistory(int length){
-	if("".equals(SimpleRestClient.access_token)){
-		return;//不登录不必上传
-	}
-	int offset = length;
-	if(length==clipLength){
-		offset = -1;
-	}
-	String params = "access_token="+SimpleRestClient.access_token+"&device_token="+SimpleRestClient.device_token
-			+"&offset="+offset;
-	if(subItem!=null){
-		params = params + "&subitem="+subItem.item_pk;
-	}
-	else{
-		params = params + "&item="+item.item_pk;
-	}
-	simpleRestClient.doSendRequest("/api/histories/create/", "post", params, new HttpPostRequestInterface() {
-		
-		@Override
-		public void onSuccess(String info) {
-			// TODO Auto-generated method stub
-			Log.i("BAIDU", info);
 		}
-		
+	}
+
+	// 初始化logo图片
+	private class LogoImageTask extends AsyncTask<String, Void, Bitmap> {
+
 		@Override
-		public void onPrepare() {
-			// TODO Auto-generated method stub
-			
+		protected void onPostExecute(Bitmap result) {
+			if (result != null) {
+				logoImage.setImageBitmap(result);
+			}
 		}
-		
+
 		@Override
-		public void onFailed(String error) {
-			// TODO Auto-generated method stub
-			Log.i("BAIDU", error);
+		protected Bitmap doInBackground(String... arg0) {
+			if (item.logo != null && item.logo.length() > 0)
+				if (NetworkUtils.getInputStream(item.logo) != null) {
+					Log.d(TAG, "item.logo ===" + item.logo);
+					logoInputStream = NetworkUtils.getInputStream(item.logo);
+					if (logoInputStream != null) {
+						Bitmap bitmap = ImageUtils.getBitmapFromInputStream(
+								logoInputStream, 160, 50);
+						return bitmap;
+					}
+				}
+			return null;
+
 		}
-	});
-}
-    private void showPanel() {
-        if (isVodMenuVisible())
-            return;
-        if (!panelShow) {
-            panelLayout.startAnimation(panelShowAnimation);
-            panelLayout.setVisibility(View.VISIBLE);
-            panelShow = true;
-            hidePanelHandler.postDelayed(hidePanelRunnable, 20000);
-        }
+	}
 
-    }
+	private void initPlayer() {
+		try {
+			if (urlInfo != null) {
+				urls[0] = urlInfo.getNormal();
+				urls[1] = urlInfo.getMedium();
+				urls[2] = urlInfo.getHigh();
+				urls[3] = urlInfo.getAdaptive();
+				favoriteManager = DaisyUtils.getFavoriteManager(this);
+				historyManager = DaisyUtils.getHistoryManager(this);
+				Quality quality = historyManager.getQuality();
+				if (quality != null) {
+					currQuality = quality.quality;
+				} else {
+					for (int i = urls.length - 1; i > -1; i--) {
+						if (urls[i] != null && !urls[i].isEmpty()) {
+							currQuality = i;
+							break;
+						}
+					}
+				}
+				if (urls[currQuality] == null || urls[currQuality].isEmpty()) {
+					for (int i = urls.length - 1; i > -1; i--) {
+						if (urls[i] != null && !urls[i].isEmpty()) {
+							currQuality = i;
+							break;
+						}
+					}
+				}
+				Log.d(TAG, "currQuality =====" + currQuality);
+				if (item != null) {
+					if (subItem != null && subItem.item_pk != subItem.pk) {
+						mHistory = historyManager.getHistoryByUrl(itemUrl);
+						if (SimpleRestClient.isLogin()) {
+							favorite = favoriteManager.getFavoriteByUrl(
+									itemUrl, "yes");
+						} else {
+							favorite = favoriteManager.getFavoriteByUrl(
+									itemUrl, "no");
+						}
+						titleText.setText(subItem.title);
+					} else {
+						mHistory = historyManager.getHistoryByUrl(itemUrl);
+						if (SimpleRestClient.isLogin()) {
+							favorite = favoriteManager.getFavoriteByUrl(
+									itemUrl, "yes");
+						} else {
+							favorite = favoriteManager.getFavoriteByUrl(
+									itemUrl, "no");
+						}
+						titleText.setText(item.title);
+					}
+					if (mHistory != null) {
+						if (mHistory.is_continue) {
+							if (mHistory.sub_url != null
+									&& mHistory.sub_url.equals(subItemUrl)) {
+								isContinue = mHistory.is_continue;
+								tempOffset = (int) mHistory.last_position;
+								if (urls[mHistory.last_quality] != null
+										&& !urls[mHistory.last_quality]
+												.isEmpty()) {
+									currQuality = mHistory.last_quality;
+								}
+							} else if (mHistory.sub_url == null
+									&& mHistory.url != null) {
+								isContinue = mHistory.is_continue;
+								tempOffset = (int) mHistory.last_position;
+								if (urls[mHistory.last_quality] != null
+										&& !urls[mHistory.last_quality]
+												.isEmpty()) {
+									currQuality = mHistory.last_quality;
+								}
+							}
+						} else {
+							if (urls[mHistory.last_quality] != null
+									&& !urls[mHistory.last_quality].isEmpty()) {
+								currQuality = mHistory.last_quality;
+							}
+							tempOffset = 0;
+							isContinue = mHistory.is_continue;
+						}
+					} else {
+						tempOffset = 0;
+						isContinue = true;
+					}
+					initQualtiyText();
+					qualityText.setVisibility(View.VISIBLE);
+					titleText.setSelected(true);
+					if (tempOffset > 0 && isContinue == true && !live_video) {
+						bufferText.setText("  " + BUFFERCONTINUE
+								+ getTimeString(tempOffset));
+					} else {
+						bufferText.setText(PlAYSTART + "《"
+								+ titleText.getText() + "》");
+					}
+					new LogoImageTask().execute();
 
-    private void hidePanel() {
-        if (panelShow) {
-            panelLayout.startAnimation(panelHideAnimation);
-            panelLayout.setVisibility(View.GONE);
-            panelShow = false;
-        }
-    }
+				}
 
-    private void pauseItem() {
-        if (paused || mVideoView == null)
-            return;
-        // //showBuffer();
-        Log.d(TAG, "pause");
-        hideBuffer();
-        mVideoView.pause();
-        paused = true;
-        if (subItem != null)
-            callaPlay.videoPlayPause(item.pk, subItem.pk, item.title, clip.pk,
-                    currQuality, 0, currPosition, sid);
-        else
-            callaPlay.videoPlayPause(item.pk, null, item.title, clip.pk,
-                    currQuality, 0, currPosition, sid);
+				if (tempOffset > 0 && isContinue) {
+					currPosition = tempOffset;
+					seekPostion = tempOffset;
+				} else {
+					currPosition = 0;
+					seekPostion = 0;
+				}
 
-    }
+				Log.d(TAG, "RES_INT_OFFSET currPosition=" + currPosition);
 
-    private void resumeItem() {
-        if (!paused || mVideoView == null)
-            return;
-        // hideBuffer();
-        Log.d(TAG, "resume");
-        mVideoView.start();
+				// mVideoView.setVideoPath(urls[currQuality]);
+				// mVideoView.setOnPreparedListener(new
+				// SmartPlayer.OnPreparedListener(){
+				//
+				// @Override
+				// public void onPrepared(SmartPlayer arg0) {
+				//
+				// arg0.start();
+				// checkTaskStart();
+				// }});
+				if (urls != null && mVideoView != null) {
+					TaskStart();// cmstest.tvxio.com
+					mVideoView.setVideoPath(urls[currQuality]);
+					Log.i("zhuabao", "play url==" + urls[currQuality]);
+					sid = VodUserAgent.getSid(urls[currQuality]);
+					mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
+					// mVideoView.setOnInfoListener(new
+					// SmartPlayer.OnInfoListener() {
+					//
+					// @Override
+					// public boolean onInfo(SmartPlayer arg0, int arg1, int
+					// arg2) {
+					// // TODO Auto-generated method stub
+					// mCurrentSeed = arg1/8;
+					// if(subItem != null)
+					// callaPlay.videoPlaySpeed(item.pk, subItem.pk, item.title,
+					// clip.pk, currQuality, mCurrentSeed, mediaip, sid);
+					// else
+					// callaPlay.videoPlaySpeed(item.pk, null, item.title,
+					// clip.pk, currQuality, mCurrentSeed, mediaip, sid);
+					// return false;
+					// }
+					// });
+					mVideoView
+							.setOnPreparedListener(new SmartPlayer.OnPreparedListener() {
+								@Override
+								public void onPrepared(SmartPlayer mp) {
 
-        if (subItem != null)
-            callaPlay.videoPlayContinue(item.pk, subItem.pk, item.title,
-                    clip.pk, currQuality, 0, currPosition, sid);
-        else
-            callaPlay.videoPlayContinue(item.pk, null, item.title, clip.pk,
-                    currQuality, 0, currPosition, sid);
-        if (!isBuffer) {
-            timeTaskStart();
-        }
-        paused = false;
-    }
+									Log.d(TAG,
+											"mVideoView onPrepared tempOffset =="
+													+ tempOffset);
+									if (mVideoView != null) {
+										if (live_video) {
+											timeBar.setEnabled(false);
 
-    private void fastForward(int step) {
-        if (currPosition > clipLength)
-            return;
-        if (offsets != 1 && offsets % 5 != 0) {
-            offsets += step;
-            Log.i("zhnagjiqiang", "offsets != 1 && offsets % 5 != 0");
-        } else {
-            if (offsets > 0) {
-                offn = offsets / 5;
-                Log.i("zhnagjiqiang", "offsets > 0");
-            }
-        }
-        if (clipLength > 1000000) {
-            if (offn < 11) {
-                Log.i("zhnagjiqiang", "offn < 11");
-                currPosition += clipLength * offn * 0.01;
-            } else {
-                Log.i("zhnagjiqiang", "offn >=11");
-                currPosition += clipLength * 0.1;
-            }
-        } else {
-            Log.i("zhnagjiqiang", "clipLength  <= 1000000");
-            currPosition += 10000;
-        }
+										} else {
+											clipLength = mVideoView
+													.getDuration();
+											timeBar.setMax(clipLength);
+											mp.seekTo(currPosition);
+											timeBar.setProgress(currPosition);
+											timeBar.setEnabled(true);
+										}
+										mp.start();
+										timeTaskStart();
+										checkTaskStart();
+										urls[0] = urlInfo.getNormal();
+										urls[1] = urlInfo.getMedium();
+										urls[2] = urlInfo.getHigh();
+										urls[3] = urlInfo.getAdaptive();
+										if (subItem != null) {
+											callaPlay
+													.videoPlayLoad(
+															item.pk,
+															subItem.pk,
+															item.title,
+															clip.pk,
+															currQuality,
+															(System.currentTimeMillis() - startDuration) / 1000,
+															0, null, sid);
+											callaPlay.videoPlayStart(item.pk,
+													subItem.pk, item.title,
+													clip.pk, currQuality, 0);
+										} else {
+											callaPlay.videoPlayLoad(
+													item.pk,
+													null,
+													item.title,
+													clip.pk,
+													currQuality,
+													(System.currentTimeMillis() - startDuration) / 1000,
+													0, null, sid);
+											callaPlay.videoPlayStart(item.pk,
+													null, item.title, clip.pk,
+													currQuality, 0);
+										}
+									}
+								}
+							});
+					mVideoView
+							.setOnErrorListener(new SmartPlayer.OnErrorListener() {
+								@Override
+								public boolean onError(SmartPlayer mp,
+										int what, int extra) {
+									Log.d(TAG,
+											"mVideoView  Error setVideoPath urls[currQuality] ");
+									addHistory(currPosition);
+									ExToClosePlayer("error", what + " " + extra);
+									return false;
+								}
+							});
 
-        if (currPosition > clipLength) {
-            currPosition = clipLength - 3000;
-        }
-        timeBar.setProgress(currPosition);
-        Log.d(TAG, "seek Forward " + currPosition);
-    }
+					mVideoView
+							.setOnCompletionListener(new SmartPlayer.OnCompletionListener() {
 
-    private void fastBackward(int step) {
-        if (currPosition < 0)
-            return;
-        if (offsets != 1 && offsets % 5 != 0) {
-            offsets += step;
-        } else {
-            if (offsets > 0) {
-                offn = offsets / 5;
-            }
-        }
-        if (clipLength > 1000000) {
-            if (offn < 11) {
-                currPosition -= clipLength * offn * 0.01;
-            } else {
-                currPosition -= clipLength * 0.1;
-            }
-        } else {
-            currPosition -= 10000;
-        }
-        if (currPosition < 0)
-            currPosition = 0;
-        timeBar.setProgress(currPosition);
-        Log.d(TAG, "seek Backward " + currPosition);
-    }
+								@Override
+								public void onCompletion(SmartPlayer mp) {
+									Log.d(TAG, "mVideoView  Completion");
+									if (item.isPreview) {
+										PaymentDialog dialog = new PaymentDialog(
+												PlayerActivity.this,
+												R.style.PaymentDialog,
+												ordercheckListener);
+										dialog.setItem(item);
+										dialog.show();
+									} else
+										gotoFinishPage();
+								}
+							});
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        boolean ret = false;
-        if (!isVodMenuVisible() && mVideoView != null) {
-            switch (keyCode) {
-                case KeyEvent.KEYCODE_DPAD_LEFT:
-                    if (mVideoView.getDuration() > 0 && !live_video) {
-                        isSeek = true;
-                        showPanel();
-                        fbImage.setImageResource(R.drawable.vodplayer_controller_rew_pressed);
-                        isBuffer = true;
-                        showBuffer();
-                        fastBackward(SHORT_STEP);
-                        ret = true;
-                    }
-                    break;
-                case KeyEvent.KEYCODE_DPAD_RIGHT:
-                    if (mVideoView.getDuration() > 0 && !live_video) {
-                        isSeek = true;
-                        showPanel();
-                        ffImage.setImageResource(R.drawable.vodplayer_controller_ffd_pressed);
-                        isBuffer = true;
-                        showBuffer();
-                        fastForward(SHORT_STEP);
-                        ret = true;
-                    }
-                    break;
-                case KeyEvent.KEYCODE_DPAD_CENTER:
-                case KeyEvent.KEYCODE_ENTER:
-                    if (mVideoView.getDuration() > 0) {
-                        showPanel();
-                        if (!paused) {
-                            pauseItem();
-                            // playPauseImage
-                            // .setImageResource(R.drawable.vod_player_pause_focus);
-                            playPauseImage
-                                    .setImageResource(R.drawable.vodplayer_controller_pause_pressed);
-                        } else {
-                            resumeItem();
-                            // playPauseImage
-                            // .setImageResource(R.drawable.vod_player_play_focus);
-                            playPauseImage
-                                    .setImageResource(R.drawable.vodplayer_controller_play_pressed);
-                        }
+					mVideoView
+							.setOnSeekCompleteListener(new SmartPlayer.OnSeekCompleteListener() {
 
-                        ret = true;
-                    }
-                    break;
-                case KeyEvent.KEYCODE_A:
-                case KeyEvent.KEYCODE_F1:
-                case KeyEvent.KEYCODE_PROG_RED:
+								@Override
+								public void onSeekComplete(SmartPlayer mp) {
+									// TODO Auto-generated method stub
+									isBuffer = false;
+									hideBuffer();
+								}
+							});
+				}
 
-                    if (panelShow) {
-                        hidePanel();
-                    } else {
-                        showPanel();
-                    }
-                    ret = true;
+			} else {
+				ExToClosePlayer("url", "m3u8 content error ,");
+			}
+		} catch (Exception e) {
+			Log.e(TAG, e.toString());
+			ExToClosePlayer("url", e.toString());
+		}
+	}
 
-                    break;
-                case KeyEvent.KEYCODE_DPAD_UP:
+	private Handler logHandler = new Handler();
 
-                    am.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-                            AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
-                    showPanel();
-                    ret = true;
+	private void TaskStart() {
+		logHandler.removeCallbacks(logTaskRunnable);
+		logHandler.post(logTaskRunnable);
+	}
 
-                    break;
-                case KeyEvent.KEYCODE_DPAD_DOWN:
-                    am.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-                            AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
-                    ret = true;
-                    break;
-                case KeyEvent.KEYCODE_BACK:
-                    if (panelShow) {
-                        hidePanel();
-                        ret = true;
-                    } else {
-                        showPopupDialog(
-                                DIALOG_OK_CANCEL,
-                                getResources().getString(
-                                        R.string.vod_player_exit_dialog));
-                        ret = true;
-                    }
-                    break;
-                case KeyEvent.KEYCODE_MENU:
-                    if (menu != null && menu.isVisible())
-                        return false;
-                    if (menu == null) {
-                        createWindow();
-                        menu = new ISTVVodMenu(this);
-                        ret = createMenu(menu);
-                    }
-                    String net = "";
-                    if(SimpleRestClient.isLogin()){
-                    	net = "yes";
-                    }
-                    else{
-                    	net = "no";
-                    }
-                    if (itemUrl != null && favoriteManager != null
-                            && favoriteManager.getFavoriteByUrl(itemUrl,net) != null) {
-                        menu.findItem(5)
-                                .setTitle(
-                                        getResources()
-                                                .getString(
-                                                        R.string.vod_bookmark_remove_bookmark_setting));
-                    }
-                    if (onVodMenuOpened(menu)) {
-                        menu.show();
-                        hideMenuHandler.postDelayed(hideMenuRunnable, 10000);
-                    }
-                    break;
+	private void timeTaskStop() {
+		logHandler.removeCallbacks(logTaskRunnable);
+	}
 
-                default:
-                    break;
-            }
-        }
-        if (mVideoView != null && ret == false) {
-            ret = super.onKeyDown(keyCode, event);
-        }
-        return ret;
-    }
+	private Runnable logTaskRunnable = new Runnable() {
+		@Override
+		public void run() {
+			try {
+				startDuration = System.currentTimeMillis();
+				if (subItem != null)
+					callaPlay.videoStart(item, subItem.pk, subItem.title,
+							currQuality, null, 0, mSection, sid);
+				else
+					callaPlay.videoStart(item, null, item.title, currQuality,
+							null, 0, mSection, sid);
+				timeTaskStop();
+			} catch (Exception e) {
+				Log.e(TAG, " Sender log videoPlayStart " + e.toString());
+			}
+		}
+	};
 
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        boolean ret = false;
-        if (mVideoView != null && !isVodMenuVisible()
-                && mVideoView.getDuration() > 0) {
-            switch (keyCode) {
-                case KeyEvent.KEYCODE_DPAD_LEFT:
-                    if (!live_video) {
-                        fbImage.setImageResource(R.drawable.vodplayer_controller_rew);
-                        mVideoView.seekTo(currPosition);
-                        if (subItem != null)
-                            callaPlay.videoPlaySeek(item.pk, subItem.pk,
-                                    item.title, clip.pk, currQuality, 0,
-                                    currPosition, sid);
-                        else
-                            callaPlay.videoPlayContinue(item.pk, null, item.title,
-                                    clip.pk, currQuality, 0, currPosition, sid);
-                        isSeekBuffer = true;
-                        Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
-                        ret = true;
-                        isSeek = false;
-                        offsets = 0;
-                        offn = 1;
-                    }
+	private void timeTaskStart() {
+		mHandler.removeCallbacks(mUpdateTimeTask);
+		mHandler.post(mUpdateTimeTask);
 
-                    break;
-                case KeyEvent.KEYCODE_DPAD_RIGHT:
-                    if (!live_video) {
-                        ffImage.setImageResource(R.drawable.vodplayer_controller_ffd);
-                        mVideoView.seekTo(currPosition);
-                        if (subItem != null)
-                            callaPlay.videoPlaySeek(item.pk, subItem.pk,
-                                    item.title, clip.pk, currQuality, 0,
-                                    currPosition, sid);
-                        else
-                            callaPlay.videoPlayContinue(item.pk, null, item.title,
-                                    clip.pk, currQuality, 0, currPosition, sid);
-                        isSeekBuffer = true;
-                        Log.d(TAG, "RIGHT seek to" + getTimeString(currPosition));
-                        ret = true;
-                        isSeek = false;
-                        offsets = 0;
-                        offn = 1;
-                    }
+	}
 
-                    break;
-                case KeyEvent.KEYCODE_DPAD_CENTER:
-                case KeyEvent.KEYCODE_ENTER:
-                    if (paused) {
-                        // playPauseImage.setImageResource(R.drawable.vod_player_play);
-                        playPauseImage
-                                .setImageResource(R.drawable.vodplayer_controller_play);
-                    } else {
-                        // playPauseImage.setImageResource(R.drawable.vod_player_pause);
-                        playPauseImage
-                                .setImageResource(R.drawable.vodplayer_controller_pause);
-                    }
-                    ret = true;
-                    break;
-                default:
-                    break;
-            }
+	private void timeTaskPause() {
+		mHandler.removeCallbacks(mUpdateTimeTask);
+	}
 
-            if (ret == false) {
-                ret = super.onKeyUp(keyCode, event);
-            }
-        }
-        return ret;
-    }
+	private Runnable mUpdateTimeTask = new Runnable() {
+		@Override
+		public void run() {
+			if (mVideoView != null) {
+				if (mVideoView.isPlaying()) {
+					seekPostion = mVideoView.getCurrentPosition();
+				}
+				mHandler.postDelayed(mUpdateTimeTask, 500);
+			} else {
+				Log.d(TAG, "mVideoView ======= null or err");
+				timeTaskPause();
+			}
+		}
+	};
 
-    public void showPopupDialog(int type, String msg) {
-        if (type == DIALOG_OK_CANCEL) {
-            popupDlg = new Dialog(this, R.style.PopupDialog);
-            View view;
-            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.popup_2btn, null);
-            // int H = DaisyUtils.getVodApplication(this).getheightPixels(this);
-            // if(H==720)
-            // popupDlg.addContentView(view, new ViewGroup.LayoutParams(
-            // (int)(538/DBHelper.rate),(int)(296/DBHelper.rate)));
-            // else
-            // popupDlg.addContentView(view, new ViewGroup.LayoutParams(
-            // (807/DBHelper.rate,
-            // ViewGroup.LayoutParams.WRAP_CONTENT));
+	private void ExToClosePlayer(String code, String content) {
+		if (bufferText != null) {
+			bufferText.setText(EXTOCLOSE);
+			if (code == "url") {
+				try {
+					if (subItem != null)
+						callaPlay.videoExcept("noplayaddress", content,
+								item.pk, subItem.pk, item.title, clip.pk,
+								currQuality, 0);
+					else
+						callaPlay.videoExcept("noplayaddress", content,
+								item.pk, null, item.title, clip.pk,
+								currQuality, 0);
+				} catch (Exception e) {
+					Log.e(TAG,
+							" Sender log videoExcept noplayaddress "
+									+ e.toString());
+				}
+			}
+			if (code == "error") {
+				try {
+					if (subItem != null)
+						callaPlay.videoExcept("mediaexception", content,
+								item.pk, subItem.pk, item.title, clip.pk,
+								currQuality, currPosition);
+					else
+						callaPlay.videoExcept("mediaexception", content,
+								item.pk, null, item.title, clip.pk,
+								currQuality, currPosition);
+				} catch (Exception e) {
+					Log.e(TAG,
+							" Sender log videoExcept noplayaddress "
+									+ e.toString());
+				}
+			}
 
-            int width = getResources().getDimensionPixelSize(
-                    R.dimen.popup_dialog_width);
-            int height = getResources().getDimensionPixelSize(
-                    R.dimen.popup_dialog_height);
+		}
+		mHandler.postDelayed(finishPlayerActivity, 3000);
+	}
 
-            popupDlg.addContentView(view, new ViewGroup.LayoutParams(width,
-                    height));
-            TextView tv = (TextView) view.findViewById(R.id.PopupText);
-            tv.setText(msg);
-            Button btn1 = null, btn2 = null;
-            btn1 = (Button) view.findViewById(R.id.LeftButton);
-            btn1.setText(R.string.vod_ok);
-            btn2 = (Button) view.findViewById(R.id.RightButton);
-            btn2.setText(R.string.vod_cancel);
-            if (btn1 != null) {
-                btn1.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        if (popupDlg != null && mVideoView != null) {
-                            addHistory(seekPostion);
-                            checkTaskPause();
-                            timeTaskPause();
-                            popupDlg.dismiss();
-                            try {
-                                if (subItem != null)
-                                    callaPlay.videoExit(
-                                            item.pk,
-                                            subItem.pk,
-                                            item.title,
-                                            clip.pk,
-                                            currQuality,
-                                            0,
-                                            "detail",
-                                            currPosition,
-                                            (System.currentTimeMillis() - startDuration) / 1000,
-                                            mSection, sid, "list",
-                                            item.content_model);
-                                else
-                                    callaPlay.videoExit(
-                                            item.pk,
-                                            null,
-                                            item.title,
-                                            clip.pk,
-                                            currQuality,
-                                            0,
-                                            "detail",
-                                            currPosition,
-                                            (System.currentTimeMillis() - startDuration) / 1000,
-                                            mSection, sid, "list",
-                                            item.content_model);
-                            } catch (Exception e) {
-                                Log.e(TAG,
-                                        " Sender log videoPlayStart "
-                                                + e.toString());
-                            }
-                            mVideoView.stopPlayback();
-                            PlayerActivity.this.finish();
-                        }
-                    }
+	private Runnable finishPlayerActivity = new Runnable() {
+		public void run() {
+			mHandler.removeCallbacks(finishPlayerActivity);
+			PlayerActivity.this.finish();
 
-                    ;
-                });
-            }
+		}
+	};
 
-            if (btn2 != null) {
-                btn2.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        if (popupDlg != null) {
-                            popupDlg.dismiss();
-                        }
-                    }
+	private void checkTaskStart() {
+		mCheckHandler.removeCallbacks(checkStatus);
+		mCheckHandler.post(checkStatus);
+	}
 
-                    ;
-                });
-            }
-            popupDlg.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                public void onDismiss(DialogInterface dialog) {
-                    popupDlg = null;
-                }
-            });
-            popupDlg.show();
-        }
-    }
+	private void checkTaskPause() {
+		mCheckHandler.removeCallbacks(checkStatus);
+	}
 
-    private Handler hidePanelHandler = new Handler();
+	private int i = 0;
+	private Runnable checkStatus = new Runnable() {
+		public void run() {
+			if (mVideoView != null) {
+				// Log.d(TAG,
+				// "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
+				if (mVideoView.isPlaying()
+						&& Math.abs(mVideoView.getCurrentPosition()
+								- seekPostion) > 0) {
+					// if (isBuffer || bufferLayout.isShown()) {
+					// //isBuffer = false;
+					// //hideBuffer();
+					// } else {
+					if (live_video && (isBuffer || bufferLayout.isShown())) {
+						isBuffer = false;
+						hideBuffer();
+					}
+					if (mVideoView.getAlpha() < 1) {
+						mVideoView.setAlpha(1);
+						bufferText.setText(BUFFERING);
+					}
 
-    private Runnable hidePanelRunnable = new Runnable() {
-        @Override
-        public void run() {
-            hidePanel();
-            hidePanelHandler.removeCallbacks(hidePanelRunnable);
-        }
-    };
+					// }
+					if (!isSeek && !isBuffer && !live_video) {
+						currPosition = mVideoView.getCurrentPosition();
+						timeBar.setProgress(currPosition);
+					}
+					i = 0;
+				} else {
+					if (!paused && !isBuffer) {
+						i += 1;
+						seekPostion = mVideoView.getCurrentPosition();
+					}
+				}
+				mCheckHandler.postDelayed(checkStatus, 300);
+			} else {
+				Log.d(TAG, "mVideoView ====== null or err");
+				checkTaskPause();
+			}
 
-    private Handler hideMenuHandler = new Handler();
+		}
 
-    private Runnable hideMenuRunnable = new Runnable() {
-        @Override
-        public void run() {
-            if (menu != null) {
+	};
+
+	private void gotoFinishPage() {
+		timeTaskPause();
+		checkTaskPause();
+		if (mVideoView != null) {
+			if (listItems != null && listItems.size() > 0
+					&& currNum < (listItems.size() - 1)) {
+				subItem = listItems.get(currNum + 1);
+				subItemUrl = simpleRestClient.root_url + "/api/subitem/"
+						+ subItem.pk + "/";
+				bundle.remove("url");
+				bundle.putString("url", subItemUrl);
+				addHistory(0);
+				if (mVideoView != null) {
+					mVideoView.setAlpha(0);
+				}
+				isBuffer = true;
+				showBuffer();
+				new ItemByUrlTask().execute();
+			} else {
+				Intent intent = new Intent("tv.ismar.daisy.PlayFinished");
+				intent.putExtra("item", item);
+				startActivity(intent);
+				seekPostion = 0;
+				currPosition = 0;
+				mVideoView = null;
+				addHistory(0);
+				try {
+					if (subItem != null)
+						callaPlay
+								.videoExit(
+										item.pk,
+										subItem.pk,
+										item.title,
+										clip.pk,
+										currQuality,
+										0,
+										"end",
+										currPosition,
+										(System.currentTimeMillis() - startDuration) / 1000,
+										mSection, sid, "list",
+										item.content_model);// String
+					// section,String
+					// sid,String
+					// source,String
+					// channel
+					else
+						callaPlay
+								.videoExit(
+										item.pk,
+										null,
+										item.title,
+										clip.pk,
+										currQuality,
+										0,
+										"end",
+										currPosition,
+										(System.currentTimeMillis() - startDuration) / 1000,
+										mSection, sid, "list",
+										item.content_model);
+				} catch (Exception e) {
+					Log.e(TAG, " log Sender videoExit end " + e.toString());
+				}
+				PlayerActivity.this.finish();
+
+			}
+		}
+
+	}
+
+	private void gotoRelatePage() {
+		Intent intent = new Intent();
+		intent.setClass(PlayerActivity.this,
+				tv.ismar.daisy.RelatedActivity.class);
+		intent.putExtra("item", item);
+		startActivity(intent);
+		addHistory(seekPostion);
+		checkTaskPause();
+		timeTaskPause();
+		mVideoView.stopPlayback();
+		try {
+			if (subItem != null)
+				callaPlay.videoExit(item.pk, subItem.pk, item.title, clip.pk,
+						currQuality, 0, "relate", currPosition,
+						(System.currentTimeMillis() - startDuration) / 1000,
+						mSection, sid, "list", item.content_model);
+			else
+				callaPlay.videoExit(item.pk, null, item.title, clip.pk,
+						currQuality, 0, "relate", currPosition,
+						(System.currentTimeMillis() - startDuration) / 1000,
+						mSection, sid, "list", item.content_model);
+			mVideoView.stopPlayback();
+		} catch (Exception e) {
+			Log.e(TAG, "log Sender videoExit relate " + e.toString());
+		}
+
+		PlayerActivity.this.finish();
+	}
+
+	private void addHistory(int last_position) {
+		if (item != null && historyManager != null) {
+			Log.d(TAG, "historyManager title ==" + item.title);
+			Log.d(TAG, "historyManager itemUrl ==" + itemUrl);
+			Log.d(TAG, "historyManager subItemUrl ==" + subItemUrl);
+			Log.d(TAG, "historyManager last_position ==" + last_position);
+			Log.d(TAG, "historyManager isContinue ==" + isContinue);
+			History history = new History();
+			if (subItem != null && subItem.title != null) {
+				history.title = subItem.title;
+			} else {
+				history.title = item.title;
+			}
+			history.adlet_url = item.adlet_url;
+			history.content_model = item.content_model;
+			history.is_complex = item.is_complex;
+			history.last_position = last_position;
+			history.last_quality = currQuality;
+			history.url = itemUrl;
+			history.sub_url = subItemUrl;
+			history.is_continue = isContinue;
+			historyManager.addHistory(history);
+		}
+	}
+
+	private void createHistory(int length) {
+		if ("".equals(SimpleRestClient.access_token)) {
+			return;// 不登录不必上传
+		}
+		int offset = length;
+		if (length == clipLength) {
+			offset = -1;
+		}
+		String params = "access_token=" + SimpleRestClient.access_token
+				+ "&device_token=" + SimpleRestClient.device_token + "&offset="
+				+ offset;
+		if (subItem != null) {
+			params = params + "&subitem=" + subItem.item_pk;
+		} else {
+			params = params + "&item=" + item.item_pk;
+		}
+		simpleRestClient.doSendRequest("/api/histories/create/", "post",
+				params, new HttpPostRequestInterface() {
+
+					@Override
+					public void onSuccess(String info) {
+						// TODO Auto-generated method stub
+						Log.i("BAIDU", info);
+					}
+
+					@Override
+					public void onPrepare() {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onFailed(String error) {
+						// TODO Auto-generated method stub
+						Log.i("BAIDU", error);
+					}
+				});
+	}
+
+	private void showPanel() {
+		if (isVodMenuVisible())
+			return;
+		if (!panelShow) {
+			panelLayout.startAnimation(panelShowAnimation);
+			panelLayout.setVisibility(View.VISIBLE);
+			panelShow = true;
+			hidePanelHandler.postDelayed(hidePanelRunnable, 20000);
+		}
+
+	}
+
+	private void hidePanel() {
+		if (panelShow) {
+			panelLayout.startAnimation(panelHideAnimation);
+			panelLayout.setVisibility(View.GONE);
+			panelShow = false;
+		}
+	}
+
+	private void pauseItem() {
+		if (paused || mVideoView == null)
+			return;
+		// //showBuffer();
+		Log.d(TAG, "pause");
+		hideBuffer();
+		mVideoView.pause();
+		paused = true;
+		if (subItem != null)
+			callaPlay.videoPlayPause(item.pk, subItem.pk, item.title, clip.pk,
+					currQuality, 0, currPosition, sid);
+		else
+			callaPlay.videoPlayPause(item.pk, null, item.title, clip.pk,
+					currQuality, 0, currPosition, sid);
+
+	}
+
+	private void resumeItem() {
+		if (!paused || mVideoView == null)
+			return;
+		// hideBuffer();
+		Log.d(TAG, "resume");
+		mVideoView.start();
+
+		if (subItem != null)
+			callaPlay.videoPlayContinue(item.pk, subItem.pk, item.title,
+					clip.pk, currQuality, 0, currPosition, sid);
+		else
+			callaPlay.videoPlayContinue(item.pk, null, item.title, clip.pk,
+					currQuality, 0, currPosition, sid);
+		if (!isBuffer) {
+			timeTaskStart();
+		}
+		paused = false;
+	}
+
+	private void fastForward(int step) {
+		if (currPosition > clipLength)
+			return;
+		if (offsets != 1 && offsets % 5 != 0) {
+			offsets += step;
+			Log.i("zhnagjiqiang", "offsets != 1 && offsets % 5 != 0");
+		} else {
+			if (offsets > 0) {
+				offn = offsets / 5;
+				Log.i("zhnagjiqiang", "offsets > 0");
+			}
+		}
+		if (clipLength > 1000000) {
+			if (offn < 11) {
+				Log.i("zhnagjiqiang", "offn < 11");
+				currPosition += clipLength * offn * 0.01;
+			} else {
+				Log.i("zhnagjiqiang", "offn >=11");
+				currPosition += clipLength * 0.1;
+			}
+		} else {
+			Log.i("zhnagjiqiang", "clipLength  <= 1000000");
+			currPosition += 10000;
+		}
+
+		if (currPosition > clipLength) {
+			currPosition = clipLength - 3000;
+		}
+		timeBar.setProgress(currPosition);
+		Log.d(TAG, "seek Forward " + currPosition);
+	}
+
+	private void fastBackward(int step) {
+		if (currPosition < 0)
+			return;
+		if (offsets != 1 && offsets % 5 != 0) {
+			offsets += step;
+		} else {
+			if (offsets > 0) {
+				offn = offsets / 5;
+			}
+		}
+		if (clipLength > 1000000) {
+			if (offn < 11) {
+				currPosition -= clipLength * offn * 0.01;
+			} else {
+				currPosition -= clipLength * 0.1;
+			}
+		} else {
+			currPosition -= 10000;
+		}
+		if (currPosition < 0)
+			currPosition = 0;
+		timeBar.setProgress(currPosition);
+		Log.d(TAG, "seek Backward " + currPosition);
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		boolean ret = false;
+		if (!isVodMenuVisible() && mVideoView != null) {
+			switch (keyCode) {
+			case KeyEvent.KEYCODE_DPAD_LEFT:
+				if (mVideoView.getDuration() > 0 && !live_video) {
+					isSeek = true;
+					showPanel();
+					fbImage.setImageResource(R.drawable.vodplayer_controller_rew_pressed);
+					isBuffer = true;
+					showBuffer();
+					fastBackward(SHORT_STEP);
+					ret = true;
+				}
+				break;
+			case KeyEvent.KEYCODE_DPAD_RIGHT:
+				if (mVideoView.getDuration() > 0 && !live_video) {
+					isSeek = true;
+					showPanel();
+					ffImage.setImageResource(R.drawable.vodplayer_controller_ffd_pressed);
+					isBuffer = true;
+					showBuffer();
+					fastForward(SHORT_STEP);
+					ret = true;
+				}
+				break;
+			case KeyEvent.KEYCODE_DPAD_CENTER:
+			case KeyEvent.KEYCODE_ENTER:
+				if (mVideoView.getDuration() > 0) {
+					showPanel();
+					if (!paused) {
+						pauseItem();
+						// playPauseImage
+						// .setImageResource(R.drawable.vod_player_pause_focus);
+						playPauseImage
+								.setImageResource(R.drawable.vodplayer_controller_pause_pressed);
+					} else {
+						resumeItem();
+						// playPauseImage
+						// .setImageResource(R.drawable.vod_player_play_focus);
+						playPauseImage
+								.setImageResource(R.drawable.vodplayer_controller_play_pressed);
+					}
+
+					ret = true;
+				}
+				break;
+			case KeyEvent.KEYCODE_A:
+			case KeyEvent.KEYCODE_F1:
+			case KeyEvent.KEYCODE_PROG_RED:
+
+				if (panelShow) {
+					hidePanel();
+				} else {
+					showPanel();
+				}
+				ret = true;
+
+				break;
+			case KeyEvent.KEYCODE_DPAD_UP:
+
+				am.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+						AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+				showPanel();
+				ret = true;
+
+				break;
+			case KeyEvent.KEYCODE_DPAD_DOWN:
+				am.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+						AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+				ret = true;
+				break;
+			case KeyEvent.KEYCODE_BACK:
+//				if (panelShow) {
+//					hidePanel();
+//					ret = true;
+//				} else {
+					showPopupDialog(
+							DIALOG_OK_CANCEL,
+							getResources().getString(
+									R.string.vod_player_exit_dialog));
+					ret = true;
+//				}
+				break;
+			case KeyEvent.KEYCODE_MENU:
+				if (menu != null && menu.isVisible())
+					return false;
+				if (menu == null) {
+					createWindow();
+					menu = new ISTVVodMenu(this);
+					ret = createMenu(menu);
+				}
+				String net = "";
+				if (SimpleRestClient.isLogin()) {
+					net = "yes";
+				} else {
+					net = "no";
+				}
+				if (itemUrl != null
+						&& favoriteManager != null
+						&& favoriteManager.getFavoriteByUrl(itemUrl, net) != null) {
+					menu.findItem(5)
+							.setTitle(
+									getResources()
+											.getString(
+													R.string.vod_bookmark_remove_bookmark_setting));
+				}
+				if (onVodMenuOpened(menu)) {
+					menu.show();
+					hideMenuHandler.postDelayed(hideMenuRunnable, 60000);
+				}
+				break;
+
+			default:
+				break;
+			}
+		}
+		if (mVideoView != null && ret == false) {
+			ret = super.onKeyDown(keyCode, event);
+		}
+		return ret;
+	}
+
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		boolean ret = false;
+		if (mVideoView != null && !isVodMenuVisible()
+				&& mVideoView.getDuration() > 0) {
+			switch (keyCode) {
+			case KeyEvent.KEYCODE_DPAD_LEFT:
+				if (!live_video) {
+					fbImage.setImageResource(R.drawable.vodplayer_controller_rew);
+					mVideoView.seekTo(currPosition);
+					if (subItem != null)
+						callaPlay.videoPlaySeek(item.pk, subItem.pk,
+								item.title, clip.pk, currQuality, 0,
+								currPosition, sid);
+					else
+						callaPlay.videoPlayContinue(item.pk, null, item.title,
+								clip.pk, currQuality, 0, currPosition, sid);
+					isSeekBuffer = true;
+					Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
+					ret = true;
+					isSeek = false;
+					offsets = 0;
+					offn = 1;
+				}
+
+				break;
+			case KeyEvent.KEYCODE_DPAD_RIGHT:
+				if (!live_video) {
+					ffImage.setImageResource(R.drawable.vodplayer_controller_ffd);
+					mVideoView.seekTo(currPosition);
+					if (subItem != null)
+						callaPlay.videoPlaySeek(item.pk, subItem.pk,
+								item.title, clip.pk, currQuality, 0,
+								currPosition, sid);
+					else
+						callaPlay.videoPlayContinue(item.pk, null, item.title,
+								clip.pk, currQuality, 0, currPosition, sid);
+					isSeekBuffer = true;
+					Log.d(TAG, "RIGHT seek to" + getTimeString(currPosition));
+					ret = true;
+					isSeek = false;
+					offsets = 0;
+					offn = 1;
+				}
+
+				break;
+			case KeyEvent.KEYCODE_DPAD_CENTER:
+			case KeyEvent.KEYCODE_ENTER:
+				if (paused) {
+					// playPauseImage.setImageResource(R.drawable.vod_player_play);
+					playPauseImage
+							.setImageResource(R.drawable.vodplayer_controller_play);
+				} else {
+					// playPauseImage.setImageResource(R.drawable.vod_player_pause);
+					playPauseImage
+							.setImageResource(R.drawable.vodplayer_controller_pause);
+				}
+				ret = true;
+				break;
+			default:
+				break;
+			}
+
+			if (ret == false) {
+				ret = super.onKeyUp(keyCode, event);
+			}
+		}
+		return ret;
+	}
+
+	public void showPopupDialog(int type, String msg) {
+		if (type == DIALOG_OK_CANCEL) {
+			popupDlg = new Dialog(this, R.style.PopupDialog);
+			View view;
+			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			view = inflater.inflate(R.layout.popup_2btn, null);
+			// int H = DaisyUtils.getVodApplication(this).getheightPixels(this);
+			// if(H==720)
+			// popupDlg.addContentView(view, new ViewGroup.LayoutParams(
+			// (int)(538/DBHelper.rate),(int)(296/DBHelper.rate)));
+			// else
+			// popupDlg.addContentView(view, new ViewGroup.LayoutParams(
+			// (807/DBHelper.rate,
+			// ViewGroup.LayoutParams.WRAP_CONTENT));
+
+			int width = getResources().getDimensionPixelSize(
+					R.dimen.popup_dialog_width);
+			int height = getResources().getDimensionPixelSize(
+					R.dimen.popup_dialog_height);
+
+			popupDlg.addContentView(view, new ViewGroup.LayoutParams(width,
+					height));
+			TextView tv = (TextView) view.findViewById(R.id.PopupText);
+			tv.setText(msg);
+			Button btn1 = null, btn2 = null;
+			btn1 = (Button) view.findViewById(R.id.LeftButton);
+			btn1.setText(R.string.vod_ok);
+			btn2 = (Button) view.findViewById(R.id.RightButton);
+			btn2.setText(R.string.vod_cancel);
+			if (btn1 != null) {
+				btn1.setOnClickListener(new View.OnClickListener() {
+					public void onClick(View v) {
+						if (popupDlg != null && mVideoView != null) {
+							addHistory(seekPostion);
+							checkTaskPause();
+							timeTaskPause();
+							popupDlg.dismiss();
+							try {
+								if (subItem != null)
+									callaPlay.videoExit(
+											item.pk,
+											subItem.pk,
+											item.title,
+											clip.pk,
+											currQuality,
+											0,
+											"detail",
+											currPosition,
+											(System.currentTimeMillis() - startDuration) / 1000,
+											mSection, sid, "list",
+											item.content_model);
+								else
+									callaPlay.videoExit(
+											item.pk,
+											null,
+											item.title,
+											clip.pk,
+											currQuality,
+											0,
+											"detail",
+											currPosition,
+											(System.currentTimeMillis() - startDuration) / 1000,
+											mSection, sid, "list",
+											item.content_model);
+							} catch (Exception e) {
+								Log.e(TAG,
+										" Sender log videoPlayStart "
+												+ e.toString());
+							}
+							mVideoView.stopPlayback();
+							PlayerActivity.this.finish();
+						}
+					}
+
+					;
+				});
+			}
+
+			if (btn2 != null) {
+				btn2.setOnClickListener(new View.OnClickListener() {
+					public void onClick(View v) {
+						if (popupDlg != null) {
+							popupDlg.dismiss();
+						}
+					}
+
+					;
+				});
+			}
+			popupDlg.setOnDismissListener(new DialogInterface.OnDismissListener() {
+				public void onDismiss(DialogInterface dialog) {
+					popupDlg = null;
+				}
+			});
+			popupDlg.show();
+		}
+	}
+
+	private Handler hidePanelHandler = new Handler();
+
+	private Runnable hidePanelRunnable = new Runnable() {
+		@Override
+		public void run() {
+			hidePanel();
+			hidePanelHandler.removeCallbacks(hidePanelRunnable);
+		}
+	};
+
+	private Handler hideMenuHandler = new Handler();
+
+	private Runnable hideMenuRunnable = new Runnable() {
+		@Override
+		public void run() {
+			if (menu != null) {
 				menu.hide();
 				menu.clear();
 				menu = null;
-            }
-            hideMenuHandler.removeCallbacks(hideMenuRunnable);
-        }
-    };
+			}
+			hideMenuHandler.removeCallbacks(hideMenuRunnable);
+		}
+	};
 
-    private boolean isVodMenuVisible() {
-        if (menu == null) {
-            return false;
-        }
-        return menu.isVisible();
-    }
+	private boolean isVodMenuVisible() {
+		if (menu == null) {
+			return false;
+		}
+		return menu.isVisible();
+	}
 
-    private void showBuffer() {
-        if (isBuffer && !bufferLayout.isShown()) {
-            bufferLayout.setVisibility(View.VISIBLE);
-            bufferDuration = System.currentTimeMillis();
-        }
-    }
+	private void showBuffer() {
+		if (isBuffer && !bufferLayout.isShown()) {
+			bufferLayout.setVisibility(View.VISIBLE);
+			bufferDuration = System.currentTimeMillis();
+		}
+	}
 
-    private void hideBuffer() {
-        if (!isBuffer && bufferLayout.isShown()) {
-            bufferText.setText(BUFFERING);
-            bufferLayout.setVisibility(View.GONE);
-            try {
-                if (subItem != null)
-                    if (isSeekBuffer) {
-                        callaPlay
-                                .videoPlaySeekBlockend(
-                                        item.pk,
-                                        subItem.pk,
-                                        item.title,
-                                        clip.pk,
-                                        currQuality,
-                                        0,
-                                        currPosition,
-                                        (System.currentTimeMillis() - bufferDuration) / 1000,
-                                        mediaip, sid);
+	private void hideBuffer() {
+		if (!isBuffer && bufferLayout.isShown()) {
+			bufferText.setText(BUFFERING);
+			bufferLayout.setVisibility(View.GONE);
+			try {
+				if (subItem != null)
+					if (isSeekBuffer) {
+						callaPlay
+								.videoPlaySeekBlockend(
+										item.pk,
+										subItem.pk,
+										item.title,
+										clip.pk,
+										currQuality,
+										0,
+										currPosition,
+										(System.currentTimeMillis() - bufferDuration) / 1000,
+										mediaip, sid);
 
-                    } else {
-                        callaPlay
-                                .videoPlayBlockend(
-                                        item.pk,
-                                        subItem.pk,
-                                        item.title,
-                                        clip.pk,
-                                        currQuality,
-                                        0,
-                                        currPosition,
-                                        (System.currentTimeMillis() - bufferDuration) / 1000,
-                                        mediaip, sid);
-                    }
-                else if (isSeekBuffer) {
-                    callaPlay
-                            .videoPlaySeekBlockend(
-                                    item.pk,
-                                    null,
-                                    item.title,
-                                    clip.pk,
-                                    currQuality,
-                                    0,
-                                    currPosition,
-                                    (System.currentTimeMillis() - bufferDuration) / 1000,
-                                    mediaip, sid);
+					} else {
+						callaPlay
+								.videoPlayBlockend(
+										item.pk,
+										subItem.pk,
+										item.title,
+										clip.pk,
+										currQuality,
+										0,
+										currPosition,
+										(System.currentTimeMillis() - bufferDuration) / 1000,
+										mediaip, sid);
+					}
+				else if (isSeekBuffer) {
+					callaPlay
+							.videoPlaySeekBlockend(
+									item.pk,
+									null,
+									item.title,
+									clip.pk,
+									currQuality,
+									0,
+									currPosition,
+									(System.currentTimeMillis() - bufferDuration) / 1000,
+									mediaip, sid);
 
-                } else {
-                    callaPlay
-                            .videoPlayBlockend(
-                                    item.pk,
-                                    null,
-                                    item.title,
-                                    clip.pk,
-                                    currQuality,
-                                    0,
-                                    currPosition,
-                                    (System.currentTimeMillis() - bufferDuration) / 1000,
-                                    mediaip, sid);
-                }
-                isSeekBuffer = false;
-            } catch (Exception e) {
-                Log.e(TAG, " Sender log videoPlayBlockend " + e.toString());
-            }
-        }
-    }
+				} else {
+					callaPlay
+							.videoPlayBlockend(
+									item.pk,
+									null,
+									item.title,
+									clip.pk,
+									currQuality,
+									0,
+									currPosition,
+									(System.currentTimeMillis() - bufferDuration) / 1000,
+									mediaip, sid);
+				}
+				isSeekBuffer = false;
+			} catch (Exception e) {
+				Log.e(TAG, " Sender log videoPlayBlockend " + e.toString());
+			}
+		}
+	}
 
-    private String getTimeString(int ms) {
-        int left = ms;
-        int hour = left / 3600000;
-        left %= 3600000;
-        int min = left / 60000;
-        left %= 60000;
-        int sec = left / 1000;
-        return String.format("%1$02d:%2$02d:%3$02d", hour, min, sec);
-    }
+	private String getTimeString(int ms) {
+		int left = ms;
+		int hour = left / 3600000;
+		left %= 3600000;
+		int min = left / 60000;
+		left %= 60000;
+		int sec = left / 1000;
+		return String.format("%1$02d:%2$02d:%3$02d", hour, min, sec);
+	}
 
-    public void onVodMenuClosed(ISTVVodMenu istvVodMenu) {
-        // TODO Auto-generated method stub
+	public void onVodMenuClosed(ISTVVodMenu istvVodMenu) {
+		// TODO Auto-generated method stub
 
-    }
+	}
 
-    public boolean createMenu(ISTVVodMenu menu) {
-        ISTVVodMenuItem sub;
+	public boolean createMenu(ISTVVodMenu menu) {
+		ISTVVodMenuItem sub;
 
-        if (listItems != null && listItems.size() > 0) {
+		if (listItems != null && listItems.size() > 0) {
 			sub = menu.addSubMenu(100,
 					getResources().getString(R.string.serie_switch));
 			for (Item i : listItems) {
@@ -1555,249 +1587,255 @@ private void createHistory(int length){
 			}
 		}
 
-        sub = menu.addSubMenu(0,
-                getResources().getString(R.string.vod_player_quality_setting));
-        sub.addItem(1,
-                getResources().getString(R.string.vod_player_quality_medium));
-        sub.addItem(2,
-                getResources().getString(R.string.vod_player_quality_high));
-        sub.addItem(3,
-                getResources().getString(R.string.vod_player_quality_ultra));
-        sub.addItem(4,
-                getResources().getString(R.string.vod_player_quality_adaptive));
+		sub = menu.addSubMenu(0,
+				getResources().getString(R.string.vod_player_quality_setting));
+		sub.addItem(1,
+				getResources().getString(R.string.vod_player_quality_medium));
+		sub.addItem(2,
+				getResources().getString(R.string.vod_player_quality_high));
+		sub.addItem(3,
+				getResources().getString(R.string.vod_player_quality_ultra));
+		sub.addItem(4,
+				getResources().getString(R.string.vod_player_quality_adaptive));
 		menu.addItem(20, getResources().getString(R.string.kefucentertitle));
 		menu.addItem(30, getResources().getString(R.string.playfromstarttitle));
 
-        return true;
-    }
+		return true;
+	}
 
-    public boolean onVodMenuOpened(ISTVVodMenu menu) {
-        for (int i = 0; i < 4; i++) {
-            ISTVVodMenuItem item;
-            item = menu.findItem(i + 1);
-            if (urls[i] == null) {
-                item.disable();
-            } else {
-                item.enable();
-            }
-            if (i == currQuality) {
-                item.select();
-                item.disable();
-            } else {
-                item.unselect();
-            }
-        }
-        if (panelShow) {
-            hidePanel();
-        }
+	public boolean onVodMenuOpened(ISTVVodMenu menu) {
+		for (int i = 0; i < 4; i++) {
+			ISTVVodMenuItem item;
+			item = menu.findItem(i + 1);
+			if (urls[i] == null) {
+				item.disable();
+			} else {
+				item.enable();
+			}
+			if (i == currQuality) {
+				item.select();
+				item.disable();
+			} else {
+				item.unselect();
+			}
+		}
+		if (panelShow) {
+			hidePanel();
+		}
 
-//        if (isContinue) {
-//            menu.findItem(8).select();
-//            menu.findItem(9).unselect();
-//        } else {
-//            menu.findItem(8).unselect();
-//            menu.findItem(9).select();
-//        }
+		// if (isContinue) {
+		// menu.findItem(8).select();
+		// menu.findItem(9).unselect();
+		// } else {
+		// menu.findItem(8).unselect();
+		// menu.findItem(9).select();
+		// }
 
-        return true;
-    }
+		return true;
+	}
 
-    class SeekBarChangeEvent implements SeekBar.OnSeekBarChangeListener {
+	class SeekBarChangeEvent implements SeekBar.OnSeekBarChangeListener {
 
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress,
-                                      boolean fromUser) {
-            if (!live_video) {
-                if (mVideoView.getDuration() > 0) {
-                    timeBar.setProgress(progress);
-                    Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
-                }
-                updataTimeText();
-            }
-        }
+		@Override
+		public void onProgressChanged(SeekBar seekBar, int progress,
+				boolean fromUser) {
+			if (!live_video) {
+				if (mVideoView.getDuration() > 0) {
+					timeBar.setProgress(progress);
+					Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
+				}
+				updataTimeText();
+			}
+		}
 
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-            Log.d(TAG, "onStartTrackingTouch" + seekBar.getProgress());
-            if (!live_video) {
-                isSeek = true;
-                isBuffer = true;
-                showPanel();
-                showBuffer();
-            }
+		@Override
+		public void onStartTrackingTouch(SeekBar seekBar) {
+			Log.d(TAG, "onStartTrackingTouch" + seekBar.getProgress());
+			if (!live_video) {
+				isSeek = true;
+				isBuffer = true;
+				showPanel();
+				showBuffer();
+			}
 
-        }
+		}
 
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-            Log.d(TAG, "onStopTrackingTouch" + seekBar.getProgress());
-            if (!live_video) {
-                mVideoView.seekTo(seekBar.getProgress());
-                isBuffer = false;
-                isSeekBuffer = true;
-                isSeek = false;
-                offsets = 0;
-                offn = 1;
-                hideBuffer();
-            }
+		@Override
+		public void onStopTrackingTouch(SeekBar seekBar) {
+			Log.d(TAG, "onStopTrackingTouch" + seekBar.getProgress());
+			if (!live_video) {
+				mVideoView.seekTo(seekBar.getProgress());
+				isBuffer = false;
+				isSeekBuffer = true;
+				isSeek = false;
+				offsets = 0;
+				offn = 1;
+				hideBuffer();
+			}
 
-        }
-    }
+		}
+	}
 
-    private void createWindow() {
-        View win;
-        ViewGroup root = (ViewGroup) findViewById(Window.ID_ANDROID_CONTENT);
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        win = inflater.inflate(R.layout.menu, null);
-        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-        win.setLayoutParams(lp);
-        root.addView(win);
-    }
+	private void createWindow() {
+		View win;
+		ViewGroup root = (ViewGroup) findViewById(Window.ID_ANDROID_CONTENT);
+		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		win = inflater.inflate(R.layout.menu, null);
+		ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT,
+				ViewGroup.LayoutParams.MATCH_PARENT);
+		win.setLayoutParams(lp);
+		root.addView(win);
+	}
 
-    // reset()-->setDataSource(path)-->prepare()-->start()-->stop()--reset()-->
-	private void deleteFavoriteByNet(){
-		simpleRestClient.doSendRequest("/api/bookmark/remove/", "post", "access_token="+
-	    SimpleRestClient.access_token+"&device_token="+SimpleRestClient.device_token+"&item="+item.pk, new HttpPostRequestInterface() {
-			
-			@Override
-			public void onSuccess(String info) {
-				// TODO Auto-generated method stub
-				if("200".equals(info)){
-	
+	// reset()-->setDataSource(path)-->prepare()-->start()-->stop()--reset()-->
+	private void deleteFavoriteByNet() {
+		simpleRestClient.doSendRequest("/api/bookmark/remove/", "post",
+				"access_token=" + SimpleRestClient.access_token
+						+ "&device_token=" + SimpleRestClient.device_token
+						+ "&item=" + item.pk, new HttpPostRequestInterface() {
+
+					@Override
+					public void onSuccess(String info) {
+						// TODO Auto-generated method stub
+						if ("200".equals(info)) {
+
+						}
+					}
+
+					@Override
+					public void onPrepare() {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onFailed(String error) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+	}
+
+	private void createFavoriteByNet() {
+		simpleRestClient.doSendRequest("/api/bookmarks/create/", "post",
+				"access_token=" + SimpleRestClient.access_token
+						+ "&device_token=" + SimpleRestClient.device_token
+						+ "&item=" + item.pk, new HttpPostRequestInterface() {
+
+					@Override
+					public void onSuccess(String info) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onPrepare() {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onFailed(String error) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+	}
+
+	/**
+	 * @param menu
+	 * @param id
+	 * @return
+	 */
+	public boolean onVodMenuClicked(ISTVVodMenu menu, int id) {
+		if (id > 0 && id < 5) {
+			int pos = id - 1;
+			if (urls[pos] != null && currQuality != pos) {
+				try {
+					timeTaskPause();
+					checkTaskPause();
+					paused = false;
+					// playPauseImage
+					// .setImageResource(R.drawable.vod_player_pause);
+					playPauseImage
+							.setImageResource(R.drawable.vodplayer_controller_pause);
+					isBuffer = true;
+					currQuality = pos;
+					mVideoView = (IsmatvVideoView) findViewById(R.id.video_view);
+					mVideoView.setVideoPath(urls[currQuality].toString());
+					historyManager.addOrUpdateQuality(new Quality(0,
+							urls[currQuality], currQuality));
+					mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
+					if (subItem != null)
+						callaPlay.videoSwitchStream(item.pk, subItem.pk,
+								item.title, clip.pk, currQuality, "manual",
+								null, null, mediaip, sid);
+					else
+						callaPlay.videoSwitchStream(item.pk, null, item.title,
+								clip.pk, currQuality, "manual", null, null,
+								mediaip, sid);
+					initQualtiyText();
+					return true;
+				} catch (Exception e) {
+					Log.d(TAG, "Exception change url " + e);
+					return false;
 				}
 			}
-			
-			@Override
-			public void onPrepare() {
-				// TODO Auto-generated method stub
-				
+			return true;
+		}
+		if (id == 5) {
+			String isnet = "";
+			if (SimpleRestClient.isLogin()) {
+				isnet = "yes";
+			} else {
+				isnet = "no";
 			}
-			
-			@Override
-			public void onFailed(String error) {
-				// TODO Auto-generated method stub
-	
+			if (itemUrl != null && favoriteManager != null
+					&& favoriteManager.getFavoriteByUrl(itemUrl, isnet) != null) {
+				if (isnet.equals("yes")) {
+					deleteFavoriteByNet();
+				}
+				favoriteManager.deleteFavoriteByUrl(itemUrl, isnet);
+				menu.findItem(5).setTitle(
+						getResources().getString(
+								R.string.vod_player_bookmark_setting));
+			} else {
+				if (item != null && favoriteManager != null && itemUrl != null) {
+					favorite = new Favorite();
+					favorite.adlet_url = item.adlet_url;
+					favorite.content_model = item.content_model;
+					favorite.is_complex = item.is_complex;
+					favorite.title = item.title;
+					favorite.url = itemUrl;
+					favorite.isnet = isnet;
+					if (isnet.equals("yes")) {
+						createFavoriteByNet();
+					}
+					favoriteManager.addFavorite(favorite, isnet);
+					menu.findItem(5)
+							.setTitle(
+									getResources()
+											.getString(
+													R.string.vod_bookmark_remove_bookmark_setting));
+				}
 			}
-		});
-	}
-	private void createFavoriteByNet(){
-		simpleRestClient.doSendRequest("/api/bookmarks/create/", "post", "access_token="+SimpleRestClient.access_token+"&device_token="+SimpleRestClient.device_token+"&item="+item.pk, new HttpPostRequestInterface() {
-			
-			@Override
-			public void onSuccess(String info) {
-				// TODO Auto-generated method stub
-		
-			}
-			
-			@Override
-			public void onPrepare() {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onFailed(String error) {
-				// TODO Auto-generated method stub
-	
-			}
-		});
-	}
-    /**
-     * @param menu
-     * @param id
-     * @return
-     */
-    public boolean onVodMenuClicked(ISTVVodMenu menu, int id) {
-        if (id > 0 && id < 5) {
-            int pos = id - 1;
-            if (urls[pos] != null && currQuality != pos) {
-                try {
-                    timeTaskPause();
-                    checkTaskPause();
-                    paused = false;
-                    // playPauseImage
-                    // .setImageResource(R.drawable.vod_player_pause);
-                    playPauseImage
-                            .setImageResource(R.drawable.vodplayer_controller_pause);
-                    isBuffer = true;
-                    currQuality = pos;
-                    mVideoView = (IsmatvVideoView) findViewById(R.id.video_view);
-                    mVideoView.setVideoPath(urls[currQuality].toString());
-                    historyManager.addOrUpdateQuality(new Quality(0,
-                            urls[currQuality], currQuality));
-                    mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
-                    if (subItem != null)
-                        callaPlay.videoSwitchStream(item.pk, subItem.pk,
-                                item.title, clip.pk, currQuality, "manual",
-                                null, null, mediaip, sid);
-                    else
-                        callaPlay.videoSwitchStream(item.pk, null, item.title,
-                                clip.pk, currQuality, "manual", null, null,
-                                mediaip, sid);
-                    initQualtiyText();
-                    return true;
-                } catch (Exception e) {
-                    Log.d(TAG, "Exception change url " + e);
-                    return false;
-                }
-            }
-            return true;
-        }
-        if (id == 5) {
-        	String isnet = "";
-        	if(SimpleRestClient.isLogin()){
-        		isnet = "yes";
-        	}
-        	else{
-        		isnet = "no";
-        	}
-            if (itemUrl != null && favoriteManager != null
-                    && favoriteManager.getFavoriteByUrl(itemUrl,isnet) != null) {
-            	if(isnet.equals("yes")){
-            		deleteFavoriteByNet();
-            	}
-                favoriteManager.deleteFavoriteByUrl(itemUrl,isnet);
-                menu.findItem(5).setTitle(
-                        getResources().getString(
-                                R.string.vod_player_bookmark_setting));
-            } else {
-                if (item != null && favoriteManager != null && itemUrl != null) {
-                    favorite = new Favorite();
-                    favorite.adlet_url = item.adlet_url;
-                    favorite.content_model = item.content_model;
-                    favorite.is_complex = item.is_complex;
-                    favorite.title = item.title;
-                    favorite.url = itemUrl;
-                    favorite.isnet = isnet;
-                    if(isnet.equals("yes")){
-                    	createFavoriteByNet();
-                    }
-                    favoriteManager.addFavorite(favorite,isnet);
-                    menu.findItem(5)
-                            .setTitle(
-                                    getResources()
-                                            .getString(
-                                                    R.string.vod_bookmark_remove_bookmark_setting));
-                }
-            }
-            return true;
-        }
-        if (id == 6) {
-            gotoRelatePage();
-            return true;
-        }
-        if (id == 8) {
-            isContinue = true;
-            addHistory(seekPostion);
-            return true;
-        }
-        if (id == 9) {
-            isContinue = false;
-            addHistory(seekPostion);
-            return true;
-        }
+			return true;
+		}
+		if (id == 6) {
+			gotoRelatePage();
+			return true;
+		}
+		if (id == 8) {
+			isContinue = true;
+			addHistory(seekPostion);
+			return true;
+		}
+		if (id == 9) {
+			isContinue = false;
+			addHistory(seekPostion);
+			return true;
+		}
 
 		// 客服按钮
 		if (id == 20) {
@@ -1811,233 +1849,247 @@ private void createHistory(int length){
 			return true;
 		}
 
-        if(id > 100){
-            subItemUrl = simpleRestClient.root_url + "/api/subitem/"
-                    + id + "/";
-            bundle.remove("url");
-            bundle.putString("url", subItemUrl);
-            addHistory(0);
-            if (mVideoView != null) {
-                mVideoView.setAlpha(0);
-            }
-            isBuffer = true;
-            showBuffer();
-            new ItemByUrlTask().execute();
-        }
+		if (id > 100) {
+			subItemUrl = simpleRestClient.root_url + "/api/subitem/" + id + "/";
+			bundle.remove("url");
+			bundle.putString("url", subItemUrl);
+			addHistory(0);
+			if (mVideoView != null) {
+				mVideoView.setAlpha(0);
+			}
+			isBuffer = true;
+			showBuffer();
+			new ItemByUrlTask().execute();
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    private void updataTimeText() {
-        String text = getTimeString(currPosition) + "/"
-                + getTimeString(clipLength);
-        timeText.setText(text);
-    }
+	private void updataTimeText() {
+		String text = getTimeString(currPosition) + "/"
+				+ getTimeString(clipLength);
+		timeText.setText(text);
+	}
 
-    private void initQualtiyText() {
+	private void initQualtiyText() {
 
-        switch (currQuality) {
-            case 0:
-                // qualityText.setText("流畅");
-                qualityText
-                        .setBackgroundResource(R.drawable.vodplayer_stream_normal);
-                break;
-            case 1:
-                // qualityText.setText("高清");
-                qualityText.setBackgroundResource(R.drawable.vodplayer_stream_high);
-                break;
-            case 2:
-                // qualityText.setText("超清");
-                qualityText
-                        .setBackgroundResource(R.drawable.vodplayer_stream_ultra);
-                break;
+		switch (currQuality) {
+		case 0:
+			// qualityText.setText("流畅");
+			qualityText
+					.setBackgroundResource(R.drawable.vodplayer_stream_normal);
+			break;
+		case 1:
+			// qualityText.setText("高清");
+			qualityText.setBackgroundResource(R.drawable.vodplayer_stream_high);
+			break;
+		case 2:
+			// qualityText.setText("超清");
+			qualityText
+					.setBackgroundResource(R.drawable.vodplayer_stream_ultra);
+			break;
 
-            case 3:
-                qualityText.setText("自适应");
-                qualityText.setBackgroundResource(R.drawable.rounded_edittext);
-                break;
+		case 3:
+			qualityText.setText("自适应");
+			qualityText.setBackgroundResource(R.drawable.rounded_edittext);
+			break;
 
-            default:
-                // qualityText.setText("流畅");
-                qualityText
-                        .setBackgroundResource(R.drawable.vodplayer_stream_normal);
-                break;
-        }
+		default:
+			// qualityText.setText("流畅");
+			qualityText
+					.setBackgroundResource(R.drawable.vodplayer_stream_normal);
+			break;
+		}
 
-    }
+	}
 
-    @Override
-    protected void onPause() {
-        try {
-        	createHistory(seekPostion);
-            addHistory(seekPostion);
-            checkTaskPause();
-            timeTaskPause();
-            removeAllHandler();
-            mVideoView.stopPlayback();
-        } catch (Exception e) {
-            Log.d(TAG, "Player close to Home");
-        }
-        super.onPause();
-    }
+	@Override
+	protected void onPause() {
+		try {
+			createHistory(seekPostion);
+			addHistory(seekPostion);
+			checkTaskPause();
+			timeTaskPause();
+			removeAllHandler();
+			mVideoView.stopPlayback();
+		} catch (Exception e) {
+			Log.d(TAG, "Player close to Home");
+		}
+		super.onPause();
+	}
 
-    @Override
-    protected void onDestroy() {
-        menu = null;
-        urlInfo = null;
-        mCheckHandler = null;
-        historyManager = null;
-        simpleRestClient = null;
-        favoriteManager = null;
-        DaisyUtils.getVodApplication(this).removeActivtyFromPool(
-                this.toString());
-        sendPlayComplete();
-        super.onDestroy();
-    }
+	@Override
+	protected void onDestroy() {
+		menu = null;
+		urlInfo = null;
+		mCheckHandler = null;
+		historyManager = null;
+		simpleRestClient = null;
+		favoriteManager = null;
+		DaisyUtils.getVodApplication(this).removeActivtyFromPool(
+				this.toString());
+		sendPlayComplete();
+		super.onDestroy();
+	}
 
-    private void removeAllHandler() {
+	private void removeAllHandler() {
 
-        mHandler.removeCallbacks(mUpdateTimeTask);
-        mHandler.removeCallbacks(finishPlayerActivity);
-        hideMenuHandler.removeCallbacks(hideMenuRunnable);
-        mHandler.removeCallbacks(mUpdateTimeTask);
-        mCheckHandler.removeCallbacks(checkStatus);
-        hidePanelHandler.removeCallbacks(hidePanelRunnable);
-        mHandler.removeCallbacksAndMessages(null);
-    }
+		mHandler.removeCallbacks(mUpdateTimeTask);
+		mHandler.removeCallbacks(finishPlayerActivity);
+		hideMenuHandler.removeCallbacks(hideMenuRunnable);
+		mHandler.removeCallbacks(mUpdateTimeTask);
+		mCheckHandler.removeCallbacks(checkStatus);
+		hidePanelHandler.removeCallbacks(hidePanelRunnable);
+		mHandler.removeCallbacksAndMessages(null);
+	}
 
-    @Override
-    public boolean onDown(MotionEvent arg0) {
-        // TODO Auto-generated method stub
-        return false;
-    }
+	@Override
+	public boolean onDown(MotionEvent arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-    private int FLING_LEFT = 1;
-    private int FLING_RIGHT = 2;
-    private int FLING_DOWN = 3;
-    private int FLING_UP = 4;
-    private int FLING_STATE = -1;
+	private int FLING_LEFT = 1;
+	private int FLING_RIGHT = 2;
+	private int FLING_DOWN = 3;
+	private int FLING_UP = 4;
+	private int FLING_STATE = -1;
 
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-                           float velocitY) {
-        // TODO Auto-generated method stub
-        if (e1.getX() - e2.getX() > 100
-                && Math.abs(velocityX) > Math.abs(velocitY)) {// 向左滑，右边显示
-            // this.flipper.setInAnimation(AnimationUtils.loadAnimation(this,
-            // R.anim.push_left_in));
-            // this.flipper.setOutAnimation(AnimationUtils.loadAnimation(this,
-            // R.anim.push_left_out));
-            if (live_video) {
-                return true;
-            }
-            FLING_STATE = FLING_LEFT;
-            if (mVideoView.getDuration() > 0) {
-                isSeek = true;
-                showPanel();
-                fbImage.setImageResource(R.drawable.vod_controlb_selector);
-                isBuffer = true;
-                showBuffer();
-                fastBackward(SHORT_STEP);
-                mVideoView.seekTo(currPosition);
-                isSeekBuffer = true;
-                Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
-                isSeek = false;
-                offsets = 0;
-                offn = 1;
-                return true;
-            }
-        } else if (e1.getX() - e2.getX() < -100
-                && Math.abs(velocityX) > Math.abs(velocitY)) {// 向右滑，左边显示
-            if (live_video) {
-                return true;
-            }
-            FLING_STATE = FLING_RIGHT;
-            if (mVideoView.getDuration() > 0) {
-                isSeek = true;
-                showPanel();
-                ffImage.setImageResource(R.drawable.vod_controlf_selector);
-                isBuffer = true;
-                showBuffer();
-                fastForward(SHORT_STEP);
-                mVideoView.seekTo(currPosition);
-                isSeekBuffer = true;
-                Log.d(TAG, "RIGHT seek to" + getTimeString(currPosition));
-                isSeek = false;
-                offsets = 0;
-                offn = 1;
-                return true;
-            }
-        } else if (e1.getY() - e2.getY() < -15
-                && Math.abs(velocityX) < Math.abs(velocitY)) {
-            // 向下滑动
-            FLING_STATE = FLING_DOWN;
-            am.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-                    AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
-            return true;
-        } else if (e1.getY() - e2.getY() > 15
-                && Math.abs(velocityX) < Math.abs(velocitY)) {
-            // 向上滑动
-            FLING_STATE = FLING_UP;
-            am.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-                    AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
-            return true;
-        } else {
-            FLING_STATE = -1;
-            return false;
-        }
-        return false;
-    }
+	@Override
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+			float velocitY) {
+		// TODO Auto-generated method stub
+		if (e1.getX() - e2.getX() > 100
+				&& Math.abs(velocityX) > Math.abs(velocitY)) {// 向左滑，右边显示
+			// this.flipper.setInAnimation(AnimationUtils.loadAnimation(this,
+			// R.anim.push_left_in));
+			// this.flipper.setOutAnimation(AnimationUtils.loadAnimation(this,
+			// R.anim.push_left_out));
+			if (live_video) {
+				return true;
+			}
+			FLING_STATE = FLING_LEFT;
+			if (mVideoView.getDuration() > 0) {
+				isSeek = true;
+				showPanel();
+				fbImage.setImageResource(R.drawable.vod_controlb_selector);
+				isBuffer = true;
+				showBuffer();
+				fastBackward(SHORT_STEP);
+				mVideoView.seekTo(currPosition);
+				isSeekBuffer = true;
+				Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
+				isSeek = false;
+				offsets = 0;
+				offn = 1;
+				return true;
+			}
+		} else if (e1.getX() - e2.getX() < -100
+				&& Math.abs(velocityX) > Math.abs(velocitY)) {// 向右滑，左边显示
+			if (live_video) {
+				return true;
+			}
+			FLING_STATE = FLING_RIGHT;
+			if (mVideoView.getDuration() > 0) {
+				isSeek = true;
+				showPanel();
+				ffImage.setImageResource(R.drawable.vod_controlf_selector);
+				isBuffer = true;
+				showBuffer();
+				fastForward(SHORT_STEP);
+				mVideoView.seekTo(currPosition);
+				isSeekBuffer = true;
+				Log.d(TAG, "RIGHT seek to" + getTimeString(currPosition));
+				isSeek = false;
+				offsets = 0;
+				offn = 1;
+				return true;
+			}
+		} else if (e1.getY() - e2.getY() < -15
+				&& Math.abs(velocityX) < Math.abs(velocitY)) {
+			// 向下滑动
+			FLING_STATE = FLING_DOWN;
+			am.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+					AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+			return true;
+		} else if (e1.getY() - e2.getY() > 15
+				&& Math.abs(velocityX) < Math.abs(velocitY)) {
+			// 向上滑动
+			FLING_STATE = FLING_UP;
+			am.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+					AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+			return true;
+		} else {
+			FLING_STATE = -1;
+			return false;
+		}
+		return false;
+	}
 
-    @Override
-    public void onLongPress(MotionEvent arg0) {
-        // TODO Auto-generated method stub
+	@Override
+	public void onLongPress(MotionEvent arg0) {
+		// TODO Auto-generated method stub
 
-    }
+	}
 
-    @Override
-    public boolean onScroll(MotionEvent arg0, MotionEvent arg1, float arg2,
-                            float arg3) {
-        // TODO Auto-generated method stub
-        return false;
-    }
+	@Override
+	public boolean onScroll(MotionEvent arg0, MotionEvent arg1, float arg2,
+			float arg3) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-    @Override
-    public void onShowPress(MotionEvent arg0) {
-        // TODO Auto-generated method stub
+	@Override
+	public void onShowPress(MotionEvent arg0) {
+		// TODO Auto-generated method stub
 
-    }
+	}
 
-    @Override
-    public boolean onSingleTapUp(MotionEvent keyEvent) {
-        // TODO Auto-generated method stub
-        switch (keyEvent.getAction()) {
-            case MotionEvent.ACTION_UP:
-                if (!panelShow) {
-                    showPanel();
-                    panelShow = true;
-                } else {
-                    hidePanel();
-                    panelShow = false;
-                }
-                break;
+	@Override
+	public boolean onSingleTapUp(MotionEvent keyEvent) {
+		// TODO Auto-generated method stub
+		switch (keyEvent.getAction()) {
+		case MotionEvent.ACTION_UP:
+			if (!panelShow) {
+				showPanel();
+				panelShow = true;
+			} else {
+				hidePanel();
+				panelShow = false;
+			}
+			break;
 
-            default:
-                break;
-        }
-        return false;
-    }
+		default:
+			break;
+		}
+		return false;
+	}
 
-    private void sendPlayComplete() {
-        Intent intent = new Intent();
-        intent.setAction(AppConstant.VOD_PLAYER_COMPLETE_ACTION);
-        sendBroadcast(intent);
-    }
+	private void sendPlayComplete() {
+		Intent intent = new Intent();
+		intent.setAction(AppConstant.VOD_PLAYER_COMPLETE_ACTION);
+		sendBroadcast(intent);
+	}
 
 	private PaymentDialog.OrderResultListener ordercheckListener = new PaymentDialog.OrderResultListener() {
 
 		@Override
 		public void payResult(boolean result) {
+		}
+	};
+
+	private OnHoverListener onhoverlistener = new OnHoverListener() {
+
+		@Override
+		public boolean onHover(View v, MotionEvent event) {
+			int what = event.getAction();
+			switch (what) {
+			case MotionEvent.ACTION_HOVER_MOVE:
+				showPanel();
+				fbImage.setImageResource(R.drawable.vodplayer_controller_rew_pressed);
+				break;
+			}
+			return false;
 		}
 
 	};

@@ -5144,6 +5144,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 			}
 		}
 	}
+
 	private View downbtn;
 	private View upbtn;
    public void setDownView(View v){
