@@ -12,7 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" >
+        android:layout_weight="4" >
 
         <RelativeLayout
             android:layout_width="@dimen/drama_main_img_layout_W"
@@ -42,7 +42,7 @@
                 android:layout_width="@dimen/drama_main_image_daram_back_W"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/image_daram_back"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/person_btn_selector"
                 android:text="@string/orderAll_drama"
                 android:textColor="#FFF8F8FF"
@@ -86,7 +86,7 @@
                 android:id="@+id/one_drama_order_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="80dp"
                 android:text="@string/one_drama_order_info"
                 android:textSize="38sp"
                 android:visibility="gone"
@@ -97,8 +97,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical" >
+        android:layout_weight="6"
+        android:orientation="vertical" 
+        >
 
         <include
             android:id="@+id/drama_gridview"

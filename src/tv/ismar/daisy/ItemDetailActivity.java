@@ -358,7 +358,7 @@ public class ItemDetailActivity extends Activity implements
 									// 电影或者电视剧整部购买
 									try {
 										remainDay = Util.daysBetween(
-												Util.getTime(), info);
+												Util.getTime(), info)+1;
 										if (remainDay == 0) {
 											isBuy = false;// 过期了。认为没购买
 											remainDay = -1;
@@ -374,7 +374,7 @@ public class ItemDetailActivity extends Activity implements
 								info = info.substring(1, info.length() - 1);
 								try {
 									remainDay = Util.daysBetween(
-											Util.getTime(), info);
+											Util.getTime(), info)+1;
 									if (remainDay == 0) {
 										isBuy = false;// 过期了。认为没购买
 										remainDay = -1;

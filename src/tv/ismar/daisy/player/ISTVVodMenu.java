@@ -35,15 +35,17 @@ public class ISTVVodMenu extends ISTVVodMenuItem {
 		view = (ListView) activity.findViewById(R.id.MenuListView);
 		view.setOnKeyListener(new View.OnKeyListener() {
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if (keyCode == KeyEvent.KEYCODE_BACK) {
-					pop();
-					return true;
-				} else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT
-						|| keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
-					return true;
-				} else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
-					if (view.getSelectedItemPosition() == (view.getCount() - 1)) {
+				if (event.getAction() == KeyEvent.ACTION_DOWN) {
+					if (keyCode == KeyEvent.KEYCODE_BACK) {
+						pop();
 						return true;
+					} else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT
+							|| keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
+						return true;
+					} else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
+						if (view.getSelectedItemPosition() == (view.getCount() - 1)) {
+							return true;
+						}
 					}
 				}
 				return false;
@@ -72,7 +74,7 @@ public class ISTVVodMenu extends ISTVVodMenuItem {
 				sel = i;
 			}
 		}
-		
+
 		view.setAdapter(new ArrayAdapter<String>(activity, R.layout.menu_item,
 				R.id.MenuText, titles) {
 			public View getView(int position, View convertView, ViewGroup parent) {
