@@ -234,7 +234,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 	PositionScroller mPositionScroller;
 	/**
 	 * Stretches columns.
-	 * 
+	 *
 	 * @see #setStretchMode(int)
 	 */
 	public static final int STRETCH_COLUMN_WIDTH = 2;
@@ -244,7 +244,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 	protected int mPersistentDrawingCache;
 	/**
 	 * Disables the transcript mode.
-	 * 
+	 *
 	 * @see #setTranscriptMode(int)
 	 */
 	public static final int TRANSCRIPT_MODE_DISABLED = 0;
@@ -448,7 +448,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 	 * Responsible for fling behavior. Use {@link #start(int)} to initiate a
 	 * fling. Each frame of the fling is handled in {@link #run()}. A
 	 * FlingRunnable will keep re-posting itself until the fling is done.
-	 * 
+	 *
 	 */
 	private class FlingRunnable implements Runnable {
 		/**
@@ -846,14 +846,14 @@ public class ZGridView extends AdapterView<ListAdapter> {
 	 * position. This is called when we have already discovered that the view is
 	 * not available for reuse in the recycle bin. The only choices left are
 	 * converting an old view or making a new one.
-	 * 
+	 *
 	 * @param position
 	 *            The position to display
 	 * @param isScrap
 	 *            Array of at least 1 boolean, the first entry will become true
 	 *            if the returned view was taken from the scrap heap, false if
 	 *            otherwise.
-	 * 
+	 *
 	 * @return A view displaying the data associated with the specified position
 	 */
 	View obtainView(int position, boolean[] isScrap) {
@@ -2001,14 +2001,14 @@ public class ZGridView extends AdapterView<ListAdapter> {
 
 	/**
 	 * Fills the list from pos up to the top of the list view.
-	 * 
+	 *
 	 * @param pos
 	 *            The first position to put in the list
-	 * 
+	 *
 	 * @param nextBottom
 	 *            The location where the bottom of the item associated with pos
 	 *            should be drawn
-	 * 
+	 *
 	 * @return The view that is currently selected
 	 */
 	private View fillUp(int pos, int nextBottom) {
@@ -2495,7 +2495,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 	 * Indicates whether this view is in a state where the selector should be
 	 * drawn. This will happen if we have focus but are not in touch mode, or we
 	 * are in the middle of displaying the pressed state for an item.
-	 * 
+	 *
 	 * @return True if the selector should be shown
 	 */
 	boolean shouldShowSelector() {
@@ -2535,11 +2535,11 @@ public class ZGridView extends AdapterView<ListAdapter> {
 	/**
 	 * Controls whether the selection highlight drawable should be drawn on top
 	 * of the item or behind it.
-	 * 
+	 *
 	 * @param onTop
 	 *            If true, the selector will be drawn on the item it is
 	 *            highlighting. The default is false.
-	 * 
+	 *
 	 * @attr ref android.R.styleable#AbsListView_drawSelectorOnTop
 	 */
 	public void setDrawSelectorOnTop(boolean onTop) {
@@ -2549,10 +2549,10 @@ public class ZGridView extends AdapterView<ListAdapter> {
 	/**
 	 * Set a Drawable that should be used to highlight the currently selected
 	 * item.
-	 * 
+	 *
 	 * @param resID
 	 *            A Drawable resource to use as the selection highlight.
-	 * 
+	 *
 	 * @attr ref android.R.styleable#AbsListView_listSelector
 	 */
 	public void setSelector(int resID) {
@@ -2601,7 +2601,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 	/**
 	 * Returns the selector {@link android.graphics.drawable.Drawable} that is
 	 * used to draw the selection in the list.
-	 * 
+	 *
 	 * @return the drawable used to display the selector
 	 */
 	public Drawable getSelector() {
@@ -2712,7 +2712,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 
 	/**
 	 * Find a position that can be selected (i.e., is not a separator).
-	 * 
+	 *
 	 * @param position
 	 *            The starting position to look at.
 	 * @param lookDown
@@ -2727,7 +2727,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 
 	/**
 	 * Utility to keep mSelectedPosition and mSelectedRowId in sync
-	 * 
+	 *
 	 * @param position
 	 *            Our current position
 	 */
@@ -2738,7 +2738,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 
 	/**
 	 * Utility to keep mNextSelectedPosition and mNextSelectedRowId in sync
-	 * 
+	 *
 	 * @param position
 	 *            Intended value for mSelectedPosition the next time we go
 	 *            through layout
@@ -2813,7 +2813,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 	/**
 	 * Register a callback to be invoked when an item in this AdapterView has
 	 * been selected.
-	 * 
+	 *
 	 * @param listener
 	 *            The callback that will run
 	 */
@@ -2946,7 +2946,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 	 * layout, all views in ActiveViews are demoted to ScrapViews. ScrapViews
 	 * are old views that could potentially be used by the adapter to avoid
 	 * allocating views unnecessarily.
-	 * 
+	 *
 	 * @see android.widget.AbsListView#setRecyclerListener(android.widget.AbsListView.RecyclerListener)
 	 * @see android.widget.AbsListView.RecyclerListener
 	 */
@@ -3052,7 +3052,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 
 		/**
 		 * Fill ActiveViews with all of the children of the AbsListView.
-		 * 
+		 *
 		 * @param childCount
 		 *            The minimum number of views mActiveViews should hold
 		 * @param firstActivePosition
@@ -3084,7 +3084,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 		/**
 		 * Get the view corresponding to the specified position. The view will
 		 * be removed from mActiveViews if it is found.
-		 * 
+		 *
 		 * @param position
 		 *            The position to look up in mActiveViews
 		 * @return The view if it is found, null otherwise
@@ -3139,7 +3139,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 
 		/**
 		 * Put a view into the ScrapViews list. These views are unordered.
-		 * 
+		 *
 		 * @param scrap
 		 *            The view to add
 		 */
@@ -3310,7 +3310,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 
 		/**
 		 * Updates the cache color hint of all known views.
-		 * 
+		 *
 		 * @param color
 		 *            The new cache color hint.
 		 */
@@ -3430,7 +3430,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 		/**
 		 * The position the view was removed from when pulled out of the scrap
 		 * heap.
-		 * 
+		 *
 		 * @hide
 		 */
 		int scrappedFromPosition;
@@ -4565,7 +4565,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 	/**
 	 * Find the row closest to y. This row will be used as the motion row when
 	 * scrolling.
-	 * 
+	 *
 	 * @param y
 	 *            Where the user touched
 	 * @return The position of the first (or only) item in the row closest to y
@@ -4649,7 +4649,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 
 	/**
 	 * Smoothly scroll by distance pixels over duration milliseconds.
-	 * 
+	 *
 	 * @param distance
 	 *            Distance to scroll in pixels.
 	 * @param duration
@@ -5145,7 +5145,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 		}
 	}
 
-	boolean pageScroll(int direction) {
+	public boolean pageScroll(int direction) {
 		int nextPage = -1;
 
 		if (direction == FOCUS_UP) {
@@ -5509,10 +5509,10 @@ public class ZGridView extends AdapterView<ListAdapter> {
 		 * next frame of the scroll is rendered. In particular, it will be
 		 * called before any calls to
 		 * {@link Adapter#getView(int, View, ViewGroup)}.
-		 * 
+		 *
 		 * @param view
 		 *            The view whose scroll state is being reported
-		 * 
+		 *
 		 * @param scrollState
 		 *            The current scroll state. One of
 		 *            {@link #SCROLL_STATE_IDLE},
@@ -5526,7 +5526,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 		/**
 		 * Callback method to be invoked when the list or grid has been
 		 * scrolled. This will be called after the scroll has completed
-		 * 
+		 *
 		 * @param view
 		 *            The view whose scroll state is being reported
 		 * @param firstVisibleItem
@@ -5544,7 +5544,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 	/**
 	 * Set the listener that will receive notifications every time the list
 	 * scrolls.
-	 * 
+	 *
 	 * @param l
 	 *            the scroll listener
 	 */
@@ -5714,7 +5714,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 	/**
 	 * A base class for Runnables that will check that their view is still
 	 * attached to the original window as when the Runnable was created.
-	 * 
+	 *
 	 */
 	private class WindowRunnnable {
 		private int mOriginalAttachCount;
@@ -5758,7 +5758,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 
 	/**
 	 * Track a motion scroll
-	 * 
+	 *
 	 * @param deltaY
 	 *            Amount to offset mMotionView. This is the accumulated delta
 	 *            since the motion began. Positive numbers mean the user's

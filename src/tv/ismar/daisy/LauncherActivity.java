@@ -23,7 +23,6 @@ import com.ismartv.launcher.data.ChannelEntity;
 import com.ismartv.launcher.data.VideoEntity;
 import com.ismartv.launcher.data.WeatherEntity;
 import com.ismartv.launcher.ui.widget.IsmartvVideoView;
-import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 import retrofit.Callback;
@@ -60,7 +59,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private static final int FETCHLATEST = 0x04;
     private static final int FETCHTVHOME = 0x05;
     private static final int GETDOMAIN = 0x06;
-
 
     /**
      * view
@@ -926,4 +924,5 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         intent.setClass(this, PosterUpdateService.class);
         startService(intent);
     }
+
 }
