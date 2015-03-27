@@ -120,6 +120,7 @@
             >
 
         <com.ismartv.launcher.ui.widget.IsmartvVideoView
+                android:background="@drawable/launcher_selector"
                 android:id="@+id/video_view"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

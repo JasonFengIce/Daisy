@@ -31,16 +31,12 @@ public class IsmartvVideoView extends VideoView {
     protected boolean dispatchHoverEvent(MotionEvent event) {
     	// TODO Auto-generated method stub
     	   if ((event.getAction() == MotionEvent.ACTION_HOVER_ENTER ) || (event.getAction() == MotionEvent.ACTION_HOVER_MOVE )) {
-
                setFocusableInTouchMode(true);
                setFocusable(true);
                requestFocusFromTouch();
                requestFocus();
-               setBackgroundResource(R.drawable.launcher_item_focus);
-
            } else {
                clearFocus();
-               setBackgroundResource(android.R.color.transparent);
            }
           
     	return true;
