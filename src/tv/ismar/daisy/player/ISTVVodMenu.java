@@ -126,6 +126,13 @@ public class ISTVVodMenu extends ISTVVodMenuItem {
 								loadMenu(item, true);
 							} else {
 								Log.d(TAG, "click " + item.title);
+								for(ISTVVodMenuItem sub:curr.subItems){
+									if(sub.id == item.id){
+										sub.selected = true;
+									}else{
+										sub.selected = false;
+									}
+								}
 								if (activity.onVodMenuClicked(ISTVVodMenu.this,
 										item.id)) {
 									hide();
@@ -185,7 +192,4 @@ public class ISTVVodMenu extends ISTVVodMenuItem {
 		view.setVerticalScrollBarEnabled(enable_scroll);
 	}
 
-	public void clearMenu() {
-		view.removeAllViews();
-	}
 }
