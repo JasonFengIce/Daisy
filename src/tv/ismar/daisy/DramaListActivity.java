@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.sakuratya.horizontal.ui.ZGridView;
+import org.sakuratya.horizontal.ui.ZGridView.OnScrollListener;
 
 import tv.ismar.daisy.adapter.DaramAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
@@ -41,7 +42,7 @@ public class DramaListActivity extends Activity implements
 		OnItemSelectedListener, OnItemClickListener, OnFocusChangeListener {
 
 	private static final String TAG = "DramaListActivity";
-
+    public final static int visableItems = 30;
 	private Item mItem = new Item();
 	private List<Item> mList = new ArrayList<Item>();
 	private DaramAdapter mDramaAdapter;
@@ -100,6 +101,23 @@ public class DramaListActivity extends Activity implements
 		up_btn = (Button)findViewById(R.id.up_btn);
 		mDramaView.setUpView(up_btn);
 		mDramaView.setDownView(down_btn);
+		mDramaView.setOnScrollListener(new OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(ZGridView view, int scrollState) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onScroll(ZGridView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				// TODO Auto-generated method stub
+				 if(visibleItemCount>=totalItemCount){
+					 down_btn.setVisibility(View.INVISIBLE);
+				 }
+			}
+		});
 		down_btn.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -213,6 +231,9 @@ public class DramaListActivity extends Activity implements
 		mDramaAdapter = new DaramAdapter(DramaListActivity.this, mList, mItem,
 				ordercheckListener, R.layout.drama_gridview_item);
 		mDramaView.setAdapter(mDramaAdapter);
+		if(mDramaAdapter.getCount()<=mDramaView.getCount()){
+			down_btn.setVisibility(View.INVISIBLE);
+		}
 		if (loadDialog != null && loadDialog.isShowing()) {
 			loadDialog.dismiss();
 		}
