@@ -2731,7 +2731,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 	 * @param position
 	 *            Our current position
 	 */
-	void setSelectedPositionInt(int position) {
+	public void setSelectedPositionInt(int position) {
 		mSelectedPosition = position;
 		mSelectedRowId = getItemIdAtPosition(position);
 	}
@@ -2849,8 +2849,8 @@ public class ZGridView extends AdapterView<ListAdapter> {
 
 		setNextSelectedPositionInt(position);
 		mLayoutMode = LAYOUT_SET_SELECTION;
-
-		requestLayout();
+		layoutChildren();
+		//requestLayout();
 	}
 
 	private void performAccessibilityActionsOnSelected() {
@@ -3832,6 +3832,9 @@ public class ZGridView extends AdapterView<ListAdapter> {
 		// break;
 		// }
 		// return false;
+		if(downbtn!=null){
+			return super.dispatchHoverEvent(event);
+		}
 		int position = pointToPosition((int) event.getX(), (int) event.getY());
 
 		if ((event.getAction() == MotionEvent.ACTION_HOVER_ENTER && position != -1)
@@ -5146,6 +5149,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 	}
 	private View downbtn;
 	private View upbtn;
+	private int count = 0;
    public void setDownView(View v){
 	   downbtn = v;
    }
@@ -5153,7 +5157,16 @@ public class ZGridView extends AdapterView<ListAdapter> {
 	   upbtn = v;
    }
 	public boolean pageScroll(int direction) {
-												
+//		if(count==0){
+//			mSelectedPosition = 0;
+//		}
+//		count++;
+//		if(mSelectedPosition<0){
+//			mSelectedPosition = 0;
+//		}
+		if(mSelectedPosition==-1){
+			mSelectedPosition = 0;
+		}
 		int nextPage = -1;     
 		if (direction == FOCUS_UP) {
 			nextPage = Math.max(0, mSelectedPosition - getChildCount());
@@ -5163,22 +5176,23 @@ public class ZGridView extends AdapterView<ListAdapter> {
 		}
 		
 			if (nextPage >= 0) {
-				upbtn.setVisibility(View.VISIBLE);
+				//upbtn.setVisibility(View.VISIBLE);
 				setSelectionInt(nextPage);
 				invokeOnItemScrollListener();
 				awakenScrollBars();
-				
-				if(mFirstPosition==0){
-					upbtn.setVisibility(View.INVISIBLE);
-					}
-					else if(mFirstPosition>0&&mFirstPosition+getChildCount()<mItemCount){
-					upbtn.setVisibility(View.VISIBLE);
-					downbtn.setVisibility(View.VISIBLE);
-					}
-					else if(mFirstPosition+getChildCount()==mItemCount){
-					//upbtn.setVisibility(View.VISIBLE);
-					downbtn.setVisibility(View.INVISIBLE);
-					}
+				if(downbtn!=null&&upbtn!=null){
+					if(mFirstPosition==0){
+						upbtn.setVisibility(View.INVISIBLE);
+						}
+						else if(mFirstPosition>0&&mFirstPosition+getChildCount()<mItemCount){
+						upbtn.setVisibility(View.VISIBLE);
+						downbtn.setVisibility(View.VISIBLE);
+						}
+						else if(mFirstPosition+getChildCount()==mItemCount){
+						//upbtn.setVisibility(View.VISIBLE);
+						downbtn.setVisibility(View.INVISIBLE);
+						}
+				}
 				return true;
 			}
 		return false;
