@@ -349,7 +349,7 @@ public class DramaListActivity extends Activity implements
 					for (Item item : mList) {
 						if (element.containsKey(item.pk)) {
 							remainDay = Util.daysBetween(currentDayString,
-									element.get(item.pk));
+									element.get(item.pk))+1;
 							item.remainDay = remainDay;
 						}
 					}
@@ -357,7 +357,7 @@ public class DramaListActivity extends Activity implements
 					try {
 						remainDay = Util.daysBetween(currentDayString, info);
 						for (Item item : mList) {
-							item.remainDay = remainDay;
+							item.remainDay = remainDay+1;
 						}
 					} catch (ParseException e1) {
 					}
