@@ -158,29 +158,35 @@ public class AdvertisementActivity extends Activity {
         }
     }
 
-    private void parseAsset(Context context) {
-        String apkName = "Sakura.apk";
-        if (AppConstant.DEBUG)
-            Log.d(TAG, "parse asset invoke...");
-        try {
-            InputStream inputStream = context.getAssets().open(apkName);
-            ByteArrayOutputStream bytestream = new ByteArrayOutputStream();
-            int ch;
-            while ((ch = inputStream.read()) != -1) {
-                bytestream.write(ch);
+    private void parseAsset(final Context context) {
+        new Thread() {
+            @Override
+            public void run() {
+                String apkName = "Sakura.apk";
+                if (AppConstant.DEBUG)
+                    Log.d(TAG, "parse asset invoke...");
+                try {
+                    InputStream inputStream = context.getAssets().open(apkName);
+                    ByteArrayOutputStream bytestream = new ByteArrayOutputStream();
+                    int ch;
+                    while ((ch = inputStream.read()) != -1) {
+                        bytestream.write(ch);
+                    }
+                    byte imgdata[] = bytestream.toByteArray();
+                    bytestream.close();
+                    File cacheDir = context.getFilesDir();
+                    File temfileName = new File(cacheDir.getAbsolutePath(), apkName);
+                    if (!temfileName.exists())
+                        temfileName.createNewFile();
+                    FileOutputStream fout = context.openFileOutput(apkName, Context.MODE_WORLD_READABLE);
+                    fout.write(imgdata);
+                    fout.flush();
+                    fout.close();
+                } catch (IOException e) {
+                    Log.e(TAG, "parse assert exception");
+                }
             }
-            byte imgdata[] = bytestream.toByteArray();
-            bytestream.close();
-            File cacheDir = context.getFilesDir();
-            File temfileName = new File(cacheDir.getAbsolutePath(), apkName);
-            if (!temfileName.exists())
-                temfileName.createNewFile();
-            FileOutputStream fout = context.openFileOutput(apkName, Context.MODE_WORLD_READABLE);
-            fout.write(imgdata);
-            fout.flush();
-            fout.close();
-        } catch (IOException e) {
-            Log.e(TAG, "parse assert exception");
-        }
+        }.start();
+
     }
 }

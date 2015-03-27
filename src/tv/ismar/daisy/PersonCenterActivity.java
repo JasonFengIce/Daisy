@@ -169,6 +169,7 @@ public class PersonCenterActivity extends Activity implements View.OnClickListen
 		login_or_out_btn = (Button)findViewById(R.id.login_or_out_btn);
 		login_layout = (LoginPanelView)findViewById(R.id.login_layout);
         client_service_btn = (Button)findViewById(R.id.client_service_btn);
+        client_service_btn.setOnClickListener(this);
          privilegelist.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -553,6 +554,7 @@ public class PersonCenterActivity extends Activity implements View.OnClickListen
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setDataAndType(uri, "application/vnd.android.package-archive");
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         }
     }
 
