@@ -894,7 +894,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
         ArrayList<String> msgs = bundle.getStringArrayList("msgs");
 
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.leftMargin = 200;
         layoutParams.topMargin = 20;
 

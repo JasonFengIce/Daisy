@@ -1,5 +1,6 @@
 package tv.ismar.daisy;
 
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -7,6 +8,10 @@ import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,7 +47,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PersonCenterActivity extends Activity {
+public class PersonCenterActivity extends Activity implements View.OnClickListener {
+    private static final String TAG = "PersonCenterActivity";
+
 	private ListView privilegelist;
 	private LoginPanelView login_layout;
 	private View mPersoninfoLayout;
@@ -57,6 +64,7 @@ public class PersonCenterActivity extends Activity {
 	private Button exit_btn;
 	private Button personal_info_btn;
 	private Button login_or_out_btn;
+    private Button client_service_btn;
 	private boolean isLogin = false;
 	private  SimpleRestClient mSimpleRestClient;
 	private ArrayList<PrivilegeItem> mList;
@@ -103,7 +111,7 @@ public class PersonCenterActivity extends Activity {
 	}
 	private void getBalance(){
 		mSimpleRestClient.doSendRequest("/accounts/balance/", "get", "", new HttpPostRequestInterface() {
-			
+
 			@Override
 			public void onSuccess(String info) {
 				// TODO Auto-generated method stub
@@ -116,13 +124,13 @@ public class PersonCenterActivity extends Activity {
 					e.printStackTrace();
 				}
 			}
-			
+
 			@Override
 			public void onPrepare() {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onFailed(String error) {
 				// TODO Auto-generated method stub
@@ -160,6 +168,7 @@ public class PersonCenterActivity extends Activity {
 		personal_info_btn = (Button)findViewById(R.id.personal_info_btn);
 		login_or_out_btn = (Button)findViewById(R.id.login_or_out_btn);
 		login_layout = (LoginPanelView)findViewById(R.id.login_layout);
+        client_service_btn = (Button)findViewById(R.id.client_service_btn);
          privilegelist.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -172,13 +181,13 @@ public class PersonCenterActivity extends Activity {
 							Intent intent = new Intent();
 							intent.setAction("tv.ismar.daisy.packageitem");
 							intent.putExtra("url", SimpleRestClient.root_url+"/api/package/"+privilegeitem.getItem_pk()+"/");
-							startActivity(intent);					
+							startActivity(intent);
 					}
 					else{
 						if(privilegeitem.getType().equals("item")){
 							final String url = "/api/item/"+privilegeitem.getItem_pk()+"/";
 							mSimpleRestClient.doSendRequest(url, "get", "", new HttpPostRequestInterface() {
-								
+
 								@Override
 								public void onSuccess(String info) {
 									// TODO Auto-generated method stub
@@ -193,13 +202,13 @@ public class PersonCenterActivity extends Activity {
 											if(privilegeitem.isIseffective()){
 												InitPlayerTool tool = new InitPlayerTool(PersonCenterActivity.this);
 												tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
-													
+
 													@Override
 													public void onPreExecute(Intent intent) {
 														// TODO Auto-generated method stub
 											            mLoadingDialog.show();
 													}
-													
+
 													@Override
 													public void onPostExecute() {
 														// TODO Auto-generated method stub
@@ -216,24 +225,24 @@ public class PersonCenterActivity extends Activity {
 										}
 									}
 								}
-								
+
 								@Override
 								public void onPrepare() {
 									// TODO Auto-generated method stub
-									
+
 								}
-								
+
 								@Override
 								public void onFailed(String error) {
 									// TODO Auto-generated method stub
-									
+
 								}
 							});
 						}
 						else if(privilegeitem.getType().equals("subitem")){
 							String subitem_url = "/api/subitem/"+privilegeitem.getItem_pk()+"/";
 							mSimpleRestClient.doSendRequest(subitem_url, "get", "", new HttpPostRequestInterface() {
-								
+
 								@Override
 								public void onSuccess(String info) {
 									// TODO Auto-generated method stub
@@ -250,13 +259,13 @@ public class PersonCenterActivity extends Activity {
 											if(privilegeitem.isIseffective()){
 												InitPlayerTool tool = new InitPlayerTool(PersonCenterActivity.this);
 												tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
-													
+
 													@Override
 													public void onPreExecute(Intent intent) {
 														// TODO Auto-generated method stub
 											            mLoadingDialog.show();
 													}
-													
+
 													@Override
 													public void onPostExecute() {
 														// TODO Auto-generated method stub
@@ -269,7 +278,7 @@ public class PersonCenterActivity extends Activity {
 												//
 												String item_url = "/api/item/"+subitem.item_pk+"/";
 												mSimpleRestClient.doSendRequest(item_url, "get", "", new HttpPostRequestInterface() {
-													
+
 													@Override
 													public void onSuccess(String info) {
 														// TODO Auto-generated method stub
@@ -280,45 +289,45 @@ public class PersonCenterActivity extends Activity {
 															buyVideo(subitem);
 														}
 													}
-													
+
 													@Override
 													public void onPrepare() {
 														// TODO Auto-generated method stub
-														
+
 													}
-													
+
 													@Override
 													public void onFailed(String error) {
 														// TODO Auto-generated method stub
-														
+
 													}
 												});
 											}
 										}
 									}
 								}
-								
+
 								@Override
 								public void onPrepare() {
 									// TODO Auto-generated method stub
-									
+
 								}
-								
+
 								@Override
 								public void onFailed(String error) {
 									// TODO Auto-generated method stub
-									
+
 								}
 							});
 						}
 					}
 				}
 			}
-        	 
-        	 
+
+
 		});
 		login_layout.setLoginListener(new LoginInterface() {
-			
+
 			@Override
 			public void onSuccess(String info) {
 				// TODO Auto-generated method stub
@@ -332,15 +341,15 @@ public class PersonCenterActivity extends Activity {
 				login_layout.clearLayout();
 				loadDataLogin();
 			}
-			
+
 			@Override
 			public void onFailed(String error) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 		exit_btn.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -356,11 +365,11 @@ public class PersonCenterActivity extends Activity {
 				isLogin = false;
 				login_or_out_btn.setEnabled(true);
 				login_or_out_btn.setBackgroundResource(R.drawable.person_btn_selector);
-				
+
 			}
 		});
 		personal_info_btn.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -374,7 +383,7 @@ public class PersonCenterActivity extends Activity {
 			}
 		});
 		login_or_out_btn.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -383,7 +392,7 @@ public class PersonCenterActivity extends Activity {
 			}
 		});
 		privilegelist = (ListView)findViewById(R.id.privilegelist);
-		
+
 //		  try {
 //				Field f = AbsListView.class.getDeclaredField("mFastScroller");
 //				if(!f.isAccessible()){
@@ -407,9 +416,9 @@ public class PersonCenterActivity extends Activity {
 //			}
 	}
 	private void getPrivilegeData(){
-	
+
 		mSimpleRestClient.doSendRequest("/accounts/orders/", "get", "", new HttpPostRequestInterface() {
-			
+
 			@Override
 			public void onSuccess(String info) {
 				// TODO Auto-generated method stub
@@ -456,7 +465,7 @@ public class PersonCenterActivity extends Activity {
 					}
 					mAdapter= new PrivilegeAdapter(PersonCenterActivity.this,mList);
 					privilegelist.setAdapter(mAdapter);
-			
+
 					if(mAdapter.getCount()>0){
 						no_privilegelist_txt.setVisibility(View.GONE);
 						privilegelist.setVisibility(View.VISIBLE);
@@ -473,20 +482,20 @@ public class PersonCenterActivity extends Activity {
 				}
 				mLoadingDialog.dismiss();
 			}
-			
+
 			@Override
 			public void onPrepare() {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onFailed(String error) {
 				// TODO Auto-generated method stub
 				mLoadingDialog.dismiss();
 			}
 		});
-		//curl "http://sky.tvxio.com/accounts/orders/?device_token=6xeQV4Vpb4khaTvDSvVJ2Q==" 
+		//curl "http://sky.tvxio.com/accounts/orders/?device_token=6xeQV4Vpb4khaTvDSvVJ2Q=="
 //		PrivilegeAdapter adapter= new PrivilegeAdapter(this,list);
 //		mListView.setAdapter(adapter);
 	}
@@ -501,7 +510,7 @@ public class PersonCenterActivity extends Activity {
 		sn_txt.setVisibility(View.VISIBLE);
 		sn_txt_value.setVisibility(View.VISIBLE);
 		exit_btn.setVisibility(View.VISIBLE);
-		
+
 	}
 	private void loadDataLoginOut(){
 		//no_privilegelist_txt.setVisibility(View.VISIBLE);
@@ -527,4 +536,34 @@ public class PersonCenterActivity extends Activity {
 		DaisyUtils.getVodApplication(this).removeActivtyFromPool(this.toString());
 		super.onDestroy();
 	}
+
+    private void startSakura(){
+        if (AppConstant.DEBUG)
+            Log.d(TAG, "install vod service invoke...");
+        try {
+          ApplicationInfo applicationInfo =  getPackageManager().getApplicationInfo(
+                    "com.ismartv.android.vod.service", 0);
+            if(null!= applicationInfo){
+                Intent intent = new Intent();
+                intent.setClassName("cn.ismartv.speedtester", "cn.ismartv.speedtester.ui.activity.MenuActivity");
+                startActivity(intent);
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            Uri uri = Uri.parse("file://" + getFileStreamPath("Sakura.apk").getAbsolutePath());
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(uri, "application/vnd.android.package-archive");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.client_service_btn:
+                startSakura();
+                break;
+            default:
+                break;
+        }
+    }
 }
