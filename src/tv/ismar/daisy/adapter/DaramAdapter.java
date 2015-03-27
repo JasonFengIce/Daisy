@@ -65,6 +65,9 @@ public class DaramAdapter extends BaseAdapter {
 		if (subitem.remainDay > 0) {
 			holder.btnCount
 					.setBackgroundResource(R.drawable.daram_grid_payed_selector);
+		}else{
+			holder.btnCount
+					.setBackgroundResource(R.drawable.daram_grid_selector);
 		}
 		holder.btnCount.setText(String.valueOf(subitem.position + 1));
 		holder.btnCount.setTag(String.valueOf(position));
