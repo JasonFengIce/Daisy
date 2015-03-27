@@ -25,12 +25,10 @@ public class DaisyButton extends Button {
 
     @Override
     public boolean dispatchHoverEvent(MotionEvent event) {
-
-
-        if ((event.getAction() == MotionEvent.ACTION_HOVER_ENTER || event.getAction() == MotionEvent.ACTION_HOVER_MOVE) && isEnabled()) {
-            setClickable(true);
+        if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER || event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
             setFocusableInTouchMode(true);
             setFocusable(true);
+            setClickable(true);
             requestFocusFromTouch();
             requestFocus();
         } else {
@@ -39,4 +37,15 @@ public class DaisyButton extends Button {
         return false;
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                performClick();
+                return true;
+            default:
+                return super.dispatchTouchEvent(event);
+        }
+
+    }
 }

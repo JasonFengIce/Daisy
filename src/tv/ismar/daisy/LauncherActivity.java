@@ -10,7 +10,6 @@ import android.os.*;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -106,7 +105,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     Activator activator;
     private DaisyImageView btn_personcenter;
     private DaisyImageView btn_search;
-    PopupWindow popupWindow;
+
+    /**
+     * PopupWindow
+     */
+    PopupWindow updatePopupWindow;
+    PopupWindow exitPopupWindow;
     /**
      * views
      */
@@ -787,17 +791,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         }.start();
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // TODO Auto-generated method stub
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            isfinished = true;
-            videoView.stopPlayback();
-            mHandler.removeCallbacksAndMessages(null);
-            finish();
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 
     @Override
     public void onSuccess(Result result) {
@@ -832,11 +825,24 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     @Override
+    public void onBackPressed() {
+        Log.i(TAG, "onBackPressed");
+        showExitPopup(mView);
+    }
+
+    public void superOnbackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
     protected void onDestroy() {
         DaisyUtils.getVodApplication(this).removeActivtyFromPool(this.toString());
         unregisterReceiver(appUpdateReceiver);
-        if (popupWindow != null && popupWindow.isShowing()) {
-            popupWindow.dismiss();
+        if (updatePopupWindow != null && updatePopupWindow.isShowing()) {
+            updatePopupWindow.dismiss();
+        }
+        if (exitPopupWindow != null && updatePopupWindow.isShowing()) {
+            exitPopupWindow.dismiss();
         }
 
         super.onDestroy();
@@ -871,11 +877,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         final Context context = this;
         View contentView = LayoutInflater.from(context)
                 .inflate(R.layout.popup_update, null);
-        contentView.setBackgroundResource(R.drawable.background);
-        popupWindow = new PopupWindow(null, 1400, 500);
-        popupWindow.setContentView(contentView);
-        popupWindow.setFocusable(true);
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+        contentView.setBackgroundResource(R.drawable.popup_bg_yellow);
+        updatePopupWindow = new PopupWindow(null, 1400, 500);
+        updatePopupWindow.setContentView(contentView);
+        updatePopupWindow.setFocusable(true);
+        updatePopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
         DaisyButton updateNow = (DaisyButton) contentView.findViewById(R.id.update_now_bt);
 
@@ -903,7 +909,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         updateNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popupWindow.dismiss();
+                updatePopupWindow.dismiss();
                 installApk(context, path);
             }
         });
@@ -925,4 +931,38 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         startService(intent);
     }
 
+    /**
+     * showExitPopup
+     *
+     * @param view
+     */
+    private void showExitPopup(View view) {
+        final Context context = this;
+        View contentView = LayoutInflater.from(context)
+                .inflate(R.layout.popup_exit, null);
+        exitPopupWindow = new PopupWindow(null, 1400, 500);
+        exitPopupWindow.setContentView(contentView);
+        exitPopupWindow.setFocusable(true);
+        exitPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+        DaisyButton confirmExit = (DaisyButton) contentView.findViewById(R.id.confirm_exit);
+        DaisyButton cancelExit = (DaisyButton) contentView.findViewById(R.id.cancel_exit);
+
+        confirmExit.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isfinished = true;
+                videoView.stopPlayback();
+                mHandler.removeCallbacksAndMessages(null);
+                exitPopupWindow.dismiss();
+                superOnbackPressed();
+            }
+        });
+
+        cancelExit.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                exitPopupWindow.dismiss();
+            }
+        });
+    }
 }
