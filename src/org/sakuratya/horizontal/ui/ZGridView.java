@@ -5144,24 +5144,43 @@ public class ZGridView extends AdapterView<ListAdapter> {
 			}
 		}
 	}
-
-	boolean pageScroll(int direction) {
-		int nextPage = -1;
-
+	private View downbtn;
+	private View upbtn;
+   public void setDownView(View v){
+	   downbtn = v;
+   }
+   public void setUpView(View v){
+	   upbtn = v;
+   }
+	public boolean pageScroll(int direction) {
+												
+		int nextPage = -1;     
 		if (direction == FOCUS_UP) {
 			nextPage = Math.max(0, mSelectedPosition - getChildCount());
 		} else if (direction == FOCUS_DOWN) {
 			nextPage = Math.min(mItemCount - 1, mSelectedPosition
 					+ getChildCount());
 		}
-
-		if (nextPage >= 0) {
-			setSelectionInt(nextPage);
-			invokeOnItemScrollListener();
-			awakenScrollBars();
-			return true;
-		}
-
+		
+			if (nextPage >= 0) {
+				upbtn.setVisibility(View.VISIBLE);
+				setSelectionInt(nextPage);
+				invokeOnItemScrollListener();
+				awakenScrollBars();
+				
+				if(mFirstPosition==0){
+					upbtn.setVisibility(View.INVISIBLE);
+					}
+					else if(mFirstPosition>0&&mFirstPosition+getChildCount()<mItemCount){
+					upbtn.setVisibility(View.VISIBLE);
+					downbtn.setVisibility(View.VISIBLE);
+					}
+					else if(mFirstPosition+getChildCount()==mItemCount){
+					//upbtn.setVisibility(View.VISIBLE);
+					downbtn.setVisibility(View.INVISIBLE);
+					}
+				return true;
+			}
 		return false;
 	}
 
@@ -5288,7 +5307,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 		}
 	}
 
-	boolean arrowScroll(int direction) {
+	public boolean arrowScroll(int direction) {
 		final int selectedPosition = mSelectedPosition;
 		final int numColumns = mNumColumns;
 
@@ -5315,6 +5334,9 @@ public class ZGridView extends AdapterView<ListAdapter> {
 				setSelectionInt(Math.max(0, selectedPosition - numColumns));
 				moved = true;
 			}
+			else{
+				Log.i("dashuai", "first");
+			}
 			break;
 		case FOCUS_DOWN:
 			if (endOfRowPos < mItemCount - 1) {
@@ -5322,6 +5344,9 @@ public class ZGridView extends AdapterView<ListAdapter> {
 				setSelectionInt(Math.min(selectedPosition + numColumns,
 						mItemCount - 1));
 				moved = true;
+			}
+			else{
+				Log.i("dashuai", "last");
 			}
 			break;
 		case FOCUS_LEFT:
@@ -5391,7 +5416,6 @@ public class ZGridView extends AdapterView<ListAdapter> {
 
 		final int nextRow = next / mNumColumns;
 		final int previousRow = previous / mNumColumns;
-
 		if (nextRow != previousRow) {
 			awakenScrollBars();
 		}

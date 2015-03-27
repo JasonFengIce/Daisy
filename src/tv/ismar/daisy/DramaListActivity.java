@@ -98,6 +98,8 @@ public class DramaListActivity extends Activity implements
 		initLayout();
 		down_btn = (Button)findViewById(R.id.down_btn);
 		up_btn = (Button)findViewById(R.id.up_btn);
+		mDramaView.setUpView(up_btn);
+		mDramaView.setDownView(down_btn);
 		down_btn.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -194,9 +196,8 @@ public class DramaListActivity extends Activity implements
 		// 名称
 		mTvDramaName.setText(mItem.title);
 		// 集数
-		String update_to_episode = getResources().getString(
-				R.string.update_to_episode);
-		mTvDramaAll.setText(String.format(update_to_episode, mItem.subitems.length)+ "  /");
+		mTvDramaAll.setText(mItem.episode + getString(R.string.daram_ji)
+				+ getString(R.string.daram_all) + "  /");
 		// 显示图片
 		switch (mItem.quality) {
 		case 3:

@@ -316,7 +316,7 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 						else{
 							//电影或者电视剧或者产品包整部购买
 							try {
-								remainDay = Util.daysBetween(Util.getTime(), info);	
+								remainDay = Util.daysBetween(Util.getTime(), info)+1;	
 								if(remainDay==0){//过期了。认为没购买
 								    remainDay = -1;
 									vod_payment_duration.setText("有效期"+mItem.expense.duration+"天");
@@ -343,7 +343,7 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 						//电影或者电视剧或者产品包整部购买
 						try {
 							info = info.substring(1, info.length()-1);
-							remainDay = Util.daysBetween(Util.getTime(), info);	
+							remainDay = Util.daysBetween(Util.getTime(), info)+1;	
 							if(remainDay==0){//过期了。认为没购买
 							    remainDay = -1;
 								vod_payment_duration.setText("有效期"+mItem.expense.duration+"天");

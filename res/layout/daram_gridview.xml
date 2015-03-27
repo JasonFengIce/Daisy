@@ -17,7 +17,8 @@
     android:layout_height="wrap_content"
     android:background="@drawable/vod_arrow_up_selector"
     android:layout_centerInParent="true"
-    android:layout_alignParentTop="true"/>
+    android:layout_alignParentTop="true"
+    android:visibility="invisible"/>
 <!-- <GridView  -->
 <!--     android:id="@+id/drama_gridview" -->
 <!--     android:layout_above="@id/down_btn" -->
@@ -38,7 +39,6 @@
         android:id="@+id/drama_zgridview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="30dip"
         sakura:listSelector="@android:color/transparent"
         sakura:numColumns="10"
         sakura:verticalSpace="@dimen/drama_gridview_verticalspacing"
