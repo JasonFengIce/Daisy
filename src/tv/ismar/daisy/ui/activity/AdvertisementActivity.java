@@ -36,18 +36,20 @@ public class AdvertisementActivity extends Activity {
 
     private Handler messageHandler;
 
+    private volatile boolean flag = true;
+
+    private File posterFile;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        flag = true;
         setContentView(R.layout.activity_advertisement);
         initViews();
-
-        File posterFile = new File(getFilesDir(), PosterUpdateService.POSTER_NAME);
+        posterFile = new File(getFilesDir(), PosterUpdateService.POSTER_NAME);
         placeAdvertisementPic(posterFile.getAbsolutePath());
         messageHandler = new MessageHandler();
-
-
     }
 
     private void initViews() {
@@ -118,7 +120,7 @@ public class AdvertisementActivity extends Activity {
 
     private void showCountTime(int second) {
         timerText.setImageResource(secondsResId[second]);
-        if (second == 0) {
+        if (second == 0 && flag) {
             intentToLauncher();
             finish();
         }
@@ -136,5 +138,11 @@ public class AdvertisementActivity extends Activity {
                     break;
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        flag = false;
     }
 }

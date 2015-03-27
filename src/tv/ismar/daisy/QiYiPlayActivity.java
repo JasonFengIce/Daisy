@@ -36,10 +36,12 @@ import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.View.OnHoverListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -49,7 +51,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
 import com.ismartv.api.t.AccessProxy;
 import com.ismartv.bean.ClipInfo;
 import com.qiyi.video.player.IVideoStateListener;
@@ -303,6 +304,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 				FrameLayout.LayoutParams.MATCH_PARENT, Gravity.CENTER);
 		FrameLayout frameContainer = (FrameLayout) findViewById(R.id.fl_videoview_container);
 		frameContainer.setVisibility(View.VISIBLE);
+		frameContainer.setOnHoverListener(onhoverlistener);
 		mPlayer = QiyiVideoPlayer.createVideoPlayer(this, frameContainer,
 				flParams, /* bundle */null, mVideoStateListener);
 		favoriteManager = DaisyUtils.getFavoriteManager(this);
@@ -842,21 +844,21 @@ public class QiYiPlayActivity extends VodMenuAction {
 				}
 				if (onVodMenuOpened(menu)) {
 					menu.show();
-					hideMenuHandler.postDelayed(hideMenuRunnable, 10000);
+					hideMenuHandler.postDelayed(hideMenuRunnable, 60000);
 				}
 				break;
 
 			case KeyEvent.KEYCODE_BACK:
-				if (panelShow) {
-					hidePanel();
-					ret = true;
-				} else {
+//				if (panelShow) {
+//					hidePanel();
+//					ret = true;
+//				} else {
 					showPopupDialog(
 							DIALOG_OK_CANCEL,
 							getResources().getString(
 									R.string.vod_player_exit_dialog));
 					ret = true;
-				}
+//				}
 
 				break;
 			default:
@@ -1383,4 +1385,20 @@ public class QiYiPlayActivity extends VodMenuAction {
 		}
 
 	}
+
+	private OnHoverListener onhoverlistener = new OnHoverListener() {
+
+		@Override
+		public boolean onHover(View v, MotionEvent event) {
+			int what = event.getAction();
+			switch (what) {
+			case MotionEvent.ACTION_HOVER_MOVE:
+				showPanel();
+				fbImage.setImageResource(R.drawable.vodplayer_controller_rew_pressed);
+				break;
+			}
+			return false;
+		}
+
+	};
 }

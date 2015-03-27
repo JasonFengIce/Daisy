@@ -49,7 +49,7 @@ public class MenuFragment extends DialogFragment implements OnItemClickListener 
 	public interface OnMenuItemClickListener {
 		public void onMenuItemClick();
 	}
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -72,7 +72,7 @@ public class MenuFragment extends DialogFragment implements OnItemClickListener 
 		MenuItem ordingmenu = new MenuItem();
 		ordingmenu.id = 4;
 		ordingmenu.isEnable = true;
-		ordingmenu.title = getResources().getString(R.string.playfromstarttitle);
+		ordingmenu.title = getResources().getString(R.string.orderlisttitle);
 		mMenuList.add(ordingmenu);
 	}
 
