@@ -25,6 +25,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Message;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -604,6 +605,17 @@ public class PaymentDialog extends Dialog {
 						ORDER_CHECK_INTERVAL);
 		}
 	};
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		switch (keyCode) {
+		case KeyEvent.KEYCODE_BACK:
+			paylistener.payResult(false);
+			dismiss();
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 
 	private LoginPanelView.LoginInterface loginInterFace = new LoginPanelView.LoginInterface() {
 
