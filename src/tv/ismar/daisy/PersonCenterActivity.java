@@ -25,6 +25,7 @@ import tv.ismar.daisy.models.PrivilegeItem;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
 import tv.ismar.daisy.ui.adapter.PrivilegeAdapter;
+import tv.ismar.daisy.ui.widget.DaisyButton;
 import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.LoadingDialog;
 import tv.ismar.daisy.views.LoginPanelView;
@@ -36,7 +37,9 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
@@ -44,6 +47,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -355,17 +359,8 @@ public class PersonCenterActivity extends Activity implements View.OnClickListen
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				//login out;
-				mPersoninfoLayout.setVisibility(View.VISIBLE);
-				login_layout.setVisibility(View.GONE);
-				login_layout.clearLayout();
-				SimpleRestClient.access_token = "";
-				SimpleRestClient.mobile_number = "";
-				DaisyUtils.getVodApplication(PersonCenterActivity.this).getEditor().putString(VodApplication.AUTH_TOKEN, "");
-				DaisyUtils.getVodApplication(PersonCenterActivity.this).getEditor().putString(VodApplication.MOBILE_NUMBER, "");
-				loadDataLoginOut();
-				isLogin = false;
-				login_or_out_btn.setEnabled(true);
-				login_or_out_btn.setBackgroundResource(R.drawable.person_btn_selector);
+				showExitPopup(v);
+
 
 			}
 		});
@@ -416,6 +411,50 @@ public class PersonCenterActivity extends Activity implements View.OnClickListen
 //				e.printStackTrace();
 //			}
 	}
+    /**
+     * showExitPopup
+     *
+     * @param view
+     */
+    private void showExitPopup(View view) {
+        final Context context = this;
+        View contentView = LayoutInflater.from(context)
+                .inflate(R.layout.popupview_exit, null);
+        final PopupWindow  exitPopupWindow = new PopupWindow(null, 1400, 500);
+        exitPopupWindow.setContentView(contentView);
+        exitPopupWindow.setFocusable(true);
+        exitPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+        TextView promt =(TextView) contentView.findViewById(R.id.prompt_txt);
+        promt.setText("您是否确定退出登录界面");
+        Button confirmExit = (Button) contentView.findViewById(R.id.confirm_exit);
+        Button cancelExit = (Button) contentView.findViewById(R.id.cancel_exit);
+
+        confirmExit.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+				mPersoninfoLayout.setVisibility(View.VISIBLE);
+				login_layout.setVisibility(View.GONE);
+				login_layout.clearLayout();
+				SimpleRestClient.access_token = "";
+				SimpleRestClient.mobile_number = "";
+				DaisyUtils.getVodApplication(PersonCenterActivity.this).getEditor().putString(VodApplication.AUTH_TOKEN, "");
+				DaisyUtils.getVodApplication(PersonCenterActivity.this).getEditor().putString(VodApplication.MOBILE_NUMBER, "");
+				loadDataLoginOut();
+				isLogin = false;
+				login_or_out_btn.setEnabled(true);
+				login_or_out_btn.setBackgroundResource(R.drawable.person_btn_selector);
+                exitPopupWindow.dismiss();
+
+            }
+        });
+
+        cancelExit.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                exitPopupWindow.dismiss();
+            }
+        });
+    }
 	private void getPrivilegeData(){
 
 		mSimpleRestClient.doSendRequest("/accounts/orders/", "get", "", new HttpPostRequestInterface() {

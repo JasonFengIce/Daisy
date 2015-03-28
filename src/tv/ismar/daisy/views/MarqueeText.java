@@ -19,11 +19,11 @@ public class MarqueeText extends TextView {
 		return true;
 	}
 	
-	@Override
-	protected void onFocusChanged(boolean focused, int direction,
-			Rect previouslyFocusedRect) {
-		// TODO Auto-generated method stub
-		//super.onFocusChanged(focused, direction, previouslyFocusedRect);
-	}
+//	@Override
+//	protected void onFocusChanged(boolean focused, int direction,
+//			Rect previouslyFocusedRect) {
+//		// TODO Auto-generated method stub
+//		//super.onFocusChanged(focused, direction, previouslyFocusedRect);
+//	}
 
 }

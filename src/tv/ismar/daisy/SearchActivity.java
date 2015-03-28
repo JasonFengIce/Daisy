@@ -21,6 +21,7 @@ import tv.ismar.daisy.views.LoadingDialog;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -323,6 +324,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 					// btnHotWords.setBackgroundColor(R.drawable.gridview_text_selector);
 					btnHotWords.setBackgroundResource(R.drawable.hotwords_selector);
 					btnHotWords.setTextColor(getResources().getColor(R.color.hotwords_text_color));
+					btnHotWords.setTextColor(Color.rgb(0xff, 0xff, 0xff));
 					// btnHotWords.setTypeface(Typeface.DEFAULT_BOLD,Typeface.NORMAL);
 					btnHotWords.setText(String.valueOf(listHotWords.get(j)));
 					linearAdd.addView(btnHotWords);

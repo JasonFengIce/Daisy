@@ -215,11 +215,20 @@ public class ItemDetailActivity extends Activity implements
 				entry.setValue(true);
 			}
 		}
+		if(isPause){
+			if (isFavorite()) {
+				mCollectBtn.setBackgroundResource(R.drawable.collected_btn_bg_selector);
+			} else {
+				mCollectBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+			}
+			isPause = false;
+		}
 		super.onResume();
 	}
-
+private boolean isPause = false;
 	@Override
 	protected void onPause() {
+		isPause = true;
 		if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
 			mLoadingDialog.dismiss();
 		}
