@@ -186,11 +186,11 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 					if (!paused) {
 						pauseItem();
 						playPauseImage
-								.setImageResource(R.drawable.vod_pausebtn_selector);
+								.setImageResource(R.drawable.vod_playbtn_selector);
 					} else {
 						resumeItem();
 						playPauseImage
-								.setImageResource(R.drawable.vod_playbtn_selector);
+								.setImageResource(R.drawable.vod_pausebtn_selector);
 					}
 
 					// }
@@ -212,7 +212,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 					if (mVideoView.getDuration() > 0 && !live_video) {
 						isSeek = true;
 						showPanel();
-						fbImage.setImageResource(R.drawable.vod_controlb_selector);
+//						fbImage.setImageResource(R.drawable.vod_controlb_selector);
 						isBuffer = true;
 						showBuffer();
 						fastBackward(SHORT_STEP);
@@ -242,7 +242,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 					if (mVideoView.getDuration() > 0 && !live_video) {
 						isSeek = true;
 						showPanel();
-						ffImage.setImageResource(R.drawable.vod_controlf_selector);
+//						ffImage.setImageResource(R.drawable.vod_controlf_selector);
 						isBuffer = true;
 						showBuffer();
 						fastForward(SHORT_STEP);
@@ -1169,7 +1169,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 				if (mVideoView.getDuration() > 0 && !live_video) {
 					isSeek = true;
 					showPanel();
-					fbImage.setImageResource(R.drawable.vodplayer_controller_rew_pressed);
+//					fbImage.setImageResource(R.drawable.vodplayer_controller_rew_pressed);
 					isBuffer = true;
 					showBuffer();
 					fastBackward(SHORT_STEP);
@@ -1180,7 +1180,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 				if (mVideoView.getDuration() > 0 && !live_video) {
 					isSeek = true;
 					showPanel();
-					ffImage.setImageResource(R.drawable.vodplayer_controller_ffd_pressed);
+//					ffImage.setImageResource(R.drawable.vodplayer_controller_ffd_pressed);
 					isBuffer = true;
 					showBuffer();
 					fastForward(SHORT_STEP);
@@ -1193,16 +1193,12 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 					showPanel();
 					if (!paused) {
 						pauseItem();
-						// playPauseImage
-						// .setImageResource(R.drawable.vod_player_pause_focus);
 						playPauseImage
-								.setImageResource(R.drawable.vodplayer_controller_pause_pressed);
+								.setImageResource(R.drawable.vod_playbtn_selector);
 					} else {
 						resumeItem();
-						// playPauseImage
-						// .setImageResource(R.drawable.vod_player_play_focus);
 						playPauseImage
-								.setImageResource(R.drawable.vodplayer_controller_play_pressed);
+								.setImageResource(R.drawable.vod_pausebtn_selector);
 					}
 
 					ret = true;
@@ -1292,7 +1288,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
 				if (!live_video) {
-					fbImage.setImageResource(R.drawable.vodplayer_controller_rew);
+//					fbImage.setImageResource(R.drawable.vodplayer_controller_rew);
 					mVideoView.seekTo(currPosition);
 					if (subItem != null)
 						callaPlay.videoPlaySeek(item.pk, subItem.pk,
@@ -1312,7 +1308,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
 				if (!live_video) {
-					ffImage.setImageResource(R.drawable.vodplayer_controller_ffd);
+//					ffImage.setImageResource(R.drawable.vodplayer_controller_ffd);
 					mVideoView.seekTo(currPosition);
 					if (subItem != null)
 						callaPlay.videoPlaySeek(item.pk, subItem.pk,
@@ -1329,19 +1325,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 					offn = 1;
 				}
 
-				break;
-			case KeyEvent.KEYCODE_DPAD_CENTER:
-			case KeyEvent.KEYCODE_ENTER:
-				if (paused) {
-					// playPauseImage.setImageResource(R.drawable.vod_player_play);
-					playPauseImage
-							.setImageResource(R.drawable.vodplayer_controller_play);
-				} else {
-					// playPauseImage.setImageResource(R.drawable.vod_player_pause);
-					playPauseImage
-							.setImageResource(R.drawable.vodplayer_controller_pause);
-				}
-				ret = true;
 				break;
 			default:
 				break;
@@ -1756,10 +1739,8 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 					timeTaskPause();
 					checkTaskPause();
 					paused = false;
-					// playPauseImage
-					// .setImageResource(R.drawable.vod_player_pause);
 					playPauseImage
-							.setImageResource(R.drawable.vodplayer_controller_pause);
+							.setImageResource(R.drawable.vod_pausebtn_selector);
 					isBuffer = true;
 					currQuality = pos;
 					mVideoView = (IsmatvVideoView) findViewById(R.id.video_view);
@@ -1972,7 +1953,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 			if (mVideoView.getDuration() > 0) {
 				isSeek = true;
 				showPanel();
-				fbImage.setImageResource(R.drawable.vod_controlb_selector);
+//				fbImage.setImageResource(R.drawable.vod_controlb_selector);
 				isBuffer = true;
 				showBuffer();
 				fastBackward(SHORT_STEP);
@@ -1993,7 +1974,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 			if (mVideoView.getDuration() > 0) {
 				isSeek = true;
 				showPanel();
-				ffImage.setImageResource(R.drawable.vod_controlf_selector);
+//				ffImage.setImageResource(R.drawable.vod_controlf_selector);
 				isBuffer = true;
 				showBuffer();
 				fastForward(SHORT_STEP);
@@ -2086,7 +2067,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 			switch (what) {
 			case MotionEvent.ACTION_HOVER_MOVE:
 				showPanel();
-				fbImage.setImageResource(R.drawable.vodplayer_controller_rew_pressed);
+//				fbImage.setImageResource(R.drawable.vodplayer_controller_rew_pressed);
 				break;
 			}
 			return false;

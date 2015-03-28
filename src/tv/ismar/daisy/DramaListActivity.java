@@ -32,16 +32,15 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import static tv.ismar.daisy.views.PaymentDialog.ORDER_CHECK_BASE_URL;
 
 public class DramaListActivity extends Activity implements
 		OnItemSelectedListener, OnItemClickListener, OnFocusChangeListener {
 
 	private static final String TAG = "DramaListActivity";
-
+	private static String ORDER_CHECK_BASE_URL ="/api/order/check/";
+    public final static int visableItems = 30;
 	private Item mItem = new Item();
 	private List<Item> mList = new ArrayList<Item>();
 	private DaramAdapter mDramaAdapter;
@@ -211,7 +210,7 @@ public class DramaListActivity extends Activity implements
 			break;
 		}
 		mDramaAdapter = new DaramAdapter(DramaListActivity.this, mList, mItem,
-				ordercheckListener, R.layout.drama_gridview_item);
+				R.layout.drama_gridview_item);
 		mDramaView.setAdapter(mDramaAdapter);
 		if (loadDialog != null && loadDialog.isShowing()) {
 			loadDialog.dismiss();
@@ -314,7 +313,6 @@ public class DramaListActivity extends Activity implements
 		public void payResult(boolean result) {
 			orderCheck();
 		}
-
 	};
 
 	private void orderCheck() {

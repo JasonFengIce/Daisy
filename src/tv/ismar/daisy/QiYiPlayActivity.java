@@ -42,6 +42,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.View.OnHoverListener;
+import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -186,6 +187,91 @@ public class QiYiPlayActivity extends VodMenuAction {
 		qualityText.setVisibility(View.GONE);
 		am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		mRootLayout = (RelativeLayout) findViewById(R.id.RootRelativeLayout);
+		playPauseImage.setOnTouchListener(new OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent keycode) {
+				// TODO Auto-generated method stub
+				switch (keycode.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					// if (mVideoView.getDuration() > 0) {
+					if (!paused) {
+						pauseItem();
+						playPauseImage
+								.setImageResource(R.drawable.vod_playbtn_selector);
+					} else {
+						resumeItem();
+						playPauseImage
+								.setImageResource(R.drawable.vod_pausebtn_selector);
+					}
+
+					// }
+					break;
+
+				default:
+					break;
+				}
+				return false;
+			}
+		});
+		fbImage.setOnTouchListener(new OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent keycode) {
+				// TODO Auto-generated method stub
+				switch (keycode.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					if (mPlayer.getDuration() > 0 && !live_video) {
+						isSeek = true;
+						showPanel();
+//						fbImage.setImageResource(R.drawable.vod_controlb_selector);
+						isBuffer = true;
+						showBuffer();
+						mPlayer.seek(-SEEK_STEP);
+						isSeekBuffer = true;
+						Log.d(TAG, "LEFT seek to "
+								+ getTimeString(currPosition));
+						isSeek = false;
+						offsets = 0;
+						offn = 1;
+					}
+					break;
+
+				default:
+					break;
+				}
+				return false;
+			}
+		});
+		ffImage.setOnTouchListener(new OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent keycode) {
+				// TODO Auto-generated method stub
+				switch (keycode.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					if (mPlayer.getDuration() > 0 && !live_video) {
+						isSeek = true;
+						showPanel();
+//						ffImage.setImageResource(R.drawable.vod_controlf_selector);
+						isBuffer = true;
+						showBuffer();
+						mPlayer.seek(SEEK_STEP);
+						isSeekBuffer = true;
+						Log.d(TAG, "RIGHT seek to"
+								+ getTimeString(currPosition));
+						isSeek = false;
+						offsets = 0;
+						offn = 1;
+					}
+					break;
+
+				default:
+					break;
+				}
+				return false;
+			}
+		});
 		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(),
 				this);
 		bundle = getIntent().getExtras();
@@ -420,12 +506,11 @@ public class QiYiPlayActivity extends VodMenuAction {
 		@Override
 		public void onMovieStart() {
 			clipLength = mPlayer.getDuration();
-			isBuffer = false;
-			if (seekPostion > 0)
-				mPlayer.seek(seekPostion);
-			hideBuffer();
+//			if (seekPostion > 0)
+//				mPlayer.seek(seekPostion);
 			showPanel();
 			timeTaskStart();
+			checkTaskStart();
 			if (mHandler.hasMessages(MSG_PLAY_TIME))
 				mHandler.removeMessages(MSG_PLAY_TIME);
 			mHandler.sendEmptyMessage(MSG_PLAY_TIME);
@@ -764,7 +849,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
 				if (!live_video) {
-					fbImage.setImageResource(R.drawable.vodplayer_controller_rew);
+//					fbImage.setImageResource(R.drawable.vodplayer_controller_rew);
 					showPanel();
 					isBuffer = true;
 					showBuffer();
@@ -786,7 +871,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
 				if (!live_video) {
-					ffImage.setImageResource(R.drawable.vodplayer_controller_ffd);
+//					ffImage.setImageResource(R.drawable.vodplayer_ffd);
 					showPanel();
 					isBuffer = true;
 					showBuffer();
@@ -811,11 +896,11 @@ public class QiYiPlayActivity extends VodMenuAction {
 				if (paused) {
 					resumeItem();
 					playPauseImage
-							.setImageResource(R.drawable.vodplayer_controller_play);
+							.setImageResource(R.drawable.vod_pausebtn_selector);
 				} else {
 					pauseItem();
 					playPauseImage
-							.setImageResource(R.drawable.vodplayer_controller_pause);
+							.setImageResource(R.drawable.vod_playbtn_selector);
 				}
 				ret = true;
 				break;
@@ -1042,11 +1127,9 @@ public class QiYiPlayActivity extends VodMenuAction {
 					timeTaskPause();
 					checkTaskPause();
 					paused = false;
-					// playPauseImage
-					// .setImageResource(R.drawable.vod_player_pause);
-					playPauseImage
-							.setImageResource(R.drawable.vodplayer_controller_pause);
 					isBuffer = true;
+					playPauseImage
+					.setImageResource(R.drawable.vod_pausebtn_selector);
 					currQuality = pos;
 					if (currQuality == 0) {
 						mPlayer.switchBitStream(Definition.DEFINITON_HIGH);
@@ -1394,7 +1477,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 			switch (what) {
 			case MotionEvent.ACTION_HOVER_MOVE:
 				showPanel();
-				fbImage.setImageResource(R.drawable.vodplayer_controller_rew_pressed);
+//				fbImage.setImageResource(R.drawable.vodplayer_controller_rew_pressed);
 				break;
 			}
 			return false;

@@ -20,16 +20,13 @@ public class DaramAdapter extends BaseAdapter {
 	private int sourceid;
 	private LayoutInflater mLayoutInflater;
 	private Item dramaItem;
-	private PaymentDialog.OrderResultListener ordercheckListener;
 
 	public DaramAdapter(Context context, List<Item> subitemlist,
-			Item dramaitem,
-			PaymentDialog.OrderResultListener ordercheckListener, int sourceid) {
+			Item dramaitem, int sourceid) {
 		this.mContext = context;
 		this.subitemlist = subitemlist;
 		this.sourceid = sourceid;
 		this.dramaItem = dramaitem;
-		this.ordercheckListener = ordercheckListener;
 		this.mLayoutInflater = LayoutInflater.from(context);
 	}
 
@@ -102,5 +99,13 @@ public class DaramAdapter extends BaseAdapter {
 		Button btnCount;
 	}
 
-	public Button testbtn;
+	private PaymentDialog.OrderResultListener ordercheckListener = new PaymentDialog.OrderResultListener() {
+
+		@Override
+		public void payResult(boolean result) {
+			subitem.remainDay = dramaItem.expense.duration;
+			DaramAdapter.this.notifyDataSetChanged();
+		}
+	};
+	
 }
