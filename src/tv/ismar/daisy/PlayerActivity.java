@@ -264,7 +264,22 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 		});
 
 		mVideoView.setOnHoverListener(onhoverlistener);
+		mVideoView.setOnTouchListener(new OnTouchListener() {
 
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (!paused) {
+					pauseItem();
+					playPauseImage
+							.setImageResource(R.drawable.vod_playbtn_selector);
+				} else {
+					resumeItem();
+					playPauseImage
+							.setImageResource(R.drawable.vod_pausebtn_selector);
+				}
+				return false;
+			}
+		});
 		initClipInfo();
 	}
 

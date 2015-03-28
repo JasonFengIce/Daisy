@@ -391,6 +391,22 @@ public class QiYiPlayActivity extends VodMenuAction {
 		FrameLayout frameContainer = (FrameLayout) findViewById(R.id.fl_videoview_container);
 		frameContainer.setVisibility(View.VISIBLE);
 		frameContainer.setOnHoverListener(onhoverlistener);
+		frameContainer.setOnTouchListener(new OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (!paused) {
+					pauseItem();
+					playPauseImage
+							.setImageResource(R.drawable.vod_playbtn_selector);
+				} else {
+					resumeItem();
+					playPauseImage
+							.setImageResource(R.drawable.vod_pausebtn_selector);
+				}
+				return false;
+			}
+		});
 		mPlayer = QiyiVideoPlayer.createVideoPlayer(this, frameContainer,
 				flParams, /* bundle */null, mVideoStateListener);
 		favoriteManager = DaisyUtils.getFavoriteManager(this);
