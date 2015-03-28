@@ -85,7 +85,15 @@ public class SystemFileUtil {
 		}
 
 	}
-
+public static boolean isCanWriteSD(){
+	if (Environment.getExternalStorageState().equals(
+			Environment.MEDIA_MOUNTED)) {
+	   	return true;
+	}
+	else{
+		return false;
+	}
+}
 	public static void writeLogToLocal(String content) {
 			String LOGLOCALPATH = "vodlog.txt";
 		    LogPath = appPath+"/"+LOGLOCALPATH;

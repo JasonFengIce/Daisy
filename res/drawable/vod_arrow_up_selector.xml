@@ -3,5 +3,6 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/vod_arrow_up_focused" android:state_hovered="true" />
     <item android:state_pressed="true" android:drawable="@drawable/vod_arrow_up_focused" />
+    <item android:state_focused="true" android:drawable="@drawable/vod_arrow_up_focused"></item>
     <item android:drawable="@drawable/vod_arrow_up_normal" />
 </selector>

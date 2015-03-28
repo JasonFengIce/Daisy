@@ -728,12 +728,12 @@ public class ItemDetailActivity extends Activity implements
 					focus.setSelected(false);
 				}
 			}
-			if (hasFocus) {
-				mDetailRightContainer
-						.setBackgroundResource(android.R.color.transparent);
-				mDetailLeftContainer
-						.setBackgroundResource(R.drawable.left_bg_unfocused);
-			}
+//			if (hasFocus) {
+//				mDetailRightContainer
+//						.setBackgroundResource(android.R.color.transparent);
+//				mDetailLeftContainer
+//						.setBackgroundResource(R.drawable.left_bg_unfocused);
+//			}
 		}
 	};
 

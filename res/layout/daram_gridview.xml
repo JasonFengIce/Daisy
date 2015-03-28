@@ -20,16 +20,16 @@
     android:layout_alignParentTop="true"
     android:visibility="invisible"/>
 <!-- <GridView  -->
-<!--     android:id="@+id/drama_gridview" -->
-<!--     android:layout_above="@id/down_btn" -->
+<!--     android:id="@+id/drama_zgridview" -->
 <!--     android:layout_width="match_parent" -->
 <!--     android:layout_height="match_parent" -->
-<!--     android:layout_marginTop="@dimen/drama_gridview_margintop" -->
 <!--     android:scrollbarDefaultDelayBeforeFade="60000" -->
 <!--     android:scrollbarThumbVertical="@drawable/srollbar" -->
 <!--     android:scrollbarTrackVertical="@drawable/srollbar_backgroud" -->
 <!--     android:verticalSpacing="@dimen/drama_gridview_verticalspacing" -->
-<!--     android:listSelector="#00000000"/> -->
+<!--     android:listSelector="#00000000" -->
+<!--        android:layout_above="@id/down_btn" -->
+<!--         android:layout_below="@id/up_btn"/> -->
 
 
     <org.sakuratya.horizontal.ui.ZGridView

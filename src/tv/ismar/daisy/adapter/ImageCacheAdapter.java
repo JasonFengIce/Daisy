@@ -12,6 +12,7 @@ import tv.ismar.daisy.core.ImageLabelUtils;
 import tv.ismar.daisy.models.MovieBean;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.AsyncImageView.OnImageViewLoadListener;
+import tv.ismar.daisy.views.MarqueeText;
 import android.R.anim;
 import android.content.Context;
 import android.graphics.AvoidXfermode.Mode;
@@ -91,7 +92,7 @@ public class ImageCacheAdapter extends BaseAdapter implements OnImageViewLoadLis
 			convertView = mLayoutInflater.inflate(sourceid, null);
 			holder.imageView = (AsyncImageView) convertView.findViewById(R.id.itemImage);
 			holder.imageView.setOnImageViewLoadListener(this);
-			holder.tvItemText = (TextView) convertView.findViewById(R.id.itemText);
+			holder.tvItemText = (MarqueeText )convertView.findViewById(R.id.itemText);
 			holder.imageLabel = (AsyncImageView) convertView.findViewById(R.id.iv_label);
 			holder.imageLabel.setOnImageViewLoadListener(this);
 			holder.imageType = (Button) convertView.findViewById(R.id.iv_type);
@@ -195,7 +196,7 @@ public class ImageCacheAdapter extends BaseAdapter implements OnImageViewLoadLis
 		public AsyncImageView imageView;
 		public AsyncImageView imageLabel;
 		public Button imageType;
-		public TextView tvItemText;
+		public MarqueeText tvItemText;
 	}
 	
 	@Override

@@ -331,37 +331,90 @@ public class ScrollableSectionList extends HorizontalScrollView {
 		public void onSectionSelectChanged(int index);
 	}
 
+//	@Override
+//	public boolean arrowScroll(int direction) {
+//		if(direction==View.FOCUS_RIGHT){
+//		//	View v = getChildAt(getcou)
+//			View currentFocused = findFocus();
+//			if(currentFocused==null || currentFocused.getTag()==null) {
+//				return super.arrowScroll(direction);
+//			}
+//			int index = (Integer) currentFocused.getTag();
+//			if(index < mContainer.getChildCount()-1){
+//				return super.arrowScroll(direction);
+//			} else {
+//				//if currentFocused is the last element of the list. just do nothing.
+//				return true;
+//			}
+//		} else if(direction==View.FOCUS_LEFT){
+//			View currentFocused = findFocus();
+//			if(currentFocused==null || currentFocused.getTag()==null) {
+//				return super.arrowScroll(direction);
+//			}
+//			int index = (Integer) currentFocused.getTag();
+//			if(index > 0 ){
+//				return super.arrowScroll(direction);
+//			} else {
+//				//if currentFocused is the last element of the list. just do nothing.
+//				return true;
+//			}
+//		} else {
+//			return super.arrowScroll(direction);
+//		}
+//	}
+	public View left;
+	public View right;
 	@Override
 	public boolean arrowScroll(int direction) {
-		if(direction==View.FOCUS_RIGHT){
-			View currentFocused = findFocus();
-			if(currentFocused==null || currentFocused.getTag()==null) {
-				return super.arrowScroll(direction);
-			}
-			int index = (Integer) currentFocused.getTag();
-			if(index < mContainer.getChildCount()-1){
-				return super.arrowScroll(direction);
-			} else {
-				//if currentFocused is the last element of the list. just do nothing.
-				return true;
-			}
-		} else if(direction==View.FOCUS_LEFT){
-			View currentFocused = findFocus();
-			if(currentFocused==null || currentFocused.getTag()==null) {
-				return super.arrowScroll(direction);
-			}
-			int index = (Integer) currentFocused.getTag();
-			if(index > 0 ){
-				return super.arrowScroll(direction);
-			} else {
-				//if currentFocused is the last element of the list. just do nothing.
-				return true;
-			}
-		} else {
-			return super.arrowScroll(direction);
-		}
+	if(direction==View.FOCUS_RIGHT){
+	View currentFocused = getFocusedChild();
+	View vv = (View)getChildAt(getChildCount()-1);
+	int subViewWidth = vv.getRight();
+	int x = getScrollX();
+	Log.i("yaoying","subViewWidth=="+subViewWidth);
+	if(subViewWidth-x-getWidth()==0){
+	  Log.i("yaoying","滑动最后");
+	    right.setVisibility(View.INVISIBLE);
 	}
-	
+	else{
+		left.setVisibility(View.VISIBLE);
+	}
+	if(currentFocused==null || currentFocused.getTag()==null) {
+	return super.arrowScroll(direction);
+	}
+	int index = (Integer) currentFocused.getTag();
+	if(index < mContainer.getChildCount()-1){
+	return super.arrowScroll(direction);
+	} else {
+	//if currentFocused is the last element of the list. just do nothing.
+	return true;
+	}
+	} else if(direction==View.FOCUS_LEFT){
+	View ss = (View)getChildAt(0);
+	int left1 = getScrollX();
+	Log.i("yaoying","left=="+left1);
+	if(left1==0){
+	Log.i("yaoying","滑到第一个");
+	 left.setVisibility(View.INVISIBLE);
+	}
+	else{
+		right.setVisibility(View.VISIBLE);
+	}
+	View currentFocused = findFocus();
+	if(currentFocused==null || currentFocused.getTag()==null) {
+	return super.arrowScroll(direction);
+	}
+	int index = (Integer) currentFocused.getTag();
+	if(index > 0 ){
+	return super.arrowScroll(direction);
+	} else {
+	//if currentFocused is the last element of the list. just do nothing.
+	return true;
+	}
+	} else {
+	return super.arrowScroll(direction);
+	}
+	}
 	/**
      * @return whether the descendant of this scroll view is within delta
      *  pixels of being on the screen.

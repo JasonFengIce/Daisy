@@ -23,6 +23,7 @@ import com.ismartv.launcher.data.VideoEntity;
 
 import tv.ismar.daisy.ChannelListActivity;
 import tv.ismar.daisy.PackageListDetailActivity;
+import tv.ismar.daisy.SearchActivity;
 import tv.ismar.daisy.ChannelListActivity.OnMenuToggleListener;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.adapter.RecommecdItemAdapter;
@@ -55,9 +56,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -107,6 +110,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 	private TextView collect_or_history_txt;
 	private VideoEntity tvHome;
 	private Item[] mHistoriesByNet;
+	private Button search_btn;
 	private long getTodayStartPoint() {
 		long currentTime = System.currentTimeMillis();
 		GregorianCalendar currentCalendar = new GregorianCalendar();
@@ -137,6 +141,18 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		divider = (View)fragmentView.findViewById(R.id.divider);
 		divider.setVisibility(View.VISIBLE);
 		recommend_txt = (TextView)fragmentView.findViewById(R.id.recommend_txt);
+		
+		search_btn = (Button)fragmentView.findViewById(R.id.search);
+		search_btn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent searchIntent = new Intent();
+                searchIntent.setClass(getActivity(), SearchActivity.class);
+                startActivity(searchIntent);
+			}
+		});
 	}
 	
 	private void initHistoryList(){

@@ -462,7 +462,7 @@
 <dimen name="Launcher_preview_title_textsize">24sp</dimen>
 <dimen name="Launcher_channel_title_textsize">32sp</dimen>
 <!-- DetailAttributeContainer -->
-<dimen name="DetailAttributeContainer_Layout_W">471dip</dimen>
+<dimen name="DetailAttributeContainer_Layout_W">505dip</dimen>
 <!-- package detail -->
 <dimen name="vod_payment_package_details_container_ML">80dip</dimen>
 <dimen name="vod_payment_package_details_container_MT">100dip</dimen>
