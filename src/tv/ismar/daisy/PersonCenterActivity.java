@@ -85,7 +85,6 @@ public class PersonCenterActivity extends Activity implements View.OnClickListen
 				R.string.vod_loading));
 		mLoadingDialog.show();
         getBalance();
-        getPrivilegeData();
         if( DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.AUTH_TOKEN, "").equals("")){
         	//login out
         	loadDataLoginOut();
@@ -122,6 +121,7 @@ public class PersonCenterActivity extends Activity implements View.OnClickListen
 				try {
 					JSONObject json = new JSONObject(info);
 					remain_money_value.setText(json.getString("balance"));
+					getPrivilegeData();
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					remain_money_value.setText("0");
@@ -139,6 +139,7 @@ public class PersonCenterActivity extends Activity implements View.OnClickListen
 			public void onFailed(String error) {
 				// TODO Auto-generated method stub
 				remain_money_value.setText("0");
+				getPrivilegeData();
 			}
 		});
 	}
@@ -432,6 +433,7 @@ public class PersonCenterActivity extends Activity implements View.OnClickListen
         confirmExit.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+            	getBalance();
 				mPersoninfoLayout.setVisibility(View.VISIBLE);
 				login_layout.setVisibility(View.GONE);
 				login_layout.clearLayout();

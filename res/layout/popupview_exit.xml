@@ -29,23 +29,23 @@
                 android:layout_height="60dp">
             <Button
                     android:layout_marginRight="30dp"
-                    android:background="@drawable/selector_button"
                     android:textSize="28sp"
                     android:text="@string/confirm"
                     android:textColor="@android:color/white"
                     android:id="@+id/confirm_exit"
                     android:layout_width="250dp"
-                    android:layout_height="60dp"/>
+                    android:layout_height="60dp"
+                    android:background="@drawable/person_btn_selector"/>
 
             <Button
                     android:layout_marginLeft="30dp"
-                    android:background="@drawable/selector_button"
                     android:textSize="28sp"
                     android:text="@string/cancel"
                     android:textColor="@android:color/white"
                     android:id="@+id/cancel_exit"
                     android:layout_width="250dp"
-                    android:layout_height="60dp"/>
+                    android:layout_height="60dp"
+                    android:background="@drawable/person_btn_selector"/>
 
         </LinearLayout>
     </LinearLayout>
