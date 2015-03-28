@@ -569,16 +569,18 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 								}
 							}
 						} else {
-							if (urls[mHistory.last_quality] != null
-									&& !urls[mHistory.last_quality].isEmpty()) {
-								currQuality = mHistory.last_quality;
-							}
-							tempOffset = 0;
-							isContinue = mHistory.is_continue;
+//							if (urls[mHistory.last_quality] != null
+//									&& !urls[mHistory.last_quality].isEmpty()) {
+//								currQuality = mHistory.last_quality;
+//							}
+//							tempOffset = 0;
+//							isContinue = mHistory.is_continue;
 						}
 					} else {
+						if(!item.isPreview){
 						tempOffset = 0;
 						isContinue = true;
+						}
 					}
 					initQualtiyText();
 					qualityText.setVisibility(View.VISIBLE);
@@ -717,6 +719,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 												PlayerActivity.this,
 												R.style.PaymentDialog,
 												ordercheckListener);
+										item.model_name = "item";
 										dialog.setItem(item);
 										dialog.show();
 									} else
@@ -2071,6 +2074,16 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 
 		@Override
 		public void payResult(boolean result) {
+			if(result){
+				if (mHistory != null) {
+					mHistory.last_position = item.preview.length * 1000;
+				} else {
+					tempOffset = item.preview.length * 1000;
+				}
+			new ItemByUrlTask().execute();
+			}else{
+				PlayerActivity.this.finish();
+			}
 		}
 	};
 
