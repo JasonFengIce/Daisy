@@ -13,9 +13,9 @@ import retrofit.client.Response;
 import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.advertisement.AdvertisementInfoEntity;
 import tv.ismar.daisy.utils.AppUtils;
-import tv.ismar.daisy.utils.DeviceUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -94,7 +94,7 @@ public class PosterUpdateService extends Service {
                 .build();
         tv.ismar.daisy.core.client.ClientApi.AdvertisementInfo client =
                 restAdapter.create(tv.ismar.daisy.core.client.ClientApi.AdvertisementInfo.class);
-        String deviceId = DeviceUtils.getDeviceSN();
+        String deviceId = SimpleRestClient.sn_token;
         client.excute(deviceId, new Callback<ArrayList<AdvertisementInfoEntity>>() {
             @Override
             public void success(ArrayList<AdvertisementInfoEntity> advertisementInfoEntities, Response response) {

@@ -41,6 +41,8 @@ public class DaisyButton extends Button {
     public boolean dispatchTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                requestFocusFromTouch();
+                requestFocus();
                 performClick();
                 return true;
             default:
