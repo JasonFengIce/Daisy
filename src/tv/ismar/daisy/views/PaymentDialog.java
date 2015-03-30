@@ -611,6 +611,14 @@ public class PaymentDialog extends Dialog {
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_BACK:
 			paylistener.payResult(false);
+			if (urlHandler.hasMessages(ORDER_CHECK_INTERVAL))
+				urlHandler.removeMessages(ORDER_CHECK_INTERVAL);
+			if (urlHandler.hasMessages(PURCHASE_CHECK_RESULT))
+				urlHandler.removeMessages(PURCHASE_CHECK_RESULT);
+			if (urlHandler.hasMessages(SETQRCODE_VIEW))
+				urlHandler.removeMessages(SETQRCODE_VIEW);
+			if (urlHandler.hasMessages(REFRESH_PAY_STATUS))
+				urlHandler.removeMessages(REFRESH_PAY_STATUS);
 			dismiss();
 			return true;
 		}

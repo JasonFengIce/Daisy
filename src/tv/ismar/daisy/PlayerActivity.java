@@ -1257,6 +1257,11 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 							getResources().getString(
 									R.string.vod_player_exit_dialog));
 					ret = true;
+					if(!paused){
+					pauseItem();
+					playPauseImage
+							.setImageResource(R.drawable.vod_playbtn_selector);
+					}
 //				}
 				break;
 			case KeyEvent.KEYCODE_MENU:
@@ -1438,6 +1443,11 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 					public void onClick(View v) {
 						if (popupDlg != null) {
 							popupDlg.dismiss();
+							if(paused){
+							resumeItem();
+							playPauseImage
+									.setImageResource(R.drawable.vod_pausebtn_selector);
+							}
 						}
 					}
 

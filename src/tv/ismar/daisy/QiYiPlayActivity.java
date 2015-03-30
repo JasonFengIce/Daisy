@@ -959,6 +959,11 @@ public class QiYiPlayActivity extends VodMenuAction {
 							getResources().getString(
 									R.string.vod_player_exit_dialog));
 					ret = true;
+					if(!paused){
+					pauseItem();
+					playPauseImage
+							.setImageResource(R.drawable.vod_playbtn_selector);
+					}
 //				}
 
 				break;
@@ -1025,6 +1030,11 @@ public class QiYiPlayActivity extends VodMenuAction {
 					public void onClick(View v) {
 						if (popupDlg != null) {
 							popupDlg.dismiss();
+							if(paused){
+							resumeItem();
+							playPauseImage
+									.setImageResource(R.drawable.vod_pausebtn_selector);
+							}
 						}
 					};
 				});

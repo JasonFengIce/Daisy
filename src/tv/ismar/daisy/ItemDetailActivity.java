@@ -1165,7 +1165,7 @@ private boolean isPause = false;
 
 		@Override
 		public void payResult(boolean result) {
-			isBuy = true;
+			isBuy = result;
 			setExpenseStatus();
 		}
 
