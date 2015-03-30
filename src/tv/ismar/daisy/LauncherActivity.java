@@ -22,9 +22,6 @@ import com.ismartv.launcher.data.ChannelEntity;
 import com.ismartv.launcher.data.VideoEntity;
 import com.ismartv.launcher.data.WeatherEntity;
 import com.ismartv.launcher.ui.widget.IsmartvVideoView;
-import com.squareup.picasso.Picasso;
-
-import org.apache.commons.io.FileSystemUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import retrofit.Callback;
@@ -66,12 +63,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
      * view
      */
     private IsmartvVideoView videoView;
-    private ImageView[] homeImages;
-    private TextView[] homeTitles;
-
-
-    private RelativeLayout[] channelImtes;
-
 
     private ImageView weatherIcon;
     private TextView weatherTmp;
@@ -254,6 +245,30 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         channelGrid = (ChannelGridView) findViewById(R.id.channel_grid);
         linkedvideoGrid = (VerticalGuideListView) findViewById(R.id.grid_linkedvideo);
         horizontalGuideListView = (HorizontalGuideListView) findViewById(R.id.h_guide_View);
+
+        //set listener for view
+        setListener();
+    }
+
+    private void setListener() {
+        linkedvideoGrid.setItemClickListener(new VerticalGuideListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view) {
+                Intent intent = new Intent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                AttributeEntity attributeEntity = (AttributeEntity) view.getTag();
+                intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.ItemDetailActivity");
+                intent.putExtra("url", attributeEntity.getAttributes().getUrl());
+                startActivity(intent);
+            }
+        });
+        linkedvideoGrid.setItemHoverListener(new VerticalGuideListView.OnItemHoverListener() {
+            @Override
+            public void onItemHover(View view) {
+                AttributeEntity attributeEntity = (AttributeEntity) view.getTag();
+                playVideoByTime((int) attributeEntity.getStart_time() * 1000, (int) attributeEntity.getEnd_time() * 1000);
+            }
+        });
     }
 
     @Override
@@ -311,18 +326,18 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             String fileName = mRemoteUrl.substring(position + 1,
                     mRemoteUrl.length());
             String realname = fileName.substring(0, fileName.lastIndexOf("?"));
-            if(SystemFileUtil.isCanWriteSD()){
+            if (SystemFileUtil.isCanWriteSD()) {
                 mLocalPath = Environment.getExternalStorageDirectory()
                         .getAbsolutePath() + "/VideoCache/" + realname;
                 mLocalDir = Environment.getExternalStorageDirectory()
                         .getAbsolutePath() + "/VideoCache/";
-            }else{
-            	String path = getFilesDir().getAbsolutePath();
-            	mLocalPath = path + "/VideoCache/" + realname;
-            	mLocalDir = path + "/VideoCache";
+            } else {
+                String path = getFilesDir().getAbsolutePath();
+                mLocalPath = path + "/VideoCache/" + realname;
+                mLocalDir = path + "/VideoCache";
             }
-            
-          //  playvideo();
+
+            //  playvideo();
             videoView.setVideoPath(mRemoteUrl);
             videoView.start();
             videoView.setKeepScreenOn(true);
@@ -980,5 +995,15 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 exitPopupWindow.dismiss();
             }
         });
+    }
+
+    private void playVideoByTime(int startTime, int endTime) {
+        int currnet = videoView.getCurrentPosition();
+        Log.d(TAG, "current ---> " + currnet);
+        if (currnet > endTime || currnet < startTime) {
+
+            Log.d(TAG, "start time ---> " + startTime + "  end time ---> " + endTime);
+            videoView.seekTo(startTime);
+        }
     }
 }

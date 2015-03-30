@@ -1,8 +1,8 @@
 package tv.ismar.daisy.ui.widget;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,8 +17,27 @@ import java.util.ArrayList;
 /**
  * Created by huaijie on 2015/3/25.
  */
-public class VerticalGuideListView extends LinearLayout {
+public class VerticalGuideListView extends LinearLayout implements ContainerLayout.OnItemHoverListener{
+    private static final String TAG = "VerticalGuideListView";
     private Context context;
+
+    private OnItemClickListener itemClickListener;
+    private OnItemHoverListener itemHoverListener;
+
+    @Override
+    public void onItemHover(View view) {
+        itemHoverListener.onItemHover(view);
+    }
+
+
+    public interface OnItemClickListener {
+        public void onItemClick(View view);
+    }
+
+    public interface OnItemHoverListener {
+        public void onItemHover(View view);
+    }
+
 
     public VerticalGuideListView(Context context) {
         super(context);
@@ -57,6 +76,7 @@ public class VerticalGuideListView extends LinearLayout {
             textView.setText(attributeEntities.get(i).getAttributes().getTitle());
             Picasso.with(context).load(attributeEntities.get(i).getAttributes().getPoster_url()).into(imageView);
             container.setOnClickListener(clickListener);
+            container.setItemHoverListener(this);
             addView(container, layoutParams);
         }
         requestLayout();
@@ -67,13 +87,22 @@ public class VerticalGuideListView extends LinearLayout {
 
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent();
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            AttributeEntity attributeEntity = (AttributeEntity) view.getTag();
-            intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.ItemDetailActivity");
-            intent.putExtra("url", attributeEntity.getAttributes().getUrl());
-            context.startActivity(intent);
+            if (null == itemClickListener) {
+                Log.e(TAG, "itemClickListener not be null");
+            } else {
+                itemClickListener.onItemClick(view);
+            }
+
         }
     }
+
+    public void setItemClickListener(OnItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
+    }
+
+    public void setItemHoverListener(OnItemHoverListener itemHoverListener){
+        this.itemHoverListener = itemHoverListener;
+    }
+
 
 }
