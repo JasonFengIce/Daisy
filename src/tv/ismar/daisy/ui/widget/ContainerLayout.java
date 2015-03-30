@@ -39,7 +39,7 @@ public class ContainerLayout extends RelativeLayout {
             requestFocus();
             if (null == itemHoverListener) {
                 Log.e(TAG, "itemHoverListener  not be null");
-            }else {
+            } else {
                 itemHoverListener.onItemHover(this);
             }
         } else {
@@ -62,6 +62,4 @@ public class ContainerLayout extends RelativeLayout {
     public void setItemHoverListener(OnItemHoverListener itemHoverListener) {
         this.itemHoverListener = itemHoverListener;
     }
-
-
 }

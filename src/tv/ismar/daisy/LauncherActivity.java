@@ -868,10 +868,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     protected void onDestroy() {
         DaisyUtils.getVodApplication(this).removeActivtyFromPool(this.toString());
         unregisterReceiver(appUpdateReceiver);
-        if (updatePopupWindow != null && updatePopupWindow.isShowing()) {
+
+
+        if (!(updatePopupWindow == null)) {
             updatePopupWindow.dismiss();
         }
-        if (exitPopupWindow != null && updatePopupWindow.isShowing()) {
+        if (exitPopupWindow != null) {
             exitPopupWindow.dismiss();
         }
 
