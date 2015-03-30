@@ -227,8 +227,7 @@ public class DramaListActivity extends Activity implements
 			mDramaImageLabel.setVisibility(View.GONE);
 			break;
 		}
-		mDramaAdapter = new DaramAdapter(DramaListActivity.this, mList, mItem,
-				ordercheckListener, R.layout.drama_gridview_item);
+		mDramaAdapter = new DaramAdapter(DramaListActivity.this, mList, mItem, R.layout.drama_gridview_item);
 		mDramaView.setAdapter(mDramaAdapter);
 	//	mDramaView.setFocusable(true);
 		mDramaAdapter.mTvDramaType = mTvDramaType;
