@@ -23,6 +23,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.KeyEvent;
@@ -245,7 +247,7 @@ public class PaymentDialog extends Dialog {
 				break;
 
 			case R.id.card_balance_cancel: {
-				dismiss();
+				doCancel();
 			}
 				break;
 			}
@@ -295,7 +297,9 @@ public class PaymentDialog extends Dialog {
 	private void changeQrcodePayPanelState(boolean visible,
 			final boolean isweixin) {
 		if (visible) {
+			qrcodeview.setImageDrawable((new ColorDrawable(Color.WHITE)));
 			qrcode_pay.setVisibility(View.VISIBLE);
+
 			new Thread() {
 
 				@Override
@@ -610,16 +614,7 @@ public class PaymentDialog extends Dialog {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_BACK:
-			paylistener.payResult(false);
-			if (urlHandler.hasMessages(ORDER_CHECK_INTERVAL))
-				urlHandler.removeMessages(ORDER_CHECK_INTERVAL);
-			if (urlHandler.hasMessages(PURCHASE_CHECK_RESULT))
-				urlHandler.removeMessages(PURCHASE_CHECK_RESULT);
-			if (urlHandler.hasMessages(SETQRCODE_VIEW))
-				urlHandler.removeMessages(SETQRCODE_VIEW);
-			if (urlHandler.hasMessages(REFRESH_PAY_STATUS))
-				urlHandler.removeMessages(REFRESH_PAY_STATUS);
-			dismiss();
+			doCancel();
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
@@ -638,6 +633,18 @@ public class PaymentDialog extends Dialog {
 
 	};
 
+	private void doCancel(){
+		paylistener.payResult(false);
+		if (urlHandler.hasMessages(ORDER_CHECK_INTERVAL))
+			urlHandler.removeMessages(ORDER_CHECK_INTERVAL);
+		if (urlHandler.hasMessages(PURCHASE_CHECK_RESULT))
+			urlHandler.removeMessages(PURCHASE_CHECK_RESULT);
+		if (urlHandler.hasMessages(SETQRCODE_VIEW))
+			urlHandler.removeMessages(SETQRCODE_VIEW);
+		if (urlHandler.hasMessages(REFRESH_PAY_STATUS))
+			urlHandler.removeMessages(REFRESH_PAY_STATUS);
+		dismiss();
+	}
 	public interface OrderResultListener {
 		public void payResult(boolean result);
 	}

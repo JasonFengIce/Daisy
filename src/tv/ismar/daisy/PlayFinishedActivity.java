@@ -107,7 +107,7 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		@Override
 		public void run() {
 			try {
-				items = simpleRest.getRelatedItem("/api/tv/relate/" + item.item_pk);
+				items = simpleRest.getRelatedItem("/api/tv/relate/" + item.item_pk+"/");
 			} catch (NetworkException e) {
 				e.printStackTrace();
 			}
