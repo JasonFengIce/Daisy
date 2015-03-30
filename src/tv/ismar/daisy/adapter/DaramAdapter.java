@@ -8,20 +8,24 @@ import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.views.PaymentDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.view.View.OnHoverListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.TextView;
 
-public class DaramAdapter extends BaseAdapter {
+public class DaramAdapter extends BaseAdapter implements OnHoverListener,OnFocusChangeListener{
 	Context mContext;
 	private List<Item> subitemlist;
 	private int sourceid;
 	private LayoutInflater mLayoutInflater;
 	private Item dramaItem;
 	private PaymentDialog.OrderResultListener ordercheckListener;
-
+	public TextView mTvDramaType;
 	public DaramAdapter(Context context, List<Item> subitemlist,
 			Item dramaitem,
 			PaymentDialog.OrderResultListener ordercheckListener, int sourceid) {
@@ -65,12 +69,11 @@ public class DaramAdapter extends BaseAdapter {
 		if (subitem.remainDay > 0) {
 			holder.btnCount
 					.setBackgroundResource(R.drawable.daram_grid_payed_selector);
-		}else{
-			holder.btnCount
-					.setBackgroundResource(R.drawable.daram_grid_selector);
 		}
 		holder.btnCount.setText(String.valueOf(subitem.position + 1));
 		holder.btnCount.setTag(String.valueOf(position));
+		holder.btnCount.setOnFocusChangeListener(this);
+		holder.btnCount.setOnHoverListener(this);
 		holder.btnCount.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -103,4 +106,35 @@ public class DaramAdapter extends BaseAdapter {
 	}
 
 	public Button testbtn;
+
+	@Override
+	public boolean onHover(View v, MotionEvent event) {
+		// TODO Auto-generated method stub
+		int what = event.getAction();
+		switch (what) {
+		case MotionEvent.ACTION_HOVER_ENTER:
+			v.setBackgroundResource(R.drawable.daram_grid_selector);
+			int position = Integer.parseInt((String) v.getTag());
+			subitem = getItem(position);
+			// 分类
+			mTvDramaType.setText(subitem.title);
+			break;
+		}
+		return false;
+	}
+
+	@Override
+	public void onFocusChange(View v, boolean hasfocus) {
+		// TODO Auto-generated method stub
+		if(hasfocus){
+			v.setBackgroundResource(R.drawable.daram_grid_selector);
+			int position = Integer.parseInt((String) v.getTag());
+			subitem = getItem(position);
+			// 分类
+			mTvDramaType.setText(subitem.title);
+		}
+//		else{
+//			v.setBackgroundResource(R.drawable.daram_grid_selector);
+//		}
+	}
 }

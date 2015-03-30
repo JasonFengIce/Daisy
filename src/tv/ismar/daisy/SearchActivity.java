@@ -5,11 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.sakuratya.horizontal.ui.HGridView;
 import org.sakuratya.horizontal.ui.ZGridView;
 import tv.ismar.daisy.adapter.ImageCacheAdapter;
-import tv.ismar.daisy.adapter.ImageCacheAdapter1;
 import tv.ismar.daisy.core.ConnectionHelper;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
@@ -24,7 +21,7 @@ import tv.ismar.daisy.views.LoadingDialog;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -41,7 +38,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -108,8 +104,8 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 		setContentView(R.layout.search_main);
 		movieList = new ArrayList<MovieBean>();
 		initViews();
-//		InputMethodManager m = (InputMethodManager) autoCompleteTextView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-//		m.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);	
+		InputMethodManager m = (InputMethodManager) autoCompleteTextView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+		m.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);	
 		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
 	}
 
@@ -282,7 +278,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 		case R.id.act_autocomplete_country:
 			// Toast.makeText(this, "is ok", Toast.LENGTH_LONG).show();
 			InputMethodManager m = (InputMethodManager) autoCompleteTextView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-			//m.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);			
+			m.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);			
 			autoCompleteTextView.showDropDown();
 			// autoCompleteTextView.onKeyDown(KeyEvent.KEYCODE_BACK, null);
 			break;
@@ -327,7 +323,8 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 					btnHotWords.setId(j);
 					// btnHotWords.setBackgroundColor(R.drawable.gridview_text_selector);
 					btnHotWords.setBackgroundResource(R.drawable.hotwords_selector);
-					btnHotWords.setTextColor(getResources().getColor(R.color.search_words));
+					btnHotWords.setTextColor(getResources().getColor(R.color.hotwords_text_color));
+					btnHotWords.setTextColor(Color.rgb(0xff, 0xff, 0xff));
 					// btnHotWords.setTypeface(Typeface.DEFAULT_BOLD,Typeface.NORMAL);
 					btnHotWords.setText(String.valueOf(listHotWords.get(j)));
 					linearAdd.addView(btnHotWords);

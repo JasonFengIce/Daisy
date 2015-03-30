@@ -89,8 +89,9 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 	
 	private HashMap<String, Object> mSectionProperties = new HashMap<String, Object>();
 	
-	private ImageView leftarrow;
-	
+	//private ImageView leftarrow;
+	private ImageView arrow_left;
+	private ImageView arrow_right;
 	private Button btn_search;
 	private void initViews(View fragmentView) {
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
@@ -99,7 +100,26 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		mHGridView.setOnScrollListener(this);
 		mScrollableSectionList = (ScrollableSectionList) fragmentView.findViewById(R.id.section_tabs);
 		mScrollableSectionList.setOnSectionSelectChangeListener(mOnSectionSelectChangedListener);
-		leftarrow = (ImageView)fragmentView.findViewById(R.id.arrow_left);
+		arrow_left = (ImageView)fragmentView.findViewById(R.id.arrow_left);
+		arrow_right = (ImageView)fragmentView.findViewById(R.id.arrow_right);
+		mScrollableSectionList.left = arrow_left;
+		mScrollableSectionList.right = arrow_right;
+		arrow_left.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mScrollableSectionList.arrowScroll(View.FOCUS_LEFT);
+			}
+		});
+		arrow_right.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mScrollableSectionList.arrowScroll(View.FOCUS_RIGHT);
+			}
+		});
 		mChannelLabel = (TextView) fragmentView.findViewById(R.id.channel_label);
 		mChannelLabel.setText(mTitle);
 		btn_search = (Button)fragmentView.findViewById(R.id.search);
@@ -229,7 +249,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 			try{
 				if(mSectionList!=null ) {
 					if(mSectionList.size()>5)
-					  leftarrow.setVisibility(View.VISIBLE);
+						arrow_right.setVisibility(View.VISIBLE);
 					mScrollableSectionList.init(mSectionList, getResources().getDimensionPixelSize(R.dimen.gridview_channel_section_tabs_width),false);
 					mHGridAdapter = new HGridAdapterImpl(getActivity(), mItemCollections);
 					mHGridAdapter.setList(mItemCollections);

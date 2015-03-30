@@ -24,6 +24,7 @@ import tv.ismar.daisy.ChannelListActivity.OnMenuToggleListener;
 import tv.ismar.daisy.ChannelListActivity;
 import tv.ismar.daisy.LauncherActivity;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.SearchActivity;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.adapter.RecommecdItemAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
@@ -53,10 +54,12 @@ import android.os.Message;
 import android.util.FloatMath;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -104,6 +107,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
     private TextView collect_or_history_txt;
     private VideoEntity tvHome;
     private Item[] FavoriteList;
+    private Button search_btn;
 	private void initViews(View fragmentView) {
 		
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
@@ -121,6 +125,17 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		divider.setVisibility(View.VISIBLE);
 		recommend_txt = (TextView)fragmentView.findViewById(R.id.recommend_txt);
 		collect_or_history_txt = (TextView)fragmentView.findViewById(R.id.collect_or_history_txt);
+		search_btn = (Button)fragmentView.findViewById(R.id.search);
+		search_btn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent searchIntent = new Intent();
+                searchIntent.setClass(getActivity(), SearchActivity.class);
+                startActivity(searchIntent);
+			}
+		});
 	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

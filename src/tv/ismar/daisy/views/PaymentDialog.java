@@ -25,6 +25,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Message;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -41,11 +42,11 @@ public class PaymentDialog extends Dialog {
 	private static final String BALANCEPAY_BASE_URL = "/api/order/create/";
 	private static final String GETBALANCE_BASE_URL = "/accounts/balance/";
 	private static final String CARDRECHARGE_BASE_URL = "https://order.tvxio.com/api/pay/verify/";
-	public static final String ORDER_CHECK_BASE_URL = "/api/order/check/";
+	public static final String  PURCHASE_CHECK_BASE_URL = "/api/order/purchase/";
 
 	private static final int REFRESH_PAY_STATUS = 0x10;
 	private static final int SETQRCODE_VIEW = 0x11;
-	private static final int ORDER_CHECK_RESULT = 0x12;
+	private static final int PURCHASE_CHECK_RESULT = 0x12;
 	private static final int ORDER_CHECK_INTERVAL = 10000;
 
 	private Context mycontext;
@@ -174,7 +175,7 @@ public class PaymentDialog extends Dialog {
 		}
 		setPackageInfo();
 		changeQrcodePayPanelState(true, true);
-		urlHandler.sendEmptyMessageDelayed(ORDER_CHECK_RESULT, 30000);
+		urlHandler.sendEmptyMessageDelayed(PURCHASE_CHECK_RESULT, 30000);
 		login_panel.setLoginListener(loginInterFace);
 	}
 
@@ -283,8 +284,8 @@ public class PaymentDialog extends Dialog {
 				dismiss();
 				break;
 			}
-			case ORDER_CHECK_RESULT: {
-				orderCheck();
+			case PURCHASE_CHECK_RESULT: {
+				purchaseCheck();
 				break;
 			}
 			}
@@ -515,7 +516,7 @@ public class PaymentDialog extends Dialog {
 						R.string.pay_card_balance_title_label);
 				card_balance_title_label.setText(String.format(balancevalue,
 						balancefloat));
-				orderCheck();
+				purchaseCheck();
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -565,7 +566,7 @@ public class PaymentDialog extends Dialog {
 		}
 	};
 
-	private void orderCheck() {
+	private void purchaseCheck() {
 		SimpleRestClient client = new SimpleRestClient();
 		String typePara = "&item=" + mItem.pk;
 		if ("package".equalsIgnoreCase(mItem.model_name)) {
@@ -573,12 +574,12 @@ public class PaymentDialog extends Dialog {
 		} else if ("subitem".equalsIgnoreCase(mItem.model_name)) {
 			typePara = "&subitem=" + mItem.pk;
 		}
-		client.doSendRequest(ORDER_CHECK_BASE_URL, "post", "device_token="
+		client.doSendRequest(PURCHASE_CHECK_BASE_URL, "post", "device_token="
 				+ SimpleRestClient.device_token + "&access_token="
-				+ SimpleRestClient.access_token + typePara, orderCheck);
+				+ SimpleRestClient.access_token + typePara, purchaseCheck);
 	}
 
-	private HttpPostRequestInterface orderCheck = new HttpPostRequestInterface() {
+	private HttpPostRequestInterface purchaseCheck = new HttpPostRequestInterface() {
 
 		@Override
 		public void onPrepare() {
@@ -591,7 +592,7 @@ public class PaymentDialog extends Dialog {
 			} else {
 				ordercheckcount++;
 				if (ordercheckcount < 60)
-					urlHandler.sendEmptyMessageDelayed(ORDER_CHECK_RESULT,
+					urlHandler.sendEmptyMessageDelayed(PURCHASE_CHECK_RESULT,
 							ORDER_CHECK_INTERVAL);
 			}
 		}
@@ -600,10 +601,29 @@ public class PaymentDialog extends Dialog {
 		public void onFailed(String error) {
 			ordercheckcount++;
 			if (ordercheckcount < 60)
-				urlHandler.sendEmptyMessageDelayed(ORDER_CHECK_RESULT,
+				urlHandler.sendEmptyMessageDelayed(PURCHASE_CHECK_RESULT,
 						ORDER_CHECK_INTERVAL);
 		}
 	};
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		switch (keyCode) {
+		case KeyEvent.KEYCODE_BACK:
+			paylistener.payResult(false);
+			if (urlHandler.hasMessages(ORDER_CHECK_INTERVAL))
+				urlHandler.removeMessages(ORDER_CHECK_INTERVAL);
+			if (urlHandler.hasMessages(PURCHASE_CHECK_RESULT))
+				urlHandler.removeMessages(PURCHASE_CHECK_RESULT);
+			if (urlHandler.hasMessages(SETQRCODE_VIEW))
+				urlHandler.removeMessages(SETQRCODE_VIEW);
+			if (urlHandler.hasMessages(REFRESH_PAY_STATUS))
+				urlHandler.removeMessages(REFRESH_PAY_STATUS);
+			dismiss();
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 
 	private LoginPanelView.LoginInterface loginInterFace = new LoginPanelView.LoginInterface() {
 

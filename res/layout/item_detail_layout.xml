@@ -64,124 +64,6 @@
             android:textColor="#FFBBBBBB"
             android:textSize="@dimen/item_detail_intro_textsize" />
 
-       <LinearLayout 
-            android:layout_height="@dimen/item_detail_btn_left_height"
-            android:layout_width="wrap_content"
-            android:layout_above="@id/detail_intro"
-            android:layout_below="@id/detail_attribute_container"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="@dimen/item_detail_introlabel_marginleft"
-            android:orientation="horizontal"
-            android:layout_marginBottom="@dimen/item_detail_btn_layout_marginB"
-            android:layout_marginTop="@dimen/item_detail_attribute_top">  
-<!--            <Button -->
-<!--                 android:id="@+id/btn_fill" -->
-<!--                 android:layout_width="wrap_content" -->
-<!--                 android:layout_height="@dimen/item_detail_btn_left_height" -->
-<!--                 android:textSize="@dimen/item_detail_btn_left_textsize" -->
-<!--                 android:textColor="#FFF8F8FF" -->
-<!--                 android:text="@string/play" -->
-<!--                 android:drawableLeft="@drawable/vod_detail_poster_play_icon_selector" -->
-<!--                 android:background="@drawable/vod_detail_relatemore_button_selector" -->
-<!--                 android:paddingLeft="@dimen/item_detail_btn_favorite_paddingleft" -->
-<!--                 android:paddingRight="@dimen/item_detail_btn_favorite_paddingright" -->
-<!--                 android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"               -->
-<!--                 android:visibility="gone"/> -->
-<!--              <Button -->
-<!--                 android:id="@+id/btn_fill_buy" -->
-<!--                 android:layout_width="wrap_content" -->
-<!--                 android:layout_height="@dimen/item_detail_btn_left_height" -->
-<!--                 android:textSize="@dimen/item_detail_btn_left_textsize" -->
-<!--                 android:textColor="#FFF8F8FF" -->
-<!--                 android:text="@string/buy_video" -->
-<!--                 android:drawableLeft="@drawable/vod_detail_poster_buy_icon_selector" -->
-<!--                 android:background="@drawable/vod_detail_relatemore_button_selector" -->
-<!--                 android:paddingLeft="@dimen/item_detail_btn_favorite_paddingleft" -->
-<!--                 android:paddingRight="@dimen/item_detail_btn_favorite_paddingright" -->
-<!--                 android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"               -->
-<!--                 android:visibility="gone"/> -->
-<!--            <Button -->
-<!--                 android:id="@+id/btn_left" -->
-<!--                 android:layout_width="wrap_content" -->
-<!--                 android:layout_height="@dimen/item_detail_btn_left_height" -->
-<!--                 android:textSize="@dimen/item_detail_btn_left_textsize" -->
-<!--                 android:textColor="#FFF8F8FF" -->
-<!--                 android:text="@string/play" -->
-<!--                 android:drawableLeft="@drawable/vod_detail_poster_play_icon_selector" -->
-<!--                 android:background="@drawable/vod_detail_relatemore_button_selector" -->
-<!--                 android:paddingLeft="@dimen/item_detail_btn_favorite_paddingleft" -->
-<!--                 android:paddingRight="@dimen/item_detail_btn_favorite_paddingright" -->
-<!--                 android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"                -->
-<!--                 android:visibility="gone"/> -->
-<!--                 <Button -->
-<!--                 android:id="@+id/btn_left_buy" -->
-<!--                 android:layout_width="wrap_content" -->
-<!--                 android:layout_height="@dimen/item_detail_btn_left_height" -->
-<!--                 android:textSize="@dimen/item_detail_btn_left_textsize" -->
-<!--                 android:textColor="#FFF8F8FF" -->
-<!--                 android:text="@string/buy_video" -->
-<!--                 android:drawableLeft="@drawable/vod_detail_poster_buy_icon_selector" -->
-<!--                 android:background="@drawable/vod_detail_relatemore_button_selector" -->
-<!--                 android:paddingLeft="@dimen/item_detail_btn_favorite_paddingleft" -->
-<!--                 android:paddingRight="@dimen/item_detail_btn_favorite_paddingright" -->
-<!--                 android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"                -->
-<!--                 android:visibility="gone"/> -->
-<!--              <Button -->
-<!--                 android:id="@+id/btn_favorite" -->
-<!--                 android:layout_width="wrap_content" -->
-<!--                 android:layout_height="@dimen/item_detail_btn_left_height" -->
-<!--                 android:drawableLeft="@drawable/vod_detail_poster_favorite_icon_selector" -->
-<!--                 android:textColor="#FFF8F8FF" -->
-<!--                 android:textSize="@dimen/item_detail_btn_favorite_textsize" -->
-<!--                 android:layout_marginLeft="@dimen/item_detail_btn_marginleft" -->
-<!--                 android:paddingLeft="@dimen/item_detail_btn_favorite_paddingleft" -->
-<!--                 android:paddingRight="@dimen/item_detail_btn_favorite_paddingright" -->
-<!--                 android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop" -->
-<!--                 android:background="@drawable/vod_detail_relatemore_button_selector" -->
-<!--                 /> -->
-
-<!--             <Button -->
-<!--                 android:id="@+id/btn_right" -->
-<!--                 android:layout_width="wrap_content" -->
-<!--                 android:layout_height="@dimen/item_detail_btn_left_height" -->
-<!--                 android:drawableLeft="@drawable/vod_detail_poster_episode_normal_icon" -->
-<!--                 android:layout_marginLeft="@dimen/item_detail_btn_marginleft"                 -->
-<!--                 android:textSize="@dimen/item_detail_btn_right_textsize" -->
-<!--                 android:textColor="#FFF8F8FF" -->
-<!--                 android:text="@string/vod_itemepisode" -->
-<!--                 android:background="@drawable/vod_detail_relatemore_button_selector" -->
-<!--                 android:visibility="invisible" -->
-<!--                 android:paddingLeft="@dimen/item_detail_btn_favorite_paddingleft" -->
-<!--                 android:paddingRight="@dimen/item_detail_btn_favorite_paddingright" -->
-<!--                 android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop" -->
-<!--                 android:paddingBottom="@dimen/item_detail_btn_favorite_paddingtop"/> -->
-            
-            
-            
-            <Button
-                android:id="@+id/btn_left"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/item_detail_btn_left_height"
-                android:background="@drawable/preview_video_btn_bg_selector"              
-                android:visibility="visible"/>
-
-
-           <Button
-                android:id="@+id/middle_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/item_detail_btn_left_height"
-                android:layout_marginLeft="@dimen/item_detail_btn_marginleft"
-                android:background="@drawable/buy_video_btn_bg_selector"
-                android:visibility="visible"/>
-
-           <Button
-                android:id="@+id/btn_right"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/item_detail_btn_left_height"
-                android:layout_marginLeft="@dimen/item_detail_btn_marginleft"                
-                android:background="@drawable/collect_btn_bg_selector"
-                android:visibility="visible" />                        
-        </LinearLayout>
         
         
 <!--         <TextView -->
@@ -261,6 +143,42 @@
             android:textSize="24.0sp"
             android:background="@drawable/vod_detail_unpayment_duration"/>
         </RelativeLayout>
+        
+        
+       <LinearLayout 
+            android:layout_height="@dimen/item_detail_btn_left_height"
+            android:layout_width="wrap_content"
+            android:layout_above="@id/detail_intro"
+            android:layout_below="@id/detail_preview_img"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/item_detail_introlabel_marginleft"
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/item_detail_btn_layout_marginB"
+            android:layout_marginTop="@dimen/item_detail_attribute_top">                               
+            <Button
+                android:id="@+id/btn_left"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/item_detail_btn_left_height"
+                android:background="@drawable/preview_video_btn_bg_selector"              
+                android:visibility="visible"/>
+
+
+           <Button
+                android:id="@+id/middle_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/item_detail_btn_left_height"
+                android:layout_marginLeft="@dimen/item_detail_btn_marginleft"
+                android:background="@drawable/buy_video_btn_bg_selector"
+                android:visibility="visible"/>
+
+           <Button
+                android:id="@+id/btn_right"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/item_detail_btn_left_height"
+                android:layout_marginLeft="@dimen/item_detail_btn_marginleft"                
+                android:background="@drawable/collect_btn_bg_selector"
+                android:visibility="visible" />                        
+        </LinearLayout>
     </RelativeLayout>
 
     <LinearLayout

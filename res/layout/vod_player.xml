@@ -155,7 +155,7 @@
                         android:layout_width="@dimen/vod_player_ffimage_W"
                         android:layout_height="@dimen/vod_player_ffimage_W"
                         android:layout_marginLeft="@dimen/vod_player_fbimage_marginleft"
-                        android:src="@drawable/vodplayer_controller_rew" 
+                        android:src="@drawable/vodplayer_controller_fbf"
                         android:clickable="true" />
 
                     <ImageView
@@ -163,7 +163,7 @@
                         android:layout_width="@dimen/vod_player_ffimage_W"
                         android:layout_height="@dimen/vod_player_ffimage_H"
                         android:layout_marginLeft="@dimen/vod_player_playpauseimage_marginleft"
-                        android:src="@drawable/vod_playbtn_selector"
+                        android:src="@drawable/vod_pausebtn_selector"
                         android:clickable="true"  />
 
                     <ImageView
@@ -171,7 +171,7 @@
                         android:layout_width="@dimen/vod_player_ffimage_W"
                         android:layout_height="@dimen/vod_player_ffimage_H"
                         android:layout_marginLeft="@dimen/vod_player_playpauseimage_marginleft"
-                        android:src="@drawable/vodplayer_controller_ffd"
+                        android:src="@drawable/vodplayer_ffd"
                         android:clickable="true" />
                 </LinearLayout>
             </RelativeLayout>

@@ -32,7 +32,7 @@
             android:textSize="@dimen/search_gridview_item_btn_type_textsize" 
             />
 
-        <TextView
+        <tv.ismar.daisy.views.MarqueeText
             android:id="@+id/itemText"
             android:layout_width="@dimen/search_gridview_item_image_W"
             android:layout_height="wrap_content"
@@ -43,9 +43,12 @@
             android:singleLine="true"
             android:textSize="@dimen/search_gridview_item_text_size"
             android:textStyle="bold"
-             >
+            android:marqueeRepeatLimit="marquee_forever"
+            android:focusableInTouchMode="true"
+            android:scrollHorizontally="true">
 
-        </TextView>
+        </tv.ismar.daisy.views.MarqueeText>
+
     </RelativeLayout>
 
     <tv.ismar.daisy.views.AsyncImageView

@@ -22,6 +22,9 @@ import com.ismartv.launcher.data.ChannelEntity;
 import com.ismartv.launcher.data.VideoEntity;
 import com.ismartv.launcher.data.WeatherEntity;
 import com.ismartv.launcher.ui.widget.IsmartvVideoView;
+import com.squareup.picasso.Picasso;
+
+import org.apache.commons.io.FileSystemUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import retrofit.Callback;
@@ -77,6 +80,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private TextView tomorrowDetail;
 
     private String mLocalPath;
+    private String mLocalDir;
     private String mRemoteUrl;
     private long readSize = 0;
     private static final int READY_BUFF = 2000 * 1024;
@@ -307,9 +311,20 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             String fileName = mRemoteUrl.substring(position + 1,
                     mRemoteUrl.length());
             String realname = fileName.substring(0, fileName.lastIndexOf("?"));
-            mLocalPath = Environment.getExternalStorageDirectory()
-                    .getAbsolutePath() + "/VideoCache/" + realname;
-            playvideo();
+            if(SystemFileUtil.isCanWriteSD()){
+                mLocalPath = Environment.getExternalStorageDirectory()
+                        .getAbsolutePath() + "/VideoCache/" + realname;
+                mLocalDir = Environment.getExternalStorageDirectory()
+                        .getAbsolutePath() + "/VideoCache/";
+            }else{
+            	String path = getFilesDir().getAbsolutePath();
+            	mLocalPath = path + "/VideoCache/" + realname;
+            	mLocalDir = path + "/VideoCache";
+            }
+            
+          //  playvideo();
+            videoView.setVideoPath(mRemoteUrl);
+            videoView.start();
             videoView.setKeepScreenOn(true);
 
             videoView
@@ -363,10 +378,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                     File cacheFile = new File(mLocalPath);
                     if (!cacheFile.exists()) {
                         cacheFile.getParentFile().mkdirs();
-                        String mLocalDir = Environment
-                                .getExternalStorageDirectory()
-                                .getAbsolutePath()
-                                + "/VideoCache";
+//                        String mLocalDir = Environment
+//                                .getExternalStorageDirectory()
+//                                .getAbsolutePath()
+//                                + "/VideoCache";
                         File Dir = new File(mLocalDir);
                         for (String s : Dir.list()) {
                             File f = new File(s);

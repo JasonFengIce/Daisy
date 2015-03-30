@@ -58,7 +58,7 @@ public class DetailAttributeContainer extends LinearLayout {
 			int width = getResources().getDimensionPixelSize(R.dimen.DetailAttributeContainer_Layout_W);
 			layoutParams = new LinearLayout.LayoutParams(width,LinearLayout.LayoutParams.WRAP_CONTENT);
 									
-//			layoutParams.topMargin =(15f);
+			layoutParams.topMargin =(7);
 			infoLine.setLayoutParams(layoutParams);
 			infoLine.setOrientation(LinearLayout.HORIZONTAL);
 			TextView itemName = new TextView(getContext());

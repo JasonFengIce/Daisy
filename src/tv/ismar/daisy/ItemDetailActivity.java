@@ -215,11 +215,20 @@ public class ItemDetailActivity extends Activity implements
 				entry.setValue(true);
 			}
 		}
+		if(isPause){
+			if (isFavorite()) {
+				mCollectBtn.setBackgroundResource(R.drawable.collected_btn_bg_selector);
+			} else {
+				mCollectBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+			}
+			isPause = false;
+		}
 		super.onResume();
 	}
-
+private boolean isPause = false;
 	@Override
 	protected void onPause() {
+		isPause = true;
 		if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
 			mLoadingDialog.dismiss();
 		}
@@ -728,12 +737,12 @@ public class ItemDetailActivity extends Activity implements
 					focus.setSelected(false);
 				}
 			}
-			if (hasFocus) {
-				mDetailRightContainer
-						.setBackgroundResource(android.R.color.transparent);
-				mDetailLeftContainer
-						.setBackgroundResource(R.drawable.left_bg_unfocused);
-			}
+//			if (hasFocus) {
+//				mDetailRightContainer
+//						.setBackgroundResource(android.R.color.transparent);
+//				mDetailLeftContainer
+//						.setBackgroundResource(R.drawable.left_bg_unfocused);
+//			}
 		}
 	};
 
@@ -1156,7 +1165,7 @@ public class ItemDetailActivity extends Activity implements
 
 		@Override
 		public void payResult(boolean result) {
-			isBuy = true;
+			isBuy = result;
 			setExpenseStatus();
 		}
 

@@ -8,8 +8,10 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.FocusFinder;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -331,37 +333,83 @@ public class ScrollableSectionList extends HorizontalScrollView {
 		public void onSectionSelectChanged(int index);
 	}
 
-	@Override
-	public boolean arrowScroll(int direction) {
-		if(direction==View.FOCUS_RIGHT){
-			View currentFocused = findFocus();
-			if(currentFocused==null || currentFocused.getTag()==null) {
-				return super.arrowScroll(direction);
-			}
-			int index = (Integer) currentFocused.getTag();
-			if(index < mContainer.getChildCount()-1){
-				return super.arrowScroll(direction);
-			} else {
-				//if currentFocused is the last element of the list. just do nothing.
-				return true;
-			}
-		} else if(direction==View.FOCUS_LEFT){
-			View currentFocused = findFocus();
-			if(currentFocused==null || currentFocused.getTag()==null) {
-				return super.arrowScroll(direction);
-			}
-			int index = (Integer) currentFocused.getTag();
-			if(index > 0 ){
-				return super.arrowScroll(direction);
-			} else {
-				//if currentFocused is the last element of the list. just do nothing.
-				return true;
-			}
-		} else {
-			return super.arrowScroll(direction);
-		}
-	}
-	
+//	@Override
+//	public boolean arrowScroll(int direction) {
+//		if(direction==View.FOCUS_RIGHT){
+//		//	View v = getChildAt(getcou)
+//			View currentFocused = findFocus();
+//			if(currentFocused==null || currentFocused.getTag()==null) {
+//				return super.arrowScroll(direction);
+//			}
+//			int index = (Integer) currentFocused.getTag();
+//			if(index < mContainer.getChildCount()-1){
+//				return super.arrowScroll(direction);
+//			} else {
+//				//if currentFocused is the last element of the list. just do nothing.
+//				return true;
+//			}
+//		} else if(direction==View.FOCUS_LEFT){
+//			View currentFocused = findFocus();
+//			if(currentFocused==null || currentFocused.getTag()==null) {
+//				return super.arrowScroll(direction);
+//			}
+//			int index = (Integer) currentFocused.getTag();
+//			if(index > 0 ){
+//				return super.arrowScroll(direction);
+//			} else {
+//				//if currentFocused is the last element of the list. just do nothing.
+//				return true;
+//			}
+//		} else {
+//			return super.arrowScroll(direction);
+//		}
+//	}
+	public View left;
+	public View right;	
+    public boolean arrowScroll(int direction) {
+    	 
+    	    final int maxJump = getMaxScrollAmount();
+            int scrollDelta = maxJump;
+
+            if (direction == View.FOCUS_LEFT) {
+            	
+            	if(getScrollX() < scrollDelta){
+            		left.setVisibility(View.INVISIBLE);
+                    scrollDelta = getScrollX();
+            	}
+            	else if(getScrollX()==scrollDelta){
+            		left.setVisibility(View.INVISIBLE);
+            		right.setVisibility(View.VISIBLE);
+            	}
+            }
+            else if (direction == View.FOCUS_RIGHT && getChildCount() > 0) {
+
+                int daRight = getChildAt(0).getRight();
+
+                int screenRight = getScrollX() + getWidth();
+
+                if (daRight - screenRight < maxJump) {
+                	right.setVisibility(View.INVISIBLE);
+                    scrollDelta = daRight - screenRight;
+                }
+                else{
+                	left.setVisibility(View.VISIBLE);
+                }
+            }
+            if (scrollDelta == 0) {
+                return false;
+            }
+            doScrollX(direction == View.FOCUS_RIGHT ? scrollDelta : -scrollDelta);
+        
+        return true;
+    }
+    /**
+     * @return whether the descendant of this scroll view is scrolled off
+     *  screen.
+     */
+    private boolean isOffScreen(View descendant) {
+        return !isWithinDeltaOfScreen(descendant, 0);
+    }
 	/**
      * @return whether the descendant of this scroll view is within delta
      *  pixels of being on the screen.
@@ -403,7 +451,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 	/*
 	 * use to change the mSelectPosition.
 	 */
-	private void changeSelection(int position) {
+	public void changeSelection(int position) {
 		if(position < 0 || position >= mContainer.getChildCount()) {
 			return;
 		}
