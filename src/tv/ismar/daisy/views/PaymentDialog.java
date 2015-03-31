@@ -49,7 +49,7 @@ public class PaymentDialog extends Dialog {
 	private static final int REFRESH_PAY_STATUS = 0x10;
 	private static final int SETQRCODE_VIEW = 0x11;
 	private static final int PURCHASE_CHECK_RESULT = 0x12;
-	private static final int ORDER_CHECK_INTERVAL = 0x13;
+	private static final int ORDER_CHECK_INTERVAL = 10000;
 	private static final int LOGIN_SUCESS = 0x14;
 	private Context mycontext;
 	private int width;
