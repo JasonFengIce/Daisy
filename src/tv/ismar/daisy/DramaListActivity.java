@@ -388,7 +388,7 @@ public class DramaListActivity extends Activity implements
 					}
 				} catch (JSONException e) {
 					try {
-						remainDay = Util.daysBetween(currentDayString, info);
+						remainDay = Util.daysBetween(currentDayString, info.replace("\"", ""));
 						for (Item item : mList) {
 							item.remainDay = remainDay+1;
 						}
