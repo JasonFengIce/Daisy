@@ -1,6 +1,7 @@
 package tv.ismar.daisy.ui.widget;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -37,14 +38,23 @@ public class ContainerLayout extends RelativeLayout {
         super.onHoverChanged(true);
         if (hovered) {
             requestFocus();
+
+        } else {
+            clearFocus();
+        }
+    }
+
+
+    @Override
+    protected void onFocusChanged(boolean gainFocus, int direction, Rect previouslyFocusedRect) {
+        if (gainFocus) {
             if (null == itemHoverListener) {
                 Log.e(TAG, "itemHoverListener  not be null");
             } else {
                 itemHoverListener.onItemHover(this);
             }
-        } else {
-            clearFocus();
         }
+        super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
     }
 
     @Override
