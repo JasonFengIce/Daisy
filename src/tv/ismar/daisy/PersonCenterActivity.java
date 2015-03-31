@@ -90,8 +90,6 @@ public class PersonCenterActivity extends Activity implements View.OnClickListen
         	loadDataLoginOut();
         	mPersoninfoLayout.setVisibility(View.VISIBLE);
         	login_layout.setVisibility(View.GONE);
-        	login_or_out_btn.setFocusable(true);
-        	login_or_out_btn.requestFocus();
         	isLogin = false;
         }
         else{
@@ -426,7 +424,7 @@ public class PersonCenterActivity extends Activity implements View.OnClickListen
         exitPopupWindow.setFocusable(true);
         exitPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
         TextView promt =(TextView) contentView.findViewById(R.id.prompt_txt);
-        promt.setText("您是否确定退出登录界面");
+        promt.setText("您是否确定退出当前账户");
         Button confirmExit = (Button) contentView.findViewById(R.id.confirm_exit);
         Button cancelExit = (Button) contentView.findViewById(R.id.cancel_exit);
 
@@ -441,6 +439,7 @@ public class PersonCenterActivity extends Activity implements View.OnClickListen
 				SimpleRestClient.mobile_number = "";
 				DaisyUtils.getVodApplication(PersonCenterActivity.this).getEditor().putString(VodApplication.AUTH_TOKEN, "");
 				DaisyUtils.getVodApplication(PersonCenterActivity.this).getEditor().putString(VodApplication.MOBILE_NUMBER, "");
+				DaisyUtils.getVodApplication(PersonCenterActivity.this).save();
 				loadDataLoginOut();
 				isLogin = false;
 				login_or_out_btn.setEnabled(true);

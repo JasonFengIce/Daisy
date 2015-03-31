@@ -3,13 +3,10 @@ package tv.ismar.daisy;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.sakuratya.horizontal.ui.ZGridView;
-
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.NetworkUtils;
@@ -17,7 +14,6 @@ import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
-import tv.ismar.daisy.models.Expense;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.AsyncImageView;
@@ -71,6 +67,7 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 	private DialogInterface.OnClickListener mNegativeListener;
 	private int remainDay = -1;
 	private ImageView isbuy_label;
+	private ImageView mDetailQualityLabel;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -94,6 +91,7 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
         dialog.show();
 	}
 	private void initView(){
+		mDetailQualityLabel = (ImageView)findViewById(R.id.quality_label);
 		isbuy_label = (ImageView)findViewById(R.id.isbuy_label);
 		detail_left_container = (RelativeLayout)findViewById(R.id.detail_left_container);
 		detail_right_container = (LinearLayout)findViewById(R.id.detail_right_container);
@@ -383,7 +381,6 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 		ArrayList<Item> items;
 		ArrayList<Item> tmpItems;
 		Context mContext;
-		private HashSet<AsyncImageView> mAsyncImageList = new HashSet<AsyncImageView>();
 		public ItemAdapter(Context context,ArrayList<Item> dataItems){
 			this.tmpItems = dataItems;
 			int count = 0;
@@ -446,7 +443,6 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 		if(item!=null){
 			Intent intent = new Intent();
 			if(item.is_complex) {
-				Expense f = item.expense;
 				intent.setAction("tv.ismar.daisy.Item");
 				intent.putExtra("url", item.url);
 				startActivity(intent);
@@ -523,12 +519,31 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 		}
 		dialog.show();
 	}
-
+//private void  setquality(Item item){
+//	switch (item.quality) {
+//	case 3:
+//		mDetailQualityLabel.setImageResource(R.drawable.label_uhd);
+//		break;
+//	case 4:
+//	case 5:
+//		mDetailQualityLabel.setImageResource(R.drawable.label_hd);
+//		break;
+//	default:
+//		mDetailQualityLabel.setVisibility(View.GONE);
+//	}
+//}
 	private PaymentDialog.OrderResultListener ordercheckListener = new PaymentDialog.OrderResultListener() {
 
 		@Override
 		public void payResult(boolean result) {
-			
+			if(result==true){
+				vod_payment_duration.setText("剩余"+mItem.expense.duration+"天");
+				vod_payment_price.setText("已付费");
+				vod_payment_duration.setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
+				vod_payment_price.setBackgroundResource(R.drawable.vod_detail_already_payment_price);
+				vod_payment_buyButton.setEnabled(false);
+				isbuy_label.setVisibility(View.VISIBLE);
+			}
 		}
 
 	};

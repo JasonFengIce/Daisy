@@ -268,7 +268,7 @@
     <dimen name="related_view_list_marginleft">139dip</dimen>
     <dimen name="related_view_list_margintop">5dip</dimen>
     <dimen name="related_view_list_marginright">139dip</dimen>
-    <dimen name="related_view_list_horizontalspacing">81dip</dimen>
+    <dimen name="related_view_list_horizontalspacing">21dip</dimen>
     <dimen name="related_view_list_verticalspacing">5dip</dimen>
     <dimen name="related_view_list_columnwidth">348dip</dimen>
     <dimen name="related_view_title_marginTop">15dip</dimen>
@@ -374,17 +374,17 @@
     <dimen name="search_gridview_item_btn_type_W">105dip</dimen>
     <dimen name="search_gridview_item_btn_type_H">55dip</dimen>
     <dimen name="search_gridview_item_btn_type_marginL">-20dip</dimen>
-    <dimen name="search_gridview_item_btn_type_marginB">-5dip</dimen>
+    <dimen name="search_gridview_item_btn_type_marginB">-17dip</dimen>
     <dimen name="search_gridview_item_btn_type_textsize">20dip</dimen>
     <dimen name="search_gridview_item_text_marginL">6dip</dimen>
-    <dimen name="search_gridview_item_text_marginT">-5dip</dimen>
+    <dimen name="search_gridview_item_text_marginT">2dip</dimen>
     <dimen name="search_gridview_item_text_marginR">6dip</dimen>
     <dimen name="search_gridview_item_text_size">28sp</dimen>
-    <dimen name="search_gridview_item_label_marginR">-2dip</dimen>
-    <dimen name="search_gridview_item_label_marginT">11dip</dimen>
+    <dimen name="search_gridview_item_label_marginR">1dip</dimen>
+    <dimen name="search_gridview_item_label_marginT">1dip</dimen>
     <dimen name="search_gridview_item_label_W">71dip</dimen>
     <dimen name="search_gridview_item_label_H">72dip</dimen>
-    <dimen name="search_btnHotWords_PLR">15dip</dimen>
+    <dimen name="search_btnHotWords_PLR">17dip</dimen>
     <dimen name="search_btnHotWords_textsize">30sp</dimen>
     <!-- channel_section_tabs -->
     <dimen name="channel_section_tabs_W">300dip</dimen>
@@ -412,9 +412,9 @@
     <dimen name="ZGridView_played_selectorBottomPadding">-33dip</dimen>
     
     <dimen name="ZGridView_search_selectorLeftPadding">7dip</dimen>
-    <dimen name="ZGridView_search_selectorTopPadding">9dip</dimen>
+    <dimen name="ZGridView_search_selectorTopPadding">19dip</dimen>
     <dimen name="ZGridView_search_selectorRight">20dip</dimen>
-    <dimen name="ZGridView_search_selectorBottom">-27dip</dimen>
+    <dimen name="ZGridView_search_selectorBottom">-70dip</dimen>
     
     <dimen name="ZGridView_packagedetail_selectorLeftPadding">2dip</dimen>
     <dimen name="ZGridView_packagedetail_selectorTopPadding">0dip</dimen>

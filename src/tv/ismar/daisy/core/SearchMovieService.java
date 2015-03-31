@@ -57,7 +57,8 @@ public class SearchMovieService {
 		String jsonString = null;
 		List<String> listHotWords = new ArrayList<String>();
 		try {
-			jsonString = HttpUtil.getJsonByGet(HttpUtil.spliceHotwordsURL());
+			//jsonString = HttpUtil.getJsonByGet(HttpUtil.spliceHotwordsURL());
+			jsonString = NetworkUtils.getJsonStr(HttpUtil.spliceHotwordsURL());
 			listHotWords = JsonSearch.parseHotWords(jsonString);
 		} catch (Exception e) {
 			e.printStackTrace();

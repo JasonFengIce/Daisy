@@ -5,8 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.sakuratya.horizontal.ui.HGridView;
 import org.sakuratya.horizontal.ui.ZGridView;
 import tv.ismar.daisy.adapter.ImageCacheAdapter;
+import tv.ismar.daisy.adapter.SearchAdapter;
 import tv.ismar.daisy.core.ConnectionHelper;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
@@ -49,10 +52,10 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	// 搜索
 	ImageButton ibtnSearch;
 	// 缓存适配器android:minSdkVersion
-	ImageCacheAdapter imageAdapter;
+	SearchAdapter imageAdapter;
 	// CacheAdapter cacheAdapter;
 	// ViewHolderAdapter holderAdapter;
-	ZGridView gridView;
+	HGridView gridView;
 	// 搜索结果数
 	TextView tvSearchCount;
 	// 搜索结果linear
@@ -174,11 +177,12 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	}
 //-partition-size 2048 -
 	public void initViews() {
-		gridView = (ZGridView) findViewById(R.id.serarc_gridview);
+		View ff = (View)findViewById(R.id.serarc_gridview);
+		gridView = (HGridView) ff.findViewById(R.id.serarc_gridview);
 		//gridView.setNumColumns(6);
 	//	gridView.setVerticalSpacing(5);
 		gridView.setOnItemClickListener(SearchActivity.this);
-		imageAdapter = new ImageCacheAdapter(SearchActivity.this, R.layout.search_grid_view_item);
+		imageAdapter = new SearchAdapter(SearchActivity.this, R.layout.search_grid_view_item);
 		ibtnSearch = (ImageButton) findViewById(R.id.ibtn_search);
 		ibtnSearch.setOnClickListener(this);
 		tvSearchCount = (TextView) findViewById(R.id.tv_search_count);
@@ -378,9 +382,9 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	 */
 	private void setImageAdapter(List<MovieBean> movieList) {
 		imageAdapter.cancelAsync();
-		imageAdapter = new ImageCacheAdapter(SearchActivity.this, movieList, R.layout.search_grid_view_item);
+		imageAdapter = new SearchAdapter(SearchActivity.this, movieList, R.layout.search_grid_view_item);
 		gridView.setAdapter(imageAdapter);
-		//imageAdapter.setList((ArrayList<MovieBean>) movieList);
+		imageAdapter.setList((ArrayList<MovieBean>) movieList);
 		gridView.setFocusable(true);
 	};
 	/**

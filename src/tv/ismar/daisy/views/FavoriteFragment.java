@@ -615,35 +615,51 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			@Override
 			public void run() {
 				super.run();
-				StringBuffer content = new StringBuffer();
-				try {
-					URL getUrl = new URL(SimpleRestClient.root_url
-							+ "/api/tv/section/tvhome/"+"?device_token="+SimpleRestClient.device_token);
-					HttpURLConnection connection = (HttpURLConnection) getUrl
-							.openConnection();
-					connection.setReadTimeout(9000);
-					connection.connect();
-					BufferedReader reader = new BufferedReader(
-							new InputStreamReader(connection.getInputStream(),"UTF-8"));
-					String lines;
-					while ((lines = reader.readLine()) != null) {
-						content.append(lines);
-					}
-					Message message = new Message();
-					Bundle data = new Bundle();
-					data.putString("content", content.toString());
-					message.setData(data);
-					mainHandler.sendMessage(message);
-				} catch (MalformedURLException e) {
-					recommend_txt.setVisibility(View.INVISIBLE);
-					if (e != null)
-						System.err.println(e.getMessage());
-				} catch (IOException e) {
-					recommend_txt.setVisibility(View.INVISIBLE);
-					if (e != null)
-						System.err.println(e.getMessage());
-				}
-			}
+				String content ="";
+			
+//					URL getUrl = new URL(SimpleRestClient.root_url
+//							+ "/api/tv/section/tvhome/"+"?device_token="+SimpleRestClient.device_token);
+//					HttpURLConnection connection = (HttpURLConnection) getUrl
+//							.openConnection();
+//					//connection.setIfModifiedSince(System.currentTimeMillis());
+//					connection.setReadTimeout(9000);
+//					connection.connect();
+//					int status = connection.getResponseCode();
+//					if(status==200){
+//						BufferedReader reader = new BufferedReader(
+//								new InputStreamReader(connection.getInputStream(),"UTF-8"));				
+//						String lines;
+//						while ((lines = reader.readLine()) != null) {
+//							content.append(lines);
+//						}
+						
+						try {
+							content = NetworkUtils.getJsonStr(SimpleRestClient.root_url+"/api/tv/section/tvhome/");
+							Message message = new Message();
+							Bundle data = new Bundle();
+							data.putString("content", content);
+							DaisyUtils.getVodApplication(getActivity()).getEditor().putString("recommend", content.toString());
+							message.setData(data);
+							mainHandler.sendMessage(message);
+						} catch (ItemOfflineException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (NetworkException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+					
+//					else if(status==304){
+//						String info = DaisyUtils.getVodApplication(getActivity()).getPreferences().getString("recommend", "");
+//						Message message = new Message();
+//						Bundle data = new Bundle();
+//						data.putString("content", info);
+//						message.setData(data);
+//						mainHandler.sendMessage(message);
+//					}
+				} 
+			
 
 		}.start();
 	}

@@ -151,6 +151,8 @@ public class ItemDetailActivity extends Activity implements
 		mMiddleBtn.setOnClickListener(mIdOnClickListener);
 		mRightBtn.setOnClickListener(mIdOnClickListener);
 		mMoreContent.setOnClickListener(mIdOnClickListener);
+		//mLeftBtn.setPressed(true);
+	
 		// mBtnFavorite.setOnClickListener(mIdOnClickListener);
 		// mBtnFillBuy.setOnClickListener(mIdOnClickListener);
 	}
@@ -945,6 +947,7 @@ private boolean isPause = false;
 						intent.setClass(ItemDetailActivity.this,
 								DramaListActivity.class);
 						intent.putExtra("item", mItem);
+						startActivityForResult(intent, 11);
 						startActivity(intent);
 					}
 					break;
@@ -1125,8 +1128,8 @@ private boolean isPause = false;
 				mCollectBtn = mRightBtn;
 			} else {
 				// 已经购买
-				isbuy_label.setVisibility(View.VISIBLE);
-				mDetailQualityLabel.setVisibility(View.GONE);
+				//isbuy_label.setVisibility(View.VISIBLE);
+				//mDetailQualityLabel.setVisibility(View.GONE);
 				if (!isDrama()) {
 					// 电影
 					mLeftBtn.setBackgroundResource(R.drawable.play_btn_bg_selector);
@@ -1146,7 +1149,7 @@ private boolean isPause = false;
 					mMiddleBtn.setTag(COLLECT_VIDEO);
 					mRightBtn
 							.setBackgroundResource(R.drawable.drama_btn_bg_selector);
-					mRightBtn.setTag(COLLECT_VIDEO);
+					mRightBtn.setTag(DRAMA_VIDEO);
 				}
 				detail_price_txt.setText("已付费");
 				detail_duration_txt.setText("剩余" + remainDay + "天");
@@ -1165,8 +1168,10 @@ private boolean isPause = false;
 
 		@Override
 		public void payResult(boolean result) {
-			isBuy = result;
-			setExpenseStatus();
+			if(result){
+				 isBuy = true;
+			     setExpenseStatus();
+			}
 		}
 
 	};
@@ -1225,5 +1230,17 @@ private boolean isPause = false;
 //						R.string.vod_bookmark_add_unsuccess));
 			}
 		});
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		if(resultCode==20){
+			if(data.getBooleanExtra("result", false)){
+				isBuy = true;
+				setExpenseStatus();
+			}
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 }
