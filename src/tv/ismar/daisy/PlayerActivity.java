@@ -1357,7 +1357,18 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 
 	public void showPopupDialog(int type, String msg) {
 		if (type == DIALOG_OK_CANCEL) {
-			popupDlg = new Dialog(this, R.style.PopupDialog);
+			popupDlg = new Dialog(this, R.style.PopupDialog) {
+				@Override
+				public void onBackPressed() {
+					super.onBackPressed();
+					if (paused) {
+						resumeItem();
+						playPauseImage
+								.setImageResource(R.drawable.vod_pausebtn_selector);
+					}
+				}
+
+			};
 			View view;
 			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			view = inflater.inflate(R.layout.popup_2btn, null);
@@ -2113,7 +2124,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 	            Log.d(TAG, "install vod service invoke...");
 	        try {
 	          ApplicationInfo applicationInfo =  getPackageManager().getApplicationInfo(
-	                    "com.ismartv.android.vod.service", 0);
+	                    "cn.ismartv.speedtester", 0);
 	            if(null!= applicationInfo){
 	                Intent intent = new Intent();
 	                intent.setClassName("cn.ismartv.speedtester", "cn.ismartv.speedtester.ui.activity.MenuActivity");

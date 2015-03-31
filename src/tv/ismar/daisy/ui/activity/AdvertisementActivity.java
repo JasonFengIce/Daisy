@@ -178,7 +178,7 @@ public class AdvertisementActivity extends Activity {
                     File temfileName = new File(cacheDir.getAbsolutePath(), apkName);
                     if (!temfileName.exists())
                         temfileName.createNewFile();
-                    FileOutputStream fout = context.openFileOutput(apkName, Context.MODE_WORLD_READABLE);
+                    FileOutputStream fout = context.openFileOutput(apkName, Context.MODE_WORLD_READABLE|Context.MODE_WORLD_WRITEABLE);
                     fout.write(imgdata);
                     fout.flush();
                     fout.close();

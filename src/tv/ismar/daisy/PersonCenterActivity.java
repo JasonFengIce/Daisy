@@ -583,7 +583,7 @@ public class PersonCenterActivity extends Activity implements View.OnClickListen
             Log.d(TAG, "install vod service invoke...");
         try {
           ApplicationInfo applicationInfo =  getPackageManager().getApplicationInfo(
-                    "com.ismartv.android.vod.service", 0);
+                    "cn.ismartv.speedtester", 0);
             if(null!= applicationInfo){
                 Intent intent = new Intent();
                 intent.setClassName("cn.ismartv.speedtester", "cn.ismartv.speedtester.ui.activity.MenuActivity");
