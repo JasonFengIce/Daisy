@@ -900,7 +900,7 @@ private boolean isPause = false;
 					if (identify.equals(PREVIEW_VIDEO)) {
 						// 预告
 						if(isDrama()){
-							tool.initClipInfo(subUrl, InitPlayerTool.FLAG_URL);
+							tool.initClipInfo(mItem.subitems[0].url, InitPlayerTool.FLAG_URL);
 						}
 						else{
 							tool.initClipInfo(mItem, InitPlayerTool.FLAG_ITEM, true);

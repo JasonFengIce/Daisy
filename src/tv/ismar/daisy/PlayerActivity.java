@@ -875,8 +875,8 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 				// Log.d(TAG,
 				// "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
 				if (mVideoView.isPlaying()
-						&& Math.abs(mVideoView.getCurrentPosition()
-								- seekPostion) > 0) {
+						&& (live_video ||Math.abs(mVideoView.getCurrentPosition()
+								- seekPostion) > 0)) {
 					// if (isBuffer || bufferLayout.isShown()) {
 					// //isBuffer = false;
 					// //hideBuffer();
