@@ -192,26 +192,43 @@ public class HGridView extends AdapterView<HGridAdapter> {
 @Override
 protected boolean dispatchHoverEvent(MotionEvent event) {
 	// TODO Auto-generated method stub
-switch (event.getAction()) {
-case MotionEvent.ACTION_HOVER_ENTER:
+//switch (event.getAction()) {
+//case MotionEvent.ACTION_HOVER_ENTER:
+//
+//	break;
+//case MotionEvent.ACTION_HOVER_MOVE:  //鼠标在view上 
+//	int position1 = pointToPosition((int) event.getX(), (int) event.getY());
+//	if(position1>=0){
+//		setFocusable(true);
+//	    requestFocus();
+//	    hover = true;
+//		setSelection(position1);	
+//	}
+//	 hover = true;
+//    break; 
+//case MotionEvent.ACTION_HOVER_EXIT:  //鼠标离开view 
+//	 hover = false;
+//	 clearFocus();
+//    break; 
+//}
+//   return false;    
+	int position = pointToPosition((int) event.getX(), (int) event.getY());
 
-	break;
-case MotionEvent.ACTION_HOVER_MOVE:  //鼠标在view上 
-	int position1 = pointToPosition((int) event.getX(), (int) event.getY());
-	if(position1>=0){
+	if ((event.getAction() == MotionEvent.ACTION_HOVER_ENTER && position != -1)
+			|| (event.getAction() == MotionEvent.ACTION_HOVER_MOVE && position != -1)) {
+		hover = true;
+		setFocusableInTouchMode(true);
 		setFocusable(true);
-	    requestFocus();
-	    hover = true;
-		setSelection(position1);	
+		requestFocusFromTouch();
+		requestFocus();
+		 setSelection(position);
+
+	} else {
+		hover = false;
+		clearFocus();
+
 	}
-	 hover = true;
-    break; 
-case MotionEvent.ACTION_HOVER_EXIT:  //鼠标离开view 
-	 hover = false;
-	 clearFocus();
-    break; 
-}
-   return false;    
+	return true;
 }
 	private float mLastMotionX;
 	private int TOUCH_STATE = -1;
