@@ -91,7 +91,7 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
         dialog.show();
 	}
 	private void initView(){
-		mDetailQualityLabel = (ImageView)findViewById(R.id.quality_label);
+		//mDetailQualityLabel = (ImageView)findViewById(R.id.quality_label);
 		isbuy_label = (ImageView)findViewById(R.id.isbuy_label);
 		detail_left_container = (RelativeLayout)findViewById(R.id.detail_left_container);
 		detail_right_container = (LinearLayout)findViewById(R.id.detail_right_container);
