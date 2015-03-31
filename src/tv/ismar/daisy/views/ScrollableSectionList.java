@@ -368,7 +368,9 @@ public class ScrollableSectionList extends HorizontalScrollView {
 	public View left;
 	public View right;	
     public boolean arrowScroll(int direction) {
-    	 
+    	   if(right==null || left == null){
+    		   return true;
+    	   }
     	    final int maxJump = getMaxScrollAmount();
             int scrollDelta = maxJump;
 

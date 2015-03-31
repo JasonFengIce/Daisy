@@ -1821,7 +1821,8 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 			if (mVideoView != null) {
 				mVideoView.setAlpha(0);
 			}
-			if (payedItemspk.contains(id)) {
+
+			if (payedItemspk.contains(id) || item.expense == null) {
 				isBuffer = true;
 				showBuffer();
 				new ItemByUrlTask().execute();

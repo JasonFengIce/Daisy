@@ -843,7 +843,7 @@ private boolean isPause = false;
 		mDataCollectionProperties.put("to", "list");
 		intent.setClass(ItemDetailActivity.this, DramaListActivity.class);
 		intent.putExtra("item", mItem);
-		startActivity(intent);
+		startActivityForResult(intent, 20);
 	}
 
 	private OnClickListener mIdOnClickListener = new OnClickListener() {
