@@ -11,7 +11,7 @@ import tv.ismar.daisy.models.Item;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-
+import android.app.Activity;
 public class InitPlayerTool {
     Context mContext;
     Intent intent;
@@ -50,7 +50,10 @@ public class InitPlayerTool {
 				intent.putExtra("ismartv", ismartv);
 			}
 			if(!"".equals(result))
-				mContext.startActivity(intent);
+				if(!mIsPreviewVideo)
+				   mContext.startActivity(intent);
+				else
+			       ((Activity)mContext).startActivityForResult(intent, 100);
 			if(mListener!=null)
 				mListener.onPostExecute();	
 		}

@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.FocusFinder;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -381,6 +382,9 @@ public class ScrollableSectionList extends HorizontalScrollView {
             		left.setVisibility(View.INVISIBLE);
             		right.setVisibility(View.VISIBLE);
             	}
+            	else{
+            		right.setVisibility(View.VISIBLE);
+            	}
             }
             else if (direction == View.FOCUS_RIGHT && getChildCount() > 0) {
 
@@ -514,7 +518,11 @@ public class ScrollableSectionList extends HorizontalScrollView {
 //		}
 		
 	}
-	
+	@Override
+	public boolean onTouchEvent(MotionEvent ev) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	public void reset() {
 		removeAllViews();
 	}

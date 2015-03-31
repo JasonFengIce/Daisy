@@ -125,7 +125,7 @@ public class LoginPanelView extends LinearLayout {
 								// TODO Auto-generated method stub
 								callback.onFailed(error);
 								//count_tip.setText(error);
-								setcount_tipText(error);
+								setcount_tipText("登录失败");
 							}
 					
 				});
