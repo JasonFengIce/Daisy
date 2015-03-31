@@ -715,6 +715,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 								public void onCompletion(SmartPlayer mp) {
 									Log.d(TAG, "mVideoView  Completion");
 									if (item.isPreview) {
+										mVideoView.stopPlayback();
 										PaymentDialog dialog = new PaymentDialog(
 												PlayerActivity.this,
 												R.style.PaymentDialog,
@@ -1277,15 +1278,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 					net = "yes";
 				} else {
 					net = "no";
-				}
-				if (itemUrl != null
-						&& favoriteManager != null
-						&& favoriteManager.getFavoriteByUrl(itemUrl, net) != null) {
-					menu.findItem(5)
-							.setTitle(
-									getResources()
-											.getString(
-													R.string.vod_bookmark_remove_bookmark_setting));
 				}
 				if (onVodMenuOpened(menu)) {
 					menu.show();

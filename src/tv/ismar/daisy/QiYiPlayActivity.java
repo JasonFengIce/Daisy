@@ -934,15 +934,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 				} else {
 					isnet = "no";
 				}
-				if (itemUrl != null
-						&& favoriteManager != null
-						&& favoriteManager.getFavoriteByUrl(itemUrl, isnet) != null) {
-					menu.findItem(5)
-							.setTitle(
-									getResources()
-											.getString(
-													R.string.vod_bookmark_remove_bookmark_setting));
-				}
 				if (onVodMenuOpened(menu)) {
 					menu.show();
 					hideMenuHandler.postDelayed(hideMenuRunnable, 60000);

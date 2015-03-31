@@ -44,13 +44,13 @@ public class PaymentDialog extends Dialog {
 	private static final String BALANCEPAY_BASE_URL = "/api/order/create/";
 	private static final String GETBALANCE_BASE_URL = "/accounts/balance/";
 	private static final String CARDRECHARGE_BASE_URL = "https://order.tvxio.com/api/pay/verify/";
-	public static final String  PURCHASE_CHECK_BASE_URL = "/api/order/purchase/";
+	public static final String PURCHASE_CHECK_BASE_URL = "/api/order/purchase/";
 
 	private static final int REFRESH_PAY_STATUS = 0x10;
 	private static final int SETQRCODE_VIEW = 0x11;
 	private static final int PURCHASE_CHECK_RESULT = 0x12;
-	private static final int ORDER_CHECK_INTERVAL = 10000;
-
+	private static final int ORDER_CHECK_INTERVAL = 0x13;
+	private static final int LOGIN_SUCESS = 0x14;
 	private Context mycontext;
 	private int width;
 	private int height;
@@ -113,6 +113,16 @@ public class PaymentDialog extends Dialog {
 
 	@Override
 	public void dismiss() {
+		if (urlHandler.hasMessages(ORDER_CHECK_INTERVAL))
+			urlHandler.removeMessages(ORDER_CHECK_INTERVAL);
+		if (urlHandler.hasMessages(PURCHASE_CHECK_RESULT))
+			urlHandler.removeMessages(PURCHASE_CHECK_RESULT);
+		if (urlHandler.hasMessages(SETQRCODE_VIEW))
+			urlHandler.removeMessages(SETQRCODE_VIEW);
+		if (urlHandler.hasMessages(REFRESH_PAY_STATUS))
+			urlHandler.removeMessages(REFRESH_PAY_STATUS);
+		if (urlHandler.hasMessages(LOGIN_SUCESS))
+			urlHandler.removeMessages(LOGIN_SUCESS);
 		super.dismiss();
 
 	}
@@ -282,14 +292,6 @@ public class PaymentDialog extends Dialog {
 				break;
 			}
 			case REFRESH_PAY_STATUS: {
-				if (urlHandler.hasMessages(ORDER_CHECK_INTERVAL))
-					urlHandler.removeMessages(ORDER_CHECK_INTERVAL);
-				if (urlHandler.hasMessages(PURCHASE_CHECK_RESULT))
-					urlHandler.removeMessages(PURCHASE_CHECK_RESULT);
-				if (urlHandler.hasMessages(SETQRCODE_VIEW))
-					urlHandler.removeMessages(SETQRCODE_VIEW);
-				if (urlHandler.hasMessages(REFRESH_PAY_STATUS))
-					urlHandler.removeMessages(REFRESH_PAY_STATUS);
 				paylistener.payResult(true);
 				dismiss();
 				break;
@@ -297,6 +299,14 @@ public class PaymentDialog extends Dialog {
 			case PURCHASE_CHECK_RESULT: {
 				purchaseCheck();
 				break;
+			}
+			case LOGIN_SUCESS: {
+				welocome_tip.setVisibility(View.VISIBLE);
+				top_login_panel.setVisibility(View.GONE);
+				String welocome = mycontext.getResources().getString(
+						R.string.welocome_tip);
+				welocome_tip.setText(String.format(welocome,
+						SimpleRestClient.mobile_number));
 			}
 			}
 		}
@@ -632,6 +642,7 @@ public class PaymentDialog extends Dialog {
 
 		@Override
 		public void onSuccess(String info) {
+			urlHandler.sendEmptyMessage(LOGIN_SUCESS);
 			getBalanceByToken();
 		}
 
@@ -641,18 +652,19 @@ public class PaymentDialog extends Dialog {
 
 	};
 
-	private void doCancel(){
+	private void doCancel() {
 		paylistener.payResult(false);
-		if (urlHandler.hasMessages(ORDER_CHECK_INTERVAL))
-			urlHandler.removeMessages(ORDER_CHECK_INTERVAL);
-		if (urlHandler.hasMessages(PURCHASE_CHECK_RESULT))
-			urlHandler.removeMessages(PURCHASE_CHECK_RESULT);
-		if (urlHandler.hasMessages(SETQRCODE_VIEW))
-			urlHandler.removeMessages(SETQRCODE_VIEW);
-		if (urlHandler.hasMessages(REFRESH_PAY_STATUS))
-			urlHandler.removeMessages(REFRESH_PAY_STATUS);
+//		if (urlHandler.hasMessages(ORDER_CHECK_INTERVAL))
+//			urlHandler.removeMessages(ORDER_CHECK_INTERVAL);
+//		if (urlHandler.hasMessages(PURCHASE_CHECK_RESULT))
+//			urlHandler.removeMessages(PURCHASE_CHECK_RESULT);
+//		if (urlHandler.hasMessages(SETQRCODE_VIEW))
+//			urlHandler.removeMessages(SETQRCODE_VIEW);
+//		if (urlHandler.hasMessages(REFRESH_PAY_STATUS))
+//			urlHandler.removeMessages(REFRESH_PAY_STATUS);
 		dismiss();
 	}
+
 	public interface OrderResultListener {
 		public void payResult(boolean result);
 	}

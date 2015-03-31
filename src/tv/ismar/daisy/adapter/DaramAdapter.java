@@ -169,8 +169,10 @@ public class DaramAdapter extends BaseAdapter implements OnHoverListener,
 
 		@Override
 		public void payResult(boolean result) {
+			if(result){
 			subitem.remainDay = subitem.expense.duration;
 			DaramAdapter.this.notifyDataSetChanged();
+			}
 		}
 	};
 }
