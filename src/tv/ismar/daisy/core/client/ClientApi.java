@@ -45,6 +45,7 @@ public class ClientApi {
      * frontpage
      */
     public interface Frontpage {
+        @Headers({"Accpt: application/json", "Cache-Control: no-cache"})
         @GET("/api/tv/frontpage/")
         void excute(@Query("device_token") String deviceToken,
                     Callback<FrontPageEntity> callback
@@ -54,8 +55,8 @@ public class ClientApi {
     /**
      * linkedvideo
      */
-
     public interface Linkedvideo {
+        @Headers({"Accpt: application/json", "Cache-Control: no-cache"})
         @GET("/api/tv/linkedvideo/{video_id}/")
         void excute(
                 @Path("video_id") long videoId,
@@ -69,6 +70,7 @@ public class ClientApi {
      */
 
     public interface Channels {
+        @Headers({"Accpt: application/json", "Cache-Control: no-cache"})
         @GET("/api/tv/channels/")
         void excute(
                 @Query("device_token") String deviceToken,
@@ -80,6 +82,7 @@ public class ClientApi {
      * HorizontalGuide
      */
     public interface HorizontalGuide {
+        @Headers({"Accpt: application/json", "Cache-Control: no-cache"})
         @GET("/api/tv/section/tvhome/")
         void excute(
                 @Query("device_token") String deviceToken,

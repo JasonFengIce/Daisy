@@ -140,6 +140,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         activator.active(MANUFACTURE, KIND, VERSION);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     Dialog dialog = null;
     private DialogInterface.OnClickListener mPositiveListener;
     private DialogInterface.OnClickListener mNegativeListener;
@@ -275,14 +280,16 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         videoView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                for (AttributeEntity attributeEntity : attributeDatas) {
-                    if (videoView.getCurrentPosition() > attributeEntity.getStart_time() * 1000 &&
-                            videoView.getCurrentPosition() < attributeEntity.getEnd_time()*1000) {
-                        Intent intent = new Intent();
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.ItemDetailActivity");
-                        intent.putExtra("url", attributeEntity.getAttributes().getUrl());
-                        startActivity(intent);
+                if (attributeDatas != null) {
+                    for (AttributeEntity attributeEntity : attributeDatas) {
+                        if (videoView.getCurrentPosition() > attributeEntity.getStart_time() * 1000 &&
+                                videoView.getCurrentPosition() < attributeEntity.getEnd_time() * 1000) {
+                            Intent intent = new Intent();
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.ItemDetailActivity");
+                            intent.putExtra("url", attributeEntity.getAttributes().getUrl());
+                            startActivity(intent);
+                        }
                     }
                 }
             }
@@ -355,8 +362,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 mLocalDir = path + "/VideoCache";
             }
 
-              playvideo();
-          //  videoView.setVideoPath(mRemoteUrl);
+            playvideo();
+            //  videoView.setVideoPath(mRemoteUrl);
             videoView.start();
             videoView.setKeepScreenOn(true);
 
