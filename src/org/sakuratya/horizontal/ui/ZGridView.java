@@ -5195,13 +5195,14 @@ public class ZGridView extends AdapterView<ListAdapter> {
 				if(downbtn!=null&&upbtn!=null){
 					if(mFirstPosition==0){
 						upbtn.setVisibility(View.INVISIBLE);
+						downbtn.setVisibility(View.VISIBLE);
 						}
 						else if(mFirstPosition>0&&mFirstPosition+getChildCount()<mItemCount){
 						upbtn.setVisibility(View.VISIBLE);
 						downbtn.setVisibility(View.VISIBLE);
 						}
 						else if(mFirstPosition+getChildCount()==mItemCount){
-						//upbtn.setVisibility(View.VISIBLE);
+						upbtn.setVisibility(View.VISIBLE);
 						downbtn.setVisibility(View.INVISIBLE);
 						}
 				}

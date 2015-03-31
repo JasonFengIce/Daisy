@@ -4,6 +4,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.ImageUtils;
@@ -61,7 +65,7 @@ import android.widget.TextView;
 import com.ismartv.api.t.AccessProxy;
 import com.ismartv.bean.ClipInfo;
 import com.qiyi.video.player.QiyiVideoPlayer;
-
+import static tv.ismar.daisy.DramaListActivity.ORDER_CHECK_BASE_URL;
 public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 
 	@SuppressWarnings("unused")
@@ -123,6 +127,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 	private FavoriteManager favoriteManager;
 	private Favorite favorite;
 	private List<Item> listItems = new ArrayList<Item>();
+	private List<Integer> payedItemspk = new ArrayList<Integer>();
 	private int currNum = 0;
 	private int offsets = 0;
 	private int offn = 1;
@@ -140,7 +145,8 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 	private GestureDetector mGestureDetector; // 手势监测器
 	private boolean live_video = false;
 	private boolean isPreview = false;
-
+    private boolean orderAlldaram = false;
+    private boolean paystatus = false;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -359,7 +365,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 								+ item.item_pk + "/";
 						// Item item1 = simpleRestClient.getItem(itemUrl);
 					}
-
+					orderCheck();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -580,7 +586,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 //							isContinue = mHistory.is_continue;
 						}
 					} else {
-						if(!item.isPreview){
+						if(!isPreview){
 						tempOffset = 0;
 						isContinue = true;
 						}
@@ -596,7 +602,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 								+ titleText.getText() + "》");
 					}
 					new LogoImageTask().execute();
-
 				}
 
 				if (tempOffset > 0 && isContinue) {
@@ -1357,7 +1362,18 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 
 	public void showPopupDialog(int type, String msg) {
 		if (type == DIALOG_OK_CANCEL) {
-			popupDlg = new Dialog(this, R.style.PopupDialog);
+			popupDlg = new Dialog(this, R.style.PopupDialog) {
+				@Override
+				public void onBackPressed() {
+					super.onBackPressed();
+					if (paused) {
+						resumeItem();
+						playPauseImage
+								.setImageResource(R.drawable.vod_pausebtn_selector);
+					}
+				}
+
+			};
 			View view;
 			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			view = inflater.inflate(R.layout.popup_2btn, null);
@@ -1425,6 +1441,9 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 												+ e.toString());
 							}
 							mVideoView.stopPlayback();
+							 Intent data=new Intent();  
+					         data.putExtra("result", paystatus);
+					         setResult(20, data);
 							PlayerActivity.this.finish();
 						}
 					}
@@ -1578,7 +1597,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 
 	public boolean createMenu(ISTVVodMenu menu) {
 		ISTVVodMenuItem sub;
-		if ((item.preview == null || (subItem != null &&subItem.position !=0)) && listItems != null && listItems.size() > 0) {
+		if (listItems != null && listItems.size() > 0) {
 			sub = menu.addSubMenu(100,
 					getResources().getString(R.string.serie_switch));
 			for (Item i : listItems) {
@@ -1627,14 +1646,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 		if (panelShow) {
 			hidePanel();
 		}
-
-		// if (isContinue) {
-		// menu.findItem(8).select();
-		// menu.findItem(9).unselect();
-		// } else {
-		// menu.findItem(8).unselect();
-		// menu.findItem(9).select();
-		// }
 
 		return true;
 	}
@@ -1787,58 +1798,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 			}
 			return true;
 		}
-		if (id == 5) {
-			String isnet = "";
-			if (SimpleRestClient.isLogin()) {
-				isnet = "yes";
-			} else {
-				isnet = "no";
-			}
-			if (itemUrl != null && favoriteManager != null
-					&& favoriteManager.getFavoriteByUrl(itemUrl, isnet) != null) {
-				if (isnet.equals("yes")) {
-					deleteFavoriteByNet();
-				}
-				favoriteManager.deleteFavoriteByUrl(itemUrl, isnet);
-				menu.findItem(5).setTitle(
-						getResources().getString(
-								R.string.vod_player_bookmark_setting));
-			} else {
-				if (item != null && favoriteManager != null && itemUrl != null) {
-					favorite = new Favorite();
-					favorite.adlet_url = item.adlet_url;
-					favorite.content_model = item.content_model;
-					favorite.is_complex = item.is_complex;
-					favorite.title = item.title;
-					favorite.url = itemUrl;
-					favorite.isnet = isnet;
-					if (isnet.equals("yes")) {
-						createFavoriteByNet();
-					}
-					favoriteManager.addFavorite(favorite, isnet);
-					menu.findItem(5)
-							.setTitle(
-									getResources()
-											.getString(
-													R.string.vod_bookmark_remove_bookmark_setting));
-				}
-			}
-			return true;
-		}
-//		if (id == 6) {
-//			gotoRelatePage();
-//			return true;
-//		}
-//		if (id == 8) {
-//			isContinue = true;
-//			addHistory(seekPostion);
-//			return true;
-//		}
-//		if (id == 9) {
-//			isContinue = false;
-//			addHistory(seekPostion);
-//			return true;
-//		}
 
 		// 客服按钮
 		if (id == 20) {
@@ -1854,16 +1813,28 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 		}
 
 		if (id > 100) {
-			subItemUrl = simpleRestClient.root_url + "/api/subitem/" + id + "/";
+			subItemUrl = simpleRestClient.root_url + "/api/subitem/" + id
+					+ "/";
 			bundle.remove("url");
 			bundle.putString("url", subItemUrl);
 			addHistory(0);
 			if (mVideoView != null) {
 				mVideoView.setAlpha(0);
 			}
-			isBuffer = true;
-			showBuffer();
-			new ItemByUrlTask().execute();
+			if (payedItemspk.contains(id)) {
+				isBuffer = true;
+				showBuffer();
+				new ItemByUrlTask().execute();
+			}else{
+				PaymentDialog dialog = new PaymentDialog(
+						PlayerActivity.this,
+						R.style.PaymentDialog,
+						ordercheckListener);
+				item.model_name = "subitem";
+				item.pk = id;
+				dialog.setItem(item);
+				dialog.show();
+			}
 		}
 
 		return true;
@@ -2079,15 +2050,26 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 
 		@Override
 		public void payResult(boolean result) {
-			if(result){
-				if (mHistory != null) {
-					mHistory.last_position = item.preview.length * 1000;
+			if (item.subitems != null && item.expense != null) {
+				if (result) {
+					isBuffer = true;
+					showBuffer();
+					payedItemspk.add(item.pk);
+					new ItemByUrlTask().execute();
 				} else {
-					tempOffset = item.preview.length * 1000;
 				}
-			new ItemByUrlTask().execute();
-			}else{
-				PlayerActivity.this.finish();
+			} else {
+				if (result) {
+					if (mHistory != null) {
+						mHistory.last_position = item.preview.length * 1000;
+					} else {
+						tempOffset = item.preview.length * 1000;
+					}
+					paystatus = true;
+					new ItemByUrlTask().execute();
+				} else {
+					PlayerActivity.this.finish();
+				}
 			}
 		}
 	};
@@ -2113,7 +2095,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 	            Log.d(TAG, "install vod service invoke...");
 	        try {
 	          ApplicationInfo applicationInfo =  getPackageManager().getApplicationInfo(
-	                    "com.ismartv.android.vod.service", 0);
+	                    "cn.ismartv.speedtester", 0);
 	            if(null!= applicationInfo){
 	                Intent intent = new Intent();
 	                intent.setClassName("cn.ismartv.speedtester", "cn.ismartv.speedtester.ui.activity.MenuActivity");
@@ -2127,4 +2109,41 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 	            startActivity(intent);
 	        }
 	    }
+
+	private void orderCheck() {
+		SimpleRestClient client = new SimpleRestClient();
+		String typePara = "&item=" + item.pk;
+		client.doSendRequest(ORDER_CHECK_BASE_URL, "post", "device_token="
+				+ SimpleRestClient.device_token + "&access_token="
+				+ SimpleRestClient.access_token + typePara, orderCheck);
+	}
+
+	private HttpPostRequestInterface orderCheck = new HttpPostRequestInterface() {
+
+		@Override
+		public void onPrepare() {
+		}
+
+		@Override
+		public void onSuccess(String info) {
+			if (info != null && "0".equals(info)) {
+			} else {
+				try {
+					JSONArray array = new JSONArray(info);
+					for (int i = 0; i < array.length(); i++) {
+						JSONObject seria = array.getJSONObject(i);
+						int pk = seria.getInt("object_pk");
+						payedItemspk.add(pk);
+					}
+				} catch (JSONException e) {
+					orderAlldaram = true;
+				}
+			}
+		}
+
+		@Override
+		public void onFailed(String error) {
+
+		}
+	};
 }
