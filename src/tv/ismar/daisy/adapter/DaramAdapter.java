@@ -18,22 +18,21 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class DaramAdapter extends BaseAdapter implements OnHoverListener,OnFocusChangeListener{
+public class DaramAdapter extends BaseAdapter implements OnHoverListener,
+		OnFocusChangeListener {
 	Context mContext;
 	private List<Item> subitemlist;
 	private int sourceid;
 	private LayoutInflater mLayoutInflater;
 	private Item dramaItem;
-	private PaymentDialog.OrderResultListener ordercheckListener;
 	public TextView mTvDramaType;
+
 	public DaramAdapter(Context context, List<Item> subitemlist,
-			Item dramaitem,
-			PaymentDialog.OrderResultListener ordercheckListener, int sourceid) {
+			Item dramaitem, int sourceid) {
 		this.mContext = context;
 		this.subitemlist = subitemlist;
 		this.sourceid = sourceid;
 		this.dramaItem = dramaitem;
-		this.ordercheckListener = ordercheckListener;
 		this.mLayoutInflater = LayoutInflater.from(context);
 	}
 
@@ -69,6 +68,9 @@ public class DaramAdapter extends BaseAdapter implements OnHoverListener,OnFocus
 		if (subitem.remainDay > 0) {
 			holder.btnCount
 					.setBackgroundResource(R.drawable.daram_grid_payed_selector);
+		} else {
+			holder.btnCount
+					.setBackgroundResource(R.drawable.daram_grid_selector);
 		}
 		holder.btnCount.setText(String.valueOf(subitem.position + 1));
 		holder.btnCount.setTag(String.valueOf(position));
@@ -82,7 +84,7 @@ public class DaramAdapter extends BaseAdapter implements OnHoverListener,OnFocus
 				subitem = getItem(position);
 				if (dramaItem.expense != null && subitem.remainDay <= 0) {
 					PaymentDialog dialog = new PaymentDialog(mContext,
-							R.style.PaymentDialog, ordercheckListener);
+							R.style.PaymentDialog, innerordercheckListener);
 					subitem.model_name = "subitem";
 					subitem.expense = dramaItem.expense;
 					dialog.setItem(subitem);
@@ -113,9 +115,24 @@ public class DaramAdapter extends BaseAdapter implements OnHoverListener,OnFocus
 		int what = event.getAction();
 		switch (what) {
 		case MotionEvent.ACTION_HOVER_ENTER:
-			v.setBackgroundResource(R.drawable.daram_grid_selector);
+			// v.setBackgroundResource(R.drawable.daram_grid_selector);
+			// int position = Integer.parseInt((String) v.getTag());
+			// subitem = getItem(position);
+
 			int position = Integer.parseInt((String) v.getTag());
 			subitem = getItem(position);
+			if (dramaItem.expense != null && subitem.remainDay <= 0) {
+				v.setBackgroundResource(R.drawable.daram_grid_selector);
+			} else {
+				if (dramaItem.expense != null && subitem.remainDay > 0)
+					v.setBackgroundResource(R.drawable.daram_grid_payed_selector);
+				else {
+					v.setBackgroundResource(R.drawable.daram_grid_selector);
+				}
+			}
+			// 分类
+
+			mTvDramaType.setText(subitem.title);
 			// 分类
 			mTvDramaType.setText(subitem.title);
 			break;
@@ -126,15 +143,34 @@ public class DaramAdapter extends BaseAdapter implements OnHoverListener,OnFocus
 	@Override
 	public void onFocusChange(View v, boolean hasfocus) {
 		// TODO Auto-generated method stub
-		if(hasfocus){
-			v.setBackgroundResource(R.drawable.daram_grid_selector);
+		if (hasfocus) {
+
 			int position = Integer.parseInt((String) v.getTag());
 			subitem = getItem(position);
+			if (dramaItem.expense != null && subitem.remainDay <= 0) {
+				v.setBackgroundResource(R.drawable.daram_grid_selector);
+			} else {
+				if (dramaItem.expense != null && subitem.remainDay > 0)
+					v.setBackgroundResource(R.drawable.daram_grid_payed_selector);
+				else {
+					v.setBackgroundResource(R.drawable.daram_grid_selector);
+				}
+			}
 			// 分类
+
 			mTvDramaType.setText(subitem.title);
 		}
-//		else{
-//			v.setBackgroundResource(R.drawable.daram_grid_selector);
-//		}
+		// else{
+		// v.setBackgroundResource(R.drawable.daram_grid_selector);
+		// }
 	}
+
+	private PaymentDialog.OrderResultListener innerordercheckListener = new PaymentDialog.OrderResultListener() {
+
+		@Override
+		public void payResult(boolean result) {
+			subitem.remainDay = subitem.expense.duration;
+			DaramAdapter.this.notifyDataSetChanged();
+		}
+	};
 }
