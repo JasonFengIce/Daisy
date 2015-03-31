@@ -508,4 +508,7 @@
 
 <!-- personal center -->
 
+    <!-- list_view -->
+    <dimen name="list_view_search_H">60dip</dimen>
+    <dimen name="list_view_search_ML">1100dip</dimen>
 </resources>
