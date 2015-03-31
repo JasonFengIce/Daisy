@@ -182,6 +182,7 @@ public class PosterUpdateService extends Service {
         SharedPreferences preferences = getSharedPreferences("poster", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("end_time", timestamp.toString());
+        editor.apply();
     }
 
     private String getPosterDomain() {

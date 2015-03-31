@@ -1,5 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:daisy="http://schemas.android.com/apk/res/tv.ismar.daisy"
+              xmlns:daisy="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:background="#8803548d"
               android:layout_width="match_parent"

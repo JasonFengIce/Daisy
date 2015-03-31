@@ -42,7 +42,6 @@ public class Util {
 	
 	private static final int STRINGMAXLENGTH = 4;
 	
-	// �ж������Ƿ����ӳɹ�
 	public static boolean isNetConnected(Context context) {
 
 		boolean ret = false;

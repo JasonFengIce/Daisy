@@ -70,5 +70,4 @@
                 android:text="@string/update_method"
                 />
     </RelativeLayout>
-    s
 </RelativeLayout>

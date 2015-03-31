@@ -182,13 +182,13 @@
 
         </receiver>
 
-    </application>
+        <supports-screens
+                android:anyDensity="true"
+                android:largeScreens="true"
+                android:normalScreens="true"
+                android:resizeable="true"
+                android:smallScreens="true"/>
 
-    <supports-screens
-            android:anyDensity="true"
-            android:largeScreens="true"
-            android:normalScreens="true"
-            android:resizeable="true"
-            android:smallScreens="true"/>
+    </application>
 
 </manifest>

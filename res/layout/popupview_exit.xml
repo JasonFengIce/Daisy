@@ -28,6 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp">
             <Button
+                    style="?android:buttonBarButtonStyle"
                     android:layout_marginRight="30dp"
                     android:textSize="28sp"
                     android:text="@string/confirm"
@@ -38,6 +39,7 @@
                     android:background="@drawable/person_btn_selector"/>
 
             <Button
+                    style="?android:buttonBarButtonStyle"
                     android:layout_marginLeft="30dp"
                     android:textSize="28sp"
                     android:text="@string/cancel"

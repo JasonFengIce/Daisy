@@ -9,7 +9,7 @@
 <!--         android:layout_marginRight="@dimen/search_gridview_marginR" -->
 <!--         android:scrollbars="vertical" -->
 <!--         android:scrollbarDefaultDelayBeforeFade="60000" -->
-    
+
 <!--         android:verticalSpacing="@dimen/search_gridview_verticalspacing" -->
 <!--         android:horizontalSpacing="@dimen/related_view_list_horizontalspacing" -->
 <!--         android:numColumns="6" -->
@@ -45,18 +45,14 @@
 <!--     </org.sakuratya.horizontal.ui.ZGridView> -->
 
 
-
-
-
-
-    <org.sakuratya.horizontal.ui.HGridView
+<org.sakuratya.horizontal.ui.HGridView
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:sakura="http://schemas.android.com/apk/res/tv.ismar.daisy"
-       android:id="@+id/serarc_gridview"
+        xmlns:sakura="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/serarc_gridview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fadingEdge="horizontal"
-        android:layout_marginLeft="@dimen/search_gridview_marginL" 
+        android:layout_marginLeft="@dimen/search_gridview_marginL"
         android:layout_marginTop="@dimen/search_gridview_marginT"
         android:layout_marginBottom="@dimen/search_gridview_marginB"
         android:layout_marginRight="@dimen/search_gridview_marginR"
@@ -70,31 +66,31 @@
         sakura:selectionTopPadding="@dimen/ZGridView_search_selectorTopPadding"
         sakura:selectionRightPadding="@dimen/ZGridView_search_selectorRight"
         sakura:selectionBottomPadding="@dimen/ZGridView_search_selectorBottom">
-    </org.sakuratya.horizontal.ui.HGridView>
+</org.sakuratya.horizontal.ui.HGridView>
 
-<!--    <org.sakuratya.horizontal.ui.HGridView -->
-<!--              xmlns:android="http://schemas.android.com/apk/res/android" -->
-<!--         xmlns:sakura="http://schemas.android.com/apk/res/tv.ismar.daisy" -->
-<!--         android:id="@+id/serarc_gridview" -->
-<!--         android:layout_width="match_parent" -->
-<!--         android:layout_height="match_parent" -->
-<!--         android:layout_marginLeft="@dimen/search_gridview_marginL"  -->
-<!--         android:layout_marginTop="@dimen/search_gridview_marginT" -->
-<!--         android:layout_marginBottom="@dimen/search_gridview_marginB" -->
-<!--         android:layout_marginRight="@dimen/search_gridview_marginR" -->
-<!--         android:fadingEdge="horizontal" -->
-<!--         android:fadingEdgeLength="@dimen/gridview_main_panel_fadingEdgeLength" -->
-<!--         sakura:horizontalSpacing="@dimen/gridview_main_panel_horizontalSpacing" -->
-<!--         sakura:numRows="3" -->
-<!--         sakura:rowHeight="@dimen/gridview_main_panel_rowHeight" -->
-<!--         sakura:selectorDrawable="@drawable/vod_gv_selector" -->
-<!--         sakura:verticalSpacing="@dimen/gridview_main_panel_verticalSpacing" -->
-<!--         sakura:selectionLeftPadding="@dimen/HGridView_related_selectionLeftPadding" -->
-<!--         sakura:selectionTopPadding="@dimen/HGridView_related_selectionTopPadding" -->
-<!--         sakura:selectionRightPadding="@dimen/HGridView_related_selectionRightPadding" -->
-<!--         sakura:selectionBottomPadding="@dimen/HGridView_related_selectionBottomPadding" -->
-<!--         > -->
-<!--     </org.sakuratya.horizontal.ui.HGridView> -->
+        <!--    <org.sakuratya.horizontal.ui.HGridView -->
+        <!--              xmlns:android="http://schemas.android.com/apk/res/android" -->
+        <!--         xmlns:sakura="http://schemas.android.com/apk/res/tv.ismar.daisy" -->
+        <!--         android:id="@+id/serarc_gridview" -->
+        <!--         android:layout_width="match_parent" -->
+        <!--         android:layout_height="match_parent" -->
+        <!--         android:layout_marginLeft="@dimen/search_gridview_marginL"  -->
+        <!--         android:layout_marginTop="@dimen/search_gridview_marginT" -->
+        <!--         android:layout_marginBottom="@dimen/search_gridview_marginB" -->
+        <!--         android:layout_marginRight="@dimen/search_gridview_marginR" -->
+        <!--         android:fadingEdge="horizontal" -->
+        <!--         android:fadingEdgeLength="@dimen/gridview_main_panel_fadingEdgeLength" -->
+        <!--         sakura:horizontalSpacing="@dimen/gridview_main_panel_horizontalSpacing" -->
+        <!--         sakura:numRows="3" -->
+        <!--         sakura:rowHeight="@dimen/gridview_main_panel_rowHeight" -->
+        <!--         sakura:selectorDrawable="@drawable/vod_gv_selector" -->
+        <!--         sakura:verticalSpacing="@dimen/gridview_main_panel_verticalSpacing" -->
+        <!--         sakura:selectionLeftPadding="@dimen/HGridView_related_selectionLeftPadding" -->
+        <!--         sakura:selectionTopPadding="@dimen/HGridView_related_selectionTopPadding" -->
+        <!--         sakura:selectionRightPadding="@dimen/HGridView_related_selectionRightPadding" -->
+        <!--         sakura:selectionBottomPadding="@dimen/HGridView_related_selectionBottomPadding" -->
+        <!--         > -->
+        <!--     </org.sakuratya.horizontal.ui.HGridView> -->
 
 
 

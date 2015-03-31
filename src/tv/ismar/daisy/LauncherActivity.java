@@ -549,15 +549,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         }
     };
 
-    private void startPlayVideo(String path) {
-        try {
-            videoView.setVideoPath(mLocalPath);
-            videoView.start();
-        } catch (Exception e) {
-
-        }
-    }
-
 //
 //    private void setTvHome(String content) {
 //        try {
