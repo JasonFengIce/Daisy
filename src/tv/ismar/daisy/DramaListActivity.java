@@ -26,6 +26,8 @@ import tv.ismar.daisy.views.PaymentDialog;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,6 +45,9 @@ public class DramaListActivity extends Activity implements
 	private static final String TAG = "DramaListActivity";
 	public static String ORDER_CHECK_BASE_URL ="/api/order/check/";
     public final static int visableItems = 30;
+    private final static int DISABLE_ORDER_ALL_DRANA = 0x10;
+    private final static int ORDER_ALL_DRANA_SUCCESS = 0x11;
+
 	private Item mItem = new Item();
 	private List<Item> mList = new ArrayList<Item>();
 	private DaramAdapter mDramaAdapter;
@@ -60,6 +65,7 @@ public class DramaListActivity extends Activity implements
 	// private Bitmap bitmap;
 	private LoadingDialog loadDialog;
 	private boolean paystatus = false;
+//    private boolean orderAlldrama = false;
 
 	private HashMap<String, Object> mDataCollectionProperties = new HashMap<String, Object>();
 
@@ -177,6 +183,27 @@ public class DramaListActivity extends Activity implements
 		});
 		loadDialog = new LoadingDialog(this, getString(R.string.vod_loading));
 	}
+
+	private Handler myHandler = new Handler(){
+
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			switch(msg.what){
+			case DISABLE_ORDER_ALL_DRANA :{
+				orderAll_drama.setEnabled(false);
+			}
+			case ORDER_ALL_DRANA_SUCCESS :{
+				orderAll_drama.setEnabled(false);
+				for (Item item : mList) {
+					item.remainDay = mItem.expense.duration+1;
+					mDramaAdapter.notifyDataSetChanged();
+				}
+			}
+			}
+		}
+
+	};
 
 	// private Handler mHandle = new Handler() {
 	// public void handleMessage(Message msg) {
@@ -346,8 +373,8 @@ public class DramaListActivity extends Activity implements
 		@Override
 		public void payResult(boolean result) {
 			paystatus = result;
+			myHandler.sendEmptyMessage(ORDER_ALL_DRANA_SUCCESS);
 		}
-
 	};
 
 	private void orderCheck() {
@@ -387,6 +414,8 @@ public class DramaListActivity extends Activity implements
 						}
 					}
 				} catch (JSONException e) {
+//					orderAlldrama = true;
+					myHandler.sendEmptyMessage(DISABLE_ORDER_ALL_DRANA);
 					try {
 						remainDay = Util.daysBetween(currentDayString, info.replace("\"", ""));
 						for (Item item : mList) {
