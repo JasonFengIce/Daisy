@@ -122,6 +122,7 @@
     <dimen name="grid_view_main_arrow_left_W">10dip</dimen>
     <dimen name="grid_view_main_arrow_left_H">12dip</dimen>
     <dimen name="grid_view_main_arrow_left_marginT">10dip</dimen>
+    <dimen name="gridview_line_ML">10dip</dimen>
     <!-- popup_2btn -->
     <dimen name="popup_dialog_width">269dip</dimen>
     <dimen name="popup_dialog_height">148dip</dimen>
@@ -424,6 +425,11 @@
     <dimen name="HGridView_label_lr_offset">4dip</dimen>
     <dimen name="HGridView_label_textleft">8dip</dimen>
     <dimen name="HGridView_label_texttop">19dip</dimen>
+    
+     <dimen name="ZGridView_recommend_selectorLeftPadding">1dip</dimen>
+    <dimen name="ZGridView_recommend_selectorTopPadding">0dip</dimen>
+    <dimen name="ZGridView_recommend_selectorRightPadding">1dip</dimen>
+    <dimen name="ZGridView_recommend_selectorBottomPadding">1dip</dimen>
     <!-- LoadingDialog -->
     <dimen name="Loading_Dialog_ProgressBar_Height">22dip</dimen>
     <dimen name="Loading_Dialog_ProgressBar_width">22dip</dimen>
@@ -454,4 +460,8 @@
 
 <!-- DetailAttributeContainer -->
 <dimen name="DetailAttributeContainer_Layout_W">157dip</dimen>
+
+ <!-- list_view -->
+    <dimen name="list_view_search_H">20dip</dimen>
+    <dimen name="list_view_search_ML">333dip</dimen>
 </resources>

@@ -144,6 +144,7 @@ public class DramaListActivity extends Activity implements
 		if(keyCode==KeyEvent.KEYCODE_BACK){
 			 Intent data=new Intent();  
 	         data.putExtra("result", paystatus);
+	         setResult(20, data);
 			 finish();
 		}
 		return super.onKeyDown(keyCode, event);

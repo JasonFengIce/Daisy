@@ -452,4 +452,8 @@
 
 <!-- DetailAttributeContainer -->
 <dimen name="DetailAttributeContainer_Layout_W">210dip</dimen>
+
+    <!-- list_view -->
+    <dimen name="list_view_search_H">20dip</dimen>
+    <dimen name="list_view_search_ML">330dip</dimen>
 </resources>
