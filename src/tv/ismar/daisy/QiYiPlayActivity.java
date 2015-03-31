@@ -652,10 +652,9 @@ public class QiYiPlayActivity extends VodMenuAction {
 			if (!live_video) {
 				if (mPlayer.getDuration() > 0) {
 					timeBar.setProgress(progress);
+					Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
 				}
-
 				updataTimeText();
-
 			}
 		}
 
@@ -663,6 +662,10 @@ public class QiYiPlayActivity extends VodMenuAction {
 		public void onStartTrackingTouch(SeekBar seekBar) {
 			Log.d(TAG, "onStartTrackingTouch" + seekBar.getProgress());
 			if (!live_video) {
+				isSeek = true;
+				isBuffer = true;
+				showPanel();
+				showBuffer();
 			}
 
 		}
@@ -671,6 +674,13 @@ public class QiYiPlayActivity extends VodMenuAction {
 		public void onStopTrackingTouch(SeekBar seekBar) {
 			Log.d(TAG, "onStopTrackingTouch" + seekBar.getProgress());
 			if (!live_video) {
+				mPlayer.seekTo(seekBar.getProgress());
+				isBuffer = false;
+				isSeekBuffer = true;
+				isSeek = false;
+				offsets = 0;
+				offn = 1;
+				hideBuffer();
 			}
 
 		}
