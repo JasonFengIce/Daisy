@@ -163,11 +163,18 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 					holder.price.setText("￥"+item.expense.price);
 					holder.price.setVisibility(View.VISIBLE);
 				}
+				else{
+					holder.price.setVisibility(View.GONE);
+				}
 				holder.title.setText(item.title);
 				holder.previewImage.setUrl(item.adlet_url);
-				if(item.bean_score>0)
-				   holder.ItemBeanScore.setVisibility(View.VISIBLE);
-				   holder.ItemBeanScore.setText(item.bean_score+"");
+				if(item.bean_score>0){
+					   holder.ItemBeanScore.setVisibility(View.VISIBLE);
+					   holder.ItemBeanScore.setText(item.bean_score+"");
+				}
+				else{
+					holder.ItemBeanScore.setVisibility(View.INVISIBLE);
+				}
 //				if(item.quality==3) {
 //					holder.qualityLabel.setImageResource(R.drawable.label_hd_small);
 //				} else if(item.quality==4 || item.quality==5) {

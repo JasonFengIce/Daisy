@@ -12,12 +12,12 @@ public class MarqueeText extends TextView {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 	}
-	@Override
-	@ExportedProperty(category = "focus")
-	public boolean isFocused() {
-		// TODO Auto-generated method stub
-		return true;
-	}
+//	@Override
+//	@ExportedProperty(category = "focus")
+//	public boolean isFocused() {
+//		// TODO Auto-generated method stub
+//		return true;
+//	}
 	
 //	@Override
 //	protected void onFocusChanged(boolean focused, int direction,
