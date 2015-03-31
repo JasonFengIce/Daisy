@@ -21,6 +21,7 @@ import com.ismartv.launcher.data.VideoEntity;
 import com.squareup.picasso.Picasso;
 
 import tv.ismar.daisy.ChannelListActivity.OnMenuToggleListener;
+import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.ChannelListActivity;
 import tv.ismar.daisy.LauncherActivity;
 import tv.ismar.daisy.R;
@@ -47,11 +48,15 @@ import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.FloatMath;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -491,6 +496,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 				}
 			}
 			break;
+		case 3 : startSakura();break;
 		}
 	}
 	private void EmptyAllFavorite(){
@@ -663,4 +669,22 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 
 		}.start();
 	}
+
+	   private void startSakura(){
+	        try {
+	          ApplicationInfo applicationInfo =  getActivity().getPackageManager().getApplicationInfo(
+	                    "com.ismartv.android.vod.service", 0);
+	            if(null!= applicationInfo){
+	                Intent intent = new Intent();
+	                intent.setClassName("cn.ismartv.speedtester", "cn.ismartv.speedtester.ui.activity.MenuActivity");
+	                startActivity(intent);
+	            }
+	        } catch (PackageManager.NameNotFoundException e) {
+	            Uri uri = Uri.parse("file://" + getActivity().getFileStreamPath("Sakura.apk").getAbsolutePath());
+	            Intent intent = new Intent(Intent.ACTION_VIEW);
+	            intent.setDataAndType(uri, "application/vnd.android.package-archive");
+	            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+	            startActivity(intent);
+	        }
+	    }
 }

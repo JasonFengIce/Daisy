@@ -36,8 +36,8 @@
             android:src="@android:color/transparent"
             android:background="@drawable/search_btn_bg_selector"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:layout_marginLeft="1100dip"
+            android:layout_height="@dimen/list_view_search_H"
+            android:layout_marginLeft="@dimen/list_view_search_ML"
             android:layout_gravity="center_vertical"/>
 </LinearLayout>
 

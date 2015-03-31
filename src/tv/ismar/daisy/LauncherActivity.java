@@ -355,8 +355,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 mLocalDir = path + "/VideoCache";
             }
 
-            //  playvideo();
-            videoView.setVideoPath(mRemoteUrl);
+              playvideo();
+          //  videoView.setVideoPath(mRemoteUrl);
             videoView.start();
             videoView.setKeepScreenOn(true);
 

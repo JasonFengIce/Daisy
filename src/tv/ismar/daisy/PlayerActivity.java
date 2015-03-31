@@ -29,8 +29,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -715,6 +718,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 								public void onCompletion(SmartPlayer mp) {
 									Log.d(TAG, "mVideoView  Completion");
 									if (item.isPreview) {
+										mVideoView.stopPlayback();
 										PaymentDialog dialog = new PaymentDialog(
 												PlayerActivity.this,
 												R.style.PaymentDialog,
@@ -1278,15 +1282,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 				} else {
 					net = "no";
 				}
-				if (itemUrl != null
-						&& favoriteManager != null
-						&& favoriteManager.getFavoriteByUrl(itemUrl, net) != null) {
-					menu.findItem(5)
-							.setTitle(
-									getResources()
-											.getString(
-													R.string.vod_bookmark_remove_bookmark_setting));
-				}
 				if (onVodMenuOpened(menu)) {
 					menu.show();
 					hideMenuHandler.postDelayed(hideMenuRunnable, 60000);
@@ -1583,8 +1578,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 
 	public boolean createMenu(ISTVVodMenu menu) {
 		ISTVVodMenuItem sub;
-
-		if (listItems != null && listItems.size() > 0) {
+		if ((item.preview == null || (subItem != null &&subItem.position !=0)) && listItems != null && listItems.size() > 0) {
 			sub = menu.addSubMenu(100,
 					getResources().getString(R.string.serie_switch));
 			for (Item i : listItems) {
@@ -1831,23 +1825,24 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 			}
 			return true;
 		}
-		if (id == 6) {
-			gotoRelatePage();
-			return true;
-		}
-		if (id == 8) {
-			isContinue = true;
-			addHistory(seekPostion);
-			return true;
-		}
-		if (id == 9) {
-			isContinue = false;
-			addHistory(seekPostion);
-			return true;
-		}
+//		if (id == 6) {
+//			gotoRelatePage();
+//			return true;
+//		}
+//		if (id == 8) {
+//			isContinue = true;
+//			addHistory(seekPostion);
+//			return true;
+//		}
+//		if (id == 9) {
+//			isContinue = false;
+//			addHistory(seekPostion);
+//			return true;
+//		}
 
 		// 客服按钮
 		if (id == 20) {
+			startSakura();
 			return true;
 		}
 		// 从头播放
@@ -2112,4 +2107,24 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 		}
 
 	};
+	
+	   private void startSakura(){
+	        if (AppConstant.DEBUG)
+	            Log.d(TAG, "install vod service invoke...");
+	        try {
+	          ApplicationInfo applicationInfo =  getPackageManager().getApplicationInfo(
+	                    "com.ismartv.android.vod.service", 0);
+	            if(null!= applicationInfo){
+	                Intent intent = new Intent();
+	                intent.setClassName("cn.ismartv.speedtester", "cn.ismartv.speedtester.ui.activity.MenuActivity");
+	                startActivity(intent);
+	            }
+	        } catch (PackageManager.NameNotFoundException e) {
+	            Uri uri = Uri.parse("file://" + getFileStreamPath("Sakura.apk").getAbsolutePath());
+	            Intent intent = new Intent(Intent.ACTION_VIEW);
+	            intent.setDataAndType(uri, "application/vnd.android.package-archive");
+	            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+	            startActivity(intent);
+	        }
+	    }
 }

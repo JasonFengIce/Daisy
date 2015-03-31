@@ -59,6 +59,7 @@ public class DramaListActivity extends Activity implements
     private Button up_btn;
 	// private Bitmap bitmap;
 	private LoadingDialog loadDialog;
+	private boolean paystatus = false;
 
 	private HashMap<String, Object> mDataCollectionProperties = new HashMap<String, Object>();
 
@@ -142,7 +143,8 @@ public class DramaListActivity extends Activity implements
 		// TODO Auto-generated method stub
 		if(keyCode==KeyEvent.KEYCODE_BACK){
 			 Intent data=new Intent();  
-	         data.putExtra("result", true);
+	         data.putExtra("result", paystatus);
+	         setResult(20, data);
 			 finish();
 		}
 		return super.onKeyDown(keyCode, event);
@@ -343,7 +345,7 @@ public class DramaListActivity extends Activity implements
 
 		@Override
 		public void payResult(boolean result) {
-			orderCheck();
+			paystatus = result;
 		}
 
 	};
@@ -386,7 +388,7 @@ public class DramaListActivity extends Activity implements
 					}
 				} catch (JSONException e) {
 					try {
-						remainDay = Util.daysBetween(currentDayString, info);
+						remainDay = Util.daysBetween(currentDayString, info.replace("\"", ""));
 						for (Item item : mList) {
 							item.remainDay = remainDay+1;
 						}

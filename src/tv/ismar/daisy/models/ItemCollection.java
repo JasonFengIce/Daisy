@@ -44,7 +44,10 @@ public class ItemCollection implements Serializable {
 	public boolean isItemReady(int index) {
 		// page is zero-based. but in api, it should be a nature number.
 		int page = index / NUM_PER_PAGE;
-		return hasFilledValidItem[page];
+		if(page<hasFilledValidItem.length){
+			return hasFilledValidItem[page];
+		}
+         return false;
 	}
 	
 	public void fillItems(int page, ArrayList<Item> itemList) {

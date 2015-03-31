@@ -220,6 +220,9 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 					for(int i=0; i<mSectionList.size(); i++) {
 						Section section = mSectionList.get(i);
 						int num_pages = (int) FloatMath.ceil((float)section.count / (float)ItemCollection.NUM_PER_PAGE);
+						if(num_pages==0){
+							num_pages = num_pages+1;
+						}
 						ItemCollection itemCollection = new ItemCollection(num_pages, section.count, section.slug, section.title);
 						mItemCollections.add(itemCollection);
 					}
