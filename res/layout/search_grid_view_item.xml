@@ -5,7 +5,7 @@
 
     <RelativeLayout
         android:id="@+id/linearLayout1"
-        android:layout_width="@dimen/search_gridview_item_main_layout_W"
+        android:layout_width="@dimen/search_gridview_item_image_W"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/search_gridview_item_main_layout_marginB"
         android:layout_marginLeft="@dimen/search_gridview_item_main_layout_marginL"
@@ -39,6 +39,7 @@
             android:layout_below="@+id/itemImage"
             android:layout_marginTop="@dimen/search_gridview_item_text_marginT"
             android:layout_centerHorizontal="true"
+            android:gravity="center"
             android:ellipsize="marquee"
             android:singleLine="true"
             android:textSize="@dimen/search_gridview_item_text_size"

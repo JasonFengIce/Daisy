@@ -26,6 +26,7 @@ import tv.ismar.daisy.views.PaymentDialog;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -136,7 +137,16 @@ public class DramaListActivity extends Activity implements
 			}
 		});
 	}
-
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		if(keyCode==KeyEvent.KEYCODE_BACK){
+			 Intent data=new Intent();  
+	         data.putExtra("result", true);
+			 finish();
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 	private void initViews() {
 		View v = (View)findViewById(R.id.drama_gridview);
 		mDramaView = (ZGridView) v.findViewById(R.id.drama_zgridview);
@@ -227,7 +237,7 @@ public class DramaListActivity extends Activity implements
 			mDramaImageLabel.setVisibility(View.GONE);
 			break;
 		}
-		mDramaAdapter = new DaramAdapter(DramaListActivity.this, mList, mItem, R.layout.drama_gridview_item);
+		mDramaAdapter = new DaramAdapter(DramaListActivity.this, mList, mItem,R.layout.drama_gridview_item);
 		mDramaView.setAdapter(mDramaAdapter);
 	//	mDramaView.setFocusable(true);
 		mDramaAdapter.mTvDramaType = mTvDramaType;
@@ -391,6 +401,7 @@ public class DramaListActivity extends Activity implements
 
 		@Override
 		public void onFailed(String error) {
+			
 		}
 	};
 }

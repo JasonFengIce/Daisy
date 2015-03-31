@@ -307,11 +307,11 @@ public SectionList getsectionss(String content){
 
 		@Override
 		protected void onPostExecute(String result) {
-			if(handler!=null){
+			if(handler!=null&&result!=null){
 				if("".equals(result)){
 					handler.onFailed("网络异常");
 				}
-				else if(result.equals("200")){
+				else if("200".equals(result)){
 					handler.onSuccess(result);
 				}
 				else if("406".equals(result)){
