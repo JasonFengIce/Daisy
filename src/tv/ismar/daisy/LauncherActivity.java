@@ -113,6 +113,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private VerticalGuideListView linkedvideoGrid;
     private HorizontalGuideListView horizontalGuideListView;
 
+    ArrayList<AttributeEntity> attributeDatas;
+
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -267,6 +269,22 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             public void onItemHover(View view) {
                 AttributeEntity attributeEntity = (AttributeEntity) view.getTag();
                 playVideoByTime((int) attributeEntity.getStart_time() * 1000, (int) attributeEntity.getEnd_time() * 1000);
+            }
+        });
+
+        videoView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for (AttributeEntity attributeEntity : attributeDatas) {
+                    if (videoView.getCurrentPosition() > attributeEntity.getStart_time() * 1000 &&
+                            videoView.getCurrentPosition() < attributeEntity.getEnd_time()*1000) {
+                        Intent intent = new Intent();
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.ItemDetailActivity");
+                        intent.putExtra("url", attributeEntity.getAttributes().getUrl());
+                        startActivity(intent);
+                    }
+                }
             }
         });
     }
@@ -769,10 +787,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             public void success(ArrayList<AttributeEntity> attributeEntities, Response response) {
                 if (AppConstant.DEBUG)
                     Log.d(TAG, "fetchLinkedvideo attributeEntities size ---> " + attributeEntities.size());
-
+                attributeDatas = attributeEntities;
                 linkedvideoGrid.setAdapter(attributeEntities);
-//                LinkedVideoAdapter linkedVideoAdapter = new LinkedVideoAdapter(LauncherActivity.this, attributeEntities);
-//                linkedvideoGrid.setAdapter(linkedVideoAdapter);
             }
 
             @Override

@@ -1,6 +1,5 @@
 package com.ismartv.launcher.ui.widget;
 
-import tv.ismar.daisy.R;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -27,18 +26,33 @@ public class IsmartvVideoView extends VideoView {
         int height = getDefaultSize(0, heightMeasureSpec);
         setMeasuredDimension(width, height);
     }
+
     @Override
     protected boolean dispatchHoverEvent(MotionEvent event) {
-    	// TODO Auto-generated method stub
-    	   if ((event.getAction() == MotionEvent.ACTION_HOVER_ENTER ) || (event.getAction() == MotionEvent.ACTION_HOVER_MOVE )) {
-               setFocusableInTouchMode(true);
-               setFocusable(true);
-               requestFocusFromTouch();
-               requestFocus();
-           } else {
-               clearFocus();
-           }
-          
-    	return true;
+        // TODO Auto-generated method stub
+        if ((event.getAction() == MotionEvent.ACTION_HOVER_ENTER) || (event.getAction() == MotionEvent.ACTION_HOVER_MOVE)) {
+            setFocusableInTouchMode(true);
+            setFocusable(true);
+            requestFocusFromTouch();
+            requestFocus();
+        } else {
+            clearFocus();
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                requestFocusFromTouch();
+                requestFocus();
+                performClick();
+                return true;
+            default:
+                return super.dispatchTouchEvent(event);
+        }
+
     }
 }
