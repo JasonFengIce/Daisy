@@ -178,7 +178,7 @@ public class LoginPanelView extends LinearLayout {
 						identifyCodeBtn.setBackgroundResource(R.drawable.btn_normal_bg);
 						identifyCodeBtn.setText("获取验证码");
 						//count_tip.setText("获取验证码:\n"+error);
-						setcount_tipText("获取验证码:\n"+error);
+						setcount_tipText("获取验证码失败\n");
 						//showDialog(error);
 					}
 				});
