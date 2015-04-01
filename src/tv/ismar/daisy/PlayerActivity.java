@@ -277,14 +277,18 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				if (!paused) {
-					pauseItem();
-					playPauseImage
-							.setImageResource(R.drawable.vod_playbtn_selector);
+				if (isVodMenuVisible()) {
+					hideMenuHandler.post(hideMenuRunnable);
 				} else {
-					resumeItem();
-					playPauseImage
-							.setImageResource(R.drawable.vod_pausebtn_selector);
+					if (!paused) {
+						pauseItem();
+						playPauseImage
+								.setImageResource(R.drawable.vod_playbtn_selector);
+					} else {
+						resumeItem();
+						playPauseImage
+								.setImageResource(R.drawable.vod_pausebtn_selector);
+					}
 				}
 				return false;
 			}
@@ -1494,8 +1498,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 		public void run() {
 			if (menu != null) {
 				menu.hide();
-				menu.clear();
-				menu = null;
 			}
 			hideMenuHandler.removeCallbacks(hideMenuRunnable);
 		}
@@ -2027,11 +2029,11 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 		switch (keyEvent.getAction()) {
 		case MotionEvent.ACTION_UP:
 			if (!panelShow) {
-				showPanel();
-				panelShow = true;
+//				showPanel();
+//				panelShow = true;
 			} else {
-				hidePanel();
-				panelShow = false;
+//				hidePanel();
+//				panelShow = false;
 			}
 			break;
 
