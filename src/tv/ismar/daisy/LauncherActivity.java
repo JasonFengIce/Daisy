@@ -273,7 +273,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             @Override
             public void onItemHover(View view) {
                 AttributeEntity attributeEntity = (AttributeEntity) view.getTag();
-                playVideoByTime((int) attributeEntity.getStart_time() * 1000, (int) attributeEntity.getEnd_time() * 1000);
+                if (videoView.isPlaying()) {
+                    playVideoByTime((int) attributeEntity.getStart_time() * 1000, (int) attributeEntity.getEnd_time() * 1000);
+                }
+
             }
         });
 
