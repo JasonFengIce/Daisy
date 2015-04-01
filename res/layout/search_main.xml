@@ -131,23 +131,25 @@
     </LinearLayout>
 
     <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
-        <ImageView
-                android:src="@drawable/selector_search_left"
+        <Button
+                android:background="@drawable/selector_search_left"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:id="@+id/arrow_left"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_marginLeft="35dip"/>
 
-        <ImageView
-                android:src="@drawable/selector_search_right"
+        <Button
+                android:background="@drawable/selector_search_right"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:id="@+id/arrow_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
-                />
+                android:visibility="invisible"
+                android:layout_marginRight="35dip"/>
 
     </RelativeLayout>
 

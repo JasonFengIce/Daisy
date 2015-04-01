@@ -189,6 +189,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 			holder.title.setText(mContext.getResources().getString(R.string.onload));
 			holder.previewImage.setUrl(null);
 			//holder.qualityLabel.setImageDrawable(null);
+			holder.price.setVisibility(View.GONE);
 		}
 		return convertView;
 	}

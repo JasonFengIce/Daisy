@@ -100,7 +100,8 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 	private SearchPromptDialog customDialog;
 	
 	private Boolean isActivityExit = false;
-
+    private Button arrow_right;
+    private Button arrow_left;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -241,7 +242,12 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 		}
 			
 		});
-		
+		arrow_right = (Button)findViewById(R.id.arrow_right);
+		arrow_left = (Button)findViewById(R.id.arrow_left);
+		arrow_left.setOnClickListener(this);
+		arrow_right.setOnClickListener(this);
+		gridView.leftbtn = arrow_left;
+		gridView.rightbtn = arrow_right;
 	}
 
 	@Override
@@ -285,6 +291,12 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 			m.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);			
 			autoCompleteTextView.showDropDown();
 			// autoCompleteTextView.onKeyDown(KeyEvent.KEYCODE_BACK, null);
+			break;
+		case R.id.arrow_left:
+			gridView.pageScroll(View.FOCUS_LEFT);
+			break;
+		case R.id.arrow_right:
+			gridView.pageScroll(View.FOCUS_RIGHT);
 			break;
 		default:
 			break;
@@ -384,6 +396,9 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 		imageAdapter.cancelAsync();
 		imageAdapter = new SearchAdapter(SearchActivity.this, movieList, R.layout.search_grid_view_item);
 		gridView.setAdapter(imageAdapter);
+		if(movieList.size()>15){
+			arrow_right.setVisibility(View.VISIBLE);
+		}
 		imageAdapter.setList((ArrayList<MovieBean>) movieList);
 		gridView.setFocusable(true);
 	};

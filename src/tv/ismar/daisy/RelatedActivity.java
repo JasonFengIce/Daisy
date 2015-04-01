@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -60,6 +61,7 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 	private GetRelatedTask mGetRelatedTask;
 	private GetRelatedItemByInfo mGetRelatedItemByInfoTask;
 	private ImageView arrow_left;
+	private ImageView arrow_right;
 	private HashMap<String, Object> mDataCollectionProperties = new HashMap<String, Object>();
 	
 	private String mSection;
@@ -69,6 +71,27 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		mItemListGrid = (ZGridView) findViewById(R.id.related_list);
 		mItemListGrid.setOnItemClickListener(this);
 		mItemListGrid.setFocusable(true);
+		arrow_left = (ImageView) findViewById(R.id.arrow_left);
+		arrow_right = (ImageView)findViewById(R.id.arrow_right);
+		mSectionTabs.left = arrow_left;
+		mSectionTabs.right = arrow_right;
+		
+		arrow_left.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mSectionTabs.arrowScroll(View.FOCUS_LEFT);
+			}
+		});
+		arrow_right.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mSectionTabs.arrowScroll(View.FOCUS_RIGHT);
+			}
+		});
 	}
 
 	@SuppressWarnings({ "unchecked" })
@@ -77,7 +100,6 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.related_view);
 		mSimpleRestClient = new SimpleRestClient();
-		arrow_left = (ImageView) findViewById(R.id.arrow_left);
 		initViews();
 		mLoadingDialog = new LoadingDialog(this, getResources().getString(R.string.vod_loading));
 		mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
@@ -184,7 +206,7 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		
 		initSectionTabs();
 		if(mVirtualSectionList.size()>5)
-			arrow_left.setVisibility(View.VISIBLE);
+			arrow_right.setVisibility(View.VISIBLE);
 		mSectionTabs.init(mVirtualSectionList, getResources().getDimensionPixelSize(R.dimen.gridview_channel_section_tabs_width),true);
 		buildGridView();
 		if(mLoadingDialog.isShowing()){

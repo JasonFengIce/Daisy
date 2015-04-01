@@ -221,7 +221,7 @@ protected boolean dispatchHoverEvent(MotionEvent event) {
 		setFocusable(true);
 		requestFocusFromTouch();
 		requestFocus();
-		 setSelection(position);
+		setSelection(position);
 
 	} else {
 		hover = false;
@@ -230,6 +230,19 @@ protected boolean dispatchHoverEvent(MotionEvent event) {
 	}
 	return true;
 }
+//@Override
+//public boolean onHoverEvent(MotionEvent event) {
+//	// TODO Auto-generated method stub
+//	switch (event.getAction()) {
+//	case MotionEvent.ACTION_HOVER_ENTER:
+//		
+//		break;
+//
+//	default:
+//		break;
+//	}
+//	return super.onHoverEvent(event);
+//}
 	private float mLastMotionX;
 	private int TOUCH_STATE = -1;
 
@@ -2476,7 +2489,56 @@ protected boolean dispatchHoverEvent(MotionEvent event) {
 			mScrollState = newState;
 		}
 	}
-
+//
+//	public boolean pageScroll(int direction) {
+//		int count = getChildCount();
+//		int nextPage = -1;
+//		int rightEdge = getRight() - mListPadding.right;
+//		int leftEdge = mListPadding.left;
+//		int currentCol = getColumn(mSelectedPosition);
+//		int currentRow = getRow(mSelectedPosition);
+//		if (direction == FOCUS_LEFT) {
+//			int lastVisiblePosition = mFirstPosition + count - 1;
+//			for (int i = count - 1; i >= 0; i--) {
+//				View v = getChildAt(i);
+//				if (v.getRight() < rightEdge) {
+//					lastVisiblePosition = mFirstPosition + i;
+//					break;
+//				}
+//			}
+//			int cols = getColumn(lastVisiblePosition)
+//					- getColumn(mFirstPosition);
+//			int nextCol = Math.max(0, currentCol - cols);
+//			int[] positionRange = getPositionRangeByColumn(nextCol);
+//			nextPage = Math
+//					.min(positionRange[0] + currentRow, positionRange[1]);
+//		} else {
+//			int firstVisibilePosition = mFirstPosition;
+//			for (int i = 0; i < count; i++) {
+//				View v = getChildAt(i);
+//				if (v.getLeft() > leftEdge) {
+//					firstVisibilePosition += i;
+//					break;
+//				}
+//			}
+//			int cols = getColumn(mFirstPosition + count - 1)
+//					- getColumn(firstVisibilePosition);
+//			int nextCol = Math.min(mMaxColumn, currentCol + cols);
+//			int[] positionRange = getPositionRangeByColumn(nextCol);
+//			nextPage = Math
+//					.min(positionRange[0] + currentRow, positionRange[1]);
+//		}
+//		if (nextPage >= 0) {
+//			View v = getChildAt(mSelectedPosition - mFirstPosition);
+//			mSpecificLeft = v.getLeft();
+//			setNextSelectedPositionInt(nextPage);
+//			mLayoutMode = LAYOUT_SPECIFIC;
+//			layoutChildren();
+//			return true;
+//		}
+//		return false;
+//	}
+	
 	public boolean pageScroll(int direction) {
 		int count = getChildCount();
 		int nextPage = -1;
@@ -2521,9 +2583,28 @@ protected boolean dispatchHoverEvent(MotionEvent event) {
 			setNextSelectedPositionInt(nextPage);
 			mLayoutMode = LAYOUT_SPECIFIC;
 			layoutChildren();
-			return true;
-		}
+			
+			if(leftbtn!=null&&rightbtn!=null){
+				if(mFirstPosition==0){
+					leftbtn.setVisibility(View.INVISIBLE);
+					rightbtn.setVisibility(View.VISIBLE);
+					}
+					else if(mFirstPosition>0&&mFirstPosition+getChildCount()<mAdapter.getCount()){
+						leftbtn.setVisibility(View.VISIBLE);
+						rightbtn.setVisibility(View.VISIBLE);
+					}
+					else if(mFirstPosition+getChildCount()==mAdapter.getCount()){
+					//upbtn.setVisibility(View.VISIBLE);
+					rightbtn.setVisibility(View.INVISIBLE);
+					leftbtn.setVisibility(View.VISIBLE);
+					}
+				return true;
+			}
+			}
 		return false;
 	}
+public View leftbtn;
+public View rightbtn;
+
 
 }
