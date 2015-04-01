@@ -14,7 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.URLUtil;
-import android.widget.*;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
 import com.google.gson.Gson;
@@ -36,7 +39,6 @@ import tv.ismar.daisy.core.service.PosterUpdateService;
 import tv.ismar.daisy.core.update.AppUpdateUtils;
 import tv.ismar.daisy.models.launcher.AttributeEntity;
 import tv.ismar.daisy.models.launcher.FrontPageEntity;
-import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.ui.widget.*;
 import tv.ismar.daisy.views.CustomDialog;
 
@@ -318,20 +320,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         this.startActivity(intent);
     }
 
-    public void pickHomeItem(RelativeLayout view) {
-        intent = new Intent();
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        String values[] = view.getTag().toString().split(",");
-        if (values[1].equals("item")) {
-            intent.setClassName("tv.ismar.daisy",
-                    "tv.ismar.daisy.ItemDetailActivity");
-            intent.putExtra("url", values[0]);
-            startActivity(intent);
-        } else {
-            InitPlayerTool tool = new InitPlayerTool(LauncherActivity.this);
-            tool.initClipInfo(InitPlayerTool.FLAG_URL, values[0]);
-        }
-    }
 
     private Intent intent;
 
@@ -559,32 +547,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         }
     };
 
-//
-//    private void setTvHome(String content) {
-//        try {
-//            Gson gson = new Gson();
-//            VideoEntity tvHome = gson.fromJson(content.toString(),
-//                    VideoEntity.class);
-//            for (int i = 0; i < 6; i++) {
-//                homeTitles[i].setText(tvHome.getObjects().get(i).getTitle());
-//                Picasso.with(LauncherActivity.this)
-//                        .load(tvHome.getObjects().get(i).getImage())
-//                        .placeholder(R.drawable.preview).error(R.drawable.preview)
-//                        .into(homeImages[i]);
-//                boolean is_complex = tvHome.getObjects().get(i).isIs_complex();
-//                if (is_complex)
-//                    homeItems[i].setTag(tvHome.getObjects().get(i).getItem_url()
-//                            + "," + "item");
-//                else
-//                    homeItems[i].setTag(tvHome.getObjects().get(i).getItem_url()
-//                            + "," + "play");
-//                homeItems[i].setOnClickListener(viewItemClickListener);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
 
     private void setWeather(String content) {
         Gson gson = new Gson();
@@ -600,23 +562,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     }
 
-    View.OnClickListener viewItemClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            intent = new Intent();
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            String[] values = view.getTag().toString().split(",");
-            if (values[1].equals("item")) {
-                intent.setClassName("tv.ismar.daisy",
-                        "tv.ismar.daisy.ItemDetailActivity");
-                intent.putExtra("url", values[0]);
-                startActivity(intent);
-            } else {
-                InitPlayerTool tool = new InitPlayerTool(LauncherActivity.this);
-                tool.initClipInfo(values[0], InitPlayerTool.FLAG_URL);
-            }
-        }
-    };
     private Handler mainHandler = new Handler() {
 
         @Override
@@ -737,43 +682,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     }
 
-    private void getTvHome() {
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                StringBuffer content = new StringBuffer();
-                try {
-                    URL getUrl = new URL(SimpleRestClient.root_url
-                            + "/api/tv/section/tvhome/" + "?device_token=" + SimpleRestClient.device_token);
-                    HttpURLConnection connection = (HttpURLConnection) getUrl
-                            .openConnection();
-                    connection.setReadTimeout(9000);
-                    connection.setUseCaches(false);
-                    connection.connect();
-                    BufferedReader reader = new BufferedReader(
-                            new InputStreamReader(connection.getInputStream(), "UTF-8"));
-                    String lines;
-                    while ((lines = reader.readLine()) != null) {
-                        content.append(lines);
-                    }
-                    Message message = new Message();
-                    Bundle data = new Bundle();
-                    data.putString("content", content.toString());
-                    message.setData(data);
-                    message.what = FETCHTVHOME;
-                    mainHandler.sendMessage(message);
-                } catch (MalformedURLException e) {
-                    if (e != null)
-                        System.err.println(e.getMessage());
-                } catch (IOException e) {
-                    if (e != null)
-                        System.err.println(e.getMessage());
-                }
-            }
-
-        }.start();
-    }
 
     private void fetchLinkedvideo(long videoId) {
         String deviceToken = SimpleRestClient.device_token;
