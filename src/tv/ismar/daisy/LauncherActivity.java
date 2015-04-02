@@ -370,7 +370,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                         @Override
                         public void onPrepared(MediaPlayer mp) {
                             mp.start();
-                            mp.setLooping(true);
+                           // mp.setLooping(true);
                         }
                     });
             videoView
@@ -957,9 +957,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         if (currnet > endTime || currnet < startTime) {
             Log.d(TAG, "start time ---> " + startTime + "  end time ---> " + endTime);
             isfinished = true;
-            videoView.setVideoPath(mLocalPath);
+           // videoView.setVideoPath(mLocalPath);
             videoView.seekTo(startTime);
-            videoView.start();
+           // videoView.start();
         }
     }
 
