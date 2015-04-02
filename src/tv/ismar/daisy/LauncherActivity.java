@@ -421,7 +421,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 //                                + "/VideoCache";
                         File Dir = new File(mLocalDir);
                         for (String s : Dir.list()) {
-                            File f = new File(s);
+                            File f = new File(mLocalDir,s);
                             if (f.exists()) {
                                 f.delete();
                             }

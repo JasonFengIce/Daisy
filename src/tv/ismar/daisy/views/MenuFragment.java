@@ -34,6 +34,12 @@ public class MenuFragment extends DialogFragment implements OnItemClickListener 
 	
 	private OnMenuItemClickedListener mOnMenuItemClickedListener;
 	
+	private int resid;
+	
+	public void setResId(int resid){
+		this.resid = resid;
+	}
+
 	public void setOnMenuItemClickedListener(OnMenuItemClickedListener listener) {
 		mOnMenuItemClickedListener = listener;
 	}
@@ -49,7 +55,9 @@ public class MenuFragment extends DialogFragment implements OnItemClickListener 
 	public interface OnMenuItemClickListener {
 		public void onMenuItemClick();
 	}
-
+    public void setTitle(int resid){
+    	
+    }
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,7 +70,7 @@ public class MenuFragment extends DialogFragment implements OnItemClickListener 
 		MenuItem clearItem = new MenuItem();
 		clearItem.id = 2;
 		clearItem.isEnable = true;
-		clearItem.title = getResources().getString(R.string.clear_history);
+		clearItem.title = getResources().getString(resid);
 		mMenuList.add(clearItem);
 		MenuItem kefu = new MenuItem();
 		kefu.id = 3;

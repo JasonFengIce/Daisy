@@ -1,11 +1,5 @@
 package tv.ismar.daisy.views;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -15,15 +9,9 @@ import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
 import org.sakuratya.horizontal.ui.HGridView;
 import org.sakuratya.horizontal.ui.ZGridView;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import com.ismartv.launcher.data.VideoEntity;
-import com.squareup.picasso.Picasso;
-
-import tv.ismar.daisy.ChannelListActivity.OnMenuToggleListener;
-import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.ChannelListActivity;
-import tv.ismar.daisy.LauncherActivity;
+import tv.ismar.daisy.ChannelListActivity.OnMenuToggleListener;
+import tv.ismar.daisy.PersonCenterActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.SearchActivity;
 import tv.ismar.daisy.VodApplication;
@@ -42,6 +30,7 @@ import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
+import tv.ismar.daisy.ui.widget.DaisyImageView;
 import tv.ismar.daisy.views.MenuFragment.MenuItem;
 import tv.ismar.daisy.views.MenuFragment.OnMenuItemClickedListener;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
@@ -56,7 +45,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.FloatMath;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -64,9 +52,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.ismartv.launcher.data.VideoEntity;
 
 public class FavoriteFragment extends Fragment implements OnSectionSelectChangedListener,
 														OnMenuToggleListener,
@@ -112,7 +103,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
     private TextView collect_or_history_txt;
     private VideoEntity tvHome;
     private Item[] FavoriteList;
-    private Button search_btn;
+    private DaisyImageView search_btn;
 	private void initViews(View fragmentView) {
 		
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
@@ -130,7 +121,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		divider.setVisibility(View.VISIBLE);
 		recommend_txt = (TextView)fragmentView.findViewById(R.id.recommend_txt);
 		collect_or_history_txt = (TextView)fragmentView.findViewById(R.id.collect_or_history_txt);
-		search_btn = (Button)fragmentView.findViewById(R.id.search);
+		search_btn = (DaisyImageView)fragmentView.findViewById(R.id.list_view_search);
 		search_btn.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -465,6 +456,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	
 	private void createMenu() {
 		mMenuFragment = MenuFragment.newInstance();
+		mMenuFragment.setResId(R.string.vod_bookmark_clear);
 		mMenuFragment.setOnMenuItemClickedListener(this);
 	}
 	
@@ -497,6 +489,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			}
 			break;
 		case 3 : startSakura();break;
+		case 4 : startPersoncenter();break;
 		}
 	}
 	private void EmptyAllFavorite(){
@@ -687,4 +680,9 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	            startActivity(intent);
 	        }
 	    }
+	   
+	   private void startPersoncenter(){
+		   Intent intent = new Intent(getActivity(),PersonCenterActivity.class);
+		   startActivity(intent);
+	   }
 }
