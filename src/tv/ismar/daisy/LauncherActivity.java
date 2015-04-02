@@ -126,7 +126,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        checkNetWork();
+//        checkNetWork();
         registerUpdateReceiver();
         AppUpdateUtils.getInstance().checkUpdate(this);
         String path = getFilesDir().getAbsolutePath();
@@ -370,7 +370,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                         @Override
                         public void onPrepared(MediaPlayer mp) {
                             mp.start();
-                           // mp.setLooping(true);
+                            // mp.setLooping(true);
                         }
                     });
             videoView
@@ -421,7 +421,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 //                                + "/VideoCache";
                         File Dir = new File(mLocalDir);
                         for (String s : Dir.list()) {
-                            File f = new File(mLocalDir,s);
+                            File f = new File(mLocalDir, s);
                             if (f.exists()) {
                                 f.delete();
                             }
@@ -534,7 +534,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                     break;
 
                 case CACHE_VIDEO_UPDATE:
-                    if (iserror&&!videoView.isPlaying()) {
+                    if (iserror && !videoView.isPlaying()) {
                         videoView.setVideoPath(mLocalPath);
                         videoView.start();
                         iserror = false;
@@ -957,25 +957,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         if (currnet > endTime || currnet < startTime) {
             Log.d(TAG, "start time ---> " + startTime + "  end time ---> " + endTime);
             isfinished = true;
-           // videoView.setVideoPath(mLocalPath);
+            // videoView.setVideoPath(mLocalPath);
             videoView.seekTo(startTime);
-           // videoView.start();
+            // videoView.start();
         }
     }
 
-    private boolean videoCacheIsComplete() {
-        File file = new File(mLocalPath);
-        SharedPreferences sharedPreferences = getSharedPreferences("Daisy", MODE_PRIVATE);
-        long totalSize = sharedPreferences.getLong("TotalSize", 0);
-        Log.d(TAG, "cache size ---> " + file.length() + " || " + "total size ---> " + totalSize);
-        if (file.length() == totalSize) {
-            Log.d(TAG, "video cache is complete true");
-            return true;
-        } else {
-            Log.d(TAG, "video cache is complete false");
-            return false;
-        }
-    }
 
     private void checkNetWork() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
