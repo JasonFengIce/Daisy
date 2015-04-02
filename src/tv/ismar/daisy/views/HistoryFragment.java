@@ -1,11 +1,5 @@
 package tv.ismar.daisy.views;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,15 +11,11 @@ import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
 import org.sakuratya.horizontal.ui.HGridView;
 import org.sakuratya.horizontal.ui.ZGridView;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import com.ismartv.launcher.data.VideoEntity;
-
 import tv.ismar.daisy.ChannelListActivity;
-import tv.ismar.daisy.PackageListDetailActivity;
-import tv.ismar.daisy.SearchActivity;
 import tv.ismar.daisy.ChannelListActivity.OnMenuToggleListener;
+import tv.ismar.daisy.PersonCenterActivity;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.SearchActivity;
 import tv.ismar.daisy.adapter.RecommecdItemAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.NetworkUtils;
@@ -40,7 +30,7 @@ import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
-import tv.ismar.daisy.views.FavoriteFragment.GetItemTask;
+import tv.ismar.daisy.ui.widget.DaisyImageView;
 import tv.ismar.daisy.views.MenuFragment.MenuItem;
 import tv.ismar.daisy.views.MenuFragment.OnMenuItemClickedListener;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
@@ -58,14 +48,17 @@ import android.util.FloatMath;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.ismartv.launcher.data.VideoEntity;
 
 public class HistoryFragment extends Fragment implements OnSectionSelectChangedListener,
 														OnMenuToggleListener,
@@ -113,7 +106,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 	private TextView collect_or_history_txt;
 	private VideoEntity tvHome;
 	private Item[] mHistoriesByNet;
-	private Button search_btn;
+	private DaisyImageView search_btn;
 	private long getTodayStartPoint() {
 		long currentTime = System.currentTimeMillis();
 		GregorianCalendar currentCalendar = new GregorianCalendar();
@@ -145,7 +138,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		divider.setVisibility(View.VISIBLE);
 		recommend_txt = (TextView)fragmentView.findViewById(R.id.recommend_txt);
 		
-		search_btn = (Button)fragmentView.findViewById(R.id.search);
+		search_btn = (DaisyImageView)fragmentView.findViewById(R.id.list_view_search);
 		search_btn.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -587,6 +580,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 	
 	private void createMenu() {
 		mMenuFragment = MenuFragment.newInstance();
+		mMenuFragment.setResId(R.string.vod_history_clear);
 		mMenuFragment.setOnMenuItemClickedListener(this);
 	}
 
@@ -616,6 +610,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 			}
 			break;
 		case 3 : startSakura();break;
+		case 4 : startPersoncenter();break;
 		}
 		
 	}
@@ -781,4 +776,9 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		            startActivity(intent);
 		        }
 		    }
+
+		   private void startPersoncenter(){
+			   Intent intent = new Intent(getActivity(),PersonCenterActivity.class);
+			   startActivity(intent);
+		   }
 }
