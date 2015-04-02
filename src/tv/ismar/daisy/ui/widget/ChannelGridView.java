@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.ismartv.launcher.data.ChannelEntity;
+import com.squareup.picasso.Picasso;
 import tv.ismar.daisy.R;
 
 /**
@@ -75,7 +76,9 @@ public class ChannelGridView extends LinearLayout {
 
                 ImageView channelImage = (ImageView) itemView.findViewById(R.id.channel_img);
                 TextView channelTitle = (TextView) itemView.findViewById(R.id.channel_title);
-                channelImage.setImageResource(itemIconRes[count]);
+
+                Picasso.with(context).load(channelEntities[count].getIcon_url()).into(channelImage);
+
                 channelTitle.setText(channelEntities[count].getName());
                 itemView.setLayoutParams(lineParams);
                 container.addView(itemView);
