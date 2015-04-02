@@ -22,6 +22,7 @@ public class ClientApi {
     public static final String APP_UPDATE_HOST = "http://client.tvxio.com";
 
 
+
     public interface AppVersionInfo {
         @GET("/api/upgrade/application/ismartvod/")
         void excute(
