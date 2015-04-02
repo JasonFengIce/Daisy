@@ -764,7 +764,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 			panelLayout.startAnimation(panelShowAnimation);
 			panelLayout.setVisibility(View.VISIBLE);
 			panelShow = true;
-			hidePanelHandler.postDelayed(hidePanelRunnable, 20000);
+			hidePanelHandler.postDelayed(hidePanelRunnable, 3000);
 		}
 
 	}

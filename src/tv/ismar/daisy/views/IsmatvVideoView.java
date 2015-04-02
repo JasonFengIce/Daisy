@@ -45,12 +45,6 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 	private static final int STATE_PLAYING = 3;
 	private static final int STATE_PAUSED = 4;
 	private static final int STATE_PLAYBACK_COMPLETED = 5;
-
-	// mCurrentState is a VideoView object's current state.
-	// mTargetState is the state that a method caller intends to reach.
-	// For instance, regardless the VideoView object's current state,
-	// calling pause() intends to bring the object to a target state
-	// of STATE_PAUSED.
 	private int mCurrentState = STATE_IDLE;
 	private int mTargetState = STATE_IDLE;
 
@@ -66,9 +60,11 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 	private SmartPlayer.OnCompletionListener mOnCompletionListener;
 	private SmartPlayer.OnPreparedListener mOnPreparedListener;
 	private SmartPlayer.OnSeekCompleteListener mOnSeekCompleteListener;
+	private SmartPlayer.OnBufferingUpdateListener mOnBufferingUpdateListener;
 	private int mCurrentBufferPercentage;
 	private SmartPlayer.OnErrorListener mOnErrorListener;
 	private SmartPlayer.OnInfoListener mOnInfoListener;
+	private SmartPlayer.OnTsInfoListener mOnTsInfoListener;
 	private int mSeekWhenPrepared; // recording the seek position while
 									// preparing
 	private boolean mCanPause;
@@ -207,15 +203,9 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 			// not ready for playback just yet, will try again later
 			return;
 		}
-		// Tell the music playback service to pause
-		// TODO: these constants need to be published somewhere in the
-		// framework.
 		Intent i = new Intent("com.android.music.musicservicecommand");
 		i.putExtra("command", "pause");
 		mContext.sendBroadcast(i);
-
-		// we shouldn't clear the target state, because somebody might have
-		// called start() previously
 		release(false);
 		try {
 			player = new SmartPlayer();
@@ -225,23 +215,18 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 			player.setOnPreparedListener(mPreparedListener);
 			player.setOnVideoSizeChangedListener(mSizeChangedListener);
 			mDuration = -1;
-			player.setOnSeekCompleteListener(mSeekCompleteChangedListener);
-//			if (mOnCompletionListener != null)
-				player.setOnCompletionListener(mCompletionListener);
-//			else
-//				player.setOnCompletionListener(mCompletionListener);
+			player.setOnSeekCompleteListener(mOnSeekCompleteListener);
+			player.setOnCompletionListener(mOnCompletionListener);
 			player.setOnErrorListener(mOnErrorListener);
-			//player.setOnInfoListener(mInfoChangedListener);
-			player.setOnBufferingUpdateListener(mBufferingUpdateListener);
+			player.setOnInfoListener(mOnInfoListener);
+			player.setOnBufferingUpdateListener(mOnBufferingUpdateListener);
+			player.setOnTsInfoListener(mOnTsInfoListener);
 			mCurrentBufferPercentage = 0;
-//			player.setDataSource(mContext, mUri, mHeaders);
 	        player.setDataSource(dataSource);
 			player.setDisplay(mSurfaceHolder);
 			player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-//			player.setScreenOnWhilePlaying(true);
+			player.setScreenOnWhilePlaying(true);
 			player.prepareAsync();
-			// we don't set the target state here either, but preserve the
-			// target state that was there before.
 			mCurrentState = STATE_PREPARING;
 			attachMediaController();
 		}catch (IllegalArgumentException ex) {
@@ -348,35 +333,7 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 			}
 		}
 	};
-	
-	SmartPlayer.OnSeekCompleteListener mSeekCompleteChangedListener = new SmartPlayer.OnSeekCompleteListener() {
-		@Override
-		public void onSeekComplete(SmartPlayer mp) {
-//			Log.i(LOG_TAG, "seek complete");
-//			isSeeking = false;
-			mOnSeekCompleteListener.onSeekComplete(mp);
-		}
-	};
-	
-	private SmartPlayer.OnBufferingUpdateListener mBufferingUpdateListener = new SmartPlayer.OnBufferingUpdateListener() {
-		public void onBufferingUpdate(SmartPlayer mp, int percent) {
-			mCurrentBufferPercentage = percent;
-		}
-	};
-	
-	private SmartPlayer.OnCompletionListener mCompletionListener = new SmartPlayer.OnCompletionListener() {
-		public void onCompletion(SmartPlayer mp) {
-			mCurrentState = STATE_PLAYBACK_COMPLETED;
-			mTargetState = STATE_PLAYBACK_COMPLETED;
-			if (mMediaController != null) {
-				mMediaController.hide();
-			}
-			if (mOnCompletionListener != null) {
-				mOnCompletionListener.onCompletion(player);
-			}
-		}
-	};
-	
+
 	private SmartPlayer.OnErrorListener mErrorListener = new SmartPlayer.OnErrorListener() {
 		public boolean onError(SmartPlayer mp, int framework_err, int impl_err) {
 			Log.d(TAG, "Error: " + framework_err + "," + impl_err);
@@ -442,14 +399,6 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 		}
 	};
 
-	MediaPlayer.OnInfoListener mInfoChangedListener = new MediaPlayer.OnInfoListener() {
-		@Override
-		public boolean onInfo(MediaPlayer arg0, int arg1, int arg2) {
-			//mOnInfoListener.onInfo(arg0, arg1, arg2);
-			return false;
-		}
-	};
-
 	/**
 	 * Register a callback to be invoked when the media file is loaded and ready
 	 * to go.
@@ -491,13 +440,23 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 	 * @param l
 	 *            The callback that will be run
 	 */
+	
+	public void setOnSeekCompleteListener(SmartPlayer.OnSeekCompleteListener l) {
+		mOnSeekCompleteListener = l;
+	}
+
+	public void setOnBufferingUpdateListener(SmartPlayer.OnBufferingUpdateListener l){
+		mOnBufferingUpdateListener =l;
+	}
+
+	public void setOnTsInfoListener(SmartPlayer.OnTsInfoListener l){
+		mOnTsInfoListener = l;
+	}
+
 	public void setOnInfoListener(SmartPlayer.OnInfoListener l) {
 		mOnInfoListener = l;
 	}
 
-	public void setOnSeekCompleteListener(SmartPlayer.OnSeekCompleteListener l){
-		mOnSeekCompleteListener = l;
-	}
 	SurfaceHolder.Callback mSHCallback = new SurfaceHolder.Callback() {
 		public void surfaceChanged(SurfaceHolder holder, int format, int w,
 				int h) {

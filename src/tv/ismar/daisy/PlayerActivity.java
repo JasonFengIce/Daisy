@@ -1,8 +1,11 @@
 package tv.ismar.daisy;
 
+import static tv.ismar.daisy.DramaListActivity.ORDER_CHECK_BASE_URL;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,7 +68,6 @@ import android.widget.TextView;
 import com.ismartv.api.t.AccessProxy;
 import com.ismartv.bean.ClipInfo;
 import com.qiyi.video.player.QiyiVideoPlayer;
-import static tv.ismar.daisy.DramaListActivity.ORDER_CHECK_BASE_URL;
 public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 
 	@SuppressWarnings("unused")
@@ -671,6 +673,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 											timeBar.setProgress(currPosition);
 											timeBar.setEnabled(true);
 										}
+										if(currPosition == 0)
 										mp.start();
 										timeTaskStart();
 										checkTaskStart();
@@ -741,15 +744,63 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 							});
 
 					mVideoView
-							.setOnSeekCompleteListener(new SmartPlayer.OnSeekCompleteListener() {
+					.setOnSeekCompleteListener(new SmartPlayer.OnSeekCompleteListener() {
 
-								@Override
-								public void onSeekComplete(SmartPlayer mp) {
-									// TODO Auto-generated method stub
-									isBuffer = false;
-									hideBuffer();
-								}
-							});
+						@Override
+						public void onSeekComplete(SmartPlayer mp) {
+							// TODO Auto-generated method stub
+							if(!mp.isPlaying())
+								mp.start();
+							isBuffer = false;
+							hideBuffer();
+						}
+					});
+			mVideoView
+					.setOnBufferingUpdateListener(new SmartPlayer.OnBufferingUpdateListener() {
+
+						@Override
+						public void onBufferingUpdate(SmartPlayer mp,
+								int percent) {
+							if(mp.isPlaying() && percent == 100){
+							isBuffer = false;
+							hideBuffer();
+							}
+						}
+
+					});
+//			mVideoView
+//			.setOnTsInfoListener(new SmartPlayer.OnTsInfoListener() {
+//
+//				@Override
+//				public void onTsInfo(SmartPlayer mp,
+//						Map<String, String> map) {
+//			    if(map.get("TsStartInfo") != null)
+//				Log.v("aaaa--TsStartInfo", map.get("TsStartInfo"));
+//			    if(map.get("TsIpAddr") !=null)
+//				Log.v("aaaa--TsIpAddr", map.get("TsIpAddr"));
+//			    if(map.get("TsBitRate") !=null)
+//				Log.v("aaaa--TsBitRate", map.get("TsBitRate"));
+//			    if(map.get("TsDownLoadSpeed") != null)
+//				Log.v("aaaa--TsDownLoadSpeed", map.get("TsDownLoadSpeed"));
+//			    if(map.get("TsUrl") != null)
+//				Log.v("aaaa--TsUrl", map.get("TsUrl"));
+//			    if(map.get("TsEndInfo") != null)
+//				Log.v("aaaa--TsEndInfo", map.get("TsEndInfo"));
+//				}
+//			});
+//			mVideoView
+//			.setOnInfoListener(new SmartPlayer.OnInfoListener() {
+//
+//				@Override
+//				public boolean onInfo(SmartPlayer smartplayer, int i,
+//						int j) {
+//					if(i == 808){
+//						isBuffer = false;
+//						hideBuffer();
+//					}
+//					return false;
+//				}
+//			});
 				}
 
 			} else {
@@ -878,9 +929,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 			if (mVideoView != null) {
 				// Log.d(TAG,
 				// "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
-				if (mVideoView.isPlaying()
-						&& (live_video ||Math.abs(mVideoView.getCurrentPosition()
-								- seekPostion) > 0)) {
+				if (mVideoView.isPlaying()) {
 					// if (isBuffer || bufferLayout.isShown()) {
 					// //isBuffer = false;
 					// //hideBuffer();
@@ -1085,7 +1134,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 			panelLayout.startAnimation(panelShowAnimation);
 			panelLayout.setVisibility(View.VISIBLE);
 			panelShow = true;
-			hidePanelHandler.postDelayed(hidePanelRunnable, 20000);
+			hidePanelHandler.postDelayed(hidePanelRunnable, 3000);
 		}
 
 	}
