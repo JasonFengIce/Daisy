@@ -156,6 +156,17 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 		setView();
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		if(needOnresume){
+			isBuffer = true;
+			showBuffer();
+			new initPlayTask().execute();
+			needOnresume = false;
+		}
+	}
+
 	private void setView() {
 		panelShowAnimation = AnimationUtils.loadAnimation(this,
 				R.drawable.fly_up);
@@ -371,7 +382,9 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 								+ item.item_pk + "/";
 						// Item item1 = simpleRestClient.getItem(itemUrl);
 					}
+					if(item.expense != null){
 					orderCheck();
+					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -632,8 +645,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 				// }});
 				if (urls != null && mVideoView != null) {
 					TaskStart();// cmstest.tvxio.com
-					mVideoView.setVideoPath(urls[currQuality]);
-					Log.i("zhuabao", "play url==" + urls[currQuality]);
 					sid = VodUserAgent.getSid(urls[currQuality]);
 					mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
 					// mVideoView.setOnInfoListener(new
@@ -788,19 +799,16 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 //				Log.v("aaaa--TsEndInfo", map.get("TsEndInfo"));
 //				}
 //			});
-//			mVideoView
-//			.setOnInfoListener(new SmartPlayer.OnInfoListener() {
-//
-//				@Override
-//				public boolean onInfo(SmartPlayer smartplayer, int i,
-//						int j) {
-//					if(i == 808){
-//						isBuffer = false;
-//						hideBuffer();
-//					}
-//					return false;
-//				}
-//			});
+			mVideoView
+			.setOnInfoListener(new SmartPlayer.OnInfoListener() {
+
+				@Override
+				public boolean onInfo(SmartPlayer smartplayer, int i,
+						int j) {
+					return false;
+				}
+			});
+			mVideoView.setVideoPath(urls[currQuality]);
 				}
 
 			} else {
@@ -1827,7 +1835,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 							.setImageResource(R.drawable.vod_pausebtn_selector);
 					isBuffer = true;
 					currQuality = pos;
-					mVideoView = (IsmatvVideoView) findViewById(R.id.video_view);
+//					mVideoView = (IsmatvVideoView) findViewById(R.id.video_view);
 					mVideoView.setVideoPath(urls[currQuality].toString());
 					historyManager.addOrUpdateQuality(new Quality(0,
 							urls[currQuality], currQuality));
@@ -2141,10 +2149,12 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 		}
 
 	};
-	
+
+	boolean needOnresume = false;
 	   private void startSakura(){
 	        if (AppConstant.DEBUG)
 	            Log.d(TAG, "install vod service invoke...");
+	        needOnresume = true;
 	        try {
 	          ApplicationInfo applicationInfo =  getPackageManager().getApplicationInfo(
 	                    "cn.ismartv.speedtester", 0);

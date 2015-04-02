@@ -52,6 +52,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -103,7 +104,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
     private TextView collect_or_history_txt;
     private VideoEntity tvHome;
     private Item[] FavoriteList;
-    private DaisyImageView search_btn;
+    private Button search_btn;
 	private void initViews(View fragmentView) {
 		
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
@@ -121,7 +122,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		divider.setVisibility(View.VISIBLE);
 		recommend_txt = (TextView)fragmentView.findViewById(R.id.recommend_txt);
 		collect_or_history_txt = (TextView)fragmentView.findViewById(R.id.collect_or_history_txt);
-		search_btn = (DaisyImageView)fragmentView.findViewById(R.id.list_view_search);
+		search_btn = (Button)fragmentView.findViewById(R.id.list_view_search);
 		search_btn.setOnClickListener(new OnClickListener() {
 			
 			@Override

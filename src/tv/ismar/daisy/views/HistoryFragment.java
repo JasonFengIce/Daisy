@@ -53,6 +53,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -106,7 +107,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 	private TextView collect_or_history_txt;
 	private VideoEntity tvHome;
 	private Item[] mHistoriesByNet;
-	private DaisyImageView search_btn;
+	private Button search_btn;
 	private long getTodayStartPoint() {
 		long currentTime = System.currentTimeMillis();
 		GregorianCalendar currentCalendar = new GregorianCalendar();
@@ -138,7 +139,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		divider.setVisibility(View.VISIBLE);
 		recommend_txt = (TextView)fragmentView.findViewById(R.id.recommend_txt);
 		
-		search_btn = (DaisyImageView)fragmentView.findViewById(R.id.list_view_search);
+		search_btn = (Button)fragmentView.findViewById(R.id.list_view_search);
 		search_btn.setOnClickListener(new OnClickListener() {
 			
 			@Override

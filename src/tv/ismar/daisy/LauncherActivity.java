@@ -783,7 +783,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     @Override
     public void onFailed(String erro) {
-        Log.d(TAG, erro);
+//        Log.d(TAG, erro);
         showDialog();
     }
 

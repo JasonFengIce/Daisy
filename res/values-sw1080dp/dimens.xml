@@ -377,7 +377,7 @@
     <dimen name="search_gridview_item_btn_type_marginB">-17dip</dimen>
     <dimen name="search_gridview_item_btn_type_textsize">20dip</dimen>
     <dimen name="search_gridview_item_text_marginL">6dip</dimen>
-    <dimen name="search_gridview_item_text_marginT">2dip</dimen>
+    <dimen name="search_gridview_item_text_marginT">10dip</dimen>
     <dimen name="search_gridview_item_text_marginR">6dip</dimen>
     <dimen name="search_gridview_item_text_size">28sp</dimen>
     <dimen name="search_gridview_item_label_marginR">1dip</dimen>
@@ -510,5 +510,5 @@
 
     <!-- list_view -->
     <dimen name="list_view_search_H">60dip</dimen>
-    <dimen name="list_view_search_ML">1100dip</dimen>
+    <dimen name="list_view_search_ML">1000dip</dimen>
 </resources>
