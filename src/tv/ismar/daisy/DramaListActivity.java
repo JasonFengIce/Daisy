@@ -395,6 +395,8 @@ public class DramaListActivity extends Activity implements
 
 		@Override
 		public void onSuccess(String info) {
+			if(mList == null)
+				return;
 			if (info != null && "0".equals(info)) {
 			} else {
 				String currentDayString = Util.getTime();
