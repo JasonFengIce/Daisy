@@ -142,6 +142,19 @@ public class ScrollableSectionList extends HorizontalScrollView {
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
 			int index = (Integer) v.getTag();
+			if(lastView!=null){
+	             if(index==0&&hasFocus&&index!=lastSelectPosition){
+	            	 right.setVisibility(View.INVISIBLE);
+	             }
+			}
+
+             if(0<index&&index<mContainer.getChildCount()-1&&hasFocus){
+            	 left.setVisibility(View.VISIBLE);
+            	 right.setVisibility(View.VISIBLE);
+             }
+             if(index==mContainer.getChildCount()-1){
+            	 right.setVisibility(View.INVISIBLE);
+             }
 
 			TextView label = (TextView) v.findViewById(R.id.section_label);
 			ProgressBar percentageBar = (ProgressBar) v.findViewById(R.id.section_percentage);

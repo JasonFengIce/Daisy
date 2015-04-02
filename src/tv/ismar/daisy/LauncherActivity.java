@@ -378,7 +378,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
                         @Override
                         public void onCompletion(MediaPlayer mp) {
-                            // videoView.setVideoURI(uri);
+                             videoView.setVideoPath(mLocalPath);
                             // videoView.start();
                         }
                     });

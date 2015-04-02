@@ -496,4 +496,9 @@
     <dimen name="package_item_ItemImage_MT">15dip</dimen>
     <dimen name="package_item_ItemText_MT">5dip</dimen>
     <dimen name="package_item_ItemText_PLR">5dip</dimen>
+    
+    
+        <!-- list_view -->
+    <dimen name="list_view_search_H">40dip</dimen>
+    <dimen name="list_view_search_ML">668dip</dimen>
 </resources>
