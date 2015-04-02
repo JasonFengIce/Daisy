@@ -414,6 +414,8 @@ public class PaymentDialog extends Dialog {
 			itemprice = mItem.expense.subprice;
 		} else if ("item".equalsIgnoreCase(mItem.model_name)) {
 			itemprice = mItem.expense.price;
+		}else if ("package".equalsIgnoreCase(mItem.model_name)) {
+			itemprice = mItem.expense.price;
 		}
 		payinfo_price.setText(String.format(price, itemprice));
 		payinfo_exprice.setText(String.format(exprice, mItem.expense.duration));

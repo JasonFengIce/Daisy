@@ -4,7 +4,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
@@ -67,6 +66,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 	private static final int MSG_PLAY_TIME = 101;
 	private static final int MSG_INITQUALITYTITLE = 102;
 	private static final int SEEK_STEP = 30000;
+	private static final int SHORT_STEP = 1;
 	private static final HashMap<Definition, String> DEFINITION_NAMES;
 	private QiyiVideoPlayer mPlayer;
 	private static final String TAG = "PLAYER";
@@ -161,6 +161,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 		initView();
 
 	}
+
 
 	public void initView() {
 		panelShowAnimation = AnimationUtils.loadAnimation(this,
@@ -689,6 +690,10 @@ public class QiYiPlayActivity extends VodMenuAction {
 	@Override
 	public void onResume() {
 		super.onResume();
+		if(needOnresume){
+			initQiyiVideoPlayer();
+			needOnresume = false;
+		}
 	}
 
 	@Override
@@ -871,93 +876,130 @@ public class QiYiPlayActivity extends VodMenuAction {
 		paused = false;
 	}
 
+	private void fastForward(int step) {
+		if (currPosition > clipLength)
+			return;
+		if (offsets != 1 && offsets % 5 != 0) {
+			offsets += step;
+			Log.i("zhnagjiqiang", "offsets != 1 && offsets % 5 != 0");
+		} else {
+			if (offsets > 0) {
+				offn = offsets / 5;
+				Log.i("zhnagjiqiang", "offsets > 0");
+			}
+		}
+		if (clipLength > 1000000) {
+			if (offn < 11) {
+				Log.i("zhnagjiqiang", "offn < 11");
+				currPosition += clipLength * offn * 0.01;
+			} else {
+				Log.i("zhnagjiqiang", "offn >=11");
+				currPosition += clipLength * 0.1;
+			}
+		} else {
+			currPosition += 10000;
+		}
+
+		if (currPosition > clipLength) {
+			currPosition = clipLength - 3000;
+		}
+		timeBar.setProgress(currPosition);
+		Log.d(TAG, "seek Forward " + currPosition);
+	}
+
+	private void fastBackward(int step) {
+		if (currPosition < 0)
+			return;
+		if (offsets != 1 && offsets % 5 != 0) {
+			offsets += step;
+		} else {
+			if (offsets > 0) {
+				offn = offsets / 5;
+			}
+		}
+		if (clipLength > 1000000) {
+			if (offn < 11) {
+				currPosition -= clipLength * offn * 0.01;
+			} else {
+				currPosition -= clipLength * 0.1;
+			}
+		} else {
+			currPosition -= 10000;
+		}
+		if (currPosition < 0)
+			currPosition = 0;
+		timeBar.setProgress(currPosition);
+		Log.d(TAG, "seek Backward " + currPosition);
+	}
+
 	@Override
-	public boolean onKeyUp(int keyCode, KeyEvent event) {
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean ret = false;
-		if (!isVodMenuVisible()) {
+		if (!isVodMenuVisible() && mPlayer != null) {
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
-				if (!live_video) {
-//					fbImage.setImageResource(R.drawable.vodplayer_controller_rew);
+				if (mPlayer.getDuration() > 0 && !live_video) {
+					isSeek = true;
 					showPanel();
 					isBuffer = true;
 					showBuffer();
-					mPlayer.seek(-SEEK_STEP);
-					if (subItem != null)
-						callaPlay.videoPlaySeek(item.pk, subItem.pk,
-								item.title, clip.pk, currQuality, 0,
-								currPosition, sid);
-					else
-						callaPlay.videoPlayContinue(item.pk, null, item.title,
-								clip.pk, currQuality, 0, currPosition, sid);
-					isSeekBuffer = true;
+					fastBackward(SHORT_STEP);
 					ret = true;
-					isSeek = false;
-					offsets = 0;
-					offn = 1;
 				}
-
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
-				if (!live_video) {
-//					ffImage.setImageResource(R.drawable.vodplayer_ffd);
+				if (mPlayer.getDuration() > 0 && !live_video) {
+					isSeek = true;
 					showPanel();
 					isBuffer = true;
 					showBuffer();
-					mPlayer.seek(SEEK_STEP);
-					if (subItem != null)
-						callaPlay.videoPlaySeek(item.pk, subItem.pk,
-								item.title, clip.pk, currQuality, 0,
-								currPosition, sid);
-					else
-						callaPlay.videoPlayContinue(item.pk, null, item.title,
-								clip.pk, currQuality, 0, currPosition, sid);
-					isSeekBuffer = true;
+					fastForward(SHORT_STEP);
 					ret = true;
-					isSeek = false;
-					offsets = 0;
-					offn = 1;
 				}
-
 				break;
 			case KeyEvent.KEYCODE_DPAD_CENTER:
 			case KeyEvent.KEYCODE_ENTER:
-				if (paused) {
-					resumeItem();
-					playPauseImage
-							.setImageResource(R.drawable.vod_pausebtn_selector);
+				if (mPlayer.getDuration() > 0) {
+					showPanel();
+					if (!paused) {
+						pauseItem();
+						playPauseImage
+								.setImageResource(R.drawable.vod_playbtn_selector);
+					} else {
+						resumeItem();
+						playPauseImage
+								.setImageResource(R.drawable.vod_pausebtn_selector);
+					}
+
+					ret = true;
+				}
+				break;
+			case KeyEvent.KEYCODE_A:
+			case KeyEvent.KEYCODE_F1:
+			case KeyEvent.KEYCODE_PROG_RED:
+
+				if (panelShow) {
+					hidePanel();
 				} else {
-					pauseItem();
-					playPauseImage
-							.setImageResource(R.drawable.vod_playbtn_selector);
+					showPanel();
 				}
 				ret = true;
-				break;
-			case KeyEvent.KEYCODE_MENU:
-				if (menu != null && menu.isVisible())
-					return false;
-				if (menu == null) {
-					createWindow();
-					menu = new ISTVVodMenu(this);
-					ret = createMenu(menu);
-				}
-				String isnet = "";
-				if (SimpleRestClient.isLogin()) {
-					isnet = "yes";
-				} else {
-					isnet = "no";
-				}
-				if (onVodMenuOpened(menu)) {
-					menu.show();
-					hideMenuHandler.postDelayed(hideMenuRunnable, 60000);
-				}
-				break;
 
+				break;
+			case KeyEvent.KEYCODE_DPAD_UP:
+
+				am.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+						AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+				showPanel();
+				ret = true;
+
+				break;
+			case KeyEvent.KEYCODE_DPAD_DOWN:
+				am.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+						AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+				ret = true;
+				break;
 			case KeyEvent.KEYCODE_BACK:
-//				if (panelShow) {
-//					hidePanel();
-//					ret = true;
-//				} else {
 					showPopupDialog(
 							DIALOG_OK_CANCEL,
 							getResources().getString(
@@ -968,7 +1010,75 @@ public class QiYiPlayActivity extends VodMenuAction {
 					playPauseImage
 							.setImageResource(R.drawable.vod_playbtn_selector);
 					}
-//				}
+				break;
+			case KeyEvent.KEYCODE_MENU:
+				if (menu != null && menu.isVisible())
+					return false;
+				if (menu == null) {
+					createWindow();
+					menu = new ISTVVodMenu(this);
+					ret = createMenu(menu);
+				}
+				if (onVodMenuOpened(menu)) {
+					menu.show();
+					hideMenuHandler.postDelayed(hideMenuRunnable, 60000);
+				}
+				break;
+
+			default:
+				break;
+			}
+		}
+		if (mPlayer != null && ret == false) {
+			ret = super.onKeyDown(keyCode, event);
+		}
+		return ret;
+	}
+
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		boolean ret = false;
+		if (mPlayer != null && !isVodMenuVisible()
+				&& mPlayer.getDuration() > 0) {
+			switch (keyCode) {
+			case KeyEvent.KEYCODE_DPAD_LEFT:
+				if (!live_video) {
+//					fbImage.setImageResource(R.drawable.vodplayer_controller_rew);
+					mPlayer.seekTo(currPosition);
+					if (subItem != null)
+						callaPlay.videoPlaySeek(item.pk, subItem.pk,
+								item.title, clip.pk, currQuality, 0,
+								currPosition, sid);
+					else
+						callaPlay.videoPlayContinue(item.pk, null, item.title,
+								clip.pk, currQuality, 0, currPosition, sid);
+					isSeekBuffer = true;
+					Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
+					ret = true;
+					isSeek = false;
+					offsets = 0;
+					offn = 1;
+				}
+
+				break;
+			case KeyEvent.KEYCODE_DPAD_RIGHT:
+				if (!live_video) {
+//					ffImage.setImageResource(R.drawable.vodplayer_controller_ffd);
+					mPlayer.seekTo(currPosition);
+					if (subItem != null)
+						callaPlay.videoPlaySeek(item.pk, subItem.pk,
+								item.title, clip.pk, currQuality, 0,
+								currPosition, sid);
+					else
+						callaPlay.videoPlayContinue(item.pk, null, item.title,
+								clip.pk, currQuality, 0, currPosition, sid);
+					isSeekBuffer = true;
+					Log.d(TAG, "RIGHT seek to" + getTimeString(currPosition));
+					ret = true;
+					isSeek = false;
+					offsets = 0;
+					offn = 1;
+				}
 
 				break;
 			default:
@@ -981,6 +1091,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 		}
 		return ret;
 	}
+
 
 	private void createWindow() {
 		View win;
@@ -1515,10 +1626,11 @@ public class QiYiPlayActivity extends VodMenuAction {
 		}
 
 	};
-
+	boolean needOnresume = false;
 	   private void startSakura(){
 	        if (AppConstant.DEBUG)
 	            Log.d(TAG, "install vod service invoke...");
+	        needOnresume = true;
 	        try {
 	          ApplicationInfo applicationInfo =  getPackageManager().getApplicationInfo(
 	                    "cn.ismartv.speedtester", 0);
