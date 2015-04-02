@@ -85,7 +85,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 	//private ImageView leftarrow;
 	private ImageView arrow_left;
 	private ImageView arrow_right;
-	private ImageView btn_search;
+	private Button btn_search;
 	private void initViews(View fragmentView) {
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
 		mHGridView.setOnItemClickListener(this);
@@ -116,7 +116,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		});
 		mChannelLabel = (TextView) fragmentView.findViewById(R.id.channel_label);
 		mChannelLabel.setText(mTitle);
-		btn_search = (ImageView)fragmentView.findViewById(R.id.list_view_search);
+		btn_search = (Button)fragmentView.findViewById(R.id.list_view_search);
 		btn_search.setOnClickListener(new OnClickListener() {
 				
 				@Override

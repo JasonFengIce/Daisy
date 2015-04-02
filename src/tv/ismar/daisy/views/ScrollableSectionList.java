@@ -385,17 +385,19 @@ public class ScrollableSectionList extends HorizontalScrollView {
            final int maxJump = getMaxScrollAmount();
 
            if (nextFocused != null && isWithinDeltaOfScreen(nextFocused, maxJump)) {
-        	   int index = (Integer) nextFocused.getTag();
-        	   if(direction==View.FOCUS_LEFT){
-        		   right.setVisibility(View.VISIBLE);
-        		   if(index==0){
-        			   left.setVisibility(View.INVISIBLE); 
-        		   }
-        	   }
-        	   else if(direction==View.FOCUS_RIGHT){
-            	   left.setVisibility(View.VISIBLE);
-            	   if(index==mContainer.getChildCount()-1){
-            		   right.setVisibility(View.INVISIBLE);
+        	   if(nextFocused.getTag()!=null){
+            	   int index = (Integer) nextFocused.getTag();
+            	   if(direction==View.FOCUS_LEFT){
+            		   right.setVisibility(View.VISIBLE);
+            		   if(index==0){
+            			   left.setVisibility(View.INVISIBLE); 
+            		   }
+            	   }
+            	   else if(direction==View.FOCUS_RIGHT){
+                	   left.setVisibility(View.VISIBLE);
+                	   if(index==mContainer.getChildCount()-1){
+                		   right.setVisibility(View.INVISIBLE);
+                	   }
             	   }
         	   }
                nextFocused.getDrawingRect(mTempRect);
@@ -442,11 +444,6 @@ public class ScrollableSectionList extends HorizontalScrollView {
 
            if (currentFocused != null && currentFocused.isFocused()
                    && isOffScreen(currentFocused)) {
-               // previously focused item still has focus and is off screen, give
-               // it up (take it back to ourselves)
-               // (also, need to temporarily force FOCUS_BEFORE_DESCENDANTS so we are
-               // sure to
-               // get it)
                final int descendantFocusability = getDescendantFocusability();  // save
                setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
                requestFocus();

@@ -29,19 +29,14 @@
         android:background="@drawable/listview_p_divider"
         android:visibility="visible" />
                   
-           <tv.ismar.daisy.ui.widget.DaisyImageView 
-               xmlns:daisy="http://schemas.android.com/apk/res/tv.ismar.daisy"
-               daisy:normal_bg="@drawable/search_normal_bg"
-                daisy:focus_bg="@drawable/search_pressed_bg"              
+           <Button           
            android:layout_width="wrap_content"
-            android:layout_height="@dimen/list_view_search_H"
-            android:layout_marginLeft="@dimen/list_view_search_ML"
-            android:layout_gravity="center_vertical"
-                android:focusable="true"
-                android:clickable="true"
-               android:id="@+id/list_view_search"
-             
-               />
+           android:layout_height="@dimen/list_view_search_H"
+           android:layout_marginLeft="@dimen/list_view_search_ML"
+           android:layout_gravity="center_vertical"
+           android:focusable="true"
+           android:id="@+id/list_view_search"
+            android:background="@drawable/search_btn_bg_selector" />
 </LinearLayout>
 
     <ImageView
@@ -85,7 +80,7 @@
             android:layout_marginTop="@dimen/grid_view_main_arrow_left_marginT"
             android:background="@drawable/arrow_right_selector"
             android:visibility="invisible"
-            />
+            android:focusable="true"/>
     </LinearLayout>
 
     <org.sakuratya.horizontal.ui.HGridView
