@@ -137,6 +137,7 @@
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
     <string name="exit_prompt">你是否确定退出视云影院</string>
+    <string name="check_network">请检查网络设置！！！</string>
 
 
     <!-- pay panel -->

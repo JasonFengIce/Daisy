@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.content.*;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnErrorListener;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.*;
 import android.util.DisplayMetrics;
@@ -103,11 +105,14 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private DaisyImageView btn_personcenter;
     private DaisyImageView btn_search;
 
+    private volatile boolean videoCacheIsComplete = false;
+
     /**
      * PopupWindow
      */
     PopupWindow updatePopupWindow;
     PopupWindow exitPopupWindow;
+    PopupWindow netErrorPopupWindow;
     /**
      * views
      */
@@ -121,6 +126,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        checkNetWork();
         registerUpdateReceiver();
         AppUpdateUtils.getInstance().checkUpdate(this);
         String path = getFilesDir().getAbsolutePath();
@@ -275,7 +281,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             @Override
             public void onItemHover(View view) {
                 AttributeEntity attributeEntity = (AttributeEntity) view.getTag();
-                if (videoView.isPlaying() && videoCacheIsComplete()) {
+                if (videoView.isPlaying() && videoCacheIsComplete) {
                     playVideoByTime((int) attributeEntity.getStart_time() * 1000, (int) attributeEntity.getEnd_time() * 1000);
                 }
 
@@ -528,7 +534,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                     break;
 
                 case CACHE_VIDEO_UPDATE:
-                    if (iserror) {
+                    if (iserror&&!videoView.isPlaying()) {
                         videoView.setVideoPath(mLocalPath);
                         videoView.start();
                         iserror = false;
@@ -536,10 +542,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                     break;
 
                 case CACHE_VIDEO_END:
+                    videoCacheIsComplete = true;
                     if (iserror || !videoView.isPlaying()) {
                         videoView.setVideoPath(mLocalPath);
                         videoView.start();
                         iserror = false;
+
                     }
                     break;
             }
@@ -924,13 +932,34 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         });
     }
 
+    private void showNetErrorPopup() {
+        final Context context = this;
+        View contentView = LayoutInflater.from(context)
+                .inflate(R.layout.popup_net_error, null);
+        netErrorPopupWindow = new PopupWindow(null, 1400, 500);
+        netErrorPopupWindow.setContentView(contentView);
+        netErrorPopupWindow.setFocusable(true);
+        netErrorPopupWindow.showAtLocation(mView, Gravity.CENTER, 0, 0);
+        DaisyButton confirmExit = (DaisyButton) contentView.findViewById(R.id.confirm_exit);
+
+        confirmExit.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                exitPopupWindow.dismiss();
+                superOnbackPressed();
+            }
+        });
+    }
+
     private void playVideoByTime(int startTime, int endTime) {
         int currnet = videoView.getCurrentPosition();
         Log.d(TAG, "current ---> " + currnet);
         if (currnet > endTime || currnet < startTime) {
-
             Log.d(TAG, "start time ---> " + startTime + "  end time ---> " + endTime);
+            isfinished = true;
+            videoView.setVideoPath(mLocalPath);
             videoView.seekTo(startTime);
+            videoView.start();
         }
     }
 
@@ -945,6 +974,15 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         } else {
             Log.d(TAG, "video cache is complete false");
             return false;
+        }
+    }
+
+    private void checkNetWork() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo.State wifiState = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
+        NetworkInfo.State ethernetState = cm.getNetworkInfo(ConnectivityManager.TYPE_ETHERNET).getState();
+        if (wifiState != NetworkInfo.State.CONNECTED && ethernetState != NetworkInfo.State.CONNECTED) {
+            showNetErrorPopup();
         }
     }
 }
