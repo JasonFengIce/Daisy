@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.FocusFinder;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -96,9 +97,11 @@ public class ScrollableSectionList extends HorizontalScrollView {
 			sectionHolder.setOnClickListener(mOnClickListener);
 			sectionHolder.setTag(i);
 			mContainer.addView(sectionHolder, i);
+			//sectionHolder.setNextFocusUpId(R.id.list_view_search);
 		}
 		this.addView(mContainer);
 		if(mContainer.getChildAt(0)!=null){
+			mContainer.getChildAt(0).setFocusable(true);
 			mContainer.getChildAt(0).requestFocus();
 			View v = mContainer.getChildAt(0);
 			TextView label = (TextView) v.findViewById(R.id.section_label);
@@ -117,7 +120,8 @@ public class ScrollableSectionList extends HorizontalScrollView {
 	
 	private RelativeLayout getSectionLabelLayout(Section section, int width) {
 		RelativeLayout sectionHolder = (RelativeLayout) LayoutInflater.from(getContext()).inflate(R.layout.section_list_item, null);
-//		LinearLayout.LayoutParams layoutParams;
+
+		//		LinearLayout.LayoutParams layoutParams;
 //		if(H==720)
 //		    layoutParams = new LinearLayout.LayoutParams(width, 44);
 //		else
@@ -337,7 +341,6 @@ public class ScrollableSectionList extends HorizontalScrollView {
 //	@Override
 //	public boolean arrowScroll(int direction) {
 //		if(direction==View.FOCUS_RIGHT){
-//		//	View v = getChildAt(getcou)
 //			View currentFocused = findFocus();
 //			if(currentFocused==null || currentFocused.getTag()==null) {
 //				return super.arrowScroll(direction);
@@ -366,46 +369,89 @@ public class ScrollableSectionList extends HorizontalScrollView {
 //		}
 //	}
 	public View left;
-	public View right;	
+	public View right;
+	public View parent;
     public boolean arrowScroll(int direction) {
-    	   if(right==null || left == null){
-    		   return true;
-    	   }
-    	    final int maxJump = getMaxScrollAmount();
-            int scrollDelta = maxJump;
+    	    
+    	   if(left==null||right==null){
+    	    	return super.arrowScroll(direction);
+    	    }
+    	  
+    	   View currentFocused = findFocus();
+           if (currentFocused == this) currentFocused = null;
 
-            if (direction == View.FOCUS_LEFT) {
-            	
-            	if(getScrollX() < scrollDelta){
-            		left.setVisibility(View.INVISIBLE);
-                    scrollDelta = getScrollX();
-            	}
-            	else if(getScrollX()==scrollDelta){
-            		left.setVisibility(View.INVISIBLE);
-            		right.setVisibility(View.VISIBLE);
-            	}
-            	else{
-            		right.setVisibility(View.VISIBLE);
-            	}
-            }
-            else if (direction == View.FOCUS_RIGHT && getChildCount() > 0) {
+           View nextFocused = FocusFinder.getInstance().findNextFocus(this, currentFocused, direction);
 
-                int daRight = getChildAt(0).getRight();
+           final int maxJump = getMaxScrollAmount();
 
-                int screenRight = getScrollX() + getWidth();
-
-                if (daRight - screenRight < maxJump) {
-                	right.setVisibility(View.INVISIBLE);
-                    scrollDelta = daRight - screenRight;
+           if (nextFocused != null && isWithinDeltaOfScreen(nextFocused, maxJump)) {
+        	   int index = (Integer) nextFocused.getTag();
+        	   if(direction==View.FOCUS_LEFT){
+        		   right.setVisibility(View.VISIBLE);
+        		   if(index==0){
+        			   left.setVisibility(View.INVISIBLE); 
+        		   }
+        	   }
+        	   else if(direction==View.FOCUS_RIGHT){
+            	   left.setVisibility(View.VISIBLE);
+            	   if(index==mContainer.getChildCount()-1){
+            		   right.setVisibility(View.INVISIBLE);
+            	   }
+        	   }
+               nextFocused.getDrawingRect(mTempRect);
+               offsetDescendantRectToMyCoords(nextFocused, mTempRect);
+               int scrollDelta = computeScrollDeltaToGetChildRectOnScreen(mTempRect);
+               doScrollX(scrollDelta);
+               nextFocused.requestFocus(direction);
+           }
+           else{
+        	   int scrollDelta = maxJump;
+        	    if (direction == View.FOCUS_LEFT) {
+                	
+                	if(getScrollX() < scrollDelta){
+                		left.setVisibility(View.INVISIBLE);
+                        scrollDelta = getScrollX();
+                	}
+                	else if(getScrollX()==scrollDelta){
+                		left.setVisibility(View.INVISIBLE);
+                		right.setVisibility(View.VISIBLE);
+                	}
+                	else{
+                		right.setVisibility(View.VISIBLE);
+                	}
                 }
-                else{
-                	left.setVisibility(View.VISIBLE);
+                else if (direction == View.FOCUS_RIGHT && getChildCount() > 0) {
+
+                    int daRight = getChildAt(0).getRight();
+
+                    int screenRight = getScrollX() + getWidth();
+
+                    if (daRight - screenRight < maxJump) {
+                    	right.setVisibility(View.INVISIBLE);
+                        scrollDelta = daRight - screenRight;
+                    }
+                    else{
+                    	left.setVisibility(View.VISIBLE);
+                    }
                 }
-            }
-            if (scrollDelta == 0) {
-                return false;
-            }
-            doScrollX(direction == View.FOCUS_RIGHT ? scrollDelta : -scrollDelta);
+                if (scrollDelta == 0) {
+                    return false;
+                }
+                doScrollX(direction == View.FOCUS_RIGHT ? scrollDelta : -scrollDelta); 
+           }
+
+           if (currentFocused != null && currentFocused.isFocused()
+                   && isOffScreen(currentFocused)) {
+               // previously focused item still has focus and is off screen, give
+               // it up (take it back to ourselves)
+               // (also, need to temporarily force FOCUS_BEFORE_DESCENDANTS so we are
+               // sure to
+               // get it)
+               final int descendantFocusability = getDescendantFocusability();  // save
+               setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+               requestFocus();
+               setDescendantFocusability(descendantFocusability);  // restore
+           }
         
         return true;
     }
@@ -520,12 +566,13 @@ public class ScrollableSectionList extends HorizontalScrollView {
 //		}
 		
 	}
-	@Override
-	public boolean onTouchEvent(MotionEvent ev) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+//	@Override
+//	public boolean onTouchEvent(MotionEvent ev) {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
 	public void reset() {
 		removeAllViews();
 	}
+	
 }

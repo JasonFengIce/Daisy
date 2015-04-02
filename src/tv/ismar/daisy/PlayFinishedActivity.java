@@ -59,10 +59,6 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 	final SimpleRestClient simpleRest = new SimpleRestClient();
 	private FavoriteManager mFavoriteManager;
 	private HistoryManager mHistorymanager;
-	
-	private static int leftCover = R.drawable.cover_left;
-	private static int rightCover = R.drawable.cover_right;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

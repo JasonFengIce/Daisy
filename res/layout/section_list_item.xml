@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/channel_section_tabs_W"
     android:layout_height="match_parent"
-    >
+ android:id="@+id/section_item_layout"
+ >
     
         <ProgressBar
         android:id="@+id/section_percentage"

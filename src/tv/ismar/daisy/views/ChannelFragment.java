@@ -8,10 +8,6 @@ import java.util.regex.Pattern;
 import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
 import org.sakuratya.horizontal.ui.HGridView;
 import org.sakuratya.horizontal.ui.HGridView.OnScrollListener;
-
-import tv.ismar.daisy.DramaListActivity;
-import tv.ismar.daisy.ItemDetailActivity;
-import tv.ismar.daisy.LauncherActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.SearchActivity;
 import tv.ismar.daisy.core.EventProperty;
@@ -19,7 +15,6 @@ import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
-import tv.ismar.daisy.models.Expense;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemCollection;
 import tv.ismar.daisy.models.ItemList;
@@ -27,14 +22,12 @@ import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
-import tv.ismar.daisy.ui.widget.DaisyImageView;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
-import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -92,7 +85,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 	//private ImageView leftarrow;
 	private ImageView arrow_left;
 	private ImageView arrow_right;
-	private Button btn_search;
+	private ImageView btn_search;
 	private void initViews(View fragmentView) {
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
 		mHGridView.setOnItemClickListener(this);
@@ -104,6 +97,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		arrow_right = (ImageView)fragmentView.findViewById(R.id.arrow_right);
 		mScrollableSectionList.left = arrow_left;
 		mScrollableSectionList.right = arrow_right;
+		//mHGridView = 
 		arrow_left.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -122,7 +116,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		});
 		mChannelLabel = (TextView) fragmentView.findViewById(R.id.channel_label);
 		mChannelLabel.setText(mTitle);
-		btn_search = (Button)fragmentView.findViewById(R.id.search);
+		btn_search = (ImageView)fragmentView.findViewById(R.id.list_view_search);
 		btn_search.setOnClickListener(new OnClickListener() {
 				
 				@Override
@@ -253,7 +247,10 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 				if(mSectionList!=null ) {
 					if(mSectionList.size()>5)
 						arrow_right.setVisibility(View.VISIBLE);
+					
+
 					mScrollableSectionList.init(mSectionList, getResources().getDimensionPixelSize(R.dimen.gridview_channel_section_tabs_width),false);
+					btn_search.setNextFocusDownId(R.id.section_item_layout);
 					mHGridAdapter = new HGridAdapterImpl(getActivity(), mItemCollections);
 					mHGridAdapter.setList(mItemCollections);
 					if(mHGridAdapter.getCount()>0){

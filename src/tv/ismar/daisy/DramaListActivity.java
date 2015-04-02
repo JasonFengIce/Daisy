@@ -373,7 +373,9 @@ public class DramaListActivity extends Activity implements
 		@Override
 		public void payResult(boolean result) {
 			paystatus = result;
+			if(result){
 			myHandler.sendEmptyMessage(ORDER_ALL_DRANA_SUCCESS);
+			}
 		}
 	};
 

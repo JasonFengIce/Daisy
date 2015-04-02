@@ -111,7 +111,6 @@
         android:layout_width="@dimen/play_finished_rightlayout_W"
         android:layout_height="match_parent"
         android:layout_weight="5"
-        android:background="@drawable/cover_right"
         android:gravity="center"
         android:orientation="vertical">
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:sakura="http://schemas.android.com/apk/res-auto"
+    xmlns:sakura="http://schemas.android.com/apk/res/tv.ismar.daisy"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
@@ -28,17 +28,20 @@
         android:layout_height="@dimen/gridview_main_gridview_line_H"
         android:background="@drawable/listview_p_divider"
         android:visibility="visible" />
-    
-         <Button
-            android:id="@+id/search"
-            android:focusable="true"
-            android:clickable="true"
-            android:src="@android:color/transparent"
-            android:background="@drawable/search_btn_bg_selector"
-            android:layout_width="wrap_content"
+                  
+           <tv.ismar.daisy.ui.widget.DaisyImageView 
+               xmlns:daisy="http://schemas.android.com/apk/res/tv.ismar.daisy"
+               daisy:normal_bg="@drawable/search_normal_bg"
+                daisy:focus_bg="@drawable/search_pressed_bg"              
+           android:layout_width="wrap_content"
             android:layout_height="@dimen/list_view_search_H"
             android:layout_marginLeft="@dimen/list_view_search_ML"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"
+                android:focusable="true"
+                android:clickable="true"
+               android:id="@+id/list_view_search"
+             
+               />
 </LinearLayout>
 
     <ImageView
@@ -64,14 +67,15 @@
             android:layout_marginTop="@dimen/grid_view_main_arrow_left_marginT"
             android:background="@drawable/arrow_left_selector"
             android:visibility="invisible" 
-            android:clickable="true"/>
+            />
            
         <tv.ismar.daisy.views.ScrollableSectionList
             android:id="@+id/section_tabs"
             android:layout_width="@dimen/gridview_channel_section_tabs_width"
             android:layout_height="match_parent"
             android:scrollbars="none"
-             >
+             android:focusable="false" 
+             android:focusableInTouchMode="false">
         </tv.ismar.daisy.views.ScrollableSectionList>
 
         <ImageView
@@ -80,8 +84,8 @@
             android:layout_height="@dimen/grid_view_main_arrow_left_H"
             android:layout_marginTop="@dimen/grid_view_main_arrow_left_marginT"
             android:background="@drawable/arrow_right_selector"
-            android:visibility="invisible" 
-            android:clickable="true"/>
+            android:visibility="invisible"
+            />
     </LinearLayout>
 
     <org.sakuratya.horizontal.ui.HGridView
