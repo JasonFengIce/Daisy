@@ -275,7 +275,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             @Override
             public void onItemHover(View view) {
                 AttributeEntity attributeEntity = (AttributeEntity) view.getTag();
-                if (videoView.isPlaying()) {
+                if (videoView.isPlaying() && videoCacheIsComplete()) {
                     playVideoByTime((int) attributeEntity.getStart_time() * 1000, (int) attributeEntity.getEnd_time() * 1000);
                 }
 
@@ -931,6 +931,20 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
             Log.d(TAG, "start time ---> " + startTime + "  end time ---> " + endTime);
             videoView.seekTo(startTime);
+        }
+    }
+
+    private boolean videoCacheIsComplete() {
+        File file = new File(mLocalPath);
+        SharedPreferences sharedPreferences = getSharedPreferences("Daisy", MODE_PRIVATE);
+        long totalSize = sharedPreferences.getLong("TotalSize", 0);
+        Log.d(TAG, "cache size ---> " + file.length() + " || " + "total size ---> " + totalSize);
+        if (file.length() == totalSize) {
+            Log.d(TAG, "video cache is complete true");
+            return true;
+        } else {
+            Log.d(TAG, "video cache is complete false");
+            return false;
         }
     }
 }
