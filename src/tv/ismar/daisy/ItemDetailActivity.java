@@ -948,7 +948,6 @@ private boolean isPause = false;
 								DramaListActivity.class);
 						intent.putExtra("item", mItem);
 						startActivityForResult(intent, 11);
-						startActivity(intent);
 					}
 					break;
 				// case R.id.btn_fill:
