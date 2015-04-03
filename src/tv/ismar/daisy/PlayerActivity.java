@@ -234,7 +234,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 					if (mVideoView.getDuration() > 0 && !live_video) {
 						isSeek = true;
 						showPanel();
-//						fbImage.setImageResource(R.drawable.vod_controlb_selector);
 						isBuffer = true;
 						showBuffer();
 						fastBackward(SHORT_STEP);
@@ -264,7 +263,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 					if (mVideoView.getDuration() > 0 && !live_video) {
 						isSeek = true;
 						showPanel();
-//						ffImage.setImageResource(R.drawable.vod_controlf_selector);
 						isBuffer = true;
 						showBuffer();
 						fastForward(SHORT_STEP);
@@ -303,6 +301,119 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 								.setImageResource(R.drawable.vod_pausebtn_selector);
 					}
 				}
+				return false;
+			}
+		});
+		mVideoView.setOnPreparedListener(new SmartPlayer.OnPreparedListener() {
+			@Override
+			public void onPrepared(SmartPlayer mp) {
+
+				Log.d(TAG, "mVideoView onPrepared tempOffset ==" + tempOffset);
+				if (mVideoView != null) {
+					if (live_video) {
+						timeBar.setEnabled(false);
+
+					} else {
+						clipLength = mVideoView.getDuration();
+						timeBar.setMax(clipLength);
+						mp.seekTo(currPosition);
+						timeBar.setProgress(currPosition);
+						timeBar.setEnabled(true);
+					}
+					if (currPosition == 0)
+						mp.start();
+					timeTaskStart();
+					checkTaskStart();
+					urls[0] = urlInfo.getNormal();
+					urls[1] = urlInfo.getMedium();
+					urls[2] = urlInfo.getHigh();
+					urls[3] = urlInfo.getAdaptive();
+					if (subItem != null) {
+						callaPlay.videoPlayLoad(
+								item.pk,
+								subItem.pk,
+								item.title,
+								clip.pk,
+								currQuality,
+								(System.currentTimeMillis() - startDuration) / 1000,
+								0, null, sid);
+						callaPlay.videoPlayStart(item.pk, subItem.pk,
+								item.title, clip.pk, currQuality, 0);
+					} else {
+						callaPlay.videoPlayLoad(
+								item.pk,
+								null,
+								item.title,
+								clip.pk,
+								currQuality,
+								(System.currentTimeMillis() - startDuration) / 1000,
+								0, null, sid);
+						callaPlay.videoPlayStart(item.pk, null, item.title,
+								clip.pk, currQuality, 0);
+					}
+				}
+			}
+		});
+		mVideoView.setOnErrorListener(new SmartPlayer.OnErrorListener() {
+			@Override
+			public boolean onError(SmartPlayer mp, int what, int extra) {
+				Log.d(TAG, "mVideoView  Error setVideoPath urls[currQuality] ");
+				addHistory(currPosition);
+				ExToClosePlayer("error", what + " " + extra);
+				return false;
+			}
+		});
+
+		mVideoView
+				.setOnCompletionListener(new SmartPlayer.OnCompletionListener() {
+
+					@Override
+					public void onCompletion(SmartPlayer mp) {
+						Log.d(TAG, "mVideoView  Completion");
+						if (item.isPreview) {
+							mVideoView.stopPlayback();
+							PaymentDialog dialog = new PaymentDialog(
+									PlayerActivity.this, R.style.PaymentDialog,
+									ordercheckListener);
+							item.model_name = "item";
+							dialog.setItem(item);
+							dialog.show();
+						} else
+							gotoFinishPage();
+					}
+				});
+
+		mVideoView
+				.setOnSeekCompleteListener(new SmartPlayer.OnSeekCompleteListener() {
+
+					@Override
+					public void onSeekComplete(SmartPlayer mp) {
+						// TODO Auto-generated method stub
+						if (!mp.isPlaying())
+							mp.start();
+						isBuffer = false;
+						hideBuffer();
+					}
+				});
+		mVideoView
+				.setOnBufferingUpdateListener(new SmartPlayer.OnBufferingUpdateListener() {
+
+					@Override
+					public void onBufferingUpdate(SmartPlayer mp, int percent) {
+						bufferText.setText(BUFFERING+" "+percent+"%");
+						isBuffer = true;
+						showBuffer();
+						if (mp.isPlaying() && percent == 100) {
+							isBuffer = false;
+							hideBuffer();
+						}
+					}
+
+				});
+		mVideoView.setOnInfoListener(new SmartPlayer.OnInfoListener() {
+
+			@Override
+			public boolean onInfo(SmartPlayer smartplayer, int i, int j) {
 				return false;
 			}
 		});
@@ -418,12 +529,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 					item = simpleRestClient.getItem((String) obj);
 					if (item != null) {
 						clip = item.clip;
-
-						// try {
-						// host = (new URL((String)obj)).getHost();
-						// } catch (MalformedURLException e) {
-						// e.printStackTrace();
-						// }http://127.0.0.1:21098/cord
 						urlInfo = AccessProxy.parse(SimpleRestClient.root_url
 								+ "/api/clip/" + clip.pk + "/",
 								VodUserAgent.getAccessToken(sn),
@@ -445,12 +550,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 						live_video = item.live_video;
 						if (item.clip != null) {
 							clip = item.clip;
-
-							// try {
-							// host = (new URL((String)obj)).getHost();
-							// } catch (MalformedURLException e) {
-							// e.printStackTrace();
-							// }http://127.0.0.1:21098/cord
 							urlInfo = AccessProxy.parse(
 									SimpleRestClient.root_url + "/api/clip/"
 											+ clip.pk + "/",
@@ -596,13 +695,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 									currQuality = mHistory.last_quality;
 								}
 							}
-						} else {
-//							if (urls[mHistory.last_quality] != null
-//									&& !urls[mHistory.last_quality].isEmpty()) {
-//								currQuality = mHistory.last_quality;
-//							}
-//							tempOffset = 0;
-//							isContinue = mHistory.is_continue;
 						}
 					} else {
 						if(!isPreview){
@@ -632,183 +724,11 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 				}
 
 				Log.d(TAG, "RES_INT_OFFSET currPosition=" + currPosition);
-
-				// mVideoView.setVideoPath(urls[currQuality]);
-				// mVideoView.setOnPreparedListener(new
-				// SmartPlayer.OnPreparedListener(){
-				//
-				// @Override
-				// public void onPrepared(SmartPlayer arg0) {
-				//
-				// arg0.start();
-				// checkTaskStart();
-				// }});
 				if (urls != null && mVideoView != null) {
 					TaskStart();// cmstest.tvxio.com
 					sid = VodUserAgent.getSid(urls[currQuality]);
 					mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
-					// mVideoView.setOnInfoListener(new
-					// SmartPlayer.OnInfoListener() {
-					//
-					// @Override
-					// public boolean onInfo(SmartPlayer arg0, int arg1, int
-					// arg2) {
-					// // TODO Auto-generated method stub
-					// mCurrentSeed = arg1/8;
-					// if(subItem != null)
-					// callaPlay.videoPlaySpeed(item.pk, subItem.pk, item.title,
-					// clip.pk, currQuality, mCurrentSeed, mediaip, sid);
-					// else
-					// callaPlay.videoPlaySpeed(item.pk, null, item.title,
-					// clip.pk, currQuality, mCurrentSeed, mediaip, sid);
-					// return false;
-					// }
-					// });
-					mVideoView
-							.setOnPreparedListener(new SmartPlayer.OnPreparedListener() {
-								@Override
-								public void onPrepared(SmartPlayer mp) {
-
-									Log.d(TAG,
-											"mVideoView onPrepared tempOffset =="
-													+ tempOffset);
-									if (mVideoView != null) {
-										if (live_video) {
-											timeBar.setEnabled(false);
-
-										} else {
-											clipLength = mVideoView
-													.getDuration();
-											timeBar.setMax(clipLength);
-											mp.seekTo(currPosition);
-											timeBar.setProgress(currPosition);
-											timeBar.setEnabled(true);
-										}
-										if(currPosition == 0)
-										mp.start();
-										timeTaskStart();
-										checkTaskStart();
-										urls[0] = urlInfo.getNormal();
-										urls[1] = urlInfo.getMedium();
-										urls[2] = urlInfo.getHigh();
-										urls[3] = urlInfo.getAdaptive();
-										if (subItem != null) {
-											callaPlay
-													.videoPlayLoad(
-															item.pk,
-															subItem.pk,
-															item.title,
-															clip.pk,
-															currQuality,
-															(System.currentTimeMillis() - startDuration) / 1000,
-															0, null, sid);
-											callaPlay.videoPlayStart(item.pk,
-													subItem.pk, item.title,
-													clip.pk, currQuality, 0);
-										} else {
-											callaPlay.videoPlayLoad(
-													item.pk,
-													null,
-													item.title,
-													clip.pk,
-													currQuality,
-													(System.currentTimeMillis() - startDuration) / 1000,
-													0, null, sid);
-											callaPlay.videoPlayStart(item.pk,
-													null, item.title, clip.pk,
-													currQuality, 0);
-										}
-									}
-								}
-							});
-					mVideoView
-							.setOnErrorListener(new SmartPlayer.OnErrorListener() {
-								@Override
-								public boolean onError(SmartPlayer mp,
-										int what, int extra) {
-									Log.d(TAG,
-											"mVideoView  Error setVideoPath urls[currQuality] ");
-									addHistory(currPosition);
-									ExToClosePlayer("error", what + " " + extra);
-									return false;
-								}
-							});
-
-					mVideoView
-							.setOnCompletionListener(new SmartPlayer.OnCompletionListener() {
-
-								@Override
-								public void onCompletion(SmartPlayer mp) {
-									Log.d(TAG, "mVideoView  Completion");
-									if (item.isPreview) {
-										mVideoView.stopPlayback();
-										PaymentDialog dialog = new PaymentDialog(
-												PlayerActivity.this,
-												R.style.PaymentDialog,
-												ordercheckListener);
-										item.model_name = "item";
-										dialog.setItem(item);
-										dialog.show();
-									} else
-										gotoFinishPage();
-								}
-							});
-
-					mVideoView
-					.setOnSeekCompleteListener(new SmartPlayer.OnSeekCompleteListener() {
-
-						@Override
-						public void onSeekComplete(SmartPlayer mp) {
-							// TODO Auto-generated method stub
-							if(!mp.isPlaying())
-								mp.start();
-							isBuffer = false;
-							hideBuffer();
-						}
-					});
-			mVideoView
-					.setOnBufferingUpdateListener(new SmartPlayer.OnBufferingUpdateListener() {
-
-						@Override
-						public void onBufferingUpdate(SmartPlayer mp,
-								int percent) {
-							if(mp.isPlaying() && percent == 100){
-							isBuffer = false;
-							hideBuffer();
-							}
-						}
-
-					});
-//			mVideoView
-//			.setOnTsInfoListener(new SmartPlayer.OnTsInfoListener() {
-//
-//				@Override
-//				public void onTsInfo(SmartPlayer mp,
-//						Map<String, String> map) {
-//			    if(map.get("TsStartInfo") != null)
-//				Log.v("aaaa--TsStartInfo", map.get("TsStartInfo"));
-//			    if(map.get("TsIpAddr") !=null)
-//				Log.v("aaaa--TsIpAddr", map.get("TsIpAddr"));
-//			    if(map.get("TsBitRate") !=null)
-//				Log.v("aaaa--TsBitRate", map.get("TsBitRate"));
-//			    if(map.get("TsDownLoadSpeed") != null)
-//				Log.v("aaaa--TsDownLoadSpeed", map.get("TsDownLoadSpeed"));
-//			    if(map.get("TsUrl") != null)
-//				Log.v("aaaa--TsUrl", map.get("TsUrl"));
-//			    if(map.get("TsEndInfo") != null)
-//				Log.v("aaaa--TsEndInfo", map.get("TsEndInfo"));
-//				}
-//			});
-			mVideoView
-			.setOnInfoListener(new SmartPlayer.OnInfoListener() {
-
-				@Override
-				public boolean onInfo(SmartPlayer smartplayer, int i,
-						int j) {
-					return false;
-				}
-			});
-			mVideoView.setVideoPath(urls[currQuality]);
+			      mVideoView.setVideoPath(urls[currQuality]);
 				}
 
 			} else {
@@ -1836,7 +1756,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 					isBuffer = true;
 					currQuality = pos;
 //					mVideoView = (IsmatvVideoView) findViewById(R.id.video_view);
-					mVideoView.setVideoPath(urls[currQuality].toString());
+					mVideoView.setVideoPath(urls[currQuality]);
 					historyManager.addOrUpdateQuality(new Quality(0,
 							urls[currQuality], currQuality));
 					mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
