@@ -908,20 +908,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 				if (mVideoView != null) {
 					mVideoView.setAlpha(0);
 				}
-				if (payedItemspk.contains(subItem.pk) || item.expense == null) {
-					isBuffer = true;
-					showBuffer();
-					new ItemByUrlTask().execute();
-				}else{
-					PaymentDialog dialog = new PaymentDialog(
-							PlayerActivity.this,
-							R.style.PaymentDialog,
-							ordercheckListener);
-					item.model_name = "subitem";
-					item.pk = subItem.pk;
-					dialog.setItem(item);
-					dialog.show();
-				}
+				checkContinueOrPay(subItem.pk);
 			} else {
 				Intent intent = new Intent("tv.ismar.daisy.PlayFinished");
 				intent.putExtra("item", item);
@@ -971,6 +958,24 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 			}
 		}
 
+	}
+
+	private void checkContinueOrPay(int pk){
+		if (payedItemspk.contains(pk) || item.expense == null) {
+			isBuffer = true;
+			showBuffer();
+			new ItemByUrlTask().execute();
+		}else{
+			mVideoView.stopPlayback();
+			PaymentDialog dialog = new PaymentDialog(
+					PlayerActivity.this,
+					R.style.PaymentDialog,
+					ordercheckListener);
+			item.model_name = "subitem";
+			item.pk = pk;
+			dialog.setItem(item);
+			dialog.show();
+		}
 	}
 
 	private void gotoRelatePage() {
@@ -1815,20 +1820,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 				mVideoView.setAlpha(0);
 			}
 
-			if (payedItemspk.contains(id) || item.expense == null) {
-				isBuffer = true;
-				showBuffer();
-				new ItemByUrlTask().execute();
-			}else{
-				PaymentDialog dialog = new PaymentDialog(
-						PlayerActivity.this,
-						R.style.PaymentDialog,
-						ordercheckListener);
-				item.model_name = "subitem";
-				item.pk = id;
-				dialog.setItem(item);
-				dialog.show();
-			}
+			checkContinueOrPay(id);
 		}
 
 		return true;
