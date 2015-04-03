@@ -402,10 +402,12 @@ public class ScrollableSectionList extends HorizontalScrollView {
 
            View nextFocused = FocusFinder.getInstance().findNextFocus(this, currentFocused, direction);
            if(currentFocused!=null){
-        	   if(direction==View.FOCUS_LEFT)
-        	      nextFocused = mContainer.getChildAt((Integer) currentFocused.getTag()-1);
-        	   else if(direction==View.FOCUS_RIGHT)
-        		  nextFocused = mContainer.getChildAt((Integer) currentFocused.getTag()+1);
+        	   if(currentFocused.getTag()!=null){
+            	   if(direction==View.FOCUS_LEFT)
+             	      nextFocused = mContainer.getChildAt((Integer) currentFocused.getTag()-1);
+             	   else if(direction==View.FOCUS_RIGHT)
+             		  nextFocused = mContainer.getChildAt((Integer) currentFocused.getTag()+1); 
+        	   }
            }
            final int maxJump = getMaxScrollAmount();
 

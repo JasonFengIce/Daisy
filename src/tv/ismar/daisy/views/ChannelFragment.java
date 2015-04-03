@@ -210,6 +210,14 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 //						}catch(Exception e){} 
 				}
 				if(mSectionList!=null) {
+					
+					SectionList tmp = new SectionList();
+					for(Section s: mSectionList){
+						if(s.count!=0){
+							tmp.add(s);
+						}
+					}
+					mSectionList = tmp;
 					mItemCollections = new ArrayList<ItemCollection>();
 					for(int i=0; i<mSectionList.size(); i++) {
 						Section section = mSectionList.get(i);
