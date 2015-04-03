@@ -1581,6 +1581,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 						+ subItem.pk + "/";
 				bundle.remove("url");
 				bundle.putString("url", subItemUrl);
+				mPlayer.stop();
 				addHistory(0);
 				isBuffer = true;
 				showBuffer();
