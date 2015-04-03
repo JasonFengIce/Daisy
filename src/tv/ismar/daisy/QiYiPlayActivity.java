@@ -1119,7 +1119,18 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 	public void showPopupDialog(int type, String msg) {
 		if (type == DIALOG_OK_CANCEL) {
-			popupDlg = new Dialog(this, R.style.PopupDialog);
+			popupDlg = new Dialog(this, R.style.PopupDialog) {
+				@Override
+				public void onBackPressed() {
+					super.onBackPressed();
+					if (paused) {
+						resumeItem();
+						playPauseImage
+								.setImageResource(R.drawable.vod_pausebtn_selector);
+					}
+				}
+
+			};
 			View view;
 			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			view = inflater.inflate(R.layout.popup_2btn, null);
