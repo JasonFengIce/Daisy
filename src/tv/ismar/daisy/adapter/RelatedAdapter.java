@@ -84,6 +84,9 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 			holder.ItemBeanScore.setText(""+mItemList.get(position).bean_score);
 			holder.ItemBeanScore.setVisibility(View.VISIBLE);
 		}
+		else{
+			holder.ItemBeanScore.setVisibility(View.INVISIBLE);
+		}
 		//holder.previewImage.setBackgroundResource(R.drawable.video_item_selector);
 //		if(mItemList.get(position).quality==3) {
 //			holder.qualityLabel.setImageResource(R.drawable.label_hd_small);

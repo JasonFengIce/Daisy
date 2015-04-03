@@ -47,6 +47,7 @@
             android:marqueeRepeatLimit="marquee_forever"
             android:focusableInTouchMode="true"
             android:scrollHorizontally="true"
+            android:textColor="#ffffffff"
             android:focusable="true">
 
         </tv.ismar.daisy.views.MarqueeText>

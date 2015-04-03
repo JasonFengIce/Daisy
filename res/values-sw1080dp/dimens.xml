@@ -262,7 +262,7 @@
     <!-- related_view -->
     <dimen name="related_view_img_W">639dip</dimen>
     <dimen name="related_view_img_H">152dip</dimen>
-    <dimen name="related_view_tabs_marginleft">165dip</dimen>
+    <dimen name="related_view_tabs_marginleft">100dip</dimen>
     <dimen name="related_view_tabs_margintop">23dip</dimen>
     <dimen name="related_view_tabs_marginright">151dip</dimen>
     <dimen name="related_view_list_marginleft">139dip</dimen>
@@ -510,5 +510,8 @@
 
     <!-- list_view -->
     <dimen name="list_view_search_H">60dip</dimen>
-    <dimen name="list_view_search_ML">1000dip</dimen>
+    <dimen name="list_view_search_ML">990dip</dimen>
+    
+    <!-- person center -->
+    
 </resources>

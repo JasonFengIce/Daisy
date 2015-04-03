@@ -248,7 +248,7 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		switch (v.getId()) {
 		case R.id.btn_replay:
 			if(item!=null) {
-				String url = simpleRest.root_url + "/api/item/" + item.pk + "/";
+				String url = SimpleRestClient.root_url + "/api/item/" + item.pk + "/";
 				History history = mHistorymanager.getHistoryByUrl(url);
 				if(history!=null) {
 					history.last_position = 0;
@@ -286,10 +286,10 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 				isnet = "yes";
 			}
 			else{
-				isnet = "true";
+				isnet = "no";
 			}
 			if (isFavorite()) {
-				String url = simpleRest.root_url + "/api/item/" + item.pk + "/";
+				String url = SimpleRestClient.root_url + "/api/item/" + item.pk + "/";
 				if(SimpleRestClient.isLogin()){
 					deleteFavoriteByNet();
 					mFavoriteManager.deleteFavoriteByUrl(url,"yes");
@@ -300,7 +300,7 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 
 				showToast(getResources().getString(R.string.vod_bookmark_remove_success));
 			} else {
-				String url = simpleRest.root_url + "/api/item/" + item.pk + "/";
+				String url = SimpleRestClient.root_url + "/api/item/" + item.pk + "/";
 				Favorite favorite = new Favorite();
 				favorite.title = item.title;
 				favorite.adlet_url = item.adlet_url;

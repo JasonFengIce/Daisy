@@ -288,7 +288,8 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 		case R.id.act_autocomplete_country:
 			// Toast.makeText(this, "is ok", Toast.LENGTH_LONG).show();
 			InputMethodManager m = (InputMethodManager) autoCompleteTextView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-			m.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);			
+			//m.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+			m.showSoftInput(autoCompleteTextView,InputMethodManager.SHOW_FORCED);
 			autoCompleteTextView.showDropDown();
 			// autoCompleteTextView.onKeyDown(KeyEvent.KEYCODE_BACK, null);
 			break;

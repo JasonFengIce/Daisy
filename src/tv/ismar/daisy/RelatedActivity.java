@@ -145,6 +145,7 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 					actorSection.title = actor.name;
 					actorSection.slug = "actor";
 					actorSection.template = actor.id;
+					actorSection.count = 1;
 					mVirtualSectionList.add(actorSection);
 				}
 			}

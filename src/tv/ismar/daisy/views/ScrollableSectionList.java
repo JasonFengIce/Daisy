@@ -73,7 +73,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 		this.setHorizontalFadingEdgeEnabled(true);
 	}
 
-	public void init(SectionList sectionList, int totalWidth,boolean isChangeBarStyle) {
+	public void init(SectionList sectionLists, int totalWidth,boolean isChangeBarStyle) {
 		mContainer = new LinearLayout(getContext());
 		this.isChangeBarStyle = isChangeBarStyle;
 //		int H = DaisyUtils.getVodApplication(getContext()).getheightPixels(getContext());
@@ -89,8 +89,13 @@ public class ScrollableSectionList extends HorizontalScrollView {
 //			int length = title.length();
 //			width = width > length * 38 ? width : length * 38 + 60;
 //		}
-		
-		for(int i=0; i<sectionList.size(); i++) {
+		    SectionList sectionList = new SectionList();
+		    for(Section s: sectionLists){
+		    	if(s.count!=0){
+		    		sectionList.add(s);
+		    	}
+		    }
+		for(int i=0; i<sectionList.size(); i++) {			
 			RelativeLayout sectionHolder = getSectionLabelLayout(sectionList.get(i), getResources()
 					.getDimensionPixelSize(R.dimen.channel_section_tabs_W));
 			sectionHolder.setOnFocusChangeListener(mOnFocusChangeListener);
@@ -101,7 +106,6 @@ public class ScrollableSectionList extends HorizontalScrollView {
 		}
 		this.addView(mContainer);
 		if(mContainer.getChildAt(0)!=null){
-			mContainer.getChildAt(0).setFocusable(true);
 			mContainer.getChildAt(0).requestFocus();
 			View v = mContainer.getChildAt(0);
 			TextView label = (TextView) v.findViewById(R.id.section_label);
@@ -142,23 +146,24 @@ public class ScrollableSectionList extends HorizontalScrollView {
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
 			int index = (Integer) v.getTag();
-			if(lastView!=null){
-	             if(index==0&&hasFocus&&index!=lastSelectPosition){
+			if(left!=null&&right!=null){
+				if(lastView!=null){
+		             if(index==0&&hasFocus&&index!=lastSelectPosition){
+		            	 right.setVisibility(View.VISIBLE);
+		            	 left.setVisibility(View.INVISIBLE);
+		             }
+				}
+
+	             if(0<index&&index<mContainer.getChildCount()-1&&hasFocus){
+	            	 left.setVisibility(View.VISIBLE);
+	            	 right.setVisibility(View.VISIBLE);
+	             }
+	             if(index==mContainer.getChildCount()-1){
 	            	 right.setVisibility(View.INVISIBLE);
 	             }
 			}
-
-             if(0<index&&index<mContainer.getChildCount()-1&&hasFocus){
-            	 left.setVisibility(View.VISIBLE);
-            	 right.setVisibility(View.VISIBLE);
-             }
-             if(index==mContainer.getChildCount()-1){
-            	 right.setVisibility(View.INVISIBLE);
-             }
-
 			TextView label = (TextView) v.findViewById(R.id.section_label);
 			ProgressBar percentageBar = (ProgressBar) v.findViewById(R.id.section_percentage);
-			Log.i("zhangjiqiang", "label text=="+label.getText().toString());
 			if(hasFocus){
 			//	label.setBackgroundColor(LABEL_TEXT_BACKGROUND_COLOR_FOCUSED);
 				label.setPadding(label.getPaddingLeft(), getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_text_PT), label.getPaddingRight(), label.getPaddingBottom());
@@ -384,17 +389,24 @@ public class ScrollableSectionList extends HorizontalScrollView {
 	public View left;
 	public View right;
 	public View parent;
+	
     public boolean arrowScroll(int direction) {
     	    
     	   if(left==null||right==null){
     	    	return super.arrowScroll(direction);
     	    }
-    	  
+
     	   View currentFocused = findFocus();
+    	   
            if (currentFocused == this) currentFocused = null;
 
            View nextFocused = FocusFinder.getInstance().findNextFocus(this, currentFocused, direction);
-
+           if(currentFocused!=null){
+        	   if(direction==View.FOCUS_LEFT)
+        	      nextFocused = mContainer.getChildAt((Integer) currentFocused.getTag()-1);
+        	   else if(direction==View.FOCUS_RIGHT)
+        		  nextFocused = mContainer.getChildAt((Integer) currentFocused.getTag()+1);
+           }
            final int maxJump = getMaxScrollAmount();
 
            if (nextFocused != null && isWithinDeltaOfScreen(nextFocused, maxJump)) {
@@ -403,7 +415,8 @@ public class ScrollableSectionList extends HorizontalScrollView {
             	   if(direction==View.FOCUS_LEFT){
             		   right.setVisibility(View.VISIBLE);
             		   if(index==0){
-            			   left.setVisibility(View.INVISIBLE); 
+            			   right.setVisibility(View.VISIBLE);
+            			   left.setVisibility(View.INVISIBLE);
             		   }
             	   }
             	   else if(direction==View.FOCUS_RIGHT){
@@ -425,6 +438,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
                 	
                 	if(getScrollX() < scrollDelta){
                 		left.setVisibility(View.INVISIBLE);
+                		right.setVisibility(View.VISIBLE);
                         scrollDelta = getScrollX();
                 	}
                 	else if(getScrollX()==scrollDelta){
@@ -443,6 +457,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 
                     if (daRight - screenRight < maxJump) {
                     	right.setVisibility(View.INVISIBLE);
+                    	left.setVisibility(View.VISIBLE);
                         scrollDelta = daRight - screenRight;
                     }
                     else{
