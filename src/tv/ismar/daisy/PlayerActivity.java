@@ -527,6 +527,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 			try {
 				if (obj != null) {
 					item = simpleRestClient.getItem((String) obj);
+					currNum = item.position;
 					if (item != null) {
 						clip = item.clip;
 						urlInfo = AccessProxy.parse(SimpleRestClient.root_url
