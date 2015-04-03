@@ -908,9 +908,20 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 				if (mVideoView != null) {
 					mVideoView.setAlpha(0);
 				}
-				isBuffer = true;
-				showBuffer();
-				new ItemByUrlTask().execute();
+				if (payedItemspk.contains(subItem.pk) || item.expense == null) {
+					isBuffer = true;
+					showBuffer();
+					new ItemByUrlTask().execute();
+				}else{
+					PaymentDialog dialog = new PaymentDialog(
+							PlayerActivity.this,
+							R.style.PaymentDialog,
+							ordercheckListener);
+					item.model_name = "subitem";
+					item.pk = subItem.pk;
+					dialog.setItem(item);
+					dialog.show();
+				}
 			} else {
 				Intent intent = new Intent("tv.ismar.daisy.PlayFinished");
 				intent.putExtra("item", item);
@@ -1062,6 +1073,9 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 			panelLayout.startAnimation(panelShowAnimation);
 			panelLayout.setVisibility(View.VISIBLE);
 			panelShow = true;
+			hidePanelHandler.postDelayed(hidePanelRunnable, 3000);
+		}else{
+			hidePanelHandler.removeCallbacks(hidePanelRunnable);
 			hidePanelHandler.postDelayed(hidePanelRunnable, 3000);
 		}
 
