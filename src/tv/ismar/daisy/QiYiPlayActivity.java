@@ -65,6 +65,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 	private static final int MSG_AD_COUNTDOWN = 100;
 	private static final int MSG_PLAY_TIME = 101;
 	private static final int MSG_INITQUALITYTITLE = 102;
+	private static final int MSG_FB = 103;
 	private static final int SEEK_STEP = 30000;
 	private static final int SHORT_STEP = 1;
 	private static final HashMap<Definition, String> DEFINITION_NAMES;
@@ -610,11 +611,10 @@ public class QiYiPlayActivity extends VodMenuAction {
 			isBuffer = false;
 		}
 	}
-
 	private Handler mHandler = new Handler(Looper.getMainLooper()) {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case MSG_AD_COUNTDOWN:
+			case MSG_AD_COUNTDOWN:	
 				sendEmptyMessageDelayed(MSG_AD_COUNTDOWN, 1000);
 				break;
 			case MSG_PLAY_TIME:
@@ -622,6 +622,14 @@ public class QiYiPlayActivity extends VodMenuAction {
 				break;
 			case MSG_INITQUALITYTITLE:
 				initQualtiyText();
+				break;
+			case MSG_FB:
+				mPlayer.seekTo(currPosition);
+				isSeekBuffer = true;
+				Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
+				isSeek = false;
+				offsets = 0;
+				offn = 1;
 				break;
 			default:
 				break;
@@ -1056,7 +1064,18 @@ public class QiYiPlayActivity extends VodMenuAction {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
 				if (!live_video) {
 //					fbImage.setImageResource(R.drawable.vodplayer_controller_rew);
-					mPlayer.seekTo(currPosition);
+					if(mHandler.hasMessages(MSG_FB)){
+						mHandler.removeMessages(MSG_FB);
+						Message msg = new Message();
+						msg.what = MSG_FB;
+						mHandler.sendMessageAtTime(msg, 500);
+					}
+					else{
+						Message msg = new Message();
+						msg.what = MSG_FB;
+						mHandler.sendMessageAtTime(msg, 500);
+					}
+					//mPlayer.seekTo(currPosition);
 					if (subItem != null)
 						callaPlay.videoPlaySeek(item.pk, subItem.pk,
 								item.title, clip.pk, currQuality, 0,
@@ -1064,13 +1083,13 @@ public class QiYiPlayActivity extends VodMenuAction {
 					else
 						callaPlay.videoPlayContinue(item.pk, null, item.title,
 								clip.pk, currQuality, 0, currPosition, sid);
-					isSeekBuffer = true;
+					//isSeekBuffer = true;
 					Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
 					ret = true;
-					isSeek = false;
-					offsets = 0;
+				//	isSeek = false;
+				//	offsets = 0;
 					offn = 1;
-				}
+				}//
 
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:

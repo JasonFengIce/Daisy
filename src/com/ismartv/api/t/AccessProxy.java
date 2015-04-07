@@ -29,7 +29,7 @@ public class AccessProxy {
 	private static final String token = "?access_token=";
 	private static final String key = "&sign=";
 	private static final String keyCrypt = "smartvdefaultkey";
-	private static String result = null;
+	private static String result = "";
 
 	public static void init(String deviceType, String deviceVersion, String sn) {
 		if (deviceType != null)
@@ -80,12 +80,15 @@ public class AccessProxy {
 		JSONObject json;
 		String info = "";
 		try {
-			json = new JSONObject(result);
-			if (json.has("iqiyi_4_0")) {
-				return "iqiyi";
-			} else {
-				info = "ismartv";
+			if(!"".equals(result)){
+				json = new JSONObject(result);
+				if (json.has("iqiyi_4_0")) {
+					return "iqiyi";
+				} else {
+					info = "ismartv";
+				}
 			}
+
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

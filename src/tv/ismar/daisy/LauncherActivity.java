@@ -158,7 +158,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private DialogInterface.OnClickListener mNegativeListener;
     public static final int NETWORK_ACTIVE_FAILED = 1;
 
-    private void showDialog() {
+    private void showDialog(String str) {
         if (dialog == null) {
             mPositiveListener = new DialogInterface.OnClickListener() {
 
@@ -180,7 +180,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 }
             };
             dialog = new CustomDialog.Builder(this)
-                    .setMessage(R.string.active_fail)
+                    .setMessage(str)
                     .setPositiveButton(R.string.vod_retry, mPositiveListener)
                     .setNegativeButton(R.string.vod_ok, mNegativeListener).create();
         }
@@ -223,7 +223,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 e.printStackTrace();
             }
         } else {
-            showDialog();
+            showDialog(getResources().getString(R.string.active_fail));
         }
     }
 
@@ -784,7 +784,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     @Override
     public void onFailed(String erro) {
 //        Log.d(TAG, erro);
-        showDialog();
+        showDialog(erro);
     }
 
     @Override

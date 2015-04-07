@@ -75,7 +75,7 @@ public class DaramAdapter extends BaseAdapter implements OnHoverListener,
 		holder.btnCount.setText(String.valueOf(subitem.position + 1));
 		holder.btnCount.setTag(String.valueOf(position));
 		holder.btnCount.setOnFocusChangeListener(this);
-		holder.btnCount.setOnHoverListener(this);
+		//holder.btnCount.setOnHoverListener(this);
 		holder.btnCount.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

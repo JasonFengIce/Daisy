@@ -3805,66 +3805,66 @@ public class ZGridView extends AdapterView<ListAdapter> {
 
 	private boolean hover = false;
 
-	@Override
-	protected boolean dispatchHoverEvent(MotionEvent event) {
-		// TODO Auto-generated method stub
-		// switch (event.getAction()) {
-		// case MotionEvent.ACTION_HOVER_ENTER:
-		// break;
-		// case MotionEvent.ACTION_HOVER_MOVE: //鼠标在view上
-		// int position1 = pointToPosition((int) event.getX(), (int)
-		// event.getY());
-		// if(position1>=0){
-		// hover = true;
-		// setFocusableInTouchMode(true);
-		// requestFocusFromTouch();
-		// setFocusable(true);
-		// requestFocus();
-		// setSelection(position1);
-		// }
-		// else{
-		// clearFocus();
-		// }
-		// break;
-		// case MotionEvent.ACTION_HOVER_EXIT: //鼠标离开view
-		// hover = false;
-		// clearFocus();
-		// break;
-		// }
-		// return false;
-		if(downbtn!=null){
-	
-			boolean s =  super.dispatchHoverEvent(event);
-//			int position = pointToPosition((int) event.getX(), (int) event.getY());
-//			if ((event.getAction() == MotionEvent.ACTION_HOVER_ENTER && position != -1)
-//					|| (event.getAction() == MotionEvent.ACTION_HOVER_MOVE && position != -1)){
-//				
-//				if(position!=-1&&event.getAction() == MotionEvent.ACTION_HOVER_ENTER){
-//					mOnItemSelectedListener.onItemSelected(this, getChildAt(position), position,
-//							getAdapter().getItemId(position));
-//				}
-//			}
-			return s;
-		}
-		int position = pointToPosition((int) event.getX(), (int) event.getY());
-
-		if ((event.getAction() == MotionEvent.ACTION_HOVER_ENTER && position != -1)
-				|| (event.getAction() == MotionEvent.ACTION_HOVER_MOVE && position != -1)) {
-			hover = true;
-			setFocusableInTouchMode(true);
-			setFocusable(true);
-			requestFocusFromTouch();
-			requestFocus();
-			if(downbtn==null)
-			   setSelection(position);
-
-		} else {
-			hover = false;
-			clearFocus();
-
-		}
-		return true;
-	}
+//	@Override
+//	protected boolean dispatchHoverEvent(MotionEvent event) {
+//		// TODO Auto-generated method stub
+//		// switch (event.getAction()) {
+//		// case MotionEvent.ACTION_HOVER_ENTER:
+//		// break;
+//		// case MotionEvent.ACTION_HOVER_MOVE: //鼠标在view上
+//		// int position1 = pointToPosition((int) event.getX(), (int)
+//		// event.getY());
+//		// if(position1>=0){
+//		// hover = true;
+//		// setFocusableInTouchMode(true);
+//		// requestFocusFromTouch();
+//		// setFocusable(true);
+//		// requestFocus();
+//		// setSelection(position1);
+//		// }
+//		// else{
+//		// clearFocus();
+//		// }
+//		// break;
+//		// case MotionEvent.ACTION_HOVER_EXIT: //鼠标离开view
+//		// hover = false;
+//		// clearFocus();
+//		// break;
+//		// }
+//		// return false;
+//		if(downbtn!=null){
+//	
+//			boolean s =  super.dispatchHoverEvent(event);
+////			int position = pointToPosition((int) event.getX(), (int) event.getY());
+////			if ((event.getAction() == MotionEvent.ACTION_HOVER_ENTER && position != -1)
+////					|| (event.getAction() == MotionEvent.ACTION_HOVER_MOVE && position != -1)){
+////				
+////				if(position!=-1&&event.getAction() == MotionEvent.ACTION_HOVER_ENTER){
+////					mOnItemSelectedListener.onItemSelected(this, getChildAt(position), position,
+////							getAdapter().getItemId(position));
+////				}
+////			}
+//			return s;
+//		}
+//		int position = pointToPosition((int) event.getX(), (int) event.getY());
+//
+//		if ((event.getAction() == MotionEvent.ACTION_HOVER_ENTER && position != -1)
+//				|| (event.getAction() == MotionEvent.ACTION_HOVER_MOVE && position != -1)) {
+//			hover = true;
+//			setFocusableInTouchMode(true);
+//			setFocusable(true);
+//			requestFocusFromTouch();
+//			requestFocus();
+//			if(downbtn==null)
+//			   setSelection(position);
+//
+//		} else {
+//			hover = false;
+//			clearFocus();
+//
+//		}
+//		return true;
+//	}
 
 	@Override
 	protected void onAttachedToWindow() {
