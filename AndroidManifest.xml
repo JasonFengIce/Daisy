@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="tv.ismar.daisy"
-          android:versionCode="380"
+          android:versionCode="38"
           android:versionName="3.8">
 
     <supports-screens
