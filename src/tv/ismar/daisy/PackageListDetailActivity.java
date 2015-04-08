@@ -87,7 +87,7 @@ public class PackageListDetailActivity extends Activity implements OnItemSelecte
 				mHGridView.setOnItemClickListener(this);
 				mHGridView.setOnItemSelectedListener(this);
 				mHGridView.setOnScrollListener(this);
-				btn_search = (Button)findViewById(R.id.search);
+				btn_search = (Button)findViewById(R.id.list_view_search);
 				btn_search.setOnClickListener(new OnClickListener() {
 						
 						@Override
