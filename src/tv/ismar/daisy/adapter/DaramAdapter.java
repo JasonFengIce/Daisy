@@ -131,9 +131,6 @@ public class DaramAdapter extends BaseAdapter implements OnHoverListener,
 				}
 			}
 			// 分类
-
-			mTvDramaType.setText(subitem.title);
-			// 分类
 			mTvDramaType.setText(subitem.title);
 			break;
 		}
@@ -143,26 +140,33 @@ public class DaramAdapter extends BaseAdapter implements OnHoverListener,
 	@Override
 	public void onFocusChange(View v, boolean hasfocus) {
 		// TODO Auto-generated method stub
-		if (hasfocus) {
-
-			int position = Integer.parseInt((String) v.getTag());
-			subitem = getItem(position);
+		int position = Integer.parseInt((String) v.getTag());
+		subitem = getItem(position);
+		if (hasfocus) {			
 			if (dramaItem.expense != null && subitem.remainDay <= 0) {
-				v.setBackgroundResource(R.drawable.daram_grid_selector);
+				v.setBackgroundResource(R.drawable.vod_detail_series_episode_focus);
 			} else {
 				if (dramaItem.expense != null && subitem.remainDay > 0)
-					v.setBackgroundResource(R.drawable.daram_grid_payed_selector);
+					v.setBackgroundResource(R.drawable.vod_detail_series_episode_payed_focus);
 				else {
-					v.setBackgroundResource(R.drawable.daram_grid_selector);
+					v.setBackgroundResource(R.drawable.vod_detail_series_episode_focus);
 				}
 			}
 			// 分类
-
 			mTvDramaType.setText(subitem.title);
 		}
-		// else{
-		// v.setBackgroundResource(R.drawable.daram_grid_selector);
-		// }
+		 else{
+			 if(dramaItem.expense != null && subitem.remainDay <= 0)
+		        v.setBackgroundResource(R.drawable.vod_detail_series_episode_backgroud);
+			 else{
+				 if (dramaItem.expense != null && subitem.remainDay > 0){
+					 v.setBackgroundResource(R.drawable.vod_detail_series_episode_payed_backgroud);
+				 }
+				 else{
+					 v.setBackgroundResource(R.drawable.vod_detail_series_episode_backgroud);
+				 }
+			 }
+		 }
 	}
 
 	private PaymentDialog.OrderResultListener innerordercheckListener = new PaymentDialog.OrderResultListener() {

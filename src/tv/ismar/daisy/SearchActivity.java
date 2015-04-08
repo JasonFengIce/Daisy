@@ -329,6 +329,9 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 				if (null == listHotWords)
 					return;
 				for (int j = 0; j < listHotWords.size(); j++) {
+					if(j==8){
+						break;
+					}
 					final Button btnHotWords = new Button(SearchActivity.this);
 					// final Button btnHotWords = (Button) findViewById(R.id.btn_words);
 					int mPaddingLR = getResources().getDimensionPixelSize(R.dimen.search_btnHotWords_PLR);
