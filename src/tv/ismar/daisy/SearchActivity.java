@@ -397,6 +397,12 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 		imageAdapter.cancelAsync();
 		imageAdapter = new SearchAdapter(SearchActivity.this, movieList, R.layout.search_grid_view_item);
 		gridView.setAdapter(imageAdapter);
+		if(arrow_left.isShown()){
+			arrow_left.setVisibility(View.INVISIBLE);
+		}
+		if(arrow_right.isShown()){
+			arrow_right.setVisibility(View.INVISIBLE);
+		}
 		if(movieList.size()>15){
 			arrow_right.setVisibility(View.VISIBLE);
 		}

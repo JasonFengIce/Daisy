@@ -1,13 +1,13 @@
 <resources>  
     <!-- item detail page-->
-    <dimen name="item_detail_detail_left_container_width">1281dip</dimen>
+    <dimen name="item_detail_detail_left_container_width">1291dip</dimen>
     <dimen name="item_detail_vod_watermark_width">669dip</dimen>
     <dimen name="item_detail_vod_watermark_height">155dip</dimen>
     <dimen name="item_detail_detail_title_width">521dip</dimen>
     <dimen name="item_detail_detail_title_marginleft">80dip</dimen>
     <dimen name="item_detail_detail_title_margintop">160dip</dimen>
     <dimen name="item_detail_detail_title_textSize">60sp</dimen>
-    <dimen name="item_detail_attribute_width">521dip</dimen>
+    <dimen name="item_detail_attribute_width">551dip</dimen>
     <dimen name="item_detail_attribute_left">80dip</dimen>
     <dimen name="item_detail_attribute_top">18dip</dimen>
     <dimen name="item_detail_intro_width">1172dip</dimen>
@@ -18,16 +18,16 @@
     <dimen name="item_detail_intro_paddingright">15dip</dimen>
     <dimen name="item_detail_intro_paddingtop">23dip</dimen>
     <dimen name="item_detail_intro_lineSpacingExtra">20dp</dimen>
-    <dimen name="item_detail_intro_textsize">35sp</dimen>
+    <dimen name="item_detail_intro_textsize">36sp</dimen>
     <dimen name="item_detail_introlabel_marginleft">81dip</dimen>
-    <dimen name="item_detail_introlabel_textsize">35sp</dimen>
-    <dimen name="item_detail_previewpanel_width">483dip</dimen>
-    <dimen name="item_detail_previewpanel_height">447dip</dimen>
+    <dimen name="item_detail_introlabel_textsize">30sp</dimen>
+    <dimen name="item_detail_previewpanel_width">493dip</dimen>
+    <dimen name="item_detail_previewpanel_height">390dip</dimen>
     <dimen name="item_detail_previewpanel_marginright">116dip</dimen>
     <dimen name="item_detail_previewpanel_margintop">159dip</dimen>
     <dimen name="item_detail_previewimgview_width">480dip</dimen>
     <dimen name="item_detail_previewimgview_height">271dip</dimen>
-    <dimen name="item_detail_previewimgview_marginright">3dip</dimen>
+    <dimen name="item_detail_previewimgview_marginright">5dip</dimen>
     <dimen name="item_detail_previewimgview_margintop">4dp</dimen>
     <dimen name="item_detail_previewimgview_padding">1dp</dimen>
     <dimen name="item_detail_detailquality_width">71dp</dimen>
@@ -59,13 +59,13 @@
     <dimen name="item_detail_related_divider_margintop">5dip</dimen>
     <dimen name="item_detail_related_divider_marginbottom">15dip</dimen>
     <dimen name="item_detail_related_divider_marginleft">40dp</dimen>
-    <dimen name="item_detail_related_video_container_height">710dip</dimen>
+    <dimen name="item_detail_related_video_container_height">700dip</dimen>
     <dimen name="item_detail_more_content_width">247dip</dimen>
     <dimen name="item_detail_more_content_height">68dip</dimen>
     <dimen name="item_detail_more_content_textsize">35dip</dimen>
     <dimen name="item_detail_more_content_marginT">50dip</dimen>
     <dimen name="item_detail_btn_marginleft">51dip</dimen>
-    <dimen name="item_detail_related_H">178dip</dimen>
+    <dimen name="item_detail_related_H">158dip</dimen>
     <dimen name="item_detail_related_W">638dip</dimen>
     <dimen name="item_detail_btn_layout_marginB">20dip</dimen>
     <dimen name="item_detail_Btn_Layout_marginT">18dip</dimen>
@@ -84,7 +84,7 @@
     <dimen name="gridview_main_panel_height">810dip</dimen>
     <dimen name="gridview_main_panel_fadingEdgeLength">144dip</dimen>
     <dimen name="gridview_main_panel_horizontalSpacing">70dip</dimen>
-    <dimen name="gridview_main_panel_verticalSpacing">0dip</dimen>
+    <dimen name="gridview_main_panel_verticalSpacing">19dip</dimen>
     <dimen name="gridview_main_panel_rowHeight">252dip</dimen>
     <dimen name="gridview_main_panel_labelTopOffset">8dip</dimen>
     <dimen name="gridview_main_panel_labelLeftOffset">35dip</dimen>
@@ -139,7 +139,7 @@
     <dimen name="popup_dialog_button_textsize">40sp</dimen>
     
     <!-- related_item -->
-    <dimen name="related_item_layout_H">178dip</dimen>
+    <dimen name="related_item_layout_H">168dip</dimen>
     <dimen name="related_item_layout_marginleft">2dip</dimen>
     <dimen name="related_item_image_H">134dip</dimen>
     <dimen name="related_item_image_W">201dip</dimen>
@@ -161,8 +161,8 @@
     <dimen name="related_item_image_quality_marginright">-3dip</dimen>
     <dimen name="related_item_title_margintop">34dip</dimen>
     <dimen name="related_item_title_marginbottom">34dip</dimen>
-    <dimen name="related_item_title_textsize">35sp</dimen>
-    <dimen name="related_item_focus_textsize">30sp</dimen>
+    <dimen name="related_item_title_textsize">30sp</dimen>
+    <dimen name="related_item_focus_textsize">25sp</dimen>
     <dimen name="related_item_focus_marginright">41dip</dimen>
     <dimen name="related_item_text_marginLeft">11dip</dimen>
     <!-- vod_player -->
@@ -462,7 +462,7 @@
 <dimen name="Launcher_preview_title_textsize">24sp</dimen>
 <dimen name="Launcher_channel_title_textsize">32sp</dimen>
 <!-- DetailAttributeContainer -->
-<dimen name="DetailAttributeContainer_Layout_W">505dip</dimen>
+<dimen name="DetailAttributeContainer_Layout_W">530dip</dimen>
 <!-- package detail -->
 <dimen name="vod_payment_package_details_container_ML">80dip</dimen>
 <dimen name="vod_payment_package_details_container_MT">100dip</dimen>

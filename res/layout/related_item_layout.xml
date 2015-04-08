@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/related_item_layout_H"
+    android:layout_height="@dimen/item_detail_related_H"
     android:layout_marginLeft="@dimen/related_item_layout_marginleft"
     android:background="@drawable/related_bg"
     android:paddingLeft="@dimen/related_item_image_marginleft"
@@ -31,7 +31,7 @@
         android:gravity="top|center"
         android:paddingTop="5.0dip"
         android:textColor="#ffffffff"
-        android:textSize="30dip"
+        android:textSize="36dip"
         android:visibility="gone" />
     <ImageView
         android:id="@+id/related_quality_label"
@@ -53,7 +53,7 @@
         android:visibility="gone"
         android:ellipsize="end"
         android:singleLine="true"
-        android:textSize="18sp"
+        android:textSize="25sp"
         android:background="@drawable/vodcategory_gv_item_price"/>
     <TextView
         android:id="@+id/related_title"
