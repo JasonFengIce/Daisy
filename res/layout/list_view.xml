@@ -54,7 +54,8 @@
         android:layout_height="@dimen/gridview_channel_panel_height"
         android:layout_marginLeft="@dimen/channel_section_tabs_layout_marginLeft"
         android:orientation="horizontal"
-         android:visibility="visible">
+         android:visibility="visible"
+         >
            <ImageView
             android:id="@+id/arrow_left"
             android:layout_width="@dimen/grid_view_main_arrow_left_W"
@@ -62,7 +63,7 @@
             android:layout_marginTop="@dimen/grid_view_main_arrow_left_marginT"
             android:background="@drawable/arrow_left_selector"
             android:visibility="invisible" 
-            />
+           />
            
         <tv.ismar.daisy.views.ScrollableSectionList
             android:id="@+id/section_tabs"
@@ -80,7 +81,7 @@
             android:layout_marginTop="@dimen/grid_view_main_arrow_left_marginT"
             android:background="@drawable/arrow_right_selector"
             android:visibility="invisible"
-            android:focusable="true"/>
+            />
     </LinearLayout>
 
     <org.sakuratya.horizontal.ui.HGridView

@@ -329,6 +329,9 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 				if (null == listHotWords)
 					return;
 				for (int j = 0; j < listHotWords.size(); j++) {
+					if(j==8){
+						break;
+					}
 					final Button btnHotWords = new Button(SearchActivity.this);
 					// final Button btnHotWords = (Button) findViewById(R.id.btn_words);
 					int mPaddingLR = getResources().getDimensionPixelSize(R.dimen.search_btnHotWords_PLR);
@@ -397,6 +400,12 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 		imageAdapter.cancelAsync();
 		imageAdapter = new SearchAdapter(SearchActivity.this, movieList, R.layout.search_grid_view_item);
 		gridView.setAdapter(imageAdapter);
+		if(arrow_left.isShown()){
+			arrow_left.setVisibility(View.INVISIBLE);
+		}
+		if(arrow_right.isShown()){
+			arrow_right.setVisibility(View.INVISIBLE);
+		}
 		if(movieList.size()>15){
 			arrow_right.setVisibility(View.VISIBLE);
 		}

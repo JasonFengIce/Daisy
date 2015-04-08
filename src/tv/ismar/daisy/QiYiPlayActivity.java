@@ -65,7 +65,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 	private static final int MSG_AD_COUNTDOWN = 100;
 	private static final int MSG_PLAY_TIME = 101;
 	private static final int MSG_INITQUALITYTITLE = 102;
-	private static final int MSG_FB = 103;
+	private static final int MSG_SEK_ACTION = 103;
 	private static final int SEEK_STEP = 30000;
 	private static final int SHORT_STEP = 1;
 	private static final HashMap<Definition, String> DEFINITION_NAMES;
@@ -467,7 +467,11 @@ public class QiYiPlayActivity extends VodMenuAction {
 			mPlayer.setVideo(qiyiInfo);
 		}
 		isfinish = false;
-		mPlayer.start();
+		if(currPosition > 0){
+			mPlayer.start(currPosition);
+		}else{
+			mPlayer.start();
+		}
 		initQualtiyText();
 	}
 
@@ -502,12 +506,14 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onBufferEnd() {
+			isBuffer = false;
 			hideBuffer();
 			checkTaskStart();
 		}
 
 		@Override
 		public void onBufferStart() {
+			isBuffer = true;
 			showBuffer();
 		}
 
@@ -535,8 +541,8 @@ public class QiYiPlayActivity extends VodMenuAction {
 		@Override
 		public void onMovieStart() {
 			clipLength = mPlayer.getDuration();
-			if (seekPostion > 0)
-				mPlayer.seekTo(seekPostion);
+//			if (seekPostion > 0)
+//				mPlayer.seekTo(seekPostion);
 
 			showPanel();
 			timeTaskStart();
@@ -579,9 +585,10 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onSeekComplete() {
-			// timeTaskStart();
-			checkTaskStart();
+			isBuffer = false;
+			isSeek = false;
 			hideBuffer();
+			checkTaskStart();
 		}
 
 		@Override
@@ -611,10 +618,11 @@ public class QiYiPlayActivity extends VodMenuAction {
 			isBuffer = false;
 		}
 	}
+
 	private Handler mHandler = new Handler(Looper.getMainLooper()) {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case MSG_AD_COUNTDOWN:	
+			case MSG_AD_COUNTDOWN:
 				sendEmptyMessageDelayed(MSG_AD_COUNTDOWN, 1000);
 				break;
 			case MSG_PLAY_TIME:
@@ -623,14 +631,12 @@ public class QiYiPlayActivity extends VodMenuAction {
 			case MSG_INITQUALITYTITLE:
 				initQualtiyText();
 				break;
-			case MSG_FB:
+			case MSG_SEK_ACTION:
 				mPlayer.seekTo(currPosition);
-				isSeekBuffer = true;
-				Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
-				isSeek = false;
-				offsets = 0;
-				offn = 1;
-				break;
+				isBuffer = true;
+				showBuffer();
+				timeTaskStart();
+				checkTaskStart();
 			default:
 				break;
 			}
@@ -958,21 +964,27 @@ public class QiYiPlayActivity extends VodMenuAction {
 		if (!isVodMenuVisible() && mPlayer != null) {
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
+				mHandler.removeCallbacks(mUpdateTimeTask);
+				mHandler.removeCallbacks(checkStatus);
+				mPlayer.pause();
 				if (mPlayer.getDuration() > 0 && !live_video) {
 					isSeek = true;
 					showPanel();
-					isBuffer = true;
-					showBuffer();
+//					isBuffer = true;
+//					showBuffer();
 					fastBackward(SHORT_STEP);
 					ret = true;
 				}
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
+				mHandler.removeCallbacks(mUpdateTimeTask);
+				mHandler.removeCallbacks(checkStatus);
+				mPlayer.pause();
 				if (mPlayer.getDuration() > 0 && !live_video) {
 					isSeek = true;
 					showPanel();
-					isBuffer = true;
-					showBuffer();
+//					isBuffer = true;
+//					showBuffer();
 					fastForward(SHORT_STEP);
 					ret = true;
 				}
@@ -1064,18 +1076,15 @@ public class QiYiPlayActivity extends VodMenuAction {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
 				if (!live_video) {
 //					fbImage.setImageResource(R.drawable.vodplayer_controller_rew);
-					if(mHandler.hasMessages(MSG_FB)){
-						mHandler.removeMessages(MSG_FB);
-						Message msg = new Message();
-						msg.what = MSG_FB;
-						mHandler.sendMessageAtTime(msg, 500);
+//					mHandler.removeCallbacks(mUpdateTimeTask);
+//					mHandler.removeCallbacks(checkStatus);
+					if(mHandler.hasMessages(MSG_SEK_ACTION)){
+						mHandler.removeMessages(MSG_SEK_ACTION);
+						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 300);
+					}else{
+						mHandler.removeMessages(MSG_SEK_ACTION);
+						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 300);
 					}
-					else{
-						Message msg = new Message();
-						msg.what = MSG_FB;
-						mHandler.sendMessageAtTime(msg, 500);
-					}
-					//mPlayer.seekTo(currPosition);
 					if (subItem != null)
 						callaPlay.videoPlaySeek(item.pk, subItem.pk,
 								item.title, clip.pk, currQuality, 0,
@@ -1083,19 +1092,27 @@ public class QiYiPlayActivity extends VodMenuAction {
 					else
 						callaPlay.videoPlayContinue(item.pk, null, item.title,
 								clip.pk, currQuality, 0, currPosition, sid);
-					//isSeekBuffer = true;
+					isSeekBuffer = true;
 					Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
 					ret = true;
-				//	isSeek = false;
-				//	offsets = 0;
+					isSeek = false;
+					offsets = 0;
 					offn = 1;
-				}//
+				}
 
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
+//				mHandler.removeCallbacks(mUpdateTimeTask);
+//				mHandler.removeCallbacks(checkStatus);
 				if (!live_video) {
 //					ffImage.setImageResource(R.drawable.vodplayer_controller_ffd);
-					mPlayer.seekTo(currPosition);
+					if(mHandler.hasMessages(MSG_SEK_ACTION)){
+						mHandler.removeMessages(MSG_SEK_ACTION);
+						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 500);
+					}else{
+						mHandler.removeMessages(MSG_SEK_ACTION);
+						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 500);
+					}
 					if (subItem != null)
 						callaPlay.videoPlaySeek(item.pk, subItem.pk,
 								item.title, clip.pk, currQuality, 0,
@@ -1568,7 +1585,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 					}
 				}
 			}
-			mCheckHandler.postDelayed(checkStatus, 300);
+			mCheckHandler.postDelayed(checkStatus, 400);
 		}
 
 	};

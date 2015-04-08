@@ -42,6 +42,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -375,6 +376,23 @@ public class PersonCenterActivity extends Activity implements View.OnClickListen
 				    loadDataLogin();
 				else
 					loadDataLoginOut();
+			}
+		});
+		personal_info_btn.setFocusable(true);
+		personal_info_btn.requestFocus();
+		personal_info_btn.setOnFocusChangeListener(new OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View v, boolean hasfocus) {
+				// TODO Auto-generated method stub
+				if(hasfocus){
+					v.setBackgroundResource(R.drawable.hover_btn_bg);
+				}
+				else{
+					v.setBackgroundResource(R.drawable.btn_normal_bg);
+				}
+
+				//person_btn_selector
 			}
 		});
 		login_or_out_btn.setOnClickListener(new OnClickListener() {

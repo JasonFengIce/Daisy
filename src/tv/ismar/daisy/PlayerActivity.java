@@ -403,7 +403,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 						bufferText.setText(BUFFERING+" "+percent+"%");
 						isBuffer = true;
 						showBuffer();
-						if (mp.isPlaying() && percent == 100) {
+						if (percent == 100) {
 							isBuffer = false;
 							hideBuffer();
 						}
@@ -2044,6 +2044,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 					payedItemspk.add(item.pk);
 					new ItemByUrlTask().execute();
 				} else {
+					PlayerActivity.this.finish();
 				}
 			} else {
 				if (result) {

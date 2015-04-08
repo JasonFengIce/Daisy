@@ -55,10 +55,10 @@ public class DetailAttributeContainer extends LinearLayout {
 			}
 			LinearLayout infoLine = new LinearLayout(getContext());
 			LinearLayout.LayoutParams layoutParams;
-			int width = getResources().getDimensionPixelSize(R.dimen.DetailAttributeContainer_Layout_W);
+			int width = getResources().getDimensionPixelSize(R.dimen.item_detail_attribute_width);
 			layoutParams = new LinearLayout.LayoutParams(width,LinearLayout.LayoutParams.WRAP_CONTENT);
 									
-			layoutParams.topMargin =(7);
+			layoutParams.topMargin =(17);
 			infoLine.setLayoutParams(layoutParams);
 			infoLine.setOrientation(LinearLayout.HORIZONTAL);
 			TextView itemName = new TextView(getContext());
@@ -68,13 +68,15 @@ public class DetailAttributeContainer extends LinearLayout {
 			itemName.setText(mContentModel.attributes.get(entry.getKey())+":");
 			infoLine.addView(itemName);
 			TextView itemValue = new TextView(getContext());
-            itemValue.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));				
+            itemValue.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));				
 			itemValue.setTextColor(0xffbbbbbb);
 			itemValue.setTextSize(textsize);
 			itemValue.setText(entry.getValue());
 			itemValue.setMaxLines(2);
 			itemValue.setEllipsize(TruncateAt.END);
 			infoLine.addView(itemValue);
+			itemValue.setLineSpacing(3.4f, 1f);
+			//lineSpacingExtra
 			addView(infoLine);
 		}
 	}

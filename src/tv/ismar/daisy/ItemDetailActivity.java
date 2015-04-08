@@ -130,6 +130,8 @@ public class ItemDetailActivity extends Activity implements
 		mDetailPreviewImg.setOnImageViewLoadListener(this);
 		mDetailQualityLabel = (ImageView) findViewById(R.id.detail_quality_label);
 		mLeftBtn = (Button) findViewById(R.id.btn_left);
+		
+		
 		mMiddleBtn = (Button) findViewById(R.id.middle_btn);
 		mRightBtn = (Button) findViewById(R.id.btn_right);
 		// mBtnFill = (Button) findViewById(R.id.btn_fill);
@@ -141,7 +143,7 @@ public class ItemDetailActivity extends Activity implements
 		detail_price_txt = (TextView) findViewById(R.id.detail_price_txt);
 		detail_duration_txt = (TextView) findViewById(R.id.detail_duration_txt);
 		mMoreContent.setOnFocusChangeListener(mRelatedOnFocusChangeListener);
-		// mBtnLeft.setOnFocusChangeListener(mLeftElementFocusChangeListener);
+		mLeftBtn.setOnFocusChangeListener(mLeftElementFocusChangeListener);
 		// mBtnRight.setOnFocusChangeListener(mLeftElementFocusChangeListener);
 		// mBtnFill.setOnFocusChangeListener(mLeftElementFocusChangeListener);
 		// mBtnFill.setOnFocusChangeListener(mLeftElementFocusChangeListener);
@@ -752,14 +754,18 @@ private boolean isPause = false;
 
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
-			if (hasFocus) {
-				mDetailRightContainer
-						.setBackgroundResource(R.drawable.right_bg_normal);
-				mDetailLeftContainer
-						.setBackgroundResource(android.R.color.transparent);
-				((Button) v).setTextColor(0xFFF8F8FF);
+			String Tag = (String)v.getTag();
+			if (hasFocus) {				
+				if(Tag.equals(PREVIEW_VIDEO))
+				    v.setBackgroundResource(R.drawable.preview_video_pressed_bg);
+				else if(Tag.equals(PLAY_VIDEO))
+					v.setBackgroundResource(R.drawable.play_video_btn_pressed_bg);
 			} else {
-				((Button) v).setTextColor(0xffbbbbbb);
+				if(Tag.equals(PREVIEW_VIDEO))
+				    v.setBackgroundResource(R.drawable.preview_video_normal_bg);
+				else if(Tag.equals(PLAY_VIDEO)){
+					v.setBackgroundResource(R.drawable.play_video_btn_normal_bg);
+				}
 			}
 		}
 	};

@@ -34,12 +34,12 @@
             android:layout_height="@dimen/grid_view_main_arrow_left_H"
             android:layout_marginTop="@dimen/grid_view_main_arrow_left_marginT"
             android:background="@drawable/arrow_left_selector"
-            android:visibility="gone" />
+            android:layout_marginLeft="@dimen/related_view_tabs_marginleft"     
+            android:visibility="invisible" />
         <tv.ismar.daisy.views.ScrollableSectionList
             android:id="@+id/related_section_tabs"
             android:layout_width="@dimen/gridview_channel_section_tabs_width"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/related_view_tabs_marginleft"     
             android:scrollbars="none" >
         </tv.ismar.daisy.views.ScrollableSectionList>
 
