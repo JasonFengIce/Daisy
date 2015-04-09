@@ -445,6 +445,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 			bufferText.setText(PlAYSTART + "《" + titleText.getText() + "》");
 		}
 		String info = (String) bundle.get("iqiyi");
+		isBuffer = true;
 		showBuffer();
 		if (tempOffset > 0 && !isfinish) {
 			currPosition = tempOffset;
@@ -462,11 +463,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 			mPlayer.setVideo(qiyiInfo);
 		}
 		isfinish = false;
-		if(currPosition > 0){
-			mPlayer.start(currPosition);
-		}else{
-			mPlayer.start();
-		}
+	    mPlayer.start();
 		initQualtiyText();
 	}
 
@@ -572,6 +569,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onPrepared() {
+			mPlayer.seekTo(currPosition);
 			timeBar.setMax(mPlayer.getDuration());
 		}
 
