@@ -65,7 +65,7 @@
        android:textSize="20sp"
        android:gravity="center"
        android:layout_alignBottom="@id/list_item_preview_img"
-       android:layout_alignLeft="@id/list_item_preview_img"
+       android:layout_alignParentLeft="true"
        android:background="@drawable/vodcategory_gv_item_price"
        android:visibility="gone" >        
     </TextView>

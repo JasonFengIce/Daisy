@@ -107,7 +107,7 @@
     <dimen name="gridview_item_image_PaddingB">1dip</dimen>
     <dimen name="gridview_item_image_H">204dip</dimen>
     <dimen name="gridview_item_image_W">345dip</dimen>
-    <dimen name="gridview_item_image_marginright">3dip</dimen>
+    <dimen name="gridview_item_image_marginright">14dip</dimen>
     <dimen name="gridview_item_image_marginleft">3dip</dimen>
     <dimen name="gridview_item_title_W">300dip</dimen>
     <dimen name="gridview_item_title_textsize">35sp</dimen>
@@ -479,7 +479,7 @@
 <dimen name="vod_payment_package_posterAndBuyBotton_container_MT">163dip</dimen>
 <dimen name="vod_payment_poster_W">480dip</dimen>
 <dimen name="vod_payment_poster_H">270dip</dimen>
-<dimen name="vod_payment_poster_MLR">4dip</dimen>
+<dimen name="vod_payment_poster_MLR">7dip</dimen>
 <dimen name="vod_payment_price_MT">230dip</dimen>
 <dimen name="vod_payment_price_textsize">24sp</dimen>
 <dimen name="vod_payment_buyButton_W">460dip</dimen>

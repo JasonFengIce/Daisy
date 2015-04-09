@@ -97,6 +97,7 @@ public class SearchAdapter extends HGridAdapter<MovieBean> implements OnImageVie
 			holder.imageLabel = (AsyncImageView) convertView.findViewById(R.id.iv_label);
 			holder.imageLabel.setOnImageViewLoadListener(this);
 			holder.imageType = (Button) convertView.findViewById(R.id.iv_type);
+			holder.expense_txt = (TextView)convertView.findViewById(R.id.expense_txt);
 			Log.i("zhnagjiqiang", "count=="+position);
 			convertView.setTag(holder);
 		} else {
@@ -198,6 +199,7 @@ public class SearchAdapter extends HGridAdapter<MovieBean> implements OnImageVie
 		public AsyncImageView imageLabel;
 		public Button imageType;
 		public TextView tvItemText;
+		public TextView expense_txt;
 	}
 	
 	@Override
