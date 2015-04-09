@@ -383,6 +383,9 @@ public class PlayerActivity extends VodMenuAction{
 						// TODO Auto-generated method stub
 						if (!mp.isPlaying())
 							mp.start();
+						if(paused){
+							mp.pause();
+							}
 						isBuffer = false;
 						isSeek = false;
 						hideBuffer();

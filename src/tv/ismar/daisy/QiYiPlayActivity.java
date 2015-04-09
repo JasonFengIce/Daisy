@@ -65,6 +65,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 	private static final int MSG_AD_COUNTDOWN = 100;
 	private static final int MSG_PLAY_TIME = 101;
 	private static final int MSG_INITQUALITYTITLE = 102;
+	private static final int MSG_PAUSE = 105;
 	private static final int SEEK_STEP = 30000;
 	private static final int SHORT_STEP = 1;
 	private static final HashMap<Definition, String> DEFINITION_NAMES;
@@ -575,7 +576,12 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onSeekComplete() {
-			mPlayer.start();
+			if (!paused){
+				mPlayer.start();
+			}
+			else{
+				mHandler.sendEmptyMessageDelayed(MSG_PAUSE,100);
+			}
 			isBuffer = false;
 			isSeek = false;
 			hideBuffer();
@@ -627,6 +633,9 @@ public class QiYiPlayActivity extends VodMenuAction {
 				mPlayer.seekTo(currPosition);
 				isBuffer = true;
 				showBuffer();
+				break;
+			case MSG_PAUSE:
+				mPlayer.pause();
 			default:
 				break;
 			}
