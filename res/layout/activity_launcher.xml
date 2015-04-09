@@ -7,14 +7,14 @@
               android:paddingLeft="@dimen/Launcher_Layout_LP"
               android:paddingTop="@dimen/Launcher_Layout_TP"
               android:paddingRight="@dimen/Launcher_Layout_RP"
-              android:paddingBottom="@dimen/Launcher_Layout_BP"
+              android:paddingBottom="64dp"
         >
 
 
     <RelativeLayout
             android:orientation="horizontal"
             android:layout_marginLeft="50dp"
-            android:layout_marginTop="@dimen/Launcher_weather_layout_MT"
+            android:layout_marginTop="40dp"
             android:layout_marginRight="50dp"
             android:gravity="center_vertical"
             android:layout_width="match_parent"

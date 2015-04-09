@@ -843,7 +843,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         View contentView = LayoutInflater.from(context)
                 .inflate(R.layout.popup_update, null);
         contentView.setBackgroundResource(R.drawable.popup_bg_yellow);
-        updatePopupWindow = new PopupWindow(null, 1400, 500);
+        updatePopupWindow = new PopupWindow(null,  1400, 500);
         updatePopupWindow.setContentView(contentView);
         updatePopupWindow.setFocusable(true);
         updatePopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
@@ -906,7 +906,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         final Context context = this;
         View contentView = LayoutInflater.from(context)
                 .inflate(R.layout.popup_exit, null);
-        exitPopupWindow = new PopupWindow(null, 1400, 500);
+        exitPopupWindow = new PopupWindow(null, 740, 341);
         exitPopupWindow.setContentView(contentView);
         exitPopupWindow.setFocusable(true);
         exitPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
