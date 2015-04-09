@@ -187,7 +187,6 @@ public class PaymentDialog extends Dialog {
 		}
 		setPackageInfo();
 		changeQrcodePayPanelState(true, true);
-		urlHandler.sendEmptyMessageDelayed(PURCHASE_CHECK_RESULT, 30000);
 		login_panel.setLoginListener(loginInterFace);
 	}
 
@@ -203,6 +202,8 @@ public class PaymentDialog extends Dialog {
 			}
 				break;
 			case R.id.videocard: {
+				if(urlHandler.hasMessages(PURCHASE_CHECK_RESULT))
+					urlHandler.removeMessages(PURCHASE_CHECK_RESULT);
 				changeQrcodePayPanelState(false, false);
 				changeLoginPanelState(false);
 				changeYuePayPanelState(false);
@@ -217,6 +218,8 @@ public class PaymentDialog extends Dialog {
 			}
 				break;
 			case R.id.balance_pay: {
+				if(urlHandler.hasMessages(PURCHASE_CHECK_RESULT))
+					urlHandler.removeMessages(PURCHASE_CHECK_RESULT);
 				changeQrcodePayPanelState(false, false);
 				changeLoginPanelState(false);
 				changeYuePayPanelState(true);
@@ -339,6 +342,11 @@ public class PaymentDialog extends Dialog {
 										+ "&source=alipay");
 					}
 					urlHandler.sendEmptyMessage(SETQRCODE_VIEW);
+					if (urlHandler.hasMessages(PURCHASE_CHECK_RESULT)) {
+						urlHandler.removeMessages(PURCHASE_CHECK_RESULT);
+						urlHandler.sendEmptyMessageDelayed(PURCHASE_CHECK_RESULT,
+								ORDER_CHECK_INTERVAL);
+					}
 				}
 
 			}.start();
@@ -593,6 +601,8 @@ public class PaymentDialog extends Dialog {
 	};
 
 	private void purchaseCheck() {
+		if(urlHandler.hasMessages(PURCHASE_CHECK_RESULT))
+			urlHandler.removeMessages(PURCHASE_CHECK_RESULT);
 		SimpleRestClient client = new SimpleRestClient();
 		String typePara = "&item=" + mItem.pk;
 		if ("package".equalsIgnoreCase(mItem.model_name)) {
