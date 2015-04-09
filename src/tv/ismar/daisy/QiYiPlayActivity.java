@@ -65,7 +65,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 	private static final int MSG_AD_COUNTDOWN = 100;
 	private static final int MSG_PLAY_TIME = 101;
 	private static final int MSG_INITQUALITYTITLE = 102;
-	private static final int MSG_SEK_ACTION = 103;
 	private static final int SEEK_STEP = 30000;
 	private static final int SHORT_STEP = 1;
 	private static final HashMap<Definition, String> DEFINITION_NAMES;
@@ -1066,9 +1065,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
 				if (!live_video) {
-//					fbImage.setImageResource(R.drawable.vodplayer_controller_rew);
-//					mHandler.removeCallbacks(mUpdateTimeTask);
-//					mHandler.removeCallbacks(checkStatus);
 					if(mHandler.hasMessages(MSG_SEK_ACTION)){
 						mHandler.removeMessages(MSG_SEK_ACTION);
 						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 300);
@@ -1093,10 +1089,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
-//				mHandler.removeCallbacks(mUpdateTimeTask);
-//				mHandler.removeCallbacks(checkStatus);
 				if (!live_video) {
-//					ffImage.setImageResource(R.drawable.vodplayer_controller_ffd);
 					if(mHandler.hasMessages(MSG_SEK_ACTION)){
 						mHandler.removeMessages(MSG_SEK_ACTION);
 						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 500);

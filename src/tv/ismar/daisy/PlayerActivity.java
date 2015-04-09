@@ -5,7 +5,6 @@ import static tv.ismar.daisy.DramaListActivity.ORDER_CHECK_BASE_URL;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,6 +43,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
@@ -68,11 +69,10 @@ import android.widget.TextView;
 import com.ismartv.api.t.AccessProxy;
 import com.ismartv.bean.ClipInfo;
 import com.qiyi.video.player.QiyiVideoPlayer;
-public class PlayerActivity extends VodMenuAction implements OnGestureListener {
+public class PlayerActivity extends VodMenuAction{
 
 	@SuppressWarnings("unused")
 	private static final String SAMPLE = "http://114.80.0.33/qyrrs?url=http%3A%2F%2Fjq.v.tvxio.com%2Fcdn%2F0%2F7b%2F78fadc2ffa42309bda633346871f26%2Fhigh%2Fslice%2Findex.m3u8&quality=high&sn=weihongchang_s52&clipid=779521&sid=85d3f919a918460d9431136d75db17f03&sign=08a868ad3c4e3b37537a13321a6f9d4b";
-	private QiyiVideoPlayer mPlayer;
 	private static final String PREFS_NAME = "tv.ismar.daisy";
 	private static final String TAG = "PLAYER";
 	private static final String BUFFERCONTINUE = " 上次放映：";
@@ -108,7 +108,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 	private boolean isContinue = true;
 	private ISTVVodMenu menu = null;
 	private ClipInfo urlInfo = new ClipInfo();
-	private Handler mHandler = new Handler();
 	private Handler mCheckHandler = new Handler();
 	private int tempOffset = 0;
 	private Item item;
@@ -141,18 +140,12 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 	private String mSection;
 	private String sid = "";
 	private String mediaip;
-	private int mCurrentSeed = 0;
-	private RelativeLayout mRootLayout;
-	private boolean isHideControlPanel = true;
-	private GestureDetector mGestureDetector; // 手势监测器
 	private boolean live_video = false;
 	private boolean isPreview = false;
-    private boolean orderAlldaram = false;
     private boolean paystatus = false;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mGestureDetector = new GestureDetector(this, this);
 		setView();
 	}
 
@@ -196,7 +189,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 		bufferLayout.setVisibility(View.GONE);
 		qualityText.setVisibility(View.GONE);
 		am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-		mRootLayout = (RelativeLayout) findViewById(R.id.RootRelativeLayout);
 		playPauseImage.setOnTouchListener(new OnTouchListener() {
 
 			@Override
@@ -322,8 +314,8 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 					}
 					if (currPosition == 0)
 						mp.start();
-					timeTaskStart();
-					checkTaskStart();
+					timeTaskStart(0);
+					checkTaskStart(0);
 					urls[0] = urlInfo.getNormal();
 					urls[1] = urlInfo.getMedium();
 					urls[2] = urlInfo.getHigh();
@@ -392,7 +384,10 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 						if (!mp.isPlaying())
 							mp.start();
 						isBuffer = false;
+						isSeek = false;
 						hideBuffer();
+						checkTaskStart(500);
+						timeTaskStart(500);
 					}
 				});
 		mVideoView
@@ -418,17 +413,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 			}
 		});
 		initClipInfo();
-	}
-
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		// TODO Auto-generated method stub
-
-		if (mGestureDetector.onTouchEvent(event)) {
-			return true;
-			// 处理手势结束
-		}
-		return super.onTouchEvent(event);
 	}
 
 	private void initClipInfo() {
@@ -771,10 +755,13 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 		}
 	};
 
-	private void timeTaskStart() {
+	private void timeTaskStart(int delay) {
 		mHandler.removeCallbacks(mUpdateTimeTask);
-		mHandler.post(mUpdateTimeTask);
-
+		if (delay > 0) {
+			mHandler.postDelayed(mUpdateTimeTask, delay);
+		} else {
+			mHandler.post(mUpdateTimeTask);
+		}
 	}
 
 	private void timeTaskPause() {
@@ -844,9 +831,13 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 		}
 	};
 
-	private void checkTaskStart() {
+	private void checkTaskStart(int delay) {
 		mCheckHandler.removeCallbacks(checkStatus);
-		mCheckHandler.post(checkStatus);
+		if(delay > 0){
+			mCheckHandler.postDelayed(checkStatus,delay);
+		}else{
+			mCheckHandler.post(checkStatus);
+		}
 	}
 
 	private void checkTaskPause() {
@@ -1128,7 +1119,7 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 			callaPlay.videoPlayContinue(item.pk, null, item.title, clip.pk,
 					currQuality, 0, currPosition, sid);
 		if (!isBuffer) {
-			timeTaskStart();
+			timeTaskStart(0);
 		}
 		paused = false;
 	}
@@ -1196,23 +1187,23 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 		if (!isVodMenuVisible() && mVideoView != null) {
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
+				mHandler.removeCallbacks(mUpdateTimeTask);
+				mHandler.removeCallbacks(checkStatus);
+				mVideoView.pause();
 				if (mVideoView.getDuration() > 0 && !live_video) {
 					isSeek = true;
 					showPanel();
-//					fbImage.setImageResource(R.drawable.vodplayer_controller_rew_pressed);
-					isBuffer = true;
-					showBuffer();
 					fastBackward(SHORT_STEP);
 					ret = true;
 				}
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
+				mHandler.removeCallbacks(mUpdateTimeTask);
+				mHandler.removeCallbacks(checkStatus);
+				mVideoView.pause();
 				if (mVideoView.getDuration() > 0 && !live_video) {
 					isSeek = true;
 					showPanel();
-//					ffImage.setImageResource(R.drawable.vodplayer_controller_ffd_pressed);
-					isBuffer = true;
-					showBuffer();
 					fastForward(SHORT_STEP);
 					ret = true;
 				}
@@ -1260,10 +1251,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 				ret = true;
 				break;
 			case KeyEvent.KEYCODE_BACK:
-//				if (panelShow) {
-//					hidePanel();
-//					ret = true;
-//				} else {
 					showPopupDialog(
 							DIALOG_OK_CANCEL,
 							getResources().getString(
@@ -1274,7 +1261,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 					playPauseImage
 							.setImageResource(R.drawable.vod_playbtn_selector);
 					}
-//				}
 				break;
 			case KeyEvent.KEYCODE_MENU:
 				if (menu != null && menu.isVisible())
@@ -1314,8 +1300,13 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
 				if (!live_video) {
-//					fbImage.setImageResource(R.drawable.vodplayer_controller_rew);
-					mVideoView.seekTo(currPosition);
+					if(mHandler.hasMessages(MSG_SEK_ACTION)){
+						mHandler.removeMessages(MSG_SEK_ACTION);
+						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 300);
+					}else{
+						mHandler.removeMessages(MSG_SEK_ACTION);
+						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 300);
+					}
 					if (subItem != null)
 						callaPlay.videoPlaySeek(item.pk, subItem.pk,
 								item.title, clip.pk, currQuality, 0,
@@ -1334,8 +1325,13 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
 				if (!live_video) {
-//					ffImage.setImageResource(R.drawable.vodplayer_controller_ffd);
-					mVideoView.seekTo(currPosition);
+					if(mHandler.hasMessages(MSG_SEK_ACTION)){
+						mHandler.removeMessages(MSG_SEK_ACTION);
+						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 300);
+					}else{
+						mHandler.removeMessages(MSG_SEK_ACTION);
+						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 300);
+					}
 					if (subItem != null)
 						callaPlay.videoPlaySeek(item.pk, subItem.pk,
 								item.title, clip.pk, currQuality, 0,
@@ -1380,14 +1376,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 			View view;
 			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			view = inflater.inflate(R.layout.popup_2btn, null);
-			// int H = DaisyUtils.getVodApplication(this).getheightPixels(this);
-			// if(H==720)
-			// popupDlg.addContentView(view, new ViewGroup.LayoutParams(
-			// (int)(538/DBHelper.rate),(int)(296/DBHelper.rate)));
-			// else
-			// popupDlg.addContentView(view, new ViewGroup.LayoutParams(
-			// (807/DBHelper.rate,
-			// ViewGroup.LayoutParams.WRAP_CONTENT));
 
 			int width = getResources().getDimensionPixelSize(
 					R.dimen.popup_dialog_width);
@@ -1581,6 +1569,19 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 		}
 	}
 
+	private Handler mHandler = new Handler(Looper.getMainLooper()) {
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case MSG_SEK_ACTION:
+				mVideoView.seekTo(currPosition);
+				isBuffer = true;
+				showBuffer();
+			default:
+				break;
+			}
+		}
+	};
+
 	private String getTimeString(int ms) {
 		int left = ms;
 		int hour = left / 3600000;
@@ -1703,61 +1704,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 				ViewGroup.LayoutParams.MATCH_PARENT);
 		win.setLayoutParams(lp);
 		root.addView(win);
-	}
-
-	// reset()-->setDataSource(path)-->prepare()-->start()-->stop()--reset()-->
-	private void deleteFavoriteByNet() {
-		simpleRestClient.doSendRequest("/api/bookmark/remove/", "post",
-				"access_token=" + SimpleRestClient.access_token
-						+ "&device_token=" + SimpleRestClient.device_token
-						+ "&item=" + item.pk, new HttpPostRequestInterface() {
-
-					@Override
-					public void onSuccess(String info) {
-						// TODO Auto-generated method stub
-						if ("200".equals(info)) {
-
-						}
-					}
-
-					@Override
-					public void onPrepare() {
-						// TODO Auto-generated method stub
-
-					}
-
-					@Override
-					public void onFailed(String error) {
-						// TODO Auto-generated method stub
-
-					}
-				});
-	}
-
-	private void createFavoriteByNet() {
-		simpleRestClient.doSendRequest("/api/bookmarks/create/", "post",
-				"access_token=" + SimpleRestClient.access_token
-						+ "&device_token=" + SimpleRestClient.device_token
-						+ "&item=" + item.pk, new HttpPostRequestInterface() {
-
-					@Override
-					public void onSuccess(String info) {
-						// TODO Auto-generated method stub
-
-					}
-
-					@Override
-					public void onPrepare() {
-						// TODO Auto-generated method stub
-
-					}
-
-					@Override
-					public void onFailed(String error) {
-						// TODO Auto-generated method stub
-
-					}
-				});
 	}
 
 	/**
@@ -1907,128 +1853,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 		mHandler.removeCallbacksAndMessages(null);
 	}
 
-	@Override
-	public boolean onDown(MotionEvent arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	private int FLING_LEFT = 1;
-	private int FLING_RIGHT = 2;
-	private int FLING_DOWN = 3;
-	private int FLING_UP = 4;
-	private int FLING_STATE = -1;
-
-	@Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-			float velocitY) {
-		// TODO Auto-generated method stub
-		if (e1.getX() - e2.getX() > 100
-				&& Math.abs(velocityX) > Math.abs(velocitY)) {// 向左滑，右边显示
-			// this.flipper.setInAnimation(AnimationUtils.loadAnimation(this,
-			// R.anim.push_left_in));
-			// this.flipper.setOutAnimation(AnimationUtils.loadAnimation(this,
-			// R.anim.push_left_out));
-			if (live_video) {
-				return true;
-			}
-			FLING_STATE = FLING_LEFT;
-			if (mVideoView.getDuration() > 0) {
-				isSeek = true;
-				showPanel();
-//				fbImage.setImageResource(R.drawable.vod_controlb_selector);
-				isBuffer = true;
-				showBuffer();
-				fastBackward(SHORT_STEP);
-				mVideoView.seekTo(currPosition);
-				isSeekBuffer = true;
-				Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
-				isSeek = false;
-				offsets = 0;
-				offn = 1;
-				return true;
-			}
-		} else if (e1.getX() - e2.getX() < -100
-				&& Math.abs(velocityX) > Math.abs(velocitY)) {// 向右滑，左边显示
-			if (live_video) {
-				return true;
-			}
-			FLING_STATE = FLING_RIGHT;
-			if (mVideoView.getDuration() > 0) {
-				isSeek = true;
-				showPanel();
-//				ffImage.setImageResource(R.drawable.vod_controlf_selector);
-				isBuffer = true;
-				showBuffer();
-				fastForward(SHORT_STEP);
-				mVideoView.seekTo(currPosition);
-				isSeekBuffer = true;
-				Log.d(TAG, "RIGHT seek to" + getTimeString(currPosition));
-				isSeek = false;
-				offsets = 0;
-				offn = 1;
-				return true;
-			}
-		} else if (e1.getY() - e2.getY() < -15
-				&& Math.abs(velocityX) < Math.abs(velocitY)) {
-			// 向下滑动
-			FLING_STATE = FLING_DOWN;
-			am.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-					AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
-			return true;
-		} else if (e1.getY() - e2.getY() > 15
-				&& Math.abs(velocityX) < Math.abs(velocitY)) {
-			// 向上滑动
-			FLING_STATE = FLING_UP;
-			am.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-					AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
-			return true;
-		} else {
-			FLING_STATE = -1;
-			return false;
-		}
-		return false;
-	}
-
-	@Override
-	public void onLongPress(MotionEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean onScroll(MotionEvent arg0, MotionEvent arg1, float arg2,
-			float arg3) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void onShowPress(MotionEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean onSingleTapUp(MotionEvent keyEvent) {
-		// TODO Auto-generated method stub
-		switch (keyEvent.getAction()) {
-		case MotionEvent.ACTION_UP:
-			if (!panelShow) {
-//				showPanel();
-//				panelShow = true;
-			} else {
-//				hidePanel();
-//				panelShow = false;
-			}
-			break;
-
-		default:
-			break;
-		}
-		return false;
-	}
-
 	private void sendPlayComplete() {
 		Intent intent = new Intent();
 		intent.setAction(AppConstant.VOD_PLAYER_COMPLETE_ACTION);
@@ -2072,7 +1896,6 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 			switch (what) {
 			case MotionEvent.ACTION_HOVER_MOVE:
 				showPanel();
-//				fbImage.setImageResource(R.drawable.vodplayer_controller_rew_pressed);
 				break;
 			}
 			return false;
@@ -2128,7 +1951,9 @@ public class PlayerActivity extends VodMenuAction implements OnGestureListener {
 						payedItemspk.add(pk);
 					}
 				} catch (JSONException e) {
-					orderAlldaram = true;
+					for(Item i:listItems){
+						payedItemspk.add(i.pk);
+					}
 				}
 			}
 		}
