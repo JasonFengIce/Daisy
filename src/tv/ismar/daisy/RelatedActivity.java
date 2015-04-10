@@ -206,6 +206,14 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_RELATE_IN, mDataCollectionProperties);
 		
 		initSectionTabs();
+		SectionList mTmpSectionList = new SectionList();
+		
+		for(Section s:mVirtualSectionList){
+			if(s.count!=0){
+				mTmpSectionList.add(s);
+			}
+		}
+		mVirtualSectionList = mTmpSectionList;
 		if(mVirtualSectionList.size()>5)
 			arrow_right.setVisibility(View.VISIBLE);
 		mSectionTabs.init(mVirtualSectionList, getResources().getDimensionPixelSize(R.dimen.gridview_channel_section_tabs_width),true);

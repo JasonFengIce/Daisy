@@ -39,7 +39,7 @@ public class SearchMovieService {
 		String jsonString = null;
 		List<MovieBean> listSearchResult = new ArrayList<MovieBean>();
 		try {
-			jsonString = HttpUtil.getJsonByGet(HttpUtil.spliceSearchURL(searchWhere));
+			jsonString = NetworkUtils.getJsonStr(HttpUtil.spliceSearchURL(searchWhere));
 			listSearchResult = JsonSearch.parseSearchJson(jsonString);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -76,7 +76,7 @@ public class SearchMovieService {
 		String jsonString = null;
 		List<String> listSearchHelper = new ArrayList<String>();
 		try {
-			jsonString = HttpUtil.getJsonByGet(HttpUtil.spliceSuggestURL(searchWhere));
+			jsonString = NetworkUtils.getJsonStr(HttpUtil.spliceSuggestURL(searchWhere));
 			listSearchHelper = JsonSearch.parseSearchPrompt(jsonString);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -23,15 +23,26 @@
             android:id="@+id/iv_type"
             android:layout_width="@dimen/search_gridview_item_btn_type_W"
             android:layout_height="@dimen/search_gridview_item_btn_type_H"
-            android:layout_alignBottom="@+id/itemImage"
+            android:layout_marginTop="-15dip"
             android:layout_alignLeft="@+id/itemImage"
-            android:layout_marginBottom="@dimen/search_gridview_item_btn_type_marginB"
+            android:layout_alignParentTop="true"
             android:layout_marginLeft="@dimen/search_gridview_item_btn_type_marginL"
             android:focusable="false"
             android:textColor="@color/hotwords_text_color"
             android:textSize="@dimen/search_gridview_item_btn_type_textsize" 
             />
-
+      <TextView
+       android:id="@+id/expense_txt"
+       android:layout_width="123dip"
+       android:layout_height="40dip"
+       android:textStyle="bold"
+       android:textSize="20sp"
+       android:gravity="center"
+       android:layout_alignBottom="@id/itemImage"
+       android:layout_alignLeft="@id/itemImage"
+       android:background="@drawable/vodcategory_gv_item_price"
+       android:visibility="gone" >        
+    </TextView>
         <tv.ismar.daisy.views.MarqueeText
             android:id="@+id/itemText"
             android:layout_width="@dimen/search_gridview_item_image_W"
@@ -60,6 +71,7 @@
         android:layout_height="@dimen/search_gridview_item_label_H"
         android:layout_gravity="right"
         android:layout_marginRight="@dimen/search_gridview_item_label_marginR"
-        android:layout_marginTop="@dimen/search_gridview_item_label_marginT" />
+        android:layout_marginTop="@dimen/search_gridview_item_label_marginT" 
+        android:visibility="gone"/>
 
 </FrameLayout>

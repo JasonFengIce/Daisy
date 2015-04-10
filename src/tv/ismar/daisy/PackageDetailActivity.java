@@ -342,7 +342,7 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 						try {
 							info = info.substring(1, info.length()-1);
 							remainDay = Util.daysBetween(Util.getTime(), info)+1;	
-							if(remainDay==0){//过期了。认为没购买
+							if(remainDay<=0){//过期了。认为没购买
 							    remainDay = -1;
 								vod_payment_duration.setText("有效期"+mItem.expense.duration+"天");
 								vod_payment_price.setText("￥"+mItem.expense.price+"元");

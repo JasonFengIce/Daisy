@@ -122,20 +122,20 @@ public class HttpUtil {
 	// 拼接搜索接口
 	public static String spliceSearchURL(String str) throws UnsupportedEncodingException {
 		keyWord = URLEncoder.encode(str, "UTF-8");
-		String searchURL = ROOT_URL + search_URL + keyWord + "/1/" +"?device_token="+SimpleRestClient.device_token;
+		String searchURL = ROOT_URL + search_URL + keyWord + "/1/";
 		return searchURL;
 	}
 
 	// 拼接提示接口
 	public static String spliceSuggestURL(String str) throws UnsupportedEncodingException {
 		keyWord = URLEncoder.encode(str, "UTF-8");
-		String suggestURL = ROOT_URL + suggest_URL + keyWord +"?device_token="+SimpleRestClient.device_token;
+		String suggestURL = ROOT_URL + suggest_URL + keyWord;
 		return suggestURL;
 	}
 
 	// 拼接热门搜索词接口
 	public static String spliceHotwordsURL() {
-		String hotwordURL = ROOT_URL + hotwords_URL +"?device_token="+SimpleRestClient.device_token;
+		String hotwordURL = ROOT_URL + hotwords_URL;;
 		return hotwordURL;
 	}
 

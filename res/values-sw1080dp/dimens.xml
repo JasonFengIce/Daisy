@@ -107,7 +107,7 @@
     <dimen name="gridview_item_image_PaddingB">1dip</dimen>
     <dimen name="gridview_item_image_H">204dip</dimen>
     <dimen name="gridview_item_image_W">345dip</dimen>
-    <dimen name="gridview_item_image_marginright">3dip</dimen>
+    <dimen name="gridview_item_image_marginright">14dip</dimen>
     <dimen name="gridview_item_image_marginleft">3dip</dimen>
     <dimen name="gridview_item_title_W">300dip</dimen>
     <dimen name="gridview_item_title_textsize">35sp</dimen>
@@ -401,10 +401,10 @@
     <dimen name="channel_section_tabs_text_PT">25dip</dimen>
     
     <!-- ZGridview -->
-    <dimen name="ZGridView_related_selectorLeftPadding">17dip</dimen>
-    <dimen name="ZGridView_related_selectorTopPadding">23dip</dimen>
-    <dimen name="ZGridView_related_selectorRightPadding">17dip</dimen>
-    <dimen name="ZGridView_related_selectorBottomPadding">-17dip</dimen>
+    <dimen name="ZGridView_related_selectorLeftPadding">15dip</dimen>
+    <dimen name="ZGridView_related_selectorTopPadding">20dip</dimen>
+    <dimen name="ZGridView_related_selectorRightPadding">15dip</dimen>
+    <dimen name="ZGridView_related_selectorBottomPadding">-27dip</dimen>
     
     <dimen name="ZGridView_played_selectorLeftPadding">7dip</dimen>
     <dimen name="ZGridView_played_selectorTopPadding">16dip</dimen>
@@ -427,9 +427,9 @@
     <dimen name="ZGridView_recommend_selectorBottomPadding">-30dip</dimen>
     
     <!-- HGridView -->
-    <dimen name="HGridView_related_selectionLeftPadding">20dip</dimen>
+    <dimen name="HGridView_related_selectionLeftPadding">15dip</dimen>
     <dimen name="HGridView_related_selectionTopPadding">20dip</dimen>
-    <dimen name="HGridView_related_selectionRightPadding">20dip</dimen>
+    <dimen name="HGridView_related_selectionRightPadding">15dip</dimen>
     <dimen name="HGridView_related_selectionBottomPadding">-28dip</dimen>      
     <dimen name="HGridView_label_lr_offset">19dip</dimen>
     <dimen name="HGridView_label_textleft">24dip</dimen>
@@ -479,7 +479,7 @@
 <dimen name="vod_payment_package_posterAndBuyBotton_container_MT">163dip</dimen>
 <dimen name="vod_payment_poster_W">480dip</dimen>
 <dimen name="vod_payment_poster_H">270dip</dimen>
-<dimen name="vod_payment_poster_MLR">4dip</dimen>
+<dimen name="vod_payment_poster_MLR">7dip</dimen>
 <dimen name="vod_payment_price_MT">230dip</dimen>
 <dimen name="vod_payment_price_textsize">24sp</dimen>
 <dimen name="vod_payment_buyButton_W">460dip</dimen>
