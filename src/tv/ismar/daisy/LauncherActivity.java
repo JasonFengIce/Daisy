@@ -967,5 +967,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         tomorrowDetail.setText(weatherEntity.getTomorrow().getTemperature()
                 + " ℃   " + weatherEntity.getTomorrow().getPhenomenon() + "   "
                 + weatherEntity.getTomorrow().getWind_direction());
+
     }
 }
