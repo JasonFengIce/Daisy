@@ -131,7 +131,7 @@ public class PackageListDetailActivity extends Activity implements OnItemSelecte
 			// TODO Auto-generated method stub
 			try {
 				items = mRestClient
-						.getItemList(SimpleRestClient.root_url+"/api/package/list/"+pk);
+						.getItemList(SimpleRestClient.root_url+"/api/package/list/"+pk + "/");
 				
 				if(items!=null){
 					mItemCollections = new ArrayList<ItemCollection>();
