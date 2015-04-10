@@ -33,9 +33,11 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
 
+import android.app.Application;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Base64;
@@ -54,6 +56,9 @@ public class NetworkUtils {
 		String urlStr = target;
 		Log.i("zhuabao", "url=="+urlStr);
 		try {
+			if(SimpleRestClient.device_token == null){
+				VodApplication.setDevice_Token();
+			}
 			URL url = new URL(urlStr+"?device_token="+SimpleRestClient.device_token+"&access_token="+SimpleRestClient.access_token);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");

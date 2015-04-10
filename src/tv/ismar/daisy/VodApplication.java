@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.ImageCache;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -49,6 +50,7 @@ public class VodApplication extends Application {
 	public static final String LOGIN_STATE = "loginstate";
 	public static String AUTH_TOKEN = "auth_token";
 	public static String MOBILE_NUMBER = "mobile_number";
+	public static String DEVICE_TOKEN = "device_token";
 	private static final int CORE_POOL_SIZE = 5;
 	private ExecutorService mExecutorService;
 	public static float rate = 1;
@@ -57,7 +59,7 @@ public class VodApplication extends Application {
 	 */
 	private ImageCache mImageCache;
 	private ArrayList<WeakReference<OnLowMemoryListener>> mLowMemoryListeners;
-	private  SharedPreferences mPreferences;
+	private static  SharedPreferences mPreferences;
 	private  SharedPreferences.Editor mEditor;
 	private static final String PREFERENCE_FILE_NAME = "Daisy";
 	public SharedPreferences getPreferences(){
@@ -76,6 +78,9 @@ public class VodApplication extends Application {
 	}
 	public boolean save() {
 		return mEditor.commit();
+	}
+	public static void setDevice_Token(){
+        SimpleRestClient.device_token = mPreferences.getString(VodApplication.DEVICE_TOKEN, "");        
 	}
 	public VodApplication() {
 		mLowMemoryListeners = new ArrayList<WeakReference<OnLowMemoryListener>>();

@@ -708,9 +708,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             SimpleRestClient.sRoot_url = "http://" + result.getDomain();
             SimpleRestClient.ad_domain = "http://" + result.getAd_domain();
             SimpleRestClient.log_domain = "http://" + result.getLog_Domain();
-            SimpleRestClient.device_token = result.getDevice_token();
+            SimpleRestClient.device_token = result.getDevice_token();                    
             SimpleRestClient.sn_token = result.getSn_Token();
             DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString(VodApplication.ad_domain, SimpleRestClient.ad_domain);
+            DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString(VodApplication.DEVICE_TOKEN, SimpleRestClient.device_token);
 //			DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString("domain", SimpleRestClient.root_url);
 //			DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString("ad_domain", SimpleRestClient.ad_domain);
             DaisyUtils.getVodApplication(LauncherActivity.this).save();
