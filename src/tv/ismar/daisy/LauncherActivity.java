@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.content.*;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnErrorListener;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.*;
 import android.text.TextUtils;
@@ -125,16 +127,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         super.onCreate(savedInstanceState);
         registerUpdateReceiver();
         AppUpdateUtils.getInstance().checkUpdate(this);
-
-        // fetch weather info from ip lookup
         fetchIpLookup();
-
         String path = getFilesDir().getAbsolutePath();
         SystemFileUtil.appPath = path;
         DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
         mView = LayoutInflater.from(this).inflate(R.layout.activity_launcher, null);
         setContentView(mView);
-        setContentView(R.layout.activity_launcher);
         initViews();
         DisplayMetrics metric = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metric);
@@ -378,7 +376,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
                         @Override
                         public void onCompletion(MediaPlayer mp) {
-                            videoView.setVideoPath(mLocalPath);
+                             videoView.setVideoPath(mLocalPath);
                             // videoView.start();
                         }
                     });
@@ -731,7 +729,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     @Override
     public void onFailed(String erro) {
 //        Log.d(TAG, erro);
-        showDialog(erro);
+       // showDialog(erro);
+          checkNetWork(erro);
     }
 
     @Override
@@ -967,5 +966,48 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         tomorrowDetail.setText(weatherEntity.getTomorrow().getTemperature()
                 + " ℃   " + weatherEntity.getTomorrow().getPhenomenon() + "   "
                 + weatherEntity.getTomorrow().getWind_direction());
+    }
+    
+    private void showNetErrorPopup() {
+        //final Context context = this;
+        View contentView = LayoutInflater.from(mView.getContext())
+                .inflate(R.layout.popup_net_error, null);
+        netErrorPopupWindow = new PopupWindow(null, 1400, 500);
+        netErrorPopupWindow.setContentView(contentView);
+        netErrorPopupWindow.setFocusable(true);
+        netErrorPopupWindow.showAtLocation(mView, Gravity.CENTER, 0, 0);
+        DaisyButton confirmExit = (DaisyButton) contentView.findViewById(R.id.confirm_exit);
+
+        confirmExit.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            	netErrorPopupWindow.dismiss();
+                superOnbackPressed();
+            }
+        });
+    }
+
+
+
+    private void checkNetWork(String error) {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo.State wifiState = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
+        if(cm.getNetworkInfo(ConnectivityManager.TYPE_ETHERNET)==null){
+        	if(wifiState != NetworkInfo.State.CONNECTED){
+        		showNetErrorPopup();
+        	}
+        	else{
+        		showDialog(error);
+        	}
+        }
+        else{
+            NetworkInfo.State ethernetState = cm.getNetworkInfo(ConnectivityManager.TYPE_ETHERNET).getState();
+            if (wifiState != NetworkInfo.State.CONNECTED && ethernetState != NetworkInfo.State.CONNECTED) {
+                showNetErrorPopup();
+            }
+            else{
+            	showDialog(error);
+            }
+        }
     }
 }
