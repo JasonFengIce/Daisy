@@ -280,11 +280,9 @@ public class QiYiPlayActivity extends VodMenuAction {
 		item = (Item) bundle.get("item");
 		clip = item.clip;
 		live_video = item.live_video;
-		itemUrl = item.clip.url;
 		titleText.setText(item.title);
 		simpleRestClient = new SimpleRestClient();
 		new initPlayTask().execute();
-		initQiyiVideoPlayer();
 	}
 
 	private class initPlayTask extends AsyncTask<String, Void, Void> {
@@ -292,7 +290,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 		@Override
 		protected void onPostExecute(Void result) {
 			// TODO Auto-generated method stub
-			// initPlayer();
+			initQiyiVideoPlayer();
 		}
 
 		@Override
@@ -355,10 +353,10 @@ public class QiYiPlayActivity extends VodMenuAction {
 					VodUserAgent.deviceVersion, sn);
 			try {
 				if (obj != null) {
-					item = simpleRestClient.getItem((String) obj);
-					currNum = item.position;
+					subItem = simpleRestClient.getItem((String) obj);
+					currNum = subItem.position;
 					if (item != null) {
-						clip = item.clip;
+						clip = subItem.clip;
 						urlInfo = AccessProxy.parse(SimpleRestClient.root_url
 								+ "/api/clip/" + clip.pk + "/",
 								VodUserAgent.getAccessToken(sn),
@@ -366,7 +364,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 						if (urlInfo.getIqiyi_4_0().length() == 0) {
 							Intent intent = new Intent();
 							intent.setAction("tv.ismar.daisy.Play");
-							intent.putExtra("item", item);
+							intent.putExtra("item", subItem);
 							intent.putExtra("ismartv",
 									AccessProxy.getvVideoClipInfo());
 							startActivity(intent);
@@ -438,7 +436,11 @@ public class QiYiPlayActivity extends VodMenuAction {
 	}
 
 	private void setQiyiVideo() {
-		titleText.setText(item.title);
+		if(subItem != null){
+			titleText.setText(subItem.title);
+		}else{
+			titleText.setText(item.title);
+		}
 		if (tempOffset > 0 && isContinue == true && !live_video) {
 			bufferText.setText("  " + BUFFERCONTINUE
 					+ getTimeString(tempOffset));
@@ -1419,8 +1421,9 @@ public class QiYiPlayActivity extends VodMenuAction {
 			subItemUrl = simpleRestClient.root_url + "/api/subitem/" + id + "/";
 			bundle.remove("url");
 			bundle.putString("url", subItemUrl);
-			addHistory(0);
 			currPosition = 0;
+			tempOffset =0;
+			addHistory(currPosition);
 			mPlayer.stop();
 			isBuffer = true;
 			showBuffer();
