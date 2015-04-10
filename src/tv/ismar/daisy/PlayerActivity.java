@@ -717,7 +717,6 @@ public class PlayerActivity extends VodMenuAction{
 					sid = VodUserAgent.getSid(urls[currQuality]);
 					mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
 			      mVideoView.setVideoPath(urls[currQuality]);
-			      Log.v("aaaa", "urls[currQuality]= "+urls[currQuality]);
 				}
 
 			} else {
@@ -853,7 +852,6 @@ public class PlayerActivity extends VodMenuAction{
 			if (mVideoView != null) {
 				// Log.d(TAG,
 				// "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
-				Log.v("aaaa", "mVideoView.isPlaying() ="+mVideoView.isPlaying());
 				if (mVideoView.isPlaying()) {
 					// if (isBuffer || bufferLayout.isShown()) {
 					// //isBuffer = false;

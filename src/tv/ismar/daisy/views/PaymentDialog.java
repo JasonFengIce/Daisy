@@ -134,8 +134,8 @@ public class PaymentDialog extends Dialog {
 	private void resizeWindow() {
 		Window dialogWindow = getWindow();
 		WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-		lp.width = ((int) (width * 0.8));
-		lp.height = ((int) (height * 0.8));
+		lp.width = ((int) (width * 0.83));
+		lp.height = ((int) (height * 0.83));
 	}
 
 	private void initView() {

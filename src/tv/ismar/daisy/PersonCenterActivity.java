@@ -437,7 +437,7 @@ public class PersonCenterActivity extends Activity implements View.OnClickListen
         final Context context = this;
         View contentView = LayoutInflater.from(context)
                 .inflate(R.layout.popupview_exit, null);
-        final PopupWindow  exitPopupWindow = new PopupWindow(null, 1400, 500);
+        final PopupWindow  exitPopupWindow = new PopupWindow(null,  740, 341);
         exitPopupWindow.setContentView(contentView);
         exitPopupWindow.setFocusable(true);
         exitPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
