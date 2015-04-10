@@ -115,7 +115,7 @@
 
                     <TextView
                         android:id="@+id/QualityText"
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/vod_player_qualitytext_W"
                         android:layout_height="@dimen/vod_player_qualitytext_H"
                         android:layout_marginTop="@dimen/vod_player_qualitytext_margintop"
                         android:background="@drawable/rounded_edittext"
@@ -126,15 +126,15 @@
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/vod_player_qualitytext_textsize" />
 
-                    <TextView
+                    <tv.ismar.daisy.views.MyMarqueeText
                         android:id="@+id/TitleText"
-                        android:layout_width="@dimen/vod_player_titletext_W"
+                        android:layout_width="wrap_content"
                         android:layout_height="@dimen/vod_player_titletext_H"
                         android:layout_marginTop="@dimen/vod_player_titletext_margintop"
-                        android:ellipsize="middle"
+                        android:ellipsize="marquee"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
-                        android:marqueeRepeatLimit="1"
+                        android:marqueeRepeatLimit="marquee_forever"
                         android:singleLine="true"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/vod_player_titletext_textsize" />

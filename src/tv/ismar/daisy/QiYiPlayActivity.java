@@ -89,7 +89,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 	private LinearLayout bufferLayout;
 	private ImageView logoImage;
 	private LinearLayout panelLayout;
-	private TextView titleText;
+	private tv.ismar.daisy.views.MyMarqueeText titleText;
 	private TextView qualityText;
 	private TextView timeText;
 	private ImageView playPauseImage;
@@ -177,7 +177,8 @@ public class QiYiPlayActivity extends VodMenuAction {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setContentView(R.layout.vod_player);
 		panelLayout = (LinearLayout) findViewById(R.id.PanelLayout);
-		titleText = (TextView) findViewById(R.id.TitleText);
+		titleText = (tv.ismar.daisy.views.MyMarqueeText) findViewById(R.id.TitleText);
+		titleText.requestFocus();
 		qualityText = (TextView) findViewById(R.id.QualityText);
 		timeText = (TextView) findViewById(R.id.TimeText);
 		timeBar = (SeekBar) findViewById(R.id.TimeSeekBar);

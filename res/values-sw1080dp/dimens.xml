@@ -174,8 +174,8 @@
     <dimen name="vod_player_buffertext_marginleft">15dip</dimen>
     <dimen name="vod_player_buffertext_textsize">35sp</dimen>
     <dimen name="vod_player_buffertext_marginTop">15dip</dimen>
-    <dimen name="vod_player_qualitytext_W">97dip</dimen>
-    <dimen name="vod_player_qualitytext_H">48dip</dimen>
+    <dimen name="vod_player_qualitytext_W">70dip</dimen>
+    <dimen name="vod_player_qualitytext_H">33dip</dimen>
     <dimen name="vod_player_qualitytext_marginleft">80dip</dimen>
     <dimen name="vod_player_qualitytext_PT">5dip</dimen>
     <dimen name="vod_player_qualitytext_textsize">40sp</dimen>
