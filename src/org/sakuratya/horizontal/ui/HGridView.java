@@ -258,11 +258,11 @@ public class HGridView extends AdapterView<HGridAdapter> {
 			int deltaX = (int) (mLastMotionX - x1);
 			mLastMotionX = x1;
 			if (deltaX > 50) {
-				pageScroll(FOCUS_RIGHT);
+				//pageScroll(FOCUS_RIGHT);
 				TOUCH_STATE = FOCUS_RIGHT;
 			} 
 			if (deltaX < -50) {
-				pageScroll(FOCUS_LEFT);
+				//pageScroll(FOCUS_LEFT);
 				TOUCH_STATE = FOCUS_LEFT;
 			}
 			if (TOUCH_STATE != FOCUS_LEFT && TOUCH_STATE != FOCUS_RIGHT) {
