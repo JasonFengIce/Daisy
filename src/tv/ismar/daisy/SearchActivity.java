@@ -311,8 +311,13 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 			case UPDATE_ADAPTER:
 				loadDialogShow();
 				linearSearch.setVisibility(View.VISIBLE);
-				if (null == movieList)
+				if (null == movieList||movieList.size()==0){
+					setSearchResult(0);
+					gridView.setVisibility(View.INVISIBLE);
+					arrow_left.setVisibility(View.INVISIBLE);
+					arrow_right.setVisibility(View.INVISIBLE);
 					return;
+				}					
 				setSearchResult(movieList.size());
 				// cacheAdapter = new CacheAdapter(SearchActivity.this, movieList);
 				// gridView.setAdapter(cacheAdapter);
@@ -376,7 +381,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 				loadDialogShow();
 				autoCompleteTextView.setText((String) msg.obj);
 				linearSearch.setVisibility(View.VISIBLE);
-				if (null == movieList) {
+				if (null == movieList||movieList.size()==0) {
 					setSearchResult(0);
 					return;
 				}
@@ -409,6 +414,7 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 		if(movieList.size()>15){
 			arrow_right.setVisibility(View.VISIBLE);
 		}
+		gridView.setVisibility(View.VISIBLE);
 		imageAdapter.setList((ArrayList<MovieBean>) movieList);
 		gridView.setFocusable(true);
 	};

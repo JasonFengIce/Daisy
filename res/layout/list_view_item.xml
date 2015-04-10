@@ -49,7 +49,7 @@
 
         android:layout_alignTop="@id/list_item_preview_img"
         android:layout_alignRight="@id/list_item_preview_img"
-        android:layout_marginRight="1dip"
+        android:layout_marginRight="8dip"
         android:layout_marginTop="1dip"
         android:background="@drawable/bean_score"
         android:gravity="top|center"
@@ -64,6 +64,7 @@
        android:textStyle="bold"
        android:textSize="20sp"
        android:gravity="center"
+       android:textColor="#ffe3e3e3"
        android:layout_alignBottom="@id/list_item_preview_img"
        android:layout_alignParentLeft="true"
        android:background="@drawable/vodcategory_gv_item_price"
