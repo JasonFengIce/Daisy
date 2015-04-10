@@ -973,7 +973,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         //final Context context = this;
         View contentView = LayoutInflater.from(mView.getContext())
                 .inflate(R.layout.popup_net_error, null);
-        netErrorPopupWindow = new PopupWindow(null, 1400, 500);
+        netErrorPopupWindow = new PopupWindow(null,  740, 341);
         netErrorPopupWindow.setContentView(contentView);
         netErrorPopupWindow.setFocusable(true);
         netErrorPopupWindow.showAtLocation(mView, Gravity.CENTER, 0, 0);
