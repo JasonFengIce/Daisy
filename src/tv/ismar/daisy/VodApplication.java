@@ -196,7 +196,7 @@ public class VodApplication extends Application {
 
 	public void getNewContentModel(){
 
-		new Thread(mGetNewContentModelTask).start();
+		//new Thread(mGetNewContentModelTask).start();
 		new Thread(mUpLoadLogRunnable).start();
 	}
 
