@@ -9,8 +9,7 @@ import retrofit.http.Path;
 import retrofit.http.Query;
 import tv.ismar.daisy.core.advertisement.AdvertisementInfoEntity;
 import tv.ismar.daisy.core.update.VersionInfoEntity;
-import tv.ismar.daisy.models.launcher.AttributeEntity;
-import tv.ismar.daisy.models.launcher.FrontPageEntity;
+import tv.ismar.daisy.models.launcher.*;
 
 import java.util.ArrayList;
 
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 public class ClientApi {
 
     public static final String APP_UPDATE_HOST = "http://client.tvxio.com";
-
 
 
     public interface AppVersionInfo {
@@ -92,4 +90,30 @@ public class ClientApi {
 
     }
 
+
+    public interface GeoId {
+        public static final String HOST = "http://media.lily.tvxio.com";
+
+        @GET("/geoid.json")
+        void excute(Callback<ArrayList<GeoIdEntity>> callback);
+
+    }
+
+    public interface IpLookup {
+        public static final String HOST = "http://lily.tvxio.com";
+
+        @GET("/iplookup")
+        void excute(Callback<IpLookupEntity> callback);
+
+    }
+
+    public interface Weather {
+        public static final String HOST = "http://media.lily.tvxio.com";
+
+        @GET("/{geoid}.json")
+        void excute(
+                @Path("geoid") String geoid,
+                Callback<WeatherEntity> callback
+        );
+    }
 }
