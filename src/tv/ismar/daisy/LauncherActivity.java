@@ -5,10 +5,9 @@ import android.app.Dialog;
 import android.content.*;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnErrorListener;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.*;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -25,7 +24,6 @@ import cn.ismartv.activator.data.Result;
 import com.google.gson.Gson;
 import com.ismartv.launcher.data.ChannelEntity;
 import com.ismartv.launcher.data.VideoEntity;
-import com.ismartv.launcher.data.WeatherEntity;
 import com.ismartv.launcher.ui.widget.IsmartvVideoView;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,8 +37,7 @@ import tv.ismar.daisy.core.SystemFileUtil;
 import tv.ismar.daisy.core.client.ClientApi;
 import tv.ismar.daisy.core.service.PosterUpdateService;
 import tv.ismar.daisy.core.update.AppUpdateUtils;
-import tv.ismar.daisy.models.launcher.AttributeEntity;
-import tv.ismar.daisy.models.launcher.FrontPageEntity;
+import tv.ismar.daisy.models.launcher.*;
 import tv.ismar.daisy.ui.widget.*;
 import tv.ismar.daisy.views.CustomDialog;
 
@@ -126,9 +123,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        checkNetWork();
         registerUpdateReceiver();
         AppUpdateUtils.getInstance().checkUpdate(this);
+
+        // fetch weather info from ip lookup
+        fetchIpLookup();
+
         String path = getFilesDir().getAbsolutePath();
         SystemFileUtil.appPath = path;
         DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
@@ -378,7 +378,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
                         @Override
                         public void onCompletion(MediaPlayer mp) {
-                             videoView.setVideoPath(mLocalPath);
+                            videoView.setVideoPath(mLocalPath);
                             // videoView.start();
                         }
                     });
@@ -555,21 +555,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         }
     };
 
-
-    private void setWeather(String content) {
-        Gson gson = new Gson();
-        WeatherEntity weatherEntity = gson.fromJson(content.toString(),
-                WeatherEntity.class);
-        weatherTmp.setText(weatherEntity.getName() + "  "
-                + weatherEntity.getToday().getTemperature() + " ℃");
-        todayWeatherDetail.setText(weatherEntity.getToday().getPhenomenon()
-                + "  " + weatherEntity.getToday().getWind_direction());
-        tomorrowDetail.setText(weatherEntity.getTomorrow().getTemperature()
-                + " ℃   " + weatherEntity.getTomorrow().getPhenomenon() + "   "
-                + weatherEntity.getTomorrow().getWind_direction());
-
-    }
-
     private Handler mainHandler = new Handler() {
 
         @Override
@@ -584,7 +569,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                     setFrontPage(dataBundle.getString("content"));
                     break;
                 case FETCHWEATHER:
-                    setWeather(dataBundle.getString("content"));
+//                    setWeather(dataBundle.getString("content"));
                     break;
                 case FETCHLATEST:
                     break;
@@ -597,7 +582,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                     getFrontPage();
                     fetchHorizontalGuide();
                     fetchChannels();
-                    fetchWeather();
+//                    fetchWeather();
                     break;
             }
         }
@@ -717,44 +702,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
 
-    private void fetchWeather() {
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                StringBuffer content = new StringBuffer();
-                try {
-                    URL getUrl = new URL(
-                            "http://media.lily.tvxio.com/101010100.json");
-                    HttpURLConnection connection = (HttpURLConnection) getUrl
-                            .openConnection();
-                    connection.setReadTimeout(4000);
-                    connection.connect();
-                    BufferedReader reader = new BufferedReader(
-                            new InputStreamReader(connection.getInputStream(), "UTF-8"));
-                    String lines;
-                    while ((lines = reader.readLine()) != null) {
-                        content.append(lines);
-                    }
-                    Message message = new Message();
-                    Bundle data = new Bundle();
-                    data.putString("content", content.toString());
-                    message.setData(data);
-                    message.what = FETCHWEATHER;
-                    mainHandler.sendMessage(message);
-                } catch (MalformedURLException e) {
-                    if (e != null)
-                        System.err.println(e.getMessage());
-                } catch (IOException e) {
-                    if (e != null)
-                        System.err.println(e.getMessage());
-                }
-            }
-
-        }.start();
-    }
-
-
     @Override
     public void onSuccess(Result result) {
         Log.d(TAG, result.toString());
@@ -843,7 +790,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         View contentView = LayoutInflater.from(context)
                 .inflate(R.layout.popup_update, null);
         contentView.setBackgroundResource(R.drawable.popup_bg_yellow);
-        updatePopupWindow = new PopupWindow(null,  1400, 500);
+        updatePopupWindow = new PopupWindow(null, 1400, 500);
         updatePopupWindow.setContentView(contentView);
         updatePopupWindow.setFocusable(true);
         updatePopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
@@ -932,24 +879,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         });
     }
 
-    private void showNetErrorPopup() {
-        final Context context = this;
-        View contentView = LayoutInflater.from(context)
-                .inflate(R.layout.popup_net_error, null);
-        netErrorPopupWindow = new PopupWindow(null, 1400, 500);
-        netErrorPopupWindow.setContentView(contentView);
-        netErrorPopupWindow.setFocusable(true);
-        netErrorPopupWindow.showAtLocation(mView, Gravity.CENTER, 0, 0);
-        DaisyButton confirmExit = (DaisyButton) contentView.findViewById(R.id.confirm_exit);
-
-        confirmExit.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                exitPopupWindow.dismiss();
-                superOnbackPressed();
-            }
-        });
-    }
 
     private void playVideoByTime(int startTime, int endTime) {
         int currnet = videoView.getCurrentPosition();
@@ -957,19 +886,86 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         if (currnet > endTime || currnet < startTime) {
             Log.d(TAG, "start time ---> " + startTime + "  end time ---> " + endTime);
             isfinished = true;
-            // videoView.setVideoPath(mLocalPath);
             videoView.seekTo(startTime);
-            // videoView.start();
         }
     }
 
 
-    private void checkNetWork() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo.State wifiState = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
-        NetworkInfo.State ethernetState = cm.getNetworkInfo(ConnectivityManager.TYPE_ETHERNET).getState();
-        if (wifiState != NetworkInfo.State.CONNECTED && ethernetState != NetworkInfo.State.CONNECTED) {
-            showNetErrorPopup();
-        }
+    public void fetchIpLookup() {
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setLogLevel(AppConstant.LOG_LEVEL)
+                .setEndpoint(ClientApi.IpLookup.HOST)
+                .build();
+        ClientApi.IpLookup client = restAdapter.create(ClientApi.IpLookup.class);
+        client.excute(new Callback<IpLookupEntity>() {
+            @Override
+            public void success(IpLookupEntity ipLookupEntity, Response response) {
+                String city = ipLookupEntity.getCity();
+                fetchGeoId(city);
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                Log.e(TAG, retrofitError.getMessage());
+            }
+        });
+
+    }
+
+    public void fetchGeoId(final String city) {
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setLogLevel(AppConstant.LOG_LEVEL)
+                .setEndpoint(ClientApi.GeoId.HOST)
+                .build();
+        ClientApi.GeoId client = restAdapter.create(ClientApi.GeoId.class);
+        client.excute(new Callback<ArrayList<GeoIdEntity>>() {
+            @Override
+            public void success(ArrayList<GeoIdEntity> geoIdEntities, Response response) {
+                String geoId = null;
+                for (GeoIdEntity geoIdEntity : geoIdEntities) {
+                    if (geoIdEntity.getName().equals(city)) {
+                        geoId = geoIdEntity.getId();
+                    }
+                }
+                if (!TextUtils.isEmpty(geoId))
+                    fetchWeather(geoId);
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                Log.e(TAG, retrofitError.getMessage());
+            }
+        });
+
+    }
+
+
+    private void fetchWeather(final String geoId) {
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setLogLevel(AppConstant.LOG_LEVEL)
+                .setEndpoint(ClientApi.Weather.HOST)
+                .build();
+        ClientApi.Weather client = restAdapter.create(ClientApi.Weather.class);
+        client.excute(geoId, new Callback<WeatherEntity>() {
+            @Override
+            public void success(WeatherEntity weatherEntity, Response response) {
+                setWeather(weatherEntity);
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                Log.e(TAG, retrofitError.getMessage());
+            }
+        });
+    }
+
+    private void setWeather(WeatherEntity weatherEntity) {
+        weatherTmp.setText(weatherEntity.getName() + "  "
+                + weatherEntity.getToday().getTemperature() + " ℃");
+        todayWeatherDetail.setText(weatherEntity.getToday().getPhenomenon()
+                + "  " + weatherEntity.getToday().getWind_direction());
+        tomorrowDetail.setText(weatherEntity.getTomorrow().getTemperature()
+                + " ℃   " + weatherEntity.getTomorrow().getPhenomenon() + "   "
+                + weatherEntity.getTomorrow().getWind_direction());
     }
 }

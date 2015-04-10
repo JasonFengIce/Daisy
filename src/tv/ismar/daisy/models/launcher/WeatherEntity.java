@@ -1,4 +1,4 @@
-package com.ismartv.launcher.data;
+package tv.ismar.daisy.models.launcher;
 
 /**
  * Created by <huaijiefeng@gmail.com> on 9/15/14.
