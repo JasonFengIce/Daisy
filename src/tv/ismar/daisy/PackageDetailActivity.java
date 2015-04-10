@@ -328,7 +328,7 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 									vod_payment_price.setText("已付费");
 									vod_payment_duration.setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
 									vod_payment_price.setBackgroundResource(R.drawable.vod_detail_already_payment_price);
-									isbuy_label.setVisibility(View.VISIBLE);
+									//isbuy_label.setVisibility(View.VISIBLE);
 								}
 							} catch (ParseException e) {
 								// TODO Auto-generated catch block
@@ -356,7 +356,8 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 								vod_payment_duration.setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
 								vod_payment_price.setBackgroundResource(R.drawable.vod_detail_already_payment_price);
 								vod_payment_buyButton.setEnabled(false);
-								isbuy_label.setVisibility(View.VISIBLE);
+								vod_payment_buyButton.setVisibility(View.INVISIBLE);
+								//isbuy_label.setVisibility(View.VISIBLE);
 							}
 						} catch (ParseException e1) {
 							// TODO Auto-generated catch block
@@ -542,7 +543,8 @@ public class PackageDetailActivity extends Activity implements OnItemClickListen
 				vod_payment_duration.setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
 				vod_payment_price.setBackgroundResource(R.drawable.vod_detail_already_payment_price);
 				vod_payment_buyButton.setEnabled(false);
-				isbuy_label.setVisibility(View.VISIBLE);
+				vod_payment_buyButton.setVisibility(View.INVISIBLE);
+				isbuy_label.setVisibility(View.INVISIBLE);
 			}
 		}
 
