@@ -27,6 +27,7 @@ import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.player.ISTVVodMenu;
 import tv.ismar.daisy.player.ISTVVodMenuItem;
+import tv.ismar.daisy.ui.widget.MarqueeView;
 import tv.ismar.daisy.views.IsmatvVideoView;
 import tv.ismar.daisy.views.PaymentDialog;
 import tv.ismar.player.SmartPlayer;
@@ -97,7 +98,7 @@ public class PlayerActivity extends VodMenuAction{
 	private LinearLayout bufferLayout;
 	private ImageView logoImage;
 	private LinearLayout panelLayout;
-	private tv.ismar.daisy.views.MyMarqueeText titleText;
+	private TextView titleText;
 	private TextView qualityText;
 	private TextView timeText;
 	private ImageView playPauseImage;
@@ -172,10 +173,15 @@ public class PlayerActivity extends VodMenuAction{
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setContentView(R.layout.vod_player);
+
+
+
 		mVideoView = (IsmatvVideoView) findViewById(R.id.video_view);
 		panelLayout = (LinearLayout) findViewById(R.id.PanelLayout);
-		titleText = (tv.ismar.daisy.views.MyMarqueeText) findViewById(R.id.TitleText);
-		titleText.requestFocus();
+		titleText = (TextView) findViewById(R.id.TitleText);
+
+
+
 		qualityText = (TextView) findViewById(R.id.QualityText);
 		timeText = (TextView) findViewById(R.id.TimeText);
 		timeBar = (SeekBar) findViewById(R.id.TimeSeekBar);
@@ -693,7 +699,6 @@ public class PlayerActivity extends VodMenuAction{
 					}
 					initQualtiyText();
 					qualityText.setVisibility(View.VISIBLE);
-					titleText.setSelected(true);
 					if (tempOffset > 0 && isContinue == true && !live_video) {
 						bufferText.setText("  " + BUFFERCONTINUE
 								+ getTimeString(tempOffset));

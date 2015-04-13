@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/RootRelativeLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/transparent"
-    android:foreground="@android:color/transparent" >
-
+                xmlns:app="http://schemas.android.com/apk/res/tv.ismar.daisy"
+                android:id="@+id/RootRelativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:foreground="@android:color/transparent">
     <tv.ismar.daisy.views.IsmatvVideoView
         android:id="@+id/video_view"
         android:layout_width="match_parent"
@@ -126,18 +126,27 @@
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/vod_player_qualitytext_textsize" />
 
-                    <tv.ismar.daisy.views.MyMarqueeText
-                        android:id="@+id/TitleText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/vod_player_titletext_H"
-                        android:layout_marginTop="@dimen/vod_player_titletext_margintop"
-                        android:ellipsize="marquee"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:marqueeRepeatLimit="marquee_forever"
-                        android:singleLine="true"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/vod_player_titletext_textsize" />
+                    <tv.ismar.daisy.ui.widget.MarqueeView
+                            android:id="@+id/TitleText_layout"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            app:speed="10"
+                            app:pause="700"
+                            app:autoStart="true"
+                            >
+                        <TextView
+                                android:id="@+id/TitleText"
+                                android:textColor="@android:color/white"
+                                android:textSize="@dimen/vod_player_titletext_textsize"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:singleLine="true"
+                                android:ellipsize="end"
+                                />
+
+                    </tv.ismar.daisy.ui.widget.MarqueeView>
+
+
                 </LinearLayout>
 
                 <LinearLayout
