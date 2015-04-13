@@ -70,4 +70,10 @@ public class SdkVideo implements IPlaybackInfo {
     public Definition getDefinition() {
         return mDefinition;
     }
+
+	@Override
+	public int getVideoSource() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
