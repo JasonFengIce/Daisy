@@ -60,6 +60,7 @@ import com.qiyi.video.player.IVideoStateListener;
 import com.qiyi.video.player.QiyiVideoPlayer;
 import com.qiyi.video.player.data.Definition;
 import com.qiyi.video.player.data.IPlaybackInfo;
+import com.qiyi.video.player.error.ISdkError;
 
 public class QiYiPlayActivity extends VodMenuAction {
 	private static final int MSG_AD_COUNTDOWN = 100;
@@ -514,14 +515,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 		}
 
 		@Override
-		public boolean onError(IPlaybackInfo arg0, int arg1, String arg2,
-				String arg3) {
-			addHistory(currPosition);
-			ExToClosePlayer("error", arg1 + " " + arg2);
-			return false;
-		}
-
-		@Override
 		public void onHeaderTailerInfoReady(int arg0, int arg1) {
 		}
 
@@ -594,6 +587,26 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onVideoSizeChange(int arg0, int arg1) {
+		}
+
+		@Override
+		public boolean onError(IPlaybackInfo arg0, ISdkError arg1) {
+			// TODO Auto-generated method stub
+			addHistory(currPosition);
+			ExToClosePlayer("error", arg0.getDefinition() + " " + arg1.getMsgFromError());
+			return false;
+		}
+
+		@Override
+		public void onPreviewCompleted() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onPreviewInfoReady(boolean arg0, int arg1) {
+			// TODO Auto-generated method stub
+			
 		}
 
 	};

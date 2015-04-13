@@ -6,6 +6,8 @@ import com.qiyi.video.player.IVideoStateListener;
 import com.qiyi.video.player.QiyiVideoPlayer;
 import com.qiyi.video.player.data.Definition;
 import com.qiyi.video.player.data.IPlaybackInfo;
+import com.qiyi.video.player.error.ISdkError;
+
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
@@ -54,13 +56,6 @@ public class QiyiMediaPlayer extends MediaPlayView{
 		public void onBufferStart() {
 			// TODO Auto-generated method stub
 			
-		}
-
-		@Override
-		public boolean onError(IPlaybackInfo arg0, int arg1, String arg2,
-				String arg3) {
-			// TODO Auto-generated method stub
-			return false;
 		}
 
 		@Override
@@ -113,6 +108,24 @@ public class QiyiMediaPlayer extends MediaPlayView{
 
 		@Override
 		public void onVideoSizeChange(int arg0, int arg1) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public boolean onError(IPlaybackInfo iplaybackinfo, ISdkError isdkerror) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public void onPreviewCompleted() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onPreviewInfoReady(boolean flag, int i) {
 			// TODO Auto-generated method stub
 			
 		}
