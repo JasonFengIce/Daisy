@@ -1636,6 +1636,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 				showBuffer();
 				seekPostion = 0;
 				currPosition = 0;
+				tempOffset = 0;
 				isfinish = true;
 				new ItemByUrlTask().execute();
 			} else {

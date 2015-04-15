@@ -1874,6 +1874,9 @@ public class PlayerActivity extends VodMenuAction{
 			if (item.subitems != null && item.expense != null) {
 				if (result) {
 					isBuffer = true;
+					seekPostion = 0;
+					currPosition = 0;
+					tempOffset = 0;
 					showBuffer();
 					payedItemspk.add(item.pk);
 					new ItemByUrlTask().execute();
