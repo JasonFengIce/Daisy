@@ -85,7 +85,6 @@ public class DramaListActivity extends Activity implements
 			mSubItem = mItem.subitems[i];
 			mList.add(mSubItem);
 		}
-		orderCheck();
 		mDataCollectionProperties.put(EventProperty.ITEM, mItem.pk);
 		mDataCollectionProperties.put("title", mItem.title);
 		mDataCollectionProperties.put("to", "return");
@@ -144,6 +143,14 @@ public class DramaListActivity extends Activity implements
 			}
 		});
 	}
+
+	@Override
+	public void onResume(){
+		super.onResume();
+		if (mItem.expense != null)
+			orderCheck();
+	}
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
