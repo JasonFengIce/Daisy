@@ -111,6 +111,18 @@ public class MarqueeView extends LinearLayout {
 		stringOfItem = string + interval;
 		initViews();
 		dealChange();
+		
+		if(getWidth()>0){
+			widthOfMarqueeView = getWidth();
+			heightOfMarqueeView = getHeight();
+			float mTextWidth = mTextField.getPaint().measureText(stringOfOrigin);
+			if(widthOfMarqueeView>=mTextWidth){
+				mTextField.setText(stringOfOrigin);				
+			}
+			else{
+				startMarquee();
+			}
+		}
 	}
 	
 	public void initViews() {
