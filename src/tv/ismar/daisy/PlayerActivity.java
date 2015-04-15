@@ -27,8 +27,8 @@ import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.player.ISTVVodMenu;
 import tv.ismar.daisy.player.ISTVVodMenuItem;
-import tv.ismar.daisy.ui.widget.MarqueeView;
 import tv.ismar.daisy.views.IsmatvVideoView;
+import tv.ismar.daisy.views.MarqueeView;
 import tv.ismar.daisy.views.PaymentDialog;
 import tv.ismar.player.SmartPlayer;
 import android.app.Dialog;
@@ -98,7 +98,7 @@ public class PlayerActivity extends VodMenuAction{
 	private LinearLayout bufferLayout;
 	private ImageView logoImage;
 	private LinearLayout panelLayout;
-	private TextView titleText;
+	private MarqueeView titleText;
 	private TextView qualityText;
 	private TextView timeText;
 	private ImageView playPauseImage;
@@ -178,9 +178,9 @@ public class PlayerActivity extends VodMenuAction{
 
 		mVideoView = (IsmatvVideoView) findViewById(R.id.video_view);
 		panelLayout = (LinearLayout) findViewById(R.id.PanelLayout);
-		titleText = (TextView) findViewById(R.id.TitleText);
+		titleText = (MarqueeView) findViewById(R.id.TitleText);
 
-
+		
 
 		qualityText = (TextView) findViewById(R.id.QualityText);
 		timeText = (TextView) findViewById(R.id.TimeText);

@@ -12,7 +12,7 @@
     <dimen name="item_detail_attribute_top">18dip</dimen>
     <dimen name="item_detail_intro_width">1172dip</dimen>
     <dimen name="item_detail_intro_height">273dip</dimen>
-    <dimen name="item_detail_intro_bottom">120dp</dimen>
+    <dimen name="item_detail_intro_bottom">100dp</dimen>
     <dimen name="item_detail_intro_marginleft">68dip</dimen>
     <dimen name="item_detail_intro_paddingleft">13dip</dimen>
     <dimen name="item_detail_intro_paddingright">15dip</dimen>
@@ -34,7 +34,7 @@
     <dimen name="item_detail_detailquality_height">72dp</dimen>
     <dimen name="item_detail_detailquality_margintop">2dip</dimen>
     <dimen name="item_detail_detailquality_marginright">2dip</dimen>
-    <dimen name="item_detail_btn_left_width">240dp</dimen>
+    <dimen name="item_detail_btn_left_width">250dp</dimen>
     <dimen name="item_detail_btn_left_height">80dip</dimen>
     <dimen name="item_detail_btn_left_textsize">35sp</dimen>
     <dimen name="item_detail_btn_right_width">240dip</dimen>
@@ -123,6 +123,7 @@
     <dimen name="grid_view_main_arrow_left_H">46dip</dimen>
     <dimen name="grid_view_main_arrow_left_marginT">33dip</dimen>
     <dimen name="gridview_line_ML">30dip</dimen>
+    <dimen name="grid_view_main_list_marginT">-20dip</dimen>
     <!-- popup_2btn -->
     <dimen name="popup_dialog_width">806dip</dimen>
     <dimen name="popup_dialog_height">444dip</dimen>
@@ -174,15 +175,15 @@
     <dimen name="vod_player_buffertext_marginleft">15dip</dimen>
     <dimen name="vod_player_buffertext_textsize">35sp</dimen>
     <dimen name="vod_player_buffertext_marginTop">15dip</dimen>
-    <dimen name="vod_player_qualitytext_W">70dip</dimen>
-    <dimen name="vod_player_qualitytext_H">33dip</dimen>
+    <dimen name="vod_player_qualitytext_W">97dip</dimen>
+    <dimen name="vod_player_qualitytext_H">48dip</dimen>
     <dimen name="vod_player_qualitytext_marginleft">80dip</dimen>
     <dimen name="vod_player_qualitytext_PT">5dip</dimen>
     <dimen name="vod_player_qualitytext_textsize">40sp</dimen>
     <dimen name="vod_player_titletext_W">1200dip</dimen>
     <dimen name="vod_player_titletext_H">54dip</dimen>
     <dimen name="vod_player_titletext_marginleft">220dip</dimen>
-    <dimen name="vod_player_titletext_textsize">40dip</dimen>
+    <dimen name="vod_player_titletext_textsize">40sp</dimen>
     <dimen name="vod_player_titletext_margintop">16dip</dimen>
     <dimen name="vod_player_timetext_H">45dip</dimen>
     <dimen name="vod_player_timetext_marginright">80dip</dimen>

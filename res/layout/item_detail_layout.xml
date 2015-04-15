@@ -171,7 +171,7 @@
             android:layout_marginTop="@dimen/item_detail_attribute_top">                               
             <Button
                 android:id="@+id/btn_left"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/item_detail_btn_left_width"
                 android:layout_height="@dimen/item_detail_btn_left_height"
                 android:background="@drawable/preview_video_btn_bg_selector"              
                 android:visibility="visible"/>
@@ -179,7 +179,7 @@
 
            <Button
                 android:id="@+id/middle_btn"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/item_detail_btn_left_width"
                 android:layout_height="@dimen/item_detail_btn_left_height"
                 android:layout_marginLeft="@dimen/item_detail_btn_marginleft"
                 android:background="@drawable/buy_video_btn_bg_selector"

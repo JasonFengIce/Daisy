@@ -123,6 +123,7 @@
     <dimen name="grid_view_main_arrow_left_W">15dip</dimen>
     <dimen name="grid_view_main_arrow_left_H">18dip</dimen>
     <dimen name="grid_view_main_arrow_left_marginT">15dip</dimen>
+    <dimen name="grid_view_main_list_marginT">-10dip</dimen>
     <!-- popup_2btn -->
     <dimen name="popup_dialog_width">403dip</dimen>
     <dimen name="popup_dialog_height">222dip</dimen>
