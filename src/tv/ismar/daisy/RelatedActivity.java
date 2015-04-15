@@ -134,6 +134,7 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		Section firstSection = new Section();
 		firstSection.title = getResources().getString(R.string.same_category_clip);
 		firstSection.slug = "default";
+		firstSection.count = mRelatedItem.size();
 		mVirtualSectionList.add(firstSection);
 		if(mItem.attributes!=null && mItem.attributes.map != null) {
 			Object actorInfoObj = mItem.attributes.map.get("actor");
@@ -156,6 +157,7 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 					directionSection.title = director.name;
 					directionSection.slug = "director";
 					directionSection.template = director.id;
+					directionSection.count = 1;
 					mVirtualSectionList.add(directionSection);
 				}
 			}
@@ -205,7 +207,7 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		}
 		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_RELATE_IN, mDataCollectionProperties);
 		
-		initSectionTabs();
+	     initSectionTabs();
 		SectionList mTmpSectionList = new SectionList();
 		
 		for(Section s:mVirtualSectionList){
@@ -213,9 +215,13 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 				mTmpSectionList.add(s);
 			}
 		}
-		mVirtualSectionList = mTmpSectionList;
+		//mVirtualSectionList = mTmpSectionList;
 		if(mVirtualSectionList.size()>5)
 			arrow_right.setVisibility(View.VISIBLE);
+		else{
+			mSectionTabs.left = null;
+			mSectionTabs.right = null;
+		}
 		mSectionTabs.init(mVirtualSectionList, getResources().getDimensionPixelSize(R.dimen.gridview_channel_section_tabs_width),true);
 		buildGridView();
 		if(mLoadingDialog.isShowing()){

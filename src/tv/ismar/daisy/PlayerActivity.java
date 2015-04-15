@@ -974,6 +974,7 @@ public class PlayerActivity extends VodMenuAction{
 					ordercheckListener);
 			item.model_name = "subitem";
 			item.pk = pk;
+			item.title = subItem.title;
 			dialog.setItem(item);
 			dialog.show();
 		}
