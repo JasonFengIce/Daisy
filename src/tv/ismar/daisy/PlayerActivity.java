@@ -967,6 +967,12 @@ public class PlayerActivity extends VodMenuAction{
 			showBuffer();
 			new ItemByUrlTask().execute();
 		}else{
+			for (Item i : listItems) {
+				if (i.pk == pk) {
+					subItem = i;
+					break;
+				}
+			}
 			mVideoView.stopPlayback();
 			PaymentDialog dialog = new PaymentDialog(
 					PlayerActivity.this,
