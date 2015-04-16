@@ -64,6 +64,7 @@ public class MarqueeView extends LinearLayout {
 	        textSize = a.getDimensionPixelSize(R.styleable.MarqueeView_textsize,textSize);
 	        textColor = a.getColorStateList(R.styleable.MarqueeView_textcolor);	  
 		    init(context);
+		    initViews();
 		    a.recycle();
 	}
     public String getText(){
@@ -110,6 +111,7 @@ public class MarqueeView extends LinearLayout {
 		stringOfOrigin = string;
 		stringOfItem = string + interval;
 		initViews();
+		clearMarquee();
 		dealChange();
 		
 		if(getWidth()>0){
