@@ -428,7 +428,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 		if (quality != null) {
 			currQuality = quality.quality;
 		}
-		if (mHistory != null) {
+		if (mHistory != null && (subItemUrl != null && subItemUrl.equalsIgnoreCase(mHistory.sub_url))) {
 			isContinue = mHistory.is_continue;
 			tempOffset = (int) mHistory.last_position;
 		}
