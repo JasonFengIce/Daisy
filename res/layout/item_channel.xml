@@ -9,14 +9,14 @@
 
     <ImageView
             android:id="@+id/channel_img"
-            android:layout_width="80dp"
-            android:layout_height="80dp"/>
+            android:layout_width="@dimen/launcher_channel_img_width"
+            android:layout_height="@dimen/launcher_channel_img_height"/>
 
     <TextView
             android:gravity="center"
             android:textSize="@dimen/Launcher_channel_title_textsize"
             android:id="@+id/channel_title"
             android:layout_width="wrap_content"
-            android:layout_height="80dp"/>
+            android:layout_height="@dimen/launcher_channel_title_height"/>
 
 </LinearLayout>

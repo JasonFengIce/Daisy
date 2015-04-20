@@ -1,4 +1,4 @@
-<resources>  
+<resources>
     <!-- item detail page-->
     <dimen name="item_detail_detail_left_container_width">1291dip</dimen>
     <dimen name="item_detail_vod_watermark_width">669dip</dimen>
@@ -69,7 +69,7 @@
     <dimen name="item_detail_related_W">638dip</dimen>
     <dimen name="item_detail_btn_layout_marginB">20dip</dimen>
     <dimen name="item_detail_Btn_Layout_marginT">18dip</dimen>
-<!-- grid listview page-->
+    <!-- grid listview page-->
     <dimen name="gridview_channel_panel_height">88dip</dimen>
     <dimen name="gridview_channel_panel_marginBottom">35dp</dimen>
     <dimen name="gridview_channel_label_width">375dip</dimen>
@@ -138,7 +138,7 @@
     <dimen name="popup_dialog_lbutton_width">440dip</dimen>
     <dimen name="popup_dialog_rbutton_width">320dip</dimen>
     <dimen name="popup_dialog_button_textsize">40sp</dimen>
-    
+
     <!-- related_item -->
     <dimen name="related_item_layout_H">168dip</dimen>
     <dimen name="related_item_layout_marginleft">2dip</dimen>
@@ -148,10 +148,10 @@
     <dimen name="related_item_image_margintop">23dip</dimen>
     <dimen name="related_item_image_marginright">23dip</dimen>
     <dimen name="related_item_image_marginbottom">23dip</dimen>
-<!--     <dimen name="related_item_image_paddingleft">7dip</dimen> -->
-<!--     <dimen name="related_item_image_paddingtop">3dip</dimen> -->
-<!--     <dimen name="related_item_image_paddingright">7dip</dimen> -->
-<!--     <dimen name="related_item_image_paddingbottom">12dip</dimen> -->
+    <!--     <dimen name="related_item_image_paddingleft">7dip</dimen> -->
+    <!--     <dimen name="related_item_image_paddingtop">3dip</dimen> -->
+    <!--     <dimen name="related_item_image_paddingright">7dip</dimen> -->
+    <!--     <dimen name="related_item_image_paddingbottom">12dip</dimen> -->
     <dimen name="related_item_image_paddingleft">1dip</dimen>
     <dimen name="related_item_image_paddingtop">1dip</dimen>
     <dimen name="related_item_image_paddingright">1dip</dimen>
@@ -214,7 +214,7 @@
     <dimen name="vod_player_vodlayout_PB">8dip</dimen>
     <dimen name="vod_player_vod_content_layout_W">600dip</dimen>
     <dimen name="vod_player_qualitytext_margintop">12dip</dimen>
-    
+
     <!-- play_finished -->
     <dimen name="play_finished_leftlayout_PL">60dip</dimen>
     <dimen name="play_finished_leftlayout_W">753dip</dimen>
@@ -245,7 +245,7 @@
     <dimen name="play_finished_gridview_related_margin">30dip</dimen>
     <dimen name="play_finished_gridview_related_horizontalSpace">53dip</dimen>
     <dimen name="play_finished_gridview_related_verticalSpace">15dip</dimen>
-    
+
     <!-- playfinish_gridview_item -->
     <dimen name="playfinish_gridview_item_marginleft">15dip</dimen>
     <dimen name="playfinish_gridview_item_margintop">5dip</dimen>
@@ -278,7 +278,7 @@
     <dimen name="toast_layout_H">172dip</dimen>
     <dimen name="toast_textsize">40sp</dimen>
     <dimen name="toast_padding">40dip</dimen>
-    
+
     <!-- menu -->
     <dimen name="menu_menulistview_W">520dip</dimen>
     <dimen name="menu_menulistview_PT">160dip</dimen>
@@ -287,7 +287,7 @@
     <dimen name="menu_item_layout_PL">40dip</dimen>
     <dimen name="menu_item_menutext_textsize">48sp</dimen>
     <dimen name="menu_item_menutext_marginleft">40dip</dimen>
-    
+
     <!-- dramaList -->
     <dimen name="drama_main_layout_PL">260dip</dimen>
     <dimen name="drama_main_layout_PT">100dip</dimen>
@@ -314,11 +314,11 @@
     <dimen name="drama_gridview_item_btn_margintop">2dip</dimen>
     <dimen name="drama_gridview_item_btn_marginbottom">2dip</dimen>
     <dimen name="drama_gridview_item_btn_marginright">2dip</dimen>
-    
+
     <!-- playfinish_gridview_item -->
     <dimen name="playfinish_gridview_iv_label_W">71dip</dimen>
     <dimen name="playfinish_gridview_iv_label_H">71dip</dimen>
-    
+
     <!-- alert_dialog -->
     <dimen name="dialog_layout_W">574dip</dimen>
     <dimen name="dialog_layout_H">375dip</dimen>
@@ -338,7 +338,7 @@
     <dimen name="dialog_negative_btn_marginR">22dip</dimen>
     <dimen name="dialog_negative_btn_marginB">25dip</dimen>
     <dimen name="dialog_negative_btn_textsize">30sp</dimen>
-    
+
     <!-- search -->
     <dimen name="search_main_tv_search_text_marginL">15dip</dimen>
     <dimen name="search_main_tv_search_text_PT">30dip</dimen>
@@ -360,7 +360,7 @@
     <dimen name="search_main_liner_search_result_PL">10dip</dimen>
     <dimen name="search_main_liner_search_result_PR">10dip</dimen>
     <dimen name="search_autocomplete_item_padding">15dip</dimen>
-    <dimen name="search_autocomplete_item_textsize">22dip</dimen>  
+    <dimen name="search_autocomplete_item_textsize">22dip</dimen>
     <dimen name="search_gridview_verticalspacing">5dip</dimen>
     <dimen name="search_gridview_marginL">150dip</dimen>
     <dimen name="search_gridview_marginT">8dip</dimen>
@@ -400,38 +400,38 @@
     <dimen name="channel_section_tabs_percentage_PLR">11dip</dimen>
     <dimen name="channel_section_tabs_layout_marginLeft">165dip</dimen>
     <dimen name="channel_section_tabs_text_PT">25dip</dimen>
-    
+
     <!-- ZGridview -->
     <dimen name="ZGridView_related_selectorLeftPadding">15dip</dimen>
     <dimen name="ZGridView_related_selectorTopPadding">20dip</dimen>
     <dimen name="ZGridView_related_selectorRightPadding">15dip</dimen>
     <dimen name="ZGridView_related_selectorBottomPadding">-27dip</dimen>
-    
+
     <dimen name="ZGridView_played_selectorLeftPadding">7dip</dimen>
     <dimen name="ZGridView_played_selectorTopPadding">16dip</dimen>
     <dimen name="ZGridView_played_selectorRightPadding">7dip</dimen>
     <dimen name="ZGridView_played_selectorBottomPadding">-33dip</dimen>
-    
+
     <dimen name="ZGridView_search_selectorLeftPadding">7dip</dimen>
     <dimen name="ZGridView_search_selectorTopPadding">19dip</dimen>
     <dimen name="ZGridView_search_selectorRight">20dip</dimen>
     <dimen name="ZGridView_search_selectorBottom">-70dip</dimen>
-    
+
     <dimen name="ZGridView_packagedetail_selectorLeftPadding">2dip</dimen>
     <dimen name="ZGridView_packagedetail_selectorTopPadding">0dip</dimen>
     <dimen name="ZGridView_packagedetail_selectorRight">1dip</dimen>
     <dimen name="ZGridView_packagedetail_selectorBottom">-22dip</dimen>
-    
+
     <dimen name="ZGridView_recommend_selectorLeftPadding">21dip</dimen>
     <dimen name="ZGridView_recommend_selectorTopPadding">0dip</dimen>
     <dimen name="ZGridView_recommend_selectorRightPadding">21dip</dimen>
     <dimen name="ZGridView_recommend_selectorBottomPadding">-30dip</dimen>
-    
+
     <!-- HGridView -->
     <dimen name="HGridView_related_selectionLeftPadding">15dip</dimen>
     <dimen name="HGridView_related_selectionTopPadding">20dip</dimen>
     <dimen name="HGridView_related_selectionRightPadding">15dip</dimen>
-    <dimen name="HGridView_related_selectionBottomPadding">-28dip</dimen>      
+    <dimen name="HGridView_related_selectionBottomPadding">-28dip</dimen>
     <dimen name="HGridView_label_lr_offset">19dip</dimen>
     <dimen name="HGridView_label_textleft">24dip</dimen>
     <dimen name="HGridView_label_texttop">56dip</dimen>
@@ -440,79 +440,86 @@
     <dimen name="Loading_Dialog_ProgressBar_width">66dip</dimen>
     <dimen name="Loading_Dialog_ProgressBar_ML">14dip</dimen>
     <dimen name="Loading_Dialog_ProgressBar_TextSize">23sp</dimen>
-     <!-- Launcher -->   
-<dimen name="Launcher_Layout_LP">40dip</dimen>
-<dimen name="Launcher_Layout_TP">1dip</dimen>
-<dimen name="Launcher_Layout_RP">40dip</dimen>
-<dimen name="Launcher_Layout_BP">15dip</dimen>
-<dimen name="Launcher_weather_layout_ML">100dip</dimen>
-<dimen name="Launcher_weather_layout_MT">5dip</dimen>
-<dimen name="Launcher_weather_layout_MR">100dip</dimen>
-<dimen name="Launcher_weather_icon_width">60dip</dimen>
-<dimen name="Launcher_weather_icon_height">60dip</dimen>
-<dimen name="Launcher_weather_tmp_ML">30dip</dimen>
-<dimen name="Launcher_weather_tmp_textsize">28sp</dimen>
-<dimen name="Launcher_today_weather_detail_textsize">18sp</dimen>
-<dimen name="Launcher_weather_divider_height">90dip</dimen>
-<dimen name="Launcher_weather_divider_ML">15dip</dimen>
-<dimen name="Launcher_weather_divider_MR">15dip</dimen>
-<dimen name="Launcher_tomorrow_detail_textsize">18sp</dimen>
-<dimen name="Launcher_video_layout_MLR">5dip</dimen>
-<dimen name="Launcher_video_view_margin">5dip</dimen>
-<dimen name="Launcher_preview_layout_MLR">5dip</dimen>
-<dimen name="Launcher_preview_title_textsize">24sp</dimen>
-<dimen name="Launcher_channel_title_textsize">32sp</dimen>
-<!-- DetailAttributeContainer -->
-<dimen name="DetailAttributeContainer_Layout_W">530dip</dimen>
-<!-- package detail -->
-<dimen name="vod_payment_package_details_container_ML">80dip</dimen>
-<dimen name="vod_payment_package_details_container_MT">100dip</dimen>
-<dimen name="package_detail_divider_W">1152dip</dimen>
-<dimen name="package_detail_divider_H">1dip</dimen>
-<dimen name="package_detail_divider_MT">42dip</dimen>
-<dimen name="package_detail_divider_cMT">598dip</dimen>
-<dimen name="vod_payment_pacakge_title_MT">60dip</dimen>
-<dimen name="vod_payment_packageDescribe_content_W">590dip</dimen>
-<dimen name="vod_payment_packageDescribe_content_MT">15dip</dimen>
-<dimen name="vod_payment_package_posterAndBuyBotton_container_W">480dip</dimen>
-<dimen name="vod_payment_package_posterAndBuyBotton_container_H">272dip</dimen>
-<dimen name="vod_payment_package_posterAndBuyBotton_container_ML">752dip</dimen>
-<dimen name="vod_payment_package_posterAndBuyBotton_container_MT">163dip</dimen>
-<dimen name="vod_payment_poster_W">480dip</dimen>
-<dimen name="vod_payment_poster_H">270dip</dimen>
-<dimen name="vod_payment_poster_MLR">7dip</dimen>
-<dimen name="vod_payment_price_MT">230dip</dimen>
-<dimen name="vod_payment_price_textsize">24sp</dimen>
-<dimen name="vod_payment_buyButton_W">460dip</dimen>
-<dimen name="vod_payment_buyButton_H">72dip</dimen>
-<dimen name="vod_payment_buyButton_ML">80dip</dimen>
-<dimen name="vod_payment_buyButton_MT">450dip</dimen>
-<dimen name="vod_payment_package_title_ML">80dip</dimen>
-<dimen name="vod_payment_package_title_MT">556dip</dimen>
-<dimen name="vod_payment_item_of_package_container_ML">40dip</dimen>
-<dimen name="vod_payment_item_of_package_container_MT">630dip</dimen>
-<dimen name="vod_payment_item_of_package_container_horizontalSpace">20dip</dimen>
-<dimen name="vod_payment_item_more_W">221dip</dimen>
-<dimen name="vod_payment_item_more_H">62dip</dimen>
-<dimen name="vod_payment_item_more_ML">990dip</dimen>
-<dimen name="vod_payment_item_more_MT">920dip</dimen>
-<dimen name="vod_payment_packageDescribe_textsize">30sp</dimen>
+    <!-- Launcher -->
+    <dimen name="Launcher_Layout_LP">40dip</dimen>
+    <dimen name="Launcher_Layout_TP">1dip</dimen>
+    <dimen name="Launcher_Layout_RP">40dip</dimen>
+    <dimen name="Launcher_Layout_BP">15dip</dimen>
+    <dimen name="Launcher_weather_layout_ML">100dip</dimen>
+    <dimen name="Launcher_weather_layout_MT">5dip</dimen>
+    <dimen name="Launcher_weather_layout_MR">100dip</dimen>
+    <dimen name="Launcher_weather_icon_width">60dip</dimen>
+    <dimen name="Launcher_weather_icon_height">60dip</dimen>
+    <dimen name="Launcher_weather_tmp_ML">30dip</dimen>
+    <dimen name="Launcher_weather_tmp_textsize">28sp</dimen>
+    <dimen name="Launcher_today_weather_detail_textsize">18sp</dimen>
+    <dimen name="Launcher_weather_divider_height">90dip</dimen>
+    <dimen name="Launcher_weather_divider_ML">15dip</dimen>
+    <dimen name="Launcher_weather_divider_MR">15dip</dimen>
+    <dimen name="Launcher_tomorrow_detail_textsize">18sp</dimen>
+    <dimen name="Launcher_video_layout_MLR">5dip</dimen>
+    <dimen name="Launcher_video_view_margin">5dip</dimen>
+    <dimen name="Launcher_preview_layout_MLR">5dip</dimen>
+    <dimen name="Launcher_preview_title_textsize">24sp</dimen>
+    <dimen name="Launcher_channel_title_textsize">32sp</dimen>
+    <!-- DetailAttributeContainer -->
+    <dimen name="DetailAttributeContainer_Layout_W">530dip</dimen>
+    <!-- package detail -->
+    <dimen name="vod_payment_package_details_container_ML">80dip</dimen>
+    <dimen name="vod_payment_package_details_container_MT">100dip</dimen>
+    <dimen name="package_detail_divider_W">1152dip</dimen>
+    <dimen name="package_detail_divider_H">1dip</dimen>
+    <dimen name="package_detail_divider_MT">42dip</dimen>
+    <dimen name="package_detail_divider_cMT">598dip</dimen>
+    <dimen name="vod_payment_pacakge_title_MT">60dip</dimen>
+    <dimen name="vod_payment_packageDescribe_content_W">590dip</dimen>
+    <dimen name="vod_payment_packageDescribe_content_MT">15dip</dimen>
+    <dimen name="vod_payment_package_posterAndBuyBotton_container_W">480dip</dimen>
+    <dimen name="vod_payment_package_posterAndBuyBotton_container_H">272dip</dimen>
+    <dimen name="vod_payment_package_posterAndBuyBotton_container_ML">752dip</dimen>
+    <dimen name="vod_payment_package_posterAndBuyBotton_container_MT">163dip</dimen>
+    <dimen name="vod_payment_poster_W">480dip</dimen>
+    <dimen name="vod_payment_poster_H">270dip</dimen>
+    <dimen name="vod_payment_poster_MLR">7dip</dimen>
+    <dimen name="vod_payment_price_MT">230dip</dimen>
+    <dimen name="vod_payment_price_textsize">24sp</dimen>
+    <dimen name="vod_payment_buyButton_W">460dip</dimen>
+    <dimen name="vod_payment_buyButton_H">72dip</dimen>
+    <dimen name="vod_payment_buyButton_ML">80dip</dimen>
+    <dimen name="vod_payment_buyButton_MT">450dip</dimen>
+    <dimen name="vod_payment_package_title_ML">80dip</dimen>
+    <dimen name="vod_payment_package_title_MT">556dip</dimen>
+    <dimen name="vod_payment_item_of_package_container_ML">40dip</dimen>
+    <dimen name="vod_payment_item_of_package_container_MT">630dip</dimen>
+    <dimen name="vod_payment_item_of_package_container_horizontalSpace">20dip</dimen>
+    <dimen name="vod_payment_item_more_W">221dip</dimen>
+    <dimen name="vod_payment_item_more_H">62dip</dimen>
+    <dimen name="vod_payment_item_more_ML">990dip</dimen>
+    <dimen name="vod_payment_item_more_MT">920dip</dimen>
+    <dimen name="vod_payment_packageDescribe_textsize">30sp</dimen>
 
-<!-- package detail item -->
-<dimen name="package_item_default_W">364dip</dimen>
-<dimen name="package_item_default_H">224dip</dimen>
-<dimen name="package_item_ItemImage_W">320dip</dimen>
-<dimen name="package_item_ItemImage_H">180dip</dimen>
-<dimen name="package_item_ItemImage_MT">22dip</dimen>
-<dimen name="package_item_ItemText_MT">7dip</dimen>
-<dimen name="package_item_ItemText_PLR">8dip</dimen>
+    <!-- package detail item -->
+    <dimen name="package_item_default_W">364dip</dimen>
+    <dimen name="package_item_default_H">224dip</dimen>
+    <dimen name="package_item_ItemImage_W">320dip</dimen>
+    <dimen name="package_item_ItemImage_H">180dip</dimen>
+    <dimen name="package_item_ItemImage_MT">22dip</dimen>
+    <dimen name="package_item_ItemText_MT">7dip</dimen>
+    <dimen name="package_item_ItemText_PLR">8dip</dimen>
 
-<!-- personal center -->
+    <!-- personal center -->
 
     <!-- list_view -->
     <dimen name="list_view_search_H">60dip</dimen>
     <dimen name="list_view_search_ML">990dip</dimen>
-    
+
     <!-- person center -->
-    
+
+    <!--launcher activity-->
+    <dimen name="launcher_layout_padding_bottom">40dp</dimen>
+    <dimen name="launcher_weather_layout_margin_top">640dp</dimen>
+    <dimen name="launcher_channel_img_height">80dp</dimen>
+    <dimen name="launcher_channel_img_width">80dp</dimen>
+    <dimen name="launcher_channel_title_height">80dp</dimen>
+
 </resources>
