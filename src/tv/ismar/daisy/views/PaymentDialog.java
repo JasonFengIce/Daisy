@@ -394,6 +394,7 @@ public class PaymentDialog extends Dialog {
 				String redirectlocation = connection.getHeaderField("Location");
 				myFileUrl = new URL(redirectlocation);
 				connection = (HttpURLConnection) myFileUrl.openConnection();
+				connection.setConnectTimeout(2000);
 				connection.setRequestMethod("GET");
 				connection.connect();
 				connection.getResponseCode();

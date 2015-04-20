@@ -498,6 +498,51 @@
     <dimen name="package_item_ItemText_MT">5dip</dimen>
     <dimen name="package_item_ItemText_PLR">5dip</dimen>
     
+  <!-- pay panel -->
+    <dimen name="pay_top_panel_merginleft">23dp</dimen>
+    <dimen name="pay_top_panel_panel_label_textsieze">13sp</dimen>
+    <dimen name="pay_top_panel_videotitle_textsieze">20sp</dimen>
+    <dimen name="pay_top_panel_warntitle_textsieze">18sp</dimen>
+    <dimen name="pay_top_panel_top_login_textsieze">23sp</dimen>
+    <dimen name="pay_top_panel_welocome_tip_textsieze">23sp</dimen>
+    <dimen name="pay_channel_weixin_height">60dp</dimen>
+    <dimen name="pay_channel_weixin_marginleft">20dp</dimen>
+    <dimen name="pay_channel_weixin_marginright">60dp</dimen>
+    <dimen name="pay_channel_weixin_margintop">30dp</dimen>
+    <dimen name="pay_channel_weixin_textsize">23sp</dimen>
+    <dimen name="pay_guanyingcard_marginleft">40dp</dimen>
+    <dimen name="pay_guanyingcard_margintop">80dp</dimen>
+    <dimen name="pay_guanyingcard_card_balance_title_textsize">24sp</dimen>
+    <dimen name="pay_guanyingcard_card_balance_package_info_margintop">40dp</dimen>
+    <dimen name="pay_guanyingcard_package_price_textsize">15sp</dimen>
+    <dimen name="pay_guanyingcard_package_exprice_textsize">15sp</dimen>
+    <dimen name="pay_guanyingcard_submit_panel_margintop">32dp</dimen>
+    <dimen name="pay_guanyingcard_card_balance_submit_textsize">23sp</dimen>
+    <dimen name="pay_guanyingcard_card_balance_cancel_marginleft">70dp</dimen>
+    <dimen name="pay_guanyingcard_card_balance_cancel_textsize">23sp</dimen>
+    <dimen name="pay_shiyuncard_marginleft">50dp</dimen>
+    <dimen name="pay_shiyuncard_margintop">80dp</dimen>
+    <dimen name="pay_shiyuncard_account_label_textsize">23sp</dimen>
+    <dimen name="pay_shiyuncard_input_margintop">32dp</dimen>
+    <dimen name="pay_shiyuncard_submit_margintop">32dp</dimen>
+    <dimen name="pay_shiyuncard_submit_textsize">23sp</dimen>
+    <dimen name="pay_qrcode_pay_panel_marginleft">28dp</dimen>
+    <dimen name="pay_qrcode_pay_panel_margintop">10dp</dimen>
+    <dimen name="pay_qrcode_pay_qrcodeview_marginleft">20dp</dimen>
+    <dimen name="pay_qrcode_pay_qrcodeview_marginright">20dp</dimen>
+    <dimen name="pay_qrcode_pay_qrcodeview_margintop">40dp</dimen>
+    <dimen name="pay_qrcode_pay_payinfo_panel_marginleft">20dp</dimen>
+    <dimen name="pay_qrcode_pay_payinfo_panel_margintop">20dp</dimen>
+    <dimen name="pay_qrcode_pay_payinfo_price_textsize">23sp</dimen>
+    <dimen name="pay_qrcode_pay_payinfo_exprice_textsize">23sp</dimen>
+    <dimen name="pay_qrcode_pay_payinfo_introduce_textsize">23sp</dimen>
+    <dimen name="pay_paymentselect_marginleft">30dp</dimen>
+    <dimen name="pay_paymentselect_marginright">30dp</dimen>
+    <dimen name="pay_paymentselect_hseparate_height">2dp</dimen>
+    <dimen name="pay_paymentselect_hseparate_margintop">10dp</dimen>
+    <dimen name="pay_paymentselect_main_marginright">30dp</dimen>
+    <dimen name="pay_paymentselect_main_margintop">10dp</dimen>
+    <dimen name="pay_paymentselect_vseparate_width">2dp</dimen>
     
         <!-- list_view -->
     <dimen name="list_view_search_H">40dip</dimen>

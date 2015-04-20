@@ -33,15 +33,15 @@
         android:layout_marginTop="@dimen/pay_shiyuncard_input_margintop"
         android:background="@drawable/edit_selector"
         android:singleLine="true"
-        android:paddingLeft="10dip"
-        android:textSize="30sp"
+        android:paddingLeft="5dip"
+        android:textSize="21sp"
         android:textColor="#FFF8F8FF"
          />
 
     <Button
         android:id="@+id/shiyuncard_submit"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/pay_channel_weixin_height"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/pay_shiyuncard_submit_margintop"
         android:background="@drawable/person_btn_selector"

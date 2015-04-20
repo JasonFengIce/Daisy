@@ -12,7 +12,7 @@
         android:id="@+id/qrcodeview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2.0"
+        android:layout_weight="2.2"
         android:layout_gravity="left"
         android:layout_marginLeft="@dimen/pay_qrcode_pay_qrcodeview_marginleft"
         android:layout_marginRight="@dimen/pay_qrcode_pay_qrcodeview_marginright"

@@ -517,7 +517,7 @@
     
   <!-- pay panel -->
     <dimen name="pay_top_panel_merginleft">20dp</dimen>
-    <dimen name="pay_top_panel_panel_label_textsieze">23sp</dimen>
+    <dimen name="pay_top_panel_panel_label_textsieze">13sp</dimen>
     <dimen name="pay_top_panel_videotitle_textsieze">35sp</dimen>
     <dimen name="pay_top_panel_warntitle_textsieze">23sp</dimen>
     <dimen name="pay_top_panel_top_login_textsieze">35sp</dimen>
