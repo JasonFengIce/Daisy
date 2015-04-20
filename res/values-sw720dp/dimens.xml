@@ -557,6 +557,7 @@
     <dimen name="launcher_channel_img_height">50dp</dimen>
     <dimen name="launcher_channel_img_width">50dp</dimen>
     <dimen name="launcher_channel_title_height">50dp</dimen>
+    <dimen name="launcher_exit_button_width">180dp</dimen>
 
 
 </resources>
