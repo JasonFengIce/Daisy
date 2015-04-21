@@ -9,6 +9,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,6 +29,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -197,7 +200,7 @@ public class PaymentDialog extends Dialog {
 			case R.id.weixin: {
 				changeQrcodePayPanelState(true, true);
 				changeLoginPanelState(false);
-				changeYuePayPanelState(false);
+				changeYuePayPanelState(false,false);
 				changeshiyuncardPanelState(false);
 			}
 				break;
@@ -206,14 +209,14 @@ public class PaymentDialog extends Dialog {
 					urlHandler.removeMessages(PURCHASE_CHECK_RESULT);
 				changeQrcodePayPanelState(false, false);
 				changeLoginPanelState(false);
-				changeYuePayPanelState(false);
+				changeYuePayPanelState(false,false);
 				changeshiyuncardPanelState(true);
 			}
 				break;
 			case R.id.zhifubao: {
 				changeQrcodePayPanelState(true, false);
 				changeLoginPanelState(false);
-				changeYuePayPanelState(false);
+				changeYuePayPanelState(false,false);
 				changeshiyuncardPanelState(false);
 			}
 				break;
@@ -222,7 +225,7 @@ public class PaymentDialog extends Dialog {
 					urlHandler.removeMessages(PURCHASE_CHECK_RESULT);
 				changeQrcodePayPanelState(false, false);
 				changeLoginPanelState(false);
-				changeYuePayPanelState(true);
+				changeYuePayPanelState(true,false);
 				changeshiyuncardPanelState(false);
 			}
 				break;
@@ -230,7 +233,7 @@ public class PaymentDialog extends Dialog {
 				flag = true;
 				changeQrcodePayPanelState(false, false);
 				changeLoginPanelState(true);
-				changeYuePayPanelState(false);
+				changeYuePayPanelState(false,false);
 				changeshiyuncardPanelState(false);
 			}
 				break;
@@ -267,7 +270,7 @@ public class PaymentDialog extends Dialog {
 		}
 	};
 
-	private void changeYuePayPanelState(boolean visible) {
+	private void changeYuePayPanelState(boolean visible,boolean needCheck) {
 		if (visible) {
 			getBalanceByToken();
 			guanyingcard_pay_panel.setVisibility(View.VISIBLE);
@@ -393,11 +396,12 @@ public class PaymentDialog extends Dialog {
 			if (code == 302) {
 				String redirectlocation = connection.getHeaderField("Location");
 				myFileUrl = new URL(redirectlocation);
+				Log.v("aaaa", "myFileUrl = "+redirectlocation);
 				connection = (HttpURLConnection) myFileUrl.openConnection();
 				connection.setConnectTimeout(2000);
 				connection.setRequestMethod("GET");
 				connection.connect();
-				connection.getResponseCode();
+				code = connection.getResponseCode();
 			}
 			InputStream is = connection.getInputStream();
 			bitmap = BitmapFactory.decodeStream(is);
@@ -520,7 +524,7 @@ public class PaymentDialog extends Dialog {
 					} else {
 						changeQrcodePayPanelState(true, true);
 						changeLoginPanelState(false);
-						changeYuePayPanelState(false);
+						changeYuePayPanelState(false,false);
 						changeshiyuncardPanelState(false);
 					}
 				}
@@ -580,7 +584,7 @@ public class PaymentDialog extends Dialog {
 					recharge_error_msg.setText("充值成功,系统将自动为您购买,6s后返回");
 					changeQrcodePayPanelState(false, false);
 					changeLoginPanelState(false);
-					changeYuePayPanelState(true);
+					changeYuePayPanelState(true,true);
 					changeshiyuncardPanelState(false);
 				} else if ("T".equalsIgnoreCase(statusString)) {
 					recharge_error_msg.setText("充值成功,系统将在第二天8点为您购买,10s后返回");
