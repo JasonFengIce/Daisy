@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
@@ -40,11 +41,11 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnHoverListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.View.OnHoverListener;
-import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -54,6 +55,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
 import com.ismartv.api.t.AccessProxy;
 import com.ismartv.bean.ClipInfo;
 import com.qiyi.video.player.IVideoStateListener;
@@ -66,8 +68,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 	private static final int MSG_AD_COUNTDOWN = 100;
 	private static final int MSG_PLAY_TIME = 101;
 	private static final int MSG_INITQUALITYTITLE = 102;
-	private static final int MSG_PAUSE = 105;
-	private static final int MSG_HIDEBUFFER = 106;
 	private static final int SEEK_STEP = 30000;
 	private static final int SHORT_STEP = 1;
 	private static final HashMap<Definition, String> DEFINITION_NAMES;
@@ -504,15 +504,15 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onBufferEnd() {
-			Log.v("aaaa", "onBufferEnd");
-			if (mHandler.hasMessages(MSG_HIDEBUFFER))
-				mHandler.removeMessages(MSG_HIDEBUFFER);
-			mHandler.sendEmptyMessageDelayed(MSG_HIDEBUFFER, 200);
+			if (!mPlayer.isPlaying())
+				mPlayer.start();
+			isBuffer = false;
+			hideBuffer();
+			checkTaskStart(0);
 		}
 
 		@Override
 		public void onBufferStart() {
-			Log.v("aaaa", "onBufferStart");
 			isBuffer = true;
 			showBuffer();
 		}
@@ -532,7 +532,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onMovieStart() {
-			Log.v("aaaa", "onMovieStart");
 			clipLength = mPlayer.getDuration();
 			showPanel();
 			// timeTaskStart();
@@ -570,8 +569,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onPrepared() {
-			Log.v("aaaa", "onprepared");
-			// mPlayer.seekTo(currPosition);
+//			 mPlayer.seekTo(currPosition);
 			timeBar.setMax(mPlayer.getDuration());
 		}
 
@@ -585,7 +583,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public boolean onError(IPlaybackInfo arg0, ISdkError arg1) {
-			// TODO Auto-generated method stub
 			addHistory(currPosition);
 			ExToClosePlayer("error",
 					arg0.getDefinition() + " " + arg1.getMsgFromError());
@@ -594,14 +591,10 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onPreviewCompleted() {
-			// TODO Auto-generated method stub
-
 		}
 
 		@Override
 		public void onPreviewInfoReady(boolean arg0, int arg1) {
-			// TODO Auto-generated method stub
-
 		}
 
 	};
@@ -644,17 +637,18 @@ public class QiYiPlayActivity extends VodMenuAction {
 				mPlayer.seekTo(currPosition);
 				isBuffer = true;
 				showBuffer();
-				break;
-			case MSG_PAUSE:
-				mPlayer.pause();
-			case MSG_HIDEBUFFER:
-				Log.v("aaaa", "MSG_HIDEBUFFER");
-				if (!mPlayer.isPlaying())
-					mPlayer.start();
-				isBuffer = false;
-				hideBuffer();
-				checkTaskStart(0);
-			default:
+				if (subItem != null)
+					callaPlay.videoPlaySeek(item.pk, subItem.pk,
+							item.title, clip.pk, currQuality, 0,
+							currPosition, sid);
+				else
+					callaPlay.videoPlayContinue(item.pk, null, item.title,
+							clip.pk, currQuality, 0, currPosition, sid);
+				isSeekBuffer = true;
+				Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
+				isSeek = false;
+				offsets = 0;
+				offn = 1;
 				break;
 			}
 		}
@@ -987,22 +981,26 @@ public class QiYiPlayActivity extends VodMenuAction {
 				mHandler.removeCallbacks(checkStatus);
 				if (mPlayer.isPlaying())
 					mPlayer.pause();
+				if (mHandler.hasMessages(MSG_SEK_ACTION))
+					mHandler.removeMessages(MSG_SEK_ACTION);
+					mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 1000);
 				isSeek = true;
 				showPanel();
 				fastBackward(SHORT_STEP);
 				ret = true;
-				// }
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
 				mHandler.removeCallbacks(mUpdateTimeTask);
 				mHandler.removeCallbacks(checkStatus);
 				if (mPlayer.isPlaying())
 					mPlayer.pause();
+				if (mHandler.hasMessages(MSG_SEK_ACTION))
+					mHandler.removeMessages(MSG_SEK_ACTION);
+					mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 1000);
 				isSeek = true;
 				showPanel();
 				fastForward(SHORT_STEP);
 				ret = true;
-				// }
 				break;
 			case KeyEvent.KEYCODE_DPAD_CENTER:
 			case KeyEvent.KEYCODE_ENTER:
@@ -1078,72 +1076,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 		}
 		if (mPlayer != null && ret == false) {
 			ret = super.onKeyDown(keyCode, event);
-		}
-		return ret;
-	}
-
-	@Override
-	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		boolean ret = false;
-		if (mPlayer != null && !isVodMenuVisible() && mPlayer.getDuration() > 0) {
-			switch (keyCode) {
-			case KeyEvent.KEYCODE_DPAD_LEFT:
-				if (!live_video) {
-					if (mHandler.hasMessages(MSG_SEK_ACTION)) {
-						mHandler.removeMessages(MSG_SEK_ACTION);
-						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 500);
-					} else {
-						mHandler.removeMessages(MSG_SEK_ACTION);
-						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 500);
-					}
-					if (subItem != null)
-						callaPlay.videoPlaySeek(item.pk, subItem.pk,
-								item.title, clip.pk, currQuality, 0,
-								currPosition, sid);
-					else
-						callaPlay.videoPlayContinue(item.pk, null, item.title,
-								clip.pk, currQuality, 0, currPosition, sid);
-					isSeekBuffer = true;
-					Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
-					ret = true;
-					isSeek = false;
-					offsets = 0;
-					offn = 1;
-				}
-
-				break;
-			case KeyEvent.KEYCODE_DPAD_RIGHT:
-				if (!live_video) {
-					if (mHandler.hasMessages(MSG_SEK_ACTION)) {
-						mHandler.removeMessages(MSG_SEK_ACTION);
-						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 500);
-					} else {
-						mHandler.removeMessages(MSG_SEK_ACTION);
-						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 500);
-					}
-					if (subItem != null)
-						callaPlay.videoPlaySeek(item.pk, subItem.pk,
-								item.title, clip.pk, currQuality, 0,
-								currPosition, sid);
-					else
-						callaPlay.videoPlayContinue(item.pk, null, item.title,
-								clip.pk, currQuality, 0, currPosition, sid);
-					isSeekBuffer = true;
-					Log.d(TAG, "RIGHT seek to" + getTimeString(currPosition));
-					ret = true;
-					isSeek = false;
-					offsets = 0;
-					offn = 1;
-				}
-
-				break;
-			default:
-				break;
-			}
-
-			if (ret == false) {
-				ret = super.onKeyUp(keyCode, event);
-			}
 		}
 		return ret;
 	}
