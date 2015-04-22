@@ -39,6 +39,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -120,6 +121,10 @@ public class ItemDetailActivity extends Activity implements
 	private String identify = "";
 	private Button mCollectBtn;
 	private ImageView isbuy_label;
+	private Drawable drawableleftplay;
+	private Drawable drawableleftcollect;
+	private Drawable drawableleftdrama;
+	private Drawable drawableleftbuy;
 	private void initViews() {
 		isbuy_label = (ImageView)findViewById(R.id.isbuy_label);
 		mDetailLeftContainer = (RelativeLayout) findViewById(R.id.detail_left_container);
@@ -157,6 +162,10 @@ public class ItemDetailActivity extends Activity implements
 	
 		// mBtnFavorite.setOnClickListener(mIdOnClickListener);
 		// mBtnFillBuy.setOnClickListener(mIdOnClickListener);
+		 drawableleftplay= getResources().getDrawable(R.drawable.daisy_left_play);
+		 drawableleftcollect = getResources().getDrawable(R.drawable.daisy_left_collect);
+		 drawableleftdrama = getResources().getDrawable(R.drawable.daisy_left_drama);
+		 drawableleftbuy = getResources().getDrawable(R.drawable.daisy_left_buy);
 	}
 
 	@Override
@@ -221,14 +230,20 @@ public class ItemDetailActivity extends Activity implements
 		}
 		if(isPause){
 			if (isFavorite()) {
-				mCollectBtn.setBackgroundResource(R.drawable.collected_btn_bg_selector);
+				//mCollectBtn.setBackgroundResource(R.drawable.collected_btn_bg_selector);
+				mCollectBtn.setText(getResources().getString(R.string.favorited));
 			} else {
-				mCollectBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+				//mCollectBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+				mCollectBtn.setText(getResources().getString(R.string.favorite));
 			}
 			isPause = false;
 		}
 		super.onResume();
 	}
+private void setLeftDrawable(Drawable drawable,Button btn){
+	drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+	btn.setCompoundDrawables(drawable,null,null,null);
+}
 private boolean isPause = false;
 	@Override
 	protected void onPause() {
@@ -435,23 +450,23 @@ private boolean isPause = false;
 		String subItemUrl = SimpleRestClient.root_url + "/api/subitem/"
 				+ mItem.pk + "/";
 		SimpleRestClient simpleRestClient = new SimpleRestClient();
-		Item subItem;
-		try {
-			subItem = simpleRestClient.getItem(subItemUrl);
-			if (subItem != null) {
-				mDataCollectionProperties
-						.put(EventProperty.SUBITEM, subItem.pk);
-			}
-		} catch (JsonSyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ItemOfflineException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NetworkException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		Item subItem;
+//		try {
+//			subItem = simpleRestClient.getItem(subItemUrl);
+//			if (subItem != null) {
+//				mDataCollectionProperties
+//						.put(EventProperty.SUBITEM, subItem.pk);
+//			}
+//		} catch (JsonSyntaxException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (ItemOfflineException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (NetworkException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 
 		new NetworkUtils.DataCollectionTask().execute(
 				NetworkUtils.VIDEO_DETAIL_IN, mDataCollectionProperties);
@@ -536,9 +551,11 @@ private boolean isPause = false;
 		mDetailIntro.setText(mItem.description);
 		// Set the favorite button's label.
 		if (isFavorite()) {
-			mCollectBtn.setBackgroundResource(R.drawable.collected_btn_bg_selector);
+			//mCollectBtn.setBackgroundResource(R.drawable.collected_btn_bg_selector);
+			mCollectBtn.setText(getResources().getString(R.string.favorited));
 		} else {
-			mCollectBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+			//mCollectBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+			mCollectBtn.setText(getResources().getString(R.string.favorite));
 		}
 
 		if (mItem.poster_url != null) {
@@ -756,16 +773,19 @@ private boolean isPause = false;
 		public void onFocusChange(View v, boolean hasFocus) {
 			String Tag = (String)v.getTag();
 			if (hasFocus) {				
-				if(Tag.equals(PREVIEW_VIDEO))
-				    v.setBackgroundResource(R.drawable.preview_video_pressed_bg);
-				else if(Tag.equals(PLAY_VIDEO))
-					v.setBackgroundResource(R.drawable.play_video_btn_pressed_bg);
+//				if(Tag.equals(PREVIEW_VIDEO))
+//				    v.setBackgroundResource(R.drawable.preview_video_pressed_bg);
+//				else if(Tag.equals(PLAY_VIDEO))
+//					v.setBackgroundResource(R.drawable.play_video_btn_pressed_bg);	
+				v.setBackgroundResource(R.drawable.daisy_btn_pressed_bg);
+				
 			} else {
-				if(Tag.equals(PREVIEW_VIDEO))
-				    v.setBackgroundResource(R.drawable.preview_video_normal_bg);
-				else if(Tag.equals(PLAY_VIDEO)){
-					v.setBackgroundResource(R.drawable.play_video_btn_normal_bg);
-				}
+//				if(Tag.equals(PREVIEW_VIDEO))
+//				    v.setBackgroundResource(R.drawable.preview_video_normal_bg);
+//				else if(Tag.equals(PLAY_VIDEO)){
+//					v.setBackgroundResource(R.drawable.play_video_btn_normal_bg);
+//				}
+				v.setBackgroundResource(R.drawable.daisy_btn_normal_bg);
 			}
 		}
 	};
@@ -933,9 +953,12 @@ private boolean isPause = false;
 					} else if (identify.equals(COLLECT_VIDEO)) {
 						addFavorite();
 						if (isFavorite()) {
-							v.setBackgroundResource(R.drawable.collected_btn_bg_selector);
+							//v.setBackgroundResource(R.drawable.collected_btn_bg_selector);
+							((Button)v).setText(getResources().getString(R.string.favorited));
+							
 						} else {
-							v.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+							//v.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+							((Button)v).setText(getResources().getString(R.string.favorite));
 						}
 					}
 					break;
@@ -944,9 +967,11 @@ private boolean isPause = false;
 					if (identify.equals(COLLECT_VIDEO)) {
 						addFavorite();
 						if (isFavorite()) {
-							v.setBackgroundResource(R.drawable.collected_btn_bg_selector);
+							//v.setBackgroundResource(R.drawable.collected_btn_bg_selector);
+							((Button)v).setText(getResources().getString(R.string.favorited));
 						} else {
-							v.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+							//v.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+							((Button)v).setText(getResources().getString(R.string.favorite));
 						}
 					} else if (identify.equals(DRAMA_VIDEO)) {
 						mDataCollectionProperties.put("to", "list");
@@ -956,50 +981,6 @@ private boolean isPause = false;
 						startActivityForResult(intent, 11);
 					}
 					break;
-				// case R.id.btn_fill:
-				// mDataCollectionProperties.put(EventProperty.TO, "play");
-				//
-				// // intent.setAction("tv.ismar.daisy.Play");
-				// // intent.putExtra("item", mItem);
-				//
-				// // intent.setClass(ItemDetailActivity.this,
-				// // QiYiPlayActivity.class);
-				// // startActivity(intent);
-				// tool.initClipInfo(mItem,InitPlayerTool.FLAG_ITEM);
-				// break;
-				// case R.id.btn_favorite:
-				// if (isFavorite()) {
-				// String url = SimpleRestClient.sRoot_url + "/api/item/"
-				// + mItem.pk + "/";
-				// DaisyUtils.getFavoriteManager(ItemDetailActivity.this)
-				// .deleteFavoriteByUrl(url);
-				// showToast(getResources().getString(
-				// R.string.vod_bookmark_remove_success));
-				// } else {
-				// String url = SimpleRestClient.sRoot_url + "/api/item/"
-				// + mItem.pk + "/";
-				// Favorite favorite = new Favorite();
-				// favorite.title = mItem.title;
-				// favorite.adlet_url = mItem.adlet_url;
-				// favorite.content_model = mItem.content_model;
-				// favorite.url = url;
-				// favorite.quality = mItem.quality;
-				// favorite.is_complex = mItem.is_complex;
-				// DaisyUtils.getFavoriteManager(ItemDetailActivity.this)
-				// .addFavorite(favorite);
-				// // mFavoriteManager.addFavorite(mItem.title, url,
-				// // mItem.content_model);
-				// showToast(getResources().getString(
-				// R.string.vod_bookmark_add_success));
-				// }
-				// if (isFavorite()) {
-				// mBtnFavorite.setText(getResources().getString(
-				// R.string.favorited));
-				// } else {
-				// mBtnFavorite.setText(getResources().getString(
-				// R.string.favorite));
-				// }
-				// break;
 				case R.id.more_content:
 					if (mRelatedItem != null && mRelatedItem.length > 0) {
 						intent.putExtra("related_item", new ArrayList<Item>(
@@ -1012,16 +993,6 @@ private boolean isPause = false;
 							RelatedActivity.class);
 					startActivity(intent);
 					break;
-				// case R.id.btn_fill_buy:
-				//
-				// PaymentDialog dialog = new
-				// PaymentDialog(ItemDetailActivity.this,
-				// R.style.PaymentDialog);
-				// dialog.setItem(mItem);
-				// //dialog.show();
-				//
-				// tool.initClipInfo(mItem,InitPlayerTool.FLAG_ITEM,true);
-				// break;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -1080,50 +1051,56 @@ private boolean isPause = false;
 		if (isFree()) {
 			// 免费
 			if (!isDrama()) {
-				// 电影
-				mLeftBtn.setBackgroundResource(R.drawable.play_btn_bg_selector);
-				mLeftBtn.setTag(PLAY_VIDEO);
-				mMiddleBtn
-						.setBackgroundResource(R.drawable.collect_btn_bg_selector);
-				mMiddleBtn.setTag(COLLECT_VIDEO);
+				// 电影	
 				mRightBtn.setVisibility(View.GONE);
 			} else {
 				// 电视剧
-				mLeftBtn.setBackgroundResource(R.drawable.play_btn_bg_selector);
-				mLeftBtn.setTag(PLAY_VIDEO);
-				mMiddleBtn
-						.setBackgroundResource(R.drawable.collect_btn_bg_selector);
-				mMiddleBtn.setTag(COLLECT_VIDEO);
-				mRightBtn
-						.setBackgroundResource(R.drawable.drama_btn_bg_selector);
+				setLeftDrawable(drawableleftdrama, mRightBtn);
 				mRightBtn.setTag(DRAMA_VIDEO);
+				mRightBtn.setText(getResources().getString(R.string.vod_itemepisode));
 			}
+			setLeftDrawable(drawableleftplay, mLeftBtn);
+			mLeftBtn.setText(getResources().getString(R.string.play));
+			setLeftDrawable(drawableleftcollect, mMiddleBtn);
+			mMiddleBtn.setText(getResources().getString(R.string.favorite));
+			mLeftBtn.setTag(PLAY_VIDEO);
+			mMiddleBtn.setTag(COLLECT_VIDEO);
 			mCollectBtn = mMiddleBtn;
 		} else {
 			// 收费
 			if (!isBuy) {
 				// 未购买
-				if (!isDrama()) {
-					// 电影
-					mLeftBtn.setBackgroundResource(R.drawable.preview_video_btn_bg_selector);
-					mLeftBtn.setTag(PREVIEW_VIDEO);
-					mMiddleBtn
-							.setBackgroundResource(R.drawable.buy_video_btn_bg_selector);
-					mMiddleBtn.setTag(BUY_VIDEO);
-					mRightBtn
-							.setBackgroundResource(R.drawable.collect_btn_bg_selector);
-					mRightBtn.setTag(COLLECT_VIDEO);
-				} else {
-					// 电视剧
-					mLeftBtn.setBackgroundResource(R.drawable.preview_video_btn_bg_selector);
-					mLeftBtn.setTag(PREVIEW_VIDEO);
-					mMiddleBtn
-							.setBackgroundResource(R.drawable.buy_video_btn_bg_selector);
-					mMiddleBtn.setTag(BUY_VIDEO);
-					mRightBtn
-							.setBackgroundResource(R.drawable.collect_btn_bg_selector);
-					mRightBtn.setTag(COLLECT_VIDEO);
-				}
+//				if (!isDrama()) {
+//					// 电影
+//					mLeftBtn.setBackgroundResource(R.drawable.preview_video_btn_bg_selector);
+//					mLeftBtn.setTag(PREVIEW_VIDEO);
+//					mMiddleBtn
+//							.setBackgroundResource(R.drawable.buy_video_btn_bg_selector);
+//					mMiddleBtn.setTag(BUY_VIDEO);
+//					mRightBtn
+//							.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+//					mRightBtn.setTag(COLLECT_VIDEO);
+//				} else {
+//					// 电视剧
+//					mLeftBtn.setBackgroundResource(R.drawable.preview_video_btn_bg_selector);
+//					mLeftBtn.setTag(PREVIEW_VIDEO);
+//					mMiddleBtn
+//							.setBackgroundResource(R.drawable.buy_video_btn_bg_selector);
+//					mMiddleBtn.setTag(BUY_VIDEO);
+//					mRightBtn
+//							.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+//					mRightBtn.setTag(COLLECT_VIDEO);
+//				}
+				setLeftDrawable(drawableleftplay, mLeftBtn);
+				mLeftBtn.setTag(PREVIEW_VIDEO);
+				mLeftBtn.setText(getResources().getString(R.string.preview_video));
+				setLeftDrawable(drawableleftbuy, mMiddleBtn);
+				mMiddleBtn.setTag(BUY_VIDEO);
+				mMiddleBtn.setText(getResources().getString(R.string.buy_video));
+				setLeftDrawable(drawableleftcollect, mRightBtn);
+				mRightBtn.setText(getResources().getString(R.string.favorite));
+				mRightBtn.setTag(COLLECT_VIDEO);
+				
 				detail_price_txt.setText("￥" + mItem.expense.price);
 				detail_duration_txt.setText("有效期" + mItem.expense.duration
 						+ "天");
@@ -1137,25 +1114,29 @@ private boolean isPause = false;
 				//mDetailQualityLabel.setVisibility(View.GONE);
 				if (!isDrama()) {
 					// 电影
-					mLeftBtn.setBackgroundResource(R.drawable.play_btn_bg_selector);
-					mLeftBtn.setTag(PLAY_VIDEO);
-					mMiddleBtn
-							.setBackgroundResource(R.drawable.collect_btn_bg_selector);
-					mMiddleBtn.setTag(COLLECT_VIDEO);
 					mRightBtn.setVisibility(View.GONE);
 					// mRightBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
 					// mRightBtn.setTag(COLLECT_VIDEO);
 				} else {
 					// 电视剧
-					mLeftBtn.setBackgroundResource(R.drawable.play_btn_bg_selector);
-					mLeftBtn.setTag(PLAY_VIDEO);
-					mMiddleBtn
-							.setBackgroundResource(R.drawable.collect_btn_bg_selector);
-					mMiddleBtn.setTag(COLLECT_VIDEO);
-					mRightBtn
-							.setBackgroundResource(R.drawable.drama_btn_bg_selector);
+//					mLeftBtn.setBackgroundResource(R.drawable.play_btn_bg_selector);
+//					mLeftBtn.setTag(PLAY_VIDEO);
+//					mMiddleBtn
+//							.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+//					mMiddleBtn.setTag(COLLECT_VIDEO);
+				
+					setLeftDrawable(drawableleftdrama, mRightBtn);
+					mRightBtn.setText(getResources().getString(R.string.vod_itemepisode));
 					mRightBtn.setTag(DRAMA_VIDEO);
 				}
+				
+				setLeftDrawable(drawableleftplay, mLeftBtn);
+				mLeftBtn.setTag(PLAY_VIDEO);
+				mLeftBtn.setText(getResources().getString(R.string.play));
+				setLeftDrawable(drawableleftcollect,mMiddleBtn);
+				mMiddleBtn.setText(getResources().getString(R.string.favorite));
+				mMiddleBtn.setTag(COLLECT_VIDEO);
+				
 				detail_price_txt.setText("已付费");
 				detail_duration_txt.setText("剩余" + remainDay + "天");
 				detail_price_txt.setVisibility(View.VISIBLE);
@@ -1189,9 +1170,10 @@ private boolean isPause = false;
 			public void onSuccess(String info) {
 				// TODO Auto-generated method stub
 				if("200".equals(info)){
-					mCollectBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+					//mCollectBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
 //					showToast(getResources().getString(
 //							R.string.vod_bookmark_remove_success));
+					mCollectBtn.setText(getResources().getString(R.string.favorite));
 				}
 			}
 			
@@ -1204,7 +1186,8 @@ private boolean isPause = false;
 			@Override
 			public void onFailed(String error) {
 				// TODO Auto-generated method stub
-				mCollectBtn.setBackgroundResource(R.drawable.collected_btn_bg_selector);
+				//mCollectBtn.setBackgroundResource(R.drawable.collected_btn_bg_selector);
+				mCollectBtn.setText(getResources().getString(R.string.favorited));
 //				showToast(getResources().getString(
 //						R.string.vod_bookmark_remove_unsuccess));
 			}
@@ -1216,7 +1199,8 @@ private boolean isPause = false;
 			@Override
 			public void onSuccess(String info) {
 				// TODO Auto-generated method stub
-				mCollectBtn.setBackgroundResource(R.drawable.collected_btn_bg_selector);
+				//mCollectBtn.setBackgroundResource(R.drawable.collected_btn_bg_selector);
+				mCollectBtn.setText(getResources().getString(R.string.favorited));
 //				showToast(getResources().getString(
 //						R.string.vod_bookmark_add_success));
 			}
@@ -1230,7 +1214,8 @@ private boolean isPause = false;
 			@Override
 			public void onFailed(String error) {
 				// TODO Auto-generated method stub
-				mCollectBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+				//mCollectBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+				mCollectBtn.setText(getResources().getString(R.string.favorite));
 //				showToast(getResources().getString(
 //						R.string.vod_bookmark_add_unsuccess));
 			}
