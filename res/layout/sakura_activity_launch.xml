@@ -4,7 +4,7 @@
               android:gravity="center"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@drawable/background"
+              android:background="@drawable/sakura_background"
         >
 
     <LinearLayout
@@ -13,7 +13,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
         <LinearLayout
-                android:layout_margin="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
                 android:orientation="vertical"
                 android:gravity="center"
                 android:layout_weight="1"
@@ -25,8 +28,8 @@
                     android:focusable="true"
                     android:clickable="true"
                     android:id="@+id/indicator_node_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/sakura_launcher_indicator_width"
+                    android:layout_height="@dimen/sakura_launcher_indicator_width"
                     android:src="@drawable/sakura_selector_indicator_node"
                     />
 
@@ -43,7 +46,10 @@
 
 
         <LinearLayout
-                android:layout_margin="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
                 android:orientation="vertical"
                 android:gravity="center"
                 android:layout_weight="1"
@@ -55,8 +61,8 @@
                     android:focusable="true"
                     android:clickable="true"
                     android:id="@+id/indicator_feedback_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/sakura_launcher_indicator_width"
+                    android:layout_height="@dimen/sakura_launcher_indicator_width"
                     android:src="@drawable/sakura_selector_indicator_feedback"
                     />
 
@@ -72,7 +78,10 @@
         </LinearLayout>
 
         <LinearLayout
-                android:layout_margin="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
                 android:orientation="vertical"
                 android:gravity="center"
                 android:layout_weight="1"
@@ -84,8 +93,8 @@
                     android:focusable="true"
                     android:clickable="true"
                     android:id="@+id/indicator_help_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/sakura_launcher_indicator_width"
+                    android:layout_height="@dimen/sakura_launcher_indicator_width"
                     android:src="@drawable/sakura_selector_indicator_help"
                     />
 

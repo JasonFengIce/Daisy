@@ -17,8 +17,8 @@ package com.activeandroid;
  */
 
 import android.content.Context;
+import android.util.Log;
 import com.activeandroid.serializer.TypeSerializer;
-import com.activeandroid.util.Log;
 import com.activeandroid.util.ReflectionUtils;
 
 import java.util.ArrayList;
@@ -288,7 +288,7 @@ public class Configuration {
 					}
 				}
 				catch (ClassNotFoundException e) {
-					Log.e("Couldn't create class.", e);
+					Log.e("Couldn't create class.", e.getMessage());
 				}
 			}
 
@@ -306,7 +306,7 @@ public class Configuration {
 					}
 				}
 				catch (ClassNotFoundException e) {
-					Log.e("Couldn't create class.", e);
+					Log.e("Couldn't create class.", e.getMessage());
 				}
 			}
 

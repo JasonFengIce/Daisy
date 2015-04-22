@@ -30,13 +30,13 @@
                 android:focusableInTouchMode="true"
                 />
 
-        <cn.ismartv.sakura.ui.widget.SakuraButton
+        <tv.ismar.sakura.ui.widget.SakuraButton
                 android:id="@+id/unbind_node"
                 android:layout_width="250dp"
                 android:layout_height="40dp"
                 android:gravity="center"
                 android:textSize="@dimen/textSize_normal"
-                android:background="@drawable/selector_button"
+                android:background="@drawable/sakura_selector_button"
                 android:singleLine="true"
                 />
     </LinearLayout>
@@ -62,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     />
-            <cn.ismartv.sakura.ui.widget.SakuraSpinner
+            <tv.ismar.sakura.ui.widget.SakuraSpinner
                     style="@style/spinner_style"
                     android:focusable="true"
                     android:id="@+id/province_spinner"
@@ -82,7 +82,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     />
-            <cn.ismartv.sakura.ui.widget.SakuraSpinner
+            <tv.ismar.sakura.ui.widget.SakuraSpinner
                     style="@style/spinner_style"
                     android:focusable="true"
                     android:id="@+id/isp_spinner"
@@ -91,9 +91,9 @@
                     />
 
         </LinearLayout>
-        <cn.ismartv.sakura.ui.widget.SakuraButton
+        <tv.ismar.sakura.ui.widget.SakuraButton
                 android:id="@+id/speed_test_btn"
-                android:background="@drawable/selector_button"
+                android:background="@drawable/sakura_selector_button"
                 android:layout_weight="1"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/textSize_testButton"

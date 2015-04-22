@@ -20,7 +20,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
-import com.activeandroid.util.*;
+import android.util.Log;
+import com.activeandroid.util.IOUtils;
+import com.activeandroid.util.NaturalOrderComparator;
+import com.activeandroid.util.SQLiteUtils;
+import com.activeandroid.util.SqlParser;
 
 import java.io.*;
 import java.util.Arrays;
@@ -28,201 +32,198 @@ import java.util.Collections;
 import java.util.List;
 
 public final class DatabaseHelper extends SQLiteOpenHelper {
-	//////////////////////////////////////////////////////////////////////////////////////
-	// PUBLIC CONSTANTS
-	//////////////////////////////////////////////////////////////////////////////////////
+    private static final String TAG = "DatabaseHelper";
+    //////////////////////////////////////////////////////////////////////////////////////
+    // PUBLIC CONSTANTS
+    //////////////////////////////////////////////////////////////////////////////////////
 
-	public final static String MIGRATION_PATH = "migrations";
+    public final static String MIGRATION_PATH = "migrations";
 
-	//////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////
     // PRIVATE FIELDS
     //////////////////////////////////////////////////////////////////////////////////////
 
     private final String mSqlParser;
 
-	//////////////////////////////////////////////////////////////////////////////////////
-	// CONSTRUCTORS
-	//////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////
+    // CONSTRUCTORS
+    //////////////////////////////////////////////////////////////////////////////////////
 
-	public DatabaseHelper(Configuration configuration) {
-		super(configuration.getContext(), configuration.getDatabaseName(), null, configuration.getDatabaseVersion());
-		copyAttachedDatabase(configuration.getContext(), configuration.getDatabaseName());
-		mSqlParser = configuration.getSqlParser();
-	}
+    public DatabaseHelper(Configuration configuration) {
+        super(configuration.getContext(), configuration.getDatabaseName(), null, configuration.getDatabaseVersion());
+        copyAttachedDatabase(configuration.getContext(), configuration.getDatabaseName());
+        mSqlParser = configuration.getSqlParser();
+    }
 
-	//////////////////////////////////////////////////////////////////////////////////////
-	// OVERRIDEN METHODS
-	//////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////
+    // OVERRIDEN METHODS
+    //////////////////////////////////////////////////////////////////////////////////////
 
-	@Override
-	public void onOpen(SQLiteDatabase db) {
-		executePragmas(db);
-	};
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        executePragmas(db);
+    }
 
-	@Override
-	public void onCreate(SQLiteDatabase db) {
-		executePragmas(db);
-		executeCreate(db);
-		executeMigrations(db, -1, db.getVersion());
-		executeCreateIndex(db);
-	}
+    ;
 
-	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		executePragmas(db);
-		executeCreate(db);
-		executeMigrations(db, oldVersion, newVersion);
-	}
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        executePragmas(db);
+        executeCreate(db);
+        executeMigrations(db, -1, db.getVersion());
+        executeCreateIndex(db);
+    }
 
-	//////////////////////////////////////////////////////////////////////////////////////
-	// PUBLIC METHODS
-	//////////////////////////////////////////////////////////////////////////////////////
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        executePragmas(db);
+        executeCreate(db);
+        executeMigrations(db, oldVersion, newVersion);
+    }
 
-	public void copyAttachedDatabase(Context context, String databaseName) {
-		final File dbPath = context.getDatabasePath(databaseName);
+    //////////////////////////////////////////////////////////////////////////////////////
+    // PUBLIC METHODS
+    //////////////////////////////////////////////////////////////////////////////////////
 
-		// If the database already exists, return
-		if (dbPath.exists()) {
-			return;
-		}
+    public void copyAttachedDatabase(Context context, String databaseName) {
+        final File dbPath = context.getDatabasePath(databaseName);
 
-		// Make sure we have a path to the file
-		dbPath.getParentFile().mkdirs();
+        // If the database already exists, return
+        if (dbPath.exists()) {
+            return;
+        }
 
-		// Try to copy database file
-		try {
-			final InputStream inputStream = context.getAssets().open(databaseName);
-			final OutputStream output = new FileOutputStream(dbPath);
+        // Make sure we have a path to the file
+        dbPath.getParentFile().mkdirs();
 
-			byte[] buffer = new byte[8192];
-			int length;
+        // Try to copy database file
+        try {
+            final InputStream inputStream = context.getAssets().open(databaseName);
+            final OutputStream output = new FileOutputStream(dbPath);
 
-			while ((length = inputStream.read(buffer, 0, 8192)) > 0) {
-				output.write(buffer, 0, length);
-			}
+            byte[] buffer = new byte[8192];
+            int length;
 
-			output.flush();
-			output.close();
-			inputStream.close();
-		}
-		catch (IOException e) {
-			Log.e("Failed to open file", e);
-		}
-	}
+            while ((length = inputStream.read(buffer, 0, 8192)) > 0) {
+                output.write(buffer, 0, length);
+            }
 
-	//////////////////////////////////////////////////////////////////////////////////////
-	// PRIVATE METHODS
-	//////////////////////////////////////////////////////////////////////////////////////
+            output.flush();
+            output.close();
+            inputStream.close();
+        } catch (IOException e) {
+            Log.e("Failed to open file", e.getMessage());
+        }
+    }
 
-	private void executePragmas(SQLiteDatabase db) {
-		if (SQLiteUtils.FOREIGN_KEYS_SUPPORTED) {
-			db.execSQL("PRAGMA foreign_keys=ON;");
-			Log.i("Foreign Keys supported. Enabling foreign key features.");
-		}
-	}
+    //////////////////////////////////////////////////////////////////////////////////////
+    // PRIVATE METHODS
+    //////////////////////////////////////////////////////////////////////////////////////
 
-	private void executeCreateIndex(SQLiteDatabase db) {
-		db.beginTransaction();
-		try {
-			for (TableInfo tableInfo : Cache.getTableInfos()) {
-				String[] definitions = SQLiteUtils.createIndexDefinition(tableInfo);
+    private void executePragmas(SQLiteDatabase db) {
+        if (SQLiteUtils.FOREIGN_KEYS_SUPPORTED) {
+            db.execSQL("PRAGMA foreign_keys=ON;");
+            Log.i(TAG, "Foreign Keys supported. Enabling foreign key features.");
+        }
+    }
 
-				for (String definition : definitions) {
-					db.execSQL(definition);
-				}
-			}
-			db.setTransactionSuccessful();
-		}
-		finally {
-			db.endTransaction();
-		}
-	}
+    private void executeCreateIndex(SQLiteDatabase db) {
+        db.beginTransaction();
+        try {
+            for (TableInfo tableInfo : Cache.getTableInfos()) {
+                String[] definitions = SQLiteUtils.createIndexDefinition(tableInfo);
 
-	private void executeCreate(SQLiteDatabase db) {
-		db.beginTransaction();
-		try {
-			for (TableInfo tableInfo : Cache.getTableInfos()) {
-				db.execSQL(SQLiteUtils.createTableDefinition(tableInfo));
-			}
-			db.setTransactionSuccessful();
-		}
-		finally {
-			db.endTransaction();
-		}
-	}
+                for (String definition : definitions) {
+                    db.execSQL(definition);
+                }
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
 
-	private boolean executeMigrations(SQLiteDatabase db, int oldVersion, int newVersion) {
-		boolean migrationExecuted = false;
-		try {
-			final List<String> files = Arrays.asList(Cache.getContext().getAssets().list(MIGRATION_PATH));
-			Collections.sort(files, new NaturalOrderComparator());
+    private void executeCreate(SQLiteDatabase db) {
+        db.beginTransaction();
+        try {
+            for (TableInfo tableInfo : Cache.getTableInfos()) {
+                db.execSQL(SQLiteUtils.createTableDefinition(tableInfo));
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
 
-			db.beginTransaction();
-			try {
-				for (String file : files) {
-					try {
-						final int version = Integer.valueOf(file.replace(".sql", ""));
+    private boolean executeMigrations(SQLiteDatabase db, int oldVersion, int newVersion) {
+        boolean migrationExecuted = false;
+        try {
+            final List<String> files = Arrays.asList(Cache.getContext().getAssets().list(MIGRATION_PATH));
+            Collections.sort(files, new NaturalOrderComparator());
 
-						if (version > oldVersion && version <= newVersion) {
-							executeSqlScript(db, file);
-							migrationExecuted = true;
+            db.beginTransaction();
+            try {
+                for (String file : files) {
+                    try {
+                        final int version = Integer.valueOf(file.replace(".sql", ""));
 
-							Log.i(file + " executed succesfully.");
-						}
-					}
-					catch (NumberFormatException e) {
-						Log.w("Skipping invalidly named file: " + file, e);
-					}
-				}
-				db.setTransactionSuccessful();
-			}
-			finally {
-				db.endTransaction();
-			}
-		}
-		catch (IOException e) {
-			Log.e("Failed to execute migrations.", e);
-		}
+                        if (version > oldVersion && version <= newVersion) {
+                            executeSqlScript(db, file);
+                            migrationExecuted = true;
 
-		return migrationExecuted;
-	}
+                            Log.i(TAG, file + " executed succesfully.");
+                        }
+                    } catch (NumberFormatException e) {
+                        Log.w("Skipping invalidly named file: " + file, e);
+                    }
+                }
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+        } catch (IOException e) {
+            Log.e("Failed to execute migrations.", e.getMessage());
+        }
 
-	private void executeSqlScript(SQLiteDatabase db, String file) {
+        return migrationExecuted;
+    }
 
-	    InputStream stream = null;
+    private void executeSqlScript(SQLiteDatabase db, String file) {
 
-		try {
-		    stream = Cache.getContext().getAssets().open(MIGRATION_PATH + "/" + file);
+        InputStream stream = null;
 
-		    if (Configuration.SQL_PARSER_DELIMITED.equalsIgnoreCase(mSqlParser)) {
-		        executeDelimitedSqlScript(db, stream);
+        try {
+            stream = Cache.getContext().getAssets().open(MIGRATION_PATH + "/" + file);
 
-		    } else {
-		        executeLegacySqlScript(db, stream);
+            if (Configuration.SQL_PARSER_DELIMITED.equalsIgnoreCase(mSqlParser)) {
+                executeDelimitedSqlScript(db, stream);
 
-		    }
+            } else {
+                executeLegacySqlScript(db, stream);
 
-		} catch (IOException e) {
-			Log.e("Failed to execute " + file, e);
+            }
 
-		} finally {
-		    IOUtils.closeQuietly(stream);
+        } catch (IOException e) {
+            Log.e("Failed to execute " + file, e.getMessage());
 
-		}
-	}
+        } finally {
+            IOUtils.closeQuietly(stream);
 
-	private void executeDelimitedSqlScript(SQLiteDatabase db, InputStream stream) throws IOException {
+        }
+    }
 
-	    List<String> commands = SqlParser.parse(stream);
+    private void executeDelimitedSqlScript(SQLiteDatabase db, InputStream stream) throws IOException {
 
-	    for(String command : commands) {
-	        db.execSQL(command);
-	    }
-	}
+        List<String> commands = SqlParser.parse(stream);
 
-	private void executeLegacySqlScript(SQLiteDatabase db, InputStream stream) throws IOException {
+        for (String command : commands) {
+            db.execSQL(command);
+        }
+    }
 
-	    InputStreamReader reader = null;
+    private void executeLegacySqlScript(SQLiteDatabase db, InputStream stream) throws IOException {
+
+        InputStreamReader reader = null;
         BufferedReader buffer = null;
 
         try {
@@ -242,5 +243,5 @@ public final class DatabaseHelper extends SQLiteOpenHelper {
             IOUtils.closeQuietly(reader);
 
         }
-	}
+    }
 }
