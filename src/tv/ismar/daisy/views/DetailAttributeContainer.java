@@ -72,8 +72,9 @@ public class DetailAttributeContainer extends LinearLayout {
 			itemValue.setTextColor(0xffbbbbbb);
 			itemValue.setTextSize(textsize);
 			itemValue.setText(entry.getValue());
-			itemValue.setMaxLines(2);
+			itemValue.setMaxLines(1);
 			itemValue.setEllipsize(TruncateAt.END);
+			itemValue.setSingleLine(true);
 			infoLine.addView(itemValue);
 			itemValue.setLineSpacing(3.4f, 1f);
 			//lineSpacingExtra

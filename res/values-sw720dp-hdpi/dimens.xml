@@ -20,8 +20,8 @@
     <dimen name="item_detail_intro_lineSpacingExtra">13dip</dimen>
     <dimen name="item_detail_intro_textsize">23sp</dimen>
     <dimen name="item_detail_introlabel_marginleft">54dip</dimen>
-    <dimen name="item_detail_introlabel_textsize">23sp</dimen>
-    <dimen name="item_detail_previewpanel_width">322dip</dimen>
+    <dimen name="item_detail_introlabel_textsize">20sp</dimen>
+    <dimen name="item_detail_previewpanel_width">329dip</dimen>
     <dimen name="item_detail_previewpanel_height">298dip</dimen>
     <dimen name="item_detail_previewpanel_marginright">77dip</dimen>
     <dimen name="item_detail_previewpanel_margintop">106dip</dimen>
@@ -47,8 +47,8 @@
     <dimen name="item_detail_btn_fill_textsize">23sp</dimen>
     <dimen name="item_detail_btn_favorite_height">46dip</dimen>
     <dimen name="item_detail_btn_favorite_textsize">23sp</dimen>
-    <dimen name="item_detail_btn_favorite_paddingleft">50dip</dimen>
-    <dimen name="item_detail_btn_favorite_paddingright">50dip</dimen>
+    <dimen name="item_detail_btn_favorite_paddingleft">30dip</dimen>
+    <dimen name="item_detail_btn_favorite_paddingright">30dip</dimen>
     <dimen name="item_detail_btn_favorite_paddingtop">3dip</dimen>
     <dimen name="item_detail_right_container_width">426dip</dimen>
     <dimen name="item_detail_related_video_label_left">27dip</dimen>
@@ -107,7 +107,7 @@
     <dimen name="gridview_item_image_PaddingB">0dip</dimen>
     <dimen name="gridview_item_image_H">123dip</dimen>
     <dimen name="gridview_item_image_W">225dip</dimen>
-    <dimen name="gridview_item_image_marginright">2dip</dimen>
+    <dimen name="gridview_item_image_marginright">9dip</dimen>
     <dimen name="gridview_item_image_marginleft">2dip</dimen>
     <dimen name="gridview_item_title_W">240dip</dimen>
     <dimen name="gridview_item_title_textsize">24sp</dimen>
@@ -118,7 +118,7 @@
     <dimen name="gridview_item_container_PB">5dip</dimen>
     <dimen name="ScrollableSectionList_item_PB">8dip</dimen>
     <dimen name="gridview_main_gridview_line_W">2dip</dimen>
-    <dimen name="gridview_main_gridview_line_H">123dip</dimen>
+    <dimen name="gridview_main_gridview_line_H">100dip</dimen>
     <dimen name="grid_view_main_arrow_left_W">20dip</dimen>
     <dimen name="grid_view_main_arrow_left_H">24dip</dimen>
     <dimen name="grid_view_main_arrow_left_marginT">17dip</dimen>
@@ -370,7 +370,7 @@
     <dimen name="search_gridview_item_image_H">109dip</dimen>
     <dimen name="search_gridview_item_btn_type_W">70dip</dimen>
     <dimen name="search_gridview_item_btn_type_H">37dip</dimen>
-    <dimen name="search_gridview_item_btn_type_marginL">-8dip</dimen>
+    <dimen name="search_gridview_item_btn_type_marginL">-13dip</dimen>
     <dimen name="search_gridview_item_btn_type_marginB">-3dip</dimen>
     <dimen name="search_gridview_item_btn_type_textsize">13dip</dimen>
     <dimen name="search_gridview_item_text_marginL">6dip</dimen>
@@ -388,7 +388,7 @@
     <dimen name="channel_section_tabs_label_marginR">7dip</dimen>
     <dimen name="channel_section_tabs_label_marginB">4dip</dimen>
     <dimen name="channel_section_tabs_label_textsize">27sp</dimen>
-    <dimen name="channel_section_tabs_percentage_H">10dip</dimen>
+    <dimen name="channel_section_tabs_percentage_H">8dip</dimen>
     <dimen name="channel_section_tabs_label_ctextsize">35sp</dimen>
     <dimen name="channel_section_tabs_label_paddingT">10dip</dimen>
     <dimen name="channel_section_tabs_percentage_PLR">7dip</dimen>
@@ -406,10 +406,10 @@
     <dimen name="ZGridView_played_selectorRightPadding">-1dip</dimen>
     <dimen name="ZGridView_played_selectorBottomPadding">-28dip</dimen>
     
-    <dimen name="ZGridView_search_selectorLeftPadding">10dip</dimen>
-    <dimen name="ZGridView_search_selectorTopPadding">12dip</dimen>
-    <dimen name="ZGridView_search_selectorRight">22dip</dimen>
-    <dimen name="ZGridView_search_selectorBottom">-13dip</dimen>
+    <dimen name="ZGridView_search_selectorLeftPadding">5dip</dimen>
+    <dimen name="ZGridView_search_selectorTopPadding">5dip</dimen>
+    <dimen name="ZGridView_search_selectorRight">14dip</dimen>
+    <dimen name="ZGridView_search_selectorBottom">-54dip</dimen>
 
     <!-- HGridView -->
     <dimen name="HGridView_related_selectionLeftPadding">12dip</dimen>

@@ -71,6 +71,8 @@
     <dimen name="item_detail_Btn_Layout_marginT">18dip</dimen>
     <dimen name="item_detail_title_txt_MT">100dip</dimen>
     <dimen name="item_detail_text_size">36sp</dimen>
+    <dimen name="item_detail_detail_price_txt_ML">2dip</dimen>
+    <dimen name="item_detail_detail_price_textsize">24sp</dimen>
     <!-- grid listview page-->
     <dimen name="gridview_channel_panel_height">88dip</dimen>
     <dimen name="gridview_channel_panel_marginBottom">35dp</dimen>
@@ -126,6 +128,25 @@
     <dimen name="grid_view_main_arrow_left_marginT">33dip</dimen>
     <dimen name="gridview_line_ML">30dip</dimen>
     <dimen name="grid_view_main_list_marginT">-20dip</dimen>
+    <dimen name="grid_view_main_divider_H">4dip</dimen>
+    <dimen name="grid_view_main_divider_MT">40dip</dimen>
+    <dimen name="grid_view_main_collect_or_history_txt_H">120dip</dimen>
+    <dimen name="grid_view_main_collect_or_history_txt_MT">80dip</dimen>
+    <dimen name="grid_view_main_collect_or_history_txt_textsize">80sp</dimen>
+    <dimen name="grid_view_main_collect_or_history_txt_PL">60dip</dimen>
+    <dimen name="grid_view_main_recommend_txt_H">100dip</dimen>
+    <dimen name="grid_view_main_recommend_txt_size">60sp</dimen>
+    <dimen name="grid_view_main_recommend_txt_PL">30dip</dimen>
+    <dimen name="grid_view_main_recommend_gridview_H">250dip</dimen>
+    <dimen name="grid_view_main_horizontalSpace">16dip</dimen>
+    <dimen name="gridview_item_list_item_title_MT">7dip</dimen>
+    <dimen name="gridview_item_ItemBeanScore_MR">8dip</dimen>
+    <dimen name="gridview_item_ItemBeanScore_MT">1dip</dimen>
+    <dimen name="gridview_item_ItemBeanScore_PT">5dip</dimen>
+    <dimen name="gridview_item_ItemBeanScore_textsize">36sp</dimen>
+    <dimen name="gridview_item_expense_txt_W">123dip</dimen>
+    <dimen name="gridview_item_expense_txt_H">40dip</dimen>
+    <dimen name="gridview_item_expense_txt_size">20sp</dimen>
     <!-- popup_2btn -->
     <dimen name="popup_dialog_width">806dip</dimen>
     <dimen name="popup_dialog_height">444dip</dimen>
@@ -168,6 +189,10 @@
     <dimen name="related_item_focus_textsize">25sp</dimen>
     <dimen name="related_item_focus_marginright">41dip</dimen>
     <dimen name="related_item_text_marginLeft">11dip</dimen>
+    <dimen name="related_item_related_preview_img_ML">6dip</dimen>
+    <dimen name="related_item_ItemBeanScore_PT">5dip</dimen>
+    <dimen name="related_item_ItemBeanScore_textsize">36sp</dimen>
+    <dimen name="related_item_related_price_txt_size">25sp</dimen>
     <!-- vod_player -->
     <dimen name="vod_player_logo_image_PT">32dip</dimen>
     <dimen name="vod_player_logo_image_PR">32dip</dimen>
@@ -389,6 +414,8 @@
     <dimen name="search_gridview_item_label_H">72dip</dimen>
     <dimen name="search_btnHotWords_PLR">10dip</dimen>
     <dimen name="search_btnHotWords_textsize">30sp</dimen>
+    <dimen name="search_arrow_btn_MLR">35dip</dimen>
+    <dimen name="search_gridview_item_iv_type_MT">-15dip</dimen>
     <!-- channel_section_tabs -->
     <dimen name="channel_section_tabs_W">300dip</dimen>
     <dimen name="channel_section_tabs_H">98dip</dimen>
@@ -516,8 +543,45 @@
     <dimen name="list_view_search_ML">990dip</dimen>
 
     <!-- person center -->
-
-    <!--launcher activity-->
+   <dimen name="personal_center_divider_H">2dip</dimen>
+   <dimen name="personal_center_divider_ML">20dip</dimen>
+   <dimen name="person_center_textsize">60sp</dimen>
+   <dimen name="person_center_text_size">60sp</dimen>
+   <dimen name="person_center_btn_layout_MT">4dip</dimen>
+   <dimen name="person_center_btn_layout_PT">90dip</dimen>
+   <dimen name="person_center_btn_H">80dip</dimen>
+   <dimen name="person_center_btn_W">400dip</dimen>
+   <dimen name="person_center_btn_text_size">35sp</dimen>
+   <dimen name="person_center_btn_MT">35dip</dimen>
+   <dimen name="person_login_layout_PL">120dip</dimen>
+   <dimen name="person_login_layout_PT">140dip</dimen>
+   <dimen name="person_login_content_layout_H">80dip</dimen>
+   <dimen name="person_login_content_MT">20dip</dimen>
+   <dimen name="person_login_phone_text_W">150dip</dimen>
+   <dimen name="person_login_phone_text_size">35sp</dimen>
+   <dimen name="person_login_phone_edit_W">600dip</dimen>
+   <dimen name="person_login_phone_view_ML">40dip</dimen>
+   <dimen name="person_login_phone_edit_PL">10dip</dimen>
+   <dimen name="person_login_phone_edit_text_size">30sp</dimen>
+   <dimen name="person_login_pay_identifyCodeBtn_W">300dip</dimen>
+   <dimen name="person_login_pay_count_tip_H">60dip</dimen>
+   <dimen name="person_login_pay_count_tip_text_size">20sp</dimen>
+   <dimen name="person_pay_btn_submit_W">400dip</dimen>
+   <dimen name="person_pay_btn_submit_H">65dip</dimen>
+   <dimen name="person_pay_btn_submit_MT">100dip</dimen>
+   <dimen name="person_pay_btn_submit_ML">275dip</dimen>
+   <dimen name="person_info_privilegelist_scrollbarSize">30dip</dimen>
+   <dimen name="person_info_warn_info_txt_ML">30dip</dimen>
+   <dimen name="person_info_exit_btn_MR">60dip</dimen>
+   <dimen name="person_info_no_privilegelist_txt_size">40sp</dimen>
+  
+   <!-- privilege -->
+   <dimen name="privilege_item_layout_H">100dip</dimen>
+   <dimen name="privilege_item_title_txt_W">500dip</dimen>
+   <dimen name="privilege_item_textsize">35sp</dimen>
+   <dimen name="privilege_item_title_txt_PL">50dip</dimen>
+   
+   <!--launcher activity-->
     <dimen name="launcher_layout_padding_bottom">40dp</dimen>
     <dimen name="launcher_weather_layout_margin_top">640dp</dimen>
     <dimen name="launcher_channel_img_height">80dp</dimen>
