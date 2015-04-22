@@ -67,6 +67,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 	private static final int MSG_PLAY_TIME = 101;
 	private static final int MSG_INITQUALITYTITLE = 102;
 	private static final int MSG_PAUSE = 105;
+	private static final int MSG_HIDEBUFFER = 106;
 	private static final int SEEK_STEP = 30000;
 	private static final int SHORT_STEP = 1;
 	private static final HashMap<Definition, String> DEFINITION_NAMES;
@@ -164,7 +165,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 		initView();
 
 	}
-
 
 	public void initView() {
 		panelShowAnimation = AnimationUtils.loadAnimation(this,
@@ -428,7 +428,9 @@ public class QiYiPlayActivity extends VodMenuAction {
 		if (quality != null) {
 			currQuality = quality.quality;
 		}
-		if (mHistory != null && (subItemUrl != null && subItemUrl.equalsIgnoreCase(mHistory.sub_url))) {
+		if (mHistory != null
+				&& (subItemUrl != null && subItemUrl
+						.equalsIgnoreCase(mHistory.sub_url))) {
 			isContinue = mHistory.is_continue;
 			tempOffset = (int) mHistory.last_position;
 		}
@@ -437,9 +439,9 @@ public class QiYiPlayActivity extends VodMenuAction {
 	}
 
 	private void setQiyiVideo() {
-		if(subItem != null){
+		if (subItem != null) {
 			titleText.setText(subItem.title);
-		}else{
+		} else {
 			titleText.setText(item.title);
 		}
 		if (tempOffset > 0 && isContinue == true && !live_video) {
@@ -467,7 +469,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 			mPlayer.setVideo(qiyiInfo);
 		}
 		isfinish = false;
-	    mPlayer.start();
+		mPlayer.start(seekPostion);
 		initQualtiyText();
 	}
 
@@ -502,13 +504,15 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onBufferEnd() {
-			isBuffer = false;
-			hideBuffer();
-			checkTaskStart(500);
+			Log.v("aaaa", "onBufferEnd");
+			if (mHandler.hasMessages(MSG_HIDEBUFFER))
+				mHandler.removeMessages(MSG_HIDEBUFFER);
+			mHandler.sendEmptyMessageDelayed(MSG_HIDEBUFFER, 200);
 		}
 
 		@Override
 		public void onBufferStart() {
+			Log.v("aaaa", "onBufferStart");
 			isBuffer = true;
 			showBuffer();
 		}
@@ -528,9 +532,10 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onMovieStart() {
+			Log.v("aaaa", "onMovieStart");
 			clipLength = mPlayer.getDuration();
 			showPanel();
-//			timeTaskStart();
+			// timeTaskStart();
 			checkTaskStart(500);
 			if (mHandler.hasMessages(MSG_PLAY_TIME))
 				mHandler.removeMessages(MSG_PLAY_TIME);
@@ -565,23 +570,13 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onPrepared() {
-			mPlayer.seekTo(currPosition);
+			Log.v("aaaa", "onprepared");
+			// mPlayer.seekTo(currPosition);
 			timeBar.setMax(mPlayer.getDuration());
 		}
 
 		@Override
 		public void onSeekComplete() {
-			if (!paused){
-				mPlayer.start();
-			}
-			else{
-				mHandler.sendEmptyMessageDelayed(MSG_PAUSE,100);
-			}
-			isBuffer = false;
-			isSeek = false;
-			hideBuffer();
-			checkTaskStart(500);
-			timeTaskStart(500);
 		}
 
 		@Override
@@ -592,20 +587,21 @@ public class QiYiPlayActivity extends VodMenuAction {
 		public boolean onError(IPlaybackInfo arg0, ISdkError arg1) {
 			// TODO Auto-generated method stub
 			addHistory(currPosition);
-			ExToClosePlayer("error", arg0.getDefinition() + " " + arg1.getMsgFromError());
+			ExToClosePlayer("error",
+					arg0.getDefinition() + " " + arg1.getMsgFromError());
 			return false;
 		}
 
 		@Override
 		public void onPreviewCompleted() {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void onPreviewInfoReady(boolean arg0, int arg1) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 	};
@@ -651,6 +647,13 @@ public class QiYiPlayActivity extends VodMenuAction {
 				break;
 			case MSG_PAUSE:
 				mPlayer.pause();
+			case MSG_HIDEBUFFER:
+				Log.v("aaaa", "MSG_HIDEBUFFER");
+				if (!mPlayer.isPlaying())
+					mPlayer.start();
+				isBuffer = false;
+				hideBuffer();
+				checkTaskStart(0);
 			default:
 				break;
 			}
@@ -727,7 +730,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if(needOnresume){
+		if (needOnresume) {
 			initQiyiVideoPlayer();
 			needOnresume = false;
 		}
@@ -807,7 +810,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 			panelLayout.setVisibility(View.VISIBLE);
 			panelShow = true;
 			hidePanelHandler.postDelayed(hidePanelRunnable, 3000);
-		}else{
+		} else {
 			hidePanelHandler.removeCallbacks(hidePanelRunnable);
 			hidePanelHandler.postDelayed(hidePanelRunnable, 3000);
 		}
@@ -982,24 +985,24 @@ public class QiYiPlayActivity extends VodMenuAction {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
 				mHandler.removeCallbacks(mUpdateTimeTask);
 				mHandler.removeCallbacks(checkStatus);
-				mPlayer.pause();
-				if (mPlayer.getDuration() > 0 && !live_video) {
-					isSeek = true;
-					showPanel();
-					fastBackward(SHORT_STEP);
-					ret = true;
-				}
+				if (mPlayer.isPlaying())
+					mPlayer.pause();
+				isSeek = true;
+				showPanel();
+				fastBackward(SHORT_STEP);
+				ret = true;
+				// }
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
 				mHandler.removeCallbacks(mUpdateTimeTask);
 				mHandler.removeCallbacks(checkStatus);
-				mPlayer.pause();
-				if (mPlayer.getDuration() > 0 && !live_video) {
-					isSeek = true;
-					showPanel();
-					fastForward(SHORT_STEP);
-					ret = true;
-				}
+				if (mPlayer.isPlaying())
+					mPlayer.pause();
+				isSeek = true;
+				showPanel();
+				fastForward(SHORT_STEP);
+				ret = true;
+				// }
 				break;
 			case KeyEvent.KEYCODE_DPAD_CENTER:
 			case KeyEvent.KEYCODE_ENTER:
@@ -1044,16 +1047,16 @@ public class QiYiPlayActivity extends VodMenuAction {
 				ret = true;
 				break;
 			case KeyEvent.KEYCODE_BACK:
-					showPopupDialog(
-							DIALOG_OK_CANCEL,
-							getResources().getString(
-									R.string.vod_player_exit_dialog));
-					ret = true;
-					if(!paused){
+				showPopupDialog(
+						DIALOG_OK_CANCEL,
+						getResources().getString(
+								R.string.vod_player_exit_dialog));
+				ret = true;
+				if (!paused) {
 					pauseItem();
 					playPauseImage
 							.setImageResource(R.drawable.vod_playbtn_selector);
-					}
+				}
 				break;
 			case KeyEvent.KEYCODE_MENU:
 				if (menu != null && menu.isVisible())
@@ -1082,17 +1085,16 @@ public class QiYiPlayActivity extends VodMenuAction {
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		boolean ret = false;
-		if (mPlayer != null && !isVodMenuVisible()
-				&& mPlayer.getDuration() > 0) {
+		if (mPlayer != null && !isVodMenuVisible() && mPlayer.getDuration() > 0) {
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
 				if (!live_video) {
-					if(mHandler.hasMessages(MSG_SEK_ACTION)){
+					if (mHandler.hasMessages(MSG_SEK_ACTION)) {
 						mHandler.removeMessages(MSG_SEK_ACTION);
-						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 300);
-					}else{
+						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 500);
+					} else {
 						mHandler.removeMessages(MSG_SEK_ACTION);
-						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 300);
+						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 500);
 					}
 					if (subItem != null)
 						callaPlay.videoPlaySeek(item.pk, subItem.pk,
@@ -1112,10 +1114,10 @@ public class QiYiPlayActivity extends VodMenuAction {
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
 				if (!live_video) {
-					if(mHandler.hasMessages(MSG_SEK_ACTION)){
+					if (mHandler.hasMessages(MSG_SEK_ACTION)) {
 						mHandler.removeMessages(MSG_SEK_ACTION);
 						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 500);
-					}else{
+					} else {
 						mHandler.removeMessages(MSG_SEK_ACTION);
 						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 500);
 					}
@@ -1145,7 +1147,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 		}
 		return ret;
 	}
-
 
 	private void createWindow() {
 		View win;
@@ -1210,10 +1211,10 @@ public class QiYiPlayActivity extends VodMenuAction {
 					public void onClick(View v) {
 						if (popupDlg != null) {
 							popupDlg.dismiss();
-							if(paused){
-							resumeItem();
-							playPauseImage
-									.setImageResource(R.drawable.vod_pausebtn_selector);
+							if (paused) {
+								resumeItem();
+								playPauseImage
+										.setImageResource(R.drawable.vod_pausebtn_selector);
 							}
 						}
 					};
@@ -1335,7 +1336,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 					paused = false;
 					isBuffer = true;
 					playPauseImage
-					.setImageResource(R.drawable.vod_pausebtn_selector);
+							.setImageResource(R.drawable.vod_pausebtn_selector);
 					currQuality = pos;
 					if (currQuality == 0) {
 						mPlayer.switchBitStream(Definition.DEFINITON_HIGH);
@@ -1419,7 +1420,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		// 客服按钮
 		if (id == 20) {
-           startSakura();
+			startSakura();
 			return true;
 		}
 		// 从头播放
@@ -1435,7 +1436,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 			bundle.remove("url");
 			bundle.putString("url", subItemUrl);
 			currPosition = 0;
-			tempOffset =0;
+			tempOffset = 0;
 			addHistory(currPosition);
 			mPlayer.stop();
 			isBuffer = true;
@@ -1574,10 +1575,10 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 	private Runnable checkStatus = new Runnable() {
 		public void run() {
-			if(isfinish){
+			if (isfinish) {
 				currPosition = 0;
 				timeBar.setProgress(currPosition);
-			}else{
+			} else {
 				if (mPlayer.isPlaying()) {
 					if (isBuffer || bufferLayout.isShown()) {
 						isBuffer = false;
@@ -1601,10 +1602,10 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 	private void checkTaskStart(int delay) {
 		mCheckHandler.removeCallbacks(checkStatus);
-		if(delay > 0){
-			mCheckHandler.postDelayed(checkStatus,delay);			
-		}else{
-			mCheckHandler.post(checkStatus);			
+		if (delay > 0) {
+			mCheckHandler.postDelayed(checkStatus, delay);
+		} else {
+			mCheckHandler.post(checkStatus);
 		}
 	}
 
@@ -1702,24 +1703,28 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 	};
 	boolean needOnresume = false;
-	   private void startSakura(){
-	        if (AppConstant.DEBUG)
-	            Log.d(TAG, "install vod service invoke...");
-	        needOnresume = true;
-	        try {
-	          ApplicationInfo applicationInfo =  getPackageManager().getApplicationInfo(
-	                    "cn.ismartv.speedtester", 0);
-	            if(null!= applicationInfo){
-	                Intent intent = new Intent();
-	                intent.setClassName("cn.ismartv.speedtester", "cn.ismartv.speedtester.ui.activity.MenuActivity");
-	                startActivity(intent);
-	            }
-	        } catch (PackageManager.NameNotFoundException e) {
-	            Uri uri = Uri.parse("file://" + getFileStreamPath("Sakura.apk").getAbsolutePath());
-	            Intent intent = new Intent(Intent.ACTION_VIEW);
-	            intent.setDataAndType(uri, "application/vnd.android.package-archive");
-	            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-	            startActivity(intent);
-	        }
-	    }
+
+	private void startSakura() {
+		if (AppConstant.DEBUG)
+			Log.d(TAG, "install vod service invoke...");
+		needOnresume = true;
+		try {
+			ApplicationInfo applicationInfo = getPackageManager()
+					.getApplicationInfo("cn.ismartv.speedtester", 0);
+			if (null != applicationInfo) {
+				Intent intent = new Intent();
+				intent.setClassName("cn.ismartv.speedtester",
+						"cn.ismartv.speedtester.ui.activity.MenuActivity");
+				startActivity(intent);
+			}
+		} catch (PackageManager.NameNotFoundException e) {
+			Uri uri = Uri.parse("file://"
+					+ getFileStreamPath("Sakura.apk").getAbsolutePath());
+			Intent intent = new Intent(Intent.ACTION_VIEW);
+			intent.setDataAndType(uri,
+					"application/vnd.android.package-archive");
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
+		}
+	}
 }

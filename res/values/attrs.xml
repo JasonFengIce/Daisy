@@ -141,4 +141,22 @@
         <attr name="textcolor" format="reference|color"/>
         <attr name="speed" format="integer"></attr>
     </declare-styleable>
+
+
+    <declare-styleable name="SakuraImageView">
+    </declare-styleable>
+
+    <declare-styleable name="IconPagerIndicator">
+    </declare-styleable>
+
+    <declare-styleable name="IconImageView">
+
+    </declare-styleable>
+
+    <declare-styleable name="SakuraButton"></declare-styleable>
+    <declare-styleable name="SakuraListView"></declare-styleable>
+    <declare-styleable name="SakuraSpinner"></declare-styleable>
+    <declare-styleable name="SakuraEditText"></declare-styleable>
+    <declare-styleable name="MessageSubmitButton"></declare-styleable>
+    <declare-styleable name="FeedBackListView"></declare-styleable>
 </resources>

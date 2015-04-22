@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@drawable/sakura_bg_fragment"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="@dimen/layout_border_padding"
+        >
+
+    <TextView
+            android:layout_marginTop="@dimen/layout_margin"
+            android:textSize="@dimen/textSize_normal"
+            android:textColor="@color/white"
+            android:text="@string/prompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+        <TextView
+                android:id="@+id/current_node_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSize_normal"
+                android:textColor="@color/white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                />
+
+        <cn.ismartv.sakura.ui.widget.SakuraButton
+                android:id="@+id/unbind_node"
+                android:layout_width="250dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textSize="@dimen/textSize_normal"
+                android:background="@drawable/selector_button"
+                android:singleLine="true"
+                />
+    </LinearLayout>
+
+
+    <LinearLayout
+            android:layout_marginTop="@dimen/layout_margin"
+            android:layout_marginBottom="@dimen/layout_margin"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+
+        <LinearLayout
+                android:layout_marginRight="@dimen/layout_margin"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+            <TextView
+                    android:text="@string/province"
+                    android:textSize="@dimen/textSize_normal"
+                    android:textColor="#FFFFFF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+            <cn.ismartv.sakura.ui.widget.SakuraSpinner
+                    style="@style/spinner_style"
+                    android:focusable="true"
+                    android:id="@+id/province_spinner"
+                    android:layout_width="160dp"
+                    android:layout_height="50dp"/>
+        </LinearLayout>
+        <LinearLayout
+                android:layout_marginLeft="@dimen/layout_margin"
+                android:layout_marginRight="@dimen/layout_margin"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+            <TextView
+                    android:text="@string/isp"
+                    android:textSize="@dimen/textSize_normal"
+                    android:textColor="#FFFFFF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+            <cn.ismartv.sakura.ui.widget.SakuraSpinner
+                    style="@style/spinner_style"
+                    android:focusable="true"
+                    android:id="@+id/isp_spinner"
+                    android:layout_width="160dp"
+                    android:layout_height="50dp"
+                    />
+
+        </LinearLayout>
+        <cn.ismartv.sakura.ui.widget.SakuraButton
+                android:id="@+id/speed_test_btn"
+                android:background="@drawable/selector_button"
+                android:layout_weight="1"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/textSize_testButton"
+                android:focusable="true"
+                android:clickable="true"
+                android:text="@string/source_speed_test"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/test_button_height"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_marginBottom="@dimen/layout_margin"
+            android:orientation="vertical"
+            android:background="@drawable/sakura_bg_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        <LinearLayout
+
+                android:layout_marginTop="@dimen/layout_margin"
+                android:layout_marginLeft="@dimen/layout_margin"
+                android:layout_marginRight="@dimen/layout_margin"
+                android:gravity="center"
+                android:background="#d5d9e2"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_title_height">
+            <TextView
+                    android:layout_weight="1"
+                    android:text="@string/video_source"
+                    android:textColor="#8f8f8f"
+                    android:textSize="@dimen/textSize_normal"
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+            <TextView
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:text="@string/source_status"
+                    android:textColor="#8f8f8f"
+                    android:textSize="@dimen/textSize_normal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <tv.ismar.sakura.ui.widget.SakuraListView
+                android:fastScrollEnabled="false"
+                android:smoothScrollbar="false"
+                android:id="@+id/node_list"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:divider="@drawable/sakura_divider"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_height="match_parent"
+                />
+    </LinearLayout>
+
+
+</LinearLayout>

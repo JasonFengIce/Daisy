@@ -526,8 +526,8 @@
     <dimen name="package_item_ItemImage_MT">15dip</dimen>
     <dimen name="package_item_ItemText_MT">5dip</dimen>
     <dimen name="package_item_ItemText_PLR">5dip</dimen>
-
-    <!-- pay panel -->
+ 
+  <!-- pay panel -->
     <dimen name="pay_top_panel_merginleft">23dp</dimen>
     <dimen name="pay_top_panel_panel_label_textsieze">13sp</dimen>
     <dimen name="pay_top_panel_videotitle_textsieze">20sp</dimen>
@@ -539,7 +539,7 @@
     <dimen name="pay_channel_weixin_marginright">60dp</dimen>
     <dimen name="pay_channel_weixin_margintop">30dp</dimen>
     <dimen name="pay_channel_weixin_textsize">23sp</dimen>
-    <dimen name="pay_guanyingcard_marginleft">40dp</dimen>
+    <dimen name="pay_guanyingcard_marginleft">50dp</dimen>
     <dimen name="pay_guanyingcard_margintop">80dp</dimen>
     <dimen name="pay_guanyingcard_card_balance_title_textsize">24sp</dimen>
     <dimen name="pay_guanyingcard_card_balance_package_info_margintop">40dp</dimen>
@@ -555,7 +555,7 @@
     <dimen name="pay_shiyuncard_input_margintop">32dp</dimen>
     <dimen name="pay_shiyuncard_submit_margintop">32dp</dimen>
     <dimen name="pay_shiyuncard_submit_textsize">23sp</dimen>
-    <dimen name="pay_qrcode_pay_panel_marginleft">28dp</dimen>
+    <dimen name="pay_qrcode_pay_panel_marginleft">50dp</dimen>
     <dimen name="pay_qrcode_pay_panel_margintop">10dp</dimen>
     <dimen name="pay_qrcode_pay_qrcodeview_marginleft">20dp</dimen>
     <dimen name="pay_qrcode_pay_qrcodeview_marginright">20dp</dimen>
@@ -574,6 +574,7 @@
     <dimen name="pay_paymentselect_vseparate_width">2dp</dimen>
 
     <!-- list_view -->
+
     <dimen name="list_view_search_H">40dip</dimen>
     <dimen name="list_view_search_ML">668dip</dimen>
    
@@ -625,6 +626,33 @@
     <dimen name="launcher_channel_img_width">50dp</dimen>
     <dimen name="launcher_channel_title_height">50dp</dimen>
     <dimen name="launcher_exit_button_width">180dp</dimen>
+
+    <!-- ====================================================== -->
+    <!-- sakura -->
+
+    <!-- text size -->
+    <dimen name="textSize_normal">22sp</dimen>
+    <dimen name="textSize_testButton">30sp</dimen>
+
+    <!-- activity_home -->
+    <dimen name="home_logo_margin_top">80dp</dimen>
+    <dimen name="home_logo_margin_left">80dp</dimen>
+    <dimen name="home_logo_width">90dp</dimen>
+    <dimen name="home_logo_height">128dp</dimen>
+    <dimen name="home_viewPager_margin_top">80dp</dimen>
+    <dimen name="home_viewPager_width">850dp</dimen>
+    <dimen name="home_viewPager_height">500dp</dimen>
+    <dimen name="home_indicator_height">200dp</dimen>
+    <dimen name="home_indicator_margin_bottom">20dp</dimen>
+    <dimen name="home_indicator_icon_width">140dp</dimen>
+    <dimen name="home_indicator_icon_height">140dp</dimen>
+
+
+    <!-- fragment_node -->
+    <dimen name="layout_margin">10dp</dimen>
+    <dimen name="test_button_height">60dp</dimen>
+    <dimen name="layout_border_padding">20dp</dimen>
+    <dimen name="list_title_height">40dp</dimen>
 
 
 </resources>

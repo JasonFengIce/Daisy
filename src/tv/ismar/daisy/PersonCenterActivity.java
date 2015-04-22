@@ -381,7 +381,7 @@ public class PersonCenterActivity extends Activity implements View.OnClickListen
 		personal_info_btn.setFocusable(true);
 		personal_info_btn.requestFocus();
 		personal_info_btn.setOnFocusChangeListener(new OnFocusChangeListener() {
-			
+
 			@Override
 			public void onFocusChange(View v, boolean hasfocus) {
 				// TODO Auto-generated method stub
@@ -597,23 +597,9 @@ public class PersonCenterActivity extends Activity implements View.OnClickListen
 	}
 
     private void startSakura(){
-        if (AppConstant.DEBUG)
-            Log.d(TAG, "install vod service invoke...");
-        try {
-          ApplicationInfo applicationInfo =  getPackageManager().getApplicationInfo(
-                    "cn.ismartv.speedtester", 0);
-            if(null!= applicationInfo){
-                Intent intent = new Intent();
-                intent.setClassName("cn.ismartv.speedtester", "cn.ismartv.speedtester.ui.activity.MenuActivity");
-                startActivity(intent);
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            Uri uri = Uri.parse("file://" + getFileStreamPath("Sakura.apk").getAbsolutePath());
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setDataAndType(uri, "application/vnd.android.package-archive");
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            Intent intent = new Intent();
+            intent.setAction("cn.ismar.sakura.launcher");
             startActivity(intent);
-        }
     }
 
     @Override
