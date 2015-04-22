@@ -47,8 +47,8 @@
     <dimen name="item_detail_btn_fill_textsize">23sp</dimen>
     <dimen name="item_detail_btn_favorite_height">46dip</dimen>
     <dimen name="item_detail_btn_favorite_textsize">23sp</dimen>
-    <dimen name="item_detail_btn_favorite_paddingleft">50dip</dimen>
-    <dimen name="item_detail_btn_favorite_paddingright">50dip</dimen>
+    <dimen name="item_detail_btn_favorite_paddingleft">30dip</dimen>
+    <dimen name="item_detail_btn_favorite_paddingright">30dip</dimen>
     <dimen name="item_detail_btn_favorite_paddingtop">3dip</dimen>
     <dimen name="item_detail_right_container_width">426dip</dimen>
     <dimen name="item_detail_related_video_label_left">27dip</dimen>
@@ -69,6 +69,8 @@
     <dimen name="item_detail_related_W">426dip</dimen>
     <dimen name="item_detail_btn_layout_marginB">5dip</dimen>
     <dimen name="item_detail_Btn_Layout_marginT">12dip</dimen>
+     <dimen name="item_detail_title_txt_MT">66dip</dimen>
+    <dimen name="item_detail_text_size">24sp</dimen>
     <!-- grid listview page-->
     <dimen name="gridview_channel_panel_height">60dip</dimen>
     <dimen name="gridview_channel_panel_marginBottom">13dp</dimen>

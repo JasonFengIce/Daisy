@@ -16,9 +16,9 @@
     android:layout_height="wrap_content"
     android:text="影片详情:"
     android:textColor="#FFBBBBBB"
-    android:textSize="36sp"
+    android:textSize="@dimen/item_detail_text_size"
     android:layout_alignParentTop="true"
-    android:layout_marginTop="100dip"
+    android:layout_marginTop="@dimen/item_detail_title_txt_MT"
     android:layout_marginLeft="@dimen/item_detail_detail_title_marginleft"
     android:visibility="visible"/>
         <ImageView
@@ -163,35 +163,48 @@
             android:layout_height="@dimen/item_detail_btn_left_height"
             android:layout_width="wrap_content"
             android:layout_above="@id/detail_intro"
-            android:layout_below="@id/detail_attribute_container"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="@dimen/item_detail_introlabel_marginleft"
             android:orientation="horizontal"
             android:layout_marginBottom="@dimen/item_detail_btn_layout_marginB"
             android:layout_marginTop="@dimen/item_detail_attribute_top">                               
-            <Button
+          <Button
                 android:id="@+id/btn_left"
-                android:layout_width="@dimen/item_detail_btn_left_width"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/item_detail_btn_left_height"
-                android:background="@drawable/preview_video_btn_bg_selector"              
-                android:visibility="visible"/>
-
-
+                android:background="@drawable/daisy_btn_bg_selector"
+                android:paddingLeft="@dimen/item_detail_btn_favorite_paddingleft"
+                android:paddingRight="@dimen/item_detail_btn_favorite_paddingright"
+                android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"            
+                android:visibility="visible"
+                android:textColor="#FFFFFFFF"
+                android:textSize="@dimen/item_detail_text_size"/>
+                 
            <Button
                 android:id="@+id/middle_btn"
-                android:layout_width="@dimen/item_detail_btn_left_width"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/item_detail_btn_left_height"
                 android:layout_marginLeft="@dimen/item_detail_btn_marginleft"
-                android:background="@drawable/buy_video_btn_bg_selector"
-                android:visibility="visible"/>
+                android:background="@drawable/daisy_btn_bg_selector"
+                android:paddingLeft="@dimen/item_detail_btn_favorite_paddingleft"
+                android:paddingRight="@dimen/item_detail_btn_favorite_paddingright"
+                android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop" 
+                android:visibility="visible"
+                android:textColor="#FFFFFFFF"
+                android:textSize="@dimen/item_detail_text_size"/>
 
            <Button
                 android:id="@+id/btn_right"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/item_detail_btn_left_height"
-                android:layout_marginLeft="@dimen/item_detail_btn_marginleft"                
-                android:background="@drawable/collect_btn_bg_selector"
-                android:visibility="visible" />                        
+                android:layout_marginLeft="@dimen/item_detail_btn_marginleft" 
+                android:paddingLeft="@dimen/item_detail_btn_favorite_paddingleft"
+                android:paddingRight="@dimen/item_detail_btn_favorite_paddingright"
+                android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"            
+                android:background="@drawable/daisy_btn_bg_selector"
+                android:visibility="visible"
+                android:textColor="#FFFFFFFF"
+                android:textSize="@dimen/item_detail_text_size" />                            
         </LinearLayout>
     </RelativeLayout>
 
