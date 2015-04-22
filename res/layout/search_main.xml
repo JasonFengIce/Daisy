@@ -139,7 +139,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="invisible"
-                android:layout_marginLeft="35dip"/>
+                android:layout_marginLeft="@dimen/search_arrow_btn_MLR"/>
 
         <Button
                 android:background="@drawable/selector_search_right"
@@ -149,7 +149,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="invisible"
-                android:layout_marginRight="35dip"/>
+                android:layout_marginRight="@dimen/search_arrow_btn_MLR"/>
 
     </RelativeLayout>
 

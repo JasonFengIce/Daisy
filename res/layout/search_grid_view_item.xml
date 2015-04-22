@@ -23,7 +23,7 @@
             android:id="@+id/iv_type"
             android:layout_width="@dimen/search_gridview_item_btn_type_W"
             android:layout_height="@dimen/search_gridview_item_btn_type_H"
-            android:layout_marginTop="-15dip"
+            android:layout_marginTop="@dimen/search_gridview_item_iv_type_MT"
             android:layout_alignLeft="@+id/itemImage"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="@dimen/search_gridview_item_btn_type_marginL"

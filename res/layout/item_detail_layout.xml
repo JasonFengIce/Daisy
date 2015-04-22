@@ -21,13 +21,7 @@
     android:layout_marginTop="@dimen/item_detail_title_txt_MT"
     android:layout_marginLeft="@dimen/item_detail_detail_title_marginleft"
     android:visibility="visible"/>
-        <ImageView
-            android:layout_width="@dimen/item_detail_vod_watermark_width"
-            android:layout_height="@dimen/personal_center_divider_H"
-            android:layout_alignParentLeft="true"
-            android:background="@drawable/divider_person"
-            android:visibility="gone"
-            android:layout_below="@id/title_txt" />
+ 
         <TextView
             android:id="@+id/detail_title"
             android:layout_width="@dimen/item_detail_detail_title_width"
@@ -39,7 +33,7 @@
             android:textColor="#FFBBBBBB"
             android:textSize="@dimen/item_detail_detail_title_textSize"
             android:ellipsize="end"
-            android:maxLines="2"/>
+            android:maxLines="1"/>
         
         <tv.ismar.daisy.views.DetailAttributeContainer
             android:layout_width="@dimen/item_detail_attribute_width"
@@ -51,9 +45,7 @@
             android:layout_marginTop="@dimen/item_detail_attribute_top"
             android:orientation="vertical"
             android:id="@+id/detail_attribute_container"
-            >
-
-            
+            >           
         </tv.ismar.daisy.views.DetailAttributeContainer>
 
         <TextView
@@ -74,18 +66,6 @@
             android:textColor="#FFBBBBBB"
             android:textSize="@dimen/item_detail_intro_textsize" />
 
-        
-        
-<!--         <TextView -->
-<!--             android:layout_width="wrap_content" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:layout_above="@id/detail_intro" -->
-<!--             android:layout_alignParentLeft="true" -->
-<!--             android:layout_marginLeft="@dimen/item_detail_introlabel_marginleft" -->
-<!--             android:text="@string/introduction" -->
-<!--             android:textColor="#FF999999" -->
-<!--             android:textSize="@dimen/item_detail_introlabel_textsize" /> -->
-
         <RelativeLayout
             android:layout_width="@dimen/item_detail_previewpanel_width"
             android:layout_height="@dimen/item_detail_previewpanel_height"
@@ -93,7 +73,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginRight="@dimen/item_detail_previewpanel_marginright"
             android:layout_marginTop="@dimen/item_detail_previewpanel_margintop" 
-           >
+>
 
             <tv.ismar.daisy.views.AsyncImageView
                 android:id="@+id/detail_preview_img"
@@ -106,7 +86,8 @@
                 android:layout_alignParentRight="true"
                 android:padding="@dimen/item_detail_previewimgview_padding"
                 android:background="@drawable/preview_img_bg"
-                />
+                android:scaleType="fitXY"
+            />
             <ImageView
                 android:id="@+id/detail_quality_label"
                 android:layout_width="@dimen/item_detail_detailquality_width"
@@ -132,13 +113,12 @@
               android:layout_height="wrap_content"
               android:layout_alignBottom="@id/detail_preview_img"
               android:layout_alignParentLeft="true"
-              android:layout_marginLeft="2dip"
-              android:text="￥5.0"
+              android:layout_marginLeft="@dimen/item_detail_detail_price_txt_ML"
               android:ellipsize="end"
               android:gravity="center"
               android:singleLine="true"
               android:textColor="#ffe3e3e3"
-              android:textSize="24.0sp"
+              android:textSize="@dimen/item_detail_detail_price_textsize"
               android:background="@drawable/vod_detail_unpayment_price"
               android:visibility="gone"/>
         <TextView
@@ -154,7 +134,7 @@
             android:gravity="center"
             android:singleLine="true"
             android:textColor="#ffe3e3e3"
-            android:textSize="24.0sp"
+            android:textSize="@dimen/item_detail_detail_price_textsize"
             android:background="@drawable/vod_detail_unpayment_duration"/>
         </RelativeLayout>
         

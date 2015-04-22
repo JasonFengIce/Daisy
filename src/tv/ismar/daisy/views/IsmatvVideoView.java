@@ -612,9 +612,15 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 		return 0;
 	}
 
-	public void seekTo(int msec) {
+	public void seekTo(final int msec) {
 		if (isInPlaybackState()) {
-			player.seekTo(msec);
+			new Thread(){
+				@Override
+				public void run() {
+					super.run();
+					player.seekTo(msec);
+				}
+			}.start();
 			mSeekWhenPrepared = 0;
 		} else {
 			mSeekWhenPrepared = msec;

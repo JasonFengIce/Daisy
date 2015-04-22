@@ -42,11 +42,11 @@
     <ImageView
         android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="4dip"
+        android:layout_height="@dimen/grid_view_main_divider_H"
         android:layout_marginLeft="@dimen/channel_section_tabs_layout_marginLeft"
         android:layout_marginRight="@dimen/channel_section_tabs_layout_marginLeft"
         android:background="@drawable/divider_person"
-        android:layout_marginTop="40dip"
+        android:layout_marginTop="@dimen/grid_view_main_divider_MT"
         android:visibility="gone" />
     <LinearLayout
         android:id="@+id/tabs_layout"
@@ -127,31 +127,31 @@
         
         <TextView 
             android:id="@+id/collect_or_history_txt"
-            android:layout_height="120dip"
+            android:layout_height="@dimen/grid_view_main_collect_or_history_txt_H"
             android:layout_width="match_parent"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="80dip"
+            android:layout_marginTop="@dimen/grid_view_main_collect_or_history_txt_MT"
             android:textColor="#FFBBBBBB"
-            android:textSize="80sp"
-            android:paddingLeft="60dip"/>
+            android:textSize="@dimen/grid_view_main_collect_or_history_txt_textsize"
+            android:paddingLeft="@dimen/grid_view_main_collect_or_history_txt_PL"/>
         <TextView 
             android:id="@+id/recommend_txt"
-            android:layout_height="100dip"
+            android:layout_height="@dimen/grid_view_main_recommend_txt_H"
             android:layout_width="match_parent"
             android:text="@string/interested_video"
             android:textColor="#FF999999"
-            android:textSize="60sp"
-            android:paddingLeft="30dip"
+            android:textSize="@dimen/grid_view_main_recommend_txt_size"
+            android:paddingLeft="@dimen/grid_view_main_recommend_txt_PL"
             android:layout_below="@id/collect_or_history_txt"/>
        
        <org.sakuratya.horizontal.ui.ZGridView
         xmlns:sakura="http://schemas.android.com/apk/res/tv.ismar.daisy"
         android:id="@+id/recommend_gridview"
         android:layout_width="match_parent"
-        android:layout_height="250dip"
-        android:layout_marginLeft="30dip"
-        android:layout_marginRight="30dip"
-        sakura:horizontalSpace="16dip"
+        android:layout_height="@dimen/grid_view_main_recommend_gridview_H"
+        android:layout_marginLeft="@dimen/grid_view_main_recommend_txt_PL"
+        android:layout_marginRight="@dimen/grid_view_main_recommend_txt_PL"
+        sakura:horizontalSpace="@dimen/grid_view_main_horizontalSpace"
         sakura:listSelector="@drawable/vod_gv_selector"
         sakura:numColumns="6"
         sakura:stretchMode="columnWidth"
@@ -160,7 +160,7 @@
         sakura:selectorRightPadding="@dimen/ZGridView_recommend_selectorRightPadding"
         sakura:selectorBottomPadding="@dimen/ZGridView_recommend_selectorBottomPadding"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="40dip"
+        android:layout_marginBottom="@dimen/grid_view_main_divider_MT"
          />
     </RelativeLayout>
 

@@ -47,8 +47,9 @@
              android:layout_width="0dip"
              android:layout_height="wrap_content"
              android:layout_marginTop="@dimen/pay_qrcode_pay_panel_margintop"
+             android:layout_marginLeft="@dimen/pay_shiyuncard_marginleft"
              login:suspension_window="true"
-             android:layout_weight="2.2"
+             android:layout_weight="2.1"
              android:visibility="gone"
              />
         <include

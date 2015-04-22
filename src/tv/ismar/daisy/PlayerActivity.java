@@ -5,11 +5,9 @@ import static tv.ismar.daisy.DramaListActivity.ORDER_CHECK_BASE_URL;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.ImageUtils;
@@ -46,9 +44,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.GestureDetector;
-import android.view.GestureDetector.OnGestureListener;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -63,13 +60,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.ismartv.api.t.AccessProxy;
 import com.ismartv.bean.ClipInfo;
-import com.qiyi.video.player.QiyiVideoPlayer;
 public class PlayerActivity extends VodMenuAction{
 
 	@SuppressWarnings("unused")
@@ -148,6 +143,11 @@ public class PlayerActivity extends VodMenuAction{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setView();
+		
+		DisplayMetrics metric = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metric);
+        int height = metric.heightPixels; // 屏幕高度（像素）
+        int densityDpi = metric.densityDpi; // 屏幕密度DPI（120 / 160 / 240）
 	}
 
 	@Override
@@ -405,13 +405,6 @@ public class PlayerActivity extends VodMenuAction{
 
 					@Override
 					public void onBufferingUpdate(SmartPlayer mp, int percent) {
-						bufferText.setText(BUFFERING+" "+percent+"%");
-						isBuffer = true;
-						showBuffer();
-						if (percent == 100) {
-							isBuffer = false;
-							hideBuffer();
-						}
 					}
 
 				});
@@ -419,6 +412,18 @@ public class PlayerActivity extends VodMenuAction{
 
 			@Override
 			public boolean onInfo(SmartPlayer smartplayer, int i, int j) {
+				Log.v("aaaa", "i =" + i + ",.,.j=" + j);
+				if (i == 701) {
+					isBuffer = true;
+					bufferText.setText(BUFFERING + " " + 0 + "%");
+					showBuffer();
+				} else if (i == 704) {
+					bufferText.setText(BUFFERING + " " + j + "%");
+				} else if (i == 702) {
+					bufferText.setText(BUFFERING + " " + 100 + "%");
+					isBuffer = false;
+					hideBuffer();
+				}
 				return false;
 			}
 		});
@@ -852,17 +857,10 @@ public class PlayerActivity extends VodMenuAction{
 		mCheckHandler.removeCallbacks(checkStatus);
 	}
 
-	private int i = 0;
 	private Runnable checkStatus = new Runnable() {
 		public void run() {
 			if (mVideoView != null) {
-				// Log.d(TAG,
-				// "seekPostion == "+Math.abs(mVideoView.getCurrentPosition()-seekPostion));
 				if (mVideoView.isPlaying()) {
-					// if (isBuffer || bufferLayout.isShown()) {
-					// //isBuffer = false;
-					// //hideBuffer();
-					// } else {
 					if (live_video && (isBuffer || bufferLayout.isShown())) {
 						isBuffer = false;
 						hideBuffer();
@@ -871,16 +869,12 @@ public class PlayerActivity extends VodMenuAction{
 						mVideoView.setAlpha(1);
 						bufferText.setText(BUFFERING);
 					}
-
-					// }
 					if (!isSeek && !isBuffer && !live_video) {
 						currPosition = mVideoView.getCurrentPosition();
 						timeBar.setProgress(currPosition);
 					}
-					i = 0;
 				} else {
 					if (!paused && !isBuffer) {
-						i += 1;
 						seekPostion = mVideoView.getCurrentPosition();
 					}
 				}
@@ -1061,20 +1055,14 @@ public class PlayerActivity extends VodMenuAction{
 
 					@Override
 					public void onSuccess(String info) {
-						// TODO Auto-generated method stub
-						Log.i("BAIDU", info);
 					}
 
 					@Override
 					public void onPrepare() {
-						// TODO Auto-generated method stub
-
 					}
 
 					@Override
 					public void onFailed(String error) {
-						// TODO Auto-generated method stub
-						Log.i("BAIDU", error);
 					}
 				});
 	}
@@ -1203,23 +1191,29 @@ public class PlayerActivity extends VodMenuAction{
 			case KeyEvent.KEYCODE_DPAD_LEFT:
 				mHandler.removeCallbacks(mUpdateTimeTask);
 				mHandler.removeCallbacks(checkStatus);
-				mVideoView.pause();
 				if (mVideoView.getDuration() > 0 && !live_video) {
+					mVideoView.pause();
 					isSeek = true;
 					showPanel();
 					fastBackward(SHORT_STEP);
 					ret = true;
+					if(mHandler.hasMessages(MSG_SEK_ACTION))
+						mHandler.removeMessages(MSG_SEK_ACTION);
+						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 1000);
 				}
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
 				mHandler.removeCallbacks(mUpdateTimeTask);
 				mHandler.removeCallbacks(checkStatus);
-				mVideoView.pause();
 				if (mVideoView.getDuration() > 0 && !live_video) {
+					mVideoView.pause();
 					isSeek = true;
 					showPanel();
 					fastForward(SHORT_STEP);
 					ret = true;
+					if(mHandler.hasMessages(MSG_SEK_ACTION))
+						mHandler.removeMessages(MSG_SEK_ACTION);
+						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 1000);
 				}
 				break;
 			case KeyEvent.KEYCODE_DPAD_CENTER:
@@ -1302,73 +1296,6 @@ public class PlayerActivity extends VodMenuAction{
 		}
 		if (mVideoView != null && ret == false) {
 			ret = super.onKeyDown(keyCode, event);
-		}
-		return ret;
-	}
-
-	@Override
-	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		boolean ret = false;
-		if (mVideoView != null && !isVodMenuVisible()
-				&& mVideoView.getDuration() > 0) {
-			switch (keyCode) {
-			case KeyEvent.KEYCODE_DPAD_LEFT:
-				if (!live_video) {
-					if(mHandler.hasMessages(MSG_SEK_ACTION)){
-						mHandler.removeMessages(MSG_SEK_ACTION);
-						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 300);
-					}else{
-						mHandler.removeMessages(MSG_SEK_ACTION);
-						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 300);
-					}
-					if (subItem != null)
-						callaPlay.videoPlaySeek(item.pk, subItem.pk,
-								item.title, clip.pk, currQuality, 0,
-								currPosition, sid);
-					else
-						callaPlay.videoPlayContinue(item.pk, null, item.title,
-								clip.pk, currQuality, 0, currPosition, sid);
-					isSeekBuffer = true;
-					Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
-					ret = true;
-					isSeek = false;
-					offsets = 0;
-					offn = 1;
-				}
-
-				break;
-			case KeyEvent.KEYCODE_DPAD_RIGHT:
-				if (!live_video) {
-					if(mHandler.hasMessages(MSG_SEK_ACTION)){
-						mHandler.removeMessages(MSG_SEK_ACTION);
-						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 300);
-					}else{
-						mHandler.removeMessages(MSG_SEK_ACTION);
-						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 300);
-					}
-					if (subItem != null)
-						callaPlay.videoPlaySeek(item.pk, subItem.pk,
-								item.title, clip.pk, currQuality, 0,
-								currPosition, sid);
-					else
-						callaPlay.videoPlayContinue(item.pk, null, item.title,
-								clip.pk, currQuality, 0, currPosition, sid);
-					isSeekBuffer = true;
-					Log.d(TAG, "RIGHT seek to" + getTimeString(currPosition));
-					ret = true;
-					isSeek = false;
-					offsets = 0;
-					offn = 1;
-				}
-
-				break;
-			default:
-				break;
-			}
-
-			if (ret == false) {
-				ret = super.onKeyUp(keyCode, event);
-			}
 		}
 		return ret;
 	}
@@ -1587,9 +1514,22 @@ public class PlayerActivity extends VodMenuAction{
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case MSG_SEK_ACTION:
-				mVideoView.seekTo(currPosition);
+				bufferText.setText(BUFFERING+" "+0+"%");
 				isBuffer = true;
 				showBuffer();
+				mVideoView.seekTo(currPosition);
+				if (subItem != null)
+					callaPlay.videoPlaySeek(item.pk, subItem.pk,
+							item.title, clip.pk, currQuality, 0,
+							currPosition, sid);
+				else
+					callaPlay.videoPlayContinue(item.pk, null, item.title,
+							clip.pk, currQuality, 0, currPosition, sid);
+				isSeekBuffer = true;
+				Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
+				isSeek = false;
+				offsets = 0;
+				offn = 1;
 			default:
 				break;
 			}

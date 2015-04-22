@@ -5,8 +5,8 @@
     <dimen name="item_detail_vod_watermark_height">103dip</dimen>
     <dimen name="item_detail_detail_title_width">347dp</dimen>
     <dimen name="item_detail_detail_title_marginleft">53dip</dimen>
-    <dimen name="item_detail_detail_title_margintop">106dp</dimen>
-    <dimen name="item_detail_detail_title_textSize">40sp</dimen>
+    <dimen name="item_detail_detail_title_margintop">110dp</dimen>
+    <dimen name="item_detail_detail_title_textSize">37sp</dimen>
     <dimen name="item_detail_attribute_width">347dip</dimen>
     <dimen name="item_detail_attribute_left">53dip</dimen>
     <dimen name="item_detail_attribute_top">12dip</dimen>
@@ -20,8 +20,8 @@
     <dimen name="item_detail_intro_lineSpacingExtra">13dip</dimen>
     <dimen name="item_detail_intro_textsize">23sp</dimen>
     <dimen name="item_detail_introlabel_marginleft">54dip</dimen>
-    <dimen name="item_detail_introlabel_textsize">23sp</dimen>
-    <dimen name="item_detail_previewpanel_width">322dip</dimen>
+    <dimen name="item_detail_introlabel_textsize">20sp</dimen>
+    <dimen name="item_detail_previewpanel_width">329dip</dimen>
     <dimen name="item_detail_previewpanel_height">298dip</dimen>
     <dimen name="item_detail_previewpanel_marginright">77dip</dimen>
     <dimen name="item_detail_previewpanel_margintop">106dip</dimen>
@@ -35,7 +35,7 @@
     <dimen name="item_detail_detailquality_margintop">2dip</dimen>
     <dimen name="item_detail_detailquality_marginright">2dip</dimen>
     <dimen name="item_detail_btn_left_width">160dp</dimen>
-    <dimen name="item_detail_btn_left_height">63dp</dimen>
+    <dimen name="item_detail_btn_left_height">63dip</dimen>
     <dimen name="item_detail_btn_left_textsize">23sp</dimen>
     <dimen name="item_detail_btn_right_width">160dip</dimen>
     <dimen name="item_detail_btn_right_height">53dp</dimen>
@@ -69,8 +69,10 @@
     <dimen name="item_detail_related_W">426dip</dimen>
     <dimen name="item_detail_btn_layout_marginB">5dip</dimen>
     <dimen name="item_detail_Btn_Layout_marginT">12dip</dimen>
-    <dimen name="item_detail_title_txt_MT">66dip</dimen>
+    <dimen name="item_detail_title_txt_MT">60dip</dimen>
     <dimen name="item_detail_text_size">24sp</dimen>
+    <dimen name="item_detail_detail_price_txt_ML">4dip</dimen>
+    <dimen name="item_detail_detail_price_textsize">16sp</dimen>
     <!-- grid listview page-->
     <dimen name="gridview_channel_panel_height">60dip</dimen>
     <dimen name="gridview_channel_panel_marginBottom">13dp</dimen>
@@ -124,7 +126,26 @@
     <dimen name="grid_view_main_arrow_left_W">20dip</dimen>
     <dimen name="grid_view_main_arrow_left_H">24dip</dimen>
     <dimen name="grid_view_main_arrow_left_marginT">17dip</dimen>
-    <dimen name="grid_view_main_list_marginT">-14dip</dimen>
+    <dimen name="grid_view_main_list_marginT">-4dip</dimen>
+    <dimen name="grid_view_main_divider_H">3dip</dimen>
+    <dimen name="grid_view_main_divider_MT">27dip</dimen>
+    <dimen name="grid_view_main_collect_or_history_txt_H">80dip</dimen>
+    <dimen name="grid_view_main_collect_or_history_txt_MT">53dip</dimen>
+    <dimen name="grid_view_main_collect_or_history_txt_textsize">53sp</dimen>
+    <dimen name="grid_view_main_collect_or_history_txt_PL">40dip</dimen>
+    <dimen name="grid_view_main_recommend_txt_H">68dip</dimen>
+    <dimen name="grid_view_main_recommend_txt_size">40sp</dimen>
+    <dimen name="grid_view_main_recommend_txt_PL">20dip</dimen>
+    <dimen name="grid_view_main_recommend_gridview_H">167dip</dimen>
+    <dimen name="grid_view_main_horizontalSpace">11dip</dimen>
+    <dimen name="gridview_item_list_item_title_MT">5dip</dimen>
+    <dimen name="gridview_item_ItemBeanScore_MR">4dip</dimen>
+    <dimen name="gridview_item_ItemBeanScore_MT">-1dip</dimen>
+    <dimen name="gridview_item_ItemBeanScore_PT">4dip</dimen>
+    <dimen name="gridview_item_ItemBeanScore_textsize">24sp</dimen>
+    <dimen name="gridview_item_expense_txt_W">75dip</dimen>
+    <dimen name="gridview_item_expense_txt_H">27dip</dimen>
+    <dimen name="gridview_item_expense_txt_size">14sp</dimen>
     <!-- popup_2btn -->
     <dimen name="popup_dialog_width">538dip</dimen>
     <dimen name="popup_dialog_height">296dip</dimen>
@@ -164,7 +185,12 @@
     <dimen name="related_item_focus_textsize">20sp</dimen>
     <dimen name="related_item_focus_marginright">27dip</dimen>
     <dimen name="related_item_text_marginLeft">7dip</dimen>
+    <dimen name="related_item_related_preview_img_ML">4dip</dimen>
+    <dimen name="related_item_ItemBeanScore_PT">4dip</dimen>
+    <dimen name="related_item_ItemBeanScore_textsize">24sp</dimen>
+    <dimen name="related_item_related_price_txt_size">17sp</dimen>
     <!-- vod_player -->
+
     <dimen name="vod_player_logo_image_PT">22dip</dimen>
     <dimen name="vod_player_logo_image_PR">22dip</dimen>
     <dimen name="vod_player_bufferlayout_H">88dip</dimen>
@@ -182,36 +208,36 @@
     <dimen name="vod_player_titletext_W">800dip</dimen>
     <dimen name="vod_player_titletext_H">37dip</dimen>
     <dimen name="vod_player_titletext_marginleft">147dip</dimen>
-    <dimen name="vod_player_titletext_textsize">27dip</dimen>
+    <dimen name="vod_player_titletext_textsize">27sp</dimen>
     <dimen name="vod_player_titletext_margintop">4dip</dimen>
     <dimen name="vod_player_timetext_H">30dip</dimen>
     <dimen name="vod_player_timetext_marginright">53dip</dimen>
     <dimen name="vod_player_timetext_PR">27dip</dimen>
     <dimen name="vod_player_timetext_textsize">27sp</dimen>
     <dimen name="vod_player_timetext_marginTop">1dip</dimen>
-    <dimen name="vod_player_titlelayout_H">73dip</dimen>
-    <dimen name="vod_player_titlelayout_PL">53dip</dimen>
-    <dimen name="vod_player_titlelayout_PR">53dip</dimen>
-    <dimen name="vod_player_titlelayout_marginleft">100dip</dimen>
-    <dimen name="vod_player_titlelayout_margintop">15dip</dimen>
-    <dimen name="vod_player_playpauseimage_W">57dip</dimen>
-    <dimen name="vod_player_playpauseimage_H">57dip</dimen>
-    <dimen name="vod_player_playpauseimage_marginleft">13dip</dimen>
-    <dimen name="vod_player_fbimage_W">49dip</dimen>
-    <dimen name="vod_player_fbimage_H">43dip</dimen>
-    <dimen name="vod_player_fbimage_marginleft">13dip</dimen>
-    <dimen name="vod_player_timeseekbar_PL">12dip</dimen>
-    <dimen name="vod_player_timeseekbar_PR">12dip</dimen>
-    <dimen name="vod_player_timeseekbar_MaxH">10dip</dimen>
+    <dimen name="vod_player_titlelayout_H">49dip</dimen>
+    <dimen name="vod_player_titlelayout_PL">35dip</dimen>
+    <dimen name="vod_player_titlelayout_PR">35dip</dimen>
+    <dimen name="vod_player_titlelayout_marginleft">67dip</dimen>
+    <dimen name="vod_player_titlelayout_margintop">10dip</dimen>
+    <dimen name="vod_player_playpauseimage_W">38dip</dimen>
+    <dimen name="vod_player_playpauseimage_H">38dip</dimen>
+    <dimen name="vod_player_playpauseimage_marginleft">9dip</dimen>
+    <dimen name="vod_player_fbimage_W">33dip</dimen>
+    <dimen name="vod_player_fbimage_H">29dip</dimen>
+    <dimen name="vod_player_fbimage_marginleft">9dip</dimen>
+    <dimen name="vod_player_timeseekbar_PL">8dip</dimen>
+    <dimen name="vod_player_timeseekbar_PR">8dip</dimen>
+    <dimen name="vod_player_timeseekbar_MaxH">7dip</dimen>
     <dimen name="vod_player_timeseekbar_thumbOffset">1dip</dimen>
-    <dimen name="vod_player_ffimage_W">57dip</dimen>
-    <dimen name="vod_player_ffimage_H">57dip</dimen>
-    <dimen name="vod_player_ffimage_marginright">53dip</dimen>
-    <dimen name="vod_player_timeseekbar_H">18dip</dimen>
-    <dimen name="vod_player_vodlayout_marginleft">40dip</dimen>
-    <dimen name="vod_player_vodlayout_margintop">3dip</dimen>
-    <dimen name="vod_player_vodlayout_PB">8dip</dimen>
-    <dimen name="vod_player_vod_content_layout_W">400dip</dimen>
+    <dimen name="vod_player_ffimage_W">38dip</dimen>
+    <dimen name="vod_player_ffimage_H">38dip</dimen>
+    <dimen name="vod_player_ffimage_marginright">35dip</dimen>
+    <dimen name="vod_player_timeseekbar_H">12dip</dimen>
+    <dimen name="vod_player_vodlayout_marginleft">27dip</dimen>
+    <dimen name="vod_player_vodlayout_margintop">2dip</dimen>
+    <dimen name="vod_player_vodlayout_PB">5dip</dimen>
+    <dimen name="vod_player_vod_content_layout_W">267dip</dimen>
 
     <!-- play_finished -->
     <dimen name="play_finished_leftlayout_PL">40dip</dimen>
@@ -386,6 +412,8 @@
     <dimen name="search_gridview_item_label_H">32dip</dimen>
     <dimen name="search_btnHotWords_PLR">10dip</dimen>
     <dimen name="search_btnHotWords_textsize">20sp</dimen>
+    <dimen name="search_arrow_btn_MLR">24dip</dimen>
+    <dimen name="search_gridview_item_iv_type_MT">0dip</dimen>
     <!-- channel_section_tabs -->
     <dimen name="channel_section_tabs_W">200dip</dimen>
     <dimen name="channel_section_tabs_H">65dip</dimen>
@@ -499,8 +527,8 @@
     <dimen name="package_item_ItemImage_MT">15dip</dimen>
     <dimen name="package_item_ItemText_MT">5dip</dimen>
     <dimen name="package_item_ItemText_PLR">5dip</dimen>
-
-    <!-- pay panel -->
+ 
+  <!-- pay panel -->
     <dimen name="pay_top_panel_merginleft">23dp</dimen>
     <dimen name="pay_top_panel_panel_label_textsieze">13sp</dimen>
     <dimen name="pay_top_panel_videotitle_textsieze">20sp</dimen>
@@ -512,7 +540,7 @@
     <dimen name="pay_channel_weixin_marginright">60dp</dimen>
     <dimen name="pay_channel_weixin_margintop">30dp</dimen>
     <dimen name="pay_channel_weixin_textsize">23sp</dimen>
-    <dimen name="pay_guanyingcard_marginleft">40dp</dimen>
+    <dimen name="pay_guanyingcard_marginleft">50dp</dimen>
     <dimen name="pay_guanyingcard_margintop">80dp</dimen>
     <dimen name="pay_guanyingcard_card_balance_title_textsize">24sp</dimen>
     <dimen name="pay_guanyingcard_card_balance_package_info_margintop">40dp</dimen>
@@ -528,7 +556,7 @@
     <dimen name="pay_shiyuncard_input_margintop">32dp</dimen>
     <dimen name="pay_shiyuncard_submit_margintop">32dp</dimen>
     <dimen name="pay_shiyuncard_submit_textsize">23sp</dimen>
-    <dimen name="pay_qrcode_pay_panel_marginleft">28dp</dimen>
+    <dimen name="pay_qrcode_pay_panel_marginleft">50dp</dimen>
     <dimen name="pay_qrcode_pay_panel_margintop">10dp</dimen>
     <dimen name="pay_qrcode_pay_qrcodeview_marginleft">20dp</dimen>
     <dimen name="pay_qrcode_pay_qrcodeview_marginright">20dp</dimen>
@@ -547,10 +575,49 @@
     <dimen name="pay_paymentselect_vseparate_width">2dp</dimen>
 
     <!-- list_view -->
+
     <dimen name="list_view_search_H">40dip</dimen>
     <dimen name="list_view_search_ML">668dip</dimen>
-
-
+   
+   <!-- person center -->
+   <dimen name="personal_center_divider_H">2dip</dimen>
+   <dimen name="personal_center_divider_ML">14dip</dimen>
+   <dimen name="person_center_textsize">60sp</dimen>
+   <dimen name="person_center_text_size">40sp</dimen>
+   <dimen name="person_center_btn_layout_MT">3dip</dimen>
+   <dimen name="person_center_btn_layout_PT">60dip</dimen>
+   <dimen name="person_center_btn_H">54dip</dimen>
+   <dimen name="person_center_btn_W">267dip</dimen>
+   <dimen name="person_center_btn_text_size">24sp</dimen>
+   <dimen name="person_center_btn_MT">24dip</dimen>
+   <dimen name="person_login_layout_PL">80dip</dimen>
+   <dimen name="person_login_layout_PT">93dip</dimen>
+   <dimen name="person_login_content_layout_H">54dip</dimen>
+    <dimen name="person_login_content_MT">14dip</dimen>
+   <dimen name="person_login_phone_text_W">130dip</dimen>
+   <dimen name="person_login_phone_text_size">24sp</dimen>
+   <dimen name="person_login_phone_edit_W">400dip</dimen>
+   <dimen name="person_login_phone_view_ML">27dip</dimen>
+   <dimen name="person_login_phone_edit_PL">7dip</dimen>
+   <dimen name="person_login_phone_edit_text_size">20sp</dimen>
+   <dimen name="person_login_pay_identifyCodeBtn_W">200dip</dimen>
+   <dimen name="person_login_pay_count_tip_H">40dip</dimen>
+   <dimen name="person_login_pay_count_tip_text_size">14sp</dimen>
+   <dimen name="person_pay_btn_submit_W">267dip</dimen>
+   <dimen name="person_pay_btn_submit_H">43dip</dimen>
+   <dimen name="person_pay_btn_submit_MT">67dip</dimen>
+   <dimen name="person_pay_btn_submit_ML">184dip</dimen>
+   <dimen name="person_info_privilegelist_scrollbarSize">20dip</dimen>
+   <dimen name="person_info_warn_info_txt_ML">20dip</dimen>
+   <dimen name="person_info_exit_btn_MR">40dip</dimen>
+   <dimen name="person_info_no_privilegelist_txt_size">27sp</dimen>
+      
+      <!-- privilege -->
+   <dimen name="privilege_item_layout_H">67dip</dimen>
+   <dimen name="privilege_item_title_txt_W">334dip</dimen>
+   <dimen name="privilege_item_textsize">24sp</dimen>
+   <dimen name="privilege_item_title_txt_PL">4dip</dimen>
+    
     <!--launcher activity-->
     <dimen name="launcher_layout_padding_bottom">20dp</dimen>
 
