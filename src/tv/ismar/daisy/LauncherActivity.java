@@ -914,7 +914,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     public void fetchGeoId(final String city) {
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setLogLevel(AppConstant.LOG_LEVEL)
+                .setLogLevel(RestAdapter.LogLevel.NONE)
                 .setEndpoint(ClientApi.GeoId.HOST)
                 .build();
         ClientApi.GeoId client = restAdapter.create(ClientApi.GeoId.class);

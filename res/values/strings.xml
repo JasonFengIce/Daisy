@@ -195,5 +195,19 @@
     <string name="submit_text">提交</string>
     <string name="tring">可以尝试</string>
     <string name="can_select">建议选择</string>
+    <string name="current_node">当前视频源:</string>
+    <string name="switch_to_auto">切换为自动获取</string>
+    <string name="already_to_auto">已自动获取</string>
+    <string name="auto_fetch">自动获取</string>
+
+    <!-- sakura_popup_select_node -->
+    <string name="are_you_sure_selecte">是否选择该视频源？</string>
+    <string name="confirm_this_node">确定</string>
+    <string name="cancel_this_node">取消</string>
+    <string name="node_bind_success">选择成功，请返回播放影片测试！</string>
+
+
+    <!-- sakura_feedback_fragment -->
+    <string name="ismartv">视云客服 ：</string>
 
 </resources>

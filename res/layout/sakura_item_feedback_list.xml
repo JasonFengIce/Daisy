@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="#ffffff"
+              android:focusable="false"
+              android:clickable="false"
+              android:layout_width="match_parent"
+              android:gravity="center_vertical"
+              android:minHeight="@dimen/feedback_item_minHeight"
+              android:layout_height="wrap_content">
+    <TextView
+            android:id="@+id/feedback_time"
+            android:layout_marginRight="@dimen/feedback_item_h_margin"
+            android:layout_marginLeft="@dimen/feedback_item_h_margin"
+            android:layout_marginTop="@dimen/feedback_item_v_margin"
+            android:textSize="@dimen/feedback_item_time_textSize"
+            android:textColor="#8f8f8f"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"/>
+
+    <TextView
+            android:id="@+id/feedback_customer"
+            android:layout_marginRight="@dimen/feedback_item_h_margin"
+            android:layout_marginLeft="@dimen/feedback_item_h_margin"
+            android:layout_marginTop="@dimen/feedback_item_v_margin"
+            android:textSize="@dimen/feedback_item_title_textSize"
+            android:textColor="#8f8f8f"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"/>
+
+    <TextView
+            android:layout_marginRight="@dimen/feedback_item_h_margin"
+            android:layout_marginLeft="@dimen/feedback_item_h_margin"
+            android:layout_marginTop="@dimen/feedback_item_v_margin"
+            android:id="@+id/feedback_ismartv"
+            android:textSize="@dimen/feedback_item_title_textSize"
+            android:textColor="#ff8400"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"/>
+
+</LinearLayout>

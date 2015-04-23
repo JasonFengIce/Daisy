@@ -10,8 +10,10 @@ import retrofit.http.Query;
 import tv.ismar.daisy.core.advertisement.AdvertisementInfoEntity;
 import tv.ismar.daisy.core.update.VersionInfoEntity;
 import tv.ismar.daisy.models.launcher.*;
+import tv.ismar.sakura.data.http.ProblemEntity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by huaijie on 3/9/15.
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class ClientApi {
 
     public static final String APP_UPDATE_HOST = "http://client.tvxio.com";
+
 
 
     public interface AppVersionInfo {
