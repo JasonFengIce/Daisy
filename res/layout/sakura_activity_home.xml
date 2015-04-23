@@ -19,14 +19,13 @@
             android:layout_centerHorizontal="true"
             />
 
-    <cn.ismartv.sakura.ui.widget.indicator.IconPagerIndicator
+    <tv.ismar.sakura.ui.widget.indicator.IconPagerIndicator
             android:id="@+id/indicator"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/pager"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="@dimen/home_indicator_margin_bottom"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/home_indicator_height">
-    </cn.ismartv.sakura.ui.widget.indicator.IconPagerIndicator>
+            android:layout_height="@dimen/home_indicator_height"/>
 
 </RelativeLayout>

@@ -52,4 +52,5 @@
     <color name="bg_update_bt_normal">#3aa0eb</color>
 
     <color name="white">#FFFFFF</color>
+    <color name="sakura_progress">#128FFF</color>
 </resources>

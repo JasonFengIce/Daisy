@@ -34,6 +34,7 @@ public class HomeActivity extends FragmentActivity {
 
 
         Intent intent = getIntent();
+        int position = intent.getIntExtra("position", 0);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
         pagerIndicator = (IconPagerIndicator) findViewById(R.id.indicator);
@@ -53,6 +54,8 @@ public class HomeActivity extends FragmentActivity {
         viewPager.setAdapter(indicatorAdapter);
 
         pagerIndicator.setViewPager(viewPager);
+
+        pagerIndicator.setCurrentItem(position);
     }
 
 

@@ -171,7 +171,6 @@
         <service android:name=".core.service.PosterUpdateService">
         </service>
 
-        <!--content provider-->
 
         <!-- receiver-->
         <receiver android:name=".core.receiver.PlayCompleteReceiver">
@@ -196,13 +195,29 @@
 
         <!-- =============================================================================== -->
         <!-- sakura -->
-        <activity android:name="tv.ismar.sakura.LauncherActivity">
+        <activity
+                android:launchMode="singleTask"
+                android:name="tv.ismar.sakura.LauncherActivity"
+                android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
+                >
             <intent-filter>
                 <action android:name="cn.ismar.sakura.launcher"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
+        <activity
+                android:launchMode="singleTask"
+                android:name="tv.ismar.sakura.ui.activity.HomeActivity"
+                android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
+                />
+        <!--content provider-->
+        <provider
+                android:authorities="tv.ismar.daisy"
+                android:exported="false"
+                android:name="com.activeandroid.content.ContentProvider"/>
+
     </application>
+
 
 </manifest>

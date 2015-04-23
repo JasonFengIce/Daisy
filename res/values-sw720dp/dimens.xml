@@ -190,6 +190,7 @@
     <dimen name="related_item_ItemBeanScore_textsize">24sp</dimen>
     <dimen name="related_item_related_price_txt_size">17sp</dimen>
     <!-- vod_player -->
+
     <dimen name="vod_player_logo_image_PT">22dip</dimen>
     <dimen name="vod_player_logo_image_PR">22dip</dimen>
     <dimen name="vod_player_bufferlayout_H">88dip</dimen>
@@ -214,29 +215,29 @@
     <dimen name="vod_player_timetext_PR">27dip</dimen>
     <dimen name="vod_player_timetext_textsize">27sp</dimen>
     <dimen name="vod_player_timetext_marginTop">1dip</dimen>
-    <dimen name="vod_player_titlelayout_H">73dip</dimen>
-    <dimen name="vod_player_titlelayout_PL">53dip</dimen>
-    <dimen name="vod_player_titlelayout_PR">53dip</dimen>
-    <dimen name="vod_player_titlelayout_marginleft">100dip</dimen>
-    <dimen name="vod_player_titlelayout_margintop">15dip</dimen>
-    <dimen name="vod_player_playpauseimage_W">57dip</dimen>
-    <dimen name="vod_player_playpauseimage_H">57dip</dimen>
-    <dimen name="vod_player_playpauseimage_marginleft">13dip</dimen>
-    <dimen name="vod_player_fbimage_W">49dip</dimen>
-    <dimen name="vod_player_fbimage_H">43dip</dimen>
-    <dimen name="vod_player_fbimage_marginleft">13dip</dimen>
-    <dimen name="vod_player_timeseekbar_PL">12dip</dimen>
-    <dimen name="vod_player_timeseekbar_PR">12dip</dimen>
-    <dimen name="vod_player_timeseekbar_MaxH">10dip</dimen>
+    <dimen name="vod_player_titlelayout_H">49dip</dimen>
+    <dimen name="vod_player_titlelayout_PL">35dip</dimen>
+    <dimen name="vod_player_titlelayout_PR">35dip</dimen>
+    <dimen name="vod_player_titlelayout_marginleft">67dip</dimen>
+    <dimen name="vod_player_titlelayout_margintop">10dip</dimen>
+    <dimen name="vod_player_playpauseimage_W">38dip</dimen>
+    <dimen name="vod_player_playpauseimage_H">38dip</dimen>
+    <dimen name="vod_player_playpauseimage_marginleft">9dip</dimen>
+    <dimen name="vod_player_fbimage_W">33dip</dimen>
+    <dimen name="vod_player_fbimage_H">29dip</dimen>
+    <dimen name="vod_player_fbimage_marginleft">9dip</dimen>
+    <dimen name="vod_player_timeseekbar_PL">8dip</dimen>
+    <dimen name="vod_player_timeseekbar_PR">8dip</dimen>
+    <dimen name="vod_player_timeseekbar_MaxH">7dip</dimen>
     <dimen name="vod_player_timeseekbar_thumbOffset">1dip</dimen>
-    <dimen name="vod_player_ffimage_W">57dip</dimen>
-    <dimen name="vod_player_ffimage_H">57dip</dimen>
-    <dimen name="vod_player_ffimage_marginright">53dip</dimen>
-    <dimen name="vod_player_timeseekbar_H">18dip</dimen>
-    <dimen name="vod_player_vodlayout_marginleft">40dip</dimen>
-    <dimen name="vod_player_vodlayout_margintop">3dip</dimen>
-    <dimen name="vod_player_vodlayout_PB">8dip</dimen>
-    <dimen name="vod_player_vod_content_layout_W">400dip</dimen>
+    <dimen name="vod_player_ffimage_W">38dip</dimen>
+    <dimen name="vod_player_ffimage_H">38dip</dimen>
+    <dimen name="vod_player_ffimage_marginright">35dip</dimen>
+    <dimen name="vod_player_timeseekbar_H">12dip</dimen>
+    <dimen name="vod_player_vodlayout_marginleft">27dip</dimen>
+    <dimen name="vod_player_vodlayout_margintop">2dip</dimen>
+    <dimen name="vod_player_vodlayout_PB">5dip</dimen>
+    <dimen name="vod_player_vod_content_layout_W">267dip</dimen>
 
     <!-- play_finished -->
     <dimen name="play_finished_leftlayout_PL">40dip</dimen>
@@ -634,6 +635,11 @@
     <dimen name="textSize_normal">22sp</dimen>
     <dimen name="textSize_testButton">30sp</dimen>
 
+
+    <!-- launcher activity -->
+    <dimen name="sakura_launcher_indicator_height">150dp</dimen>
+    <dimen name="sakura_launcher_indicator_width">150dp</dimen>
+
     <!-- activity_home -->
     <dimen name="home_logo_margin_top">80dp</dimen>
     <dimen name="home_logo_margin_left">80dp</dimen>
@@ -653,6 +659,17 @@
     <dimen name="test_button_height">60dp</dimen>
     <dimen name="layout_border_padding">20dp</dimen>
     <dimen name="list_title_height">40dp</dimen>
+    <dimen name="list_select_prompt_textSize">26sp</dimen>
+
+    <dimen name="list_item_margin">30dp</dimen>
+
+    <!-- sakura_item_node_list -->
+    <dimen name="count_layout_width">40dp</dimen>
+    <dimen name="count_layout_height">40dp</dimen>
+    <dimen name="count_number_textSize">20sp</dimen>
+    <dimen name="item_node_name_width">130dp</dimen>
+    <dimen name="item_node_minHeight">55dp</dimen>
+
 
 
 </resources>

@@ -1,6 +1,9 @@
 package tv.ismar.sakura.data.http;
 
+import tv.ismar.sakura.utils.StringUtils;
+
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by huaijie on 2015/4/9.
@@ -34,56 +37,36 @@ public class CdnListEntity {
         this.retmsg = retmsg;
     }
 
-    class CdnEntity {
-        private String cdnID;
-        private String flag;
+    public class CdnEntity {
+        private int cdnID;
+        private int flag;
         private String name;
-        private String route_trace;
+        private int route_trace;
         private String url;
-        private String ping;
 
-        private String nick;
 
-        public String getPing() {
-            return ping;
-        }
-
-        public void setPing(String ping) {
-            this.ping = ping;
-        }
-
-        public void setNick(String nick) {
-            this.nick = nick;
-        }
-
-        public int getSpeed() {
-            return speed;
-        }
-
-        public void setSpeed(int speed) {
-            this.speed = speed;
-        }
-
-        private int speed;
-
-        public String getTestFile() {
-            return "http://" + getUrl() + "/cdn/speedtest.ts";
-        }
-
-        public String getCdnID() {
+        public int getCdnID() {
             return cdnID;
         }
 
-        public void setCdnID(String cdnID) {
+        public void setCdnID(int cdnID) {
             this.cdnID = cdnID;
         }
 
-        public String getFlag() {
+        public int getFlag() {
             return flag;
         }
 
-        public void setFlag(String flag) {
+        public void setFlag(int flag) {
             this.flag = flag;
+        }
+
+        public int getRoute_trace() {
+            return route_trace;
+        }
+
+        public void setRoute_trace(int route_trace) {
+            this.route_trace = route_trace;
         }
 
         public String getName() {
@@ -94,16 +77,9 @@ public class CdnListEntity {
             this.name = name;
         }
 
-        public String getRoute_trace() {
-            return route_trace;
-        }
-
-        public void setRoute_trace(String route_trace) {
-            this.route_trace = route_trace;
-        }
-
         public String getUrl() {
-            return url.replace("|", "-").split("-")[0];
+           String[] urls =url.replace("|", "-").split("-");
+            return urls[new Random().nextInt(urls.length)];
         }
 
         public void setUrl(String url) {
@@ -112,6 +88,14 @@ public class CdnListEntity {
 
         public String getNick() {
             return name.replace("|", "-").split("-")[1];
+        }
+
+        public int getIsp(){
+            return StringUtils.getIspCodeByNode(getNick());
+        }
+
+        public int getArea(){
+            return StringUtils.getAreaCodeByNode(getNick());
         }
     }
 }

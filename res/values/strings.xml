@@ -193,5 +193,7 @@
     <string name="add_description">补充描述:</string>
     <string name="max_msg_length">输入信息最长不要超过70个字符!</string>
     <string name="submit_text">提交</string>
+    <string name="tring">可以尝试</string>
+    <string name="can_select">建议选择</string>
 
 </resources>
