@@ -36,7 +36,7 @@
            android:layout_gravity="center_vertical"
            android:focusable="true"
            android:id="@+id/list_view_search"
-            android:background="@drawable/search_btn_bg_selector" />
+           android:background="@drawable/search_btn_bg_selector" />
 </LinearLayout>
 
     <ImageView

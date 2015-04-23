@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/channel_section_tabs_W"
     android:layout_height="match_parent"
- android:id="@+id/section_item_layout"
+    android:id="@+id/section_item_layout"
  >
     
         <ProgressBar
@@ -28,8 +28,5 @@
         android:textSize="@dimen/channel_section_tabs_label_textsize"
         android:textColor="#FFBBBBBB"
         android:singleLine="true"
-       android:gravity="center_horizontal"/>
-    
-
-
+        android:gravity="center_horizontal"/>
 </RelativeLayout>

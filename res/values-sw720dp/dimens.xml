@@ -481,10 +481,10 @@
     <!-- DetailAttributeContainer -->
     <dimen name="DetailAttributeContainer_Layout_W">314dip</dimen>
     <!-- package detail -->
-    <dimen name="ZGridView_packagedetail_selectorLeftPadding">5dip</dimen>
-    <dimen name="ZGridView_packagedetail_selectorTopPadding">2dip</dimen>
-    <dimen name="ZGridView_packagedetail_selectorRight">3dip</dimen>
-    <dimen name="ZGridView_packagedetail_selectorBottom">-15dip</dimen>
+    <dimen name="ZGridView_packagedetail_selectorLeftPadding">1dip</dimen>
+    <dimen name="ZGridView_packagedetail_selectorTopPadding">-1dip</dimen>
+    <dimen name="ZGridView_packagedetail_selectorRight">0dip</dimen>
+    <dimen name="ZGridView_packagedetail_selectorBottom">-18dip</dimen>
     <dimen name="vod_payment_package_details_container_ML">53dip</dimen>
     <dimen name="vod_payment_package_details_container_MT">67dip</dimen>
     <dimen name="package_detail_divider_W">768dip</dimen>
