@@ -2,8 +2,7 @@ package tv.ismar.sakura.core;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
-import retrofit.http.GET;
-import retrofit.http.Query;
+import retrofit.http.*;
 import tv.ismar.daisy.AppConstant;
 import tv.ismar.sakura.data.http.*;
 
@@ -15,9 +14,11 @@ import java.util.List;
 public class SakuraClientAPI {
     public static final RestAdapter restAdapter_WX_API_TVXIO;
     public static final RestAdapter restAdapter_IRIS_TVXIO;
+    public static final RestAdapter restAdapter_SPEED_CALLA_TVXIO;
 
     public static final String API_HOST = "http://wx.api.tvxio.com/";
     private static final String IRIS_TVXIO_HOST = "http://iris.tvxio.com";
+    private static final String SPEED_CALLA_TVXIO_HOST = "http://speed.calla.tvxio.com";
 
 
     static {
@@ -28,6 +29,10 @@ public class SakuraClientAPI {
         restAdapter_IRIS_TVXIO = new RestAdapter.Builder()
                 .setLogLevel(AppConstant.LOG_LEVEL)
                 .setEndpoint(SakuraClientAPI.IRIS_TVXIO_HOST)
+                .build();
+        restAdapter_SPEED_CALLA_TVXIO = new RestAdapter.Builder()
+                .setLogLevel(AppConstant.LOG_LEVEL)
+                .setEndpoint(SPEED_CALLA_TVXIO_HOST)
                 .build();
     }
 
@@ -97,5 +102,28 @@ public class SakuraClientAPI {
         );
     }
 
+
+    public interface DeviceLog {
+        @GET("/log")
+        void execute(
+                @Query("data") String data,
+                @Query("sn") String sn,
+                @Query("modelname") String modelName,
+                Callback<Empty> callback
+        );
+    }
+
+    public interface UploadResult {
+       public static final String ACTION_TYPE ="submitTestData";
+        @FormUrlEncoded
+        @POST("/shipinkefu/getCdninfo")
+        void excute(
+                @Field("actiontype") String actionType,
+                @Field("snCode") String snCode,
+                @Field("nodeId") String nodeId,
+                @Field("nodeSpeed") String nodeSpeed,
+                Callback<Empty> callback
+        );
+    }
 
 }

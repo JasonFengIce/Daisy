@@ -31,6 +31,7 @@
                 />
 
         <tv.ismar.sakura.ui.widget.SakuraButton
+                android:layout_marginLeft="@dimen/layout_margin"
                 android:id="@+id/unbind_node"
                 android:layout_width="250dp"
                 android:layout_height="40dp"
@@ -94,7 +95,7 @@
         <tv.ismar.sakura.ui.widget.SakuraButton
                 android:id="@+id/speed_test_btn"
                 android:background="@drawable/sakura_selector_button"
-                android:layout_weight="1"
+                android:layout_weight="0.7"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/textSize_testButton"
                 android:focusable="true"

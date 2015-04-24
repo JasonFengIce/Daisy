@@ -22,6 +22,9 @@ public class CdnCacheTable extends Model {
     @Column(name = "cdn_flag")
     public int cdn_flag = 0;
 
+    @Column(name = "cdn_ip")
+    public String cdn_ip;
+
     @Column(name = "area")
     public int area = 0;
 

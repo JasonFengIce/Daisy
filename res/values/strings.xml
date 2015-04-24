@@ -199,6 +199,12 @@
     <string name="switch_to_auto">切换为自动获取</string>
     <string name="already_to_auto">已自动获取</string>
     <string name="auto_fetch">自动获取</string>
+    <string name="test_complete_text">测速完成,请选择视频源</string>
+    <string name="speed_testing">正在测速...</string>
+    <string name="test_interupt">测速已终止</string>
+    <string name="confirm_test_complete">确定</string>
+
+
 
     <!-- sakura_popup_select_node -->
     <string name="are_you_sure_selecte">是否选择该视频源？</string>
@@ -213,6 +219,7 @@
     <!-- sakura_help_fragment -->
     <string name="device_code">设备识别码: </string>
     <string name="weixin">微信公共平台：</string>
+
 
 
 </resources>
