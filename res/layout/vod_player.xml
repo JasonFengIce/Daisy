@@ -4,14 +4,15 @@
                 android:id="@+id/RootRelativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                android:foreground="@android:color/transparent">
+                android:background="@android:color/black"
+                >
     <tv.ismar.daisy.views.IsmatvVideoView
         android:id="@+id/video_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:visibility="visible" >
+        android:visibility="visible"
+         >
     </tv.ismar.daisy.views.IsmatvVideoView>
 
     <FrameLayout
