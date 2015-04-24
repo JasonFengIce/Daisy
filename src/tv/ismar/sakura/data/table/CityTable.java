@@ -7,7 +7,7 @@ import com.activeandroid.annotation.Table;
 /**
  * Created by huaijie on 11/27/14.
  */
-@Table(name = "city")
+@Table(name = "city", id = "_id")
 public class CityTable extends Model {
     public static final String FLAG = "flag";
     public static final String NAME = "name";

@@ -84,4 +84,18 @@ public class SakuraClientAPI {
         );
     }
 
+
+    public interface FetchTel {
+        public String ACTION = "getContact";
+
+        @GET("/shipinkefu/getCdninfo")
+        void excute(
+                @Query("actiontype") String actiontype,
+                @Query("ModeName") String modeName,
+                @Query("sn") String sn,
+                Callback<List<TeleEntity>> callback
+        );
+    }
+
+
 }
