@@ -662,6 +662,8 @@
     <dimen name="list_select_prompt_textSize">26sp</dimen>
 
     <dimen name="list_item_margin">30dp</dimen>
+    <dimen name="spinner_text">20sp</dimen>
+
 
     <!-- sakura_item_node_list -->
     <dimen name="count_layout_width">40dp</dimen>
