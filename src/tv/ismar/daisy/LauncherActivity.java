@@ -145,12 +145,21 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         activator.setOnCompleteListener(this);
         activator.active(MANUFACTURE, KIND, VERSION);
     }
-
+@Override
+protected void onPause() {
+	// TODO Auto-generated method stub
+	super.onPause();
+	ispause = true;
+}
     @Override
     protected void onResume() {
         super.onResume();
+        if(ispause){
+        	if(mCurrentTime>=0)
+        	  videoView.seekTo(mCurrentTime);
+        	ispause = false;
+        }
     }
-
     Dialog dialog = null;
     private DialogInterface.OnClickListener mPositiveListener;
     private DialogInterface.OnClickListener mNegativeListener;
@@ -879,7 +888,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         });
     }
 
-
+    private int mCurrentTime = -1;
+    private boolean ispause = false;
     private void playVideoByTime(int startTime, int endTime) {
         int currnet = videoView.getCurrentPosition();
         Log.d(TAG, "current ---> " + currnet);
@@ -887,6 +897,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             Log.d(TAG, "start time ---> " + startTime + "  end time ---> " + endTime);
             isfinished = true;
             videoView.seekTo(startTime);
+            mCurrentTime = startTime;
         }
     }
 

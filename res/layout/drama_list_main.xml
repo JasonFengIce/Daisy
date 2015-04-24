@@ -42,7 +42,7 @@
                 android:layout_width="@dimen/drama_main_image_daram_back_W"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/image_daram_back"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="7dp"
                 android:background="@drawable/person_btn_selector"
                 android:text="@string/orderAll_drama"
                 android:textColor="#FFF8F8FF"
@@ -86,9 +86,9 @@
                 android:id="@+id/one_drama_order_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="80dp"
+                android:layout_marginTop="53dp"
                 android:text="@string/one_drama_order_info"
-                android:textSize="38sp"
+                android:textSize="25sp"
                 android:visibility="gone"
                  />
         </LinearLayout>
