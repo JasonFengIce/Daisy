@@ -684,5 +684,8 @@
     <dimen name="feedback_item_v_margin">5dp</dimen>
     <dimen name="feedback_item_h_margin">10dp</dimen>
 
+    <!-- help fragment -->
+    <dimen name="help_item__h_margin">10dp</dimen>
+
 
 </resources>
