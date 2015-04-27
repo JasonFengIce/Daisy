@@ -1884,27 +1884,9 @@ public class PlayerActivity extends VodMenuAction {
 	boolean needOnresume = false;
 
 	private void startSakura() {
-		if (AppConstant.DEBUG)
-			Log.d(TAG, "install vod service invoke...");
-		needOnresume = true;
-		try {
-			ApplicationInfo applicationInfo = getPackageManager()
-					.getApplicationInfo("cn.ismartv.speedtester", 0);
-			if (null != applicationInfo) {
-				Intent intent = new Intent();
-				intent.setClassName("cn.ismartv.speedtester",
-						"cn.ismartv.speedtester.ui.activity.MenuActivity");
-				startActivity(intent);
-			}
-		} catch (PackageManager.NameNotFoundException e) {
-			Uri uri = Uri.parse("file://"
-					+ getFileStreamPath("Sakura.apk").getAbsolutePath());
-			Intent intent = new Intent(Intent.ACTION_VIEW);
-			intent.setDataAndType(uri,
-					"application/vnd.android.package-archive");
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
-		}
+        Intent intent = new Intent();
+        intent.setAction("cn.ismar.sakura.launcher");
+        startActivity(intent);
 	}
 
 	private void orderCheck() {

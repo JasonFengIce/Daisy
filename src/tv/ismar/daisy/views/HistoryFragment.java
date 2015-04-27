@@ -770,21 +770,9 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		}
 
 		   private void startSakura(){
-		        try {
-		          ApplicationInfo applicationInfo =  getActivity().getPackageManager().getApplicationInfo(
-		                    "cn.ismartv.speedtester", 0);
-		            if(null!= applicationInfo){
-		                Intent intent = new Intent();
-		                intent.setClassName("cn.ismartv.speedtester", "cn.ismartv.speedtester.ui.activity.MenuActivity");
-		                startActivity(intent);
-		            }
-		        } catch (PackageManager.NameNotFoundException e) {
-		            Uri uri = Uri.parse("file://" + getActivity().getFileStreamPath("Sakura.apk").getAbsolutePath());
-		            Intent intent = new Intent(Intent.ACTION_VIEW);
-		            intent.setDataAndType(uri, "application/vnd.android.package-archive");
-		            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		            startActivity(intent);
-		        }
+	            Intent intent = new Intent();
+	            intent.setAction("cn.ismar.sakura.launcher");
+	            startActivity(intent);
 		    }
 
 		   private void startPersoncenter(){
