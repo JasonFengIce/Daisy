@@ -8,9 +8,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#FFFFFFFF"
-        android:textSize="48sp"
+        android:textSize="@dimen/menu_item_text_size"
         android:gravity="center"
-        android:paddingTop="30dip"
-        android:paddingBottom="30dip"/>
+        android:paddingTop="@dimen/menu_item_PaddingTB"
+        android:paddingBottom="@dimen/menu_item_PaddingTB"/>
 
 </LinearLayout>

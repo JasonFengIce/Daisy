@@ -689,5 +689,16 @@
     <!-- help fragment -->
     <dimen name="help_item__h_margin">10dp</dimen>
 
-
+<!-- recommend -->
+    <dimen name="recommend_item__W">153dip</dimen>
+    <dimen name="recommend_item_image__H">100dip</dimen>
+    <dimen name="ZGridView_recommend_selectorLeftPadding">14dip</dimen>
+    <dimen name="ZGridView_recommend_selectorTopPadding">0dip</dimen>
+    <dimen name="ZGridView_recommend_selectorRightPadding">14dip</dimen>
+    <dimen name="ZGridView_recommend_selectorBottomPadding">-20dip</dimen>
+    
+    <!--menu  -->
+<dimen name="menu_list_PaddingTB">34dip</dimen>
+<dimen name="menu_item_PaddingTB">20dip</dimen>
+<dimen name="menu_item_text_size">32sp</dimen>
 </resources>

@@ -3,10 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:id="@+id/simple_toast_root" >
 
     <LinearLayout
-        android:id="@+id/simple_toast_root"
+       
         android:layout_width="@dimen/toast_layout_W"
         android:layout_height="@dimen/toast_layout_H"
         android:background="@drawable/simple_toast"

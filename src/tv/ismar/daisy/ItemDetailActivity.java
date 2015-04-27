@@ -1033,7 +1033,7 @@ private boolean isPause = false;
 	private void showToast(String text) {
 		LayoutInflater inflater = getLayoutInflater();
 		View layout = inflater.inflate(R.layout.simple_toast,
-				(ViewGroup) findViewById(R.id.simple_toast_root));
+				null);
 		TextView toastText = (TextView) layout.findViewById(R.id.toast_text);
 		toastText.setText(text);
 		Toast toast = new Toast(getApplicationContext());
@@ -1163,7 +1163,7 @@ private boolean isPause = false;
 	};
 	
 	private void deleteFavoriteByNet(){
-		mSimpleRestClient.doSendRequest("/api/bookmark/remove/", "post", "access_token="+
+		mSimpleRestClient.doSendRequest("/api/bookmarks/remove/", "post", "access_token="+
 	    SimpleRestClient.access_token+"&device_token="+SimpleRestClient.device_token+"&item="+mItem.pk, new HttpPostRequestInterface() {
 			
 			@Override

@@ -589,5 +589,12 @@
     <dimen name="launcher_channel_title_height">80dp</dimen>
     <dimen name="launcher_exit_button_width">250dp</dimen>
 
+<!-- recommend -->
+<dimen name="recommend_item__W">230dip</dimen>
+<dimen name="recommend_item_image__H">150dip</dimen>
 
+<!--menu  -->
+<dimen name="menu_list_PaddingTB">50dip</dimen>
+<dimen name="menu_item_PaddingTB">30dip</dimen>
+<dimen name="menu_item_text_size">48sp</dimen>
 </resources>
