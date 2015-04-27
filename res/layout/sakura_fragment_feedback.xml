@@ -59,7 +59,7 @@
 
         <tv.ismar.sakura.ui.widget.SakuraEditText
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
+                android:layout_height="match_parent"
                 android:textSize="@dimen/textSize_normal"
                 android:gravity="center"
                 android:id="@+id/phone_number_edit"
@@ -89,7 +89,7 @@
 
         <tv.ismar.sakura.ui.widget.SakuraEditText
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
+                android:layout_height="match_parent"
                 android:textSize="@dimen/textSize_normal"
                 android:maxLength="70"
                 android:gravity="center"
