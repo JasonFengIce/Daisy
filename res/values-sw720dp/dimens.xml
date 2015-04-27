@@ -556,7 +556,7 @@
     <dimen name="pay_shiyuncard_input_margintop">32dp</dimen>
     <dimen name="pay_shiyuncard_submit_margintop">32dp</dimen>
     <dimen name="pay_shiyuncard_submit_textsize">23sp</dimen>
-    <dimen name="pay_qrcode_pay_panel_marginleft">50dp</dimen>
+    <dimen name="pay_qrcode_pay_panel_marginleft">30dp</dimen>
     <dimen name="pay_qrcode_pay_panel_margintop">10dp</dimen>
     <dimen name="pay_qrcode_pay_qrcodeview_marginleft">20dp</dimen>
     <dimen name="pay_qrcode_pay_qrcodeview_marginright">20dp</dimen>
