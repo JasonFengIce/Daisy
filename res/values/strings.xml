@@ -205,7 +205,6 @@
     <string name="confirm_test_complete">确定</string>
 
 
-
     <!-- sakura_popup_select_node -->
     <string name="are_you_sure_selecte">是否选择该视频源？</string>
     <string name="confirm_this_node">确定</string>
@@ -215,11 +214,12 @@
 
     <!-- sakura_feedback_fragment -->
     <string name="ismartv">视云客服 ：</string>
+    <string name="fill_contact_number">请填写联系电话!</string>
+    <string name="you_should_give_an_phone_number">请填写正确的手机号码</string>
 
     <!-- sakura_help_fragment -->
-    <string name="device_code">设备识别码: </string>
+    <string name="device_code">设备识别码:</string>
     <string name="weixin">微信公共平台：</string>
-
 
 
 </resources>
