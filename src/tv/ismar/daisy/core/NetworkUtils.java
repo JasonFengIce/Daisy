@@ -149,7 +149,8 @@ public class NetworkUtils {
 	        connection.setDoOutput(true);
 	        connection.setDoInput(true);
 	        connection.setRequestMethod("POST");
-	        connection.setUseCaches(false);
+	        //connection.setUseCaches(false);
+	        connection.addRequestProperty("Accept-Encoding", "gzip,deflate,sdch");
 	        connection.setInstanceFollowRedirects(true);
 	        connection.setRequestProperty("Content-Type",
 	                "application/x-www-form-urlencoded");
@@ -162,20 +163,28 @@ public class NetworkUtils {
 	        out.flush();
 	        out.close();
 	        int status = connection.getResponseCode();
-
-	       
+	        GZIPInputStream is = null;
+			String encoding = connection.getContentEncoding();
+			BufferedReader buff ;
+			 if(encoding!=null && encoding.contains("gzip")){//首先判断服务器返回的数据是否支持gzip压缩，
+					is = new GZIPInputStream(connection.getInputStream());
+					buff = new BufferedReader(new InputStreamReader(is,"UTF-8")); //如果支持则应该使用GZIPInputStream解压，否则会出现乱码无效数据
+				}
+			 else{
+				 buff = new BufferedReader(new InputStreamReader(connection.getInputStream(),"UTF-8"));
+			 }
 	        if(status==200){
-	            BufferedReader reader = new BufferedReader(new InputStreamReader(
-		                connection.getInputStream(),"UTF-8"));
+//	            BufferedReader reader = new BufferedReader(new InputStreamReader(
+//		                connection.getInputStream(),"UTF-8"));
 		        String line;
-		        while ((line = reader.readLine()) != null) {
+		        while ((line = buff.readLine()) != null) {
 		            response.append(line);
 		        }
 		        if(response.toString().equals("")){
-		        	reader.close();	
+		        	buff.close();	
 		        	return "200";
 		        }
-		        reader.close();		        	
+		        buff.close();		        	
 	        }
 	        else if(status==201){
 	        	//历史记录创建成功

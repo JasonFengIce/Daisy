@@ -108,6 +108,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 	private VideoEntity tvHome;
 	private Item[] mHistoriesByNet;
 	private Button search_btn;
+	private ItemCollection mHistoryItemList;
 	private long getTodayStartPoint() {
 		long currentTime = System.currentTimeMillis();
 		GregorianCalendar currentCalendar = new GregorianCalendar();
@@ -127,8 +128,8 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		mHGridView.setOnItemClickListener(this);
 		mHGridView.setOnItemSelectedListener(this);
 		mScrollableSectionList = (ScrollableSectionList) fragmentView.findViewById(R.id.section_tabs);
-		mScrollableSectionList.setOnSectionSelectChangeListener(this);
-		
+		//mScrollableSectionList.setOnSectionSelectChangeListener(this);
+		mScrollableSectionList.setVisibility(View.GONE);
 		mChannelLabel = (TextView) fragmentView.findViewById(R.id.channel_label);
 		mChannelLabel.setText(getResources().getString(R.string.vod_movielist_title_history));
 		
@@ -160,6 +161,8 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		mYesterdayItemList = new ItemCollection(1, 0, "yesterday", getResources().getString(R.string.vod_movielist_yesterday));
 		//define early days's ItemList
 		mEarlyItemList = new ItemCollection(1, 0, "early", getResources().getString(R.string.vod_movielist_recent));
+		
+		mHistoryItemList = new ItemCollection(1,0,"1","1");
 	}
 	
 	@Override
@@ -289,41 +292,46 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 					for(int i=0;i<mHistories.size();++i) {
 						History history = mHistories.get(i);
 						Item item = getItem(history);
-						if(history.last_played_time < yesterdayStartPoint){
-							mEarlyItemList.objects.put(mEarlyItemList.count++, item);
-						} else if(history.last_played_time > yesterdayStartPoint && history.last_played_time < todayStartPoint) {
-							mYesterdayItemList.objects.put(mYesterdayItemList.count++, item);
-						} else {
-							mTodayItemList.objects.put(mTodayItemList.count++, item);
-						}
+//						if(history.last_played_time < yesterdayStartPoint){
+//							mEarlyItemList.objects.put(mEarlyItemList.count++, item);
+//						} else if(history.last_played_time > yesterdayStartPoint && history.last_played_time < todayStartPoint) {
+//							mYesterdayItemList.objects.put(mYesterdayItemList.count++, item);
+//						} else {
+//							mTodayItemList.objects.put(mTodayItemList.count++, item);
+//						}
+						mHistoryItemList.objects.put(mHistoryItemList.count++, item);
 					}
-					mTodayItemList.num_pages = (int) FloatMath.ceil((float)mTodayItemList.count / (float)ItemCollection.NUM_PER_PAGE);
-					mYesterdayItemList.num_pages = (int) FloatMath.ceil((float)mYesterdayItemList.count /(float) ItemCollection.NUM_PER_PAGE);
-					mEarlyItemList.num_pages = (int) FloatMath.ceil((float)mEarlyItemList.count / (float)ItemCollection.NUM_PER_PAGE);
-					if(mTodayItemList.count > 0) {
-						Section todaySection = new Section();
-						todaySection.slug = mTodayItemList.slug;
-						todaySection.title = mTodayItemList.title;
-						todaySection.count = mTodayItemList.count;
-						mSectionList.add(todaySection);
-						Arrays.fill(mTodayItemList.hasFilledValidItem, true);
+					//mTodayItemList.num_pages = (int) FloatMath.ceil((float)mTodayItemList.count / (float)ItemCollection.NUM_PER_PAGE);
+					//mYesterdayItemList.num_pages = (int) FloatMath.ceil((float)mYesterdayItemList.count /(float) ItemCollection.NUM_PER_PAGE);
+					//mEarlyItemList.num_pages = (int) FloatMath.ceil((float)mEarlyItemList.count / (float)ItemCollection.NUM_PER_PAGE);
+					mHistoryItemList.num_pages = (int) FloatMath.ceil((float)mHistoryItemList.count / (float)ItemCollection.NUM_PER_PAGE);
+					if(mHistoryItemList.count>0){
+						Arrays.fill(mHistoryItemList.hasFilledValidItem, true);
 					}
-					if(mYesterdayItemList.count > 0) {
-						Section yesterdaySection = new Section();
-						yesterdaySection.slug = mYesterdayItemList.slug;
-						yesterdaySection.title = mYesterdayItemList.title;
-						yesterdaySection.count = mYesterdayItemList.count;
-						mSectionList.add(yesterdaySection);
-						Arrays.fill(mYesterdayItemList.hasFilledValidItem, true);
-					}
-					if(mEarlyItemList.count > 0) {
-						Section earlySection = new Section();
-						earlySection.slug = mEarlyItemList.slug;
-						earlySection.title = mEarlyItemList.title;
-						earlySection.count = mEarlyItemList.count;
-						mSectionList.add(earlySection);
-						Arrays.fill(mEarlyItemList.hasFilledValidItem, true);
-					}
+//					if(mTodayItemList.count > 0) {
+//						Section todaySection = new Section();
+//						todaySection.slug = mTodayItemList.slug;
+//						todaySection.title = mTodayItemList.title;
+//						todaySection.count = mTodayItemList.count;
+//						mSectionList.add(todaySection);
+//						Arrays.fill(mTodayItemList.hasFilledValidItem, true);
+//					}
+//					if(mYesterdayItemList.count > 0) {
+//						Section yesterdaySection = new Section();
+//						yesterdaySection.slug = mYesterdayItemList.slug;
+//						yesterdaySection.title = mYesterdayItemList.title;
+//						yesterdaySection.count = mYesterdayItemList.count;
+//						mSectionList.add(yesterdaySection);
+//						Arrays.fill(mYesterdayItemList.hasFilledValidItem, true);
+//					}
+//					if(mEarlyItemList.count > 0) {
+//						Section earlySection = new Section();
+//						earlySection.slug = mEarlyItemList.slug;
+//						earlySection.title = mEarlyItemList.title;
+//						earlySection.count = mEarlyItemList.count;
+//						mSectionList.add(earlySection);
+//						Arrays.fill(mEarlyItemList.hasFilledValidItem, true);
+//					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -333,26 +341,27 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 
 		@Override
 		protected void onPostExecute(Void result) {
-			if(mSectionList!=null && mSectionList.size() > 0) {
-				mScrollableSectionList.init(mSectionList, 1365,false);
+			if(mHistoryItemList!=null&&mHistoryItemList.count>0) {
+				//mScrollableSectionList.init(mSectionList, 1365,false);
 				ArrayList<ItemCollection> itemCollections = new ArrayList<ItemCollection>();
-				if(mTodayItemList.count > 0) {
-					itemCollections.add(mTodayItemList);
-				}
-				if(mYesterdayItemList.count > 0) {
-					itemCollections.add(mYesterdayItemList);
-				}
-				if(mEarlyItemList.count > 0) {
-					itemCollections.add(mEarlyItemList);
-				}
-				mHGridAdapter = new HGridAdapterImpl(getActivity(), itemCollections);
+//				if(mTodayItemList.count > 0) {
+//					itemCollections.add(mTodayItemList);
+//				}
+//				if(mYesterdayItemList.count > 0) {
+//					itemCollections.add(mYesterdayItemList);
+//				}
+//				if(mEarlyItemList.count > 0) {
+//					itemCollections.add(mEarlyItemList);
+//				}
+				itemCollections.add(mHistoryItemList);
+				mHGridAdapter = new HGridAdapterImpl(getActivity(), itemCollections,false);
 				mHGridView.setAdapter(mHGridAdapter);
 				mHGridView.setFocusable(true);
 				mHGridView.setHorizontalFadingEdgeEnabled(true);
 				mHGridView.setFadingEdgeLength(144);
-				int rows = mHGridView.getRows();
-				int totalColumnsOfSectionX = (int) FloatMath.ceil((float)mHGridAdapter.getSectionCount(mCurrentSectionPosition) / (float)rows);
-				mScrollableSectionList.setPercentage(mCurrentSectionPosition, (int)(1f/(float)totalColumnsOfSectionX*100f));
+				//int rows = mHGridView.getRows();
+				//int totalColumnsOfSectionX = (int) FloatMath.ceil((float)mHGridAdapter.getSectionCount(mCurrentSectionPosition) / (float)rows);
+				//mScrollableSectionList.setPercentage(mCurrentSectionPosition, (int)(1f/(float)totalColumnsOfSectionX*100f));
 			} else {
 				no_video();
 			}
@@ -557,7 +566,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 	}
 	
 	private void reset() {
-		mScrollableSectionList.reset();
+		//mScrollableSectionList.reset();
 		mSectionList = new SectionList();
 		initHistoryList();
 		if(mGetHistoryTask!=null && mGetHistoryTask.getStatus()!=AsyncTask.Status.FINISHED) {
@@ -639,17 +648,17 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		if("".equals(SimpleRestClient.access_token)){
 			mSelectedPosition = position;
 			// When selected column has changed, we need to update the ScrollableSectionList
-			int sectionIndex = mHGridAdapter.getSectionIndex(position);
-			int rows = mHGridView.getRows();
-			int itemCount = 0;
-			for(int i=0; i < sectionIndex; i++) {
-				itemCount += mHGridAdapter.getSectionCount(i);
-				
-			}
-			int columnOfX = (position - itemCount) / rows + 1;
-			int totalColumnOfSectionX = (int)(FloatMath.ceil((float)mHGridAdapter.getSectionCount(sectionIndex) / (float) rows)); 
-			int percentage = (int) ((float)columnOfX / (float)totalColumnOfSectionX * 100f);
-			mScrollableSectionList.setPercentage(sectionIndex, percentage);
+//			int sectionIndex = mHGridAdapter.getSectionIndex(position);
+//			int rows = mHGridView.getRows();
+//			int itemCount = 0;
+//			for(int i=0; i < sectionIndex; i++) {
+//				itemCount += mHGridAdapter.getSectionCount(i);
+//				
+//			}
+			//int columnOfX = (position - itemCount) / rows + 1;
+			//int totalColumnOfSectionX = (int)(FloatMath.ceil((float)mHGridAdapter.getSectionCount(sectionIndex) / (float) rows)); 
+			//int percentage = (int) ((float)columnOfX / (float)totalColumnOfSectionX * 100f);
+			//mScrollableSectionList.setPercentage(sectionIndex, percentage);
 		}
 	}
 
@@ -761,21 +770,9 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		}
 
 		   private void startSakura(){
-		        try {
-		          ApplicationInfo applicationInfo =  getActivity().getPackageManager().getApplicationInfo(
-		                    "cn.ismartv.speedtester", 0);
-		            if(null!= applicationInfo){
-		                Intent intent = new Intent();
-		                intent.setClassName("cn.ismartv.speedtester", "cn.ismartv.speedtester.ui.activity.MenuActivity");
-		                startActivity(intent);
-		            }
-		        } catch (PackageManager.NameNotFoundException e) {
-		            Uri uri = Uri.parse("file://" + getActivity().getFileStreamPath("Sakura.apk").getAbsolutePath());
-		            Intent intent = new Intent(Intent.ACTION_VIEW);
-		            intent.setDataAndType(uri, "application/vnd.android.package-archive");
-		            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		            startActivity(intent);
-		        }
+	            Intent intent = new Intent();
+	            intent.setAction("cn.ismar.sakura.launcher");
+	            startActivity(intent);
 		    }
 
 		   private void startPersoncenter(){

@@ -5,9 +5,11 @@ import static tv.ismar.daisy.DramaListActivity.ORDER_CHECK_BASE_URL;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.ImageUtils;
@@ -65,7 +67,8 @@ import android.widget.TextView;
 
 import com.ismartv.api.t.AccessProxy;
 import com.ismartv.bean.ClipInfo;
-public class PlayerActivity extends VodMenuAction{
+
+public class PlayerActivity extends VodMenuAction {
 
 	@SuppressWarnings("unused")
 	private static final String SAMPLE = "http://114.80.0.33/qyrrs?url=http%3A%2F%2Fjq.v.tvxio.com%2Fcdn%2F0%2F7b%2F78fadc2ffa42309bda633346871f26%2Fhigh%2Fslice%2Findex.m3u8&quality=high&sn=weihongchang_s52&clipid=779521&sid=85d3f919a918460d9431136d75db17f03&sign=08a868ad3c4e3b37537a13321a6f9d4b";
@@ -73,7 +76,6 @@ public class PlayerActivity extends VodMenuAction{
 	private static final String TAG = "PLAYER";
 	private static final String BUFFERCONTINUE = " 上次放映：";
 	private static final String PlAYSTART = " 即将放映：";
-	private static final String BUFFERING = " 正在加载 ";
 	private static final String EXTOCLOSE = " 网络数据异常，即将退出播放器";
 	@SuppressWarnings("unused")
 	private static final String HOST = "cord.tvxio.com";
@@ -82,7 +84,6 @@ public class PlayerActivity extends VodMenuAction{
 	private static final int DIALOG_OK_CANCEL = 0;
 
 	private boolean paused = false;
-	private boolean isBuffer = true;
 	private boolean isSeekBuffer = false;
 	private boolean panelShow = false;
 	private int currQuality = 0;
@@ -90,7 +91,6 @@ public class PlayerActivity extends VodMenuAction{
 	private Animation panelShowAnimation;
 	private Animation panelHideAnimation;
 	// private Animation bufferHideAnimation;
-	private LinearLayout bufferLayout;
 	private ImageView logoImage;
 	private LinearLayout panelLayout;
 	private MarqueeView titleText;
@@ -128,7 +128,6 @@ public class PlayerActivity extends VodMenuAction{
 	private int currNum = 0;
 	private int offsets = 0;
 	private int offn = 1;
-	private TextView bufferText;
 	private long bufferDuration = 0;
 	private long startDuration = 0;
 	private CallaPlay callaPlay = new CallaPlay();
@@ -138,22 +137,24 @@ public class PlayerActivity extends VodMenuAction{
 	private String mediaip;
 	private boolean live_video = false;
 	private boolean isPreview = false;
-    private boolean paystatus = false;
+	private boolean paystatus = false;
+	private boolean ismedialplayerinit = false;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setView();
-		
+
 		DisplayMetrics metric = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metric);
-        int height = metric.heightPixels; // 屏幕高度（像素）
-        int densityDpi = metric.densityDpi; // 屏幕密度DPI（120 / 160 / 240）
+		getWindowManager().getDefaultDisplay().getMetrics(metric);
+		int height = metric.heightPixels; // 屏幕高度（像素）
+		int densityDpi = metric.densityDpi; // 屏幕密度DPI（120 / 160 / 240）
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		if(needOnresume){
+		if (needOnresume) {
 			isBuffer = true;
 			showBuffer();
 			new initPlayTask().execute();
@@ -174,13 +175,9 @@ public class PlayerActivity extends VodMenuAction{
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setContentView(R.layout.vod_player);
 
-
-
 		mVideoView = (IsmatvVideoView) findViewById(R.id.video_view);
 		panelLayout = (LinearLayout) findViewById(R.id.PanelLayout);
 		titleText = (MarqueeView) findViewById(R.id.TitleText);
-
-		
 
 		qualityText = (TextView) findViewById(R.id.QualityText);
 		timeText = (TextView) findViewById(R.id.TimeText);
@@ -390,9 +387,9 @@ public class PlayerActivity extends VodMenuAction{
 						// TODO Auto-generated method stub
 						if (!mp.isPlaying())
 							mp.start();
-						if(paused){
+						if (paused) {
 							mp.pause();
-							}
+						}
 						isBuffer = false;
 						isSeek = false;
 						hideBuffer();
@@ -412,17 +409,24 @@ public class PlayerActivity extends VodMenuAction{
 
 			@Override
 			public boolean onInfo(SmartPlayer smartplayer, int i, int j) {
-				Log.v("aaaa", "i =" + i + ",.,.j=" + j);
 				if (i == 701) {
-					isBuffer = true;
-					bufferText.setText(BUFFERING + " " + 0 + "%");
-					showBuffer();
+					if (ismedialplayerinit) {
+						isBuffer = true;
+						bufferText.setText(BUFFERING + " " + 0 + "%");
+						showBuffer();
+					}
 				} else if (i == 704) {
-					bufferText.setText(BUFFERING + " " + j + "%");
+					if (ismedialplayerinit) {
+						bufferText.setText(BUFFERING + " " + j + "%");
+					}
 				} else if (i == 702) {
-					bufferText.setText(BUFFERING + " " + 100 + "%");
-					isBuffer = false;
-					hideBuffer();
+					if (ismedialplayerinit) {
+						bufferText.setText(BUFFERING + " " + 100 + "%");
+						isBuffer = false;
+						hideBuffer();
+					}
+				} else if (i == 3) {
+					ismedialplayerinit = true;
 				}
 				return false;
 			}
@@ -492,8 +496,8 @@ public class PlayerActivity extends VodMenuAction{
 								+ item.item_pk + "/";
 						// Item item1 = simpleRestClient.getItem(itemUrl);
 					}
-					if(item.expense != null){
-					orderCheck();
+					if (item.expense != null) {
+						orderCheck();
 					}
 				}
 			} catch (Exception e) {
@@ -697,9 +701,9 @@ public class PlayerActivity extends VodMenuAction{
 							}
 						}
 					} else {
-						if(!isPreview){
-						tempOffset = 0;
-						isContinue = true;
+						if (!isPreview) {
+							tempOffset = 0;
+							isContinue = true;
 						}
 					}
 					initQualtiyText();
@@ -727,7 +731,8 @@ public class PlayerActivity extends VodMenuAction{
 					TaskStart();// cmstest.tvxio.com
 					sid = VodUserAgent.getSid(urls[currQuality]);
 					mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
-			      mVideoView.setVideoPath(urls[currQuality]);
+					mVideoView.setVideoPath(urls[currQuality]);
+					ismedialplayerinit = false;
 				}
 
 			} else {
@@ -846,9 +851,9 @@ public class PlayerActivity extends VodMenuAction{
 
 	private void checkTaskStart(int delay) {
 		mCheckHandler.removeCallbacks(checkStatus);
-		if(delay > 0){
-			mCheckHandler.postDelayed(checkStatus,delay);
-		}else{
+		if (delay > 0) {
+			mCheckHandler.postDelayed(checkStatus, delay);
+		} else {
 			mCheckHandler.post(checkStatus);
 		}
 	}
@@ -955,12 +960,12 @@ public class PlayerActivity extends VodMenuAction{
 
 	}
 
-	private void checkContinueOrPay(int pk){
+	private void checkContinueOrPay(int pk) {
 		if (payedItemspk.contains(pk) || item.expense == null) {
 			isBuffer = true;
 			showBuffer();
 			new ItemByUrlTask().execute();
-		}else{
+		} else {
 			for (Item i : listItems) {
 				if (i.pk == pk) {
 					subItem = i;
@@ -968,10 +973,8 @@ public class PlayerActivity extends VodMenuAction{
 				}
 			}
 			mVideoView.stopPlayback();
-			PaymentDialog dialog = new PaymentDialog(
-					PlayerActivity.this,
-					R.style.PaymentDialog,
-					ordercheckListener);
+			PaymentDialog dialog = new PaymentDialog(PlayerActivity.this,
+					R.style.PaymentDialog, ordercheckListener);
 			item.model_name = "subitem";
 			item.pk = pk;
 			item.title = subItem.title;
@@ -1075,7 +1078,7 @@ public class PlayerActivity extends VodMenuAction{
 			panelLayout.setVisibility(View.VISIBLE);
 			panelShow = true;
 			hidePanelHandler.postDelayed(hidePanelRunnable, 3000);
-		}else{
+		} else {
 			hidePanelHandler.removeCallbacks(hidePanelRunnable);
 			hidePanelHandler.postDelayed(hidePanelRunnable, 3000);
 		}
@@ -1197,9 +1200,9 @@ public class PlayerActivity extends VodMenuAction{
 					showPanel();
 					fastBackward(SHORT_STEP);
 					ret = true;
-					if(mHandler.hasMessages(MSG_SEK_ACTION))
+					if (mHandler.hasMessages(MSG_SEK_ACTION))
 						mHandler.removeMessages(MSG_SEK_ACTION);
-						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 1000);
+					mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 1000);
 				}
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
@@ -1211,9 +1214,9 @@ public class PlayerActivity extends VodMenuAction{
 					showPanel();
 					fastForward(SHORT_STEP);
 					ret = true;
-					if(mHandler.hasMessages(MSG_SEK_ACTION))
+					if (mHandler.hasMessages(MSG_SEK_ACTION))
 						mHandler.removeMessages(MSG_SEK_ACTION);
-						mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 1000);
+					mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 1000);
 				}
 				break;
 			case KeyEvent.KEYCODE_DPAD_CENTER:
@@ -1259,16 +1262,16 @@ public class PlayerActivity extends VodMenuAction{
 				ret = true;
 				break;
 			case KeyEvent.KEYCODE_BACK:
-					showPopupDialog(
-							DIALOG_OK_CANCEL,
-							getResources().getString(
-									R.string.vod_player_exit_dialog));
-					ret = true;
-					if(!paused){
+				showPopupDialog(
+						DIALOG_OK_CANCEL,
+						getResources().getString(
+								R.string.vod_player_exit_dialog));
+				ret = true;
+				if (!paused) {
 					pauseItem();
 					playPauseImage
 							.setImageResource(R.drawable.vod_playbtn_selector);
-					}
+				}
 				break;
 			case KeyEvent.KEYCODE_MENU:
 				if (menu != null && menu.isVisible())
@@ -1373,9 +1376,9 @@ public class PlayerActivity extends VodMenuAction{
 												+ e.toString());
 							}
 							mVideoView.stopPlayback();
-							 Intent data=new Intent();  
-					         data.putExtra("result", paystatus);
-					         setResult(20, data);
+							Intent data = new Intent();
+							data.putExtra("result", paystatus);
+							setResult(20, data);
 							PlayerActivity.this.finish();
 						}
 					}
@@ -1389,10 +1392,10 @@ public class PlayerActivity extends VodMenuAction{
 					public void onClick(View v) {
 						if (popupDlg != null) {
 							popupDlg.dismiss();
-							if(paused){
-							resumeItem();
-							playPauseImage
-									.setImageResource(R.drawable.vod_pausebtn_selector);
+							if (paused) {
+								resumeItem();
+								playPauseImage
+										.setImageResource(R.drawable.vod_pausebtn_selector);
 							}
 						}
 					}
@@ -1438,14 +1441,19 @@ public class PlayerActivity extends VodMenuAction{
 		return menu.isVisible();
 	}
 
-	private void showBuffer() {
+	protected void showBuffer() {
 		if (isBuffer && !bufferLayout.isShown()) {
 			bufferLayout.setVisibility(View.VISIBLE);
 			bufferDuration = System.currentTimeMillis();
 		}
+		mHandler.sendEmptyMessageDelayed(BUFFER_COUNTDOWN_ACTION, 1000);
 	}
 
-	private void hideBuffer() {
+	protected void hideBuffer() {
+		if (mHandler.hasMessages(BUFFER_COUNTDOWN_ACTION)) {
+			mHandler.removeMessages(BUFFER_COUNTDOWN_ACTION);
+			buffercountDown = 0;
+		}
 		if (!isBuffer && bufferLayout.isShown()) {
 			bufferText.setText(BUFFERING);
 			bufferLayout.setVisibility(View.GONE);
@@ -1514,14 +1522,13 @@ public class PlayerActivity extends VodMenuAction{
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case MSG_SEK_ACTION:
-				bufferText.setText(BUFFERING+" "+0+"%");
+				bufferText.setText(BUFFERING + " " + 0 + "%");
 				isBuffer = true;
 				showBuffer();
 				mVideoView.seekTo(currPosition);
 				if (subItem != null)
-					callaPlay.videoPlaySeek(item.pk, subItem.pk,
-							item.title, clip.pk, currQuality, 0,
-							currPosition, sid);
+					callaPlay.videoPlaySeek(item.pk, subItem.pk, item.title,
+							clip.pk, currQuality, 0, currPosition, sid);
 				else
 					callaPlay.videoPlayContinue(item.pk, null, item.title,
 							clip.pk, currQuality, 0, currPosition, sid);
@@ -1530,6 +1537,19 @@ public class PlayerActivity extends VodMenuAction{
 				isSeek = false;
 				offsets = 0;
 				offn = 1;
+				break;
+			case BUFFER_COUNTDOWN_ACTION:
+				buffercountDown++;
+				if (buffercountDown > 30) {
+					if (mHandler.hasMessages(BUFFER_COUNTDOWN_ACTION)) {
+						mHandler.removeMessages(BUFFER_COUNTDOWN_ACTION);
+						buffercountDown = 0;
+					}
+					showDialog("网络不给力，请检查网络或稍后再试!");
+				} else {
+					mHandler.sendEmptyMessageDelayed(BUFFER_COUNTDOWN_ACTION,
+							1000);
+				}
 			default:
 				break;
 			}
@@ -1676,8 +1696,10 @@ public class PlayerActivity extends VodMenuAction{
 					playPauseImage
 							.setImageResource(R.drawable.vod_pausebtn_selector);
 					isBuffer = true;
+					showBuffer();
 					currQuality = pos;
-//					mVideoView = (IsmatvVideoView) findViewById(R.id.video_view);
+					// mVideoView = (IsmatvVideoView)
+					// findViewById(R.id.video_view);
 					mVideoView.setVideoPath(urls[currQuality]);
 					historyManager.addOrUpdateQuality(new Quality(0,
 							urls[currQuality], currQuality));
@@ -1714,8 +1736,7 @@ public class PlayerActivity extends VodMenuAction{
 		}
 
 		if (id > 100) {
-			subItemUrl = simpleRestClient.root_url + "/api/subitem/" + id
-					+ "/";
+			subItemUrl = simpleRestClient.root_url + "/api/subitem/" + id + "/";
 			bundle.remove("url");
 			bundle.putString("url", subItemUrl);
 			addHistory(0);
@@ -1861,26 +1882,12 @@ public class PlayerActivity extends VodMenuAction{
 	};
 
 	boolean needOnresume = false;
-	   private void startSakura(){
-	        if (AppConstant.DEBUG)
-	            Log.d(TAG, "install vod service invoke...");
-	        needOnresume = true;
-	        try {
-	          ApplicationInfo applicationInfo =  getPackageManager().getApplicationInfo(
-	                    "cn.ismartv.speedtester", 0);
-	            if(null!= applicationInfo){
-	                Intent intent = new Intent();
-	                intent.setClassName("cn.ismartv.speedtester", "cn.ismartv.speedtester.ui.activity.MenuActivity");
-	                startActivity(intent);
-	            }
-	        } catch (PackageManager.NameNotFoundException e) {
-	            Uri uri = Uri.parse("file://" + getFileStreamPath("Sakura.apk").getAbsolutePath());
-	            Intent intent = new Intent(Intent.ACTION_VIEW);
-	            intent.setDataAndType(uri, "application/vnd.android.package-archive");
-	            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-	            startActivity(intent);
-	        }
-	    }
+
+	private void startSakura() {
+        Intent intent = new Intent();
+        intent.setAction("cn.ismar.sakura.launcher");
+        startActivity(intent);
+	}
 
 	private void orderCheck() {
 		SimpleRestClient client = new SimpleRestClient();
@@ -1908,7 +1915,7 @@ public class PlayerActivity extends VodMenuAction{
 						payedItemspk.add(pk);
 					}
 				} catch (JSONException e) {
-					for(Item i:listItems){
+					for (Item i : listItems) {
 						payedItemspk.add(i.pk);
 					}
 				}

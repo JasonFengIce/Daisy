@@ -11,8 +11,8 @@
         android:listSelector="@drawable/menu_selector_focus"
         android:foreground="@color/player_menu_fg"
         android:background="@color/player_menu_bg"
-        android:paddingTop="50dip"
-        android:paddingBottom="50dip">
+        android:paddingTop="@dimen/menu_list_PaddingTB"
+        android:paddingBottom="@dimen/menu_list_PaddingTB">
         
     </ListView>
 </RelativeLayout>

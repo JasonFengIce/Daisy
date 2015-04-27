@@ -68,6 +68,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 	private static final int MSG_AD_COUNTDOWN = 100;
 	private static final int MSG_PLAY_TIME = 101;
 	private static final int MSG_INITQUALITYTITLE = 102;
+	static final int BUFFER_COUNTDOWN_ACTION = 113;
 	private static final int SEEK_STEP = 30000;
 	private static final int SHORT_STEP = 1;
 	private static final HashMap<Definition, String> DEFINITION_NAMES;
@@ -139,6 +140,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 	private boolean live_video = false;
 	private List<Definition> mBitStreamList = new ArrayList<Definition>();
 	private boolean isfinish = false;
+	
 	private boolean[] avalibleRate = { false, false, false };
 	static {
 		DEFINITION_NAMES = new HashMap<Definition, String>();
@@ -561,7 +563,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 				currQuality = 1;
 			} else {
 				currQuality = 2;
-			}
+			} 
 			// if (mHandler.hasMessages(MSG_INITQUALITYTITLE))
 			mHandler.removeMessages(MSG_INITQUALITYTITLE);
 			mHandler.sendEmptyMessage(MSG_INITQUALITYTITLE);
@@ -569,7 +571,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onPrepared() {
-//			 mPlayer.seekTo(currPosition);
+			// mPlayer.seekTo(currPosition);
 			timeBar.setMax(mPlayer.getDuration());
 		}
 
@@ -606,18 +608,80 @@ public class QiYiPlayActivity extends VodMenuAction {
 		return menu.isVisible();
 	}
 
-	private void showBuffer() {
+	protected void showBuffer() {
 		if (isBuffer && !bufferLayout.isShown()) {
 			bufferLayout.setVisibility(View.VISIBLE);
 			bufferDuration = System.currentTimeMillis();
 		}
+		mHandler.sendEmptyMessageDelayed(BUFFER_COUNTDOWN_ACTION, 1000);
 	}
 
-	private void hideBuffer() {
+	protected void hideBuffer() {
+		if (mHandler.hasMessages(BUFFER_COUNTDOWN_ACTION)) {
+			mHandler.removeMessages(BUFFER_COUNTDOWN_ACTION);
+			buffercountDown = 0;
+		}
 		if (!isBuffer && bufferLayout.isShown()) {
 			bufferText.setText(BUFFERING);
 			bufferLayout.setVisibility(View.GONE);
-			isBuffer = false;
+			try {
+				if (subItem != null)
+					if (isSeekBuffer) {
+						callaPlay
+								.videoPlaySeekBlockend(
+										item.pk,
+										subItem.pk,
+										item.title,
+										clip.pk,
+										currQuality,
+										0,
+										currPosition,
+										(System.currentTimeMillis() - bufferDuration) / 1000,
+										mediaip, sid);
+
+					} else {
+						callaPlay
+								.videoPlayBlockend(
+										item.pk,
+										subItem.pk,
+										item.title,
+										clip.pk,
+										currQuality,
+										0,
+										currPosition,
+										(System.currentTimeMillis() - bufferDuration) / 1000,
+										mediaip, sid);
+					}
+				else if (isSeekBuffer) {
+					callaPlay
+							.videoPlaySeekBlockend(
+									item.pk,
+									null,
+									item.title,
+									clip.pk,
+									currQuality,
+									0,
+									currPosition,
+									(System.currentTimeMillis() - bufferDuration) / 1000,
+									mediaip, sid);
+
+				} else {
+					callaPlay
+							.videoPlayBlockend(
+									item.pk,
+									null,
+									item.title,
+									clip.pk,
+									currQuality,
+									0,
+									currPosition,
+									(System.currentTimeMillis() - bufferDuration) / 1000,
+									mediaip, sid);
+				}
+				isSeekBuffer = false;
+			} catch (Exception e) {
+				Log.e(TAG, " Sender log videoPlayBlockend " + e.toString());
+			}
 		}
 	}
 
@@ -638,9 +702,8 @@ public class QiYiPlayActivity extends VodMenuAction {
 				isBuffer = true;
 				showBuffer();
 				if (subItem != null)
-					callaPlay.videoPlaySeek(item.pk, subItem.pk,
-							item.title, clip.pk, currQuality, 0,
-							currPosition, sid);
+					callaPlay.videoPlaySeek(item.pk, subItem.pk, item.title,
+							clip.pk, currQuality, 0, currPosition, sid);
 				else
 					callaPlay.videoPlayContinue(item.pk, null, item.title,
 							clip.pk, currQuality, 0, currPosition, sid);
@@ -650,6 +713,18 @@ public class QiYiPlayActivity extends VodMenuAction {
 				offsets = 0;
 				offn = 1;
 				break;
+			case BUFFER_COUNTDOWN_ACTION:
+				buffercountDown++;
+				if (buffercountDown > 30) {
+					if (mHandler.hasMessages(BUFFER_COUNTDOWN_ACTION)) {
+						mHandler.removeMessages(BUFFER_COUNTDOWN_ACTION);
+						buffercountDown = 0;
+					}
+					showDialog("网络不给力，请检查网络或稍后再试!");
+				} else {
+					mHandler.sendEmptyMessageDelayed(BUFFER_COUNTDOWN_ACTION,
+							1000);
+				}
 			}
 		}
 	};
@@ -983,7 +1058,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 					mPlayer.pause();
 				if (mHandler.hasMessages(MSG_SEK_ACTION))
 					mHandler.removeMessages(MSG_SEK_ACTION);
-					mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 1000);
+				mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 1000);
 				isSeek = true;
 				showPanel();
 				fastBackward(SHORT_STEP);
@@ -996,7 +1071,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 					mPlayer.pause();
 				if (mHandler.hasMessages(MSG_SEK_ACTION))
 					mHandler.removeMessages(MSG_SEK_ACTION);
-					mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 1000);
+				mHandler.sendEmptyMessageDelayed(MSG_SEK_ACTION, 1000);
 				isSeek = true;
 				showPanel();
 				fastForward(SHORT_STEP);
@@ -1267,6 +1342,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 					checkTaskPause();
 					paused = false;
 					isBuffer = true;
+					showBuffer();
 					playPauseImage
 							.setImageResource(R.drawable.vod_pausebtn_selector);
 					currQuality = pos;
@@ -1637,26 +1713,8 @@ public class QiYiPlayActivity extends VodMenuAction {
 	boolean needOnresume = false;
 
 	private void startSakura() {
-		if (AppConstant.DEBUG)
-			Log.d(TAG, "install vod service invoke...");
-		needOnresume = true;
-		try {
-			ApplicationInfo applicationInfo = getPackageManager()
-					.getApplicationInfo("cn.ismartv.speedtester", 0);
-			if (null != applicationInfo) {
-				Intent intent = new Intent();
-				intent.setClassName("cn.ismartv.speedtester",
-						"cn.ismartv.speedtester.ui.activity.MenuActivity");
-				startActivity(intent);
-			}
-		} catch (PackageManager.NameNotFoundException e) {
-			Uri uri = Uri.parse("file://"
-					+ getFileStreamPath("Sakura.apk").getAbsolutePath());
-			Intent intent = new Intent(Intent.ACTION_VIEW);
-			intent.setDataAndType(uri,
-					"application/vnd.android.package-archive");
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
-		}
+        Intent intent = new Intent();
+        intent.setAction("cn.ismar.sakura.launcher");
+        startActivity(intent);
 	}
 }
