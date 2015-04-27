@@ -593,7 +593,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
 
     public void uploadTestResult(String cdnId, String speed) {
         SakuraClientAPI.UploadResult client = restAdapter_WX_API_TVXIO.create(SakuraClientAPI.UploadResult.class);
-        client.excute("submitTestData", snCode, cdnId, speed, new Callback<Empty>() {
+        client.excute(SakuraClientAPI.UploadResult.ACTION_TYPE, snCode, cdnId, speed, new Callback<Empty>() {
             @Override
             public void success(Empty empty, Response response) {
                 Log.i(TAG, "uploadTestResult success");
