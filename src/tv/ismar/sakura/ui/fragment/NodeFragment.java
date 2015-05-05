@@ -482,11 +482,6 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         cdnTestDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                /**
-                 * 恢复 测速 按钮 颜色
-                 */
-//                speedTestBtn.setBackgroundResource(R.drawable.selector_button);
-//                speedTestBtn.setEnabled(true);
                 httpDownloadTask.cancel(true);
                 httpDownloadTask = null;
             }
