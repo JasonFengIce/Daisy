@@ -143,7 +143,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         String domain = DaisyUtils.getVodApplication(this).getPreferences().getString("domain", "");
         activator = Activator.getInstance(this);
         activator.setOnCompleteListener(this);
-        activator.active(MANUFACTURE, KIND, VERSION);
+        activator.active(MANUFACTURE, KIND, VERSION,"");
     }
 @Override
 protected void onPause() {
@@ -174,7 +174,7 @@ protected void onPause() {
                     // TODO Auto-generated method stub
                     dialog.dismiss();
                     //register();
-                    activator.active(MANUFACTURE, KIND, VERSION);
+                    activator.active(MANUFACTURE, KIND, VERSION,"");
                 }
             };
             mNegativeListener = new DialogInterface.OnClickListener() {

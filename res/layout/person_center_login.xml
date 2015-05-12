@@ -17,7 +17,8 @@
             android:gravity="center"
             android:text="手机号:"
             android:textColor="#FFF8F8FF"
-            android:textSize="@dimen/person_login_phone_text_size" />
+            android:textSize="@dimen/person_login_phone_text_size"
+           />
 
         <EditText
             android:id="@+id/pay_edit_mobile"
@@ -28,7 +29,8 @@
             android:textColor="#FFF8F8FF"
             android:textSize="@dimen/person_login_phone_edit_text_size"
             android:gravity="center_vertical"
-            android:paddingLeft="@dimen/person_login_phone_edit_PL"/>
+            android:paddingLeft="@dimen/person_login_phone_edit_PL"
+            />
 
         <Button
             android:id="@+id/pay_identifyCodeBtn"

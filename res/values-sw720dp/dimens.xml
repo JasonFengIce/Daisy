@@ -591,7 +591,7 @@
     <dimen name="person_center_btn_text_size">24sp</dimen>
     <dimen name="person_center_btn_MT">24dip</dimen>
     <dimen name="person_login_layout_PL">80dip</dimen>
-    <dimen name="person_login_layout_PT">93dip</dimen>
+    <dimen name="person_login_layout_PT">100dip</dimen>
     <dimen name="person_login_content_layout_H">54dip</dimen>
     <dimen name="person_login_content_MT">14dip</dimen>
     <dimen name="person_login_phone_text_W">130dip</dimen>
