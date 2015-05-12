@@ -53,4 +53,7 @@
 
     <color name="white">#FFFFFF</color>
     <color name="sakura_progress">#128FFF</color>
+
+    <!-- sakura -->
+    <color name="button_disable_bg">#666666</color>
 </resources>

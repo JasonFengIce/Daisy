@@ -39,6 +39,7 @@
                 android:textSize="@dimen/textSize_normal"
                 android:background="@drawable/sakura_selector_button"
                 android:singleLine="true"
+                android:nextFocusLeft="@id/unbind_node"
                 />
     </LinearLayout>
 

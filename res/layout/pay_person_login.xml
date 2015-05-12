@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/pay_qrcode_pay_panel_marginleft"
     android:orientation="vertical"
      >
 
@@ -78,8 +77,8 @@
 
     <Button
         android:id="@+id/pay_btn_submit"
-        android:layout_width="120dip"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/pay_channel_weixin_height"
         android:layout_marginLeft="210dip"
         android:layout_marginTop="70dip"
         android:background="@drawable/person_btn_selector"

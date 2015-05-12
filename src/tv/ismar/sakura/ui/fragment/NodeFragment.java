@@ -28,11 +28,9 @@ import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.sakura.core.CdnCacheLoader;
 import tv.ismar.sakura.core.HttpDownloadTask;
 import tv.ismar.sakura.core.SakuraClientAPI;
-import tv.ismar.sakura.data.http.BindedCdnEntity;
-import tv.ismar.sakura.data.http.CdnListEntity;
-import tv.ismar.sakura.data.http.Empty;
-import tv.ismar.sakura.data.http.SpeedLogEntity;
+import tv.ismar.sakura.data.http.*;
 import tv.ismar.sakura.data.table.CdnCacheTable;
+import tv.ismar.sakura.data.table.CityTable;
 import tv.ismar.sakura.ui.adapter.NodeListAdapter;
 import tv.ismar.sakura.ui.widget.SakuraButton;
 import tv.ismar.sakura.ui.widget.SakuraListView;
@@ -41,14 +39,14 @@ import tv.ismar.sakura.utils.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import static tv.ismar.sakura.core.SakuraClientAPI.restAdapter_SPEED_CALLA_TVXIO;
-import static tv.ismar.sakura.core.SakuraClientAPI.restAdapter_WX_API_TVXIO;
+import static tv.ismar.sakura.core.SakuraClientAPI.*;
 
 /**
  * Created by huaijie on 2015/4/8.
  */
 public class NodeFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
-        AdapterView.OnItemClickListener, View.OnClickListener, HttpDownloadTask.OnCompleteListener {
+        AdapterView.OnItemClickListener, View.OnClickListener, HttpDownloadTask.OnCompleteListener,
+        SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = "NodeFragment";
 
     private SakuraListView nodeListView;
@@ -74,16 +72,19 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
     private List<Integer> cdnCollections;
     private HttpDownloadTask httpDownloadTask;
 
-
     private String snCode = TextUtils.isEmpty(SimpleRestClient.sn_token) ? "sn is null" : SimpleRestClient.sn_token;
+
+    SharedPreferences ipLookupPreferences;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ipLookupPreferences = getActivity().getSharedPreferences("user_location_info", Context.MODE_PRIVATE);
+        ipLookupPreferences.registerOnSharedPreferenceChangeListener(this);
         cities = getResources().getStringArray(R.array.citys);
         fetchCdnList();
-
+        fetchIpLookup();
     }
 
     @Override
@@ -172,6 +173,10 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         }
         if (null != cdnTestDialog) {
             cdnTestDialog.dismiss();
+        }
+
+        if (null != ipLookupPreferences) {
+            ipLookupPreferences.unregisterOnSharedPreferenceChangeListener(this);
         }
         super.onDestroy();
     }
@@ -477,11 +482,6 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         cdnTestDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                /**
-                 * 恢复 测速 按钮 颜色
-                 */
-//                speedTestBtn.setBackgroundResource(R.drawable.selector_button);
-//                speedTestBtn.setEnabled(true);
                 httpDownloadTask.cancel(true);
                 httpDownloadTask = null;
             }
@@ -617,9 +617,56 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         return cdnCollections;
     }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        Log.d(TAG, "onSharedPreferenceChanged");
+
+        int provincePosition = getProvincePositionByName(sharedPreferences.getString("user_default_city", ""));
+        int ispPosition = getIspPositionByName(sharedPreferences.getString("user_default_isp", ""));
+
+        provinceSpinner.setSelection(provincePosition);
+        ispSpinner.setSelection(ispPosition);
+    }
+
 
     enum Status {
         CANCEL,
         COMPLETE
+    }
+
+    private void fetchIpLookup() {
+        SakuraClientAPI.IpLookUp client = restAdapter_LILY_TVXIO_HOST.create(SakuraClientAPI.IpLookUp.class);
+        client.execute(new Callback<IpLookUpEntity>() {
+            @Override
+            public void success(IpLookUpEntity ipLookUpEntity, Response response) {
+                SharedPreferences.Editor editor = ipLookupPreferences.edit();
+                editor.putString("user_default_city", ipLookUpEntity.getCity());
+                editor.putString("user_default_isp", ipLookUpEntity.getIsp());
+                editor.apply();
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                Log.e(TAG, "fetchIpLookup: " + retrofitError.getMessage());
+            }
+        });
+    }
+
+    public int getProvincePositionByName(String provinceName) {
+        CityTable cityTable = new Select()
+                .from(CityTable.class)
+                .where(CityTable.NICK + " = ? ", provinceName)
+                .executeSingle();
+        return cityTable.flag - 1;
+    }
+
+    public int getIspPositionByName(String ispName) {
+        String[] isps = getResources().getStringArray(R.array.isps);
+        for (int i = 0; i < isps.length; ++i) {
+            if (ispName.equals(isps[i])) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

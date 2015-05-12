@@ -15,10 +15,12 @@ public class SakuraClientAPI {
     public static final RestAdapter restAdapter_WX_API_TVXIO;
     public static final RestAdapter restAdapter_IRIS_TVXIO;
     public static final RestAdapter restAdapter_SPEED_CALLA_TVXIO;
+    public static final RestAdapter restAdapter_LILY_TVXIO_HOST;
 
     public static final String API_HOST = "http://wx.api.tvxio.com/";
     private static final String IRIS_TVXIO_HOST = "http://iris.tvxio.com";
     private static final String SPEED_CALLA_TVXIO_HOST = "http://speed.calla.tvxio.com";
+    private static final String LILY_TVXIO_HOST = "http://lily.tvxio.com";
 
 
     static {
@@ -34,6 +36,11 @@ public class SakuraClientAPI {
                 .setLogLevel(AppConstant.LOG_LEVEL)
                 .setEndpoint(SPEED_CALLA_TVXIO_HOST)
                 .build();
+        restAdapter_LILY_TVXIO_HOST = new RestAdapter.Builder()
+                .setLogLevel(AppConstant.LOG_LEVEL)
+                .setEndpoint(LILY_TVXIO_HOST)
+                .build();
+
     }
 
     public interface Problems {
@@ -126,4 +133,10 @@ public class SakuraClientAPI {
         );
     }
 
+    public interface IpLookUp {
+        @GET("/iplookup")
+        void execute(
+                Callback<IpLookUpEntity> callback
+        );
+    }
 }
