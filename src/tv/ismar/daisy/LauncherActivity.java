@@ -23,10 +23,18 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
+
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.GeofenceClient;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.location.LocationClientOption.LocationMode;
 import com.google.gson.Gson;
 import com.ismartv.launcher.data.ChannelEntity;
 import com.ismartv.launcher.data.VideoEntity;
 import com.ismartv.launcher.ui.widget.IsmartvVideoView;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import retrofit.Callback;
@@ -103,7 +111,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     Activator activator;
     private DaisyImageView btn_personcenter;
     private DaisyImageView btn_search;
-
+    private LocationClient mLocationClient;
+    private GeofenceClient mGeofenceClient;
+    private MyLocationListener mMyLocationListener;
     private volatile boolean videoCacheIsComplete = false;
 
     /**
@@ -143,7 +153,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         String domain = DaisyUtils.getVodApplication(this).getPreferences().getString("domain", "");
         activator = Activator.getInstance(this);
         activator.setOnCompleteListener(this);
-        activator.active(MANUFACTURE, KIND, VERSION,"");
+        String localInfo = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.LOCATION_INFO, "");
+        Log.v(TAG, localInfo);
+        sendLoncationRequest();
+        activator.active(MANUFACTURE, KIND, VERSION,localInfo);
     }
 @Override
 protected void onPause() {
@@ -1023,4 +1036,57 @@ protected void onPause() {
             }
         }
     }
+
+    private void sendLoncationRequest() {
+		mLocationClient = new LocationClient(LauncherActivity.this);
+		mMyLocationListener = new MyLocationListener();
+		mLocationClient.registerLocationListener(mMyLocationListener);
+		mGeofenceClient = new GeofenceClient(getApplicationContext());
+		LocationClientOption option = new LocationClientOption();
+		option.setLocationMode(LocationMode.Hight_Accuracy);// 设置定位模式
+		// option.setCoorType("bd09ll");//返回的定位结果是百度经纬度,默认值gcj02
+		option.setScanSpan(5000);// 设置发起定位请求的间隔时间为5000ms
+		option.setIsNeedAddress(true);// 返回的定位结果包含地址信息
+		mLocationClient.setLocOption(option);
+		mLocationClient.start();
+		mLocationClient.requestLocation();
+	}
+
+	public class MyLocationListener implements BDLocationListener {
+
+		@Override
+		public void onReceiveLocation(BDLocation location) {
+			mLocationClient.stop();
+			// Receive Location
+//			StringBuffer sb = new StringBuffer(256);
+//			sb.append("time : ");
+//			sb.append(location.getTime());
+//			sb.append("\nerror code : ");
+//			sb.append(location.getLocType());
+//			sb.append("\ncity : ");
+//			sb.append(location.getCity());
+//			sb.append("\nstreet : ");
+//			sb.append(location.getStreet());
+//			sb.append("\ndistrict : ");
+//			sb.append(location.getDistrict());
+//			sb.append("\nfloor : ");
+//			sb.append(location.getFloor());
+//			sb.append("\npoi : ");
+//			sb.append(location.getAddrStr());
+//			sb.append("\nprovince : ");
+//			sb.append(location.getProvince());
+//			sb.append("\ncityCode : ");
+//			sb.append(location.getCityCode());
+//			sb.append("\nlatitude : ");
+//			sb.append(location.getLatitude());
+//			sb.append("\nlontitude : ");
+//			sb.append(location.getLongitude());
+//			sb.append("\nradius : ");
+//			sb.append(location.getRadius());
+//			Log.i("BaiduLocationApiDem", sb.toString());
+			DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString(VodApplication.LOCATION_INFO, location.getAddrStr());
+			DaisyUtils.getVodApplication(LauncherActivity.this).save();
+		}
+
+	}
 }

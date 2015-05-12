@@ -409,24 +409,17 @@ public class PlayerActivity extends VodMenuAction {
 
 			@Override
 			public boolean onInfo(SmartPlayer smartplayer, int i, int j) {
-				if (i == 701) {
-					if (ismedialplayerinit) {
-						isBuffer = true;
-						bufferText.setText(BUFFERING + " " + 0 + "%");
-						showBuffer();
-					}
+				Log.v("aaaa", "i =" + i + ",.,.j=" + j);
+				if (i == SmartPlayer.MEDIA_INFO_BUFFERING_START) {
+					isBuffer = true;
+					bufferText.setText(BUFFERING + " " + 0 + "%");
+					showBuffer();
 				} else if (i == 704) {
-					if (ismedialplayerinit) {
-						bufferText.setText(BUFFERING + " " + j + "%");
-					}
-				} else if (i == 702) {
-					if (ismedialplayerinit) {
-						bufferText.setText(BUFFERING + " " + 100 + "%");
-						isBuffer = false;
-						hideBuffer();
-					}
-				} else if (i == 3) {
-					ismedialplayerinit = true;
+					bufferText.setText(BUFFERING + " " + j + "%");
+				} else if (i == SmartPlayer.MEDIA_INFO_BUFFERING_END) {
+					bufferText.setText(BUFFERING + " " + 100 + "%");
+					isBuffer = false;
+					hideBuffer();
 				}
 				return false;
 			}
