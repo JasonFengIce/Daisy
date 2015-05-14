@@ -349,6 +349,7 @@ protected void onPause() {
 
     private Intent intent;
 
+    private boolean isNoSdCard = false;
     private void setFrontPage(String content) {
         try {
             Gson gson = new Gson();
@@ -375,11 +376,12 @@ protected void onPause() {
                         .getAbsolutePath() + "/VideoCache/";
             } else {
                 String path = getFilesDir().getAbsolutePath();
-                mLocalPath = path + "/VideoCache/" + realname;
-                mLocalDir = path + "/VideoCache";
+                mLocalPath = path + "/" + realname;
+                mLocalDir = path + "/";
+                isNoSdCard = true;
             }
 
-            playvideo();
+            playvideo(realname);
             //  videoView.setVideoPath(mRemoteUrl);
             videoView.start();
             videoView.setKeepScreenOn(true);
@@ -420,7 +422,7 @@ protected void onPause() {
     FileOutputStream out = null;
     InputStream is = null;
 
-    private void playvideo() {
+    private void playvideo(final String name) {
         if (!URLUtil.isNetworkUrl(this.mRemoteUrl)) {
             videoView.setVideoPath(this.mRemoteUrl);
             videoView.start();
@@ -442,7 +444,8 @@ protected void onPause() {
                         File Dir = new File(mLocalDir);
                         for (String s : Dir.list()) {
                             File f = new File(mLocalDir, s);
-                            if (f.exists()) {
+                            String prefix=s.substring(s.lastIndexOf(".")+1); 
+                            if (f.exists()&&prefix.equals("mp4")) {
                                 f.delete();
                             }
                         }
@@ -462,8 +465,12 @@ protected void onPause() {
                     HttpURLConnection httpConnection = (HttpURLConnection) url
                             .openConnection();
                     System.out.println("localUrl: " + mLocalPath);
-                    out = new FileOutputStream(cacheFile, true);
-
+                    if(!isNoSdCard)
+                       out = new FileOutputStream(cacheFile, true);
+                    else                    	
+                        out = openFileOutput(
+                		  name, Context.MODE_WORLD_READABLE|Context.MODE_WORLD_WRITEABLE);
+                    
                     httpConnection.setRequestProperty("User-Agent", "NetFox");
                     httpConnection.setRequestProperty("RANGE", "bytes="
                             + readSize + "-");
