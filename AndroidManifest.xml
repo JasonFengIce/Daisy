@@ -22,7 +22,21 @@
     <uses-permission android:name="android.permission.GET_TASKS"></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>
-
+ <!-- 这个权限用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" >
+    </uses-permission>
+    <!-- 这个权限用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" >
+    </uses-permission>
+    <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" >
+    </uses-permission>
+    <!-- SD卡读取权限，用户写入离线定位数据 -->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" >
+    </uses-permission>
+    <!-- 允许应用读取低级别的系统日志文件 -->
+    <uses-permission android:name="android.permission.READ_LOGS" >
+    </uses-permission>
     <application
             android:name=".VodApplication"
             android:icon="@drawable/ic_launcher"

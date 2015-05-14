@@ -46,6 +46,7 @@ public class VodApplication extends Application {
     public static String AUTH_TOKEN = "auth_token";
     public static String MOBILE_NUMBER = "mobile_number";
     public static String DEVICE_TOKEN = "device_token";
+    public static String LOCATION_INFO = "location_info";
     private static final int CORE_POOL_SIZE = 5;
     private ExecutorService mExecutorService;
     public static float rate = 1;
