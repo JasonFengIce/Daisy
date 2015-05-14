@@ -524,9 +524,10 @@ private boolean isPause = false;
 			if (isDrama()) {
 				attributeMap.put("episodes", getEpisodes(mItem));
 			}
-			if(mItem.clip.length>0)
-			   attributeMap.put("length", getClipLength(mItem.clip));// modify by
-																	// zjq
+			if(mItem.clip!=null){
+				if(mItem.clip.length>0)
+					   attributeMap.put("length", getClipLength(mItem.clip));
+			}
 			Iterator iter = mItem.attributes.map.keySet().iterator();
 			while (iter.hasNext()) {
 				String key = (String) iter.next();
