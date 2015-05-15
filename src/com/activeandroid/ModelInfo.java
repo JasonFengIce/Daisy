@@ -142,8 +142,13 @@ final class ModelInfo {
 
     private void scanForModelClasses(File path, String packageName, ClassLoader classLoader) {
         if (path.isDirectory()) {
-            for (File file : path.listFiles()) {
-                scanForModelClasses(file, packageName, classLoader);
+            try {
+
+                for (File file : path.listFiles()) {
+                    scanForModelClasses(file, packageName, classLoader);
+                }
+            } catch (NullPointerException e) {
+                Log.e("scanForModelClasses", path.getAbsolutePath());
             }
         } else {
             String className = path.getName();
