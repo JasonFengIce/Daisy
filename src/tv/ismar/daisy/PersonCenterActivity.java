@@ -52,7 +52,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PersonCenterActivity extends Activity implements View.OnClickListener {
+public class PersonCenterActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "PersonCenterActivity";
 
 	private ListView privilegelist;

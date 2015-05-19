@@ -47,7 +47,7 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
-public class SearchActivity extends Activity implements OnClickListener, OnItemClickListener {
+public class SearchActivity extends BaseActivity implements OnClickListener, OnItemClickListener {
 
 	// 搜索
 	ImageButton ibtnSearch;
@@ -340,10 +340,11 @@ public class SearchActivity extends Activity implements OnClickListener, OnItemC
 					final Button btnHotWords = new Button(SearchActivity.this);
 					// final Button btnHotWords = (Button) findViewById(R.id.btn_words);
 					int mPaddingLR = getResources().getDimensionPixelSize(R.dimen.search_btnHotWords_PLR);
-					int mTextSize = (int) (getResources().getDimensionPixelSize(R.dimen.search_btnHotWords_textsize)/VodApplication.rate);				
+					float rate = DaisyUtils.getVodApplication(SearchActivity.this).getRate(SearchActivity.this);
+					int mTextSize = (int) (getResources().getDimensionPixelSize(R.dimen.search_btnHotWords_textsize)/rate);				
 						btnHotWords.setPadding(mPaddingLR, 0, mPaddingLR, 0);
 						btnHotWords.setTextSize(mTextSize);
-			
+						
 									
 					btnHotWords.setId(j);
 					// btnHotWords.setBackgroundColor(R.drawable.gridview_text_selector);

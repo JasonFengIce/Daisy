@@ -14,7 +14,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
-public class ChannelListActivity extends Activity {
+public class ChannelListActivity extends BaseActivity {
 	
 	private final static String TAG = "ChannelListActivity";
 	

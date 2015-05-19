@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public abstract class VodMenuAction extends Activity {
+public abstract class VodMenuAction extends BaseActivity {
 	static final int MSG_SEK_ACTION = 103;
 	static final int BUFFER_COUNTDOWN_ACTION = 113;
 	protected int buffercountDown = 0;

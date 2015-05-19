@@ -119,7 +119,7 @@
             android:layout_marginLeft="@dimen/Launcher_video_layout_MLR"
             android:layout_marginRight="@dimen/Launcher_video_layout_MLR"
             android:layout_height="0dp"
-            android:layout_weight="3"
+            android:layout_weight="2.48"
             >
 
         <com.ismartv.launcher.ui.widget.IsmartvVideoView

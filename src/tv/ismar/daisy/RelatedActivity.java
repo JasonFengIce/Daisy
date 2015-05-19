@@ -37,7 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
-public class RelatedActivity extends Activity implements OnSectionSelectChangedListener, OnItemClickListener {
+public class RelatedActivity extends BaseActivity implements OnSectionSelectChangedListener, OnItemClickListener {
 	
 	private static final String TAG = "RelatedActivity";
 	
@@ -258,7 +258,7 @@ public class RelatedActivity extends Activity implements OnSectionSelectChangedL
 		super.onPause();
 	}
 	
-	
+
 	@Override
 	protected void onDestroy() {
 		if(mGetRelatedTask!=null && mGetRelatedTask.getStatus()!=AsyncTask.Status.FINISHED) {

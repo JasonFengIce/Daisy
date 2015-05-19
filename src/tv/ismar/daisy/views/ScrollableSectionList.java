@@ -2,6 +2,7 @@ package tv.ismar.daisy.views;
 
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
 import android.content.Context;
@@ -114,7 +115,8 @@ public class ScrollableSectionList extends HorizontalScrollView {
 			
 			//percentageBar.setProgress(0);
 			int textsize = getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_ctextsize);
-			 textsize = (int) (textsize/VodApplication.rate);
+			float rate = DaisyUtils.getVodApplication(getContext()).getRate(getContext());
+			 textsize = (int) (textsize/rate);
 			 label.setTextSize(textsize);
 			label.setTextColor(LABEL_TEXT_COLOR_FOCUSED);
 			percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_hot_selected));
@@ -146,6 +148,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
 			int index = (Integer) v.getTag();
+			float rate = DaisyUtils.getVodApplication(getContext()).getRate(getContext());
 			if(left!=null&&right!=null){
 				if(lastView!=null){
 		             if(index==0&&hasFocus&&index!=lastSelectPosition){
@@ -170,7 +173,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 				
 				//percentageBar.setProgress(0);
 				int textsize = getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_ctextsize);
-				 textsize = (int) (textsize/VodApplication.rate);
+				 textsize = (int) (textsize/rate);
 				 label.setTextSize(textsize);
 				label.setTextColor(LABEL_TEXT_COLOR_FOCUSED);
 				if(index==lastSelectPosition) {
@@ -193,7 +196,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 						lastlabel.setPadding(label.getPaddingLeft(), getResources().
 								getDimensionPixelSize(R.dimen.channel_section_tabs_label_paddingT), label.getPaddingRight(), label.getPaddingBottom());
 						
-						lastlabel.setTextSize(getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_textsize)/VodApplication.rate);	
+						lastlabel.setTextSize(getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_textsize)/rate);	
 						
 						lastPercentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_noselected));
 					}	
@@ -225,19 +228,19 @@ public class ScrollableSectionList extends HorizontalScrollView {
 	};
 	
 	public void setSectionTabProperty(View currentView,View lastSelectedView){
-		
+		float rate = DaisyUtils.getVodApplication(getContext()).getRate(getContext());
 		TextView lastLabel = (TextView) lastSelectedView.findViewById(R.id.section_label);
 		lastLabel.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
 		lastLabel.setPadding(lastLabel.getPaddingLeft(), getResources().
 				getDimensionPixelSize(R.dimen.channel_section_tabs_label_paddingT), lastLabel.getPaddingRight(), lastLabel.getPaddingBottom());
 		
-		lastLabel.setTextSize(getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_textsize)/VodApplication.rate);	
+		lastLabel.setTextSize(getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_textsize)/rate);	
 		TextView label = (TextView) currentView.findViewById(R.id.section_label);
 		label.setPadding(label.getPaddingLeft(), getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_text_PT), label.getPaddingRight(), label.getPaddingBottom());
 		
 		//percentageBar.setProgress(0);
 		int textsize = getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_ctextsize);
-		textsize = (int) (textsize/VodApplication.rate);
+		textsize = (int) (textsize/rate);
 		label.setTextSize(textsize);
 		label.setTextColor(LABEL_TEXT_COLOR_FOCUSED);
 	}

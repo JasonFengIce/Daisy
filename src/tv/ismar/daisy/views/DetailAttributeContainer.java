@@ -4,7 +4,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.SearchActivity;
 import tv.ismar.daisy.VodApplication;
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.models.ContentModel;
 import android.content.Context;
 import android.text.TextUtils.TruncateAt;
@@ -25,14 +27,16 @@ public class DetailAttributeContainer extends LinearLayout {
 			int defStyle) {
 		super(context, attrs, defStyle);
 		myContext = context;
-		textsize = myContext.getResources().getDimension(R.dimen.item_detail_introlabel_textsize)/VodApplication.rate;
+		float rate = DaisyUtils.getVodApplication(context).getRate(context);
+		textsize = myContext.getResources().getDimension(R.dimen.item_detail_introlabel_textsize)/rate;
 		// TODO Auto-generated constructor stub
 	}
 
 	public DetailAttributeContainer(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		myContext = context;
-		textsize = myContext.getResources().getDimension(R.dimen.item_detail_introlabel_textsize)/VodApplication.rate;
+		float rate = DaisyUtils.getVodApplication(getContext()).getRate(getContext());
+		textsize = myContext.getResources().getDimension(R.dimen.item_detail_introlabel_textsize)/rate;
 		// TODO Auto-generated constructor stub
 	}
 

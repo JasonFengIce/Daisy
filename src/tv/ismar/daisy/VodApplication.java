@@ -17,6 +17,7 @@ import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.models.ContentModel;
 import tv.ismar.daisy.models.ContentModelList;
+import tv.ismar.daisy.models.launcher.AttributeEntity;
 import tv.ismar.daisy.persistence.FavoriteManager;
 import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.persistence.LocalFavoriteManager;
@@ -24,6 +25,7 @@ import tv.ismar.daisy.persistence.LocalHistoryManager;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -46,10 +48,13 @@ public class VodApplication extends Application {
     public static String AUTH_TOKEN = "auth_token";
     public static String MOBILE_NUMBER = "mobile_number";
     public static String DEVICE_TOKEN = "device_token";
+    public static String SN_TOKEN = "sntoken";
+    public static String DOMAIN = "domain";
+    public static String LOG_DOMAIN = "logmain";
     public static String LOCATION_INFO = "location_info";
     private static final int CORE_POOL_SIZE = 5;
     private ExecutorService mExecutorService;
-    public static float rate = 1;
+   // public static float rate = 1;
     /**
      * Use to cache the AsyncImageView's bitmap in memory, When application memory is low, the cache will be recovered.
      */
@@ -128,7 +133,6 @@ public class VodApplication extends Application {
         getContentModelFromAssets();
         registerReceiver(mCloseReceiver, new IntentFilter("com.amlogic.dvbplayer.homekey"));
         registerReceiver(mSleepReceiver, new IntentFilter("com.alpha.lenovo.powerKey"));
-
     }
 
     public static String getDeviceId(Context context) {
@@ -452,6 +456,15 @@ public class VodApplication extends Application {
         }
         return H;
     }
+
+  public float getRate(Context context){
+      DisplayMetrics metric = new DisplayMetrics();
+      ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(metric);
+      int densityDpi = metric.densityDpi; // 屏幕密度DPI（120 / 160 / 240）
+      float rate = (float) densityDpi / (float) 160;
+	  return rate;
+  }
+
 
 
 }

@@ -149,7 +149,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         int height = metric.heightPixels; // 屏幕高度（像素）
         int densityDpi = metric.densityDpi; // 屏幕密度DPI（120 / 160 / 240）
         float rate = (float) densityDpi / (float) 160;
-        VodApplication.rate = rate;
         String domain = DaisyUtils.getVodApplication(this).getPreferences().getString("domain", "");
         activator = Activator.getInstance(this);
         activator.setOnCompleteListener(this);
@@ -741,9 +740,10 @@ protected void onPause() {
             SimpleRestClient.sn_token = result.getSn_Token();
             DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString(VodApplication.ad_domain, SimpleRestClient.ad_domain);
             DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString(VodApplication.DEVICE_TOKEN, SimpleRestClient.device_token);
-//			DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString("domain", SimpleRestClient.root_url);
-//			DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString("ad_domain", SimpleRestClient.ad_domain);
-            DaisyUtils.getVodApplication(LauncherActivity.this).save();
+			DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString(VodApplication.DOMAIN, SimpleRestClient.root_url);
+			DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString(VodApplication.SN_TOKEN, SimpleRestClient.sn_token);
+			DaisyUtils.getVodApplication(LauncherActivity.this).getEditor().putString(VodApplication.LOG_DOMAIN, SimpleRestClient.log_domain);
+			DaisyUtils.getVodApplication(LauncherActivity.this).save();
             SimpleRestClient.mobile_number = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.MOBILE_NUMBER, "");
             SimpleRestClient.access_token = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.AUTH_TOKEN, "");
             mainHandler.sendEmptyMessage(GETDOMAIN);
