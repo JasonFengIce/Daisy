@@ -16,4 +16,5 @@ proguard-project.txt
 .idea/
 *.iml
 out/
+.DS_Store
 /build

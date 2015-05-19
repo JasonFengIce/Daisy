@@ -45,8 +45,9 @@
         <meta-data android:name="AA_DB_NAME" android:value="sakura.db"/>
         <meta-data android:name="AA_DB_VERSION" android:value="3"/>
 
+        <!--android:name=".ui.activity.AdvertisementActivity"-->
         <activity
-                android:name=".ui.activity.AdvertisementActivity"
+                android:name=".ui.activity.TVGuideActivity"
                 android:screenOrientation="landscape"
                 android:launchMode="singleTask"
                 android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
@@ -200,12 +201,6 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".core.receiver.PackageInstallReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"></action>
-            </intent-filter>
-
-        </receiver>
 
         <!-- =============================================================================== -->
         <!-- sakura -->
