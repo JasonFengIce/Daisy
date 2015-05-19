@@ -27,12 +27,21 @@
             android:layout_width="match_parent"
             />
 
-    <tv.ismar.daisy.ui.widget.ChannelGridView
-            android:id="@+id/channel_grid"
+
+    <tv.ismar.daisy.ui.widget.HorizontalListView
+            android:background="@android:color/holo_orange_dark"
+            android:id="@+id/channel_h_list"
             android:layout_width="match_parent"
-            android:orientation="vertical"
             android:layout_height="0dp"
             android:layout_weight="1"
-            >
-    </tv.ismar.daisy.ui.widget.ChannelGridView>
+            />
+
+    <!--<tv.ismar.daisy.ui.widget.ChannelGridView-->
+            <!--android:id="@+id/channel_grid"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!-->-->
+    <!--</tv.ismar.daisy.ui.widget.ChannelGridView>-->
 </LinearLayout>

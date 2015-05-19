@@ -159,4 +159,9 @@
     <declare-styleable name="SakuraEditText"></declare-styleable>
     <declare-styleable name="MessageSubmitButton"></declare-styleable>
     <declare-styleable name="FeedBackListView"></declare-styleable>
+
+
+    <!-- new  guide activity -->
+    <declare-styleable name="HorizontalListView"></declare-styleable>
+
 </resources>
