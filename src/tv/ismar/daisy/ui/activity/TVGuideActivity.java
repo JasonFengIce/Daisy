@@ -60,7 +60,7 @@ public class TVGuideActivity extends FragmentActivity {
             @Override
             public void onClick(View view) {
                 final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.container, new ChildFragmentContainer(), TAG_CHILD_FRAGMENT).commit();
+                transaction.replace(R.id.container, new ChildFragmentContainer(), TAG_ENTERTAINMENT_FRAGMENT).commit();
             }
         });
     }

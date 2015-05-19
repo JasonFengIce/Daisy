@@ -8,9 +8,15 @@
             android:id="@+id/section_one"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:orientation="horizontal"
             >
+
+        <ListView
+                android:id="@+id/sec_one_list_1"
+                android:layout_width="0dp"
+                android:layout_weight="1.5"
+                android:layout_height="match_parent"/>
 
         <RelativeLayout
                 android:layout_width="0dp"
@@ -23,24 +29,30 @@
                     android:layout_height="match_parent"
                     />
 
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-            <tv.ismar.daisy.ui.widget.image_indicator.IconPagerIndicator
-                    android:id="@+id/pager_indicator"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"/>
+                <tv.ismar.daisy.ui.widget.image_indicator.IconPagerIndicator
+                        android:id="@+id/pager_indicator"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+            </LinearLayout>
+
 
         </RelativeLayout>
 
-        <GridView
+
+        <ListView
+                android:id="@+id/sec_one_list_2"
                 android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="match_parent">
-        </GridView>
+                android:layout_weight="1.5"
+                android:layout_height="match_parent"/>
 
     </LinearLayout>
 
-
     <GridView
+            android:id="@+id/section_two"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"

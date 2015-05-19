@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class EntertainmentFragmentContainer extends Fragment {
 
-    private static final String TAG = "FragmentContainer";
+    private static final String TAG = "EntertainmentFragmentContainer";
 
 
     @Override
@@ -28,10 +28,9 @@ public class EntertainmentFragmentContainer extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         ArrayList<Fragment> fragments = new ArrayList<>();
-        fragments.add(new ChildFragment());
+        fragments.add(new EntertainmentFragment());
         fragments.add(new HDetailFragment());
         viewPager.setAdapter(new GuideContentAdapter(getFragmentManager(), fragments));
 
