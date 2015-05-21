@@ -234,10 +234,25 @@ public class NetworkUtils {
 	/**
 	 * 记录日志信息到本地
 	 */
+//	public static boolean SaveLogToLocal(String eventName,HashMap<String,Object> propertiesMap){
+//		try {
+//			String jsonContent = getContentJson(eventName, propertiesMap);
+//			SystemFileUtil.writeLogToLocal(jsonContent);
+//			return true;
+//		} catch (JSONException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			return false;
+//		}
+//		
+//	}
+	
 	public static boolean SaveLogToLocal(String eventName,HashMap<String,Object> propertiesMap){
 		try {
 			String jsonContent = getContentJson(eventName, propertiesMap);
-			SystemFileUtil.writeLogToLocal(jsonContent);
+			//SystemFileUtil.writeLogToLocal(jsonContent);
+			 MessageQueue.addQueue(jsonContent);
+			//LogSender(eventName, propertiesMap);
 			return true;
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -257,60 +272,71 @@ public class NetworkUtils {
 	 * @return true、false  是否成功
 	 * 
 	 */
-//	public static Boolean LogSender(String eventName,HashMap<String,Object> propertiesMap) {
-//		try {
-//			
-//			String jsonContent = getContentJson(eventName, propertiesMap);
-//			Log.d(TAG,"base64 =="+jsonContent);
-//			String url="http://a21.calla.tvxio.com/log";
-//			java.net.URL connURL = new java.net.URL(url);
-//			java.net.HttpURLConnection httpConn = (java.net.HttpURLConnection) connURL.openConnection();
-//			httpConn.setRequestMethod("POST");
-//			httpConn.setConnectTimeout(10000);
-//			httpConn.setReadTimeout(10000); 
-//			httpConn.setDoOutput(true);                 
-//
-//	        httpConn.setDoInput(true); 
-//			httpConn.setRequestProperty("Accept", "*/*");
-//            httpConn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-//			httpConn.setRequestProperty("Host", "a21.calla.tvxio.com");
-//			httpConn.setRequestProperty("Connection", "Keep-Alive");
-//			//httpConn.setRequestProperty("User-Agent", "ideatv_A21/S0054.38 TD04007053");
-//			httpConn.setRequestProperty("User-Agent", VodUserAgent.getUserAgent(VodUserAgent.getMACAddress()));
-//			httpConn.setRequestProperty("Pragma:", "no-cache");  
-//			httpConn.setRequestProperty("Cache-Control", "no-cache");
-//			httpConn.setUseCaches(false);
-//			httpConn.connect();
-//			
-//			DataOutputStream out = new DataOutputStream(httpConn.getOutputStream());
-//			String content = "data=" + URLEncoder.encode(jsonContent, "UTF-8");
-//			Log.d(TAG,content);
-//	        out.writeBytes(content); 
-//	        out.flush();
-//	        out.close(); // flush and close
-//	        BufferedReader reader = new BufferedReader(new InputStreamReader(httpConn.getInputStream(), "UTF-8"));
-//    		String line;
-//    		int code = httpConn.getResponseCode();
-//    		while ((line = reader.readLine()) != null)
-//    		{
-//    			System.out.println(line);
-//    		}
-//    		reader.close();
-//    		httpConn.disconnect();
-//			return true;
-//		} catch (MalformedURLException e) {
-//			Log.e(TAG, eventName +" MalformedURLException "+e.toString());
-//			return false;
-//		} catch (IOException e) {
-//			Log.e(TAG, eventName +" IOException "+e.toString());
-//			return false;
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			Log.e(TAG, eventName +" Exception "+e.toString());
-//			return false;
-//		}
-//		
-//	}
+	public static Boolean LogSender(String Content) {
+		try {
+			String jsonContent = base64Code(Content);
+			String url="http://ismartv.calla.tvxio.com/log";
+			java.net.URL connURL = new java.net.URL(url);
+			java.net.HttpURLConnection httpConn = (java.net.HttpURLConnection) connURL.openConnection();
+			httpConn.setRequestMethod("POST");
+			httpConn.setConnectTimeout(10000);
+			httpConn.setReadTimeout(10000); 
+			httpConn.setDoOutput(true);                 
+
+	        httpConn.setDoInput(true); 
+			httpConn.setRequestProperty("Accept", "*/*");
+            httpConn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			httpConn.setRequestProperty("Host", "a21.calla.tvxio.com");
+			httpConn.setRequestProperty("Connection", "Keep-Alive");
+			//httpConn.setRequestProperty("User-Agent", "ideatv_A21/S0054.38 TD04007053");
+			httpConn.setRequestProperty("User-Agent", VodUserAgent.getUserAgent(VodUserAgent.getMACAddress()));
+			httpConn.setRequestProperty("Pragma:", "no-cache");  
+			httpConn.setRequestProperty("Cache-Control", "no-cache");
+			httpConn.setRequestProperty("Accept-Encoding", "gzip");
+			httpConn.setUseCaches(false);
+			httpConn.connect();
+			DataOutputStream out = new DataOutputStream(httpConn.getOutputStream());
+			
+			
+			String content = "sn=" + SimpleRestClient.sn_token + "&modelname="
+					+ VodUserAgent.getModelName() + "&data="
+					+ URLEncoder.encode(jsonContent, "UTF-8") + "&deviceToken="
+					+ SimpleRestClient.device_token + "&acessToken="
+					+ SimpleRestClient.access_token;
+			
+			
+			
+			
+			//String content = "data=" + URLEncoder.encode(jsonContent, "UTF-8");
+	        out.writeBytes(content);
+	        /////gzip
+	       // out.write(MessageGZIP.compressToByte(content));
+	        out.flush();
+	        out.close(); // flush and close
+	        BufferedReader reader = new BufferedReader(new InputStreamReader(httpConn.getInputStream(), "UTF-8"));
+    		String line;
+    		int code = httpConn.getResponseCode();
+    		Log.i("LogSender", "LogSender code=="+code);
+    		while ((line = reader.readLine()) != null)
+    		{
+    			System.out.println(line);
+    		}
+    		reader.close();
+    		httpConn.disconnect();
+			return true;
+		} catch (MalformedURLException e) {
+			Log.e(TAG, "" +" MalformedURLException "+e.toString());
+			return false;
+		} catch (IOException e) {
+			Log.e(TAG, "" +" IOException "+e.toString());
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.e(TAG, "" +" Exception "+e.toString());
+			return false;
+		}
+		
+	}
 	
 	private static boolean isSupportGzip(){
 		boolean isSupport = false;
@@ -478,11 +504,12 @@ public class NetworkUtils {
         logJson.put("event", eventName);
         logJson.put("properties", propertiesJson);
         Log.d(TAG," Log data For Test === " + logJson.toString());
-        return base64Code(logJson.toString());
+        return logJson.toString();
 	}
 
 	private static String base64Code(String date){
 		try {
+			//return Base64.encodeToString(date.getBytes("UTF-8"),Base64.NO_PADDING|Base64.NO_WRAP);
 			return Base64.encodeToString(date.getBytes("UTF-8"),Base64.DEFAULT);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -513,7 +540,15 @@ public class NetworkUtils {
 				}
 				//LogSender(eventName, properties);
 				
-				SaveLogToLocal(eventName,properties);
+				//SaveLogToLocal(eventName,properties);
+				String jsonContent;
+				try {
+					jsonContent = getContentJson(eventName, properties);
+					 MessageQueue.addQueue(jsonContent);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			return null;
 		}

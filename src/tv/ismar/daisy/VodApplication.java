@@ -9,9 +9,12 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.app.Application;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import tv.ismar.daisy.core.ImageCache;
+import tv.ismar.daisy.core.MessageQueue;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.dao.DBHelper;
@@ -243,15 +246,42 @@ public class VodApplication extends Application {
             // TODO Auto-generated method stub
             while (isFinish) {
                 try {
-                    Thread.sleep(900000);
-                    //Thread.sleep(1000);
-                    Log.i("zhangjiqiang", "upload123");
-                    NetworkUtils.LogUpLoad(getApplicationContext());
+                   // Thread.sleep(900000);
+                    Thread.sleep(10000);
+                    
+                    ArrayList<String> list = MessageQueue.getQueueList();
+                    int i;
+                    JSONArray s = new JSONArray();
+                    if(list.size()>0){
+                    	for(i=0;i<list.size();i++){
+                    		JSONObject obj;
+                    		try {
+                    			Log.i("qazwsx", "json item=="+list.get(i).toString());
+                    			obj = new JSONObject(list.get(i).toString());
+								s.put(obj); 
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+                    	                   	  
+                    	}
+                    	if(i==list.size()){
+                    		MessageQueue.remove();
+                    		NetworkUtils.LogSender(s.toString());
+                    		Log.i("qazwsx", "json array=="+s.toString());
+                    		Log.i("qazwsx", "remove");
+                    	}
+                    }
+                    else{
+                    	Log.i("qazwsx", "queue is no elements");
+                    }
+                    //NetworkUtils.LogUpLoad(getApplicationContext());
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
+            Log.i("qazwsx", "Thread is finished!!!"); 
         }
 
     };
