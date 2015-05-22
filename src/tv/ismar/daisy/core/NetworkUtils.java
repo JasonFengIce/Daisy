@@ -810,4 +810,6 @@ public class NetworkUtils {
 	 * 退出剧集列表界面
 	 */
 	public static final String VIDEO_DRAMALIST_OUT = "video_dramalist_out";
+	
+	public static final String FRONT_PAGE_VIDEO = "frontpagevideo";
 }

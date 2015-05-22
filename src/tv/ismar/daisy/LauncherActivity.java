@@ -42,6 +42,8 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.EventProperty;
+import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SystemFileUtil;
 import tv.ismar.daisy.core.client.ClientApi;
@@ -56,6 +58,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class LauncherActivity extends Activity implements View.OnClickListener, Activator.OnComplete {
     private static final String TAG = "LauncherActivity";
@@ -368,6 +371,13 @@ protected void onPause() {
             String fileName = mRemoteUrl.substring(position + 1,
                     mRemoteUrl.length());
             String realname = fileName.substring(0, fileName.lastIndexOf("?"));
+            
+            final HashMap<String, Object> properties = new HashMap<String, Object>();                                    
+            properties.put(EventProperty.CONTENT,
+					mRemoteUrl);
+			new NetworkUtils.DataCollectionTask().execute(
+					NetworkUtils.FRONT_PAGE_VIDEO, properties);    
+            
             if (SystemFileUtil.isCanWriteSD()) {
                 mLocalPath = Environment.getExternalStorageDirectory()
                         .getAbsolutePath() + "/VideoCache/" + realname;
