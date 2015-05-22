@@ -286,7 +286,7 @@ public class NetworkUtils {
 	        httpConn.setDoInput(true); 
 			httpConn.setRequestProperty("Accept", "*/*");
             httpConn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-			httpConn.setRequestProperty("Host", "a21.calla.tvxio.com");
+			httpConn.setRequestProperty("Host", "ismartv.calla.tvxio.com");
 			httpConn.setRequestProperty("Connection", "Keep-Alive");
 			//httpConn.setRequestProperty("User-Agent", "ideatv_A21/S0054.38 TD04007053");
 			httpConn.setRequestProperty("User-Agent", VodUserAgent.getUserAgent(VodUserAgent.getMACAddress()));

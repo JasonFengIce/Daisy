@@ -68,6 +68,11 @@
     <dimen name="item_detail_related_W">426dip</dimen>
     <dimen name="item_detail_btn_layout_marginB">8dip</dimen>
     <dimen name="item_detail_Btn_Layout_marginT">12dip</dimen>
+    <dimen name="item_detail_title_txt_MT">60dip</dimen>
+    <dimen name="item_detail_text_size">24sp</dimen>
+    <dimen name="item_detail_detail_price_txt_ML">4dip</dimen>
+    <dimen name="item_detail_detail_price_textsize">16sp</dimen>
+    
     <!-- grid listview page -->
     <dimen name="gridview_channel_panel_height">60dip</dimen>
     <dimen name="gridview_channel_panel_marginBottom">13dp</dimen>
@@ -122,6 +127,25 @@
     <dimen name="grid_view_main_arrow_left_H">24dip</dimen>
     <dimen name="grid_view_main_arrow_left_marginT">17dip</dimen>
     <dimen name="grid_view_main_list_marginT">-20dip</dimen>
+    <dimen name="grid_view_main_divider_H">3dip</dimen>
+    <dimen name="grid_view_main_divider_MT">27dip</dimen>
+    <dimen name="grid_view_main_collect_or_history_txt_H">80dip</dimen>
+    <dimen name="grid_view_main_collect_or_history_txt_MT">53dip</dimen>
+    <dimen name="grid_view_main_collect_or_history_txt_textsize">53sp</dimen>
+    <dimen name="grid_view_main_collect_or_history_txt_PL">40dip</dimen>
+    <dimen name="grid_view_main_recommend_txt_H">68dip</dimen>
+    <dimen name="grid_view_main_recommend_txt_size">40sp</dimen>
+    <dimen name="grid_view_main_recommend_txt_PL">20dip</dimen>
+    <dimen name="grid_view_main_recommend_gridview_H">167dip</dimen>
+    <dimen name="grid_view_main_horizontalSpace">11dip</dimen>
+    <dimen name="gridview_item_list_item_title_MT">5dip</dimen>
+    <dimen name="gridview_item_ItemBeanScore_MR">4dip</dimen>
+    <dimen name="gridview_item_ItemBeanScore_MT">-1dip</dimen>
+    <dimen name="gridview_item_ItemBeanScore_PT">4dip</dimen>
+    <dimen name="gridview_item_ItemBeanScore_textsize">24sp</dimen>
+    <dimen name="gridview_item_expense_txt_W">75dip</dimen>
+    <dimen name="gridview_item_expense_txt_H">27dip</dimen>
+    <dimen name="gridview_item_expense_txt_size">14sp</dimen>
     <!-- popup_2btn -->
     <dimen name="popup_dialog_width">538dip</dimen>
     <dimen name="popup_dialog_height">296dip</dimen>
@@ -160,6 +184,10 @@
     <dimen name="related_item_focus_textsize">20sp</dimen>
     <dimen name="related_item_focus_marginright">27dip</dimen>
     <dimen name="related_item_text_marginLeft">7dip</dimen>
+    <dimen name="related_item_related_preview_img_ML">4dip</dimen>
+    <dimen name="related_item_ItemBeanScore_PT">4dip</dimen>
+    <dimen name="related_item_ItemBeanScore_textsize">24sp</dimen>
+    <dimen name="related_item_related_price_txt_size">17sp</dimen>
     <!-- vod_player -->
     <dimen name="vod_player_logo_image_PT">22dip</dimen>
     <dimen name="vod_player_logo_image_PR">22dip</dimen>
@@ -382,6 +410,8 @@
     <dimen name="search_gridview_item_label_H">32dip</dimen>
     <dimen name="search_btnHotWords_PLR">10dip</dimen>
     <dimen name="search_btnHotWords_textsize">20sp</dimen>
+    <dimen name="search_arrow_btn_MLR">24dip</dimen>
+    <dimen name="search_gridview_item_iv_type_MT">0dip</dimen>
     <!-- channel_section_tabs -->
     <dimen name="channel_section_tabs_W">200dip</dimen>
     <dimen name="channel_section_tabs_H">65dip</dimen>
@@ -431,6 +461,11 @@
     <dimen name="Loading_Dialog_ProgressBar_ML">10dip</dimen>
     <dimen name="Loading_Dialog_ProgressBar_TextSize">15sp</dimen>
     <!-- Launcher -->
+    <dimen name="launcher_channel_img_height">50dp</dimen>
+    <dimen name="launcher_channel_img_width">50dp</dimen>
+    <dimen name="launcher_channel_title_height">50dp</dimen>
+    <dimen name="launcher_layout_padding_bottom">20dp</dimen>
+    <dimen name="launcher_weather_layout_margin_top">10dp</dimen>
     <dimen name="Launcher_Layout_LP">40dip</dimen>
     <dimen name="Launcher_Layout_TP">10dip</dimen>
     <dimen name="Launcher_Layout_RP">40dip</dimen>
@@ -452,6 +487,7 @@
     <dimen name="Launcher_preview_layout_MLR">5dip</dimen>
     <dimen name="Launcher_preview_title_textsize">18sp</dimen>
     <dimen name="Launcher_channel_title_textsize">20sp</dimen>
+    <dimen name="launcher_exit_button_width">180dp</dimen>
     <!-- DetailAttributeContainer -->
     <dimen name="DetailAttributeContainer_Layout_W">314dip</dimen>
 
@@ -564,9 +600,96 @@
     <dimen name="personal_center_divider_H">2dip</dimen>
     <dimen name="personal_center_divider_ML">20dip</dimen>
     <dimen name="person_center_textsize">60sp</dimen>
-    
+    <dimen name="person_center_text_size">40sp</dimen>
+    <dimen name="person_center_btn_layout_MT">3dip</dimen>
+    <dimen name="person_center_btn_layout_PT">60dip</dimen>
+    <dimen name="person_center_btn_H">54dip</dimen>
+    <dimen name="person_center_btn_W">267dip</dimen>
+    <dimen name="person_center_btn_text_size">24sp</dimen>
+    <dimen name="person_center_btn_MT">24dip</dimen>
+    <dimen name="person_login_layout_PL">80dip</dimen>
+    <dimen name="person_login_layout_PT">100dip</dimen>
+    <dimen name="person_login_content_layout_H">54dip</dimen>
+    <dimen name="person_login_content_MT">14dip</dimen>
+    <dimen name="person_login_phone_text_W">130dip</dimen>
+    <dimen name="person_login_phone_text_size">24sp</dimen>
+    <dimen name="person_login_phone_edit_W">400dip</dimen>
+    <dimen name="person_login_phone_view_ML">27dip</dimen>
+    <dimen name="person_login_phone_edit_PL">7dip</dimen>
+    <dimen name="person_login_phone_edit_text_size">20sp</dimen>
+    <dimen name="person_login_pay_identifyCodeBtn_W">200dip</dimen>
+    <dimen name="person_login_pay_count_tip_H">40dip</dimen>
+    <dimen name="person_login_pay_count_tip_text_size">14sp</dimen>
+    <dimen name="person_pay_btn_submit_W">267dip</dimen>
+    <dimen name="person_pay_btn_submit_H">43dip</dimen>
+    <dimen name="person_pay_btn_submit_MT">67dip</dimen>
+    <dimen name="person_pay_btn_submit_ML">184dip</dimen>
+    <dimen name="person_info_privilegelist_scrollbarSize">20dip</dimen>
+    <dimen name="person_info_warn_info_txt_ML">20dip</dimen>
+    <dimen name="person_info_exit_btn_MR">40dip</dimen>
+    <dimen name="person_info_no_privilegelist_txt_size">27sp</dimen>
     <!-- list_view -->
     <dimen name="list_view_search_H">60dip</dimen>
     <dimen name="list_view_search_ML">1100dip</dimen>
+ <!-- ====================================================== -->
+    <!-- sakura -->
+
+    <!-- text size -->
+    <dimen name="textSize_normal">22sp</dimen>
+    <dimen name="textSize_testButton">30sp</dimen>
+
+
+    <!-- launcher activity -->
+    <dimen name="sakura_launcher_indicator_height">150dp</dimen>
+    <dimen name="sakura_launcher_indicator_width">150dp</dimen>
+
+    <!-- activity_home -->
+    <dimen name="home_logo_margin_top">80dp</dimen>
+    <dimen name="home_logo_margin_left">80dp</dimen>
+    <dimen name="home_logo_width">90dp</dimen>
+    <dimen name="home_logo_height">128dp</dimen>
+    <dimen name="home_viewPager_margin_top">80dp</dimen>
+    <dimen name="home_viewPager_width">850dp</dimen>
+    <dimen name="home_viewPager_height">500dp</dimen>
+    <dimen name="home_indicator_height">200dp</dimen>
+    <dimen name="home_indicator_margin_bottom">20dp</dimen>
+    <dimen name="home_indicator_icon_width">140dp</dimen>
+    <dimen name="home_indicator_icon_height">140dp</dimen>
+
+
+    <!-- fragment_node -->
+    <dimen name="layout_margin">10dp</dimen>
+    <dimen name="test_button_height">60dp</dimen>
+    <dimen name="layout_border_padding">20dp</dimen>
+    <dimen name="list_title_height">40dp</dimen>
+    <dimen name="list_select_prompt_textSize">26sp</dimen>
+
+    <dimen name="list_item_margin">30dp</dimen>
+    <dimen name="spinner_text">20sp</dimen>
+
+
+    <!-- sakura_item_node_list -->
+    <dimen name="count_layout_width">40dp</dimen>
+    <dimen name="count_layout_height">40dp</dimen>
+    <dimen name="count_number_textSize">20sp</dimen>
+    <dimen name="item_node_name_width">130dp</dimen>
+    <dimen name="item_node_minHeight">55dp</dimen>
+
+
+    <!-- feedback fragment -->
+    <dimen name="feedback_layout_h_margin">40dp</dimen>
+    <dimen name="feedback_layout_v_margin">10dp</dimen>
+    <dimen name="feedback_radio_button_textSize">18sp</dimen>
+    <dimen name="feedback_radiogroup_margin">20dp</dimen>
+
+    <dimen name="feedback_item_title_textSize">20sp</dimen>
+    <dimen name="feedback_item_time_textSize">18sp</dimen>
+
+    <dimen name="feedback_item_minHeight">40dp</dimen>
+    <dimen name="feedback_item_v_margin">5dp</dimen>
+    <dimen name="feedback_item_h_margin">10dp</dimen>
+
+    <!-- help fragment -->
+    <dimen name="help_item__h_margin">10dp</dimen>
 </resources>
 
