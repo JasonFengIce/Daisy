@@ -25,7 +25,7 @@ public class ChildFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        ArrayList<ImageView> imgs = new ArrayList<>();
+        ArrayList<ImageView> imgs = new ArrayList<ImageView>();
         for (int i = 0; i < 3; i++) {
             ImageView imageView = new ImageView(getActivity());
             imageView.setImageResource(R.drawable.ic_launcher);

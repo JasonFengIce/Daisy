@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import com.ismartv.launcher.data.ChannelEntity;
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -36,8 +38,15 @@ public class TVGuideActivity extends FragmentActivity {
     public static final String TAG_FILM_FRAGMENT = "film";
     public static final String TAG_SPORT_FRAGMENT = "sport";
 
-    private ChildFragmentContainer childFragmentContainer;
 
+    private ChildFragment childFragment;
+    private EntertainmentFragment entertainmentFragment;
+    private FilmFragment filmFragment;
+    private SportFragment sportFragment;
+    private GuideFragment guideFragment;
+
+
+    private LinearLayout channelListView;
 
 //    private ChannelGridView channelGrid;
 
@@ -48,7 +57,9 @@ public class TVGuideActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tv_guide);
-        childFragmentContainer = new ChildFragmentContainer();
+        fetchChannels();
+
+        channelListView = (LinearLayout) findViewById(R.id.channel_h_list);
 
         if (savedInstanceState == null) {
             final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -56,58 +67,39 @@ public class TVGuideActivity extends FragmentActivity {
         } else {
 
         }
-//        channelGrid = (ChannelGridView) findViewById(R.id.channel_grid);
-
-
-//        fetchChannels();
-
-        HorizontalListView horizontalListView = (HorizontalListView) findViewById(R.id.channel_h_list);
-
-        ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            list.add("channel --- " + i);
-        }
-
-        ChannleListAdapter channleListAdapter = new ChannleListAdapter(this, list);
-        horizontalListView.setAdapter(channleListAdapter);
-
-        change = (Button) findViewById(R.id.change);
-        change.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!childFragmentContainer.isVisible()) {
-                    final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.container, childFragmentContainer, TAG_ENTERTAINMENT_FRAGMENT).commit();
-                }
-            }
-        });
-
-
     }
 
 
     /**
      * fetch channel
      */
-//    private void fetchChannels() {
-//        String deviceToken = SimpleRestClient.device_token;
-//        String host = SimpleRestClient.root_url;
-//        RestAdapter restAdapter = new RestAdapter.Builder()
-//                .setLogLevel(AppConstant.LOG_LEVEL)
-//                .setEndpoint(host)
-//                .build();
-//        ClientApi.Channels client = restAdapter.create(ClientApi.Channels.class);
-//        client.excute(deviceToken, new Callback<ChannelEntity[]>() {
-//            @Override
-//            public void success(ChannelEntity[] channelEntities, Response response) {
-//                channelGrid.setAdapter(channelEntities);
-//            }
-//
-//            @Override
-//            public void failure(RetrofitError retrofitError) {
-//                Log.e(TAG, retrofitError.getMessage());
-//            }
-//        });
-//    }
+    private void fetchChannels() {
+        String deviceToken = SimpleRestClient.device_token;
+        String host = SimpleRestClient.root_url;
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setLogLevel(AppConstant.LOG_LEVEL)
+                .setEndpoint(host)
+                .build();
+        ClientApi.Channels client = restAdapter.create(ClientApi.Channels.class);
+        client.excute(deviceToken, new Callback<ChannelEntity[]>() {
+            @Override
+            public void success(ChannelEntity[] channelEntities, Response response) {
+                for (ChannelEntity channelEntity : channelEntities) {
+                    TextView textView = new TextView(TVGuideActivity.this);
+                    textView.setFocusable(true);
+                    textView.setPadding(100, 0, 100, 0);
+                    textView.setBackgroundResource(R.drawable.selector_button);
+                    textView.setText(channelEntity.getName());
+                    channelListView.addView(textView);
+
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                Log.e(TAG, retrofitError.getMessage());
+            }
+        });
+    }
 
 }
