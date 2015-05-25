@@ -292,7 +292,7 @@ public class NetworkUtils {
 			httpConn.setRequestProperty("User-Agent", VodUserAgent.getUserAgent(VodUserAgent.getMACAddress()));
 			httpConn.setRequestProperty("Pragma:", "no-cache");  
 			httpConn.setRequestProperty("Cache-Control", "no-cache");
-			httpConn.setRequestProperty("Accept-Encoding", "gzip");
+			httpConn.setRequestProperty("Content-Encoding", "gzip");
 			httpConn.setUseCaches(false);
 			httpConn.connect();
 			DataOutputStream out = new DataOutputStream(httpConn.getOutputStream());
@@ -303,11 +303,6 @@ public class NetworkUtils {
 					+ URLEncoder.encode(jsonContent, "UTF-8") + "&deviceToken="
 					+ SimpleRestClient.device_token + "&acessToken="
 					+ SimpleRestClient.access_token;
-			
-			
-			
-			
-			//String content = "data=" + URLEncoder.encode(jsonContent, "UTF-8");
 	        out.writeBytes(content);
 	        /////gzip
 	       // out.write(MessageGZIP.compressToByte(content));
