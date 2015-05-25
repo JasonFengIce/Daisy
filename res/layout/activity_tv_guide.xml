@@ -29,6 +29,8 @@
 
 
     <tv.ismar.daisy.ui.widget.HorizontalListView
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:background="@android:color/holo_orange_dark"
             android:id="@+id/channel_h_list"
             android:layout_width="match_parent"

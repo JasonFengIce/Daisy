@@ -5,13 +5,16 @@ import android.database.DataSetObserver;
 import android.gesture.GestureStroke;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Scroller;
+import tv.ismar.daisy.R;
 import tv.ismar.daisy.models.Item;
 
 import java.util.LinkedList;
@@ -21,6 +24,7 @@ import java.util.Queue;
  * Created by huaijie on 5/19/15.
  */
 public class HorizontalListView extends AdapterView<ListAdapter> {
+    private static final String TAG = "HorizontalListView";
 
     public boolean mAlwaysOverrideTouch = true;
     protected ListAdapter mAdapter;
@@ -37,6 +41,12 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
     private OnItemClickListener mOnItemClicked;
     private OnItemLongClickListener mOnItemLongClicked;
     private boolean mDataChanged = false;
+
+
+    private int itemCount;
+    private int selectedPosition;
+
+    private int currentSelectedPosition = 0;
 
 
     public HorizontalListView(Context context, AttributeSet attrs) {
@@ -97,8 +107,11 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 
     @Override
     public View getSelectedView() {
-        //TODO: implement
-        return null;
+        if (itemCount > 0 && selectedPosition >= 0) {
+            return getChildAt(selectedPosition);
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -109,6 +122,8 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         mAdapter = adapter;
         mAdapter.registerDataSetObserver(mDataObserver);
         reset();
+
+
     }
 
     private synchronized void reset() {
@@ -119,13 +134,14 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 
     @Override
     public void setSelection(int position) {
-        //TODO: implement
+        Log.d(TAG, "set selection : " + position);
     }
+
 
     private void addAndMeasureChild(final View child, int viewPos) {
         LayoutParams params = child.getLayoutParams();
         if (params == null) {
-            params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+            params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         }
 
         addViewInLayout(child, viewPos, params, true);
@@ -275,6 +291,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         return handled;
     }
 
+
     protected boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
                               float velocityY) {
         synchronized (HorizontalListView.this) {
@@ -360,6 +377,41 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
             return viewRect.contains((int) e.getRawX(), (int) e.getRawY());
         }
     };
+
+
+//    private boolean commonKey(int keyCode, int count, KeyEvent event) {
+//
+//        int action = event.getAction();
+//
+//        switch (keyCode) {
+//            case KeyEvent.KEYCODE_DPAD_UP:
+//
+//                break;
+//
+//
+//        }
+//
+//    }
+
+
+//    private boolean arrowScrollImpl(int direction) {
+//        View selectedView = getSelectedView();
+//
+//        int nextSelectedPosition =
+//
+//    }
+
+
+    private final int nextSelectedPositionForDirection(View selectedView, int selectedPos, int direction) {
+        int nextSelected = 0;
+
+
+        if (nextSelected < 0 || nextSelected >= mAdapter.getCount()) {
+            return INVALID_POSITION;
+        }
+
+        return nextSelected;
+    }
 
 
 }

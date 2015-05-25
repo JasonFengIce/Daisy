@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import com.ismartv.launcher.data.ChannelEntity;
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -80,6 +81,8 @@ public class TVGuideActivity extends FragmentActivity {
                 }
             }
         });
+
+
     }
 
 
