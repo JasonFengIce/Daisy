@@ -1,37 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:background="#8803548d"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
     <LinearLayout
-            android:background="@android:color/holo_red_dark"
+            android:layout_marginRight="@dimen/guide_channel_margin_lr"
+            android:layout_marginLeft="@dimen/guide_title_margin_lr"
             android:id="@+id/top_column_layout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:layout_height="100dp"
             >
 
-        <Button
-                android:id="@+id/change"
-                android:text="change"
+        <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:text="@string/ismartv_cinema"
+                android:textSize="@dimen/guide_title_size"
+                android:textColor="@android:color/white"
+                />
+
+        <ImageView
+                android:background="@android:color/white"
+                android:layout_width="40dp"
+                android:layout_height="4dp"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ismartv_films"
+                android:textSize="@dimen/guide_channel_size"
+                android:textColor="@android:color/white"
+                />
+
+        <RelativeLayout
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <TextView
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/guide_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/guide_history_size"
+                    android:textColor="@android:color/white"
+                    android:text="@string/guide_search"
+                    />
+
+
+            <TextView
+                    android:layout_marginRight="@dimen/guide_channel_margin_lr"
+                    android:text="@string/guide_message"
+                    android:layout_toLeftOf="@id/guide_search"
+                    android:id="@+id/guide_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/guide_history_size"
+                    android:textColor="@android:color/white"
+                    />
+
+            <TextView
+                    android:layout_marginRight="@dimen/guide_channel_margin_lr"
+                    android:text="@string/guide_user_center"
+                    android:layout_toLeftOf="@id/guide_message"
+                    android:id="@+id/guide_user_center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/guide_history_size"
+                    android:textColor="@android:color/white"
+                    />
+
+            <TextView
+                    android:layout_marginRight="@dimen/guide_channel_margin_lr"
+                    android:text="@string/guide_my_favorite"
+                    android:layout_toLeftOf="@id/guide_user_center"
+                    android:id="@+id/guide_my_favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/guide_history_size"
+                    android:textColor="@android:color/white"
+                    />
+
+            <TextView
+                    android:layout_marginRight="@dimen/guide_channel_margin_lr"
+                    android:text="@string/guide_play_history"
+                    android:layout_toLeftOf="@id/guide_my_favorite"
+                    android:id="@+id/guide_play_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/guide_history_size"
+                    android:textColor="@android:color/white"
+                    />
+
+        </RelativeLayout>
 
     </LinearLayout>
 
     <FrameLayout
+            android:layout_marginTop="@dimen/guide_fragment_margin_top"
+            android:layout_marginBottom="@dimen/guide_fragment_margin_bottom"
+            android:layout_marginLeft="@dimen/guide_fragment_margin_lr"
+            android:layout_marginRight="@dimen/guide_fragment_margin_lr"
             android:id="@+id/container"
-            android:layout_height="0dp"
-            android:layout_weight="10"
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
             />
 
 
     <HorizontalScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="66dp"
+            android:layout_marginRight="@dimen/guide_channel_margin_lr"
+            android:layout_marginLeft="@dimen/guide_channel_margin_lr"
             >
 
         <LinearLayout
@@ -43,5 +126,14 @@
         </LinearLayout>
 
     </HorizontalScrollView>
+
+        <LinearLayout
+                android:layout_marginTop="@dimen/guide_tab_margin_top"
+                android:layout_gravity="center"
+                android:id="@+id/tab_list"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></LinearLayout>
+
 
 </LinearLayout>

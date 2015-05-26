@@ -4,10 +4,57 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <TextView
-            android:gravity="center"
-            android:text="guide fragment"
+
+    <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="@dimen/guide_video_height">
+
+        <ImageView
+                android:src="@drawable/ic_launcher"
+                android:scaleType="fitXY"
+                android:layout_width="@dimen/guide_video_width"
+                android:layout_height="match_parent"/>
+
+        <LinearLayout
+                android:layout_marginLeft="@dimen/guide_linked_item_margin_left"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_launcher"
+                    android:scaleType="fitXY"
+                    />
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_launcher"
+                    android:scaleType="fitXY"
+                    />
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_launcher"
+                    android:scaleType="fitXY"
+                    />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+            android:layout_marginTop="@dimen/guide_recommend_margin_top"
+            android:orientation="horizontal"
+            android:id="@+id/recommend_list"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/guide_recommend_item_height">
+    </LinearLayout>
 
 </LinearLayout>
