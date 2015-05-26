@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -15,6 +17,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import cn.ismartv.activator.Activator;
+import cn.ismartv.activator.data.Result;
+import com.baidu.location.*;
 import com.ismartv.launcher.data.ChannelEntity;
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -22,7 +27,9 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.adapter.ChannleListAdapter;
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.ClientApi;
 import tv.ismar.daisy.core.service.PosterUpdateService;
@@ -36,8 +43,10 @@ import java.util.ArrayList;
 /**
  * Created by huaijie on 5/18/15.
  */
-public class TVGuideActivity extends FragmentActivity {
+public class TVGuideActivity extends FragmentActivity implements Activator.OnComplete {
     private static final String TAG = "TVGuideActivity";
+
+    private static final int GETDOMAIN = 0x06;
 
     public static final String TAG_GUIDE_FRAGMENT = "guide";
     public static final String TAG_CHILD_FRAGMENT = "child";
@@ -74,12 +83,18 @@ public class TVGuideActivity extends FragmentActivity {
 
     private View contentView;
 
+    Activator activator;
+
+
+    private static final String KIND = "sky";
+    private static final String VERSION = "1.0";
+    private static final String MANUFACTURE = "sky";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_tv_guide, null);
         setContentView(contentView);
-        fetchChannels();
         channelListView = (LinearLayout) findViewById(R.id.channel_h_list);
         tabListView = (LinearLayout) findViewById(R.id.tab_list);
         initTabView();
@@ -89,6 +104,14 @@ public class TVGuideActivity extends FragmentActivity {
         } else {
 
         }
+
+
+        activator = Activator.getInstance(this);
+        activator.setOnCompleteListener(this);
+        String localInfo = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.LOCATION_INFO, "");
+        Log.v(TAG, localInfo);
+        sendLoncationRequest();
+        activator.active(MANUFACTURE, KIND, VERSION, localInfo);
     }
 
 
@@ -278,5 +301,114 @@ public class TVGuideActivity extends FragmentActivity {
             }
         });
     }
+
+
+    @Override
+    public void onSuccess(Result result) {
+        Log.d(TAG, result.toString());
+        try {
+            SimpleRestClient.root_url = "http://" + result.getDomain();
+            SimpleRestClient.sRoot_url = "http://" + result.getDomain();
+            SimpleRestClient.ad_domain = "http://" + result.getAd_domain();
+            SimpleRestClient.log_domain = "http://" + result.getLog_Domain();
+            SimpleRestClient.device_token = result.getDevice_token();
+            SimpleRestClient.sn_token = result.getSn_Token();
+            DaisyUtils.getVodApplication(this).getEditor().putString(VodApplication.ad_domain, SimpleRestClient.ad_domain);
+            DaisyUtils.getVodApplication(this).getEditor().putString(VodApplication.DEVICE_TOKEN, SimpleRestClient.device_token);
+            DaisyUtils.getVodApplication(this).getEditor().putString(VodApplication.DOMAIN, SimpleRestClient.root_url);
+            DaisyUtils.getVodApplication(this).getEditor().putString(VodApplication.SN_TOKEN, SimpleRestClient.sn_token);
+            DaisyUtils.getVodApplication(this).getEditor().putString(VodApplication.LOG_DOMAIN, SimpleRestClient.log_domain);
+            DaisyUtils.getVodApplication(this).save();
+            SimpleRestClient.mobile_number = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.MOBILE_NUMBER, "");
+            SimpleRestClient.access_token = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.AUTH_TOKEN, "");
+            mainHandler.sendEmptyMessage(GETDOMAIN);
+            Log.i("zjqactivator", "device_token=" + SimpleRestClient.device_token + "///"
+                    + "access_token=" + SimpleRestClient.access_token + "ad_domain==" + SimpleRestClient.ad_domain + "domain==" + SimpleRestClient.root_url);
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onFailed(String erro) {
+//        Log.d(TAG, erro);
+        // showDialog(erro);
+//        checkNetWork(erro);
+    }
+
+    private void sendLoncationRequest() {
+//        mLocationClient = new LocationClient(LauncherActivity.this);
+//        mMyLocationListener = new MyLocationListener();
+//        mLocationClient.registerLocationListener(mMyLocationListener);
+//        mGeofenceClient = new GeofenceClient(getApplicationContext());
+//        LocationClientOption option = new LocationClientOption();
+//        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);// 设置定位模式
+//        // option.setCoorType("bd09ll");//返回的定位结果是百度经纬度,默认值gcj02
+//        option.setScanSpan(5000);// 设置发起定位请求的间隔时间为5000ms
+//        option.setIsNeedAddress(true);// 返回的定位结果包含地址信息
+//        mLocationClient.setLocOption(option);
+//        mLocationClient.start();
+//        mLocationClient.requestLocation();
+    }
+
+    public class MyLocationListener implements BDLocationListener {
+
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+//            mLocationClient.stop();
+            // Receive Location
+//			StringBuffer sb = new StringBuffer(256);
+//			sb.append("time : ");
+//			sb.append(location.getTime());
+//			sb.append("\nerror code : ");
+//			sb.append(location.getLocType());
+//			sb.append("\ncity : ");
+//			sb.append(location.getCity());
+//			sb.append("\nstreet : ");
+//			sb.append(location.getStreet());
+//			sb.append("\ndistrict : ");
+//			sb.append(location.getDistrict());
+//			sb.append("\nfloor : ");
+//			sb.append(location.getFloor());
+//			sb.append("\npoi : ");
+//			sb.append(location.getAddrStr());
+//			sb.append("\nprovince : ");
+//			sb.append(location.getProvince());
+//			sb.append("\ncityCode : ");
+//			sb.append(location.getCityCode());
+//			sb.append("\nlatitude : ");
+//			sb.append(location.getLatitude());
+//			sb.append("\nlontitude : ");
+//			sb.append(location.getLongitude());
+//			sb.append("\nradius : ");
+//			sb.append(location.getRadius());
+//			Log.i("BaiduLocationApiDem", sb.toString());
+            DaisyUtils.getVodApplication(TVGuideActivity.this).getEditor().putString(VodApplication.LOCATION_INFO, location.getAddrStr());
+            DaisyUtils.getVodApplication(TVGuideActivity.this).save();
+        }
+    }
+
+    private Handler mainHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int type = msg.what;
+            Bundle dataBundle = msg.getData();
+            switch (type) {
+                case GETDOMAIN:
+                    DaisyUtils.getVodApplication(TVGuideActivity.this).getNewContentModel();
+                    fetchChannels();
+//                    updatePoster();
+//                    getFrontPage();
+//                    fetchHorizontalGuide();
+//                    fetchChannels();
+//                    fetchWeather();
+                    break;
+            }
+        }
+    };
 
 }
