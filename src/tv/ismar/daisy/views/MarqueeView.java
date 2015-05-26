@@ -2,6 +2,7 @@ package tv.ismar.daisy.views;
 
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
+import tv.ismar.daisy.core.DaisyUtils;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -62,7 +63,8 @@ public class MarqueeView extends LinearLayout {
         
 	        mSpeed = a.getInteger(R.styleable.MarqueeView_speed, 20);
 	        //textColor = a.getInteger(R.styleable.MarqueeView_textcolor, -1);
-	        textSize = (int) (a.getDimensionPixelSize(R.styleable.MarqueeView_textsize,textSize)/VodApplication.rate) ;
+	        float rate = DaisyUtils.getVodApplication(context).getRate(context);
+	        textSize = (int) (a.getDimensionPixelSize(R.styleable.MarqueeView_textsize,textSize)/rate) ;
 	        textColor = a.getColorStateList(R.styleable.MarqueeView_textcolor);	  
 		    init(context);
 		    initViews();

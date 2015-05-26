@@ -39,7 +39,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class DramaListActivity extends Activity implements
+public class DramaListActivity extends BaseActivity implements
 		OnItemSelectedListener, OnItemClickListener {
 
 	private static final String TAG = "DramaListActivity";

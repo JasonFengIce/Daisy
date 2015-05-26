@@ -94,7 +94,7 @@ public static boolean isCanWriteSD(){
 		return false;
 	}
 }
-	public static void writeLogToLocal(String content) {
+	public static synchronized void writeLogToLocal(String content) {
 			String LOGLOCALPATH = "vodlog.txt";
 		    LogPath = appPath+"/"+LOGLOCALPATH;
 			File Dir = new File(appPath);

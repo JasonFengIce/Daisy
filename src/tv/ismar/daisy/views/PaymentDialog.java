@@ -17,6 +17,8 @@ import java.util.regex.Pattern;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.ismartv.activator.Activator;
+
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
@@ -194,6 +196,8 @@ public class PaymentDialog extends Dialog {
 	}
 
 	private View.OnClickListener buttonClick = new View.OnClickListener() {
+		private Activator activator;
+
 		@Override
 		public void onClick(View view) {
 			switch (view.getId()) {
@@ -254,11 +258,25 @@ public class PaymentDialog extends Dialog {
 			case R.id.card_balance_submit: {
 				submit_yuepay.setClickable(false);
 				SimpleRestClient client = new SimpleRestClient();
-				client.doSendRequest(BALANCEPAY_BASE_URL, "post", "wares_id="
+
+				
+				String timestamp = System.currentTimeMillis()+"";
+				
+				String encode = "sn=" + SimpleRestClient.sn_token +"&source=sky"+ "&timestamp="+timestamp + 
+						"&wares_id=" +mItem.pk + "&wares_type="+ mItem.model_name;
+				
+				//encode = "sn=sk_39knib8o&source=sky&timestamp=1432014663168&wares_id=657880&wares_type=item";
+				activator = Activator.getInstance(getContext());
+				String rsaResult = activator.PayRsaEncode(encode);
+				//String rsaResult = activator.PayRsaEncodeByJava(encode);
+				if(rsaResult!=null&&!"".equals(rsaResult)){
+				       client.doSendRequest(BALANCEPAY_BASE_URL, "post", "wares_id="
 						+ mItem.pk + "&wares_type=" + mItem.model_name
 						+ "&device_token=" + SimpleRestClient.device_token
 						+ "&access_token=" + SimpleRestClient.access_token
-						+ "&source=sky", balancePay);
+						+ "&source=sky"+"&timestamp="+timestamp+"&sn="+SimpleRestClient.sn_token+"&sign="+rsaResult, balancePay);
+				}
+
 			}
 				break;
 

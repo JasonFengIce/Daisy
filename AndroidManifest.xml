@@ -44,8 +44,17 @@
 
         <meta-data android:name="AA_DB_NAME" android:value="sakura.db"/>
         <meta-data android:name="AA_DB_VERSION" android:value="3"/>
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" >
+        </service>
 
         <!--android:name=".ui.activity.AdvertisementActivity"-->
+
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="ezPBAhZuOKTRS73MKsRl4KhH" />
         <activity
                 android:name=".ui.activity.TVGuideActivity"
                 android:screenOrientation="landscape"

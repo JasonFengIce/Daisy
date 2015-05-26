@@ -57,7 +57,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.google.gson.JsonSyntaxException;
 
-public class ItemDetailActivity extends Activity implements
+public class ItemDetailActivity extends BaseActivity implements
 		OnImageViewLoadListener {
 
 	private static final String TAG = "ItemDetailActivity";

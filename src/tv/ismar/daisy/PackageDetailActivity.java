@@ -45,7 +45,7 @@ import android.widget.TextView;
 
 import com.google.gson.JsonSyntaxException;
 
-public class PackageDetailActivity extends Activity implements OnItemClickListener{
+public class PackageDetailActivity extends BaseActivity implements OnItemClickListener{
  
 	private TextView vod_payment_pacakge_title;
 	private TextView vod_payment_packageDescribe_content;

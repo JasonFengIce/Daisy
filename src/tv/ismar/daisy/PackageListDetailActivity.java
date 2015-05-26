@@ -41,7 +41,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class PackageListDetailActivity extends Activity implements OnItemSelectedListener, OnItemClickListener, OnScrollListener{
+public class PackageListDetailActivity extends BaseActivity implements OnItemSelectedListener, OnItemClickListener, OnScrollListener{
  
 	private SimpleRestClient mRestClient = new SimpleRestClient();
 	
