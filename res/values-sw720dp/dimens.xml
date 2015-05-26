@@ -701,4 +701,6 @@
 <dimen name="menu_list_PaddingTB">34dip</dimen>
 <dimen name="menu_item_PaddingTB">20dip</dimen>
 <dimen name="menu_item_text_size">32sp</dimen>
+
+<dimen name="test_height">300dip</dimen>
 </resources>

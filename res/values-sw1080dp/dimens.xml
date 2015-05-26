@@ -633,5 +633,5 @@
     <dimen name="guide_tab_item_wh">64dp</dimen>
 
 
-
+    <dimen name="test_height">450dip</dimen>
 </resources>

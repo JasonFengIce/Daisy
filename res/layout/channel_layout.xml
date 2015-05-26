@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    >
+
+
+
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></FrameLayout>
+
+    <LinearLayout
+            android:background="@android:color/holo_orange_light"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/test_height"
+            android:id="@+id/filter"
+            android:orientation="horizontal"
+            android:visibility="gone">
+    </LinearLayout>
 
 </FrameLayout>
