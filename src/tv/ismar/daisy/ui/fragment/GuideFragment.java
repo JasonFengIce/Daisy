@@ -1,15 +1,12 @@
 package tv.ismar.daisy.ui.fragment;
 
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import tv.ismar.daisy.R;
 
 /**
@@ -41,8 +38,6 @@ public class GuideFragment extends Fragment {
 
             guideRecommmendList.addView(itemView);
         }
-
-        guideRecommmendList.requestLayout();
     }
 
 }

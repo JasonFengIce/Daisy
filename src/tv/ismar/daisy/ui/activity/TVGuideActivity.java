@@ -170,7 +170,6 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
                     textView.setText(channelEntities[i].getName());
                     textView.setTextColor(getResources().getColor(R.color.white));
                     channelListView.addView(textView);
-
                 }
             }
 
