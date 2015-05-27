@@ -691,5 +691,6 @@
 
     <!-- help fragment -->
     <dimen name="help_item__h_margin">10dp</dimen>
+    <dimen name="test_height">300dip</dimen>
 </resources>
 

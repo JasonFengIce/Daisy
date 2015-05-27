@@ -1,7 +1,11 @@
 package tv.ismar.daisy;
 
+import android.view.View;
+import android.view.animation.TranslateAnimation;
+import org.sakuratya.horizontal.ui.HGridView;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.views.ActivityToFragmentListener;
 import tv.ismar.daisy.views.ChannelFragment;
 import tv.ismar.daisy.views.FavoriteFragment;
 import tv.ismar.daisy.views.HistoryFragment;
@@ -19,11 +23,15 @@ public class ChannelListActivity extends BaseActivity {
 	private final static String TAG = "ChannelListActivity";
 	
 	private OnMenuToggleListener mOnMenuToggleListener;
-	
+
+    private ChannelFragment channelFragment;
+    private View filter;
+    private HGridView mHgridView;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.channel_layout);		  
+		setContentView(R.layout.channel_layout);
+        filter = findViewById(R.id.filter);
 		Intent intent = getIntent();
 		String title = null;
 		String url = null;
@@ -66,7 +74,7 @@ public class ChannelListActivity extends BaseActivity {
 				finish();
 			}
 			else {
-				ChannelFragment channelFragment = new ChannelFragment();
+				channelFragment = new ChannelFragment();
 				channelFragment.mChannel = channel;
 				channelFragment.mTitle = title;  //chinesemovie
 				channelFragment.mUrl = url;
@@ -85,18 +93,38 @@ public class ChannelListActivity extends BaseActivity {
 		super.onDestroy();
 	}
 
-	@Override
-	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		if(keyCode==KeyEvent.KEYCODE_MENU) {
+//	@Override
+//	public boolean onKeyUp(int keyCode, KeyEvent event) {
+//		if(keyCode==KeyEvent.KEYCODE_MENU) {
+//			if(mOnMenuToggleListener!=null) {
+//				mOnMenuToggleListener.OnMenuToggle();
+//				return true;
+//			}
+//		}
+//		return super.onKeyUp(keyCode, event);
+//	}
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode==KeyEvent.KEYCODE_BACK){
+            if(filter.getVisibility()==View.VISIBLE&&channelFragment!=null){
+                ((ActivityToFragmentListener)channelFragment).onMessageListener(KeyEvent.KEYCODE_BACK);
+            }
+            else{
+                finish();
+            }
+        }
+        else if(keyCode==KeyEvent.KEYCODE_MENU) {
 			if(mOnMenuToggleListener!=null) {
 				mOnMenuToggleListener.OnMenuToggle();
 				return true;
 			}
 		}
-		return super.onKeyUp(keyCode, event);
-	}
-	
-	public void registerOnMenuToggleListener(OnMenuToggleListener listener) {
+        return false;
+    }
+
+    public void registerOnMenuToggleListener(OnMenuToggleListener listener) {
 		mOnMenuToggleListener = listener;
 	}
 	
@@ -111,5 +139,5 @@ public class ChannelListActivity extends BaseActivity {
 		final float scale = context.getResources().getDisplayMetrics().density;
 		return (int) (pxValue / scale + 0.5f);
 	}
-	
+
 }

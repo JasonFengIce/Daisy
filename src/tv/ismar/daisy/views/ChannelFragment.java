@@ -5,9 +5,14 @@ import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import android.view.*;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
 import org.sakuratya.horizontal.ui.HGridView;
 import org.sakuratya.horizontal.ui.HGridView.OnScrollListener;
+import tv.ismar.daisy.ChannelListActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.SearchActivity;
 import tv.ismar.daisy.core.EventProperty;
@@ -33,9 +38,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.FloatMath;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -44,7 +46,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ChannelFragment extends Fragment implements OnItemSelectedListener, OnItemClickListener, OnScrollListener {
+public class ChannelFragment extends Fragment implements OnItemSelectedListener, OnItemClickListener,
+        OnScrollListener,ActivityToFragmentListener,ChannelListActivity.OnMenuToggleListener,
+        MenuFragment.OnMenuItemClickedListener {
 	
 	private static final String TAG = "ChannelFragment";
 
@@ -86,7 +90,12 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 	private ImageView arrow_left;
 	private ImageView arrow_right;
 	private Button btn_search;
+    private View filter;
+    private View large_layout;
+    private MenuFragment mMenuFragment;
 	private void initViews(View fragmentView) {
+        large_layout = fragmentView.findViewById(R.id.large_layout);
+        filter = getActivity().findViewById(R.id.filter);
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
 		mHGridView.setOnItemClickListener(this);
 		mHGridView.setOnItemSelectedListener(this);
@@ -128,6 +137,8 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 				}
 			});
 	}
+
+
 	View fragmentView;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -159,10 +170,95 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		Matcher matcher = pattern.matcher(url);
 		return matcher.matches();
 	}
-	
-	
-	
-	class InitTask extends AsyncTask<String, Void, Integer> {
+
+    @Override
+    public void onMessageListener(int command) {
+        large_layout.setAlpha(1);
+        TranslateAnimation animation1 = new TranslateAnimation(0,0,200,0);
+        animation1.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                int height = getResources().getDimensionPixelSize(R.dimen.test_height);
+                TranslateAnimation animation2 = new TranslateAnimation(0,0,0,-height);
+                animation2.setDuration(1000);//
+                animation2.setFillAfter(true);
+                filter.startAnimation(animation2);
+                filter.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        animation1.setDuration(1000);//
+        animation1.setFillAfter(true);
+
+        mHGridView.startAnimation(animation1);
+
+
+    }
+
+    @Override
+    public void onMenuItemClicked(MenuFragment.MenuItem item) {
+
+
+            switch (item.id){
+                case 2:
+                    int height = getResources().getDimensionPixelSize(R.dimen.test_height);
+                    TranslateAnimation animation1 = new TranslateAnimation(0,0,-height,0);
+                    large_layout.setAlpha((float) 0.4);
+                    animation1.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            TranslateAnimation animation2 = new TranslateAnimation(0, 0, 0, 200);
+                            animation2.setDuration(1000);//
+                            animation2.setFillAfter(true);
+                            mHGridView.startAnimation(animation2);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                    animation1.setDuration(1000);//
+                    animation1.setFillAfter(true);
+                    filter.setVisibility(View.VISIBLE);
+                    filter.startAnimation(animation1);
+                    break;
+
+            }
+    }
+
+    @Override
+    public void OnMenuToggle() {
+        if(mMenuFragment==null) {
+            createMenu();
+        }
+        if(mMenuFragment.isShowing()) {
+            mMenuFragment.dismiss();
+        } else {
+            mMenuFragment.show(getFragmentManager(), "list");
+        }
+    }
+
+    private void createMenu() {
+        mMenuFragment = MenuFragment.newInstance();
+        mMenuFragment.setResId(R.string.filter);
+        mMenuFragment.setOnMenuItemClickedListener(this);
+    }
+    class InitTask extends AsyncTask<String, Void, Integer> {
 		
 		String url;
 		String channel;
@@ -362,6 +458,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 	@Override
 	public void onResume() {
 		mIsBusy = false;
+        ((ChannelListActivity)getActivity()).registerOnMenuToggleListener(this);
 		super.onResume();
 	}
 
@@ -383,7 +480,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		for(Integer index:currentLoadingTask.keySet()) {
 			currentLoadingTask.get(index).cancel(true);
 		}
-		
+        ((ChannelListActivity)getActivity()).unregisterOnMenuToggleListener();
 		final HashMap<String, Object> properties = new HashMap<String, Object>();
 		properties.putAll(mSectionProperties);
 		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_CATEGORY_OUT, properties);
@@ -636,4 +733,5 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 			mCurrentSectionIndex = newSectionIndex;
 		}
 	}
+
 }
