@@ -111,6 +111,7 @@
 
 
     <HorizontalScrollView
+            android:scrollbars="none"
             android:layout_width="match_parent"
             android:layout_height="66dp"
             android:layout_marginRight="@dimen/guide_channel_margin_lr"
