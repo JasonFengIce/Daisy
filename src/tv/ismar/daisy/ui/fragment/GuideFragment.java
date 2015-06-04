@@ -1,5 +1,6 @@
 package tv.ismar.daisy.ui.fragment;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.VideoView;
 import com.squareup.picasso.Picasso;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -15,9 +17,14 @@ import retrofit.client.Response;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.ClientApi;
 import tv.ismar.daisy.core.client.IsmartvFileClient;
+import tv.ismar.daisy.utils.DeviceUtils;
 import tv.ismar.sakura.data.http.HomePagerEntity;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static tv.ismar.daisy.core.client.ClientApi.Homepage;
 import static tv.ismar.daisy.core.client.ClientApi.restAdapter_SKYTEST_TVXIO;
@@ -30,11 +37,14 @@ public class GuideFragment extends Fragment {
     private LinearLayout guideRecommmendList;
     private LinearLayout carouselLayout;
 
+    private VideoView linkedVideoView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_guide, null);
         guideRecommmendList = (LinearLayout) mView.findViewById(R.id.recommend_list);
         carouselLayout = (LinearLayout) mView.findViewById(R.id.carousel_layout);
+        linkedVideoView = (VideoView) mView.findViewById(R.id.linked_video);
         return mView;
     }
 
@@ -81,19 +91,22 @@ public class GuideFragment extends Fragment {
     }
 
     private void initCarousel(ArrayList<HomePagerEntity.Carousel> carousels) {
-
-        new IsmartvFileClient(getActivity(), carousels.get(0).getVideo_url(), new IsmartvFileClient.CallBack() {
-            @Override
-            public void onSuccess(String result) {
-
+        LoopList loopList = new LoopList();
+        for (HomePagerEntity.Carousel carousel : carousels) {
+            HashMap<String, String> hashMap = new HashMap<String, String>();
+            hashMap.put("url", carousel.getVideo_url());
+            try {
+                URL mUrl = new URL(carousel.getVideo_url());
+                File file = new File(DeviceUtils.getCachePath(), mUrl.getFile());
+                String fileName = file.getName().split("\\.")[0];
+                hashMap.put("path", file.getAbsolutePath());
+                hashMap.put("md5", fileName);
+                loopList.add(hashMap);
+            } catch (MalformedURLException e) {
+                Log.e(TAG, "initCarousel: " + e.getMessage());
             }
-
-            @Override
-            public void onFailed(Exception exception) {
-
-            }
-        }).start();
-
+        }
+        playVideo(loopList);
         for (int i = 0; i < 3; i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
             params.weight = 1;
@@ -102,10 +115,89 @@ public class GuideFragment extends Fragment {
             itemView.setScaleType(ImageView.ScaleType.FIT_XY);
             itemView.setLayoutParams(params);
             carouselLayout.addView(itemView);
+        }
+        downloadCarouselVideo(carousels);
+
+    }
+
+    private void downloadCarouselVideo(ArrayList<HomePagerEntity.Carousel> carousels) {
+        new IsmartvFileClient(carousels).start();
+    }
+
+//    private void playVideo(ArrayList<HomePagerEntity.Carousel> carousels) {
+//        ArrayList<String> videoPaths = new ArrayList<String>();
+//        for (HomePagerEntity.Carousel carousel : carousels) {
+//            try {
+//                URL url = new URL(carousel.getVideo_url());
+//                String path = DeviceUtils.getCachePath(getActivity()) + url.getFile();
+//                videoPaths.add(path);
+//            } catch (MalformedURLException e) {
+//                Log.e(TAG, e.getMessage());
+//            }
+//        }
+////        Log.i(TAG, "playVideo: " + videoPaths.get(0));
+//        File file = new File(videoPaths.get(0));
+//        if (file.exists() && file.length()) {
+//            linkedVideoView.setVideoPath(videoPaths.get(0));
+//        } else {
+//
+//        }
+//
+//    }
 
 
+    private void playVideo(final LoopList loopList) {
+        HashMap<String, String> hashMap = loopList.next();
+        String url = hashMap.get("url");
+        File file = new File(hashMap.get("path"));
+
+        if (file.exists()) {
+            String md5 = hashMap.get("md5");
+            Log.i(TAG, "md5 is: " + DeviceUtils.getMd5ByFile(file));
+            if (DeviceUtils.getMd5ByFile(file).equals(md5)) {
+                linkedVideoView.setVideoPath(file.getAbsolutePath());
+                Log.i(TAG, "video path is: " + file.getAbsolutePath());
+            } else {
+                linkedVideoView.setVideoPath(url);
+                Log.i(TAG, "video path is: " + url);
+            }
+        } else {
+            linkedVideoView.setVideoPath(url);
+            Log.i(TAG, "video path is: " + url);
+        }
+        linkedVideoView.start();
+        linkedVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                playVideo(loopList);
+            }
+        });
+    }
+
+
+    class LoopList {
+        ArrayList<HashMap<String, String>> list;
+        private int next;
+
+        public LoopList() {
+            list = new ArrayList<HashMap<String, String>>();
         }
 
+        public void add(HashMap<String, String> hashMap) {
+            list.add(hashMap);
+        }
+
+        public HashMap<String, String> next() {
+            if (next == list.size()) {
+                HashMap<String, String> hashMap = list.get(0);
+                next = 1;
+                return hashMap;
+            } else {
+                HashMap<String, String> hashMap = list.get(next);
+                next = next + 1;
+                return hashMap;
+            }
+        }
     }
 }
 

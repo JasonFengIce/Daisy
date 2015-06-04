@@ -689,18 +689,55 @@
     <!-- help fragment -->
     <dimen name="help_item__h_margin">10dp</dimen>
 
-<!-- recommend -->
+    <!-- recommend -->
     <dimen name="recommend_item__W">153dip</dimen>
     <dimen name="recommend_item_image__H">100dip</dimen>
     <dimen name="ZGridView_recommend_selectorLeftPadding">14dip</dimen>
     <dimen name="ZGridView_recommend_selectorTopPadding">0dip</dimen>
     <dimen name="ZGridView_recommend_selectorRightPadding">14dip</dimen>
     <dimen name="ZGridView_recommend_selectorBottomPadding">-20dip</dimen>
-    
-    <!--menu  -->
-<dimen name="menu_list_PaddingTB">34dip</dimen>
-<dimen name="menu_item_PaddingTB">20dip</dimen>
-<dimen name="menu_item_text_size">32sp</dimen>
 
-<dimen name="test_height">300dip</dimen>
+    <!--menu  -->
+    <dimen name="menu_list_PaddingTB">34dip</dimen>
+    <dimen name="menu_item_PaddingTB">20dip</dimen>
+    <dimen name="menu_item_text_size">32sp</dimen>
+
+    <dimen name="test_height">300dip</dimen>
+
+
+    <!--guide activity-->
+    <dimen name="guide_title_size">48sp</dimen>
+    <dimen name="guide_channel_size">36sp</dimen>
+    <dimen name="guide_history_size">24sp</dimen>
+
+    <dimen name="guide_title_margin_lr">13dp</dimen>
+
+    <dimen name="guide_channel_margin_lr">58dp</dimen>
+    <dimen name="guide_fragment_margin_top">10dp</dimen>
+    <dimen name="guide_fragment_margin_bottom">4dp</dimen>
+    <dimen name="guide_fragment_margin_lr">73dp</dimen>
+
+
+    <!-- fragment guide -->
+    <dimen name="guide_video_width">900dp</dimen>
+    <dimen name="guide_video_height">498dp</dimen>
+
+
+    <dimen name="linked_item_width">297dp</dimen>
+    <dimen name="linked_item_height">166dp</dimen>
+
+    <dimen name="guide_recommend_item_width">199dp</dimen>
+    <dimen name="guide_recommend_item_height">278dp</dimen>
+    <dimen name="guide_recommend_margin_top">4dp</dimen>
+
+    <dimen name="guide_linked_item_margin_left">7dp</dimen>
+    <dimen name="guide_channel_margin_top">4dp</dimen>
+
+
+    <dimen name="guide_tab_margin_top">32dp</dimen>
+    <dimen name="guide_tab_margin_rl">68dp</dimen>
+
+    <dimen name="guide_tab_item_wh">64dp</dimen>
+
+
 </resources>
