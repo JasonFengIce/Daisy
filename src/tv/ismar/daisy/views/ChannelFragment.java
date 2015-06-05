@@ -229,7 +229,6 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 
                         @Override
                         public void onAnimationRepeat(Animation animation) {
-
                         }
                     });
                     animation1.setDuration(1000);//
@@ -641,6 +640,12 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 				intent.putExtra("url", item.url);
 				startActivity(intent);
 			}
+            else if(item.model_name.equals("topic")){
+                Intent intent = new Intent();
+                intent.setAction("tv.ismar.daisy.Topic");
+                intent.putExtra("url", item.url);
+                startActivity(intent);
+            }
 			else{
 				if(item!=null) {
 					mSectionProperties.put(EventProperty.TO_ITEM, item.pk);
