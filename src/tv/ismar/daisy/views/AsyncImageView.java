@@ -102,7 +102,7 @@ public class AsyncImageView extends ImageView implements ImageRequestCallback {
     private Drawable mDefaultDrawable;
     private int mDefaultResId;
 
-    private String mUrl;
+    private String mUrl="";
     private ImageRequest mRequest;
     private boolean mPaused;
 
@@ -110,7 +110,9 @@ public class AsyncImageView extends ImageView implements ImageRequestCallback {
     private OnImageViewLoadListener mOnImageViewLoadListener;
     private ImageProcessor mImageProcessor;
     private BitmapFactory.Options mOptions;
-
+    private boolean isTopic = false;
+    private boolean is_complex;
+    private String itemUrl;
     public AsyncImageView(Context context) {
         this(context, null);
     }
@@ -145,7 +147,9 @@ public class AsyncImageView extends ImageView implements ImageRequestCallback {
         mImageSource = IMAGE_SOURCE_UNKNOWN;
         mPaused = false;
     }
-
+    public void setTopicEnable(boolean isTopic){
+         this.isTopic = isTopic;
+    }
     /**
      * Return true if this AsyncImageView is currently loading an image.
      * 
@@ -180,7 +184,24 @@ public class AsyncImageView extends ImageView implements ImageRequestCallback {
             }
         }
     }
-
+    public void setIsComplex(boolean is_complex){
+        this.is_complex = is_complex;
+    }
+    public boolean getIscomplex(){
+        return this.is_complex;
+    }
+    public void setItemUrl(String url){
+        this.itemUrl = url;
+    }
+    public String getItemUrl(){
+        return this.itemUrl;
+    }
+    public String getUrl(){
+        return mUrl;
+    }
+    public void setImageUrl(String url){
+        mUrl = url;
+    }
     /**
      * Helper to {@link #setOptions(Options)} that simply sets the inDensity for
      * loaded image.
@@ -282,6 +303,7 @@ public class AsyncImageView extends ImageView implements ImageRequestCallback {
 
         // Check the url has changed
         if (mBitmap != null && url != null && url.equals(mUrl)) {
+            setImageBitmap(mBitmap);
             return;
         }
 
@@ -436,11 +458,13 @@ public class AsyncImageView extends ImageView implements ImageRequestCallback {
 
     public void onImageRequestEnded(ImageRequest request, Bitmap image) {
         mBitmap = image;
-		Animation mAnimation = null; 
-		/**加载透明动画**/
-	    mAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.image_alpha); 
-	    View d = (View) getParent();
-	    d.startAnimation(mAnimation);
+        if(!this.isTopic){
+            Animation mAnimation = null;
+            /**加载透明动画**/
+            mAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.image_alpha);
+            View d = (View) getParent();
+            d.startAnimation(mAnimation);
+        }
         setImageBitmap(mBitmap);
         if (mOnImageViewLoadListener != null) {
             mOnImageViewLoadListener.onLoadingEnded(this, image);

@@ -54,7 +54,6 @@ public class NetworkUtils {
 	DataCollectionTask mDataCollectionTask;
 	public static String getJsonStr(String target) throws ItemOfflineException, NetworkException {
 		String urlStr = target;
-		Log.i("zhuabao", "url=="+urlStr);
 		try {
 			if(SimpleRestClient.device_token == null){
 				VodApplication.setDevice_Token();

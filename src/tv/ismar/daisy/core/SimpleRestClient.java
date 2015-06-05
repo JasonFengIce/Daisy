@@ -263,7 +263,19 @@ public SectionList getsectionss(String content){
 		q.method = method;
 		new GetDataTask().execute(q);
 	}
-
+    public void doTopicRequest(String url,String method,String params,HttpPostRequestInterface l){
+        //NetworkUtils.getJsonStrByPost(url, "");
+        RequestParams q = new RequestParams();
+        handler = l;
+        if (!(url.contains("https") || url.contains("http"))){
+            q.url =  url;
+        }else{
+            q.url = url;
+        }
+        q.values = params;
+        q.method = method;
+        new GetDataTask().execute(q);
+    }
 	class GetDataTask extends AsyncTask<RequestParams, Void, String> {
 
 		@Override
