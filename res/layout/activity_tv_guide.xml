@@ -105,8 +105,8 @@
             android:layout_marginLeft="@dimen/guide_fragment_margin_lr"
             android:layout_marginRight="@dimen/guide_fragment_margin_lr"
             android:id="@+id/container"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
+            android:layout_height="@dimen/guide_container_height"
+            android:layout_width="@dimen/guide_container_width"
             />
 
 

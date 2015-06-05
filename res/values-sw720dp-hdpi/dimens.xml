@@ -448,4 +448,9 @@
 <dimen name="Launcher_channel_title_textsize">20sp</dimen>
 <!-- DetailAttributeContainer -->
 <dimen name="DetailAttributeContainer_Layout_W">314dip</dimen>
+
+
+
+    <dimen name="guide_container_width">1200dp</dimen>
+    <dimen name="guide_container_height">500dp</dimen>
 </resources>

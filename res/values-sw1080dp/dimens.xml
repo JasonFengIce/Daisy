@@ -634,4 +634,7 @@
 
 
     <dimen name="test_height">450dip</dimen>
+
+    <dimen name="guide_container_width">1774dp</dimen>
+    <dimen name="guide_container_height">780dp</dimen>
 </resources>

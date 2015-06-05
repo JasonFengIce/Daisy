@@ -99,7 +99,7 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
         initTabView();
         if (savedInstanceState == null) {
             final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.container, new GuideFragment(), TAG_GUIDE_FRAGMENT).commit();
+            transaction.add(R.id.container, new ChildFragment(), TAG_GUIDE_FRAGMENT).commit();
         } else {
 
         }

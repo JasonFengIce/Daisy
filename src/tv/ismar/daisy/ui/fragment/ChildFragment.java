@@ -25,17 +25,17 @@ public class ChildFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        ArrayList<ImageView> imgs = new ArrayList<ImageView>();
-        for (int i = 0; i < 3; i++) {
-            ImageView imageView = new ImageView(getActivity());
-            imageView.setImageResource(R.drawable.ic_launcher);
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            imgs.add(imageView);
-        }
-
-        viewPager = (ViewPager)view.findViewById(R.id.sec_one_pager);
-        PagerImageAdapter filmPagerAdapter = new PagerImageAdapter(imgs);
-        viewPager.setAdapter(filmPagerAdapter);
+//        ArrayList<ImageView> imgs = new ArrayList<ImageView>();
+//        for (int i = 0; i < 3; i++) {
+//            ImageView imageView = new ImageView(getActivity());
+//            imageView.setImageResource(R.drawable.ic_launcher);
+//            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+//            imgs.add(imageView);
+//        }
+//
+//        viewPager = (ViewPager)view.findViewById(R.id.sec_one_pager);
+//        PagerImageAdapter filmPagerAdapter = new PagerImageAdapter(imgs);
+//        viewPager.setAdapter(filmPagerAdapter);
 
     }
 }
