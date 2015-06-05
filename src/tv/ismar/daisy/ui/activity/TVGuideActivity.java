@@ -4,19 +4,22 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
 import com.baidu.location.*;
@@ -28,15 +31,13 @@ import retrofit.client.Response;
 import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
-import tv.ismar.daisy.adapter.ChannleListAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.ClientApi;
 import tv.ismar.daisy.core.service.PosterUpdateService;
+import tv.ismar.daisy.core.update.AppUpdateUtils;
 import tv.ismar.daisy.ui.fragment.*;
-import tv.ismar.daisy.ui.widget.ChannelGridView;
 import tv.ismar.daisy.ui.widget.DaisyButton;
-import tv.ismar.daisy.ui.widget.HorizontalListView;
 
 import java.util.ArrayList;
 
@@ -72,19 +73,15 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
     PopupWindow exitPopupWindow;
     PopupWindow netErrorPopupWindow;
 
-
     private LinearLayout channelListView;
     private LinearLayout tabListView;
 
-//    private ChannelGridView channelGrid;
-
-    private Button change;
-
-
     private View contentView;
+    private Activator activator;
 
-    Activator activator;
-
+    private LocationClient mLocationClient;
+    private MyLocationListener mMyLocationListener;
+    private GeofenceClient mGeofenceClient;
 
     private static final String KIND = "sky";
     private static final String VERSION = "1.0";
@@ -93,6 +90,8 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        registerUpdateReceiver();
+        AppUpdateUtils.getInstance().checkUpdate(this);
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_tv_guide, null);
         setContentView(contentView);
         channelListView = (LinearLayout) findViewById(R.id.channel_h_list);
@@ -104,8 +103,6 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
         } else {
 
         }
-
-
         activator = Activator.getInstance(this);
         activator.setOnCompleteListener(this);
         String localInfo = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.LOCATION_INFO, "");
@@ -114,11 +111,30 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
         activator.active(MANUFACTURE, KIND, VERSION, localInfo);
     }
 
+    @Override
+    public void onBackPressed() {
+        showExitPopup(contentView);
+    }
+
+    public void superOnbackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(appUpdateReceiver);
+
+        if (!(updatePopupWindow == null)) {
+            updatePopupWindow.dismiss();
+        }
+        if (exitPopupWindow != null) {
+            exitPopupWindow.dismiss();
+        }
+        super.onDestroy();
+    }
 
     private void initTabView() {
         int res[] = {R.drawable.selector_tab_film, R.drawable.selector_tab_game, R.drawable.selector_tab_list};
-
-
         for (int i = 0; i < res.length; i++) {
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     (int) getResources().getDimension(R.dimen.guide_tab_item_wh),
@@ -285,11 +301,8 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
         confirmExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                isfinished = true;
-//                videoView.stopPlayback();
-//                mHandler.removeCallbacksAndMessages(null);
                 exitPopupWindow.dismiss();
-//                superOnbackPressed();
+                superOnbackPressed();
             }
         });
 
@@ -332,58 +345,73 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
 
     @Override
     public void onFailed(String erro) {
-//        Log.d(TAG, erro);
-        // showDialog(erro);
-//        checkNetWork(erro);
+        checkNetWork(erro);
     }
 
+
+    private void checkNetWork(String error) {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo.State wifiState = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
+        if(cm.getNetworkInfo(ConnectivityManager.TYPE_ETHERNET)==null){
+            if(wifiState != NetworkInfo.State.CONNECTED){
+                showNetErrorPopup();
+            }
+            else{
+//                showDialog(error);
+            }
+        }
+        else{
+            NetworkInfo.State ethernetState = cm.getNetworkInfo(ConnectivityManager.TYPE_ETHERNET).getState();
+            if (wifiState != NetworkInfo.State.CONNECTED && ethernetState != NetworkInfo.State.CONNECTED) {
+                showNetErrorPopup();
+            }
+            else{
+//                showDialog(error);
+            }
+        }
+    }
+
+
+    private void showNetErrorPopup() {
+        //final Context context = this;
+        View contentView = LayoutInflater.from(this)
+                .inflate(R.layout.popup_net_error, null);
+        netErrorPopupWindow = new PopupWindow(null,  740, 341);
+        netErrorPopupWindow.setContentView(contentView);
+        netErrorPopupWindow.setFocusable(true);
+        netErrorPopupWindow.showAtLocation(contentView, Gravity.CENTER, 0, 0);
+        DaisyButton confirmExit = (DaisyButton) contentView.findViewById(R.id.confirm_exit);
+
+        confirmExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                netErrorPopupWindow.dismiss();
+                superOnbackPressed();
+            }
+        });
+    }
+
+
     private void sendLoncationRequest() {
-//        mLocationClient = new LocationClient(LauncherActivity.this);
-//        mMyLocationListener = new MyLocationListener();
-//        mLocationClient.registerLocationListener(mMyLocationListener);
-//        mGeofenceClient = new GeofenceClient(getApplicationContext());
-//        LocationClientOption option = new LocationClientOption();
-//        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);// 设置定位模式
-//        // option.setCoorType("bd09ll");//返回的定位结果是百度经纬度,默认值gcj02
-//        option.setScanSpan(5000);// 设置发起定位请求的间隔时间为5000ms
-//        option.setIsNeedAddress(true);// 返回的定位结果包含地址信息
-//        mLocationClient.setLocOption(option);
-//        mLocationClient.start();
-//        mLocationClient.requestLocation();
+        mLocationClient = new LocationClient(this);
+        mMyLocationListener = new MyLocationListener();
+        mLocationClient.registerLocationListener(mMyLocationListener);
+        mGeofenceClient = new GeofenceClient(getApplicationContext());
+        LocationClientOption option = new LocationClientOption();
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);// 设置定位模式
+        // option.setCoorType("bd09ll");//返回的定位结果是百度经纬度,默认值gcj02
+        option.setScanSpan(5000);// 设置发起定位请求的间隔时间为5000ms
+        option.setIsNeedAddress(true);// 返回的定位结果包含地址信息
+        mLocationClient.setLocOption(option);
+        mLocationClient.start();
+        mLocationClient.requestLocation();
     }
 
     public class MyLocationListener implements BDLocationListener {
 
         @Override
         public void onReceiveLocation(BDLocation location) {
-//            mLocationClient.stop();
-            // Receive Location
-//			StringBuffer sb = new StringBuffer(256);
-//			sb.append("time : ");
-//			sb.append(location.getTime());
-//			sb.append("\nerror code : ");
-//			sb.append(location.getLocType());
-//			sb.append("\ncity : ");
-//			sb.append(location.getCity());
-//			sb.append("\nstreet : ");
-//			sb.append(location.getStreet());
-//			sb.append("\ndistrict : ");
-//			sb.append(location.getDistrict());
-//			sb.append("\nfloor : ");
-//			sb.append(location.getFloor());
-//			sb.append("\npoi : ");
-//			sb.append(location.getAddrStr());
-//			sb.append("\nprovince : ");
-//			sb.append(location.getProvince());
-//			sb.append("\ncityCode : ");
-//			sb.append(location.getCityCode());
-//			sb.append("\nlatitude : ");
-//			sb.append(location.getLatitude());
-//			sb.append("\nlontitude : ");
-//			sb.append(location.getLongitude());
-//			sb.append("\nradius : ");
-//			sb.append(location.getRadius());
-//			Log.i("BaiduLocationApiDem", sb.toString());
+            mLocationClient.stop();
             DaisyUtils.getVodApplication(TVGuideActivity.this).getEditor().putString(VodApplication.LOCATION_INFO, location.getAddrStr());
             DaisyUtils.getVodApplication(TVGuideActivity.this).save();
         }
@@ -400,11 +428,6 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
                 case GETDOMAIN:
                     DaisyUtils.getVodApplication(TVGuideActivity.this).getNewContentModel();
                     fetchChannels();
-//                    updatePoster();
-//                    getFrontPage();
-//                    fetchHorizontalGuide();
-//                    fetchChannels();
-//                    fetchWeather();
                     break;
             }
         }

@@ -36,7 +36,6 @@ public class GuideFragment extends Fragment {
     private String TAG = "GuideFragment";
     private LinearLayout guideRecommmendList;
     private LinearLayout carouselLayout;
-
     private VideoView linkedVideoView;
 
     @Override
