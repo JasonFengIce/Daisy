@@ -3,6 +3,7 @@ package tv.ismar.daisy.utils;
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
+import android.text.TextUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -56,5 +57,13 @@ public class DeviceUtils {
             e.printStackTrace();
         }
         return value;
+    }
+
+    public static String getFileNameWithoutSuffix(String fileName) {
+        if (!TextUtils.isEmpty(fileName) ) {
+            return fileName.split("\\.")[0];
+        } else {
+            return fileName;
+        }
     }
 }

@@ -98,6 +98,14 @@ public class IsmartvFileClient extends Thread {
             try {
 
                 if (file.exists()) {
+                    String subFileMD5 = DeviceUtils.getMd5ByFile(file);
+                    String fileNameWithoutSuffix = DeviceUtils.getFileNameWithoutSuffix(file.getName());
+                    Log.i(TAG, "subFileMD5: " + subFileMD5);
+                    Log.i(TAG, "fileNameWithoutSuffix: " + fileNameWithoutSuffix);
+                    if (subFileMD5.equals(fileNameWithoutSuffix)) {
+
+                        continue;
+                    }
                     long length = file.length();
                     Log.i(TAG, "file last download:" + length);
                     Request request = new Request.Builder()

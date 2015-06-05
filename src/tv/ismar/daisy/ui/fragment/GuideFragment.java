@@ -124,27 +124,6 @@ public class GuideFragment extends Fragment {
         new IsmartvFileClient(carousels).start();
     }
 
-//    private void playVideo(ArrayList<HomePagerEntity.Carousel> carousels) {
-//        ArrayList<String> videoPaths = new ArrayList<String>();
-//        for (HomePagerEntity.Carousel carousel : carousels) {
-//            try {
-//                URL url = new URL(carousel.getVideo_url());
-//                String path = DeviceUtils.getCachePath(getActivity()) + url.getFile();
-//                videoPaths.add(path);
-//            } catch (MalformedURLException e) {
-//                Log.e(TAG, e.getMessage());
-//            }
-//        }
-////        Log.i(TAG, "playVideo: " + videoPaths.get(0));
-//        File file = new File(videoPaths.get(0));
-//        if (file.exists() && file.length()) {
-//            linkedVideoView.setVideoPath(videoPaths.get(0));
-//        } else {
-//
-//        }
-//
-//    }
-
 
     private void playVideo(final LoopList loopList) {
         HashMap<String, String> hashMap = loopList.next();
