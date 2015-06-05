@@ -163,5 +163,10 @@
 
     <!-- new  guide activity -->
     <declare-styleable name="HorizontalListView"></declare-styleable>
-
+    <declare-styleable name="LabelImageView">
+        <attr name="focuspaddingtop" format="dimension"/>
+        <attr name="focustextsize" format="dimension"/>
+        <attr name="focustextpaddingtop" format="dimension"/>
+        <attr name="focusbackground" format="color"/>
+    </declare-styleable>
 </resources>
