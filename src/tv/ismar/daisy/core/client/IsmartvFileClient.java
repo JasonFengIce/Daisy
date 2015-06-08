@@ -1,13 +1,12 @@
 package tv.ismar.daisy.core.client;
 
-import android.content.Context;
 import android.util.Log;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import tv.ismar.daisy.utils.DeviceUtils;
-import tv.ismar.sakura.data.http.HomePagerEntity;
+import tv.ismar.daisy.data.HomePagerEntity;
 
 import java.io.File;
 import java.io.FileOutputStream;

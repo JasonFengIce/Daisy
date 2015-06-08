@@ -1,4 +1,4 @@
-package tv.ismar.sakura.data.http;
+package tv.ismar.daisy.data;
 
 import java.util.ArrayList;
 
@@ -26,13 +26,38 @@ public class HomePagerEntity {
     }
 
     public class Carousel {
+        private String video_image;
+        private String pause_time;
+        private String url;
         private String video_url;
         private String title;
         private String introduction;
-        private String link_url;
-        private String custom_url;
-        private int pause_time;
-        private String link_type;
+        private String thumb_image;
+        private String model_name;
+
+        public String getVideo_image() {
+            return video_image;
+        }
+
+        public void setVideo_image(String video_image) {
+            this.video_image = video_image;
+        }
+
+        public String getPause_time() {
+            return pause_time;
+        }
+
+        public void setPause_time(String pause_time) {
+            this.pause_time = pause_time;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
 
         public String getVideo_url() {
             return video_url;
@@ -58,36 +83,20 @@ public class HomePagerEntity {
             this.introduction = introduction;
         }
 
-        public String getLink_url() {
-            return link_url;
+        public String getThumb_image() {
+            return thumb_image;
         }
 
-        public void setLink_url(String link_url) {
-            this.link_url = link_url;
+        public void setThumb_image(String thumb_image) {
+            this.thumb_image = thumb_image;
         }
 
-        public String getCustom_url() {
-            return custom_url;
+        public String getModel_name() {
+            return model_name;
         }
 
-        public void setCustom_url(String custom_url) {
-            this.custom_url = custom_url;
-        }
-
-        public int getPause_time() {
-            return pause_time;
-        }
-
-        public void setPause_time(int pause_time) {
-            this.pause_time = pause_time;
-        }
-
-        public String getLink_type() {
-            return link_type;
-        }
-
-        public void setLink_type(String link_type) {
-            this.link_type = link_type;
+        public void setModel_name(String model_name) {
+            this.model_name = model_name;
         }
     }
 
@@ -96,10 +105,10 @@ public class HomePagerEntity {
         private String vertical_url;
         private String title;
         private String introduction;
-        private String link_url;
-        private String custom_url;
+        private String url;
         private String poster_url;
-        private String link_type;
+        private String model_name;
+        private String custom_image;
 
         public String getVertical_url() {
             return vertical_url;
@@ -125,20 +134,12 @@ public class HomePagerEntity {
             this.introduction = introduction;
         }
 
-        public String getLink_url() {
-            return link_url;
+        public String getUrl() {
+            return url;
         }
 
-        public void setLink_url(String link_url) {
-            this.link_url = link_url;
-        }
-
-        public String getCustom_url() {
-            return custom_url;
-        }
-
-        public void setCustom_url(String custom_url) {
-            this.custom_url = custom_url;
+        public void setUrl(String url) {
+            this.url = url;
         }
 
         public String getPoster_url() {
@@ -149,12 +150,20 @@ public class HomePagerEntity {
             this.poster_url = poster_url;
         }
 
-        public String getLink_type() {
-            return link_type;
+        public String getModel_name() {
+            return model_name;
         }
 
-        public void setLink_type(String link_type) {
-            this.link_type = link_type;
+        public void setModel_name(String model_name) {
+            this.model_name = model_name;
+        }
+
+        public String getCustom_image() {
+            return custom_image;
+        }
+
+        public void setCustom_image(String custom_image) {
+            this.custom_image = custom_image;
         }
     }
 

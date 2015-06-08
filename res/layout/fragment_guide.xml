@@ -1,36 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:paddingLeft="@dimen/fragment_padding_lr"
+              android:paddingRight="@dimen/fragment_padding_lr"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
 
     <LinearLayout
+            android:paddingTop="@dimen/guide_padding"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/guide_video_height">
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            >
 
         <VideoView
+                android:layout_marginRight="@dimen/guide_padding"
                 android:id="@+id/linked_video"
-                android:layout_width="@dimen/guide_video_width"
+                android:layout_width="0dp"
+                android:layout_weight="14.7"
                 android:layout_height="match_parent"/>
 
         <LinearLayout
                 android:id="@+id/carousel_layout"
-                android:layout_marginLeft="@dimen/guide_linked_item_margin_left"
                 android:orientation="vertical"
-                android:layout_width="match_parent"
+                android:layout_weight="3"
+                android:layout_width="0dp"
                 android:layout_height="match_parent">
         </LinearLayout>
     </LinearLayout>
 
 
     <LinearLayout
-            android:layout_marginTop="@dimen/guide_recommend_margin_top"
+            android:paddingTop="@dimen/guide_padding"
+            android:paddingBottom="@dimen/guide_padding"
             android:orientation="horizontal"
             android:id="@+id/recommend_list"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/guide_recommend_item_height">
+            android:layout_height="0dp"
+            android:layout_weight="2.8"
+            >
     </LinearLayout>
 
 </LinearLayout>

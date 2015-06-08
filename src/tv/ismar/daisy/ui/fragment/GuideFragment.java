@@ -18,7 +18,7 @@ import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.ClientApi;
 import tv.ismar.daisy.core.client.IsmartvFileClient;
 import tv.ismar.daisy.utils.DeviceUtils;
-import tv.ismar.sakura.data.http.HomePagerEntity;
+import tv.ismar.daisy.data.HomePagerEntity;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -82,7 +82,7 @@ public class GuideFragment extends Fragment {
                 params.setMargins(0, 0, 25, 0);
             }
             ImageView itemView = new ImageView(getActivity());
-            Picasso.with(getActivity()).load(posters.get(i).getCustom_url()).into(itemView);
+            Picasso.with(getActivity()).load(posters.get(i).getCustom_image()).into(itemView);
             itemView.setScaleType(ImageView.ScaleType.FIT_XY);
             itemView.setLayoutParams(params);
             guideRecommmendList.addView(itemView);
@@ -110,7 +110,7 @@ public class GuideFragment extends Fragment {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
             params.weight = 1;
             ImageView itemView = new ImageView(getActivity());
-            Picasso.with(getActivity()).load(carousels.get(i).getCustom_url()).into(itemView);
+            Picasso.with(getActivity()).load(carousels.get(i).getThumb_image()).into(itemView);
             itemView.setScaleType(ImageView.ScaleType.FIT_XY);
             itemView.setLayoutParams(params);
             carouselLayout.addView(itemView);

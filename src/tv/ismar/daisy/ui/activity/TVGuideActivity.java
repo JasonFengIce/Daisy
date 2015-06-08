@@ -99,7 +99,7 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
         initTabView();
         if (savedInstanceState == null) {
             final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.container, new ChildFragment(), TAG_GUIDE_FRAGMENT).commit();
+            transaction.add(R.id.container, new GuideFragment(), TAG_GUIDE_FRAGMENT).commit();
         } else {
 
         }
@@ -137,11 +137,11 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
         int res[] = {R.drawable.selector_tab_film, R.drawable.selector_tab_game, R.drawable.selector_tab_list};
         for (int i = 0; i < res.length; i++) {
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    (int) getResources().getDimension(R.dimen.guide_tab_item_wh),
-                    (int) getResources().getDimension(R.dimen.guide_tab_item_wh));
+                    64,
+                    64);
             layoutParams.weight = 1;
             if (i != res.length - 1) {
-                layoutParams.setMargins(0, 0, (int) getResources().getDimension(R.dimen.guide_tab_margin_rl), 0);
+                layoutParams.setMargins(0, 0, 68, 0);
             }
             ImageView imageView = new ImageView(this);
             imageView.setImageResource(res[i]);
@@ -179,7 +179,7 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
                     textView.setFocusable(true);
                     textView.setFocusableInTouchMode(true);
                     textView.setClickable(true);
-                    textView.setTextSize(getResources().getDimension(R.dimen.guide_channel_size));
+                    textView.setTextSize(getResources().getDimension(R.dimen.tv_guide_channel_textSize));
                     textView.setGravity(Gravity.CENTER);
                     textView.setBackgroundResource(R.drawable.selector_channel_item);
                     textView.setLayoutParams(layoutParams);
@@ -352,20 +352,17 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
     private void checkNetWork(String error) {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo.State wifiState = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
-        if(cm.getNetworkInfo(ConnectivityManager.TYPE_ETHERNET)==null){
-            if(wifiState != NetworkInfo.State.CONNECTED){
+        if (cm.getNetworkInfo(ConnectivityManager.TYPE_ETHERNET) == null) {
+            if (wifiState != NetworkInfo.State.CONNECTED) {
                 showNetErrorPopup();
-            }
-            else{
+            } else {
 //                showDialog(error);
             }
-        }
-        else{
+        } else {
             NetworkInfo.State ethernetState = cm.getNetworkInfo(ConnectivityManager.TYPE_ETHERNET).getState();
             if (wifiState != NetworkInfo.State.CONNECTED && ethernetState != NetworkInfo.State.CONNECTED) {
                 showNetErrorPopup();
-            }
-            else{
+            } else {
 //                showDialog(error);
             }
         }
@@ -376,7 +373,7 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
         //final Context context = this;
         View contentView = LayoutInflater.from(this)
                 .inflate(R.layout.popup_net_error, null);
-        netErrorPopupWindow = new PopupWindow(null,  740, 341);
+        netErrorPopupWindow = new PopupWindow(null, 740, 341);
         netErrorPopupWindow.setContentView(contentView);
         netErrorPopupWindow.setFocusable(true);
         netErrorPopupWindow.showAtLocation(contentView, Gravity.CENTER, 0, 0);

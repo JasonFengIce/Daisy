@@ -12,12 +12,9 @@ import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.core.advertisement.AdvertisementInfoEntity;
 import tv.ismar.daisy.core.update.VersionInfoEntity;
 import tv.ismar.daisy.models.launcher.*;
-import tv.ismar.sakura.data.http.Empty;
-import tv.ismar.sakura.data.http.HomePagerEntity;
-import tv.ismar.sakura.data.http.ProblemEntity;
+import tv.ismar.daisy.data.HomePagerEntity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by huaijie on 3/9/15.

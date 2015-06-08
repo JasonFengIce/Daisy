@@ -625,7 +625,7 @@
 
     <dimen name="guide_linked_item_margin_left">7dp</dimen>
     <dimen name="guide_channel_margin_top">4dp</dimen>
-    
+
 
     <dimen name="guide_tab_margin_top">32dp</dimen>
     <dimen name="guide_tab_margin_rl">68dp</dimen>
@@ -637,4 +637,16 @@
 
     <dimen name="guide_container_width">1774dp</dimen>
     <dimen name="guide_container_height">780dp</dimen>
+
+    <!-- guide -->
+    <dimen name="tv_guide_channel_textSize">36sp</dimen>
+    <dimen name="tv_guide_cinema_textSize">48sp</dimen>
+    <dimen name="tv_guide_history_textSize">24sp</dimen>
+
+    <dimen name="fragment_padding_lr">70dp</dimen>
+
+    <dimen name="guide_padding">4dp</dimen>
+    <dimen name="tv_guide_menu_margin">44dp</dimen>
+    <dimen name="tv_guide_top_section_padding">14dp</dimen>
+    <dimen name="tv_guide_channel_margin_lr">54dp</dimen>
 </resources>
