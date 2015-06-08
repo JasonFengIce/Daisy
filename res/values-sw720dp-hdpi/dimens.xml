@@ -452,5 +452,5 @@
 
 
     <dimen name="guide_container_width">1200dp</dimen>
-    <dimen name="guide_container_height">500dp</dimen>
+    <dimen name="guide_container_height">400dp</dimen>
 </resources>
