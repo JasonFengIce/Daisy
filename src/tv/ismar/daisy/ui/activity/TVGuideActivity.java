@@ -99,10 +99,14 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
         channelListView = (LinearLayout) findViewById(R.id.channel_h_list);
         tabListView = (LinearLayout) findViewById(R.id.tab_list);
         initTabView();
-        currentFragment = new GuideFragment();
+
+
         if (savedInstanceState == null) {
             final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.container, currentFragment, TAG_GUIDE_FRAGMENT).commit();
+            guideFragment = new GuideFragment();
+            childFragment = new ChildFragment();
+            currentFragment = guideFragment;
+            transaction.add(R.id.container, guideFragment, TAG_GUIDE_FRAGMENT).commit();
         } else {
 
         }
@@ -116,7 +120,14 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
 
     @Override
     public void onBackPressed() {
-        showExitPopup(contentView);
+        Log.d(TAG, "on back pressed!!!");
+        if (currentFragment.getClass() != GuideFragment.class) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, guideFragment).commit();
+            contentView.setBackgroundResource(R.color.normal_activity_bg);
+        } else {
+            showExitPopup(contentView);
+        }
+
     }
 
     public void superOnbackPressed() {
@@ -419,39 +430,47 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
         }
     }
 
-	private OnClickListener channelClickListener = new OnClickListener() {
+    private OnClickListener channelClickListener = new OnClickListener() {
 
-		@Override
-		public void onClick(View v) {
-			final FragmentTransaction transaction = getSupportFragmentManager()
-					.beginTransaction();
-			String channel = v.getTag().toString();
-			if ("chinesemovie".equals(channel)) {
-				transaction.add(R.id.container, currentFragment,
-						TAG_GUIDE_FRAGMENT).commit();
-			} else if ("overseas".equals(channel)) {
+        @Override
+        public void onClick(View v) {
+            if (v.getTag().toString().equals("comic")){
+                contentView.setBackgroundResource(R.drawable.channel_child_bg);
+            }else {
+                contentView.setBackgroundResource(R.color.normal_activity_bg);
+            }
 
-			} else if ("teleplay".equals(channel)) {
 
-			} else if ("variety".equals(channel)) {
-				currentFragment = new EntertainmentFragment();
-			} else if ("comic".equals(channel)) {
+            final FragmentTransaction transaction = getSupportFragmentManager()
+                    .beginTransaction();
+            String channel = v.getTag().toString();
+            Log.d(TAG, "click tag is: " + channel);
+            if ("chinesemovie".equals(channel)) {
+//                transaction.replace(R.id.container, currentFragment,
+//                        TAG_GUIDE_FRAGMENT).commit();
+            } else if ("overseas".equals(channel)) {
 
-			} else if ("sport".equals(channel)) {
+            } else if ("teleplay".equals(channel)) {
 
-			} else if ("music".equals(channel)) {
+            } else if ("variety".equals(channel)) {
+                currentFragment = new EntertainmentFragment();
+            } else if ("comic".equals(channel)) {
+                currentFragment = childFragment;
+                transaction.replace(R.id.container, childFragment, TAG_CHILD_FRAGMENT);
+                transaction.commit();
 
-			} else if ("documentary".equals(channel)) {
+            } else if ("sport".equals(channel)) {
 
-			} else if ("rankinglist".equals(channel)) {
+            } else if ("music".equals(channel)) {
 
-			}
-			transaction
-					.replace(R.id.container, currentFragment, TAG_GUIDE_FRAGMENT)
-					.commit();
-		}
+            } else if ("documentary".equals(channel)) {
 
-	};
+            } else if ("rankinglist".equals(channel)) {
+
+            }
+        }
+
+    };
 
     private Handler mainHandler = new Handler() {
 

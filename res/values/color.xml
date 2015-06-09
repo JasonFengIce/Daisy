@@ -56,4 +56,6 @@
 
     <!-- sakura -->
     <color name="button_disable_bg">#666666</color>
+
+    <color name="normal_activity_bg">#8803548d</color>
 </resources>
