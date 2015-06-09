@@ -7,10 +7,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLDecoder;
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.Attribute;
@@ -19,9 +19,7 @@ import tv.ismar.daisy.models.ContentModelList;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemList;
 import tv.ismar.daisy.models.SectionList;
-
 import android.os.AsyncTask;
-import android.view.View;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -197,6 +195,25 @@ public class SimpleRestClient {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public HomePagerEntity getVaietyHome()
+			throws NetworkException {
+		HomePagerEntity entity = null;
+		try {
+//			String url = root_url + "/api/tv/homepage/zongyi/";
+			String url = "http://skytest.tvxio.com" + "/api/tv/homepage/zongyi/";
+			String jsonStr = NetworkUtils.getJsonStr(url);
+			entity = gson.fromJson(jsonStr, HomePagerEntity.class);
+			return entity;
+		} catch (JsonSyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ItemOfflineException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return entity;
 	}
 
 	public SectionList getSections(String url) throws NetworkException,

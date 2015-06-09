@@ -10,12 +10,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -64,7 +66,7 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
     private FilmFragment filmFragment;
     private SportFragment sportFragment;
     private GuideFragment guideFragment;
-
+    private Fragment currentFragment;
 
     /**
      * PopupWindow
@@ -97,9 +99,10 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
         channelListView = (LinearLayout) findViewById(R.id.channel_h_list);
         tabListView = (LinearLayout) findViewById(R.id.tab_list);
         initTabView();
+        currentFragment = new GuideFragment();
         if (savedInstanceState == null) {
             final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.container, new GuideFragment(), TAG_GUIDE_FRAGMENT).commit();
+            transaction.add(R.id.container, currentFragment, TAG_GUIDE_FRAGMENT).commit();
         } else {
 
         }
@@ -185,6 +188,8 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
                     textView.setLayoutParams(layoutParams);
                     textView.setText(channelEntities[i].getName());
                     textView.setTextColor(getResources().getColor(R.color.white));
+                    textView.setTag(channelEntities[i].getChannel());
+                    textView.setOnClickListener(channelClickListener);
                     channelListView.addView(textView);
                 }
             }
@@ -413,6 +418,40 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
             DaisyUtils.getVodApplication(TVGuideActivity.this).save();
         }
     }
+
+	private OnClickListener channelClickListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			final FragmentTransaction transaction = getSupportFragmentManager()
+					.beginTransaction();
+			String channel = v.getTag().toString();
+			if ("chinesemovie".equals(channel)) {
+				transaction.add(R.id.container, currentFragment,
+						TAG_GUIDE_FRAGMENT).commit();
+			} else if ("overseas".equals(channel)) {
+
+			} else if ("teleplay".equals(channel)) {
+
+			} else if ("variety".equals(channel)) {
+				currentFragment = new EntertainmentFragment();
+			} else if ("comic".equals(channel)) {
+
+			} else if ("sport".equals(channel)) {
+
+			} else if ("music".equals(channel)) {
+
+			} else if ("documentary".equals(channel)) {
+
+			} else if ("rankinglist".equals(channel)) {
+
+			}
+			transaction
+					.replace(R.id.container, currentFragment, TAG_GUIDE_FRAGMENT)
+					.commit();
+		}
+
+	};
 
     private Handler mainHandler = new Handler() {
 

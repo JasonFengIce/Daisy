@@ -30,7 +30,7 @@ public class HomePagerEntity {
         private String pause_time;
         private String url;
         private String video_url;
-        private String title;
+		private String title;
         private String introduction;
         private String thumb_image;
         private String model_name;
@@ -59,7 +59,7 @@ public class HomePagerEntity {
             this.url = url;
         }
 
-        public String getVideo_url() {
+		public String getVideo_url() {
             return video_url;
         }
 
@@ -136,10 +136,6 @@ public class HomePagerEntity {
 
         public String getUrl() {
             return url;
-        }
-
-        public void setUrl(String url) {
-            this.url = url;
         }
 
         public String getPoster_url() {
