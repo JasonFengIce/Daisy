@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core._enum.ChannelEnum;
 import tv.ismar.daisy.core.client.ClientApi;
 import tv.ismar.daisy.core.service.PosterUpdateService;
 import tv.ismar.daisy.core.update.AppUpdateUtils;
@@ -42,6 +44,7 @@ import tv.ismar.daisy.ui.fragment.*;
 import tv.ismar.daisy.ui.widget.DaisyButton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -51,11 +54,7 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
 
     private static final int GETDOMAIN = 0x06;
 
-    public static final String TAG_GUIDE_FRAGMENT = "guide";
-    public static final String TAG_CHILD_FRAGMENT = "child";
-    public static final String TAG_ENTERTAINMENT_FRAGMENT = "entertainment";
-    public static final String TAG_FILM_FRAGMENT = "film";
-    public static final String TAG_SPORT_FRAGMENT = "sport";
+    private String tag_chinesemovie = "chinesemovie";
 
 
     private AppUpdateReceiver appUpdateReceiver;
@@ -105,8 +104,11 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
             final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             guideFragment = new GuideFragment();
             childFragment = new ChildFragment();
+            entertainmentFragment = new EntertainmentFragment();
+            filmFragment = new FilmFragment();
+            sportFragment = new SportFragment();
             currentFragment = guideFragment;
-            transaction.add(R.id.container, guideFragment, TAG_GUIDE_FRAGMENT).commit();
+            transaction.add(R.id.container, guideFragment).commit();
         } else {
 
         }
@@ -199,7 +201,12 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
                     textView.setLayoutParams(layoutParams);
                     textView.setText(channelEntities[i].getName());
                     textView.setTextColor(getResources().getColor(R.color.white));
-                    textView.setTag(channelEntities[i].getChannel());
+
+                    HashMap<String, String> hashMap = new HashMap<String, String>();
+                    hashMap.put("channel", channelEntities[i].getChannel());
+                    hashMap.put("url", channelEntities[i].getUrl());
+                    textView.setTag(hashMap);
+
                     textView.setOnClickListener(channelClickListener);
                     channelListView.addView(textView);
                 }
@@ -434,32 +441,51 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
 
         @Override
         public void onClick(View v) {
-            if (v.getTag().toString().equals("comic")){
+            if (v.getTag().toString().equals("comic")) {
                 contentView.setBackgroundResource(R.drawable.channel_child_bg);
-            }else {
+            } else {
                 contentView.setBackgroundResource(R.color.normal_activity_bg);
             }
 
-
             final FragmentTransaction transaction = getSupportFragmentManager()
                     .beginTransaction();
-            String channel = v.getTag().toString();
+            HashMap<String, String> hashMap = (HashMap<String, String>) v.getTag();
+            String channel = hashMap.get("channel");
+            String url = hashMap.get("url");
+            Bundle bundle = new Bundle();
+            bundle.putString("url", url);
+
             Log.d(TAG, "click tag is: " + channel);
             if ("chinesemovie".equals(channel)) {
-//                transaction.replace(R.id.container, currentFragment,
-//                        TAG_GUIDE_FRAGMENT).commit();
+
+                transaction.detach(currentFragment).commit();
+                filmFragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, filmFragment)
+                        .commit();
+                currentFragment = filmFragment;
             } else if ("overseas".equals(channel)) {
-
+                transaction.detach(currentFragment).commit();
+                filmFragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, filmFragment)
+                        .commit();
+                currentFragment = filmFragment;
             } else if ("teleplay".equals(channel)) {
-
+                transaction.detach(currentFragment).commit();
+                filmFragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, filmFragment)
+                        .commit();
+                currentFragment = filmFragment;
             } else if ("variety".equals(channel)) {
-                currentFragment = new EntertainmentFragment();
+                currentFragment = entertainmentFragment;
+                transaction.replace(R.id.container, entertainmentFragment).commit();
             } else if ("comic".equals(channel)) {
                 currentFragment = childFragment;
-                transaction.replace(R.id.container, childFragment, TAG_CHILD_FRAGMENT);
-                transaction.commit();
+                transaction.replace(R.id.container, childFragment, url).commit();
+                contentView.setBackgroundResource(R.drawable.channel_child_bg);
 
             } else if ("sport".equals(channel)) {
+                currentFragment = sportFragment;
+                transaction.replace(R.id.container, sportFragment).commit();
 
             } else if ("music".equals(channel)) {
 
@@ -487,5 +513,5 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
             }
         }
     };
-
 }
+

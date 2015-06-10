@@ -1,5 +1,7 @@
 package tv.ismar.daisy.ui.fragment;
 
+import android.app.Activity;
+import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -38,9 +40,17 @@ public class GuideFragment extends Fragment {
     private LinearLayout carouselLayout;
     private VideoView linkedVideoView;
 
+    private Context context;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        context = activity;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View mView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_guide, null);
+        View mView = LayoutInflater.from(context).inflate(R.layout.fragment_guide, null);
         guideRecommmendList = (LinearLayout) mView.findViewById(R.id.recommend_list);
         carouselLayout = (LinearLayout) mView.findViewById(R.id.carousel_layout);
         linkedVideoView = (VideoView) mView.findViewById(R.id.linked_video);
@@ -81,8 +91,8 @@ public class GuideFragment extends Fragment {
             if (i != 7) {
                 params.setMargins(0, 0, 25, 0);
             }
-            ImageView itemView = new ImageView(getActivity());
-            Picasso.with(getActivity()).load(posters.get(i).getCustom_image()).into(itemView);
+            ImageView itemView = new ImageView(context);
+            Picasso.with(context).load(posters.get(i).getCustom_image()).into(itemView);
             itemView.setScaleType(ImageView.ScaleType.FIT_XY);
             itemView.setLayoutParams(params);
             guideRecommmendList.addView(itemView);
@@ -109,8 +119,8 @@ public class GuideFragment extends Fragment {
         for (int i = 0; i < 3; i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
             params.weight = 1;
-            ImageView itemView = new ImageView(getActivity());
-            Picasso.with(getActivity()).load(carousels.get(i).getThumb_image()).into(itemView);
+            ImageView itemView = new ImageView(context);
+            Picasso.with(context).load(carousels.get(i).getThumb_image()).into(itemView);
             itemView.setScaleType(ImageView.ScaleType.FIT_XY);
             itemView.setLayoutParams(params);
             carouselLayout.addView(itemView);
