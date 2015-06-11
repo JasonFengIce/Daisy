@@ -53,7 +53,11 @@ public class ClientApi {
 
 
     public interface Child {
-
+        @GET("/api/tv/homepage/comic/")
+        void excute(
+                @Query("device_token") String deviceToken,
+                Callback<HomePagerEntity> callback
+        );
     }
 
     public interface Chinese {

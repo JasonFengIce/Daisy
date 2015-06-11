@@ -108,7 +108,8 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
             filmFragment = new FilmFragment();
             sportFragment = new SportFragment();
             currentFragment = guideFragment;
-            transaction.add(R.id.container, guideFragment).commit();
+            contentView.setBackgroundResource(R.drawable.channel_child_bg);
+            transaction.add(R.id.container, childFragment).commit();
         } else {
 
         }
