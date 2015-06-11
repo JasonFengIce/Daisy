@@ -32,7 +32,8 @@ public class SimpleRestClient {
 	// public static String sRoot_url = "http://127.0.0.1:21098/cord";
 
 	public static String root_url = "";
-	public static String sRoot_url = "http://cord.tvxio.com/v2_0/A21/dto";
+//	public static String sRoot_url = "http://cord.tvxio.com/v2_0/A21/dto";
+	public static String sRoot_url = "http://skytest.tvxio.com/v2_0/A21/dto";
     public static String ad_domain = "lilac.tvxio.com";
     public static String log_domain = "cord.tvxio.com";
     public static String device_token;
@@ -202,7 +203,7 @@ public class SimpleRestClient {
 		HomePagerEntity entity = null;
 		try {
 //			String url = root_url + "/api/tv/homepage/zongyi/";
-			String url = "http://skytest.tvxio.com" + "/api/tv/homepage/zongyi/";
+			String url = "http://skytest.tvxio.com" + "/api/tv/homepage/variety/";
 			String jsonStr = NetworkUtils.getJsonStr(url);
 			entity = gson.fromJson(jsonStr, HomePagerEntity.class);
 			return entity;

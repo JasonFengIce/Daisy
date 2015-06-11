@@ -1,142 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:background="@color/normal_activity_bg"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#8803548d"
+    android:orientation="vertical" >
 
     <LinearLayout
-            android:paddingRight="@dimen/tv_guide_top_section_padding"
-            android:paddingLeft="@dimen/tv_guide_top_section_padding"
-            android:id="@+id/top_column_layout"
-            android:layout_width="match_parent"
-            android:gravity="center_vertical"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            >
+        android:id="@+id/top_column_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/tv_guide_top_section_padding"
+        android:paddingRight="@dimen/tv_guide_top_section_padding" >
 
         <TextView
-                android:textSize="@dimen/tv_guide_cinema_textSize"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ismartv_cinema"
-                android:textColor="@android:color/white"
-                />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="@string/ismartv_cinema"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/tv_guide_cinema_textSize" />
 
         <ImageView
-                android:background="@android:color/white"
-                android:layout_width="40dp"
-                android:layout_height="2dp"/>
+            android:layout_width="40dp"
+            android:layout_height="2dp"
+            android:background="@android:color/white" />
 
         <TextView
-                android:textSize="@dimen/tv_guide_area_textSize"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ismartv_films"
-                android:textColor="@android:color/white"
-                />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ismartv_films"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/tv_guide_area_textSize" />
 
         <RelativeLayout
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical" >
 
             <TextView
-                    android:textSize="@dimen/tv_guide_history_textSize"
-                    android:layout_marginRight="@dimen/tv_guide_menu_margin"
-                    android:layout_alignParentRight="true"
-                    android:id="@+id/guide_search"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:text="@string/guide_search"
-                    />
-
+                android:id="@+id/guide_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/tv_guide_menu_margin"
+                android:text="@string/guide_search"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/tv_guide_history_textSize" />
 
             <TextView
-                    android:textSize="@dimen/tv_guide_history_textSize"
-                    android:layout_marginRight="@dimen/tv_guide_menu_margin"
-                    android:text="@string/guide_message"
-                    android:layout_toLeftOf="@id/guide_search"
-                    android:id="@+id/guide_message"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    />
+                android:id="@+id/guide_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/tv_guide_menu_margin"
+                android:layout_toLeftOf="@id/guide_search"
+                android:text="@string/guide_message"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/tv_guide_history_textSize" />
 
             <TextView
-                    android:textSize="@dimen/tv_guide_history_textSize"
-                    android:layout_marginRight="@dimen/tv_guide_menu_margin"
-                    android:text="@string/guide_user_center"
-                    android:layout_toLeftOf="@id/guide_message"
-                    android:id="@+id/guide_user_center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    />
+                android:id="@+id/guide_user_center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/tv_guide_menu_margin"
+                android:layout_toLeftOf="@id/guide_message"
+                android:text="@string/guide_user_center"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/tv_guide_history_textSize" />
 
             <TextView
-                    android:textSize="@dimen/tv_guide_history_textSize"
-                    android:layout_marginRight="@dimen/tv_guide_menu_margin"
-                    android:text="@string/guide_my_favorite"
-                    android:layout_toLeftOf="@id/guide_user_center"
-                    android:id="@+id/guide_my_favorite"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    />
+                android:id="@+id/guide_my_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/tv_guide_menu_margin"
+                android:layout_toLeftOf="@id/guide_user_center"
+                android:text="@string/guide_my_favorite"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/tv_guide_history_textSize" />
 
             <TextView
-                    android:textSize="@dimen/tv_guide_history_textSize"
-                    android:layout_marginRight="@dimen/tv_guide_menu_margin"
-                    android:text="@string/guide_play_history"
-                    android:layout_toLeftOf="@id/guide_my_favorite"
-                    android:id="@+id/guide_play_history"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    />
-
+                android:id="@+id/guide_play_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/tv_guide_menu_margin"
+                android:layout_toLeftOf="@id/guide_my_favorite"
+                android:text="@string/guide_play_history"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/tv_guide_history_textSize" />
         </RelativeLayout>
-
     </LinearLayout>
 
-    <FrameLayout
-            android:id="@+id/container"
-            android:layout_height="0dp"
-            android:layout_weight="7.3"
-            android:layout_width="match_parent"
-            />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7.3" >
 
+        <ImageView
+            android:id="@+id/arrow_scroll_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/scroll_left_focus"
+            android:focusable="true" />
+
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/arrow_scroll_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/scroll_right_focus"
+            android:focusable="true" />
+    </RelativeLayout>
 
     <HorizontalScrollView
-            android:layout_marginRight="@dimen/tv_guide_channel_margin_lr"
-            android:layout_marginLeft="@dimen/tv_guide_channel_margin_lr"
-            android:scrollbars="none"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.7"
-            >
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/tv_guide_channel_margin_lr"
+        android:layout_marginRight="@dimen/tv_guide_channel_margin_lr"
+        android:layout_weight="0.7"
+        android:scrollbars="none" >
 
         <LinearLayout
-                android:orientation="horizontal"
-                android:id="@+id/channel_h_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
+            android:id="@+id/channel_h_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" >
         </LinearLayout>
-
     </HorizontalScrollView>
 
     <LinearLayout
-
-            android:layout_gravity="center"
-            android:id="@+id/tab_list"
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            />
-
+        android:id="@+id/tab_list"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:orientation="horizontal" />
 
 </LinearLayout>

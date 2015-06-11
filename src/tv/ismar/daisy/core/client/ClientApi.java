@@ -43,31 +43,41 @@ public class ClientApi {
         );
     }
 
-    public interface OverSeas {
-        @GET("/api/tv/homepage/overseas/")
+    public interface ChineseMovie {
+        @GET("/api/tv/homepage/chinesemovie/")
         void excute(
+                @Query("access_token") String accessToken,
                 @Query("device_token") String deviceToken,
                 Callback<HomePagerEntity> callback
         );
     }
 
+    public interface Overseas {
+        @GET("/api/tv/homepage/overseas/")
+        void excute(
+                @Query("access_token") String accessToken,
+                @Query("device_token") String deviceToken,
+                Callback<HomePagerEntity> callback
+        );
+    }
+
+    public interface Teleplay {
+        @GET("/api/tv/homepage/teleplay/")
+        void excute(
+                @Query("access_token") String accessToken,
+                @Query("device_token") String deviceToken,
+                Callback<HomePagerEntity> callback
+        );
+    }
 
     public interface Child {
         @GET("/api/tv/homepage/comic/")
         void excute(
+                @Query("access_token") String accessToken,
                 @Query("device_token") String deviceToken,
                 Callback<HomePagerEntity> callback
         );
     }
-
-    public interface Chinese {
-
-    }
-
-    public interface Drama {
-
-    }
-
 
     public interface AppVersionInfo {
         @GET("/api/upgrade/application/ismartvod/")
@@ -164,6 +174,4 @@ public class ClientApi {
                 Callback<WeatherEntity> callback
         );
     }
-
-
 }

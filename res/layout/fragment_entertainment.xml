@@ -2,7 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:paddingLeft="@dimen/fragment_padding_lr"
+    android:paddingRight="@dimen/fragment_padding_lr"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,26 +35,26 @@
                     android:id="@+id/vaiety_thumb1"
                     android:layout_width="132dp"
                     android:layout_height="74dp"
-                    android:scaleType="fitXY"
                     android:focusable="true"
+                    android:scaleType="fitXY"
                     android:src="@drawable/list_item_preview_bg" />
 
                 <tv.ismar.daisy.views.AsyncImageView
                     android:id="@+id/vaiety_thumb2"
                     android:layout_width="132dp"
                     android:layout_height="74dp"
+                    android:focusable="true"
                     android:paddingTop="22dp"
                     android:scaleType="fitXY"
-                    android:focusable="true"
                     android:src="@drawable/list_item_preview_bg" />
 
                 <tv.ismar.daisy.views.AsyncImageView
                     android:id="@+id/vaiety_thumb3"
                     android:layout_width="132dp"
                     android:layout_height="74dp"
+                    android:focusable="true"
                     android:paddingTop="22dp"
                     android:scaleType="fitXY"
-                    android:focusable="true"
                     android:src="@drawable/list_item_preview_bg" />
 
                 <TextView
@@ -59,10 +62,10 @@
                     android:layout_width="520dp"
                     android:layout_height="52dp"
                     android:layout_gravity="bottom"
-                    android:gravity="center"
-                    android:textSize="24sp"
                     android:alpha="0.7"
-                    android:background="#303030" />
+                    android:background="#303030"
+                    android:gravity="center"
+                    android:textSize="24sp" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -303,7 +306,7 @@
                 android:textSize="24sp" />
         </LinearLayout>
 
-       <LinearLayout
+        <LinearLayout
             android:id="@+id/vaiety_channel5"
             android:layout_width="332dp"
             android:layout_height="219dp"
@@ -314,10 +317,9 @@
                 android:id="@+id/vaiety_channel5_image"
                 android:layout_width="332dp"
                 android:layout_height="189dp"
+                android:background="@drawable/launcher_selector"
                 android:focusable="true"
-                android:src="#00a8ff"
-               />
-
+                android:src="#00a8ff" />
         </LinearLayout>
     </LinearLayout>
 

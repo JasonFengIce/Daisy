@@ -12,7 +12,7 @@ import retrofit.client.Response;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.ClientApi;
-import tv.ismar.daisy.core.client.ClientApi.ChineseMovie;
+import tv.ismar.daisy.core.client.ClientApi.Teleplay;
 import tv.ismar.daisy.core.client.IsmartvFileClient;
 import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Poster;
@@ -34,7 +34,7 @@ import com.squareup.picasso.Picasso;
 /**
  * Created by huaijie on 5/18/15.
  */
-public class FilmFragment extends Fragment {
+public class TeleplayFragment extends Fragment {
 	private static final String TAG = "FilmFragment";
 
 	private LinearLayout guideRecommmendList;
@@ -63,8 +63,8 @@ public class FilmFragment extends Fragment {
 	}
 
 	private void fetchHomePage(String accessToken, String deviceToken) {
-		ClientApi.ChineseMovie client = restAdapter_SKYTEST_TVXIO
-				.create(ChineseMovie.class);
+		ClientApi.Teleplay client = restAdapter_SKYTEST_TVXIO
+				.create(Teleplay.class);
 		client.excute(accessToken, deviceToken,
 				new Callback<HomePagerEntity>() {
 					@Override
@@ -215,7 +215,7 @@ public class FilmFragment extends Fragment {
 			if (poster == null) {
 				intent.putExtra("title", "华语电影");
 				intent.putExtra("url",
-						"http://skytest.tvxio.com/v2_0/A21/dto/api/tv/sections/chinesemovie/");
+						"http://skytest.tvxio.com/v2_0/A21/dto/api/tv/sections/teleplay/");
 				intent.putExtra("channel", "chinesemovie");
 				intent.setClassName("tv.ismar.daisy",
 						"tv.ismar.daisy.ChannelListActivity");

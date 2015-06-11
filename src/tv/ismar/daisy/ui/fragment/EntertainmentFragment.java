@@ -13,6 +13,7 @@ import tv.ismar.daisy.views.LabelImageView;
 import tv.ismar.daisy.views.LoadingDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -52,7 +53,7 @@ public class EntertainmentFragment extends Fragment {
 	private TextView vaiety_channel3_subtitle;
 	private LabelImageView vaiety_channel4_image;
 	private TextView vaiety_channel4_subtitle;
-    private ImageView vaiety_channel5;
+	private ImageView vaiety_channel5;
 	private HomePagerEntity entity;
 
 	@Override
@@ -65,7 +66,8 @@ public class EntertainmentFragment extends Fragment {
 		vaiety_thumb1 = (AsyncImageView) view.findViewById(R.id.vaiety_thumb1);
 		vaiety_thumb2 = (AsyncImageView) view.findViewById(R.id.vaiety_thumb2);
 		vaiety_thumb3 = (AsyncImageView) view.findViewById(R.id.vaiety_thumb3);
-		vaiety_fouce_label = (TextView) view.findViewById(R.id.vaiety_fouce_label);
+		vaiety_fouce_label = (TextView) view
+				.findViewById(R.id.vaiety_fouce_label);
 		vaiety_card1_image = (LabelImageView) view
 				.findViewById(R.id.vaiety_card1_image);
 		vaiety_card1_subtitle = (TextView) view
@@ -100,6 +102,15 @@ public class EntertainmentFragment extends Fragment {
 				.findViewById(R.id.vaiety_channel4_subtitle);
 		vaiety_channel5 = (ImageView) view
 				.findViewById(R.id.vaiety_channel5_image);
+		vaiety_card1_image.setOnClickListener(ItemClickListener);
+		vaiety_card2_image.setOnClickListener(ItemClickListener);
+		vaiety_card3_image.setOnClickListener(ItemClickListener);
+		vaiety_card4_image.setOnClickListener(ItemClickListener);
+		vaiety_channel1_image.setOnClickListener(ItemClickListener);
+		vaiety_channel2_image.setOnClickListener(ItemClickListener);
+		vaiety_channel3_image.setOnClickListener(ItemClickListener);
+		vaiety_channel4_image.setOnClickListener(ItemClickListener);
+		vaiety_channel5.setOnClickListener(ItemClickListener);
 		return view;
 	}
 
@@ -111,8 +122,11 @@ public class EntertainmentFragment extends Fragment {
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (hasFocus) {
 					v.setPadding(0, 0, 0, 0);
-					vaiety_post.setUrl(v.getTag().toString());
-					vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post).toString());
+					if (v.getTag() != null) {
+						vaiety_post.setUrl(v.getTag().toString());
+						vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post)
+								.toString());
+					}
 				} else {
 					v.setPadding(0, 22, 0, 0);
 				}
@@ -124,7 +138,8 @@ public class EntertainmentFragment extends Fragment {
 				if (hasFocus) {
 					v.setPadding(0, 0, 0, 0);
 					vaiety_post.setUrl(v.getTag().toString());
-					vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post).toString());
+					vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post)
+							.toString());
 				} else {
 					v.setPadding(0, 22, 0, 0);
 				}
@@ -136,7 +151,8 @@ public class EntertainmentFragment extends Fragment {
 				if (hasFocus) {
 					v.setPadding(0, 0, 0, 0);
 					vaiety_post.setUrl(v.getTag().toString());
-					vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post).toString());
+					vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post)
+							.toString());
 				} else {
 					v.setPadding(0, 22, 0, 0);
 				}
@@ -156,8 +172,10 @@ public class EntertainmentFragment extends Fragment {
 	private void fillData(ArrayList<Carousel> carousellist,
 			ArrayList<Poster> postlist) {
 		vaiety_post.setUrl(carousellist.get(0).getVideo_image());
-		vaiety_thumb1.setUrl("http://res.tvxio.com/media/upload/hldf4802700225_adlet.jpg");
-		vaiety_thumb1.setTag("http://res.tvxio.com/media/upload/hldf4802700225_adlet.jpg");
+		vaiety_thumb1
+				.setUrl("http://res.tvxio.com/media/upload/hldf4802700225_adlet.jpg");
+		vaiety_thumb1
+				.setTag("http://res.tvxio.com/media/upload/hldf4802700225_adlet.jpg");
 		vaiety_thumb1.setTag(R.id.vaiety_post, carousellist.get(0).getTitle());
 		vaiety_thumb2.setUrl(carousellist.get(1).getThumb_image());
 		vaiety_thumb2.setTag(carousellist.get(1).getVideo_image());
@@ -168,28 +186,36 @@ public class EntertainmentFragment extends Fragment {
 		vaiety_fouce_label.setText(carousellist.get(0).getTitle());
 		vaiety_card1_image.setUrl(postlist.get(0).getCustom_image());
 		vaiety_card1_image.setFocustitle(postlist.get(0).getIntroduction());
+		vaiety_card1_image.setTag(postlist.get(0));
 		vaiety_card1_subtitle.setText(postlist.get(0).getTitle());
 		vaiety_card2_image.setUrl(postlist.get(1).getCustom_image());
 		vaiety_card2_image.setFocustitle(postlist.get(1).getIntroduction());
+		vaiety_card2_image.setTag(postlist.get(1));
 		vaiety_card2_subtitle.setText(postlist.get(1).getTitle());
 		vaiety_card3_image.setUrl(postlist.get(2).getCustom_image());
 		vaiety_card3_image.setFocustitle(postlist.get(2).getIntroduction());
 		vaiety_card3_subtitle.setText(postlist.get(2).getTitle());
+		vaiety_card3_image.setTag(postlist.get(2));
 		vaiety_card4_image.setUrl(postlist.get(3).getCustom_image());
 		vaiety_card4_image.setFocustitle(postlist.get(3).getIntroduction());
 		vaiety_card4_subtitle.setText(postlist.get(3).getTitle());
+		vaiety_card4_image.setTag(postlist.get(3));
 		vaiety_channel1_image.setUrl(postlist.get(4).getCustom_image());
 		vaiety_channel1_image.setFocustitle(postlist.get(4).getIntroduction());
 		vaiety_channel1_subtitle.setText(postlist.get(4).getTitle());
+		vaiety_channel1_image.setTag(postlist.get(4));
 		vaiety_channel2_image.setUrl(postlist.get(5).getCustom_image());
 		vaiety_channel2_image.setFocustitle(postlist.get(5).getIntroduction());
 		vaiety_channel2_subtitle.setText(postlist.get(5).getTitle());
+		vaiety_channel2_image.setTag(postlist.get(5));
 		vaiety_channel3_image.setUrl(postlist.get(6).getCustom_image());
 		vaiety_channel3_image.setFocustitle(postlist.get(6).getIntroduction());
 		vaiety_channel3_subtitle.setText(postlist.get(6).getTitle());
+		vaiety_channel3_image.setTag(postlist.get(6));
 		vaiety_channel4_image.setUrl(postlist.get(7).getCustom_image());
 		vaiety_channel4_image.setFocustitle(postlist.get(7).getIntroduction());
 		vaiety_channel4_subtitle.setText(postlist.get(7).getTitle());
+		vaiety_channel4_image.setTag(postlist.get(7));
 	}
 
 	class FetchDataTask extends AsyncTask<String, Void, Integer> {
@@ -233,4 +259,34 @@ public class EntertainmentFragment extends Fragment {
 		}
 	}
 
+	private View.OnClickListener ItemClickListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View view) {
+			Poster poster = (Poster) view.getTag();
+			Intent intent = new Intent();
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			if (poster == null) {
+				intent.putExtra("title", "综艺娱乐");
+				intent.putExtra("url",
+						"http://skytest.tvxio.com/v2_0/A21/dto/api/tv/sections/variety/");
+				intent.putExtra("channel", "variety");
+				intent.setClassName("tv.ismar.daisy",
+						"tv.ismar.daisy.ChannelListActivity");
+				getActivity().startActivity(intent);
+			} else {
+				if ("item".equals(poster.getModel_name())) {
+					intent.setClassName("tv.ismar.daisy",
+							"tv.ismar.daisy.ItemDetailActivity");
+					intent.putExtra("url", poster.getUrl());
+					getActivity().startActivity(intent);
+				} else if ("topic".equals(poster.getModel_name())) {
+
+				} else if ("section".equals(poster.getModel_name())) {
+
+				} else if ("package".equals(poster.getModel_name())) {
+
+				}
+			}
+		}
+	};
 }

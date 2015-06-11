@@ -1,22 +1,9 @@
 package tv.ismar.daisy.ui.fragment;
 
-import android.app.Activity;
-import android.content.Context;
-import android.graphics.Color;
-import android.media.Image;
-import android.nfc.Tag;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
-import android.widget.*;
-import com.squareup.picasso.Picasso;
+import static tv.ismar.daisy.core.client.ClientApi.restAdapter_SKYTEST_TVXIO;
+
+import java.util.ArrayList;
+
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -24,10 +11,22 @@ import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.ClientApi;
 import tv.ismar.daisy.data.HomePagerEntity;
+import android.app.Activity;
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import java.util.ArrayList;
-
-import static tv.ismar.daisy.core.client.ClientApi.restAdapter_SKYTEST_TVXIO;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -67,12 +66,13 @@ public class ChildFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        fetchChild();
+        fetchChild(SimpleRestClient.access_token,
+				SimpleRestClient.device_token);
     }
 
-    private void fetchChild() {
+    private void fetchChild(String accessToken, String deviceToken) {
         ClientApi.Child client = restAdapter_SKYTEST_TVXIO.create(ClientApi.Child.class);
-        client.excute("dZTLzDpmhmDbeGYs0euiGWjTY70nbAMABnkVUR1vtnc%3D", new Callback<HomePagerEntity>() {
+        client.excute(accessToken, deviceToken, new Callback<HomePagerEntity>() {
             @Override
             public void success(HomePagerEntity homePagerEntity, Response response) {
                 ArrayList<HomePagerEntity.Poster> posters = homePagerEntity.getPosters();
