@@ -128,17 +128,17 @@ public class AsyncImageView extends ImageView implements ImageRequestCallback {
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AsyncImageView, defStyle, 0);
 
-        Drawable d = a.getDrawable(R.styleable.AsyncImageView_defaultSrc);
-        if (d != null) {
-            setDefaultImageDrawable(d);
-        }
+//        Drawable d = a.getDrawable(R.styleable.AsyncImageView_defaultSrc);
+//        if (d != null) {
+//            setDefaultImageDrawable(d);
+//        }
 
 //        final int inDensity = a.getInt(R.styleable.AsyncImageView_inDensity, -1);
 //        if (inDensity != -1) {
 //            setInDensity(inDensity);
 //        }
         setInDensity(-1);
-        setUrl(a.getString(R.styleable.AsyncImageView_url));
+//        setUrl(a.getString(R.styleable.AsyncImageView_url));
 
         a.recycle();
     }

@@ -462,7 +462,7 @@
     <dimen name="tv_guide_channel_textSize">9sp</dimen>
     <dimen name="tv_guide_cinema_textSize">24sp</dimen>
     <dimen name="tv_guide_history_textSize">12sp</dimen>
-    <dimen name="tv_guide_area_textSize">18sp</dimen>
+    <dimen name="tv_guide_area_textSize">36sp</dimen>
 
     <dimen name="fragment_padding_lr">35dp</dimen>
 

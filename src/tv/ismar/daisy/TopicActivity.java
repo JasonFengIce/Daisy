@@ -89,8 +89,8 @@ public class TopicActivity extends BaseActivity implements View.OnFocusChangeLis
         });
     }
     private void initTemplate(){
-       //String url = getIntent().getStringExtra("url");
-       String url = "http://cord.tvxio.com/v2_0/A21/dto/api/topic/8/";
+       String url = getIntent().getStringExtra("url");
+//       String url = "http://cord.tvxio.com/v2_0/A21/dto/api/topic/8/";
 
         mSimpleRestClient.doTopicRequest(url, "get", "", new SimpleRestClient.HttpPostRequestInterface(){
 
