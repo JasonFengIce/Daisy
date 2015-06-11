@@ -58,4 +58,8 @@
     <color name="button_disable_bg">#666666</color>
 
     <color name="normal_activity_bg">#8803548d</color>
+
+    <drawable name="child_item_bg_focus">#ea7b0d</drawable>
+    <drawable name="child_item_bg_normal">#601800</drawable>
+
 </resources>

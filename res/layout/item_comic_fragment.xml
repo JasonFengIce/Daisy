@@ -5,13 +5,23 @@
               android:layout_height="match_parent">
 
     <ImageView
+            android:paddingTop="@dimen/child_fragment_item_img_padding"
+            android:paddingLeft="@dimen/child_fragment_item_img_padding"
+            android:paddingRight="@dimen/child_fragment_item_img_padding"
             android:id="@+id/item_img"
+            android:scaleType="fitXY"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            />
 
     <TextView
+            android:textColor="@android:color/white"
+            android:gravity="center"
             android:id="@+id/item_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
 
 </LinearLayout>

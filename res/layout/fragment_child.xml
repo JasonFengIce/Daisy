@@ -17,6 +17,10 @@
         </LinearLayout>
 
         <LinearLayout
+                android:layout_marginTop="@dimen/child_fragment_centerlayout_margin_tp"
+                android:layout_marginBottom="@dimen/child_fragment_centerlayout_margin_tp"
+                android:layout_marginLeft="@dimen/child_fragment_centerlayout_margin_lf"
+                android:layout_marginRight="@dimen/child_fragment_centerlayout_margin_lf"
                 android:orientation="vertical"
                 android:layout_width="0dp"
                 android:layout_weight="2"
@@ -28,6 +32,7 @@
                     android:layout_weight="2">
 
                 <ImageView
+                        android:scaleType="fitXY"
                         android:id="@+id/image_switcher"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">

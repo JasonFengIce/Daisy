@@ -94,40 +94,65 @@ public class ChildFragment extends Fragment {
 
 
     private void initPosters(ArrayList<HomePagerEntity.Poster> posters) {
-        LinearLayout.LayoutParams verticalParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
-        verticalParams.weight = 1;
-        verticalParams.setMargins(20, 20, 20, 20);
-
-        LinearLayout.LayoutParams horizontalParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
-        horizontalParams.weight = 1;
-        horizontalParams.setMargins(20, 20, 20, 20);
-
+        int marginLR = (int) getResources().getDimension(R.dimen.child_fragment_item_margin_lr);
+        int marginTP = (int) getResources().getDimension(R.dimen.child_fragment_item_margin_tp);
+        Log.d(TAG, "margin lr: " + marginLR);
 
         for (int i = 0; i < 7; i++) {
             View itemContainer = LayoutInflater.from(context).inflate(R.layout.item_comic_fragment, null);
+            itemContainer.setBackgroundResource(R.drawable.selector_child_item);
+            itemContainer.setFocusable(true);
+            itemContainer.setFocusableInTouchMode(true);
+            itemContainer.setClickable(true);
             ImageView itemImg = (ImageView) itemContainer.findViewById(R.id.item_img);
             TextView itemText = (TextView) itemContainer.findViewById(R.id.item_title);
-            itemText.setText(posters.get(i).getTitle());
+
             Picasso.with(context).load(posters.get(i).getCustom_image()).into(itemImg);
+            itemText.setText(posters.get(i).getTitle());
             if (i >= 0 && i < 3) {
+                LinearLayout.LayoutParams verticalParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
+                verticalParams.weight = 1;
+                if (i == 2) {
+                    verticalParams.setMargins(marginLR, marginTP, 0, marginTP);
+                } else {
+                    verticalParams.setMargins(marginLR, marginTP, 0, 0);
+                }
                 itemContainer.setLayoutParams(verticalParams);
                 leftLayout.addView(itemContainer);
             }
 
 
             if (i >= 3 && i < 5) {
+                LinearLayout.LayoutParams horizontalParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
+                horizontalParams.weight = 1;
+                if (i == 3) {
+                    horizontalParams.setMargins(0, marginTP, (int)getResources().getDimension(R.dimen.child_fragment_bottomlayout_margin), 0);
+                } else if (i == 4) {
+                    horizontalParams.setMargins(0, marginTP, 0, 0);
+                }
+
                 itemContainer.setLayoutParams(horizontalParams);
                 bottomLayout.addView(itemContainer);
             }
 
 
             if (i >= 5 && i < 7) {
+                LinearLayout.LayoutParams verticalParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
+                verticalParams.weight = 1;
+
+                verticalParams.setMargins(0, marginTP, marginLR, 0);
                 itemContainer.setLayoutParams(verticalParams);
                 rightLayout.addView(itemContainer);
             }
         }
         ImageView imageView = new ImageView(context);
+        imageView.setFocusable(true);
+        imageView.setFocusableInTouchMode(true);
+        imageView.setClickable(true);
         imageView.setImageResource(R.drawable.selector_child_more);
+        LinearLayout.LayoutParams verticalParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
+        verticalParams.weight = 1;
+        verticalParams.setMargins(0, 0, marginLR, 0);
         imageView.setLayoutParams(verticalParams);
         rightLayout.addView(imageView);
     }
@@ -138,6 +163,7 @@ public class ChildFragment extends Fragment {
             indicatorImgs[i].setOnFocusChangeListener(new IndicatorFocusChangeListener(carousels));
             Picasso.with(context).load(carousels.get(i).getThumb_image()).into(indicatorImgs[i]);
         }
+        Picasso.with(context).load(carousels.get(0).getVideo_image()).into(imageSwitcher);
     }
 
 

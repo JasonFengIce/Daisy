@@ -649,4 +649,12 @@
     <dimen name="tv_guide_menu_margin">44dp</dimen>
     <dimen name="tv_guide_top_section_padding">14dp</dimen>
     <dimen name="tv_guide_channel_margin_lr">54dp</dimen>
+
+    <!-- child fragment -->
+    <dimen name="child_fragment_item_margin_lr">107dp</dimen>
+    <dimen name="child_fragment_item_margin_tp">20dp</dimen>
+    <dimen name="child_fragment_item_img_padding">4dp</dimen>
+    <dimen name="child_fragment_centerlayout_margin_lf">113dp</dimen>
+    <dimen name="child_fragment_centerlayout_margin_tp">20dp</dimen>
+    <dimen name="child_fragment_bottomlayout_margin">96dp</dimen>
 </resources>
