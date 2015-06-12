@@ -3,7 +3,13 @@ package tv.ismar.daisy.ui.fragment;
 import static tv.ismar.daisy.core.client.ClientApi.restAdapter_SKYTEST_TVXIO;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.widget.RelativeLayout;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -40,6 +46,11 @@ public class ChildFragment extends Fragment {
     private LinearLayout rightLayout;
     private ImageView imageSwitcher;
     private ImageView[] indicatorImgs;
+    private RelativeLayout indicatorLayout;
+
+    private volatile boolean startLoop;
+
+    private LinkedList<HashMap<String, String>> linkedList;
 
     @Override
     public void onAttach(Activity activity) {
@@ -54,6 +65,7 @@ public class ChildFragment extends Fragment {
         bottomLayout = (LinearLayout) mView.findViewById(R.id.bottom_layout);
         rightLayout = (LinearLayout) mView.findViewById(R.id.right_layout);
         imageSwitcher = (ImageView) mView.findViewById(R.id.image_switcher);
+        indicatorLayout = (RelativeLayout) mView.findViewById(R.id.indicator_layout);
         indicatorImgs = new ImageView[]{
                 (ImageView) mView.findViewById(R.id.indicator_1),
                 (ImageView) mView.findViewById(R.id.indicator_2),
@@ -159,14 +171,21 @@ public class ChildFragment extends Fragment {
     }
 
     private void initCarousel(ArrayList<HomePagerEntity.Carousel> carousels) {
+        linkedList = new LinkedList<HashMap<String, String>>();
         for (int i = 0; i < 3; i++) {
             indicatorImgs[i].setTag(i);
             indicatorImgs[i].setOnFocusChangeListener(new IndicatorFocusChangeListener(carousels));
             Picasso.with(context).load(carousels.get(i).getThumb_image()).into(indicatorImgs[i]);
-        }
-        Picasso.with(context).load(carousels.get(0).getVideo_image()).into(imageSwitcher);
-    }
 
+            HashMap<String, String> hashMap = new HashMap<String, String>();
+            hashMap.put("position", String.valueOf(i));
+            hashMap.put("url", carousels.get(i).getVideo_image());
+            linkedList.add(hashMap);
+        }
+//        Picasso.with(context).load(carousels.get(0).getVideo_image()).into(imageSwitcher);
+
+        startLoopAnimatioin();
+    }
 
     class IndicatorFocusChangeListener implements View.OnFocusChangeListener {
         private ArrayList<HomePagerEntity.Carousel> carousels;
@@ -177,11 +196,11 @@ public class ChildFragment extends Fragment {
 
         @Override
         public void onFocusChange(View view, boolean focus) {
-
             if (focus) {
+                startLoop = false;
                 int position = (Integer) view.getTag();
                 AnimationSet animationSet = new AnimationSet(true);
-                ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1, 1, 1.8f,
+                ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1, 1, 1.53f,
                         Animation.RELATIVE_TO_SELF, 0.5f,
                         Animation.RELATIVE_TO_SELF, 0.5f);
                 scaleAnimation.setDuration(200);
@@ -192,15 +211,72 @@ public class ChildFragment extends Fragment {
 
             } else {
                 AnimationSet animationSet = new AnimationSet(true);
-                ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1f, 1.8f, 1f,
+                ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1f, 1.53f, 1f,
                         Animation.RELATIVE_TO_SELF, 0.5f,
                         Animation.RELATIVE_TO_SELF, 0.5f);
                 scaleAnimation.setDuration(200);
                 animationSet.addAnimation(scaleAnimation);
                 animationSet.setFillAfter(true);
                 view.startAnimation(animationSet);
+
+                boolean tag = true;
+                for (ImageView imageView : indicatorImgs) {
+                    tag = tag && !imageView.isFocused();
+                }
+                Log.d(TAG, "start loop tag is: " + tag);
+                if (tag) {
+                   startLoopAnimatioin();
+                }
             }
 
         }
+
+    }
+
+    private void startLoopAnimatioin() {
+        startLoop = true;
+        class AnimationHandler extends Handler {
+            public AnimationHandler(Looper looper) {
+                super(looper);
+            }
+
+
+            @Override
+            public void handleMessage(Message msg) {
+                HashMap<String, String> last = linkedList.removeLast();
+                linkedList.addFirst(last);
+                int position = Integer.valueOf(last.get("position"));
+                String url = last.get("url");
+                Picasso.with(context).load(url).into(imageSwitcher);
+//                indicatorImgs[position]
+            }
+
+
+        }
+
+        new Thread() {
+            @Override
+            public void run() {
+                while (startLoop) {
+
+                    AnimationHandler handler = new AnimationHandler(context.getMainLooper());
+                    handler.sendEmptyMessage(0);
+
+                    try {
+                        sleep(3000);
+                    } catch (InterruptedException e) {
+                        Log.e(TAG, e.getMessage());
+                    }
+                }
+            }
+        }.start();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        startLoop = false;
     }
 }
+
+
