@@ -648,7 +648,7 @@
     <dimen name="guide_padding">4dp</dimen>
     <dimen name="tv_guide_menu_margin">44dp</dimen>
     <dimen name="tv_guide_top_section_padding">14dp</dimen>
-    <dimen name="tv_guide_channel_margin_lr">54dp</dimen>
+    <dimen name="tv_guide_channel_margin_lr">58dp</dimen>
 
     <!-- guide fragment -->
     <dimen name="guide_fragment_poser_margin_lf">25dp</dimen>
@@ -660,7 +660,6 @@
     <dimen name="child_fragment_centerlayout_margin_lf">113dp</dimen>
     <dimen name="child_fragment_centerlayout_margin_tp">20dp</dimen>
     <dimen name="child_fragment_bottomlayout_margin">96dp</dimen>
-
     <dimen name="child_fragment_indicator_width">151dp</dimen>
     <dimen name="child_fragment_indicator_height">55dp</dimen>
 
@@ -668,6 +667,4 @@
 
 
     <dimen name="item_boundary_margin">7dp</dimen>
-
-
 </resources>

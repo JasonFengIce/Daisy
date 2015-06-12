@@ -12,6 +12,6 @@
         android:focusable="true"
         labelimage:focusbackground="#b3303030"
         labelimage:focuspaddingtop="136dp"
-        labelimage:focustextpaddingtop="28dp"
+        labelimage:focustextpaddingtop="26dp"
         labelimage:focustextsize="18sp" />
 </LinearLayout>

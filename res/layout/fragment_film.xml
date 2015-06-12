@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/fragment_padding_lr"
-    android:paddingRight="@dimen/fragment_padding_lr" >
+    android:paddingLeft="80dp"
+    android:paddingRight="80dp" >
 
 
     <LinearLayout
@@ -13,19 +13,42 @@
         android:layout_weight="5"
         android:orientation="horizontal"
         android:paddingTop="@dimen/guide_padding" >
-
+        <tv.ismar.daisy.views.LabelImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.8"
+            android:scaleType="centerCrop"
+            android:focusable="true"
+            android:src="@drawable/list_item_preview_bg"
+            android:background="@drawable/launcher_selector"
+             />
         <VideoView
             android:id="@+id/film_linked_video"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginRight="@dimen/guide_padding"
-            android:layout_weight="14.7" />
-
+            android:background="@drawable/launcher_selector"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="5.7"
+             />
+        <tv.ismar.daisy.views.LabelImageView
+            android:id="@+id/film_linked_image"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/guide_padding"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="5.7"
+            android:scaleType="centerCrop"
+            android:focusable="true"
+            android:src="@drawable/list_item_preview_bg"
+            android:background="@drawable/launcher_selector"
+            android:visibility="gone"
+             />
         <LinearLayout
             android:id="@+id/film_carousel_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:orientation="vertical" >
         </LinearLayout>
     </LinearLayout>

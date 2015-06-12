@@ -1,8 +1,12 @@
 package tv.ismar.daisy.views;
 
+import java.io.InputStream;
+
 import tv.ismar.daisy.R;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -16,6 +20,7 @@ public class LabelImageView extends AsyncImageView {
 	private int focuspaddingtop;
 	private int focusbackground;
 	private int focustitlepaddingtop;
+	private int modetype;
 
 	public String getFocustitle() {
 		return focustitle;
@@ -70,14 +75,41 @@ public class LabelImageView extends AsyncImageView {
 		super.draw(canvas);
 		int width = getLayoutParams().width;
 		int height = getLayoutParams().height;
-		Paint paint = new Paint();
+		int paddingright = getPaddingRight();
+		int paddingtop = getPaddingTop();
 		int paddingBottom = getPaddingBottom();
+		Paint paint = new Paint();
+		// 绘制角标
+		if (modetype > 0) {
+			int resId = R.drawable.entertainment_bg;
+			switch (modetype) {
+			case 1:
+				resId = R.drawable.entertainment_bg;
+				break;
+			case 2:
+				resId = R.drawable.variety_bg;
+				break;
+			case 3:
+				resId = R.drawable.all_match;
+				break;
+			case 4:
+				resId = R.drawable.living;
+				break;
+			case 5:
+				resId = R.drawable.beonline;
+				break;
+			}
+			InputStream is = getResources().openRawResource(resId);
+			Bitmap mBitmap = BitmapFactory.decodeStream(is);
+			canvas.drawBitmap(mBitmap, width - mBitmap.getWidth()
+					- paddingright, paddingtop, paint);
+		}
 		// 绘制看点背景
 		paint.setColor(Color.WHITE);
 		if (focustitle.length() > 0) {
 			paint.setColor(focusbackground);
-			canvas.drawRect(new Rect(4, focuspaddingtop, width-4, height
-					- paddingBottom), paint);
+			canvas.drawRect(new Rect(getPaddingLeft(), focuspaddingtop, width
+					- paddingright, height - paddingBottom), paint);
 			// 看点内容
 			paint.setColor(Color.WHITE);
 			paint.setTextSize(focustitlesize);
