@@ -149,13 +149,13 @@ public class ChildFragment extends Fragment {
         imageView.setFocusable(true);
         imageView.setFocusableInTouchMode(true);
         imageView.setClickable(true);
-        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         imageView.setImageResource(R.drawable.selector_child_more);
         LinearLayout.LayoutParams verticalParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
         verticalParams.weight = 1;
-        verticalParams.setMargins(0, 0, marginLR, 0);
+        verticalParams.setMargins(0, 0, marginLR, marginTP);
         imageView.setLayoutParams(verticalParams);
         rightLayout.addView(imageView);
+        rightLayout.requestLayout();
     }
 
     private void initCarousel(ArrayList<HomePagerEntity.Carousel> carousels) {

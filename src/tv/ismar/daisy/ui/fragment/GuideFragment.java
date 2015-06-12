@@ -62,6 +62,7 @@ public class GuideFragment extends Fragment {
 
         fetchHomePage(" ", " ");
 
+
     }
 
 
@@ -106,7 +107,7 @@ public class GuideFragment extends Fragment {
             hashMap.put("url", carousel.getVideo_url());
             try {
                 URL mUrl = new URL(carousel.getVideo_url());
-                File file = new File(DeviceUtils.getCachePath(), mUrl.getFile());
+                File file = new File(DeviceUtils.getCachePath(context), mUrl.getFile());
                 String fileName = file.getName().split("\\.")[0];
                 hashMap.put("path", file.getAbsolutePath());
                 hashMap.put("md5", fileName);
@@ -130,7 +131,7 @@ public class GuideFragment extends Fragment {
     }
 
     private void downloadCarouselVideo(ArrayList<HomePagerEntity.Carousel> carousels) {
-        new IsmartvFileClient(carousels).start();
+        new IsmartvFileClient(context, carousels).start();
     }
 
 
@@ -153,6 +154,8 @@ public class GuideFragment extends Fragment {
             linkedVideoView.setVideoPath(url);
             Log.i(TAG, "video path is: " + url);
         }
+
+
         linkedVideoView.start();
         linkedVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override

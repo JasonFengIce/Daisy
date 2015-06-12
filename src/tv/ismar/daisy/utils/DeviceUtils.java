@@ -1,13 +1,12 @@
 package tv.ismar.daisy.utils;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Environment;
+import android.os.StatFs;
 import android.text.TextUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -17,30 +16,28 @@ import java.security.MessageDigest;
  * Created by huaijie on 3/12/15.
  */
 public class DeviceUtils {
-//    public static final String getDeviceSN() {
-//        return Build.SERIAL;
-//    }
-//
-//    public static final File getCacheDirectory(Context context) {
-//        File cacheFile = null;
-//
-//        boolean exist = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
-//        if (exist) {
-//            cacheFile = new File(Environment.getExternalStorageDirectory() + File.separator + context.getPackageName());
-//        } else {
-//            cacheFile = context.getFilesDir();
-//        }
-//        return cacheFile;
-//    }
 
-
-    public static String getCachePath() {
+    public static String getCachePath(Context context) {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            return new File(Environment.getExternalStorageDirectory(), "/Daisy").getPath();
+            return new File(Environment.getExternalStorageDirectory(), "/Daisy").getAbsolutePath();
         } else {
-            return null;
+            long internalMemorySize = getAvailableInternalMemorySize() / 1024 / 1024 / 1024;
+            if (internalMemorySize >= 1)
+                return context.getCacheDir().getAbsolutePath();
+            else
+                return "";
         }
     }
+
+
+    public static long getAvailableInternalMemorySize() {
+        File path = Environment.getDataDirectory();
+        StatFs stat = new StatFs(path.getPath());
+        long blockSize = stat.getBlockSize();
+        long availableBlocks = stat.getAvailableBlocks();
+        return availableBlocks * blockSize;
+    }
+
 
     public static String getMd5ByFile(File file) {
         String value = null;
@@ -60,7 +57,7 @@ public class DeviceUtils {
     }
 
     public static String getFileNameWithoutSuffix(String fileName) {
-        if (!TextUtils.isEmpty(fileName) ) {
+        if (!TextUtils.isEmpty(fileName)) {
             return fileName.split("\\.")[0];
         } else {
             return fileName;

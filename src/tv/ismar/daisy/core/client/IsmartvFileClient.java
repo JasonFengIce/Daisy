@@ -1,5 +1,7 @@
 package tv.ismar.daisy.core.client;
 
+import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
@@ -28,34 +30,35 @@ public class IsmartvFileClient extends Thread {
 
     private File parentDir;
 
+    private Context context;
 
-    public IsmartvFileClient(ArrayList<HomePagerEntity.Carousel> carousels) {
+    public IsmartvFileClient(Context context, ArrayList<HomePagerEntity.Carousel> carousels) {
         this.carousels = carousels;
+        this.context = context;
         files = new ArrayList<HashMap<String, String>>();
         for (HomePagerEntity.Carousel carousel : carousels) {
             HashMap<String, String> hashMap = new HashMap<String, String>();
-            hashMap.put("url", carousel.getVideo_url());
+
+            String downloadUrl = carousel.getVideo_url();
+            hashMap.put("url", downloadUrl);
+
+            Log.d(TAG, "download url is: " + downloadUrl);
+
             try {
-                URL url = new URL(carousel.getVideo_url());
-                hashMap.put("path", DeviceUtils.getCachePath() + url.getFile());
-                files.add(hashMap);
+                URL url = new URL(downloadUrl);
+                String downloadPath = DeviceUtils.getCachePath(context);
+                String videoName = url.getFile();
+                hashMap.put("path", downloadPath + videoName);
+                if (!TextUtils.isEmpty(downloadPath)) {
+                    files.add(hashMap);
+                }
             } catch (MalformedURLException e) {
                 Log.e(TAG, e.getMessage());
             }
         }
 
         parentDir = new File(files.get(0).get("path")).getParentFile();
-        Log.i(TAG, "parent dir: " + parentDir.getAbsolutePath());
 
-        for (HashMap<String, String> videoFile : files) {
-            Log.i(TAG, "video files: " + videoFile.get("path"));
-        }
-
-        if (parentDir.exists()) {
-            for (File file : parentDir.listFiles()) {
-                Log.i(TAG, "sub files:" + file.getAbsolutePath());
-            }
-        }
         if (!parentDir.exists()) {
             parentDir.mkdirs();
         } else {
@@ -90,7 +93,6 @@ public class IsmartvFileClient extends Thread {
                     Log.i(TAG, "subFileMD5: " + subFileMD5);
                     Log.i(TAG, "fileNameWithoutSuffix: " + fileNameWithoutSuffix);
                     if (subFileMD5.equals(fileNameWithoutSuffix)) {
-
                         continue;
                     }
                     long length = file.length();
