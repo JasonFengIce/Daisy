@@ -4,11 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.VideoView;
@@ -95,7 +101,12 @@ public class GuideFragment extends Fragment {
             ImageView itemView = new ImageView(context);
             Picasso.with(context).load(posters.get(i).getCustom_image()).into(itemView);
             itemView.setScaleType(ImageView.ScaleType.FIT_XY);
+            itemView.setFocusable(true);
+            itemView.setFocusableInTouchMode(true);
+            itemView.setClickable(true);
+            itemView.setBackgroundResource(R.drawable.launcher_selector);
             itemView.setLayoutParams(params);
+            itemView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
             guideRecommmendList.addView(itemView);
         }
     }
@@ -136,33 +147,53 @@ public class GuideFragment extends Fragment {
 
 
     private void playVideo(final LoopList loopList) {
-        HashMap<String, String> hashMap = loopList.next();
-        String url = hashMap.get("url");
-        File file = new File(hashMap.get("path"));
-
-        if (file.exists()) {
-            String md5 = hashMap.get("md5");
-            Log.i(TAG, "md5 is: " + DeviceUtils.getMd5ByFile(file));
-            if (DeviceUtils.getMd5ByFile(file).equals(md5)) {
-                linkedVideoView.setVideoPath(file.getAbsolutePath());
-                Log.i(TAG, "video path is: " + file.getAbsolutePath());
-            } else {
-                linkedVideoView.setVideoPath(url);
-                Log.i(TAG, "video path is: " + url);
+        class VideoMessageHandle extends Handler {
+            public VideoMessageHandle(Looper looper) {
+                super(looper);
             }
-        } else {
-            linkedVideoView.setVideoPath(url);
-            Log.i(TAG, "video path is: " + url);
+
+            @Override
+            public void handleMessage(Message msg) {
+                linkedVideoView.setVideoPath(msg.obj.toString());
+                linkedVideoView.start();
+                linkedVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+                        playVideo(loopList);
+                    }
+                });
+            }
         }
 
-
-        linkedVideoView.start();
-        linkedVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+        new Thread() {
             @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                playVideo(loopList);
+            public void run() {
+                String videoPath;
+                HashMap<String, String> hashMap = loopList.next();
+                String url = hashMap.get("url");
+                File file = new File(hashMap.get("path"));
+
+                if (file.exists()) {
+                    String md5 = hashMap.get("md5");
+                    Log.i(TAG, "md5 is: " + DeviceUtils.getMd5ByFile(file));
+                    if (DeviceUtils.getMd5ByFile(file).equals(md5)) {
+                        videoPath = file.getAbsolutePath();
+                        Log.i(TAG, "video path is: " + file.getAbsolutePath());
+                    } else {
+                        videoPath = url;
+                        Log.i(TAG, "video path is: " + url);
+                    }
+                } else {
+                    videoPath = url;
+                    Log.i(TAG, "video path is: " + url);
+                }
+                VideoMessageHandle messageHandle = new VideoMessageHandle(context.getMainLooper());
+                Message message = messageHandle.obtainMessage(0, videoPath);
+                messageHandle.sendMessage(message);
             }
-        });
+        }.start();
+
+
     }
 
 
@@ -188,6 +219,35 @@ public class GuideFragment extends Fragment {
                 next = next + 1;
                 return hashMap;
             }
+        }
+    }
+
+
+    class ItemViewFocusChangeListener implements View.OnFocusChangeListener {
+
+        @Override
+        public void onFocusChange(View itemView, boolean hasFocus) {
+            if (hasFocus) {
+                AnimationSet animationSet = new AnimationSet(true);
+                ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
+                        Animation.RELATIVE_TO_SELF, 0.5f,
+                        Animation.RELATIVE_TO_SELF, 0.5f);
+                scaleAnimation.setDuration(200);
+                animationSet.addAnimation(scaleAnimation);
+                animationSet.setFillAfter(true);
+                itemView.startAnimation(animationSet);
+
+            } else {
+                AnimationSet animationSet = new AnimationSet(true);
+                ScaleAnimation scaleAnimation = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
+                        Animation.RELATIVE_TO_SELF, 0.5f,
+                        Animation.RELATIVE_TO_SELF, 0.5f);
+                scaleAnimation.setDuration(200);
+                animationSet.addAnimation(scaleAnimation);
+                animationSet.setFillAfter(true);
+                itemView.startAnimation(animationSet);
+            }
+
         }
     }
 }

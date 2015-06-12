@@ -119,7 +119,15 @@ public class TVGuideActivity extends FragmentActivity implements
 
     @Override
     public void onBackPressed() {
-        showExitPopup(contentView);
+        if (currentFragment.getClass().getName().equals(GuideFragment.class.getName())) {
+            showExitPopup(contentView);
+        } else {
+            contentView.setBackgroundResource(R.color.normal_activity_bg);
+            currentFragment = new GuideFragment();
+            replaceFragment(currentFragment);
+        }
+
+
     }
 
     public void superOnbackPressed() {
@@ -487,16 +495,7 @@ public class TVGuideActivity extends FragmentActivity implements
             } else if ("rankinglist".equals(channel)) {
 
             }
-            
-            FragmentTransaction transaction = getSupportFragmentManager()
-                    .beginTransaction();
-            transaction.setCustomAnimations(
-                    R.anim.push_left_in,
-                    R.anim.push_left_out,
-                    R.anim.push_left_in,
-                    R.anim.push_left_out);
-            transaction.replace(R.id.container, currentFragment,
-                    TAG_GUIDE_FRAGMENT).commit();
+            replaceFragment(currentFragment);
         }
 
     };
@@ -518,4 +517,16 @@ public class TVGuideActivity extends FragmentActivity implements
         }
     };
 
+
+    private void replaceFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager()
+                .beginTransaction();
+        transaction.setCustomAnimations(
+                R.anim.push_left_in,
+                R.anim.push_left_out,
+                R.anim.push_left_in,
+                R.anim.push_left_out);
+        transaction.replace(R.id.container, fragment,
+                TAG_GUIDE_FRAGMENT).commit();
+    }
 }
