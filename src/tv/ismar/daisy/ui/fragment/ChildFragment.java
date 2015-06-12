@@ -67,7 +67,7 @@ public class ChildFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         fetchChild(SimpleRestClient.access_token,
-				SimpleRestClient.device_token);
+                SimpleRestClient.device_token);
     }
 
     private void fetchChild(String accessToken, String deviceToken) {
@@ -126,7 +126,7 @@ public class ChildFragment extends Fragment {
                 LinearLayout.LayoutParams horizontalParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
                 horizontalParams.weight = 1;
                 if (i == 3) {
-                    horizontalParams.setMargins(0, marginTP, (int)getResources().getDimension(R.dimen.child_fragment_bottomlayout_margin), 0);
+                    horizontalParams.setMargins(0, marginTP, (int) getResources().getDimension(R.dimen.child_fragment_bottomlayout_margin), 0);
                 } else if (i == 4) {
                     horizontalParams.setMargins(0, marginTP, 0, 0);
                 }
@@ -149,6 +149,7 @@ public class ChildFragment extends Fragment {
         imageView.setFocusable(true);
         imageView.setFocusableInTouchMode(true);
         imageView.setClickable(true);
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         imageView.setImageResource(R.drawable.selector_child_more);
         LinearLayout.LayoutParams verticalParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
         verticalParams.weight = 1;
