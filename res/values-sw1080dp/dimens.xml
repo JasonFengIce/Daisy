@@ -638,7 +638,7 @@
     <dimen name="guide_container_width">1774dp</dimen>
     <dimen name="guide_container_height">780dp</dimen>
 
-    <!-- guide -->
+    <!-- tv guide activity -->
     <dimen name="tv_guide_channel_textSize">36sp</dimen>
     <dimen name="tv_guide_cinema_textSize">48sp</dimen>
     <dimen name="tv_guide_history_textSize">24sp</dimen>
@@ -649,6 +649,9 @@
     <dimen name="tv_guide_menu_margin">44dp</dimen>
     <dimen name="tv_guide_top_section_padding">14dp</dimen>
     <dimen name="tv_guide_channel_margin_lr">54dp</dimen>
+
+    <!-- guide fragment -->
+    <dimen name="guide_fragment_poser_margin_lf">25dp</dimen>
 
     <!-- child fragment -->
     <dimen name="child_fragment_item_margin_lr">107dp</dimen>
@@ -664,6 +667,7 @@
     <dimen name="child_fragment_indicator_layout_padding_bottom">38dp</dimen>
 
 
+    <dimen name="item_boundary_margin">7dp</dimen>
 
 
 </resources>

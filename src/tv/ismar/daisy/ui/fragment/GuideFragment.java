@@ -12,9 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.VideoView;
@@ -25,8 +22,9 @@ import retrofit.client.Response;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.ClientApi;
 import tv.ismar.daisy.core.client.IsmartvFileClient;
-import tv.ismar.daisy.utils.DeviceUtils;
 import tv.ismar.daisy.data.HomePagerEntity;
+import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
+import tv.ismar.daisy.utils.DeviceUtils;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -48,6 +46,8 @@ public class GuideFragment extends Fragment {
 
     private Context context;
 
+    private int itemViewBoundaryMargin;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -60,6 +60,8 @@ public class GuideFragment extends Fragment {
         guideRecommmendList = (LinearLayout) mView.findViewById(R.id.recommend_list);
         carouselLayout = (LinearLayout) mView.findViewById(R.id.carousel_layout);
         linkedVideoView = (VideoView) mView.findViewById(R.id.linked_video);
+
+        itemViewBoundaryMargin = (int) getResources().getDimension(R.dimen.item_boundary_margin);
         return mView;
     }
 
@@ -95,8 +97,14 @@ public class GuideFragment extends Fragment {
         for (int i = 0; i < 8; i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
             params.weight = 1;
-            if (i != 7) {
-                params.setMargins(0, 0, 25, 0);
+            int marginLF = (int)getResources().getDimension(R.dimen.guide_fragment_poser_margin_lf);
+
+            if (i == 0) {
+                params.setMargins(itemViewBoundaryMargin, itemViewBoundaryMargin, marginLF, itemViewBoundaryMargin);
+            } else if (i == 7) {
+                params.setMargins(0, itemViewBoundaryMargin, itemViewBoundaryMargin, itemViewBoundaryMargin);
+            } else {
+                params.setMargins(0, itemViewBoundaryMargin, marginLF, itemViewBoundaryMargin);
             }
             ImageView itemView = new ImageView(context);
             Picasso.with(context).load(posters.get(i).getCustom_image()).into(itemView);
@@ -131,12 +139,7 @@ public class GuideFragment extends Fragment {
         for (int i = 0; i < 3; i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
             params.weight = 1;
-            if (i != 2) {
-                params.setMargins(0, (int) getResources().getDimension(R.dimen.guide_padding), 0, 0);
-            } else {
-                params.setMargins(0, (int) getResources().getDimension(R.dimen.guide_padding),
-                        0, (int) getResources().getDimension(R.dimen.guide_padding));
-            }
+            params.setMargins(itemViewBoundaryMargin, itemViewBoundaryMargin / 2, itemViewBoundaryMargin, itemViewBoundaryMargin / 2);
             ImageView itemView = new ImageView(context);
             itemView.setBackgroundResource(R.drawable.launcher_selector);
             itemView.setFocusableInTouchMode(true);
@@ -145,6 +148,7 @@ public class GuideFragment extends Fragment {
             Picasso.with(context).load(carousels.get(i).getThumb_image()).into(itemView);
             itemView.setScaleType(ImageView.ScaleType.FIT_XY);
             itemView.setLayoutParams(params);
+            itemView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
             carouselLayout.addView(itemView);
         }
         downloadCarouselVideo(carousels);
@@ -229,35 +233,6 @@ public class GuideFragment extends Fragment {
                 next = next + 1;
                 return hashMap;
             }
-        }
-    }
-
-
-    class ItemViewFocusChangeListener implements View.OnFocusChangeListener {
-
-        @Override
-        public void onFocusChange(View itemView, boolean hasFocus) {
-            if (hasFocus) {
-                AnimationSet animationSet = new AnimationSet(true);
-                ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
-                        Animation.RELATIVE_TO_SELF, 0.5f,
-                        Animation.RELATIVE_TO_SELF, 0.5f);
-                scaleAnimation.setDuration(200);
-                animationSet.addAnimation(scaleAnimation);
-                animationSet.setFillAfter(true);
-                itemView.startAnimation(animationSet);
-
-            } else {
-                AnimationSet animationSet = new AnimationSet(true);
-                ScaleAnimation scaleAnimation = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
-                        Animation.RELATIVE_TO_SELF, 0.5f,
-                        Animation.RELATIVE_TO_SELF, 0.5f);
-                scaleAnimation.setDuration(200);
-                animationSet.addAnimation(scaleAnimation);
-                animationSet.setFillAfter(true);
-                itemView.startAnimation(animationSet);
-            }
-
         }
     }
 }

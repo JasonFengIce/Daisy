@@ -16,6 +16,10 @@
             >
 
         <VideoView
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:clickable="true"
+                android:background="@drawable/launcher_selector"
                 android:layout_marginRight="@dimen/guide_padding"
                 android:id="@+id/linked_video"
                 android:layout_width="0dp"

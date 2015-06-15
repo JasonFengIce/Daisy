@@ -38,6 +38,7 @@ import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.ClientApi;
 import tv.ismar.daisy.core.service.PosterUpdateService;
 import tv.ismar.daisy.core.update.AppUpdateUtils;
+import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
 import tv.ismar.daisy.ui.fragment.*;
 import tv.ismar.daisy.ui.widget.DaisyButton;
 
@@ -52,19 +53,8 @@ public class TVGuideActivity extends FragmentActivity implements
 
     private static final int GETDOMAIN = 0x06;
 
-    public static final String TAG_GUIDE_FRAGMENT = "guide";
-    public static final String TAG_CHILD_FRAGMENT = "child";
-    public static final String TAG_ENTERTAINMENT_FRAGMENT = "entertainment";
-    public static final String TAG_FILM_FRAGMENT = "film";
-    public static final String TAG_SPORT_FRAGMENT = "sport";
 
     private AppUpdateReceiver appUpdateReceiver;
-
-    private ChildFragment childFragment;
-    private EntertainmentFragment entertainmentFragment;
-    private FilmFragment filmFragment;
-    private SportFragment sportFragment;
-    private GuideFragment guideFragment;
     private Fragment currentFragment;
 
     /**
@@ -104,11 +94,12 @@ public class TVGuideActivity extends FragmentActivity implements
             final FragmentTransaction transaction = getSupportFragmentManager()
                     .beginTransaction();
             transaction
-                    .add(R.id.container, currentFragment, TAG_GUIDE_FRAGMENT)
+                    .add(R.id.container, currentFragment)
                     .commit();
         } else {
 
         }
+
         activator = Activator.getInstance(this);
         activator.setOnCompleteListener(this);
         String localInfo = DaisyUtils.getVodApplication(this).getPreferences()
@@ -127,8 +118,6 @@ public class TVGuideActivity extends FragmentActivity implements
             currentFragment = new GuideFragment();
             replaceFragment(currentFragment);
         }
-
-
     }
 
     public void superOnbackPressed() {
@@ -138,7 +127,6 @@ public class TVGuideActivity extends FragmentActivity implements
     @Override
     protected void onDestroy() {
         unregisterReceiver(appUpdateReceiver);
-
         if (!(updatePopupWindow == null)) {
             updatePopupWindow.dismiss();
         }
@@ -164,6 +152,7 @@ public class TVGuideActivity extends FragmentActivity implements
             imageView.setFocusableInTouchMode(true);
             imageView.setClickable(true);
             imageView.setLayoutParams(layoutParams);
+            imageView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
             tabListView.addView(imageView);
         }
 
@@ -204,6 +193,7 @@ public class TVGuideActivity extends FragmentActivity implements
                             .getColor(R.color.white));
                     textView.setTag(channelEntities[i].getChannel());
                     textView.setOnClickListener(channelClickListener);
+                    textView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
                     channelListView.addView(textView);
                 }
             }
@@ -527,7 +517,6 @@ public class TVGuideActivity extends FragmentActivity implements
                 R.anim.push_left_out,
                 R.anim.push_left_in,
                 R.anim.push_left_out);
-        transaction.replace(R.id.container, fragment,
-                TAG_GUIDE_FRAGMENT).commit();
+        transaction.replace(R.id.container, fragment).commit();
     }
 }
