@@ -63,4 +63,9 @@ public class DeviceUtils {
             return fileName;
         }
     }
+
+    public static boolean isExternalStorageMounted() {
+        return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED) ? true : false;
+    }
+
 }

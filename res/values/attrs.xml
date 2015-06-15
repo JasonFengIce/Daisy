@@ -169,4 +169,6 @@
         <attr name="focustextpaddingtop" format="dimension"/>
         <attr name="focusbackground" format="color"/>
     </declare-styleable>
+
+    <declare-styleable name="DaisyVideoView"/>
 </resources>

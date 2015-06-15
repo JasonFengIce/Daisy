@@ -8,6 +8,8 @@ import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Environment;
+import android.text.TextUtils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -18,6 +20,8 @@ import tv.ismar.daisy.core.client.ClientApi.ChineseMovie;
 import tv.ismar.daisy.core.client.IsmartvFileClient;
 import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Poster;
+import tv.ismar.daisy.ui.CarouselUtils;
+import tv.ismar.daisy.ui.widget.DaisyVideoView;
 import tv.ismar.daisy.utils.DeviceUtils;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -41,7 +45,8 @@ public class FilmFragment extends Fragment {
 
     private LinearLayout guideRecommmendList;
     private LinearLayout carouselLayout;
-    private VideoView linkedVideoView;
+    private DaisyVideoView linkedVideoView;
+    private ImageView linkedVideoImage;
 
     private Context context;
 
@@ -60,8 +65,9 @@ public class FilmFragment extends Fragment {
                 .findViewById(R.id.film_recommend_list);
         carouselLayout = (LinearLayout) mView
                 .findViewById(R.id.film_carousel_layout);
-        linkedVideoView = (VideoView) mView
+        linkedVideoView = (DaisyVideoView) mView
                 .findViewById(R.id.film_linked_video);
+        linkedVideoImage = (ImageView)mView.findViewById(R.id.film_linked_image);
         return mView;
     }
 
@@ -124,22 +130,24 @@ public class FilmFragment extends Fragment {
     }
 
     private void initCarousel(ArrayList<HomePagerEntity.Carousel> carousels) {
-        LoopList loopList = new LoopList();
-        // for (HomePagerEntity.Carousel carousel : carousels) {
-        // HashMap<String, String> hashMap = new HashMap<String, String>();
-        // hashMap.put("url", carousel.getVideo_url());
-        // try {
-        // URL mUrl = new URL(carousel.getVideo_url());
-        // File file = new File(DeviceUtils.getCachePath(), mUrl.getFile());
-        // String fileName = file.getName().split("\\.")[0];
-        // hashMap.put("path", file.getAbsolutePath());
-        // hashMap.put("md5", fileName);
-        // loopList.add(hashMap);
-        // } catch (MalformedURLException e) {
-        // Log.e(TAG, "initCarousel: " + e.getMessage());
-        // }
-        // }
-        // playVideo(loopList);
+        ArrayList<String> arrayList = new ArrayList<String>();
+        if (DeviceUtils.isExternalStorageMounted()) {
+            for (HomePagerEntity.Carousel carousel : carousels) {
+                String url;
+                if (TextUtils.isEmpty(carousel.getVideo_url())) {
+                    url = carousel.getVideo_image();
+                } else {
+                    url = carousel.getVideo_url();
+                }
+                arrayList.add(url);
+            }
+        } else {
+            for (HomePagerEntity.Carousel carousel : carousels) {
+                arrayList.add(carousel.getVideo_image());
+            }
+        }
+
+        CarouselUtils.getInstance().loopCarousel(context, arrayList,linkedVideoView, linkedVideoImage);
         for (int i = 0; i < carousels.size(); i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, 0);
@@ -246,4 +254,6 @@ public class FilmFragment extends Fragment {
             }
         }
     };
+
+
 }
