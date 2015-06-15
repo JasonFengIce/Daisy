@@ -107,6 +107,7 @@ public class TVGuideActivity extends FragmentActivity implements
                     .add(R.id.container, currentFragment, TAG_GUIDE_FRAGMENT)
                     .commit();
         } else {
+
         }
         activator = Activator.getInstance(this);
         activator.setOnCompleteListener(this);

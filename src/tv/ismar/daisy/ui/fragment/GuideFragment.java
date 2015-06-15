@@ -131,7 +131,17 @@ public class GuideFragment extends Fragment {
         for (int i = 0; i < 3; i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
             params.weight = 1;
+            if (i != 2) {
+                params.setMargins(0, (int) getResources().getDimension(R.dimen.guide_padding), 0, 0);
+            } else {
+                params.setMargins(0, (int) getResources().getDimension(R.dimen.guide_padding),
+                        0, (int) getResources().getDimension(R.dimen.guide_padding));
+            }
             ImageView itemView = new ImageView(context);
+            itemView.setBackgroundResource(R.drawable.launcher_selector);
+            itemView.setFocusableInTouchMode(true);
+            itemView.setFocusable(true);
+            itemView.setClickable(true);
             Picasso.with(context).load(carousels.get(i).getThumb_image()).into(itemView);
             itemView.setScaleType(ImageView.ScaleType.FIT_XY);
             itemView.setLayoutParams(params);
