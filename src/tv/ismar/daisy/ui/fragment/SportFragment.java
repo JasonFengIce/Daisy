@@ -8,12 +8,14 @@ import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.data.HomePagerEntity.Poster;
 import tv.ismar.daisy.exception.NetworkException;
+import tv.ismar.daisy.models.SportsGame;
+import tv.ismar.daisy.models.SportsGameList;
 import tv.ismar.daisy.views.LabelImageView;
 import tv.ismar.daisy.views.LoadingDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,7 +23,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -33,11 +34,12 @@ public class SportFragment extends Fragment {
 	private SimpleRestClient mRestClient = new SimpleRestClient();
 	private LoadingDialog mLoadingDialog;
 	private HomePagerEntity entity;
-	private ListView sec_one_list_1;
-	private ListView sec_one_list_2;
+	private SportsGameList games;
+	private ListView sec_one_list;
 	private ScheduleAdapter adapter;
-	private ArrayList<Carousel> yingchao;
-	private ArrayList<Carousel> nba;
+	private LabelImageView sport_card1;
+	private LabelImageView sport_card2;
+	private LabelImageView sport_card3;
 	private LabelImageView sport_channel1_image;
 	private TextView sport_channel1_subtitle;
 	private LabelImageView sport_channel2_image;
@@ -52,10 +54,12 @@ public class SportFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_sport, null);
-		sec_one_list_1 = (ListView) view.findViewById(R.id.sec_one_list_1);
-		sec_one_list_2 = (ListView) view.findViewById(R.id.sec_one_list_2);
+		sec_one_list = (ListView) view.findViewById(R.id.sec_one_list_2);
 		mLoadingDialog = new LoadingDialog(getActivity(), getResources()
 				.getString(R.string.loading));
+		sport_card1 = (LabelImageView) view.findViewById(R.id.sport_card1);
+		sport_card2 = (LabelImageView) view.findViewById(R.id.sport_card2);
+		sport_card3 = (LabelImageView) view.findViewById(R.id.sport_card3);
 		sport_channel1_image = (LabelImageView) view
 				.findViewById(R.id.sport_channel1_image);
 		sport_channel1_subtitle = (TextView) view
@@ -80,12 +84,10 @@ public class SportFragment extends Fragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		new FetchDataTask().execute();
-		yingchao = new ArrayList<Carousel>();
-		nba = new ArrayList<Carousel>();
+		games = new SportsGameList();
 		adapter = new ScheduleAdapter();
-		adapter.setmData(yingchao);
-		sec_one_list_1.setAdapter(adapter);
-		sec_one_list_2.setAdapter(adapter);
+		adapter.setmData(games);
+		sec_one_list.setAdapter(adapter);
 		mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
 	}
 
@@ -97,35 +99,41 @@ public class SportFragment extends Fragment {
 		}
 	};
 
-	private void fillData(ArrayList<Carousel> carousellist,
+	private void fillData(SportsGameList carousellist,
 			ArrayList<Poster> postlist) {
 		adapter.setmData(carousellist);
 		adapter.notifyDataSetChanged();
-		sport_channel1_image.setUrl(postlist.get(4).getCustom_image());
-		sport_channel1_image.setFocustitle(postlist.get(4).getIntroduction());
-		sport_channel1_subtitle.setText(postlist.get(4).getTitle());
-		sport_channel2_image.setUrl(postlist.get(5).getCustom_image());
-		sport_channel2_image.setFocustitle(postlist.get(5).getIntroduction());
-		sport_channel2_subtitle.setText(postlist.get(5).getTitle());
-		sport_channel3_image.setUrl(postlist.get(6).getCustom_image());
-		sport_channel3_image.setFocustitle(postlist.get(6).getIntroduction());
-		sport_channel3_subtitle.setText(postlist.get(6).getTitle());
-		sport_channel4_image.setUrl(postlist.get(7).getCustom_image());
-		sport_channel4_image.setFocustitle(postlist.get(7).getIntroduction());
-		sport_channel4_subtitle.setText(postlist.get(7).getTitle());
+		sport_card1.setUrl(postlist.get(0).getCustom_image());
+		sport_card1.setFocustitle(postlist.get(0).getIntroduction());
+		sport_card2.setUrl(postlist.get(1).getCustom_image());
+		sport_card2.setFocustitle(postlist.get(1).getIntroduction());
+		sport_card3.setUrl(postlist.get(2).getCustom_image());
+		sport_card3.setFocustitle(postlist.get(2).getIntroduction());
+		sport_channel1_image.setUrl(postlist.get(3).getCustom_image());
+		sport_channel1_image.setFocustitle(postlist.get(3).getIntroduction());
+		sport_channel1_subtitle.setText(postlist.get(3).getTitle());
+		sport_channel2_image.setUrl(postlist.get(4).getCustom_image());
+		sport_channel2_image.setFocustitle(postlist.get(4).getIntroduction());
+		sport_channel2_subtitle.setText(postlist.get(4).getTitle());
+		sport_channel3_image.setUrl(postlist.get(5).getCustom_image());
+		sport_channel3_image.setFocustitle(postlist.get(5).getIntroduction());
+		sport_channel3_subtitle.setText(postlist.get(5).getTitle());
+		sport_channel4_image.setUrl(postlist.get(6).getCustom_image());
+		sport_channel4_image.setFocustitle(postlist.get(6).getIntroduction());
+		sport_channel4_subtitle.setText(postlist.get(6).getTitle());
 		sport_channel1_image.setOnClickListener(ItemClickListener);
-		sport_channel1_image.setTag(postlist.get(4));
+		sport_channel1_image.setTag(postlist.get(3));
 		sport_channel2_image.setOnClickListener(ItemClickListener);
-		sport_channel2_image.setTag(postlist.get(5));
+		sport_channel2_image.setTag(postlist.get(4));
 		sport_channel3_image.setOnClickListener(ItemClickListener);
-		sport_channel3_image.setTag(postlist.get(6));
+		sport_channel3_image.setTag(postlist.get(5));
 		sport_channel4_image.setOnClickListener(ItemClickListener);
-		sport_channel4_image.setTag(postlist.get(7));
+		sport_channel4_image.setTag(postlist.get(6));
 		sport_channel5.setOnClickListener(ItemClickListener);
 	}
 
 	private class ScheduleAdapter extends BaseAdapter {
-		private ArrayList<Carousel> mData;
+		private SportsGameList mData;
 		private LayoutInflater mInflater;
 
 		public ScheduleAdapter() {
@@ -139,7 +147,7 @@ public class SportFragment extends Fragment {
 		}
 
 		@Override
-		public Carousel getItem(int position) {
+		public SportsGame getItem(int position) {
 			return mData.get(position);
 		}
 
@@ -161,16 +169,16 @@ public class SportFragment extends Fragment {
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			holder.view.setUrl(mData.get(position).getVideo_image());
-			holder.view.setFocustitle((mData.get(position).getIntroduction()));
+			holder.view.setUrl(mData.get(position).poster_url);
+			holder.view.setFocustitle((mData.get(position).name));
 			return convertView;
 		}
 
-		public ArrayList<Carousel> getmData() {
+		public SportsGameList getmData() {
 			return mData;
 		}
 
-		public void setmData(ArrayList<Carousel> mData) {
+		public void setmData(SportsGameList mData) {
 			this.mData = mData;
 		}
 
@@ -195,7 +203,8 @@ public class SportFragment extends Fragment {
 		@Override
 		protected Integer doInBackground(String... params) {
 			try {
-				entity = mRestClient.getVaietyHome();
+				entity = mRestClient.getSportHome();
+				games = mRestClient.getSportGames();
 			} catch (NetworkException e) {
 				e.printStackTrace();
 			}
@@ -214,9 +223,8 @@ public class SportFragment extends Fragment {
 			if (result != RESULT_SUCCESS) {
 				return;
 			} else {
-				ArrayList<Carousel> carousellist = entity.getCarousels();
 				ArrayList<Poster> postlist = entity.getPosters();
-				fillData(carousellist, postlist);
+				fillData(games, postlist);
 			}
 		}
 	}

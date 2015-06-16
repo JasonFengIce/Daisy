@@ -19,6 +19,7 @@ import tv.ismar.daisy.models.ContentModelList;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemList;
 import tv.ismar.daisy.models.SectionList;
+import tv.ismar.daisy.models.SportsGameList;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
@@ -206,6 +207,44 @@ public class SimpleRestClient {
 			String url = "http://skytest.tvxio.com" + "/api/tv/homepage/variety/";
 			String jsonStr = NetworkUtils.getJsonStr(url);
 			entity = gson.fromJson(jsonStr, HomePagerEntity.class);
+			return entity;
+		} catch (JsonSyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ItemOfflineException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return entity;
+	}
+
+	public HomePagerEntity getSportHome()
+			throws NetworkException {
+		HomePagerEntity entity = null;
+		try {
+//			String url = root_url + "/api/tv/homepage/zongyi/";
+			String url = "http://skytest.tvxio.com" + "/api/tv/homepage/sport/";
+			String jsonStr = NetworkUtils.getJsonStr(url);
+			entity = gson.fromJson(jsonStr, HomePagerEntity.class);
+			return entity;
+		} catch (JsonSyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ItemOfflineException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return entity;
+	}
+
+	public SportsGameList getSportGames()
+			throws NetworkException {
+		SportsGameList entity = null;
+		try {
+//			String url = root_url + "/api/tv/homepage/zongyi/";
+			String url = "http://skytest.tvxio.com" + "/api/tv/living_video/";
+			String jsonStr = NetworkUtils.getJsonStr(url);
+			entity = gson.fromJson(jsonStr, SportsGameList.class);
 			return entity;
 		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
