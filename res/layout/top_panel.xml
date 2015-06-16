@@ -1,0 +1,101 @@
+  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/top_column_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/tv_guide_top_section_padding"
+        android:paddingRight="@dimen/tv_guide_top_section_padding" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="@string/ismartv_cinema"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/tv_guide_cinema_textSize" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="2dp"
+            android:background="@android:color/white" />
+
+        <TextView
+            android:id="@+id/guide_channelname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ismartv_films"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/tv_guide_area_textSize" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/guide_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/tv_guide_menu_margin"
+                android:text="@string/guide_search"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/tv_guide_history_textSize"
+                android:focusable="true"
+                android:background="@drawable/launcher_selector"
+                 />
+
+            <TextView
+                android:id="@+id/guide_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/tv_guide_menu_margin"
+                android:layout_toLeftOf="@id/guide_search"
+                android:text="@string/guide_message"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/tv_guide_history_textSize"
+                android:focusable="true"
+                android:background="@drawable/launcher_selector"
+                 />
+
+            <TextView
+                android:id="@+id/guide_user_center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/tv_guide_menu_margin"
+                android:layout_toLeftOf="@id/guide_message"
+                android:text="@string/guide_user_center"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/tv_guide_history_textSize"
+                android:focusable="true"
+                android:background="@drawable/launcher_selector"
+                 />
+
+            <TextView
+                android:id="@+id/guide_my_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/tv_guide_menu_margin"
+                android:layout_toLeftOf="@id/guide_user_center"
+                android:text="@string/guide_my_favorite"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/tv_guide_history_textSize"
+                android:focusable="true"
+                android:background="@drawable/launcher_selector"
+                 />
+
+            <TextView
+                android:id="@+id/guide_play_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/tv_guide_menu_margin"
+                android:layout_toLeftOf="@id/guide_my_favorite"
+                android:text="@string/guide_play_history"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/tv_guide_history_textSize"
+                android:focusable="true"
+                android:background="@drawable/launcher_selector"
+                 />
+        </RelativeLayout>
+    </LinearLayout>

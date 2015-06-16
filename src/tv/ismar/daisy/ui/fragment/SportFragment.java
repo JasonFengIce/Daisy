@@ -259,4 +259,14 @@ public class SportFragment extends Fragment {
 			}
 		}
 	};
+
+	private View.OnFocusChangeListener ItemOnFocusListener = new View.OnFocusChangeListener() {
+
+		@Override
+		public void onFocusChange(View v, boolean hasFocus) {
+			if (hasFocus) {
+				String url = v.getTag().toString();
+			}
+		}
+	};
 }
