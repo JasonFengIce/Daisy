@@ -57,19 +57,21 @@ public class IsmartvFileClient extends Thread {
             }
         }
 
-        parentDir = new File(files.get(0).get("path")).getParentFile();
+        if (!files.isEmpty()) {
+            parentDir = new File(files.get(0).get("path")).getParentFile();
 
-        if (!parentDir.exists()) {
-            parentDir.mkdirs();
-        } else {
-            File[] subFiles = parentDir.listFiles();
-            for (File subfile : subFiles) {
-                if (!subfile.getName().equals(new File(files.get(0).get("path")).getName())
-                        && !subfile.getName().equals(new File(files.get(1).get("path")).getName())
-                        && !subfile.getName().equals(new File(files.get(2).get("path")).getName())) {
-                    if (subfile.exists()) {
-                        subfile.delete();
-                        Log.i(TAG, "subfile delete: " + subfile.getName());
+            if (!parentDir.exists()) {
+                parentDir.mkdirs();
+            } else {
+                File[] subFiles = parentDir.listFiles();
+                for (File subfile : subFiles) {
+                    if (!subfile.getName().equals(new File(files.get(0).get("path")).getName())
+                            && !subfile.getName().equals(new File(files.get(1).get("path")).getName())
+                            && !subfile.getName().equals(new File(files.get(2).get("path")).getName())) {
+                        if (subfile.exists()) {
+                            subfile.delete();
+                            Log.i(TAG, "subfile delete: " + subfile.getName());
+                        }
                     }
                 }
             }

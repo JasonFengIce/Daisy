@@ -67,7 +67,7 @@ public class FilmFragment extends Fragment {
                 .findViewById(R.id.film_carousel_layout);
         linkedVideoView = (DaisyVideoView) mView
                 .findViewById(R.id.film_linked_video);
-        linkedVideoImage = (ImageView)mView.findViewById(R.id.film_linked_image);
+        linkedVideoImage = (ImageView) mView.findViewById(R.id.film_linked_image);
         return mView;
     }
 
@@ -131,6 +131,7 @@ public class FilmFragment extends Fragment {
 
     private void initCarousel(ArrayList<HomePagerEntity.Carousel> carousels) {
         ArrayList<String> arrayList = new ArrayList<String>();
+        Log.d(TAG, "external mounted: " + DeviceUtils.isExternalStorageMounted());
         if (DeviceUtils.isExternalStorageMounted()) {
             for (HomePagerEntity.Carousel carousel : carousels) {
                 String url;
@@ -147,7 +148,11 @@ public class FilmFragment extends Fragment {
             }
         }
 
-        CarouselUtils.getInstance().loopCarousel(context, arrayList,linkedVideoView, linkedVideoImage);
+        for (String s : arrayList) {
+            Log.d(TAG, "url is: " + s);
+        }
+
+        CarouselUtils.getInstance().loopCarousel(context, arrayList, linkedVideoView, linkedVideoImage);
         for (int i = 0; i < carousels.size(); i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, 0);

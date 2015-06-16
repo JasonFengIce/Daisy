@@ -66,6 +66,7 @@ public class TeleplayFragment extends Fragment {
                 .findViewById(R.id.film_carousel_layout);
         linkedVideoView = (DaisyVideoView) mView
                 .findViewById(R.id.film_linked_video);
+        linkedVideoImage = (ImageView) mView.findViewById(R.id.film_linked_image);
         return mView;
     }
 
@@ -146,7 +147,7 @@ public class TeleplayFragment extends Fragment {
             }
         }
 
-        CarouselUtils.getInstance().loopCarousel(context, arrayList,linkedVideoView, linkedVideoImage);
+        CarouselUtils.getInstance().loopCarousel(context, arrayList, linkedVideoView, linkedVideoImage);
 
         for (int i = 0; i < carousels.size(); i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
