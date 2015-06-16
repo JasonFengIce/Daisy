@@ -2,11 +2,7 @@ package tv.ismar.daisy.ui.fragment;
 
 import android.app.Activity;
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,16 +19,12 @@ import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.ClientApi;
 import tv.ismar.daisy.core.client.IsmartvFileClient;
+import tv.ismar.daisy.core.preferences.SimpleClientPreferences;
 import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.ui.CarouselUtils;
 import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
-import tv.ismar.daisy.utils.DeviceUtils;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import static tv.ismar.daisy.core.client.ClientApi.Homepage;
 import static tv.ismar.daisy.core.client.ClientApi.restAdapter_SKYTEST_TVXIO;
@@ -73,22 +65,18 @@ public class GuideFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
-        getView().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                fetchHomePage(" ", " ");
-            }
-        },3000);
-
-
-
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        fetchHomePage(SimpleClientPreferences.getInstance(context).getDeviceToken());
+    }
 
-    private void fetchHomePage(String accessToken, String deviceToken) {
+    public void fetchHomePage(String deviceToken) {
         Log.d(TAG, "fetchHomePage: " + SimpleRestClient.device_token);
         ClientApi.Homepage client = restAdapter_SKYTEST_TVXIO.create(Homepage.class);
-        client.excute(SimpleRestClient.device_token, new Callback<HomePagerEntity>() {
+        client.excute(deviceToken, new Callback<HomePagerEntity>() {
             @Override
             public void success(HomePagerEntity homePagerEntity, Response response) {
                 ArrayList<HomePagerEntity.Carousel> carousels = homePagerEntity.getCarousels();
@@ -138,7 +126,7 @@ public class GuideFragment extends Fragment {
             public void run() {
                 carouselUtils.loopCarousel(context, carousels, linkedVideoView);
             }
-        },3000);
+        }, 3000);
 
         for (int i = 0; i < 3; i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);

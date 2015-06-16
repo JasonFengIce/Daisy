@@ -2,14 +2,11 @@ package tv.ismar.daisy;
 
 import android.app.Activity;
 import android.content.*;
-import android.content.res.AssetManager;
-import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.app.Application;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,18 +16,12 @@ import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.models.ContentModel;
-import tv.ismar.daisy.models.ContentModelList;
-import tv.ismar.daisy.models.launcher.AttributeEntity;
 import tv.ismar.daisy.persistence.FavoriteManager;
 import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.persistence.LocalFavoriteManager;
 import tv.ismar.daisy.persistence.LocalHistoryManager;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -43,7 +34,6 @@ public class VodApplication extends Application {
 
     private static final String TAG = "VodApplication";
 
-    public static final String content_model_api = "/static/meta/content_model.json";
     public static final String domain = "";
     public static final String ad_domain = "ad_domain";
     public ContentModel[] mContentModel;
@@ -65,7 +55,8 @@ public class VodApplication extends Application {
     private ArrayList<WeakReference<OnLowMemoryListener>> mLowMemoryListeners;
     private static SharedPreferences mPreferences;
     private SharedPreferences.Editor mEditor;
-    private static final String PREFERENCE_FILE_NAME = "Daisy";
+
+    public static final String PREFERENCE_FILE_NAME = "Daisy";
 
     public SharedPreferences getPreferences() {
         return mPreferences;
@@ -133,7 +124,6 @@ public class VodApplication extends Application {
         ActiveAndroid.initialize(this);
 
         load(this);
-        getContentModelFromAssets();
         registerReceiver(mCloseReceiver, new IntentFilter("com.amlogic.dvbplayer.homekey"));
         registerReceiver(mSleepReceiver, new IntentFilter("com.alpha.lenovo.powerKey"));
     }
@@ -154,68 +144,8 @@ public class VodApplication extends Application {
 
     String sn;
 
-    private void register() {
-        new Thread(new Runnable() {
 
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-                sn = Build.SERIAL;
-                if (sn == null || (sn != null && sn.equals("unknown"))) {
-                    sn = getDeviceId(VodApplication.this);
-                }
-                String responseCode = SimpleRestClient.readContentFromPost("register", sn);
-                if (responseCode != null && responseCode.equals("200"))
-                    active();
-            }
-        }).start();
-    }
 
-    private void active() {
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-                String content = SimpleRestClient.readContentFromPost("active", sn);
-                if (!"".equals(content)) {
-                    try {
-                        JSONObject json = new JSONObject(content);
-                        String domain = json.getString("domain");
-                        try {
-                            Thread.sleep(10000);
-                        } catch (InterruptedException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                        SimpleRestClient.root_url = "http://" + domain;
-                        SimpleRestClient.sRoot_url = "http://" + domain;
-                        SimpleRestClient.ad_domain = "http://" + json.getString("ad_domain");
-                        mEditor.putString("domain", SimpleRestClient.root_url);
-                        mEditor.putString("ad_domain", SimpleRestClient.ad_domain);
-                        save();
-                    } catch (JSONException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
-    }
-
-    public void getContentModelFromAssets() {
-        AssetManager assetManager = getAssets();
-        SimpleRestClient restClient = new SimpleRestClient();
-        try {
-            InputStream in = assetManager.open("content_model.json");
-            ContentModelList contentModelList = restClient.getContentModelList(in);
-            if (contentModelList != null) {
-                mContentModel = contentModelList.zh_CN;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 
     public void getNewContentModel() {
@@ -224,19 +154,6 @@ public class VodApplication extends Application {
         new Thread(mUpLoadLogRunnable).start();
     }
 
-    private Runnable mGetNewContentModelTask = new Runnable() {
-
-        @Override
-        public void run() {
-            SimpleRestClient restClient = new SimpleRestClient();
-
-            ContentModelList contentModelList = restClient.getContentModelLIst(content_model_api);
-            if (contentModelList != null) {
-                mContentModel = contentModelList.zh_CN;
-            }
-
-        }
-    };
 
 
     private Runnable mUpLoadLogRunnable = new Runnable() {
@@ -350,15 +267,6 @@ public class VodApplication extends Application {
         return mImageCache;
     }
 
-    /**
-     * Used for receiving low memory system notification. You should definitely
-     * use it in order to clear caches and not important data every time the
-     * system needs memory.
-     *
-     * @author Cyril Mottier
-     * @see GDApplication#registerOnLowMemoryListener(OnLowMemoryListener)
-     * @see GDApplication#unregisterOnLowMemoryListener(OnLowMemoryListener)
-     */
     public static interface OnLowMemoryListener {
 
         /**
@@ -399,10 +307,6 @@ public class VodApplication extends Application {
         }
     }
 
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-    }
 
     @Override
     public void onLowMemory() {
@@ -454,38 +358,6 @@ public class VodApplication extends Application {
         }
     };
 
-    public int getheightPixels(Context context) {
-        int H = 0;
-//	   DisplayMetrics mDisplayMetrics = new DisplayMetrics();
-//	   ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(mDisplayMetrics);
-//	   H = mDisplayMetrics.heightPixels;
-        int ver = Build.VERSION.SDK_INT;
-        DisplayMetrics dm = new DisplayMetrics();
-        android.view.Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
-        display.getMetrics(dm);
-        if (ver < 13) {
-            H = dm.heightPixels;
-        } else if (ver == 13) {
-            try {
-                Method mt = display.getClass().getMethod("getRealHeight");
-                H = (Integer) mt.invoke(display);
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                H = dm.heightPixels;
-                e.printStackTrace();
-            }
-        } else if (ver > 13) {
-            try {
-                Method mt = display.getClass().getMethod("getRawHeight");
-                H = (Integer) mt.invoke(display);
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                H = dm.heightPixels;
-                e.printStackTrace();
-            }
-        }
-        return H;
-    }
 
   public float getRate(Context context){
       DisplayMetrics metric = new DisplayMetrics();

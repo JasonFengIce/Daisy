@@ -2,13 +2,10 @@ package tv.ismar.daisy.ui.fragment;
 
 import static tv.ismar.daisy.core.client.ClientApi.restAdapter_SKYTEST_TVXIO;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.Context;
-import android.text.TextUtils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -21,9 +18,7 @@ import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Poster;
 import tv.ismar.daisy.ui.CarouselUtils;
 import tv.ismar.daisy.ui.widget.DaisyVideoView;
-import tv.ismar.daisy.utils.DeviceUtils;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -32,7 +27,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.VideoView;
 
 import com.squareup.picasso.Picasso;
 

@@ -15,7 +15,7 @@ import android.widget.VideoView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import tv.ismar.daisy.data.HomePagerEntity;
-import tv.ismar.daisy.utils.DeviceUtils;
+import tv.ismar.daisy.utils.HardwareUtils;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -97,7 +97,7 @@ public class CarouselUtils {
         } else if (videoView == null) {
             url = carousel.getVideo_image();
         } else {
-            if (DeviceUtils.isExternalStorageMounted()) {
+            if (HardwareUtils.isExternalStorageMounted()) {
                 if (TextUtils.isEmpty(carousel.getVideo_url())) {
                     url = carousel.getVideo_image();
                 } else {
@@ -137,12 +137,12 @@ public class CarouselUtils {
 
         URL videoUrl = new URL(carousel.getVideo_url());
 
-        File localVideoFile = new File(DeviceUtils.getSDCardCachePath(), videoUrl.getFile());
+        File localVideoFile = new File(HardwareUtils.getSDCardCachePath(), videoUrl.getFile());
         String playPath;
 
         if (localVideoFile.exists()) {
             String fileMd5Code = localVideoFile.getName().split("\\.")[0];
-            if (DeviceUtils.getMd5ByFile(localVideoFile).equalsIgnoreCase(fileMd5Code)) {
+            if (HardwareUtils.getMd5ByFile(localVideoFile).equalsIgnoreCase(fileMd5Code)) {
                 playPath = localVideoFile.getAbsolutePath();
             } else {
                 playPath = videoUrl.toString();
@@ -187,10 +187,12 @@ public class CarouselUtils {
 
     }
 
-    public void setCurrentPosition(int position) {
-        loopList.setCurrent(position);
-        messageHandler.removeMessages(0);
-        playCarousel();
+    public void setCurrentPosition(Integer position) {
+        if (null!= position){
+            loopList.setCurrent(position);
+            messageHandler.removeMessages(0);
+            playCarousel();
+        }
     }
 
     private class MessageHandler extends Handler {

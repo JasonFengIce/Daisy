@@ -1,15 +1,10 @@
 package tv.ismar.daisy.ui.activity;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.*;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -36,6 +31,7 @@ import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.ClientApi;
+import tv.ismar.daisy.core.preferences.SimpleClientPreferences;
 import tv.ismar.daisy.core.service.PosterUpdateService;
 import tv.ismar.daisy.core.update.AppUpdateUtils;
 import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
@@ -43,6 +39,8 @@ import tv.ismar.daisy.ui.fragment.*;
 import tv.ismar.daisy.ui.widget.DaisyButton;
 
 import java.util.ArrayList;
+
+import static tv.ismar.daisy.VodApplication.*;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -330,55 +328,23 @@ public class TVGuideActivity extends FragmentActivity implements
 
     @Override
     public void onSuccess(Result result) {
-        Log.d(TAG, result.toString());
-        try {
-            SimpleRestClient.root_url = "http://" + result.getDomain();
-            SimpleRestClient.sRoot_url = "http://" + result.getDomain();
-            SimpleRestClient.ad_domain = "http://" + result.getAd_domain();
-            SimpleRestClient.log_domain = "http://" + result.getLog_Domain();
-            SimpleRestClient.device_token = result.getDevice_token();
-            SimpleRestClient.sn_token = result.getSn_Token();
-            DaisyUtils
-                    .getVodApplication(this)
-                    .getEditor()
-                    .putString(VodApplication.ad_domain,
-                            SimpleRestClient.ad_domain);
-            DaisyUtils
-                    .getVodApplication(this)
-                    .getEditor()
-                    .putString(VodApplication.DEVICE_TOKEN,
-                            SimpleRestClient.device_token);
-            DaisyUtils
-                    .getVodApplication(this)
-                    .getEditor()
-                    .putString(VodApplication.DOMAIN, SimpleRestClient.root_url);
-            DaisyUtils
-                    .getVodApplication(this)
-                    .getEditor()
-                    .putString(VodApplication.SN_TOKEN,
-                            SimpleRestClient.sn_token);
-            DaisyUtils
-                    .getVodApplication(this)
-                    .getEditor()
-                    .putString(VodApplication.LOG_DOMAIN,
-                            SimpleRestClient.log_domain);
-            DaisyUtils.getVodApplication(this).save();
-            SimpleRestClient.mobile_number = DaisyUtils.getVodApplication(this)
-                    .getPreferences()
-                    .getString(VodApplication.MOBILE_NUMBER, "");
-            SimpleRestClient.access_token = DaisyUtils.getVodApplication(this)
-                    .getPreferences().getString(VodApplication.AUTH_TOKEN, "");
-            mainHandler.sendEmptyMessage(GETDOMAIN);
-            Log.i("zjqactivator", "device_token="
-                    + SimpleRestClient.device_token + "///" + "access_token="
-                    + SimpleRestClient.access_token + "ad_domain=="
-                    + SimpleRestClient.ad_domain + "domain=="
-                    + SimpleRestClient.root_url);
+        SimpleClientPreferences preferences = SimpleClientPreferences.getInstance(this);
+        preferences.setApiDomain(result.getDomain());
+        preferences.setAdvertisementDomain(result.getAd_domain());
+        preferences.setLogDomain(result.getLog_Domain());
+        preferences.setSnToken(result.getSn_Token());
+        preferences.setDeviceToken(result.getDevice_token());
 
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+
+        saveSimpleRestClientPreferences(this, result);
+        DaisyUtils.getVodApplication(TVGuideActivity.this)
+                .getNewContentModel();
+        fetchChannels();
+
+        if (currentFragment.getClass().getName().equals(GuideFragment.class.getName())) {
+            ((GuideFragment) currentFragment).fetchHomePage(result.getDevice_token());
         }
+
     }
 
     @Override
@@ -492,23 +458,6 @@ public class TVGuideActivity extends FragmentActivity implements
 
     };
 
-    private Handler mainHandler = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            int type = msg.what;
-            Bundle dataBundle = msg.getData();
-            switch (type) {
-                case GETDOMAIN:
-                    DaisyUtils.getVodApplication(TVGuideActivity.this)
-                            .getNewContentModel();
-                    fetchChannels();
-                    break;
-            }
-        }
-    };
-
 
     private void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager()
@@ -519,5 +468,29 @@ public class TVGuideActivity extends FragmentActivity implements
                 R.anim.push_left_in,
                 R.anim.push_left_out);
         transaction.replace(R.id.container, fragment).commit();
+    }
+
+    private void saveSimpleRestClientPreferences(Context context, Result result) {
+        SimpleRestClient.root_url = "http://" + result.getDomain();
+        SimpleRestClient.sRoot_url = "http://" + result.getDomain();
+        SimpleRestClient.ad_domain = "http://" + result.getAd_domain();
+        SimpleRestClient.log_domain = "http://" + result.getLog_Domain();
+        SimpleRestClient.device_token = result.getDevice_token();
+        SimpleRestClient.sn_token = result.getSn_Token();
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(ad_domain, SimpleRestClient.ad_domain);
+        editor.putString(DEVICE_TOKEN, SimpleRestClient.device_token);
+        editor.putString(DOMAIN, SimpleRestClient.root_url);
+        editor.putString(SN_TOKEN, SimpleRestClient.sn_token);
+        editor.putString(LOG_DOMAIN, SimpleRestClient.log_domain);
+        editor.apply();
+
+        SimpleRestClient.mobile_number = DaisyUtils.getVodApplication(this)
+                .getPreferences()
+                .getString(VodApplication.MOBILE_NUMBER, "");
+        SimpleRestClient.access_token = DaisyUtils.getVodApplication(this)
+                .getPreferences().getString(VodApplication.AUTH_TOKEN, "");
     }
 }

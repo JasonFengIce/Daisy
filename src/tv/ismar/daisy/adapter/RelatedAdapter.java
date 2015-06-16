@@ -87,21 +87,10 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 		else{
 			holder.ItemBeanScore.setVisibility(View.INVISIBLE);
 		}
-		//holder.previewImage.setBackgroundResource(R.drawable.video_item_selector);
-//		if(mItemList.get(position).quality==3) {
-//			holder.qualityLabel.setImageResource(R.drawable.label_hd_small);
-//		} else if(mItemList.get(position).quality==4 || mItemList.get(position).quality==5) {
-//			holder.qualityLabel.setImageResource(R.drawable.label_uhd_small);
-//		}
-		int H = DaisyUtils.getVodApplication(mContext).getheightPixels(mContext);
-//		if(H==720||(H>720&&H<1080)){
-//			LayoutParams f = (LayoutParams)holder.qualityLabel.getLayoutParams();
-//			f.setMargins(f.leftMargin, -1, -1, f.bottomMargin);
-//			holder.qualityLabel.setLayoutParams(f);
-//		}
+
 		return convertView;
 	}
-	
+
 	static class Holder {
 		AsyncImageView previewImage;
 		TextView title;

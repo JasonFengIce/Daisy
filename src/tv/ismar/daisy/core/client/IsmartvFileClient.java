@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
-import tv.ismar.daisy.utils.DeviceUtils;
+import tv.ismar.daisy.utils.HardwareUtils;
 import tv.ismar.daisy.data.HomePagerEntity;
 
 import java.io.File;
@@ -46,7 +46,7 @@ public class IsmartvFileClient extends Thread {
 
             try {
                 URL url = new URL(downloadUrl);
-                String downloadPath = DeviceUtils.getCachePath(context);
+                String downloadPath = HardwareUtils.getCachePath(context);
                 String videoName = url.getFile();
                 hashMap.put("path", downloadPath + videoName);
                 if (!TextUtils.isEmpty(downloadPath)) {
@@ -90,8 +90,8 @@ public class IsmartvFileClient extends Thread {
             try {
 
                 if (file.exists()) {
-                    String subFileMD5 = DeviceUtils.getMd5ByFile(file);
-                    String fileNameWithoutSuffix = DeviceUtils.getFileNameWithoutSuffix(file.getName());
+                    String subFileMD5 = HardwareUtils.getMd5ByFile(file);
+                    String fileNameWithoutSuffix = HardwareUtils.getFileNameWithoutSuffix(file.getName());
                     Log.i(TAG, "subFileMD5: " + subFileMD5);
                     Log.i(TAG, "fileNameWithoutSuffix: " + fileNameWithoutSuffix);
                     if (subFileMD5.equals(fileNameWithoutSuffix)) {
