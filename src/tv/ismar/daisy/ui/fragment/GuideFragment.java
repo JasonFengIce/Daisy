@@ -23,6 +23,7 @@ import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.ClientApi;
 import tv.ismar.daisy.core.client.IsmartvFileClient;
 import tv.ismar.daisy.data.HomePagerEntity;
+import tv.ismar.daisy.ui.CarouselUtils;
 import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
 import tv.ismar.daisy.utils.DeviceUtils;
 
@@ -44,6 +45,8 @@ public class GuideFragment extends Fragment {
     private LinearLayout carouselLayout;
     private VideoView linkedVideoView;
 
+    private CarouselUtils carouselUtils;
+
     private Context context;
 
     private int itemViewBoundaryMargin;
@@ -62,6 +65,7 @@ public class GuideFragment extends Fragment {
         linkedVideoView = (VideoView) mView.findViewById(R.id.linked_video);
 
         itemViewBoundaryMargin = (int) getResources().getDimension(R.dimen.item_boundary_margin);
+
         return mView;
     }
 
@@ -97,7 +101,7 @@ public class GuideFragment extends Fragment {
         for (int i = 0; i < 8; i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
             params.weight = 1;
-            int marginLF = (int)getResources().getDimension(R.dimen.guide_fragment_poser_margin_lf);
+            int marginLF = (int) getResources().getDimension(R.dimen.guide_fragment_poser_margin_lf);
 
             if (i == 0) {
                 params.setMargins(itemViewBoundaryMargin, itemViewBoundaryMargin, marginLF, itemViewBoundaryMargin);
@@ -120,22 +124,9 @@ public class GuideFragment extends Fragment {
     }
 
     private void initCarousel(ArrayList<HomePagerEntity.Carousel> carousels) {
-        LoopList loopList = new LoopList();
-        for (HomePagerEntity.Carousel carousel : carousels) {
-            HashMap<String, String> hashMap = new HashMap<String, String>();
-            hashMap.put("url", carousel.getVideo_url());
-            try {
-                URL mUrl = new URL(carousel.getVideo_url());
-                File file = new File(DeviceUtils.getCachePath(context), mUrl.getFile());
-                String fileName = file.getName().split("\\.")[0];
-                hashMap.put("path", file.getAbsolutePath());
-                hashMap.put("md5", fileName);
-                loopList.add(hashMap);
-            } catch (MalformedURLException e) {
-                Log.e(TAG, "initCarousel: " + e.getMessage());
-            }
-        }
-        playVideo(loopList);
+        carouselUtils = new CarouselUtils();
+        carouselUtils.loopCarousel(context, carousels, linkedVideoView);
+
         for (int i = 0; i < 3; i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
             params.weight = 1;
@@ -148,7 +139,8 @@ public class GuideFragment extends Fragment {
             Picasso.with(context).load(carousels.get(i).getThumb_image()).into(itemView);
             itemView.setScaleType(ImageView.ScaleType.FIT_XY);
             itemView.setLayoutParams(params);
-            itemView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
+            itemView.setTag(i);
+            itemView.setOnFocusChangeListener(carouselUtils.listener);
             carouselLayout.addView(itemView);
         }
         downloadCarouselVideo(carousels);
@@ -159,82 +151,6 @@ public class GuideFragment extends Fragment {
         new IsmartvFileClient(context, carousels).start();
     }
 
-
-    private void playVideo(final LoopList loopList) {
-        class VideoMessageHandle extends Handler {
-            public VideoMessageHandle(Looper looper) {
-                super(looper);
-            }
-
-            @Override
-            public void handleMessage(Message msg) {
-                linkedVideoView.setVideoPath(msg.obj.toString());
-                linkedVideoView.start();
-                linkedVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mediaPlayer) {
-                        playVideo(loopList);
-                    }
-                });
-            }
-        }
-
-        new Thread() {
-            @Override
-            public void run() {
-                String videoPath;
-                HashMap<String, String> hashMap = loopList.next();
-                String url = hashMap.get("url");
-                File file = new File(hashMap.get("path"));
-
-                if (file.exists()) {
-                    String md5 = hashMap.get("md5");
-                    Log.i(TAG, "md5 is: " + DeviceUtils.getMd5ByFile(file));
-                    if (DeviceUtils.getMd5ByFile(file).equals(md5)) {
-                        videoPath = file.getAbsolutePath();
-                        Log.i(TAG, "video path is: " + file.getAbsolutePath());
-                    } else {
-                        videoPath = url;
-                        Log.i(TAG, "video path is: " + url);
-                    }
-                } else {
-                    videoPath = url;
-                    Log.i(TAG, "video path is: " + url);
-                }
-                VideoMessageHandle messageHandle = new VideoMessageHandle(context.getMainLooper());
-                Message message = messageHandle.obtainMessage(0, videoPath);
-                messageHandle.sendMessage(message);
-            }
-        }.start();
-
-
-    }
-
-
-    class LoopList {
-        ArrayList<HashMap<String, String>> list;
-        private int next;
-
-        public LoopList() {
-            list = new ArrayList<HashMap<String, String>>();
-        }
-
-        public void add(HashMap<String, String> hashMap) {
-            list.add(hashMap);
-        }
-
-        public HashMap<String, String> next() {
-            if (next == list.size()) {
-                HashMap<String, String> hashMap = list.get(0);
-                next = 1;
-                return hashMap;
-            } else {
-                HashMap<String, String> hashMap = list.get(next);
-                next = next + 1;
-                return hashMap;
-            }
-        }
-    }
 }
 
 

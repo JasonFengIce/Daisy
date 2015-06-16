@@ -29,6 +29,10 @@ public class DeviceUtils {
         }
     }
 
+    public static String getSDCardCachePath() {
+        return new File(Environment.getExternalStorageDirectory(), "/Daisy").getAbsolutePath();
+    }
+
 
     public static long getAvailableInternalMemorySize() {
         File path = Environment.getDataDirectory();

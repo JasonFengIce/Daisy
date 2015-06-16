@@ -47,6 +47,7 @@ public class FilmFragment extends Fragment {
     private LinearLayout carouselLayout;
     private DaisyVideoView linkedVideoView;
     private ImageView linkedVideoImage;
+    private CarouselUtils carouselUtils;
 
     private Context context;
 
@@ -130,29 +131,10 @@ public class FilmFragment extends Fragment {
     }
 
     private void initCarousel(ArrayList<HomePagerEntity.Carousel> carousels) {
-        ArrayList<String> arrayList = new ArrayList<String>();
-        Log.d(TAG, "external mounted: " + DeviceUtils.isExternalStorageMounted());
-        if (DeviceUtils.isExternalStorageMounted()) {
-            for (HomePagerEntity.Carousel carousel : carousels) {
-                String url;
-                if (TextUtils.isEmpty(carousel.getVideo_url())) {
-                    url = carousel.getVideo_image();
-                } else {
-                    url = carousel.getVideo_url();
-                }
-                arrayList.add(url);
-            }
-        } else {
-            for (HomePagerEntity.Carousel carousel : carousels) {
-                arrayList.add(carousel.getVideo_image());
-            }
-        }
 
-        for (String s : arrayList) {
-            Log.d(TAG, "url is: " + s);
-        }
 
-        CarouselUtils.getInstance().loopCarousel(context, arrayList, linkedVideoView, linkedVideoImage);
+        carouselUtils = new CarouselUtils();
+        carouselUtils.loopCarousel(context, carousels, linkedVideoView, linkedVideoImage);
         for (int i = 0; i < carousels.size(); i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, 0);
@@ -164,6 +146,8 @@ public class FilmFragment extends Fragment {
                     .into(itemView);
             itemView.setScaleType(ImageView.ScaleType.FIT_XY);
             itemView.setLayoutParams(params);
+            itemView.setTag(i);
+            itemView.setOnFocusChangeListener(carouselUtils.listener);
             carouselLayout.addView(itemView);
         }
         // downloadCarouselVideo(carousels);
@@ -175,59 +159,6 @@ public class FilmFragment extends Fragment {
         new IsmartvFileClient(context, carousels).start();
     }
 
-    private void playVideo(final LoopList loopList) {
-        HashMap<String, String> hashMap = loopList.next();
-        String url = hashMap.get("url");
-        File file = new File(hashMap.get("path"));
-
-        if (file.exists()) {
-            String md5 = hashMap.get("md5");
-            Log.i(TAG, "md5 is: " + DeviceUtils.getMd5ByFile(file));
-            if (DeviceUtils.getMd5ByFile(file).equals(md5)) {
-                linkedVideoView.setVideoPath(file.getAbsolutePath());
-                Log.i(TAG, "video path is: " + file.getAbsolutePath());
-            } else {
-                linkedVideoView.setVideoPath(url);
-                Log.i(TAG, "video path is: " + url);
-            }
-        } else {
-            linkedVideoView.setVideoPath(url);
-            Log.i(TAG, "video path is: " + url);
-        }
-        linkedVideoView.start();
-        linkedVideoView
-                .setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mediaPlayer) {
-                        playVideo(loopList);
-                    }
-                });
-    }
-
-    class LoopList {
-        ArrayList<HashMap<String, String>> list;
-        private int next;
-
-        public LoopList() {
-            list = new ArrayList<HashMap<String, String>>();
-        }
-
-        public void add(HashMap<String, String> hashMap) {
-            list.add(hashMap);
-        }
-
-        public HashMap<String, String> next() {
-            if (next == list.size()) {
-                HashMap<String, String> hashMap = list.get(0);
-                next = 1;
-                return hashMap;
-            } else {
-                HashMap<String, String> hashMap = list.get(next);
-                next = next + 1;
-                return hashMap;
-            }
-        }
-    }
 
     private View.OnClickListener ItemClickListener = new View.OnClickListener() {
         @Override
@@ -259,6 +190,8 @@ public class FilmFragment extends Fragment {
             }
         }
     };
+
+
 
 
 }

@@ -66,7 +66,7 @@ public class OverseasFilmFragment extends Fragment {
                 .findViewById(R.id.film_carousel_layout);
         linkedVideoView = (DaisyVideoView) mView
                 .findViewById(R.id.film_linked_video);
-        linkedVideoImage = (ImageView)mView.findViewById(R.id.film_linked_image);
+        linkedVideoImage = (ImageView) mView.findViewById(R.id.film_linked_image);
         return mView;
     }
 
@@ -129,24 +129,9 @@ public class OverseasFilmFragment extends Fragment {
     }
 
     private void initCarousel(ArrayList<HomePagerEntity.Carousel> carousels) {
-        ArrayList<String> arrayList = new ArrayList<String>();
-        if (DeviceUtils.isExternalStorageMounted()) {
-            for (HomePagerEntity.Carousel carousel : carousels) {
-                String url;
-                if (TextUtils.isEmpty(carousel.getVideo_url())) {
-                    url = carousel.getVideo_image();
-                } else {
-                    url = carousel.getVideo_url();
-                }
-                arrayList.add(url);
-            }
-        } else {
-            for (HomePagerEntity.Carousel carousel : carousels) {
-                arrayList.add(carousel.getVideo_image());
-            }
-        }
 
-        CarouselUtils.getInstance().loopCarousel(context, arrayList,linkedVideoView, linkedVideoImage);
+        CarouselUtils carouselUtils = new CarouselUtils();
+        carouselUtils.loopCarousel(context, carousels, linkedVideoView, linkedVideoImage);
         for (int i = 0; i < carousels.size(); i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, 0);
@@ -158,6 +143,8 @@ public class OverseasFilmFragment extends Fragment {
                     .into(itemView);
             itemView.setScaleType(ImageView.ScaleType.FIT_XY);
             itemView.setLayoutParams(params);
+            itemView.setTag(i);
+            itemView.setOnFocusChangeListener(carouselUtils.listener);
             carouselLayout.addView(itemView);
         }
         // downloadCarouselVideo(carousels);
