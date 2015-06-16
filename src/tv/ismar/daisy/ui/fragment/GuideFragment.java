@@ -20,6 +20,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.ClientApi;
 import tv.ismar.daisy.core.client.IsmartvFileClient;
 import tv.ismar.daisy.data.HomePagerEntity;
@@ -72,15 +73,22 @@ public class GuideFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
-        fetchHomePage(" ", " ");
+        getView().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                fetchHomePage(" ", " ");
+            }
+        },3000);
+
 
 
     }
 
 
     private void fetchHomePage(String accessToken, String deviceToken) {
+        Log.d(TAG, "fetchHomePage: " + SimpleRestClient.device_token);
         ClientApi.Homepage client = restAdapter_SKYTEST_TVXIO.create(Homepage.class);
-        client.excute(accessToken, deviceToken, new Callback<HomePagerEntity>() {
+        client.excute(SimpleRestClient.device_token, new Callback<HomePagerEntity>() {
             @Override
             public void success(HomePagerEntity homePagerEntity, Response response) {
                 ArrayList<HomePagerEntity.Carousel> carousels = homePagerEntity.getCarousels();
@@ -123,9 +131,14 @@ public class GuideFragment extends Fragment {
         }
     }
 
-    private void initCarousel(ArrayList<HomePagerEntity.Carousel> carousels) {
+    private void initCarousel(final ArrayList<HomePagerEntity.Carousel> carousels) {
         carouselUtils = new CarouselUtils();
-        carouselUtils.loopCarousel(context, carousels, linkedVideoView);
+        getView().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                carouselUtils.loopCarousel(context, carousels, linkedVideoView);
+            }
+        },3000);
 
         for (int i = 0; i < 3; i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);

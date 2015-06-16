@@ -35,9 +35,8 @@ public class ClientApi {
     }
 
     public interface Homepage {
-        @GET("/api/tv/homepage/top/")
+        @GET("/v2_0/SKY/dto/api/tv/homepage/top/")
         void excute(
-                @Query("access_token") String accessToken,
                 @Query("device_token") String deviceToken,
                 Callback<HomePagerEntity> callback
         );

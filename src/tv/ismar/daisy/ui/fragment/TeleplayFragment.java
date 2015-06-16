@@ -128,11 +128,16 @@ public class TeleplayFragment extends Fragment {
         }
     }
 
-    private void initCarousel(ArrayList<HomePagerEntity.Carousel> carousels) {
+    private void initCarousel(final ArrayList<HomePagerEntity.Carousel> carousels) {
 
 
-        CarouselUtils carouselUtils = new CarouselUtils();
-        carouselUtils.loopCarousel(context, carousels, linkedVideoView, linkedVideoImage);
+        final CarouselUtils carouselUtils = new CarouselUtils();
+        getView().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                carouselUtils.loopCarousel(context, carousels, linkedVideoView, linkedVideoImage);
+            }
+        }, 1000);
 
         for (int i = 0; i < carousels.size(); i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(

@@ -130,11 +130,19 @@ public class FilmFragment extends Fragment {
         }
     }
 
-    private void initCarousel(ArrayList<HomePagerEntity.Carousel> carousels) {
+    private void initCarousel(final ArrayList<HomePagerEntity.Carousel> carousels) {
 
 
         carouselUtils = new CarouselUtils();
-        carouselUtils.loopCarousel(context, carousels, linkedVideoView, linkedVideoImage);
+        getView().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                carouselUtils.loopCarousel(context, carousels, linkedVideoView, linkedVideoImage);
+            }
+        },1000);
+
+
+
         for (int i = 0; i < carousels.size(); i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, 0);

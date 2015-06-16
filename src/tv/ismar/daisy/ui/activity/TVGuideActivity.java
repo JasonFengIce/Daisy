@@ -162,6 +162,7 @@ public class TVGuideActivity extends FragmentActivity implements
      * fetch channel
      */
     private void fetchChannels() {
+        Log.d(TAG, "sn: " + SimpleRestClient.sn_token);
         String deviceToken = SimpleRestClient.device_token;
         String host = SimpleRestClient.root_url;
         RestAdapter restAdapter = new RestAdapter.Builder()
