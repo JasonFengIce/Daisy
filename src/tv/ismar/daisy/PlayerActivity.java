@@ -1822,9 +1822,6 @@ public class PlayerActivity extends VodMenuAction {
 	}
 
 	private void sendPlayComplete() {
-		Intent intent = new Intent();
-		intent.setAction(AppConstant.VOD_PLAYER_COMPLETE_ACTION);
-		sendBroadcast(intent);
 	}
 
 	private PaymentDialog.OrderResultListener ordercheckListener = new PaymentDialog.OrderResultListener() {

@@ -20,7 +20,7 @@ import android.widget.TextView;
 import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
 import com.baidu.location.*;
-import com.ismartv.launcher.data.ChannelEntity;
+import tv.ismar.daisy.data.ChannelEntity;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;

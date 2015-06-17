@@ -1,7 +1,5 @@
 package tv.ismar.daisy.core.client;
 
-import com.ismartv.launcher.data.ChannelEntity;
-import com.ismartv.launcher.data.VideoEntity;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.http.GET;
@@ -11,8 +9,9 @@ import retrofit.http.Query;
 import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.core.advertisement.AdvertisementInfoEntity;
 import tv.ismar.daisy.core.update.VersionInfoEntity;
-import tv.ismar.daisy.models.launcher.*;
+import tv.ismar.daisy.data.ChannelEntity;
 import tv.ismar.daisy.data.HomePagerEntity;
+import tv.ismar.daisy.models.launcher.*;
 
 import java.util.ArrayList;
 
@@ -132,19 +131,6 @@ public class ClientApi {
                 @Query("device_token") String deviceToken,
                 Callback<ChannelEntity[]> callback
         );
-    }
-
-    /**
-     * HorizontalGuide
-     */
-    public interface HorizontalGuide {
-        @Headers({"Accpt: application/json", "Cache-Control: no-cache"})
-        @GET("/api/tv/section/tvhome/")
-        void excute(
-                @Query("device_token") String deviceToken,
-                Callback<VideoEntity> callback
-        );
-
     }
 
 

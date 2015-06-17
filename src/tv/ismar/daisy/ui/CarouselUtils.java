@@ -236,8 +236,11 @@ public class CarouselUtils {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus) {
-                int position = (Integer) v.getTag();
-                setCurrentPosition(position);
+                Integer position = (Integer) v.getTag();
+                if (null != position){
+                    setCurrentPosition(position);
+                }
+
             }
         }
     }
@@ -245,8 +248,10 @@ public class CarouselUtils {
         @Override
         public void onFocusChange(View view, boolean hasFocus) {
             if (hasFocus) {
-                int position = (Integer) view.getTag();
-                setCurrentPosition(position);
+                Integer position = (Integer) view.getTag();
+                if (null != position){
+                    setCurrentPosition(position);
+                }
                 AnimationSet animationSet = new AnimationSet(true);
                 ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1, 1, 1.53f,
                         Animation.RELATIVE_TO_SELF, 0.5f,
