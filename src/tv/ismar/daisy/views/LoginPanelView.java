@@ -8,7 +8,7 @@ import org.json.JSONException;
 import com.alibaba.fastjson.JSONObject;
 
 import tv.ismar.daisy.ItemDetailActivity;
-import tv.ismar.daisy.LauncherActivity;
+//import tv.ismar.daisy.LauncherActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;

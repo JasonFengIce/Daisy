@@ -1,6 +1,43 @@
 package tv.ismar.daisy.ui.activity;
 
-import android.content.*;
+import static tv.ismar.daisy.VodApplication.DEVICE_TOKEN;
+import static tv.ismar.daisy.VodApplication.DOMAIN;
+import static tv.ismar.daisy.VodApplication.LOG_DOMAIN;
+import static tv.ismar.daisy.VodApplication.PREFERENCE_FILE_NAME;
+import static tv.ismar.daisy.VodApplication.SN_TOKEN;
+import static tv.ismar.daisy.VodApplication.ad_domain;
+
+import java.util.ArrayList;
+
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import tv.ismar.daisy.AppConstant;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.VodApplication;
+import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.client.ClientApi;
+import tv.ismar.daisy.core.preferences.SimpleClientPreferences;
+import tv.ismar.daisy.core.service.PosterUpdateService;
+import tv.ismar.daisy.core.update.AppUpdateUtils;
+import tv.ismar.daisy.data.ChannelEntity;
+import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
+import tv.ismar.daisy.ui.fragment.ChildFragment;
+import tv.ismar.daisy.ui.fragment.EntertainmentFragment;
+import tv.ismar.daisy.ui.fragment.FilmFragment;
+import tv.ismar.daisy.ui.fragment.GuideFragment;
+import tv.ismar.daisy.ui.fragment.OverseasFilmFragment;
+import tv.ismar.daisy.ui.fragment.SportFragment;
+import tv.ismar.daisy.ui.fragment.TeleplayFragment;
+import tv.ismar.daisy.ui.widget.DaisyButton;
+import tv.ismar.daisy.ui.widget.TopPanelView;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -19,28 +56,12 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
-import com.baidu.location.*;
-import tv.ismar.daisy.data.ChannelEntity;
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import tv.ismar.daisy.AppConstant;
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.VodApplication;
-import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.client.ClientApi;
-import tv.ismar.daisy.core.preferences.SimpleClientPreferences;
-import tv.ismar.daisy.core.service.PosterUpdateService;
-import tv.ismar.daisy.core.update.AppUpdateUtils;
-import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
-import tv.ismar.daisy.ui.fragment.*;
-import tv.ismar.daisy.ui.widget.DaisyButton;
 
-import java.util.ArrayList;
-
-import static tv.ismar.daisy.VodApplication.*;
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.GeofenceClient;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -76,6 +97,10 @@ public class TVGuideActivity extends FragmentActivity implements
     private static final String VERSION = "1.0";
     private static final String MANUFACTURE = "sky";
     private int currentChannelIndex =0;
+    private ImageView arrow_left;
+    private ImageView arrow_right;
+    private TopPanelView toppanel;
+    private ChannelEntity[] channels;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +110,12 @@ public class TVGuideActivity extends FragmentActivity implements
         setContentView(contentView);
         channelListView = (LinearLayout) findViewById(R.id.channel_h_list);
         tabListView = (LinearLayout) findViewById(R.id.tab_list);
+        arrow_left = (ImageView)findViewById(R.id.arrow_scroll_left);
+        arrow_right = (ImageView)findViewById(R.id.arrow_scroll_right);
+        toppanel =(TopPanelView)findViewById(R.id.top_column_layout);
+        toppanel.setChannelName("首页");
+        arrow_left.setOnClickListener(arrowViewListener);
+        arrow_right.setOnClickListener(arrowViewListener);
         initTabView();
 
         activator = Activator.getInstance(this);
@@ -102,6 +133,8 @@ public class TVGuideActivity extends FragmentActivity implements
             contentView.setBackgroundResource(R.color.normal_activity_bg);
             currentFragment = new GuideFragment();
             replaceFragment(currentFragment);
+            toppanel.setChannelName("首页");
+            currentChannelIndex = 0;
         }
     }
 
@@ -158,6 +191,7 @@ public class TVGuideActivity extends FragmentActivity implements
             @Override
             public void success(ChannelEntity[] channelEntities,
                                 Response response) {
+            	channels = channelEntities;
                 for (int i = 0; i < channelEntities.length; i++) {
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(188, 66);
                     TextView textView = new TextView(TVGuideActivity.this);
@@ -403,6 +437,7 @@ public class TVGuideActivity extends FragmentActivity implements
         public void onClick(View v) {
             String channel = v.getTag().toString();
             currentChannelIndex = Integer.parseInt(v.getTag(R.dimen.tv_guide_channel_textSize).toString());
+            toppanel.setChannelName(channels[currentChannelIndex].getName());
             if ("chinesemovie".equals(channel)) {
                 currentFragment = new FilmFragment();
                 contentView.setBackgroundResource(R.color.normal_activity_bg);
@@ -433,6 +468,25 @@ public class TVGuideActivity extends FragmentActivity implements
 
     };
 
+	private OnClickListener arrowViewListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			if (v.getId() == R.id.arrow_scroll_left) {
+				currentChannelIndex--;
+			} else if (v.getId() == R.id.arrow_scroll_right) {
+				currentChannelIndex++;
+			}
+			if (currentChannelIndex < 0)
+				currentChannelIndex = 0;
+			if (currentChannelIndex > channelListView.getChildCount() - 1)
+				currentChannelIndex = channelListView.getChildCount() - 1;
+			View view = channelListView.getChildAt(currentChannelIndex);
+			view.requestFocus();
+			view.performClick();
+		}
+
+	};
 
     private void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager()
