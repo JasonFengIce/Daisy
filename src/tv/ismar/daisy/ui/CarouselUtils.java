@@ -141,6 +141,7 @@ public class CarouselUtils {
         String playPath;
 
         if (localVideoFile.exists()) {
+            Log.d(TAG, "local video path: " + localVideoFile.getAbsolutePath());
             String fileMd5Code = localVideoFile.getName().split("\\.")[0];
             if (HardwareUtils.getMd5ByFile(localVideoFile).equalsIgnoreCase(fileMd5Code)) {
                 playPath = localVideoFile.getAbsolutePath();

@@ -49,13 +49,18 @@ public class HardwareUtils {
 
     public static String getMd5ByFile(File file) {
         String value = null;
-        FileInputStream in = null;
+        FileInputStream in;
         try {
             in = new FileInputStream(file);
-            MappedByteBuffer byteBuffer = in.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, file.length());
-            MessageDigest md5 = MessageDigest.getInstance("MD5");
-            md5.update(byteBuffer);
-            BigInteger bi = new BigInteger(1, md5.digest());
+//            MappedByteBuffer byteBuffer = in.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, file.length());
+            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+
+            byte[] buffer = new byte[1024 * 1024];
+            int length;
+            while ((length = in.read(buffer)) >0){
+                messageDigest.update(buffer, 0, length);
+            }
+            BigInteger bi = new BigInteger(1, messageDigest.digest());
             value = bi.toString(16);
             in.close();
         } catch (Exception e) {
