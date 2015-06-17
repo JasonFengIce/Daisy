@@ -65,7 +65,7 @@
 
         <tv.ismar.daisy.views.LabelImageView
             xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
-            android:id="@+id/sportschedule"
+            android:id="@+id/sportspost"
             android:layout_width="1186dp"
             android:layout_height="495dp"
             android:background="@drawable/launcher_selector"

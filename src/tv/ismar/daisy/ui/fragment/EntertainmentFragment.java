@@ -16,6 +16,8 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +31,7 @@ import android.widget.TextView;
  */
 public class EntertainmentFragment extends Fragment {
 
+	private final int IMAGE_SWITCH_KEY = 0X11;
 	private SimpleRestClient mRestClient = new SimpleRestClient();
 	private LoadingDialog mLoadingDialog;
 
@@ -55,6 +58,8 @@ public class EntertainmentFragment extends Fragment {
 	private TextView vaiety_channel4_subtitle;
 	private ImageView vaiety_channel5;
 	private HomePagerEntity entity;
+	private ArrayList<String> looppost = new ArrayList<String>();
+	private int loopindex = 0;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -127,8 +132,10 @@ public class EntertainmentFragment extends Fragment {
 						vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post)
 								.toString());
 					}
+					imageswitch.removeMessages(IMAGE_SWITCH_KEY);
 				} else {
 					v.setPadding(0, 22, 0, 0);
+					imageswitch.sendEmptyMessageDelayed(IMAGE_SWITCH_KEY, 6000);
 				}
 			}
 		});
@@ -140,8 +147,10 @@ public class EntertainmentFragment extends Fragment {
 					vaiety_post.setUrl(v.getTag().toString());
 					vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post)
 							.toString());
+					imageswitch.removeMessages(IMAGE_SWITCH_KEY);
 				} else {
 					v.setPadding(0, 22, 0, 0);
+					imageswitch.sendEmptyMessageDelayed(IMAGE_SWITCH_KEY, 6000);
 				}
 			}
 		});
@@ -153,8 +162,10 @@ public class EntertainmentFragment extends Fragment {
 					vaiety_post.setUrl(v.getTag().toString());
 					vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post)
 							.toString());
+					imageswitch.removeMessages(IMAGE_SWITCH_KEY);
 				} else {
 					v.setPadding(0, 22, 0, 0);
+					imageswitch.sendEmptyMessageDelayed(IMAGE_SWITCH_KEY, 6000);
 				}
 			}
 		});
@@ -171,11 +182,10 @@ public class EntertainmentFragment extends Fragment {
 
 	private void fillData(ArrayList<Carousel> carousellist,
 			ArrayList<Poster> postlist) {
-		vaiety_post.setUrl(carousellist.get(0).getVideo_image());
+		// vaiety_post.setUrl(carousellist.get(0).getVideo_image());
 		vaiety_thumb1
 				.setUrl("http://res.tvxio.com/media/upload/hldf4802700225_adlet.jpg");
-		vaiety_thumb1
-				.setTag("http://res.tvxio.com/media/upload/hldf4802700225_adlet.jpg");
+		vaiety_thumb1.setTag(carousellist.get(0).getVideo_image());
 		vaiety_thumb1.setTag(R.id.vaiety_post, carousellist.get(0).getTitle());
 		vaiety_thumb2.setUrl(carousellist.get(1).getThumb_image());
 		vaiety_thumb2.setTag(carousellist.get(1).getVideo_image());
@@ -183,6 +193,10 @@ public class EntertainmentFragment extends Fragment {
 		vaiety_thumb3.setUrl(carousellist.get(2).getThumb_image());
 		vaiety_thumb3.setTag(carousellist.get(2).getVideo_image());
 		vaiety_thumb3.setTag(R.id.vaiety_post, carousellist.get(2).getTitle());
+		looppost.add(carousellist.get(0).getVideo_image());
+		looppost.add(carousellist.get(1).getVideo_image());
+		looppost.add(carousellist.get(2).getVideo_image());
+		imageswitch.sendEmptyMessage(IMAGE_SWITCH_KEY);
 		vaiety_fouce_label.setText(carousellist.get(0).getTitle());
 		vaiety_card1_image.setUrl(postlist.get(0).getCustom_image());
 		vaiety_card1_image.setFocustitle(postlist.get(0).getIntroduction());
@@ -287,6 +301,18 @@ public class EntertainmentFragment extends Fragment {
 
 				}
 			}
+		}
+	};
+
+	private Handler imageswitch = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			vaiety_post.setUrl(looppost.get(loopindex++));
+			if (loopindex >= 2)
+				loopindex = 0;
+			imageswitch.sendEmptyMessageDelayed(IMAGE_SWITCH_KEY, 6000);
+			// pendingView.requestFocus();
 		}
 	};
 }
