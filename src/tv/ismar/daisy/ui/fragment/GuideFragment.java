@@ -64,14 +64,9 @@ public class GuideFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
         fetchHomePage(SimpleClientPreferences.getInstance(context).getDeviceToken());
     }
+
 
     public void fetchHomePage(String deviceToken) {
         Log.d(TAG, "fetchHomePage: " + SimpleRestClient.device_token);

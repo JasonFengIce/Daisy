@@ -81,28 +81,15 @@ public class TVGuideActivity extends FragmentActivity implements
         super.onCreate(savedInstanceState);
         registerUpdateReceiver();
         AppUpdateUtils.getInstance().checkUpdate(this);
-        contentView = LayoutInflater.from(this).inflate(
-                R.layout.activity_tv_guide, null);
+        contentView = LayoutInflater.from(this).inflate(R.layout.activity_tv_guide, null);
         setContentView(contentView);
         channelListView = (LinearLayout) findViewById(R.id.channel_h_list);
         tabListView = (LinearLayout) findViewById(R.id.tab_list);
         initTabView();
-        currentFragment = new GuideFragment();
-        if (savedInstanceState == null) {
-            final FragmentTransaction transaction = getSupportFragmentManager()
-                    .beginTransaction();
-            transaction
-                    .add(R.id.container, currentFragment)
-                    .commit();
-        } else {
-
-        }
 
         activator = Activator.getInstance(this);
         activator.setOnCompleteListener(this);
-        String localInfo = DaisyUtils.getVodApplication(this).getPreferences()
-                .getString(VodApplication.LOCATION_INFO, "");
-        Log.v(TAG, localInfo);
+        String localInfo = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.LOCATION_INFO, "");
         sendLoncationRequest();
         activator.active(MANUFACTURE, KIND, VERSION, localInfo);
     }
@@ -172,8 +159,7 @@ public class TVGuideActivity extends FragmentActivity implements
             public void success(ChannelEntity[] channelEntities,
                                 Response response) {
                 for (int i = 0; i < channelEntities.length; i++) {
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                            188, 66);
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(188, 66);
                     TextView textView = new TextView(TVGuideActivity.this);
                     textView.setFocusable(true);
                     if (i != channelEntities.length - 1) {
@@ -182,8 +168,7 @@ public class TVGuideActivity extends FragmentActivity implements
                     textView.setFocusable(true);
                     textView.setFocusableInTouchMode(true);
                     textView.setClickable(true);
-                    textView.setTextSize(getResources().getDimension(
-                            R.dimen.tv_guide_channel_textSize));
+                    textView.setTextSize(getResources().getDimension(R.dimen.tv_guide_channel_textSize));
                     textView.setGravity(Gravity.CENTER);
                     textView.setBackgroundResource(R.drawable.selector_channel_item);
                     textView.setLayoutParams(layoutParams);
@@ -230,21 +215,16 @@ public class TVGuideActivity extends FragmentActivity implements
      */
     private void showUpdatePopup(View view, Bundle bundle) {
         final Context context = this;
-        View contentView = LayoutInflater.from(context).inflate(
-                R.layout.popup_update, null);
+        View contentView = LayoutInflater.from(context).inflate(R.layout.popup_update, null);
         contentView.setBackgroundResource(R.drawable.popup_bg_yellow);
         updatePopupWindow = new PopupWindow(null, 1400, 500);
         updatePopupWindow.setContentView(contentView);
         updatePopupWindow.setFocusable(true);
         updatePopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
-        DaisyButton updateNow = (DaisyButton) contentView
-                .findViewById(R.id.update_now_bt);
-
-        TextView updateTitle = (TextView) contentView
-                .findViewById(R.id.update_title);
-        LinearLayout updateMsgLayout = (LinearLayout) contentView
-                .findViewById(R.id.update_msg_layout);
+        DaisyButton updateNow = (DaisyButton) contentView.findViewById(R.id.update_now_bt);
+        TextView updateTitle = (TextView) contentView.findViewById(R.id.update_title);
+        LinearLayout updateMsgLayout = (LinearLayout) contentView.findViewById(R.id.update_msg_layout);
 
         final String path = bundle.getString("path");
         String title = bundle.getString("title");
@@ -260,8 +240,7 @@ public class TVGuideActivity extends FragmentActivity implements
 
         for (String msg : msgs) {
             TextView textView = new TextView(this);
-            textView.setTextSize(getResources().getDimensionPixelSize(
-                    R.dimen.update_msg_textsize));
+            textView.setTextSize(getResources().getDimensionPixelSize(R.dimen.update_msg_textsize));
             textView.setLayoutParams(layoutParams);
             textView.setText(msg);
             updateMsgLayout.addView(textView);
@@ -299,16 +278,13 @@ public class TVGuideActivity extends FragmentActivity implements
      */
     private void showExitPopup(View view) {
         final Context context = this;
-        View contentView = LayoutInflater.from(context).inflate(
-                R.layout.popup_exit, null);
+        View contentView = LayoutInflater.from(context).inflate(R.layout.popup_exit, null);
         exitPopupWindow = new PopupWindow(null, 740, 341);
         exitPopupWindow.setContentView(contentView);
         exitPopupWindow.setFocusable(true);
         exitPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-        DaisyButton confirmExit = (DaisyButton) contentView
-                .findViewById(R.id.confirm_exit);
-        DaisyButton cancelExit = (DaisyButton) contentView
-                .findViewById(R.id.cancel_exit);
+        DaisyButton confirmExit = (DaisyButton) contentView.findViewById(R.id.confirm_exit);
+        DaisyButton cancelExit = (DaisyButton) contentView.findViewById(R.id.cancel_exit);
 
         confirmExit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -335,16 +311,13 @@ public class TVGuideActivity extends FragmentActivity implements
         preferences.setSnToken(result.getSn_Token());
         preferences.setDeviceToken(result.getDevice_token());
 
-
         saveSimpleRestClientPreferences(this, result);
-        DaisyUtils.getVodApplication(TVGuideActivity.this)
-                .getNewContentModel();
+        DaisyUtils.getVodApplication(TVGuideActivity.this).getNewContentModel();
         fetchChannels();
 
-        if (currentFragment.getClass().getName().equals(GuideFragment.class.getName())) {
-            ((GuideFragment) currentFragment).fetchHomePage(result.getDevice_token());
-        }
-
+        currentFragment = new GuideFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.container, currentFragment).commit();
     }
 
     @Override
