@@ -44,11 +44,20 @@
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:paddingTop="@dimen/person_center_btn_layout_PT" >
-
+            <Button
+                android:id="@+id/personal_card_btn"
+                android:layout_width="@dimen/person_center_btn_W"
+                android:layout_height="@dimen/person_center_btn_H"
+                android:background="@drawable/person_btn_selector"
+                android:gravity="center"
+                android:text="购卡充值"
+                android:textColor="#FFF8F8FF"
+                android:textSize="@dimen/person_center_btn_text_size" />
             <Button
                 android:id="@+id/personal_info_btn"
                 android:layout_width="@dimen/person_center_btn_W"
                 android:layout_height="@dimen/person_center_btn_H"
+                android:layout_marginTop="@dimen/person_center_btn_MT"
                 android:background="@drawable/person_btn_selector"
                 android:gravity="center"
                 android:text=" 个人信息"
@@ -65,7 +74,16 @@
                 android:text="登录/注册"
                 android:textColor="#FFF8F8FF"
                 android:textSize="@dimen/person_center_btn_text_size" />
-
+            <Button
+                android:id="@+id/personal_orderrecord_btn"
+                android:layout_width="@dimen/person_center_btn_W"
+                android:layout_height="@dimen/person_center_btn_H"
+                android:layout_marginTop="@dimen/person_center_btn_MT"
+                android:background="@drawable/person_btn_selector"
+                android:gravity="center"
+                android:text="购买记录"
+                android:textColor="#FFF8F8FF"
+                android:textSize="@dimen/person_center_btn_text_size" />
             <Button
                 android:id="@+id/client_service_btn"
                 android:layout_width="@dimen/person_center_btn_W"

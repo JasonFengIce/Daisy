@@ -178,10 +178,21 @@ public class TeleplayFragment extends Fragment {
                             "tv.ismar.daisy.ItemDetailActivity");
                     intent.putExtra("url", poster.getUrl());
                     getActivity().startActivity(intent);
-                } else if ("topic".equals(poster.getModel_name())) {
-
+                }  else if ("topic".equals(poster.getModel_name())) {
+                       intent.putExtra("url",
+                       		poster.getUrl());
+                       intent.setClassName("tv.ismar.daisy",
+                               "tv.ismar.daisy.TopicActivity");
+                       getActivity().startActivity(intent);
                 } else if ("section".equals(poster.getModel_name())) {
-
+                    intent.putExtra("title", poster.getTitle());
+                    intent.putExtra("itemlistUrl",
+                    		poster.getUrl());
+                    intent.putExtra("lableString",
+                    		poster.getTitle());
+                    intent.setClassName("tv.ismar.daisy",
+                            "tv.ismar.daisy.PackageListDetailActivity");
+                    getActivity().startActivity(intent);
                 } else if ("package".equals(poster.getModel_name())) {
 
                 }

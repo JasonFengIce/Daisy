@@ -75,7 +75,7 @@ public class TVGuideActivity extends FragmentActivity implements
     private static final String KIND = "sky";
     private static final String VERSION = "1.0";
     private static final String MANUFACTURE = "sky";
-
+    private int currentChannelIndex =0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -176,6 +176,7 @@ public class TVGuideActivity extends FragmentActivity implements
                     textView.setTextColor(getResources()
                             .getColor(R.color.white));
                     textView.setTag(channelEntities[i].getChannel());
+                    textView.setTag(R.dimen.tv_guide_channel_textSize, i);
                     textView.setOnClickListener(channelClickListener);
                     textView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
                     channelListView.addView(textView);
@@ -401,6 +402,7 @@ public class TVGuideActivity extends FragmentActivity implements
         @Override
         public void onClick(View v) {
             String channel = v.getTag().toString();
+            currentChannelIndex = Integer.parseInt(v.getTag(R.dimen.tv_guide_channel_textSize).toString());
             if ("chinesemovie".equals(channel)) {
                 currentFragment = new FilmFragment();
                 contentView.setBackgroundResource(R.color.normal_activity_bg);

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.lang3.StringUtils;
 import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
 import org.sakuratya.horizontal.ui.HGridView;
 import org.sakuratya.horizontal.ui.HGridView.OnScrollListener;
@@ -62,6 +63,8 @@ public class PackageListDetailActivity extends BaseActivity implements OnItemSel
 	private boolean mIsBusy = false;
 	private TextView channel_label;
 	private Button btn_search;
+	private String itemlistUrl;
+	private String lableString;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -70,6 +73,8 @@ public class PackageListDetailActivity extends BaseActivity implements OnItemSel
 		mLoadingDialog = new LoadingDialog(this, getResources().getString(R.string.loading));
 		mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
 		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
+		itemlistUrl = getIntent().getStringExtra("itemlistUrl");
+		lableString = getIntent().getStringExtra("lableString");
 		initView();
 		getData();
 	}
@@ -80,7 +85,12 @@ public class PackageListDetailActivity extends BaseActivity implements OnItemSel
 	}
 	private void initView(){
 		        channel_label = (TextView)findViewById(R.id.channel_label);
-		        channel_label.setText("礼包内容");
+				if (StringUtils.isNotEmpty(lableString)) {
+					channel_label.setText(lableString);
+				} else {
+					channel_label.setText("礼包内容");
+				}
+
 		        section_tabs = (ScrollableSectionList)findViewById(R.id.section_tabs);
 		        section_tabs.setVisibility(View.GONE);
 				mHGridView = (HGridView)findViewById(R.id.h_grid_view);
@@ -100,10 +110,10 @@ public class PackageListDetailActivity extends BaseActivity implements OnItemSel
 					});
 	}
 	private void getData(){
-		pk = getIntent().getIntExtra("pk", -1);
-		if(pk>0){
+//		pk = getIntent().getIntExtra("pk", -1);
+//		if(pk>0){
 			new InitPackageItemTask().execute();
-		}
+//		}
 	}
 	private OnCancelListener mLoadingCancelListener = new OnCancelListener() {
 		
@@ -130,8 +140,13 @@ public class PackageListDetailActivity extends BaseActivity implements OnItemSel
 		protected Integer doInBackground(Void... arg0) {
 			// TODO Auto-generated method stub
 			try {
-				items = mRestClient
-						.getItemList(SimpleRestClient.root_url+"/api/package/list/"+pk + "/");
+				if(StringUtils.isNotEmpty(itemlistUrl)){
+					items = mRestClient
+							.getItemList(itemlistUrl);
+				}else{
+					items = mRestClient
+							.getItemList(SimpleRestClient.root_url+"/api/package/list/"+pk + "/");		
+				}
 				
 				if(items!=null){
 					mItemCollections = new ArrayList<ItemCollection>();
@@ -212,7 +227,13 @@ public class PackageListDetailActivity extends BaseActivity implements OnItemSel
 				mCurrentLoadingTask.put(index, this);
 				int[] sectionAndPage = getSectionAndPageFromIndex(index);
 				int page = sectionAndPage[1] + 1;
-				ItemList itemList = mRestClient.getItemList(SimpleRestClient.root_url+"/api/package/list/"+pk+"/"+page+"/");
+				ItemList itemList =null;
+				if(StringUtils.isNotEmpty(itemlistUrl)){
+					 itemList = mRestClient.getItemList(itemlistUrl+page+"/");
+				}else{
+					 itemList = mRestClient.getItemList(SimpleRestClient.root_url+"/api/package/list/"+pk+"/"+page+"/");
+				}
+
 				if(isCancelled()) {
 					return null;
 				} else {
