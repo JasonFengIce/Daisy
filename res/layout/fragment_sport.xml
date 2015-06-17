@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingLeft="@dimen/fragment_padding_lr"
-    android:paddingRight="@dimen/fragment_padding_lr" 
+     
     android:layout_marginTop="23dp"
     >
 
@@ -66,7 +66,7 @@
         <tv.ismar.daisy.views.LabelImageView
             xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
             android:id="@+id/sportspost"
-            android:layout_width="1186dp"
+            android:layout_width="1179dp"
             android:layout_height="495dp"
             android:background="@drawable/launcher_selector"
             android:focusable="true"
@@ -78,12 +78,12 @@
             labelimage:focustextsize="18sp" />
 
         <RelativeLayout
-            android:layout_width="297dp"
+            android:layout_width="300dp"
             android:layout_height="495dp" >
 
             <ListView
                 android:id="@+id/sec_one_list_2"
-                android:layout_width="297dp"
+                android:layout_width="300dp"
                 android:layout_height="495dp"
                 android:dividerHeight="2dp"
                 android:listSelector="@drawable/launcher_selector" />

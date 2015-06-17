@@ -189,6 +189,7 @@ public class SportFragment extends Fragment {
 			}
 			holder.view.setUrl(mData.get(position).poster_url);
 			holder.view.setFocustitle((mData.get(position).name));
+			holder.view.setModetype(5);
 			return convertView;
 		}
 

@@ -22,6 +22,10 @@ public class LabelImageView extends AsyncImageView {
 	private int focustitlepaddingtop;
 	private int modetype;
 
+	public void setModetype(int modetype) {
+		this.modetype = modetype;
+	}
+
 	public String getFocustitle() {
 		return focustitle;
 	}

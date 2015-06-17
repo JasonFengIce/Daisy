@@ -2,6 +2,7 @@ package tv.ismar.daisy.ui.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -21,6 +22,8 @@ import tv.ismar.daisy.core.client.ClientApi;
 import tv.ismar.daisy.core.client.IsmartvFileClient;
 import tv.ismar.daisy.core.preferences.SimpleClientPreferences;
 import tv.ismar.daisy.data.HomePagerEntity;
+import tv.ismar.daisy.data.HomePagerEntity.Carousel;
+import tv.ismar.daisy.data.HomePagerEntity.Poster;
 import tv.ismar.daisy.ui.CarouselUtils;
 import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
 
@@ -109,6 +112,8 @@ public class GuideFragment extends Fragment {
             itemView.setClickable(true);
             itemView.setBackgroundResource(R.drawable.launcher_selector);
             itemView.setLayoutParams(params);
+            itemView.setOnClickListener(ItemClickListener);
+            itemView.setTag(posters.get(i));
             itemView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
             guideRecommmendList.addView(itemView);
         }
@@ -136,6 +141,8 @@ public class GuideFragment extends Fragment {
             itemView.setScaleType(ImageView.ScaleType.FIT_XY);
             itemView.setLayoutParams(params);
             itemView.setTag(i);
+            itemView.setTag(R.drawable.launcher_selector,carousels.get(i));
+            itemView.setOnClickListener(ItemClickListener);
             itemView.setOnFocusChangeListener(carouselUtils.listener);
             carouselLayout.addView(itemView);
         }
@@ -147,6 +154,60 @@ public class GuideFragment extends Fragment {
         new IsmartvFileClient(context, carousels).start();
     }
 
+    private View.OnClickListener ItemClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+        	String url = null;
+        	String contentMode =null;
+        	String title = null;
+        	if (view.getTag()  instanceof Poster) {
+        		Poster new_name = (Poster) view.getTag();
+        		contentMode = new_name.getModel_name();
+        		url =new_name.getUrl();
+        		title = new_name.getTitle();
+			}else if(view.getTag(R.drawable.launcher_selector)  instanceof Carousel){
+				Carousel new_name = (Carousel) view.getTag(R.drawable.launcher_selector);
+        		contentMode = new_name.getModel_name();
+        		url =new_name.getUrl();
+        		title = new_name.getTitle();
+			}
+            Intent intent = new Intent();
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            if (url == null) {
+                intent.putExtra("title", "华语电影");
+                intent.putExtra("url",
+                        "http://skytest.tvxio.com/v2_0/A21/dto/api/tv/sections/chinesemovie/");
+                intent.putExtra("channel", "chinesemovie");
+                intent.setClassName("tv.ismar.daisy",
+                        "tv.ismar.daisy.ChannelListActivity");
+                getActivity().startActivity(intent);
+            } else {
+                if ("item".equals(contentMode)) {
+                    intent.setClassName("tv.ismar.daisy",
+                            "tv.ismar.daisy.ItemDetailActivity");
+                    intent.putExtra("url", url);
+                    getActivity().startActivity(intent);
+                }  else if ("topic".equals(contentMode)) {
+                       intent.putExtra("url",
+                    		   url);
+                       intent.setClassName("tv.ismar.daisy",
+                               "tv.ismar.daisy.TopicActivity");
+                       getActivity().startActivity(intent);
+                } else if ("section".equals(contentMode)) {
+                    intent.putExtra("title", title);
+                    intent.putExtra("itemlistUrl",
+                    		url);
+                    intent.putExtra("lableString",
+                    		title);
+                    intent.setClassName("tv.ismar.daisy",
+                            "tv.ismar.daisy.PackageListDetailActivity");
+                    getActivity().startActivity(intent);
+                } else if ("package".equals(contentMode)) {
+
+                }
+            }
+        }
+    };
 }
 
 
