@@ -7,25 +7,55 @@
     android:background="@drawable/background"
     android:orientation="vertical" >
 
-    <tv.ismar.daisy.ui.widget.TopPanelView
-            android:id="@+id/top_column_layout"
-            android:layout_width="match_parent"
-            android:layout_height="112dip"
-            android:gravity="center_vertical"
-            android:paddingLeft="@dimen/tv_guide_top_section_padding"
-            android:paddingRight="@dimen/tv_guide_top_section_padding"
-            android:visibility="invisible">
-    </tv.ismar.daisy.ui.widget.TopPanelView>
-    <TextView android:layout_width="match_parent"
-              android:layout_height="3dip"
-            android:background="@drawable/listview_normal_divider"
-            android:visibility="gone"/>
+    <LinearLayout
+        android:id="@+id/arrow_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    <TextView
+        android:id="@+id/channel_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/gridview_channel_label_marginleft"
+        android:layout_marginRight="@dimen/gridview_channel_label_marginright"
+        android:layout_marginTop="@dimen/gridview_channel_label_margintop"
+        android:gravity="center"
+        android:padding="@dimen/gridview_channel_label_padding"
+        android:textColor="#FFBBBBBB"
+        android:textSize="@dimen/gridview_channel_label_textsize" />
+    <ImageView
+        android:id="@+id/gridview_line"
+        android:layout_marginLeft="@dimen/gridview_line_ML"
+        android:layout_width="@dimen/gridview_main_gridview_line_W"
+        android:layout_height="@dimen/gridview_main_gridview_line_H"
+        android:background="@drawable/listview_p_divider"
+        android:visibility="visible" />
+                  
+           <Button
+           android:layout_width="wrap_content"
+           android:layout_height="@dimen/list_view_search_H"
+           android:layout_marginLeft="@dimen/list_view_search_ML"
+           android:layout_gravity="center_vertical"
+           android:focusable="true"
+           android:id="@+id/list_view_search"
+           android:background="@drawable/search_btn_bg_selector" />
+</LinearLayout>
+
+    <ImageView
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/grid_view_main_divider_H"
+        android:layout_marginLeft="@dimen/channel_section_tabs_layout_marginLeft"
+        android:layout_marginRight="@dimen/channel_section_tabs_layout_marginLeft"
+        android:background="@drawable/divider_person"
+        android:layout_marginTop="@dimen/grid_view_main_divider_MT"
+        android:visibility="gone" />
     <LinearLayout
         android:id="@+id/tabs_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/gridview_channel_panel_height"
-        android:layout_marginLeft="222dip"
-        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/channel_section_tabs_layout_marginLeft"
+        android:orientation="horizontal"
          android:visibility="visible"
         >
            <ImageView
@@ -34,26 +64,17 @@
             android:layout_height="@dimen/grid_view_main_arrow_left_H"
             android:layout_marginTop="@dimen/grid_view_main_arrow_left_marginT"
             android:background="@drawable/arrow_left_selector"
-            android:visibility="gone"
+            android:visibility="invisible" 
            />
            
         <tv.ismar.daisy.views.ScrollableSectionList
             android:id="@+id/section_tabs"
             android:layout_width="@dimen/gridview_channel_section_tabs_width"
-            android:layout_height="@dimen/channel_section_tabs_H"
+            android:layout_height="match_parent"
             android:scrollbars="none"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:fillViewport="false">
+             android:focusable="false" 
+             android:focusableInTouchMode="false">
         </tv.ismar.daisy.views.ScrollableSectionList>
-        <ProgressBar
-                android:id="@+id/section_percentage"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/channel_section_tabs_percentage_H"
-                android:progressDrawable="@drawable/section_percentage_selected"
-                style="@android:style/Widget.ProgressBar.Horizontal"
-                android:indeterminate="false"
-                android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/arrow_right"
@@ -61,7 +82,7 @@
             android:layout_height="@dimen/grid_view_main_arrow_left_H"
             android:layout_marginTop="@dimen/grid_view_main_arrow_left_marginT"
             android:background="@drawable/arrow_right_selector"
-            android:visibility="gone"
+            android:visibility="invisible"
             />
     </LinearLayout>
 
@@ -72,6 +93,21 @@
         android:fadingEdge="horizontal"
         android:fadingEdgeLength="@dimen/gridview_main_panel_fadingEdgeLength"
         sakura:horizontalSpacing="@dimen/gridview_main_panel_horizontalSpacing"
+        sakura:labelBackgroundDrawable="@drawable/section_shadow_bg"
+        sakura:labelBackgroundHeight="@dimen/gridview_main_panel_labelBackgroundHeight"
+        sakura:labelBackgroundLeftOffset="@dimen/gridview_main_panel_labelBackgroundLeftOffset"
+        sakura:labelBackgroundWidth="@dimen/gridview_main_panel_labelBackgroundWidth"
+        sakura:labelDrawable="@drawable/section_label_drawable"
+        sakura:labelHeight="@dimen/gridview_main_panel_labelHeight"
+        sakura:labelLeftOffset="@dimen/gridview_main_panel_labelLeftOffset"
+        sakura:labelTextColor="#FFF8F8FF"
+        sakura:labelTextMarginBottom="@dimen/gridview_main_panel_labelTextMarginBottom"
+        sakura:labelTextMarginLeft="@dimen/gridview_main_panel_labelTextMarginLeft"
+        sakura:labelTextMarginRight="@dimen/gridview_main_panel_labelTextMarginRight"
+        sakura:labelTextMarginTop="@dimen/gridview_main_panel_labelTextMarginTop"
+        sakura:labelTextSize="@dimen/gridview_main_panel_labelTextSize"
+        sakura:labelTopOffset="@dimen/gridview_main_panel_labelTopOffset"
+        sakura:labelWidth="@dimen/gridview_main_panel_labelWidth"
         sakura:numRows="3"
         sakura:rowHeight="@dimen/gridview_main_panel_rowHeight"
         sakura:selectorDrawable="@drawable/vod_gv_selector"
@@ -80,8 +116,7 @@
         sakura:selectionTopPadding="@dimen/HGridView_related_selectionTopPadding"
         sakura:selectionRightPadding="@dimen/HGridView_related_selectionRightPadding"
         sakura:selectionBottomPadding="@dimen/HGridView_related_selectionBottomPadding"
-        android:layout_marginTop="-12dip"
-        android:layout_marginLeft="60dip">
+        android:layout_marginTop="@dimen/grid_view_main_list_marginT" >
     </org.sakuratya.horizontal.ui.HGridView>
 
     <RelativeLayout

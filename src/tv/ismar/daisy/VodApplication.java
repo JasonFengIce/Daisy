@@ -2,6 +2,7 @@ package tv.ismar.daisy;
 
 import android.app.Activity;
 import android.content.*;
+import android.content.res.AssetManager;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -16,11 +17,14 @@ import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.models.ContentModel;
+import tv.ismar.daisy.models.ContentModelList;
 import tv.ismar.daisy.persistence.FavoriteManager;
 import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.persistence.LocalFavoriteManager;
 import tv.ismar.daisy.persistence.LocalHistoryManager;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
@@ -122,12 +126,24 @@ public class VodApplication extends Application {
          * initialize ActiveAndroid
          */
         ActiveAndroid.initialize(this);
-
+        getContentModelFromAssets();
         load(this);
         registerReceiver(mCloseReceiver, new IntentFilter("com.amlogic.dvbplayer.homekey"));
         registerReceiver(mSleepReceiver, new IntentFilter("com.alpha.lenovo.powerKey"));
     }
-
+    public void getContentModelFromAssets() {
+        AssetManager assetManager = getAssets();
+        SimpleRestClient restClient = new SimpleRestClient();
+        try {
+            InputStream in = assetManager.open("content_model.json");
+            ContentModelList contentModelList = restClient.getContentModelList(in);
+            if(contentModelList!=null) {
+                mContentModel = contentModelList.zh_CN;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public static String getDeviceId(Context context) {
         String deviceId = null;
         try {

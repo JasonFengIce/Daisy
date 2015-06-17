@@ -14,15 +14,12 @@ import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemList;
 import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
-import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.LoadingDialog;
-import tv.ismar.daisy.views.ScrollableSectionList;
-import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
-import android.app.Activity;
+import tv.ismar.daisy.views.RelateScrollableSectionList;
+import tv.ismar.daisy.views.RelateScrollableSectionList.OnSectionSelectChangedListener;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -31,17 +28,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
+
 public class RelatedActivity extends BaseActivity implements OnSectionSelectChangedListener, OnItemClickListener {
 	
 	private static final String TAG = "RelatedActivity";
 	
-	private ScrollableSectionList mSectionTabs;
+	private RelateScrollableSectionList mSectionTabs;
 	
 	//private GridView mItemListGrid;
     private ZGridView mItemListGrid;
@@ -66,7 +62,7 @@ public class RelatedActivity extends BaseActivity implements OnSectionSelectChan
 	
 	private String mSection;
 	private void initViews(){
-		mSectionTabs = (ScrollableSectionList) findViewById(R.id.related_section_tabs);
+		mSectionTabs = (RelateScrollableSectionList) findViewById(R.id.related_section_tabs);
 		mSectionTabs.setOnSectionSelectChangeListener(this);
 		mItemListGrid = (ZGridView) findViewById(R.id.related_list);
 		mItemListGrid.setOnItemClickListener(this);

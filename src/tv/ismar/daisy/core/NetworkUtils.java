@@ -62,9 +62,6 @@ public class NetworkUtils {
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			StringBuffer sb = new StringBuffer();
-			if(url.toString().contains("oumeijuchang")){
-			Log.v("aaaa", url.toString());
-			}
 			//conn.addRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.94 Safari/537.36");
 //			conn.addRequestProperty("Accept", "*/*");
 			//conn.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");

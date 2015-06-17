@@ -9,12 +9,12 @@ import java.util.regex.Pattern;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.*;
 import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
 import org.sakuratya.horizontal.ui.HGridView;
 import org.sakuratya.horizontal.ui.HGridView.OnScrollListener;
 import tv.ismar.daisy.ChannelListActivity;
 import tv.ismar.daisy.R;
-import tv.ismar.daisy.SearchActivity;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -27,6 +27,7 @@ import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
+import tv.ismar.daisy.ui.widget.TopPanelView;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -39,12 +40,8 @@ import android.text.TextUtils;
 import android.util.FloatMath;
 import android.util.Log;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 public class ChannelFragment extends Fragment implements OnItemSelectedListener, OnItemClickListener,
         OnScrollListener,ActivityToFragmentListener,ChannelListActivity.OnMenuToggleListener,
@@ -87,55 +84,65 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 	private HashMap<String, Object> mSectionProperties = new HashMap<String, Object>();
 	
 	//private ImageView leftarrow;
-	private ImageView arrow_left;
-	private ImageView arrow_right;
-	private Button btn_search;
-    private View filter;
+	//private ImageView arrow_left;
+	//private ImageView arrow_right;
+	//private Button btn_search;
+    private FilterLayout filter;
     private View large_layout;
     private MenuFragment mMenuFragment;
+    private boolean isPortrait = false;
+    private TopPanelView top_column_layout;
+    ProgressBar percentage;
+    public void setIsPOrtrait(boolean isPortrait){
+        this.isPortrait = isPortrait;
+    }
 	private void initViews(View fragmentView) {
+        percentage = (ProgressBar) fragmentView.findViewById(R.id.section_percentage);
+        top_column_layout = (TopPanelView)fragmentView.findViewById(R.id.top_column_layout);
+        top_column_layout.setChannelName(mTitle);
         large_layout = fragmentView.findViewById(R.id.large_layout);
-        filter = getActivity().findViewById(R.id.filter);
+        filter = (FilterLayout) getActivity().findViewById(R.id.filter);
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
 		mHGridView.setOnItemClickListener(this);
 		mHGridView.setOnItemSelectedListener(this);
 		mHGridView.setOnScrollListener(this);
 		mScrollableSectionList = (ScrollableSectionList) fragmentView.findViewById(R.id.section_tabs);
 		mScrollableSectionList.setOnSectionSelectChangeListener(mOnSectionSelectChangedListener);
-		arrow_left = (ImageView)fragmentView.findViewById(R.id.arrow_left);
-		arrow_right = (ImageView)fragmentView.findViewById(R.id.arrow_right);
-		mScrollableSectionList.left = arrow_left;
-		mScrollableSectionList.right = arrow_right;
+        mScrollableSectionList.percentageBar = percentage;
+		//arrow_left = (ImageView)fragmentView.findViewById(R.id.arrow_left);
+		//arrow_right = (ImageView)fragmentView.findViewById(R.id.arrow_right);
+		//mScrollableSectionList.left = arrow_left;
+		//mScrollableSectionList.right = arrow_right;
 		//mHGridView = 
-		arrow_left.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				mScrollableSectionList.arrowScroll(View.FOCUS_LEFT);
-			}
-		});
-		arrow_right.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				mScrollableSectionList.arrowScroll(View.FOCUS_RIGHT);
-			}
-		});
-		mChannelLabel = (TextView) fragmentView.findViewById(R.id.channel_label);
-		mChannelLabel.setText(mTitle);
-		btn_search = (Button)fragmentView.findViewById(R.id.list_view_search);
-		btn_search.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					Intent searchIntent = new Intent();
-					searchIntent.setClass(getActivity(), SearchActivity.class);
-					startActivity(searchIntent);
-				}
-			});
+//		arrow_left.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				mScrollableSectionList.arrowScroll(View.FOCUS_LEFT);
+//			}
+//		});
+//		arrow_right.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				mScrollableSectionList.arrowScroll(View.FOCUS_RIGHT);
+//			}
+//		});
+		//mChannelLabel = (TextView) fragmentView.findViewById(R.id.channel_label);
+	//	mChannelLabel.setText(mTitle);
+//		btn_search = (Button)fragmentView.findViewById(R.id.list_view_search);
+//		btn_search.setOnClickListener(new OnClickListener() {
+//
+//				@Override
+//				public void onClick(View v) {
+//					// TODO Auto-generated method stub
+//					Intent searchIntent = new Intent();
+//					searchIntent.setClass(getActivity(), SearchActivity.class);
+//					startActivity(searchIntent);
+//				}
+//			});
 	}
 
 
@@ -146,7 +153,10 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		if(fragmentView==null){
 			mLoadingDialog = new LoadingDialog(getActivity(), getResources().getString(R.string.loading));
 			mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
-			fragmentView = inflater.inflate(R.layout.list_view, container, false);
+            if(!isPortrait)
+			   fragmentView = inflater.inflate(R.layout.list_view, container, false);
+            else
+               fragmentView = inflater.inflate(R.layout.listportrait, container, false);
 			initViews(fragmentView);
 			mInitTask = new InitTask();
 			mInitTask.execute(mUrl, mChannel);
@@ -203,43 +213,117 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 
 
     }
+    private void doFilterRequest(){
+        String s = mChannel;
+        String url = "http://cordadmintest.tvxio.com/api/tv/retrieval/"+mChannel+"/";
+        mRestClient.doTopicRequest(url,"get","",new SimpleRestClient.HttpPostRequestInterface(){
 
+            @Override
+            public void onPrepare() {
+               mLoadingDialog.show();
+            }
+
+            @Override
+            public void onSuccess(String info) {
+                Toast.makeText(getActivity(),info,Toast.LENGTH_SHORT).show();
+                mLoadingDialog.dismiss();
+                filter.setViewInfoListener(new FilterLayout.ViewInfoListener() {
+                    @Override
+                    public void onViewInfoCallBack(int height) {
+                        startFilterLayout();
+                    }
+
+                    @Override
+                    public void onFilterSubmitClick(String condition) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onFailed(String error) {
+                mLoadingDialog.dismiss();
+                showDialog();
+            }
+        });
+    }
+    public void showDialog() {
+        AlertDialogFragment newFragment = AlertDialogFragment.newInstance(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG);
+        newFragment.setPositiveListener(new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+                doFilterRequest();
+                dialog.dismiss();
+            }
+        });
+        newFragment.setNegativeListener(new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                getActivity().finish();
+                dialog.dismiss();
+            }
+        });
+        FragmentManager manager = getFragmentManager();
+        if(manager!=null) {
+            newFragment.show(manager, "dialog");
+        }
+    }
     @Override
     public void onMenuItemClicked(MenuFragment.MenuItem item) {
 
 
             switch (item.id){
                 case 2:
-                    int height = getResources().getDimensionPixelSize(R.dimen.test_height);
-                    TranslateAnimation animation1 = new TranslateAnimation(0,0,-height,0);
-                    large_layout.setAlpha((float) 0.4);
-                    animation1.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            TranslateAnimation animation2 = new TranslateAnimation(0, 0, 0, 200);
-                            animation2.setDuration(1000);//
-                            animation2.setFillAfter(true);
-                            mHGridView.startAnimation(animation2);
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-                        }
-                    });
-                    animation1.setDuration(1000);//
-                    animation1.setFillAfter(true);
-                    filter.setVisibility(View.VISIBLE);
-                    filter.startAnimation(animation1);
+                   doFilterRequest();
                     break;
 
             }
     }
+    private void startFilterLayout(){
+        int height = getResources().getDimensionPixelSize(R.dimen.test_height);
+        TranslateAnimation animation1 = new TranslateAnimation(0,0,-height,0);
+        large_layout.setAlpha((float) 0.4);
+        animation1.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
 
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                TranslateAnimation animation2 = new TranslateAnimation(0, 0, 0, 200);
+                animation2.setDuration(1000);//
+                animation2.setFillAfter(true);
+                mHGridView.startAnimation(animation2);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+        animation1.setDuration(1000);//
+        animation1.setFillAfter(true);
+        // initFilterLayout();
+        filter.setVisibility(View.VISIBLE);
+        filter.startAnimation(animation1);
+    }
+   private void initFilterLayout(){
+       filter.setOrientation(LinearLayout.VERTICAL);
+       HorizontalScrollView genreScroll = new HorizontalScrollView(getActivity());
+       LinearLayout.LayoutParams genreScrollParams = new LinearLayout.LayoutParams(300,100);
+
+       genreScroll.setLayoutParams(genreScrollParams);
+       genreScroll.setBackgroundResource(android.R.color.holo_green_dark);
+       filter.addView(genreScroll);
+       //LinearLayout genreLayout = new LinearLayout(getActivity());
+
+
+
+
+   }
     @Override
     public void OnMenuToggle() {
         if(mMenuFragment==null) {
@@ -337,11 +421,12 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 
 		@Override
 		protected void onPostExecute(Integer result) {
-			Log.i("zhangjq123","onPostExecute");
 			if(mLoadingDialog!=null && mLoadingDialog.isShowing()) {
 				mLoadingDialog.dismiss();
 			}
 			isInitTaskLoading = false;
+            top_column_layout.setVisibility(View.VISIBLE);
+            percentage.setVisibility(View.VISIBLE);
 			if(result!=RESULT_SUCCESS) {
 				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, (mInitTask = new InitTask()), new String[]{url, channel});
 				return;
@@ -349,12 +434,15 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 			try{
 				if(mSectionList!=null ) {
 					if(mSectionList.size()>5)
-						arrow_right.setVisibility(View.VISIBLE);
+						//arrow_right.setVisibility(View.VISIBLE);
 					
 
 					mScrollableSectionList.init(mSectionList, getResources().getDimensionPixelSize(R.dimen.gridview_channel_section_tabs_width),false);
-					btn_search.setNextFocusDownId(R.id.section_item_layout);
+				//	btn_search.setNextFocusDownId(R.id.section_item_layout);
 					mHGridAdapter = new HGridAdapterImpl(getActivity(), mItemCollections);
+                    if(isPortrait)
+                      mHGridAdapter.setIsPortrait(true);
+
 					mHGridAdapter.setList(mItemCollections);
 					if(mHGridAdapter.getCount()>0){
 						mHGridView.setAdapter(mHGridAdapter);
@@ -364,8 +452,8 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 						mHGridAdapter.hg = mHGridView;
 						int num_rows = mHGridView.getRows();
 						int totalColumnsOfSectionX = (int) FloatMath.ceil((float)mItemCollections.get(nextSection).count / (float) num_rows);
-						mScrollableSectionList.setPercentage(nextSection, (int)(1f/(float)totalColumnsOfSectionX*100f));
-						checkSectionChanged(nextSection);
+						mScrollableSectionList.setPercentage(nextSection+1, (int)(1f/(float)totalColumnsOfSectionX*100f));
+						checkSectionChanged(nextSection+1);
 					}
 
 				} else {
@@ -699,8 +787,8 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		int columnOfX = (position - itemCount) / rows + 1;
 		int totalColumnOfSectionX = (int)(FloatMath.ceil((float)mHGridAdapter.getSectionCount(sectionIndex) / (float) rows)); 
 		int percentage = (int) ((float)columnOfX / (float)totalColumnOfSectionX * 100f);
-		mScrollableSectionList.setPercentage(sectionIndex, percentage);
-		checkSectionChanged(sectionIndex);
+		mScrollableSectionList.setPercentage(sectionIndex+1, percentage);
+		checkSectionChanged(sectionIndex+1);
 	}
 
 	@Override
@@ -722,13 +810,21 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 	
 	private void checkSectionChanged(int newSectionIndex) {
 		if(newSectionIndex != mCurrentSectionIndex && newSectionIndex >= 0) {
-			Section newSection = mSectionList.get(newSectionIndex);
+            Section newSection;
+            if(newSectionIndex>0)
+			    newSection = mSectionList.get(newSectionIndex-1);
+            else
+                newSection = mSectionList.get(newSectionIndex);
 			mSectionProperties.put(EventProperty.SECTION, newSection.slug);
 			mSectionProperties.put(EventProperty.TITLE, newSection.title);
 			//mSectionProperties.put("sid", newSectionIndex);
 			new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_CATEGORY_IN, mSectionProperties);
 			if(mCurrentSectionIndex >=0 ){
-				Section oldSection = mSectionList.get(mCurrentSectionIndex);
+                Section oldSection;
+                if(mCurrentSectionIndex>0)
+                    oldSection = mSectionList.get(mCurrentSectionIndex-1);
+                else
+                    oldSection = mSectionList.get(mCurrentSectionIndex);
 				HashMap<String, Object> sectionProperties = new HashMap<String, Object>();
 				sectionProperties.put(EventProperty.SECTION, oldSection.slug);
 				sectionProperties.put(EventProperty.TITLE, oldSection.title);

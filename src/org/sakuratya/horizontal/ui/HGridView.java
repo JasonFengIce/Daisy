@@ -1075,7 +1075,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 			}
 			setSelectedPositionInt(mNextSelectedPosition);
 
-			resetLabel();
+			//resetLabel();
 
 			if (mDataChanged) {
 				for (int i = 0; i < childCount; i++) {
@@ -1628,9 +1628,9 @@ public class HGridView extends AdapterView<HGridAdapter> {
 
 	@Override
 	protected void dispatchDraw(Canvas canvas) {
-		if (mAdapter != null && mAdapter.hasSection() && getChildCount() > 0) {
-			drawSectionLabels(canvas);
-		}
+//		if (mAdapter != null && mAdapter.hasSection() && getChildCount() > 0) {
+//			drawSectionLabels(canvas);
+//		}
 		drawSelector(canvas);
 		super.dispatchDraw(canvas);
 	}
@@ -1791,7 +1791,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 				// textLeft += 24;
 				// }
 				for (int j = 0; j < labelText.length(); j++) {
-				
+
 					// if(chr>=48&&chr<=57){
 					// canvas.drawText(labelText, j, j+1, textLeft+5, textTop,
 					// mLabelTextPaint);

@@ -32,6 +32,11 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 	public HGridView hg;
 	private HashSet<AsyncImageView> mOnLoadingImageQueue = new HashSet<AsyncImageView>();
 	private HashSet<RelativeLayout> mOnLoadinglayoutQueue = new HashSet<RelativeLayout>();
+    private boolean isPortrait = false;
+
+    public void setIsPortrait(boolean isPortrait){
+        this.isPortrait = isPortrait;
+    }
 	public HGridAdapterImpl(Context context, ArrayList<ItemCollection> list) {
 		mContext = context;
 		if(list != null && list.size()>0) {
@@ -91,7 +96,10 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 	public View getView( final int position, View convertView, ViewGroup parent) {
 		Holder holder = null;
 		if(convertView == null) {
-			convertView = LayoutInflater.from(mContext).inflate(R.layout.list_view_item,null);
+            if(!this.isPortrait)
+			    convertView = LayoutInflater.from(mContext).inflate(R.layout.list_view_item,null);
+            else
+                convertView = LayoutInflater.from(mContext).inflate(R.layout.list_portrait_item,null);
 			holder = new Holder();
 			holder.title = (TextView) convertView.findViewById(R.id.list_item_title);
 			holder.previewImage = (AsyncImageView) convertView.findViewById(R.id.list_item_preview_img);
@@ -156,25 +164,26 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 		}
 
 		// This ItemCollection's currentIndex has been filled.
-		if(mList.get(sectionIndex).isItemReady(indexOfCurrentSection)) {
-			final Item item = mList.get(sectionIndex).objects.get(indexOfCurrentSection);
-			if(item!=null){
-				if(item.expense!=null){
-					holder.price.setText("￥"+item.expense.price);
-					holder.price.setVisibility(View.VISIBLE);
-				}
-				else{
-					holder.price.setVisibility(View.GONE);
-				}
-				holder.title.setText(item.title);
-				holder.previewImage.setUrl(item.adlet_url);
-				if(item.bean_score>0){
-					   holder.ItemBeanScore.setVisibility(View.VISIBLE);
-					   holder.ItemBeanScore.setText(item.bean_score+"");
-				}
-				else{
-					holder.ItemBeanScore.setVisibility(View.INVISIBLE);
-				}
+        if(mList.size()>0){
+            if(mList.get(sectionIndex).isItemReady(indexOfCurrentSection)) {
+                final Item item = mList.get(sectionIndex).objects.get(indexOfCurrentSection);
+                if(item!=null){
+                    if(item.expense!=null){
+                        holder.price.setText("￥"+item.expense.price);
+                        holder.price.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        holder.price.setVisibility(View.GONE);
+                    }
+                    holder.title.setText(item.title);
+                    holder.previewImage.setUrl(item.adlet_url);
+                    if(item.bean_score>0){
+                        holder.ItemBeanScore.setVisibility(View.VISIBLE);
+                        holder.ItemBeanScore.setText(item.bean_score+"");
+                    }
+                    else{
+                        holder.ItemBeanScore.setVisibility(View.INVISIBLE);
+                    }
 //				if(item.quality==3) {
 //					holder.qualityLabel.setImageResource(R.drawable.label_hd_small);
 //				} else if(item.quality==4 || item.quality==5) {
@@ -182,15 +191,17 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 //				} else {
 //					holder.qualityLabel.setImageDrawable(null);
 //				}
-			}
-		} else {
-			// This ItemCollection's currentIndex has not filled yet.
-			// Show the default info.
-			holder.title.setText(mContext.getResources().getString(R.string.onload));
-			holder.previewImage.setUrl(null);
-			//holder.qualityLabel.setImageDrawable(null);
-			holder.price.setVisibility(View.GONE);
-		}
+                }
+            } else {
+                // This ItemCollection's currentIndex has not filled yet.
+                // Show the default info.
+                holder.title.setText(mContext.getResources().getString(R.string.onload));
+                holder.previewImage.setUrl(null);
+                //holder.qualityLabel.setImageDrawable(null);
+                holder.price.setVisibility(View.GONE);
+            }
+        }
+
 		return convertView;
 	}
 
@@ -225,7 +236,10 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 
 	@Override
 	public int getSectionCount(int sectionIndex) {
-		return mList.get(sectionIndex).count;
+        if(mList.size()>0)
+		   return mList.get(sectionIndex).count;
+        else
+            return 0;
 	}
 
 	@Override
@@ -233,7 +247,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 		if(this.mHasSection)
 		    return mList.get(sectionIndex).title;
 		else
-			return "";
+			return " ";
 	}
 	
 	public void cancel() {

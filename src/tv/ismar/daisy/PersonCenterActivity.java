@@ -75,6 +75,8 @@ public class PersonCenterActivity extends BaseActivity implements View.OnClickLi
 	private ArrayList<PrivilegeItem> mList;
 	private LoadingDialog mLoadingDialog;
 	private PrivilegeAdapter mAdapter;
+
+    //请求需要签名 sign: sn="xxx"&timestamp="xxx"
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub

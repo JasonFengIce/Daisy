@@ -36,12 +36,12 @@
             android:background="@drawable/arrow_left_selector"
             android:layout_marginLeft="@dimen/related_view_tabs_marginleft"     
             android:visibility="invisible" />
-        <tv.ismar.daisy.views.ScrollableSectionList
+        <tv.ismar.daisy.views.RelateScrollableSectionList
             android:id="@+id/related_section_tabs"
             android:layout_width="@dimen/gridview_channel_section_tabs_width"
             android:layout_height="match_parent"
             android:scrollbars="none" >
-        </tv.ismar.daisy.views.ScrollableSectionList>
+        </tv.ismar.daisy.views.RelateScrollableSectionList>
 
         <ImageView
             android:id="@+id/arrow_right"
