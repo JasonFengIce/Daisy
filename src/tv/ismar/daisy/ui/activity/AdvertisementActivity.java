@@ -14,7 +14,6 @@ import android.util.Log;
 import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 import tv.ismar.daisy.AppConstant;
-import tv.ismar.daisy.LauncherActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.service.PosterUpdateService;
 
@@ -97,7 +96,7 @@ public class AdvertisementActivity extends Activity {
     }
 
     private void intentToLauncher() {
-        Intent intent = new Intent(this, LauncherActivity.class);
+        Intent intent = new Intent(this, TVGuideActivity.class);
         startActivity(intent);
     }
 

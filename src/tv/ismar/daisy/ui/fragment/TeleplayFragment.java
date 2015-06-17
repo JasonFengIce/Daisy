@@ -46,7 +46,7 @@ public class TeleplayFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        this.context = context;
+        this.context = activity;
     }
 
     @Override

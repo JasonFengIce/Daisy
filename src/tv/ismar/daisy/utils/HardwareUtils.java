@@ -52,9 +52,7 @@ public class HardwareUtils {
         FileInputStream in;
         try {
             in = new FileInputStream(file);
-//            MappedByteBuffer byteBuffer = in.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, file.length());
             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-
             byte[] buffer = new byte[1024 * 1024];
             int length;
             while ((length = in.read(buffer)) >0){

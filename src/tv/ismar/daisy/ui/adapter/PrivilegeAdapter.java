@@ -1,22 +1,15 @@
 package tv.ismar.daisy.ui.adapter;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.models.PrivilegeItem;
 
-import android.content.Context;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.TextView;
+import java.util.ArrayList;
 
 public class PrivilegeAdapter extends BaseAdapter {
     ArrayList<PrivilegeItem> mList;
