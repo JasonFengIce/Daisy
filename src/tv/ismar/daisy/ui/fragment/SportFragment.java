@@ -12,12 +12,15 @@ import tv.ismar.daisy.models.SportsGame;
 import tv.ismar.daisy.models.SportsGameList;
 import tv.ismar.daisy.views.LabelImageView;
 import tv.ismar.daisy.views.LoadingDialog;
+import android.R.integer;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +34,7 @@ import android.widget.TextView;
  * Created by huaijie on 5/18/15.
  */
 public class SportFragment extends Fragment {
+	private final int IMAGE_SWITCH_KEY = 0X11;
 	private SimpleRestClient mRestClient = new SimpleRestClient();
 	private LoadingDialog mLoadingDialog;
 	private HomePagerEntity entity;
@@ -40,6 +44,7 @@ public class SportFragment extends Fragment {
 	private LabelImageView sport_card1;
 	private LabelImageView sport_card2;
 	private LabelImageView sport_card3;
+	private LabelImageView sportspost;
 	private LabelImageView sport_channel1_image;
 	private TextView sport_channel1_subtitle;
 	private LabelImageView sport_channel2_image;
@@ -49,6 +54,8 @@ public class SportFragment extends Fragment {
 	private LabelImageView sport_channel4_image;
 	private TextView sport_channel4_subtitle;
 	private ImageView sport_channel5;
+	private ArrayList<String> looppost = new ArrayList<String>();
+	private int loopindex = 0;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,6 +67,7 @@ public class SportFragment extends Fragment {
 		sport_card1 = (LabelImageView) view.findViewById(R.id.sport_card1);
 		sport_card2 = (LabelImageView) view.findViewById(R.id.sport_card2);
 		sport_card3 = (LabelImageView) view.findViewById(R.id.sport_card3);
+		sportspost = (LabelImageView) view.findViewById(R.id.sportspost);
 		sport_channel1_image = (LabelImageView) view
 				.findViewById(R.id.sport_channel1_image);
 		sport_channel1_subtitle = (TextView) view
@@ -100,15 +108,25 @@ public class SportFragment extends Fragment {
 	};
 
 	private void fillData(SportsGameList carousellist,
-			ArrayList<Poster> postlist) {
+			ArrayList<Carousel> carousels, ArrayList<Poster> postlist) {
 		adapter.setmData(carousellist);
 		adapter.notifyDataSetChanged();
-		sport_card1.setUrl(postlist.get(0).getCustom_image());
-		sport_card1.setFocustitle(postlist.get(0).getIntroduction());
-		sport_card2.setUrl(postlist.get(1).getCustom_image());
-		sport_card2.setFocustitle(postlist.get(1).getIntroduction());
-		sport_card3.setUrl(postlist.get(2).getCustom_image());
-		sport_card3.setFocustitle(postlist.get(2).getIntroduction());
+		sport_card1.setUrl(carousels.get(0).getThumb_image());
+		sport_card1.setFocustitle(carousels.get(0).getIntroduction());
+		sport_card1.setTag(carousels.get(0).getVideo_image());
+		sport_card1.setOnFocusChangeListener(ItemOnFocusListener);
+		sport_card2.setUrl(carousels.get(1).getThumb_image());
+		sport_card2.setFocustitle(carousels.get(1).getIntroduction());
+		sport_card2.setTag(carousels.get(1).getVideo_image());
+		sport_card2.setOnFocusChangeListener(ItemOnFocusListener);
+		sport_card3.setUrl(carousels.get(2).getThumb_image());
+		sport_card3.setFocustitle(carousels.get(2).getIntroduction());
+		sport_card3.setTag(carousels.get(2).getVideo_image());
+		sport_card3.setOnFocusChangeListener(ItemOnFocusListener);
+		looppost.add(carousels.get(0).getVideo_image());
+		looppost.add(carousels.get(1).getVideo_image());
+		looppost.add(carousels.get(2).getVideo_image());
+		imageswitch.sendEmptyMessage(IMAGE_SWITCH_KEY);
 		sport_channel1_image.setUrl(postlist.get(3).getCustom_image());
 		sport_channel1_image.setFocustitle(postlist.get(3).getIntroduction());
 		sport_channel1_subtitle.setText(postlist.get(3).getTitle());
@@ -224,7 +242,8 @@ public class SportFragment extends Fragment {
 				return;
 			} else {
 				ArrayList<Poster> postlist = entity.getPosters();
-				fillData(games, postlist);
+				ArrayList<Carousel> carousels = entity.getCarousels();
+				fillData(games, carousels, postlist);
 			}
 		}
 	}
@@ -266,7 +285,23 @@ public class SportFragment extends Fragment {
 		public void onFocusChange(View v, boolean hasFocus) {
 			if (hasFocus) {
 				String url = v.getTag().toString();
+				sportspost.setUrl(url);
+				imageswitch.removeMessages(IMAGE_SWITCH_KEY);
+			} else {
+				imageswitch.sendEmptyMessageDelayed(IMAGE_SWITCH_KEY, 6000);
 			}
+		}
+	};
+
+	private Handler imageswitch = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			sportspost.setUrl(looppost.get(loopindex++));
+			if (loopindex >= 2)
+				loopindex = 0;
+			imageswitch.sendEmptyMessageDelayed(IMAGE_SWITCH_KEY, 6000);
+			// pendingView.requestFocus();
 		}
 	};
 }
