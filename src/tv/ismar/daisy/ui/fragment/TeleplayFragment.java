@@ -149,14 +149,14 @@ public class TeleplayFragment extends Fragment {
             itemView.setOnFocusChangeListener(carouselUtils.listener);
             carouselLayout.addView(itemView);
         }
-         downloadCarouselVideo(carousels);
+        downloadCarouselVideo(carousels);
 
     }
 
     private void downloadCarouselVideo(
             ArrayList<HomePagerEntity.Carousel> carousels) {
-        if (HardwareUtils.isExternalStorageMounted()){
-            new IsmartvFileClient(context, carousels, HardwareUtils.getSDCardCachePath()).start();
+        if (HardwareUtils.isExternalStorageMounted()) {
+            new IsmartvFileClient(context, carousels, HardwareUtils.getSDCardCachePath() + "/drama/").start();
         }
 
     }
@@ -181,18 +181,18 @@ public class TeleplayFragment extends Fragment {
                             "tv.ismar.daisy.ItemDetailActivity");
                     intent.putExtra("url", poster.getUrl());
                     getActivity().startActivity(intent);
-                }  else if ("topic".equals(poster.getModel_name())) {
-                       intent.putExtra("url",
-                       		poster.getUrl());
-                       intent.setClassName("tv.ismar.daisy",
-                               "tv.ismar.daisy.TopicActivity");
-                       getActivity().startActivity(intent);
+                } else if ("topic".equals(poster.getModel_name())) {
+                    intent.putExtra("url",
+                            poster.getUrl());
+                    intent.setClassName("tv.ismar.daisy",
+                            "tv.ismar.daisy.TopicActivity");
+                    getActivity().startActivity(intent);
                 } else if ("section".equals(poster.getModel_name())) {
                     intent.putExtra("title", poster.getTitle());
                     intent.putExtra("itemlistUrl",
-                    		poster.getUrl());
+                            poster.getUrl());
                     intent.putExtra("lableString",
-                    		poster.getTitle());
+                            poster.getTitle());
                     intent.setClassName("tv.ismar.daisy",
                             "tv.ismar.daisy.PackageListDetailActivity");
                     getActivity().startActivity(intent);

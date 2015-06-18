@@ -134,8 +134,7 @@ public class FilmFragment extends Fragment {
             public void run() {
                 carouselUtils.loopCarousel(context, carousels, linkedVideoView, linkedVideoImage);
             }
-        },1000);
-
+        }, 1000);
 
 
         for (int i = 0; i < carousels.size(); i++) {
@@ -150,19 +149,19 @@ public class FilmFragment extends Fragment {
             itemView.setScaleType(ImageView.ScaleType.FIT_XY);
             itemView.setLayoutParams(params);
             itemView.setTag(i);
-            itemView.setTag(R.drawable.launcher_selector,carousels.get(i));
+            itemView.setTag(R.drawable.launcher_selector, carousels.get(i));
             itemView.setOnClickListener(ItemClickListener);
             itemView.setOnFocusChangeListener(carouselUtils.listener);
             carouselLayout.addView(itemView);
         }
-         downloadCarouselVideo(carousels);
+        downloadCarouselVideo(carousels);
 
     }
 
     private void downloadCarouselVideo(
             ArrayList<HomePagerEntity.Carousel> carousels) {
-        if (HardwareUtils.isExternalStorageMounted()){
-            new IsmartvFileClient(context, carousels, HardwareUtils.getSDCardCachePath()).start();
+        if (HardwareUtils.isExternalStorageMounted()) {
+            new IsmartvFileClient(context, carousels, HardwareUtils.getSDCardCachePath() + "/chinese/").start();
         }
 
     }
@@ -171,20 +170,20 @@ public class FilmFragment extends Fragment {
     private View.OnClickListener ItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-        	String url = null;
-        	String contentMode =null;
-        	String title = null;
-        	if (view.getTag()  instanceof Poster) {
-        		Poster new_name = (Poster) view.getTag();
-        		contentMode = new_name.getModel_name();
-        		url =new_name.getUrl();
-        		title = new_name.getTitle();
-			}else if(view.getTag(R.drawable.launcher_selector)  instanceof Carousel){
-				Carousel new_name = (Carousel) view.getTag(R.drawable.launcher_selector);
-        		contentMode = new_name.getModel_name();
-        		url =new_name.getUrl();
-        		title = new_name.getTitle();
-			}
+            String url = null;
+            String contentMode = null;
+            String title = null;
+            if (view.getTag() instanceof Poster) {
+                Poster new_name = (Poster) view.getTag();
+                contentMode = new_name.getModel_name();
+                url = new_name.getUrl();
+                title = new_name.getTitle();
+            } else if (view.getTag(R.drawable.launcher_selector) instanceof Carousel) {
+                Carousel new_name = (Carousel) view.getTag(R.drawable.launcher_selector);
+                contentMode = new_name.getModel_name();
+                url = new_name.getUrl();
+                title = new_name.getTitle();
+            }
             Intent intent = new Intent();
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             if (url == null) {
@@ -201,18 +200,18 @@ public class FilmFragment extends Fragment {
                             "tv.ismar.daisy.ItemDetailActivity");
                     intent.putExtra("url", url);
                     getActivity().startActivity(intent);
-                }  else if ("topic".equals(contentMode)) {
-                       intent.putExtra("url",
-                    		   url);
-                       intent.setClassName("tv.ismar.daisy",
-                               "tv.ismar.daisy.TopicActivity");
-                       getActivity().startActivity(intent);
+                } else if ("topic".equals(contentMode)) {
+                    intent.putExtra("url",
+                            url);
+                    intent.setClassName("tv.ismar.daisy",
+                            "tv.ismar.daisy.TopicActivity");
+                    getActivity().startActivity(intent);
                 } else if ("section".equals(contentMode)) {
                     intent.putExtra("title", title);
                     intent.putExtra("itemlistUrl",
-                    		url);
+                            url);
                     intent.putExtra("lableString",
-                    		title);
+                            title);
                     intent.setClassName("tv.ismar.daisy",
                             "tv.ismar.daisy.PackageListDetailActivity");
                     getActivity().startActivity(intent);
