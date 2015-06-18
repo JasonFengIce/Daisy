@@ -32,7 +32,7 @@ public class IsmartvFileClient extends Thread {
 
     private Context context;
 
-    public IsmartvFileClient(Context context, ArrayList<HomePagerEntity.Carousel> carousels) {
+    public IsmartvFileClient(Context context, ArrayList<HomePagerEntity.Carousel> carousels, String downloadPath) {
         this.carousels = carousels;
         this.context = context;
         files = new ArrayList<HashMap<String, String>>();
@@ -46,7 +46,6 @@ public class IsmartvFileClient extends Thread {
 
             try {
                 URL url = new URL(downloadUrl);
-                String downloadPath = HardwareUtils.getCachePath(context);
                 String videoName = url.getFile();
                 hashMap.put("path", downloadPath + videoName);
                 if (!TextUtils.isEmpty(downloadPath)) {

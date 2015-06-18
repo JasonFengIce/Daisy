@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.squareup.picasso.Picasso;
+import tv.ismar.daisy.utils.HardwareUtils;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -154,13 +155,16 @@ public class FilmFragment extends Fragment {
             itemView.setOnFocusChangeListener(carouselUtils.listener);
             carouselLayout.addView(itemView);
         }
-        // downloadCarouselVideo(carousels);
+         downloadCarouselVideo(carousels);
 
     }
 
     private void downloadCarouselVideo(
             ArrayList<HomePagerEntity.Carousel> carousels) {
-        new IsmartvFileClient(context, carousels).start();
+        if (HardwareUtils.isExternalStorageMounted()){
+            new IsmartvFileClient(context, carousels, HardwareUtils.getSDCardCachePath()).start();
+        }
+
     }
 
 

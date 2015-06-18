@@ -151,6 +151,7 @@ public class CarouselUtils {
         } else {
             playPath = videoUrl.toString();
         }
+        Log.d(TAG, "setVideoPath: " + playPath);
         videoView.setVideoPath(playPath);
         videoView.start();
     }

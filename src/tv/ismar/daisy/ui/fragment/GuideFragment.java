@@ -26,6 +26,7 @@ import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.data.HomePagerEntity.Poster;
 import tv.ismar.daisy.ui.CarouselUtils;
 import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
+import tv.ismar.daisy.utils.HardwareUtils;
 
 import java.util.ArrayList;
 
@@ -151,7 +152,7 @@ public class GuideFragment extends Fragment {
     }
 
     private void downloadCarouselVideo(ArrayList<HomePagerEntity.Carousel> carousels) {
-        new IsmartvFileClient(context, carousels).start();
+        new IsmartvFileClient(context, carousels, HardwareUtils.getCachePath(context)).start();
     }
 
     private View.OnClickListener ItemClickListener = new View.OnClickListener() {

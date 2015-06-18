@@ -25,13 +25,12 @@ public class HardwareUtils {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             return new File(Environment.getExternalStorageDirectory(), "/Daisy").getAbsolutePath();
         } else {
-            long internalMemorySize = getAvailableInternalMemorySize() / 1024 / 1024 / 1024;
-            if (internalMemorySize >= 1)
                 return context.getCacheDir().getAbsolutePath();
-            else
-                return "";
         }
     }
+
+
+
 
     public static String getSDCardCachePath() {
         return new File(Environment.getExternalStorageDirectory(), "/Daisy").getAbsolutePath();
