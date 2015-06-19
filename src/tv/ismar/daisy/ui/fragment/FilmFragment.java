@@ -37,7 +37,7 @@ import tv.ismar.daisy.utils.HardwareUtils;
 /**
  * Created by huaijie on 5/18/15.
  */
-public class FilmFragment extends Fragment {
+public class FilmFragment extends ChannelBaseFragment {
     private static final String TAG = "FilmFragment";
 
     private LinearLayout guideRecommmendList;

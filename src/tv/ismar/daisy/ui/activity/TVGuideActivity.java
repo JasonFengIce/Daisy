@@ -53,7 +53,7 @@ public class TVGuideActivity extends FragmentActivity implements
 
 
     private AppUpdateReceiver appUpdateReceiver;
-    private Fragment currentFragment;
+    private ChannelBaseFragment currentFragment;
 
     /**
      * PopupWindow
@@ -422,14 +422,9 @@ public class TVGuideActivity extends FragmentActivity implements
                 contentView.setBackgroundResource(R.color.normal_activity_bg);
             } else if ("template4".equals(channelEntity.getHomepage_template())) {
                 currentFragment = new ChildFragment();
-                contentView.setBackgroundResource(R.color.normal_activity_bg);
+                contentView.setBackgroundResource(R.drawable.channel_child_bg);
             }
-            Bundle bundle = new Bundle();  
-            bundle.putString("homepage_url", channelEntity.getHomepage_url());
-            bundle.putString("url", channelEntity.getUrl());
-            bundle.putString("name", channelEntity.getName());
-            bundle.putString("channel", channelEntity.getChannel());
-            currentFragment.setArguments(bundle);
+            currentFragment.setChannelEntity(channelEntity);
             replaceFragment(currentFragment);
         }
 

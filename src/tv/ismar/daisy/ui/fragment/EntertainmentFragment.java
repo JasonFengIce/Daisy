@@ -29,7 +29,7 @@ import android.widget.TextView;
 /**
  * Created by huaijie on 5/18/15.
  */
-public class EntertainmentFragment extends Fragment {
+public class EntertainmentFragment extends ChannelBaseFragment {
 
 	private final int IMAGE_SWITCH_KEY = 0X11;
 	private SimpleRestClient mRestClient = new SimpleRestClient();
@@ -60,10 +60,7 @@ public class EntertainmentFragment extends Fragment {
 	private HomePagerEntity entity;
 	private ArrayList<String> looppost = new ArrayList<String>();
 	private int loopindex = 0;
-    private String homepage_url;
-    private String url;
-    private String name;
-    private String channel;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -124,10 +121,6 @@ public class EntertainmentFragment extends Fragment {
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
-		homepage_url = getArguments().getString("homepage_url");
-		url = getArguments().getString("url");
-		name = getArguments().getString("name");
-		channel = getArguments().getString("channel");
 		new FetchDataTask().execute();
 		vaiety_thumb1.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
@@ -254,7 +247,7 @@ public class EntertainmentFragment extends Fragment {
 		@Override
 		protected Integer doInBackground(String... params) {
 			try {
-				entity = mRestClient.getVaietyHome(homepage_url);
+				entity = mRestClient.getVaietyHome(channelEntity.getHomepage_url());
 			} catch (NetworkException e) {
 				e.printStackTrace();
 			}
@@ -287,9 +280,9 @@ public class EntertainmentFragment extends Fragment {
 			Intent intent = new Intent();
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			if (poster == null) {
-				intent.putExtra("title", name);
-				intent.putExtra("url",url);
-				intent.putExtra("channel", channel);
+				intent.putExtra("title", channelEntity.getName());
+				intent.putExtra("url",channelEntity.getUrl());
+				intent.putExtra("channel", channelEntity.getChannel());
 				intent.setClassName("tv.ismar.daisy",
 						"tv.ismar.daisy.ChannelListActivity");
 				getActivity().startActivity(intent);
