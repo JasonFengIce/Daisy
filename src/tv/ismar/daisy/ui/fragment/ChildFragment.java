@@ -102,7 +102,7 @@ public class ChildFragment extends Fragment {
 
 
     private void initPosters(ArrayList<HomePagerEntity.Poster> posters) {
-        int marginLR = (int) getResources().getDimension(R.dimen.child_fragment_item_margin_lr);
+        int marginLR = (int) context.getResources().getDimension(R.dimen.child_fragment_item_margin_lr);
         int marginTP = (int) getResources().getDimension(R.dimen.child_fragment_item_margin_tp);
         Log.d(TAG, "margin lr: " + marginLR);
 

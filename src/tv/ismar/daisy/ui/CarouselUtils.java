@@ -90,6 +90,7 @@ public class CarouselUtils {
         loopList = new LoopList(carousels);
         playCarousel();
     }
+
     public void loopCarousel(Context context, ArrayList<HomePagerEntity.Carousel> carousels, final ImageView imageView, ImageIndicatorCallback callback) {
         Log.d(TAG, "loopCarousel is starting!!!");
         this.context = context;
@@ -99,7 +100,6 @@ public class CarouselUtils {
         loopList = new LoopList(carousels);
         playCarousel();
     }
-
 
 
     private void playCarousel() {
@@ -203,7 +203,7 @@ public class CarouselUtils {
     }
 
     public void setCurrentPosition(Integer position) {
-        if (null != position) {
+        if (null != position && loopList != null) {
             loopList.setCurrent(position);
             messageHandler.removeMessages(0);
             playCarousel();
@@ -235,7 +235,7 @@ public class CarouselUtils {
 
         public HomePagerEntity.Carousel next() {
             if (next == list.size()) {
-                if (null != callback){
+                if (null != callback) {
                     callback.indicatorChanged(currentPosition, 0);
                     currentPosition = 0;
                 }
@@ -244,7 +244,7 @@ public class CarouselUtils {
                 next = 1;
                 return carousel;
             } else {
-                if (null != callback){
+                if (null != callback) {
                     callback.indicatorChanged(currentPosition, next);
                     currentPosition = next;
                 }

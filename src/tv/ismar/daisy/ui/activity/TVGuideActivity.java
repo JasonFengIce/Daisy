@@ -1,43 +1,6 @@
 package tv.ismar.daisy.ui.activity;
 
-import static tv.ismar.daisy.VodApplication.DEVICE_TOKEN;
-import static tv.ismar.daisy.VodApplication.DOMAIN;
-import static tv.ismar.daisy.VodApplication.LOG_DOMAIN;
-import static tv.ismar.daisy.VodApplication.PREFERENCE_FILE_NAME;
-import static tv.ismar.daisy.VodApplication.SN_TOKEN;
-import static tv.ismar.daisy.VodApplication.ad_domain;
-
-import java.util.ArrayList;
-
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import tv.ismar.daisy.AppConstant;
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.VodApplication;
-import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.client.ClientApi;
-import tv.ismar.daisy.core.preferences.SimpleClientPreferences;
-import tv.ismar.daisy.core.service.PosterUpdateService;
-import tv.ismar.daisy.core.update.AppUpdateUtils;
-import tv.ismar.daisy.data.ChannelEntity;
-import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
-import tv.ismar.daisy.ui.fragment.ChildFragment;
-import tv.ismar.daisy.ui.fragment.EntertainmentFragment;
-import tv.ismar.daisy.ui.fragment.FilmFragment;
-import tv.ismar.daisy.ui.fragment.GuideFragment;
-import tv.ismar.daisy.ui.fragment.OverseasFilmFragment;
-import tv.ismar.daisy.ui.fragment.SportFragment;
-import tv.ismar.daisy.ui.fragment.TeleplayFragment;
-import tv.ismar.daisy.ui.widget.DaisyButton;
-import tv.ismar.daisy.ui.widget.TopPanelView;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -56,12 +19,28 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
+import com.baidu.location.*;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import tv.ismar.daisy.AppConstant;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.VodApplication;
+import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.client.ClientApi;
+import tv.ismar.daisy.core.service.PosterUpdateService;
+import tv.ismar.daisy.core.update.AppUpdateUtils;
+import tv.ismar.daisy.data.ChannelEntity;
+import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
+import tv.ismar.daisy.ui.fragment.*;
+import tv.ismar.daisy.ui.widget.DaisyButton;
+import tv.ismar.daisy.ui.widget.TopPanelView;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.GeofenceClient;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
+import java.util.ArrayList;
+
+import static tv.ismar.daisy.VodApplication.*;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -339,12 +318,6 @@ public class TVGuideActivity extends FragmentActivity implements
 
     @Override
     public void onSuccess(Result result) {
-        SimpleClientPreferences preferences = SimpleClientPreferences.getInstance(this);
-        preferences.setApiDomain(result.getDomain());
-        preferences.setAdvertisementDomain(result.getAd_domain());
-        preferences.setLogDomain(result.getLog_Domain());
-        preferences.setSnToken(result.getSn_Token());
-        preferences.setDeviceToken(result.getDevice_token());
 
         saveSimpleRestClientPreferences(this, result);
         DaisyUtils.getVodApplication(TVGuideActivity.this).getNewContentModel();
