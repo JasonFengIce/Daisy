@@ -199,12 +199,10 @@ public class SimpleRestClient {
 		return null;
 	}
 
-	public HomePagerEntity getVaietyHome()
+	public HomePagerEntity getVaietyHome(String url)
 			throws NetworkException {
 		HomePagerEntity entity = null;
 		try {
-//			String url = root_url + "/api/tv/homepage/zongyi/";
-			String url = "http://skytest.tvxio.com" + "/api/tv/homepage/variety/";
 			String jsonStr = NetworkUtils.getJsonStr(url);
 			entity = gson.fromJson(jsonStr, HomePagerEntity.class);
 			return entity;
@@ -218,12 +216,10 @@ public class SimpleRestClient {
 		return entity;
 	}
 
-	public HomePagerEntity getSportHome()
+	public HomePagerEntity getSportHome(String url)
 			throws NetworkException {
 		HomePagerEntity entity = null;
 		try {
-//			String url = root_url + "/api/tv/homepage/zongyi/";
-			String url = "http://skytest.tvxio.com" + "/api/tv/homepage/sport/";
 			String jsonStr = NetworkUtils.getJsonStr(url);
 			entity = gson.fromJson(jsonStr, HomePagerEntity.class);
 			return entity;

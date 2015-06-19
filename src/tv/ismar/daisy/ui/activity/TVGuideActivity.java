@@ -422,6 +422,12 @@ public class TVGuideActivity extends FragmentActivity implements
                 currentFragment = new ChildFragment();
                 contentView.setBackgroundResource(R.color.normal_activity_bg);
             }
+            Bundle bundle = new Bundle();  
+            bundle.putString("homepage_url", channelEntity.getHomepage_url());
+            bundle.putString("url", channelEntity.getUrl());
+            bundle.putString("name", channelEntity.getName());
+            bundle.putString("channel", channelEntity.getChannel());
+            currentFragment.setArguments(bundle);
             replaceFragment(currentFragment);
         }
 
