@@ -10,12 +10,14 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.widget.RelativeLayout;
+import com.google.gson.Gson;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.ClientApi;
+import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.HomePagerEntity;
 import android.app.Activity;
 import android.content.Context;
@@ -74,15 +76,15 @@ public class ChildFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        fetchChild(SimpleRestClient.access_token,
-                SimpleRestClient.device_token);
+        String url = getArguments().getString("url");
+        fetchChild(url);
     }
 
-    private void fetchChild(String accessToken, String deviceToken) {
-        ClientApi.Child client = restAdapter_SKYTEST_TVXIO.create(ClientApi.Child.class);
-        client.excute(accessToken, deviceToken, new Callback<HomePagerEntity>() {
+    private void fetchChild(String url) {
+        new IsmartvUrlClient(context).doRequest(url, new IsmartvUrlClient.CallBack() {
             @Override
-            public void success(HomePagerEntity homePagerEntity, Response response) {
+            public void onSuccess(String result) {
+                HomePagerEntity homePagerEntity = new Gson().fromJson(result, HomePagerEntity.class);
                 ArrayList<HomePagerEntity.Poster> posters = homePagerEntity.getPosters();
                 ArrayList<HomePagerEntity.Carousel> carousels = homePagerEntity.getCarousels();
 
@@ -94,10 +96,11 @@ public class ChildFragment extends Fragment {
             }
 
             @Override
-            public void failure(RetrofitError retrofitError) {
-
+            public void onFailed(Exception exception) {
+                Log.e(TAG, exception.getMessage());
             }
         });
+
     }
 
 

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import com.google.gson.Gson;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -14,6 +15,7 @@ import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.ClientApi;
 import tv.ismar.daisy.core.client.ClientApi.Teleplay;
 import tv.ismar.daisy.core.client.IsmartvFileClient;
+import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Poster;
 import tv.ismar.daisy.ui.CarouselUtils;
@@ -68,33 +70,30 @@ public class TeleplayFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fetchHomePage(SimpleRestClient.access_token,
-                SimpleRestClient.device_token);
+        String url = getArguments().getString("url");
+        fetchHomePage(url);
     }
 
-    private void fetchHomePage(String accessToken, String deviceToken) {
-        ClientApi.Teleplay client = restAdapter_SKYTEST_TVXIO
-                .create(Teleplay.class);
-        client.excute(accessToken, deviceToken,
-                new Callback<HomePagerEntity>() {
-                    @Override
-                    public void success(HomePagerEntity homePagerEntity,
-                                        Response response) {
-                        ArrayList<HomePagerEntity.Carousel> carousels = homePagerEntity
-                                .getCarousels();
-                        ArrayList<HomePagerEntity.Poster> posters = homePagerEntity
-                                .getPosters();
-                        initPosters(posters);
-                        initCarousel(carousels);
-                    }
+    private void fetchHomePage(String url) {
+        new IsmartvUrlClient(context).doRequest(url, new IsmartvUrlClient.CallBack() {
+            @Override
+            public void onSuccess(String result) {
+                HomePagerEntity homePagerEntity = new Gson().fromJson(result, HomePagerEntity.class);
+                ArrayList<HomePagerEntity.Poster> posters = homePagerEntity.getPosters();
+                ArrayList<HomePagerEntity.Carousel> carousels = homePagerEntity.getCarousels();
 
-                    @Override
-                    public void failure(RetrofitError retrofitError) {
-                        Log.e(TAG, retrofitError.getMessage());
-                    }
-                });
 
+                initPosters(posters);
+                initCarousel(carousels);
+            }
+
+            @Override
+            public void onFailed(Exception exception) {
+                Log.e(TAG, exception.getMessage());
+            }
+        });
     }
+
 
     private void initPosters(ArrayList<HomePagerEntity.Poster> posters) {
         for (int i = 0; i < posters.size(); i++) {
