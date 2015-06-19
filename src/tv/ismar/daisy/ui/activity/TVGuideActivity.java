@@ -163,7 +163,9 @@ public class TVGuideActivity extends FragmentActivity implements
         String deviceToken = SimpleRestClient.device_token;
         String host = SimpleRestClient.root_url;
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setLogLevel(AppConstant.LOG_LEVEL).setEndpoint(host).build();
+                .setLogLevel(AppConstant.LOG_LEVEL)
+                .setEndpoint(host)
+                .build();
         ClientApi.Channels client = restAdapter
                 .create(ClientApi.Channels.class);
         client.excute(deviceToken, new Callback<ChannelEntity[]>() {

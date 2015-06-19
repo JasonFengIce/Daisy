@@ -83,7 +83,7 @@ public class IsmartvUrlClient extends Thread {
         }
         stringBuffer.deleteCharAt(stringBuffer.length() - 1);
         this.params = stringBuffer.toString();
-        this.url = SimpleRestClient.root_url + api;
+        this.url = api;
         this.callback = callback;
         this.method = method;
         start();
@@ -104,7 +104,7 @@ public class IsmartvUrlClient extends Thread {
         }
         stringBuffer.deleteCharAt(stringBuffer.length() - 1);
         this.params = stringBuffer.toString();
-        this.url = SimpleRestClient.root_url + api;
+        this.url = api;
         this.callback = callback;
         this.method = Method.GET;
         start();

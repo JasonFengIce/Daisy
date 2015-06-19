@@ -15,6 +15,7 @@ import android.widget.VideoView;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvFileClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.HomePagerEntity;
@@ -66,7 +67,7 @@ public class GuideFragment extends Fragment {
 
 
     public void fetchHomePage() {
-        String api = "/api/tv/homepage/top/";
+        String api = SimpleRestClient.root_url + "/api/tv/homepage/top/";
         new IsmartvUrlClient(context).doRequest(api, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
