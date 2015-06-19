@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.VideoView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.utils.HardwareUtils;
 
@@ -29,6 +30,7 @@ public class CarouselUtils {
 
     private static final String TAG = "CarouselUtils";
 
+    private int currentPosition = 0;
 
     private Context context;
     private LoopList loopList;
@@ -36,6 +38,7 @@ public class CarouselUtils {
     private ImageView imageView;
     public CarouselFocusChangeListener listener;
     public ScaleFocusChangeListener scaleListener;
+    private ImageIndicatorCallback callback;
 
     private MessageHandler messageHandler;
 
@@ -87,6 +90,16 @@ public class CarouselUtils {
         loopList = new LoopList(carousels);
         playCarousel();
     }
+    public void loopCarousel(Context context, ArrayList<HomePagerEntity.Carousel> carousels, final ImageView imageView, ImageIndicatorCallback callback) {
+        Log.d(TAG, "loopCarousel is starting!!!");
+        this.context = context;
+        this.imageView = imageView;
+        this.messageHandler = new MessageHandler();
+        this.callback = callback;
+        loopList = new LoopList(carousels);
+        playCarousel();
+    }
+
 
 
     private void playCarousel() {
@@ -190,7 +203,7 @@ public class CarouselUtils {
     }
 
     public void setCurrentPosition(Integer position) {
-        if (null!= position){
+        if (null != position) {
             loopList.setCurrent(position);
             messageHandler.removeMessages(0);
             playCarousel();
@@ -222,15 +235,25 @@ public class CarouselUtils {
 
         public HomePagerEntity.Carousel next() {
             if (next == list.size()) {
+                if (null != callback){
+                    callback.indicatorChanged(currentPosition, 0);
+                    currentPosition = 0;
+                }
+
                 HomePagerEntity.Carousel carousel = list.get(0);
                 next = 1;
                 return carousel;
             } else {
+                if (null != callback){
+                    callback.indicatorChanged(currentPosition, next);
+                    currentPosition = next;
+                }
                 HomePagerEntity.Carousel carousel = list.get(next);
                 next = next + 1;
                 return carousel;
             }
         }
+
     }
 
     private class CarouselFocusChangeListener implements View.OnFocusChangeListener {
@@ -238,19 +261,20 @@ public class CarouselUtils {
         public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus) {
                 Integer position = (Integer) v.getTag();
-                if (null != position){
+                if (null != position) {
                     setCurrentPosition(position);
                 }
 
             }
         }
     }
-    private class ScaleFocusChangeListener implements View.OnFocusChangeListener{
+
+    private class ScaleFocusChangeListener implements View.OnFocusChangeListener {
         @Override
         public void onFocusChange(View view, boolean hasFocus) {
             if (hasFocus) {
                 Integer position = (Integer) view.getTag();
-                if (null != position){
+                if (null != position) {
                     setCurrentPosition(position);
                 }
                 AnimationSet animationSet = new AnimationSet(true);
@@ -273,6 +297,10 @@ public class CarouselUtils {
             }
 
         }
+    }
+
+    public interface ImageIndicatorCallback {
+        void indicatorChanged(int hide, int show);
     }
 
 }

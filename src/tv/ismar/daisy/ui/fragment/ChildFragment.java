@@ -168,7 +168,14 @@ public class ChildFragment extends Fragment {
 
     private void initCarousel(ArrayList<HomePagerEntity.Carousel> carousels) {
         CarouselUtils carouselUtils = new CarouselUtils();
-        carouselUtils.loopCarousel(context, carousels, imageSwitcher);
+        carouselUtils.loopCarousel(context, carousels, imageSwitcher, new CarouselUtils.ImageIndicatorCallback() {
+            @Override
+            public void indicatorChanged(int hide, int show) {
+                zoomIn(indicatorImgs[hide]);
+                zoomOut(indicatorImgs[show]);
+
+            }
+        });
         for (int i = 0; i < 3; i++) {
             indicatorImgs[i].setTag(i);
             indicatorImgs[i].setOnFocusChangeListener(carouselUtils.scaleListener);
@@ -176,6 +183,28 @@ public class ChildFragment extends Fragment {
         }
     }
 
+
+    private void zoomIn(View view) {
+        AnimationSet animationSet = new AnimationSet(true);
+        ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1f, 1.53f, 1f,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        scaleAnimation.setDuration(200);
+        animationSet.addAnimation(scaleAnimation);
+        animationSet.setFillAfter(true);
+        view.startAnimation(animationSet);
+    }
+
+    private void zoomOut(View view) {
+        AnimationSet animationSet = new AnimationSet(true);
+        ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1, 1, 1.53f,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        scaleAnimation.setDuration(200);
+        animationSet.addAnimation(scaleAnimation);
+        animationSet.setFillAfter(true);
+        view.startAnimation(animationSet);
+    }
 }
 
 

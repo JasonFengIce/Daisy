@@ -22,7 +22,7 @@ public class ClientApi {
 
     public static final String APP_UPDATE_HOST = "http://client.tvxio.com";
 
-    public static final String SKYTEST_TVXIO_HOST = "http://skytest.tvxio.com";
+    public static final String SKYTEST_TVXIO_HOST = "http://v2.sky.tvxio.com/";
 
     public static final RestAdapter restAdapter_SKYTEST_TVXIO;
 
@@ -34,7 +34,7 @@ public class ClientApi {
     }
 
     public interface Homepage {
-        @GET("/v2_0/SKY/dto/api/tv/homepage/top/")
+        @GET("/api/tv/homepage/top/")
         void excute(
                 @Query("device_token") String deviceToken,
                 Callback<HomePagerEntity> callback
