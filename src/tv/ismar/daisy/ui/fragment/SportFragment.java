@@ -56,7 +56,10 @@ public class SportFragment extends Fragment {
 	private ImageView sport_channel5;
 	private ArrayList<String> looppost = new ArrayList<String>();
 	private int loopindex = 0;
-
+    private String homepage_url;
+    private String url;
+    private String name;
+    private String channel;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -91,6 +94,10 @@ public class SportFragment extends Fragment {
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
+		homepage_url = getArguments().getString("homepage_url");
+		url = getArguments().getString("url");
+		name = getArguments().getString("name");
+		channel = getArguments().getString("channel");
 		new FetchDataTask().execute();
 		games = new SportsGameList();
 		adapter = new ScheduleAdapter();
@@ -109,8 +116,8 @@ public class SportFragment extends Fragment {
 
 	private void fillData(SportsGameList carousellist,
 			ArrayList<Carousel> carousels, ArrayList<Poster> postlist) {
-		adapter.setmData(carousellist);
-		adapter.notifyDataSetChanged();
+//		adapter.setmData(carousellist);
+//		adapter.notifyDataSetChanged();
 		sport_card1.setUrl(carousels.get(0).getThumb_image());
 		sport_card1.setFocustitle(carousels.get(0).getIntroduction());
 		sport_card1.setTag(carousels.get(0).getVideo_image());
@@ -222,7 +229,7 @@ public class SportFragment extends Fragment {
 		@Override
 		protected Integer doInBackground(String... params) {
 			try {
-				entity = mRestClient.getSportHome();
+				entity = mRestClient.getSportHome(homepage_url);
 				games = mRestClient.getSportGames();
 			} catch (NetworkException e) {
 				e.printStackTrace();
@@ -256,10 +263,9 @@ public class SportFragment extends Fragment {
 			Intent intent = new Intent();
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			if (poster == null) {
-				intent.putExtra("title", "华语电影");
-				intent.putExtra("url",
-						"http://skytest.tvxio.com/v2_0/A21/dto/api/tv/sections/sport/");
-				intent.putExtra("channel", "chinesemovie");
+				intent.putExtra("title", name);
+				intent.putExtra("url",url);
+				intent.putExtra("channel", channel);
 				intent.setClassName("tv.ismar.daisy",
 						"tv.ismar.daisy.ChannelListActivity");
 				getActivity().startActivity(intent);

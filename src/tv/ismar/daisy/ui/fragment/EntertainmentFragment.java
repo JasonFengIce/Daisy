@@ -60,7 +60,10 @@ public class EntertainmentFragment extends Fragment {
 	private HomePagerEntity entity;
 	private ArrayList<String> looppost = new ArrayList<String>();
 	private int loopindex = 0;
-
+    private String homepage_url;
+    private String url;
+    private String name;
+    private String channel;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -121,6 +124,10 @@ public class EntertainmentFragment extends Fragment {
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
+		homepage_url = getArguments().getString("homepage_url");
+		url = getArguments().getString("url");
+		name = getArguments().getString("name");
+		channel = getArguments().getString("channel");
 		new FetchDataTask().execute();
 		vaiety_thumb1.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
@@ -247,7 +254,7 @@ public class EntertainmentFragment extends Fragment {
 		@Override
 		protected Integer doInBackground(String... params) {
 			try {
-				entity = mRestClient.getVaietyHome();
+				entity = mRestClient.getVaietyHome(homepage_url);
 			} catch (NetworkException e) {
 				e.printStackTrace();
 			}
@@ -280,10 +287,9 @@ public class EntertainmentFragment extends Fragment {
 			Intent intent = new Intent();
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			if (poster == null) {
-				intent.putExtra("title", "综艺娱乐");
-				intent.putExtra("url",
-						"http://skytest.tvxio.com/v2_0/A21/dto/api/tv/sections/variety/");
-				intent.putExtra("channel", "variety");
+				intent.putExtra("title", name);
+				intent.putExtra("url",url);
+				intent.putExtra("channel", channel);
 				intent.setClassName("tv.ismar.daisy",
 						"tv.ismar.daisy.ChannelListActivity");
 				getActivity().startActivity(intent);

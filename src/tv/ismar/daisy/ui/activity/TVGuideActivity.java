@@ -190,8 +190,7 @@ public class TVGuideActivity extends FragmentActivity implements
                     textView.setText(channelEntities[i].getName());
                     textView.setTextColor(getResources()
                             .getColor(R.color.white));
-                    textView.setTag(channelEntities[i].getChannel());
-                    textView.setTag(R.dimen.tv_guide_channel_textSize, i);
+                    textView.setTag(channelEntities[i]);
                     textView.setOnClickListener(channelClickListener);
                     textView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
                     channelListView.addView(textView);
@@ -410,34 +409,27 @@ public class TVGuideActivity extends FragmentActivity implements
 
         @Override
         public void onClick(View v) {
-            String channel = v.getTag().toString();
-            currentChannelIndex = Integer.parseInt(v.getTag(R.dimen.tv_guide_channel_textSize).toString());
-            toppanel.setChannelName(channels[currentChannelIndex].getName());
-            if ("chinesemovie".equals(channel)) {
+        	ChannelEntity channelEntity = (ChannelEntity)v.getTag();
+            toppanel.setChannelName(channelEntity.getName());
+            if ("template1".equals(channelEntity.getHomepage_template())) {
                 currentFragment = new FilmFragment();
                 contentView.setBackgroundResource(R.color.normal_activity_bg);
-            } else if ("overseas".equals(channel)) {
-                currentFragment = new OverseasFilmFragment();
-                contentView.setBackgroundResource(R.color.normal_activity_bg);
-            } else if ("teleplay".equals(channel)) {
-                currentFragment = new TeleplayFragment();
-                contentView.setBackgroundResource(R.color.normal_activity_bg);
-            } else if ("variety".equals(channel)) {
+            } else if ("template2".equals(channelEntity.getHomepage_template())) {
                 currentFragment = new EntertainmentFragment();
                 contentView.setBackgroundResource(R.color.normal_activity_bg);
-            } else if ("comic".equals(channel)) {
-                contentView.setBackgroundResource(R.drawable.channel_child_bg);
-                currentFragment = new ChildFragment();
-            } else if ("sport".equals(channel)) {
+            } else if ("template3".equals(channelEntity.getHomepage_template())) {
                 currentFragment = new SportFragment();
                 contentView.setBackgroundResource(R.color.normal_activity_bg);
-            } else if ("music".equals(channel)) {
-
-            } else if ("documentary".equals(channel)) {
-
-            } else if ("rankinglist".equals(channel)) {
-
+            } else if ("template4".equals(channelEntity.getHomepage_template())) {
+                currentFragment = new ChildFragment();
+                contentView.setBackgroundResource(R.color.normal_activity_bg);
             }
+            Bundle bundle = new Bundle();  
+            bundle.putString("homepage_url", channelEntity.getHomepage_url());
+            bundle.putString("url", channelEntity.getUrl());
+            bundle.putString("name", channelEntity.getName());
+            bundle.putString("channel", channelEntity.getChannel());
+            currentFragment.setArguments(bundle);
             replaceFragment(currentFragment);
         }
 

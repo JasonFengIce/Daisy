@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -527,7 +528,7 @@ public class PaymentDialog extends Dialog {
 		public void onSuccess(String info) {
 			try {
 				JSONObject object = new JSONObject(info);
-				String balance = object.getString("balance");
+				String balance = StringUtils.isNotEmpty(SimpleRestClient.access_token)?object.getString("balance"):object.getString("sn_balance");
 				float balancefloat = Float.parseFloat(balance);
 				String balancevalue = mycontext.getResources().getString(
 						R.string.pay_card_balance_title_label);
