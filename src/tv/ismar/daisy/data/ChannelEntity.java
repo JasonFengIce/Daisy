@@ -11,8 +11,26 @@ public class ChannelEntity {
     private boolean chargeable;
     private String channel;
     private String template;
+    private String homepage_template;
+    private String homepage_url;
 
-    public String getName() {
+    public String getHomepage_template() {
+		return homepage_template;
+	}
+
+	public void setHomepage_template(String homepage_template) {
+		this.homepage_template = homepage_template;
+	}
+
+	public String getHomepage_url() {
+		return homepage_url;
+	}
+
+	public void setHomepage_url(String homepage_url) {
+		this.homepage_url = homepage_url;
+	}
+
+	public String getName() {
         return name;
     }
 
