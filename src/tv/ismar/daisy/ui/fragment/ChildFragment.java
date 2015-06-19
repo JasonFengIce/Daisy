@@ -38,7 +38,7 @@ import tv.ismar.daisy.ui.CarouselUtils;
 /**
  * Created by huaijie on 5/18/15.
  */
-public class ChildFragment extends Fragment {
+public class ChildFragment extends ChannelBaseFragment {
     private static final String TAG = "ChildFragment";
 
     private Context context;

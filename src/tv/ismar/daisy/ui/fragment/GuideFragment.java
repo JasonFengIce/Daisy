@@ -29,7 +29,7 @@ import java.util.ArrayList;
 /**
  * Created by huaijie on 5/18/15.
  */
-public class GuideFragment extends Fragment {
+public class GuideFragment extends ChannelBaseFragment {
     private String TAG = "GuideFragment";
     private LinearLayout guideRecommmendList;
     private LinearLayout carouselLayout;

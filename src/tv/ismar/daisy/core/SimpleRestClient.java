@@ -238,7 +238,7 @@ public class SimpleRestClient {
 		SportsGameList entity = null;
 		try {
 //			String url = root_url + "/api/tv/homepage/zongyi/";
-			String url = "http://skytest.tvxio.com" + "/api/tv/living_video/";
+			String url = root_url + "/api/tv/living_video/";
 			String jsonStr = NetworkUtils.getJsonStr(url);
 			entity = gson.fromJson(jsonStr, SportsGameList.class);
 			return entity;
