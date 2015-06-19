@@ -1,28 +1,9 @@
 package tv.ismar.daisy.ui.fragment;
 
-import static tv.ismar.daisy.core.client.ClientApi.restAdapter_SKYTEST_TVXIO;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.widget.RelativeLayout;
-import com.google.gson.Gson;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.client.ClientApi;
-import tv.ismar.daisy.core.client.IsmartvUrlClient;
-import tv.ismar.daisy.data.HomePagerEntity;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,9 +14,14 @@ import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.ui.CarouselUtils;
+
+import java.util.ArrayList;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -76,8 +62,8 @@ public class ChildFragment extends ChannelBaseFragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        String url = getArguments().getString("url");
-        fetchChild(url);
+
+        fetchChild(channelEntity.getHomepage_url());
     }
 
     private void fetchChild(String url) {
@@ -115,6 +101,9 @@ public class ChildFragment extends ChannelBaseFragment {
             itemContainer.setFocusable(true);
             itemContainer.setFocusableInTouchMode(true);
             itemContainer.setClickable(true);
+            itemContainer.setOnClickListener(ItemClickListener);
+            itemContainer.setTag(posters);
+
             ImageView itemImg = (ImageView) itemContainer.findViewById(R.id.item_img);
             TextView itemText = (TextView) itemContainer.findViewById(R.id.item_title);
 
@@ -161,6 +150,7 @@ public class ChildFragment extends ChannelBaseFragment {
         imageView.setFocusableInTouchMode(true);
         imageView.setClickable(true);
         imageView.setImageResource(R.drawable.selector_child_more);
+        imageView.setOnClickListener(ItemClickListener);
         LinearLayout.LayoutParams verticalParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
         verticalParams.weight = 1;
         verticalParams.setMargins(0, 0, marginLR, marginTP);
@@ -208,6 +198,62 @@ public class ChildFragment extends ChannelBaseFragment {
         animationSet.setFillAfter(true);
         view.startAnimation(animationSet);
     }
+
+    private View.OnClickListener ItemClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            String url = null;
+            String contentMode = null;
+            String title = null;
+            if (view.getTag() instanceof HomePagerEntity.Poster) {
+                HomePagerEntity.Poster new_name = (HomePagerEntity.Poster) view.getTag();
+                contentMode = new_name.getModel_name();
+                url = new_name.getUrl();
+                title = new_name.getTitle();
+            } else if (view.getTag(R.drawable.launcher_selector) instanceof HomePagerEntity.Carousel) {
+                HomePagerEntity.Carousel new_name = (HomePagerEntity.Carousel) view.getTag(R.drawable.launcher_selector);
+                contentMode = new_name.getModel_name();
+                url = new_name.getUrl();
+                title = new_name.getTitle();
+            }
+            Intent intent = new Intent();
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            if (url == null) {
+                intent.putExtra("title", "华语电影");
+                intent.putExtra("url",
+                        channelEntity.getUrl());
+                intent.putExtra("channel", "chinesemovie");
+                intent.setClassName("tv.ismar.daisy",
+                        "tv.ismar.daisy.ChannelListActivity");
+                getActivity().startActivity(intent);
+            } else {
+                if ("item".equals(contentMode)) {
+                    intent.setClassName("tv.ismar.daisy",
+                            "tv.ismar.daisy.ItemDetailActivity");
+                    intent.putExtra("url", url);
+                    getActivity().startActivity(intent);
+                } else if ("topic".equals(contentMode)) {
+                    intent.putExtra("url",
+                            url);
+                    intent.setClassName("tv.ismar.daisy",
+                            "tv.ismar.daisy.TopicActivity");
+                    getActivity().startActivity(intent);
+                } else if ("section".equals(contentMode)) {
+                    intent.putExtra("title", title);
+                    intent.putExtra("itemlistUrl",
+                            url);
+                    intent.putExtra("lableString",
+                            title);
+                    intent.setClassName("tv.ismar.daisy",
+                            "tv.ismar.daisy.PackageListDetailActivity");
+                    getActivity().startActivity(intent);
+                } else if ("package".equals(contentMode)) {
+
+                }
+            }
+        }
+    };
+
 }
 
 

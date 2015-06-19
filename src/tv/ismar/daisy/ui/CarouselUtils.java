@@ -151,11 +151,14 @@ public class CarouselUtils {
         URL videoUrl = new URL(carousel.getVideo_url());
 
         File localVideoFile = new File(HardwareUtils.getSDCardCachePath(), videoUrl.getFile());
+        Log.d(TAG, "local video path: " + localVideoFile.getAbsolutePath());
         String playPath;
 
         if (localVideoFile.exists()) {
-            Log.d(TAG, "local video path: " + localVideoFile.getAbsolutePath());
+
             String fileMd5Code = localVideoFile.getName().split("\\.")[0];
+            Log.d(TAG, "local file md5: " + HardwareUtils.getMd5ByFile(localVideoFile));
+            Log.d(TAG, "url md5: " + fileMd5Code);
             if (HardwareUtils.getMd5ByFile(localVideoFile).equalsIgnoreCase(fileMd5Code)) {
                 playPath = localVideoFile.getAbsolutePath();
             } else {

@@ -63,16 +63,17 @@ public class IsmartvFileClient extends Thread {
                 parentDir.mkdirs();
             } else {
                 File[] subFiles = parentDir.listFiles();
-                for (File subfile : subFiles) {
-                    if (!subfile.getName().equals(new File(files.get(0).get("path")).getName())
-                            && !subfile.getName().equals(new File(files.get(1).get("path")).getName())
-                            && !subfile.getName().equals(new File(files.get(2).get("path")).getName())) {
-                        if (subfile.exists()) {
-                            subfile.delete();
-                            Log.i(TAG, "subfile delete: " + subfile.getName());
-                        }
-                    }
-                }
+                deleteSubFile(subFiles);
+//                for (File subfile : subFiles) {
+//                    if (!subfile.getName().equals(new File(files.get(0).get("path")).getName())
+//                            && !subfile.getName().equals(new File(files.get(1).get("path")).getName())
+//                            && !subfile.getName().equals(new File(files.get(2).get("path")).getName())) {
+//                        if (subfile.exists()) {
+//                            subfile.delete();
+//                            Log.i(TAG, "subfile delete: " + subfile.getName());
+//                        }
+//                    }
+//                }
             }
         }
     }
@@ -130,5 +131,29 @@ public class IsmartvFileClient extends Thread {
             }
             Log.i(TAG, file.getAbsolutePath() + " download complete!!!");
         }
+    }
+
+    private void deleteSubFile(File[] subFiles) {
+        for (int i = 0; i < subFiles.length; i++) {
+            boolean delete = true;
+            for (int j = 0; j < subFiles.length; j++) {
+                delete = (!subFiles[i].getName().equals(new File(files.get(i).get("path")).getName())) ? (delete && true) : (delete && false);
+            }
+
+            if (subFiles[i].exists() && delete) {
+                subFiles[i].delete();
+                Log.i(TAG, "subfile delete: " + subFiles[i].getName());
+            }
+        }
+
+//            for (File subfile : subFiles) {
+//                if (!subfile.getName().equals(new File(files.get(0).get("path")).getName())
+//                        && !subfile.getName().equals(new File(files.get(1).get("path")).getName())
+//                        && !subfile.getName().equals(new File(files.get(2).get("path")).getName())) {
+//                    if (subfile.exists()) {
+//                        subfile.delete();
+//                        Log.i(TAG, "subfile delete: " + subfile.getName());
+//                    }
+//                }
     }
 }

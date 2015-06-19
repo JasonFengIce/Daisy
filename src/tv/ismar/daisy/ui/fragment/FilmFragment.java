@@ -72,9 +72,8 @@ public class FilmFragment extends ChannelBaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        String url = getArguments().getString("url");
 
-        fetchHomePage(url);
+        fetchHomePage(channelEntity.getHomepage_url());
     }
 
     private void fetchHomePage(String url) {
@@ -191,7 +190,7 @@ public class FilmFragment extends ChannelBaseFragment {
             if (url == null) {
                 intent.putExtra("title", "华语电影");
                 intent.putExtra("url",
-                        "http://skytest.tvxio.com/v2_0/A21/dto/api/tv/sections/chinesemovie/");
+                        channelEntity.getUrl());
                 intent.putExtra("channel", "chinesemovie");
                 intent.setClassName("tv.ismar.daisy",
                         "tv.ismar.daisy.ChannelListActivity");
