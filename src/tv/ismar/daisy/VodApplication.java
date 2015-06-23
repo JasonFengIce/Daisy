@@ -49,6 +49,9 @@ public class VodApplication extends Application {
     public static String DOMAIN = "domain";
     public static String LOG_DOMAIN = "logmain";
     public static String LOCATION_INFO = "location_info";
+    public static String LOCATION_PROVINCE ="location_province";
+    public static String LOCATION_CITY = "location_city";
+    public static String LOCATION_DISTRICT = "location_district";
     private static final int CORE_POOL_SIZE = 5;
     private ExecutorService mExecutorService;
    // public static float rate = 1;
