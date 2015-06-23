@@ -40,7 +40,7 @@ public class VodUserAgent {
 	 * @return UserAgent
 	 */
 	public static String getUserAgent(String sn) {
-		String userAgent = deviceType + "/"+ deviceVersion + " " + getMACAddress().toUpperCase();
+		String userAgent = Build.MODEL + "/"+ Build.VERSION.RELEASE + " " + getMACAddress().toUpperCase();
 		return userAgent;
 	}
 	public static String getHttpUserAgent(){

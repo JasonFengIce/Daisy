@@ -377,14 +377,14 @@ public class NetworkUtils {
 				return false;
 			}
 			Log.d(TAG,"base64 =="+jsonContent);
-			String url="http://ismartv.calla.tvxio.com/log";
+			String url=SimpleRestClient.log_domain+"/log";
 			//String url = "http://192.168.1.185:8099/shipinkefu/22.mp4";
 			java.net.URL connURL = new java.net.URL(url);
 			httpConn = (java.net.HttpURLConnection) connURL.openConnection();
 			httpConn.setRequestMethod("POST");
 			httpConn.setConnectTimeout(10000);
 			httpConn.setReadTimeout(10000); 
-			httpConn.setDoOutput(true);                 
+			httpConn.setDoOutput(true);
 
 	        httpConn.setDoInput(true); 
 			httpConn.setRequestProperty("Accept", "*/*");
@@ -402,7 +402,7 @@ public class NetworkUtils {
 			//String gzip1 = httpConn.getContentEncoding();
 			//Log.i("zjq", "gzip1=="+gzip1);
 			httpConn.connect();
-			
+
 			DataOutputStream out = new DataOutputStream(httpConn.getOutputStream());
 			String content = "sn=" + SimpleRestClient.sn_token + "&modelname="
 					+ VodUserAgent.getModelName() + "&data="
