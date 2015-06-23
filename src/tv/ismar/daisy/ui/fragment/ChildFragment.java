@@ -92,7 +92,7 @@ public class ChildFragment extends ChannelBaseFragment {
 
     private void initPosters(ArrayList<HomePagerEntity.Poster> posters) {
         int marginLR = (int) context.getResources().getDimension(R.dimen.child_fragment_item_margin_lr);
-        int marginTP = (int) getResources().getDimension(R.dimen.child_fragment_item_margin_tp);
+        int marginTP = (int) context.getResources().getDimension(R.dimen.child_fragment_item_margin_tp);
         Log.d(TAG, "margin lr: " + marginLR);
 
         for (int i = 0; i < 7; i++) {
@@ -126,7 +126,7 @@ public class ChildFragment extends ChannelBaseFragment {
                 LinearLayout.LayoutParams horizontalParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
                 horizontalParams.weight = 1;
                 if (i == 3) {
-                    horizontalParams.setMargins(0, marginTP, (int) getResources().getDimension(R.dimen.child_fragment_bottomlayout_margin), 0);
+                    horizontalParams.setMargins(0, marginTP, (int) context.getResources().getDimension(R.dimen.child_fragment_bottomlayout_margin), 0);
                 } else if (i == 4) {
                     horizontalParams.setMargins(0, marginTP, 0, 0);
                 }
