@@ -8,7 +8,7 @@ public class MessageQueue {
 
 	static ArrayList<String> messageQueueList;
 	//private static MessageQueue queue = new MessageQueue();
-
+    public static final String async="sync";
 	static {
 		messageQueueList = new ArrayList<String>();
 	}

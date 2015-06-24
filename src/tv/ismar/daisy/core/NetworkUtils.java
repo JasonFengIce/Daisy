@@ -246,9 +246,9 @@ public class NetworkUtils {
 	public static boolean SaveLogToLocal(String eventName,HashMap<String,Object> propertiesMap){
 		try {
 			String jsonContent = getContentJson(eventName, propertiesMap);
-			//SystemFileUtil.writeLogToLocal(jsonContent);
-			 MessageQueue.addQueue(jsonContent);
-			//LogSender(eventName, propertiesMap);
+            synchronized (MessageQueue.async){
+                MessageQueue.addQueue(jsonContent);
+            }
 			return true;
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -535,7 +535,9 @@ public class NetworkUtils {
 				String jsonContent;
 				try {
 					jsonContent = getContentJson(eventName, properties);
-					 MessageQueue.addQueue(jsonContent);
+                    synchronized (MessageQueue.async){
+                        MessageQueue.addQueue(jsonContent);
+                    }
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
