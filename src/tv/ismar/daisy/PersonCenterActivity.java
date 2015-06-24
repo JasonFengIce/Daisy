@@ -32,6 +32,7 @@ import tv.ismar.daisy.views.LoginPanelView;
 import tv.ismar.daisy.views.PaymentDialog;
 import tv.ismar.daisy.views.LoginPanelView.LoginInterface;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -41,6 +42,8 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.AbsListView;
@@ -75,6 +78,7 @@ public class PersonCenterActivity extends BaseActivity implements View.OnClickLi
 	private ArrayList<PrivilegeItem> mList;
 	private LoadingDialog mLoadingDialog;
 	private PrivilegeAdapter mAdapter;
+    private TextView account_register;
 
     //请求需要签名 sign: sn="xxx"&timestamp="xxx"
 	@Override
@@ -175,6 +179,8 @@ public class PersonCenterActivity extends BaseActivity implements View.OnClickLi
 		login_or_out_btn = (Button)findViewById(R.id.login_or_out_btn);
 		login_layout = (LoginPanelView)findViewById(R.id.login_layout);
         client_service_btn = (Button)findViewById(R.id.client_service_btn);
+        account_register = (TextView)findViewById(R.id.account_register);
+        account_register.setOnClickListener(this);
         client_service_btn.setOnClickListener(this);
          privilegelist.setOnItemClickListener(new OnItemClickListener() {
 
@@ -478,7 +484,7 @@ public class PersonCenterActivity extends BaseActivity implements View.OnClickLi
     }
 	private void getPrivilegeData(){
 
-		mSimpleRestClient.doSendRequest("/accounts/orders/", "get", "", new HttpPostRequestInterface() {
+		mSimpleRestClient.doSendRequest("http://sky.tvxio.com/v2_0/SKY/dto//accounts/orders/", "get", "", new HttpPostRequestInterface() {
 
 			@Override
 			public void onSuccess(String info) {
@@ -610,8 +616,55 @@ public class PersonCenterActivity extends BaseActivity implements View.OnClickLi
             case R.id.client_service_btn:
                 startSakura();
                 break;
+            case R.id.account_register:
+            	AccountAboutDialog dialog = new AccountAboutDialog(this,R.style.PaymentDialog);
+            	dialog.getWindow().clearFlags( WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            	dialog.show();
             default:
                 break;
         }
     }
+
+	class AccountAboutDialog extends Dialog {
+		private int width;
+		private int height;
+        private int x_coordinate;
+        private int y_coordinate;
+		public AccountAboutDialog(Context context, int theme) {
+			super(context, theme);
+			WindowManager wm = (WindowManager) getContext().getSystemService(
+					Context.WINDOW_SERVICE);
+			width = wm.getDefaultDisplay().getWidth();
+			height = wm.getDefaultDisplay().getHeight();
+		}
+
+		@Override
+		protected void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+			this.setContentView(R.layout.account_about);
+			resizeWindow();
+		}
+
+		private void resizeWindow() {
+			Window dialogWindow = getWindow();
+			WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+			x_coordinate = ((int) (width * 0.15));
+			y_coordinate = ((int) (height * 0.1));
+			lp.width = ((int) (width * 0.70));
+			lp.height = ((int) (height * 0.74));
+			lp.x = 510;
+			lp.y = 150;
+			lp.gravity = Gravity.LEFT|Gravity.TOP;
+		}
+
+		@Override
+		public boolean onKeyDown(int keyCode, KeyEvent event) {
+			switch (keyCode) {
+			case KeyEvent.KEYCODE_BACK:
+				dismiss();
+				return true;
+			}
+			return super.onKeyDown(keyCode, event);
+		}
+	};
 }
