@@ -57,6 +57,7 @@ public class CarouselUtils {
     public void loopCarousel(String tag, Context context, ArrayList<HomePagerEntity.Carousel> carousels, final VideoView videoView, final ImageView imageView) {
         Log.d(TAG, "loopCarousel is starting!!!");
         this.tag = tag;
+        deleteFile(carousels);
         this.context = context;
         this.videoView = videoView;
         this.imageView = imageView;
@@ -75,6 +76,7 @@ public class CarouselUtils {
     public void loopCarousel(String tag, Context context, ArrayList<HomePagerEntity.Carousel> carousels, final VideoView videoView) {
         Log.d(TAG, "loopCarousel is starting!!!");
         this.tag = tag;
+        deleteFile(carousels);
         this.context = context;
         this.videoView = videoView;
         this.messageHandler = new MessageHandler();
@@ -323,4 +325,21 @@ public class CarouselUtils {
         void indicatorChanged(int hide, int show);
     }
 
+
+    private void deleteFile(ArrayList<HomePagerEntity.Carousel> carousels) {
+
+        String savePath = HardwareUtils.getCachePath(context) + "/" + tag + "/";
+        ArrayList<String> exceptsPaths = new ArrayList<String>();
+
+        for (HomePagerEntity.Carousel carousel : carousels) {
+            try {
+                File file = new File(new URL(carousel.getVideo_url()).getFile());
+                exceptsPaths.add(file.getName());
+            } catch (MalformedURLException e) {
+                Log.e(TAG, e.getMessage());
+            }
+
+        }
+        HardwareUtils.deleteFiles(savePath, exceptsPaths);
+    }
 }

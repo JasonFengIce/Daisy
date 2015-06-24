@@ -27,6 +27,9 @@ import tv.ismar.daisy.ui.CarouselUtils;
 import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
 import tv.ismar.daisy.utils.HardwareUtils;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -141,10 +144,7 @@ public class GuideFragment extends ChannelBaseFragment {
             itemView.setOnClickListener(ItemClickListener);
             itemView.setOnFocusChangeListener(carouselUtils.listener);
             carouselLayout.addView(itemView);
-
-
         }
-
 
     }
 

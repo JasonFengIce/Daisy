@@ -11,16 +11,21 @@ import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by huaijie on 3/12/15.
  */
 public class HardwareUtils {
+    private static final String TAG = "HardwareUtils";
 
     public static String getCachePath(Context context) {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -106,5 +111,27 @@ public class HardwareUtils {
         return H;
     }
 
+    public static void deleteFiles(String path, ArrayList<String> exceptsArray) {
+        File directory = new File(path);
+        if (directory.exists()) {
+            if (directory.length() > 0) {
+                List<String> sub = Arrays.asList(directory.list());
+                ArrayList<String> subFiles = new ArrayList<String>(sub);
+                ArrayList<String> tmp = new ArrayList<String>(subFiles);
+                tmp.retainAll(exceptsArray);
+                for (String str : tmp) {
+                    Log.d(TAG, "all contain: " + str);
+                    subFiles.remove(str);
+                }
 
+                for (String str : subFiles) {
+                    Log.d(TAG, "will be delete: " + str);
+                    File subfile = new File(path + "/" + str);
+                    if (subfile.exists()) {
+                        subfile.delete();
+                    }
+                }
+            }
+        }
+    }
 }

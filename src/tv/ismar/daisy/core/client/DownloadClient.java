@@ -25,7 +25,7 @@ public class DownloadClient implements Runnable {
         this.url = downloadUrl;
 
         try {
-            String videoName = new URL(downloadUrl).getFile();
+            String videoName = new File(new URL(downloadUrl).getFile()).getName();
             downloadFile = new File(savePath, videoName);
             if (!downloadFile.getParentFile().exists()) {
                 downloadFile.getParentFile().mkdirs();
