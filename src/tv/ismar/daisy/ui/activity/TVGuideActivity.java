@@ -386,24 +386,31 @@ public class TVGuideActivity extends FragmentActivity implements
         // option.setCoorType("bd09ll");//返回的定位结果是百度经纬度,默认值gcj02
         option.setScanSpan(5000);// 设置发起定位请求的间隔时间为5000ms
         option.setIsNeedAddress(true);// 返回的定位结果包含地址信息
+        option.setOpenGps(false);
         mLocationClient.setLocOption(option);
         mLocationClient.start();
         mLocationClient.requestLocation();
     }
 
-    public class MyLocationListener implements BDLocationListener {
+	public class MyLocationListener implements BDLocationListener {
 
-        @Override
-        public void onReceiveLocation(BDLocation location) {
-            mLocationClient.stop();
-            DaisyUtils
-                    .getVodApplication(TVGuideActivity.this)
-                    .getEditor()
-                    .putString(VodApplication.LOCATION_INFO,
-                            location.getAddrStr());
-            DaisyUtils.getVodApplication(TVGuideActivity.this).save();
-        }
-    }
+		@Override
+		public void onReceiveLocation(BDLocation location) {
+			mLocationClient.stop();
+			DaisyUtils
+					.getVodApplication(TVGuideActivity.this)
+					.getEditor()
+					.putString(VodApplication.LOCATION_INFO,
+							location.getAddrStr());
+			DaisyUtils.getVodApplication(TVGuideActivity.this).getEditor()
+					.putString(LOCATION_PROVINCE, location.getProvince());
+			DaisyUtils.getVodApplication(TVGuideActivity.this).getEditor()
+					.putString(LOCATION_CITY, location.getCity());
+			DaisyUtils.getVodApplication(TVGuideActivity.this).getEditor()
+					.putString(LOCATION_DISTRICT, location.getDistrict());
+			DaisyUtils.getVodApplication(TVGuideActivity.this).save();
+		}
+	}
 
     private OnClickListener channelClickListener = new OnClickListener() {
 
