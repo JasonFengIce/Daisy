@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,11 +26,9 @@ public class HardwareUtils {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             return new File(Environment.getExternalStorageDirectory(), "/Daisy").getAbsolutePath();
         } else {
-                return context.getCacheDir().getAbsolutePath();
+            return context.getCacheDir().getAbsolutePath();
         }
     }
-
-
 
 
     public static String getSDCardCachePath() {
@@ -47,21 +46,22 @@ public class HardwareUtils {
 
 
     public static String getMd5ByFile(File file) {
-        String value = null;
+        String value;
         FileInputStream in;
         try {
             in = new FileInputStream(file);
             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
             byte[] buffer = new byte[1024 * 1024];
             int length;
-            while ((length = in.read(buffer)) >0){
+            while ((length = in.read(buffer)) > 0) {
                 messageDigest.update(buffer, 0, length);
             }
             BigInteger bi = new BigInteger(1, messageDigest.digest());
             value = bi.toString(16);
             in.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("getMd5ByFile", e.getMessage());
+            return "";
         }
         return value;
     }

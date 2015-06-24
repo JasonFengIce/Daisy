@@ -16,6 +16,8 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.client.DownloadClient;
+import tv.ismar.daisy.core.client.DownloadThreadPool;
 import tv.ismar.daisy.core.client.IsmartvFileClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.HomePagerEntity;
@@ -118,7 +120,7 @@ public class GuideFragment extends ChannelBaseFragment {
         getView().postDelayed(new Runnable() {
             @Override
             public void run() {
-                carouselUtils.loopCarousel(context, carousels, linkedVideoView);
+                carouselUtils.loopCarousel("guide", context, carousels, linkedVideoView);
             }
         }, 3000);
 
@@ -139,13 +141,11 @@ public class GuideFragment extends ChannelBaseFragment {
             itemView.setOnClickListener(ItemClickListener);
             itemView.setOnFocusChangeListener(carouselUtils.listener);
             carouselLayout.addView(itemView);
+
+
         }
-        downloadCarouselVideo(carousels);
 
-    }
 
-    private void downloadCarouselVideo(ArrayList<HomePagerEntity.Carousel> carousels) {
-        new IsmartvFileClient(context, carousels, HardwareUtils.getCachePath(context) + "/guide/").start();
     }
 
     private View.OnClickListener ItemClickListener = new View.OnClickListener() {

@@ -1,38 +1,26 @@
 package tv.ismar.daisy.ui.fragment;
 
-import static tv.ismar.daisy.core.client.ClientApi.restAdapter_SKYTEST_TVXIO;
-
-import java.util.ArrayList;
-
-import com.google.gson.Gson;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.client.ClientApi;
-import tv.ismar.daisy.core.client.ClientApi.ChineseMovie;
-import tv.ismar.daisy.core.client.IsmartvFileClient;
-import tv.ismar.daisy.core.client.IsmartvUrlClient;
-import tv.ismar.daisy.data.HomePagerEntity;
-import tv.ismar.daisy.data.HomePagerEntity.Carousel;
-import tv.ismar.daisy.data.HomePagerEntity.Poster;
-import tv.ismar.daisy.ui.CarouselUtils;
-import tv.ismar.daisy.ui.widget.DaisyVideoView;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
-import tv.ismar.daisy.utils.HardwareUtils;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.data.HomePagerEntity;
+import tv.ismar.daisy.data.HomePagerEntity.Carousel;
+import tv.ismar.daisy.data.HomePagerEntity.Poster;
+import tv.ismar.daisy.ui.CarouselUtils;
+import tv.ismar.daisy.ui.widget.DaisyVideoView;
+
+import java.util.ArrayList;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -128,12 +116,12 @@ public class FilmFragment extends ChannelBaseFragment {
 
     private void initCarousel(final ArrayList<HomePagerEntity.Carousel> carousels) {
 
-
+        final String tag = getChannelEntity().getChannel();
         carouselUtils = new CarouselUtils();
         getView().postDelayed(new Runnable() {
             @Override
             public void run() {
-                carouselUtils.loopCarousel(context, carousels, linkedVideoView, linkedVideoImage);
+                carouselUtils.loopCarousel(tag, context, carousels, linkedVideoView, linkedVideoImage);
             }
         }, 1000);
 
@@ -154,15 +142,7 @@ public class FilmFragment extends ChannelBaseFragment {
             itemView.setOnClickListener(ItemClickListener);
             itemView.setOnFocusChangeListener(carouselUtils.listener);
             carouselLayout.addView(itemView);
-        }
-        downloadCarouselVideo(carousels);
 
-    }
-
-    private void downloadCarouselVideo(
-            ArrayList<HomePagerEntity.Carousel> carousels) {
-        if (HardwareUtils.isExternalStorageMounted()) {
-            new IsmartvFileClient(context, carousels, HardwareUtils.getSDCardCachePath() + "/chinese/").start();
         }
 
     }

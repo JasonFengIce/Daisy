@@ -1,68 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingLeft="80dp"
-    android:paddingRight="80dp" >
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:paddingLeft="80dp"
+              android:paddingRight="80dp">
 
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="5"
-        android:orientation="horizontal"
-        android:paddingTop="@dimen/guide_padding" >
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/guide_padding">
+
         <tv.ismar.daisy.views.LabelImageView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.8"
-            android:scaleType="centerCrop"
-            android:focusable="true"
-            android:src="@drawable/list_item_preview_bg"
-            android:background="@drawable/launcher_selector"
-             />
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.8"
+                android:scaleType="centerCrop"
+                android:focusable="true"
+                android:src="@drawable/list_item_preview_bg"
+                android:background="@drawable/launcher_selector"
+                />
+
         <tv.ismar.daisy.ui.widget.DaisyVideoView
-            android:id="@+id/film_linked_video"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="@dimen/guide_padding"
-            android:background="@drawable/launcher_selector"
-            android:layout_marginLeft="8dp"
-            android:layout_weight="5.7"
-             />
+                android:focusableInTouchMode="false"
+                android:focusable="false"
+
+                android:id="@+id/film_linked_video"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/guide_padding"
+                android:background="@drawable/launcher_selector"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="5.7"
+                />
+
         <tv.ismar.daisy.views.LabelImageView
-            android:id="@+id/film_linked_image"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="@dimen/guide_padding"
-            android:layout_marginLeft="8dp"
-            android:layout_weight="5.7"
-            android:scaleType="fitXY"
-            android:focusable="true"
-            android:src="@drawable/list_item_preview_bg"
-            android:background="@drawable/launcher_selector"
-            android:visibility="gone"
-             />
+                android:id="@+id/film_linked_image"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/guide_padding"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="5.7"
+                android:scaleType="fitXY"
+                android:focusable="true"
+                android:src="@drawable/list_item_preview_bg"
+                android:background="@drawable/launcher_selector"
+                android:visibility="gone"
+                />
+
         <LinearLayout
-            android:id="@+id/film_carousel_layout"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical" >
+                android:id="@+id/film_carousel_layout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
         </LinearLayout>
     </LinearLayout>
 
 
     <LinearLayout
 
-        android:id="@+id/film_recommend_list"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2.8"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/guide_padding"
-        android:paddingTop="@dimen/guide_padding" >
+            android:id="@+id/film_recommend_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2.8"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/guide_padding"
+            android:paddingTop="@dimen/guide_padding">
     </LinearLayout>
 
 </LinearLayout>

@@ -12,10 +12,14 @@ import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.VideoView;
+import com.activeandroid.query.Select;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import tv.ismar.daisy.core.client.DownloadClient;
+import tv.ismar.daisy.core.client.DownloadThreadPool;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.HomePagerEntity;
+import tv.ismar.daisy.data.table.DownloadTable;
 import tv.ismar.daisy.utils.HardwareUtils;
 
 import java.io.File;
@@ -29,6 +33,8 @@ import java.util.ArrayList;
 public class CarouselUtils {
 
     private static final String TAG = "CarouselUtils";
+
+    private String tag;
 
     private int currentPosition = 0;
 
@@ -48,8 +54,9 @@ public class CarouselUtils {
     }
 
 
-    public void loopCarousel(Context context, ArrayList<HomePagerEntity.Carousel> carousels, final VideoView videoView, final ImageView imageView) {
+    public void loopCarousel(String tag, Context context, ArrayList<HomePagerEntity.Carousel> carousels, final VideoView videoView, final ImageView imageView) {
         Log.d(TAG, "loopCarousel is starting!!!");
+        this.tag = tag;
         this.context = context;
         this.videoView = videoView;
         this.imageView = imageView;
@@ -65,8 +72,9 @@ public class CarouselUtils {
         playCarousel();
     }
 
-    public void loopCarousel(Context context, ArrayList<HomePagerEntity.Carousel> carousels, final VideoView videoView) {
+    public void loopCarousel(String tag, Context context, ArrayList<HomePagerEntity.Carousel> carousels, final VideoView videoView) {
         Log.d(TAG, "loopCarousel is starting!!!");
+        this.tag = tag;
         this.context = context;
         this.videoView = videoView;
         this.messageHandler = new MessageHandler();
@@ -81,15 +89,15 @@ public class CarouselUtils {
         playCarousel();
     }
 
-    public void loopCarousel(Context context, ArrayList<HomePagerEntity.Carousel> carousels, final ImageView imageView) {
-        Log.d(TAG, "loopCarousel is starting!!!");
-        this.context = context;
-        this.imageView = imageView;
-        this.messageHandler = new MessageHandler();
-
-        loopList = new LoopList(carousels);
-        playCarousel();
-    }
+//    public void loopCarousel(Context context, ArrayList<HomePagerEntity.Carousel> carousels, final ImageView imageView) {
+//        Log.d(TAG, "loopCarousel is starting!!!");
+//        this.context = context;
+//        this.imageView = imageView;
+//        this.messageHandler = new MessageHandler();
+//
+//        loopList = new LoopList(carousels);
+//        playCarousel();
+//    }
 
     public void loopCarousel(Context context, ArrayList<HomePagerEntity.Carousel> carousels, final ImageView imageView, ImageIndicatorCallback callback) {
         Log.d(TAG, "loopCarousel is starting!!!");
@@ -143,29 +151,38 @@ public class CarouselUtils {
     }
 
     private void playVideo(HomePagerEntity.Carousel carousel) throws MalformedURLException {
+        String playPath;
         if (videoView.getVisibility() != View.VISIBLE) {
             imageView.setVisibility(View.GONE);
             videoView.setVisibility(View.VISIBLE);
         }
-
         URL videoUrl = new URL(carousel.getVideo_url());
+        DownloadTable downloadTable = new Select().from(DownloadTable.class).where(DownloadTable.URL + "=?", videoUrl.toString()).executeSingle();
 
-        File localVideoFile = new File(HardwareUtils.getSDCardCachePath(), videoUrl.getFile());
-        Log.d(TAG, "local video path: " + localVideoFile.getAbsolutePath());
-        String playPath;
+        if (downloadTable == null) {
+            playPath = videoUrl.toString();
+            String savePath = HardwareUtils.getCachePath(context) + "/" + tag + "/";
+            DownloadClient client = new DownloadClient(playPath, savePath);
+            DownloadThreadPool.getInstance().add(client);
+        } else {
+            File localVideoFile = new File(downloadTable.download_path);
+            Log.d(TAG, "local video path: " + localVideoFile.getAbsolutePath());
 
-        if (localVideoFile.exists()) {
-
-            String fileMd5Code = localVideoFile.getName().split("\\.")[0];
-            Log.d(TAG, "local file md5: " + HardwareUtils.getMd5ByFile(localVideoFile));
-            Log.d(TAG, "url md5: " + fileMd5Code);
-            if (HardwareUtils.getMd5ByFile(localVideoFile).equalsIgnoreCase(fileMd5Code)) {
-                playPath = localVideoFile.getAbsolutePath();
+            if (localVideoFile.exists()) {
+                String fileMd5Code = localVideoFile.getName().split("\\.")[0];
+                Log.d(TAG, "local file md5: " + downloadTable.md5);
+                Log.d(TAG, "url md5: " + fileMd5Code);
+                if (downloadTable.md5.equalsIgnoreCase(fileMd5Code)) {
+                    playPath = localVideoFile.getAbsolutePath();
+                } else {
+                    playPath = videoUrl.toString();
+                }
             } else {
                 playPath = videoUrl.toString();
+                String savePath = HardwareUtils.getCachePath(context) + "/" + tag + "/";
+                DownloadClient client = new DownloadClient(playPath, savePath);
+                DownloadThreadPool.getInstance().add(client);
             }
-        } else {
-            playPath = videoUrl.toString();
         }
         Log.d(TAG, "setVideoPath: " + playPath);
         videoView.setVideoPath(playPath);
