@@ -222,6 +222,7 @@ public class ChildFragment extends ChannelBaseFragment {
                 intent.putExtra("title", "华语电影");
                 intent.putExtra("url",
                         channelEntity.getUrl());
+                intent.putExtra("portraitflag", channelEntity.getSytle());
                 intent.putExtra("channel", "chinesemovie");
                 intent.setClassName("tv.ismar.daisy",
                         "tv.ismar.daisy.ChannelListActivity");

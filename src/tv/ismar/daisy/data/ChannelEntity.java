@@ -13,8 +13,16 @@ public class ChannelEntity {
     private String template;
     private String homepage_template;
     private String homepage_url;
+    private int sytle;
+    public int getSytle() {
+		return sytle;
+	}
 
-    public String getHomepage_template() {
+	public void setSytle(int sytle) {
+		this.sytle = sytle;
+	}
+
+	public String getHomepage_template() {
 		return homepage_template;
 	}
 

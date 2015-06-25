@@ -36,6 +36,7 @@ public class ChannelListActivity extends BaseActivity {
 		String title = null;
 		String url = null;
 		String channel = null;
+		int portraitflag =1;
 		if(intent!=null){
 			Bundle bundle = intent.getExtras();
 			if(bundle!=null){
@@ -44,6 +45,7 @@ public class ChannelListActivity extends BaseActivity {
 				title = bundle.getString("title");
 				
 				channel = bundle.getString("channel");
+				portraitflag = bundle.getInt("portraitflag");
 			}
 		}
 		if(url==null) {
@@ -75,7 +77,11 @@ public class ChannelListActivity extends BaseActivity {
 			}
 			else {
 				channelFragment = new ChannelFragment();
+				if(1 == portraitflag){
                 channelFragment.setIsPOrtrait(false);
+				}else if(2 == portraitflag){
+					channelFragment.setIsPOrtrait(true);					
+				}
 				channelFragment.mChannel = channel;
 				channelFragment.mTitle = title;  //chinesemovie
 				channelFragment.mUrl = url;

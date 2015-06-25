@@ -172,6 +172,7 @@ public class FilmFragment extends ChannelBaseFragment {
                 intent.putExtra("url",
                         channelEntity.getUrl());
                 intent.putExtra("channel", "chinesemovie");
+                intent.putExtra("portraitflag", channelEntity.getSytle());
                 intent.setClassName("tv.ismar.daisy",
                         "tv.ismar.daisy.ChannelListActivity");
                 getActivity().startActivity(intent);

@@ -320,12 +320,15 @@
             android:layout_marginLeft="29dp"
             android:orientation="vertical" >
 
-            <ImageView
+            <TextView
                 android:id="@+id/vaiety_channel5_image"
                 android:layout_width="332dp"
                 android:layout_height="189dp"
                 android:background="@drawable/launcher_selector"
                 android:focusable="true"
+                android:text="更多"
+                android:gravity="center"
+                android:textSize="50sp"
                 android:src="#00a8ff" />
         </LinearLayout>
     </LinearLayout>
