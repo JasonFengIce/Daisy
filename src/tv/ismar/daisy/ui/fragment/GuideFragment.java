@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,20 +15,13 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.client.DownloadClient;
-import tv.ismar.daisy.core.client.DownloadThreadPool;
-import tv.ismar.daisy.core.client.IsmartvFileClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.data.HomePagerEntity.Poster;
 import tv.ismar.daisy.ui.CarouselUtils;
 import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
-import tv.ismar.daisy.utils.HardwareUtils;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -94,7 +86,7 @@ public class GuideFragment extends ChannelBaseFragment {
         for (int i = 0; i < 8; i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
             params.weight = 1;
-            int marginLF = (int) getResources().getDimension(R.dimen.guide_fragment_poser_margin_lf);
+            int marginLF = (int) context.getResources().getDimension(R.dimen.guide_fragment_poser_margin_lf);
 
             if (i == 0) {
                 params.setMargins(itemViewBoundaryMargin, itemViewBoundaryMargin, marginLF, itemViewBoundaryMargin);

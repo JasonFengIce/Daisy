@@ -48,6 +48,8 @@ public class CarouselUtils {
 
     private MessageHandler messageHandler;
 
+    private boolean pause = false;
+
     public CarouselUtils() {
         listener = new CarouselFocusChangeListener();
         scaleListener = new ScaleFocusChangeListener();
@@ -57,17 +59,19 @@ public class CarouselUtils {
     public void loopCarousel(String tag, Context context, ArrayList<HomePagerEntity.Carousel> carousels, final VideoView videoView, final ImageView imageView) {
         Log.d(TAG, "loopCarousel is starting!!!");
         this.tag = tag;
-        deleteFile(carousels);
         this.context = context;
         this.videoView = videoView;
         this.imageView = imageView;
         this.messageHandler = new MessageHandler();
+        deleteFile(carousels);
 
         loopList = new LoopList(carousels);
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                playCarousel();
+                if (!pause) {
+                    playCarousel();
+                }
             }
         });
         playCarousel();
@@ -76,10 +80,10 @@ public class CarouselUtils {
     public void loopCarousel(String tag, Context context, ArrayList<HomePagerEntity.Carousel> carousels, final VideoView videoView) {
         Log.d(TAG, "loopCarousel is starting!!!");
         this.tag = tag;
-        deleteFile(carousels);
         this.context = context;
         this.videoView = videoView;
         this.messageHandler = new MessageHandler();
+        deleteFile(carousels);
 
         loopList = new LoopList(carousels);
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -200,15 +204,24 @@ public class CarouselUtils {
         Picasso.with(context).load(carousel.getVideo_image()).into(imageView, new Callback() {
             @Override
             public void onSuccess() {
-                messageHandler.sendEmptyMessageDelayed(0, pauseTime * 1000);
+                if (!pause) {
+                    messageHandler.sendEmptyMessageDelayed(0, pauseTime * 1000);
+                }
             }
 
             @Override
             public void onError() {
-                messageHandler.sendEmptyMessageDelayed(0, pauseTime * 1000);
+                if (!pause) {
+                    messageHandler.sendEmptyMessageDelayed(0, pauseTime * 1000);
+                }
             }
         });
 
+    }
+
+    public void continueLoop(){
+        pause = false;
+        messageHandler.sendEmptyMessage(0);
     }
 
 
@@ -228,6 +241,7 @@ public class CarouselUtils {
         if (null != position && loopList != null) {
             loopList.setCurrent(position);
             messageHandler.removeMessages(0);
+            pause = true;
             playCarousel();
         }
     }
