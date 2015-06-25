@@ -69,7 +69,7 @@ public class PackageListDetailActivity extends BaseActivity implements OnItemSel
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.list_view);
+		setContentView(R.layout.historycollectlist_view);
 		mLoadingDialog = new LoadingDialog(this, getResources().getString(R.string.loading));
 		mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
 		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);

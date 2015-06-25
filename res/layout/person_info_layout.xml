@@ -65,8 +65,8 @@
 
         <TextView
             android:id="@+id/sn_txt_value"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:textColor="#FFF8F8FF"
             android:textSize="@dimen/person_login_phone_text_size"
@@ -74,14 +74,22 @@
         
          <TextView
             android:id="@+id/warn_info_txt"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:text="您的账户关联到当前设备,设备损坏或更换时账户余额及特权将清零"
             android:textColor="#fe8109"
             android:textSize="@dimen/person_login_phone_edit_text_size"
             android:visibility="gone"
             android:layout_marginLeft="@dimen/person_info_warn_info_txt_ML" />
+         <TextView
+            android:id="@+id/account_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="关联"
+            android:focusable="true"
+            android:textSize="@dimen/person_login_phone_text_size"
+            />
     </LinearLayout>
 
     <LinearLayout
