@@ -106,7 +106,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		vaiety_channel4_subtitle = (TextView) view
 				.findViewById(R.id.vaiety_channel4_subtitle);
 		vaiety_channel5 = (TextView) view
-				.findViewById(R.id.vaiety_channel5_image);
+				.findViewById(R.id.listmore);
 		vaiety_card1_image.setOnClickListener(ItemClickListener);
 		vaiety_card2_image.setOnClickListener(ItemClickListener);
 		vaiety_card3_image.setOnClickListener(ItemClickListener);

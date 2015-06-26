@@ -1,5 +1,15 @@
 package tv.ismar.daisy.ui.fragment;
 
+import java.util.ArrayList;
+
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.data.HomePagerEntity;
+import tv.ismar.daisy.data.HomePagerEntity.Carousel;
+import tv.ismar.daisy.data.HomePagerEntity.Poster;
+import tv.ismar.daisy.ui.CarouselUtils;
+import tv.ismar.daisy.ui.widget.DaisyVideoView;
+import tv.ismar.daisy.views.LabelImageView;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,17 +20,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.core.client.IsmartvUrlClient;
-import tv.ismar.daisy.data.HomePagerEntity;
-import tv.ismar.daisy.data.HomePagerEntity.Carousel;
-import tv.ismar.daisy.data.HomePagerEntity.Poster;
-import tv.ismar.daisy.ui.CarouselUtils;
-import tv.ismar.daisy.ui.widget.DaisyVideoView;
-
-import java.util.ArrayList;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -33,7 +35,7 @@ public class FilmFragment extends ChannelBaseFragment {
     private DaisyVideoView linkedVideoView;
     private ImageView linkedVideoImage;
     private CarouselUtils carouselUtils;
-
+    private LabelImageView film_lefttop_image;
     private Context context;
 
     @Override
@@ -53,6 +55,8 @@ public class FilmFragment extends ChannelBaseFragment {
                 .findViewById(R.id.film_carousel_layout);
         linkedVideoView = (DaisyVideoView) mView
                 .findViewById(R.id.film_linked_video);
+        film_lefttop_image = (LabelImageView)mView
+                .findViewById(R.id.film_lefttop_image);
         linkedVideoImage = (ImageView) mView.findViewById(R.id.film_linked_image);
         return mView;
     }
@@ -88,7 +92,9 @@ public class FilmFragment extends ChannelBaseFragment {
     }
 
     private void initPosters(ArrayList<HomePagerEntity.Poster> posters) {
-        for (int i = 0; i < posters.size(); i++) {
+    	film_lefttop_image.setUrl(posters.get(0).getCustom_image());
+    	film_lefttop_image.setFocustitle(posters.get(0).getIntroduction());
+        for (int i = 1; i < posters.size(); i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0,
                     ViewGroup.LayoutParams.MATCH_PARENT);
             params.weight = 1;
@@ -99,18 +105,22 @@ public class FilmFragment extends ChannelBaseFragment {
             itemView.setBackgroundResource(R.drawable.launcher_selector);
             itemView.setFocusable(true);
             itemView.setOnClickListener(ItemClickListener);
-            if (i <= 6) {
-                Picasso.with(getActivity())
-                        .load(posters.get(i).getCustom_image()).into(itemView);
-                itemView.setScaleType(ImageView.ScaleType.FIT_XY);
-                itemView.setLayoutParams(params);
-                itemView.setTag(posters.get(i));
-            } else {
-                itemView.setImageResource(R.color.channel_more);
-                itemView.setScaleType(ImageView.ScaleType.FIT_XY);
-                itemView.setLayoutParams(params);
-            }
-            guideRecommmendList.addView(itemView);
+			if (i <= 6) {
+				Picasso.with(getActivity())
+						.load(posters.get(i).getCustom_image()).into(itemView);
+				itemView.setScaleType(ImageView.ScaleType.FIT_XY);
+				itemView.setLayoutParams(params);
+				itemView.setTag(posters.get(i));
+				guideRecommmendList.addView(itemView);
+			} else {
+				LinearLayout morelayout = (LinearLayout) LayoutInflater.from(
+						getActivity()).inflate(R.layout.toppagelistmorebutton,
+						null);
+				morelayout.setLayoutParams(params);
+				View view = morelayout.findViewById(R.id.listmore);
+				view.setOnClickListener(ItemClickListener);
+				guideRecommmendList.addView(morelayout);
+			}
         }
     }
 

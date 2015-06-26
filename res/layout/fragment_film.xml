@@ -15,19 +15,23 @@
             android:paddingTop="@dimen/guide_padding">
 
         <tv.ismar.daisy.views.LabelImageView
+            xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
+                android:id="@+id/film_lefttop_image"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1.8"
-                android:scaleType="centerCrop"
+                android:layout_weight="1.7"
                 android:focusable="true"
                 android:src="@drawable/list_item_preview_bg"
                 android:background="@drawable/launcher_selector"
+                labelimage:focusbackground="#FFFF00"
+                labelimage:focuspaddingtop="453dp"
+                labelimage:focustextpaddingtop="34dp"
+                labelimage:focustextsize="32sp"
                 />
 
         <tv.ismar.daisy.ui.widget.DaisyVideoView
                 android:focusableInTouchMode="false"
                 android:focusable="false"
-
                 android:id="@+id/film_linked_video"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

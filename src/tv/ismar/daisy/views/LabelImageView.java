@@ -82,6 +82,10 @@ public class LabelImageView extends AsyncImageView {
 		int paddingright = getPaddingRight();
 		int paddingtop = getPaddingTop();
 		int paddingBottom = getPaddingBottom();
+		if(width <=0)
+			width = getWidth();
+		if(height <=0)
+			height =getHeight();
 		Paint paint = new Paint();
 		// 绘制角标
 		if (modetype > 0) {
