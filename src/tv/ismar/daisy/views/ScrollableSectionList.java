@@ -1,7 +1,13 @@
 package tv.ismar.daisy.views;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.view.*;
 import android.widget.*;
+import tv.ismar.daisy.FilterActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
@@ -44,6 +50,9 @@ public class ScrollableSectionList extends HorizontalScrollView {
 	private static final int LABEL_TEXT_BACKGROUND_NOSELECTED_NOFOCUSED = 0x00000000;
 
     public ProgressBar percentageBar;
+    public String title;
+    public String channel;
+    public boolean isPortrait = false;
 	public ScrollableSectionList(Context context, AttributeSet attrs,
 			int defStyle) {
 		super(context, attrs, defStyle);
@@ -289,17 +298,6 @@ public class ScrollableSectionList extends HorizontalScrollView {
 //			return false;
 //		}
 //	};
-    private OnClickListener mOnFilterClickListener = new OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        //筛选
-
-    }
-};
-
-    private void showToast(){
-        Toast.makeText(getContext(),"filter",Toast.LENGTH_SHORT).show();
-    }
 	private OnClickListener mOnClickListener = new OnClickListener() {
 		
 		@Override
@@ -307,13 +305,21 @@ public class ScrollableSectionList extends HorizontalScrollView {
 			
 			int index = (Integer) v.getTag();
             if(index==0){
-               if(index!=mSelectPosition){
+
                    percentageBar.setProgress(0);
                    View lastSelectedView = mContainer.getChildAt(mSelectPosition);
                    setSectionTabProperty(v,lastSelectedView);
                    changeSelection(index);
-                   showToast();
-               }
+                   Intent intent = new Intent();
+                   intent.putExtra("title",title);
+                   intent.putExtra("channel",channel);
+                   if(isPortrait)
+                      intent.putExtra("isPortrait",true);
+                   else
+                      intent.putExtra("isPortrait",false);
+                 //  intent.setClass(getContext(), FilterActivity.class);
+                   intent.setAction("tv.ismar.daisy.Filter");
+                   getContext().startActivity(intent);
             }else{
                 if(index!=mSelectPosition){
                     percentageBar.setProgress(0);

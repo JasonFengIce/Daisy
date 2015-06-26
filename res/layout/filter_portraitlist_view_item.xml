@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/filter_item_layout"
+    >
+    <tv.ismar.daisy.views.AsyncImageView
+        android:layout_width="254dip"
+        android:layout_height="355dip"
+        android:id="@+id/filter_list_item_preview_img"
+        android:background="@drawable/list_item_preview_bg"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitXY" 
+        android:paddingTop="@dimen/gridview_item_image_PaddingT"
+        android:paddingBottom="@dimen/gridview_item_image_PaddingB"
+        android:paddingLeft="@dimen/gridview_item_image_PaddingL"
+        android:paddingRight="@dimen/gridview_item_image_PaddingR"
+        />
+    <TextView
+        android:layout_marginTop="5dip"
+        android:layout_width="254dip"
+        android:layout_height="match_parent"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/filter_list_item_preview_img"
+        android:textSize="@dimen/gridview_item_title_textsize"
+        android:id="@+id/filter_list_item_title"
+        android:textColor="#FFF8F8FF"
+        />
+</RelativeLayout>

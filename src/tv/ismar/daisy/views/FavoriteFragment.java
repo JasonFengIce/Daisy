@@ -118,7 +118,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View fragmentView = inflater.inflate(R.layout.list_view, container, false);
+		View fragmentView = inflater.inflate(R.layout.historycollectlist_view, container, false);
 		initViews(fragmentView);
 		if("".equals(SimpleRestClient.access_token))
 		   new GetFavoriteTask().execute();

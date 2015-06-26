@@ -28,6 +28,21 @@
             android:textColor="@android:color/white"
             android:textSize="@dimen/tv_guide_area_textSize" />
 
+      <ImageView
+              android:id="@+id/secondline"
+              android:layout_width="40dp"
+              android:layout_height="2dp"
+              android:background="@android:color/white"
+              android:visibility="gone"/>
+
+      <TextView
+              android:id="@+id/guide_channelsecondname"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/filter"
+              android:textColor="@android:color/white"
+              android:textSize="@dimen/tv_guide_area_textSize"
+              android:visibility="gone"/>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

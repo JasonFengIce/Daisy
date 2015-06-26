@@ -461,6 +461,17 @@
     <dimen name="HGridView_related_selectionTopPadding">20dip</dimen>
     <dimen name="HGridView_related_selectionRightPadding">15dip</dimen>
     <dimen name="HGridView_related_selectionBottomPadding">-40dip</dimen>
+
+    <dimen name="HGridView_related_PFilterLeftPadding">20dip</dimen>
+    <dimen name="HGridView_related_PFilterTopPadding">21dip</dimen>
+    <dimen name="HGridView_related_PFilterRightPadding">21dip</dimen>
+    <dimen name="HGridView_related_PFilterBottomPadding">-26dip</dimen>
+
+    <dimen name="HGridView_related_FilterLeftPadding">21dip</dimen>
+    <dimen name="HGridView_related_FilterTopPadding">20dip</dimen>
+    <dimen name="HGridView_related_FilterRightPadding">22dip</dimen>
+    <dimen name="HGridView_related_FilterBottomPadding">-40dip</dimen>
+
     <dimen name="HGridView_label_lr_offset">19dip</dimen>
     <dimen name="HGridView_label_textleft">24dip</dimen>
     <dimen name="HGridView_label_texttop">56dip</dimen>
