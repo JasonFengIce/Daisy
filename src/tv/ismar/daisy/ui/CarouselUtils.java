@@ -12,6 +12,7 @@ import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.VideoView;
+import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -26,11 +27,12 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by huaijie on 6/15/15.
  */
-public class CarouselUtils {
+public class CarouselUtils implements DownloadClient.DownloadCallback {
 
     private static final String TAG = "CarouselUtils";
 
@@ -49,6 +51,8 @@ public class CarouselUtils {
     private MessageHandler messageHandler;
 
     private boolean pause = false;
+
+    private HomePagerEntity.Carousel currentCarousel;
 
     public CarouselUtils() {
         listener = new CarouselFocusChangeListener();
@@ -118,6 +122,7 @@ public class CarouselUtils {
 
     private void playCarousel() {
         HomePagerEntity.Carousel carousel = loopList.next();
+        currentCarousel = carousel;
         String url;
         if (imageView == null) {
             url = carousel.getVideo_url();
@@ -163,14 +168,14 @@ public class CarouselUtils {
             videoView.setVisibility(View.VISIBLE);
         }
         URL videoUrl = new URL(carousel.getVideo_url());
-        DownloadTable downloadTable = new Select().from(DownloadTable.class).where(DownloadTable.URL + "=?", videoUrl.toString()).executeSingle();
-
-        if (downloadTable == null) {
+        List<DownloadTable> downloadTables = new Select().from(DownloadTable.class).where(DownloadTable.URL + " = ?", videoUrl.toString()).execute();
+        Log.d(TAG, "downloadTables size: " + downloadTables.size());
+        if (downloadTables.isEmpty()) {
             playPath = videoUrl.toString();
-            String savePath = HardwareUtils.getCachePath(context) + "/" + tag + "/";
-            DownloadClient client = new DownloadClient(playPath, savePath);
-            DownloadThreadPool.getInstance().add(client);
+            videoView.setVideoPath(playPath);
+            download(playPath, tag);
         } else {
+            DownloadTable downloadTable = downloadTables.get(0);
             File localVideoFile = new File(downloadTable.download_path);
             Log.d(TAG, "local video path: " + localVideoFile.getAbsolutePath());
 
@@ -180,19 +185,28 @@ public class CarouselUtils {
                 Log.d(TAG, "url md5: " + fileMd5Code);
                 if (downloadTable.md5.equalsIgnoreCase(fileMd5Code)) {
                     playPath = localVideoFile.getAbsolutePath();
+                    videoView.setVideoPath(playPath);
                 } else {
+                    for (DownloadTable table : downloadTables){
+                        File file = new File(table.download_path);
+                        if (file.exists()){
+                            file.delete();
+                        }
+                        table.delete();
+                    }
                     playPath = videoUrl.toString();
+                    videoView.setVideoPath(playPath);
+                    download(playPath, tag);
                 }
             } else {
                 playPath = videoUrl.toString();
-                String savePath = HardwareUtils.getCachePath(context) + "/" + tag + "/";
-                DownloadClient client = new DownloadClient(playPath, savePath);
-                DownloadThreadPool.getInstance().add(client);
+                videoView.setVideoPath(playPath);
+                download(playPath, tag);
             }
         }
         Log.d(TAG, "setVideoPath: " + playPath);
-        videoView.setVideoPath(playPath);
-        videoView.start();
+
+
     }
 
     private void playImage(final HomePagerEntity.Carousel carousel) {
@@ -219,7 +233,7 @@ public class CarouselUtils {
 
     }
 
-    public void continueLoop(){
+    public void continueLoop() {
         pause = false;
         messageHandler.sendEmptyMessage(0);
     }
@@ -244,6 +258,21 @@ public class CarouselUtils {
             pause = true;
             playCarousel();
         }
+    }
+
+    @Override
+    public void onCreateFileSuccess() {
+        videoView.start();
+    }
+
+    @Override
+    public void onCreateFileFailure() {
+        if (tag.equals("guide")){
+                    videoView.start();
+        }else {
+            playImage(currentCarousel);
+        }
+
     }
 
     private class MessageHandler extends Handler {
@@ -355,5 +384,11 @@ public class CarouselUtils {
 
         }
         HardwareUtils.deleteFiles(savePath, exceptsPaths);
+    }
+
+    private void download(String downloadUrl, String tag) {
+        String savePath = HardwareUtils.getCachePath(context) + "/" + tag + "/";
+        DownloadClient client = new DownloadClient(downloadUrl, savePath, this);
+        DownloadThreadPool.getInstance().add(client);
     }
 }

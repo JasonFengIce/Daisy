@@ -11,4 +11,8 @@ public class ImageIndicatorLayout extends RelativeLayout{
     public ImageIndicatorLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
+
+
+
+
 }

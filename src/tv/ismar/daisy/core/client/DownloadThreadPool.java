@@ -24,7 +24,7 @@ public class DownloadThreadPool {
         return instance;
     }
 
-    public void add(DownloadClient client) {
+    public void add(Runnable client) {
         executorService.execute(client);
     }
 }
