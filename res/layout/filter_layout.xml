@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#8803548d">
+
+    <tv.ismar.daisy.ui.widget.TopPanelView
+            android:id="@+id/top_column_layout"
+            android:layout_width="match_parent"
+            android:layout_height="112dip"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/tv_guide_top_section_padding"
+            android:paddingRight="@dimen/tv_guide_top_section_padding"
+            android:visibility="invisible">
+    </tv.ismar.daisy.ui.widget.TopPanelView>
+<ImageView
+           android:layout_width="match_parent"
+           android:layout_height="3dip"
+           android:background="@drawable/filter_divider"
+           android:gravity="center_vertical"
+           android:paddingLeft="@dimen/tv_guide_top_section_padding"
+           android:paddingRight="@dimen/tv_guide_top_section_padding"/>
+
+<LinearLayout
+            android:id="@+id/filter_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+</LinearLayout>
+
+
+
+</LinearLayout>

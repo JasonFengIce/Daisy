@@ -11,13 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"></FrameLayout>
 
-    <tv.ismar.daisy.views.FilterLayout
-            android:background="@android:color/holo_orange_light"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/filter"
-            android:orientation="vertical"
-            android:visibility="gone">
-    </tv.ismar.daisy.views.FilterLayout>
+
 
 </FrameLayout>

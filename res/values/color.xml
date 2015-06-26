@@ -61,5 +61,6 @@
 
     <drawable name="child_item_bg_focus">#ea7b0d</drawable>
     <drawable name="child_item_bg_normal">#601800</drawable>
-
+    <drawable name="list_item_more_bg">#00a8ff</drawable>
+    <drawable name="user_info_popwindow_bg">#b3303030</drawable>
 </resources>

@@ -56,7 +56,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 	private TextView vaiety_channel3_subtitle;
 	private LabelImageView vaiety_channel4_image;
 	private TextView vaiety_channel4_subtitle;
-	private ImageView vaiety_channel5;
+	private TextView vaiety_channel5;
 	private HomePagerEntity entity;
 	private ArrayList<String> looppost = new ArrayList<String>();
 	private int loopindex = 0;
@@ -105,8 +105,8 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 				.findViewById(R.id.vaiety_channel4_image);
 		vaiety_channel4_subtitle = (TextView) view
 				.findViewById(R.id.vaiety_channel4_subtitle);
-		vaiety_channel5 = (ImageView) view
-				.findViewById(R.id.vaiety_channel5_image);
+		vaiety_channel5 = (TextView) view
+				.findViewById(R.id.listmore);
 		vaiety_card1_image.setOnClickListener(ItemClickListener);
 		vaiety_card2_image.setOnClickListener(ItemClickListener);
 		vaiety_card3_image.setOnClickListener(ItemClickListener);
@@ -127,6 +127,8 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (hasFocus) {
 					v.setPadding(0, 0, 0, 0);
+					vaiety_thumb2.setPadding(0, 22, 0, 0);
+					vaiety_thumb3.setPadding(0, 22, 0, 0);
 					if (v.getTag() != null) {
 						vaiety_post.setUrl(v.getTag().toString());
 						vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post)
@@ -144,6 +146,8 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (hasFocus) {
 					v.setPadding(0, 0, 0, 0);
+					vaiety_thumb1.setPadding(0, 22, 0, 0);
+					vaiety_thumb3.setPadding(0, 22, 0, 0);
 					vaiety_post.setUrl(v.getTag().toString());
 					vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post)
 							.toString());
@@ -159,6 +163,8 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (hasFocus) {
 					v.setPadding(0, 0, 0, 0);
+					vaiety_thumb2.setPadding(0, 22, 0, 0);
+					vaiety_thumb1.setPadding(0, 22, 0, 0);
 					vaiety_post.setUrl(v.getTag().toString());
 					vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post)
 							.toString());
@@ -247,7 +253,8 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		@Override
 		protected Integer doInBackground(String... params) {
 			try {
-				entity = mRestClient.getVaietyHome(channelEntity.getHomepage_url());
+				entity = mRestClient.getVaietyHome(channelEntity
+						.getHomepage_url());
 			} catch (NetworkException e) {
 				e.printStackTrace();
 			}
@@ -281,7 +288,8 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			if (poster == null) {
 				intent.putExtra("title", channelEntity.getName());
-				intent.putExtra("url",channelEntity.getUrl());
+				intent.putExtra("url", channelEntity.getUrl());
+				intent.putExtra("portraitflag", channelEntity.getSytle());
 				intent.putExtra("channel", channelEntity.getChannel());
 				intent.setClassName("tv.ismar.daisy",
 						"tv.ismar.daisy.ChannelListActivity");
@@ -292,24 +300,21 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 							"tv.ismar.daisy.ItemDetailActivity");
 					intent.putExtra("url", poster.getUrl());
 					getActivity().startActivity(intent);
-				}  else if ("topic".equals(poster.getModel_name())) {
-                       intent.putExtra("url",
-                       		poster.getUrl());
-                       intent.setClassName("tv.ismar.daisy",
-                               "tv.ismar.daisy.TopicActivity");
-                       getActivity().startActivity(intent);
-                } else if ("section".equals(poster.getModel_name())) {
-                    intent.putExtra("title", poster.getTitle());
-                    intent.putExtra("itemlistUrl",
-                    		poster.getUrl());
-                    intent.putExtra("lableString",
-                    		poster.getTitle());
-                    intent.setClassName("tv.ismar.daisy",
-                            "tv.ismar.daisy.PackageListDetailActivity");
-                    getActivity().startActivity(intent);
-                } else if ("package".equals(poster.getModel_name())) {
+				} else if ("topic".equals(poster.getModel_name())) {
+					intent.putExtra("url", poster.getUrl());
+					intent.setClassName("tv.ismar.daisy",
+							"tv.ismar.daisy.TopicActivity");
+					getActivity().startActivity(intent);
+				} else if ("section".equals(poster.getModel_name())) {
+					intent.putExtra("title", poster.getTitle());
+					intent.putExtra("itemlistUrl", poster.getUrl());
+					intent.putExtra("lableString", poster.getTitle());
+					intent.setClassName("tv.ismar.daisy",
+							"tv.ismar.daisy.PackageListDetailActivity");
+					getActivity().startActivity(intent);
+				} else if ("package".equals(poster.getModel_name())) {
 
-                }
+				}
 			}
 		}
 	};
@@ -318,9 +323,28 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
-			vaiety_post.setUrl(looppost.get(loopindex++));
+			vaiety_post.setUrl(looppost.get(++loopindex));
+			if (loopindex == 0) {
+				vaiety_thumb1.setPadding(0, 0, 0, 0);
+				vaiety_thumb2.setPadding(0, 22, 0, 0);
+				vaiety_thumb3.setPadding(0, 22, 0, 0);
+				vaiety_fouce_label.setText(vaiety_thumb1.getTag(R.id.vaiety_post)
+						.toString());
+			} else if (loopindex == 1) {
+				vaiety_thumb1.setPadding(0, 22, 0, 0);
+				vaiety_thumb2.setPadding(0, 0, 0, 0);
+				vaiety_thumb3.setPadding(0, 22, 0, 0);
+				vaiety_fouce_label.setText(vaiety_thumb2.getTag(R.id.vaiety_post)
+						.toString());
+			} else if (loopindex == 2) {
+				vaiety_thumb1.setPadding(0, 22, 0, 0);
+				vaiety_thumb2.setPadding(0, 22, 0, 0);
+				vaiety_thumb3.setPadding(0, 0, 0, 0);
+				vaiety_fouce_label.setText(vaiety_thumb3.getTag(R.id.vaiety_post)
+						.toString());
+			}
 			if (loopindex >= 2)
-				loopindex = 0;
+				loopindex = -1;
 			imageswitch.sendEmptyMessageDelayed(IMAGE_SWITCH_KEY, 6000);
 			// pendingView.requestFocus();
 		}

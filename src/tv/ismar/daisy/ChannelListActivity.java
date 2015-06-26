@@ -31,11 +31,11 @@ public class ChannelListActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.channel_layout);
-        filter = findViewById(R.id.filter);
 		Intent intent = getIntent();
 		String title = null;
 		String url = null;
 		String channel = null;
+		int portraitflag =1;
 		if(intent!=null){
 			Bundle bundle = intent.getExtras();
 			if(bundle!=null){
@@ -44,6 +44,7 @@ public class ChannelListActivity extends BaseActivity {
 				title = bundle.getString("title");
 				
 				channel = bundle.getString("channel");
+				portraitflag = bundle.getInt("portraitflag");
 			}
 		}
 		if(url==null) {
@@ -75,10 +76,15 @@ public class ChannelListActivity extends BaseActivity {
 			}
 			else {
 				channelFragment = new ChannelFragment();
+				if(1 == portraitflag){
                 channelFragment.setIsPOrtrait(false);
+				}else if(2 == portraitflag){
+					channelFragment.setIsPOrtrait(true);					
+				}
 				channelFragment.mChannel = channel;
 				channelFragment.mTitle = title;  //chinesemovie
-				channelFragment.mUrl = url;
+             
+                channelFragment.mUrl = url;
 				fragmentTransaction.add(R.id.fragment_container, channelFragment);
 			}
 			fragmentTransaction.commit();
@@ -94,36 +100,16 @@ public class ChannelListActivity extends BaseActivity {
 		super.onDestroy();
 	}
 
-//	@Override
-//	public boolean onKeyUp(int keyCode, KeyEvent event) {
-//		if(keyCode==KeyEvent.KEYCODE_MENU) {
-//			if(mOnMenuToggleListener!=null) {
-//				mOnMenuToggleListener.OnMenuToggle();
-//				return true;
-//			}
-//		}
-//		return super.onKeyUp(keyCode, event);
-//	}
-
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode==KeyEvent.KEYCODE_BACK){
-            if(filter.getVisibility()==View.VISIBLE&&channelFragment!=null){
-                ((ActivityToFragmentListener)channelFragment).onMessageListener(KeyEvent.KEYCODE_BACK);
-            }
-            else{
-                finish();
-            }
-        }
-        else if(keyCode==KeyEvent.KEYCODE_MENU) {
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if(keyCode==KeyEvent.KEYCODE_MENU) {
 			if(mOnMenuToggleListener!=null) {
 				mOnMenuToggleListener.OnMenuToggle();
 				return true;
 			}
 		}
-        return false;
-    }
+		return super.onKeyUp(keyCode, event);
+	}
 
     public void registerOnMenuToggleListener(OnMenuToggleListener listener) {
 		mOnMenuToggleListener = listener;

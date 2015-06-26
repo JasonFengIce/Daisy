@@ -86,6 +86,17 @@
             </intent-filter>
         </activity>
         <activity
+                android:name=".FilterActivity"
+                android:screenOrientation="landscape"
+                android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+                android:windowSoftInputMode="adjustUnspecified|stateHidden">
+            <intent-filter>
+                <action android:name="tv.ismar.daisy.Filter"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity
                 android:name=".ItemDetailActivity"
                 android:screenOrientation="landscape"
                 android:theme="@android:style/Theme.NoTitleBar.Fullscreen"

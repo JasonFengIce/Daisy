@@ -78,10 +78,10 @@
         sakura:rowHeight="439dip"
         sakura:selectorDrawable="@drawable/vod_gv_selector"
         sakura:verticalSpacing="0dip"
-        sakura:selectionLeftPadding="@dimen/HGridView_related_selectionLeftPadding"
-        sakura:selectionTopPadding="@dimen/HGridView_related_selectionTopPadding"
-        sakura:selectionRightPadding="@dimen/HGridView_related_selectionRightPadding"
-        sakura:selectionBottomPadding="@dimen/HGridView_related_selectionBottomPadding"
+        sakura:selectionLeftPadding="@dimen/HGridView_related_pselectionLeftPadding"
+        sakura:selectionTopPadding="@dimen/HGridView_related_pselectionTopPadding"
+        sakura:selectionRightPadding="@dimen/HGridView_related_pselectionRightPadding"
+        sakura:selectionBottomPadding="@dimen/HGridView_related_pselectionBottomPadding"
         android:layout_marginTop="-22dip"
         >
     </org.sakuratya.horizontal.ui.HGridView>

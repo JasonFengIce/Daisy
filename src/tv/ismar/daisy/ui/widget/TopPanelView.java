@@ -17,12 +17,15 @@ public class TopPanelView extends LinearLayout {
 	private TextView usercenterview;
 	private TextView favoriteview;
 	private TextView historyview;
-
+    private View guide_channelsecondname;
+    private View secondline;
 	public TopPanelView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		LayoutInflater mInflater = LayoutInflater.from(context);
 		View myView = mInflater.inflate(R.layout.top_panel, null);
 		addView(myView);
+        secondline = findViewById(R.id.secondline);
+        guide_channelsecondname = findViewById(R.id.guide_channelsecondname);
 		channelName = (TextView) findViewById(R.id.guide_channelname);
 		searchview = (TextView) findViewById(R.id.guide_search);
 		messageview = (TextView) findViewById(R.id.guide_message);
@@ -59,6 +62,7 @@ public class TopPanelView extends LinearLayout {
 				intent.setClassName("tv.ismar.daisy",
 						"tv.ismar.daisy.ChannelListActivity");
 				intent.putExtra("channel", "$bookmarks");
+                break;
 			case R.id.guide_play_history:
 				intent.setClassName("tv.ismar.daisy",
 						"tv.ismar.daisy.ChannelListActivity");
@@ -72,4 +76,8 @@ public class TopPanelView extends LinearLayout {
 	public void setChannelName(String channeltitle) {
 		channelName.setText(channeltitle);
 	}
+    public void setSecondChannelVisable(){
+        guide_channelsecondname.setVisibility(View.VISIBLE);
+        secondline.setVisibility(View.VISIBLE);
+    }
 }
