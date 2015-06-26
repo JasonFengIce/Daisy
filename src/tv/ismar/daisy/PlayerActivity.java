@@ -450,6 +450,32 @@ public class PlayerActivity extends VodMenuAction {
 			// new ItemByUrlTask().execute();
 			String info = bundle.getString("ismartv");
 			urlInfo = AccessProxy.getIsmartvClipInfo(info);
+			StringBuffer director = new StringBuffer();
+			String params = "channel=" + "chinesemovie" + "&section=" + "xingzhen"
+					+ "&itemid="
+					+ item.pk
+					+ "&topic="
+					+ "3"
+					+ "&source="
+					+ "related"
+					+ "&genre="
+					+ "{10021, 10023, 10031}"
+					+ "&content_model="
+					+ item.content_model
+					+ "&director="
+					+ "[27909, 27910]"
+					+ "&actor="
+					+ "[913，1187]"
+					+ "&clipid="
+					+ item.clip.pk
+					+ "&live_video="
+					+ item.live_video
+					+ "&vendor="
+					+ item.vendor
+					+ "&expense="
+					+ "true"
+					+ "&length=" + item.clip.length;
+			new GetAdDataTask().execute("qiantiepian",params);
 			new initPlayTask().execute();
 		}
 	}

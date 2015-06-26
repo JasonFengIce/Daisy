@@ -16,9 +16,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.zip.GZIPInputStream;
 
@@ -27,19 +28,17 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
-
-import android.app.Application;
+import tv.ismar.daisy.models.AdElement;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
 
@@ -213,6 +212,100 @@ public class NetworkUtils {
 			}
 		 return response.toString();
 	   }
+
+	public static ArrayList<AdElement> getAdByPost(String adpid,
+			String values) {
+		StringBuffer response = new StringBuffer();
+		ArrayList<AdElement> result = new ArrayList<AdElement>();
+		String baseparams = "sn=" + SimpleRestClient.sn_token
+				+ "&modelName=" + Build.MODEL + "&version="
+				+ SimpleRestClient.appVersion + "&accessToken="
+				+ SimpleRestClient.access_token + "&deviceToken="
+				+ SimpleRestClient.device_token + "&app="
+				+ SimpleRestClient.appVersion + "&resolution="
+				+ SimpleRestClient.screenWidth + ","
+				+ SimpleRestClient.screenHeight + "&dpi="
+				+ SimpleRestClient.densityDpi + "&adpid=" + "[" + adpid
+				+ "]";
+		try {
+			URL postUrl = new URL("http://lilac.t.tvxio.com"+ "/testads/?"+baseparams + "&" + values);
+			HttpURLConnection connection = (HttpURLConnection) postUrl
+					.openConnection();
+//			connection.setDoOutput(true);
+//			connection.setDoInput(true);
+			connection.setRequestMethod("GET");
+			// connection.setUseCaches(false);
+			connection.addRequestProperty("Accept-Encoding",
+					"gzip,deflate,sdch");
+//			connection.setInstanceFollowRedirects(true);
+//			connection.setRequestProperty("Content-Type",
+//					"application/x-www-form-urlencoded");
+			connection.setRequestProperty("Accept", "application/json");
+			connection.connect();
+//			DataOutputStream out = new DataOutputStream(
+//					connection.getOutputStream());
+//			out.writeBytes(baseparams + "&" + values);
+//			out.flush();
+//			out.close();
+			int status = connection.getResponseCode();
+			GZIPInputStream is = null;
+			String encoding = connection.getContentEncoding();
+			BufferedReader buff;
+			if (encoding != null && encoding.contains("gzip")) {// 首先判断服务器返回的数据是否支持gzip压缩，
+				is = new GZIPInputStream(connection.getInputStream());
+				buff = new BufferedReader(new InputStreamReader(is, "UTF-8")); // 如果支持则应该使用GZIPInputStream解压，否则会出现乱码无效数据
+			} else {
+				buff = new BufferedReader(new InputStreamReader(
+						connection.getInputStream(), "UTF-8"));
+			}
+			if (status == 200) {
+				String line;
+				while ((line = buff.readLine()) != null) {
+					response.append(line);
+				}
+				buff.close();
+				JSONObject rootJsonObject = new JSONObject(response.toString());
+				int retcode = rootJsonObject.getInt("retcode");
+				String retmsg = rootJsonObject.getString("retmsg");
+				if (retcode == 200) {
+					JSONObject body = rootJsonObject.getJSONObject("ads");
+					JSONArray arrays = body.getJSONArray("adpid");
+					for (int i = 0; i < arrays.length(); i++) {
+						JSONObject element = arrays.getJSONObject(i);
+						AdElement ad = new AdElement();
+//						ad.setRetcode(element.getInt("retcode"));
+						ad.setTitle(element.getString("title"));
+						ad.setDescription(element.getString("description"));
+						ad.setMedia_url(element.getString("media_url"));
+						ad.setMedia_id(element.getInt("media_id"));
+						ad.setMedia_type(element.getString("media_type"));
+						ad.setSerial(element.getInt("serial"));
+						ad.setStart(element.getInt("start"));
+						ad.setEnd(element.getInt("end"));
+						ad.setDuration(element.getInt("duration"));
+						result.add(ad);
+						Collections.sort(result, new Comparator<AdElement>() {
+							@Override
+							public int compare(AdElement lhs, AdElement rhs) {
+								if (lhs.getSerial() > rhs.getSerial())
+									return 1;
+								return 0;
+							}
+						});
+					}
+				} else {
+					AdElement ad = new AdElement();
+					ad.setRoot_retcode(retcode);
+					ad.setRoot_retmsg(retmsg);
+				}
+			}
+			connection.disconnect();
+		} catch (Exception e) {
+			Log.v("aaaa", e.getMessage());
+		}
+		return result;
+	}
+
 	public static InputStream getInputStream(String target) {
 		String urlStr = target;
 		try {

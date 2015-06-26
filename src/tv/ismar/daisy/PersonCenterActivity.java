@@ -617,7 +617,7 @@ public class PersonCenterActivity extends BaseActivity implements View.OnClickLi
                 startSakura();
                 break;
             case R.id.account_register:
-            	AccountAboutDialog dialog = new AccountAboutDialog(this,R.style.PaymentDialog);
+            	AccountAboutDialog dialog = new AccountAboutDialog(this,R.style.UserinfoDialog);
             	dialog.getWindow().clearFlags( WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             	dialog.show();
             default:

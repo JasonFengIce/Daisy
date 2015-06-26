@@ -86,6 +86,7 @@
                 android:layout_width="300dp"
                 android:layout_height="495dp"
                 android:dividerHeight="2dp"
+                android:scrollbars="none"
                 android:listSelector="@drawable/launcher_selector" />
 
             <ImageView

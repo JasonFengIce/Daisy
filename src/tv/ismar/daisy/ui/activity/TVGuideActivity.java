@@ -1,25 +1,17 @@
 package tv.ismar.daisy.ui.activity;
 
-import android.content.*;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.TextView;
-import cn.ismartv.activator.Activator;
-import cn.ismartv.activator.data.Result;
-import com.baidu.location.*;
+import static tv.ismar.daisy.VodApplication.DEVICE_TOKEN;
+import static tv.ismar.daisy.VodApplication.DOMAIN;
+import static tv.ismar.daisy.VodApplication.LOCATION_CITY;
+import static tv.ismar.daisy.VodApplication.LOCATION_DISTRICT;
+import static tv.ismar.daisy.VodApplication.LOCATION_PROVINCE;
+import static tv.ismar.daisy.VodApplication.LOG_DOMAIN;
+import static tv.ismar.daisy.VodApplication.PREFERENCE_FILE_NAME;
+import static tv.ismar.daisy.VodApplication.SN_TOKEN;
+import static tv.ismar.daisy.VodApplication.ad_domain;
+
+import java.util.ArrayList;
+
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -34,13 +26,47 @@ import tv.ismar.daisy.core.service.PosterUpdateService;
 import tv.ismar.daisy.core.update.AppUpdateUtils;
 import tv.ismar.daisy.data.ChannelEntity;
 import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
-import tv.ismar.daisy.ui.fragment.*;
+import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
+import tv.ismar.daisy.ui.fragment.ChildFragment;
+import tv.ismar.daisy.ui.fragment.EntertainmentFragment;
+import tv.ismar.daisy.ui.fragment.FilmFragment;
+import tv.ismar.daisy.ui.fragment.GuideFragment;
+import tv.ismar.daisy.ui.fragment.SportFragment;
 import tv.ismar.daisy.ui.widget.DaisyButton;
 import tv.ismar.daisy.ui.widget.TopPanelView;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
+import cn.ismartv.activator.Activator;
+import cn.ismartv.activator.data.Result;
 
-import java.util.ArrayList;
-
-import static tv.ismar.daisy.VodApplication.*;
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.GeofenceClient;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -102,6 +128,7 @@ public class TVGuideActivity extends FragmentActivity implements
         String localInfo = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.LOCATION_INFO, "");
         sendLoncationRequest();
         activator.active(MANUFACTURE, KIND, VERSION, localInfo);
+        getHardInfo();
     }
 
     @Override
@@ -490,5 +517,22 @@ public class TVGuideActivity extends FragmentActivity implements
                 .getString(VodApplication.MOBILE_NUMBER, "");
         SimpleRestClient.access_token = DaisyUtils.getVodApplication(this)
                 .getPreferences().getString(VodApplication.AUTH_TOKEN, "");
+    }
+    
+    private void getHardInfo(){
+    	DisplayMetrics metric = new DisplayMetrics();
+    	getWindowManager().getDefaultDisplay().getMetrics(metric);
+    	SimpleRestClient.densityDpi = metric.densityDpi;
+    	SimpleRestClient.densityDpi = metric.widthPixels;
+    	SimpleRestClient.densityDpi = metric.heightPixels;
+    	PackageManager manager = getPackageManager();
+        try {
+            PackageInfo info = manager.getPackageInfo(getPackageName(), 0);
+//            String appVersionName = info.versionName;
+            SimpleRestClient.appVersion = info.versionCode;
+        } catch (NameNotFoundException e) {
+            // TODO Auto-generated catch blockd
+            e.printStackTrace();
+        }
     }
 }

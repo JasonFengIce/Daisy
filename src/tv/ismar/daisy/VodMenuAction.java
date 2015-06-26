@@ -1,12 +1,16 @@
 package tv.ismar.daisy;
 
+import java.util.ArrayList;
+
+import tv.ismar.daisy.core.NetworkUtils;
+import tv.ismar.daisy.models.AdElement;
 import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.player.ISTVVodMenu;
 import tv.ismar.daisy.views.CustomDialog;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.view.View;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -60,5 +64,24 @@ public abstract class VodMenuAction extends BaseActivity {
 	}
 
 	protected void hideBuffer() {
+	}
+
+	class GetAdDataTask extends AsyncTask<String, Void, ArrayList<AdElement>> {
+
+		@Override
+		protected void onPostExecute(ArrayList<AdElement> result) {
+			AdElement firstElement = result.get(0);
+			Log.v("", firstElement.getRoot_retmsg());
+		}
+
+		@Override
+		protected ArrayList<AdElement> doInBackground(String... params) {
+			String adpid = params[0];
+			String p = params[1];
+			NetworkUtils.getAdByPost(adpid, p);
+			ArrayList<AdElement> ads = new ArrayList<AdElement>();
+			return ads;
+		}
+
 	}
 }
