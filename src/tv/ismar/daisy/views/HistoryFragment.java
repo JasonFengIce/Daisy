@@ -19,6 +19,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
 import org.sakuratya.horizontal.ui.HGridView;
@@ -28,10 +29,13 @@ import tv.ismar.daisy.ChannelListActivity.OnMenuToggleListener;
 import tv.ismar.daisy.PersonCenterActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.SearchActivity;
+import tv.ismar.daisy.adapter.RecommecdItemAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
+import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.History;
@@ -94,6 +98,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 	private Item[] mHistoriesByNet;
 	private Button search_btn;
 	private ItemCollection mHistoryItemList;
+    private ArrayList<HomePagerEntity.Poster> posters;
 	private long getTodayStartPoint() {
 		long currentTime = System.currentTimeMillis();
 		GregorianCalendar currentCalendar = new GregorianCalendar();
@@ -522,7 +527,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		mScrollableSectionList.setVisibility(View.GONE);
 		mHGridView.setVisibility(View.GONE);
 		collect_or_history_txt.setText(getResources().getString(R.string.no_history_record));
-		getTvHome();
+		fetchHomePage();
 	}
 	
 	private void showDialog(final int dialogType, final AsyncTask task, final Object[] params) {
@@ -662,18 +667,13 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 			break;
 
 		case R.id.recommend_gridview:
-//			Intent intent= new Intent();
-////			if(tvHome.getObjects().get(position).isIs_complex()){
-////				intent.setClassName("tv.ismar.daisy",
-////						"tv.ismar.daisy.ItemDetailActivity");
-////				intent.putExtra("url", tvHome.getObjects().get(position).getItem_url());
-//				startActivity(intent);
-//			}
-//			else{
-//				InitPlayerTool tool = new InitPlayerTool(getActivity());
-////				tool.initClipInfo(tvHome.getObjects().get(position).getItem_url(), InitPlayerTool.FLAG_URL);
-//			}
-//			break;
+            if(posters!=null){
+                Intent intent= new Intent();
+                intent.setClassName("tv.ismar.daisy",
+                        "tv.ismar.daisy.ItemDetailActivity");
+                intent.putExtra("url", posters.get(position).getUrl());
+                startActivity(intent);
+            }
 		}
 	}
 	private Handler mainHandler = new Handler() {
@@ -685,60 +685,37 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 			}
 		};
 		private void setTvHome(String content) {
+            Log.i("zxcvbnm","json=="+content);
+            HomePagerEntity homePagerEntity = new Gson().fromJson(content, HomePagerEntity.class);
+            posters = homePagerEntity.getPosters();
+            if(posters.size()>0){
+                RecommecdItemAdapter recommendAdapter = new RecommecdItemAdapter(getActivity(), posters);
+                recommend_gridview.setAdapter(recommendAdapter);
+                recommend_gridview.setFocusable(true);
+                recommend_gridview.setOnItemClickListener(this);
+            }
 		}
-		private void getTvHome() {
-			new Thread() {
-				@Override
-				public void run() {
-					super.run();
-					String content ="";
-				
-//						URL getUrl = new URL(SimpleRestClient.root_url
-//								+ "/api/tv/section/tvhome/"+"?device_token="+SimpleRestClient.device_token);
-//						HttpURLConnection connection = (HttpURLConnection) getUrl
-//								.openConnection();
-//						//connection.setIfModifiedSince(System.currentTimeMillis());
-//						connection.setReadTimeout(9000);
-//						connection.connect();
-//						int status = connection.getResponseCode();
-//						if(status==200){
-//							BufferedReader reader = new BufferedReader(
-//									new InputStreamReader(connection.getInputStream(),"UTF-8"));				
-//							String lines;
-//							while ((lines = reader.readLine()) != null) {
-//								content.append(lines);
-//							}
-							
-							try {
-								content = NetworkUtils.getJsonStr(SimpleRestClient.root_url+"/api/tv/section/tvhome/");
-								Message message = new Message();
-								Bundle data = new Bundle();
-								data.putString("content", content);
-								DaisyUtils.getVodApplication(getActivity()).getEditor().putString("recommend", content.toString());
-								message.setData(data);
-								mainHandler.sendMessage(message);
-							} catch (ItemOfflineException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							} catch (NetworkException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
+    public void fetchHomePage() {
+        String api = SimpleRestClient.root_url + "/api/tv/homepage/top/";
+        new IsmartvUrlClient(getActivity()).doRequest(api, new IsmartvUrlClient.CallBack() {
+            @Override
+            public void onSuccess(String result) {
 
-						
-//						else if(status==304){
-//							String info = DaisyUtils.getVodApplication(getActivity()).getPreferences().getString("recommend", "");
-//							Message message = new Message();
-//							Bundle data = new Bundle();
-//							data.putString("content", info);
-//							message.setData(data);
-//							mainHandler.sendMessage(message);
-//						}
-					} 
-				
 
-			}.start();
-		}
+                Message message = new Message();
+                Bundle data = new Bundle();
+                data.putString("content", result);
+                DaisyUtils.getVodApplication(getActivity()).getEditor().putString("recommend", result.toString());
+                message.setData(data);
+                mainHandler.sendMessage(message);
+            }
+
+            @Override
+            public void onFailed(Exception exception) {
+                Log.e("", exception.getMessage());
+            }
+        });
+    }
 
 		   private void startSakura(){
 	            Intent intent = new Intent();

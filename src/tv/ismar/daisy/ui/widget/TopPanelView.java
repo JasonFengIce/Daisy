@@ -62,6 +62,7 @@ public class TopPanelView extends LinearLayout {
 				intent.setClassName("tv.ismar.daisy",
 						"tv.ismar.daisy.ChannelListActivity");
 				intent.putExtra("channel", "$bookmarks");
+                break;
 			case R.id.guide_play_history:
 				intent.setClassName("tv.ismar.daisy",
 						"tv.ismar.daisy.ChannelListActivity");
