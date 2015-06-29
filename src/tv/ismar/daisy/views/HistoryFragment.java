@@ -685,7 +685,6 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 			}
 		};
 		private void setTvHome(String content) {
-            Log.i("zxcvbnm","json=="+content);
             HomePagerEntity homePagerEntity = new Gson().fromJson(content, HomePagerEntity.class);
             posters = homePagerEntity.getPosters();
             if(posters.size()>0){
