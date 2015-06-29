@@ -75,7 +75,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View mView = LayoutInflater.from(getActivity()).inflate(
+        View mView = LayoutInflater.from(context).inflate(
                 R.layout.fragment_film, null);
         guideRecommmendList = (LinearLayout) mView
                 .findViewById(R.id.film_recommend_list);
@@ -109,7 +109,6 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
                 playCarousel();
             }
         };
-
 
         linkedVideoView.setOnCompletionListener(loopAllListener);
 
@@ -157,12 +156,12 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
 //            if (i != 7) {
                 params.setMargins(0, 0, 25, 0);
 //            }
-            ImageView itemView = new ImageView(getActivity());
+            ImageView itemView = new ImageView(context);
             itemView.setBackgroundResource(R.drawable.launcher_selector);
             itemView.setFocusable(true);
             itemView.setOnClickListener(ItemClickListener);
 			if (i <=7) {
-				Picasso.with(getActivity())
+				Picasso.with(context)
 						.load(posters.get(i).getCustom_image()).into(itemView);
 				itemView.setScaleType(ImageView.ScaleType.FIT_XY);
 				itemView.setLayoutParams(params);
@@ -171,7 +170,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
 			} else {
 				params.setMargins(0, 0, 30, 0);
 				LinearLayout morelayout = (LinearLayout) LayoutInflater.from(
-						getActivity()).inflate(R.layout.toppagelistmorebutton,
+						context).inflate(R.layout.toppagelistmorebutton,
 						null);
 				morelayout.setLayoutParams(params);
 				View view = morelayout.findViewById(R.id.listmore);
@@ -212,10 +211,10 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, 0);
             params.weight = 1;
-            ImageView itemView = new ImageView(getActivity());
+            ImageView itemView = new ImageView(context);
             itemView.setBackgroundResource(R.drawable.launcher_selector);
             itemView.setFocusable(true);
-            Picasso.with(getActivity()).load(carousels.get(i).getThumb_image())
+            Picasso.with(context).load(carousels.get(i).getThumb_image())
                     .into(itemView);
             itemView.setScaleType(ImageView.ScaleType.FIT_XY);
             itemView.setLayoutParams(params);
@@ -345,19 +344,19 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
                 intent.putExtra("portraitflag", channelEntity.getSytle());
                 intent.setClassName("tv.ismar.daisy",
                         "tv.ismar.daisy.ChannelListActivity");
-                getActivity().startActivity(intent);
+                context.startActivity(intent);
             } else {
                 if ("item".equals(contentMode)) {
                     intent.setClassName("tv.ismar.daisy",
                             "tv.ismar.daisy.ItemDetailActivity");
                     intent.putExtra("url", url);
-                    getActivity().startActivity(intent);
+                    context.startActivity(intent);
                 } else if ("topic".equals(contentMode)) {
                     intent.putExtra("url",
                             url);
                     intent.setClassName("tv.ismar.daisy",
                             "tv.ismar.daisy.TopicActivity");
-                    getActivity().startActivity(intent);
+                    context.startActivity(intent);
                 } else if ("section".equals(contentMode)) {
                     intent.putExtra("title", title);
                     intent.putExtra("itemlistUrl",
@@ -366,7 +365,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
                             title);
                     intent.setClassName("tv.ismar.daisy",
                             "tv.ismar.daisy.PackageListDetailActivity");
-                    getActivity().startActivity(intent);
+                    context.startActivity(intent);
                 } else if ("package".equals(contentMode)) {
 
                 }
