@@ -111,7 +111,38 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
             }
         };
 
+        View.OnClickListener viewClickListener = new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                String url = carousels.get(flag.getPosition()).getUrl();
+                String model = carousels.get(flag.getPosition()).getModel_name();
+                String title = carousels.get(flag.getPosition()).getTitle();
+                Intent intent = new Intent();
+                if ("item".equals(model)) {
+                    intent.setClassName("tv.ismar.daisy",
+                            "tv.ismar.daisy.ItemDetailActivity");
+                    intent.putExtra("url", url);
+                } else if ("topic".equals(model)) {
+                    intent.putExtra("url",
+                            url);
+                    intent.setClassName("tv.ismar.daisy",
+                            "tv.ismar.daisy.TopicActivity");
+                } else if ("section".equals(model)) {
+                    intent.putExtra("title", title);
+                    intent.putExtra("itemlistUrl",
+                            url);
+                    intent.putExtra("lableString",
+                            title);
+                    intent.setClassName("tv.ismar.daisy",
+                            "tv.ismar.daisy.PackageListDetailActivity");
+                }
+                context.startActivity(intent);
+            }
+        };
+
         linkedVideoView.setOnCompletionListener(loopAllListener);
+        linkedVideoView.setOnClickListener(viewClickListener);
+        linkedVideoImage.setOnClickListener(viewClickListener);
 
         return mView;
     }

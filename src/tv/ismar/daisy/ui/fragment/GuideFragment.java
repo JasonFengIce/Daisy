@@ -52,6 +52,7 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
     private ArrayList<String> allVideoUrl;
     private ArrayList<ImageView> allItem;
 
+    private ArrayList<Carousel> carousels;
     private Flag flag;
 
 
@@ -72,15 +73,35 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
 
         flag = new Flag(this);
 
-        linkedVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-            @Override
-            public boolean onError(MediaPlayer mp, int what, int extra) {
-                Log.d(TAG, "linkedVideoView onError");
 
-                return false;
+        linkedVideoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = carousels.get(flag.getPosition()).getUrl();
+                String model = carousels.get(flag.getPosition()).getModel_name();
+                String title = carousels.get(flag.getPosition()).getTitle();
+                Intent intent = new Intent();
+                if ("item".equals(model)) {
+                    intent.setClassName("tv.ismar.daisy",
+                            "tv.ismar.daisy.ItemDetailActivity");
+                    intent.putExtra("url", url);
+                } else if ("topic".equals(model)) {
+                    intent.putExtra("url",
+                            url);
+                    intent.setClassName("tv.ismar.daisy",
+                            "tv.ismar.daisy.TopicActivity");
+                } else if ("section".equals(model)) {
+                    intent.putExtra("title", title);
+                    intent.putExtra("itemlistUrl",
+                            url);
+                    intent.putExtra("lableString",
+                            title);
+                    intent.setClassName("tv.ismar.daisy",
+                            "tv.ismar.daisy.PackageListDetailActivity");
+                }
+                context.startActivity(intent);
             }
         });
-
 
         return mView;
     }
@@ -141,7 +162,7 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
     }
 
     private void initCarousel(final ArrayList<HomePagerEntity.Carousel> carousels) {
-
+        this.carousels = carousels;
         String tag = "guide";
         deleteFile(carousels, tag);
         downloadVideo(carousels, tag);
@@ -203,7 +224,7 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
                 if (focusFlag) {
                     linkedVideoView.setOnCompletionListener(loopAllListener);
                 } else {
-                    flag.setPosition((Integer)v.getTag());
+                    flag.setPosition((Integer) v.getTag());
                     linkedVideoView.setOnCompletionListener(loopCurrentListener);
                     setVideoPath(linkedVideoView, allVideoUrl.get(flag.getPosition()));
                 }
