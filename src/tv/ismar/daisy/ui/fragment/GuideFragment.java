@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,13 +19,11 @@ import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.DownloadClient;
 import tv.ismar.daisy.core.client.DownloadThreadPool;
-import tv.ismar.daisy.core.client.InternalDownloadClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.data.HomePagerEntity.Poster;
 import tv.ismar.daisy.data.table.DownloadTable;
-import tv.ismar.daisy.ui.CarouselUtils;
 import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
 import tv.ismar.daisy.utils.HardwareUtils;
 
@@ -45,7 +42,6 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
     private LinearLayout carouselLayout;
     private VideoView linkedVideoView;
 
-    private CarouselUtils carouselUtils;
 
     private Context context;
 
@@ -367,11 +363,11 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
         for (int i = 0; i < allItem.size(); i++) {
             ImageView imageView = allItem.get(i);
             if (position != i) {
-                if (imageView.getAlpha() != 1) {
-                    imageView.setAlpha((float) 1);
+                if (imageView.getAlpha() == 1) {
+                    imageView.setAlpha((float) 0.5);
                 }
             } else {
-                imageView.setAlpha((float) 0.5);
+                imageView.setAlpha((float) 1);
             }
 
         }

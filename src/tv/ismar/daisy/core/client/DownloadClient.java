@@ -2,6 +2,7 @@ package tv.ismar.daisy.core.client;
 
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -41,6 +42,7 @@ public class DownloadClient implements Runnable {
 
     @Override
     public void run() {
+
         try {
             String videoName = new File(new URL(url).getFile()).getName();
             downloadFile = new File(savePath, videoName);
@@ -63,6 +65,7 @@ public class DownloadClient implements Runnable {
         downloadTable.file_name = downloadFile.getName();
         downloadTable.download_path = downloadFile.getAbsolutePath();
         downloadTable.url = url;
+        downloadTable.md5 = "";
         downloadTable.save();
 
 

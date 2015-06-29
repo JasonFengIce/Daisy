@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +21,6 @@ import com.squareup.picasso.Picasso;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.HomePagerEntity;
-import tv.ismar.daisy.ui.CarouselUtils;
 
 import java.util.ArrayList;
 
@@ -78,7 +79,7 @@ public class ChildFragment extends ChannelBaseFragment {
                 Log.d(TAG, "carousels size: " + carousels.size());
 
                 initPosters(posters);
-                initCarousel(carousels);
+//                initCarousel(carousels);
             }
 
             @Override
@@ -159,22 +160,22 @@ public class ChildFragment extends ChannelBaseFragment {
         rightLayout.requestLayout();
     }
 
-    private void initCarousel(ArrayList<HomePagerEntity.Carousel> carousels) {
-        CarouselUtils carouselUtils = new CarouselUtils();
-        carouselUtils.loopCarousel(context, carousels, imageSwitcher, new CarouselUtils.ImageIndicatorCallback() {
-            @Override
-            public void indicatorChanged(int hide, int show) {
-                zoomIn(indicatorImgs[hide]);
-                zoomOut(indicatorImgs[show]);
-
-            }
-        });
-        for (int i = 0; i < 3; i++) {
-            indicatorImgs[i].setTag(i);
-            indicatorImgs[i].setOnFocusChangeListener(carouselUtils.scaleListener);
-            Picasso.with(context).load(carousels.get(i).getThumb_image()).into(indicatorImgs[i]);
-        }
-    }
+//    private void initCarousel(ArrayList<HomePagerEntity.Carousel> carousels) {
+//        CarouselUtils carouselUtils = new CarouselUtils();
+//        carouselUtils.loopCarousel(context, carousels, imageSwitcher, new CarouselUtils.ImageIndicatorCallback() {
+//            @Override
+//            public void indicatorChanged(int hide, int show) {
+//                zoomIn(indicatorImgs[hide]);
+//                zoomOut(indicatorImgs[show]);
+//
+//            }
+//        });
+//        for (int i = 0; i < 3; i++) {
+//            indicatorImgs[i].setTag(i);
+//            indicatorImgs[i].setOnFocusChangeListener(carouselUtils.scaleListener);
+//            Picasso.with(context).load(carousels.get(i).getThumb_image()).into(indicatorImgs[i]);
+//        }
+//    }
 
 
     private void zoomIn(View view) {
@@ -254,6 +255,8 @@ public class ChildFragment extends ChannelBaseFragment {
             }
         }
     };
+
+
 
 }
 
