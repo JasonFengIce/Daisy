@@ -94,18 +94,18 @@ public class FilmFragment extends ChannelBaseFragment {
     private void initPosters(ArrayList<HomePagerEntity.Poster> posters) {
     	film_lefttop_image.setUrl(posters.get(0).getCustom_image());
     	film_lefttop_image.setFocustitle(posters.get(0).getIntroduction());
-        for (int i = 1; i < posters.size(); i++) {
+        for (int i = 1; i <=posters.size(); i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0,
                     ViewGroup.LayoutParams.MATCH_PARENT);
             params.weight = 1;
-            if (i != 7) {
+//            if (i != 7) {
                 params.setMargins(0, 0, 25, 0);
-            }
+//            }
             ImageView itemView = new ImageView(getActivity());
             itemView.setBackgroundResource(R.drawable.launcher_selector);
             itemView.setFocusable(true);
             itemView.setOnClickListener(ItemClickListener);
-			if (i <= 6) {
+			if (i <=7) {
 				Picasso.with(getActivity())
 						.load(posters.get(i).getCustom_image()).into(itemView);
 				itemView.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -113,6 +113,7 @@ public class FilmFragment extends ChannelBaseFragment {
 				itemView.setTag(posters.get(i));
 				guideRecommmendList.addView(itemView);
 			} else {
+				params.setMargins(0, 0, 30, 0);
 				LinearLayout morelayout = (LinearLayout) LayoutInflater.from(
 						getActivity()).inflate(R.layout.toppagelistmorebutton,
 						null);

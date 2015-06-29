@@ -78,8 +78,7 @@ public abstract class VodMenuAction extends BaseActivity {
 		protected ArrayList<AdElement> doInBackground(String... params) {
 			String adpid = params[0];
 			String p = params[1];
-			NetworkUtils.getAdByPost(adpid, p);
-			ArrayList<AdElement> ads = new ArrayList<AdElement>();
+			ArrayList<AdElement> ads = NetworkUtils.getAdByPost(adpid, p);
 			return ads;
 		}
 

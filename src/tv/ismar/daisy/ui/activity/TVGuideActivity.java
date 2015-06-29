@@ -218,6 +218,7 @@ public class TVGuideActivity extends FragmentActivity implements
                     textView.setTextColor(getResources()
                             .getColor(R.color.white));
                     textView.setTag(channelEntities[i]);
+                    textView.setTag(R.drawable.selector_channel_item,i);
                     textView.setOnClickListener(channelClickListener);
                     textView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
                     channelListView.addView(textView);
@@ -443,6 +444,17 @@ public class TVGuideActivity extends FragmentActivity implements
 
         @Override
         public void onClick(View v) {
+			for (int i = 0; i < channelListView.getChildCount(); i++) {
+				if (v.getTag(R.drawable.selector_channel_item)
+						.toString()
+						.equals(channelListView.getChildAt(i)
+								.getTag(R.drawable.selector_channel_item)
+								.toString())) {
+					v.setBackgroundResource(R.drawable.channel_item_focus);
+				} else {
+					v.setBackgroundResource(R.drawable.selector_channel_item);
+				}
+			}
         	ChannelEntity channelEntity = (ChannelEntity)v.getTag();
             toppanel.setChannelName(channelEntity.getName());
             if ("template1".equals(channelEntity.getHomepage_template())) {
