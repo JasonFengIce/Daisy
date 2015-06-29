@@ -1,5 +1,6 @@
 package tv.ismar.daisy.ui;
 
+import tv.ismar.daisy.R;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -20,7 +21,6 @@ public class ItemViewFocusChangeListener implements View.OnFocusChangeListener {
             animationSet.addAnimation(scaleAnimation);
             animationSet.setFillAfter(true);
             itemView.startAnimation(animationSet);
-
         } else {
             AnimationSet animationSet = new AnimationSet(true);
             ScaleAnimation scaleAnimation = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,

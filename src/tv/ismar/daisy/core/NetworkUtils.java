@@ -269,7 +269,7 @@ public class NetworkUtils {
 				String retmsg = rootJsonObject.getString("retmsg");
 				if (retcode == 200) {
 					JSONObject body = rootJsonObject.getJSONObject("ads");
-					JSONArray arrays = body.getJSONArray("adpid");
+					JSONArray arrays = body.getJSONArray(adpid);
 					for (int i = 0; i < arrays.length(); i++) {
 						JSONObject element = arrays.getJSONObject(i);
 						AdElement ad = new AdElement();
