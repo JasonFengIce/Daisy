@@ -10,24 +10,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.google.gson.Gson;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.HomePagerEntity;
+import tv.ismar.daisy.ui.widget.child.ChildThumbImageView;
 
 import java.util.ArrayList;
 
 /**
  * Created by huaijie on 5/18/15.
  */
-public class ChildFragment extends ChannelBaseFragment {
+public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCallback {
     private static final String TAG = "ChildFragment";
 
     private Context context;
@@ -35,7 +34,16 @@ public class ChildFragment extends ChannelBaseFragment {
     private LinearLayout bottomLayout;
     private LinearLayout rightLayout;
     private ImageView imageSwitcher;
-    private ImageView[] indicatorImgs;
+    private ChildThumbImageView[] indicatorImgs;
+    private TextView indicatorTitle;
+
+    private boolean focusFlag = true;
+
+    private Flag flag;
+
+    private ArrayList<HomePagerEntity.Carousel> carousels;
+
+    private MessageHandler messageHandler;
 
 
     @Override
@@ -51,13 +59,15 @@ public class ChildFragment extends ChannelBaseFragment {
         bottomLayout = (LinearLayout) mView.findViewById(R.id.bottom_layout);
         rightLayout = (LinearLayout) mView.findViewById(R.id.right_layout);
         imageSwitcher = (ImageView) mView.findViewById(R.id.image_switcher);
-        indicatorImgs = new ImageView[]{
-                (ImageView) mView.findViewById(R.id.indicator_1),
-                (ImageView) mView.findViewById(R.id.indicator_2),
-                (ImageView) mView.findViewById(R.id.indicator_3)
+        indicatorImgs = new ChildThumbImageView[]{
+                (ChildThumbImageView) mView.findViewById(R.id.indicator_1),
+                (ChildThumbImageView) mView.findViewById(R.id.indicator_2),
+                (ChildThumbImageView) mView.findViewById(R.id.indicator_3)
         };
+        indicatorTitle = (TextView) mView.findViewById(R.id.indicator_title);
 
-
+        flag = new Flag(this);
+        messageHandler = new MessageHandler();
         return mView;
     }
 
@@ -79,7 +89,7 @@ public class ChildFragment extends ChannelBaseFragment {
                 Log.d(TAG, "carousels size: " + carousels.size());
 
                 initPosters(posters);
-//                initCarousel(carousels);
+                initCarousel(carousels);
             }
 
             @Override
@@ -160,44 +170,89 @@ public class ChildFragment extends ChannelBaseFragment {
         rightLayout.requestLayout();
     }
 
-//    private void initCarousel(ArrayList<HomePagerEntity.Carousel> carousels) {
-//        CarouselUtils carouselUtils = new CarouselUtils();
-//        carouselUtils.loopCarousel(context, carousels, imageSwitcher, new CarouselUtils.ImageIndicatorCallback() {
-//            @Override
-//            public void indicatorChanged(int hide, int show) {
-//                zoomIn(indicatorImgs[hide]);
-//                zoomOut(indicatorImgs[show]);
+    private void initCarousel(ArrayList<HomePagerEntity.Carousel> carousels) {
+
+        this.carousels = carousels;
 //
-//            }
-//        });
-//        for (int i = 0; i < 3; i++) {
-//            indicatorImgs[i].setTag(i);
-//            indicatorImgs[i].setOnFocusChangeListener(carouselUtils.scaleListener);
-//            Picasso.with(context).load(carousels.get(i).getThumb_image()).into(indicatorImgs[i]);
-//        }
-//    }
+
+        View.OnFocusChangeListener itemFocusChangeListener = new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                focusFlag = true;
+                for (ChildThumbImageView imageView : indicatorImgs) {
+                    focusFlag = focusFlag && (!imageView.isFocused());
+                }
+
+                if (hasFocus) {
+                    int position = (Integer) v.getTag();
+                    flag.setPosition(position);
+                    playCarousel();
+                }
+            }
+        };
 
 
-    private void zoomIn(View view) {
-        AnimationSet animationSet = new AnimationSet(true);
-        ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1f, 1.53f, 1f,
-                Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF, 0.5f);
-        scaleAnimation.setDuration(200);
-        animationSet.addAnimation(scaleAnimation);
-        animationSet.setFillAfter(true);
-        view.startAnimation(animationSet);
+        for (int i = 0; i < 3; i++) {
+            indicatorImgs[i].setTag(i);
+            indicatorImgs[i].setOnFocusChangeListener(itemFocusChangeListener);
+            Picasso.with(context).load(carousels.get(i).getThumb_image()).into(indicatorImgs[i]);
+        }
+
+        flag.setPosition(0);
+        playCarousel();
+
     }
 
-    private void zoomOut(View view) {
-        AnimationSet animationSet = new AnimationSet(true);
-        ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1, 1, 1.53f,
-                Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF, 0.5f);
-        scaleAnimation.setDuration(200);
-        animationSet.addAnimation(scaleAnimation);
-        animationSet.setFillAfter(true);
-        view.startAnimation(animationSet);
+    private void playCarousel() {
+        messageHandler.removeMessages(0);
+        Picasso.with(context).load(carousels.get(flag.getPosition()).getVideo_image()).into(imageSwitcher, new Callback() {
+            int pauseTime = Integer.parseInt(carousels.get(flag.getPosition()).getPause_time());
+
+            @Override
+            public void onSuccess() {
+                messageHandler.sendEmptyMessageDelayed(0, pauseTime * 1000);
+            }
+
+            @Override
+            public void onError() {
+                messageHandler.sendEmptyMessageDelayed(0, pauseTime * 1000);
+            }
+        });
+
+    }
+
+    @Override
+    public void change(int position) {
+        for (int i = 0; i < indicatorImgs.length; i++) {
+            ChildThumbImageView imageView = indicatorImgs[i];
+            if (position != i) {
+                if (imageView.getAlpha() == 1) {
+                    imageView.zoomNormalImage();
+                    imageView.setAlpha((float) 0.5);
+
+
+                }
+            } else {
+                imageView.zoomInImage();
+                imageView.setAlpha((float) 1);
+                indicatorTitle.setText(carousels.get(flag.getPosition()).getTitle());
+
+            }
+        }
+    }
+
+    private class MessageHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            if (focusFlag) {
+                if (flag.getPosition() + 1 >= carousels.size()) {
+                    flag.setPosition(0);
+                } else {
+                    flag.setPosition(flag.getPosition() + 1);
+                }
+            }
+            playCarousel();
+        }
     }
 
     private View.OnClickListener ItemClickListener = new View.OnClickListener() {
@@ -255,7 +310,6 @@ public class ChildFragment extends ChannelBaseFragment {
             }
         }
     };
-
 
 
 }
