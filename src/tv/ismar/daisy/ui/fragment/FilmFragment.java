@@ -32,6 +32,7 @@ import tv.ismar.daisy.utils.HardwareUtils;
 import tv.ismar.daisy.views.LabelImageView;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -147,36 +148,36 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
     }
 
     private void initPosters(ArrayList<HomePagerEntity.Poster> posters) {
-    	film_lefttop_image.setUrl(posters.get(0).getCustom_image());
-    	film_lefttop_image.setFocustitle(posters.get(0).getIntroduction());
-        for (int i = 1; i <=posters.size(); i++) {
+        film_lefttop_image.setUrl(posters.get(0).getCustom_image());
+        film_lefttop_image.setFocustitle(posters.get(0).getIntroduction());
+        for (int i = 1; i <= posters.size(); i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0,
                     ViewGroup.LayoutParams.MATCH_PARENT);
             params.weight = 1;
 //            if (i != 7) {
-                params.setMargins(0, 0, 25, 0);
+            params.setMargins(0, 0, 25, 0);
 //            }
             ImageView itemView = new ImageView(context);
             itemView.setBackgroundResource(R.drawable.launcher_selector);
             itemView.setFocusable(true);
             itemView.setOnClickListener(ItemClickListener);
-			if (i <=7) {
-				Picasso.with(context)
-						.load(posters.get(i).getCustom_image()).into(itemView);
-				itemView.setScaleType(ImageView.ScaleType.FIT_XY);
-				itemView.setLayoutParams(params);
-				itemView.setTag(posters.get(i));
-				guideRecommmendList.addView(itemView);
-			} else {
-				params.setMargins(0, 0, 30, 0);
-				LinearLayout morelayout = (LinearLayout) LayoutInflater.from(
-						context).inflate(R.layout.toppagelistmorebutton,
-						null);
-				morelayout.setLayoutParams(params);
-				View view = morelayout.findViewById(R.id.listmore);
-				view.setOnClickListener(ItemClickListener);
-				guideRecommmendList.addView(morelayout);
-			}
+            if (i <= 7) {
+                Picasso.with(context)
+                        .load(posters.get(i).getCustom_image()).into(itemView);
+                itemView.setScaleType(ImageView.ScaleType.FIT_XY);
+                itemView.setLayoutParams(params);
+                itemView.setTag(posters.get(i));
+                guideRecommmendList.addView(itemView);
+            } else {
+                params.setMargins(0, 0, 30, 0);
+                LinearLayout morelayout = (LinearLayout) LayoutInflater.from(
+                        context).inflate(R.layout.toppagelistmorebutton,
+                        null);
+                morelayout.setLayoutParams(params);
+                View view = morelayout.findViewById(R.id.listmore);
+                view.setOnClickListener(ItemClickListener);
+                guideRecommmendList.addView(morelayout);
+            }
         }
     }
 
@@ -188,7 +189,17 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
 
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             if (!TextUtils.isEmpty(videoUrl)) {
-                playVideo();
+                try {
+                    File file = new File(HardwareUtils.getSDCardCachePath(), "/text/text.mp4");
+                    if (!file.getParentFile().exists()) {
+                        file.getParentFile().mkdirs();
+                    }
+                    file.createNewFile();
+                    file.delete();
+                    playVideo();
+                } catch (IOException e) {
+                    playImage();
+                }
             } else {
                 playImage();
             }
@@ -204,7 +215,6 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
         final String tag = getChannelEntity().getChannel();
 
         deleteFile(carousels, tag);
-        downloadVideo(carousels, tag);
 
 
         for (int i = 0; i < carousels.size(); i++) {

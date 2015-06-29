@@ -29,7 +29,7 @@ public class HardwareUtils {
 
     public static String getCachePath(Context context) {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            return new File(Environment.getExternalStorageDirectory(), "/Daisy").getAbsolutePath();
+            return new File(Environment.getExternalStorageDirectory(), "/Daisy/").getAbsolutePath();
         } else {
             return context.getCacheDir().getAbsolutePath();
         }
@@ -37,7 +37,7 @@ public class HardwareUtils {
 
 
     public static String getSDCardCachePath() {
-        return new File(Environment.getExternalStorageDirectory(), "/Daisy").getAbsolutePath();
+        return new File(Environment.getExternalStorageDirectory(), "/Daisy/").getAbsolutePath();
     }
 
 
