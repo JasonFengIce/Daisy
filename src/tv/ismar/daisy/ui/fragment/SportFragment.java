@@ -2,6 +2,7 @@ package tv.ismar.daisy.ui.fragment;
 
 import java.util.ArrayList;
 
+import android.util.Log;
 import android.widget.*;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -31,6 +32,8 @@ import android.view.ViewGroup;
  * Created by huaijie on 5/18/15.
  */
 public class SportFragment extends ChannelBaseFragment implements ListView.OnScrollListener {
+    private static final String TAG = "SportFragment";
+
     private final int IMAGE_SWITCH_KEY = 0X11;
     private SimpleRestClient mRestClient = new SimpleRestClient();
     private LoadingDialog mLoadingDialog;
@@ -163,15 +166,19 @@ public class SportFragment extends ChannelBaseFragment implements ListView.OnScr
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         int lastVisibleItem = firstVisibleItem + visibleItemCount - 1;
+        Log.d(TAG, "firstVisibleItem: " + firstVisibleItem);
         if (firstVisibleItem == 0) {
             arrowUp.setVisibility(View.GONE);
-        } else if ( lastVisibleItem == (totalItemCount - 1)){
-            arrowDown.setVisibility(View.GONE);
-        }else {
-            if (arrowUp.getVisibility()!= View.VISIBLE){
+        } else {
+            if (arrowUp.getVisibility() != View.VISIBLE) {
                 arrowUp.setVisibility(View.VISIBLE);
             }
-            if (arrowDown.getVisibility()!= View.VISIBLE){
+        }
+
+        if (lastVisibleItem == (totalItemCount - 1)) {
+            arrowDown.setVisibility(View.GONE);
+        } else {
+            if (arrowDown.getVisibility() != View.VISIBLE) {
                 arrowDown.setVisibility(View.VISIBLE);
             }
         }
