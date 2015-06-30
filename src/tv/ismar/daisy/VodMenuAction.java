@@ -70,8 +70,8 @@ public abstract class VodMenuAction extends BaseActivity {
 
 		@Override
 		protected void onPostExecute(ArrayList<AdElement> result) {
-			AdElement firstElement = result.get(0);
-			Log.v("", firstElement.getRoot_retmsg());
+//			AdElement firstElement = result.get(0);
+//			Log.v("", firstElement.getRoot_retmsg());
 		}
 
 		@Override

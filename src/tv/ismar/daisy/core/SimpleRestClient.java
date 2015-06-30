@@ -151,7 +151,7 @@ public class SimpleRestClient {
 
 	public ContentModelList getContentModelLIst(String url) {
 		try {
-			String jsonStr = NetworkUtils.getJsonStr(root_url + url);
+			String jsonStr = NetworkUtils.getJsonStr(root_url + url,"");
 			return gson.fromJson(jsonStr, ContentModelList.class);
 		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
@@ -173,7 +173,7 @@ public class SimpleRestClient {
 	public ChannelList getChannelList() {
 		try {
 			String api = "/api/tv/channels/";
-			String jsonStr = NetworkUtils.getJsonStr(root_url + api);
+			String jsonStr = NetworkUtils.getJsonStr(root_url + api,"");
 			return gson.fromJson(jsonStr, ChannelList.class);
 		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
@@ -192,7 +192,7 @@ public class SimpleRestClient {
 			throws NetworkException {
 		try {
 			String url = root_url + "/api/tv/sections/" + channel + "/";
-			String jsonStr = NetworkUtils.getJsonStr(url);
+			String jsonStr = NetworkUtils.getJsonStr(url,"");
 			SectionList list = gson.fromJson(jsonStr, SectionList.class);
 			return list;
 		} catch (JsonSyntaxException e) {
@@ -209,7 +209,7 @@ public class SimpleRestClient {
 			throws NetworkException {
 		HomePagerEntity entity = null;
 		try {
-			String jsonStr = NetworkUtils.getJsonStr(url);
+			String jsonStr = NetworkUtils.getJsonStr(url,"");
 			entity = gson.fromJson(jsonStr, HomePagerEntity.class);
 			return entity;
 		} catch (JsonSyntaxException e) {
@@ -226,7 +226,7 @@ public class SimpleRestClient {
 			throws NetworkException {
 		HomePagerEntity entity = null;
 		try {
-			String jsonStr = NetworkUtils.getJsonStr(url);
+			String jsonStr = NetworkUtils.getJsonStr(url,"");
 			entity = gson.fromJson(jsonStr, HomePagerEntity.class);
 			return entity;
 		} catch (JsonSyntaxException e) {
@@ -245,7 +245,7 @@ public class SimpleRestClient {
 		try {
 //			String url = root_url + "/api/tv/homepage/zongyi/";
 			String url = root_url + "/api/tv/living_video/";
-			String jsonStr = NetworkUtils.getJsonStr(url);
+			String jsonStr = NetworkUtils.getJsonStr(url,"");
 			entity = gson.fromJson(jsonStr, SportsGameList.class);
 			return entity;
 		} catch (JsonSyntaxException e) {
@@ -261,7 +261,7 @@ public class SimpleRestClient {
 	public SectionList getSections(String url) throws NetworkException,
 			ItemOfflineException {
 		try {
-			String jsonStr = NetworkUtils.getJsonStr(url);
+			String jsonStr = NetworkUtils.getJsonStr(url,"");
 			SectionList list = gson.fromJson(jsonStr, SectionList.class);
 			return list;
 		} catch (JsonSyntaxException e) {
@@ -277,7 +277,7 @@ public SectionList getsectionss(String content){
 	public ItemList getItemList(String url) throws NetworkException,
 			ItemOfflineException {
 		try {
-			String jsonStr = NetworkUtils.getJsonStr(url);
+			String jsonStr = NetworkUtils.getJsonStr(url,"");
 			ItemList list = gson.fromJson(jsonStr, ItemList.class);
 			return list;
 		} catch (JsonSyntaxException e) {
@@ -290,7 +290,7 @@ public SectionList getsectionss(String content){
 	public Item getItem(String url) throws ItemOfflineException,
 			NetworkException, JsonSyntaxException {
 
-		String jsonStr = NetworkUtils.getJsonStr(url);
+		String jsonStr = NetworkUtils.getJsonStr(url,"");
 		// Log.d("Item is", jsonStr);
 
 		return gson.fromJson(jsonStr, Item.class);
@@ -298,7 +298,7 @@ public SectionList getsectionss(String content){
 
 	public Item[] getRelatedItem(String api) throws NetworkException {
 		try {
-			String jsonStr = NetworkUtils.getJsonStr(root_url + api);
+			String jsonStr = NetworkUtils.getJsonStr(root_url + api,"");
 			return gson.fromJson(jsonStr, Item[].class);
 		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
@@ -361,7 +361,7 @@ public SectionList getsectionss(String content){
 						jsonStr = NetworkUtils.getJsonStrByPost(url, values);
 					}
 					}else{
-						jsonStr = NetworkUtils.getJsonStr(url);	
+						jsonStr = NetworkUtils.getJsonStr(url,values);	
 					}
 				} catch (ItemOfflineException e) {
 					// TODO Auto-generated catch block

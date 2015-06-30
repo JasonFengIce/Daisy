@@ -17,6 +17,7 @@ import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.core.VodUserAgent;
+import tv.ismar.daisy.models.Attribute;
 import tv.ismar.daisy.models.Clip;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
@@ -450,22 +451,57 @@ public class PlayerActivity extends VodMenuAction {
 			// new ItemByUrlTask().execute();
 			String info = bundle.getString("ismartv");
 			urlInfo = AccessProxy.getIsmartvClipInfo(info);
-			StringBuffer director = new StringBuffer();
-			String params = "channel=" + "chinesemovie" + "&section=" + "xingzhen"
-					+ "&itemid="
+			StringBuffer directorsBuffer = new StringBuffer();
+			StringBuffer actorsBuffer = new StringBuffer();
+			StringBuffer genresBuffer = new StringBuffer();
+			Attribute.Info[] directorarray = (Attribute.Info[]) item.attributes.map
+					.get("director");
+			Attribute.Info[] actorarray = (Attribute.Info[]) item.attributes.map
+					.get("actor");
+			Attribute.Info[] genrearray = (Attribute.Info[]) item.attributes.map
+					.get("genre");
+			for (int i = 0; i < directorarray.length; i++) {
+				if (i == 0)
+					directorsBuffer.append("[");
+				directorsBuffer.append(directorarray[i].id);
+				if (i >= 0 && i != directorarray.length - 1)
+					directorsBuffer.append(",");
+				if (i == directorarray.length - 1)
+					directorsBuffer.append("]");
+			}
+			for (int i = 0; i < actorarray.length; i++) {
+				if (i == 0)
+					actorsBuffer.append("[");
+				actorsBuffer.append(actorarray[i].id);
+				if (i >= 0 && i != actorarray.length - 1)
+					actorsBuffer.append(",");
+				if (i == actorarray.length - 1)
+					actorsBuffer.append("]");
+			}
+			for (int i = 0; i < genrearray.length; i++) {
+				if (i == 0)
+					genresBuffer.append("{");
+				genresBuffer.append(genrearray[i].id);
+				if (i >= 0 && i != genrearray.length - 1)
+					genresBuffer.append(",");
+				if (i == genrearray.length - 1)
+					genresBuffer.append("}");
+			}
+			String params = "channel=" + "chinesemovie" + "&section="
+					+ "xingzhen" + "&itemid="
 					+ item.pk
 					+ "&topic="
 					+ "3"
 					+ "&source="
 					+ "related"
 					+ "&genre="
-					+ "{10021, 10023, 10031}"
+					+ genresBuffer.toString()
 					+ "&content_model="
 					+ item.content_model
 					+ "&director="
-					+ "[27909, 27910]"
+					+ directorsBuffer.toString()
 					+ "&actor="
-					+ "[913，1187]"
+					+ actorsBuffer.toString()
 					+ "&clipid="
 					+ item.clip.pk
 					+ "&live_video="
@@ -474,8 +510,9 @@ public class PlayerActivity extends VodMenuAction {
 					+ item.vendor
 					+ "&expense="
 					+ "true"
-					+ "&length=" + item.clip.length;
-			new GetAdDataTask().execute("qiantiepian",params);
+					+ "&length="
+					+ item.clip.length;
+			new GetAdDataTask().execute("qiantiepian", params);
 			new initPlayTask().execute();
 		}
 	}
@@ -1900,9 +1937,9 @@ public class PlayerActivity extends VodMenuAction {
 	boolean needOnresume = false;
 
 	private void startSakura() {
-        Intent intent = new Intent();
-        intent.setAction("cn.ismar.sakura.launcher");
-        startActivity(intent);
+		Intent intent = new Intent();
+		intent.setAction("cn.ismar.sakura.launcher");
+		startActivity(intent);
 	}
 
 	private void orderCheck() {

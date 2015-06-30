@@ -52,7 +52,7 @@ public class PrivilegeAdapter extends BaseAdapter {
 		}
 		PrivilegeItem item = mList.get(position);
 		holder.title.setText(item.getTitle());
-		holder.buydate_txt.setText(item.getBuydate());
+		holder.buydate_txt.setText(item.getExceeddate());
 		return convertView;
 	}
 	public static class ViewHolder {
