@@ -141,6 +141,12 @@ public class TVGuideActivity extends FragmentActivity implements
             replaceFragment(currentFragment);
             toppanel.setChannelName("首页");
             currentChannelIndex = 0;
+			if (arrow_left.getVisibility() == View.VISIBLE) {
+				arrow_left.setVisibility(View.GONE);
+			}
+			if (arrow_right.getVisibility() == View.VISIBLE) {
+				arrow_right.setVisibility(View.GONE);
+			}
         }
     }
 
@@ -444,6 +450,12 @@ public class TVGuideActivity extends FragmentActivity implements
 
         @Override
         public void onClick(View v) {
+			if (arrow_left.getVisibility() == View.GONE) {
+				arrow_left.setVisibility(View.VISIBLE);
+			}
+			if (arrow_right.getVisibility() == View.GONE) {
+				arrow_right.setVisibility(View.VISIBLE);
+			}
 			for (int i = 0; i < channelListView.getChildCount(); i++) {
 				if (v.getTag(R.drawable.selector_channel_item)
 						.toString()

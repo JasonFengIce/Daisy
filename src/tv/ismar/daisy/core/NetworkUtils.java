@@ -32,6 +32,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.ismartv.activator.Activator;
+
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
@@ -51,13 +53,13 @@ public class NetworkUtils {
 	
 	private static final int BUFFERSIZE = 1024;
 	DataCollectionTask mDataCollectionTask;
-	public static String getJsonStr(String target) throws ItemOfflineException, NetworkException {
+	public static String getJsonStr(String target,String values) throws ItemOfflineException, NetworkException {
 		String urlStr = target;
 		try {
 			if(SimpleRestClient.device_token == null){
 				VodApplication.setDevice_Token();
 			}
-			URL url = new URL(urlStr+"?device_token="+SimpleRestClient.device_token+"&access_token="+SimpleRestClient.access_token);
+			URL url = new URL(urlStr+"?device_token="+SimpleRestClient.device_token+"&access_token="+SimpleRestClient.access_token+values);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			StringBuffer sb = new StringBuffer();
@@ -284,15 +286,15 @@ public class NetworkUtils {
 						ad.setEnd(element.getInt("end"));
 						ad.setDuration(element.getInt("duration"));
 						result.add(ad);
-						Collections.sort(result, new Comparator<AdElement>() {
-							@Override
-							public int compare(AdElement lhs, AdElement rhs) {
-								if (lhs.getSerial() > rhs.getSerial())
-									return 1;
-								return 0;
-							}
-						});
 					}
+					Collections.sort(result, new Comparator<AdElement>() {
+						@Override
+						public int compare(AdElement lhs, AdElement rhs) {
+							if (lhs.getSerial() < rhs.getSerial())
+								return 1;
+							return 0;
+						}
+					});
 				} else {
 					AdElement ad = new AdElement();
 					ad.setRoot_retcode(retcode);
@@ -301,7 +303,6 @@ public class NetworkUtils {
 			}
 			connection.disconnect();
 		} catch (Exception e) {
-			Log.v("aaaa", e.getMessage());
 		}
 		return result;
 	}

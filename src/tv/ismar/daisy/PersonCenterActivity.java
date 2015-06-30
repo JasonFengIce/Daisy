@@ -1,6 +1,7 @@
 package tv.ismar.daisy;
 
 import java.io.*;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ import android.net.Uri;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import cn.ismartv.activator.Activator;
 
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
@@ -483,8 +486,14 @@ public class PersonCenterActivity extends BaseActivity implements View.OnClickLi
         });
     }
 	private void getPrivilegeData(){
-
-		mSimpleRestClient.doSendRequest("http://sky.tvxio.com/v2_0/SKY/dto//accounts/orders/", "get", "", new HttpPostRequestInterface() {
+		long timestamp = System.currentTimeMillis();
+		Activator	activator = Activator.getInstance(this);
+//		URLEncoder.
+		String rsaResult = activator.PayRsaEncode("sn="+SimpleRestClient.sn_token+"&timestamp="+timestamp);
+		String params = "device_token=" + SimpleRestClient.device_token
+				+ "&access=" + SimpleRestClient.access_token + "&timestamp="
+				+ timestamp + "&sign=" + rsaResult;
+		mSimpleRestClient.doSendRequest(SimpleRestClient.root_url+"/accounts/playauths/", "post", params, new HttpPostRequestInterface() {
 
 			@Override
 			public void onSuccess(String info) {
@@ -492,41 +501,29 @@ public class PersonCenterActivity extends BaseActivity implements View.OnClickLi
 				try {
 					JSONObject json = new JSONObject(info);
 					mList = new ArrayList<PrivilegeItem>();
-					JSONArray ineffective = json.getJSONArray("ineffective");
-					JSONArray effective = json.getJSONArray("effective");
-					if(effective.length()>0){
-						int length = effective.length();
+					JSONArray sn_authlist = json.getJSONArray("sn_playauth_list");
+					JSONArray playauth_list = json.getJSONArray("playauth_list");
+					//设备权限
+					if(sn_authlist.length()>0){
+						int length = sn_authlist.length();
 						for(int i=0;i<length;i++){
 							PrivilegeItem item = new PrivilegeItem();
-							String title = effective.getJSONArray(i).getString(0);
+							String title = sn_authlist.getJSONObject(i).getString("title");
 							item.setTitle(title);
-							String buydate = effective.getJSONArray(i).getString(1);
-							item.setBuydate(buydate);
-							String exceedDate = effective.getJSONArray(i).getString(2);
+							String exceedDate = sn_authlist.getJSONObject(i).getString("expiry_date");
 							item.setExceeddate(exceedDate);
-							String type = effective.getJSONArray(i).getString(3);
-							item.setType(type);
-							int item_pk = effective.getJSONArray(i).getInt(4);
-							item.setItem_pk(item_pk);
-							item.setIseffective(true);
 							mList.add(item);
 						}
 					}
-					if(ineffective.length()>0){
-						int length = ineffective.length();
+					//账户权限
+					if(playauth_list.length()>0){
+						int length = playauth_list.length();
 						for(int i=0;i<length;i++){
 							PrivilegeItem item = new PrivilegeItem();
-							String title = ineffective.getJSONArray(i).getString(0);
+							String title = playauth_list.getJSONObject(i).getString("title");
 							item.setTitle(title);
-							String buydate = ineffective.getJSONArray(i).getString(1);
-							item.setBuydate(buydate);
-							String exceedDate = ineffective.getJSONArray(i).getString(2);
+							String exceedDate = playauth_list.getJSONObject(i).getString("expiry_date");
 							item.setExceeddate(exceedDate);
-							String type = ineffective.getJSONArray(i).getString(3);
-							item.setType(type);
-							int item_pk = ineffective.getJSONArray(i).getInt(4);
-							item.setItem_pk(item_pk);
-							item.setIseffective(false);
 							mList.add(item);
 						}
 					}

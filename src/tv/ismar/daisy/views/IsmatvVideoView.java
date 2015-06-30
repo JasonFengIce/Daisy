@@ -3,6 +3,7 @@ package tv.ismar.daisy.views;
 import java.util.Map;
 
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.player.SmartPlayer;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -209,6 +210,7 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 		release(false);
 		try {
 			player = new SmartPlayer();
+			player.setSn(SimpleRestClient.sn_token);
 			player.setScreenOnWhilePlaying(true);
 			player.setOnPreparedListener(mPreparedListener);
 			player.setSDCardisAvailable(true);
