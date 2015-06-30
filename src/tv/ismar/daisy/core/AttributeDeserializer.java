@@ -28,8 +28,15 @@ public class AttributeDeserializer implements JsonDeserializer<Attribute> {
 					String key = entry.getKey();
 					JsonElement element = entry.getValue();
 					if(element.isJsonNull()){
-						attribute.map.put(key, null);
-					} else if(element.isJsonArray()){
+//                        String str = element.getAsString();
+//                        if(str!=null&&!"".equals(str))
+//						   attribute.map.put(key, element.getAsString());
+//                        else
+                            attribute.map.put(key, null);
+					}else if(element.isJsonPrimitive()){
+                        attribute.map.put(key, element.getAsString());
+                    }
+                    else if(element.isJsonArray()){
 						JsonArray innerArray = element.getAsJsonArray();
 						if(innerArray.get(0).isJsonArray()){
 							Attribute.Info[] infos = new Attribute.Info[innerArray.size()];

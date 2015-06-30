@@ -14,6 +14,7 @@
     <string name="vod_loading">加载中请稍后</string>
     <string name="genre">类型</string>
     <string name="vendor">来源</string>
+    <string name="air_date">上映日期</string>
     <string name="length">时长</string>
     <string name="minute">分钟</string>
     <string name="second">秒</string>
