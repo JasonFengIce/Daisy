@@ -106,11 +106,12 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
         return mView;
     }
 
+
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onResume() {
+        super.onResume();
         fetchHomePage();
     }
-
 
     public void fetchHomePage() {
         String api = SimpleRestClient.root_url + "/api/tv/homepage/top/";
@@ -132,6 +133,7 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
     }
 
     private void initPosters(ArrayList<HomePagerEntity.Poster> posters) {
+        guideRecommmendList.removeAllViews();
         for (int i = 0; i < 8; i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
             params.weight = 1;
@@ -191,6 +193,7 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
         allItem = new ArrayList<ImageView>();
         allVideoUrl = new ArrayList<String>();
 
+        carouselLayout.removeAllViews();
         for (int i = 0; i < 3; i++) {
             allVideoUrl.add(carousels.get(i).getVideo_url());
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
