@@ -1,8 +1,10 @@
 package tv.ismar.daisy.ui.fragment;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
@@ -66,11 +68,51 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
 
     private boolean focusFlag = true;
 
+    private BroadcastReceiver externalStorageReceiver;
+
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.context = activity;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        externalStorageReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (linkedVideoView.getVisibility() == View.VISIBLE) {
+                    if (flag.getPosition() + 1 >= carousels.size()) {
+                        flag.setPosition(0);
+                    } else {
+                        flag.setPosition(flag.getPosition() + 1);
+                    }
+                    playCarousel();
+                }
+            }
+        };
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_MEDIA_UNMOUNTED);
+        intentFilter.addAction(Intent.ACTION_MEDIA_EJECT);
+        intentFilter.addAction(Intent.ACTION_MEDIA_REMOVED);
+        intentFilter.addAction(Intent.ACTION_MEDIA_BAD_REMOVAL);
+        intentFilter.addDataScheme("file");
+        context.registerReceiver(externalStorageReceiver, intentFilter);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        context.unregisterReceiver(externalStorageReceiver);
     }
 
     @Override
@@ -111,7 +153,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
             }
         };
 
-        View.OnClickListener viewClickListener = new View.OnClickListener(){
+        View.OnClickListener viewClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String url = carousels.get(flag.getPosition()).getUrl();
