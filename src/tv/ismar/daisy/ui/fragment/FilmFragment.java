@@ -29,6 +29,7 @@ import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.data.HomePagerEntity.Poster;
 import tv.ismar.daisy.data.table.DownloadTable;
+import tv.ismar.daisy.ui.activity.TVGuideActivity;
 import tv.ismar.daisy.ui.widget.DaisyVideoView;
 import tv.ismar.daisy.utils.HardwareUtils;
 import tv.ismar.daisy.views.LabelImageView;
@@ -193,8 +194,8 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         fetchHomePage(channelEntity.getHomepage_url());
+
     }
 
     private void fetchHomePage(String url) {

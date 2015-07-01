@@ -11,6 +11,7 @@ import static tv.ismar.daisy.VodApplication.SN_TOKEN;
 import static tv.ismar.daisy.VodApplication.ad_domain;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -106,6 +107,9 @@ public class TVGuideActivity extends FragmentActivity implements
     private ImageView arrow_right;
     private TopPanelView toppanel;
     private ChannelEntity[] channels;
+
+    private HashMap<String, TextView> channelHashMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -206,6 +210,7 @@ public class TVGuideActivity extends FragmentActivity implements
             public void success(ChannelEntity[] channelEntities,
                                 Response response) {
             	channels = channelEntities;
+                channelHashMap = new HashMap<String, TextView>();
                 for (int i = 0; i < channelEntities.length; i++) {
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(188, 66);
                     TextView textView = new TextView(TVGuideActivity.this);
@@ -224,10 +229,11 @@ public class TVGuideActivity extends FragmentActivity implements
                     textView.setTextColor(getResources()
                             .getColor(R.color.white));
                     textView.setTag(channelEntities[i]);
-                    textView.setTag(R.drawable.selector_channel_item,i);
                     textView.setOnClickListener(channelClickListener);
                     textView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
                     channelListView.addView(textView);
+
+                    channelHashMap.put(channelEntities[i].getChannel(), textView);
                 }
             }
 
@@ -456,17 +462,6 @@ public class TVGuideActivity extends FragmentActivity implements
 			if (arrow_right.getVisibility() == View.GONE) {
 				arrow_right.setVisibility(View.VISIBLE);
 			}
-			for (int i = 0; i < channelListView.getChildCount(); i++) {
-				if (v.getTag(R.drawable.selector_channel_item)
-						.toString()
-						.equals(channelListView.getChildAt(i)
-								.getTag(R.drawable.selector_channel_item)
-								.toString())) {
-					v.setBackgroundResource(R.drawable.channel_item_focus);
-				} else {
-					v.setBackgroundResource(R.drawable.selector_channel_item);
-				}
-			}
         	ChannelEntity channelEntity = (ChannelEntity)v.getTag();
             toppanel.setChannelName(channelEntity.getName());
             if ("template1".equals(channelEntity.getHomepage_template())) {
@@ -558,5 +553,10 @@ public class TVGuideActivity extends FragmentActivity implements
             // TODO Auto-generated catch blockd
             e.printStackTrace();
         }
+    }
+
+    public void channelRequestFocus(String channel){
+        channelHashMap.get(channel).requestFocus();
+        channelHashMap.get(channel).requestFocusFromTouch();
     }
 }
