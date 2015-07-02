@@ -34,6 +34,7 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 	private String TAG = "VideoView";
 	// settable by the client
 	private String dataSource;
+	private String[] addataSource;
 	private Uri mUri;
 	private Map<String, String> mHeaders;
 	private int mDuration;
@@ -173,6 +174,11 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 		setVideoURI(Uri.parse(path));
 	}
 
+	public void setAdVideoPath(String[] path) {
+		addataSource = path;
+		setVideoURI(Uri.parse(path[0]));
+	}
+
 	public void setVideoURI(Uri uri) {
 		setVideoURI(uri, null);
 	}
@@ -223,6 +229,9 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 			player.setOnBufferingUpdateListener(mOnBufferingUpdateListener);
 			player.setOnTsInfoListener(mOnTsInfoListener);
 			mCurrentBufferPercentage = 0;
+			if(addataSource != null)
+				player.setDataSource(addataSource);
+			else
 	        player.setDataSource(dataSource);
 			player.setDisplay(mSurfaceHolder);
 			player.setAudioStreamType(AudioManager.STREAM_MUSIC);

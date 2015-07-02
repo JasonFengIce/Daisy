@@ -15,6 +15,25 @@ public class AdElement {
 	private int serial;
 	private int start;
 	private int end;
+	private String report_url;
+	private String md5;
+
+	public String getMd5() {
+		return md5;
+	}
+
+	public void setMd5(String md5) {
+		this.md5 = md5;
+	}
+
+	public String getReport_url() {
+		return report_url;
+	}
+
+	public void setReport_url(String report_url) {
+		this.report_url = report_url;
+	}
+
 	public int getRoot_retcode() {
 		return root_retcode;
 	}

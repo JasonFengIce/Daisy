@@ -44,6 +44,7 @@
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:paddingTop="@dimen/person_center_btn_layout_PT" >
+
             <Button
                 android:id="@+id/personal_card_btn"
                 android:layout_width="@dimen/person_center_btn_W"
@@ -53,6 +54,7 @@
                 android:text="购卡充值"
                 android:textColor="#FFF8F8FF"
                 android:textSize="@dimen/person_center_btn_text_size" />
+
             <Button
                 android:id="@+id/personal_info_btn"
                 android:layout_width="@dimen/person_center_btn_W"
@@ -74,6 +76,7 @@
                 android:text="登录/注册"
                 android:textColor="#FFF8F8FF"
                 android:textSize="@dimen/person_center_btn_text_size" />
+
             <Button
                 android:id="@+id/personal_orderrecord_btn"
                 android:layout_width="@dimen/person_center_btn_W"
@@ -84,6 +87,7 @@
                 android:text="购买记录"
                 android:textColor="#FFF8F8FF"
                 android:textSize="@dimen/person_center_btn_text_size" />
+
             <Button
                 android:id="@+id/client_service_btn"
                 android:layout_width="@dimen/person_center_btn_W"
@@ -102,30 +106,55 @@
             android:layout_height="match_parent"
             android:background="@drawable/portrait_divider_person" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="0dip"
             android:layout_height="match_parent"
-            android:layout_weight="5" >
+            android:layout_weight="6.5" >
 
             <include
                 android:id="@+id/info"
-                layout="@layout/person_info_layout" 
-                android:visibility="gone"/>
-               <include
-                android:id="@+id/login"
-                layout="@layout/person_center_login"
+                layout="@layout/person_info_layout"
                 android:visibility="gone" />
-               <tv.ismar.daisy.views.LoginPanelView
-                   android:id="@+id/login_layout" 
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent">
-                   
-               </tv.ismar.daisy.views.LoginPanelView>
-        </LinearLayout>
+
+            <tv.ismar.daisy.views.LoginPanelView
+                android:id="@+id/login_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+            </tv.ismar.daisy.views.LoginPanelView>
+
+            <ListView
+                android:id="@+id/orderlist"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="@dimen/person_login_phone_view_ML"
+                android:layout_marginTop="23dp"
+                android:divider="@drawable/orderlistdivide"
+                android:dividerHeight="1px"
+                android:fadeScrollbars="false"
+                android:listSelector="#00000000"
+                android:scrollbarFadeDuration="0"
+                android:scrollbarSize="@dimen/person_info_privilegelist_scrollbarSize"
+                android:scrollbarStyle="outsideInset"
+                android:scrollbars="vertical"
+                android:visibility="gone" />
+
+            <GridView
+                android:id="@+id/person_center_packagelist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:numColumns="4"
+                android:layout_marginRight="73dp"
+                android:layout_marginLeft="10dp"
+                android:stretchMode="columnWidth" >
+            </GridView>
+        </RelativeLayout>
     </LinearLayout>
-    <TextView 
-            android:layout_width="match_parent"
-            android:layout_height="0dip"
-            android:layout_weight="1.9"
-            android:visibility="gone"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1.9"
+        android:visibility="gone" />
+
 </LinearLayout>
