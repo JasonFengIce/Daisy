@@ -5,7 +5,9 @@ import static tv.ismar.daisy.DramaListActivity.ORDER_CHECK_BASE_URL;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,6 +19,7 @@ import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.core.VodUserAgent;
+import tv.ismar.daisy.models.AdElement;
 import tv.ismar.daisy.models.Attribute;
 import tv.ismar.daisy.models.Clip;
 import tv.ismar.daisy.models.Favorite;
@@ -37,11 +40,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -140,6 +140,8 @@ public class PlayerActivity extends VodMenuAction {
 	private boolean isPreview = false;
 	private boolean paystatus = false;
 	private boolean ismedialplayerinit = false;
+	private Stack<AdElement> adElement;
+	private AdImageDialog adimageDialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -281,6 +283,74 @@ public class PlayerActivity extends VodMenuAction {
 		});
 
 		mVideoView.setOnHoverListener(onhoverlistener);
+		setVideoActionListener();
+		initClipInfo();
+	}
+
+	protected void initClipInfo() {
+		simpleRestClient = new SimpleRestClient();
+		bufferText.setText(BUFFERING);
+		if (mVideoView != null) {
+			mVideoView.setAlpha(0);
+		}
+		showBuffer();
+		Log.d(TAG, " initClipInfo ");
+		Intent intent = getIntent();
+		if (intent != null) {
+			mSection = intent.getStringExtra(EventProperty.SECTION);
+			bundle = intent.getExtras();
+			item = (Item) bundle.get("item");
+			clip = item.clip;
+			live_video = item.live_video;
+			isPreview = item.isPreview;
+			// use to get mUrl, and registerActivity
+			DaisyUtils.getVodApplication(this).addActivityToPool(
+					this.toString(), this);
+			// *********************
+			// new ItemByUrlTask().execute();
+			String info = bundle.getString("ismartv");
+			urlInfo = AccessProxy.getIsmartvClipInfo(info);
+			getAdInfo("qiantiepian");
+		}
+	}
+
+	protected void showAd(ArrayList<AdElement> result) {
+		adElement = new Stack<AdElement>();
+		for (int i = 0; i < result.size(); i++) {
+			AdElement element = result.get(i);
+			if (element.getRoot_retcode() != 200)
+				break;
+			if (element.getRetcode() != 200) {
+				// report error log
+			} else {
+				adElement.push(element);
+			}
+		}
+		playAdElement();
+	}
+
+	private void playAdElement() {
+		if (!adElement.isEmpty()) {
+			AdElement element = adElement.pop();
+			if ("video".equals(element.getMedia_type())) {
+				currPosition = 0;
+				mVideoView.setVideoPath(element.getMedia_url());
+			} else {
+				adimageDialog = new AdImageDialog(this, R.style.UserinfoDialog,
+						element.getMedia_url());
+				adimageDialog.show();
+				mHandler.sendEmptyMessageDelayed(DISMISS_AD_DIALOG, 6 * 1000);
+			}
+		} else {
+			playMainVideo();
+		}
+	}
+
+	protected void playMainVideo() {
+		new initPlayTask().execute();
+	}
+
+	private void setVideoActionListener() {
 		mVideoView.setOnTouchListener(new OnTouchListener() {
 
 			@Override
@@ -289,6 +359,7 @@ public class PlayerActivity extends VodMenuAction {
 					hideMenuHandler.post(hideMenuRunnable);
 				} else {
 					if (!paused) {
+						getAdInfo("zanting");
 						pauseItem();
 						playPauseImage
 								.setImageResource(R.drawable.vod_playbtn_selector);
@@ -367,16 +438,21 @@ public class PlayerActivity extends VodMenuAction {
 					@Override
 					public void onCompletion(SmartPlayer mp) {
 						Log.d(TAG, "mVideoView  Completion");
-						if (item.isPreview) {
-							mVideoView.stopPlayback();
-							PaymentDialog dialog = new PaymentDialog(
-									PlayerActivity.this, R.style.PaymentDialog,
-									ordercheckListener);
-							item.model_name = "item";
-							dialog.setItem(item);
-							dialog.show();
-						} else
-							gotoFinishPage();
+						if (!adElement.isEmpty() || StringUtils.isEmpty(sid)) {
+							playAdElement();
+						} else {
+							if (item.isPreview) {
+								mVideoView.stopPlayback();
+								PaymentDialog dialog = new PaymentDialog(
+										PlayerActivity.this,
+										R.style.PaymentDialog,
+										ordercheckListener);
+								item.model_name = "item";
+								dialog.setItem(item);
+								dialog.show();
+							} else
+								gotoFinishPage();
+						}
 					}
 				});
 
@@ -425,41 +501,19 @@ public class PlayerActivity extends VodMenuAction {
 				return false;
 			}
 		});
-		initClipInfo();
 	}
 
-	private void initClipInfo() {
-		simpleRestClient = new SimpleRestClient();
-		bufferText.setText(BUFFERING);
-		if (mVideoView != null) {
-			mVideoView.setAlpha(0);
-		}
-		showBuffer();
-		Log.d(TAG, " initClipInfo ");
-		Intent intent = getIntent();
-		if (intent != null) {
-			mSection = intent.getStringExtra(EventProperty.SECTION);
-			bundle = intent.getExtras();
-			item = (Item) bundle.get("item");
-			clip = item.clip;
-			live_video = item.live_video;
-			isPreview = item.isPreview;
-			// use to get mUrl, and registerActivity
-			DaisyUtils.getVodApplication(this).addActivityToPool(
-					this.toString(), this);
-			// *********************
-			// new ItemByUrlTask().execute();
-			String info = bundle.getString("ismartv");
-			urlInfo = AccessProxy.getIsmartvClipInfo(info);
-			StringBuffer directorsBuffer = new StringBuffer();
-			StringBuffer actorsBuffer = new StringBuffer();
-			StringBuffer genresBuffer = new StringBuffer();
-			Attribute.Info[] directorarray = (Attribute.Info[]) item.attributes.map
-					.get("director");
-			Attribute.Info[] actorarray = (Attribute.Info[]) item.attributes.map
-					.get("actor");
-			Attribute.Info[] genrearray = (Attribute.Info[]) item.attributes.map
-					.get("genre");
+	private void getAdInfo(String adpid) {
+		StringBuffer directorsBuffer = new StringBuffer();
+		StringBuffer actorsBuffer = new StringBuffer();
+		StringBuffer genresBuffer = new StringBuffer();
+		Attribute.Info[] directorarray = (Attribute.Info[]) item.attributes.map
+				.get("director");
+		Attribute.Info[] actorarray = (Attribute.Info[]) item.attributes.map
+				.get("actor");
+		Attribute.Info[] genrearray = (Attribute.Info[]) item.attributes.map
+				.get("genre");
+		if (directorarray != null) {
 			for (int i = 0; i < directorarray.length; i++) {
 				if (i == 0)
 					directorsBuffer.append("[");
@@ -469,6 +523,8 @@ public class PlayerActivity extends VodMenuAction {
 				if (i == directorarray.length - 1)
 					directorsBuffer.append("]");
 			}
+		}
+		if (actorarray != null) {
 			for (int i = 0; i < actorarray.length; i++) {
 				if (i == 0)
 					actorsBuffer.append("[");
@@ -478,6 +534,8 @@ public class PlayerActivity extends VodMenuAction {
 				if (i == actorarray.length - 1)
 					actorsBuffer.append("]");
 			}
+		}
+		if (genrearray != null) {
 			for (int i = 0; i < genrearray.length; i++) {
 				if (i == 0)
 					genresBuffer.append("{");
@@ -487,34 +545,30 @@ public class PlayerActivity extends VodMenuAction {
 				if (i == genrearray.length - 1)
 					genresBuffer.append("}");
 			}
-			String params = "channel=" + "chinesemovie" + "&section="
-					+ "xingzhen" + "&itemid="
-					+ item.pk
-					+ "&topic="
-					+ "3"
-					+ "&source="
-					+ "related"
-					+ "&genre="
-					+ genresBuffer.toString()
-					+ "&content_model="
-					+ item.content_model
-					+ "&director="
-					+ directorsBuffer.toString()
-					+ "&actor="
-					+ actorsBuffer.toString()
-					+ "&clipid="
-					+ item.clip.pk
-					+ "&live_video="
-					+ item.live_video
-					+ "&vendor="
-					+ item.vendor
-					+ "&expense="
-					+ "true"
-					+ "&length="
-					+ item.clip.length;
-			new GetAdDataTask().execute("qiantiepian", params);
-			new initPlayTask().execute();
 		}
+		String params = "channel=" + "chinesemovie" + "&section=" + "xingzhen"
+				+ "&itemid="
+				+ item.pk
+				+ "&topic="
+				+ "3"
+				+ "&source="
+				+ "related"
+				+ "&genre="
+				+ genresBuffer.toString()
+				+ "&content_model="
+				+ item.content_model
+				+ "&director="
+				+ directorsBuffer.toString()
+				+ "&actor="
+				+ actorsBuffer.toString()
+				+ "&clipid="
+				+ item.clip == null ?"":item.clip.pk
+				+ "&live_video="
+				+ item.live_video
+				+ "&vendor="
+				+ item.vendor
+				+ "&expense=" + "true" + "&length=" + item.clip.length;
+		new GetAdDataTask().execute(adpid, params);
 	}
 
 	private class initPlayTask extends AsyncTask<String, Void, Void> {
@@ -1039,35 +1093,6 @@ public class PlayerActivity extends VodMenuAction {
 		}
 	}
 
-	private void gotoRelatePage() {
-		Intent intent = new Intent();
-		intent.setClass(PlayerActivity.this,
-				tv.ismar.daisy.RelatedActivity.class);
-		intent.putExtra("item", item);
-		startActivity(intent);
-		addHistory(seekPostion);
-		checkTaskPause();
-		timeTaskPause();
-		mVideoView.stopPlayback();
-		try {
-			if (subItem != null)
-				callaPlay.videoExit(item.pk, subItem.pk, item.title, clip.pk,
-						currQuality, 0, "relate", currPosition,
-						(System.currentTimeMillis() - startDuration) / 1000,
-						mSection, sid, "list", item.content_model);
-			else
-				callaPlay.videoExit(item.pk, null, item.title, clip.pk,
-						currQuality, 0, "relate", currPosition,
-						(System.currentTimeMillis() - startDuration) / 1000,
-						mSection, sid, "list", item.content_model);
-			mVideoView.stopPlayback();
-		} catch (Exception e) {
-			Log.e(TAG, "log Sender videoExit relate " + e.toString());
-		}
-
-		PlayerActivity.this.finish();
-	}
-
 	private void addHistory(int last_position) {
 		if (item != null && historyManager != null) {
 			Log.d(TAG, "historyManager title ==" + item.title);
@@ -1166,7 +1191,7 @@ public class PlayerActivity extends VodMenuAction {
 
 	}
 
-	private void resumeItem() {
+	protected void resumeItem() {
 		if (!paused || mVideoView == null)
 			return;
 		// hideBuffer();
@@ -1606,6 +1631,10 @@ public class PlayerActivity extends VodMenuAction {
 					mHandler.sendEmptyMessageDelayed(BUFFER_COUNTDOWN_ACTION,
 							1000);
 				}
+				break;
+			case DISMISS_AD_DIALOG:
+				if (adimageDialog != null && adimageDialog.isShowing())
+					adimageDialog.dismiss();
 			default:
 				break;
 			}

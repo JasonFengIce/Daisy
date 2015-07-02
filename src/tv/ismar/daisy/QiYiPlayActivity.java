@@ -972,7 +972,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 		}
 	};
 
-	private void resumeItem() {
+	protected void resumeItem() {
 		if (!paused)
 			return;
 		hideBuffer();

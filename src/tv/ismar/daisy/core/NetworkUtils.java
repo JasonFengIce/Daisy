@@ -229,6 +229,7 @@ public class NetworkUtils {
 				+ SimpleRestClient.screenHeight + "&dpi="
 				+ SimpleRestClient.densityDpi + "&adpid=" + "[" + adpid
 				+ "]";
+		int status =500;
 		try {
 			URL postUrl = new URL("http://lilac.t.tvxio.com"+ "/testads/?"+baseparams + "&" + values);
 			HttpURLConnection connection = (HttpURLConnection) postUrl
@@ -249,7 +250,7 @@ public class NetworkUtils {
 //			out.writeBytes(baseparams + "&" + values);
 //			out.flush();
 //			out.close();
-			int status = connection.getResponseCode();
+			status = connection.getResponseCode();
 			GZIPInputStream is = null;
 			String encoding = connection.getContentEncoding();
 			BufferedReader buff;
@@ -275,34 +276,41 @@ public class NetworkUtils {
 					for (int i = 0; i < arrays.length(); i++) {
 						JSONObject element = arrays.getJSONObject(i);
 						AdElement ad = new AdElement();
-//						ad.setRetcode(element.getInt("retcode"));
+						ad.setRoot_retcode(200);
+						ad.setRetcode(element.getInt("retcode"));
+						ad.setRetmsg(element.getString("retmsg"));
 						ad.setTitle(element.getString("title"));
 						ad.setDescription(element.getString("description"));
 						ad.setMedia_url(element.getString("media_url"));
 						ad.setMedia_id(element.getInt("media_id"));
+						ad.setMd5(element.getString("md5"));
 						ad.setMedia_type(element.getString("media_type"));
 						ad.setSerial(element.getInt("serial"));
 						ad.setStart(element.getInt("start"));
 						ad.setEnd(element.getInt("end"));
 						ad.setDuration(element.getInt("duration"));
+						ad.setReport_url(element.getString("report_url"));
 						result.add(ad);
 					}
 					Collections.sort(result, new Comparator<AdElement>() {
 						@Override
 						public int compare(AdElement lhs, AdElement rhs) {
-							if (lhs.getSerial() < rhs.getSerial())
-								return 1;
-							return 0;
+							return rhs.getSerial() > lhs.getSerial() ? 1:0;
 						}
 					});
 				} else {
 					AdElement ad = new AdElement();
 					ad.setRoot_retcode(retcode);
 					ad.setRoot_retmsg(retmsg);
+					result.add(ad);
 				}
 			}
 			connection.disconnect();
 		} catch (Exception e) {
+			AdElement ad = new AdElement();
+			ad.setRoot_retcode(status);
+			ad.setRoot_retmsg(e.getMessage());
+			result.add(ad);
 		}
 		return result;
 	}
