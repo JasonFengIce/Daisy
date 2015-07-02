@@ -47,6 +47,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.ismartv.activator.Activator;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -133,8 +134,10 @@ public class PersonCenterActivity extends BaseActivity implements
 						// TODO Auto-generated method stub
 						try {
 							JSONObject json = new JSONObject(info);
-							remain_money_value.setText(json
-									.getString("balance"));
+							String balance = json.getString("balance");
+							String sn_balance = json.getString("sn_balance");
+							float sum = Float.parseFloat(balance)+Float.parseFloat(sn_balance);
+							remain_money_value.setText(""+sum);
 							getPrivilegeData();
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
@@ -177,7 +180,7 @@ public class PersonCenterActivity extends BaseActivity implements
 	private void initView() {
 		mPersoninfoLayout = (View) findViewById(R.id.info);
 		orderlist = (ListView) findViewById(R.id.orderlist);
-		person_center_packagelist =(GridView)findViewById(R.id.person_center_packagelist);
+		person_center_packagelist = (GridView) findViewById(R.id.person_center_packagelist);
 		privilege_txt = (TextView) mPersoninfoLayout
 				.findViewById(R.id.privilege_txt);
 		privilege_txt.setVisibility(View.GONE);
@@ -202,7 +205,7 @@ public class PersonCenterActivity extends BaseActivity implements
 		login_layout = (LoginPanelView) findViewById(R.id.login_layout);
 		client_service_btn = (Button) findViewById(R.id.client_service_btn);
 		orderlist_btn = (Button) findViewById(R.id.personal_orderrecord_btn);
-		personal_card_btn = (Button)findViewById(R.id.personal_card_btn);
+		personal_card_btn = (Button) findViewById(R.id.personal_card_btn);
 		account_register = (TextView) findViewById(R.id.account_register);
 		orderlist_btn.setOnClickListener(this);
 		personal_card_btn.setOnClickListener(this);
@@ -531,7 +534,7 @@ public class PersonCenterActivity extends BaseActivity implements
 		String rsaResult = activator.PayRsaEncode("sn="
 				+ SimpleRestClient.sn_token + "&timestamp=" + timestamp);
 		String params = "device_token=" + SimpleRestClient.device_token
-				+ "&access=" + SimpleRestClient.access_token + "&timestamp="
+				+ "&access_token=" + SimpleRestClient.access_token + "&timestamp="
 				+ timestamp + "&sign=" + rsaResult;
 		mSimpleRestClient.doSendRequest(SimpleRestClient.root_url
 				+ "/accounts/playauths/", "post", params,
@@ -622,7 +625,7 @@ public class PersonCenterActivity extends BaseActivity implements
 		String rsaResult = activator.PayRsaEncode("sn="
 				+ SimpleRestClient.sn_token + "&timestamp=" + timestamp);
 		String params = "device_token=" + SimpleRestClient.device_token
-				+ "&access=" + SimpleRestClient.access_token + "&timestamp="
+				+ "&access_token=" + SimpleRestClient.access_token + "&timestamp="
 				+ timestamp + "&sign=" + rsaResult;
 		mSimpleRestClient.doSendRequest(SimpleRestClient.root_url
 				+ "/accounts/orders/", "post", params,
@@ -808,8 +811,6 @@ public class PersonCenterActivity extends BaseActivity implements
 	class AccountAboutDialog extends Dialog {
 		private int width;
 		private int height;
-		private int x_coordinate;
-		private int y_coordinate;
 
 		public AccountAboutDialog(Context context, int theme) {
 			super(context, theme);
@@ -829,12 +830,10 @@ public class PersonCenterActivity extends BaseActivity implements
 		private void resizeWindow() {
 			Window dialogWindow = getWindow();
 			WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-			x_coordinate = ((int) (width * 0.15));
-			y_coordinate = ((int) (height * 0.1));
 			lp.width = ((int) (width * 0.70));
 			lp.height = ((int) (height * 0.74));
-			lp.x = 510;
-			lp.y = 150;
+			lp.x = ((int) (width * 0.26));
+			lp.y = ((int) (height * 0.2));
 			lp.gravity = Gravity.LEFT | Gravity.TOP;
 		}
 

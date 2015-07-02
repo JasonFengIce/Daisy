@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res/tv.ismar.daisy"
+                
                 android:id="@+id/RootRelativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -39,7 +39,18 @@
             android:alpha="0.8"
             android:paddingRight="@dimen/vod_player_logo_image_PR"
             android:paddingTop="@dimen/vod_player_logo_image_PT" />
-
+        <TextView
+            android:id="@+id/ad_count_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:alpha="0.8"
+            android:paddingRight="@dimen/vod_player_logo_image_PR"
+            android:paddingTop="@dimen/vod_player_logo_image_PT"
+            android:textSize="25sp"
+            android:visibility="gone"
+            />
         <LinearLayout
             android:id="@+id/BufferLayout"
             android:layout_width="wrap_content"
@@ -123,7 +134,8 @@
                         android:singleLine="true"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/vod_player_qualitytext_textsize" />                   
-                 <tv.ismar.daisy.views.MarqueeView          
+                 <tv.ismar.daisy.views.MarqueeView
+                     xmlns:app="http://schemas.android.com/apk/res/tv.ismar.daisy"
                         android:id="@+id/TitleText"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/vod_player_titletext_H"
