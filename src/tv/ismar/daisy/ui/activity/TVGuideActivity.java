@@ -26,7 +26,9 @@ import tv.ismar.daisy.core.client.ClientApi;
 import tv.ismar.daisy.core.service.PosterUpdateService;
 import tv.ismar.daisy.core.update.AppUpdateUtils;
 import tv.ismar.daisy.data.ChannelEntity;
+import tv.ismar.daisy.models.Channel;
 import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
+import tv.ismar.daisy.ui.Position;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
 import tv.ismar.daisy.ui.fragment.ChildFragment;
 import tv.ismar.daisy.ui.fragment.EntertainmentFragment;
@@ -72,12 +74,8 @@ import com.baidu.location.LocationClientOption;
 /**
  * Created by huaijie on 5/18/15.
  */
-public class TVGuideActivity extends FragmentActivity implements
-        Activator.OnComplete {
+public class TVGuideActivity extends FragmentActivity implements Activator.OnComplete {
     private static final String TAG = "TVGuideActivity";
-
-    private static final int GETDOMAIN = 0x06;
-
 
     private AppUpdateReceiver appUpdateReceiver;
     private ChannelBaseFragment currentFragment;
@@ -102,13 +100,75 @@ public class TVGuideActivity extends FragmentActivity implements
     private static final String KIND = "sky";
     private static final String VERSION = "1.0";
     private static final String MANUFACTURE = "sky";
-    private int currentChannelIndex =0;
     private ImageView arrow_left;
     private ImageView arrow_right;
     private TopPanelView toppanel;
-    private ChannelEntity[] channels;
-
+    private ChannelEntity[] mChannelEntitys;
     private HashMap<String, TextView> channelHashMap;
+
+    private ChannelChange channelChange;
+
+    private Position mCurrentChannelPosition = new Position(new Position.PositioinChangeCallback() {
+        @Override
+        public void onChange(int position) {
+            if (position == 0) {
+                arrow_left.setVisibility(View.GONE);
+                if (channelChange != null && channelChange != ChannelChange.CLICK_CHANNEL)
+                    channelChange = ChannelChange.RIGHT_ARROW;
+            }
+
+            if (position == mChannelEntitys.length - 1) {
+                arrow_right.setVisibility(View.GONE);
+                if (channelChange != null && channelChange != ChannelChange.CLICK_CHANNEL)
+                    channelChange = ChannelChange.LEFT_ARROW;
+            }
+            selectChannelByPosition(position);
+        }
+    });
+
+
+    private OnClickListener arrowViewListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.arrow_scroll_left:
+                    channelChange = ChannelChange.LEFT_ARROW;
+                    if (mCurrentChannelPosition.getPosition() - 1 >= 0) {
+                        mCurrentChannelPosition.setPosition(mCurrentChannelPosition.getPosition() - 1);
+                    } else {
+                        mCurrentChannelPosition.setPosition(0);
+                    }
+
+                    break;
+                case R.id.arrow_scroll_right:
+                    channelChange = ChannelChange.RIGHT_ARROW;
+                    if (mCurrentChannelPosition.getPosition() + 1 <= mChannelEntitys.length - 1) {
+                        mCurrentChannelPosition.setPosition(mCurrentChannelPosition.getPosition() + 1);
+                    } else {
+                        mCurrentChannelPosition.setPosition(mChannelEntitys.length - 1);
+                    }
+                    break;
+            }
+        }
+
+    };
+
+    private OnClickListener channelClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            channelChange = ChannelChange.CLICK_CHANNEL;
+
+            if (arrow_left.getVisibility() == View.GONE) {
+                arrow_left.setVisibility(View.VISIBLE);
+            }
+            if (arrow_right.getVisibility() == View.GONE) {
+                arrow_right.setVisibility(View.VISIBLE);
+            }
+            int channelPosition = (Integer) v.getTag();
+            mCurrentChannelPosition.setPosition(channelPosition);
+        }
+
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,9 +179,9 @@ public class TVGuideActivity extends FragmentActivity implements
         setContentView(contentView);
         channelListView = (LinearLayout) findViewById(R.id.channel_h_list);
         tabListView = (LinearLayout) findViewById(R.id.tab_list);
-        arrow_left = (ImageView)findViewById(R.id.arrow_scroll_left);
-        arrow_right = (ImageView)findViewById(R.id.arrow_scroll_right);
-        toppanel =(TopPanelView)findViewById(R.id.top_column_layout);
+        arrow_left = (ImageView) findViewById(R.id.arrow_scroll_left);
+        arrow_right = (ImageView) findViewById(R.id.arrow_scroll_right);
+        toppanel = (TopPanelView) findViewById(R.id.top_column_layout);
         toppanel.setChannelName("首页");
         arrow_left.setOnClickListener(arrowViewListener);
         arrow_right.setOnClickListener(arrowViewListener);
@@ -133,6 +193,8 @@ public class TVGuideActivity extends FragmentActivity implements
         sendLoncationRequest();
         activator.active(MANUFACTURE, KIND, VERSION, localInfo);
         getHardInfo();
+
+
     }
 
     @Override
@@ -144,13 +206,13 @@ public class TVGuideActivity extends FragmentActivity implements
             currentFragment = new GuideFragment();
             replaceFragment(currentFragment);
             toppanel.setChannelName("首页");
-            currentChannelIndex = 0;
-			if (arrow_left.getVisibility() == View.VISIBLE) {
-				arrow_left.setVisibility(View.GONE);
-			}
-			if (arrow_right.getVisibility() == View.VISIBLE) {
-				arrow_right.setVisibility(View.GONE);
-			}
+            mCurrentChannelPosition.setPosition(0);
+            if (arrow_left.getVisibility() == View.VISIBLE) {
+                arrow_left.setVisibility(View.GONE);
+            }
+            if (arrow_right.getVisibility() == View.VISIBLE) {
+                arrow_right.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -158,17 +220,6 @@ public class TVGuideActivity extends FragmentActivity implements
         super.onBackPressed();
     }
 
-    @Override
-    protected void onDestroy() {
-        unregisterReceiver(appUpdateReceiver);
-        if (!(updatePopupWindow == null)) {
-            updatePopupWindow.dismiss();
-        }
-        if (exitPopupWindow != null) {
-            exitPopupWindow.dismiss();
-        }
-        super.onDestroy();
-    }
 
     private void initTabView() {
         int res[] = {R.drawable.selector_tab_film,
@@ -189,7 +240,6 @@ public class TVGuideActivity extends FragmentActivity implements
             imageView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
             tabListView.addView(imageView);
         }
-
     }
 
     /**
@@ -207,9 +257,8 @@ public class TVGuideActivity extends FragmentActivity implements
                 .create(ClientApi.Channels.class);
         client.excute(deviceToken, new Callback<ChannelEntity[]>() {
             @Override
-            public void success(ChannelEntity[] channelEntities,
-                                Response response) {
-            	channels = channelEntities;
+            public void success(ChannelEntity[] channelEntities, Response response) {
+                mChannelEntitys = channelEntities;
                 channelHashMap = new HashMap<String, TextView>();
                 for (int i = 0; i < channelEntities.length; i++) {
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(188, 66);
@@ -228,11 +277,10 @@ public class TVGuideActivity extends FragmentActivity implements
                     textView.setText(channelEntities[i].getName());
                     textView.setTextColor(getResources()
                             .getColor(R.color.white));
-                    textView.setTag(channelEntities[i]);
+                    textView.setTag(i);
                     textView.setOnClickListener(channelClickListener);
                     textView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
                     channelListView.addView(textView);
-
                     channelHashMap.put(channelEntities[i].getChannel(), textView);
                 }
             }
@@ -432,76 +480,47 @@ public class TVGuideActivity extends FragmentActivity implements
         mLocationClient.requestLocation();
     }
 
-	public class MyLocationListener implements BDLocationListener {
-
-		@Override
-		public void onReceiveLocation(BDLocation location) {
-			mLocationClient.stop();
-			DaisyUtils
-					.getVodApplication(TVGuideActivity.this)
-					.getEditor()
-					.putString(VodApplication.LOCATION_INFO,
-							location.getAddrStr());
-			DaisyUtils.getVodApplication(TVGuideActivity.this).getEditor()
-					.putString(LOCATION_PROVINCE, location.getProvince());
-			DaisyUtils.getVodApplication(TVGuideActivity.this).getEditor()
-					.putString(LOCATION_CITY, location.getCity());
-			DaisyUtils.getVodApplication(TVGuideActivity.this).getEditor()
-					.putString(LOCATION_DISTRICT, location.getDistrict());
-			DaisyUtils.getVodApplication(TVGuideActivity.this).save();
-		}
-	}
-
-    private OnClickListener channelClickListener = new OnClickListener() {
+    public class MyLocationListener implements BDLocationListener {
 
         @Override
-        public void onClick(View v) {
-			if (arrow_left.getVisibility() == View.GONE) {
-				arrow_left.setVisibility(View.VISIBLE);
-			}
-			if (arrow_right.getVisibility() == View.GONE) {
-				arrow_right.setVisibility(View.VISIBLE);
-			}
-        	ChannelEntity channelEntity = (ChannelEntity)v.getTag();
-            toppanel.setChannelName(channelEntity.getName());
-            if ("template1".equals(channelEntity.getHomepage_template())) {
-                currentFragment = new FilmFragment();
-                contentView.setBackgroundResource(R.color.normal_activity_bg);
-            } else if ("template2".equals(channelEntity.getHomepage_template())) {
-                currentFragment = new EntertainmentFragment();
-                contentView.setBackgroundResource(R.color.normal_activity_bg);
-            } else if ("template3".equals(channelEntity.getHomepage_template())) {
-                currentFragment = new SportFragment();
-                contentView.setBackgroundResource(R.color.normal_activity_bg);
-            } else if ("template4".equals(channelEntity.getHomepage_template())) {
-                currentFragment = new ChildFragment();
-                contentView.setBackgroundResource(R.drawable.channel_child_bg);
-            }
-            currentFragment.setChannelEntity(channelEntity);
-            replaceFragment(currentFragment);
+        public void onReceiveLocation(BDLocation location) {
+            mLocationClient.stop();
+            DaisyUtils
+                    .getVodApplication(TVGuideActivity.this)
+                    .getEditor()
+                    .putString(VodApplication.LOCATION_INFO,
+                            location.getAddrStr());
+            DaisyUtils.getVodApplication(TVGuideActivity.this).getEditor()
+                    .putString(LOCATION_PROVINCE, location.getProvince());
+            DaisyUtils.getVodApplication(TVGuideActivity.this).getEditor()
+                    .putString(LOCATION_CITY, location.getCity());
+            DaisyUtils.getVodApplication(TVGuideActivity.this).getEditor()
+                    .putString(LOCATION_DISTRICT, location.getDistrict());
+            DaisyUtils.getVodApplication(TVGuideActivity.this).save();
         }
+    }
 
-    };
 
-	private OnClickListener arrowViewListener = new OnClickListener() {
+    private void selectChannelByPosition(int position) {
+        ChannelEntity channelEntity = mChannelEntitys[position];
+        toppanel.setChannelName(channelEntity.getName());
+        if ("template1".equals(channelEntity.getHomepage_template())) {
+            currentFragment = new FilmFragment();
+            contentView.setBackgroundResource(R.color.normal_activity_bg);
+        } else if ("template2".equals(channelEntity.getHomepage_template())) {
+            currentFragment = new EntertainmentFragment();
+            contentView.setBackgroundResource(R.color.normal_activity_bg);
+        } else if ("template3".equals(channelEntity.getHomepage_template())) {
+            currentFragment = new SportFragment();
+            contentView.setBackgroundResource(R.color.normal_activity_bg);
+        } else if ("template4".equals(channelEntity.getHomepage_template())) {
+            currentFragment = new ChildFragment();
+            contentView.setBackgroundResource(R.drawable.channel_child_bg);
+        }
+        currentFragment.setChannelEntity(channelEntity);
+        replaceFragment(currentFragment);
+    }
 
-		@Override
-		public void onClick(View v) {
-			if (v.getId() == R.id.arrow_scroll_left) {
-				currentChannelIndex--;
-			} else if (v.getId() == R.id.arrow_scroll_right) {
-				currentChannelIndex++;
-			}
-			if (currentChannelIndex < 0)
-				currentChannelIndex = 0;
-			if (currentChannelIndex > channelListView.getChildCount() - 1)
-				currentChannelIndex = channelListView.getChildCount() - 1;
-			View view = channelListView.getChildAt(currentChannelIndex);
-			view.requestFocus();
-			view.performClick();
-		}
-
-	};
 
     private void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager()
@@ -537,14 +556,14 @@ public class TVGuideActivity extends FragmentActivity implements
         SimpleRestClient.access_token = DaisyUtils.getVodApplication(this)
                 .getPreferences().getString(VodApplication.AUTH_TOKEN, "");
     }
-    
-    private void getHardInfo(){
-    	DisplayMetrics metric = new DisplayMetrics();
-    	getWindowManager().getDefaultDisplay().getMetrics(metric);
-    	SimpleRestClient.densityDpi = metric.densityDpi;
-    	SimpleRestClient.densityDpi = metric.widthPixels;
-    	SimpleRestClient.densityDpi = metric.heightPixels;
-    	PackageManager manager = getPackageManager();
+
+    private void getHardInfo() {
+        DisplayMetrics metric = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metric);
+        SimpleRestClient.densityDpi = metric.densityDpi;
+        SimpleRestClient.densityDpi = metric.widthPixels;
+        SimpleRestClient.densityDpi = metric.heightPixels;
+        PackageManager manager = getPackageManager();
         try {
             PackageInfo info = manager.getPackageInfo(getPackageName(), 0);
 //            String appVersionName = info.versionName;
@@ -555,8 +574,40 @@ public class TVGuideActivity extends FragmentActivity implements
         }
     }
 
-    public void channelRequestFocus(String channel){
-        channelHashMap.get(channel).requestFocus();
-        channelHashMap.get(channel).requestFocusFromTouch();
+    public void channelRequestFocus(String channel) {
+        switch (channelChange) {
+            case CLICK_CHANNEL:
+                channelHashMap.get(channel).requestFocus();
+                channelHashMap.get(channel).requestFocusFromTouch();
+                break;
+            case LEFT_ARROW:
+                arrow_left.requestFocus();
+                arrow_left.requestFocusFromTouch();
+                break;
+            case RIGHT_ARROW:
+                arrow_right.requestFocus();
+                arrow_right.requestFocusFromTouch();
+                break;
+        }
+
+    }
+
+    enum ChannelChange {
+        CLICK_CHANNEL,
+        LEFT_ARROW,
+        RIGHT_ARROW
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(appUpdateReceiver);
+        if (!(updatePopupWindow == null)) {
+            updatePopupWindow.dismiss();
+        }
+        if (exitPopupWindow != null) {
+            exitPopupWindow.dismiss();
+        }
+        super.onDestroy();
     }
 }

@@ -1,6 +1,5 @@
 package tv.ismar.daisy.ui;
 
-import tv.ismar.daisy.R;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;

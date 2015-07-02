@@ -26,9 +26,10 @@ public class ChannelBaseFragment extends Fragment {
         this.activity = (TVGuideActivity) activity;
     }
 
+
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onResume() {
+        super.onResume();
         if (null != channelEntity && !TextUtils.isEmpty(channelEntity.getChannel()))
             activity.channelRequestFocus(channelEntity.getChannel());
     }
