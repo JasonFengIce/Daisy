@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.VideoView;
@@ -25,6 +26,7 @@ import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.data.HomePagerEntity.Poster;
 import tv.ismar.daisy.data.table.DownloadTable;
 import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
+import tv.ismar.daisy.ui.widget.DaisyViewContainer;
 import tv.ismar.daisy.utils.HardwareUtils;
 
 import java.io.File;
@@ -39,7 +41,7 @@ import java.util.List;
 public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCallback {
     private String TAG = "GuideFragment";
     private LinearLayout guideRecommmendList;
-    private LinearLayout carouselLayout;
+    private DaisyViewContainer carouselLayout;
     private VideoView linkedVideoView;
 
 
@@ -48,7 +50,6 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
     private int itemViewBoundaryMargin;
 
 
-    //    private int currentVideoPosition;
     private ArrayList<String> allVideoUrl;
     private ArrayList<ImageView> allItem;
 
@@ -64,13 +65,11 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View mView = LayoutInflater.from(context).inflate(R.layout.fragment_guide, null);
         guideRecommmendList = (LinearLayout) mView.findViewById(R.id.recommend_list);
-        carouselLayout = (LinearLayout) mView.findViewById(R.id.carousel_layout);
+        carouselLayout = (DaisyViewContainer) mView.findViewById(R.id.carousel_layout);
         linkedVideoView = (VideoView) mView.findViewById(R.id.linked_video);
         itemViewBoundaryMargin = (int) context.getResources().getDimension(R.dimen.item_boundary_margin);
-
         flag = new Flag(this);
 
 
@@ -177,7 +176,6 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
                 } else {
                     flag.setPosition(flag.getPosition() + 1);
                 }
-
                 setVideoPath(linkedVideoView, allVideoUrl.get(flag.getPosition()));
             }
         };
@@ -194,25 +192,20 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
         allVideoUrl = new ArrayList<String>();
 
         carouselLayout.removeAllViews();
+
+        ArrayList<FrameLayout> arrayList =new ArrayList<FrameLayout>();
         for (int i = 0; i < 3; i++) {
             allVideoUrl.add(carousels.get(i).getVideo_url());
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
-            params.weight = 1;
-            params.setMargins(itemViewBoundaryMargin, itemViewBoundaryMargin / 2, itemViewBoundaryMargin, itemViewBoundaryMargin / 2);
-            ImageView itemView = new ImageView(context);
+            FrameLayout frameLayout = (FrameLayout) LayoutInflater.from(context).inflate(R.layout.item_loop_imageview, null);
+            ImageView itemView = (ImageView) frameLayout.findViewById(R.id.loop_image);
             itemView.setBackgroundResource(R.drawable.launcher_selector);
-            itemView.setFocusableInTouchMode(true);
-            itemView.setFocusable(true);
-            itemView.setClickable(true);
             Picasso.with(context).load(carousels.get(i).getThumb_image()).into(itemView);
-            itemView.setScaleType(ImageView.ScaleType.FIT_XY);
-            itemView.setLayoutParams(params);
             itemView.setTag(i);
-            itemView.setTag(R.drawable.launcher_selector, carousels.get(i));
             itemView.setOnClickListener(ItemClickListener);
             allItem.add(itemView);
-            carouselLayout.addView(itemView);
+            arrayList.add(frameLayout);
         }
+        carouselLayout.addAllViews(arrayList);
 
 
         View.OnFocusChangeListener itemFocusChangeListener = new View.OnFocusChangeListener() {
@@ -243,6 +236,10 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
         setVideoPath(linkedVideoView, carousels.get(flag.getPosition()).getVideo_url());
         linkedVideoView.setOnCompletionListener(loopAllListener);
 
+
+    }
+
+    private void createCarouselView(ArrayList<Carousel> carousels) {
 
     }
 

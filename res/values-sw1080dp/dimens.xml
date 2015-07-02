@@ -615,6 +615,12 @@
     <dimen name="menu_item_PaddingTB">30dip</dimen>
     <dimen name="menu_item_text_size">48sp</dimen>
 
+    <!--activity_tv_guide-->
+    <dimen name="tv_guide_container_margin_top">10dp</dimen>
+    <dimen name="tv_guide_channel_item_width">188dp</dimen>
+    <dimen name="tv_guide_channel_item_height">66dp</dimen>
+    <dimen name="tv_guide_channel_text_size">36sp</dimen>
+
     <!--guide activity-->
     <dimen name="guide_title_size">48sp</dimen>
     <dimen name="guide_channel_size">36sp</dimen>
@@ -642,7 +648,7 @@
 
     <dimen name="guide_linked_item_margin_left">7dp</dimen>
     <dimen name="guide_channel_margin_top">4dp</dimen>
-    
+
 
     <dimen name="guide_tab_margin_top">32dp</dimen>
     <dimen name="guide_tab_margin_rl">68dp</dimen>
@@ -665,7 +671,7 @@
     <dimen name="guide_padding">4dp</dimen>
     <dimen name="tv_guide_menu_margin">44dp</dimen>
     <dimen name="tv_guide_top_section_padding">14dp</dimen>
-    <dimen name="tv_guide_channel_margin_lr">58dp</dimen>
+    <dimen name="tv_guide_channel_margin_lr">51dp</dimen>
 
     <!-- guide fragment -->
     <dimen name="guide_fragment_poser_margin_lf">25dp</dimen>
@@ -684,8 +690,8 @@
 
 
     <dimen name="item_boundary_margin">7dp</dimen>
-    
-     <!-- Filter-->
+
+    <!-- Filter-->
     <dimen name="condition_height">100dip</dimen>
     <dimen name="submit_btn_width">150dip</dimen>
     <dimen name="submit_btn_height">100dip</dimen>

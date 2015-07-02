@@ -170,5 +170,11 @@
         <attr name="focusbackground" format="color"/>
     </declare-styleable>
 
+    <declare-styleable name="DaisyViewContainer">
+        <attr name="horizontal_spacing" format="dimension"/>
+        <attr name="vertical_spacing" format="dimension"/>
+    </declare-styleable>
+
+
     <declare-styleable name="DaisyVideoView"/>
 </resources>

@@ -8,8 +8,7 @@
     <tv.ismar.daisy.ui.widget.TopPanelView
         android:id="@+id/top_column_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="99dp"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/tv_guide_top_section_padding"
         android:paddingRight="@dimen/tv_guide_top_section_padding"
@@ -25,6 +24,7 @@
         android:layout_height="1dp"/>
 
     <RelativeLayout
+        android:layout_marginTop="@dimen/tv_guide_container_margin_top"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="7.8">

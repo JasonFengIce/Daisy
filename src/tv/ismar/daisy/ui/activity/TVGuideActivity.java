@@ -1,47 +1,6 @@
 package tv.ismar.daisy.ui.activity;
 
-import static tv.ismar.daisy.VodApplication.DEVICE_TOKEN;
-import static tv.ismar.daisy.VodApplication.DOMAIN;
-import static tv.ismar.daisy.VodApplication.LOCATION_CITY;
-import static tv.ismar.daisy.VodApplication.LOCATION_DISTRICT;
-import static tv.ismar.daisy.VodApplication.LOCATION_PROVINCE;
-import static tv.ismar.daisy.VodApplication.LOG_DOMAIN;
-import static tv.ismar.daisy.VodApplication.PREFERENCE_FILE_NAME;
-import static tv.ismar.daisy.VodApplication.SN_TOKEN;
-import static tv.ismar.daisy.VodApplication.ad_domain;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import tv.ismar.daisy.AppConstant;
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.VodApplication;
-import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.client.ClientApi;
-import tv.ismar.daisy.core.service.PosterUpdateService;
-import tv.ismar.daisy.core.update.AppUpdateUtils;
-import tv.ismar.daisy.data.ChannelEntity;
-import tv.ismar.daisy.models.Channel;
-import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
-import tv.ismar.daisy.ui.Position;
-import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
-import tv.ismar.daisy.ui.fragment.ChildFragment;
-import tv.ismar.daisy.ui.fragment.EntertainmentFragment;
-import tv.ismar.daisy.ui.fragment.FilmFragment;
-import tv.ismar.daisy.ui.fragment.GuideFragment;
-import tv.ismar.daisy.ui.fragment.SportFragment;
-import tv.ismar.daisy.ui.widget.DaisyButton;
-import tv.ismar.daisy.ui.widget.TopPanelView;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -58,18 +17,34 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.TextView;
+import android.widget.*;
 import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
+import com.baidu.location.*;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import tv.ismar.daisy.AppConstant;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.VodApplication;
+import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.client.ClientApi;
+import tv.ismar.daisy.core.service.PosterUpdateService;
+import tv.ismar.daisy.core.update.AppUpdateUtils;
+import tv.ismar.daisy.data.ChannelEntity;
+import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
+import tv.ismar.daisy.ui.Position;
+import tv.ismar.daisy.ui.fragment.*;
+import tv.ismar.daisy.ui.widget.DaisyButton;
+import tv.ismar.daisy.ui.widget.TopPanelView;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.GeofenceClient;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import static tv.ismar.daisy.VodApplication.*;
+import static tv.ismar.daisy.AppConstant.*;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -97,9 +72,6 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
     private MyLocationListener mMyLocationListener;
     private GeofenceClient mGeofenceClient;
 
-    private static final String KIND = "sky";
-    private static final String VERSION = "1.0";
-    private static final String MANUFACTURE = "sky";
     private ImageView arrow_left;
     private ImageView arrow_right;
     private TopPanelView toppanel;
@@ -206,7 +178,6 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
             currentFragment = new GuideFragment();
             replaceFragment(currentFragment);
             toppanel.setChannelName("首页");
-            mCurrentChannelPosition.setPosition(0);
             if (arrow_left.getVisibility() == View.VISIBLE) {
                 arrow_left.setVisibility(View.GONE);
             }
@@ -246,43 +217,18 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
      * fetch channel
      */
     private void fetchChannels() {
-        Log.d(TAG, "sn: " + SimpleRestClient.sn_token);
         String deviceToken = SimpleRestClient.device_token;
         String host = SimpleRestClient.root_url;
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setLogLevel(AppConstant.LOG_LEVEL)
                 .setEndpoint(host)
                 .build();
-        ClientApi.Channels client = restAdapter
-                .create(ClientApi.Channels.class);
+        ClientApi.Channels client = restAdapter.create(ClientApi.Channels.class);
         client.excute(deviceToken, new Callback<ChannelEntity[]>() {
             @Override
             public void success(ChannelEntity[] channelEntities, Response response) {
                 mChannelEntitys = channelEntities;
-                channelHashMap = new HashMap<String, TextView>();
-                for (int i = 0; i < channelEntities.length; i++) {
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(188, 66);
-                    TextView textView = new TextView(TVGuideActivity.this);
-                    textView.setFocusable(true);
-                    if (i != channelEntities.length - 1) {
-                        layoutParams.setMargins(0, 0, 14, 0);
-                    }
-                    textView.setFocusable(true);
-                    textView.setFocusableInTouchMode(true);
-                    textView.setClickable(true);
-                    textView.setTextSize(getResources().getDimension(R.dimen.tv_guide_channel_textSize));
-                    textView.setGravity(Gravity.CENTER);
-                    textView.setBackgroundResource(R.drawable.selector_channel_item);
-                    textView.setLayoutParams(layoutParams);
-                    textView.setText(channelEntities[i].getName());
-                    textView.setTextColor(getResources()
-                            .getColor(R.color.white));
-                    textView.setTag(i);
-                    textView.setOnClickListener(channelClickListener);
-                    textView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
-                    channelListView.addView(textView);
-                    channelHashMap.put(channelEntities[i].getChannel(), textView);
-                }
+                createChannelView(channelEntities);
             }
 
             @Override
@@ -290,6 +236,21 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
                 Log.e(TAG, retrofitError.getMessage());
             }
         });
+    }
+
+    private void createChannelView(ChannelEntity[] channelEntities) {
+        channelHashMap = new HashMap<String, TextView>();
+        channelListView.removeAllViews();
+        for (int i = 0; i < channelEntities.length; i++) {
+            FrameLayout frameLayout = (FrameLayout) LayoutInflater.from(this).inflate(R.layout.item_channel, null);
+            TextView textView = (TextView) frameLayout.findViewById(R.id.channel_item);
+            textView.setText(channelEntities[i].getName());
+            textView.setOnClickListener(channelClickListener);
+            textView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
+            textView.setTag(i);
+            channelListView.addView(frameLayout);
+            channelHashMap.put(channelEntities[i].getChannel(), textView);
+        }
     }
 
     private void registerUpdateReceiver() {
@@ -566,10 +527,8 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
         PackageManager manager = getPackageManager();
         try {
             PackageInfo info = manager.getPackageInfo(getPackageName(), 0);
-//            String appVersionName = info.versionName;
             SimpleRestClient.appVersion = info.versionCode;
         } catch (NameNotFoundException e) {
-            // TODO Auto-generated catch blockd
             e.printStackTrace();
         }
     }
