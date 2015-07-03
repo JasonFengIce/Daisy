@@ -34,15 +34,15 @@
     </LinearLayout>
 
 
-    <LinearLayout
+    <tv.ismar.daisy.ui.widget.DaisyViewContainer
         android:paddingTop="@dimen/guide_padding"
         android:paddingBottom="@dimen/guide_padding"
         android:orientation="horizontal"
         android:id="@+id/recommend_list"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2.8"
+        android:layout_height="wrap_content"
+        app:horizontal_spacing="@dimen/guide_recommend_item_spacing"
         >
-    </LinearLayout>
+    </tv.ismar.daisy.ui.widget.DaisyViewContainer>
 
 </LinearLayout>

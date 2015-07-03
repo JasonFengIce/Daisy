@@ -40,7 +40,7 @@ import java.util.List;
  */
 public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCallback {
     private String TAG = "GuideFragment";
-    private LinearLayout guideRecommmendList;
+    private DaisyViewContainer guideRecommmendList;
     private DaisyViewContainer carouselLayout;
     private VideoView linkedVideoView;
 
@@ -66,7 +66,7 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mView = LayoutInflater.from(context).inflate(R.layout.fragment_guide, null);
-        guideRecommmendList = (LinearLayout) mView.findViewById(R.id.recommend_list);
+        guideRecommmendList = (DaisyViewContainer) mView.findViewById(R.id.recommend_list);
         carouselLayout = (DaisyViewContainer) mView.findViewById(R.id.carousel_layout);
         linkedVideoView = (VideoView) mView.findViewById(R.id.linked_video);
         itemViewBoundaryMargin = (int) context.getResources().getDimension(R.dimen.item_boundary_margin);
@@ -133,32 +133,17 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
 
     private void initPosters(ArrayList<HomePagerEntity.Poster> posters) {
         guideRecommmendList.removeAllViews();
+        ArrayList<FrameLayout> imageViews = new ArrayList<FrameLayout>();
         for (int i = 0; i < 8; i++) {
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
-            params.weight = 1;
-            int marginLF = (int) context.getResources().getDimension(R.dimen.guide_fragment_poser_margin_lf);
-
-            if (i == 0) {
-                params.setMargins(itemViewBoundaryMargin, itemViewBoundaryMargin, marginLF, itemViewBoundaryMargin);
-            } else if (i == 7) {
-                params.setMargins(0, itemViewBoundaryMargin, itemViewBoundaryMargin, itemViewBoundaryMargin);
-            } else {
-                params.setMargins(0, itemViewBoundaryMargin, marginLF, itemViewBoundaryMargin);
-            }
-            ImageView itemView = new ImageView(context);
-            Picasso.with(context).load(posters.get(i).getCustom_image()).into(itemView);
-            itemView.setScaleType(ImageView.ScaleType.FIT_XY);
-            itemView.setFocusable(true);
-            itemView.setFocusableInTouchMode(true);
-            itemView.setClickable(true);
-            itemView.setBackgroundResource(R.drawable.launcher_selector);
-            itemView.setLayoutParams(params);
+            FrameLayout frameLayout = (FrameLayout) LayoutInflater.from(context).inflate(R.layout.item_poster, null);
+            ImageView itemView = (ImageView) frameLayout.findViewById(R.id.poster_image);
             itemView.setOnClickListener(ItemClickListener);
+            Picasso.with(context).load(posters.get(i).getCustom_image()).into(itemView);
             itemView.setTag(posters.get(i));
-            itemView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
-            guideRecommmendList.addView(itemView);
+//            itemView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
+            imageViews.add(frameLayout);
         }
-
+        guideRecommmendList.addAllViews(imageViews);
 
     }
 
@@ -193,7 +178,7 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
 
         carouselLayout.removeAllViews();
 
-        ArrayList<FrameLayout> arrayList =new ArrayList<FrameLayout>();
+        ArrayList<FrameLayout> arrayList = new ArrayList<FrameLayout>();
         for (int i = 0; i < 3; i++) {
             allVideoUrl.add(carousels.get(i).getVideo_url());
             FrameLayout frameLayout = (FrameLayout) LayoutInflater.from(context).inflate(R.layout.item_loop_imageview, null);
