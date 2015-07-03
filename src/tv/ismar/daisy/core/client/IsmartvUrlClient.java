@@ -22,15 +22,13 @@ public class IsmartvUrlClient extends Thread {
     private static final int SUCCESS = 0x0001;
     private static final int FAILURE = 0x0002;
 
-    private Context context;
     private String url;
     private String params;
     private CallBack callback;
     private Method method;
     private MessageHandler messageHandler = new MessageHandler();
 
-    public IsmartvUrlClient(Context context) {
-        this.context = context;
+    public IsmartvUrlClient() {
     }
 
     @Override

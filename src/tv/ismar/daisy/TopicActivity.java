@@ -19,7 +19,6 @@ import org.json.JSONObject;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.views.AlertDialogFragment;
 import tv.ismar.daisy.views.AsyncImageView;

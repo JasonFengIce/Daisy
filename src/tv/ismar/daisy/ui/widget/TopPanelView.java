@@ -56,7 +56,7 @@ public class TopPanelView extends LinearLayout {
 				break;
 			case R.id.guide_user_center:
 				intent.setClassName("tv.ismar.daisy",
-						"tv.ismar.daisy.PersonCenterActivity");
+						"tv.ismar.daisy.ui.activity.UserCenterActivity");
 				break;
 			case R.id.guide_my_favorite:
 				intent.setClassName("tv.ismar.daisy",

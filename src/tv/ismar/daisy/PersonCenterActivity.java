@@ -531,8 +531,7 @@ public class PersonCenterActivity extends BaseActivity implements
 	private void getPrivilegeData() {
 		long timestamp = System.currentTimeMillis();
 		Activator activator = Activator.getInstance(this);
-		String rsaResult = activator.PayRsaEncode("sn="
-				+ SimpleRestClient.sn_token + "&timestamp=" + timestamp);
+		String rsaResult = activator.PayRsaEncode("sn="+ SimpleRestClient.sn_token + "&timestamp=" + timestamp);
 		String params = "device_token=" + SimpleRestClient.device_token
 				+ "&access_token=" + SimpleRestClient.access_token + "&timestamp="
 				+ timestamp + "&sign=" + rsaResult;

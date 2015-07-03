@@ -114,7 +114,7 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
 
     public void fetchHomePage() {
         String api = SimpleRestClient.root_url + "/api/tv/homepage/top/";
-        new IsmartvUrlClient(context).doRequest(api, new IsmartvUrlClient.CallBack() {
+        new IsmartvUrlClient().doRequest(api, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
                 HomePagerEntity homePagerEntity = new Gson().fromJson(result, HomePagerEntity.class);

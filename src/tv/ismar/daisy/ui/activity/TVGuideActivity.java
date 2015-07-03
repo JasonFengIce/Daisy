@@ -260,6 +260,19 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
         registerReceiver(appUpdateReceiver, intentFilter);
     }
 
+    public void onUserCenterClick() {
+        FragmentTransaction transaction = getSupportFragmentManager()
+                .beginTransaction();
+        transaction.setCustomAnimations(
+                R.anim.fade_in,
+                R.anim.fade_out,
+                R.anim.fade_in,
+                R.anim.fade_out);
+//        transaction.replace(R.id.container, new UserCenterFragment()).commit();
+
+
+    }
+
     /**
      * receive app update broadcast, and show update popup window
      */

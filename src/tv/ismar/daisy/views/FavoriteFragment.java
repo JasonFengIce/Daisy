@@ -575,7 +575,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
     }
     public void fetchHomePage() {
         String api = SimpleRestClient.root_url + "/api/tv/homepage/top/";
-        new IsmartvUrlClient(getActivity()).doRequest(api, new IsmartvUrlClient.CallBack() {
+        new IsmartvUrlClient().doRequest(api, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
 

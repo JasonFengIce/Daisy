@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@drawable/person_center_bg"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <tv.ismar.daisy.ui.widget.TopPanelView
+        android:id="@+id/top_column_layout"
+        android:layout_width="match_parent"
+        android:layout_height="99dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/tv_guide_top_section_padding"
+        android:paddingRight="@dimen/tv_guide_top_section_padding"
+        >
+    </tv.ismar.daisy.ui.widget.TopPanelView>
+
+    <ImageView
+        android:src="@drawable/horizontal_divider_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:id="@+id/user_center_indicator_layout"
+            android:orientation="vertical"
+            android:layout_width="@dimen/usercenter_fragment_indicator_layout_width"
+            android:layout_height="match_parent">
+        </LinearLayout>
+
+        <ImageView
+            android:src="@drawable/vertical_divider_line"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"/>
+
+        <FrameLayout
+            android:id="@+id/user_center_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </FrameLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

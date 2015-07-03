@@ -1,0 +1,94 @@
+package tv.ismar.daisy.data.usercenter;
+
+import java.util.ArrayList;
+
+/**
+ * Created by huaijie on 7/3/15.
+ */
+public class AccountsOrdersEntity {
+
+    private ArrayList<OrderEntity> order_list;
+    private ArrayList<OrderEntity> sn_order_list;
+
+    public ArrayList<OrderEntity> getOrder_list() {
+        return order_list;
+    }
+
+    public void setOrder_list(ArrayList<OrderEntity> order_list) {
+        this.order_list = order_list;
+    }
+
+    public ArrayList<OrderEntity> getSn_order_list() {
+        return sn_order_list;
+    }
+
+    public void setSn_order_list(ArrayList<OrderEntity> sn_order_list) {
+        this.sn_order_list = sn_order_list;
+    }
+
+    public class OrderEntity {
+        private String title;
+        private String extra;
+        private String source;
+        private String expiry_date;
+        private float total_fee;
+        private String thumb_url;
+        private String start_date;
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getExtra() {
+            return extra;
+        }
+
+        public void setExtra(String extra) {
+            this.extra = extra;
+        }
+
+        public String getSource() {
+            return source;
+        }
+
+        public void setSource(String source) {
+            this.source = source;
+        }
+
+        public String getExpiry_date() {
+            return expiry_date;
+        }
+
+        public void setExpiry_date(String expiry_date) {
+            this.expiry_date = expiry_date;
+        }
+
+        public float getTotal_fee() {
+            return total_fee;
+        }
+
+        public void setTotal_fee(float total_fee) {
+            this.total_fee = total_fee;
+        }
+
+        public String getThumb_url() {
+            return thumb_url;
+        }
+
+        public void setThumb_url(String thumb_url) {
+            this.thumb_url = thumb_url;
+        }
+
+        public String getStart_date() {
+            return start_date;
+        }
+
+        public void setStart_date(String start_date) {
+            this.start_date = start_date;
+        }
+    }
+}
