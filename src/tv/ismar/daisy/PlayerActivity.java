@@ -100,6 +100,7 @@ public class PlayerActivity extends VodMenuAction {
 	private ImageView playPauseImage;
 	private ImageView ffImage;
 	private ImageView fbImage;
+	private TextView ad_count_view;
 	private int clipLength = 0;
 	private int currPosition = 0;
 	private boolean isContinue = true;
@@ -142,6 +143,7 @@ public class PlayerActivity extends VodMenuAction {
 	private boolean ismedialplayerinit = false;
 	private Stack<AdElement> adElement;
 	private AdImageDialog adimageDialog;
+	private int adsumtime;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -192,6 +194,7 @@ public class PlayerActivity extends VodMenuAction {
 		bufferLayout = (LinearLayout) findViewById(R.id.BufferLayout);
 		bufferText = (TextView) findViewById(R.id.BufferText);
 		logoImage = (ImageView) findViewById(R.id.logo_image);
+		ad_count_view = (TextView) findViewById(R.id.ad_count_view);
 		panelLayout.setVisibility(View.GONE);
 		bufferLayout.setVisibility(View.GONE);
 		qualityText.setVisibility(View.GONE);
@@ -323,6 +326,9 @@ public class PlayerActivity extends VodMenuAction {
 			if (element.getRetcode() != 200) {
 				// report error log
 			} else {
+				if ("video".equals(element.getMedia_type())) {
+					adsumtime += element.getDuration();
+				}
 				adElement.push(element);
 			}
 		}
@@ -331,17 +337,21 @@ public class PlayerActivity extends VodMenuAction {
 
 	private void playAdElement() {
 		if (!adElement.isEmpty()) {
+			ad_count_view.setVisibility(View.VISIBLE);
 			AdElement element = adElement.pop();
 			if ("video".equals(element.getMedia_type())) {
 				currPosition = 0;
 				mVideoView.setVideoPath(element.getMedia_url());
+				ad_count_view.setText("广告倒计时" + adsumtime);
 			} else {
 				adimageDialog = new AdImageDialog(this, R.style.UserinfoDialog,
 						element.getMedia_url());
 				adimageDialog.show();
-				mHandler.sendEmptyMessageDelayed(DISMISS_AD_DIALOG, 6 * 1000);
+				// mHandler.sendEmptyMessageDelayed(DISMISS_AD_DIALOG, 6 *
+				// 1000);
 			}
 		} else {
+			ad_count_view.setVisibility(View.GONE);
 			playMainVideo();
 		}
 	}
@@ -377,6 +387,11 @@ public class PlayerActivity extends VodMenuAction {
 			public void onPrepared(SmartPlayer mp) {
 
 				Log.d(TAG, "mVideoView onPrepared tempOffset ==" + tempOffset);
+				if (!adElement.isEmpty() || StringUtils.isEmpty(sid)) {
+					if(mHandler.hasMessages(AD_COUNT_ACTION))
+						mHandler.removeMessages(AD_COUNT_ACTION);
+					mHandler.sendEmptyMessageDelayed(AD_COUNT_ACTION, 1000);
+				}
 				if (mVideoView != null) {
 					if (live_video) {
 						timeBar.setEnabled(false);
@@ -439,6 +454,8 @@ public class PlayerActivity extends VodMenuAction {
 					public void onCompletion(SmartPlayer mp) {
 						Log.d(TAG, "mVideoView  Completion");
 						if (!adElement.isEmpty() || StringUtils.isEmpty(sid)) {
+							if(mHandler.hasMessages(AD_COUNT_ACTION))
+								mHandler.removeMessages(AD_COUNT_ACTION);
 							playAdElement();
 						} else {
 							if (item.isPreview) {
@@ -547,27 +564,14 @@ public class PlayerActivity extends VodMenuAction {
 			}
 		}
 		String params = "channel=" + "chinesemovie" + "&section=" + "xingzhen"
-				+ "&itemid="
-				+ item.pk
-				+ "&topic="
-				+ "3"
-				+ "&source="
-				+ "related"
-				+ "&genre="
-				+ genresBuffer.toString()
-				+ "&content_model="
-				+ item.content_model
-				+ "&director="
-				+ directorsBuffer.toString()
-				+ "&actor="
-				+ actorsBuffer.toString()
-				+ "&clipid="
-				+ item.clip == null ?"":item.clip.pk
-				+ "&live_video="
-				+ item.live_video
-				+ "&vendor="
-				+ item.vendor
-				+ "&expense=" + "true" + "&length=" + item.clip.length;
+				+ "&itemid=" + item.pk + "&topic=" + "3" + "&source="
+				+ "related" + "&genre=" + genresBuffer.toString()
+				+ "&content_model=" + item.content_model + "&director="
+				+ directorsBuffer.toString() + "&actor="
+				+ actorsBuffer.toString() + "&clipid=" + item.clip == null ? ""
+				: item.clip.pk + "&live_video=" + item.live_video + "&vendor="
+						+ item.vendor + "&expense=" + "true" + "&length="
+						+ item.clip.length;
 		new GetAdDataTask().execute(adpid, params);
 	}
 
@@ -1635,6 +1639,12 @@ public class PlayerActivity extends VodMenuAction {
 			case DISMISS_AD_DIALOG:
 				if (adimageDialog != null && adimageDialog.isShowing())
 					adimageDialog.dismiss();
+				break;
+			case AD_COUNT_ACTION:
+				adsumtime--;
+				ad_count_view.setText("广告倒计时" + adsumtime);
+				sendEmptyMessageDelayed(AD_COUNT_ACTION, 1000);
+				break;
 			default:
 				break;
 			}

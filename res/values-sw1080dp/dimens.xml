@@ -588,7 +588,7 @@
     <dimen name="person_pay_btn_submit_MT">100dip</dimen>
     <dimen name="person_pay_btn_submit_ML">275dip</dimen>
     <dimen name="person_info_privilegelist_scrollbarSize">30dip</dimen>
-    <dimen name="person_info_warn_info_txt_ML">30dip</dimen>
+    <dimen name="person_info_warn_info_txt_ML">1dip</dimen>
     <dimen name="person_info_exit_btn_MR">60dip</dimen>
     <dimen name="person_info_no_privilegelist_txt_size">40sp</dimen>
 

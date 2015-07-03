@@ -38,7 +38,7 @@
                 android:id="@+id/orderlistitem_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="40dp" />
+                android:textSize="30sp" />
         </LinearLayout>
 
         <LinearLayout

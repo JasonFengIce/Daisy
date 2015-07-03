@@ -25,6 +25,7 @@ public abstract class VodMenuAction extends BaseActivity {
 	static final int MSG_SEK_ACTION = 103;
 	static final int BUFFER_COUNTDOWN_ACTION = 113;
 	static final int DISMISS_AD_DIALOG = 114;
+	static final int AD_COUNT_ACTION = 115;
 	protected int buffercountDown = 0;
 	protected static final String BUFFERING = " 正在加载 ";
 	Dialog dialog = null;
