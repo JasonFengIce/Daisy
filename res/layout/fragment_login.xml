@@ -4,4 +4,9 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+    <tv.ismar.daisy.views.LoginPanelView
+        android:id="@+id/login_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </tv.ismar.daisy.views.LoginPanelView>
 </LinearLayout>
