@@ -53,6 +53,7 @@ public class VodApplication extends Application {
     public static String LOCATION_CITY = "location_city";
     public static String LOCATION_DISTRICT = "location_district";
     private static final int CORE_POOL_SIZE = 5;
+    public static String NEWEST_ENTERTAINMENT = "newestentertainment";
     private ExecutorService mExecutorService;
    // public static float rate = 1;
     /**

@@ -33,7 +33,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	private static final String CREATE_HISTORY_TABLE = "CREATE TABLE IF NOT EXISTS 'history_table' " +
 			"('_id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'title' TEXT NOT NULL, 'url' TEXT NOT NULL, 'adlet_url' TEXT, " +
 			"'last_played_time' INTEGER DEFAULT(0), 'last_position' INTEGER DEFAULT(0), 'content_model' TEXT NOT NULL, 'quality' INTEGER DEFAULT(1), " +
-			"'last_quality' INTEGER DEFAULT(1), 'is_complex' INTEGER DEFAULT(0), 'is_continue' INTEGER DEFAULT(0), 'sub_url' TEXT)";
+			"'last_quality' INTEGER DEFAULT(1), 'is_complex' INTEGER DEFAULT(0), 'is_continue' INTEGER DEFAULT(0), 'sub_url' TEXT,'isnet' TEXT NOT NULL)";
 	private static final String CREATE_FAVORITE_TABLE = "CREATE TABLE IF NOT EXISTS 'favorite_table' " +
 			"('_id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'title' TEXT NOT NULL, 'url' TEXT NOT NULL, 'content_model' TEXT, " +
 			"'adlet_url' TEXT, 'quality' INTEGER DEFAULT(1), 'is_complex' INTEGER DEFAULT(0),'isnet' TEXT NOT NULL)";
@@ -57,6 +57,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			public static final String LAST_PLAY_TIME = "last_played_time";
 			public static final String LAST_POSITION = "last_position";
 			public static final String SUB_URL = "sub_url";
+            public static final String ISNET = "isnet";
 		}
 		
 		public static interface FavoriteTable extends BaseColumns {
@@ -108,9 +109,9 @@ public class DBHelper extends SQLiteOpenHelper {
 	 * Use to query all history records. sorted by last_played_time column.
 	 * @return an ArrayList contains all History objects.
 	 */
-	public ArrayList<History> getAllHistories() {
+	public ArrayList<History> getAllHistories(String isnet) {
 		ArrayList<History> historyList = new ArrayList<History>();
-		Cursor cur = db.query(DBFields.HistroyTable.TABLE_NAME, null, null, null, null, null, " last_played_time desc");
+		Cursor cur = db.query(DBFields.HistroyTable.TABLE_NAME, null, DBFields.HistroyTable.ISNET  + "= ?", new String[]{isnet}, null, null, " last_played_time desc");
 		if(cur!=null) {
 			if(cur.moveToFirst()) {
 				do {
@@ -190,6 +191,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		cv.put(DBFields.HistroyTable.IS_CONTINUE, history.is_continue?1:0);
 		cv.put(DBFields.HistroyTable.LAST_PLAY_TIME, history.last_played_time);
 		cv.put(DBFields.HistroyTable.LAST_POSITION, history.last_position);
+        cv.put(DBFields.HistroyTable.ISNET,history.isnet);
 		cv.put(DBFields.HistroyTable.SUB_URL, history.sub_url);
 		db.update(DBFields.HistroyTable.TABLE_NAME, cv, "_id = ?", new String[]{String.valueOf(history.id)});
 	}
@@ -216,9 +218,9 @@ public class DBHelper extends SQLiteOpenHelper {
 		db.update(DBFields.QualityTable.TABLE_NAME, cv, " _id = ?", new String[]{String.valueOf(quality.id)});
 	}
 	
-	public History queryHistoryByUrl(String url) {
+	public History queryHistoryByUrl(String url,String isnet) {
 		History history = null;
-		Cursor cur = db.query(DBFields.HistroyTable.TABLE_NAME, null, DBFields.HistroyTable.URL + " = ?", new String[]{url}, null, null, " _id desc");
+		Cursor cur = db.query(DBFields.HistroyTable.TABLE_NAME, null, DBFields.HistroyTable.URL + " = ? and " + DBFields.HistroyTable.ISNET + "= ?", new String[]{url,isnet}, null, null, " _id desc");
 		if(cur!=null) {
 			if(cur.moveToFirst()) {
 				history = new History(cur);
@@ -260,11 +262,11 @@ public class DBHelper extends SQLiteOpenHelper {
 		}
 		return db.delete(table, " url = ? and " + DBFields.FavoriteTable.ISNET + "=?", new String[]{url,isnet});
 	}
-	public int deleteHistory(String table, String url ) {
+	public int deleteHistory(String table, String url,String isnet) {
 		if(url==null) {
 			return db.delete(table, null, null);
 		}
-		return db.delete(table, " url = ?", new String[]{url});
+		return db.delete(table, " url = ? and " + DBFields.HistroyTable.ISNET + "=?", new String[]{url,isnet});
 	}
 	public void releaseDB() {
 		db.close();

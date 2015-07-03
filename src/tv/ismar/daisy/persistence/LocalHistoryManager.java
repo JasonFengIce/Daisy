@@ -28,13 +28,13 @@ public class LocalHistoryManager implements HistoryManager {
 	
 	public LocalHistoryManager(Context context) {
 		mDBHelper = DaisyUtils.getDBHelper(context);
-		mHistories = mDBHelper.getAllHistories();
+		mHistories = mDBHelper.getAllHistories("no");
 	}
 	
 	private int mTotalEntriesLimit = 50;
 
 	@Override
-	public void addHistory(String title, String url, long currentPosition) {
+	public void addHistory(String title, String url, long currentPosition,String isnet) {
 		if(url==null || title==null) {
 			throw new RuntimeException("url or title can not be null");
 		}
@@ -56,12 +56,12 @@ public class LocalHistoryManager implements HistoryManager {
 			cv.put(DBFields.HistroyTable.LAST_PLAY_TIME, currentTimeMillis);
 			cv.put(DBFields.HistroyTable.LAST_POSITION, currentPosition);
 			mDBHelper.insert(cv, DBFields.HistroyTable.TABLE_NAME, mTotalEntriesLimit);
-			mHistories = mDBHelper.getAllHistories();
+			mHistories = mDBHelper.getAllHistories(isnet);
 		}
 	}
 
 	@Override
-	public History getHistoryByUrl(String url) {
+	public History getHistoryByUrl(String url,String isnet) {
 		if(url==null){
 			throw new RuntimeException("url cannot be null");
 		}
@@ -77,7 +77,7 @@ public class LocalHistoryManager implements HistoryManager {
 			}
 		}
 		if(history == null) {
-			history = mDBHelper.queryHistoryByUrl(url);
+			history = mDBHelper.queryHistoryByUrl(url,isnet);
 			if(history!=null) {
 				mHistories.add(history);
 			}
@@ -86,21 +86,22 @@ public class LocalHistoryManager implements HistoryManager {
 	}
 
 	@Override
-	public ArrayList<History> getAllHistories() {
+	public ArrayList<History> getAllHistories(String isnet) {
 		if(mHistories==null) {
 			mHistories = new ArrayList<History>();
 		}
+        mHistories = mDBHelper.getAllHistories(isnet);
 		return mHistories;
 	}
 
 	@Override
-	public void addHistory(History history) {
+	public void addHistory(History history,String isnet) {
 		if(history==null || history.title==null || history.content_model==null || history.url==null) {
 			throw new RuntimeException("history or history's field should not be null");
 		}
 		
 		long currentTimeMillis = System.currentTimeMillis();
-		History h = getHistoryByUrl(history.url);
+		History h = getHistoryByUrl(history.url,isnet);
 		if(h!=null) {
 			h.last_position = history.last_position;
 			h.last_played_time = currentTimeMillis;
@@ -112,6 +113,7 @@ public class LocalHistoryManager implements HistoryManager {
 			h.is_complex = history.is_complex;
 			h.is_continue = history.is_continue;
 			h.sub_url = history.sub_url;
+            h.isnet = isnet;
 			mDBHelper.updateHistory(h);
 		} else {
 			ContentValues cv = new ContentValues();
@@ -126,8 +128,9 @@ public class LocalHistoryManager implements HistoryManager {
 			cv.put(DBFields.HistroyTable.IS_COMPLEX, history.is_complex?1:0);
 			cv.put(DBFields.HistroyTable.IS_CONTINUE, history.is_continue?1:0);
 			cv.put(DBFields.HistroyTable.SUB_URL, history.sub_url);
+            cv.put(DBFields.HistroyTable.ISNET,history.isnet);
 			long result = mDBHelper.insert(cv, DBFields.HistroyTable.TABLE_NAME, mTotalEntriesLimit);
-			mHistories = mDBHelper.getAllHistories();
+			mHistories = mDBHelper.getAllHistories(isnet);
 			if(result >=0) {
 				new DataCollectionTask().execute(history);
 			}
@@ -135,18 +138,18 @@ public class LocalHistoryManager implements HistoryManager {
 	}
 
 	@Override
-	public void deleteHistory(String url) {
+	public void deleteHistory(String url,String isnet) {
 		if(url==null) {
 			throw new RuntimeException("url should not be null");
 		}
-		int rowsAffected = mDBHelper.deleteHistory(DBFields.HistroyTable.TABLE_NAME, url);
+		int rowsAffected = mDBHelper.deleteHistory(DBFields.HistroyTable.TABLE_NAME, url,isnet);
 		Log.d("LocalHistoryManager", rowsAffected + "records delete");
-		mHistories = mDBHelper.getAllHistories();
+		mHistories = mDBHelper.getAllHistories(isnet);
 	}
 
 	@Override
-	public void deleteAll() {
-		mDBHelper.deleteHistory(DBFields.HistroyTable.TABLE_NAME, null);
+	public void deleteAll(String isnet) {
+		mDBHelper.deleteHistory(DBFields.HistroyTable.TABLE_NAME, null,isnet);
 		mHistories.clear();
 	}
 	

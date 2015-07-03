@@ -218,7 +218,7 @@ public class ItemDetailActivity extends BaseActivity implements
 						+ "/api/item/" + mItem.pk + "/"
 						: mItem.item_url;
 				mHistory = DaisyUtils.getHistoryManager(this).getHistoryByUrl(
-						url);
+						url,"no");
 			}
 		}
 		for (HashMap.Entry<AsyncImageView, Boolean> entry : mLoadingImageQueue
@@ -478,7 +478,8 @@ private boolean isPause = false;
 		if (isDrama()) {
 			String url = mItem.item_url == null ? SimpleRestClient.sRoot_url
 					+ "/api/item/" + mItem.pk + "/" : mItem.item_url;
-			mHistory = DaisyUtils.getHistoryManager(this).getHistoryByUrl(url);
+
+			mHistory = DaisyUtils.getHistoryManager(this).getHistoryByUrl(url,"no");
 		}
 
 		mDetailTitle.setText(mItem.title);
@@ -502,6 +503,10 @@ private boolean isPause = false;
 				mContentModel.attributes.put("vendor", getResources()
 						.getString(R.string.vendor));
 			}
+            if(mContentModel.attributes.get("air_date")==null){
+                mContentModel.attributes.put("air_date", getResources()
+                        .getString(R.string.air_date));
+            }
 			if (isDrama) {
 				if (mContentModel.attributes.get("episodes") == null) {
 					mContentModel.attributes.put("episodes", getResources()
@@ -517,10 +522,12 @@ private boolean isPause = false;
 			attributeMap.put("genre", null);
 			attributeMap.put("vendor", null);
 			attributeMap.put("length", null);
+            attributeMap.put("air_date", null);
 			for (String key : mContentModel.attributes.keySet()) {
 				attributeMap.put(key, null);
 			}
 			attributeMap.put("vendor", mItem.vendor);
+            attributeMap.put("air_date",mItem.attributes.air_date);
 			if (isDrama()) {
 				attributeMap.put("episodes", getEpisodes(mItem));
 			}
@@ -528,10 +535,12 @@ private boolean isPause = false;
 				if(mItem.clip.length>0)
 					   attributeMap.put("length", getClipLength(mItem.clip));
 			}
+
 			Iterator iter = mItem.attributes.map.keySet().iterator();
 			while (iter.hasNext()) {
 				String key = (String) iter.next();
 				Object value = mItem.attributes.map.get(key);
+
 				if (value != null) {
 					if (value.getClass().equals(String.class)) {
 						attributeMap.put(key, (String) value);

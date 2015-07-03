@@ -64,7 +64,7 @@ public class InitPlayerTool {
 			AccessProxy.init(VodUserAgent.deviceType,
 					VodUserAgent.deviceVersion, sn);
             String flag = (String) params[1];
-            Item item = null;;
+            Item item = null;
             if(flag.equals("url")){
             	try {
 					item = simpleRestClient.getItem((String) params[0]);

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class Item implements Serializable {
 	
 	private static final long serialVersionUID = 5414782976396856671L;
+    public int subitem_show;
 	public float bean_score;
 	public String adlet_url;
     public Attribute attributes;
@@ -47,4 +48,6 @@ public class Item implements Serializable {
     public boolean isPreview;
     //used only for daram seria and expense page
     public int remainDay;
+    public int offset;
+    public int month;
 }

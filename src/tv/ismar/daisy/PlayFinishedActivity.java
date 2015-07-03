@@ -249,10 +249,17 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		case R.id.btn_replay:
 			if(item!=null) {
 				String url = SimpleRestClient.root_url + "/api/item/" + item.pk + "/";
-				History history = mHistorymanager.getHistoryByUrl(url);
+                History history = null;
+                if(SimpleRestClient.isLogin())
+				    history = mHistorymanager.getHistoryByUrl(url,"yes");
+                else
+                    history = mHistorymanager.getHistoryByUrl(url,"no");
 				if(history!=null) {
 					history.last_position = 0;
-					mHistorymanager.addHistory(history);
+                    if(SimpleRestClient.isLogin())
+					    mHistorymanager.addHistory(history,"yes");
+                    else
+                        mHistorymanager.addHistory(history,"no");
 					if(history.sub_url!=null) {
 						url = history.sub_url;
 					}

@@ -715,8 +715,19 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 					mSectionProperties.put(EventProperty.SECTION, s.slug);
 					Intent intent = new Intent();
 					if(item.is_complex) {
-						intent.setAction("tv.ismar.daisy.Item");
+                        if(!isPortrait){
+                            if(item.content_model.equals("variety")){
+                               //综艺详情
+                                intent.setAction("tv.ismar.daisy.EntertainmentItem");
+                            }
+                            else
+                                intent.setAction("tv.ismar.daisy.Item");
+                        }
+                        else{
+                            intent.setAction("tv.ismar.daisy.PFileItem");
+                        }
 						intent.putExtra("url", item.url);
+                        intent.putExtra("title",mTitle);
 						intent.putExtra(EventProperty.SECTION, s.slug);
 						startActivity(intent);
 					} else {
