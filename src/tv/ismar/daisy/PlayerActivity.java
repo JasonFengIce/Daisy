@@ -160,8 +160,8 @@ public class PlayerActivity extends VodMenuAction {
 	public void onResume() {
 		super.onResume();
 		if (needOnresume) {
-			isBuffer = true;
-			showBuffer();
+//			isBuffer = true;
+//			showBuffer();
 			new initPlayTask().execute();
 			needOnresume = false;
 		}
@@ -296,7 +296,7 @@ public class PlayerActivity extends VodMenuAction {
 		if (mVideoView != null) {
 			mVideoView.setAlpha(0);
 		}
-		showBuffer();
+//		showBuffer();
 		Log.d(TAG, " initClipInfo ");
 		Intent intent = getIntent();
 		if (intent != null) {
@@ -337,11 +337,11 @@ public class PlayerActivity extends VodMenuAction {
 
 	private void playAdElement() {
 		if (!adElement.isEmpty()) {
-			ad_count_view.setVisibility(View.VISIBLE);
 			AdElement element = adElement.pop();
 			if ("video".equals(element.getMedia_type())) {
 				currPosition = 0;
 				mVideoView.setVideoPath(element.getMedia_url());
+				ad_count_view.setVisibility(View.VISIBLE);
 				ad_count_view.setText("广告倒计时" + adsumtime);
 			} else {
 				adimageDialog = new AdImageDialog(this, R.style.UserinfoDialog,
@@ -405,6 +405,8 @@ public class PlayerActivity extends VodMenuAction {
 					}
 					if (currPosition == 0)
 						mp.start();
+					if(!adElement.isEmpty())
+						return;
 					timeTaskStart(0);
 					checkTaskStart(0);
 					urls[0] = urlInfo.getNormal();
@@ -1274,6 +1276,8 @@ public class PlayerActivity extends VodMenuAction {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean ret = false;
+		if(keyCode != KeyEvent.KEYCODE_BACK && !adElement.isEmpty())
+			return ret;
 		if (!isVodMenuVisible() && mVideoView != null) {
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
@@ -1527,6 +1531,8 @@ public class PlayerActivity extends VodMenuAction {
 	}
 
 	protected void showBuffer() {
+		if(adElement != null && !adElement.isEmpty())
+			return;
 		if (isBuffer && !bufferLayout.isShown()) {
 			bufferLayout.setVisibility(View.VISIBLE);
 			bufferDuration = System.currentTimeMillis();

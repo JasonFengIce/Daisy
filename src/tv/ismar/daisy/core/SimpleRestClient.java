@@ -239,12 +239,12 @@ public class SimpleRestClient {
 		return entity;
 	}
 
-	public SportsGameList getSportGames()
+	public SportsGameList getSportGames(String path)
 			throws NetworkException {
 		SportsGameList entity = null;
 		try {
 //			String url = root_url + "/api/tv/homepage/zongyi/";
-			String url = root_url + "/api/tv/living_video/";
+			String url = root_url + path;
 			String jsonStr = NetworkUtils.getJsonStr(url,"");
 			entity = gson.fromJson(jsonStr, SportsGameList.class);
 			return entity;

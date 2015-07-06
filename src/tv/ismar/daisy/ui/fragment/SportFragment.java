@@ -258,7 +258,11 @@ public class SportFragment extends ChannelBaseFragment implements ListView.OnScr
         protected Integer doInBackground(String... params) {
             try {
                 entity = mRestClient.getSportHome(channelEntity.getHomepage_url());
-                games = mRestClient.getSportGames();
+                if("sport".equals(channelEntity.getChannel())){
+                	games = mRestClient.getSportGames("/api/tv/living_video/sport/");   	
+                } else if("game".equals(channelEntity.getChannel())){
+                	games = mRestClient.getSportGames("/api/tv/living_video/game/");                	
+                }
             } catch (NetworkException e) {
                 e.printStackTrace();
             }
