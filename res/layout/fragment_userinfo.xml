@@ -2,101 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:layout_marginLeft="@dimen/person_login_phone_view_ML"
-              android:orientation="vertical" >
+              android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_marginTop="@dimen/person_login_phone_view_ML"
-        android:layout_weight="1.3"
-        android:orientation="horizontal" >
-
-        <TextView
-            android:id="@+id/mobile_or_sn_txt"
-            android:layout_width="@dimen/person_login_phone_text_W"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text="手机号:"
-            android:textColor="#FFF8F8FF"
-            android:textSize="@dimen/person_login_phone_text_size" />
-
-        <Button
-            android:id="@+id/exit_btn"
-            android:layout_width="@dimen/person_pay_btn_submit_W"
-            android:layout_height="@dimen/person_center_btn_H"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/person_info_exit_btn_MR"
-            android:background="@drawable/person_btn_selector"
-            android:gravity="center"
-            android:text=" 退出登录"
-            android:textColor="#FFF8F8FF"
-            android:textSize="@dimen/person_login_phone_text_size"
-            android:visibility="invisible" />
-
-        <TextView
-            android:id="@+id/mobile_or_sn_value"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@id/exit_btn"
-            android:layout_toRightOf="@id/mobile_or_sn_txt"
-            android:gravity="center_vertical"
-            android:textColor="#FFF8F8FF"
-            android:textSize="@dimen/person_login_phone_text_size"
-            android:visibility="visible" />
-
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/device_number"
+        android:layout_marginTop="@dimen/usercenter_info_device_number_margin_top"
+        android:textColor="#FFFFFF"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/usercenter_info_layout_margin_left"
+        android:textSize="@dimen/person_login_phone_text_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
+        android:layout_marginLeft="@dimen/usercenter_info_layout_margin_left"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1.3"
-        android:orientation="horizontal" >
-
-        <TextView
-            android:id="@+id/sn_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text="SN号:"
-            android:textColor="#FFF8F8FF"
-            android:textSize="@dimen/person_login_phone_text_size"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@+id/sn_txt_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:textColor="#FFF8F8FF"
-            android:textSize="@dimen/person_login_phone_text_size"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/warn_info_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:text="您的账户关联到当前设备,设备损坏或更换时账户余额及特权将清零"
-            android:textColor="#fe8109"
-            android:textSize="@dimen/person_login_phone_edit_text_size"
-            android:visibility="gone"
-            android:layout_marginLeft="@dimen/person_info_warn_info_txt_ML" />
-        <TextView
-            android:id="@+id/account_register"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="关联"
-            android:focusable="true"
-            android:textSize="@dimen/person_login_phone_text_size"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1.3"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="@dimen/person_login_phone_text_W"
@@ -104,7 +27,7 @@
             android:gravity="center_vertical"
             android:text="余额:"
             android:textColor="#FFF8F8FF"
-            android:textSize="@dimen/person_login_phone_text_size" />
+            android:textSize="@dimen/person_login_phone_text_size"/>
 
         <TextView
             android:id="@+id/remain_money_value"
@@ -112,29 +35,31 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:textColor="#FFF8F8FF"
-            android:textSize="@dimen/person_login_phone_text_size" />
+            android:textSize="@dimen/person_login_phone_text_size"/>
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
+        android:layout_marginLeft="@dimen/usercenter_info_layout_margin_left"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="6"
-        android:orientation="horizontal" >
+        >
 
         <TextView
             android:id="@+id/privilege_txt"
-            android:layout_marginTop="@dimen/person_info_privilegelist_scrollbarSize"
-            android:layout_width="@dimen/person_login_phone_text_W"
-            android:layout_height="@dimen/person_center_btn_H"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/privilege_item_layout_H"
+            android:gravity="center_vertical"
             android:text="特权:"
             android:textColor="#FFF8F8FF"
-            android:textSize="@dimen/person_login_phone_text_size" >
+            android:textSize="@dimen/person_login_phone_text_size">
         </TextView>
 
         <ListView
+            android:layout_toRightOf="@id/privilege_txt"
             android:id="@+id/privilegelist"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:divider="@android:color/transparent"
             android:scrollbars="vertical"
             android:scrollbarSize="@dimen/person_info_privilegelist_scrollbarSize"
@@ -143,7 +68,9 @@
             android:fadeScrollbars="false"
             android:layout_marginRight="@dimen/person_login_phone_view_ML">
         </ListView>
+
         <TextView
+            android:visibility="gone"
             android:id="@+id/no_privilegelist_txt"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
@@ -152,6 +79,6 @@
             android:textSize="@dimen/person_info_no_privilegelist_txt_size"
             android:gravity="center"
             />
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

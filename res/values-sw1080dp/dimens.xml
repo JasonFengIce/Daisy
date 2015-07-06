@@ -694,6 +694,12 @@
     <dimen name="usercenter_help_contact_margin_left">135dp</dimen>
     <dimen name="usercenter_help_helpcenter_text_margin_top">60dp</dimen>
 
+    <dimen name="usercenter_help_icon_margin_top">85dp</dimen>
+    <dimen name="usercenter_help_shipinkefu_margin_top">20dp</dimen>
+
+    <dimen name="usercenter_info_layout_margin_left">40dp</dimen>
+    <dimen name="usercenter_info_device_number_margin_top">35dp</dimen>
+
 
 
     <!-- child fragment -->

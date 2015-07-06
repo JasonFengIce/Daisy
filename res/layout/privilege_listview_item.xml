@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/privilege_item_layout_H"
-    android:gravity="center_vertical" >
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/privilege_item_layout_H"
+                android:gravity="center_vertical">
 
     <TextView
         android:gravity="center_vertical"
@@ -11,28 +11,8 @@
         android:layout_height="@dimen/privilege_item_layout_H"
         android:paddingLeft="@dimen/privilege_item_title_txt_PL"
         android:textColor="#FFF8F8FF"
-        android:textSize="@dimen/privilege_item_textsize" />
+        android:textSize="@dimen/privilege_item_textsize"/>
 
-<!--     <Button -->
-<!--         android:id="@+id/renew_btn" -->
-<!--         android:layout_width="250dip" -->
-<!--         android:layout_height="70dip" -->
-<!--         android:layout_alignParentRight="true" -->
-<!--         android:layout_marginRight="100dip" -->
-<!--         android:background="@drawable/person_btn_selector" -->
-<!--         android:text="续费" -->
-<!--         android:textColor="#FFF8F8FF" -->
-<!--         android:textSize="35sp" /> -->
-
-<!--     <TextView -->
-<!--         android:gravity="center_vertical" -->
-<!--         android:id="@+id/duration_txt" -->
-<!--         android:layout_width="match_parent" -->
-<!--         android:layout_height="100dip" -->
-<!--         android:layout_toLeftOf="@id/renew_btn" -->
-<!--         android:layout_toRightOf="@id/card_type_txt" -->
-<!--         android:textColor="#FFF8F8FF" -->
-<!--         android:textSize="35sp" /> -->
 
     <TextView
         android:gravity="center_vertical"
@@ -41,5 +21,5 @@
         android:layout_height="@dimen/privilege_item_layout_H"
         android:layout_toRightOf="@id/title_txt"
         android:textColor="#FFF8F8FF"
-        android:textSize="@dimen/privilege_item_textsize" />
+        android:textSize="@dimen/privilege_item_textsize"/>
 </RelativeLayout>

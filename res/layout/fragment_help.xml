@@ -88,6 +88,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
+        <ImageView
+            android:id="@+id/ismartv_icon"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:clickable="true"
+            android:background="@drawable/launcher_selector"
+            android:layout_marginTop="@dimen/usercenter_help_icon_margin_top"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ismartv_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_gravity="center_horizontal"
+            android:textColor="#FFFFFF"
+            android:text="@string/shipinkefu"
+            android:layout_marginTop="@dimen/usercenter_help_shipinkefu_margin_top"
+            android:textSize="@dimen/usercenter_fragment_help_ismartv_introduction_text_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 </LinearLayout>

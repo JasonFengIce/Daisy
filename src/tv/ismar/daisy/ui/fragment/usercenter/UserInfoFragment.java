@@ -14,6 +14,8 @@ import android.widget.TextView;
 import cn.ismartv.activator.Activator;
 import com.google.gson.Gson;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.VodApplication;
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.usercenter.AccountBalanceEntity;
@@ -33,9 +35,9 @@ public class UserInfoFragment extends Fragment {
 
     private Context mContext;
 
+    private TextView deviceNumber;
 
     private TextView balanceTextView;
-
     private ListView playAuthListView;
 
     @Override
@@ -47,8 +49,10 @@ public class UserInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_userinfo, null);
+        deviceNumber = (TextView) view.findViewById(R.id.device_number);
         balanceTextView = (TextView) view.findViewById(R.id.remain_money_value);
         playAuthListView = (ListView) view.findViewById(R.id.privilegelist);
+
         return view;
     }
 
@@ -57,6 +61,7 @@ public class UserInfoFragment extends Fragment {
         super.onResume();
         fetchAccountsBalance();
         fetchAccountsPlayauths();
+        initViewByLoginStatus();
     }
 
     private void fetchAccountsBalance() {
@@ -107,4 +112,12 @@ public class UserInfoFragment extends Fragment {
         });
     }
 
+
+    private void initViewByLoginStatus() {
+        if (DaisyUtils.getVodApplication(mContext).getPreferences().getString(VodApplication.AUTH_TOKEN, "").equals("")) {
+            deviceNumber.setText("SN: " + SimpleRestClient.sn_token);
+        } else {
+
+        }
+    }
 }
