@@ -276,7 +276,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 			try {
 				final long todayStartPoint = getTodayStartPoint();
 				final long yesterdayStartPoint = getYesterdayStartPoint();
-				ArrayList<History> mHistories = DaisyUtils.getHistoryManager(getActivity()).getAllHistories();
+				ArrayList<History> mHistories = DaisyUtils.getHistoryManager(getActivity()).getAllHistories("no");
 				if(mHistories.size()>0) {
 					Collections.sort(mHistories);
 					for(int i=0;i<mHistories.size();++i) {
@@ -467,7 +467,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 			} else if(result == ITEM_SUCCESS_GET){
 				String url = SimpleRestClient.sRoot_url + "/api/item/" + item.pk + "/";
 				mCurrentGetItemTask.remove(url);
-				History history = DaisyUtils.getHistoryManager(getActivity()).getHistoryByUrl(url);
+				History history = DaisyUtils.getHistoryManager(getActivity()).getHistoryByUrl(url,"no");
 				// Use to data collection.
 				mDataCollectionProperties = new HashMap<String, Object>();
 				int id = SimpleRestClient.getItemId(url, new boolean[1]);
@@ -539,7 +539,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 				if(dialogType==AlertDialogFragment.NETWORK_EXCEPTION_DIALOG && !isInGetItemTask) {
 					task.execute(params);
 				} else if (!isInGetHistoryTask) {
-					DaisyUtils.getHistoryManager(getActivity()).deleteHistory((String)params[0]);
+					DaisyUtils.getHistoryManager(getActivity()).deleteHistory((String)params[0],"");
 					reset();
 				}
 				dialog.dismiss();
@@ -591,7 +591,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 			if(mHGridAdapter!=null && mSelectedPosition!=INVALID_POSITION) {
 				Item selectedItem = mHGridAdapter.getItem(mSelectedPosition);
 				if(!isInGetHistoryTask && selectedItem.url!=null) {
-					DaisyUtils.getHistoryManager(getActivity()).deleteHistory(selectedItem.url);
+					DaisyUtils.getHistoryManager(getActivity()).deleteHistory(selectedItem.url,"no");
 					reset();
 				}
 			}
@@ -600,10 +600,11 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 			if(mHGridAdapter!=null) {
 				if(!isInGetHistoryTask) {
 					if("".equals(SimpleRestClient.access_token)){
-						DaisyUtils.getHistoryManager(getActivity()).deleteAll();
+						DaisyUtils.getHistoryManager(getActivity()).deleteAll("no");
 						reset();
 					}
 					else{
+                        DaisyUtils.getHistoryManager(getActivity()).deleteAll("yes");
 						EmptyAllHistory();
 					}
 				}

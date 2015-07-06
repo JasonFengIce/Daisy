@@ -419,11 +419,12 @@ public class QiYiPlayActivity extends VodMenuAction {
 				flParams, /* bundle */null, mVideoStateListener);
 		favoriteManager = DaisyUtils.getFavoriteManager(this);
 		historyManager = DaisyUtils.getHistoryManager(this);
-		mHistory = historyManager.getHistoryByUrl(itemUrl);
 		if (SimpleRestClient.isLogin()) {
 			favorite = favoriteManager.getFavoriteByUrl(itemUrl, "yes");
+            mHistory = historyManager.getHistoryByUrl(itemUrl,"yes");
 		} else {
 			favorite = favoriteManager.getFavoriteByUrl(itemUrl, "no");
+            mHistory = historyManager.getHistoryByUrl(itemUrl,"no");
 		}
 
 		Quality quality = historyManager.getQuality();
@@ -972,7 +973,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 		}
 	};
 
-	protected void resumeItem() {
+	private void resumeItem() {
 		if (!paused)
 			return;
 		hideBuffer();
@@ -1538,7 +1539,10 @@ public class QiYiPlayActivity extends VodMenuAction {
 			history.url = itemUrl;
 			history.sub_url = subItemUrl;
 			history.is_continue = isContinue;
-			historyManager.addHistory(history);
+            if(!SimpleRestClient.isLogin())
+			    historyManager.addHistory(history,"no");
+            else
+                historyManager.addHistory(history,"yes");
 		}
 	}
 
