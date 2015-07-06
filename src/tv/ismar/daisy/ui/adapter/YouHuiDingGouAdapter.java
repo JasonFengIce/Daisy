@@ -5,7 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+import com.squareup.picasso.Picasso;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.data.usercenter.YouHuiDingGouEntity;
 import tv.ismar.daisy.views.AsyncImageView;
@@ -48,7 +50,7 @@ public class YouHuiDingGouAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.title = (TextView) convertView
                     .findViewById(R.id.package_grid_title);
-            holder.icon = (AsyncImageView) convertView
+            holder.icon = (ImageView) convertView
                     .findViewById(R.id.package_grid_image);
             convertView.setTag(holder);
         } else {
@@ -56,12 +58,12 @@ public class YouHuiDingGouAdapter extends BaseAdapter {
         }
         YouHuiDingGouEntity.Object item = mList.get(position);
         holder.title.setText(item.getTitle());
-        holder.icon.setUrl(item.getPoster_url());
+        Picasso.with(mContext).load(item.getPoster_url()).into(holder.icon);
         return convertView;
     }
 
     public static class ViewHolder {
-        AsyncImageView icon;
+        ImageView icon;
         TextView title;
     }
 }

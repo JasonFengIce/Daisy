@@ -115,9 +115,9 @@ public class UserInfoFragment extends Fragment {
 
     private void initViewByLoginStatus() {
         if (DaisyUtils.getVodApplication(mContext).getPreferences().getString(VodApplication.AUTH_TOKEN, "").equals("")) {
-            deviceNumber.setText("SN: " + SimpleRestClient.sn_token);
+            deviceNumber.setText("SN： " + SimpleRestClient.sn_token);
         } else {
-
+            deviceNumber.setText("手机号：" + SimpleRestClient.mobile_number);
         }
     }
 }

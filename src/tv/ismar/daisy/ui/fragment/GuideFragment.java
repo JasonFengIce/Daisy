@@ -218,8 +218,13 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
         }
 
         flag.setPosition(0);
-        setVideoPath(linkedVideoView, carousels.get(flag.getPosition()).getVideo_url());
         linkedVideoView.setOnCompletionListener(loopAllListener);
+        getView().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setVideoPath(linkedVideoView, carousels.get(flag.getPosition()).getVideo_url());
+            }
+        }, 1000);
 
 
     }

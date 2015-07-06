@@ -6,7 +6,7 @@
     android:gravity="center"
     android:orientation="vertical" >
 
-    <tv.ismar.daisy.views.AsyncImageView
+    <ImageView
         android:id="@+id/package_grid_image"
         android:layout_width="336dp"
         android:layout_height="189dp"
