@@ -256,4 +256,22 @@
     <string name="shipinkefu">视频客服</string>
 
 
+    <string name="association">关联</string>
+    <string name="association_phone">关联手机</string>
+    <string name="association_phone_number">手机号码</string>
+    <string name="association_verification_code">验证码</string>
+    <string name="association_submit">提交</string>
+    <string name="association_fetch_verification">获取验证码</string>
+
+
+    <string name="login_phone_msg">无需设置密码，使用验证码直接登陆</string>
+    <string name="login_verification_msg">请输入您手机收到的6位数字验证码</string>
+
+    <string name="phone_number_not_be_null">手机号码不能为空</string>
+    <string name="not_phone_number">手机格式不正确</string>
+
+    <string name="verification_not_be_null">验证码不能为空</string>
+    <string name="not_verification">验证码不正确</string>
+
+
 </resources>

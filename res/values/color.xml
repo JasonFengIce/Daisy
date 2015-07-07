@@ -63,4 +63,9 @@
     <drawable name="child_item_bg_normal">#601800</drawable>
     <drawable name="list_item_more_bg">#00a8ff</drawable>
     <drawable name="user_info_popwindow_bg">#b3303030</drawable>
+
+    <color name="association_normal">#FFFFFF</color>
+    <color name="association_focus">#00a9ff</color>
+
+    <drawable name="transparent">#00000000</drawable>
 </resources>

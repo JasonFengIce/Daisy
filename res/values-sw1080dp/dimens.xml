@@ -693,12 +693,20 @@
     <dimen name="usercenter_fragment_help_ismartv_introduction_lineSpacingExtra">35dp</dimen>
     <dimen name="usercenter_help_contact_margin_left">135dp</dimen>
     <dimen name="usercenter_help_helpcenter_text_margin_top">60dp</dimen>
-
     <dimen name="usercenter_help_icon_margin_top">85dp</dimen>
     <dimen name="usercenter_help_shipinkefu_margin_top">20dp</dimen>
-
     <dimen name="usercenter_info_layout_margin_left">40dp</dimen>
     <dimen name="usercenter_info_device_number_margin_top">35dp</dimen>
+    <dimen name="usercenter_info_association_pop_widht">1370dp</dimen>
+    <dimen name="usercenter_info_association_pop_height">870dp</dimen>
+    <dimen name="association_pop_title_height">125dp</dimen>
+    <dimen name="association_phone_edit_height">60dp</dimen>
+    <dimen name="association_phone_edit_width">440dp</dimen>
+    <dimen name="association_phone_margin_top">60dp</dimen>
+    <dimen name="association_fetch_verification_button_width">250dp</dimen>
+    <dimen name="association_submit_width">290dp</dimen>
+
+    <dimen name="login_fragmet_view_margin_top">230dp</dimen>
 
 
 
@@ -721,4 +729,10 @@
     <dimen name="condition_height">100dip</dimen>
     <dimen name="submit_btn_width">150dip</dimen>
     <dimen name="submit_btn_height">100dip</dimen>
+
+
+    <dimen name="h1_text_size">48sp</dimen>
+    <dimen name="h2_text_size">36sp</dimen>
+    <dimen name="h3_text_size">24sp</dimen>
+
 </resources>

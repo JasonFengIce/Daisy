@@ -14,6 +14,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
+
+    <LinearLayout
+        android:layout_marginLeft="@dimen/usercenter_info_layout_margin_left"
+        android:layout_marginTop="@dimen/usercenter_info_device_number_margin_top"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:text="您的账户关联到当前设备,设备损坏或更换时账户余额及特权将清零"
+            android:textColor="#fe8109"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/person_login_phone_text_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:textSize="@dimen/person_login_phone_text_size"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:clickable="true"
+            android:text="@string/association"
+            android:layout_marginLeft="20dp"
+            android:textColor="#FFFFFF"
+            android:id="@+id/association"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
     <LinearLayout
         android:layout_marginLeft="@dimen/usercenter_info_layout_margin_left"
         android:layout_width="match_parent"
