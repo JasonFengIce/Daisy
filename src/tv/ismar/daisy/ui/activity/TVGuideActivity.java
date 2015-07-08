@@ -87,12 +87,16 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
                 arrow_left.setVisibility(View.GONE);
                 if (channelChange != null && channelChange != ChannelChange.CLICK_CHANNEL)
                     channelChange = ChannelChange.RIGHT_ARROW;
+            }else {
+                arrow_left.setVisibility(View.VISIBLE);
             }
 
             if (position == mChannelEntitys.length - 1) {
                 arrow_right.setVisibility(View.GONE);
                 if (channelChange != null && channelChange != ChannelChange.CLICK_CHANNEL)
                     channelChange = ChannelChange.LEFT_ARROW;
+            }else {
+                arrow_right.setVisibility(View.VISIBLE);
             }
             selectChannelByPosition(position);
         }

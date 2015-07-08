@@ -334,9 +334,12 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
         }
 
         flag.setPosition(0);
-        playCarousel();
-
-
+        getView().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                playCarousel();
+            }
+        }, 1000);
     }
 
 
