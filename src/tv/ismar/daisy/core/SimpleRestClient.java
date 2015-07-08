@@ -243,16 +243,13 @@ public class SimpleRestClient {
 			throws NetworkException {
 		SportsGameList entity = null;
 		try {
-//			String url = root_url + "/api/tv/homepage/zongyi/";
 			String url = root_url + path;
 			String jsonStr = NetworkUtils.getJsonStr(url,"");
 			entity = gson.fromJson(jsonStr, SportsGameList.class);
 			return entity;
 		} catch (JsonSyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ItemOfflineException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return entity;
@@ -265,7 +262,6 @@ public class SimpleRestClient {
 			SectionList list = gson.fromJson(jsonStr, SectionList.class);
 			return list;
 		} catch (JsonSyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

@@ -2,32 +2,31 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="23dp"
     android:orientation="vertical"
     android:paddingLeft="@dimen/fragment_padding_lr"
-     
-    android:layout_marginTop="23dp"
-    >
+    android:paddingRight="80dp" >
 
     <LinearLayout
         android:id="@+id/section_one"
-        android:layout_width="1780dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2.0"
+        android:layout_weight="1.8"
         android:orientation="horizontal" >
 
         <LinearLayout
-            android:layout_width="297dp"
-            android:layout_height="495dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:orientation="vertical" >
 
             <tv.ismar.daisy.views.LabelImageView
                 xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
                 android:id="@+id/sport_card1"
-                android:layout_width="297dp"
-                android:layout_height="165dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="@drawable/launcher_selector"
                 android:focusable="true"
-                android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
                 labelimage:focuspaddingtop="136dp"
@@ -37,11 +36,10 @@
             <tv.ismar.daisy.views.LabelImageView
                 xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
                 android:id="@+id/sport_card2"
-                android:layout_width="297dp"
-                android:layout_height="165dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="@drawable/launcher_selector"
                 android:focusable="true"
-                android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
                 labelimage:focuspaddingtop="136dp"
@@ -51,11 +49,10 @@
             <tv.ismar.daisy.views.LabelImageView
                 xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
                 android:id="@+id/sport_card3"
-                android:layout_width="297dp"
-                android:layout_height="165dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="@drawable/launcher_selector"
                 android:focusable="true"
-                android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
                 labelimage:focuspaddingtop="136dp"
@@ -66,11 +63,11 @@
         <tv.ismar.daisy.views.LabelImageView
             xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
             android:id="@+id/sportspost"
-            android:layout_width="1179dp"
-            android:layout_height="495dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
             android:background="@drawable/launcher_selector"
             android:focusable="true"
-            android:scaleType="fitXY"
             android:src="@drawable/list_item_preview_bg"
             labelimage:focusbackground="#b3303030"
             labelimage:focuspaddingtop="136dp"
@@ -78,16 +75,17 @@
             labelimage:focustextsize="18sp" />
 
         <RelativeLayout
-            android:layout_width="300dp"
-            android:layout_height="495dp" >
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
 
             <ListView
                 android:id="@+id/sec_one_list_2"
                 android:layout_width="300dp"
                 android:layout_height="495dp"
                 android:dividerHeight="2dp"
-                android:scrollbars="none"
-                android:listSelector="@drawable/launcher_selector" />
+                android:listSelector="@drawable/launcher_selector"
+                android:scrollbars="none" />
 
             <ImageView
                 android:id="@+id/sec_one_list_1_arrowdown"
@@ -119,13 +117,13 @@
         <LinearLayout
             android:id="@+id/sport_channel1"
             android:layout_width="332dp"
-            android:layout_height="224dp"
+            android:layout_height="match_parent"
             android:orientation="vertical" >
 
             <tv.ismar.daisy.views.LabelImageView
                 xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
                 android:id="@+id/sport_channel1_image"
-                android:layout_width="332dp"
+                android:layout_width="wrap_content"
                 android:layout_height="189dp"
                 android:background="@drawable/launcher_selector"
                 android:focusable="true"
@@ -139,6 +137,7 @@
                 android:id="@+id/sport_channel1_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
+                android:layout_marginTop="15dp"
                 android:gravity="center"
                 android:textSize="24sp" />
         </LinearLayout>
@@ -146,7 +145,7 @@
         <LinearLayout
             android:id="@+id/sport_channel2"
             android:layout_width="332dp"
-            android:layout_height="224dp"
+            android:layout_height="match_parent"
             android:layout_marginLeft="29dp"
             android:orientation="vertical" >
 
@@ -167,6 +166,7 @@
                 android:id="@+id/sport_channel2_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
+                android:layout_marginTop="15dp"
                 android:gravity="center"
                 android:textSize="24sp" />
         </LinearLayout>
@@ -174,8 +174,8 @@
         <LinearLayout
             android:id="@+id/sport_channel3"
             android:layout_width="332dp"
-            android:layout_height="224dp"
-            android:layout_marginLeft="28dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="29dp"
             android:orientation="vertical" >
 
             <tv.ismar.daisy.views.LabelImageView
@@ -195,6 +195,7 @@
                 android:id="@+id/sport_channel3_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
+                android:layout_marginTop="15dp"
                 android:gravity="center"
                 android:textSize="24sp" />
         </LinearLayout>
@@ -202,7 +203,7 @@
         <LinearLayout
             android:id="@+id/sport_channel4"
             android:layout_width="332dp"
-            android:layout_height="224dp"
+            android:layout_height="match_parent"
             android:layout_marginLeft="28dp"
             android:orientation="vertical" >
 
@@ -223,15 +224,16 @@
                 android:id="@+id/sport_channel4_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
+                android:layout_marginTop="15dp"
                 android:gravity="center"
                 android:textSize="24sp" />
         </LinearLayout>
 
-    <include layout="@layout/toppagelistmorebutton"
-                android:layout_width="332dp"
-                android:layout_height="189dp"
-                android:layout_marginLeft="29dp"    
-         />
+        <include
+            android:layout_width="332dp"
+            android:layout_height="189dp"
+            android:layout_marginLeft="29dp"
+            layout="@layout/toppagelistmorebutton" />
     </LinearLayout>
 
 </LinearLayout>

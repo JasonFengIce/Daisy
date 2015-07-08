@@ -76,7 +76,7 @@ public class DownloadClient implements Runnable {
             Log.d(TAG, "download url is: " + url);
             Request request = new Request.Builder().url(url).build();
             response = client.newCall(request).execute();
-            fileOutputStream = new FileOutputStream(downloadFile, false);
+            fileOutputStream = new FileOutputStream(downloadFile, true);
             InputStream inputStream = response.body().byteStream();
             byte[] buffer = new byte[1024];
             int byteRead;
