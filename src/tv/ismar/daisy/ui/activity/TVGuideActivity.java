@@ -170,6 +170,8 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
         activator.active(MANUFACTURE, KIND, VERSION, localInfo);
         getHardInfo();
 
+        updatePoster();
+
 
     }
 

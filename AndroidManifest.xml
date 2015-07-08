@@ -62,7 +62,7 @@
             android:value="ezPBAhZuOKTRS73MKsRl4KhH"/>
 
         <activity
-            android:name=".ui.activity.TVGuideActivity"
+            android:name=".ui.activity.AdvertisementActivity"
             android:screenOrientation="landscape"
             android:launchMode="singleTask"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
@@ -71,6 +71,14 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name=".ui.activity.TVGuideActivity"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+
 
         </activity>
 
