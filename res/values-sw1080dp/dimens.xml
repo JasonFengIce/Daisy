@@ -559,6 +559,51 @@
     <dimen name="list_view_search_H">60dip</dimen>
     <dimen name="list_view_search_ML">990dip</dimen>
 
+    <!-- pay panel -->
+    <dimen name="pay_top_panel_merginleft">20dp</dimen>
+    <dimen name="pay_top_panel_panel_label_textsieze">13sp</dimen>
+    <dimen name="pay_top_panel_videotitle_textsieze">35sp</dimen>
+    <dimen name="pay_top_panel_warntitle_textsieze">23sp</dimen>
+    <dimen name="pay_top_panel_top_login_textsieze">35sp</dimen>
+    <dimen name="pay_top_panel_welocome_tip_textsieze">23sp</dimen>
+    <dimen name="pay_channel_weixin_height">80dp</dimen>
+    <dimen name="pay_channel_weixin_marginleft">20dp</dimen>
+    <dimen name="pay_channel_weixin_marginright">120dp</dimen>
+    <dimen name="pay_channel_weixin_margintop">60dp</dimen>
+    <dimen name="pay_channel_weixin_textsize">35sp</dimen>
+    <dimen name="pay_guanyingcard_marginleft">50dp</dimen>
+    <dimen name="pay_guanyingcard_margintop">100dp</dimen>
+    <dimen name="pay_guanyingcard_card_balance_title_textsize">38sp</dimen>
+    <dimen name="pay_guanyingcard_card_balance_package_info_margintop">50dp</dimen>
+    <dimen name="pay_guanyingcard_package_price_textsize">23sp</dimen>
+    <dimen name="pay_guanyingcard_package_exprice_textsize">23sp</dimen>
+    <dimen name="pay_guanyingcard_submit_panel_margintop">40dp</dimen>
+    <dimen name="pay_guanyingcard_card_balance_submit_textsize">32sp</dimen>
+    <dimen name="pay_guanyingcard_card_balance_cancel_marginleft">80dp</dimen>
+    <dimen name="pay_guanyingcard_card_balance_cancel_textsize">32sp</dimen>
+    <dimen name="pay_shiyuncard_marginleft">50dp</dimen>
+    <dimen name="pay_shiyuncard_margintop">80dp</dimen>
+    <dimen name="pay_shiyuncard_account_label_textsize">32sp</dimen>
+    <dimen name="pay_shiyuncard_input_margintop">50dp</dimen>
+    <dimen name="pay_shiyuncard_submit_margintop">50dp</dimen>
+    <dimen name="pay_shiyuncard_submit_textsize">35sp</dimen>
+    <dimen name="pay_qrcode_pay_panel_marginleft">50dp</dimen>
+    <dimen name="pay_qrcode_pay_panel_margintop">100dp</dimen>
+    <dimen name="pay_qrcode_pay_qrcodeview_marginleft">40dp</dimen>
+    <dimen name="pay_qrcode_pay_qrcodeview_marginright">80dp</dimen>
+    <dimen name="pay_qrcode_pay_qrcodeview_margintop">40dp</dimen>
+    <dimen name="pay_qrcode_pay_payinfo_panel_marginleft">40dp</dimen>
+    <dimen name="pay_qrcode_pay_payinfo_panel_margintop">80dp</dimen>
+    <dimen name="pay_qrcode_pay_payinfo_price_textsize">35sp</dimen>
+    <dimen name="pay_qrcode_pay_payinfo_exprice_textsize">35sp</dimen>
+    <dimen name="pay_qrcode_pay_payinfo_introduce_textsize">35sp</dimen>
+    <dimen name="pay_paymentselect_marginleft">30dp</dimen>
+    <dimen name="pay_paymentselect_marginright">30dp</dimen>
+    <dimen name="pay_paymentselect_hseparate_height">2dp</dimen>
+    <dimen name="pay_paymentselect_hseparate_margintop">10dp</dimen>
+    <dimen name="pay_paymentselect_main_marginright">30dp</dimen>
+    <dimen name="pay_paymentselect_main_margintop">30dp</dimen>
+    <dimen name="pay_paymentselect_vseparate_width">2dp</dimen>
     <!-- person center -->
     <dimen name="personal_center_divider_H">2dip</dimen>
     <dimen name="personal_center_divider_ML">20dip</dimen>
@@ -567,7 +612,7 @@
     <dimen name="person_center_btn_layout_MT">4dip</dimen>
     <dimen name="person_center_btn_layout_PT">90dip</dimen>
     <dimen name="person_center_btn_H">80dip</dimen>
-    <dimen name="person_center_btn_W">300dip</dimen>
+    <dimen name="person_center_btn_W">400dip</dimen>
     <dimen name="person_center_btn_text_size">35sp</dimen>
     <dimen name="person_center_btn_MT">35dip</dimen>
     <dimen name="person_login_layout_PL">120dip</dimen>
@@ -614,6 +659,7 @@
     <dimen name="menu_list_PaddingTB">50dip</dimen>
     <dimen name="menu_item_PaddingTB">30dip</dimen>
     <dimen name="menu_item_text_size">48sp</dimen>
+
 
     <!--activity_tv_guide-->
     <dimen name="tv_guide_container_margin_top">10dp</dimen>
@@ -751,5 +797,15 @@
     <dimen name="h1_text_size">48sp</dimen>
     <dimen name="h2_text_size">36sp</dimen>
     <dimen name="h3_text_size">24sp</dimen>
+    <!--update-->
+    <dimen name="update_notice_textsize">40sp</dimen>
+    <dimen name="update_title_textsize">32sp</dimen>
+    <dimen name="update_msg_textsize">28sp</dimen>
 
+    <dimen name="update_notice_margin_top">60dp</dimen>
+
+    <dimen name="update_confirm_button_width">250dp</dimen>
+    <dimen name="update_confirm_button_height">60dp</dimen>
+
+    <dimen name="update_confirm_button_margin_bottom">50dp</dimen>
 </resources>

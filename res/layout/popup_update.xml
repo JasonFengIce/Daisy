@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
     <RelativeLayout
             android:background="@android:color/black"
             android:layout_width="match_parent"
@@ -9,8 +10,9 @@
 
 
         <TextView
+
                 android:id="@+id/update_notice"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="@dimen/update_notice_margin_top"
                 android:textSize="@dimen/update_notice_textsize"
                 android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
@@ -22,7 +24,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/update_notice"
                 android:layout_gravity="center"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="@dimen/update_notice_margin_top"
                 android:textSize="@dimen/update_title_textsize"
                 android:id="@+id/update_title"
                 android:layout_width="wrap_content"
@@ -40,7 +42,7 @@
         <LinearLayout
                 android:layout_alignParentBottom="true"
                 android:id="@+id/update_button_layout"
-                android:layout_marginBottom="50dp"
+                android:layout_marginBottom="@dimen/update_confirm_button_margin_bottom"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -54,8 +56,8 @@
                     android:id="@+id/update_now_bt"
                     android:text="@string/update_now"
                     android:background="@drawable/selector_button"
-                    android:layout_width="250dp"
-                    android:layout_height="60dp"/>
+                    android:layout_width="@dimen/update_confirm_button_width"
+                    android:layout_height="@dimen/update_confirm_button_height"/>
         </LinearLayout>
 
         <TextView

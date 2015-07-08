@@ -740,4 +740,17 @@
     <dimen name="guide_tab_item_wh">64dp</dimen>
 
 
+    <!--update-->
+    <dimen name="update_notice_textsize">40sp</dimen>
+    <dimen name="update_title_textsize">32sp</dimen>
+    <dimen name="update_msg_textsize">16sp</dimen>
+
+    <dimen name="update_notice_margin_top">20dp</dimen>
+
+    <dimen name="update_confirm_button_width">170dp</dimen>
+    <dimen name="update_confirm_button_height">40dp</dimen>
+
+
+    <dimen name="update_confirm_button_margin_bottom">30dp</dimen>
+
 </resources>
