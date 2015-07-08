@@ -87,7 +87,7 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
                 arrow_left.setVisibility(View.GONE);
                 if (channelChange != null && channelChange != ChannelChange.CLICK_CHANNEL)
                     channelChange = ChannelChange.RIGHT_ARROW;
-            }else {
+            } else {
                 arrow_left.setVisibility(View.VISIBLE);
             }
 
@@ -95,7 +95,7 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
                 arrow_right.setVisibility(View.GONE);
                 if (channelChange != null && channelChange != ChannelChange.CLICK_CHANNEL)
                     channelChange = ChannelChange.LEFT_ARROW;
-            }else {
+            } else {
                 arrow_right.setVisibility(View.VISIBLE);
             }
             selectChannelByPosition(position);
@@ -399,7 +399,6 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
 
     @Override
     public void onFailed(String erro) {
-        Log.e(TAG, erro);
         checkNetWork(erro);
     }
 
@@ -409,32 +408,31 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
                 ConnectivityManager.TYPE_WIFI).getState();
         if (cm.getNetworkInfo(ConnectivityManager.TYPE_ETHERNET) == null) {
             if (wifiState != NetworkInfo.State.CONNECTED) {
-                showNetErrorPopup();
+                showNetErrorPopup("请检查网络设置！");
             } else {
-                // showDialog(error);
+                showNetErrorPopup(error);
             }
         } else {
             NetworkInfo.State ethernetState = cm.getNetworkInfo(
                     ConnectivityManager.TYPE_ETHERNET).getState();
             if (wifiState != NetworkInfo.State.CONNECTED
                     && ethernetState != NetworkInfo.State.CONNECTED) {
-                showNetErrorPopup();
+                showNetErrorPopup("请检查网络设置！");
             } else {
-                // showDialog(error);
+                showNetErrorPopup(error);
             }
         }
     }
 
-    private void showNetErrorPopup() {
-        // final Context context = this;
-        View contentView = LayoutInflater.from(this).inflate(
-                R.layout.popup_net_error, null);
+    private void showNetErrorPopup(String msg) {
+        View contentView = LayoutInflater.from(this).inflate(R.layout.popup_net_error, null);
         netErrorPopupWindow = new PopupWindow(null, 740, 341);
         netErrorPopupWindow.setContentView(contentView);
         netErrorPopupWindow.setFocusable(true);
         netErrorPopupWindow.showAtLocation(contentView, Gravity.CENTER, 0, 0);
-        DaisyButton confirmExit = (DaisyButton) contentView
-                .findViewById(R.id.confirm_exit);
+        Button confirmExit = (Button) contentView.findViewById(R.id.confirm_exit);
+        TextView errorMsg = (TextView) contentView.findViewById(R.id.error_msg);
+        errorMsg.setText(msg);
 
         confirmExit.setOnClickListener(new View.OnClickListener() {
             @Override
