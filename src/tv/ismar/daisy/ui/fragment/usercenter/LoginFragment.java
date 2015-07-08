@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Layout;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import cn.ismartv.activator.Activator;
+import com.activeandroid.annotation.Table;
 import org.w3c.dom.Text;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -29,7 +31,7 @@ import java.util.regex.Pattern;
  * Created by huaijie on 7/3/15.
  */
 public class LoginFragment extends Fragment implements View.OnClickListener {
-
+    private static final String TAG = "LoginFragment";
 
     private Context mContext;
 
@@ -85,7 +87,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fetch_verification_btn:
-                phoneNumberEdit.setText("15370770697");
                 fetchVerificationCode();
                 break;
             case R.id.submit_btn:
@@ -185,12 +186,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         new IsmartvUrlClient().doRequest(IsmartvUrlClient.Method.POST, api, params, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
-
+                Log.d(TAG, "accountsCombine: " + result);
             }
 
             @Override
             public void onFailed(Exception exception) {
-
+                Log.e(TAG, "accountsCombine: " + exception.getMessage());
             }
         });
 
@@ -257,7 +258,25 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         combineAccountPop.setFocusable(true);
         combineAccountPop.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.transparent));
         combineAccountPop.showAtLocation(fragmentView, Gravity.CENTER, 200, 0);
-//        ((UserCenterActivity) mContext).switchToUserInfoFragment();
+
+        Button confirm = (Button) popupLayout.findViewById(R.id.confirm_account_combine);
+        Button cancel = (Button) popupLayout.findViewById(R.id.cancel_account_combine);
+
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                accountsCombine();
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                combineAccountPop.dismiss();
+            }
+        });
+
+        ((UserCenterActivity) mContext).switchToUserInfoFragment();
     }
 
     public void setBackground(boolean background) {

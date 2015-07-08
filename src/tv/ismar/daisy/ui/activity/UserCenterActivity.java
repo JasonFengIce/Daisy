@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -65,7 +66,7 @@ public class UserCenterActivity extends FragmentActivity implements View.OnClick
     private void createIndicatorView() {
         for (int res : INDICATOR_TEXT_RES_ARRAY) {
             RelativeLayout frameLayout = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_usercenter_indicator, null);
-            TextView textView = (TextView) frameLayout.findViewById(R.id.usercenter_indicator_text);
+            Button textView = (Button) frameLayout.findViewById(R.id.usercenter_indicator_text);
             textView.setText(res);
             textView.setId(res);
             textView.setOnClickListener(this);

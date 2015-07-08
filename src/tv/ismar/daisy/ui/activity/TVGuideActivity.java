@@ -249,7 +249,7 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
         channelListView.removeAllViews();
         for (int i = 0; i < channelEntities.length; i++) {
             FrameLayout frameLayout = (FrameLayout) LayoutInflater.from(this).inflate(R.layout.item_channel, null);
-            TextView textView = (TextView) frameLayout.findViewById(R.id.channel_item);
+            Button textView = (Button) frameLayout.findViewById(R.id.channel_item);
             textView.setText(channelEntities[i].getName());
             textView.setOnClickListener(channelClickListener);
             textView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
