@@ -660,7 +660,7 @@
     <dimen name="menu_item_PaddingTB">30dip</dimen>
     <dimen name="menu_item_text_size">48sp</dimen>
 
-<<<<<<< HEAD
+
     <!--activity_tv_guide-->
     <dimen name="tv_guide_container_margin_top">10dp</dimen>
     <dimen name="tv_guide_channel_item_width">188dp</dimen>
@@ -780,10 +780,6 @@
     <dimen name="h1_text_size">48sp</dimen>
     <dimen name="h2_text_size">36sp</dimen>
     <dimen name="h3_text_size">24sp</dimen>
-
-</resources>
-=======
-
     <!--update-->
     <dimen name="update_notice_textsize">40sp</dimen>
     <dimen name="update_title_textsize">32sp</dimen>
@@ -796,4 +792,3 @@
 
     <dimen name="update_confirm_button_margin_bottom">50dp</dimen>
 </resources>
->>>>>>> 345a229... modify update popup widow
