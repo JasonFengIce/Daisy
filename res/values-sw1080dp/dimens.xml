@@ -707,6 +707,23 @@
     <dimen name="association_submit_width">290dp</dimen>
 
     <dimen name="login_fragmet_view_margin_top">230dp</dimen>
+    <dimen name="login_pop_msg_margin_top">100dp</dimen>
+
+    <dimen name="login_pop_button_width">300dp</dimen>
+    <dimen name="login_pop_button_height">70dp</dimen>
+
+    <dimen name="login_pop_width">1200dp</dimen>
+    <dimen name="login_pop_height">400dp</dimen>
+
+    <dimen name="user_center_logout_width">260dp</dimen>
+    <dimen name="user_center_logout_height">60dp</dimen>
+    <dimen name="account_combine_text_margin_top">60dp</dimen>
+    <dimen name="account_combine_text_margin_lr">40dp</dimen>
+    <dimen name="account_combine_button_width">300dp</dimen>
+    <dimen name="account_combine_button_height">65dp</dimen>
+    <dimen name="account_combine_button_spacing">110dp</dimen>
+    <dimen name="account_combine_pop_width">1200dp</dimen>
+    <dimen name="account_combine_pop_height">400dp</dimen>
 
 
 

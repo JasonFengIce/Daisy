@@ -4,17 +4,22 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Layout;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import cn.ismartv.activator.Activator;
 import org.w3c.dom.Text;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.ui.activity.UserCenterActivity;
 
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -24,6 +29,7 @@ import java.util.regex.Pattern;
  * Created by huaijie on 7/3/15.
  */
 public class LoginFragment extends Fragment implements View.OnClickListener {
+
 
     private Context mContext;
 
@@ -36,6 +42,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private TextView phoneNumberPrompt;
     private TextView verificationPrompt;
 
+    private PopupWindow loginPopup;
+    private PopupWindow combineAccountPop;
+
+    private View fragmentView;
+
     private int count;
 
     @Override
@@ -46,17 +57,17 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login, null);
-        phoneNumberEdit = (EditText) view.findViewById(R.id.login_phone_edit);
-        verificationEdit = (EditText) view.findViewById(R.id.login_verification_edit);
-        fetchVerificationBtn = (Button) view.findViewById(R.id.fetch_verification_btn);
+        fragmentView = inflater.inflate(R.layout.fragment_login, null);
+        phoneNumberEdit = (EditText) fragmentView.findViewById(R.id.login_phone_edit);
+        verificationEdit = (EditText) fragmentView.findViewById(R.id.login_verification_edit);
+        fetchVerificationBtn = (Button) fragmentView.findViewById(R.id.fetch_verification_btn);
         fetchVerificationBtn.setOnClickListener(this);
-        submitBtn = (Button) view.findViewById(R.id.submit_btn);
+        submitBtn = (Button) fragmentView.findViewById(R.id.submit_btn);
         submitBtn.setOnClickListener(this);
-        phoneNumberPrompt = (TextView) view.findViewById(R.id.phone_number_prompt);
-        verificationPrompt = (TextView) view.findViewById(R.id.verification_prompt);
+        phoneNumberPrompt = (TextView) fragmentView.findViewById(R.id.phone_number_prompt);
+        verificationPrompt = (TextView) fragmentView.findViewById(R.id.verification_prompt);
 
-        return view;
+        return fragmentView;
     }
 
     @Override
@@ -74,6 +85,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fetch_verification_btn:
+                phoneNumberEdit.setText("15370770697");
                 fetchVerificationCode();
                 break;
             case R.id.submit_btn:
@@ -103,12 +115,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         new IsmartvUrlClient().doRequest(IsmartvUrlClient.Method.POST, api, params, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
+                phoneNumberPrompt.setText(R.string.fetch_verification_success);
+                count = 60;
                 countDown();
             }
 
             @Override
             public void onFailed(Exception exception) {
-
+                phoneNumberPrompt.setText(R.string.fetch_verification_failure);
             }
         });
 
@@ -136,14 +150,121 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         String api = SimpleRestClient.root_url + "/accounts/login/";
         HashMap params = new HashMap();
+        params.put("device_token", SimpleRestClient.device_token);
+        params.put("username", phoneNumber);
+        params.put("auth_number", verificationCode);
+        new IsmartvUrlClient().doRequest(IsmartvUrlClient.Method.POST, api, params, new IsmartvUrlClient.CallBack() {
+            @Override
+            public void onSuccess(String result) {
+                submitBtn.clearFocus();
+                showLoginSuccessPopup();
+            }
+
+            @Override
+            public void onFailed(Exception exception) {
+                verificationPrompt.setText(R.string.login_failure);
+
+            }
+        });
+
+    }
+
+
+    private void accountsCombine() {
+        String api = SimpleRestClient.root_url + "/accounts/combine/";
+        long timestamp = System.currentTimeMillis();
+        Activator activator = Activator.getInstance(mContext);
+        String rsaResult = activator.PayRsaEncode("sn=" + SimpleRestClient.sn_token + "&timestamp=" + timestamp);
+
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("device_token", SimpleRestClient.device_token);
+        params.put("access_token", SimpleRestClient.access_token);
+        params.put("timestamp", String.valueOf(timestamp));
+        params.put("sign", rsaResult);
+
+        new IsmartvUrlClient().doRequest(IsmartvUrlClient.Method.POST, api, params, new IsmartvUrlClient.CallBack() {
+            @Override
+            public void onSuccess(String result) {
+
+            }
+
+            @Override
+            public void onFailed(Exception exception) {
+
+            }
+        });
+
 
     }
 
     private void countDown() {
-//        fetchVerificationBtn.setEnabled(false);
-        for (count = 60; count > 0; count--) {
-            fetchVerificationBtn.setText(count + "秒");
+        if (count > 0) {
+            View view = getView();
+            if (view != null) {
+                view.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (fetchVerificationBtn.isEnabled())
+                            fetchVerificationBtn.setEnabled(false);
+                        fetchVerificationBtn.setText(count + "秒");
+                        count--;
+                        countDown();
+                    }
+                }, 1000);
+            }
+        } else {
+            if (!fetchVerificationBtn.isEnabled()) {
+                fetchVerificationBtn.setEnabled(true);
+                fetchVerificationBtn.setText(R.string.association_fetch_verification);
+            }
         }
-        fetchVerificationBtn.setText(R.string.association_fetch_verification);
+    }
+
+
+    private void showLoginSuccessPopup() {
+        View popupLayout = LayoutInflater.from(mContext).inflate(R.layout.popup_login_success, null);
+        TextView textView = (TextView) popupLayout.findViewById(R.id.login_success_msg);
+        String msg = mContext.getText(R.string.login_success).toString();
+        String phoneNumber = phoneNumberEdit.getText().toString();
+        textView.setText(String.format(msg, phoneNumber));
+
+        Button button = (Button) popupLayout.findViewById(R.id.login_success_btn);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginPopup.dismiss();
+                showAccountsCombinePopup();
+            }
+        });
+
+
+        int width = (int) mContext.getResources().getDimension(R.dimen.login_pop_width);
+        int height = (int) mContext.getResources().getDimension(R.dimen.login_pop_height);
+        loginPopup = new PopupWindow(popupLayout, width, height);
+        loginPopup.setFocusable(true);
+        loginPopup.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.transparent));
+        loginPopup.showAtLocation(fragmentView, Gravity.CENTER, 200, 0);
+
+    }
+
+
+    private void showAccountsCombinePopup() {
+        View popupLayout = LayoutInflater.from(mContext).inflate(R.layout.popup_account_combine, null);
+        int width = (int) mContext.getResources().getDimension(R.dimen.login_pop_width);
+        int height = (int) mContext.getResources().getDimension(R.dimen.login_pop_height);
+        combineAccountPop = new PopupWindow(popupLayout, width, height);
+        combineAccountPop = new PopupWindow(popupLayout, width, height);
+        combineAccountPop.setFocusable(true);
+        combineAccountPop.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.transparent));
+        combineAccountPop.showAtLocation(fragmentView, Gravity.CENTER, 200, 0);
+//        ((UserCenterActivity) mContext).switchToUserInfoFragment();
+    }
+
+    public void setBackground(boolean background) {
+        if (background) {
+            getView().setBackgroundColor(0xAA000000);
+        } else {
+            getView().setBackgroundColor(0x00000000);
+        }
     }
 }

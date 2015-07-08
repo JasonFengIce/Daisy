@@ -39,9 +39,12 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
     private ListView playAuthListView;
     private TextView associationText;
 
-    private PopupWindow associationPopup;
+    private TextView phoneNumber;
+
 
     private View fragmentView;
+
+    private LoginFragment loginFragment;
 
     @Override
     public void onAttach(Activity activity) {
@@ -51,15 +54,23 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         fragmentView = inflater.inflate(R.layout.fragment_userinfo, null);
+        phoneNumber = (TextView) fragmentView.findViewById(R.id.phone_number);
         deviceNumber = (TextView) fragmentView.findViewById(R.id.device_number);
         balanceTextView = (TextView) fragmentView.findViewById(R.id.remain_money_value);
         playAuthListView = (ListView) fragmentView.findViewById(R.id.privilegelist);
         associationText = (TextView) fragmentView.findViewById(R.id.association);
-        associationText.setOnFocusChangeListener(associationTextFocusListenter);
         associationText.setOnClickListener(this);
+
+        loginFragment = new LoginFragment();
+        getChildFragmentManager().beginTransaction().add(R.id.association_phone_layout, loginFragment).commit();
+        getChildFragmentManager().beginTransaction().hide(loginFragment).commit();
+
+
         return fragmentView;
     }
+
 
     @Override
     public void onResume() {
@@ -127,46 +138,21 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initViewByLoginStatus() {
-        if (DaisyUtils.getVodApplication(mContext).getPreferences().getString(VodApplication.AUTH_TOKEN, "").equals("")) {
-            deviceNumber.setText("SN： " + SimpleRestClient.sn_token);
-        } else {
-            deviceNumber.setText("手机号：" + SimpleRestClient.mobile_number);
+        deviceNumber.setText("SN： " + SimpleRestClient.sn_token);
+        if (!DaisyUtils.getVodApplication(mContext).getPreferences().getString(VodApplication.AUTH_TOKEN, "").equals("")) {
+            phoneNumber.setText("手机号：" + SimpleRestClient.mobile_number);
         }
     }
-
 
 
     private void showAssociationPopupWindow() {
-        View popupLayout = LayoutInflater.from(mContext).inflate(R.layout.popup_association_phone, null);
-        int width = (int) mContext.getResources().getDimension(R.dimen.usercenter_info_association_pop_widht);
-        int height = (int) mContext.getResources().getDimension(R.dimen.usercenter_info_association_pop_height);
-        associationPopup = new PopupWindow(popupLayout, width, height);
-        associationPopup.setFocusable(true);
-        associationPopup.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.transparent));
-        associationPopup.showAtLocation(fragmentView, Gravity.CENTER, 200, 40);
+        loginFragment.setBackground(true);
+        getChildFragmentManager().beginTransaction().show(loginFragment).commit();
+        loginFragment.getView().requestFocus();
 
     }
 
 
-    @Override
-    public void onDestroy() {
-        if (null != associationPopup && associationPopup.isShowing()) {
-            associationPopup.dismiss();
-        }
 
-        super.onDestroy();
-    }
-
-    private View.OnFocusChangeListener associationTextFocusListenter = new View.OnFocusChangeListener() {
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            TextView textView = (TextView) v;
-            if (hasFocus) {
-                textView.setTextColor(mContext.getResources().getColor(R.color.association_focus));
-            } else {
-                textView.setTextColor(mContext.getResources().getColor(R.color.association_normal));
-            }
-        }
-    };
 
 }

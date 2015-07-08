@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:background="#aa000000"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/login_success_msg"
+        android:layout_marginTop="@dimen/login_pop_msg_margin_top"
+        android:layout_gravity="center_horizontal"
+        android:textSize="@dimen/h1_text_size"
+        android:textColor="#FFFFFF"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:gravity="center"
+        android:text="@string/confirm"
+        android:id="@+id/login_success_btn"
+        android:layout_marginTop="@dimen/login_pop_msg_margin_top"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/selector_channel_item"
+        android:textSize="@dimen/h2_text_size"
+        android:textColor="#FFFFFF"
+        android:layout_width="@dimen/login_pop_button_width"
+        android:layout_height="@dimen/login_pop_button_height"/>
+</LinearLayout>

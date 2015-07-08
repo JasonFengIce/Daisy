@@ -120,8 +120,13 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
                 HomePagerEntity homePagerEntity = new Gson().fromJson(result, HomePagerEntity.class);
                 ArrayList<HomePagerEntity.Carousel> carousels = homePagerEntity.getCarousels();
                 ArrayList<HomePagerEntity.Poster> posters = homePagerEntity.getPosters();
-                initPosters(posters);
-                initCarousel(carousels);
+                if (!carousels.isEmpty()) {
+                    initCarousel(carousels);
+                }
+
+                if (!posters.isEmpty()) {
+                    initPosters(posters);
+                }
             }
 
             @Override

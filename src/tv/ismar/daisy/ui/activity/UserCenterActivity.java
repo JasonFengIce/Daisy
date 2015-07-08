@@ -11,6 +11,8 @@ import tv.ismar.daisy.R;
 import tv.ismar.daisy.ui.fragment.usercenter.*;
 import tv.ismar.daisy.ui.widget.TopPanelView;
 
+import java.util.ArrayList;
+
 /**
  * Created by huaijie on 7/3/15.
  */
@@ -91,5 +93,14 @@ public class UserCenterActivity extends FragmentActivity implements View.OnClick
                 getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, helpFragment).commit();
                 break;
         }
+    }
+
+    public void switchToUserInfoFragment() {
+        userCenterIndicatorLayout.getChildAt(1).requestFocus();
+        getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, userInfoFragment).commit();
+    }
+
+    public enum UserCenter {
+
     }
 }

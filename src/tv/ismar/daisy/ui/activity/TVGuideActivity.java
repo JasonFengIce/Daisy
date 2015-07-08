@@ -393,6 +393,7 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
 
     @Override
     public void onFailed(String erro) {
+        Log.e(TAG, erro);
         checkNetWork(erro);
     }
 
