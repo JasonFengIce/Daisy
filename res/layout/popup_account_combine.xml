@@ -25,7 +25,7 @@
         >
 
         <Button
-            
+
             android:text="@string/confirm"
             android:id="@+id/confirm_account_combine"
             android:textColor="#FFFFFF"

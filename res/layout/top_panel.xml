@@ -58,7 +58,6 @@
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/tv_guide_history_textSize"
                 android:focusable="true"
-                android:background="@drawable/launcher_selector"
                  />
 
             <TextView
@@ -71,7 +70,6 @@
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/tv_guide_history_textSize"
                 android:focusable="true"
-                android:background="@drawable/launcher_selector"
                 android:visibility="gone"/>
 
             <TextView
@@ -84,7 +82,6 @@
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/tv_guide_history_textSize"
                 android:focusable="true"
-                android:background="@drawable/launcher_selector"
                  />
 
             <TextView
@@ -97,7 +94,6 @@
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/tv_guide_history_textSize"
                 android:focusable="true"
-                android:background="@drawable/launcher_selector"
                  />
 
             <TextView
@@ -110,7 +106,6 @@
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/tv_guide_history_textSize"
                 android:focusable="true"
-                android:background="@drawable/launcher_selector"
                  />
         </RelativeLayout>
     </LinearLayout>
