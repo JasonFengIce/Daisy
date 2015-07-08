@@ -15,8 +15,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import com.activeandroid.query.Select;
 import com.google.gson.Gson;
 import com.squareup.picasso.Callback;
@@ -41,6 +44,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * Created by huaijie on 5/18/15.
  */
@@ -51,6 +56,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
     private LinearLayout carouselLayout;
     private DaisyVideoView linkedVideoView;
     private ImageView linkedVideoImage;
+    private TextView film_linked_title;
     private LabelImageView film_lefttop_image;
     private Context context;
 
@@ -130,7 +136,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
         film_lefttop_image = (LabelImageView) mView
                 .findViewById(R.id.film_lefttop_image);
         linkedVideoImage = (ImageView) mView.findViewById(R.id.film_linked_image);
-
+        film_linked_title = (TextView)mView.findViewById(R.id.film_linked_title);
         flag = new Flag(this);
 
         messageHandler = new MessageHandler();
@@ -236,12 +242,18 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
             itemView.setFocusable(true);
             itemView.setOnClickListener(ItemClickListener);
             if (i <= 7) {
-                Picasso.with(context)
-                        .load(posters.get(i).getCustom_image()).into(itemView);
-                itemView.setScaleType(ImageView.ScaleType.FIT_XY);
-                itemView.setLayoutParams(params);
-                itemView.setTag(posters.get(i));
-                guideRecommmendList.addView(itemView);
+                FrameLayout frameLayout = (FrameLayout) LayoutInflater.from(context).inflate(R.layout.item_poster, null);
+                ImageView postitemView = (ImageView) frameLayout.findViewById(R.id.poster_image);
+                TextView textView = (TextView) frameLayout.findViewById(R.id.poster_title);
+                if(StringUtils.isNotEmpty(posters.get(i).getIntroduction())){
+                	textView.setText(posters.get(i).getIntroduction());
+                	textView.setVisibility(View.VISIBLE);
+                }
+                frameLayout.setOnClickListener(ItemClickListener);
+                Picasso.with(context).load(posters.get(i).getCustom_image()).into(postitemView);
+                frameLayout.setTag(posters.get(i));
+                frameLayout.setLayoutParams(params);
+                guideRecommmendList.addView(frameLayout);
             } else {
                 params.setMargins(0, 0, 30, 0);
                 LinearLayout morelayout = (LinearLayout) LayoutInflater.from(
@@ -354,7 +366,13 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
 
         String url = carousels.get(flag.getPosition()).getVideo_image();
 
-
+        String intro = carousels.get(flag.getPosition()).getIntroduction();
+        if(StringUtils.isNotEmpty(intro)){
+        	film_linked_title.setVisibility(View.VISIBLE);
+        	film_linked_title.setText(intro);
+        }else{
+        	film_linked_title.setVisibility(View.GONE);
+        }
         Picasso.with(context).load(url).into(linkedVideoImage, new Callback() {
             int pauseTime = Integer.parseInt(carousels.get(flag.getPosition()).getPause_time());
 

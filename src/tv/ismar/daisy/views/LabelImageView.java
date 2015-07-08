@@ -82,10 +82,10 @@ public class LabelImageView extends AsyncImageView {
 		int paddingright = getPaddingRight();
 		int paddingtop = getPaddingTop();
 		int paddingBottom = getPaddingBottom();
-		if(width <=0)
+		if (width <= 0)
 			width = getWidth();
-		if(height <=0)
-			height =getHeight();
+		if (height <= 0)
+			height = getHeight();
 		Paint paint = new Paint();
 		// 绘制角标
 		if (modetype > 0) {
@@ -106,11 +106,14 @@ public class LabelImageView extends AsyncImageView {
 			case 5:
 				resId = R.drawable.beonline;
 				break;
+			case 6:
+				resId = R.drawable.collection;
+				break;
 			}
 			InputStream is = getResources().openRawResource(resId);
 			Bitmap mBitmap = BitmapFactory.decodeStream(is);
 			canvas.drawBitmap(mBitmap, width - mBitmap.getWidth()
-					- paddingright, paddingtop, paint);
+					- paddingright - 10, paddingtop, paint);
 		}
 		// 绘制看点背景
 		paint.setColor(Color.WHITE);

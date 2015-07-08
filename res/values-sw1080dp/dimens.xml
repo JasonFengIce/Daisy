@@ -690,7 +690,7 @@
 
     <dimen name="guide_recommend_item_width">199dp</dimen>
     <dimen name="guide_recommend_item_height">278dp</dimen>
-    <dimen name="guide_recommend_item_spacing">25dp</dimen>
+    <dimen name="guide_recommend_item_spacing">22dp</dimen>
 
     <dimen name="guide_recommend_margin_top">4dp</dimen>
 

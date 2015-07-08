@@ -224,7 +224,7 @@ public class SportFragment extends ChannelBaseFragment implements ListView.OnScr
             }
             holder.view.setUrl(mData.get(position).poster_url);
             holder.view.setFocustitle((mData.get(position).name));
-            holder.view.setModetype(5);
+            holder.view.setModetype(mData.get(position).getGameType());
             return convertView;
         }
 

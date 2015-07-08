@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.VideoView;
 import com.activeandroid.query.Select;
 import com.google.gson.Gson;
@@ -34,6 +35,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -142,6 +145,11 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
         for (int i = 0; i < 8; i++) {
             FrameLayout frameLayout = (FrameLayout) LayoutInflater.from(context).inflate(R.layout.item_poster, null);
             ImageView itemView = (ImageView) frameLayout.findViewById(R.id.poster_image);
+            TextView textView = (TextView) frameLayout.findViewById(R.id.poster_title);
+            if(StringUtils.isNotEmpty(posters.get(i).getIntroduction())){
+            	textView.setText(posters.get(i).getIntroduction());
+            	textView.setVisibility(View.VISIBLE);
+            }
             itemView.setOnClickListener(ItemClickListener);
             Picasso.with(context).load(posters.get(i).getCustom_image()).into(itemView);
             itemView.setTag(posters.get(i));
