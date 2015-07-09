@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -16,9 +15,7 @@ import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import cn.ismartv.activator.Activator;
-import com.activeandroid.annotation.Table;
 import com.google.gson.Gson;
-import org.w3c.dom.Text;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
@@ -297,7 +294,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         DaisyUtils.getVodApplication(mContext).save();
         SimpleRestClient.access_token = authToken;
         SimpleRestClient.mobile_number = phoneNumber;
-
         fetchFavorite();
     }
 
@@ -308,7 +304,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         new IsmartvUrlClient().doRequest(api, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
-                Log.d(TAG, "fetchFavorite: " + result);
+                Item[] favoriteList = new Gson().fromJson(result, Item[].class);
+                for (Item item : favoriteList) {
+                    addFavorite(item);
+                }
             }
 
             @Override
@@ -320,77 +319,40 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
 
+    //
+    private void addFavorite(Item mItem) {
+        if (isFavorite(mItem)) {
+            String url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk + "/";
+            // DaisyUtils.getFavoriteManager(getContext())
+            // .deleteFavoriteByUrl(url,"yes");
+        } else {
+            String url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk + "/";
+            Favorite favorite = new Favorite();
+            favorite.title = mItem.title;
+            favorite.adlet_url = mItem.adlet_url;
+            favorite.content_model = mItem.content_model;
+            favorite.url = url;
+            favorite.quality = mItem.quality;
+            favorite.is_complex = mItem.is_complex;
+            favorite.isnet = "yes";
+            DaisyUtils.getFavoriteManager(mContext).addFavorite(favorite, favorite.isnet);
+        }
+    }
 
-//    private void GetFavoriteByNet() {
-//        mSimpleRestClient.doSendRequest("/api/bookmarks/", "get", "",
-//                new SimpleRestClient.HttpPostRequestInterface() {
-//
-//                    @Override
-//                    public void onSuccess(String info) {
-//                        // TODO Auto-generated method stub
-//                        FavoriteList = mSimpleRestClient.getItems(info);
-//                        if (FavoriteList != null) {
-//                            // 添加记录到本地
-//                            for (Item i : FavoriteList) {
-//                                addFavorite(i);
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onPrepare() {
-//                        // TODO Auto-generated method stub
-//
-//                    }
-//
-//                    @Override
-//                    public void onFailed(String error) {
-//                        // TODO Auto-generated method stub
-//
-//                    }
-//                });
-//    }
-//
-//    private void addFavorite(Item mItem) {
-//        if (isFavorite(mItem)) {
-//            String url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk
-//                    + "/";
-//            // DaisyUtils.getFavoriteManager(getContext())
-//            // .deleteFavoriteByUrl(url,"yes");
-//        } else {
-//            String url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk
-//                    + "/";
-//            Favorite favorite = new Favorite();
-//            favorite.title = mItem.title;
-//            favorite.adlet_url = mItem.adlet_url;
-//            favorite.content_model = mItem.content_model;
-//            favorite.url = url;
-//            favorite.quality = mItem.quality;
-//            favorite.is_complex = mItem.is_complex;
-//            favorite.isnet = "yes";
-//            DaisyUtils.getFavoriteManager(getContext()).addFavorite(favorite,
-//                    favorite.isnet);
-//        }
-//    }
-//
-//    private boolean isFavorite(Item mItem) {
-//        if (mItem != null) {
-//            String url = mItem.item_url;
-//            if (url == null && mItem.pk != 0) {
-//                url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk
-//                        + "/";
-//            }
-//            Favorite favorite = null;
-//            favorite = DaisyUtils.getFavoriteManager(getContext())
-//                    .getFavoriteByUrl(url, "yes");
-//            if (favorite != null) {
-//                return true;
-//            }
-//        }
-//
-//        return false;
-//    }
-//
+    private boolean isFavorite(Item mItem) {
+        if (mItem != null) {
+            String url = mItem.item_url;
+            if (url == null && mItem.pk != 0) {
+                url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk + "/";
+            }
+            Favorite favorite = DaisyUtils.getFavoriteManager(mContext).getFavoriteByUrl(url, "yes");
+            if (favorite != null) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
 
     public void setBackground(boolean background) {

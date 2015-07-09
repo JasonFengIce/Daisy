@@ -4,13 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import cn.ismartv.activator.Activator;
 import com.google.gson.Gson;
@@ -21,6 +20,7 @@ import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.usercenter.AccountBalanceEntity;
 import tv.ismar.daisy.data.usercenter.AccountPlayAuthEntity;
+import tv.ismar.daisy.ui.adapter.AccountOrderAdapter;
 import tv.ismar.daisy.ui.adapter.AccoutPlayAuthAdapter;
 
 import java.util.ArrayList;
@@ -114,10 +114,12 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
             public void onSuccess(String result) {
                 Log.d(TAG, "fetchAccountsPlayauths: " + result);
                 AccountPlayAuthEntity accountPlayAuthEntity = new Gson().fromJson(result, AccountPlayAuthEntity.class);
-                ArrayList<AccountPlayAuthEntity.PlayAuth> playAuths = new ArrayList<AccountPlayAuthEntity.PlayAuth>();
-                playAuths.addAll(accountPlayAuthEntity.getPlayauth_list());
-                playAuths.addAll(accountPlayAuthEntity.getSn_playauth_list());
-                AccoutPlayAuthAdapter accoutPlayAuthAdapter = new AccoutPlayAuthAdapter(mContext, playAuths);
+                AccoutPlayAuthAdapter accoutPlayAuthAdapter;
+                if (!TextUtils.isEmpty(SimpleRestClient.access_token) && !TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
+                    accoutPlayAuthAdapter = new AccoutPlayAuthAdapter(mContext, accountPlayAuthEntity.getPlayauth_list());
+                } else {
+                    accoutPlayAuthAdapter = new AccoutPlayAuthAdapter(mContext, accountPlayAuthEntity.getSn_playauth_list());
+                }
                 playAuthListView.setAdapter(accoutPlayAuthAdapter);
             }
 
@@ -151,8 +153,6 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
         loginFragment.getView().requestFocus();
 
     }
-
-
 
 
 }

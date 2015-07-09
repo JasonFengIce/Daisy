@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,13 +72,13 @@ public class PurchaseHistoryFragment extends Fragment {
                 Log.d(TAG, "fetchAccountsOrders: " + result);
                 AccountsOrdersEntity accountsOrdersEntity = new Gson().fromJson(result, AccountsOrdersEntity.class);
 
-                ArrayList<AccountsOrdersEntity.OrderEntity> orderEntities = new ArrayList<AccountsOrdersEntity.OrderEntity>();
-                orderEntities.addAll(accountsOrdersEntity.getOrder_list());
-                orderEntities.addAll(accountsOrdersEntity.getSn_order_list());
-
-                AccountOrderAdapter accountOrderAdapter = new AccountOrderAdapter(mContext, orderEntities);
+                AccountOrderAdapter accountOrderAdapter;
+                if (!TextUtils.isEmpty(SimpleRestClient.access_token) && !TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
+                    accountOrderAdapter = new AccountOrderAdapter(mContext, accountsOrdersEntity.getOrder_list());
+                } else {
+                    accountOrderAdapter = new AccountOrderAdapter(mContext, accountsOrdersEntity.getSn_order_list());
+                }
                 accountOrderListView.setAdapter(accountOrderAdapter);
-
             }
 
             @Override
