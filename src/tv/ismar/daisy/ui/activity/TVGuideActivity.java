@@ -21,6 +21,7 @@ import android.widget.*;
 import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
 import com.baidu.location.*;
+import com.squareup.picasso.Picasso;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -153,6 +154,18 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
         AppUpdateUtils.getInstance().checkUpdate(this);
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_tv_guide, null);
         setContentView(contentView);
+        initViews();
+        initTabView();
+        activator = Activator.getInstance(this);
+        activator.setOnCompleteListener(this);
+        String localInfo = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.LOCATION_INFO, "");
+        sendLoncationRequest();
+        activator.active(MANUFACTURE, KIND, VERSION, localInfo);
+        getHardInfo();
+        updatePoster();
+    }
+
+    private void initViews() {
         channelListView = (LinearLayout) findViewById(R.id.channel_h_list);
         tabListView = (LinearLayout) findViewById(R.id.tab_list);
         arrow_left = (ImageView) findViewById(R.id.arrow_scroll_left);
@@ -161,18 +174,6 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
         toppanel.setChannelName("首页");
         arrow_left.setOnClickListener(arrowViewListener);
         arrow_right.setOnClickListener(arrowViewListener);
-        initTabView();
-
-        activator = Activator.getInstance(this);
-        activator.setOnCompleteListener(this);
-        String localInfo = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.LOCATION_INFO, "");
-        sendLoncationRequest();
-        activator.active(MANUFACTURE, KIND, VERSION, localInfo);
-        getHardInfo();
-
-        updatePoster();
-
-
     }
 
     @Override
@@ -364,16 +365,18 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
         View contentView = LayoutInflater.from(context).inflate(R.layout.popup_exit, null);
         exitPopupWindow = new PopupWindow(null, 740, 341);
         exitPopupWindow.setContentView(contentView);
+        exitPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent));
         exitPopupWindow.setFocusable(true);
         exitPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-        DaisyButton confirmExit = (DaisyButton) contentView.findViewById(R.id.confirm_exit);
-        DaisyButton cancelExit = (DaisyButton) contentView.findViewById(R.id.cancel_exit);
+
+        Button confirmExit = (Button) contentView.findViewById(R.id.confirm_exit);
+        Button cancelExit = (Button) contentView.findViewById(R.id.cancel_exit);
 
         confirmExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 exitPopupWindow.dismiss();
-                superOnbackPressed();
+                TVGuideActivity.this.finish();
             }
         });
 

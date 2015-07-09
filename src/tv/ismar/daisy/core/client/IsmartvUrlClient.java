@@ -27,9 +27,6 @@ public class IsmartvUrlClient extends Thread {
     private Method method;
     private MessageHandler messageHandler = new MessageHandler();
 
-    public IsmartvUrlClient() {
-    }
-
     @Override
     public void run() {
         switch (method) {
@@ -123,12 +120,12 @@ public class IsmartvUrlClient extends Thread {
         try {
             response = client.newCall(request).execute();
             String result = response.body().string();
-            Log.i(TAG, "---> begin\n" +
-                            "\t<--- request url: " + "\t" + api + "\n" +
-                            "\t<--- request method: " + "\t" + "get" + "\n" +
-                            "\t<--- response code: " + "\t" + response.code() + "\n" +
-                            "\t<--- response result: " + "\t" + result + "\n" +
-                            "\t---> end"
+            Log.i(TAG, "---> BEGIN\n" +
+                            "\t<--- Request URL: " + "\t" + api + "\n" +
+                            "\t<--- Request Method: " + "\t" + "GET" + "\n" +
+                            "\t<--- Response Code: " + "\t" + response.code() + "\n" +
+                            "\t<--- Response Result: " + "\t" + result + "\n" +
+                            "\t---> END"
             );
             if (response.code() >= 400) {
                 message.what = FAILURE;
@@ -156,13 +153,13 @@ public class IsmartvUrlClient extends Thread {
         try {
             response = client.newCall(request).execute();
             String result = response.body().string();
-            Log.i(TAG, "---> begin\n" +
-                            "\t<--- request url: " + "\t" + url + "\n" +
-                            "\t<--- request method: " + "\t" + "post" + "\n" +
-                            "\t<--- request params: " + "\t" + params + "\n" +
-                            "\t<--- response code: " + "\t" + response.code() + "\n" +
-                            "\t<--- response result: " + "\t" + result + "\n" +
-                            "\t---> end"
+            Log.i(TAG, "---> BEGIN\n" +
+                            "\t<--- Request URL: " + "\t" + url + "\n" +
+                            "\t<--- Request Method: " + "\t" + "POST" + "\n" +
+                            "\t<--- Request Params: " + "\t" + params + "\n" +
+                            "\t<--- Response Code: " + "\t" + response.code() + "\n" +
+                            "\t<--- Response Result: " + "\t" + result + "\n" +
+                            "\t---> END"
             );
             if (response.code() >= 400) {
                 message.what = FAILURE;

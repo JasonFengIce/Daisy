@@ -18,9 +18,7 @@ import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.usercenter.AccountsOrdersEntity;
 import tv.ismar.daisy.ui.adapter.AccountOrderAdapter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by huaijie on 7/3/15.

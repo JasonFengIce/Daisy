@@ -5,46 +5,48 @@
               android:layout_width="match_parent"
               android:gravity="center"
               android:layout_height="match_parent">
+
     <LinearLayout
-            android:gravity="center"
-            android:orientation="vertical"
-            android:background="@android:color/black"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
 
         <TextView
-                android:text="@string/exit_prompt"
-                android:textSize="28sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            android:text="@string/exit_prompt"
+            android:textSize="28sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
 
         <LinearLayout
-                android:gravity="center"
-                android:layout_marginTop="80dp"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="60dp">
-            <tv.ismar.daisy.ui.widget.DaisyButton
-                    android:layout_marginRight="30dp"
-                    android:background="@drawable/selector_button"
-                    android:textSize="28sp"
-                    android:text="@string/confirm"
-                    android:textColor="@android:color/white"
-                    android:id="@+id/confirm_exit"
-                    android:layout_width="@dimen/launcher_exit_button_width"
-                    android:layout_height="60dp"/>
+            android:gravity="center"
+            android:layout_marginTop="80dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
 
-            <tv.ismar.daisy.ui.widget.DaisyButton
-                    android:layout_marginLeft="30dp"
-                    android:background="@drawable/selector_button"
-                    android:textSize="28sp"
-                    android:text="@string/cancel"
-                    android:textColor="@android:color/white"
-                    android:id="@+id/cancel_exit"
-                    android:layout_width="@dimen/launcher_exit_button_width"
-                    android:layout_height="60dp"/>
+            <Button
+                android:layout_marginRight="30dp"
+                android:background="@drawable/selector_button"
+                android:textSize="28sp"
+                android:text="@string/confirm"
+                android:textColor="@android:color/white"
+                android:id="@+id/confirm_exit"
+                android:layout_width="@dimen/launcher_exit_button_width"
+                android:layout_height="60dp"/>
+
+            <Button
+                android:layout_marginLeft="30dp"
+                android:background="@drawable/selector_button"
+                android:textSize="28sp"
+                android:text="@string/cancel"
+                android:textColor="@android:color/white"
+                android:id="@+id/cancel_exit"
+                android:layout_width="@dimen/launcher_exit_button_width"
+                android:layout_height="60dp"/>
 
         </LinearLayout>
     </LinearLayout>
