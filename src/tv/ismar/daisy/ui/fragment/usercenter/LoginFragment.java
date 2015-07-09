@@ -17,10 +17,16 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import cn.ismartv.activator.Activator;
 import com.activeandroid.annotation.Table;
+import com.google.gson.Gson;
 import org.w3c.dom.Text;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.VodApplication;
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.data.usercenter.AuthTokenEntity;
+import tv.ismar.daisy.models.Favorite;
+import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.ui.activity.UserCenterActivity;
 
 import java.util.HashMap;
@@ -87,6 +93,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fetch_verification_btn:
+                phoneNumberEdit.setText("15370770697");
                 fetchVerificationCode();
                 break;
             case R.id.submit_btn:
@@ -130,7 +137,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
     private void login() {
-        String phoneNumber = phoneNumberEdit.getText().toString();
+        final String phoneNumber = phoneNumberEdit.getText().toString();
         String verificationCode = verificationEdit.getText().toString();
 
         if (TextUtils.isEmpty(phoneNumber)) {
@@ -157,8 +164,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         new IsmartvUrlClient().doRequest(IsmartvUrlClient.Method.POST, api, params, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
+                AuthTokenEntity authTokenEntity = new Gson().fromJson(result, AuthTokenEntity.class);
+                saveToLocal(authTokenEntity.getAuth_token(), phoneNumber);
                 submitBtn.clearFocus();
                 showLoginSuccessPopup();
+
             }
 
             @Override
@@ -245,7 +255,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         loginPopup.setFocusable(true);
         loginPopup.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.transparent));
         loginPopup.showAtLocation(fragmentView, Gravity.CENTER, 200, 0);
-
     }
 
 
@@ -266,6 +275,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 accountsCombine();
+                combineAccountPop.dismiss();
+
             }
         });
 
@@ -279,6 +290,109 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         ((UserCenterActivity) mContext).switchToUserInfoFragment();
     }
 
+
+    private void saveToLocal(String authToken, String phoneNumber) {
+        DaisyUtils.getVodApplication(mContext).getEditor().putString(VodApplication.AUTH_TOKEN, authToken);
+        DaisyUtils.getVodApplication(mContext).getEditor().putString(VodApplication.MOBILE_NUMBER, phoneNumber);
+        DaisyUtils.getVodApplication(mContext).save();
+        SimpleRestClient.access_token = authToken;
+        SimpleRestClient.mobile_number = phoneNumber;
+
+        fetchFavorite();
+    }
+
+
+    private void fetchFavorite() {
+        String api = SimpleRestClient.root_url + "/api/bookmarks/";
+
+        new IsmartvUrlClient().doRequest(api, new IsmartvUrlClient.CallBack() {
+            @Override
+            public void onSuccess(String result) {
+                Log.d(TAG, "fetchFavorite: " + result);
+            }
+
+            @Override
+            public void onFailed(Exception exception) {
+                Log.e(TAG, "fetchFavorite: " + exception.getMessage());
+            }
+        });
+
+    }
+
+
+
+//    private void GetFavoriteByNet() {
+//        mSimpleRestClient.doSendRequest("/api/bookmarks/", "get", "",
+//                new SimpleRestClient.HttpPostRequestInterface() {
+//
+//                    @Override
+//                    public void onSuccess(String info) {
+//                        // TODO Auto-generated method stub
+//                        FavoriteList = mSimpleRestClient.getItems(info);
+//                        if (FavoriteList != null) {
+//                            // 添加记录到本地
+//                            for (Item i : FavoriteList) {
+//                                addFavorite(i);
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onPrepare() {
+//                        // TODO Auto-generated method stub
+//
+//                    }
+//
+//                    @Override
+//                    public void onFailed(String error) {
+//                        // TODO Auto-generated method stub
+//
+//                    }
+//                });
+//    }
+//
+//    private void addFavorite(Item mItem) {
+//        if (isFavorite(mItem)) {
+//            String url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk
+//                    + "/";
+//            // DaisyUtils.getFavoriteManager(getContext())
+//            // .deleteFavoriteByUrl(url,"yes");
+//        } else {
+//            String url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk
+//                    + "/";
+//            Favorite favorite = new Favorite();
+//            favorite.title = mItem.title;
+//            favorite.adlet_url = mItem.adlet_url;
+//            favorite.content_model = mItem.content_model;
+//            favorite.url = url;
+//            favorite.quality = mItem.quality;
+//            favorite.is_complex = mItem.is_complex;
+//            favorite.isnet = "yes";
+//            DaisyUtils.getFavoriteManager(getContext()).addFavorite(favorite,
+//                    favorite.isnet);
+//        }
+//    }
+//
+//    private boolean isFavorite(Item mItem) {
+//        if (mItem != null) {
+//            String url = mItem.item_url;
+//            if (url == null && mItem.pk != 0) {
+//                url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk
+//                        + "/";
+//            }
+//            Favorite favorite = null;
+//            favorite = DaisyUtils.getFavoriteManager(getContext())
+//                    .getFavoriteByUrl(url, "yes");
+//            if (favorite != null) {
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//    }
+//
+
+
     public void setBackground(boolean background) {
         if (background) {
             getView().setBackgroundColor(0xAA000000);
@@ -286,4 +400,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             getView().setBackgroundColor(0x00000000);
         }
     }
+
+
 }

@@ -136,7 +136,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
         film_lefttop_image = (LabelImageView) mView
                 .findViewById(R.id.film_lefttop_image);
         linkedVideoImage = (ImageView) mView.findViewById(R.id.film_linked_image);
-        film_linked_title = (TextView)mView.findViewById(R.id.film_linked_title);
+        film_linked_title = (TextView) mView.findViewById(R.id.film_linked_title);
         flag = new Flag(this);
 
         messageHandler = new MessageHandler();
@@ -245,9 +245,9 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
                 FrameLayout frameLayout = (FrameLayout) LayoutInflater.from(context).inflate(R.layout.item_poster, null);
                 ImageView postitemView = (ImageView) frameLayout.findViewById(R.id.poster_image);
                 TextView textView = (TextView) frameLayout.findViewById(R.id.poster_title);
-                if(StringUtils.isNotEmpty(posters.get(i).getIntroduction())){
-                	textView.setText(posters.get(i).getIntroduction());
-                	textView.setVisibility(View.VISIBLE);
+                if (StringUtils.isNotEmpty(posters.get(i).getIntroduction())) {
+                    textView.setText(posters.get(i).getIntroduction());
+                    textView.setVisibility(View.VISIBLE);
                 }
                 frameLayout.setOnClickListener(ItemClickListener);
                 Picasso.with(context).load(posters.get(i).getCustom_image()).into(postitemView);
@@ -346,12 +346,16 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
         }
 
         flag.setPosition(0);
-        getView().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                playCarousel();
-            }
-        }, 1000);
+        View view = getView();
+        if (view != null) {
+            view.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    playCarousel();
+                }
+            }, 1000);
+        }
+
     }
 
 
@@ -367,11 +371,11 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
         String url = carousels.get(flag.getPosition()).getVideo_image();
 
         String intro = carousels.get(flag.getPosition()).getIntroduction();
-        if(StringUtils.isNotEmpty(intro)){
-        	film_linked_title.setVisibility(View.VISIBLE);
-        	film_linked_title.setText(intro);
-        }else{
-        	film_linked_title.setVisibility(View.GONE);
+        if (StringUtils.isNotEmpty(intro)) {
+            film_linked_title.setVisibility(View.VISIBLE);
+            film_linked_title.setText(intro);
+        } else {
+            film_linked_title.setVisibility(View.GONE);
         }
         Picasso.with(context).load(url).into(linkedVideoImage, new Callback() {
             int pauseTime = Integer.parseInt(carousels.get(flag.getPosition()).getPause_time());

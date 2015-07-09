@@ -146,9 +146,9 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
             FrameLayout frameLayout = (FrameLayout) LayoutInflater.from(context).inflate(R.layout.item_poster, null);
             ImageView itemView = (ImageView) frameLayout.findViewById(R.id.poster_image);
             TextView textView = (TextView) frameLayout.findViewById(R.id.poster_title);
-            if(StringUtils.isNotEmpty(posters.get(i).getIntroduction())){
-            	textView.setText(posters.get(i).getIntroduction());
-            	textView.setVisibility(View.VISIBLE);
+            if (StringUtils.isNotEmpty(posters.get(i).getIntroduction())) {
+                textView.setText(posters.get(i).getIntroduction());
+                textView.setVisibility(View.VISIBLE);
             }
             itemView.setOnClickListener(ItemClickListener);
             Picasso.with(context).load(posters.get(i).getCustom_image()).into(itemView);
@@ -232,14 +232,15 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
 
         flag.setPosition(0);
         linkedVideoView.setOnCompletionListener(loopAllListener);
-        getView().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                setVideoPath(linkedVideoView, carousels.get(flag.getPosition()).getVideo_url());
-            }
-        }, 1000);
-
-
+        View view = getView();
+        if (view != null) {
+            view.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    setVideoPath(linkedVideoView, carousels.get(flag.getPosition()).getVideo_url());
+                }
+            }, 1000);
+        }
     }
 
     private void createCarouselView(ArrayList<Carousel> carousels) {
