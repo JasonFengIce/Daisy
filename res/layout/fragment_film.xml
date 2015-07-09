@@ -57,11 +57,11 @@
             <TextView
                 android:id="@+id/film_linked_title"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="35dp"
                 android:layout_gravity="bottom|center"
                 android:background="#b3808080"
                 android:gravity="left|center"
-                android:textSize="18sp"
+                android:textSize="24sp"
                 android:paddingLeft="30dp"
                 android:visibility="gone"
                  />

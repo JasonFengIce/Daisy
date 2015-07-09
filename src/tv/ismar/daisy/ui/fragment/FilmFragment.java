@@ -24,6 +24,8 @@ import com.activeandroid.query.Select;
 import com.google.gson.Gson;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import tv.ismar.daisy.ItemDetailActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.DownloadClient;
 import tv.ismar.daisy.core.client.DownloadThreadPool;
@@ -32,6 +34,7 @@ import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.data.HomePagerEntity.Poster;
 import tv.ismar.daisy.data.table.DownloadTable;
+import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.ui.activity.TVGuideActivity;
 import tv.ismar.daisy.ui.widget.DaisyVideoView;
 import tv.ismar.daisy.utils.HardwareUtils;
@@ -58,8 +61,6 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
     private ImageView linkedVideoImage;
     private TextView film_linked_title;
     private LabelImageView film_lefttop_image;
-    private Context context;
-
 
     private ArrayList<Carousel> carousels;
     private ArrayList<ImageView> allItem;
@@ -76,13 +77,6 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
     private boolean focusFlag = true;
 
     private BroadcastReceiver externalStorageReceiver;
-
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        this.context = activity;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -425,63 +419,6 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
             }
         });
     }
-
-    private View.OnClickListener ItemClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            String url = null;
-            String contentMode = null;
-            String title = null;
-            if (view.getTag() instanceof Poster) {
-                Poster new_name = (Poster) view.getTag();
-                contentMode = new_name.getModel_name();
-                url = new_name.getUrl();
-                title = new_name.getTitle();
-            } else if (view.getTag(R.drawable.launcher_selector) instanceof Carousel) {
-                Carousel new_name = (Carousel) view.getTag(R.drawable.launcher_selector);
-                contentMode = new_name.getModel_name();
-                url = new_name.getUrl();
-                title = new_name.getTitle();
-            }
-            Intent intent = new Intent();
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            if (url == null) {
-                intent.putExtra("title", channelEntity.getName());
-                intent.putExtra("url",
-                        channelEntity.getUrl());
-                intent.putExtra("channel", channelEntity.getChannel());
-                intent.putExtra("portraitflag", channelEntity.getSytle());
-                intent.setClassName("tv.ismar.daisy",
-                        "tv.ismar.daisy.ChannelListActivity");
-                context.startActivity(intent);
-            } else {
-                if ("item".equals(contentMode)) {
-                    intent.setClassName("tv.ismar.daisy",
-                            "tv.ismar.daisy.ItemDetailActivity");
-                    intent.putExtra("url", url);
-                    context.startActivity(intent);
-                } else if ("topic".equals(contentMode)) {
-                    intent.putExtra("url",
-                            url);
-                    intent.setClassName("tv.ismar.daisy",
-                            "tv.ismar.daisy.TopicActivity");
-                    context.startActivity(intent);
-                } else if ("section".equals(contentMode)) {
-                    intent.putExtra("title", title);
-                    intent.putExtra("itemlistUrl",
-                            url);
-                    intent.putExtra("lableString",
-                            title);
-                    intent.setClassName("tv.ismar.daisy",
-                            "tv.ismar.daisy.PackageListDetailActivity");
-                    context.startActivity(intent);
-                } else if ("package".equals(contentMode)) {
-
-                }
-            }
-        }
-    };
-
 
     @Override
     public void change(int position) {

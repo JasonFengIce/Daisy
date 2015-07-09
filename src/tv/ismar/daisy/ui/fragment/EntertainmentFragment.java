@@ -11,19 +11,17 @@ import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.LabelImageView;
 import tv.ismar.daisy.views.LoadingDialog;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -105,8 +103,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 				.findViewById(R.id.vaiety_channel4_image);
 		vaiety_channel4_subtitle = (TextView) view
 				.findViewById(R.id.vaiety_channel4_subtitle);
-		vaiety_channel5 = (TextView) view
-				.findViewById(R.id.listmore);
+		vaiety_channel5 = (TextView) view.findViewById(R.id.listmore);
 		vaiety_card1_image.setOnClickListener(ItemClickListener);
 		vaiety_card2_image.setOnClickListener(ItemClickListener);
 		vaiety_card3_image.setOnClickListener(ItemClickListener);
@@ -280,45 +277,6 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		}
 	}
 
-	private View.OnClickListener ItemClickListener = new View.OnClickListener() {
-		@Override
-		public void onClick(View view) {
-			Poster poster = (Poster) view.getTag();
-			Intent intent = new Intent();
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			if (poster == null) {
-				intent.putExtra("title", channelEntity.getName());
-				intent.putExtra("url", channelEntity.getUrl());
-				intent.putExtra("portraitflag", channelEntity.getSytle());
-				intent.putExtra("channel", channelEntity.getChannel());
-				intent.setClassName("tv.ismar.daisy",
-						"tv.ismar.daisy.ChannelListActivity");
-				getActivity().startActivity(intent);
-			} else {
-				if ("item".equals(poster.getModel_name())) {
-					intent.setClassName("tv.ismar.daisy",
-							"tv.ismar.daisy.ItemDetailActivity");
-					intent.putExtra("url", poster.getUrl());
-					getActivity().startActivity(intent);
-				} else if ("topic".equals(poster.getModel_name())) {
-					intent.putExtra("url", poster.getUrl());
-					intent.setClassName("tv.ismar.daisy",
-							"tv.ismar.daisy.TopicActivity");
-					getActivity().startActivity(intent);
-				} else if ("section".equals(poster.getModel_name())) {
-					intent.putExtra("title", poster.getTitle());
-					intent.putExtra("itemlistUrl", poster.getUrl());
-					intent.putExtra("lableString", poster.getTitle());
-					intent.setClassName("tv.ismar.daisy",
-							"tv.ismar.daisy.PackageListDetailActivity");
-					getActivity().startActivity(intent);
-				} else if ("package".equals(poster.getModel_name())) {
-
-				}
-			}
-		}
-	};
-
 	private Handler imageswitch = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -328,20 +286,20 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 				vaiety_thumb1.setPadding(0, 0, 0, 0);
 				vaiety_thumb2.setPadding(0, 22, 0, 0);
 				vaiety_thumb3.setPadding(0, 22, 0, 0);
-				vaiety_fouce_label.setText(vaiety_thumb1.getTag(R.id.vaiety_post)
-						.toString());
+				vaiety_fouce_label.setText(vaiety_thumb1.getTag(
+						R.id.vaiety_post).toString());
 			} else if (loopindex == 1) {
 				vaiety_thumb1.setPadding(0, 22, 0, 0);
 				vaiety_thumb2.setPadding(0, 0, 0, 0);
 				vaiety_thumb3.setPadding(0, 22, 0, 0);
-				vaiety_fouce_label.setText(vaiety_thumb2.getTag(R.id.vaiety_post)
-						.toString());
+				vaiety_fouce_label.setText(vaiety_thumb2.getTag(
+						R.id.vaiety_post).toString());
 			} else if (loopindex == 2) {
 				vaiety_thumb1.setPadding(0, 22, 0, 0);
 				vaiety_thumb2.setPadding(0, 22, 0, 0);
 				vaiety_thumb3.setPadding(0, 0, 0, 0);
-				vaiety_fouce_label.setText(vaiety_thumb3.getTag(R.id.vaiety_post)
-						.toString());
+				vaiety_fouce_label.setText(vaiety_thumb3.getTag(
+						R.id.vaiety_post).toString());
 			}
 			if (loopindex >= 2)
 				loopindex = -1;

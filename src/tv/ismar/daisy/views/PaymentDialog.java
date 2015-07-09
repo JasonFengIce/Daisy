@@ -349,14 +349,14 @@ public class PaymentDialog extends Dialog {
 				public void run() {
 					super.run();
 					if (isweixin) {
-						qrcodeBitmap = returnBitMap(QRCODE_BASE_URL,
+						qrcodeBitmap = returnBitMap(SimpleRestClient.root_url+QRCODE_BASE_URL,
 								"wares_id=" + mItem.pk + "&wares_type="
 										+ mItem.model_name + "&device_token="
 										+ SimpleRestClient.device_token
 										+ "&access_token=" + SimpleRestClient.access_token
 										+ "&source=weixin");
 					} else {
-						qrcodeBitmap = returnBitMap(QRCODE_BASE_URL,
+						qrcodeBitmap = returnBitMap(SimpleRestClient.root_url+QRCODE_BASE_URL,
 								"wares_id=" + mItem.pk + "&wares_type="
 										+ mItem.model_name + "&device_token="
 										+ SimpleRestClient.device_token

@@ -113,7 +113,7 @@ public class LabelImageView extends AsyncImageView {
 			InputStream is = getResources().openRawResource(resId);
 			Bitmap mBitmap = BitmapFactory.decodeStream(is);
 			canvas.drawBitmap(mBitmap, width - mBitmap.getWidth()
-					- paddingright - 10, paddingtop, paint);
+					- paddingright - 15, paddingtop, paint);
 		}
 		// 绘制看点背景
 		paint.setColor(Color.WHITE);

@@ -144,7 +144,8 @@ public class PlayerActivity extends VodMenuAction {
 	private Stack<AdElement> adElement;
 	private AdImageDialog adimageDialog;
 	private int adsumtime;
-    private boolean isadvideoplaying = false;
+	private boolean isadvideoplaying = false;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -160,8 +161,8 @@ public class PlayerActivity extends VodMenuAction {
 	public void onResume() {
 		super.onResume();
 		if (needOnresume) {
-//			isBuffer = true;
-//			showBuffer();
+			// isBuffer = true;
+			// showBuffer();
 			new initPlayTask().execute();
 			needOnresume = false;
 		}
@@ -296,16 +297,18 @@ public class PlayerActivity extends VodMenuAction {
 		if (mVideoView != null) {
 			mVideoView.setAlpha(0);
 		}
-//		showBuffer();
+		// showBuffer();
 		Log.d(TAG, " initClipInfo ");
 		Intent intent = getIntent();
 		if (intent != null) {
 			mSection = intent.getStringExtra(EventProperty.SECTION);
 			bundle = intent.getExtras();
 			item = (Item) bundle.get("item");
+			if(item != null){
 			clip = item.clip;
 			live_video = item.live_video;
 			isPreview = item.isPreview;
+			}
 			// use to get mUrl, and registerActivity
 			DaisyUtils.getVodApplication(this).addActivityToPool(
 					this.toString(), this);
@@ -388,7 +391,7 @@ public class PlayerActivity extends VodMenuAction {
 
 				Log.d(TAG, "mVideoView onPrepared tempOffset ==" + tempOffset);
 				if (!adElement.isEmpty() || StringUtils.isEmpty(sid)) {
-					if(mHandler.hasMessages(AD_COUNT_ACTION))
+					if (mHandler.hasMessages(AD_COUNT_ACTION))
 						mHandler.removeMessages(AD_COUNT_ACTION);
 					mHandler.sendEmptyMessageDelayed(AD_COUNT_ACTION, 1000);
 				}
@@ -405,7 +408,7 @@ public class PlayerActivity extends VodMenuAction {
 					}
 					if (currPosition == 0)
 						mp.start();
-					if(!adElement.isEmpty())
+					if (!adElement.isEmpty())
 						return;
 					timeTaskStart(0);
 					checkTaskStart(0);
@@ -456,7 +459,7 @@ public class PlayerActivity extends VodMenuAction {
 					public void onCompletion(SmartPlayer mp) {
 						Log.d(TAG, "mVideoView  Completion");
 						if (!adElement.isEmpty() || StringUtils.isEmpty(sid)) {
-							if(mHandler.hasMessages(AD_COUNT_ACTION))
+							if (mHandler.hasMessages(AD_COUNT_ACTION))
 								mHandler.removeMessages(AD_COUNT_ACTION);
 							playAdElement();
 						} else {
@@ -774,7 +777,7 @@ public class PlayerActivity extends VodMenuAction {
 				Log.d(TAG, "currQuality =====" + currQuality);
 				if (item != null) {
 					if (subItem != null && subItem.item_pk != subItem.pk) {
-//						mHistory = historyManager.getHistoryByUrl(itemUrl);
+						// mHistory = historyManager.getHistoryByUrl(itemUrl);
 						if (SimpleRestClient.isLogin()) {
 							favorite = favoriteManager.getFavoriteByUrl(
 									itemUrl, "yes");
@@ -784,7 +787,7 @@ public class PlayerActivity extends VodMenuAction {
 						}
 						titleText.setText(subItem.title);
 					} else {
-//						mHistory = historyManager.getHistoryByUrl(itemUrl);
+						// mHistory = historyManager.getHistoryByUrl(itemUrl);
 						if (SimpleRestClient.isLogin()) {
 							favorite = favoriteManager.getFavoriteByUrl(
 									itemUrl, "yes");
@@ -1120,7 +1123,7 @@ public class PlayerActivity extends VodMenuAction {
 			history.url = itemUrl;
 			history.sub_url = subItemUrl;
 			history.is_continue = isContinue;
-//			historyManager.addHistory(history);
+			// historyManager.addHistory(history);
 		}
 	}
 
@@ -1276,7 +1279,7 @@ public class PlayerActivity extends VodMenuAction {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean ret = false;
-		if(keyCode != KeyEvent.KEYCODE_BACK && isadvideoplaying)
+		if (keyCode != KeyEvent.KEYCODE_BACK && isadvideoplaying)
 			return ret;
 		if (!isVodMenuVisible() && mVideoView != null) {
 			switch (keyCode) {
@@ -1393,8 +1396,8 @@ public class PlayerActivity extends VodMenuAction {
 	}
 
 	public void showPopupDialog(int type, String msg) {
-		if(isadvideoplaying){
-				mHandler.removeMessages(AD_COUNT_ACTION);
+		if (isadvideoplaying) {
+			mHandler.removeMessages(AD_COUNT_ACTION);
 		}
 		if (type == DIALOG_OK_CANCEL) {
 			popupDlg = new Dialog(this, R.style.PopupDialog) {
@@ -1403,9 +1406,10 @@ public class PlayerActivity extends VodMenuAction {
 					super.onBackPressed();
 					if (paused) {
 						resumeItem();
-						if(isadvideoplaying){
-								mHandler.removeMessages(AD_COUNT_ACTION);
-								mHandler.sendEmptyMessageDelayed(AD_COUNT_ACTION, 1000);
+						if (isadvideoplaying) {
+							mHandler.removeMessages(AD_COUNT_ACTION);
+							mHandler.sendEmptyMessageDelayed(AD_COUNT_ACTION,
+									1000);
 						}
 						playPauseImage
 								.setImageResource(R.drawable.vod_pausebtn_selector);
@@ -1538,7 +1542,7 @@ public class PlayerActivity extends VodMenuAction {
 	}
 
 	protected void showBuffer() {
-		if(adElement != null && !adElement.isEmpty())
+		if (adElement != null && !adElement.isEmpty())
 			return;
 		if (isBuffer && !bufferLayout.isShown()) {
 			bufferLayout.setVisibility(View.VISIBLE);
@@ -1655,8 +1659,10 @@ public class PlayerActivity extends VodMenuAction {
 				break;
 			case AD_COUNT_ACTION:
 				adsumtime--;
-				ad_count_view.setText("广告倒计时" + adsumtime);
-				sendEmptyMessageDelayed(AD_COUNT_ACTION, 1000);
+				if (adsumtime >= 0) {
+					ad_count_view.setText("广告倒计时" + adsumtime);
+					sendEmptyMessageDelayed(AD_COUNT_ACTION, 1000);
+				}
 				break;
 			default:
 				break;
