@@ -18,5 +18,3 @@ proguard-project.txt
 out/
 .DS_Store
 /build
-/src
-
