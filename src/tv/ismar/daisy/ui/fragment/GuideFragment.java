@@ -47,9 +47,6 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
     private DaisyViewContainer carouselLayout;
     private VideoView linkedVideoView;
 
-
-    private Context context;
-
     private int itemViewBoundaryMargin;
 
 
@@ -58,13 +55,6 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
 
     private ArrayList<Carousel> carousels;
     private Flag flag;
-
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        context = activity;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -267,62 +257,6 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
         videoView.setVideoPath(playPath);
         videoView.start();
     }
-
-    private View.OnClickListener ItemClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            String url = null;
-            String contentMode = null;
-            String title = null;
-            if (view.getTag() instanceof Poster) {
-                Poster new_name = (Poster) view.getTag();
-                contentMode = new_name.getModel_name();
-                url = new_name.getUrl();
-                title = new_name.getTitle();
-            } else if (view.getTag(R.drawable.launcher_selector) instanceof Carousel) {
-                Carousel new_name = (Carousel) view.getTag(R.drawable.launcher_selector);
-                contentMode = new_name.getModel_name();
-                url = new_name.getUrl();
-                title = new_name.getTitle();
-            }
-            Intent intent = new Intent();
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            if (url == null) {
-                intent.putExtra("title", "华语电影");
-                intent.putExtra("url",
-                        "http://skytest.tvxio.com/v2_0/A21/dto/api/tv/sections/chinesemovie/");
-                intent.putExtra("channel", "chinesemovie");
-                intent.setClassName("tv.ismar.daisy",
-                        "tv.ismar.daisy.ChannelListActivity");
-                getActivity().startActivity(intent);
-            } else {
-                if ("item".equals(contentMode)) {
-                    intent.setClassName("tv.ismar.daisy",
-                            "tv.ismar.daisy.ItemDetailActivity");
-                    intent.putExtra("url", url);
-                    getActivity().startActivity(intent);
-                } else if ("topic".equals(contentMode)) {
-                    intent.putExtra("url",
-                            url);
-                    intent.setClassName("tv.ismar.daisy",
-                            "tv.ismar.daisy.TopicActivity");
-                    getActivity().startActivity(intent);
-                } else if ("section".equals(contentMode)) {
-                    intent.putExtra("title", title);
-                    intent.putExtra("itemlistUrl",
-                            url);
-                    intent.putExtra("lableString",
-                            title);
-                    intent.setClassName("tv.ismar.daisy",
-                            "tv.ismar.daisy.PackageListDetailActivity");
-                    getActivity().startActivity(intent);
-                } else if ("package".equals(contentMode)) {
-
-                }
-            }
-        }
-    };
-
 
     private void downloadVideo(ArrayList<Carousel> carousels, String tag) {
         for (Carousel carousel : carousels) {

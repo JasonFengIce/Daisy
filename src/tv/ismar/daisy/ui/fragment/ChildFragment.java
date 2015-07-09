@@ -1,8 +1,11 @@
 package tv.ismar.daisy.ui.fragment;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
+import java.util.ArrayList;
+
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.data.HomePagerEntity;
+import tv.ismar.daisy.ui.widget.child.ChildThumbImageView;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,15 +16,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.google.gson.Gson;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.core.client.IsmartvUrlClient;
-import tv.ismar.daisy.data.HomePagerEntity;
-import tv.ismar.daisy.ui.widget.child.ChildThumbImageView;
-
-import java.util.ArrayList;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -29,7 +27,6 @@ import java.util.ArrayList;
 public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCallback {
     private static final String TAG = "ChildFragment";
 
-    private Context context;
     private LinearLayout leftLayout;
     private LinearLayout bottomLayout;
     private LinearLayout rightLayout;
@@ -44,13 +41,6 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
     private ArrayList<HomePagerEntity.Carousel> carousels;
 
     private MessageHandler messageHandler;
-
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        this.context = activity;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -254,63 +244,6 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
             playCarousel();
         }
     }
-
-    private View.OnClickListener ItemClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            String url = null;
-            String contentMode = null;
-            String title = null;
-            if (view.getTag() instanceof HomePagerEntity.Poster) {
-                HomePagerEntity.Poster new_name = (HomePagerEntity.Poster) view.getTag();
-                contentMode = new_name.getModel_name();
-                url = new_name.getUrl();
-                title = new_name.getTitle();
-            } else if (view.getTag(R.drawable.launcher_selector) instanceof HomePagerEntity.Carousel) {
-                HomePagerEntity.Carousel new_name = (HomePagerEntity.Carousel) view.getTag(R.drawable.launcher_selector);
-                contentMode = new_name.getModel_name();
-                url = new_name.getUrl();
-                title = new_name.getTitle();
-            }
-            Intent intent = new Intent();
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            if (url == null) {
-                intent.putExtra("title", "华语电影");
-                intent.putExtra("url",
-                        channelEntity.getUrl());
-                intent.putExtra("portraitflag", channelEntity.getSytle());
-                intent.putExtra("channel", "chinesemovie");
-                intent.setClassName("tv.ismar.daisy",
-                        "tv.ismar.daisy.ChannelListActivity");
-                getActivity().startActivity(intent);
-            } else {
-                if ("item".equals(contentMode)) {
-                    intent.setClassName("tv.ismar.daisy",
-                            "tv.ismar.daisy.ItemDetailActivity");
-                    intent.putExtra("url", url);
-                    getActivity().startActivity(intent);
-                } else if ("topic".equals(contentMode)) {
-                    intent.putExtra("url",
-                            url);
-                    intent.setClassName("tv.ismar.daisy",
-                            "tv.ismar.daisy.TopicActivity");
-                    getActivity().startActivity(intent);
-                } else if ("section".equals(contentMode)) {
-                    intent.putExtra("title", title);
-                    intent.putExtra("itemlistUrl",
-                            url);
-                    intent.putExtra("lableString",
-                            title);
-                    intent.setClassName("tv.ismar.daisy",
-                            "tv.ismar.daisy.PackageListDetailActivity");
-                    getActivity().startActivity(intent);
-                } else if ("package".equals(contentMode)) {
-
-                }
-            }
-        }
-    };
-
 
 }
 

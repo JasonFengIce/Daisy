@@ -11,7 +11,7 @@
         android:id="@+id/section_one"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.8"
+        android:layout_weight="1.9"
         android:orientation="horizontal" >
 
         <LinearLayout
@@ -27,6 +27,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/launcher_selector"
                 android:focusable="true"
+                android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
                 labelimage:focuspaddingtop="136dp"
@@ -40,6 +41,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/launcher_selector"
                 android:focusable="true"
+                android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
                 labelimage:focuspaddingtop="136dp"
@@ -53,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/launcher_selector"
                 android:focusable="true"
+                android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
                 labelimage:focuspaddingtop="136dp"
@@ -60,24 +63,42 @@
                 labelimage:focustextsize="18sp" />
         </LinearLayout>
 
-        <tv.ismar.daisy.views.LabelImageView
-            xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
-            android:id="@+id/sportspost"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
             android:background="@drawable/launcher_selector"
-            android:focusable="true"
-            android:src="@drawable/list_item_preview_bg"
-            labelimage:focusbackground="#b3303030"
-            labelimage:focuspaddingtop="136dp"
-            labelimage:focustextpaddingtop="28dp"
-            labelimage:focustextsize="18sp" />
+            android:focusable="true" >
+
+            <tv.ismar.daisy.views.LabelImageView
+                xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
+                android:id="@+id/sportspost"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/list_item_preview_bg"
+                labelimage:focusbackground="#b3303030"
+                labelimage:focuspaddingtop="136dp"
+                labelimage:focustextpaddingtop="28dp"
+                labelimage:focustextsize="18sp" />
+
+            <TextView
+                android:id="@+id/sportspost_title"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_gravity="bottom|center"
+                android:background="#b3808080"
+                android:gravity="left|center"
+                android:paddingLeft="30dp"
+                android:textSize="24sp"
+                android:text="测试的的"
+                 />
+        </FrameLayout>
 
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" >
+            android:layout_weight="0.95" >
 
             <ListView
                 android:id="@+id/sec_one_list_2"

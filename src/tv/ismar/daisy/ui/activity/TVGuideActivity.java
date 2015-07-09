@@ -159,8 +159,7 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
         activator = Activator.getInstance(this);
         activator.setOnCompleteListener(this);
         String localInfo = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.LOCATION_INFO, "");
-        sendLoncationRequest();
-        activator.active(MANUFACTURE, KIND, VERSION, localInfo);
+        activator.active(MANUFACTURE, KIND, String.valueOf(SimpleRestClient.appVersion), localInfo);
         getHardInfo();
         updatePoster();
     }
@@ -398,6 +397,7 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
         currentFragment = new GuideFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.container, currentFragment).commit();
+        sendLoncationRequest();
     }
 
     @Override
