@@ -1,6 +1,5 @@
 package tv.ismar.daisy.core.client;
 
-import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -16,7 +15,7 @@ import java.util.Map;
  * Created by huaijie on 5/28/15.
  */
 public class IsmartvUrlClient extends Thread {
-    private static final String TAG = "IsmartvClient";
+    private static final String TAG = "IsmartvClient:";
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     private static final int SUCCESS = 0x0001;
