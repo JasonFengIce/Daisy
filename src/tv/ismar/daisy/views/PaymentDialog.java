@@ -46,7 +46,7 @@ import android.widget.TextView;
 
 public class PaymentDialog extends Dialog {
 
-	private static final String QRCODE_BASE_URL = "http://sky.tvxio.com/api/order/create/";
+	private static final String QRCODE_BASE_URL = "/api/order/create/";
 	private static final String BALANCEPAY_BASE_URL = "/api/order/create/";
 	private static final String GETBALANCE_BASE_URL = "/accounts/balance/";
 	private static final String CARDRECHARGE_BASE_URL = "https://order.tvxio.com/api/pay/verify/";

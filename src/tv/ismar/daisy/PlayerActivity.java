@@ -144,7 +144,7 @@ public class PlayerActivity extends VodMenuAction {
 	private Stack<AdElement> adElement;
 	private AdImageDialog adimageDialog;
 	private int adsumtime;
-
+    private boolean isadvideoplaying = false;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -340,6 +340,7 @@ public class PlayerActivity extends VodMenuAction {
 			AdElement element = adElement.pop();
 			if ("video".equals(element.getMedia_type())) {
 				currPosition = 0;
+				isadvideoplaying = true;
 				mVideoView.setVideoPath(element.getMedia_url());
 				ad_count_view.setVisibility(View.VISIBLE);
 				ad_count_view.setText("广告倒计时" + adsumtime);
@@ -347,11 +348,10 @@ public class PlayerActivity extends VodMenuAction {
 				adimageDialog = new AdImageDialog(this, R.style.UserinfoDialog,
 						element.getMedia_url());
 				adimageDialog.show();
-				// mHandler.sendEmptyMessageDelayed(DISMISS_AD_DIALOG, 6 *
-				// 1000);
 			}
 		} else {
 			ad_count_view.setVisibility(View.GONE);
+			isadvideoplaying = false;
 			playMainVideo();
 		}
 	}
@@ -1158,7 +1158,7 @@ public class PlayerActivity extends VodMenuAction {
 	}
 
 	private void showPanel() {
-		if (isVodMenuVisible())
+		if (isVodMenuVisible() || isadvideoplaying)
 			return;
 		if (!panelShow) {
 			panelLayout.startAnimation(panelShowAnimation);
@@ -1276,7 +1276,7 @@ public class PlayerActivity extends VodMenuAction {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean ret = false;
-		if(keyCode != KeyEvent.KEYCODE_BACK && !adElement.isEmpty())
+		if(keyCode != KeyEvent.KEYCODE_BACK && isadvideoplaying)
 			return ret;
 		if (!isVodMenuVisible() && mVideoView != null) {
 			switch (keyCode) {
@@ -1393,6 +1393,9 @@ public class PlayerActivity extends VodMenuAction {
 	}
 
 	public void showPopupDialog(int type, String msg) {
+		if(isadvideoplaying){
+				mHandler.removeMessages(AD_COUNT_ACTION);
+		}
 		if (type == DIALOG_OK_CANCEL) {
 			popupDlg = new Dialog(this, R.style.PopupDialog) {
 				@Override
@@ -1400,6 +1403,10 @@ public class PlayerActivity extends VodMenuAction {
 					super.onBackPressed();
 					if (paused) {
 						resumeItem();
+						if(isadvideoplaying){
+								mHandler.removeMessages(AD_COUNT_ACTION);
+								mHandler.sendEmptyMessageDelayed(AD_COUNT_ACTION, 1000);
+						}
 						playPauseImage
 								.setImageResource(R.drawable.vod_pausebtn_selector);
 					}
