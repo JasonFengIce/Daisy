@@ -1,15 +1,19 @@
 package tv.ismar.daisy.core.client;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import com.squareup.okhttp.*;
+import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.core.SimpleRestClient;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by huaijie on 5/28/15.
@@ -26,6 +30,12 @@ public class IsmartvUrlClient extends Thread {
     private CallBack callback;
     private Method method;
     private MessageHandler messageHandler = new MessageHandler();
+
+    private static Context mContext;
+
+    public static void initializeWithContext(Context context) {
+        mContext = context;
+    }
 
     @Override
     public void run() {
@@ -55,6 +65,7 @@ public class IsmartvUrlClient extends Thread {
                     callback.onSuccess((String) msg.obj);
                     break;
                 case FAILURE:
+                    sendConnectErrorBroadcast(((Exception) msg.obj).getMessage());
                     callback.onFailed((Exception) msg.obj);
                     break;
                 default:
@@ -110,14 +121,16 @@ public class IsmartvUrlClient extends Thread {
     }
 
     private void doGet() {
-        String api = url + "?" + params;
         Message message = messageHandler.obtainMessage();
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url(api)
-                .build();
-        Response response;
         try {
+            String api = url + "?" + params;
+            OkHttpClient client = new OkHttpClient();
+            client.setConnectTimeout(10, TimeUnit.SECONDS);
+            Request request = new Request.Builder()
+                    .url(api)
+                    .build();
+
+            Response response;
             response = client.newCall(request).execute();
             String result = response.body().string();
             Log.i(TAG, "---> BEGIN\n" +
@@ -134,7 +147,7 @@ public class IsmartvUrlClient extends Thread {
                 message.what = SUCCESS;
                 message.obj = result;
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             message.what = FAILURE;
             message.obj = e;
         }
@@ -143,14 +156,15 @@ public class IsmartvUrlClient extends Thread {
 
     private void doPost() {
         Message message = messageHandler.obtainMessage();
-        OkHttpClient client = new OkHttpClient();
-        RequestBody body = RequestBody.create(JSON, params);
-        Request request = new Request.Builder()
-                .url(url)
-                .post(body)
-                .build();
-        Response response;
         try {
+            OkHttpClient client = new OkHttpClient();
+            client.setConnectTimeout(10, TimeUnit.SECONDS);
+            RequestBody body = RequestBody.create(JSON, params);
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+            Response response;
             response = client.newCall(request).execute();
             String result = response.body().string();
             Log.i(TAG, "---> BEGIN\n" +
@@ -168,10 +182,19 @@ public class IsmartvUrlClient extends Thread {
                 message.what = SUCCESS;
                 message.obj = result;
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             message.what = FAILURE;
             message.obj = e;
         }
         messageHandler.sendMessage(message);
+    }
+
+    private void sendConnectErrorBroadcast(String msg) {
+        if (mContext != null) {
+            Intent intent = new Intent();
+            intent.putExtra("data", msg);
+            intent.setAction(BaseActivity.ACTION_CONNECT_ERROR);
+            mContext.sendBroadcast(intent);
+        }
     }
 }
