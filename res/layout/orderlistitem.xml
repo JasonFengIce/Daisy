@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="3dp"
-    android:paddingLeft="2dp"
-    android:orientation="horizontal"
-    android:focusable="false"
-     >
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:paddingTop="3dp"
+              android:paddingLeft="2dp"
+              android:orientation="horizontal"
+              android:focusable="false"
+    >
 
-    <tv.ismar.daisy.views.AsyncImageView
+    <ImageView
         android:id="@+id/orderlistitem_icon"
         android:layout_width="0dp"
         android:layout_height="194dp"
@@ -17,8 +17,9 @@
         android:layout_marginRight="5dp"
         android:layout_marginTop="3dp"
         android:focusable="true"
+        android:clickable="true"
         android:background="@drawable/launcher_selector"
-         />
+        />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -26,61 +27,76 @@
         android:layout_weight="3"
         android:layout_marginTop="3dp"
         android:layout_marginLeft="5dp"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <TextView
+                android:textColor="#FFFFFF"
                 android:id="@+id/orderlistitem_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30sp" />
+                android:textSize="@dimen/h2_text_size"
+                />
+            <TextView
+                android:layout_marginLeft="40dp"
+                android:id="@+id/purchase_extra"
+                android:textSize="@dimen/h2_text_size"
+                android:textColor="#FFFFFF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <TextView
+                android:textColor="#FFFFFF"
                 android:id="@+id/orderlistitem_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="40dp" />
+                android:textSize="@dimen/h2_text_size"
+                />
 
             <TextView
+                android:textColor="#FFFFFF"
                 android:id="@+id/orderlistitem_remainday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
-                android:textSize="40dp"
-                 />
+                android:textSize="@dimen/h2_text_size"
+                />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <TextView
+                android:textColor="#FFFFFF"
                 android:id="@+id/orderlistitem_cost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="40dp"
-                 />
+                android:textSize="@dimen/h2_text_size"
+                />
 
             <TextView
+                android:textColor="#FFFFFF"
                 android:id="@+id/orderlistitem_paychannel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
-                android:textSize="40dp" />
+                android:textSize="@dimen/h2_text_size"
+                />
         </LinearLayout>
     </LinearLayout>
 

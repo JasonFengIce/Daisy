@@ -6,11 +6,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import cn.ismartv.activator.Activator;
 import com.google.gson.Gson;
 import tv.ismar.daisy.R;
@@ -37,7 +37,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
     private TextView deviceNumber;
     private TextView balanceTextView;
     private ListView playAuthListView;
-    private TextView associationText;
+    private Button associationText;
 
     private TextView phoneNumber;
 
@@ -45,6 +45,8 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
     private View fragmentView;
 
     private LoginFragment loginFragment;
+
+    private LinearLayout userInfoLayout;
 
     @Override
     public void onAttach(Activity activity) {
@@ -60,7 +62,8 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
         deviceNumber = (TextView) fragmentView.findViewById(R.id.device_number);
         balanceTextView = (TextView) fragmentView.findViewById(R.id.remain_money_value);
         playAuthListView = (ListView) fragmentView.findViewById(R.id.privilegelist);
-        associationText = (TextView) fragmentView.findViewById(R.id.association);
+        associationText = (Button) fragmentView.findViewById(R.id.association);
+        userInfoLayout = (LinearLayout) fragmentView.findViewById(R.id.userinfo_layout);
         associationText.setOnClickListener(this);
 
         loginFragment = new LoginFragment();
@@ -150,9 +153,17 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
     private void showAssociationPopupWindow() {
         loginFragment.setBackground(true);
         getChildFragmentManager().beginTransaction().show(loginFragment).commit();
+        playAuthListView.setFocusable(false);
+        associationText.setFocusable(false);
+
         loginFragment.getView().requestFocus();
-
+        loginFragment.setLoginCallback(new LoginFragment.OnLoginCallback() {
+            @Override
+            public void onLoginSuccess() {
+                getChildFragmentManager().beginTransaction().hide(loginFragment).commit();
+                playAuthListView.setFocusable(true);
+                associationText.setFocusable(true);
+            }
+        });
     }
-
-
 }

@@ -31,7 +31,7 @@ public class AccountsOrdersEntity {
         private String extra;
         private String source;
         private String expiry_date;
-        private float total_fee;
+        private String total_fee;
         private String thumb_url;
         private String start_date;
 
@@ -67,11 +67,11 @@ public class AccountsOrdersEntity {
             this.expiry_date = expiry_date;
         }
 
-        public float getTotal_fee() {
+        public String getTotal_fee() {
             return total_fee;
         }
 
-        public void setTotal_fee(float total_fee) {
+        public void setTotal_fee(String total_fee) {
             this.total_fee = total_fee;
         }
 

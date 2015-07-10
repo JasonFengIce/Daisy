@@ -54,6 +54,16 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private int count;
 
+    private OnLoginCallback loginCallback;
+
+    public interface OnLoginCallback {
+        void onLoginSuccess();
+    }
+
+    public void setLoginCallback(OnLoginCallback loginCallback) {
+        this.loginCallback = loginCallback;
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -90,7 +100,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fetch_verification_btn:
-                phoneNumberEdit.setText("15370770697");
                 fetchVerificationCode();
                 break;
             case R.id.submit_btn:
@@ -161,11 +170,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         new IsmartvUrlClient().doRequest(IsmartvUrlClient.Method.POST, api, params, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
+                if (loginCallback != null) {
+                    loginCallback.onLoginSuccess();
+                }
+
                 AuthTokenEntity authTokenEntity = new Gson().fromJson(result, AuthTokenEntity.class);
                 saveToLocal(authTokenEntity.getAuth_token(), phoneNumber);
                 submitBtn.clearFocus();
                 showLoginSuccessPopup();
-
             }
 
             @Override
@@ -259,7 +271,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         View popupLayout = LayoutInflater.from(mContext).inflate(R.layout.popup_account_combine, null);
         int width = (int) mContext.getResources().getDimension(R.dimen.login_pop_width);
         int height = (int) mContext.getResources().getDimension(R.dimen.login_pop_height);
-        combineAccountPop = new PopupWindow(popupLayout, width, height);
         combineAccountPop = new PopupWindow(popupLayout, width, height);
         combineAccountPop.setFocusable(true);
         combineAccountPop.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.transparent));

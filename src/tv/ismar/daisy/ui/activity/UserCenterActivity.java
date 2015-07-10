@@ -1,7 +1,10 @@
 package tv.ismar.daisy.ui.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -9,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.ui.adapter.AccoutPlayAuthAdapter;
 import tv.ismar.daisy.ui.fragment.usercenter.*;
 import tv.ismar.daisy.ui.widget.TopPanelView;
 
@@ -27,6 +32,7 @@ public class UserCenterActivity extends FragmentActivity implements View.OnClick
             R.string.usercenter_help
     };
 
+    private ArrayList<View> indicatorView;
 
     private TopPanelView mTopPanelView;
     private LinearLayout userCenterIndicatorLayout;
@@ -51,6 +57,7 @@ public class UserCenterActivity extends FragmentActivity implements View.OnClick
         initViews();
         createIndicatorView();
 
+
         getSupportFragmentManager().beginTransaction().add(R.id.user_center_container, storeFragment).commit();
     }
 
@@ -64,13 +71,25 @@ public class UserCenterActivity extends FragmentActivity implements View.OnClick
      * createIndicatorView
      */
     private void createIndicatorView() {
+        indicatorView = new ArrayList<View>();
+        userCenterIndicatorLayout.removeAllViews();
         for (int res : INDICATOR_TEXT_RES_ARRAY) {
             RelativeLayout frameLayout = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_usercenter_indicator, null);
             Button textView = (Button) frameLayout.findViewById(R.id.usercenter_indicator_text);
             textView.setText(res);
             textView.setId(res);
             textView.setOnClickListener(this);
+            indicatorView.add(textView);
             userCenterIndicatorLayout.addView(frameLayout);
+        }
+
+        if (!TextUtils.isEmpty(SimpleRestClient.access_token) && !TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
+            indicatorView.get(2).setEnabled(false);
+            indicatorView.get(2).setFocusable(false);
+
+        } else {
+            indicatorView.get(2).setEnabled(true);
+            indicatorView.get(2).setFocusable(true);
         }
     }
 

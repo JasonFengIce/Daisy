@@ -5,92 +5,11 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <TextView
-        android:text="@string/association_phone"
-        android:gravity="center"
-        android:textSize="48sp"
-        android:textColor="#FFFFFF"
+    <FrameLayout
+        android:id="@+id/association_frame"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/association_pop_title_height"/>
+        android:layout_height="match_parent">
 
-    <ImageView
-        android:src="@drawable/horizontal_divider_line"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
-
-    <RelativeLayout
-        android:layout_marginTop="@dimen/association_phone_margin_top"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:layout_centerVertical="true"
-            android:id="@+id/association_phone_edit"
-            android:layout_centerHorizontal="true"
-            android:layout_width="@dimen/association_phone_edit_width"
-            android:layout_height="@dimen/association_phone_edit_height"/>
-
-        <TextView
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/association_phone_edit"
-            android:layout_marginRight="10dp"
-            android:textSize="@dimen/h2_text_size"
-            android:gravity="center"
-            android:textColor="#FFFFFF"
-            android:text="@string/association_phone_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:gravity="center"
-            android:textColor="#FFFFFF"
-            android:textSize="@dimen/h2_text_size"
-            android:background="@drawable/selector_channel_item"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/association_phone_edit"
-            android:layout_marginLeft="10dp"
-            android:text="@string/association_fetch_verification"
-            android:layout_width="@dimen/association_fetch_verification_button_width"
-            android:layout_height="@dimen/association_phone_edit_height"/>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-
-        android:layout_marginTop="@dimen/association_phone_margin_top"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:layout_centerVertical="true"
-            android:id="@+id/association_verification_edit"
-            android:layout_centerHorizontal="true"
-            android:layout_width="@dimen/association_phone_edit_width"
-            android:layout_height="@dimen/association_phone_edit_height"/>
-
-        <TextView
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/association_verification_edit"
-            android:layout_marginRight="10dp"
-            android:textSize="@dimen/h2_text_size"
-            android:gravity="center"
-            android:textColor="#FFFFFF"
-            android:text="@string/association_verification_code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-
-    </RelativeLayout>
-
-    <Button
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:layout_marginTop="@dimen/association_phone_margin_top"
-        android:background="@drawable/selector_channel_item"
-        android:textColor="#FFFFFF"
-        android:textSize="@dimen/h2_text_size"
-        android:text="@string/association_submit"
-        android:layout_width="@dimen/association_submit_width"
-        android:layout_height="@dimen/association_phone_edit_height"/>
+    </FrameLayout>
 
 </LinearLayout>

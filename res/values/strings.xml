@@ -236,7 +236,7 @@
     <!-- personcenter_orderlist_item -->
     <string name="personcenter_orderlist_item_orderday">购买时间 : %1$s</string>
     <string name="personcenter_orderlist_item_remainday">剩余 %1$s天</string>
-    <string name="personcenter_orderlist_item_cost">消费 : %1$f元</string>
+    <string name="personcenter_orderlist_item_cost">消费 : %1$s元</string>
     <string name="personcenter_orderlist_item_paysource">支付渠道 : %1$s</string>
     <string name="account_bind_dialog_bindmsg">恭喜您成功注册/登陆视云账户,建议您将当前设备特权和余额上传到视云账户，
     使备份更安全!</string>
