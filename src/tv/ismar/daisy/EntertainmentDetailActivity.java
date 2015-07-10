@@ -238,7 +238,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
         Intent intent = getIntent();
         if (intent != null) {
             if (intent.getSerializableExtra("item") != null) {
-//                mItem = (EntertainmentItem) intent.getSerializableExtra("item");
+                mItem = (Item) intent.getSerializableExtra("item");
                 if (mItem != null) {
                     try {
                         // initLayout();
