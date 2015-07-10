@@ -280,5 +280,9 @@
     <string name="login_failure">登录失败</string>
     <string name="logout">注销</string>
     <string name="account_combine_msg">恭喜您已成功注册／登录视云账户，建议您将当前设备特权和余额上传到视云账户，云备份更安全！</string>
+    
+    <string name="setting_network">设置网络</string>
+    <string name="i_know">我知道了</string>
+    <string name="fetch_net_data_error">获取网络数据失败</string>
 
 </resources>

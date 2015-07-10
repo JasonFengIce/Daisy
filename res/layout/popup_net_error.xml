@@ -15,7 +15,7 @@
 
 
         <TextView
-            android:id="@+id/error_msg"
+            android:id="@+id/fetch_net_data_error"
             android:text="@string/check_network"
             android:textSize="28sp"
             android:layout_width="wrap_content"
@@ -26,18 +26,30 @@
             android:gravity="center"
             android:layout_marginTop="80dp"
             android:orientation="horizontal"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="60dp">
 
             <Button
                 android:layout_marginRight="30dp"
-                android:background="@drawable/selector_button"
+                android:background="@drawable/selector_channel_item"
                 android:textSize="28sp"
-                android:text="@string/confirm"
+                android:text="@string/setting_network"
                 android:textColor="@android:color/white"
-                android:id="@+id/confirm_exit"
+                android:id="@+id/setting_network"
                 android:layout_width="250dp"
                 android:layout_height="60dp"/>
+
+            <Button
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="30dp"
+                android:background="@drawable/selector_channel_item"
+                android:textSize="28sp"
+                android:text="@string/i_know"
+                android:textColor="@android:color/white"
+                android:id="@+id/i_know"
+                android:layout_width="250dp"
+                android:layout_height="60dp"/>
+
 
         </LinearLayout>
     </LinearLayout>

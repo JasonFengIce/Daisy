@@ -15,6 +15,7 @@ import tv.ismar.daisy.core.ImageCache;
 import tv.ismar.daisy.core.MessageQueue;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.models.ContentModel;
 import tv.ismar.daisy.models.ContentModelList;
@@ -49,13 +50,13 @@ public class VodApplication extends Application {
     public static String DOMAIN = "domain";
     public static String LOG_DOMAIN = "logmain";
     public static String LOCATION_INFO = "location_info";
-    public static String LOCATION_PROVINCE ="location_province";
+    public static String LOCATION_PROVINCE = "location_province";
     public static String LOCATION_CITY = "location_city";
     public static String LOCATION_DISTRICT = "location_district";
     private static final int CORE_POOL_SIZE = 5;
     public static String NEWEST_ENTERTAINMENT = "newestentertainment";
     private ExecutorService mExecutorService;
-   // public static float rate = 1;
+    // public static float rate = 1;
     /**
      * Use to cache the AsyncImageView's bitmap in memory, When application memory is low, the cache will be recovered.
      */
@@ -130,24 +131,27 @@ public class VodApplication extends Application {
          * initialize ActiveAndroid
          */
         ActiveAndroid.initialize(this);
+        IsmartvUrlClient.initializeWithContext(this);
         getContentModelFromAssets();
         load(this);
         registerReceiver(mCloseReceiver, new IntentFilter("com.amlogic.dvbplayer.homekey"));
         registerReceiver(mSleepReceiver, new IntentFilter("com.alpha.lenovo.powerKey"));
     }
+
     public void getContentModelFromAssets() {
         AssetManager assetManager = getAssets();
         SimpleRestClient restClient = new SimpleRestClient();
         try {
             InputStream in = assetManager.open("content_model.json");
             ContentModelList contentModelList = restClient.getContentModelList(in);
-            if(contentModelList!=null) {
+            if (contentModelList != null) {
                 mContentModel = contentModelList.zh_CN;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     public static String getDeviceId(Context context) {
         String deviceId = null;
         try {
@@ -165,15 +169,11 @@ public class VodApplication extends Application {
     String sn;
 
 
-
-
-
     public void getNewContentModel() {
 
 //		new Thread(mGetNewContentModelTask).start();
         new Thread(mUpLoadLogRunnable).start();
     }
-
 
 
     private Runnable mUpLoadLogRunnable = new Runnable() {
@@ -184,18 +184,18 @@ public class VodApplication extends Application {
             while (isFinish) {
                 try {
                     Thread.sleep(10000);
-                    synchronized(MessageQueue.async){
+                    synchronized (MessageQueue.async) {
                         // Thread.sleep(900000);
 
 
                         ArrayList<String> list = MessageQueue.getQueueList();
                         int i;
                         JSONArray s = new JSONArray();
-                        if(list.size()>0){
-                            for(i=0;i<list.size();i++){
+                        if (list.size() > 0) {
+                            for (i = 0; i < list.size(); i++) {
                                 JSONObject obj;
                                 try {
-                                    Log.i("qazwsx", "json item=="+list.get(i).toString());
+                                    Log.i("qazwsx", "json item==" + list.get(i).toString());
                                     obj = new JSONObject(list.get(i).toString());
                                     s.put(obj);
                                 } catch (JSONException e) {
@@ -204,14 +204,13 @@ public class VodApplication extends Application {
                                 }
 
                             }
-                            if(i==list.size()){
+                            if (i == list.size()) {
                                 MessageQueue.remove();
                                 NetworkUtils.LogSender(s.toString());
-                                Log.i("qazwsx", "json array=="+s.toString());
+                                Log.i("qazwsx", "json array==" + s.toString());
                                 Log.i("qazwsx", "remove");
                             }
-                        }
-                        else{
+                        } else {
                             Log.i("qazwsx", "queue is no elements");
                         }
                     }
@@ -222,7 +221,7 @@ public class VodApplication extends Application {
                     e.printStackTrace();
                 }
             }
-            Log.i("qazwsx", "Thread is finished!!!"); 
+            Log.i("qazwsx", "Thread is finished!!!");
         }
 
     };
@@ -383,14 +382,13 @@ public class VodApplication extends Application {
     };
 
 
-  public float getRate(Context context){
-      DisplayMetrics metric = new DisplayMetrics();
-      ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(metric);
-      int densityDpi = metric.densityDpi; // 屏幕密度DPI（120 / 160 / 240）
-      float rate = (float) densityDpi / (float) 160;
-	  return rate;
-  }
-
+    public float getRate(Context context) {
+        DisplayMetrics metric = new DisplayMetrics();
+        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(metric);
+        int densityDpi = metric.densityDpi; // 屏幕密度DPI（120 / 160 / 240）
+        float rate = (float) densityDpi / (float) 160;
+        return rate;
+    }
 
 
 }

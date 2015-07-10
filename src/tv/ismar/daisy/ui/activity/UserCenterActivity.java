@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.ui.adapter.AccoutPlayAuthAdapter;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 /**
  * Created by huaijie on 7/3/15.
  */
-public class UserCenterActivity extends FragmentActivity implements View.OnClickListener {
+public class UserCenterActivity extends BaseActivity implements View.OnClickListener {
 
     private static final int[] INDICATOR_TEXT_RES_ARRAY = {
             R.string.usercenter_store,

@@ -8,8 +8,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -21,12 +21,12 @@ import android.widget.*;
 import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
 import com.baidu.location.*;
-import com.squareup.picasso.Picasso;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import tv.ismar.daisy.AppConstant;
+import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
@@ -44,13 +44,14 @@ import tv.ismar.daisy.ui.widget.TopPanelView;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static tv.ismar.daisy.AppConstant.KIND;
+import static tv.ismar.daisy.AppConstant.MANUFACTURE;
 import static tv.ismar.daisy.VodApplication.*;
-import static tv.ismar.daisy.AppConstant.*;
 
 /**
  * Created by huaijie on 5/18/15.
  */
-public class TVGuideActivity extends FragmentActivity implements Activator.OnComplete {
+public class TVGuideActivity extends BaseActivity implements Activator.OnComplete {
     private static final String TAG = "TVGuideActivity";
 
     private AppUpdateReceiver appUpdateReceiver;
@@ -402,49 +403,36 @@ public class TVGuideActivity extends FragmentActivity implements Activator.OnCom
 
     @Override
     public void onFailed(String erro) {
-        checkNetWork(erro);
+        Log.e(TAG, "active error: " + erro);
+        showNetErrorPopup();
     }
 
-    private void checkNetWork(String error) {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo.State wifiState = cm.getNetworkInfo(
-                ConnectivityManager.TYPE_WIFI).getState();
-        if (cm.getNetworkInfo(ConnectivityManager.TYPE_ETHERNET) == null) {
-            if (wifiState != NetworkInfo.State.CONNECTED) {
-                showNetErrorPopup("请检查网络设置！");
-            } else {
-                showNetErrorPopup(error);
-            }
-        } else {
-            NetworkInfo.State ethernetState = cm.getNetworkInfo(
-                    ConnectivityManager.TYPE_ETHERNET).getState();
-            if (wifiState != NetworkInfo.State.CONNECTED
-                    && ethernetState != NetworkInfo.State.CONNECTED) {
-                showNetErrorPopup("请检查网络设置！");
-            } else {
-                showNetErrorPopup(error);
-            }
-        }
-    }
 
-    private void showNetErrorPopup(String msg) {
+    private void showNetErrorPopup() {
         View contentView = LayoutInflater.from(this).inflate(R.layout.popup_net_error, null);
         netErrorPopupWindow = new PopupWindow(null, 740, 341);
         netErrorPopupWindow.setContentView(contentView);
         netErrorPopupWindow.setFocusable(true);
         netErrorPopupWindow.showAtLocation(contentView, Gravity.CENTER, 0, 0);
-        Button confirmExit = (Button) contentView.findViewById(R.id.confirm_exit);
-        TextView errorMsg = (TextView) contentView.findViewById(R.id.error_msg);
-        errorMsg.setText(msg);
+        Button settingNetwork = (Button) contentView.findViewById(R.id.setting_network);
+        Button iKnow = (Button) contentView.findViewById(R.id.i_know);
 
-        confirmExit.setOnClickListener(new View.OnClickListener() {
+        settingNetwork.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                TVGuideActivity.this.startActivity(intent);
+            }
+        });
+
+        iKnow.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 netErrorPopupWindow.dismiss();
-                superOnbackPressed();
             }
         });
     }
+
 
     private void sendLoncationRequest() {
         mLocationClient = new LocationClient(this);
