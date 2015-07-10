@@ -777,23 +777,26 @@ public class PlayerActivity extends VodMenuAction {
 				Log.d(TAG, "currQuality =====" + currQuality);
 				if (item != null) {
 					if (subItem != null && subItem.item_pk != subItem.pk) {
-						// mHistory = historyManager.getHistoryByUrl(itemUrl);
 						if (SimpleRestClient.isLogin()) {
 							favorite = favoriteManager.getFavoriteByUrl(
 									itemUrl, "yes");
+                            mHistory = historyManager.getHistoryByUrl(itemUrl,"yes");
 						} else {
 							favorite = favoriteManager.getFavoriteByUrl(
 									itemUrl, "no");
+                            mHistory = historyManager.getHistoryByUrl(itemUrl,"no");
 						}
 						titleText.setText(subItem.title);
 					} else {
-						// mHistory = historyManager.getHistoryByUrl(itemUrl);
+
 						if (SimpleRestClient.isLogin()) {
 							favorite = favoriteManager.getFavoriteByUrl(
 									itemUrl, "yes");
+                            mHistory = historyManager.getHistoryByUrl(itemUrl,"yes");
 						} else {
 							favorite = favoriteManager.getFavoriteByUrl(
 									itemUrl, "no");
+                            mHistory = historyManager.getHistoryByUrl(itemUrl,"no");
 						}
 						titleText.setText(item.title);
 					}
@@ -1123,7 +1126,10 @@ public class PlayerActivity extends VodMenuAction {
 			history.url = itemUrl;
 			history.sub_url = subItemUrl;
 			history.is_continue = isContinue;
-			// historyManager.addHistory(history);
+            if(SimpleRestClient.isLogin())
+			    historyManager.addHistory(history,"yes");
+            else
+                historyManager.addHistory(history,"no");
 		}
 	}
 
