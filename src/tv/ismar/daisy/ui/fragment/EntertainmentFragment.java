@@ -187,7 +187,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 			ArrayList<Poster> postlist) {
 		// vaiety_post.setUrl(carousellist.get(0).getVideo_image());
 		vaiety_thumb1
-				.setUrl("http://res.tvxio.com/media/upload/hldf4802700225_adlet.jpg");
+				.setUrl(carousellist.get(0).getThumb_image());
 		vaiety_thumb1.setTag(carousellist.get(0).getVideo_image());
 		vaiety_thumb1.setTag(R.id.vaiety_post, carousellist.get(0).getTitle());
 		vaiety_thumb2.setUrl(carousellist.get(1).getThumb_image());
