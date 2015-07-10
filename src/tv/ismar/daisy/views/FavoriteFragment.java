@@ -1,5 +1,39 @@
 package tv.ismar.daisy.views;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
+import org.sakuratya.horizontal.ui.HGridView;
+import org.sakuratya.horizontal.ui.ZGridView;
+
+import tv.ismar.daisy.ChannelListActivity;
+import tv.ismar.daisy.ChannelListActivity.OnMenuToggleListener;
+import tv.ismar.daisy.PersonCenterActivity;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.SearchActivity;
+import tv.ismar.daisy.VodApplication;
+import tv.ismar.daisy.adapter.RecommecdItemAdapter;
+import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.NetworkUtils;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
+import tv.ismar.daisy.exception.ItemOfflineException;
+import tv.ismar.daisy.exception.NetworkException;
+import tv.ismar.daisy.models.ContentModel;
+import tv.ismar.daisy.models.Favorite;
+import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.models.ItemCollection;
+import tv.ismar.daisy.models.Section;
+import tv.ismar.daisy.models.SectionList;
+import tv.ismar.daisy.models.VideoEntity;
+import tv.ismar.daisy.player.InitPlayerTool;
+import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
+import tv.ismar.daisy.views.MenuFragment.MenuItem;
+import tv.ismar.daisy.views.MenuFragment.OnMenuItemClickedListener;
+import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,7 +42,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.FloatMath;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,33 +52,9 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
-import org.sakuratya.horizontal.ui.HGridView;
-import org.sakuratya.horizontal.ui.ZGridView;
-import tv.ismar.daisy.*;
-import tv.ismar.daisy.ChannelListActivity.OnMenuToggleListener;
-import tv.ismar.daisy.adapter.RecommecdItemAdapter;
-import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.NetworkUtils;
-import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
-import tv.ismar.daisy.core.client.IsmartvUrlClient;
-import tv.ismar.daisy.data.HomePagerEntity;
-import tv.ismar.daisy.exception.ItemOfflineException;
-import tv.ismar.daisy.exception.NetworkException;
-import tv.ismar.daisy.models.*;
-import tv.ismar.daisy.player.InitPlayerTool;
-import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
-import tv.ismar.daisy.views.MenuFragment.MenuItem;
-import tv.ismar.daisy.views.MenuFragment.OnMenuItemClickedListener;
-import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class FavoriteFragment extends Fragment implements OnSectionSelectChangedListener,
 														OnMenuToggleListener,
@@ -56,10 +65,15 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	private static final int INVALID_POSITION = -1;
 	
 	private HGridView mHGridView;
+	private ScrollableSectionList mScrollableSectionList;
 	private TextView mChannelLabel;
+	
 	private HGridAdapterImpl mHGridAdapter;
 	private ArrayList<ItemCollection> mItemCollections;
 	private SectionList mSectionList;
+	
+	private int mCurrentSectionPosition = 0;
+	
 	private SimpleRestClient mRestClient;
 	
 	private ContentModel[] mContentModels;
@@ -84,14 +98,16 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
     private View divider;
     private TextView recommend_txt;
     private TextView collect_or_history_txt;
+    private VideoEntity tvHome;
     private Item[] FavoriteList;
     private Button search_btn;
-    private ArrayList<HomePagerEntity.Poster> posters;
 	private void initViews(View fragmentView) {
 		
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
 		mHGridView.setOnItemClickListener(this);
 		mHGridView.setOnItemSelectedListener(this);
+		mScrollableSectionList = (ScrollableSectionList) fragmentView.findViewById(R.id.section_tabs);
+		mScrollableSectionList.setOnSectionSelectChangeListener(this);
 		
 		mChannelLabel = (TextView) fragmentView.findViewById(R.id.channel_label);
 		mChannelLabel.setText(getResources().getString(R.string.favorite));
@@ -245,11 +261,15 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 				no_video();
 				return;
 			}
+			mScrollableSectionList.init(mSectionList, 1365,false);
 			mHGridAdapter = new HGridAdapterImpl(getActivity(), mItemCollections);
 			mHGridView.setAdapter(mHGridAdapter);
 			mHGridView.setFocusable(true);
 			mHGridView.setHorizontalFadingEdgeEnabled(true);
 			mHGridView.setFadingEdgeLength(144);
+			int num_rows = mHGridView.getRows();
+			int totalColumnsOfSectionX = (int) FloatMath.ceil((float)mItemCollections.get(mCurrentSectionPosition).count / (float) num_rows);
+			mScrollableSectionList.setPercentage(mCurrentSectionPosition, (int)(1f/(float)totalColumnsOfSectionX*100f));
 		}
 		
 	}
@@ -395,9 +415,10 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	private void no_video() {
 		mNoVideoContainer.setVisibility(View.VISIBLE);
 		mNoVideoContainer.setBackgroundResource(R.drawable.no_record);
+		mScrollableSectionList.setVisibility(View.GONE);
 		mHGridView.setVisibility(View.GONE);
 		collect_or_history_txt.setText(getResources().getString(R.string.no_collect_record));
-		fetchHomePage();
+		getTvHome();
 	}
 	
 	private void showDialog(final int dialogType, final AsyncTask task, final Object[] params)  {
@@ -426,6 +447,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	}
 	
 	private void reset() {
+		mScrollableSectionList.reset();
 		new GetFavoriteTask().execute();
 	}
 	
@@ -507,6 +529,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		}
 		mLoadingDialog = null;
 		mSectionList = null;
+		mScrollableSectionList = null;
 		mRestClient = null;
 		mMenuFragment = null;
 		super.onDetach();
@@ -522,32 +545,38 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			break;
 
 		case R.id.recommend_gridview:
-
-//			if(tvHome.getObjects().get(position).isIs_complex()){
-//				intent.setClassName("tv.ismar.daisy",
-//						"tv.ismar.daisy.ItemDetailActivity");
-//				intent.putExtra("url", tvHome.getObjects().get(position).getItem_url());
-//				startActivity(intent);
-//			}
-//			else{
-//				InitPlayerTool tool = new InitPlayerTool(getActivity());
-//				tool.initClipInfo(tvHome.getObjects().get(position).getItem_url(), InitPlayerTool.FLAG_URL);
-//			}
-
-                if(posters!=null){
-                    Intent intent= new Intent();
-                    intent.setClassName("tv.ismar.daisy",
-                            "tv.ismar.daisy.ItemDetailActivity");
-                    intent.putExtra("url", posters.get(position).getUrl());
-                    startActivity(intent);
-                }
+			Intent intent= new Intent();
+			if(tvHome.getObjects().get(position).isIs_complex()){
+				intent.setClassName("tv.ismar.daisy",
+						"tv.ismar.daisy.ItemDetailActivity");
+				intent.putExtra("url", tvHome.getObjects().get(position).getItem_url());
+				startActivity(intent);
+			}
+			else{
+				InitPlayerTool tool = new InitPlayerTool(getActivity());
+				tool.initClipInfo(tvHome.getObjects().get(position).getItem_url(), InitPlayerTool.FLAG_URL);
+			}
 			break;
 		}
 	}
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
-
+		if(!SimpleRestClient.isLogin()){
+			mSelectedPosition = position;
+			// When selected column has changed, we need to update the ScrollableSectionList
+			int sectionIndex = mHGridAdapter.getSectionIndex(position);
+			int rows = mHGridView.getRows();
+			int itemCount = 0;
+			for(int i=0; i < sectionIndex; i++) {
+				itemCount += mHGridAdapter.getSectionCount(i);
+				
+			}
+			int columnOfX = (position - itemCount) / rows + 1;
+			int totalColumnOfSectionX = (int)(FloatMath.ceil((float)mHGridAdapter.getSectionCount(sectionIndex) / (float) rows)); 
+			int percentage = (int) ((float)columnOfX / (float)totalColumnOfSectionX * 100f);
+			mScrollableSectionList.setPercentage(sectionIndex, percentage);
+		}		
 	}
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
@@ -561,39 +590,75 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 				setTvHome(dataBundle.getString("content"));
 			}
 		};
+		private void setTvHome(String content) {
+			try{
+				Gson gson = new Gson();
+				tvHome = gson.fromJson(content.toString(),
+						VideoEntity.class);
+				if(tvHome.getObjects()!=null&&tvHome.getObjects().size()>0){
+					RecommecdItemAdapter recommendAdapter = new RecommecdItemAdapter(getActivity(), tvHome);
+					recommend_gridview.setAdapter(recommendAdapter);
+					recommend_gridview.setFocusable(true);	
+					recommend_gridview.setOnItemClickListener(this);
+				}
+			}catch(Exception e){
+				recommend_txt.setVisibility(View.INVISIBLE);
+				e.printStackTrace();
+			}
+		}
+	private void getTvHome() {
+		new Thread() {
+			@Override
+			public void run() {
+				super.run();
+				String content ="";
+			
+//					URL getUrl = new URL(SimpleRestClient.root_url
+//							+ "/api/tv/section/tvhome/"+"?device_token="+SimpleRestClient.device_token);
+//					HttpURLConnection connection = (HttpURLConnection) getUrl
+//							.openConnection();
+//					//connection.setIfModifiedSince(System.currentTimeMillis());
+//					connection.setReadTimeout(9000);
+//					connection.connect();
+//					int status = connection.getResponseCode();
+//					if(status==200){
+//						BufferedReader reader = new BufferedReader(
+//								new InputStreamReader(connection.getInputStream(),"UTF-8"));				
+//						String lines;
+//						while ((lines = reader.readLine()) != null) {
+//							content.append(lines);
+//						}
+						
+						try {
+							content = NetworkUtils.getJsonStr(SimpleRestClient.root_url+"/api/tv/section/tvhome/","");
+							Message message = new Message();
+							Bundle data = new Bundle();
+							data.putString("content", content);
+							DaisyUtils.getVodApplication(getActivity()).getEditor().putString("recommend", content.toString());
+							message.setData(data);
+							mainHandler.sendMessage(message);
+						} catch (ItemOfflineException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (NetworkException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 
-    private void setTvHome(String content) {
-        Log.i("zxcvbnm", "json==" + content);
-        HomePagerEntity homePagerEntity = new Gson().fromJson(content, HomePagerEntity.class);
-        posters = homePagerEntity.getPosters();
-        if(posters.size()>0){
-            RecommecdItemAdapter recommendAdapter = new RecommecdItemAdapter(getActivity(), posters);
-            recommend_gridview.setAdapter(recommendAdapter);
-            recommend_gridview.setFocusable(true);
-            recommend_gridview.setOnItemClickListener(this);
-        }
-    }
-    public void fetchHomePage() {
-        String api = SimpleRestClient.root_url + "/api/tv/homepage/top/";
-        new IsmartvUrlClient().doRequest(api, new IsmartvUrlClient.CallBack() {
-            @Override
-            public void onSuccess(String result) {
+					
+//					else if(status==304){
+//						String info = DaisyUtils.getVodApplication(getActivity()).getPreferences().getString("recommend", "");
+//						Message message = new Message();
+//						Bundle data = new Bundle();
+//						data.putString("content", info);
+//						message.setData(data);
+//						mainHandler.sendMessage(message);
+//					}
+				} 
+			
 
-
-                Message message = new Message();
-                Bundle data = new Bundle();
-                data.putString("content", result);
-                DaisyUtils.getVodApplication(getActivity()).getEditor().putString("recommend", result.toString());
-                message.setData(data);
-                mainHandler.sendMessage(message);
-            }
-
-            @Override
-            public void onFailed(Exception exception) {
-                Log.e("", exception.getMessage());
-            }
-        });
-    }
+		}.start();
+	}
 
 	   private void startSakura(){
            Intent intent = new Intent();

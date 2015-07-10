@@ -50,4 +50,5 @@ public class Item implements Serializable {
     public int remainDay;
     public int offset;
     public int month;
+    public String list_url;
 }
