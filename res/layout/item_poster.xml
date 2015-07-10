@@ -19,11 +19,13 @@
         android:layout_gravity="bottom|center"
         android:background="#b3303030"
         android:ellipsize="marquee"
-        android:focusableInTouchMode="true"
         android:gravity="center"
         android:marqueeRepeatLimit="marquee_forever"
+        android:focusableInTouchMode="true"
+        android:scrollHorizontally="true"
+        android:focusable="true"
         android:singleLine="true"
-        android:textSize="18sp"
+        android:textSize="36sp"
         android:visibility="gone" />
 
 </FrameLayout>

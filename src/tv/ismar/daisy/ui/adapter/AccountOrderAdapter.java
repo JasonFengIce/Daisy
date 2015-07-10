@@ -1,7 +1,6 @@
 package tv.ismar.daisy.ui.adapter;
 
 import android.content.Context;
-import android.media.Image;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
