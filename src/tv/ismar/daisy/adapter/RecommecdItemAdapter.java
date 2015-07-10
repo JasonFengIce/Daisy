@@ -1,8 +1,11 @@
 package tv.ismar.daisy.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import tv.ismar.daisy.R;
-import tv.ismar.daisy.data.HomePagerEntity;
+import tv.ismar.daisy.models.VideoEntity;
+import tv.ismar.daisy.models.VideoEntity.Objects;
 import tv.ismar.daisy.views.AsyncImageView;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,15 +16,17 @@ import android.widget.TextView;
 
 public class RecommecdItemAdapter extends BaseAdapter {
 
+	VideoEntity mTvHome;
 	Context mContext;
-    ArrayList<HomePagerEntity.Poster> mList;
-	public RecommecdItemAdapter(Context context, ArrayList<HomePagerEntity.Poster> data){
+	List<Objects> mList;
+	public RecommecdItemAdapter(Context context,VideoEntity data){
 		mContext = context;
-        ArrayList<HomePagerEntity.Poster> tmp = data;
-		mList = new ArrayList<HomePagerEntity.Poster>();
+		mTvHome = data;
+		List<Objects> tmp = mTvHome.getObjects();
+		mList = new ArrayList<VideoEntity.Objects>();
 		if(tmp.size()>6){
 			int count = 0;
-			for(HomePagerEntity.Poster obj: tmp){
+			for(Objects obj: tmp){
 				mList.add(obj);
 				count++;
 				if(count==6)
@@ -29,7 +34,7 @@ public class RecommecdItemAdapter extends BaseAdapter {
 			}
 		}
 		else{
-			mList = data;
+			mList = mTvHome.getObjects();
 		}
 	}
 	@Override
@@ -64,8 +69,8 @@ public class RecommecdItemAdapter extends BaseAdapter {
 		else
 			holder = (ViewHolder) convertView.getTag();
 		
-		holder.title.setText(mList.get(position).getIntroduction());
-		holder.previewImage.setUrl(mList.get(position).getPoster_url());
+		holder.title.setText(mList.get(position).getTitle());
+		holder.previewImage.setUrl(mList.get(position).getImage());
 		return convertView;
 	}
 	public static class ViewHolder {
