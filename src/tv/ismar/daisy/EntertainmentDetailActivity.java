@@ -155,11 +155,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                             if (isDrama())
                                 tool.initClipInfo(subUrl, InitPlayerTool.FLAG_URL);
                             else{
-                                Item item = getnewestItem(newpk);
-                                if(item!=null){
-                                    tool.initClipInfo(item, InitPlayerTool.FLAG_ITEM);
-                                }else
-                                   tool.initClipInfo(mItem, InitPlayerTool.FLAG_ITEM);
+                                tool.initClipInfo(mItem, InitPlayerTool.FLAG_ITEM);
 
                             }
                         }
@@ -272,8 +268,12 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 String url = mItem.item_url == null ? mSimpleRestClient.root_url
                         + "/api/item/" + mItem.pk + "/"
                         : mItem.item_url;
-                mHistory = DaisyUtils.getHistoryManager(this).getHistoryByUrl(
-                        url,"");
+                if(SimpleRestClient.isLogin())
+                    mHistory = DaisyUtils.getHistoryManager(this).getHistoryByUrl(
+                           url,"yes");
+                else
+                    mHistory = DaisyUtils.getHistoryManager(this).getHistoryByUrl(
+                            url,"no");
             }
         }
         for (HashMap.Entry<AsyncImageView, Boolean> entry : mLoadingImageQueue
@@ -856,7 +856,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
     private Item getnewestItem(int pk){
         Item item = null;
         Item[] items = mItem.subitems;
-        int count = 0;
+        int count = items.length;
         for(int i=0;i<count;i++){
             if(mItem.subitems[i].clip.pk==newpk){
                 item = mItem.subitems[i];
@@ -882,10 +882,10 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
 		 * which are defined in ContentModel.
 		 */
         setExpenseStatus();
-        Item item = getnewestItem(newpk);
-        if(item!=null){
-            mLeftBtn.setText(item.title);
-        }
+//        Item item = getnewestItem(newpk);
+//        if(item!=null){
+//            mLeftBtn.setText(item.title);
+//        }
         if (mItem.attributes != null && mItem.attributes.map != null) {
 
             for (ContentModel m : DaisyUtils.getVodApplication(this).mContentModel) {

@@ -128,7 +128,7 @@ public class LocalHistoryManager implements HistoryManager {
 			cv.put(DBFields.HistroyTable.IS_COMPLEX, history.is_complex?1:0);
 			cv.put(DBFields.HistroyTable.IS_CONTINUE, history.is_continue?1:0);
 			cv.put(DBFields.HistroyTable.SUB_URL, history.sub_url);
-            cv.put(DBFields.HistroyTable.ISNET,history.isnet);
+            cv.put(DBFields.HistroyTable.ISNET,isnet);
 			long result = mDBHelper.insert(cv, DBFields.HistroyTable.TABLE_NAME, mTotalEntriesLimit);
 			mHistories = mDBHelper.getAllHistories(isnet);
 			if(result >=0) {

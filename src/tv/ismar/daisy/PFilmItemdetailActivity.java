@@ -761,6 +761,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 //            }
             imgView.setTag(mRelatedItem[i].adlet_url);
             imgView.setUrl(mRelatedItem[i].adlet_url);
+            if(mRelatedItem[i].focus!=null)
             imgView.setFocustitle(mRelatedItem[i].focus);
             titleView.setText(mRelatedItem[i].title);
             relatedHolder.setTag(mRelatedItem[i].item_url);

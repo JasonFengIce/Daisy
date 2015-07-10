@@ -1,17 +1,21 @@
 package tv.ismar.daisy.views;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.util.FloatMath;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 
+import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.models.Favorite;
+import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
 import android.app.Dialog;
 import android.content.Context;
@@ -31,6 +35,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import cn.ismartv.activator.Activator;
+import tv.ismar.daisy.models.ItemCollection;
 
 public class LoginPanelView extends LinearLayout {
 
@@ -45,7 +50,7 @@ public class LoginPanelView extends LinearLayout {
 	private TextView count_tip;
 	private IsmartCountTimer timeCount;
 	private boolean suspension_window = false;
-
+    private Item[] mHistoriesByNet;
 	public LoginPanelView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
@@ -135,6 +140,7 @@ public class LoginPanelView extends LinearLayout {
 									SimpleRestClient.mobile_number = edit_mobile
 											.getText().toString();
 									GetFavoriteByNet();
+                                    getHistoryByNet();
 									AccountAboutDialog dialog = new AccountAboutDialog(
 											getContext(),
 											R.style.UserinfoDialog);
@@ -288,7 +294,36 @@ public class LoginPanelView extends LinearLayout {
 		count_tip.setText(str);
 		count_tip.setVisibility(View.VISIBLE);
 	}
+    private void getHistoryByNet(){
+        mSimpleRestClient.doSendRequest("/api/histories/", "get", "", new HttpPostRequestInterface() {
 
+            @Override
+            public void onSuccess(String info) {
+                // TODO Auto-generated method stub
+                //Log.i(tag, msg);
+
+                //解析json
+                mHistoriesByNet = mSimpleRestClient.getItems(info);
+                if(mHistoriesByNet!=null){
+                    for(Item i : mHistoriesByNet){
+                        addHistory(i);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onPrepare() {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onFailed(String error) {
+                // TODO Auto-generated method stub
+                //Log.i(tag, msg);
+            }
+        });
+    }
 	private void GetFavoriteByNet() {
 		mSimpleRestClient.doSendRequest("/api/bookmarks/", "get", "",
 				new HttpPostRequestInterface() {
@@ -318,7 +353,23 @@ public class LoginPanelView extends LinearLayout {
 					}
 				});
 	}
+    private void addHistory(Item item) {
+            History history = new History();
+            history.title = item.title;
+            history.adlet_url = item.adlet_url;
+            history.content_model = item.content_model;
+            history.is_complex = item.is_complex;
+            history.last_position = item.offset;
+            history.last_quality = item.quality;
+            history.url = item.url;
+            history.sub_url = item.item_url;
+            history.is_continue = true;
+            if(SimpleRestClient.isLogin())
+                DaisyUtils.getHistoryManager(getContext()).addHistory(history,"yes");
+            else
+                DaisyUtils.getHistoryManager(getContext()).addHistory(history,"no");
 
+    }
 	private void addFavorite(Item mItem) {
 		if (isFavorite(mItem)) {
 			String url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk
