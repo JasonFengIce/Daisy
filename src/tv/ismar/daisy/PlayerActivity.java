@@ -350,6 +350,8 @@ public class PlayerActivity extends VodMenuAction {
 			} else {
 				adimageDialog = new AdImageDialog(this, R.style.UserinfoDialog,
 						element.getMedia_url());
+				adimageDialog.getWindow().clearFlags(
+						WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 				adimageDialog.show();
 			}
 		} else {

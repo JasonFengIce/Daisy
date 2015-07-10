@@ -63,7 +63,7 @@ public class SportFragment extends ChannelBaseFragment implements
 	private ImageView arrowUp;
 	private ImageView arrowDown;
 	private TextView sportspost_title;
-	private ArrayList<String> looppost = new ArrayList<String>();
+	private ArrayList<Carousel> looppost = new ArrayList<Carousel>();
 	private int loopindex = 0;
 
 	@Override
@@ -136,9 +136,9 @@ public class SportFragment extends ChannelBaseFragment implements
 		sport_card3.setFocustitle(carousels.get(2).getIntroduction());
 		sport_card3.setTag(carousels.get(2));
 		sport_card3.setOnFocusChangeListener(ItemOnFocusListener);
-		looppost.add(carousels.get(0).getVideo_image());
-		looppost.add(carousels.get(1).getVideo_image());
-		looppost.add(carousels.get(2).getVideo_image());
+		looppost.add(carousels.get(0));
+		looppost.add(carousels.get(1));
+		looppost.add(carousels.get(2));
 		imageswitch.sendEmptyMessage(IMAGE_SWITCH_KEY);
 		sport_channel1_image.setUrl(postlist.get(0).getCustom_image());
 		sport_channel1_image.setFocustitle(postlist.get(0).getIntroduction());
@@ -321,9 +321,15 @@ public class SportFragment extends ChannelBaseFragment implements
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
-			sportspost.setUrl(looppost.get(loopindex++));
+			sportspost.setUrl(looppost.get(++loopindex).getVideo_image());
+			if (StringUtils.isNotEmpty(looppost.get(loopindex).getIntroduction())) {
+				sportspost_title.setText(looppost.get(loopindex).getIntroduction());
+				sportspost_title.setVisibility(View.VISIBLE);
+			} else {
+				sportspost_title.setVisibility(View.GONE);
+			}
 			if (loopindex >= 2)
-				loopindex = 0;
+				loopindex = -1;
 			imageswitch.sendEmptyMessageDelayed(IMAGE_SWITCH_KEY, 6000);
 			// pendingView.requestFocus();
 		}

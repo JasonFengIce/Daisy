@@ -15,10 +15,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 public abstract class VodMenuAction extends BaseActivity {
@@ -69,16 +70,21 @@ public abstract class VodMenuAction extends BaseActivity {
 		dialog.show();
 	}
 
-	protected void resumeItem(){}
+	protected void resumeItem() {
+	}
+
 	protected void showBuffer() {
 	}
 
 	protected void hideBuffer() {
 	}
-	
-	protected void playMainVideo(){}
-    
-	protected void showAd(ArrayList<AdElement> result){}
+
+	protected void playMainVideo() {
+	}
+
+	protected void showAd(ArrayList<AdElement> result) {
+	}
+
 	class GetAdDataTask extends AsyncTask<String, Void, ArrayList<AdElement>> {
 
 		@Override
@@ -95,12 +101,15 @@ public abstract class VodMenuAction extends BaseActivity {
 		}
 
 	}
-	
+
 	class AdImageDialog extends Dialog {
 		private int width;
 		private int height;
 		private String url;
-		public AdImageDialog(Context context, int theme,String imageurl) {
+		private AsyncImageView zanting_image;
+		private ImageView close_btn;
+
+		public AdImageDialog(Context context, int theme, String imageurl) {
 			super(context, theme);
 			WindowManager wm = (WindowManager) getContext().getSystemService(
 					Context.WINDOW_SERVICE);
@@ -112,19 +121,28 @@ public abstract class VodMenuAction extends BaseActivity {
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
-			AsyncImageView image = new AsyncImageView(VodMenuAction.this);
-			LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT);
-			image.setUrl(url);
-			this.addContentView(image, params);
+			this.setContentView(R.layout.zantingguanggao);
+			zanting_image = (AsyncImageView) this.findViewById(R.id.zantingguanggao);
+			close_btn = (ImageView) this.findViewById(R.id.zanting_close);
+			close_btn.setVisibility(View.VISIBLE);
+			zanting_image.setUrl(url);
 			resizeWindow();
 		}
 
 		private void resizeWindow() {
 			Window dialogWindow = getWindow();
 			WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-			lp.width = ((int) (width * 0.70));
-			lp.height = ((int) (height * 0.74));
+			lp.width = ((int) (width * 0.53));
+			lp.height = ((int) (height * 0.53));
 			lp.gravity = Gravity.CENTER;
+			close_btn.requestFocus();
+			close_btn.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					dismiss();
+				}
+			});
 		}
 
 		@Override
@@ -140,13 +158,13 @@ public abstract class VodMenuAction extends BaseActivity {
 		@Override
 		public void dismiss() {
 			super.dismiss();
-			resumeItem();
+//			resumeItem();
 		}
 
 		@Override
 		public void onBackPressed() {
 			super.onBackPressed();
 		}
-		
+
 	};
 }
