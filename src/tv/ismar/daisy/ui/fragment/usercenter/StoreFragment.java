@@ -70,11 +70,9 @@ public class StoreFragment extends Fragment {
 									View view, int position, long id) {
 								YouHuiDingGouEntity.Object o = youHuiDingGouEntity.getObjects().get(position);
 								Intent intent = new Intent();
-			                    intent.putExtra("lableString", o.getTitle());
-			                    intent.putExtra("itemlistUrl",
-			                            o.getUrl());
-			                    intent.setClassName("tv.ismar.daisy",
-			                            "tv.ismar.daisy.PackageListDetailActivity");
+								intent.setAction("tv.ismar.daisy.packageitem");
+								intent.putExtra("url", o.getUrl());
+								startActivity(intent);
 			                    mContext.startActivity(intent);
 							}
 						});

@@ -143,7 +143,7 @@ public class MarqueeView extends LinearLayout {
 //		   mTextField.setTextColor(Color.parseColor("#ffffffff"));
 		mTextField.setTextColor(textColor != null ? textColor : ColorStateList.valueOf(0xFF000000));
 		//mTextField.setTextColor(textColor);
-		mPaint.setFakeBoldText(true);
+//		mPaint.setFakeBoldText(true);
 		mPaint.setAntiAlias(true);
 
 		LayoutParams sv1lp = new LayoutParams(LayoutParams.MATCH_PARENT,
@@ -152,7 +152,7 @@ public class MarqueeView extends LinearLayout {
 		LayoutParams tv1lp = new LayoutParams(TEXTVIEW_VIRTUAL_WIDTH,
 				LayoutParams.MATCH_PARENT);
 		tv1lp.gravity = Gravity.CENTER;
-
+		mTextField.setLayoutParams(sv1lp);
 		mScrollView.addView(mTextField, tv1lp);
 		addView(mScrollView, sv1lp);
 	}
