@@ -28,7 +28,7 @@ public class AccountsOrdersEntity {
 
     public class OrderEntity {
         private String title;
-        private String extra;
+        private String info;
         private String source;
         private String expiry_date;
         private String total_fee;
@@ -43,12 +43,12 @@ public class AccountsOrdersEntity {
             this.title = title;
         }
 
-        public String getExtra() {
-            return extra;
+        public String getInfo() {
+            return info;
         }
 
-        public void setExtra(String extra) {
-            this.extra = extra;
+        public void setInfo(String info) {
+            this.info = info;
         }
 
         public String getSource() {

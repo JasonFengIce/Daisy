@@ -7,11 +7,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
 
-public class ConnectionChangeReceiver extends BroadcastReceiver{
-	 @Override   
-     public void onReceive( Context context, Intent intent ) {   
-         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);   
-         NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();   
-//         connectivityManager.getActiveNetworkInfo().get
-       }  
+public class ConnectionChangeReceiver extends BroadcastReceiver {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+
+    }
 }

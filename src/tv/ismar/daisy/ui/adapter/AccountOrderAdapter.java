@@ -77,9 +77,9 @@ public class AccountOrderAdapter extends BaseAdapter {
         holder.totalfee.setText(String.format(cost, item.getTotal_fee()));
         holder.orderlistitem_paychannel.setText(String.format(paySource, getValueBySource(item.getSource())));
         Picasso.with(mContext).load(item.getThumb_url()).into(holder.icon);
-        if (!TextUtils.isEmpty(item.getExtra())) {
+        if (!TextUtils.isEmpty(item.getInfo())) {
             holder.purchaseExtra.setVisibility(View.VISIBLE);
-            holder.purchaseExtra.setText("(" + item.getExtra() + "合并至视云账户" + SimpleRestClient.mobile_number + ")");
+            holder.purchaseExtra.setText("(" + item.getInfo() + "合并至视云账户" + SimpleRestClient.mobile_number + ")");
         } else {
             holder.purchaseExtra.setVisibility(View.GONE);
         }

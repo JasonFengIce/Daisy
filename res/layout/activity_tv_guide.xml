@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="#8803548d"
+              android:background="@drawable/person_center_bg"
               android:orientation="vertical">
 
     <tv.ismar.daisy.ui.widget.TopPanelView
