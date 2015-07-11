@@ -38,8 +38,7 @@ import java.util.*;
 public class EntertainmentDetailActivity extends BaseActivity implements AsyncImageView.OnImageViewLoadListener{
 
     private int subitem_show;
-    private String newestclip;
-    private int newpk;
+    private String mChannel;
     private SimpleRestClient mSimpleRestClient;
     private LoadingDialog mLoadingDialog;
     private String title;
@@ -78,9 +77,10 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
     private TopPanelView top_column_layout;
     private void initViews(){
         large_layout = findViewById(R.id.large_layout);
+        mChannel = getIntent().getStringExtra("channel");
         title = getIntent().getStringExtra("title");
         top_column_layout = (TopPanelView)findViewById(R.id.top_column_layout);
-        top_column_layout.setChannelName(title);
+        top_column_layout.setChannelName(mChannel);
         mDetailTitle = (TextView) findViewById(R.id.detail_title);
         mDetailIntro = (TextView)findViewById(R.id.detail_intro);
         mDetailPreviewImg = (AsyncImageView) findViewById(R.id.detail_preview_img);
@@ -124,22 +124,25 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                     case R.id.btn_left:
                         String subUrl = null;
                         if (isDrama()) {
-                            int sub_id = 0;
-                            String title = mItem.title;
-                            if (mHistory != null && mHistory.is_continue) {
-                                subUrl = mHistory.sub_url;
-                                for (Item item : mItem.subitems) {
-                                    if (item.url.equals(subUrl)) {
-                                        sub_id = item.pk;
-                                        title += "(" + item.episode + ")";
-                                        break;
-                                    }
-                                }
-                            } else {
-                                subUrl = mItem.subitems[0].url;
-                                sub_id = mItem.subitems[0].pk;
-                                title += "(" + mItem.subitems[0].episode + ")";
-                            }
+//                            int sub_id = 0;
+//                            String title = mItem.title;
+//                            if (mHistory != null && mHistory.is_continue) {
+//                                subUrl = mHistory.sub_url;
+//                                for (Item item : mItem.subitems) {
+//                                    if (item.url.equals(subUrl)) {
+//                                        sub_id = item.pk;
+//                                        title += "(" + item.episode + ")";
+//                                        break;
+//                                    }
+//                                }
+//                            } else {
+//                                subUrl = mItem.subitems[0].url;
+//                                sub_id = mItem.subitems[0].pk;
+//                                title += "(" + mItem.subitems[0].episode + ")";
+//                            }
+
+                            Item item = getItemByClipPk(mItem.clip.pk);
+                            subUrl = item.url;
                         }
                         identify = (String) v.getTag();
                         if (identify.equals(PREVIEW_VIDEO)) {
@@ -159,8 +162,6 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
 
                             }
                         }
-
-                        // tool.initClipInfo(subUrl,InitPlayerTool.FLAG_URL);
                         break;
                     case R.id.middle_btn:
                         identify = (String) v.getTag();
@@ -168,7 +169,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                             // 购买
                             if (isDrama()) {
 
-                                // startDramaListActivity();
+                                 startDramaListActivity();
                             } else {
                                 buyVideo();
                             }
@@ -196,10 +197,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                                 ((Button)v).setText(getResources().getString(R.string.favorite));
                             }
                         } else if (identify.equals(DRAMA_VIDEO)) {
-                            intent.setClass(EntertainmentDetailActivity.this,
-                                    DramaListActivity.class);
-                            intent.putExtra("item", mItem);
-                            startActivityForResult(intent, 11);
+                                 startDramaListActivity();
                         }
                         break;
                     case R.id.more_content:
@@ -207,8 +205,6 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                             intent.putExtra("related_item", new ArrayList<Item>(
                                     Arrays.asList(mRelatedItem)));
                         }
-
-
                         intent.putExtra("item", mItem);
                         intent.setClass(EntertainmentDetailActivity.this,
                                 RelatedActivity.class);
@@ -349,7 +345,17 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
     private void startDramaListActivity() {
         Intent intent = new Intent();
         mDataCollectionProperties.put("to", "list");
-        intent.setClass(EntertainmentDetailActivity.this, DramaListActivity.class);
+        subitem_show = mItem.subitem_show;
+        if(subitem_show==1){
+            intent.setClass(EntertainmentDetailActivity.this,DramaVarietyNoMonthList.class);
+        }
+        else if(subitem_show==2){
+            intent.setClass(EntertainmentDetailActivity.this,DramaVarietyMonthList.class);
+        }
+        else{
+            intent.setClass(EntertainmentDetailActivity.this, DramaListActivity.class);
+        }
+        intent.putExtra("channel",mChannel);
         intent.putExtra("item", mItem);
         startActivityForResult(intent, 20);
     }
@@ -853,12 +859,12 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             return null;
         }
     }
-    private Item getnewestItem(int pk){
+    private Item getItemByClipPk(int pk){
         Item item = null;
         Item[] items = mItem.subitems;
         int count = items.length;
         for(int i=0;i<count;i++){
-            if(mItem.subitems[i].clip.pk==newpk){
+            if(mItem.subitems[i].clip.pk==pk){
                 item = mItem.subitems[i];
                 break;
             }
@@ -867,15 +873,6 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
     }
     private void initLayout(){
         mDetailTitle.setText(mItem.title);
-
-        newpk = DaisyUtils.getVodApplication(this).getPreferences().getInt(VodApplication.NEWEST_ENTERTAINMENT,-1);
-        if(newpk<0||newpk!=mItem.clip.pk){
-              //历史记录已经不是最新的了
-            newpk = mItem.clip.pk;
-            DaisyUtils.getVodApplication(this).getEditor().putInt(VodApplication.NEWEST_ENTERTAINMENT,newpk);
-            DaisyUtils.getVodApplication(this).save();
-        }
-
 		/*
 		 * Build detail attributes list using a given order according to
 		 * ContentModel's define. we also need to add some common attributes

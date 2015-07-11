@@ -1,27 +1,23 @@
 package org.sakuratya.horizontal.adapter;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import org.apache.commons.lang3.StringUtils;
 import org.sakuratya.horizontal.ui.HGridView;
-
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemCollection;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.AsyncImageView.OnImageViewLoadListener;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnGenericMotionListener;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements OnImageViewLoadListener {
 	
@@ -34,7 +30,10 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 	private HashSet<AsyncImageView> mOnLoadingImageQueue = new HashSet<AsyncImageView>();
 	private HashSet<RelativeLayout> mOnLoadinglayoutQueue = new HashSet<RelativeLayout>();
     private boolean isPortrait = false;
-
+    private int template = 0;  //1 2
+	public void setTemplate(int flag){
+		this.template = flag;
+	}
     public void setIsPortrait(boolean isPortrait){
         this.isPortrait = isPortrait;
     }
@@ -97,8 +96,14 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 	public View getView( final int position, View convertView, ViewGroup parent) {
 		Holder holder = null;
 		if(convertView == null) {
-            if(!this.isPortrait)
-			    convertView = LayoutInflater.from(mContext).inflate(R.layout.list_view_item,null);
+            if(!this.isPortrait){
+				if(this.template == 1)
+				    convertView = LayoutInflater.from(mContext).inflate(R.layout.list_view_variety_no_month_item,null);
+				else if(this.template == 2)
+					convertView = LayoutInflater.from(mContext).inflate(R.layout.list_view_variety_month_item,null);
+				else
+				    convertView = LayoutInflater.from(mContext).inflate(R.layout.list_view_item,null);
+			}
             else
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.list_portrait_item,null);
 			holder = new Holder();
