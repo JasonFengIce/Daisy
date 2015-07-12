@@ -224,6 +224,8 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
     private void initPosters(ArrayList<HomePagerEntity.Poster> posters) {
         film_lefttop_image.setUrl(posters.get(0).getCustom_image());
         film_lefttop_image.setFocustitle(posters.get(0).getIntroduction());
+        film_lefttop_image.setOnClickListener(ItemClickListener);
+        film_lefttop_image.setTag(posters.get(0));
         for (int i = 1; i <= posters.size(); i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0,
                     ViewGroup.LayoutParams.MATCH_PARENT);

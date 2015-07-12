@@ -31,6 +31,8 @@ public class LabelImageView extends AsyncImageView {
 	}
 
 	public void setFocustitle(String focustitle) {
+		if(focustitle.length() >8)
+			focustitle = focustitle.substring(0, 8);
 		this.focustitle = focustitle;
 	}
 
