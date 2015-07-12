@@ -42,6 +42,8 @@ public class BaseActivity extends FragmentActivity {
         intentFilter.addAction(ACTION_CONNECT_ERROR);
         connectionErrorReceiver = new ConnectionErrorReceiver();
 
+        createNetErrorPopup();
+
     }
 
 
@@ -74,13 +76,12 @@ public class BaseActivity extends FragmentActivity {
         }
     }
 
-    private void showNetErrorPopup() {
+    private void createNetErrorPopup() {
         View contentView = LayoutInflater.from(this).inflate(R.layout.popup_net_error, null);
         netErrorPopupWindow = new PopupWindow(null, 740, 341);
         netErrorPopupWindow.setContentView(contentView);
         netErrorPopupWindow.setFocusable(true);
         netErrorPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent));
-        netErrorPopupWindow.showAtLocation(contentView, Gravity.CENTER, 0, 0);
         Button settingNetwork = (Button) contentView.findViewById(R.id.setting_network);
         Button iKnow = (Button) contentView.findViewById(R.id.i_know);
 
@@ -98,5 +99,10 @@ public class BaseActivity extends FragmentActivity {
                 netErrorPopupWindow.dismiss();
             }
         });
+    }
+
+    private void showNetErrorPopup() {
+        netErrorPopupWindow.showAtLocation(netErrorPopupWindow.getContentView(), Gravity.CENTER, 0, 0);
+
     }
 }

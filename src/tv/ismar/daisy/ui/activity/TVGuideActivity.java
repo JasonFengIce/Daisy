@@ -178,25 +178,31 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     @Override
     public void onBackPressed() {
-        if (currentFragment.getClass().getName().equals(GuideFragment.class.getName())) {
-            showExitPopup(contentView);
-        } else {
-            contentView.setBackgroundResource(R.color.normal_activity_bg);
-            currentFragment = new GuideFragment();
-            replaceFragment(currentFragment);
-            toppanel.setChannelName("首页");
-            if (arrow_left.getVisibility() == View.VISIBLE) {
-                arrow_left.setVisibility(View.GONE);
-            }
-            if (arrow_right.getVisibility() == View.VISIBLE) {
-                arrow_right.setVisibility(View.GONE);
-            }
-        }
-    }
 
-    public void superOnbackPressed() {
-        super.onBackPressed();
+        if (currentFragment != null) {
+            if (currentFragment.getClass().getName().equals(GuideFragment.class.getName())) {
+                showExitPopup(contentView);
+            } else {
+                contentView.setBackgroundResource(R.color.normal_activity_bg);
+                currentFragment = new GuideFragment();
+                replaceFragment(currentFragment);
+                toppanel.setChannelName("首页");
+                if (arrow_left.getVisibility() == View.VISIBLE) {
+                    arrow_left.setVisibility(View.GONE);
+                }
+                if (arrow_right.getVisibility() == View.VISIBLE) {
+                    arrow_right.setVisibility(View.GONE);
+                }
+            }
+        } else {
+            showExitPopup(contentView);
+        }
+
     }
+//
+//    public void superOnbackPressed() {
+//        super.onBackPressed();
+//    }
 
 
     private void initTabView() {
