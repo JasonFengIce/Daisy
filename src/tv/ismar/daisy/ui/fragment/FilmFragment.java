@@ -245,8 +245,22 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
                     textView.setText(posters.get(i).getIntroduction());
                     textView.setVisibility(View.VISIBLE);
                 }
+				textView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+					@Override
+					public void onFocusChange(View v, boolean hasFocus) {
+						if (hasFocus) {
+							((FrameLayout) v.getParent())
+									.setBackgroundResource(R.drawable.popup_bg_yellow);
+						} else {
+							((FrameLayout) v.getParent())
+									.setBackgroundResource(R.drawable.launcher_selector);
+						}
+					}
+				});
+                textView.setOnClickListener(ItemClickListener);
                 frameLayout.setOnClickListener(ItemClickListener);
                 Picasso.with(context).load(posters.get(i).getCustom_image()).into(postitemView);
+                textView.setTag(posters.get(i));
                 frameLayout.setTag(posters.get(i));
                 frameLayout.setLayoutParams(params);
                 guideRecommmendList.addView(frameLayout);
