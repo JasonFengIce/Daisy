@@ -140,9 +140,9 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
                 textView.setText(posters.get(i).getIntroduction());
                 textView.setVisibility(View.VISIBLE);
             }
-            itemView.setOnClickListener(ItemClickListener);
+            frameLayout.setOnClickListener(ItemClickListener);
             Picasso.with(context).load(posters.get(i).getCustom_image()).into(itemView);
-            itemView.setTag(posters.get(i));
+            frameLayout.setTag(posters.get(i));
 //            itemView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
             imageViews.add(frameLayout);
         }
@@ -190,6 +190,7 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
             Picasso.with(context).load(carousels.get(i).getThumb_image()).into(itemView);
             itemView.setTag(i);
             itemView.setOnClickListener(ItemClickListener);
+            itemView.setTag(R.drawable.launcher_selector,carousels.get(i));
             allItem.add(itemView);
             arrayList.add(frameLayout);
         }
