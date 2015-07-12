@@ -1718,6 +1718,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 	boolean needOnresume = false;
 
 	private void startSakura() {
+		needOnresume = true;
         Intent intent = new Intent();
         intent.setAction("cn.ismar.sakura.launcher");
         startActivity(intent);

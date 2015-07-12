@@ -413,7 +413,7 @@ public class DramaListActivity extends BaseActivity implements
 					HashMap<Integer, String> element = new HashMap<Integer, String>();
 					for (int i = 0; i < array.length(); i++) {
 						JSONObject seria = array.getJSONObject(i);
-						int pk = seria.getInt("object_pk");
+						int pk = seria.getInt("wares_id");
 						String expireDay = seria.getString("max_expiry_date");
 						element.put(pk, expireDay);
 					}

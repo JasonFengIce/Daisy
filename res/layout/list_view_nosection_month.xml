@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sakura="http://schemas.android.com/apk/res/tv.ismar.daisy"
+    android:id="@+id/large_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical" >
+
+    <tv.ismar.daisy.ui.widget.TopPanelView
+            android:id="@+id/top_column_layout"
+            android:layout_width="match_parent"
+            android:layout_height="112dip"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/tv_guide_top_section_padding"
+            android:paddingRight="@dimen/tv_guide_top_section_padding"
+            android:visibility="invisible">
+    </tv.ismar.daisy.ui.widget.TopPanelView>
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="3dip"
+            android:background="@drawable/filter_divider"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/tv_guide_top_section_padding"
+            android:paddingRight="@dimen/tv_guide_top_section_padding"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/month_section_layout"
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            android:layout_marginLeft="187dip"
+            android:layout_marginRight="187dip"
+            android:layout_marginTop="55dip">
+
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    </LinearLayout>
+    <Button
+            android:background="@drawable/selector_search_left"
+            android:id="@+id/arrow_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:layout_marginLeft="16dip"
+            android:layout_marginTop="411dip"/>
+    <org.sakuratya.horizontal.ui.HGridView
+        android:id="@+id/h_grid_view"
+        android:layout_width="1718dip"
+        android:layout_height="match_parent"
+        android:fadingEdge="horizontal"
+        android:fadingEdgeLength="@dimen/gridview_main_panel_fadingEdgeLength"
+        sakura:horizontalSpacing="34dip"
+        sakura:numRows="2"
+        sakura:rowHeight="305dip"
+        sakura:selectorDrawable="@drawable/vod_gv_selector"
+        sakura:verticalSpacing="55dip"
+        sakura:selectionLeftPadding="@dimen/HGridView_related_selectionLeftPadding"
+        sakura:selectionTopPadding="@dimen/HGridView_related_selectionTopPadding"
+        sakura:selectionRightPadding="@dimen/HGridView_related_selectionRightPadding"
+        sakura:selectionBottomPadding="@dimen/HGridView_related_selectionBottomPadding"
+        android:layout_marginTop="10dip"
+        android:layout_marginLeft="101dip">
+    </org.sakuratya.horizontal.ui.HGridView>
+    <Button
+            android:background="@drawable/selector_search_right"
+            android:id="@+id/arrow_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:layout_marginRight="16dip"
+            android:layout_marginTop="411dip"/>
+</LinearLayout>
