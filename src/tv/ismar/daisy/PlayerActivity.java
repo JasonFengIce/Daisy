@@ -204,7 +204,6 @@ public class PlayerActivity extends VodMenuAction {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent keycode) {
-				// TODO Auto-generated method stub
 				switch (keycode.getAction()) {
 				case MotionEvent.ACTION_DOWN:
 					// if (mVideoView.getDuration() > 0) {
@@ -370,11 +369,12 @@ public class PlayerActivity extends VodMenuAction {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
+				if(isadvideoplaying)
+					return false;
 				if (isVodMenuVisible()) {
 					hideMenuHandler.post(hideMenuRunnable);
 				} else {
 					if (!paused) {
-						getAdInfo("zanting");
 						pauseItem();
 						playPauseImage
 								.setImageResource(R.drawable.vod_playbtn_selector);
@@ -1199,6 +1199,8 @@ public class PlayerActivity extends VodMenuAction {
 		hideBuffer();
 		mVideoView.pause();
 		paused = true;
+		if (!(popupDlg != null && popupDlg.isShowing()))
+			getAdInfo("zanting");
 		if (subItem != null)
 			callaPlay.videoPlayPause(item.pk, subItem.pk, item.title, clip.pk,
 					currQuality, 0, currPosition, sid);
@@ -1912,6 +1914,7 @@ public class PlayerActivity extends VodMenuAction {
 
 	@Override
 	protected void onPause() {
+		needOnresume = true;
 		try {
 			createHistory(seekPostion);
 			addHistory(seekPostion);
@@ -1992,6 +1995,7 @@ public class PlayerActivity extends VodMenuAction {
 			int what = event.getAction();
 			switch (what) {
 			case MotionEvent.ACTION_HOVER_MOVE:
+				if(!StringUtils.isEmpty(sid))
 				showPanel();
 				break;
 			}
