@@ -126,15 +126,15 @@ public class SportFragment extends ChannelBaseFragment implements
 		adapter.notifyDataSetChanged();
 		sport_card1.setUrl(carousels.get(0).getThumb_image());
 		sport_card1.setFocustitle(carousels.get(0).getIntroduction());
-		sport_card1.setTag(carousels.get(0));
+		sport_card1.setTag(R.drawable.launcher_selector,carousels.get(0));
 		sport_card1.setOnFocusChangeListener(ItemOnFocusListener);
 		sport_card2.setUrl(carousels.get(1).getThumb_image());
 		sport_card2.setFocustitle(carousels.get(1).getIntroduction());
-		sport_card2.setTag(carousels.get(1));
+		sport_card2.setTag(R.drawable.launcher_selector,carousels.get(1));
 		sport_card2.setOnFocusChangeListener(ItemOnFocusListener);
 		sport_card3.setUrl(carousels.get(2).getThumb_image());
 		sport_card3.setFocustitle(carousels.get(2).getIntroduction());
-		sport_card3.setTag(carousels.get(2));
+		sport_card3.setTag(R.drawable.launcher_selector,carousels.get(2));
 		sport_card3.setOnFocusChangeListener(ItemOnFocusListener);
 		looppost.add(carousels.get(0));
 		looppost.add(carousels.get(1));
@@ -161,6 +161,9 @@ public class SportFragment extends ChannelBaseFragment implements
 		sport_channel4_image.setOnClickListener(ItemClickListener);
 		sport_channel4_image.setTag(postlist.get(3));
 		sport_channel5.setOnClickListener(ItemClickListener);
+		sport_card1.setOnClickListener(ItemClickListener);
+		sport_card2.setOnClickListener(ItemClickListener);
+		sport_card3.setOnClickListener(ItemClickListener);
 	}
 
 	@Override
@@ -302,7 +305,7 @@ public class SportFragment extends ChannelBaseFragment implements
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
 			if (hasFocus) {
-				Carousel carousel = (Carousel) v.getTag();
+				Carousel carousel = (Carousel) v.getTag(R.drawable.launcher_selector);
 				sportspost.setUrl(carousel.getVideo_image());
 				if (StringUtils.isNotEmpty(carousel.getIntroduction())) {
 					sportspost_title.setText(carousel.getIntroduction());

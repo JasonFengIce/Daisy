@@ -57,6 +57,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
 
     private LinearLayout guideRecommmendList;
     private LinearLayout carouselLayout;
+    private FrameLayout film_post_layout;
     private DaisyVideoView linkedVideoView;
     private ImageView linkedVideoImage;
     private TextView film_linked_title;
@@ -129,6 +130,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
                 .findViewById(R.id.film_linked_video);
         film_lefttop_image = (LabelImageView) mView
                 .findViewById(R.id.film_lefttop_image);
+        film_post_layout =(FrameLayout)mView.findViewById(R.id.film_post_layout);
         linkedVideoImage = (ImageView) mView.findViewById(R.id.film_linked_image);
         film_linked_title = (TextView) mView.findViewById(R.id.film_linked_title);
         flag = new Flag(this);
@@ -184,8 +186,8 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
         };
 
         linkedVideoView.setOnCompletionListener(loopAllListener);
-        linkedVideoView.setOnClickListener(viewClickListener);
-        linkedVideoImage.setOnClickListener(viewClickListener);
+        film_post_layout.setOnClickListener(viewClickListener);
+//        film_post_layout.setOnClickListener(viewClickListener);
 
         return mView;
     }
