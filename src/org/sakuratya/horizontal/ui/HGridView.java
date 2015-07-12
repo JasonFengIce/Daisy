@@ -728,8 +728,13 @@ public class HGridView extends AdapterView<HGridAdapter> {
 
 			int offset = Math.min(spaceLeft, spaceRight);
 			// Now offset the selected item to get it into view.
+            if(rightbtn!=null)
+            rightbtn.setVisibility(View.VISIBLE);
 			offsetChildrenLeftAndRight(offset);
 		}
+//        else{
+//            rightbtn.setVisibility(View.INVISIBLE);
+//        }
 	}
 
 	private void adjustForRightFadingEdge(View childInSelectedRow,
@@ -744,6 +749,8 @@ public class HGridView extends AdapterView<HGridAdapter> {
 
 			int offset = Math.min(spaceLeft, spaceRight);
 			// Now offset the selected item to get it into view.
+            if(leftbtn!=null)
+            leftbtn.setVisibility(View.VISIBLE);
 			offsetChildrenLeftAndRight(-offset);
 		}
 	}
@@ -1399,21 +1406,21 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		}
 
 		if (nextSelectedPosition != INVALID_POSITION) {
-			mLayoutMode = LAYOUT_MOVE_SELECTION;
-			layoutChildren();
-			
-			if(leftbtn!=null&&rightbtn!=null)
-			if(mFirstPosition==0){
-				leftbtn.setVisibility(View.INVISIBLE);
-				}
-				else if(mFirstPosition>0&&mFirstPosition+getChildCount()<mAdapter.getCount()){
-					leftbtn.setVisibility(View.VISIBLE);
-					rightbtn.setVisibility(View.VISIBLE);
-				}
-				else if(mFirstPosition+getChildCount()==mAdapter.getCount()){
-				//upbtn.setVisibility(View.VISIBLE);
-				rightbtn.setVisibility(View.INVISIBLE);
-				}
+            mLayoutMode = LAYOUT_MOVE_SELECTION;
+            layoutChildren();
+
+//			if(leftbtn!=null&&rightbtn!=null)
+//			if(mFirstPosition==0){
+//				leftbtn.setVisibility(View.INVISIBLE);
+//				}
+//				else if(mFirstPosition>0&&mFirstPosition+getChildCount()<mAdapter.getCount()){
+//					leftbtn.setVisibility(View.VISIBLE);
+//					rightbtn.setVisibility(View.VISIBLE);
+//				}
+//				else if(mFirstPosition+getChildCount()==mAdapter.getCount()){
+//				//upbtn.setVisibility(View.VISIBLE);
+//				rightbtn.setVisibility(View.INVISIBLE);
+//				}
 		}
 
 		return true;

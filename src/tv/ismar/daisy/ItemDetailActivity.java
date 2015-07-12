@@ -447,26 +447,8 @@ private boolean isPause = false;
 	private void initLayout() {
 		mDataCollectionProperties.put(EventProperty.ITEM, mItem.pk);
 		mDataCollectionProperties.put(EventProperty.TITLE, mItem.title);
-		String subItemUrl = SimpleRestClient.root_url + "/api/subitem/"
-				+ mItem.pk + "/";
-		SimpleRestClient simpleRestClient = new SimpleRestClient();
-//		Item subItem;
-//		try {
-//			subItem = simpleRestClient.getItem(subItemUrl);
-//			if (subItem != null) {
-//				mDataCollectionProperties
-//						.put(EventProperty.SUBITEM, subItem.pk);
-//			}
-//		} catch (JsonSyntaxException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (ItemOfflineException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (NetworkException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+
+
 
 		new NetworkUtils.DataCollectionTask().execute(
 				NetworkUtils.VIDEO_DETAIL_IN, mDataCollectionProperties);
@@ -531,7 +513,8 @@ private boolean isPause = false;
 			if (isDrama()) {
 				attributeMap.put("episodes", getEpisodes(mItem));
 			}
-			if(mItem.clip!=null){
+            String  channel = getIntent().getStringExtra("channel");
+			if(mItem.clip!=null&&!"teleplay".equals(mItem.content_model)){
 				if(mItem.clip.length>0)
 					   attributeMap.put("length", getClipLength(mItem.clip));
 			}

@@ -255,6 +255,8 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 		switch (v.getId()) {
 		case R.id.ibtn_search:
 			try {
+                InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 				if (!ConnectionHelper.isNetWorkAvailable(this)) {
 					if (!customDialog.isShowing()) {
 						customDialog.show();

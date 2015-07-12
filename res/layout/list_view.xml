@@ -64,7 +64,10 @@
             android:visibility="gone"
             />
     </LinearLayout>
-
+    <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
     <org.sakuratya.horizontal.ui.HGridView
         android:id="@+id/h_grid_view"
         android:layout_width="match_parent"
@@ -83,7 +86,28 @@
         android:layout_marginTop="-12dip"
         android:layout_marginLeft="60dip">
     </org.sakuratya.horizontal.ui.HGridView>
-
+        <ImageView
+                android:visibility="invisible"
+                android:clickable="true"
+                android:layout_alignBottom="@id/h_grid_view"
+                android:layout_alignTop="@id/h_grid_view"
+                android:layout_alignLeft="@id/h_grid_view"
+                android:id="@+id/left_shadow"
+                android:layout_width="144dip"
+                android:layout_height="match_parent"
+                android:background="@android:color/black"
+                android:alpha="0.1"/>
+        <ImageView
+                android:clickable="true"
+                android:layout_alignBottom="@id/h_grid_view"
+                android:layout_alignTop="@id/h_grid_view"
+                android:layout_alignRight="@id/h_grid_view"
+                android:id="@+id/right_shadow"
+                android:layout_width="144dip"
+                android:layout_height="match_parent"
+                android:background="@android:color/black"
+                android:alpha="0.4"/>
+    </RelativeLayout>
     <RelativeLayout
         android:id="@+id/no_video_container"
         android:layout_width="match_parent"
