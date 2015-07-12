@@ -110,10 +110,8 @@ public class PackageListDetailActivity extends BaseActivity implements OnItemSel
 					});
 	}
 	private void getData(){
-//		pk = getIntent().getIntExtra("pk", -1);
-//		if(pk>0){
-			new InitPackageItemTask().execute();
-//		}
+		pk = getIntent().getIntExtra("pk", -1);
+	    new InitPackageItemTask().execute();
 	}
 	private OnCancelListener mLoadingCancelListener = new OnCancelListener() {
 		
@@ -279,7 +277,7 @@ public class PackageListDetailActivity extends BaseActivity implements OnItemSel
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
 				if(!isInitTaskLoading) {
-					task.execute(params);
+					task.execute();
 				}
 				dialog.dismiss();
 			}
