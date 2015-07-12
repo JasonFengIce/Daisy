@@ -10,6 +10,7 @@ import tv.ismar.daisy.R;
 import tv.ismar.daisy.data.usercenter.AccountPlayAuthEntity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by huaijie on 7/3/15.
@@ -59,5 +60,9 @@ public class AccoutPlayAuthAdapter extends BaseAdapter {
     public static class ViewHolder {
         TextView title;
         TextView buydate_txt;
+    }
+
+    public ArrayList<AccountPlayAuthEntity.PlayAuth> getList() {
+        return mList;
     }
 }

@@ -29,6 +29,15 @@ public class AccountPlayAuthEntity {
     public class PlayAuth {
         private String expiry_date;
         private String title;
+        private String url;
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
 
         public String getExpiry_date() {
             return expiry_date;

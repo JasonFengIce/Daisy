@@ -20,6 +20,7 @@ import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.usercenter.AccountBalanceEntity;
 import tv.ismar.daisy.data.usercenter.AccountPlayAuthEntity;
+import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.ui.adapter.AccountOrderAdapter;
 import tv.ismar.daisy.ui.adapter.AccoutPlayAuthAdapter;
 
@@ -29,7 +30,7 @@ import java.util.HashMap;
 /**
  * Created by huaijie on 7/3/15.
  */
-public class UserInfoFragment extends Fragment implements View.OnClickListener {
+public class UserInfoFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
     private static final String TAG = "UserInfoFragment";
 
     private Context mContext;
@@ -48,6 +49,8 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
 
     private LinearLayout userInfoLayout;
 
+    private AccoutPlayAuthAdapter accoutPlayAuthAdapter;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -62,6 +65,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
         deviceNumber = (TextView) fragmentView.findViewById(R.id.device_number);
         balanceTextView = (TextView) fragmentView.findViewById(R.id.remain_money_value);
         playAuthListView = (ListView) fragmentView.findViewById(R.id.privilegelist);
+        playAuthListView.setOnItemClickListener(this);
         associationText = (Button) fragmentView.findViewById(R.id.association);
         userInfoLayout = (LinearLayout) fragmentView.findViewById(R.id.userinfo_layout);
         associationText.setOnClickListener(this);
@@ -117,7 +121,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
             public void onSuccess(String result) {
                 Log.d(TAG, "fetchAccountsPlayauths: " + result);
                 AccountPlayAuthEntity accountPlayAuthEntity = new Gson().fromJson(result, AccountPlayAuthEntity.class);
-                AccoutPlayAuthAdapter accoutPlayAuthAdapter;
+
                 if (!TextUtils.isEmpty(SimpleRestClient.access_token) && !TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
                     accoutPlayAuthAdapter = new AccoutPlayAuthAdapter(mContext, accountPlayAuthEntity.getPlayauth_list());
                 } else {
@@ -165,5 +169,14 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
                 associationText.setFocusable(true);
             }
         });
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        String url = accoutPlayAuthAdapter.getList().get(position).getUrl();
+        if (!TextUtils.isEmpty(url)) {
+            InitPlayerTool tool = new InitPlayerTool(mContext);
+            tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
+        }
     }
 }

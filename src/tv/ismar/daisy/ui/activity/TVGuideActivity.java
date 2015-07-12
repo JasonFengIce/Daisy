@@ -413,7 +413,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         netErrorPopupWindow = new PopupWindow(null, 740, 341);
         netErrorPopupWindow.setContentView(contentView);
         netErrorPopupWindow.setFocusable(true);
+        netErrorPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent));
         netErrorPopupWindow.showAtLocation(contentView, Gravity.CENTER, 0, 0);
+
         Button settingNetwork = (Button) contentView.findViewById(R.id.setting_network);
         Button iKnow = (Button) contentView.findViewById(R.id.i_know);
 

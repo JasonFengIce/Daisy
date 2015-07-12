@@ -1,7 +1,9 @@
 package tv.ismar.daisy;
 
-import android.app.Activity;
-import android.content.*;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
@@ -10,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 
@@ -78,6 +79,7 @@ public class BaseActivity extends FragmentActivity {
         netErrorPopupWindow = new PopupWindow(null, 740, 341);
         netErrorPopupWindow.setContentView(contentView);
         netErrorPopupWindow.setFocusable(true);
+        netErrorPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent));
         netErrorPopupWindow.showAtLocation(contentView, Gravity.CENTER, 0, 0);
         Button settingNetwork = (Button) contentView.findViewById(R.id.setting_network);
         Button iKnow = (Button) contentView.findViewById(R.id.i_know);
