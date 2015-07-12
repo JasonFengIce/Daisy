@@ -354,7 +354,12 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 				// start new Activity.
 				Intent intent = new Intent();
 				if(item.is_complex) {
-					intent.setAction("tv.ismar.daisy.Item");
+					if("variety".equals(item.content_model)){
+						intent.setAction("tv.ismar.daisy.EntertainmentItem");
+						intent.putExtra("channel", "娱乐综艺");
+					}else {
+						intent.setAction("tv.ismar.daisy.Item");						
+					}
 					intent.putExtra("url", item.url);
 					startActivity(intent);
 				} else {

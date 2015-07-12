@@ -496,7 +496,12 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 				// start a new activity.
 				Intent intent = new Intent();
 				if(item.is_complex) {
-					intent.setAction("tv.ismar.daisy.Item");
+					if("variety".equals(item.content_model)){
+						intent.setAction("tv.ismar.daisy.EntertainmentItem");
+						intent.putExtra("channel", "娱乐综艺");
+					}else {
+						intent.setAction("tv.ismar.daisy.Item");						
+					}
 					intent.putExtra("url", url);
 					startActivity(intent);
 				} else {
