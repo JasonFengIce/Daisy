@@ -15,7 +15,8 @@
 
         <RelativeLayout
             android:id="@+id/vaiety_lefttop"
-            android:layout_width="915dp"
+            android:layout_width="0dp"
+            android:layout_weight="1.1"
             android:layout_height="match_parent" >
 
             <tv.ismar.daisy.views.AsyncImageView
@@ -73,8 +74,9 @@
 
         <RelativeLayout
             android:id="@+id/vaiety_righttop"
-            android:layout_width="829dp"
-            android:layout_height="516dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:layout_marginLeft="27dp" >
 
             <LinearLayout
