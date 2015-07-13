@@ -57,6 +57,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
 
     private LinearLayout guideRecommmendList;
     private LinearLayout carouselLayout;
+    private FrameLayout film_post_layout;
     private DaisyVideoView linkedVideoView;
     private ImageView linkedVideoImage;
     private TextView film_linked_title;
@@ -129,6 +130,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
                 .findViewById(R.id.film_linked_video);
         film_lefttop_image = (LabelImageView) mView
                 .findViewById(R.id.film_lefttop_image);
+        film_post_layout =(FrameLayout)mView.findViewById(R.id.film_post_layout);
         linkedVideoImage = (ImageView) mView.findViewById(R.id.film_linked_image);
         film_linked_title = (TextView) mView.findViewById(R.id.film_linked_title);
         flag = new Flag(this);
@@ -184,8 +186,8 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
         };
 
         linkedVideoView.setOnCompletionListener(loopAllListener);
-        linkedVideoView.setOnClickListener(viewClickListener);
-        linkedVideoImage.setOnClickListener(viewClickListener);
+        film_post_layout.setOnClickListener(viewClickListener);
+//        film_post_layout.setOnClickListener(viewClickListener);
 
         return mView;
     }
@@ -224,6 +226,8 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
     private void initPosters(ArrayList<HomePagerEntity.Poster> posters) {
         film_lefttop_image.setUrl(posters.get(0).getCustom_image());
         film_lefttop_image.setFocustitle(posters.get(0).getIntroduction());
+        film_lefttop_image.setOnClickListener(ItemClickListener);
+        film_lefttop_image.setTag(posters.get(0));
         for (int i = 1; i <= posters.size(); i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0,
                     ViewGroup.LayoutParams.MATCH_PARENT);
@@ -243,8 +247,22 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
                     textView.setText(posters.get(i).getIntroduction());
                     textView.setVisibility(View.VISIBLE);
                 }
+				textView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+					@Override
+					public void onFocusChange(View v, boolean hasFocus) {
+						if (hasFocus) {
+							((FrameLayout) v.getParent())
+									.setBackgroundResource(R.drawable.popup_bg_yellow);
+						} else {
+							((FrameLayout) v.getParent())
+									.setBackgroundResource(R.drawable.launcher_selector);
+						}
+					}
+				});
+                textView.setOnClickListener(ItemClickListener);
                 frameLayout.setOnClickListener(ItemClickListener);
                 Picasso.with(context).load(posters.get(i).getCustom_image()).into(postitemView);
+                textView.setTag(posters.get(i));
                 frameLayout.setTag(posters.get(i));
                 frameLayout.setLayoutParams(params);
                 guideRecommmendList.addView(frameLayout);

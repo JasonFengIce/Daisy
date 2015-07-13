@@ -77,7 +77,7 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
         Bundle bundle = getIntent().getExtras();
         if (null == bundle)
             return;
-        top_column_layout.setChannelName(getIntent().getStringExtra("channel"));
+        top_column_layout.setChannelName(getIntent().getStringExtra("title"));
         mItem = (Item) bundle.get("item");
         Item[] subItems = mItem.subitems;
 

@@ -1,0 +1,47 @@
+package tv.ismar.daisy.views;
+
+/**
+ * Created by zhangjiqiang on 15-7-12.
+ */
+import android.content.Context;
+import android.graphics.Canvas;
+import android.util.AttributeSet;
+import android.view.Gravity;
+import android.widget.TextView;
+
+/**
+ * Created by zhangjiqiang on 2015/7/12.
+ */
+public class RotateTextView extends TextView {
+    private static final int DEFAULT_DEGREES = 45;
+    private int mDegrees;
+
+    public RotateTextView(Context context) {
+        super(context, null);
+    }
+
+    public RotateTextView(Context context, AttributeSet attrs) {
+        super(context, attrs, android.R.attr.textViewStyle);
+        this.setGravity(Gravity.CENTER);
+
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        setMeasuredDimension(getMeasuredWidth(), getMeasuredWidth());
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        canvas.save();
+        canvas.translate(getCompoundPaddingLeft()+11, getExtendedPaddingTop()-14);
+        canvas.rotate(45, this.getWidth() / 2f, this.getHeight() / 2f);
+        super.onDraw(canvas);
+        canvas.restore();
+    }
+
+    public void setDegrees(int degrees) {
+        mDegrees = degrees;
+    }
+}

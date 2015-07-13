@@ -460,7 +460,7 @@
     <dimen name="HGridView_related_selectionLeftPadding">15dip</dimen>
     <dimen name="HGridView_related_selectionTopPadding">20dip</dimen>
     <dimen name="HGridView_related_selectionRightPadding">15dip</dimen>
-    <dimen name="HGridView_related_selectionBottomPadding">-40dip</dimen>
+    <dimen name="HGridView_related_selectionBottomPadding">-80dip</dimen>
 
     <dimen name="HGridView_related_PFilterLeftPadding">20dip</dimen>
     <dimen name="HGridView_related_PFilterTopPadding">21dip</dimen>
@@ -559,9 +559,9 @@
     <dimen name="list_view_search_H">60dip</dimen>
     <dimen name="list_view_search_ML">990dip</dimen>
 
-    <!-- pay panel -->
+  <!-- pay panel -->
     <dimen name="pay_top_panel_merginleft">20dp</dimen>
-    <dimen name="pay_top_panel_panel_label_textsieze">13sp</dimen>
+    <dimen name="pay_top_panel_panel_label_textsieze">23sp</dimen>
     <dimen name="pay_top_panel_videotitle_textsieze">35sp</dimen>
     <dimen name="pay_top_panel_warntitle_textsieze">23sp</dimen>
     <dimen name="pay_top_panel_top_login_textsieze">35sp</dimen>

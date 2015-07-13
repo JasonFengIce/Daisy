@@ -96,7 +96,8 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		mHGridView.setOnItemClickListener(this);
 		mHGridView.setOnItemSelectedListener(this);
 		mScrollableSectionList = (ScrollableSectionList) fragmentView.findViewById(R.id.section_tabs);
-		mScrollableSectionList.setOnSectionSelectChangeListener(this);
+		mScrollableSectionList.setVisibility(View.GONE);
+//		mScrollableSectionList.setOnSectionSelectChangeListener(this);
 		
 		mChannelLabel = (TextView) fragmentView.findViewById(R.id.channel_label);
 		mChannelLabel.setText(getResources().getString(R.string.favorite));
@@ -250,7 +251,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 				no_video();
 				return;
 			}
-			mScrollableSectionList.init(mSectionList, 1365,false);
+//			mScrollableSectionList.init(mSectionList, 1365,false);
 			mHGridAdapter = new HGridAdapterImpl(getActivity(), mItemCollections);
 			mHGridView.setAdapter(mHGridAdapter);
 			mHGridView.setFocusable(true);
@@ -258,7 +259,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			mHGridView.setFadingEdgeLength(144);
 			int num_rows = mHGridView.getRows();
 			int totalColumnsOfSectionX = (int) FloatMath.ceil((float)mItemCollections.get(mCurrentSectionPosition).count / (float) num_rows);
-			mScrollableSectionList.setPercentage(mCurrentSectionPosition, (int)(1f/(float)totalColumnsOfSectionX*100f));
+//			mScrollableSectionList.setPercentage(mCurrentSectionPosition, (int)(1f/(float)totalColumnsOfSectionX*100f));
 		}
 		
 	}
@@ -342,7 +343,12 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 				// start new Activity.
 				Intent intent = new Intent();
 				if(item.is_complex) {
-					intent.setAction("tv.ismar.daisy.Item");
+					if("variety".equals(item.content_model)){
+						intent.setAction("tv.ismar.daisy.EntertainmentItem");
+						intent.putExtra("channel", "娱乐综艺");
+					}else {
+						intent.setAction("tv.ismar.daisy.Item");						
+					}
 					intent.putExtra("url", item.url);
 					startActivity(intent);
 				} else {
@@ -404,7 +410,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	private void no_video() {
 		mNoVideoContainer.setVisibility(View.VISIBLE);
 		mNoVideoContainer.setBackgroundResource(R.drawable.no_record);
-		mScrollableSectionList.setVisibility(View.GONE);
+//		mScrollableSectionList.setVisibility(View.GONE);
 		mHGridView.setVisibility(View.GONE);
 		collect_or_history_txt.setText(getResources().getString(R.string.no_collect_record));
 		getTvHome();
@@ -436,7 +442,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	}
 	
 	private void reset() {
-		mScrollableSectionList.reset();
+//		mScrollableSectionList.reset();
 		new GetFavoriteTask().execute();
 	}
 	
@@ -518,7 +524,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		}
 		mLoadingDialog = null;
 		mSectionList = null;
-		mScrollableSectionList = null;
+//		mScrollableSectionList = null;
 		mRestClient = null;
 		mMenuFragment = null;
 		super.onDetach();
@@ -564,7 +570,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			int columnOfX = (position - itemCount) / rows + 1;
 			int totalColumnOfSectionX = (int)(FloatMath.ceil((float)mHGridAdapter.getSectionCount(sectionIndex) / (float) rows)); 
 			int percentage = (int) ((float)columnOfX / (float)totalColumnOfSectionX * 100f);
-			mScrollableSectionList.setPercentage(sectionIndex, percentage);
+//			mScrollableSectionList.setPercentage(sectionIndex, percentage);
 		}		
 	}
 	@Override

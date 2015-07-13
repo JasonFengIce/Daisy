@@ -113,6 +113,9 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		vaiety_channel3_image.setOnClickListener(ItemClickListener);
 		vaiety_channel4_image.setOnClickListener(ItemClickListener);
 		vaiety_channel5.setOnClickListener(ItemClickListener);
+		vaiety_thumb1.setOnClickListener(ItemClickListener);
+		vaiety_thumb2.setOnClickListener(ItemClickListener);
+		vaiety_thumb3.setOnClickListener(ItemClickListener);
 		return view;
 	}
 
@@ -190,12 +193,15 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 				.setUrl(carousellist.get(0).getThumb_image());
 		vaiety_thumb1.setTag(carousellist.get(0).getVideo_image());
 		vaiety_thumb1.setTag(R.id.vaiety_post, carousellist.get(0).getTitle());
+		vaiety_thumb1.setTag(R.drawable.launcher_selector,carousellist.get(0));
 		vaiety_thumb2.setUrl(carousellist.get(1).getThumb_image());
 		vaiety_thumb2.setTag(carousellist.get(1).getVideo_image());
 		vaiety_thumb2.setTag(R.id.vaiety_post, carousellist.get(1).getTitle());
+		vaiety_thumb2.setTag(R.drawable.launcher_selector,carousellist.get(1));
 		vaiety_thumb3.setUrl(carousellist.get(2).getThumb_image());
 		vaiety_thumb3.setTag(carousellist.get(2).getVideo_image());
 		vaiety_thumb3.setTag(R.id.vaiety_post, carousellist.get(2).getTitle());
+		vaiety_thumb3.setTag(R.drawable.launcher_selector,carousellist.get(2));
 		looppost.add(carousellist.get(0).getVideo_image());
 		looppost.add(carousellist.get(1).getVideo_image());
 		looppost.add(carousellist.get(2).getVideo_image());

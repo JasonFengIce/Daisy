@@ -117,6 +117,9 @@ public class ScrollableSectionList extends HorizontalScrollView {
 			sectionHolder.setOnClickListener(mOnClickListener);
 			sectionHolder.setTag(i+1);
             mContainer.addView(sectionHolder, i+1);
+            if(i==sectionList.size()-1){
+                sectionHolder.setNextFocusRightId(-1);
+            }
 			//sectionHolder.setNextFocusUpId(R.id.list_view_search);
 		}
 		this.addView(mContainer);
@@ -400,6 +403,16 @@ public class ScrollableSectionList extends HorizontalScrollView {
     public boolean arrowScroll(int direction) {
     	    
     	   if(left==null||right==null){
+               View currentFocused = findFocus();
+               if(currentFocused!=null){
+                   int index = (Integer) currentFocused.getTag();
+                   if(index==mContainer.getChildCount()-1){
+                       View nextFocused = FocusFinder.getInstance().findNextFocus(this, currentFocused, direction);
+                       if(nextFocused==null){
+                           return true;
+                       }
+                   }
+               }
     	    	return super.arrowScroll(direction);
     	    }
 

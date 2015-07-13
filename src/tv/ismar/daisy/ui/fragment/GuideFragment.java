@@ -1,7 +1,23 @@
 package tv.ismar.daisy.ui.fragment;
 
-import android.app.Activity;
-import android.content.Context;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.client.DownloadClient;
+import tv.ismar.daisy.core.client.DownloadThreadPool;
+import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.data.HomePagerEntity;
+import tv.ismar.daisy.data.HomePagerEntity.Carousel;
+import tv.ismar.daisy.data.table.DownloadTable;
+import tv.ismar.daisy.ui.widget.DaisyViewContainer;
+import tv.ismar.daisy.utils.HardwareUtils;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -11,32 +27,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
+
 import com.activeandroid.query.Select;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.client.DownloadClient;
-import tv.ismar.daisy.core.client.DownloadThreadPool;
-import tv.ismar.daisy.core.client.IsmartvUrlClient;
-import tv.ismar.daisy.data.HomePagerEntity;
-import tv.ismar.daisy.data.HomePagerEntity.Carousel;
-import tv.ismar.daisy.data.HomePagerEntity.Poster;
-import tv.ismar.daisy.data.table.DownloadTable;
-import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
-import tv.ismar.daisy.ui.widget.DaisyViewContainer;
-import tv.ismar.daisy.utils.HardwareUtils;
-
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -140,9 +136,21 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
                 textView.setText(posters.get(i).getIntroduction());
                 textView.setVisibility(View.VISIBLE);
             }
-            itemView.setOnClickListener(ItemClickListener);
+            textView.setOnClickListener(ItemClickListener);
+            frameLayout.setOnClickListener(ItemClickListener);
+            textView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+				@Override
+				public void onFocusChange(View v, boolean hasFocus) {
+					if(hasFocus){
+						((FrameLayout) v.getParent()).setBackgroundResource(R.drawable.popup_bg_yellow);
+					}else{
+						((FrameLayout) v.getParent()).setBackgroundResource(R.drawable.launcher_selector);
+					}
+				}
+			});
             Picasso.with(context).load(posters.get(i).getCustom_image()).into(itemView);
-            itemView.setTag(posters.get(i));
+            textView.setTag(posters.get(i));
+            frameLayout.setTag(posters.get(i));
 //            itemView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
             imageViews.add(frameLayout);
         }
@@ -190,6 +198,7 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
             Picasso.with(context).load(carousels.get(i).getThumb_image()).into(itemView);
             itemView.setTag(i);
             itemView.setOnClickListener(ItemClickListener);
+            itemView.setTag(R.drawable.launcher_selector,carousels.get(i));
             allItem.add(itemView);
             arrayList.add(frameLayout);
         }

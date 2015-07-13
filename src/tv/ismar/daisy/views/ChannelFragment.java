@@ -95,6 +95,8 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
     private boolean isPortrait = false;
     private TopPanelView top_column_layout;
     ProgressBar percentage;
+    private ImageView left_shadow;
+    private ImageView right_shadow;
     public void setIsPOrtrait(boolean isPortrait){
         this.isPortrait = isPortrait;
     }
@@ -104,6 +106,10 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
         top_column_layout.setChannelName(mTitle);
         large_layout = fragmentView.findViewById(R.id.large_layout);
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
+        left_shadow = (ImageView) fragmentView.findViewById(R.id.left_shadow);
+        right_shadow = (ImageView)fragmentView.findViewById(R.id.right_shadow);
+        mHGridView.leftbtn = left_shadow;
+        mHGridView.rightbtn = right_shadow;
 		mHGridView.setOnItemClickListener(this);
 		mHGridView.setOnItemSelectedListener(this);
 		mHGridView.setOnScrollListener(this);
@@ -685,6 +691,9 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 			}
 			Log.d(TAG, currentLoadingTask.size() + " tasks in currentLoadingTask: ");
 		}
+        else{
+
+        }
 	}
 
 	@Override
@@ -771,6 +780,10 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		int percentage = (int) ((float)columnOfX / (float)totalColumnOfSectionX * 100f);
 		mScrollableSectionList.setPercentage(sectionIndex+1, percentage);
 		checkSectionChanged(sectionIndex+1);
+        if(percentage==100&&sectionIndex==mSectionList.size()-1){
+             // right_shadow.setVisibility(View.INVISIBLE);
+        }
+
 	}
 
 	@Override

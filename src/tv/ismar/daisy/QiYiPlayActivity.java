@@ -25,10 +25,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.media.AudioManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -140,7 +137,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 	private boolean live_video = false;
 	private List<Definition> mBitStreamList = new ArrayList<Definition>();
 	private boolean isfinish = false;
-	
+
 	private boolean[] avalibleRate = { false, false, false };
 	static {
 		DEFINITION_NAMES = new HashMap<Definition, String>();
@@ -421,10 +418,10 @@ public class QiYiPlayActivity extends VodMenuAction {
 		historyManager = DaisyUtils.getHistoryManager(this);
 		if (SimpleRestClient.isLogin()) {
 			favorite = favoriteManager.getFavoriteByUrl(itemUrl, "yes");
-            mHistory = historyManager.getHistoryByUrl(itemUrl,"yes");
+			mHistory = historyManager.getHistoryByUrl(itemUrl, "yes");
 		} else {
 			favorite = favoriteManager.getFavoriteByUrl(itemUrl, "no");
-            mHistory = historyManager.getHistoryByUrl(itemUrl,"no");
+			mHistory = historyManager.getHistoryByUrl(itemUrl, "no");
 		}
 
 		Quality quality = historyManager.getQuality();
@@ -536,6 +533,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 		@Override
 		public void onMovieStart() {
 			clipLength = mPlayer.getDuration();
+			 mPlayer.seekTo(currPosition);
 			showPanel();
 			// timeTaskStart();
 			checkTaskStart(500);
@@ -564,7 +562,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 				currQuality = 1;
 			} else {
 				currQuality = 2;
-			} 
+			}
 			// if (mHandler.hasMessages(MSG_INITQUALITYTITLE))
 			mHandler.removeMessages(MSG_INITQUALITYTITLE);
 			mHandler.sendEmptyMessage(MSG_INITQUALITYTITLE);
@@ -572,12 +570,14 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onPrepared() {
-			// mPlayer.seekTo(currPosition);
 			timeBar.setMax(mPlayer.getDuration());
 		}
 
 		@Override
 		public void onSeekComplete() {
+			isBuffer = false;
+			hideBuffer();
+			checkTaskStart(0);
 		}
 
 		@Override
@@ -832,8 +832,8 @@ public class QiYiPlayActivity extends VodMenuAction {
 	@Override
 	public void onPause() {
 		try {
-			createHistory(seekPostion);
-			addHistory(seekPostion);
+			createHistory(currPosition);
+			addHistory(currPosition);
 			checkTaskPause();
 			timeTaskPause();
 			removeAllHandler();
@@ -1427,7 +1427,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 			return true;
 		}
 
-
 		// 客服按钮
 		if (id == 20) {
 			startSakura();
@@ -1540,10 +1539,10 @@ public class QiYiPlayActivity extends VodMenuAction {
 			history.url = itemUrl;
 			history.sub_url = subItemUrl;
 			history.is_continue = isContinue;
-            if(!SimpleRestClient.isLogin())
-			    historyManager.addHistory(history,"no");
-            else
-                historyManager.addHistory(history,"yes");
+			if (!SimpleRestClient.isLogin())
+				historyManager.addHistory(history, "no");
+			else
+				historyManager.addHistory(history, "yes");
 		}
 	}
 
@@ -1592,20 +1591,18 @@ public class QiYiPlayActivity extends VodMenuAction {
 				currPosition = 0;
 				timeBar.setProgress(currPosition);
 			} else {
-				if (mPlayer.isPlaying()) {
-					if (isBuffer || bufferLayout.isShown()) {
-						isBuffer = false;
-						hideBuffer();
-					}
-					if (live_video && (isBuffer || bufferLayout.isShown())) {
-						isBuffer = false;
-						hideBuffer();
-					}
-					bufferText.setText(BUFFERING);
-					if (!isSeek && !isBuffer && !live_video) {
-						currPosition = mPlayer.getCurrentPosition();
-						timeBar.setProgress(currPosition);
-					}
+				if (isBuffer || bufferLayout.isShown()) {
+					isBuffer = false;
+					hideBuffer();
+				}
+				if (live_video && (isBuffer || bufferLayout.isShown())) {
+					isBuffer = false;
+					hideBuffer();
+				}
+				bufferText.setText(BUFFERING);
+				if (!isSeek && !isBuffer && !live_video) {
+					currPosition = mPlayer.getCurrentPosition();
+					timeBar.setProgress(currPosition);
 				}
 			}
 			mCheckHandler.postDelayed(checkStatus, 400);
@@ -1719,8 +1716,8 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 	private void startSakura() {
 		needOnresume = true;
-        Intent intent = new Intent();
-        intent.setAction("cn.ismar.sakura.launcher");
-        startActivity(intent);
+		Intent intent = new Intent();
+		intent.setAction("cn.ismar.sakura.launcher");
+		startActivity(intent);
 	}
 }

@@ -28,12 +28,14 @@
             labelimage:focustextsize="36sp" />
 
         <FrameLayout
+            android:id="@+id/film_post_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="@dimen/guide_padding"
             android:layout_weight="5.7"
             android:focusable="true"
+            android:clickable="true"
             android:background="@drawable/launcher_selector" >
 
             <tv.ismar.daisy.ui.widget.DaisyVideoView

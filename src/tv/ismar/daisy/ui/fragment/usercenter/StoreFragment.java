@@ -73,7 +73,6 @@ public class StoreFragment extends Fragment {
 								intent.setAction("tv.ismar.daisy.packageitem");
 								intent.putExtra("url", o.getUrl());
 								startActivity(intent);
-			                    mContext.startActivity(intent);
 							}
 						});
 			}

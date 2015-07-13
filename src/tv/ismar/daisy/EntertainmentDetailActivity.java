@@ -80,7 +80,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
         mChannel = getIntent().getStringExtra("channel");
         title = getIntent().getStringExtra("title");
         top_column_layout = (TopPanelView)findViewById(R.id.top_column_layout);
-        top_column_layout.setChannelName(mChannel);
+        top_column_layout.setChannelName(title);
         mDetailTitle = (TextView) findViewById(R.id.detail_title);
         mDetailIntro = (TextView)findViewById(R.id.detail_intro);
         mDetailPreviewImg = (AsyncImageView) findViewById(R.id.detail_preview_img);
@@ -355,7 +355,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
         else{
             intent.setClass(EntertainmentDetailActivity.this, DramaListActivity.class);
         }
-        intent.putExtra("channel",mChannel);
+        intent.putExtra("title",title);
         intent.putExtra("item", mItem);
         startActivityForResult(intent, 20);
     }
