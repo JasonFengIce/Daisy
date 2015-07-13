@@ -359,6 +359,8 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 					btnHotWords.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
+                            InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 							loadDialogShow();
 							// 这里继续写执行查询代码
 							new Thread(new Runnable() {

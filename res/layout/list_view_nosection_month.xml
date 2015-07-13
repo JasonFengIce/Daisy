@@ -38,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-    </LinearLayout>
+
     <Button
             android:background="@drawable/selector_search_left"
             android:id="@+id/arrow_left"
@@ -73,4 +73,5 @@
             android:visibility="invisible"
             android:layout_marginRight="16dip"
             android:layout_marginTop="411dip"/>
+        </LinearLayout>
 </LinearLayout>

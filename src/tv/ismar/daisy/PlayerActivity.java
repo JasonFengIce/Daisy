@@ -1147,7 +1147,7 @@ public class PlayerActivity extends VodMenuAction {
 				+ "&device_token=" + SimpleRestClient.device_token + "&offset="
 				+ offset;
 		if (subItem != null) {
-			params = params + "&subitem=" + subItem.item_pk;
+			params = params + "&subitem=" + subItem.pk;
 		} else {
 			params = params + "&item=" + item.item_pk;
 		}

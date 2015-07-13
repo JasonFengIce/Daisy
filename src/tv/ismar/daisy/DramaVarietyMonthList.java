@@ -80,17 +80,20 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
         top_column_layout.setChannelName(getIntent().getStringExtra("title"));
         mItem = (Item) bundle.get("item");
         Item[] subItems = mItem.subitems;
-
+        ArrayList<Item> list = null;
         for(Item item :subItems){
             int month = item.month;
-            ArrayList<Item> list = null;
             if(currentMonth!=month){
                 list = new ArrayList<Item>();
                 Button monthSection = new Button(this);
                 monthSection.setClickable(true);
                 monthSection.setText(month + "月");
                 monthSection.setTag(month + "");
+                monthSection.setTextSize(25);
+                monthSection.setFocusable(true);
+                monthSection.setTextColor(0xffbbbbbb);
                 monthSection.setBackgroundResource(R.drawable.month_btn_selector);
+                monthSection.setClickable(true);
                 monthSection.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -111,6 +114,7 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
                             mHGridView.setFadingEdgeLength(144);
                             mItemCollections.get(0).fillItems(0, lists);
                             mHGridAdapter.setList(mItemCollections);
+                            top_column_layout.setVisibility(View.VISIBLE);
                             if(arrow_left.isShown()){
                                 arrow_left.setVisibility(View.INVISIBLE);
                             }
