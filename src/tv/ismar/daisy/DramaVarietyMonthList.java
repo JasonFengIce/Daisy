@@ -55,6 +55,7 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
         month_section_layout = (LinearLayout) findViewById(R.id.month_section_layout);
         loadDialog = new LoadingDialog(this, getString(R.string.vod_loading));
         mHGridView = (HGridView)findViewById(R.id.h_grid_view);
+        mHGridView.setOnItemClickListener(this);
         arrow_left = (Button)findViewById(R.id.arrow_left);
         arrow_right = (Button)findViewById(R.id.arrow_right);
         mHGridView.leftbtn = arrow_left;
@@ -110,8 +111,6 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
                         if(mHGridAdapter.getCount()>0){
                             mHGridView.setAdapter(mHGridAdapter);
                             mHGridView.setFocusable(true);
-                            mHGridView.setHorizontalFadingEdgeEnabled(true);
-                            mHGridView.setFadingEdgeLength(144);
                             mItemCollections.get(0).fillItems(0, lists);
                             mHGridAdapter.setList(mItemCollections);
                             top_column_layout.setVisibility(View.VISIBLE);
@@ -121,7 +120,7 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
                             if(arrow_right.isShown()){
                                 arrow_right.setVisibility(View.INVISIBLE);
                             }
-                            if(mHGridAdapter.getCount()>15){
+                            if(mHGridAdapter.getCount()>8){
                                 arrow_right.setVisibility(View.VISIBLE);
                             }
                         }
@@ -131,6 +130,9 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
 
                 if(currentMonth>0){
                     params.leftMargin = 34;
+                }
+                if(currentMonth==0){
+                    monthSection.requestFocus();
                 }
                 month_section_layout.addView(monthSection,params);
                 currentMonth = month;

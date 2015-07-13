@@ -66,18 +66,20 @@
             android:visibility="gone"
             />
     </LinearLayout>
-
+<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <org.sakuratya.horizontal.ui.HGridView
         android:id="@+id/h_grid_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fadingEdge="horizontal"
-        android:fadingEdgeLength="@dimen/gridview_main_panel_fadingEdgeLength"
+        android:fadingEdgeLength="@dimen/gridview_main_panel_horizontalSpacing"
         sakura:horizontalSpacing="8dip"
         sakura:numRows="2"
-        sakura:rowHeight="439dip"
+        sakura:rowHeight="399dip"
         sakura:selectorDrawable="@drawable/vod_gv_selector"
-        sakura:verticalSpacing="0dip"
+        sakura:verticalSpacing="5dip"
         sakura:selectionLeftPadding="@dimen/HGridView_related_pselectionLeftPadding"
         sakura:selectionTopPadding="@dimen/HGridView_related_pselectionTopPadding"
         sakura:selectionRightPadding="@dimen/HGridView_related_pselectionRightPadding"
@@ -85,4 +87,27 @@
         android:layout_marginTop="-22dip"
         >
     </org.sakuratya.horizontal.ui.HGridView>
+
+    <ImageView
+            android:visibility="invisible"
+            android:clickable="true"
+            android:layout_alignBottom="@id/h_grid_view"
+            android:layout_alignTop="@id/h_grid_view"
+            android:layout_alignLeft="@id/h_grid_view"
+            android:id="@+id/left_shadow"
+            android:layout_width="144dip"
+            android:layout_height="match_parent"
+            android:background="@android:color/black"
+            android:alpha="0.4"/>
+    <ImageView
+            android:clickable="true"
+            android:layout_alignBottom="@id/h_grid_view"
+            android:layout_alignTop="@id/h_grid_view"
+            android:layout_alignRight="@id/h_grid_view"
+            android:id="@+id/right_shadow"
+            android:layout_width="144dip"
+            android:layout_height="match_parent"
+            android:background="@android:color/black"
+            android:alpha="0.4"/>
+</RelativeLayout>
 </LinearLayout>

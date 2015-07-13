@@ -472,7 +472,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	public void setSelection(int position) {
 		setNextSelectedPositionInt(position);
 		mLayoutMode = LAYOUT_SET_SELECTION;
-		layoutChildren();
+		layoutChildren();//getChildCount()
 			
 	}
 	public void jumpToSection(int sectionIndex) {
@@ -481,6 +481,14 @@ public class HGridView extends AdapterView<HGridAdapter> {
 			itemCount += mAdapter.getSectionCount(i);
 		}
 		int sectionFirstPosition = itemCount;
+        if(leftbtn!=null&&rightbtn!=null){
+            if(sectionIndex!=0){
+                leftbtn.setVisibility(View.VISIBLE);
+            }
+            else{
+                leftbtn.setVisibility(View.INVISIBLE);
+            }
+        }
 		setNextSelectedPositionInt(sectionFirstPosition);
 		mLayoutMode = LAYOUT_JUMP;
 		layoutChildren();
@@ -536,7 +544,11 @@ public class HGridView extends AdapterView<HGridAdapter> {
 						- firstLeft);
 
 				// Move everything right
-				offsetChildrenLeftAndRight(rightOffset);
+                if(leftbtn!=null&&rightbtn!=null){
+                    offsetChildrenLeftAndRight(0);
+                    rightbtn.setVisibility(View.INVISIBLE);
+                }
+
 				int firstCol = getColumn(mFirstPosition);
 				if (firstCol - 1 >= 0) {
 					// Fill columns that was opened before the mFirstPosition
@@ -547,7 +559,12 @@ public class HGridView extends AdapterView<HGridAdapter> {
 				}
 			}
 		}
+      else{
+            if(leftbtn!=null&&rightbtn!=null){
 
+                rightbtn.setVisibility(View.VISIBLE);
+            }
+        }
 	}
 
 	private void pinToRight(int childrenRight) {

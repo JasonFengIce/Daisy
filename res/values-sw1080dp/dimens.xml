@@ -475,7 +475,7 @@
     <dimen name="HGridView_related_pselectionLeftPadding">15dip</dimen>
     <dimen name="HGridView_related_pselectionTopPadding">20dip</dimen>
     <dimen name="HGridView_related_pselectionRightPadding">15dip</dimen>
-    <dimen name="HGridView_related_pselectionBottomPadding">-27dip</dimen>
+    <dimen name="HGridView_related_pselectionBottomPadding">-25dip</dimen>
 
 
     <dimen name="HGridView_label_lr_offset">19dip</dimen>

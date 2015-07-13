@@ -45,6 +45,7 @@ public class DramaVarietyNoMonthList extends BaseActivity implements AdapterView
         top_column_layout = (TopPanelView)findViewById(R.id.top_column_layout);
         loadDialog = new LoadingDialog(this, getString(R.string.vod_loading));
         mHGridView = (HGridView)findViewById(R.id.h_grid_view);
+        mHGridView.setOnItemClickListener(this);
         arrow_left = (Button)findViewById(R.id.arrow_left);
         arrow_right = (Button)findViewById(R.id.arrow_right);
         mHGridView.leftbtn = arrow_left;
@@ -82,14 +83,13 @@ public class DramaVarietyNoMonthList extends BaseActivity implements AdapterView
         mHGridAdapter = new HGridAdapterImpl(DramaVarietyNoMonthList.this, mItemCollections,false);
         mHGridAdapter.setTemplate(1);
         mHGridAdapter.setList(mItemCollections);
+        top_column_layout.setVisibility(View.VISIBLE);
         if(mHGridAdapter.getCount()>0){
             mHGridView.setAdapter(mHGridAdapter);
             mHGridView.setFocusable(true);
-            mHGridView.setHorizontalFadingEdgeEnabled(true);
-            mHGridView.setFadingEdgeLength(144);
             mItemCollections.get(0).fillItems(0, lists);
             mHGridAdapter.setList(mItemCollections);
-            if(mHGridAdapter.getCount()>15){
+            if(mHGridAdapter.getCount()>12){
                 arrow_right.setVisibility(View.VISIBLE);
             }
         }

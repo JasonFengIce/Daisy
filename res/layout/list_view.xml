@@ -65,7 +65,6 @@
             />
     </LinearLayout>
     <RelativeLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
     <org.sakuratya.horizontal.ui.HGridView
@@ -96,7 +95,7 @@
                 android:layout_width="144dip"
                 android:layout_height="match_parent"
                 android:background="@android:color/black"
-                android:alpha="0.1"/>
+                android:alpha="0.4"/>
         <ImageView
                 android:clickable="true"
                 android:layout_alignBottom="@id/h_grid_view"

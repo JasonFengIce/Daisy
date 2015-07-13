@@ -424,7 +424,12 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 						mHGridView.setAdapter(mHGridAdapter);
 						mHGridView.setFocusable(true);
 						mHGridView.setHorizontalFadingEdgeEnabled(true);
-						mHGridView.setFadingEdgeLength(144);
+                        if(isPortrait){
+                            mHGridView.setFadingEdgeLength(90);
+                        }
+                        else{
+                            mHGridView.setFadingEdgeLength(144);
+                        }
 						mHGridAdapter.hg = mHGridView;
 						int num_rows = mHGridView.getRows();
 						int totalColumnsOfSectionX = (int) FloatMath.ceil((float)mItemCollections.get(nextSection).count / (float) num_rows);

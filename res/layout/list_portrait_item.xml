@@ -8,7 +8,7 @@
     <tv.ismar.daisy.views.LabelImageView
         xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
         android:layout_width="254dip"
-        android:layout_height="392dip"
+        android:layout_height="355dip"
         android:id="@+id/list_item_preview_img"
         android:background="@drawable/list_item_preview_bg"
         android:layout_marginLeft="@dimen/gridview_item_image_marginright"
@@ -29,7 +29,6 @@
         android:layout_height="match_parent"
         android:singleLine="true"
         android:ellipsize="marquee"
-        android:gravity="center_horizontal"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/list_item_preview_img"
         android:textSize="@dimen/gridview_item_title_textsize"
