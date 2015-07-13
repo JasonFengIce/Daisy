@@ -2,6 +2,8 @@ package tv.ismar.daisy.views;
 
 import java.io.InputStream;
 
+import org.apache.commons.lang3.StringUtils;
+
 import tv.ismar.daisy.R;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -32,7 +34,7 @@ public class LabelImageView extends AsyncImageView {
 	}
 
 	public void setFocustitle(String focustitle) {
-		if(focustitle.length() >8)
+		if((StringUtils.isNotEmpty(focustitle)) && focustitle.length() >8)
 			focustitle = focustitle.substring(0, 8);
 		this.focustitle = focustitle;
 	}
@@ -120,7 +122,7 @@ public class LabelImageView extends AsyncImageView {
 		}
 		// 绘制看点背景
 		paint.setColor(Color.WHITE);
-		if (focustitle.length() > 0) {
+		if (StringUtils.isNotEmpty(focustitle)&&focustitle.length() > 0) {
 			paint.setColor(focusbackground);
 			canvas.drawRect(new Rect(getPaddingLeft(), (int)(focuspaddingtop*height), width
 					- paddingright, height - paddingBottom), paint);

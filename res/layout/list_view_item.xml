@@ -6,7 +6,8 @@
                 android:id="@+id/list_item_layout"
     >
 
-    <tv.ismar.daisy.views.AsyncImageView
+    <tv.ismar.daisy.views.LabelImageView
+        xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
         android:layout_width="336dp"
         android:layout_height="189dp"
         android:id="@+id/list_item_preview_img"
@@ -19,6 +20,9 @@
         android:paddingBottom="@dimen/gridview_item_image_PaddingB"
         android:paddingLeft="@dimen/gridview_item_image_PaddingL"
         android:paddingRight="@dimen/gridview_item_image_PaddingR"
+        labelimage:focuspaddingtop="0.90"
+        labelimage:focustextsize="30sp"
+        labelimage:focusbackground="#b3303030"
         />
 
     <TextView
