@@ -8,19 +8,21 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="2.06"
         android:layout_marginBottom="13dp"
         android:orientation="horizontal" >
 
         <RelativeLayout
             android:id="@+id/vaiety_lefttop"
-            android:layout_width="918dp"
-            android:layout_height="516dp" >
+            android:layout_width="915dp"
+            android:layout_height="match_parent" >
 
             <tv.ismar.daisy.views.AsyncImageView
                 android:id="@+id/vaiety_post"
                 android:layout_width="918dp"
-                android:layout_height="516dp"
+                android:layout_height="match_parent"
+                android:paddingLeft="2dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg" />
 
@@ -184,7 +186,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="horizontal" >
 
         <RelativeLayout
@@ -298,9 +301,9 @@
         </RelativeLayout>
 
     <include layout="@layout/toppagelistmorebutton"
-                android:layout_width="332dp"
+                android:layout_width="330dp"
                 android:layout_height="189dp"
-                android:layout_marginLeft="29dp"    
+                android:layout_marginLeft="29dp"
          />
     </LinearLayout>
 

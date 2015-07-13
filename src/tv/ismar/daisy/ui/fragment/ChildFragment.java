@@ -185,6 +185,8 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
         for (int i = 0; i < 3; i++) {
             indicatorImgs[i].setTag(i);
             indicatorImgs[i].setOnFocusChangeListener(itemFocusChangeListener);
+            indicatorImgs[i].setOnClickListener(ItemClickListener);
+            indicatorImgs[i].setTag(R.drawable.launcher_selector, carousels.get(i));
             Picasso.with(context).load(carousels.get(i).getThumb_image()).into(indicatorImgs[i]);
         }
 

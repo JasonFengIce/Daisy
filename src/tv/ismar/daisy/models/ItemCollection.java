@@ -55,6 +55,7 @@ public class ItemCollection implements Serializable {
 			hasFilledValidItem = new boolean[num_pages];
 		}
 		for(int i=0; i < itemList.size(); i++) {
+			itemList.get(i).section = slug;
 			objects.put(i + page*NUM_PER_PAGE , itemList.get(i));
 		}
 		hasFilledValidItem[page] = true;
