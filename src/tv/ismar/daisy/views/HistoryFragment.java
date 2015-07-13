@@ -1,38 +1,5 @@
 package tv.ismar.daisy.views;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
-import org.sakuratya.horizontal.ui.HGridView;
-import org.sakuratya.horizontal.ui.ZGridView;
-
-import tv.ismar.daisy.ChannelListActivity;
-import tv.ismar.daisy.ChannelListActivity.OnMenuToggleListener;
-import tv.ismar.daisy.PersonCenterActivity;
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.SearchActivity;
-import tv.ismar.daisy.adapter.RecommecdItemAdapter;
-import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.NetworkUtils;
-import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
-import tv.ismar.daisy.exception.ItemOfflineException;
-import tv.ismar.daisy.exception.NetworkException;
-import tv.ismar.daisy.models.History;
-import tv.ismar.daisy.models.Item;
-import tv.ismar.daisy.models.ItemCollection;
-import tv.ismar.daisy.models.SectionList;
-import tv.ismar.daisy.models.VideoEntity;
-import tv.ismar.daisy.player.InitPlayerTool;
-import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
-import tv.ismar.daisy.views.MenuFragment.MenuItem;
-import tv.ismar.daisy.views.MenuFragment.OnMenuItemClickedListener;
-import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -52,9 +19,32 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
+import org.sakuratya.horizontal.ui.HGridView;
+import org.sakuratya.horizontal.ui.ZGridView;
+import tv.ismar.daisy.ChannelListActivity;
+import tv.ismar.daisy.ChannelListActivity.OnMenuToggleListener;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.SearchActivity;
+import tv.ismar.daisy.adapter.RecommecdItemAdapter;
+import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.NetworkUtils;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
+import tv.ismar.daisy.exception.ItemOfflineException;
+import tv.ismar.daisy.exception.NetworkException;
+import tv.ismar.daisy.models.*;
+import tv.ismar.daisy.player.InitPlayerTool;
+import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
+import tv.ismar.daisy.ui.activity.UserCenterActivity;
+import tv.ismar.daisy.views.MenuFragment.MenuItem;
+import tv.ismar.daisy.views.MenuFragment.OnMenuItemClickedListener;
+import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class HistoryFragment extends Fragment implements OnSectionSelectChangedListener,
 														OnMenuToggleListener,
@@ -771,7 +761,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		    }
 
 		   private void startPersoncenter(){
-			   Intent intent = new Intent(getActivity(),PersonCenterActivity.class);
+			   Intent intent = new Intent(getActivity(),UserCenterActivity.class);
 			   startActivity(intent);
 		   }
 }
