@@ -89,8 +89,6 @@
                     android:background="@drawable/launcher_selector"
                     android:focusable="true"
                     labelimage:focusbackground="#b3303030"
-                    labelimage:focuspaddingtop="194dp"
-                    labelimage:focustextpaddingtop="25dp"
                     labelimage:focustextsize="18sp" />
 
                 <TextView
@@ -118,8 +116,6 @@
                     android:focusable="true"
                     android:src="@drawable/list_item_preview_bg"
                     labelimage:focusbackground="#b3303030"
-                    labelimage:focuspaddingtop="194dp"
-                    labelimage:focustextpaddingtop="25dp"
                     labelimage:focustextsize="18sp" />
 
                 <TextView
@@ -146,8 +142,6 @@
                     android:focusable="true"
                     android:src="@drawable/list_item_preview_bg"
                     labelimage:focusbackground="#b3303030"
-                    labelimage:focuspaddingtop="194dp"
-                    labelimage:focustextpaddingtop="25dp"
                     labelimage:focustextsize="18sp" />
 
                 <TextView
@@ -176,8 +170,6 @@
                     android:focusable="true"
                     android:src="@drawable/list_item_preview_bg"
                     labelimage:focusbackground="#b3303030"
-                    labelimage:focuspaddingtop="194dp"
-                    labelimage:focustextpaddingtop="25dp"
                     labelimage:focustextsize="18sp" />
 
                 <TextView
@@ -210,8 +202,6 @@
                 android:focusable="true"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
-                labelimage:focuspaddingtop="156dp"
-                labelimage:focustextpaddingtop="25dp"
                 labelimage:focustextsize="18sp" />
 
             <TextView
@@ -240,8 +230,6 @@
                 android:focusable="true"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
-                labelimage:focuspaddingtop="156dp"
-                labelimage:focustextpaddingtop="25dp"
                 labelimage:focustextsize="18sp" />
 
             <TextView
@@ -269,8 +257,6 @@
                 android:focusable="true"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
-                labelimage:focuspaddingtop="156dp"
-                labelimage:focustextpaddingtop="25dp"
                 labelimage:focustextsize="18sp" />
 
             <TextView
@@ -300,8 +286,6 @@
                 android:focusable="true"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
-                labelimage:focuspaddingtop="156dp"
-                labelimage:focustextpaddingtop="25dp"
                 labelimage:focustextsize="18sp" />
 
             <TextView

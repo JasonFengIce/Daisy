@@ -23,8 +23,7 @@
             android:focusable="true"
             android:src="@drawable/list_item_preview_bg"
             labelimage:focusbackground="#b3303030"
-            labelimage:focuspaddingtop="453dp"
-            labelimage:focustextpaddingtop="34dp"
+            labelimage:focuspaddingtop="0.89"
             labelimage:focustextsize="36sp" />
 
         <FrameLayout
