@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.gson.JsonSyntaxException;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -355,7 +356,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
         else{
             intent.setClass(EntertainmentDetailActivity.this, DramaListActivity.class);
         }
-        intent.putExtra("title",title);
+        intent.putExtra("title", title);
         intent.putExtra("item", mItem);
         startActivityForResult(intent, 20);
     }
@@ -790,7 +791,12 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
 //                related_price_txt.setText("￥" + mRelatedItem[i].expense.price);
 //            }
             imgView.setTag(mRelatedItem[i].adlet_url);
-            imgView.setUrl(mRelatedItem[i].adlet_url);
+            if(StringUtils.isNotEmpty(mRelatedItem[i].list_url)){
+                imgView.setFocustitle(mRelatedItem[i].list_url);
+            }
+            else{
+                imgView.setUrl(mRelatedItem[i].adlet_url);
+            }
             if(mRelatedItem[i].focus!=null)
               imgView.setFocustitle(mRelatedItem[i].focus);
             titleView.setText(mRelatedItem[i].title);

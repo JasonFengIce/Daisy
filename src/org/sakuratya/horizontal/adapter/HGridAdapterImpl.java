@@ -1,5 +1,17 @@
 package org.sakuratya.horizontal.adapter;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
+import org.apache.commons.lang3.StringUtils;
+import org.sakuratya.horizontal.ui.HGridView;
+
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.models.ItemCollection;
+import tv.ismar.daisy.views.AsyncImageView;
+import tv.ismar.daisy.views.AsyncImageView.OnImageViewLoadListener;
+import tv.ismar.daisy.views.LabelImageView;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
@@ -8,16 +20,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import org.apache.commons.lang3.StringUtils;
-import org.sakuratya.horizontal.ui.HGridView;
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.models.Item;
-import tv.ismar.daisy.models.ItemCollection;
-import tv.ismar.daisy.views.AsyncImageView;
-import tv.ismar.daisy.views.AsyncImageView.OnImageViewLoadListener;
-
-import java.util.ArrayList;
-import java.util.HashSet;
 
 public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements OnImageViewLoadListener {
 	
@@ -108,7 +110,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.list_portrait_item,null);
 			holder = new Holder();
 			holder.title = (TextView) convertView.findViewById(R.id.list_item_title);
-			holder.previewImage = (AsyncImageView) convertView.findViewById(R.id.list_item_preview_img);
+			holder.previewImage = (LabelImageView) convertView.findViewById(R.id.list_item_preview_img);
 			holder.qualityLabel = (ImageView) convertView.findViewById(R.id.list_item_quality_label);
 			holder.listLayout = (RelativeLayout)convertView.findViewById(R.id.list_item_layout);
 			holder.price = (TextView)convertView.findViewById(R.id.expense_txt);
@@ -187,7 +189,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 					} else {
 						holder.previewImage.setUrl(item.adlet_url);
 					}
-
+					holder.previewImage.setFocustitle(item.focus);
                     if(item.bean_score>0){
                         holder.ItemBeanScore.setVisibility(View.VISIBLE);
                         holder.ItemBeanScore.setText(item.bean_score+"");
@@ -217,7 +219,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 	}
 
 	static class Holder {
-		AsyncImageView previewImage;
+		LabelImageView previewImage;
 		TextView title;
 		TextView price;
 		ImageView qualityLabel;

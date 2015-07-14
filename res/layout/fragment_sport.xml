@@ -30,8 +30,8 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
-                labelimage:focuspaddingtop="136dp"
-                labelimage:focustextpaddingtop="26dp"
+                labelimage:focuspaddingtop="70"
+                labelimage:focustextpaddingtop="75"
                 labelimage:focustextsize="18sp" />
 
             <tv.ismar.daisy.views.LabelImageView
@@ -44,8 +44,8 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
-                labelimage:focuspaddingtop="136dp"
-                labelimage:focustextpaddingtop="26dp"
+                labelimage:focuspaddingtop="0.8"
+                labelimage:focustextpaddingtop="0.88"
                 labelimage:focustextsize="18sp" />
 
             <tv.ismar.daisy.views.LabelImageView
@@ -58,8 +58,8 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
-                labelimage:focuspaddingtop="136dp"
-                labelimage:focustextpaddingtop="26dp"
+                labelimage:focuspaddingtop="0.8"
+                labelimage:focustextpaddingtop="0.88"
                 labelimage:focustextsize="18sp" />
         </LinearLayout>
 
@@ -78,8 +78,8 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
-                labelimage:focuspaddingtop="136dp"
-                labelimage:focustextpaddingtop="28dp"
+                labelimage:focuspaddingtop="70"
+                labelimage:focustextpaddingtop="75"
                 labelimage:focustextsize="18sp" />
 
             <TextView
@@ -150,8 +150,8 @@
                 android:focusable="true"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
-                labelimage:focuspaddingtop="156dp"
-                labelimage:focustextpaddingtop="25dp"
+                labelimage:focuspaddingtop="70"
+                labelimage:focustextpaddingtop="75"
                 labelimage:focustextsize="18sp" />
 
             <TextView
@@ -179,8 +179,8 @@
                 android:focusable="true"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
-                labelimage:focuspaddingtop="156dp"
-                labelimage:focustextpaddingtop="25dp"
+                labelimage:focuspaddingtop="70"
+                labelimage:focustextpaddingtop="75"
                 labelimage:focustextsize="18sp" />
 
             <TextView
@@ -208,8 +208,8 @@
                 android:focusable="true"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
-                labelimage:focuspaddingtop="156dp"
-                labelimage:focustextpaddingtop="25dp"
+                labelimage:focuspaddingtop="70"
+                labelimage:focustextpaddingtop="75"
                 labelimage:focustextsize="18sp" />
 
             <TextView
@@ -237,8 +237,8 @@
                 android:focusable="true"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
-                labelimage:focuspaddingtop="156dp"
-                labelimage:focustextpaddingtop="25dp"
+                labelimage:focuspaddingtop="70"
+                labelimage:focustextpaddingtop="75"
                 labelimage:focustextsize="18sp" />
 
             <TextView

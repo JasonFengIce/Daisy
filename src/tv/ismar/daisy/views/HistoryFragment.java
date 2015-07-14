@@ -604,6 +604,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 						reset();
 					}
 					else{
+                        DaisyUtils.getHistoryManager(getActivity()).deleteAll("yes");
 						EmptyAllHistory();
 					}
 				}

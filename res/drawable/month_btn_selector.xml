@@ -3,7 +3,8 @@
 
 <!--     <item android:drawable="@color/order_test2" android:color="#ffffff" android:state_pressed="true"/> -->
 
-    <item android:drawable="@color/autocomplete_back_color_selector" android:state_hovered="true"/>
+    <item android:drawable="@drawable/month_btn_pressed" android:state_hovered="true"/>
     <item android:drawable="@drawable/month_btn_pressed" android:state_focused="true"/>
+    <item android:drawable="@drawable/month_btn_pressed" android:state_pressed="true"/>
     <item android:drawable="@drawable/month_btn_normal" />
 </selector>

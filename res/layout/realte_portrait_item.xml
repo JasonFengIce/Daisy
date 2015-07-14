@@ -20,8 +20,8 @@
         android:paddingLeft="3dip"
         android:paddingRight="3dip"
         labelimage:focusbackground="#b3303030"
-        labelimage:focuspaddingtop="318dp"
-        labelimage:focustextpaddingtop="28dp"
+        labelimage:focuspaddingtop="0.90"
+        labelimage:focustextpaddingtop="0.97"
         labelimage:focustextsize="24sp"
         android:focusable="true"/>
 

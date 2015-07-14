@@ -41,20 +41,18 @@
         android:id="@+id/h_grid_view"
         android:layout_width="1719dip"
         android:layout_height="match_parent"
-        android:fadingEdge="horizontal"
-        android:fadingEdgeLength="@dimen/gridview_main_panel_fadingEdgeLength"
-        sakura:horizontalSpacing="125dip"
+        sakura:horizontalSpacing="90dip"
         sakura:numRows="3"
-        sakura:rowHeight="@dimen/gridview_main_panel_rowHeight"
+        sakura:rowHeight="252dip"
         sakura:selectorDrawable="@drawable/vod_gv_selector"
         sakura:verticalSpacing="40dip"
         sakura:selectionLeftPadding="@dimen/HGridView_related_selectionLeftPadding"
         sakura:selectionTopPadding="@dimen/HGridView_related_selectionTopPadding"
         sakura:selectionRightPadding="@dimen/HGridView_related_selectionRightPadding"
-        sakura:selectionBottomPadding="@dimen/HGridView_related_selectionBottomPadding"
+        sakura:selectionBottomPadding="-40dip"
         android:layout_marginTop="10dip"
-        android:layout_marginLeft="100dip"
-        android:layout_marginRight="100dip">
+        android:layout_marginLeft="23dip"
+        android:layout_marginRight="23dip">
     </org.sakuratya.horizontal.ui.HGridView>
 
 

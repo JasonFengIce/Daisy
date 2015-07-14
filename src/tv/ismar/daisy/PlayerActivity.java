@@ -161,8 +161,8 @@ public class PlayerActivity extends VodMenuAction {
 	public void onResume() {
 		super.onResume();
 		if (needOnresume) {
-			// isBuffer = true;
-			// showBuffer();
+			 isBuffer = true;
+			 showBuffer();
 			new initPlayTask().execute();
 			needOnresume = false;
 		}
@@ -296,7 +296,7 @@ public class PlayerActivity extends VodMenuAction {
 		if (mVideoView != null) {
 			mVideoView.setAlpha(0);
 		}
-		// showBuffer();
+		 showBuffer();
 		Log.d(TAG, " initClipInfo ");
 		Intent intent = getIntent();
 		if (intent != null) {
@@ -570,14 +570,15 @@ public class PlayerActivity extends VodMenuAction {
 					genresBuffer.append("}");
 			}
 		}
-		String params = "channel=" + "chinesemovie" + "&section=" + "xingzhen"
-				+ "&itemid=" + item.pk + "&topic=" + "3" + "&source="
-				+ "related" + "&genre=" + genresBuffer.toString()
+		String params = "channel=" + "chinesemovie" + "&section="
+				+ item.section + "&itemid=" + item.pk + "&topic=" + ""
+				+ "&source=" + "related" + "&genre=" + genresBuffer.toString()
 				+ "&content_model=" + item.content_model + "&director="
 				+ directorsBuffer.toString() + "&actor="
 				+ actorsBuffer.toString() + "&clipid=" + item.clip == null ? ""
 				: item.clip.pk + "&live_video=" + item.live_video + "&vendor="
-						+ item.vendor + "&expense=" + "true" + "&length="
+						+ item.vendor + "&expense="
+						+ (item.expense == null ? false : true) + "&length="
 						+ item.clip.length;
 		new GetAdDataTask().execute(adpid, params);
 	}
@@ -1147,7 +1148,7 @@ public class PlayerActivity extends VodMenuAction {
 				+ "&device_token=" + SimpleRestClient.device_token + "&offset="
 				+ offset;
 		if (subItem != null) {
-			params = params + "&subitem=" + subItem.item_pk;
+			params = params + "&subitem=" + subItem.pk;
 		} else {
 			params = params + "&item=" + item.item_pk;
 		}
@@ -1194,7 +1195,7 @@ public class PlayerActivity extends VodMenuAction {
 	private void pauseItem() {
 		if (paused || mVideoView == null)
 			return;
-		// //showBuffer();
+		 //showBuffer();
 		Log.d(TAG, "pause");
 		hideBuffer();
 		mVideoView.pause();

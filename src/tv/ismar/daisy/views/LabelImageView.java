@@ -2,6 +2,8 @@ package tv.ismar.daisy.views;
 
 import java.io.InputStream;
 
+import org.apache.commons.lang3.StringUtils;
+
 import tv.ismar.daisy.R;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -17,9 +19,10 @@ public class LabelImageView extends AsyncImageView {
 
 	private String focustitle = "";
 	private int focustitlesize;
-	private int focuspaddingtop;
+	private float focuspaddingtop;
 	private int focusbackground;
-	private int focustitlepaddingtop;
+	private float focustitlepaddingtop;
+
 	private int modetype;
 
 	public void setModetype(int modetype) {
@@ -31,7 +34,7 @@ public class LabelImageView extends AsyncImageView {
 	}
 
 	public void setFocustitle(String focustitle) {
-		if(focustitle.length() >8)
+		if((StringUtils.isNotEmpty(focustitle)) && focustitle.length() >8)
 			focustitle = focustitle.substring(0, 8);
 		this.focustitle = focustitle;
 	}
@@ -56,14 +59,14 @@ public class LabelImageView extends AsyncImageView {
 		super(context, attrs, defStyle);
 		TypedArray a = context.obtainStyledAttributes(attrs,
 				R.styleable.LabelImageView);
-		focuspaddingtop = a.getDimensionPixelOffset(
-				R.styleable.LabelImageView_focuspaddingtop, 0);
+		focuspaddingtop = a.getFloat(
+				R.styleable.LabelImageView_focuspaddingtop, 0.85f);
 		focustitlesize = a.getDimensionPixelOffset(
 				R.styleable.LabelImageView_focustextsize, 0);
 		focusbackground = a.getColor(
 				R.styleable.LabelImageView_focusbackground, 0);
-		focustitlepaddingtop = a.getDimensionPixelOffset(
-				R.styleable.LabelImageView_focustextpaddingtop, 0);
+		focustitlepaddingtop = a.getFloat(
+				R.styleable.LabelImageView_focustextpaddingtop, 0.97f);
 		a.recycle();
 
 	}
@@ -119,17 +122,18 @@ public class LabelImageView extends AsyncImageView {
 		}
 		// 绘制看点背景
 		paint.setColor(Color.WHITE);
-		if (focustitle.length() > 0) {
+		if (StringUtils.isNotEmpty(focustitle)&&focustitle.length() > 0) {
 			paint.setColor(focusbackground);
-			canvas.drawRect(new Rect(getPaddingLeft(), focuspaddingtop, width
+			canvas.drawRect(new Rect(getPaddingLeft(), (int)(focuspaddingtop*height), width
 					- paddingright, height - paddingBottom), paint);
 			// 看点内容
 			paint.setColor(Color.WHITE);
 			paint.setTextSize(focustitlesize);
+//			FontMetrics fm = paint.getFontMetrics();
+//			int focusTextHeight = (int)Math.ceil(fm.descent - fm.ascent);
 			float focuswidth = paint.measureText(focustitle);
 			int xfocus = (int) ((width - focuswidth) / 2);
-			canvas.drawText(focustitle, xfocus, focuspaddingtop
-					+ focustitlepaddingtop, paint);
+			canvas.drawText(focustitle, xfocus, (int)(focustitlepaddingtop*height), paint);
 		}
 	}
 }

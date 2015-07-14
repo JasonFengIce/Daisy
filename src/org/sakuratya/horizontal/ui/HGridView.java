@@ -472,7 +472,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	public void setSelection(int position) {
 		setNextSelectedPositionInt(position);
 		mLayoutMode = LAYOUT_SET_SELECTION;
-		layoutChildren();
+		layoutChildren();//getChildCount()
 			
 	}
 	public void jumpToSection(int sectionIndex) {
@@ -481,6 +481,14 @@ public class HGridView extends AdapterView<HGridAdapter> {
 			itemCount += mAdapter.getSectionCount(i);
 		}
 		int sectionFirstPosition = itemCount;
+        if(leftbtn!=null&&rightbtn!=null){
+            if(sectionIndex!=0){
+                leftbtn.setVisibility(View.VISIBLE);
+            }
+            else{
+                leftbtn.setVisibility(View.INVISIBLE);
+            }
+        }
 		setNextSelectedPositionInt(sectionFirstPosition);
 		mLayoutMode = LAYOUT_JUMP;
 		layoutChildren();
@@ -536,7 +544,11 @@ public class HGridView extends AdapterView<HGridAdapter> {
 						- firstLeft);
 
 				// Move everything right
-				offsetChildrenLeftAndRight(rightOffset);
+                if(leftbtn!=null&&rightbtn!=null){
+                    offsetChildrenLeftAndRight(0);
+                    rightbtn.setVisibility(View.INVISIBLE);
+                }
+
 				int firstCol = getColumn(mFirstPosition);
 				if (firstCol - 1 >= 0) {
 					// Fill columns that was opened before the mFirstPosition
@@ -547,7 +559,12 @@ public class HGridView extends AdapterView<HGridAdapter> {
 				}
 			}
 		}
+      else{
+            if(leftbtn!=null&&rightbtn!=null){
 
+                rightbtn.setVisibility(View.VISIBLE);
+            }
+        }
 	}
 
 	private void pinToRight(int childrenRight) {
@@ -728,8 +745,14 @@ public class HGridView extends AdapterView<HGridAdapter> {
 
 			int offset = Math.min(spaceLeft, spaceRight);
 			// Now offset the selected item to get it into view.
-            if(rightbtn!=null)
-            rightbtn.setVisibility(View.VISIBLE);
+            if(rightbtn!=null&&leftbtn!=null){
+                rightbtn.setVisibility(View.VISIBLE);
+                count--;
+                if(count==0){
+                 leftbtn.setVisibility(View.INVISIBLE);
+                }
+            }
+
 			offsetChildrenLeftAndRight(offset);
 		}
 //        else{
@@ -749,12 +772,17 @@ public class HGridView extends AdapterView<HGridAdapter> {
 
 			int offset = Math.min(spaceLeft, spaceRight);
 			// Now offset the selected item to get it into view.
-            if(leftbtn!=null)
-            leftbtn.setVisibility(View.VISIBLE);
+            if(leftbtn!=null&&rightbtn!=null){
+                leftbtn.setVisibility(View.VISIBLE);
+                count++;
+            }
+            Log.i("zxcvbnm","offset=="+offset +"\\spaceLeft=="+spaceLeft+"\\spaceRight="+
+                    spaceRight+"\\leftSelectionPixel=="+leftSelectionPixel+"\\rightSelectionPixel="
+                    +rightSelectionPixel+"\\childInSelectedRow.getRight()=="+childInSelectedRow.getRight());
 			offsetChildrenLeftAndRight(-offset);
 		}
 	}
-
+ private int count=0;
 	private View moveSelection(int delta, int childrenLeft, int childrenRight) {
 		final int fadingEdgeLength = getHorizontalFadingEdgeLength();
 		final int nextSelectedPosition = mNextSelectedPosition;
@@ -814,6 +842,9 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		if (columnRight <= mMaxColumn) {
 			fillRight(columnRight, referenceView.getRight() + horizontalSpacing);
 		}
+        if(columnRight>mMaxColumn){
+            rightbtn.setVisibility(View.INVISIBLE);
+        }
 		return selectedView;
 	}
 
@@ -851,7 +882,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	private int getRightSelectionPixel(int childrenRight, int fadingEdgeLength,
 			int col) {
 		int rightSelectionPixel = childrenRight;
-		if (col < mMaxColumn) {
+		if (col <= mMaxColumn) {
 			rightSelectionPixel -= fadingEdgeLength;
 		}
 		return rightSelectionPixel;
@@ -1411,7 +1442,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 
 //			if(leftbtn!=null&&rightbtn!=null)
 //			if(mFirstPosition==0){
-//				leftbtn.setVisibility(View.INVISIBLE);
+//				//leftbtn.setVisibility(View.INVISIBLE);
 //				}
 //				else if(mFirstPosition>0&&mFirstPosition+getChildCount()<mAdapter.getCount()){
 //					leftbtn.setVisibility(View.VISIBLE);
