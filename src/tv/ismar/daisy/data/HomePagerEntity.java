@@ -34,8 +34,17 @@ public class HomePagerEntity {
         private String introduction;
         private String thumb_image;
         private String model_name;
+        private String content_model;
 
-        public String getVideo_image() {
+        public String getContent_model() {
+			return content_model;
+		}
+
+		public void setContent_model(String content_model) {
+			this.content_model = content_model;
+		}
+
+		public String getVideo_image() {
             return video_image;
         }
 
@@ -109,8 +118,16 @@ public class HomePagerEntity {
         private String poster_url;
         private String model_name;
         private String custom_image;
+        private String content_model;
+        public String getContent_model() {
+			return content_model;
+		}
 
-        public String getVertical_url() {
+		public void setContent_model(String content_model) {
+			this.content_model = content_model;
+		}
+
+		public String getVertical_url() {
             return vertical_url;
         }
 

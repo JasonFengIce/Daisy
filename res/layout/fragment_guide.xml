@@ -11,7 +11,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="498dp"
         >
 
         <VideoView
@@ -27,7 +27,7 @@
         <tv.ismar.daisy.ui.widget.DaisyViewContainer
             android:id="@+id/carousel_layout"
             android:orientation="vertical"
-            app:vertical_spacing="3dp"
+            app:vertical_spacing="0dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
         </tv.ismar.daisy.ui.widget.DaisyViewContainer>
@@ -36,11 +36,10 @@
 
     <tv.ismar.daisy.ui.widget.DaisyViewContainer
         android:paddingTop="@dimen/guide_padding"
-        android:paddingBottom="@dimen/guide_padding"
         android:orientation="horizontal"
         android:id="@+id/recommend_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="283dp"
         app:horizontal_spacing="@dimen/guide_recommend_item_spacing"
         >
     </tv.ismar.daisy.ui.widget.DaisyViewContainer>

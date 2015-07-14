@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/guide_recommend_item_width"
     android:layout_height="@dimen/guide_recommend_item_height"
+    android:layout_marginLeft="25dp"
     android:background="@drawable/launcher_selector"
     android:clickable="true"
     android:focusable="false">
@@ -9,7 +10,9 @@
     <ImageView
         android:id="@+id/poster_image"
         android:layout_width="@dimen/guide_recommend_item_width"
-        android:layout_height="@dimen/guide_recommend_item_height" />
+        android:layout_height="@dimen/guide_recommend_item_height"
+        android:scaleType="fitXY"
+         />
 
     <TextView
         android:id="@+id/poster_title"
@@ -23,6 +26,7 @@
         android:focusable="true"
         android:singleLine="true"
         android:textSize="36sp"
+        android:paddingLeft="3dp"
         android:visibility="gone" />
 
 </FrameLayout>

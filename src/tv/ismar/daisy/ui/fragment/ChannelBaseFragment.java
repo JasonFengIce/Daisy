@@ -69,6 +69,10 @@ public class ChannelBaseFragment extends Fragment {
 				context.startActivity(intent);
 			} else {
 				if ("item".equals(contentMode)) {
+					if ("".equals("")) {
+						intent.setClassName("tv.ismar.daisy",
+								"tv.ismar.daisy.ItemDetailActivity");
+					}
 					intent.setClassName("tv.ismar.daisy",
 							"tv.ismar.daisy.ItemDetailActivity");
 					intent.putExtra("url", url);
@@ -86,7 +90,8 @@ public class ChannelBaseFragment extends Fragment {
 							"tv.ismar.daisy.PackageListDetailActivity");
 					context.startActivity(intent);
 				} else if ("package".equals(contentMode)) {
-
+					intent.setAction("tv.ismar.daisy.packageitem");
+					intent.putExtra("url", url);
 				} else if ("clip".equals(contentMode)) {
 					InitPlayerTool tool = new InitPlayerTool(context);
 					tool.initClipInfo(url, InitPlayerTool.FLAG_URL);

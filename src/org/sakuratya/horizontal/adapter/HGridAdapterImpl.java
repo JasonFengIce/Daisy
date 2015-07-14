@@ -186,10 +186,10 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
                     holder.title.setText(item.title);
 					if (isPortrait && StringUtils.isNotEmpty(item.list_url)) {
 						holder.previewImage.setUrl(item.list_url);
+						holder.previewImage.setFocustitle(item.focus);
 					} else {
 						holder.previewImage.setUrl(item.adlet_url);
 					}
-					holder.previewImage.setFocustitle(item.focus);
                     if(item.bean_score>0){
                         holder.ItemBeanScore.setVisibility(View.VISIBLE);
                         holder.ItemBeanScore.setText(item.bean_score+"");

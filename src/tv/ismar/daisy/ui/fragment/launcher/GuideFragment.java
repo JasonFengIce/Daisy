@@ -133,10 +133,14 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
             FrameLayout frameLayout = (FrameLayout) LayoutInflater.from(context).inflate(R.layout.item_poster, null);
             ImageView itemView = (ImageView) frameLayout.findViewById(R.id.poster_image);
             TextView textView = (TextView) frameLayout.findViewById(R.id.poster_title);
-            if (StringUtils.isNotEmpty(posters.get(i).getIntroduction())) {
-                textView.setText(posters.get(i).getIntroduction());
-                textView.setVisibility(View.VISIBLE);
-            }
+			if (StringUtils.isNotEmpty(posters.get(i).getIntroduction())) {
+				textView.setText(posters.get(i).getIntroduction());
+				textView.setVisibility(View.VISIBLE);
+			} else {
+				frameLayout.setBackgroundResource(R.drawable.launcher_selector);
+				frameLayout.setFocusable(true);
+				frameLayout.setClickable(true);
+			}
             textView.setOnClickListener(ItemClickListener);
             frameLayout.setOnClickListener(ItemClickListener);
             textView.setOnFocusChangeListener(new View.OnFocusChangeListener() {

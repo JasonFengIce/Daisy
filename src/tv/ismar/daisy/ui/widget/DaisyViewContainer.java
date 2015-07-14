@@ -45,12 +45,13 @@ public class DaisyViewContainer extends LinearLayout {
                 spacing = horizontalSpacing / rate;
                 for (int i = 0; i < allViews.size(); i++) {
                     if (i != 0) {
-                        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        layoutParams.setMargins((int) spacing, 0, 0, 0);
+                        LayoutParams layoutParams = new LayoutParams(199, 278);
+                        layoutParams.setMargins((int) 25, 0, 0, 0);
                         addView(allViews.get(i), layoutParams);
 
                     } else {
-                        addView(allViews.get(i));
+					    LayoutParams layoutParams = new LayoutParams(199, 278);
+                        addView(allViews.get(i),layoutParams);
                     }
                 }
                 break;
@@ -58,7 +59,7 @@ public class DaisyViewContainer extends LinearLayout {
                 spacing = verticalSpacing / rate;
                 for (int i = 0; i < allViews.size(); i++) {
                     if (i != 0) {
-                        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        LayoutParams layoutParams = new LayoutParams(297, 166);
                         layoutParams.setMargins(0, (int) spacing, 0, 0);
                         addView(allViews.get(i), layoutParams);
 
