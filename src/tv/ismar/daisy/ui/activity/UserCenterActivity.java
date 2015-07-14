@@ -30,7 +30,8 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             R.string.usercenter_userinfo,
             R.string.usercenter_login,
             R.string.usercenter_purchase_history,
-            R.string.usercenter_help
+            R.string.usercenter_help,
+            R.string.usercenter_location
     };
 
     private ArrayList<View> indicatorView;
@@ -43,6 +44,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private LoginFragment loginFragment;
     private PurchaseHistoryFragment historyFragment;
     private HelpFragment helpFragment;
+    private LocationFragment locationFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         loginFragment = new LoginFragment();
         historyFragment = new PurchaseHistoryFragment();
         helpFragment = new HelpFragment();
+        locationFragment = new LocationFragment();
 
         initViews();
         createIndicatorView();
@@ -112,6 +115,9 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.string.usercenter_help:
                 getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, helpFragment).commit();
+                break;
+            case R.string.usercenter_location:
+                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, locationFragment).commit();
                 break;
         }
     }

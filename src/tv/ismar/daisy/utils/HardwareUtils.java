@@ -71,6 +71,19 @@ public class HardwareUtils {
         return value;
     }
 
+    public static String getMd5ByString(String string) {
+        String value;
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+            messageDigest.update(string.getBytes());
+             value = new BigInteger(1, messageDigest.digest()).toString(16);
+        } catch (Exception e) {
+            Log.e("getMd5ByFile", e.getMessage());
+            return "";
+        }
+        return value;
+    }
+
     public static String getFileNameWithoutSuffix(String fileName) {
         if (!TextUtils.isEmpty(fileName)) {
             return fileName.split("\\.")[0];
