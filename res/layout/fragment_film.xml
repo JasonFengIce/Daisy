@@ -3,22 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="80dp"
-    android:paddingRight="80dp" >
+              android:paddingLeft="@dimen/fragment_padding_lr"
+              android:paddingRight="@dimen/fragment_padding_lr">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5"
         android:orientation="horizontal"
-        android:paddingTop="@dimen/guide_padding" >
+         >
 
         <tv.ismar.daisy.views.LabelImageView
             xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
             android:id="@+id/film_lefttop_image"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.7"
+            android:layout_weight="1.80"
             android:background="@drawable/launcher_selector"
             android:focusable="true"
             android:src="@drawable/list_item_preview_bg"
@@ -83,8 +83,7 @@
         android:layout_height="0dp"
         android:layout_weight="2.8"
         android:orientation="horizontal"
-        android:paddingBottom="@dimen/guide_padding"
-        android:paddingTop="@dimen/guide_padding" >
+         >
     </LinearLayout>
 
 </LinearLayout>
