@@ -791,12 +791,13 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
 //                related_price_txt.setText("￥" + mRelatedItem[i].expense.price);
 //            }
             imgView.setTag(mRelatedItem[i].adlet_url);
-            if(StringUtils.isNotEmpty(mRelatedItem[i].list_url)){
-                imgView.setFocustitle(mRelatedItem[i].list_url);
-            }
-            else{
-                imgView.setUrl(mRelatedItem[i].adlet_url);
-            }
+//            if(StringUtils.isNotEmpty(mRelatedItem[i].list_url)){
+//
+//            }
+//            else{
+//                imgView.setUrl(mRelatedItem[i].adlet_url);
+//            }
+            imgView.setUrl(mRelatedItem[i].list_url);
             if(mRelatedItem[i].focus!=null)
               imgView.setFocustitle(mRelatedItem[i].focus);
             titleView.setText(mRelatedItem[i].title);

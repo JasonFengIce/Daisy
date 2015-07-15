@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.gson.JsonSyntaxException;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -593,8 +594,8 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 //            mCollectBtn.setText(getResources().getString(R.string.favorite));
 //        }
         if (mItem.poster_url != null) {
-            mDetailPreviewImg.setTag(mItem.poster_url);
-            mDetailPreviewImg.setUrl(mItem.poster_url);
+            mDetailPreviewImg.setTag(mItem.detail_url);
+            mDetailPreviewImg.setUrl(mItem.detail_url);
         }
         if (isFavorite()) {
             //mCollectBtn.setBackgroundResource(R.drawable.collected_btn_bg_selector);
@@ -760,7 +761,13 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 //                related_price_txt.setText("￥" + mRelatedItem[i].expense.price);
 //            }
             imgView.setTag(mRelatedItem[i].adlet_url);
-            imgView.setUrl(mRelatedItem[i].adlet_url);
+//            if(StringUtils.isNotEmpty(mRelatedItem[i].list_url)){
+//
+//            }
+//            else{
+//                imgView.setUrl(mRelatedItem[i].adlet_url);
+//            }
+            imgView.setUrl(mRelatedItem[i].list_url);
             if(mRelatedItem[i].focus!=null)
             imgView.setFocustitle(mRelatedItem[i].focus);
             titleView.setText(mRelatedItem[i].title);

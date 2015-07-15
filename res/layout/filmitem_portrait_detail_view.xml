@@ -181,7 +181,7 @@
      </RelativeLayout>
  </LinearLayout>
     <LinearLayout
-            android:layout_marginLeft="178dip"
+            android:layout_marginLeft="170dip"
             android:id="@+id/bottom_view_layout"
             android:layout_width="match_parent"
             android:layout_height="439dip"
@@ -198,16 +198,17 @@
                   android:text="同类推荐"/>
         <LinearLayout
                 android:id="@+id/related_video_container"
-                android:layout_width="1564dip"
+                android:layout_width="1575dip"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 >
         </LinearLayout>
         <LinearLayout
-                android:layout_marginLeft="7dip"
+                android:focusable="true"
+                android:layout_marginLeft="17dip"
                 android:id="@+id/more_content"
                 android:clickable="true"
-                android:layout_width="110dip"
+                android:layout_width="100dip"
                 android:layout_height="355dip"
                 android:orientation="vertical"
                 android:gravity="center"

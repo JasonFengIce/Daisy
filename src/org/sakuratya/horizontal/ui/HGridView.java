@@ -843,7 +843,8 @@ public class HGridView extends AdapterView<HGridAdapter> {
 			fillRight(columnRight, referenceView.getRight() + horizontalSpacing);
 		}
         if(columnRight>mMaxColumn){
-            rightbtn.setVisibility(View.INVISIBLE);
+            if(rightbtn!=null)
+                rightbtn.setVisibility(View.INVISIBLE);
         }
 		return selectedView;
 	}

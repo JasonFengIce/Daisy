@@ -20,6 +20,7 @@
         android:paddingBottom="@dimen/gridview_item_image_PaddingB"
         android:paddingLeft="@dimen/gridview_item_image_PaddingL"
         android:paddingRight="@dimen/gridview_item_image_PaddingR"
+        labelimage:focuspaddingtop="0.90"
         labelimage:focustextsize="30sp"
         labelimage:focusbackground="#b3303030"
         />

@@ -109,14 +109,15 @@
         sakura:labelTopOffset="@dimen/gridview_main_panel_labelTopOffset"
         sakura:labelWidth="@dimen/gridview_main_panel_labelWidth"
         sakura:numRows="3"
-        sakura:rowHeight="@dimen/gridview_main_panel_rowHeight"
+        sakura:rowHeight="252dip"
         sakura:selectorDrawable="@drawable/vod_gv_selector"
-        sakura:verticalSpacing="-30dip"
+        sakura:verticalSpacing="1dip"
         sakura:selectionLeftPadding="@dimen/HGridView_related_selectionLeftPadding"
         sakura:selectionTopPadding="@dimen/HGridView_related_selectionTopPadding"
         sakura:selectionRightPadding="@dimen/HGridView_related_selectionRightPadding"
-        sakura:selectionBottomPadding="@dimen/HGridView_related_selectionBottomPadding"
-        android:layout_marginTop="@dimen/grid_view_main_list_marginT" >
+        sakura:selectionBottomPadding="-40dip"
+        android:layout_marginTop="20dip"
+            >
     </org.sakuratya.horizontal.ui.HGridView>
 
     <RelativeLayout

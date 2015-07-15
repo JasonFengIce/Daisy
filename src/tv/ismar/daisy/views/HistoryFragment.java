@@ -109,6 +109,8 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		return todayStartPoint - 24*3600*1000;
 	}
 	private void initViews(View fragmentView) {
+        View vv = fragmentView.findViewById(R.id.tabs_layout);
+        vv.setVisibility(View.GONE);
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
 		mHGridView.setOnItemClickListener(this);
 		mHGridView.setOnItemSelectedListener(this);
@@ -485,33 +487,40 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 				mDataCollectionProperties.put("quality", qualitys[(history.quality >=0 && history.quality < qualitys.length)?history.quality:0]);
 				// start a new activity.
 				Intent intent = new Intent();
-				if(item.is_complex) {
-					if("variety".equals(item.content_model)){
-						intent.setAction("tv.ismar.daisy.EntertainmentItem");
-						intent.putExtra("channel", "娱乐综艺");
-					}else {
-						intent.setAction("tv.ismar.daisy.Item");						
-					}
-					intent.putExtra("url", url);
-					startActivity(intent);
-				} else {
-					InitPlayerTool tool = new InitPlayerTool(getActivity());
-					tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
-						
-						@Override
-						public void onPreExecute(Intent intent) {
-							// TODO Auto-generated method stub
-							mLoadingDialog.show();
-						}
-						
-						@Override
-						public void onPostExecute() {
-							// TODO Auto-generated method stub
-							mLoadingDialog.dismiss();
-						}
-					});
-					tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
-				}
+//				if(item.is_complex) {
+//					if("variety".equals(item.content_model)){
+//						intent.setAction("tv.ismar.daisy.EntertainmentItem");
+//						intent.putExtra("channel", "娱乐综艺");
+//					}else {
+//						intent.setAction("tv.ismar.daisy.Item");
+//					}
+//					intent.putExtra("url", url);
+//					startActivity(intent);
+//				} else {
+//
+//				}
+
+
+                InitPlayerTool tool = new InitPlayerTool(getActivity());
+                tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
+
+                    @Override
+                    public void onPreExecute(Intent intent) {
+                        // TODO Auto-generated method stub
+                        mLoadingDialog.show();
+                    }
+
+                    @Override
+                    public void onPostExecute() {
+                        // TODO Auto-generated method stub
+                        mLoadingDialog.dismiss();
+                    }
+                });
+                if(item.subitems!=null&&item.subitems.length>0&&history!=null){
+                    tool.initClipInfo(history.sub_url, InitPlayerTool.FLAG_URL);
+                }
+                else
+                  tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
 			}
 			if(mLoadingDialog!=null && mLoadingDialog.isShowing()) {
 				mLoadingDialog.dismiss();
@@ -679,6 +688,9 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 				InitPlayerTool tool = new InitPlayerTool(getActivity());
 				tool.initClipInfo(tvHome.getObjects().get(position).getItem_url(), InitPlayerTool.FLAG_URL);
 			}
+
+            InitPlayerTool tool = new InitPlayerTool(getActivity());
+            tool.initClipInfo(tvHome.getObjects().get(position).getItem_url(), InitPlayerTool.FLAG_URL);
 			break;
 		}
 	}
