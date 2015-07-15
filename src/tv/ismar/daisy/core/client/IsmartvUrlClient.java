@@ -25,6 +25,9 @@ public class IsmartvUrlClient extends Thread {
     private static final int SUCCESS = 0x0001;
     private static final int FAILURE = 0x0002;
 
+    private static final int FAILURE_4XX = 0x0004;
+    private static final int FAILURE_5XX = 0x0005;
+
     private String url;
     private String params;
     private CallBack callback;
@@ -65,8 +68,15 @@ public class IsmartvUrlClient extends Thread {
                     callback.onSuccess((String) msg.obj);
                     break;
                 case FAILURE:
-                    sendConnectErrorBroadcast(((Exception) msg.obj).getMessage());
+
                     callback.onFailed((Exception) msg.obj);
+                    break;
+                case FAILURE_4XX:
+                    callback.onFailed((Exception) msg.obj);
+                    break;
+                case FAILURE_5XX:
+                    callback.onFailed((Exception) msg.obj);
+                    sendConnectErrorBroadcast(((Exception) msg.obj).getMessage());
                     break;
                 default:
                     break;
@@ -140,9 +150,13 @@ public class IsmartvUrlClient extends Thread {
                             "\t<--- Response Result: " + "\t" + result + "\n" +
                             "\t---> END"
             );
-            if (response.code() >= 400) {
-                message.what = FAILURE;
+            if (response.code() >= 400 && response.code() < 500) {
+                message.what = FAILURE_4XX;
                 message.obj = new IOException(response.message());
+            } else if (response.code() >= 500) {
+                message.what = FAILURE_5XX;
+                message.obj = new IOException(response.message());
+
             } else {
                 message.what = SUCCESS;
                 message.obj = result;
@@ -175,9 +189,13 @@ public class IsmartvUrlClient extends Thread {
                             "\t<--- Response Result: " + "\t" + result + "\n" +
                             "\t---> END"
             );
-            if (response.code() >= 400) {
-                message.what = FAILURE;
+            if (response.code() >= 400 && response.code() < 500) {
+                message.what = FAILURE_4XX;
                 message.obj = new IOException(response.message());
+            } else if (response.code() >= 500) {
+                message.what = FAILURE_5XX;
+                message.obj = new IOException(response.message());
+
             } else {
                 message.what = SUCCESS;
                 message.obj = result;
