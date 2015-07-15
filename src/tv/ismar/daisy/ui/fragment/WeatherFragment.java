@@ -50,6 +50,15 @@ public class WeatherFragment extends Fragment implements View.OnClickListener, V
 
     private SharedPreferences locationSharedPreferences;
 
+    private SharedPreferences.OnSharedPreferenceChangeListener changeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            Log.d(TAG, "onSharedPreferenceChanged");
+            String geoId = locationSharedPreferences.getString(LocationFragment.LOCATION_PREFERENCE_GEOID, "101020100");
+            fetchWeatherInfo(geoId);
+        }
+    };
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -76,13 +85,7 @@ public class WeatherFragment extends Fragment implements View.OnClickListener, V
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         locationSharedPreferences = mContext.getSharedPreferences(LocationFragment.LOCATION_PREFERENCE_NAME, Context.MODE_PRIVATE);
-        locationSharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                String geoId = locationSharedPreferences.getString(LocationFragment.LOCATION_PREFERENCE_GEOID, "101020100");
-                fetchWeatherInfo(geoId);
-            }
-        });
+        locationSharedPreferences.registerOnSharedPreferenceChangeListener(changeListener);
         createGuideIndicator();
 
         String geoId = locationSharedPreferences.getString(LocationFragment.LOCATION_PREFERENCE_GEOID, "101020100");
