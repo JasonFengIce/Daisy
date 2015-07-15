@@ -1,4 +1,4 @@
-package tv.ismar.daisy.ui.fragment;
+package tv.ismar.daisy.ui.fragment.launcher;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -16,6 +16,7 @@ import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.data.table.DownloadTable;
+import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
 import tv.ismar.daisy.ui.widget.DaisyViewContainer;
 import tv.ismar.daisy.utils.HardwareUtils;
 import android.content.Intent;

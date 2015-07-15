@@ -1,6 +1,5 @@
-package tv.ismar.daisy.ui.fragment;
+package tv.ismar.daisy.ui.fragment.launcher;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,17 +24,14 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import tv.ismar.daisy.ItemDetailActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.DownloadClient;
 import tv.ismar.daisy.core.client.DownloadThreadPool;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
-import tv.ismar.daisy.data.HomePagerEntity.Poster;
 import tv.ismar.daisy.data.table.DownloadTable;
-import tv.ismar.daisy.player.InitPlayerTool;
-import tv.ismar.daisy.ui.activity.TVGuideActivity;
+import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
 import tv.ismar.daisy.ui.widget.DaisyVideoView;
 import tv.ismar.daisy.utils.HardwareUtils;
 import tv.ismar.daisy.views.LabelImageView;

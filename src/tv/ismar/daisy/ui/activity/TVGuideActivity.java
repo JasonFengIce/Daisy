@@ -4,8 +4,6 @@ import android.content.*;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -38,6 +36,7 @@ import tv.ismar.daisy.data.ChannelEntity;
 import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
 import tv.ismar.daisy.ui.Position;
 import tv.ismar.daisy.ui.fragment.*;
+import tv.ismar.daisy.ui.fragment.launcher.*;
 import tv.ismar.daisy.ui.widget.DaisyButton;
 import tv.ismar.daisy.ui.widget.TopPanelView;
 
@@ -76,11 +75,13 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     private ImageView arrow_left;
     private ImageView arrow_right;
-    private TopPanelView toppanel;
+    private FrameLayout toppanel;
     private ChannelEntity[] mChannelEntitys;
     private HashMap<String, TextView> channelHashMap;
 
     private ChannelChange channelChange;
+
+    private WeatherFragment weatherFragment;
 
     private Position mCurrentChannelPosition = new Position(new Position.PositioinChangeCallback() {
         @Override
@@ -166,12 +167,14 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     }
 
     private void initViews() {
+        toppanel = (FrameLayout) findViewById(R.id.top_column_layout);
+        weatherFragment = new WeatherFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.top_column_layout, weatherFragment).commit();
         channelListView = (LinearLayout) findViewById(R.id.channel_h_list);
         tabListView = (LinearLayout) findViewById(R.id.tab_list);
         arrow_left = (ImageView) findViewById(R.id.arrow_scroll_left);
         arrow_right = (ImageView) findViewById(R.id.arrow_scroll_right);
-        toppanel = (TopPanelView) findViewById(R.id.top_column_layout);
-        toppanel.setChannelName("首页");
+//        weatherFragment.setTitle("首页");
         arrow_left.setOnClickListener(arrowViewListener);
         arrow_right.setOnClickListener(arrowViewListener);
     }
@@ -186,7 +189,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 contentView.setBackgroundResource(R.color.normal_activity_bg);
                 currentFragment = new GuideFragment();
                 replaceFragment(currentFragment);
-                toppanel.setChannelName("首页");
+                weatherFragment.setTitle("首页");
                 if (arrow_left.getVisibility() == View.VISIBLE) {
                     arrow_left.setVisibility(View.GONE);
                 }
@@ -481,7 +484,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     private void selectChannelByPosition(int position) {
         ChannelEntity channelEntity = mChannelEntitys[position];
-        toppanel.setChannelName(channelEntity.getName());
+        weatherFragment.setSubTitle(channelEntity.getName());
         if ("template1".equals(channelEntity.getHomepage_template())) {
             currentFragment = new FilmFragment();
             contentView.setBackgroundResource(R.color.normal_activity_bg);

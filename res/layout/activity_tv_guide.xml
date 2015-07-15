@@ -5,86 +5,85 @@
               android:background="@drawable/person_center_bg"
               android:orientation="vertical">
 
-    <tv.ismar.daisy.ui.widget.TopPanelView
-        android:id="@+id/top_column_layout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:paddingLeft="@dimen/tv_guide_top_section_padding"
-        android:paddingRight="@dimen/tv_guide_top_section_padding"
-        >
-    </tv.ismar.daisy.ui.widget.TopPanelView>
+    <FrameLayout
+            android:id="@+id/top_column_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/weather_fragment_h"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/tv_guide_top_section_padding"
+            android:paddingRight="@dimen/tv_guide_top_section_padding"
+            >
+    </FrameLayout>
 
     <ImageView
-        android:layout_marginLeft="26dp"
-        android:layout_marginRight="26dp"
-        android:layout_width="match_parent"
-        android:scaleType="fitXY"
-        android:src="@drawable/orderlistdivide"
-        android:layout_height="1dp"/>
+            android:layout_marginLeft="26dp"
+            android:layout_marginRight="26dp"
+            android:layout_width="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/orderlistdivide"
+            android:layout_height="1dp"/>
 
     <RelativeLayout
-        android:layout_marginTop="@dimen/tv_guide_container_margin_top"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="7.8">
+            android:layout_marginTop="@dimen/tv_guide_container_margin_top"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7.8">
 
         <FrameLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            />
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                />
 
         <ImageView
-            android:id="@+id/arrow_scroll_left"
-            android:layout_width="41dp"
-            android:layout_height="82dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="30dp"
-            android:src="@drawable/channel_arrow_left"
-            android:visibility="gone"
-            android:focusable="true"/>
+                android:id="@+id/arrow_scroll_left"
+                android:layout_width="41dp"
+                android:layout_height="82dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="30dp"
+                android:src="@drawable/channel_arrow_left"
+                android:visibility="gone"
+                android:focusable="true"/>
 
         <ImageView
-            android:id="@+id/arrow_scroll_right"
-            android:layout_width="41dp"
-            android:layout_height="82dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="30dp"
-            android:src="@drawable/channel_arrow_right"
-            android:visibility="gone"
-            android:focusable="true"/>
+                android:id="@+id/arrow_scroll_right"
+                android:layout_width="41dp"
+                android:layout_height="82dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="30dp"
+                android:src="@drawable/channel_arrow_right"
+                android:visibility="gone"
+                android:focusable="true"/>
     </RelativeLayout>
 
     <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginLeft="@dimen/tv_guide_channel_margin_lr"
-        android:layout_marginRight="@dimen/tv_guide_channel_margin_lr"
-        android:layout_weight="0.7"
-        android:scrollbars="none">
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="@dimen/tv_guide_channel_margin_lr"
+            android:layout_marginRight="@dimen/tv_guide_channel_margin_lr"
+            android:layout_weight="0.7"
+            android:scrollbars="none">
 
         <LinearLayout
-            android:id="@+id/channel_h_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+                android:id="@+id/channel_h_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
         </LinearLayout>
     </HorizontalScrollView>
 
     <LinearLayout
-        android:id="@+id/tab_list"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="center"
-        android:layout_weight="1.2"
-        android:orientation="horizontal"
-        android:visibility="invisible"
-        />
+            android:id="@+id/tab_list"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1.2"
+            android:orientation="horizontal"
+            android:visibility="invisible"
+            />
 
 </LinearLayout>

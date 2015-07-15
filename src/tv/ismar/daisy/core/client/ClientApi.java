@@ -4,14 +4,12 @@ import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.http.GET;
 import retrofit.http.Headers;
-import retrofit.http.Path;
 import retrofit.http.Query;
 import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.core.advertisement.AdvertisementInfoEntity;
 import tv.ismar.daisy.core.update.VersionInfoEntity;
 import tv.ismar.daisy.data.ChannelEntity;
 import tv.ismar.daisy.data.HomePagerEntity;
-import tv.ismar.daisy.models.launcher.*;
 
 import java.util.ArrayList;
 
@@ -97,30 +95,6 @@ public class ClientApi {
     }
 
     /**
-     * frontpage
-     */
-    public interface Frontpage {
-        @Headers({"Accpt: application/json", "Cache-Control: no-cache"})
-        @GET("/api/tv/frontpage/")
-        void excute(@Query("device_token") String deviceToken,
-                    Callback<FrontPageEntity> callback
-        );
-    }
-
-    /**
-     * linkedvideo
-     */
-    public interface Linkedvideo {
-        @Headers({"Accpt: application/json", "Cache-Control: no-cache"})
-        @GET("/api/tv/linkedvideo/{video_id}/")
-        void excute(
-                @Path("video_id") long videoId,
-                @Query("device_token") String deviceToken,
-                Callback<ArrayList<AttributeEntity>> callback
-        );
-    }
-
-    /**
      * channel
      */
 
@@ -133,30 +107,4 @@ public class ClientApi {
         );
     }
 
-
-    public interface GeoId {
-        public static final String HOST = "http://media.lily.tvxio.com";
-
-        @GET("/geoid.json")
-        void excute(Callback<ArrayList<GeoIdEntity>> callback);
-
-    }
-
-    public interface IpLookup {
-        public static final String HOST = "http://lily.tvxio.com";
-
-        @GET("/iplookup")
-        void excute(Callback<IpLookupEntity> callback);
-
-    }
-
-    public interface Weather {
-        public static final String HOST = "http://media.lily.tvxio.com";
-
-        @GET("/{geoid}.json")
-        void excute(
-                @Path("geoid") String geoid,
-                Callback<WeatherEntity> callback
-        );
-    }
 }

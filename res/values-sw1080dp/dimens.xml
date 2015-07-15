@@ -870,4 +870,17 @@
     <!-- help fragment -->
     <dimen name="help_item__h_margin">10dp</dimen>
     <dimen name="test_height">300dip</dimen>
+
+    <dimen name="weather_guide_text_margin_lr">20dp</dimen>
+    <dimen name="weather_guide_text_margin_margin_top">55dp</dimen>
+    <dimen name="weather_guide_text_margin_margin_bottom">20dp</dimen>
+    <dimen name="weather_fragment_h">100dp</dimen>
+
+    <dimen name="weather_layout_margin_left">25dp</dimen>
+
+    <dimen name="weather_divider_width">50dp</dimen>
+    <dimen name="weather_divider_height">5dp</dimen>
+    <dimen name="weather_divider_margin_bottom">40dp</dimen>
+
+
 </resources>

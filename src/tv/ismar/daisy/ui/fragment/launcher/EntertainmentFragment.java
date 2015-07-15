@@ -1,4 +1,4 @@
-package tv.ismar.daisy.ui.fragment;
+package tv.ismar.daisy.ui.fragment.launcher;
 
 import java.util.ArrayList;
 
@@ -8,6 +8,7 @@ import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.data.HomePagerEntity.Poster;
 import tv.ismar.daisy.exception.NetworkException;
+import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.LabelImageView;
 import tv.ismar.daisy.views.LoadingDialog;

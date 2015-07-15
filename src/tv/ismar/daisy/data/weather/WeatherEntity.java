@@ -1,4 +1,4 @@
-package tv.ismar.daisy.models.launcher;
+package tv.ismar.daisy.data.weather;
 
 /**
  * Created by <huaijiefeng@gmail.com> on 9/15/14.

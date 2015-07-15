@@ -1,4 +1,4 @@
-package tv.ismar.daisy.ui.fragment;
+package tv.ismar.daisy.ui.fragment.launcher;
 
 import java.util.ArrayList;
 
@@ -15,6 +15,7 @@ import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.SportsGame;
 import tv.ismar.daisy.models.SportsGameList;
 import tv.ismar.daisy.player.InitPlayerTool;
+import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
 import tv.ismar.daisy.views.LabelImageView;
 import tv.ismar.daisy.views.LoadingDialog;
 import android.R.integer;

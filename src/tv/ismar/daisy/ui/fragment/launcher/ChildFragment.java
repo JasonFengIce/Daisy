@@ -1,10 +1,11 @@
-package tv.ismar.daisy.ui.fragment;
+package tv.ismar.daisy.ui.fragment.launcher;
 
 import java.util.ArrayList;
 
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.HomePagerEntity;
+import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
 import tv.ismar.daisy.ui.widget.child.ChildThumbImageView;
 import android.os.Bundle;
 import android.os.Handler;

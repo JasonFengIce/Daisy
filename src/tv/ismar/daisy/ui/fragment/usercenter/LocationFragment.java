@@ -24,6 +24,12 @@ import java.util.List;
  * Created by huaijie on 7/13/15.
  */
 public class LocationFragment extends Fragment implements AdapterView.OnItemClickListener {
+    public static final String LOCATION_PREFERENCE_NAME = "location";
+
+    public static final String LOCATION_PREFERENCE_GEOID = "geo_id";
+
+
+
     private Context mContext;
 
     private GridView provinceListView;

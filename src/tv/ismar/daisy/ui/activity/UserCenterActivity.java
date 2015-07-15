@@ -1,20 +1,17 @@
 package tv.ismar.daisy.ui.activity;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.ui.adapter.AccoutPlayAuthAdapter;
+import tv.ismar.daisy.ui.fragment.WeatherFragment;
 import tv.ismar.daisy.ui.fragment.usercenter.*;
 import tv.ismar.daisy.ui.widget.TopPanelView;
 
@@ -36,7 +33,6 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     private ArrayList<View> indicatorView;
 
-    private TopPanelView mTopPanelView;
     private LinearLayout userCenterIndicatorLayout;
 
     private StoreFragment storeFragment;
@@ -45,6 +41,8 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private PurchaseHistoryFragment historyFragment;
     private HelpFragment helpFragment;
     private LocationFragment locationFragment;
+
+    private WeatherFragment weatherFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,8 +65,18 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
 
     private void initViews() {
-        mTopPanelView = (TopPanelView) findViewById(R.id.top_column_layout);
-        mTopPanelView.setChannelName(getText(R.string.user_center).toString());
+        weatherFragment = new WeatherFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.top_column_layout, weatherFragment).commit();
+
+
+    }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+
+        weatherFragment.hideSubTitle();
+        weatherFragment.setTitle(getText(R.string.user_center).toString());
     }
 
     /**
