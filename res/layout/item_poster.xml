@@ -19,7 +19,7 @@
         android:layout_width="@dimen/guide_recommend_item_width"
         android:layout_height="55dp"
         android:layout_gravity="bottom|center"
-        android:background="#b3303030"
+        android:background="#b3000000"
         android:ellipsize="marquee"
         android:gravity="center"
         android:marqueeRepeatLimit="marquee_forever"
