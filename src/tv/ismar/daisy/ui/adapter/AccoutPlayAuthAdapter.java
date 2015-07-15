@@ -9,8 +9,9 @@ import android.widget.TextView;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.data.usercenter.AccountPlayAuthEntity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by huaijie on 7/3/15.
@@ -51,9 +52,12 @@ public class AccoutPlayAuthAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+
+        String remainday = mContext.getResources().getString(R.string.personcenter_orderlist_item_remainday);
+
         AccountPlayAuthEntity.PlayAuth item = mList.get(position);
         holder.title.setText(item.getTitle());
-        holder.buydate_txt.setText(item.getExpiry_date());
+        holder.buydate_txt.setText(String.format(remainday, remaindDay(item.getExpiry_date())));
         return convertView;
     }
 
@@ -64,5 +68,22 @@ public class AccoutPlayAuthAdapter extends BaseAdapter {
 
     public ArrayList<AccountPlayAuthEntity.PlayAuth> getList() {
         return mList;
+    }
+
+    private int remaindDay(String exprieTime) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date startDate = new GregorianCalendar().getTime();
+        ParsePosition pos = new ParsePosition(0);
+        Date exprietDate = formatter.parse(exprieTime, pos);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startDate);
+        int startDay = calendar.get(Calendar.DAY_OF_YEAR);
+        calendar.setTime(exprietDate);
+        int exprieDay = calendar.get(Calendar.DAY_OF_YEAR);
+        int remaindDay = exprieDay - startDay;
+        if (remaindDay < 0) {
+            return 0;
+        }
+        return remaindDay;
     }
 }
