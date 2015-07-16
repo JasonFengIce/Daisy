@@ -67,7 +67,7 @@ public class ChannelBaseFragment extends Fragment {
 				intent.putExtra("title", channelEntity.getName());
 				intent.putExtra("url", channelEntity.getUrl());
 				intent.putExtra("channel", channelEntity.getChannel());
-				intent.putExtra("portraitflag", channelEntity.getSytle());
+				intent.putExtra("portraitflag", channelEntity.getStyle());
 				intent.setClassName("tv.ismar.daisy",
 						"tv.ismar.daisy.ChannelListActivity");
 				context.startActivity(intent);

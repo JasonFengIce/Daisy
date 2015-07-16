@@ -128,8 +128,8 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (hasFocus) {
 					v.setPadding(0, 0, 0, 0);
-					vaiety_thumb2.setPadding(0, -22, 0, 0);
-					vaiety_thumb3.setPadding(0, -22, 0, 0);
+					vaiety_thumb2.setPadding(0, 22, 0, -22);
+					vaiety_thumb3.setPadding(0, 22, 0, -22);
 					if (v.getTag() != null) {
 						vaiety_post.setUrl(v.getTag().toString());
 						vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post)
@@ -137,7 +137,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 					}
 					imageswitch.removeMessages(IMAGE_SWITCH_KEY);
 				} else {
-					v.setPadding(0, -22, 0, 0);
+					v.setPadding(0, 22, 0, -22);
 					imageswitch.sendEmptyMessageDelayed(IMAGE_SWITCH_KEY, 6000);
 				}
 			}
@@ -147,14 +147,14 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (hasFocus) {
 					v.setPadding(0, 0, 0, 0);
-					vaiety_thumb1.setPadding(0, -22, 0, 0);
-					vaiety_thumb3.setPadding(0, -22, 0, 0);
+					vaiety_thumb1.setPadding(0, 22, 0, -22);
+					vaiety_thumb3.setPadding(0, 22, 0, -22);
 					vaiety_post.setUrl(v.getTag().toString());
 					vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post)
 							.toString());
 					imageswitch.removeMessages(IMAGE_SWITCH_KEY);
 				} else {
-					v.setPadding(0, -22, 0, 0);
+					v.setPadding(0, 22, 0, -22);
 					imageswitch.sendEmptyMessageDelayed(IMAGE_SWITCH_KEY, 6000);
 				}
 			}
@@ -164,14 +164,14 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (hasFocus) {
 					v.setPadding(0, 0, 0, 0);
-					vaiety_thumb2.setPadding(0, -22, 0, 0);
-					vaiety_thumb1.setPadding(0, -22, 0, 0);
+					vaiety_thumb2.setPadding(0, 22, 0, -22);
+					vaiety_thumb1.setPadding(0, 22, 0, -22);
 					vaiety_post.setUrl(v.getTag().toString());
 					vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post)
 							.toString());
 					imageswitch.removeMessages(IMAGE_SWITCH_KEY);
 				} else {
-					v.setPadding(0, -22, 0, 0);
+					v.setPadding(0, 22, 0, -22);
 					imageswitch.sendEmptyMessageDelayed(IMAGE_SWITCH_KEY, 6000);
 				}
 			}
@@ -291,19 +291,19 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 			vaiety_post.setUrl(looppost.get(++loopindex));
 			if (loopindex == 0) {
 				vaiety_thumb1.setPadding(0, 0, 0, 0);
-				vaiety_thumb2.setPadding(0, 22, 0, 0);
-				vaiety_thumb3.setPadding(0, 22, 0, 0);
+				vaiety_thumb2.setPadding(0, 22, 0, -22);
+				vaiety_thumb3.setPadding(0, 22, 0, -22);
 				vaiety_fouce_label.setText(vaiety_thumb1.getTag(
 						R.id.vaiety_post).toString());
 			} else if (loopindex == 1) {
-				vaiety_thumb1.setPadding(0, 22, 0, 0);
+				vaiety_thumb1.setPadding(0, 22, 0, -22);
 				vaiety_thumb2.setPadding(0, 0, 0, 0);
-				vaiety_thumb3.setPadding(0, 22, 0, 0);
+				vaiety_thumb3.setPadding(0, 22, 0, -22);
 				vaiety_fouce_label.setText(vaiety_thumb2.getTag(
 						R.id.vaiety_post).toString());
 			} else if (loopindex == 2) {
-				vaiety_thumb1.setPadding(0, 22, 0, 0);
-				vaiety_thumb2.setPadding(0, 22, 0, 0);
+				vaiety_thumb1.setPadding(0, 22, 0, -22);
+				vaiety_thumb2.setPadding(0, 22, 0, -22);
 				vaiety_thumb3.setPadding(0, 0, 0, 0);
 				vaiety_fouce_label.setText(vaiety_thumb3.getTag(
 						R.id.vaiety_post).toString());
