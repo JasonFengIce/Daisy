@@ -215,29 +215,36 @@ public class NetworkUtils {
 		 return response.toString();
 	   }
 
-	public static ArrayList<AdElement> getAdByPost(String adpid,
-			String values) {
+	public static ArrayList<AdElement> getAdByPost(String adpid, String values) {
 		StringBuffer response = new StringBuffer();
 		ArrayList<AdElement> result = new ArrayList<AdElement>();
-		String baseparams = "sn=" + SimpleRestClient.sn_token
-				+ "&modelName=" + Build.MODEL + "&version="
-				+ SimpleRestClient.appVersion + "&accessToken="
-				+ SimpleRestClient.access_token + "&deviceToken="
-				+ SimpleRestClient.device_token + "&app="
-				+ SimpleRestClient.appVersion + "&resolution="
+		String baseparams = "'sn':" + "'" + SimpleRestClient.sn_token + "'"
+				+ ",'modelName':" + "'" + Build.MODEL + "'" + ",'version':"
+				+ "'" + SimpleRestClient.appVersion + "'" + ",'accessToken':"
+				+ "'" + SimpleRestClient.access_token + "'" + ",deviceToken':"
+				+ "'" + SimpleRestClient.device_token + "'" + ",'app':" + "'"
+				+ SimpleRestClient.appVersion + "'" + ",'resolution':" + "'"
 				+ SimpleRestClient.screenWidth + ","
-				+ SimpleRestClient.screenHeight + "&dpi="
-				+ SimpleRestClient.densityDpi + "&adpid=" + "[" + adpid
-				+ "]";
-		int status =500;
+				+ SimpleRestClient.screenHeight + "'" + ",'dpi':" + "'"
+				+ SimpleRestClient.densityDpi + "'" + ",'adpid':" + "['"
+				+ adpid + "']";
+		int status = 500;
 		try {
+<<<<<<< HEAD
+			URL postUrl = new URL(SimpleRestClient.ad_domain + "/api/get/ad/ ");
+=======
 			URL postUrl = new URL(SimpleRestClient.ad_domain+"/api/get/ad/ ");
+>>>>>>> 698fc82... fix template3 loop play ui bug.
 			HttpURLConnection connection = (HttpURLConnection) postUrl
 					.openConnection();
 			connection.setDoOutput(true);
 			connection.setDoInput(true);
 			connection.setRequestMethod("POST");
+<<<<<<< HEAD
+			connection.setUseCaches(false);
+=======
 			 connection.setUseCaches(false);
+>>>>>>> 698fc82... fix template3 loop play ui bug.
 			connection.addRequestProperty("Accept-Encoding",
 					"gzip,deflate,sdch");
 			connection.setInstanceFollowRedirects(true);
@@ -247,7 +254,11 @@ public class NetworkUtils {
 			connection.connect();
 			DataOutputStream out = new DataOutputStream(
 					connection.getOutputStream());
+<<<<<<< HEAD
+			out.writeBytes(baseparams + "," + values);
+=======
 			out.writeBytes(baseparams + "&" + values);
+>>>>>>> 698fc82... fix template3 loop play ui bug.
 			out.flush();
 			out.close();
 			status = connection.getResponseCode();
@@ -295,7 +306,7 @@ public class NetworkUtils {
 					Collections.sort(result, new Comparator<AdElement>() {
 						@Override
 						public int compare(AdElement lhs, AdElement rhs) {
-							return rhs.getSerial() > lhs.getSerial() ? 1:0;
+							return rhs.getSerial() > lhs.getSerial() ? 1 : 0;
 						}
 					});
 				} else {

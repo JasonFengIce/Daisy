@@ -161,8 +161,8 @@ public class PlayerActivity extends VodMenuAction {
 	public void onResume() {
 		super.onResume();
 		if (needOnresume) {
-			 isBuffer = true;
-			 showBuffer();
+			isBuffer = true;
+			showBuffer();
 			new initPlayTask().execute();
 			needOnresume = false;
 		}
@@ -296,17 +296,17 @@ public class PlayerActivity extends VodMenuAction {
 		if (mVideoView != null) {
 			mVideoView.setAlpha(0);
 		}
-		 showBuffer();
+		showBuffer();
 		Log.d(TAG, " initClipInfo ");
 		Intent intent = getIntent();
 		if (intent != null) {
 			mSection = intent.getStringExtra(EventProperty.SECTION);
 			bundle = intent.getExtras();
 			item = (Item) bundle.get("item");
-			if(item != null){
-			clip = item.clip;
-			live_video = item.live_video;
-			isPreview = item.isPreview;
+			if (item != null) {
+				clip = item.clip;
+				live_video = item.live_video;
+				isPreview = item.isPreview;
 			}
 			// use to get mUrl, and registerActivity
 			DaisyUtils.getVodApplication(this).addActivityToPool(
@@ -369,7 +369,7 @@ public class PlayerActivity extends VodMenuAction {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				if(isadvideoplaying)
+				if (isadvideoplaying)
 					return false;
 				if (isVodMenuVisible()) {
 					hideMenuHandler.post(hideMenuRunnable);
@@ -570,16 +570,19 @@ public class PlayerActivity extends VodMenuAction {
 					genresBuffer.append("}");
 			}
 		}
-		String params = "channel=" + "chinesemovie" + "&section="
-				+ item.section + "&itemid=" + item.pk + "&topic=" + ""
-				+ "&source=" + "related" + "&genre=" + genresBuffer.toString()
-				+ "&content_model=" + item.content_model + "&director="
-				+ directorsBuffer.toString() + "&actor="
-				+ actorsBuffer.toString() + "&clipid=" + item.clip == null ? ""
-				: item.clip.pk + "&live_video=" + item.live_video + "&vendor="
-						+ item.vendor + "&expense="
-						+ (item.expense == null ? false : true) + "&length="
-						+ item.clip.length;
+		String params = "'channel':" + "'chinesemovie'" + ",'section':" + "'"
+				+ item.section + "'" + ",'itemid':" + "'" + item.pk + "'"
+				+ ",'topic':" + "" + ",'source':" + "'related':" + ",'genre':"
+				+ "'" + genresBuffer.toString() + "'" + ",'content_model':"
+				+ "'" + item.content_model + "'" + ",'director':" + "'"
+				+ directorsBuffer.toString() + "'" + ",'actor':" + "'"
+				+ actorsBuffer.toString() + "'" + ",'clipid':" + "'"
+				+ (item.clip == null ? "" : item.clip.pk) + "'"
+				+ ",'live_video':" + item.live_video + ",'vendor':" + "'"
+				+ item.vendor + "'" + ",'expense':"
+				+ (item.expense == null ? false : true) + ",'length':"
+				+ "'"+item.clip.length+"'";
+		Log.v("aaaa", params);
 		new GetAdDataTask().execute(adpid, params);
 	}
 
@@ -783,11 +786,13 @@ public class PlayerActivity extends VodMenuAction {
 						if (SimpleRestClient.isLogin()) {
 							favorite = favoriteManager.getFavoriteByUrl(
 									itemUrl, "yes");
-                            mHistory = historyManager.getHistoryByUrl(itemUrl,"yes");
+							mHistory = historyManager.getHistoryByUrl(itemUrl,
+									"yes");
 						} else {
 							favorite = favoriteManager.getFavoriteByUrl(
 									itemUrl, "no");
-                            mHistory = historyManager.getHistoryByUrl(itemUrl,"no");
+							mHistory = historyManager.getHistoryByUrl(itemUrl,
+									"no");
 						}
 						titleText.setText(subItem.title);
 					} else {
@@ -795,11 +800,13 @@ public class PlayerActivity extends VodMenuAction {
 						if (SimpleRestClient.isLogin()) {
 							favorite = favoriteManager.getFavoriteByUrl(
 									itemUrl, "yes");
-                            mHistory = historyManager.getHistoryByUrl(itemUrl,"yes");
+							mHistory = historyManager.getHistoryByUrl(itemUrl,
+									"yes");
 						} else {
 							favorite = favoriteManager.getFavoriteByUrl(
 									itemUrl, "no");
-                            mHistory = historyManager.getHistoryByUrl(itemUrl,"no");
+							mHistory = historyManager.getHistoryByUrl(itemUrl,
+									"no");
 						}
 						titleText.setText(item.title);
 					}
@@ -1129,10 +1136,10 @@ public class PlayerActivity extends VodMenuAction {
 			history.url = itemUrl;
 			history.sub_url = subItemUrl;
 			history.is_continue = isContinue;
-            if(SimpleRestClient.isLogin())
-			    historyManager.addHistory(history,"yes");
-            else
-                historyManager.addHistory(history,"no");
+			if (SimpleRestClient.isLogin())
+				historyManager.addHistory(history, "yes");
+			else
+				historyManager.addHistory(history, "no");
 		}
 	}
 
@@ -1195,7 +1202,7 @@ public class PlayerActivity extends VodMenuAction {
 	private void pauseItem() {
 		if (paused || mVideoView == null)
 			return;
-		 //showBuffer();
+		// showBuffer();
 		Log.d(TAG, "pause");
 		hideBuffer();
 		mVideoView.pause();
@@ -1996,8 +2003,8 @@ public class PlayerActivity extends VodMenuAction {
 			int what = event.getAction();
 			switch (what) {
 			case MotionEvent.ACTION_HOVER_MOVE:
-				if(!StringUtils.isEmpty(sid))
-				showPanel();
+				if (!StringUtils.isEmpty(sid))
+					showPanel();
 				break;
 			}
 			return false;

@@ -4,7 +4,6 @@
              android:layout_height="wrap_content">
 
     <ImageView
-        android:background="@drawable/launcher_selector"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:clickable="true"
