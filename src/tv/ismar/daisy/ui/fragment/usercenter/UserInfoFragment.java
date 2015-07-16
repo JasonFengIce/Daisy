@@ -179,4 +179,18 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
             tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
         }
     }
+
+    public boolean isLoginFragmentShowing() {
+        if (loginFragment.isVisible()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void hideLoginFragment() {
+        associationText.setFocusable(true);
+        playAuthListView.setFocusable(true);
+        getChildFragmentManager().beginTransaction().hide(loginFragment).commit();
+    }
 }

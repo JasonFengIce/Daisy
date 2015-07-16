@@ -135,6 +135,17 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, userInfoFragment).commit();
     }
 
+    @Override
+    public void onBackPressed() {
+        if (userInfoFragment.isLoginFragmentShowing()) {
+            userInfoFragment.hideLoginFragment();
+        } else {
+            super.onBackPressed();
+        }
+
+
+    }
+
     public enum UserCenter {
 
     }
