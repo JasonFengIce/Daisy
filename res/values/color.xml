@@ -70,4 +70,6 @@
     <drawable name="transparent">#00000000</drawable>
 
     <drawable name="button_disable">#7f7f7f</drawable>
+
+    <color name="location_text_focus">#ffba00</color>
 </resources>

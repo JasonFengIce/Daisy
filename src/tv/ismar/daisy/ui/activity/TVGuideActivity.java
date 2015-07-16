@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -249,7 +250,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
             @Override
             public void failure(RetrofitError retrofitError) {
-                Log.e(TAG, retrofitError.getMessage());
+                String message = retrofitError.getMessage();
+                if (null != message)
+                    Log.e(TAG, retrofitError.getMessage());
             }
         });
     }

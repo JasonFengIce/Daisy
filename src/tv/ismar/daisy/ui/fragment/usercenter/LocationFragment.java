@@ -5,18 +5,23 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.GridView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
+import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.data.table.weather.LocationTable;
 import tv.ismar.daisy.data.table.weather.ProvinceTable;
 import tv.ismar.daisy.ui.adapter.weather.CityAdapter;
+import tv.ismar.daisy.ui.adapter.weather.CityAdapter.OnItemListener;
 import tv.ismar.daisy.ui.adapter.weather.ProvinceAdapter;
 
 import java.util.List;
@@ -24,7 +29,7 @@ import java.util.List;
 /**
  * Created by huaijie on 7/13/15.
  */
-public class LocationFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class LocationFragment extends Fragment implements ProvinceAdapter.OnItemListener {
     public static final String LOCATION_PREFERENCE_NAME = "location";
 
     public static final String LOCATION_PREFERENCE_GEOID = "geo_id";
@@ -41,6 +46,20 @@ public class LocationFragment extends Fragment implements AdapterView.OnItemClic
 
     private SharedPreferences locationSharedPreferences;
 
+    private TextView currentPostion;
+
+    private SharedPreferences.OnSharedPreferenceChangeListener changeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            String stringRes = mContext.getString(R.string.location_current_position);
+            String geoId = sharedPreferences.getString(LOCATION_PREFERENCE_GEOID, "101020100");
+            LocationTable locationTable = new Select().from(LocationTable.class).where("geo_id=?", geoId).executeSingle();
+            if (null != locationTable) {
+                currentPostion.setText(String.format(stringRes, locationTable.city));
+            }
+        }
+    };
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -52,18 +71,30 @@ public class LocationFragment extends Fragment implements AdapterView.OnItemClic
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         locationSharedPreferences = mContext.getSharedPreferences(LOCATION_PREFERENCE_NAME, Context.MODE_PRIVATE);
+        locationSharedPreferences.registerOnSharedPreferenceChangeListener(changeListener);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-
         fragmentView = inflater.inflate(R.layout.fragment_location, null);
+        currentPostion = (TextView) fragmentView.findViewById(R.id.current_position);
         provinceListView = (GridView) fragmentView.findViewById(R.id.province_list);
-        provinceListView.setOnItemClickListener(this);
+
         return fragmentView;
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        String stringRes = mContext.getString(R.string.location_current_position);
+        String geoId = locationSharedPreferences.getString(LOCATION_PREFERENCE_GEOID, "101020100");
+        LocationTable locationTable = new Select().from(LocationTable.class).where("geo_id=?", geoId).executeSingle();
+        if (null != locationTable) {
+            currentPostion.setText(String.format(stringRes, locationTable.city));
+        }
+
+    }
 
     @Override
     public void onResume() {
@@ -76,39 +107,46 @@ public class LocationFragment extends Fragment implements AdapterView.OnItemClic
         List<ProvinceTable> provinceTables = new Select().from(ProvinceTable.class).execute();
         if (provinceTables != null && !provinceTables.isEmpty()) {
             provinceAdapter = new ProvinceAdapter(mContext, provinceTables);
+            provinceAdapter.setOnItemListener(this);
             provinceListView.setAdapter(provinceAdapter);
         }
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        String provinceId = provinceAdapter.getList().get(position).province_id;
-        showAreaPopup(provinceId);
-    }
 
     private void showAreaPopup(String provinceId) {
         View popupLayout = LayoutInflater.from(mContext).inflate(R.layout.popup_area, null);
         GridView gridView = (GridView) popupLayout.findViewById(R.id.area_grid);
 
-        int width = (int) mContext.getResources().getDimension(R.dimen.login_pop_width);
-        int height = (int) mContext.getResources().getDimension(R.dimen.login_pop_height);
+        int width = (int) mContext.getResources().getDimension(R.dimen.location_area_pop_width);
+        int height = (int) mContext.getResources().getDimension(R.dimen.location_area_pop_height);
         areaPopup = new PopupWindow(popupLayout, width, height);
         areaPopup.setFocusable(true);
         areaPopup.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.transparent));
-        areaPopup.showAtLocation(fragmentView, Gravity.CENTER, 200, 0);
+        areaPopup.showAtLocation(fragmentView, Gravity.CENTER, 170, 0);
 
         final List<LocationTable> locationTableList = new Select().from(LocationTable.class).where("province_id=?", provinceId).execute();
         CityAdapter cityAdapter = new CityAdapter(mContext, locationTableList);
-        gridView.setAdapter(cityAdapter);
-
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        cityAdapter.setOnItemListener(new OnItemListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onClick(View view, int position) {
                 SharedPreferences.Editor editor = locationSharedPreferences.edit();
                 editor.putString(LOCATION_PREFERENCE_GEOID, String.valueOf(locationTableList.get(position).geo_id));
                 editor.apply();
             }
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                TextView textView = (TextView) v;
+                if (hasFocus) {
+                    textView.setTextColor(mContext.getResources().getColor(R.color.location_text_focus));
+                    textView.setTextSize(mContext.getResources().getDimension(R.dimen.h1_text_size));
+                } else {
+                    textView.setTextColor(mContext.getResources().getColor(R.color.white));
+                    textView.setTextSize(mContext.getResources().getDimension(R.dimen.h2_text_size));
+                }
+            }
         });
+        gridView.setAdapter(cityAdapter);
     }
 
     @Override
@@ -117,5 +155,25 @@ public class LocationFragment extends Fragment implements AdapterView.OnItemClic
             areaPopup.dismiss();
         }
         super.onDestroyView();
+    }
+
+
+    @Override
+    public void onClick(View view, int position) {
+        String provinceId = provinceAdapter.getList().get(position).province_id;
+        showAreaPopup(provinceId);
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        TextView textView = (TextView) v;
+        if (hasFocus) {
+            textView.setTextColor(mContext.getResources().getColor(R.color.location_text_focus));
+            textView.setTextSize(mContext.getResources().getDimension(R.dimen.h1_text_size));
+
+        } else {
+            textView.setTextColor(mContext.getResources().getColor(R.color.white));
+            textView.setTextSize(mContext.getResources().getDimension(R.dimen.h2_text_size));
+        }
     }
 }

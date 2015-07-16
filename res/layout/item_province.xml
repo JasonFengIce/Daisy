@@ -2,15 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:gravity="center"
+              android:minHeight="65dp"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
     <TextView
-        android:gravity="center"
-        android:id="@+id/province_text"
-        android:textColor="#FFFFFF"
-        android:textSize="@dimen/h2_text_size"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:clickable="true"
+            android:gravity="center"
+            android:id="@+id/province_text"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/h2_text_size"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
 </LinearLayout>

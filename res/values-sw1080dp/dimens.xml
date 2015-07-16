@@ -882,5 +882,16 @@
     <dimen name="weather_divider_height">5dp</dimen>
     <dimen name="weather_divider_margin_bottom">40dp</dimen>
 
+    <dimen name="location_fragment_current_position_height">204dp</dimen>
+
+    <dimen name="location_divider_margin_left">36dp</dimen>
+    <dimen name="location_divider_width">1314dp</dimen>
+
+    <dimen name="location_grid_margin_top">21dp</dimen>
+
+    <dimen name="location_area_pop_width">1400dp</dimen>
+    <dimen name="location_area_pop_height">860dp</dimen>
+
+
 
 </resources>
