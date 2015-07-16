@@ -1,5 +1,7 @@
 package tv.ismar.daisy.ui.activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -44,10 +46,32 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     private WeatherFragment weatherFragment;
 
+    private SharedPreferences accountPreference;
+
+    private SharedPreferences.OnSharedPreferenceChangeListener  changeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            String accessToken = accountPreference.getString("auth_token", "");
+            String phoneNumber = accountPreference.getString("mobile_number", "");
+            if (!TextUtils.isEmpty(accessToken) && !TextUtils.isEmpty(phoneNumber)) {
+                indicatorView.get(2).setEnabled(false);
+                indicatorView.get(2).setFocusable(false);
+
+            } else {
+                indicatorView.get(2).setEnabled(true);
+                indicatorView.get(2).setFocusable(true);
+            }
+        }
+    };
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usercenter);
+
+        accountPreference = getSharedPreferences("Daisy", Context.MODE_PRIVATE);
+        accountPreference.registerOnSharedPreferenceChangeListener(changeListener);
+
         userCenterIndicatorLayout = (LinearLayout) findViewById(R.id.user_center_indicator_layout);
         storeFragment = new StoreFragment();
         userInfoFragment = new UserInfoFragment();

@@ -286,6 +286,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             public void onClick(View v) {
                 accountsCombine();
                 combineAccountPop.dismiss();
+                ((UserCenterActivity) mContext).switchToUserInfoFragment();
 
             }
         });
@@ -294,10 +295,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 combineAccountPop.dismiss();
+                ((UserCenterActivity) mContext).switchToUserInfoFragment();
             }
         });
 
-        ((UserCenterActivity) mContext).switchToUserInfoFragment();
+
     }
 
 
