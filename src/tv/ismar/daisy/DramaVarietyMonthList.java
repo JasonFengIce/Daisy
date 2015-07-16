@@ -16,6 +16,7 @@ import tv.ismar.daisy.models.ItemCollection;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.ui.widget.TopPanelView;
 import tv.ismar.daisy.views.LoadingDialog;
+import tv.ismar.daisy.views.MonthSectionButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +37,8 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
     private TopPanelView top_column_layout;
     private Button arrow_left;
     private Button arrow_right;
+    private int mCurrentPosition=-1;
+    private int mLastPosition = -1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,10 +47,10 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
         DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
         initView();
         getData();
-        month_section_layout.getChildAt(0).setFocusable(true);
-        month_section_layout.getChildAt(0).requestFocus();
         View vv = month_section_layout.getChildAt(0);
         ((Button)month_section_layout.getChildAt(0)).performClick();
+        month_section_layout.getChildAt(0).setFocusable(true);
+        month_section_layout.getChildAt(0).requestFocus();
     }
 
     private void initView(){
@@ -60,7 +63,6 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
         arrow_right = (Button)findViewById(R.id.arrow_right);
         mHGridView.leftbtn = arrow_left;
         mHGridView.rightbtn = arrow_right;
-
         arrow_left.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,23 +84,53 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
         mItem = (Item) bundle.get("item");
         Item[] subItems = mItem.subitems;
         ArrayList<Item> list = null;
+        int k = 0;
         for(Item item :subItems){
             int month = item.month;
             if(currentMonth!=month){
                 list = new ArrayList<Item>();
-                Button monthSection = new Button(this);
+                MonthSectionButton monthSection = new MonthSectionButton(this);
                 monthSection.setClickable(true);
                 monthSection.setText(month + "月");
                 monthSection.setTag(month + "");
+                monthSection.setPosition(k);
                 monthSection.setTextSize(25);
                 monthSection.setFocusable(true);
                 monthSection.setTextColor(0xffbbbbbb);
-                monthSection.setBackgroundResource(R.drawable.month_btn_selector);
+                monthSection.setBackgroundResource(R.drawable.month_btn_normal);
                 monthSection.setClickable(true);
+                monthSection.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View view, boolean hasfocus) {
+                         int position = ((MonthSectionButton)view).getPosition();
+                        if(hasfocus){
+                            view.setBackgroundResource(R.drawable.month_btn_pressed);
+                           if(position!=mLastPosition){
+                               View lastView = month_section_layout.getChildAt(mLastPosition);
+                               if(lastView!=null){
+                                   lastView.setBackgroundResource(R.drawable.month_btn_normal);
+                               }
+                               mLastPosition = position;
+                           }
+                        }
+                        else{
+                         ////////////////////////////////////
+                        }
+                    }
+                });
                 monthSection.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         String key = (String) view.getTag();
+                        int position = ((MonthSectionButton)view).getPosition();
+                        if(position==mCurrentPosition){
+                           // mLastPosition = position;
+                            return;
+                        }
+                        view.setBackgroundResource(R.drawable.month_btn_pressed);
+                        View lastView = month_section_layout.getChildAt(mCurrentPosition);
+                        if(lastView!=null)
+                            lastView.setBackgroundResource(R.drawable.month_btn_normal);
                         ArrayList<Item> lists = maps.get(key);
                         mItemCollections = new ArrayList<ItemCollection>();
                         int num_pages = (int) FloatMath.ceil((float) lists.size() / (float) ItemCollection.NUM_PER_PAGE);
@@ -108,6 +140,8 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
                         mHGridAdapter = new HGridAdapterImpl(DramaVarietyMonthList.this, mItemCollections,false);
                         mHGridAdapter.setTemplate(2);
                         mHGridAdapter.setList(mItemCollections);
+                        mCurrentPosition = position;
+                        mLastPosition = position;
                         if(mHGridAdapter.getCount()>0){
                             mHGridView.setAdapter(mHGridAdapter);
                             mHGridView.setFocusable(true);
@@ -131,11 +165,9 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
                 if(currentMonth>0){
                     params.leftMargin = 34;
                 }
-                if(currentMonth==0){
-                    monthSection.requestFocus();
-                }
                 month_section_layout.addView(monthSection,params);
                 currentMonth = month;
+                k++;
                 maps.put(month+"",list);
             }
             list.add(item);

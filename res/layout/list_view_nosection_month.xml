@@ -24,7 +24,7 @@
             android:paddingLeft="@dimen/tv_guide_top_section_padding"
             android:paddingRight="@dimen/tv_guide_top_section_padding"/>
     <LinearLayout
-            android:focusable="true"
+            android:focusable="false"
             android:orientation="horizontal"
             android:id="@+id/month_section_layout"
             android:layout_width="match_parent"

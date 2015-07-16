@@ -39,7 +39,14 @@ public class VideoEntity {
         private String title;
         private String item_url;
         private boolean is_complex;
-        
+        private String content_model;
+
+        public String getContent_model(){
+            return content_model;
+        }
+        public void setContent_model(String content_model){
+            this.content_model = content_model;
+        }
         public boolean isIs_complex() {
 			return is_complex;
 		}

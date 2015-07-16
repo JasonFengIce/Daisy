@@ -89,7 +89,7 @@
     <dimen name="gridview_main_panel_fadingEdgeLength">144dip</dimen>
     <dimen name="gridview_main_panel_horizontalSpacing">42dip</dimen>
     <dimen name="gridview_main_panel_verticalSpacing">0dip</dimen>
-    <dimen name="gridview_main_panel_rowHeight">289dip</dimen>
+    <dimen name="gridview_main_panel_rowHeight">252dip</dimen>
     <dimen name="gridview_main_panel_labelTopOffset">8dip</dimen>
     <dimen name="gridview_main_panel_labelLeftOffset">35dip</dimen>
     <dimen name="gridview_main_panel_labelWidth">53dip</dimen>
@@ -418,7 +418,7 @@
     <dimen name="search_gridview_item_iv_type_MT">-15dip</dimen>
     <!-- channel_section_tabs -->
     <dimen name="channel_section_tabs_W">300dip</dimen>
-    <dimen name="channel_section_tabs_H">73dip</dimen>
+    <dimen name="channel_section_tabs_H">85dip</dimen>
     <dimen name="channel_section_tabs_label_marginL">10dip</dimen>
     <dimen name="channel_section_tabs_label_marginR">10dip</dimen>
     <dimen name="channel_section_tabs_label_marginB">6dip</dimen>

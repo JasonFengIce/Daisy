@@ -189,7 +189,12 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 					} else {
 						holder.previewImage.setUrl(item.adlet_url);
 					}
-					holder.previewImage.setFocustitle(item.focus);
+                    if(isPortrait){
+                        holder.previewImage.setFocustitle(item.focus);
+                    }
+                    else{
+                        holder.previewImage.setFocustitle("");
+                    }
                     if(item.bean_score>0){
                         holder.ItemBeanScore.setVisibility(View.VISIBLE);
                         holder.ItemBeanScore.setText(item.bean_score+"");

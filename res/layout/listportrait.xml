@@ -98,6 +98,7 @@
             android:background="@android:color/black"
             android:alpha="0.4"/>
     <ImageView
+            android:visibility="invisible"
             android:clickable="true"
             android:layout_alignBottom="@id/h_grid_view"
             android:layout_alignTop="@id/h_grid_view"

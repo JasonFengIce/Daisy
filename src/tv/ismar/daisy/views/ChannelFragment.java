@@ -415,6 +415,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 			}
 			isInitTaskLoading = false;
             top_column_layout.setVisibility(View.VISIBLE);
+            right_shadow.setVisibility(View.INVISIBLE);
             //top_column_layout.setSecondChannelVisable();
             percentage.setVisibility(View.VISIBLE);
 			if(result!=RESULT_SUCCESS) {
