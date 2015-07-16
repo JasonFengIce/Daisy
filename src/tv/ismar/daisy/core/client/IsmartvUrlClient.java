@@ -68,8 +68,8 @@ public class IsmartvUrlClient extends Thread {
                     callback.onSuccess((String) msg.obj);
                     break;
                 case FAILURE:
-
                     callback.onFailed((Exception) msg.obj);
+                    sendConnectErrorBroadcast(((Exception) msg.obj).getMessage());
                     break;
                 case FAILURE_4XX:
                     callback.onFailed((Exception) msg.obj);

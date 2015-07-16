@@ -1,8 +1,13 @@
 package tv.ismar.daisy.ui.fragment.usercenter;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -21,6 +26,7 @@ import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.core.receiver.TimeCountdownBroadcastSender;
 import tv.ismar.daisy.data.usercenter.AuthTokenEntity;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.Item;
@@ -52,9 +58,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private View fragmentView;
 
-    private int count;
 
     private OnLoginCallback loginCallback;
+
+
+    private IntentFilter intentFilter;
+
 
     public interface OnLoginCallback {
         void onLoginSuccess();
@@ -66,8 +75,24 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onAttach(Activity activity) {
+
         super.onAttach(activity);
         this.mContext = activity;
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(TimeCountdownBroadcastSender.ACTION_TIME_COUNTDOWN);
+        mContext.registerReceiver(countdownReceiver, intentFilter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mContext.unregisterReceiver(countdownReceiver);
     }
 
     @Override
@@ -109,6 +134,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
     private void fetchVerificationCode() {
+//        phoneNumberEdit.setText("15370770697");
         String phoneNumber = phoneNumberEdit.getText().toString();
         if (TextUtils.isEmpty(phoneNumber)) {
             phoneNumberPrompt.setText(mContext.getText(R.string.phone_number_not_be_null));
@@ -130,8 +156,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onSuccess(String result) {
                 phoneNumberPrompt.setText(R.string.fetch_verification_success);
-                count = 60;
-                countDown();
+                TimeCountdownBroadcastSender.getInstance(mContext).start(60);
             }
 
             @Override
@@ -217,29 +242,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    private void countDown() {
-        if (count > 0) {
-            View view = getView();
-            if (view != null) {
-                view.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (fetchVerificationBtn.isEnabled())
-                            fetchVerificationBtn.setEnabled(false);
-                        fetchVerificationBtn.setText(count + "秒");
-                        count--;
-                        countDown();
-                    }
-                }, 1000);
-            }
-        } else {
-            if (!fetchVerificationBtn.isEnabled()) {
-                fetchVerificationBtn.setEnabled(true);
-                fetchVerificationBtn.setText(R.string.association_fetch_verification);
-            }
-        }
-    }
-
 
     private void showLoginSuccessPopup() {
         View popupLayout = LayoutInflater.from(mContext).inflate(R.layout.popup_login_success, null);
@@ -284,6 +286,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             public void onClick(View v) {
                 accountsCombine();
                 combineAccountPop.dismiss();
+                ((UserCenterActivity) mContext).switchToUserInfoFragment();
 
             }
         });
@@ -292,10 +295,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 combineAccountPop.dismiss();
+                ((UserCenterActivity) mContext).switchToUserInfoFragment();
             }
         });
 
-        ((UserCenterActivity) mContext).switchToUserInfoFragment();
+
     }
 
 
@@ -373,6 +377,23 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             getView().setBackgroundColor(0x00000000);
         }
     }
+
+    private BroadcastReceiver countdownReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int count = intent.getIntExtra(TimeCountdownBroadcastSender.COUNT, 0);
+            if (count > 0) {
+                if (fetchVerificationBtn.isEnabled())
+                    fetchVerificationBtn.setEnabled(false);
+                fetchVerificationBtn.setText(count + "秒");
+            } else {
+                if (!fetchVerificationBtn.isEnabled()) {
+                    fetchVerificationBtn.setEnabled(true);
+                    fetchVerificationBtn.setText(R.string.association_fetch_verification);
+                }
+            }
+        }
+    };
 
 
 }

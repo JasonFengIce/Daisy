@@ -5,16 +5,28 @@
               android:layout_height="match_parent">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+            android:id="@+id/current_position"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/h1_text_size"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/location_fragment_current_position_height"/>
+
+    <ImageView
+            android:src="@drawable/horizontal_divider_line"
+            android:layout_width="@dimen/location_divider_width"
+            android:layout_marginLeft="@dimen/location_divider_margin_left"
+            android:layout_height="1dp"/>
 
     <GridView
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:id="@+id/province_list"
-        android:numColumns="6"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            android:descendantFocusability="afterDescendants"
+            android:layout_marginTop="@dimen/location_grid_margin_top"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:id="@+id/province_list"
+            android:numColumns="10"
+            android:verticalSpacing="60dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
     </GridView>
 </LinearLayout>

@@ -74,7 +74,7 @@ public class WeatherFragment extends Fragment implements View.OnClickListener, V
         subTitleTextView = (TextView) view.findViewById(R.id.sub_title);
         weatherInfoTextView = (TextView) view.findViewById(R.id.weather_info);
         guideLayout = (LinearLayout) view.findViewById(R.id.indicator_layout);
-        dividerImage = (ImageView)view.findViewById(R.id.divider);
+        dividerImage = (ImageView) view.findViewById(R.id.divider);
 
         titleTextView.setText(R.string.app_name);
         subTitleTextView.setText(R.string.front_page);
@@ -113,7 +113,7 @@ public class WeatherFragment extends Fragment implements View.OnClickListener, V
         subTitleTextView.setText(subTitle);
     }
 
-    public void hideSubTitle(){
+    public void hideSubTitle() {
         dividerImage.setVisibility(View.GONE);
         subTitleTextView.setVisibility(View.GONE);
     }
@@ -133,14 +133,16 @@ public class WeatherFragment extends Fragment implements View.OnClickListener, V
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(date);
 
-                weatherInfoTextView.setText("");
-                weatherInfoTextView.append("   "+calendar.get(Calendar.YEAR) + getText(R.string.year).toString() +
-                        calendar.get(Calendar.MONTH) + getText(R.string.month).toString() +
-                        calendar.get(Calendar.DATE) + getText(R.string.day).toString() + "   ");
+                if (isAdded()) {
+                    weatherInfoTextView.setText("");
+                    weatherInfoTextView.append("   " + calendar.get(Calendar.YEAR) + getText(R.string.year).toString() +
+                            calendar.get(Calendar.MONTH) + getText(R.string.month).toString() +
+                            calendar.get(Calendar.DATE) + getText(R.string.day).toString() + "   ");
 
-                weatherInfoTextView.append(todayDetail.getPhenomenon() + "   ");
-                weatherInfoTextView.append(todayDetail.getTemperature() + getText(R.string.degree) + "   ");
-                weatherInfoTextView.append(todayDetail.getWind_direction());
+                    weatherInfoTextView.append(todayDetail.getPhenomenon() + "   ");
+                    weatherInfoTextView.append(todayDetail.getTemperature() + getText(R.string.degree) + "   ");
+                    weatherInfoTextView.append(todayDetail.getWind_direction());
+                }
             }
 
             @Override
