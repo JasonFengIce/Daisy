@@ -231,25 +231,25 @@ public class NetworkUtils {
 				+ "]";
 		int status =500;
 		try {
-			URL postUrl = new URL("http://lilac.t.tvxio.com"+ "/testads/?"+baseparams + "&" + values);
+			URL postUrl = new URL(SimpleRestClient.ad_domain+"/api/get/ad/ ");
 			HttpURLConnection connection = (HttpURLConnection) postUrl
 					.openConnection();
-//			connection.setDoOutput(true);
-//			connection.setDoInput(true);
-			connection.setRequestMethod("GET");
-			// connection.setUseCaches(false);
+			connection.setDoOutput(true);
+			connection.setDoInput(true);
+			connection.setRequestMethod("POST");
+			 connection.setUseCaches(false);
 			connection.addRequestProperty("Accept-Encoding",
 					"gzip,deflate,sdch");
-//			connection.setInstanceFollowRedirects(true);
-//			connection.setRequestProperty("Content-Type",
-//					"application/x-www-form-urlencoded");
+			connection.setInstanceFollowRedirects(true);
+			connection.setRequestProperty("Content-Type",
+					"application/x-www-form-urlencoded");
 			connection.setRequestProperty("Accept", "application/json");
 			connection.connect();
-//			DataOutputStream out = new DataOutputStream(
-//					connection.getOutputStream());
-//			out.writeBytes(baseparams + "&" + values);
-//			out.flush();
-//			out.close();
+			DataOutputStream out = new DataOutputStream(
+					connection.getOutputStream());
+			out.writeBytes(baseparams + "&" + values);
+			out.flush();
+			out.close();
 			status = connection.getResponseCode();
 			GZIPInputStream is = null;
 			String encoding = connection.getContentEncoding();

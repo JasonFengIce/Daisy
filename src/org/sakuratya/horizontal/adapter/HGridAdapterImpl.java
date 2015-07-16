@@ -184,7 +184,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
                         holder.price.setVisibility(View.GONE);
                     }
                     holder.title.setText(item.title);
-					if (isPortrait && StringUtils.isNotEmpty(item.list_url)) {
+					if (isPortrait) {
 						holder.previewImage.setUrl(item.list_url);
 					} else {
 						holder.previewImage.setUrl(item.adlet_url);

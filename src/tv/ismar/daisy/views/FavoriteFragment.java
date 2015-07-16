@@ -12,12 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
@@ -91,7 +88,8 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
     private Item[] FavoriteList;
     private Button search_btn;
 	private void initViews(View fragmentView) {
-		
+        View vv = fragmentView.findViewById(R.id.tabs_layout);
+        vv.setVisibility(View.GONE);
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
 		mHGridView.setOnItemClickListener(this);
 		mHGridView.setOnItemSelectedListener(this);
@@ -536,7 +534,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		switch (parent.getId()) {
 		case R.id.h_grid_view:
 			Item item = mHGridAdapter.getItem(position);
-			new GetItemTask().execute(item);
+            new GetItemTask().execute(item);
 			break;
 
 		case R.id.recommend_gridview:

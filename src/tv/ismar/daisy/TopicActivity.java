@@ -152,22 +152,25 @@ public class TopicActivity extends BaseActivity implements View.OnFocusChangeLis
                                 int position_x = jsonObj.getInt("position_x");
                                 int position_y = jsonObj.getInt("position_y");
 
-                                JSONArray polygonArray = jsonObj.getJSONArray("polygon");
+                                if(jsonObj.has("polygon")){
+                                    JSONArray polygonArray = jsonObj.getJSONArray("polygon");
 
 
-                                JSONObject polygonLT = polygonArray.getJSONObject(0);
-                                JSONObject polygonRT = polygonArray.getJSONObject(1);
-                                JSONObject polygonRB = polygonArray.getJSONObject(2);
-                                JSONObject polygonLB = polygonArray.getJSONObject(3);
-                                POINT PLT,PRT,PRB,PLB;
-                                PLT = new POINT(polygonLT.getInt("x"),polygonLT.getInt("y"));
-                                PRT = new POINT(polygonRT.getInt("x"),polygonRT.getInt("y"));
-                                PRB = new POINT(polygonRB.getInt("x"),polygonRB.getInt("y"));
-                                PLB = new POINT(polygonLB.getInt("x"),polygonLB.getInt("y"));
-                                Quadrangle quad;
-                                quad = new Quadrangle(PLT,PRT,PRB,PLB,i);
+                                    JSONObject polygonLT = polygonArray.getJSONObject(0);
+                                    JSONObject polygonRT = polygonArray.getJSONObject(1);
+                                    JSONObject polygonRB = polygonArray.getJSONObject(2);
+                                    JSONObject polygonLB = polygonArray.getJSONObject(3);
+                                    POINT PLT,PRT,PRB,PLB;
+                                    PLT = new POINT(polygonLT.getInt("x"),polygonLT.getInt("y"));
+                                    PRT = new POINT(polygonRT.getInt("x"),polygonRT.getInt("y"));
+                                    PRB = new POINT(polygonRB.getInt("x"),polygonRB.getInt("y"));
+                                    PLB = new POINT(polygonLB.getInt("x"),polygonLB.getInt("y"));
+                                    Quadrangle quad;
+                                    quad = new Quadrangle(PLT,PRT,PRB,PLB,i);
 
-                                mQuadlist.add(i,quad);
+                                    mQuadlist.add(i,quad);
+                                }
+
                                 Log.i("Quadrangle","add view i="+i);
                                 params.leftMargin = position_x;
                                 params.topMargin = position_y;

@@ -110,6 +110,20 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
         right_shadow = (ImageView)fragmentView.findViewById(R.id.right_shadow);
         mHGridView.leftbtn = left_shadow;
         mHGridView.rightbtn = right_shadow;
+        if(left_shadow!=null&&right_shadow!=null){
+            left_shadow.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mHGridView.pageScroll(View.FOCUS_LEFT);
+                }
+            });
+            right_shadow.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mHGridView.pageScroll(View.FOCUS_RIGHT);
+                }
+            });
+        }
 		mHGridView.setOnItemClickListener(this);
 		mHGridView.setOnItemSelectedListener(this);
 		mHGridView.setOnScrollListener(this);
@@ -425,7 +439,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 						mHGridView.setFocusable(true);
 						mHGridView.setHorizontalFadingEdgeEnabled(true);
                         if(isPortrait){
-                            mHGridView.setFadingEdgeLength(90);
+                            mHGridView.setFadingEdgeLength(160);
                         }
                         else{
                             mHGridView.setFadingEdgeLength(144);

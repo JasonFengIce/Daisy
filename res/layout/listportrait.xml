@@ -74,7 +74,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fadingEdge="horizontal"
-        android:fadingEdgeLength="@dimen/gridview_main_panel_horizontalSpacing"
         sakura:horizontalSpacing="8dip"
         sakura:numRows="2"
         sakura:rowHeight="399dip"
@@ -84,8 +83,7 @@
         sakura:selectionTopPadding="@dimen/HGridView_related_pselectionTopPadding"
         sakura:selectionRightPadding="@dimen/HGridView_related_pselectionRightPadding"
         sakura:selectionBottomPadding="@dimen/HGridView_related_pselectionBottomPadding"
-        android:layout_marginTop="-22dip"
-        >
+        android:layout_marginTop="-22dip">
     </org.sakuratya.horizontal.ui.HGridView>
 
     <ImageView
@@ -95,7 +93,7 @@
             android:layout_alignTop="@id/h_grid_view"
             android:layout_alignLeft="@id/h_grid_view"
             android:id="@+id/left_shadow"
-            android:layout_width="144dip"
+            android:layout_width="178dip"
             android:layout_height="match_parent"
             android:background="@android:color/black"
             android:alpha="0.4"/>
@@ -105,7 +103,7 @@
             android:layout_alignTop="@id/h_grid_view"
             android:layout_alignRight="@id/h_grid_view"
             android:id="@+id/right_shadow"
-            android:layout_width="144dip"
+            android:layout_width="178dip"
             android:layout_height="match_parent"
             android:background="@android:color/black"
             android:alpha="0.4"/>

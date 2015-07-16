@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingLeft="@dimen/fragment_padding_lr"
-    android:paddingRight="@dimen/fragment_padding_lr" >
+    android:paddingRight="@dimen/fragment_padding_lr"
+     >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,7 +22,7 @@
 
             <tv.ismar.daisy.views.AsyncImageView
                 android:id="@+id/vaiety_post"
-                android:layout_width="918dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingLeft="2dp"
                 android:scaleType="fitXY"
@@ -38,7 +39,7 @@
                     android:layout_width="132dp"
                     android:layout_height="74dp"
                     android:focusable="true"
-                    android:paddingTop="22dp"
+                    android:paddingBottom="-22dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/list_item_preview_bg" />
 
@@ -47,7 +48,7 @@
                     android:layout_width="132dp"
                     android:layout_height="74dp"
                     android:focusable="true"
-                    android:paddingTop="22dp"
+                    android:paddingBottom="-22dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/list_item_preview_bg" />
 
@@ -56,7 +57,7 @@
                     android:layout_width="132dp"
                     android:layout_height="74dp"
                     android:focusable="true"
-                    android:paddingTop="22dp"
+                    android:paddingBottom="-22dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/list_item_preview_bg" />
 
@@ -88,8 +89,8 @@
                 <tv.ismar.daisy.views.LabelImageView
                     xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
                     android:id="@+id/vaiety_card1_image"
-                    android:layout_width="396dp"
-                    android:layout_height="226dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="227dp"
                     android:background="@drawable/launcher_selector"
                     android:focusable="true"
                     labelimage:focusbackground="#b3303030"
@@ -114,7 +115,7 @@
                 <tv.ismar.daisy.views.LabelImageView
                     xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
                     android:id="@+id/vaiety_card2_image"
-                    android:layout_width="398dp"
+                    android:layout_width="match_parent"
                     android:layout_height="227dp"
                     android:background="@drawable/launcher_selector"
                     android:focusable="true"
@@ -140,7 +141,7 @@
                 <tv.ismar.daisy.views.LabelImageView
                     xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
                     android:id="@+id/vaiety_card3_image"
-                    android:layout_width="398dp"
+                    android:layout_width="match_parent"
                     android:layout_height="227dp"
                     android:background="@drawable/launcher_selector"
                     android:focusable="true"
@@ -168,7 +169,7 @@
                 <tv.ismar.daisy.views.LabelImageView
                     xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
                     android:id="@+id/vaiety_card4_image"
-                    android:layout_width="398dp"
+                    android:layout_width="match_parent"
                     android:layout_height="227dp"
                     android:background="@drawable/launcher_selector"
                     android:focusable="true"
