@@ -59,20 +59,19 @@ public class DaisyUtils {
 		return getVodApplication(context).getFavoriteManager();
 	}
 
-	public static void gotoSpecialPage(Context context, String contentMode) {
+	public static void gotoSpecialPage(Context context, String contentMode,String url) {
 		Intent intent = new Intent();
-		if ("variety".equals(contentMode)) {
-			intent.setClassName("tv.ismar.daisy",
-					"tv.ismar.daisy.ItemDetailActivity");
+		if ("variety".equals(contentMode)||"entertainment".equals(contentMode)) {
 			intent.setAction("tv.ismar.daisy.EntertainmentItem");
-			intent.putExtra("channel", "娱乐综艺");
+			intent.putExtra("title", "娱乐综艺");
 		} else if ("movie".equals(contentMode)) {
 			intent.setAction("tv.ismar.daisy.PFileItem");
-			intent.putExtra("channel", "电影");
+			intent.putExtra("title", "电影");
 		} else {
 			intent.setClassName("tv.ismar.daisy",
 					"tv.ismar.daisy.ItemDetailActivity");
 		}
+        intent.putExtra("url", url);
 		context.startActivity(intent);
 	}
 

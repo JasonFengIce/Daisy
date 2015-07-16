@@ -7,6 +7,7 @@
     android:background="@drawable/background"
     android:orientation="vertical" >
     <tv.ismar.daisy.ui.widget.TopPanelView
+            android:paddingTop="50dip"
             android:id="@+id/top_column_layout"
             android:layout_width="match_parent"
             android:layout_height="112dip"
@@ -16,19 +17,17 @@
             android:visibility="invisible">
     </tv.ismar.daisy.ui.widget.TopPanelView>
     <ImageView
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/grid_view_main_divider_H"
-        android:layout_marginLeft="@dimen/channel_section_tabs_layout_marginLeft"
-        android:layout_marginRight="@dimen/channel_section_tabs_layout_marginLeft"
-        android:background="@drawable/divider_person"
-        android:layout_marginTop="@dimen/grid_view_main_divider_MT"
-        android:visibility="gone" />
+            android:layout_marginLeft="26dp"
+            android:layout_marginRight="26dp"
+            android:layout_width="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/orderlistdivide"
+            android:layout_height="1dp"/>
     <LinearLayout
         android:id="@+id/tabs_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/gridview_channel_panel_height"
-        android:layout_marginLeft="158dip"
+        android:layout_marginLeft="222dip"
         android:orientation="vertical"
          android:visibility="visible"
         >
@@ -53,7 +52,7 @@
                 android:id="@+id/section_percentage"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/channel_section_tabs_percentage_H"
-                android:progressDrawable="@drawable/section_percentage_selected"
+                android:progressDrawable="@drawable/progressbg"
                 style="@android:style/Widget.ProgressBar.Horizontal"
                 android:indeterminate="false"
                 android:visibility="invisible" />
@@ -76,14 +75,16 @@
         android:fadingEdge="horizontal"
         sakura:horizontalSpacing="8dip"
         sakura:numRows="2"
-        sakura:rowHeight="399dip"
+        sakura:rowHeight="392dip"
         sakura:selectorDrawable="@drawable/vod_gv_selector"
-        sakura:verticalSpacing="5dip"
+        sakura:verticalSpacing="3dip"
         sakura:selectionLeftPadding="@dimen/HGridView_related_pselectionLeftPadding"
         sakura:selectionTopPadding="@dimen/HGridView_related_pselectionTopPadding"
         sakura:selectionRightPadding="@dimen/HGridView_related_pselectionRightPadding"
         sakura:selectionBottomPadding="@dimen/HGridView_related_pselectionBottomPadding"
-        android:layout_marginTop="-22dip">
+        android:layout_marginTop="9dip"
+        android:padding="3dip"
+        android:layout_marginBottom="69dip">
     </org.sakuratya.horizontal.ui.HGridView>
 
     <ImageView
@@ -93,10 +94,10 @@
             android:layout_alignTop="@id/h_grid_view"
             android:layout_alignLeft="@id/h_grid_view"
             android:id="@+id/left_shadow"
-            android:layout_width="178dip"
+            android:layout_width="171dip"
             android:layout_height="match_parent"
             android:background="@android:color/black"
-            android:alpha="0.4"/>
+            android:alpha="0.3"/>
     <ImageView
             android:visibility="invisible"
             android:clickable="true"
@@ -104,9 +105,9 @@
             android:layout_alignTop="@id/h_grid_view"
             android:layout_alignRight="@id/h_grid_view"
             android:id="@+id/right_shadow"
-            android:layout_width="178dip"
+            android:layout_width="171dip"
             android:layout_height="match_parent"
             android:background="@android:color/black"
-            android:alpha="0.4"/>
+            android:alpha="0.3"/>
 </RelativeLayout>
 </LinearLayout>

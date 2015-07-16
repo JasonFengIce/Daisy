@@ -440,10 +440,10 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 						mHGridView.setFocusable(true);
 						mHGridView.setHorizontalFadingEdgeEnabled(true);
                         if(isPortrait){
-                            mHGridView.setFadingEdgeLength(160);
+                            mHGridView.setFadingEdgeLength(155);
                         }
                         else{
-                            mHGridView.setFadingEdgeLength(144);
+                            mHGridView.setFadingEdgeLength(200);
                         }
 						mHGridAdapter.hg = mHGridView;
 						int num_rows = mHGridView.getRows();
@@ -745,7 +745,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 					Intent intent = new Intent();
 					if(item.is_complex) {
                         if(!isPortrait){
-                            if(item.content_model.equals("variety")){
+                            if(item.content_model.equals("variety")||item.content_model.equals("entertainment")){
                                //综艺详情
                                 intent.setAction("tv.ismar.daisy.EntertainmentItem");
                             }

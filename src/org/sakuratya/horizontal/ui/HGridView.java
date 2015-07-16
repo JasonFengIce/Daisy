@@ -1211,15 +1211,16 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	}
 
 	private void positionSelector(int l, int t, int r, int b) {
-		mSelectorRect.set(l - mSelectionLeftPadding, t - mSelectionTopPadding,
-				r + mSelectionRightPadding, b + mSelectionBottomPadding);
+        mSelectorRect.set(l - mSelectionLeftPadding, t - mSelectionTopPadding,
+                r + mSelectionRightPadding, b + mSelectionBottomPadding);
+
 	}
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		final Rect listPadding = mListPadding;
 		listPadding.left = mSelectionLeftPadding + getPaddingLeft();
-		listPadding.top = mSelectionTopPadding + getPaddingTop();
+		listPadding.top = 0 + getPaddingTop();
 		listPadding.right = mSelectionRightPadding + getPaddingRight();
 		listPadding.bottom = mSelectionBottomPadding + getPaddingBottom();
 

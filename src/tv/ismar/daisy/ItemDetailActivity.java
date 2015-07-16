@@ -719,7 +719,7 @@ private boolean isPause = false;
 			imgView.setUrl(mRelatedItem[i].adlet_url);
 			titleView.setText(mRelatedItem[i].title);
 			focusView.setText(mRelatedItem[i].focus);
-			relatedHolder.setTag(mRelatedItem[i].item_url);
+			relatedHolder.setTag(mRelatedItem[i]);
 			mRelatedVideoContainer.addView(relatedHolder);
 			relatedHolder
 					.setOnFocusChangeListener(mRelatedOnFocusChangeListener);
@@ -788,10 +788,10 @@ private boolean isPause = false;
 
 		@Override
 		public void onClick(View v) {
-			String url = (String) v.getTag();
+			Item itemSection = (Item) v.getTag();
 			final Item[] relatedItem = mRelatedItem;
 			for (Item item : relatedItem) {
-				if (url.equals(item.item_url)) {
+				if (itemSection.item_url.equals(item.item_url)) {
 					HashMap<String, Object> properties = new HashMap<String, Object>();
 					properties.put(EventProperty.ITEM, mItem.pk);
 					properties.put(EventProperty.TO_ITEM, item.pk);
@@ -802,11 +802,11 @@ private boolean isPause = false;
 					break;
 				}
 			}
-			Intent intent = new Intent();
-			intent.setAction(action);
-			intent.putExtra("url", url);
-			startActivity(intent);
-
+//			Intent intent = new Intent();
+//			intent.setAction(action);
+//			intent.putExtra("url", url);
+//			startActivity(intent);
+            DaisyUtils.gotoSpecialPage(ItemDetailActivity.this,itemSection.content_model,itemSection.item_url);
 		}
 	};
 

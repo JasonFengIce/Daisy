@@ -12,10 +12,7 @@
         android:layout_height="189dp"
         android:id="@+id/list_item_preview_img"
         android:background="@drawable/list_item_preview_bg"
-        android:layout_marginLeft="@dimen/gridview_item_image_marginright"
-        android:layout_marginRight="@dimen/gridview_item_image_marginleft"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:paddingTop="@dimen/gridview_item_image_PaddingT"
         android:paddingBottom="@dimen/gridview_item_image_PaddingB"
         android:paddingLeft="@dimen/gridview_item_image_PaddingL"
@@ -23,20 +20,20 @@
         labelimage:focuspaddingtop="0.90"
         labelimage:focustextsize="30sp"
         labelimage:focusbackground="#b3303030"
-        />
+        android:scaleType="fitXY"/>
 
     <TextView
-        android:layout_width="@dimen/gridview_item_image_W"
+        android:layout_width="336dip"
         android:layout_height="match_parent"
         android:singleLine="true"
         android:ellipsize="marquee"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/list_item_preview_img"
         android:textSize="@dimen/gridview_item_title_textsize"
         android:id="@+id/list_item_title"
         android:textColor="#FFF8F8FF"
-        android:layout_marginTop="@dimen/gridview_item_list_item_title_MT"/>
+       />
 
     <ImageView
         android:layout_width="@dimen/gridview_item_quality_img_H"

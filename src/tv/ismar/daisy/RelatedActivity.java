@@ -331,10 +331,13 @@ public class RelatedActivity extends BaseActivity implements OnSectionSelectChan
 		} else {
 			mDataCollectionProperties.put(EventProperty.CLIP, "");
 		}
-		Intent intent = new Intent("tv.ismar.daisy.Item");
-		intent.putExtra("url", item.item_url);
-        intent.putExtra(EventProperty.SECTION, mSection);
-		startActivity(intent);
+//		Intent intent = new Intent("tv.ismar.daisy.Item");
+//		intent.putExtra("url", item.item_url);
+//        intent.putExtra(EventProperty.SECTION, mSection);
+//		startActivity(intent);
+
+        DaisyUtils.gotoSpecialPage(this,item.content_model,item.item_url);
+
 	}
 	
 	
