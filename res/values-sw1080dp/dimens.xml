@@ -442,8 +442,8 @@
     <dimen name="ZGridView_played_selectorBottomPadding">-33dip</dimen>
 
     <dimen name="ZGridView_search_selectorLeftPadding">7dip</dimen>
-    <dimen name="ZGridView_search_selectorTopPadding">19dip</dimen>
-    <dimen name="ZGridView_search_selectorRight">20dip</dimen>
+    <dimen name="ZGridView_search_selectorTopPadding">21dip</dimen>
+    <dimen name="ZGridView_search_selectorRight">21dip</dimen>
     <dimen name="ZGridView_search_selectorBottom">-70dip</dimen>
 
     <dimen name="ZGridView_packagedetail_selectorLeftPadding">2dip</dimen>
