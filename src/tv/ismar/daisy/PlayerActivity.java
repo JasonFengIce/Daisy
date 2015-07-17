@@ -20,6 +20,7 @@ import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.models.AdElement;
+import tv.ismar.daisy.models.AdRequestElement;
 import tv.ismar.daisy.models.Attribute;
 import tv.ismar.daisy.models.Clip;
 import tv.ismar.daisy.models.Favorite;
@@ -562,28 +563,32 @@ public class PlayerActivity extends VodMenuAction {
 		if (genrearray != null) {
 			for (int i = 0; i < genrearray.length; i++) {
 				if (i == 0)
-					genresBuffer.append("{");
+					genresBuffer.append("[");
 				genresBuffer.append(genrearray[i].id);
 				if (i >= 0 && i != genrearray.length - 1)
 					genresBuffer.append(",");
 				if (i == genrearray.length - 1)
-					genresBuffer.append("}");
+					genresBuffer.append("]");
 			}
 		}
-		String params = "'channel':" + "'chinesemovie'" + ",'section':" + "'"
-				+ item.section + "'" + ",'itemid':" + "'" + item.pk + "'"
-				+ ",'topic':" + "" + ",'source':" + "'related':" + ",'genre':"
-				+ "'" + genresBuffer.toString() + "'" + ",'content_model':"
-				+ "'" + item.content_model + "'" + ",'director':" + "'"
-				+ directorsBuffer.toString() + "'" + ",'actor':" + "'"
-				+ actorsBuffer.toString() + "'" + ",'clipid':" + "'"
-				+ (item.clip == null ? "" : item.clip.pk) + "'"
-				+ ",'live_video':" + item.live_video + ",'vendor':" + "'"
-				+ item.vendor + "'" + ",'expense':"
-				+ (item.expense == null ? false : true) + ",'length':"
-				+ "'"+item.clip.length+"'";
-		Log.v("aaaa", params);
-		new GetAdDataTask().execute(adpid, params);
+		AdRequestElement adrequest = new AdRequestElement();
+		adrequest.setAdpid(adpid);
+		adrequest.setChannel("chinesemovie");
+//		adrequest.setSection(item.section == null ? "" :item.section);
+		adrequest.setSection("xinpianshangxian");
+		adrequest.setItemid(item.pk+"");
+		adrequest.setTopic("");
+		adrequest.setSource("list");
+		adrequest.setGenre(genresBuffer.toString());
+		adrequest.setContent_model(item.content_model);
+		adrequest.setDirector(directorsBuffer.toString());
+		adrequest.setActor(actorsBuffer.toString());
+		adrequest.setClipid((item.clip == null ? "" : (item.clip.pk+"")));
+		adrequest.setLive_video(item.live_video+"");
+		adrequest.setVendor(item.vendor);
+		adrequest.setExpense((item.expense == null ? false : true)+"");
+		adrequest.setLength((item.clip == null ? "" :item.clip.length)+"");
+		new GetAdDataTask().execute(adrequest);
 	}
 
 	private class initPlayTask extends AsyncTask<String, Void, Void> {

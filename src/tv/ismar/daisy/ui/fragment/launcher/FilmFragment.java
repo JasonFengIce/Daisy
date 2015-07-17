@@ -225,11 +225,10 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
         film_lefttop_image.setOnClickListener(ItemClickListener);
         film_lefttop_image.setTag(posters.get(0));
         for (int i = 1; i <= posters.size(); i++) {
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0,
-                    ViewGroup.LayoutParams.MATCH_PARENT);
-            params.weight = 1;
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(199, 278);
+//            params.weight = 1;
 //            if (i != 7) {
-            params.setMargins(0, 0, 22, 0);
+            params.setMargins(0, 0, 25, 0);
 //            }
             ImageView itemView = new ImageView(context);
             itemView.setBackgroundResource(R.drawable.launcher_selector);
@@ -263,6 +262,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
                 frameLayout.setLayoutParams(params);
                 guideRecommmendList.addView(frameLayout);
             } else {
+            	params.width = 197;
                 params.setMargins(0, 0, 0, 0);
                 LinearLayout morelayout = (LinearLayout) LayoutInflater.from(
                         context).inflate(R.layout.toppagelistmorebutton,
