@@ -181,7 +181,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
     }
 
     public boolean isLoginFragmentShowing() {
-        if (loginFragment.isVisible()) {
+        if (loginFragment != null && loginFragment.isVisible()) {
             return true;
         } else {
             return false;
