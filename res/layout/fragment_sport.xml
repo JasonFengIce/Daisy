@@ -5,13 +5,13 @@
     android:layout_marginTop="23dp"
     android:orientation="vertical"
     android:paddingLeft="@dimen/fragment_padding_lr"
-    android:paddingRight="80dp" >
+    android:paddingRight="@dimen/fragment_padding_lr">
 
     <LinearLayout
         android:id="@+id/section_one"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.9"
+        android:layout_height="497dp"
+        android:layout_marginTop="13dp"
         android:orientation="horizontal" >
 
         <LinearLayout
@@ -23,43 +23,45 @@
             <tv.ismar.daisy.views.LabelImageView
                 xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
                 android:id="@+id/sport_card1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/launcher_selector"
+                android:layout_width="297dp"
+                android:layout_height="165dp"
                 android:focusable="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
-                labelimage:focuspaddingtop="70"
-                labelimage:focustextpaddingtop="75"
+                labelimage:focuspaddingtop="0.8"
+                labelimage:focustextpaddingtop="0.91"
+                labelimage:frontcolor="#b3000000"
                 labelimage:focustextsize="18sp" />
 
             <tv.ismar.daisy.views.LabelImageView
                 xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
                 android:id="@+id/sport_card2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/launcher_selector"
+                android:layout_width="297dp"
+                android:layout_height="165dp"
+                android:layout_marginTop="1dp"
                 android:focusable="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
                 labelimage:focuspaddingtop="0.8"
-                labelimage:focustextpaddingtop="0.88"
+                labelimage:focustextpaddingtop="0.91"
+                labelimage:frontcolor="#b3000000"
                 labelimage:focustextsize="18sp" />
 
             <tv.ismar.daisy.views.LabelImageView
                 xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
                 android:id="@+id/sport_card3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/launcher_selector"
+                android:layout_width="297dp"
+                android:layout_height="165dp"
+                android:layout_marginTop="1dp"
                 android:focusable="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
                 labelimage:focuspaddingtop="0.8"
-                labelimage:focustextpaddingtop="0.88"
+                labelimage:focustextpaddingtop="0.91"
+                labelimage:frontcolor="#b3000000"
                 labelimage:focustextsize="18sp" />
         </LinearLayout>
 
@@ -130,9 +132,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
+        android:layout_height="254dp"
+        android:layout_marginTop="19dp"
         android:orientation="horizontal" >
 
         <LinearLayout
@@ -144,21 +145,19 @@
             <tv.ismar.daisy.views.LabelImageView
                 xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
                 android:id="@+id/sport_channel1_image"
-                android:layout_width="wrap_content"
+                android:layout_width="332dp"
                 android:layout_height="189dp"
                 android:background="@drawable/launcher_selector"
                 android:focusable="true"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
-                labelimage:focuspaddingtop="70"
-                labelimage:focustextpaddingtop="75"
                 labelimage:focustextsize="18sp" />
 
             <TextView
                 android:id="@+id/sport_channel1_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="17dp"
                 android:gravity="center"
                 android:textSize="24sp" />
         </LinearLayout>
@@ -179,15 +178,13 @@
                 android:focusable="true"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
-                labelimage:focuspaddingtop="70"
-                labelimage:focustextpaddingtop="75"
                 labelimage:focustextsize="18sp" />
 
             <TextView
                 android:id="@+id/sport_channel2_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="17dp"
                 android:gravity="center"
                 android:textSize="24sp" />
         </LinearLayout>
@@ -208,15 +205,13 @@
                 android:focusable="true"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
-                labelimage:focuspaddingtop="70"
-                labelimage:focustextpaddingtop="75"
                 labelimage:focustextsize="18sp" />
 
             <TextView
                 android:id="@+id/sport_channel3_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="17dp"
                 android:gravity="center"
                 android:textSize="24sp" />
         </LinearLayout>
@@ -237,21 +232,19 @@
                 android:focusable="true"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
-                labelimage:focuspaddingtop="70"
-                labelimage:focustextpaddingtop="75"
                 labelimage:focustextsize="18sp" />
 
             <TextView
                 android:id="@+id/sport_channel4_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="17dp"
                 android:gravity="center"
                 android:textSize="24sp" />
         </LinearLayout>
 
         <include
-            android:layout_width="332dp"
+            android:layout_width="327dp"
             android:layout_height="189dp"
             android:layout_marginLeft="29dp"
             layout="@layout/toppagelistmorebutton" />

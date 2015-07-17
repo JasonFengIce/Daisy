@@ -166,6 +166,7 @@
     <declare-styleable name="LabelImageView">
         <attr name="focustextsize" format="dimension"/>
         <attr name="focusbackground" format="color"/>
+        <attr name="frontcolor" format="color"/>
         <attr name="focustextpaddingtop" format="float"/>
         <attr name="focuspaddingtop" format="float"/>
     </declare-styleable>

@@ -22,7 +22,7 @@ public class LabelImageView extends AsyncImageView {
 	private float focuspaddingtop;
 	private int focusbackground;
 	private float focustitlepaddingtop;
-
+	private int frontcolor;
 	private int modetype;
 
 	public void setModetype(int modetype) {
@@ -34,7 +34,7 @@ public class LabelImageView extends AsyncImageView {
 	}
 
 	public void setFocustitle(String focustitle) {
-		if((StringUtils.isNotEmpty(focustitle)) && focustitle.length() >8)
+		if ((StringUtils.isNotEmpty(focustitle)) && focustitle.length() > 8)
 			focustitle = focustitle.substring(0, 8);
 		this.focustitle = focustitle;
 	}
@@ -67,6 +67,7 @@ public class LabelImageView extends AsyncImageView {
 				R.styleable.LabelImageView_focusbackground, 0);
 		focustitlepaddingtop = a.getFloat(
 				R.styleable.LabelImageView_focustextpaddingtop, 0.97f);
+		frontcolor = a.getInt(R.styleable.LabelImageView_frontcolor, 0);
 		a.recycle();
 
 	}
@@ -122,18 +123,27 @@ public class LabelImageView extends AsyncImageView {
 		}
 		// 绘制看点背景
 		paint.setColor(Color.WHITE);
-		if (StringUtils.isNotEmpty(focustitle)&&focustitle.length() > 0) {
+		if (StringUtils.isNotEmpty(focustitle) && focustitle.length() > 0) {
 			paint.setColor(focusbackground);
-			canvas.drawRect(new Rect(getPaddingLeft(), (int)(focuspaddingtop*height), width
-					- paddingright, height - paddingBottom), paint);
+			canvas.drawRect(new Rect(getPaddingLeft(),
+					(int) (focuspaddingtop * height), width - paddingright,
+					height - paddingBottom), paint);
 			// 看点内容
 			paint.setColor(Color.WHITE);
 			paint.setTextSize(focustitlesize);
-//			FontMetrics fm = paint.getFontMetrics();
-//			int focusTextHeight = (int)Math.ceil(fm.descent - fm.ascent);
+			// FontMetrics fm = paint.getFontMetrics();
+			// int focusTextHeight = (int)Math.ceil(fm.descent - fm.ascent);
 			float focuswidth = paint.measureText(focustitle);
 			int xfocus = (int) ((width - focuswidth) / 2);
-			canvas.drawText(focustitle, xfocus, (int)(focustitlepaddingtop*height), paint);
+			canvas.drawText(focustitle, xfocus,
+					(int) (focustitlepaddingtop * height), paint);
+		}
+		// 绘制遮罩效果
+		if (frontcolor != 0) {
+			if (!isFocused()) {
+				paint.setColor(frontcolor);
+				canvas.drawRect(new Rect(0, 0, width, height), paint);
+			}
 		}
 	}
 }
