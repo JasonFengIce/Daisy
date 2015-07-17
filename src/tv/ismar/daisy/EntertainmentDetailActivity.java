@@ -801,11 +801,11 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             if(mRelatedItem[i].focus!=null)
               imgView.setFocustitle(mRelatedItem[i].focus);
             titleView.setText(mRelatedItem[i].title);
-            relatedHolder.setTag(mRelatedItem[i]);
+            imgView.setTag(mRelatedItem[i]);
             related_video_container.addView(relatedHolder);
 //            relatedHolder
 //                    .setOnFocusChangeListener(mRelatedOnFocusChangeListener);
-            relatedHolder.setOnClickListener(mRelatedClickListener);
+            imgView.setOnClickListener(mRelatedClickListener);
         }
     }
     private View.OnClickListener mRelatedClickListener = new View.OnClickListener() {

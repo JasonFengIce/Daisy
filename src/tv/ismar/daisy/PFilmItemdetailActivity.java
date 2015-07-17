@@ -771,11 +771,12 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             if(mRelatedItem[i].focus!=null)
             imgView.setFocustitle(mRelatedItem[i].focus);
             titleView.setText(mRelatedItem[i].title);
-            relatedHolder.setTag(mRelatedItem[i].item_url);
+            imgView.setTag(mRelatedItem[i]);
             related_video_container.addView(relatedHolder);
 //            relatedHolder
 //                    .setOnFocusChangeListener(mRelatedOnFocusChangeListener);
-            relatedHolder.setOnClickListener(mRelatedClickListener);
+
+            imgView.setOnClickListener(mRelatedClickListener);
         }
     }
     private View.OnClickListener mIdOnClickListener = new View.OnClickListener() {
@@ -903,10 +904,10 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
         @Override
         public void onClick(View v) {
-            String url = (String) v.getTag();
+            Item itemSection = (Item) v.getTag();
             final Item[] relatedItem = mRelatedItem;
             for (Item item : relatedItem) {
-                if (url.equals(item.item_url)) {
+                if (itemSection.item_url.equals(item.item_url)) {
                     HashMap<String, Object> properties = new HashMap<String, Object>();
                     properties.put(EventProperty.ITEM, mItem.pk);
                     properties.put(EventProperty.TO_ITEM, item.pk);
@@ -917,11 +918,11 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                     break;
                 }
             }
-            Intent intent = new Intent();
-            intent.setAction("tv.ismar.daisy.PFileItem");
-            intent.putExtra("url", url);
-            startActivity(intent);
-
+//            Intent intent = new Intent();
+//            intent.setAction("tv.ismar.daisy.PFileItem");
+//            intent.putExtra("url", url);
+//            startActivity(intent);
+            DaisyUtils.gotoSpecialPage(PFilmItemdetailActivity.this,itemSection.content_model,itemSection.item_url);
         }
     };
     private DialogInterface.OnCancelListener mLoadingCancelListener = new DialogInterface.OnCancelListener() {

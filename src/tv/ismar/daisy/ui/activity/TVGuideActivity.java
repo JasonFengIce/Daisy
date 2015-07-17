@@ -546,8 +546,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         DisplayMetrics metric = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metric);
         SimpleRestClient.densityDpi = metric.densityDpi;
-        SimpleRestClient.densityDpi = metric.widthPixels;
-        SimpleRestClient.densityDpi = metric.heightPixels;
+        SimpleRestClient.screenWidth = metric.widthPixels;
+        SimpleRestClient.screenHeight = metric.heightPixels;
         PackageManager manager = getPackageManager();
         try {
             PackageInfo info = manager.getPackageInfo(getPackageName(), 0);

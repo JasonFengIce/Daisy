@@ -17,14 +17,13 @@
         <RelativeLayout
             android:id="@+id/vaiety_lefttop"
             android:layout_width="0dp"
-            android:layout_weight="1.1"
+            android:layout_weight="1.11"
             android:layout_height="match_parent" >
 
             <tv.ismar.daisy.views.AsyncImageView
                 android:id="@+id/vaiety_post"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="2dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg" />
 
@@ -84,15 +83,17 @@
                 android:id="@+id/vaiety_card1"
                 android:layout_width="398dp"
                 android:layout_height="258dp"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                 >
 
                 <tv.ismar.daisy.views.LabelImageView
                     xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
                     android:id="@+id/vaiety_card1_image"
-                    android:layout_width="match_parent"
+                    android:layout_width="398dp"
                     android:layout_height="227dp"
                     android:background="@drawable/launcher_selector"
                     android:focusable="true"
+                    android:scaleType="fitXY"
                     labelimage:focusbackground="#b3303030"
                     labelimage:focustextsize="18sp" />
 
@@ -119,6 +120,7 @@
                     android:layout_height="227dp"
                     android:background="@drawable/launcher_selector"
                     android:focusable="true"
+                    android:scaleType="fitXY"
                     android:src="@drawable/list_item_preview_bg"
                     labelimage:focusbackground="#b3303030"
                     labelimage:focustextsize="18sp" />
@@ -145,6 +147,7 @@
                     android:layout_height="227dp"
                     android:background="@drawable/launcher_selector"
                     android:focusable="true"
+                    android:scaleType="fitXY"
                     android:src="@drawable/list_item_preview_bg"
                     labelimage:focusbackground="#b3303030"
                     labelimage:focustextsize="18sp" />
@@ -173,6 +176,7 @@
                     android:layout_height="227dp"
                     android:background="@drawable/launcher_selector"
                     android:focusable="true"
+                    android:scaleType="fitXY"
                     android:src="@drawable/list_item_preview_bg"
                     labelimage:focusbackground="#b3303030"
                     labelimage:focustextsize="18sp" />
@@ -206,6 +210,7 @@
                 android:layout_height="189dp"
                 android:background="@drawable/launcher_selector"
                 android:focusable="true"
+                android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
                 labelimage:focustextsize="18sp" />
@@ -234,6 +239,7 @@
                 android:layout_height="189dp"
                 android:background="@drawable/launcher_selector"
                 android:focusable="true"
+                android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
                 labelimage:focustextsize="18sp" />
@@ -261,6 +267,7 @@
                 android:layout_height="189dp"
                 android:background="@drawable/launcher_selector"
                 android:focusable="true"
+                android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
                 labelimage:focustextsize="18sp" />
@@ -290,6 +297,7 @@
                 android:layout_alignParentTop="true"
                 android:background="@drawable/launcher_selector"
                 android:focusable="true"
+                android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
                 labelimage:focustextsize="18sp" />
@@ -304,7 +312,7 @@
         </RelativeLayout>
 
     <include layout="@layout/toppagelistmorebutton"
-                android:layout_width="330dp"
+                android:layout_width="319dp"
                 android:layout_height="189dp"
                 android:layout_marginLeft="29dp"
          />
