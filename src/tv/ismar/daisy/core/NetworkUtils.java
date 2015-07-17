@@ -230,21 +230,14 @@ public class NetworkUtils {
 				+ adpid + "']";
 		int status = 500;
 		try {
-<<<<<<< HEAD
-			URL postUrl = new URL(SimpleRestClient.ad_domain + "/api/get/ad/ ");
-=======
 			URL postUrl = new URL(SimpleRestClient.ad_domain+"/api/get/ad/ ");
->>>>>>> 698fc82... fix template3 loop play ui bug.
 			HttpURLConnection connection = (HttpURLConnection) postUrl
 					.openConnection();
 			connection.setDoOutput(true);
 			connection.setDoInput(true);
 			connection.setRequestMethod("POST");
-<<<<<<< HEAD
 			connection.setUseCaches(false);
-=======
-			 connection.setUseCaches(false);
->>>>>>> 698fc82... fix template3 loop play ui bug.
+
 			connection.addRequestProperty("Accept-Encoding",
 					"gzip,deflate,sdch");
 			connection.setInstanceFollowRedirects(true);
@@ -254,11 +247,8 @@ public class NetworkUtils {
 			connection.connect();
 			DataOutputStream out = new DataOutputStream(
 					connection.getOutputStream());
-<<<<<<< HEAD
 			out.writeBytes(baseparams + "," + values);
-=======
-			out.writeBytes(baseparams + "&" + values);
->>>>>>> 698fc82... fix template3 loop play ui bug.
+
 			out.flush();
 			out.close();
 			status = connection.getResponseCode();

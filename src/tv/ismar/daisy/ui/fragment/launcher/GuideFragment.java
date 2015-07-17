@@ -153,7 +153,7 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
 					}
 				}
 			});
-            Picasso.with(context).load(posters.get(5).getCustom_image()).into(itemView);
+            Picasso.with(context).load(posters.get(i).getCustom_image()).into(itemView);
             textView.setTag(posters.get(i));
             frameLayout.setTag(posters.get(i));
 //            itemView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
