@@ -175,7 +175,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         tabListView = (LinearLayout) findViewById(R.id.tab_list);
         arrow_left = (ImageView) findViewById(R.id.arrow_scroll_left);
         arrow_right = (ImageView) findViewById(R.id.arrow_scroll_right);
-//        weatherFragment.setTitle("首页");
         arrow_left.setOnClickListener(arrowViewListener);
         arrow_right.setOnClickListener(arrowViewListener);
     }
@@ -190,7 +189,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 contentView.setBackgroundResource(R.color.normal_activity_bg);
                 currentFragment = new GuideFragment();
                 replaceFragment(currentFragment);
-                weatherFragment.setTitle("首页");
+                weatherFragment.setTitle(getText(R.string.ismartv_cinema).toString());
+                weatherFragment.setSubTitle("首页");
+
                 if (arrow_left.getVisibility() == View.VISIBLE) {
                     arrow_left.setVisibility(View.GONE);
                 }
