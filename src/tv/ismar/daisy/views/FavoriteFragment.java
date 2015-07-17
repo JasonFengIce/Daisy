@@ -341,14 +341,15 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 				// start new Activity.
 				Intent intent = new Intent();
 				if(item.is_complex) {
-					if("variety".equals(item.content_model)){
-						intent.setAction("tv.ismar.daisy.EntertainmentItem");
-						intent.putExtra("channel", "娱乐综艺");
-					}else {
-						intent.setAction("tv.ismar.daisy.Item");						
-					}
-					intent.putExtra("url", item.url);
-					startActivity(intent);
+//					if("variety".equals(item.content_model)){
+//						intent.setAction("tv.ismar.daisy.EntertainmentItem");
+//						intent.putExtra("channel", "娱乐综艺");
+//					}else {
+//						intent.setAction("tv.ismar.daisy.Item");
+//					}
+//					intent.putExtra("url", item.url);
+//					startActivity(intent);
+                    DaisyUtils.gotoSpecialPage(getActivity(),item.content_model,item.url);
 				} else {
 					InitPlayerTool tool = new InitPlayerTool(getActivity());
 					tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
@@ -538,12 +539,9 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			break;
 
 		case R.id.recommend_gridview:
-			Intent intent= new Intent();
 			if(tvHome.getObjects().get(position).isIs_complex()){
-				intent.setClassName("tv.ismar.daisy",
-						"tv.ismar.daisy.ItemDetailActivity");
-				intent.putExtra("url", tvHome.getObjects().get(position).getItem_url());
-				startActivity(intent);
+                DaisyUtils.gotoSpecialPage(getActivity(),tvHome.getObjects().get(position).getContent_model(),tvHome.getObjects().get(position).getItem_url());
+				//startActivity(intent);
 			}
 			else{
 				InitPlayerTool tool = new InitPlayerTool(getActivity());

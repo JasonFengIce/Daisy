@@ -199,7 +199,7 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
             allVideoUrl.add(carousels.get(i).getVideo_url());
             FrameLayout frameLayout = (FrameLayout) LayoutInflater.from(context).inflate(R.layout.item_loop_imageview, null);
             ImageView itemView = (ImageView) frameLayout.findViewById(R.id.loop_image);
-            itemView.setBackgroundResource(R.drawable.launcher_selector);
+//            itemView.setBackgroundResource(R.drawable.launcher_selector);
             Picasso.with(context).load(carousels.get(i).getThumb_image()).into(itemView);
             itemView.setTag(i);
             itemView.setOnClickListener(ItemClickListener);

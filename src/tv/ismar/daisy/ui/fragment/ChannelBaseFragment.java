@@ -73,7 +73,7 @@ public class ChannelBaseFragment extends Fragment {
 				context.startActivity(intent);
 			} else {
 				if ("item".equals(mode_name)) {
-					DaisyUtils.gotoSpecialPage(context,contentMode);
+					DaisyUtils.gotoSpecialPage(context,contentMode,url);
 				} else if ("topic".equals(mode_name)) {
 					intent.putExtra("url", url);
 					intent.setClassName("tv.ismar.daisy",

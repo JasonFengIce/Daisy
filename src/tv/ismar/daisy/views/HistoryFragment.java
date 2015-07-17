@@ -677,12 +677,8 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 			break;
 
 		case R.id.recommend_gridview:
-			Intent intent= new Intent();
 			if(tvHome.getObjects().get(position).isIs_complex()){
-				intent.setClassName("tv.ismar.daisy",
-						"tv.ismar.daisy.ItemDetailActivity");
-				intent.putExtra("url", tvHome.getObjects().get(position).getItem_url());
-				startActivity(intent);
+                DaisyUtils.gotoSpecialPage(getActivity(),tvHome.getObjects().get(position).getContent_model(),tvHome.getObjects().get(position).getItem_url());
 			}
 			else{
 				InitPlayerTool tool = new InitPlayerTool(getActivity());

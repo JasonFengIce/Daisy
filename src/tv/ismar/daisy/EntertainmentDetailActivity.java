@@ -801,7 +801,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             if(mRelatedItem[i].focus!=null)
               imgView.setFocustitle(mRelatedItem[i].focus);
             titleView.setText(mRelatedItem[i].title);
-            relatedHolder.setTag(mRelatedItem[i].item_url);
+            relatedHolder.setTag(mRelatedItem[i]);
             related_video_container.addView(relatedHolder);
 //            relatedHolder
 //                    .setOnFocusChangeListener(mRelatedOnFocusChangeListener);
@@ -812,10 +812,10 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
 
         @Override
         public void onClick(View v) {
-            String url = (String) v.getTag();
+            Item itemSection = (Item) v.getTag();
             final Item[] relatedItem = mRelatedItem;
             for (Item item : relatedItem) {
-                if (url.equals(item.item_url)) {
+                if (itemSection.item_url.equals(item.item_url)) {
                     HashMap<String, Object> properties = new HashMap<String, Object>();
                     properties.put(EventProperty.ITEM, mItem.pk);
                     properties.put(EventProperty.TO_ITEM, item.pk);
@@ -826,10 +826,12 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                     break;
                 }
             }
-            Intent intent = new Intent();
-            intent.setAction("tv.ismar.daisy.PFileItem");
-            intent.putExtra("url", url);
-            startActivity(intent);
+//            Intent intent = new Intent();
+//            intent.setAction("tv.ismar.daisy.PFileItem");
+//            intent.putExtra("url", url);
+//            startActivity(intent);
+
+            DaisyUtils.gotoSpecialPage(EntertainmentDetailActivity.this,itemSection.content_model,itemSection.item_url);
 
         }
     };

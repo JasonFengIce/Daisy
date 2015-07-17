@@ -476,10 +476,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 		}){}.start();
 		try {
 			if (movieList.get(position).is_complex) {
-				bundle.putString("url", movieList.get(position).url);
-				intent.setAction("tv.ismar.daisy.Item");
-				intent.putExtras(bundle);
-				startActivity(intent);
+                DaisyUtils.gotoSpecialPage(SearchActivity.this,movieList.get(position).content_model,movieList.get(position).url);
 			} else {
 				InitPlayerTool tool = new InitPlayerTool(SearchActivity.this);
 				tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
