@@ -60,21 +60,24 @@
             android:focusable="true"/>
     </RelativeLayout>
 
-    <HorizontalScrollView
+    <tv.ismar.daisy.views.MyHorizontalScrollView
+            android:id="@+id/scroll"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginLeft="@dimen/tv_guide_channel_margin_lr"
-            android:layout_marginRight="@dimen/tv_guide_channel_margin_lr"
+            android:paddingRight="0dip"
+            android:paddingLeft="77dip"
             android:layout_weight="0.7"
+
             android:scrollbars="none">
 
         <LinearLayout
+
                 android:id="@+id/channel_h_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
         </LinearLayout>
-    </HorizontalScrollView>
+    </tv.ismar.daisy.views.MyHorizontalScrollView>
 
     <LinearLayout
         android:id="@+id/tab_list"

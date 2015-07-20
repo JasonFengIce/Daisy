@@ -257,11 +257,14 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             }
         });
     }
-
+  private tv.ismar.daisy.views.MyHorizontalScrollView scroll;
     private void createChannelView(ChannelEntity[] channelEntities) {
+        scroll = (tv.ismar.daisy.views.MyHorizontalScrollView)contentView.findViewById(R.id.scroll);
         channelHashMap = new HashMap<String, TextView>();
+        scroll.mLeftDistance = 77;
         channelListView.removeAllViews();
-        for (int i = 0; i < channelEntities.length; i++) {
+        int i;
+        for ( i = 0; i < channelEntities.length; i++) {
             FrameLayout frameLayout = (FrameLayout) LayoutInflater.from(this).inflate(R.layout.item_channel, null);
             Button textView = (Button) frameLayout.findViewById(R.id.channel_item);
             textView.setText(channelEntities[i].getName());
@@ -271,6 +274,29 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             channelListView.addView(frameLayout);
             channelHashMap.put(channelEntities[i].getChannel(), textView);
         }
+        FrameLayout frameLayout1 = (FrameLayout) LayoutInflater.from(this).inflate(R.layout.item_channel, null);
+        Button textView1 = (Button) frameLayout1.findViewById(R.id.channel_item);
+        textView1.setTag(i);
+        textView1.setText("test1");
+
+        FrameLayout frameLayout2 = (FrameLayout) LayoutInflater.from(this).inflate(R.layout.item_channel, null);
+        Button textView2 = (Button) frameLayout2.findViewById(R.id.channel_item);
+        i++;
+        textView2.setTag(i);
+        textView2.setText("test2");
+
+        FrameLayout frameLayout3 = (FrameLayout) LayoutInflater.from(this).inflate(R.layout.item_channel, null);
+        Button textView3 = (Button) frameLayout3.findViewById(R.id.channel_item);
+        textView3.setText("test3");
+        i++;
+        textView3.setTag(i);
+
+        channelListView.addView(frameLayout1);
+    //    channelListView.addView(frameLayout2);
+     //   channelListView.addView(frameLayout3);
+
+      //  scroll.setHorizontalFadingEdgeEnabled(true);
+      //  scroll.setFadingEdgeLength(100);
     }
 
     private void registerUpdateReceiver() {

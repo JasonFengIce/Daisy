@@ -108,22 +108,22 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
         left_shadow = (ImageView) fragmentView.findViewById(R.id.left_shadow);
         right_shadow = (ImageView)fragmentView.findViewById(R.id.right_shadow);
-        mHGridView.leftbtn = left_shadow;
-        mHGridView.rightbtn = right_shadow;
-        if(left_shadow!=null&&right_shadow!=null){
-            left_shadow.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mHGridView.pageScroll(View.FOCUS_LEFT);
-                }
-            });
-            right_shadow.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mHGridView.pageScroll(View.FOCUS_RIGHT);
-                }
-            });
-        }
+//        mHGridView.leftbtn = left_shadow;
+//        mHGridView.rightbtn = right_shadow;
+//        if(left_shadow!=null&&right_shadow!=null){
+//            left_shadow.setOnClickListener(new OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    mHGridView.pageScroll(View.FOCUS_LEFT);
+//                }
+//            });
+//            right_shadow.setOnClickListener(new OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    mHGridView.pageScroll(View.FOCUS_RIGHT);
+//                }
+//            });
+//        }
 		mHGridView.setOnItemClickListener(this);
 		mHGridView.setOnItemSelectedListener(this);
 		mHGridView.setOnScrollListener(this);
