@@ -47,6 +47,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -571,15 +572,30 @@ public class PlayerActivity extends VodMenuAction {
 			}
 		}
 		String params = "channel=" + "chinesemovie" + "&section="
-				+ item.section + "&itemid=" + item.pk + "&topic=" + ""
-				+ "&source=" + "related" + "&genre=" + genresBuffer.toString()
-				+ "&content_model=" + item.content_model + "&director="
-				+ directorsBuffer.toString() + "&actor="
-				+ actorsBuffer.toString() + "&clipid=" + item.clip == null ? ""
-				: item.clip.pk + "&live_video=" + item.live_video + "&vendor="
-						+ item.vendor + "&expense="
-						+ (item.expense == null ? false : true) + "&length="
-						+ item.clip.length;
+				+ "xinpianshangxian" + "&itemid="
+				+ item.pk
+				+ "&topic="
+				+ ""
+				+ "&source="
+				+ "list"
+				+ "&genre="
+				+ genresBuffer.toString()
+				+ "&content_model="
+				+ item.content_model
+				+ "&director="
+				+ directorsBuffer.toString()
+				+ "&actor="
+				+ actorsBuffer.toString()
+				+ "&clipid="
+				+ (item.clip == null ? "" : item.clip.pk)
+				+ "&live_video="
+				+ item.live_video
+				+ "&vendor="
+				+ Base64.encodeToString(item.vendor.getBytes(), Base64.URL_SAFE)
+				+ "&expense="
+				+ (item.expense == null ? false : true)
+				+ "&length="
+				+ item.clip.length;
 		new GetAdDataTask().execute(adpid, params);
 	}
 
@@ -1369,6 +1385,8 @@ public class PlayerActivity extends VodMenuAction {
 				ret = true;
 				break;
 			case KeyEvent.KEYCODE_BACK:
+				if(isadvideoplaying)
+					finish();
 				showPopupDialog(
 						DIALOG_OK_CANCEL,
 						getResources().getString(
@@ -1677,6 +1695,8 @@ public class PlayerActivity extends VodMenuAction {
 				if (adsumtime >= 0) {
 					ad_count_view.setText("广告倒计时" + adsumtime);
 					sendEmptyMessageDelayed(AD_COUNT_ACTION, 1000);
+				}else{
+					playMainVideo();
 				}
 				break;
 			default:
