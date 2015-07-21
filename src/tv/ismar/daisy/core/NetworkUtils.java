@@ -214,25 +214,29 @@ public class NetworkUtils {
 		 return response.toString();
 	   }
 
-	public static ArrayList<AdElement> getAdByPost(AdRequestElement requestelement) {
+	public static ArrayList<AdElement> getAdByPost(String adpid,
+			String values) {
 		StringBuffer response = new StringBuffer();
 		ArrayList<AdElement> result = new ArrayList<AdElement>();
-		requestelement.setSn(SimpleRestClient.sn_token);
-		requestelement.setAccessToken(SimpleRestClient.access_token);
-		requestelement.setApp(SimpleRestClient.appVersion+"");
-		requestelement.setResolution(SimpleRestClient.screenWidth + ","
-				+ SimpleRestClient.screenHeight);
-		requestelement.setDpi(SimpleRestClient.densityDpi+"");
-		int status = 500;
+		String baseparams = "sn=" + SimpleRestClient.sn_token
+				+ "&modelName=" + Build.MODEL + "&version="
+				+ SimpleRestClient.appVersion + "&accessToken="
+				+ SimpleRestClient.access_token + "&deviceToken="
+				+ SimpleRestClient.device_token + "&app="
+				+ SimpleRestClient.appVersion + "&resolution="
+				+ SimpleRestClient.screenWidth + ","
+				+ SimpleRestClient.screenHeight + "&dpi="
+				+ SimpleRestClient.densityDpi + "&adpid=" + "[" + adpid
+				+ "]";
+		int status =500;
 		try {
-			URL postUrl = new URL(SimpleRestClient.ad_domain+"/api/get/ad/ ");
+			URL postUrl = new URL(SimpleRestClient.ad_domain);
 			HttpURLConnection connection = (HttpURLConnection) postUrl
 					.openConnection();
 			connection.setDoOutput(true);
 			connection.setDoInput(true);
 			connection.setRequestMethod("POST");
 			connection.setUseCaches(false);
-
 			connection.addRequestProperty("Accept-Encoding",
 					"gzip,deflate,sdch");
 			connection.setInstanceFollowRedirects(true);
@@ -242,8 +246,7 @@ public class NetworkUtils {
 			connection.connect();
 			DataOutputStream out = new DataOutputStream(
 					connection.getOutputStream());
-			out.writeBytes(URLEncoder.encode(requestelement.parseToJsonString(), "UTF-8"));
-
+			out.writeBytes(URLEncoder.encode(baseparams + "&" + values,"utf-8"));
 			out.flush();
 			out.close();
 			status = connection.getResponseCode();
@@ -268,7 +271,7 @@ public class NetworkUtils {
 				String retmsg = rootJsonObject.getString("retmsg");
 				if (retcode == 200) {
 					JSONObject body = rootJsonObject.getJSONObject("ads");
-					JSONArray arrays = body.getJSONArray(requestelement.getAdpid());
+					JSONArray arrays = body.getJSONArray(adpid);
 					for (int i = 0; i < arrays.length(); i++) {
 						JSONObject element = arrays.getJSONObject(i);
 						AdElement ad = new AdElement();
@@ -291,7 +294,7 @@ public class NetworkUtils {
 					Collections.sort(result, new Comparator<AdElement>() {
 						@Override
 						public int compare(AdElement lhs, AdElement rhs) {
-							return rhs.getSerial() > lhs.getSerial() ? 1 : 0;
+							return rhs.getSerial() > lhs.getSerial() ? 1:0;
 						}
 					});
 				} else {

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.models.AdElement;
-import tv.ismar.daisy.models.AdRequestElement;
 import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.player.ISTVVodMenu;
 import tv.ismar.daisy.views.AsyncImageView;
@@ -86,7 +85,7 @@ public abstract class VodMenuAction extends BaseActivity {
 	protected void showAd(ArrayList<AdElement> result) {
 	}
 
-	class GetAdDataTask extends AsyncTask<AdRequestElement, Void, ArrayList<AdElement>> {
+	class GetAdDataTask extends AsyncTask<String, Void, ArrayList<AdElement>> {
 
 		@Override
 		protected void onPostExecute(ArrayList<AdElement> result) {
@@ -94,9 +93,10 @@ public abstract class VodMenuAction extends BaseActivity {
 		}
 
 		@Override
-		protected ArrayList<AdElement> doInBackground(AdRequestElement... params) {
-//			String adpid = params[0];
-			ArrayList<AdElement> ads = NetworkUtils.getAdByPost(params[0]);
+		protected ArrayList<AdElement> doInBackground(String... params) {
+			String adpid = params[0];
+			String p = params[1];
+			ArrayList<AdElement> ads = NetworkUtils.getAdByPost(adpid, p);
 			return ads;
 		}
 
