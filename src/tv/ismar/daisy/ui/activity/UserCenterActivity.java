@@ -7,15 +7,13 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.ui.fragment.WeatherFragment;
 import tv.ismar.daisy.ui.fragment.usercenter.*;
-import tv.ismar.daisy.ui.widget.TopPanelView;
+import tv.ismar.daisy.ui.widget.TopView;
 
 import java.util.ArrayList;
 
@@ -44,7 +42,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private HelpFragment helpFragment;
     private LocationFragment locationFragment;
 
-    private WeatherFragment weatherFragment;
+    private TopView topView;
 
     private SharedPreferences accountPreference;
 
@@ -89,8 +87,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
 
     private void initViews() {
-        weatherFragment = new WeatherFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.top_column_layout, weatherFragment).commit();
+        topView = (TopView)findViewById(R.id.top_column_layout);
 
 
     }
@@ -99,8 +96,8 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     protected void onResumeFragments() {
         super.onResumeFragments();
 
-        weatherFragment.hideSubTitle();
-        weatherFragment.setTitle(getText(R.string.user_center).toString());
+        topView.setTitle(getText(R.string.user_center).toString());
+        topView.hideSubTiltle();
     }
 
     /**
@@ -166,11 +163,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         } else {
             super.onBackPressed();
         }
-
-
     }
 
-    public enum UserCenter {
 
-    }
 }

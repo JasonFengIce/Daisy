@@ -18,6 +18,7 @@ import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.usercenter.AccountsOrdersEntity;
 import tv.ismar.daisy.ui.adapter.AccountOrderAdapter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -72,8 +73,12 @@ public class PurchaseHistoryFragment extends Fragment {
 
                 AccountOrderAdapter accountOrderAdapter;
                 if (!TextUtils.isEmpty(SimpleRestClient.access_token) && !TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
-                    accountOrderAdapter = new AccountOrderAdapter(mContext, accountsOrdersEntity.getOrder_list());
+                    ArrayList<AccountsOrdersEntity.OrderEntity> arrayList = new ArrayList<AccountsOrdersEntity.OrderEntity>();
+                    arrayList.addAll(accountsOrdersEntity.getOrder_list());
+                    arrayList.addAll(accountsOrdersEntity.getSn_order_list());
+                    accountOrderAdapter = new AccountOrderAdapter(mContext, arrayList);
                 } else {
+
                     accountOrderAdapter = new AccountOrderAdapter(mContext, accountsOrdersEntity.getSn_order_list());
                 }
                 accountOrderListView.setAdapter(accountOrderAdapter);

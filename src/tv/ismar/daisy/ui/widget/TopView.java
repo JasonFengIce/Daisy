@@ -1,15 +1,18 @@
-package tv.ismar.daisy.ui.fragment;
+package tv.ismar.daisy.ui.widget;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.text.Layout;
+import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,19 +28,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created by huaijie on 2015/7/14.
+ * Created by huaijie on 2015/7/21.
  */
-public class WeatherFragment extends Fragment implements View.OnClickListener, View.OnFocusChangeListener {
-    private static final String TAG = "WeatherFragment";
-
-    private Context mContext;
-
-    private static final int[] INDICATOR_RES_LIST = {
-            R.string.guide_play_history,
-            R.string.guide_my_favorite,
-            R.string.guide_user_center,
-            R.string.guide_search
-    };
+public class TopView extends FrameLayout
+        implements View.OnClickListener, View.OnFocusChangeListener {
+    private Context context;
 
 
     private TextView titleTextView;
@@ -50,26 +45,19 @@ public class WeatherFragment extends Fragment implements View.OnClickListener, V
 
     private SharedPreferences locationSharedPreferences;
 
-    private SharedPreferences.OnSharedPreferenceChangeListener changeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            Log.d(TAG, "onSharedPreferenceChanged");
-            String geoId = locationSharedPreferences.getString(LocationFragment.LOCATION_PREFERENCE_GEOID, "101020100");
-            fetchWeatherInfo(geoId);
-        }
-    };
-
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mContext = activity;
+    public TopView(Context context) {
+        super(context);
+        this.context = context;
     }
 
+    public TopView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        this.context = context;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_weather, null);
+
+        View view = LayoutInflater.from(context).inflate(R.layout.fragment_weather, null);
+
+
         titleTextView = (TextView) view.findViewById(R.id.title);
         subTitleTextView = (TextView) view.findViewById(R.id.sub_title);
         weatherInfoTextView = (TextView) view.findViewById(R.id.weather_info);
@@ -78,24 +66,38 @@ public class WeatherFragment extends Fragment implements View.OnClickListener, V
 
         titleTextView.setText(R.string.app_name);
         subTitleTextView.setText(R.string.front_page);
-        return view;
-    }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        locationSharedPreferences = mContext.getSharedPreferences(LocationFragment.LOCATION_PREFERENCE_NAME, Context.MODE_PRIVATE);
+        locationSharedPreferences = context.getSharedPreferences(LocationFragment.LOCATION_PREFERENCE_NAME, Context.MODE_PRIVATE);
         locationSharedPreferences.registerOnSharedPreferenceChangeListener(changeListener);
         createGuideIndicator();
 
         String geoId = locationSharedPreferences.getString(LocationFragment.LOCATION_PREFERENCE_GEOID, "101020100");
         fetchWeatherInfo(geoId);
+
+        addView(view);
     }
+
+
+    private static final int[] INDICATOR_RES_LIST = {
+            R.string.guide_play_history,
+            R.string.guide_my_favorite,
+            R.string.guide_user_center,
+            R.string.guide_search
+    };
+
+
+    private SharedPreferences.OnSharedPreferenceChangeListener changeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            String geoId = locationSharedPreferences.getString(LocationFragment.LOCATION_PREFERENCE_GEOID, "101020100");
+            fetchWeatherInfo(geoId);
+        }
+    };
 
 
     private void createGuideIndicator() {
         for (int res : INDICATOR_RES_LIST) {
-            View view = LayoutInflater.from(mContext).inflate(R.layout.item_weather_indicator, null);
+            View view = LayoutInflater.from(context).inflate(R.layout.item_weather_indicator, null);
             TextView textView = (TextView) view.findViewById(R.id.weather_indicator);
             textView.setOnClickListener(this);
             textView.setOnFocusChangeListener(this);
@@ -106,16 +108,17 @@ public class WeatherFragment extends Fragment implements View.OnClickListener, V
     }
 
     public void setTitle(String title) {
-        titleTextView.setText(title);
+            titleTextView.setText(title);
     }
 
     public void setSubTitle(String subTitle) {
         subTitleTextView.setText(subTitle);
     }
 
-    public void hideSubTitle() {
-        dividerImage.setVisibility(View.GONE);
+    public void hideSubTiltle(){
         subTitleTextView.setVisibility(View.GONE);
+        dividerImage.setVisibility(View.GONE);
+
     }
 
     private void fetchWeatherInfo(String geoId) {
@@ -133,21 +136,18 @@ public class WeatherFragment extends Fragment implements View.OnClickListener, V
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(date);
 
-                if (isAdded()) {
-                    weatherInfoTextView.setText("");
-                    weatherInfoTextView.append("   " + calendar.get(Calendar.YEAR) + getText(R.string.year).toString() +
-                            calendar.get(Calendar.MONTH) + getText(R.string.month).toString() +
-                            calendar.get(Calendar.DATE) + getText(R.string.day).toString() + "   ");
+                weatherInfoTextView.setText("");
+                weatherInfoTextView.append("   " + calendar.get(Calendar.YEAR) + context.getText(R.string.year).toString() +
+                        calendar.get(Calendar.MONTH) + context.getText(R.string.month).toString() +
+                        calendar.get(Calendar.DATE) + context.getText(R.string.day).toString() + "   ");
 
-                    weatherInfoTextView.append(todayDetail.getPhenomenon() + "   ");
-                    weatherInfoTextView.append(todayDetail.getTemperature() + getText(R.string.degree) + "   ");
-                    weatherInfoTextView.append(todayDetail.getWind_direction());
-                }
+                weatherInfoTextView.append(todayDetail.getPhenomenon() + "   ");
+                weatherInfoTextView.append(todayDetail.getTemperature() + context.getText(R.string.degree) + "   ");
+                weatherInfoTextView.append(todayDetail.getWind_direction());
             }
 
             @Override
             public void onFailed(Exception exception) {
-                Log.e(TAG, exception.getMessage());
             }
         });
     }
@@ -178,7 +178,7 @@ public class WeatherFragment extends Fragment implements View.OnClickListener, V
                         "tv.ismar.daisy.SearchActivity");
                 break;
         }
-        mContext.startActivity(intent);
+        context.startActivity(intent);
     }
 
     @Override
@@ -189,4 +189,5 @@ public class WeatherFragment extends Fragment implements View.OnClickListener, V
             ((TextView) v).setTextColor(getResources().getColor(R.color.association_normal));
         }
     }
+
 }

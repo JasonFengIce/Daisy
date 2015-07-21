@@ -12,7 +12,7 @@ import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemCollection;
 import tv.ismar.daisy.player.InitPlayerTool;
-import tv.ismar.daisy.ui.widget.TopPanelView;
+import tv.ismar.daisy.ui.widget.TopView;
 import tv.ismar.daisy.views.LoadingDialog;
 
 import java.util.ArrayList;
@@ -21,17 +21,19 @@ import java.util.HashMap;
 /**
  * Created by zhangjiqiang on 15-7-10.
  */
-public class DramaVarietyNoMonthList extends BaseActivity implements AdapterView.OnItemClickListener{
+public class DramaVarietyNoMonthList extends BaseActivity implements AdapterView.OnItemClickListener {
 
     private Item mItem;
-    private HashMap<String,ArrayList<Item>> maps;
+    private HashMap<String, ArrayList<Item>> maps;
     private HGridView mHGridView;
     private HGridAdapterImpl mHGridAdapter;
     private ArrayList<ItemCollection> mItemCollections;
     private LoadingDialog loadDialog;
-    private TopPanelView top_column_layout;
     private Button arrow_left;
     private Button arrow_right;
+
+    private TopView weatherFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,13 +43,15 @@ public class DramaVarietyNoMonthList extends BaseActivity implements AdapterView
         getData();
     }
 
-    private void initView(){
-        top_column_layout = (TopPanelView)findViewById(R.id.top_column_layout);
+    private void initView() {
+        weatherFragment = (TopView)findViewById(R.id.top_column_layout);
+
+
         loadDialog = new LoadingDialog(this, getString(R.string.vod_loading));
-        mHGridView = (HGridView)findViewById(R.id.h_grid_view);
+        mHGridView = (HGridView) findViewById(R.id.h_grid_view);
         mHGridView.setOnItemClickListener(this);
-        arrow_left = (Button)findViewById(R.id.arrow_left);
-        arrow_right = (Button)findViewById(R.id.arrow_right);
+        arrow_left = (Button) findViewById(R.id.arrow_left);
+        arrow_right = (Button) findViewById(R.id.arrow_right);
         mHGridView.leftbtn = arrow_left;
         mHGridView.rightbtn = arrow_right;
         arrow_left.setOnClickListener(new View.OnClickListener() {
@@ -64,15 +68,17 @@ public class DramaVarietyNoMonthList extends BaseActivity implements AdapterView
         });
         loadDialog = new LoadingDialog(this, getString(R.string.vod_loading));
     }
-    private void getData(){
+
+    private void getData() {
         Bundle bundle = getIntent().getExtras();
         if (null == bundle)
             return;
-        top_column_layout.setChannelName(getIntent().getStringExtra("title"));
+        weatherFragment.setTitle(getIntent().getStringExtra("title"));
+        weatherFragment.hideSubTiltle();
         mItem = (Item) bundle.get("item");
         Item[] subItems = mItem.subitems;
         ArrayList<Item> lists = new ArrayList<Item>();
-        for(Item item:subItems){
+        for (Item item : subItems) {
             lists.add(item);
         }
         mItemCollections = new ArrayList<ItemCollection>();
@@ -80,20 +86,20 @@ public class DramaVarietyNoMonthList extends BaseActivity implements AdapterView
         ItemCollection itemCollection = new ItemCollection(num_pages, lists.size(), "1", "1");
         mItemCollections.add(itemCollection);
 
-        mHGridAdapter = new HGridAdapterImpl(DramaVarietyNoMonthList.this, mItemCollections,false);
+        mHGridAdapter = new HGridAdapterImpl(DramaVarietyNoMonthList.this, mItemCollections, false);
         mHGridAdapter.setTemplate(1);
         mHGridAdapter.setList(mItemCollections);
-        top_column_layout.setVisibility(View.VISIBLE);
-        if(mHGridAdapter.getCount()>0){
+        if (mHGridAdapter.getCount() > 0) {
             mHGridView.setAdapter(mHGridAdapter);
             mHGridView.setFocusable(true);
             mItemCollections.get(0).fillItems(0, lists);
             mHGridAdapter.setList(mItemCollections);
-            if(mHGridAdapter.getCount()>12){
+            if (mHGridAdapter.getCount() > 12) {
                 arrow_right.setVisibility(View.VISIBLE);
             }
         }
     }
+
     @Override
     protected void onDestroy() {
         DaisyUtils.getVodApplication(this).removeActivtyFromPool(this.toString());

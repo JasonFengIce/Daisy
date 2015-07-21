@@ -298,6 +298,6 @@
     <string name="location_current_position">当前位置 : %1$s</string>
 
 
-
+    <string name="change_account">切换</string>
 
 </resources>

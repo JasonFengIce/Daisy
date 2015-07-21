@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Message;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -39,7 +38,7 @@ import tv.ismar.daisy.ui.Position;
 import tv.ismar.daisy.ui.fragment.*;
 import tv.ismar.daisy.ui.fragment.launcher.*;
 import tv.ismar.daisy.ui.widget.DaisyButton;
-import tv.ismar.daisy.ui.widget.TopPanelView;
+import tv.ismar.daisy.ui.widget.TopView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,7 +81,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     private ChannelChange channelChange;
 
-    private WeatherFragment weatherFragment;
+//    private WeatherFragment weatherFragment;
+
+    private TopView topView;
 
     private Position mCurrentChannelPosition = new Position(new Position.PositioinChangeCallback() {
         @Override
@@ -157,6 +158,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         AppUpdateUtils.getInstance().checkUpdate(this);
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_tv_guide, null);
         setContentView(contentView);
+
+        topView = (TopView)findViewById(R.id.top_column_layout);
         initViews();
         initTabView();
         activator = Activator.getInstance(this);
@@ -169,8 +172,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     private void initViews() {
         toppanel = (FrameLayout) findViewById(R.id.top_column_layout);
-        weatherFragment = new WeatherFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.top_column_layout, weatherFragment).commit();
+//        weatherFragment = new WeatherFragment();
+//        getSupportFragmentManager().beginTransaction().add(R.id.top_column_layout, weatherFragment).commit();
         channelListView = (LinearLayout) findViewById(R.id.channel_h_list);
         tabListView = (LinearLayout) findViewById(R.id.tab_list);
         arrow_left = (ImageView) findViewById(R.id.arrow_scroll_left);
@@ -189,8 +192,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 contentView.setBackgroundResource(R.color.normal_activity_bg);
                 currentFragment = new GuideFragment();
                 replaceFragment(currentFragment);
-                weatherFragment.setTitle(getText(R.string.ismartv_cinema).toString());
-                weatherFragment.setSubTitle("首页");
+                topView.setTitle(getText(R.string.ismartv_cinema).toString());
+                topView.setSubTitle("首页");
 
                 if (arrow_left.getVisibility() == View.VISIBLE) {
                     arrow_left.setVisibility(View.GONE);
@@ -514,7 +517,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     private void selectChannelByPosition(int position) {
         ChannelEntity channelEntity = mChannelEntitys[position];
-        weatherFragment.setSubTitle(channelEntity.getName());
+        topView.setSubTitle(channelEntity.getName());
         if ("template1".equals(channelEntity.getHomepage_template())) {
             currentFragment = new FilmFragment();
             contentView.setBackgroundResource(R.color.normal_activity_bg);

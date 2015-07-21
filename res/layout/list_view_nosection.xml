@@ -7,15 +7,15 @@
     android:background="@drawable/background"
     android:orientation="vertical" >
 
-    <tv.ismar.daisy.ui.widget.TopPanelView
+    <tv.ismar.daisy.ui.widget.TopView
             android:id="@+id/top_column_layout"
             android:layout_width="match_parent"
             android:layout_height="112dip"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/tv_guide_top_section_padding"
             android:paddingRight="@dimen/tv_guide_top_section_padding"
-            android:visibility="invisible">
-    </tv.ismar.daisy.ui.widget.TopPanelView>
+            >
+    </tv.ismar.daisy.ui.widget.TopView>
     <ImageView
             android:layout_width="match_parent"
             android:layout_height="3dip"

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
 import org.sakuratya.horizontal.ui.HGridView;
@@ -14,7 +15,7 @@ import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemCollection;
 import tv.ismar.daisy.player.InitPlayerTool;
-import tv.ismar.daisy.ui.widget.TopPanelView;
+import tv.ismar.daisy.ui.widget.TopView;
 import tv.ismar.daisy.views.LoadingDialog;
 import tv.ismar.daisy.views.MonthSectionButton;
 
@@ -34,11 +35,13 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
     private HGridAdapterImpl mHGridAdapter;
     private ArrayList<ItemCollection> mItemCollections;
     private LoadingDialog loadDialog;
-    private TopPanelView top_column_layout;
+    private FrameLayout top_column_layout;
     private Button arrow_left;
     private Button arrow_right;
     private int mCurrentPosition=-1;
     private int mLastPosition = -1;
+
+    private TopView weatherFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +57,9 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
     }
 
     private void initView(){
-        top_column_layout = (TopPanelView)findViewById(R.id.top_column_layout);
+        weatherFragment = (TopView)findViewById(R.id.top_column_layout);
+
+
         month_section_layout = (LinearLayout) findViewById(R.id.month_section_layout);
         loadDialog = new LoadingDialog(this, getString(R.string.vod_loading));
         mHGridView = (HGridView)findViewById(R.id.h_grid_view);
@@ -80,7 +85,8 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
         Bundle bundle = getIntent().getExtras();
         if (null == bundle)
             return;
-        top_column_layout.setChannelName(getIntent().getStringExtra("title"));
+        weatherFragment.setTitle((getIntent().getStringExtra("title")));
+        weatherFragment.hideSubTiltle();
         mItem = (Item) bundle.get("item");
         Item[] subItems = mItem.subitems;
         ArrayList<Item> list = null;

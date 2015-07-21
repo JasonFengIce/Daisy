@@ -12,59 +12,69 @@
         android:orientation="vertical">
 
 
-        <TextView
-            android:layout_marginTop="@dimen/usercenter_info_device_number_margin_top"
-            android:layout_marginLeft="@dimen/usercenter_info_layout_margin_left"
-            android:layout_marginRight="@dimen/usercenter_info_layout_margin_left"
-            android:id="@+id/phone_number"
-            android:textColor="#FFFFFF"
-            android:gravity="center_vertical"
-            android:textSize="@dimen/person_login_phone_text_size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-
-        <TextView
-            android:id="@+id/device_number"
-            android:layout_marginTop="@dimen/usercenter_info_device_number_margin_top"
-            android:textColor="#FFFFFF"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="@dimen/usercenter_info_layout_margin_left"
-            android:textSize="@dimen/person_login_phone_text_size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-
-        <RelativeLayout
-            android:layout_marginLeft="@dimen/usercenter_info_layout_margin_left"
-            android:layout_marginRight="@dimen/usercenter_info_layout_margin_left"
-            android:layout_marginTop="@dimen/usercenter_info_device_number_margin_top"
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
+        <LinearLayout
+                android:id="@+id/phone_number_layout"
+                android:layout_marginTop="@dimen/usercenter_info_device_number_margin_top"
+                android:layout_marginLeft="@dimen/usercenter_info_layout_margin_left"
+                android:layout_marginRight="@dimen/usercenter_info_layout_margin_left"
+                android:visibility="gone"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
             <TextView
-                android:text="您的账户关联到当前设备,设备损坏或更换时账户余额及特权将清零"
-                android:textColor="#fe8109"
-                android:gravity="center_vertical"
-                android:textSize="@dimen/person_login_phone_text_size"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+
+                    android:id="@+id/phone_number"
+                    android:textColor="#FFFFFF"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/person_login_phone_text_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
 
             <Button
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/selector_channel_item"
-                android:textSize="@dimen/person_login_phone_text_size"
-                android:text="@string/association"
-                android:layout_marginLeft="20dp"
-                android:textColor="#FFFFFF"
-                android:id="@+id/association"
-                android:layout_width="@dimen/user_center_logout_width"
-                android:layout_height="@dimen/user_center_logout_height"/>
+                    android:background="@drawable/selector_channel_item"
+                    android:textSize="@dimen/person_login_phone_text_size"
+                    android:text="@string/change_account"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="#FFFFFF"
+                    android:id="@+id/change"
+                    android:layout_width="@dimen/user_center_logout_width"
+                    android:layout_height="@dimen/user_center_logout_height"/>
 
-        </RelativeLayout>
+        </LinearLayout>
+
+
+
+        <LinearLayout
+                android:id="@+id/sn_number_layout"
+                android:layout_marginTop="@dimen/usercenter_info_device_number_margin_top"
+                android:layout_marginLeft="@dimen/usercenter_info_layout_margin_left"
+                android:layout_marginRight="@dimen/usercenter_info_layout_margin_left"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <TextView
+                    android:id="@+id/device_number"
+                    android:textColor="#FFFFFF"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/person_login_phone_text_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <Button
+                    android:background="@drawable/selector_channel_item"
+                    android:textSize="@dimen/person_login_phone_text_size"
+                    android:text="@string/association"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="#FFFFFF"
+                    android:id="@+id/association_button"
+                    android:layout_width="@dimen/user_center_logout_width"
+                    android:layout_height="@dimen/user_center_logout_height"/>
+        </LinearLayout>
+
+
+
 
 
         <LinearLayout

@@ -2,6 +2,7 @@ package tv.ismar.daisy.ui.fragment.usercenter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -39,6 +40,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
     private TextView balanceTextView;
     private ListView playAuthListView;
     private Button associationText;
+    private Button changeButton;
 
     private TextView phoneNumber;
 
@@ -51,10 +53,33 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
 
     private AccoutPlayAuthAdapter accoutPlayAuthAdapter;
 
+    private SharedPreferences sharedPreferences;
+
+    private View phoneNumberLayout;
+
+    private View snNumberLayout;
+
+    SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            String phone = sharedPreferences.getString("mobile_number", "");
+            if (TextUtils.isEmpty(phone)) {
+                phoneNumberLayout.setVisibility(View.VISIBLE);
+                associationText.setVisibility(View.GONE);
+                phoneNumber.setText(phone);
+
+            } else {
+                phoneNumberLayout.setVisibility(View.GONE);
+                associationText.setVisibility(View.VISIBLE);
+            }
+        }
+    };
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.mContext = activity;
+
     }
 
     @Override
@@ -66,14 +91,27 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
         balanceTextView = (TextView) fragmentView.findViewById(R.id.remain_money_value);
         playAuthListView = (ListView) fragmentView.findViewById(R.id.privilegelist);
         playAuthListView.setOnItemClickListener(this);
-        associationText = (Button) fragmentView.findViewById(R.id.association);
+        associationText = (Button) fragmentView.findViewById(R.id.association_button);
         userInfoLayout = (LinearLayout) fragmentView.findViewById(R.id.userinfo_layout);
+        changeButton = (Button) fragmentView.findViewById(R.id.change);
+
+        phoneNumberLayout = fragmentView.findViewById(R.id.phone_number_layout);
+        snNumberLayout = fragmentView.findViewById(R.id.sn_number_layout);
+
         associationText.setOnClickListener(this);
+        changeButton.setOnClickListener(this);
 
         loginFragment = new LoginFragment();
         getChildFragmentManager().beginTransaction().add(R.id.association_phone_layout, loginFragment).commit();
         getChildFragmentManager().beginTransaction().hide(loginFragment).commit();
+        sharedPreferences = mContext.getSharedPreferences("Daisy", Context.MODE_PRIVATE);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
 
+        if (!TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
+            phoneNumberLayout.setVisibility(View.VISIBLE);
+            associationText.setVisibility(View.GONE);
+
+        }
 
         return fragmentView;
     }
@@ -140,7 +178,10 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.association:
+            case R.id.association_button:
+                showAssociationPopupWindow();
+                break;
+            case R.id.change:
                 showAssociationPopupWindow();
                 break;
         }

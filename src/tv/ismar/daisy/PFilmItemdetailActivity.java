@@ -1,23 +1,19 @@
 package tv.ismar.daisy;
 
-import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.gson.JsonSyntaxException;
-import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,7 +25,7 @@ import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.*;
 import tv.ismar.daisy.player.InitPlayerTool;
-import tv.ismar.daisy.ui.widget.TopPanelView;
+import tv.ismar.daisy.ui.widget.TopView;
 import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.*;
 
@@ -42,7 +38,6 @@ import java.util.*;
 public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageView.OnImageViewLoadListener {
     private Item mItem;
     private String title;
-    private TopPanelView top_column_layout;
     private SimpleRestClient mSimpleRestClient;
     private LoadingDialog mLoadingDialog;
     private GetItemTask mGetItemTask;
@@ -77,6 +72,8 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
     private View top_view_layout;
     private View bottom_view_layout;
 
+    private TopView weatherFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,7 +104,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 }
             } else {
                 String url = intent.getStringExtra("url");
-               // mSection = intent.getStringExtra(EventProperty.SECTION);
+                // mSection = intent.getStringExtra(EventProperty.SECTION);
                 if (url == null) {
                     url = SimpleRestClient.sRoot_url + "/api/item/96538/";
                 }
@@ -128,7 +125,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                         + "/api/item/" + mItem.pk + "/"
                         : mItem.item_url;
                 mHistory = DaisyUtils.getHistoryManager(this).getHistoryByUrl(
-                        url,"no");
+                        url, "no");
             }
         }
         for (HashMap.Entry<AsyncImageView, Boolean> entry : mLoadingImageQueue
@@ -138,7 +135,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 entry.setValue(true);
             }
         }
-        if(isPause){
+        if (isPause) {
             if (isFavorite()) {
                 //mCollectBtn.setBackgroundResource(R.drawable.collected_btn_bg_selector);
                 mCollectBtn.setText(getResources().getString(R.string.favorited));
@@ -150,6 +147,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         }
         super.onResume();
     }
+
     private boolean isFavorite() {
         if (mItem != null) {
             String url = mItem.item_url;
@@ -158,13 +156,12 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                         + "/";
             }
             Favorite favorite = null;
-            if(!SimpleRestClient.isLogin()){
+            if (!SimpleRestClient.isLogin()) {
                 favorite = DaisyUtils.getFavoriteManager(this)
-                        .getFavoriteByUrl(url,"no");
-            }
-            else{
+                        .getFavoriteByUrl(url, "no");
+            } else {
                 favorite = DaisyUtils.getFavoriteManager(this)
-                        .getFavoriteByUrl(url,"yes");
+                        .getFavoriteByUrl(url, "yes");
             }
             if (favorite != null) {
                 return true;
@@ -173,6 +170,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
         return false;
     }
+
     private void showToast(String text) {
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.simple_toast,
@@ -185,14 +183,15 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         toast.setView(layout);
         toast.show();
     }
-    private void deleteFavoriteByNet(){
-        mSimpleRestClient.doSendRequest("/api/bookmarks/remove/", "post", "access_token="+
-                SimpleRestClient.access_token+"&device_token="+SimpleRestClient.device_token+"&item="+mItem.pk, new SimpleRestClient.HttpPostRequestInterface() {
+
+    private void deleteFavoriteByNet() {
+        mSimpleRestClient.doSendRequest("/api/bookmarks/remove/", "post", "access_token=" +
+                SimpleRestClient.access_token + "&device_token=" + SimpleRestClient.device_token + "&item=" + mItem.pk, new SimpleRestClient.HttpPostRequestInterface() {
 
             @Override
             public void onSuccess(String info) {
                 // TODO Auto-generated method stub
-                if("200".equals(info)){
+                if ("200".equals(info)) {
                     //mCollectBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
 //					showToast(getResources().getString(
 //							R.string.vod_bookmark_remove_success));
@@ -216,20 +215,20 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             }
         });
     }
+
     private void addFavorite() {
         if (isFavorite()) {
             String url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk
                     + "/";
             String isnet = "";
-            if(SimpleRestClient.isLogin()){
+            if (SimpleRestClient.isLogin()) {
                 isnet = "yes";
                 deleteFavoriteByNet();
-            }
-            else{
+            } else {
                 isnet = "no";
             }
             DaisyUtils.getFavoriteManager(PFilmItemdetailActivity.this)
-                    .deleteFavoriteByUrl(url,isnet);
+                    .deleteFavoriteByUrl(url, isnet);
             showToast(getResources().getString(
                     R.string.vod_bookmark_remove_success));
         } else {
@@ -242,21 +241,21 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             favorite.url = url;
             favorite.quality = mItem.quality;
             favorite.is_complex = mItem.is_complex;
-            if(SimpleRestClient.isLogin()){
+            if (SimpleRestClient.isLogin()) {
                 favorite.isnet = "yes";
                 createFavoriteByNet();
-            }
-            else{
+            } else {
                 favorite.isnet = "no";
             }
             DaisyUtils.getFavoriteManager(PFilmItemdetailActivity.this).addFavorite(
-                    favorite,favorite.isnet);
+                    favorite, favorite.isnet);
             showToast(getResources().getString(
                     R.string.vod_bookmark_add_success));
         }
     }
-    private void createFavoriteByNet(){
-        mSimpleRestClient.doSendRequest("/api/bookmarks/create/", "post", "access_token="+SimpleRestClient.access_token+"&device_token="+SimpleRestClient.device_token+"&item="+mItem.pk, new SimpleRestClient.HttpPostRequestInterface() {
+
+    private void createFavoriteByNet() {
+        mSimpleRestClient.doSendRequest("/api/bookmarks/create/", "post", "access_token=" + SimpleRestClient.access_token + "&device_token=" + SimpleRestClient.device_token + "&item=" + mItem.pk, new SimpleRestClient.HttpPostRequestInterface() {
 
             @Override
             public void onSuccess(String info) {
@@ -288,15 +287,16 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
         @Override
         public void payResult(boolean result) {
-            if(result){
+            if (result) {
                 isBuy = true;
                 setExpenseStatus();
             }
         }
 
     };
+
     private void setExpenseStatus() {
-		/*
+        /*
 		 * if this item is a drama , the button should split to two. otherwise.
 		 * use one button.
 		 */
@@ -364,6 +364,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             }
         }
     }
+
     private void buyVideo() {
         PaymentDialog dialog = new PaymentDialog(PFilmItemdetailActivity.this,
                 R.style.PaymentDialog, ordercheckListener);
@@ -371,11 +372,14 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         dialog.setItem(mItem);
         dialog.show();
     }
-    private void setLeftDrawable(Drawable drawable,Button btn){
+
+    private void setLeftDrawable(Drawable drawable, Button btn) {
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-        btn.setCompoundDrawables(drawable,null,null,null);
+        btn.setCompoundDrawables(drawable, null, null, null);
     }
+
     private boolean isPause = false;
+
     @Override
     protected void onPause() {
         isPause = true;
@@ -417,6 +421,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 this.toString());
         super.onDestroy();
     }
+
     @Override
     public void onLoadingStarted(AsyncImageView imageView) {
         if (mLoadingImageQueue != null) {
@@ -495,13 +500,15 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         }
 
     }
+
     private boolean isFree() {
         if (mItem.expense != null) {
             return false;
         }
         return true;
     }
-    private void initLayout(){
+
+    private void initLayout() {
         mDetailTitle.setText(mItem.title);
 		/*
 		 * Build detail attributes list using a given order according to
@@ -524,7 +531,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 mContentModel.attributes.put("vendor", getResources()
                         .getString(R.string.vendor));
             }
-            if(mContentModel.attributes.get("air_date")==null){
+            if (mContentModel.attributes.get("air_date") == null) {
                 mContentModel.attributes.put("air_date", getResources()
                         .getString(R.string.air_date));
             }
@@ -548,12 +555,12 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 attributeMap.put(key, null);
             }
             attributeMap.put("vendor", mItem.vendor);
-            attributeMap.put("air_date",mItem.attributes.air_date);
+            attributeMap.put("air_date", mItem.attributes.air_date);
 //            if (isDrama()) {
 //                attributeMap.put("episodes", getEpisodes(mItem));
 //            }
-            if(mItem.clip!=null){
-                if(mItem.clip.length>0)
+            if (mItem.clip != null) {
+                if (mItem.clip.length > 0)
                     attributeMap.put("length", getClipLength(mItem.clip));
             }
 
@@ -581,9 +588,9 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         }
         // Set the content to Introduction View
         mDetailIntro.setText(mItem.description);
-        if(mItem.bean_score>0){
+        if (mItem.bean_score > 0) {
             bean_score.setVisibility(View.VISIBLE);
-            bean_score.setText(mItem.bean_score+"");
+            bean_score.setText(mItem.bean_score + "");
         }
         // Set the favorite button's label.
 //        if (isFavorite()) {
@@ -609,6 +616,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
         isInitialized = true;
     }
+
     class GetRelatedTask extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -631,35 +639,39 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 mLoadingDialog.dismiss();
                 bottom_view_layout.setVisibility(View.VISIBLE);
                 top_view_layout.setVisibility(View.VISIBLE);
-                top_column_layout.setVisibility(View.VISIBLE);
             }
         }
 
     }
-    private void initViews(){
-     bottom_view_layout = findViewById(R.id.bottom_view_layout);
-     top_view_layout = findViewById(R.id.top_view_layout);
-     title = getIntent().getStringExtra("title");
-     top_column_layout = (TopPanelView)findViewById(R.id.top_column_layout);
-     top_column_layout.setChannelName(title);
-     mDetailTitle = (TextView) findViewById(R.id.detail_title);
-     mDetailIntro = (TextView)findViewById(R.id.detail_intro);
-     mDetailPreviewImg = (AsyncImageView) findViewById(R.id.detail_preview_img);
-     mDetailAttributeContainer = (DetailAttributeContainer) findViewById(R.id.detail_attribute_container);
-     related_video_container = (LinearLayout)findViewById(R.id.related_video_container);
-     mMoreContent = (LinearLayout)findViewById(R.id.more_content);
-     detail_price_txt = (TextView)findViewById(R.id.detail_price_txt);
-     detail_duration_txt = (TextView)findViewById(R.id.detail_duration_txt);
-     bean_score = (TextView)findViewById(R.id.bean_score);
-     mLeftBtn = (Button) findViewById(R.id.btn_left);
-     mMiddleBtn = (Button) findViewById(R.id.middle_btn);
-     mRightBtn = (Button) findViewById(R.id.btn_right);
-     mLeftBtn.setOnClickListener(mIdOnClickListener);
-     mMiddleBtn.setOnClickListener(mIdOnClickListener);
-     mRightBtn.setOnClickListener(mIdOnClickListener);
-     mMoreContent.setOnClickListener(mIdOnClickListener);
+
+    private void initViews() {
+        bottom_view_layout = findViewById(R.id.bottom_view_layout);
+        top_view_layout = findViewById(R.id.top_view_layout);
+        title = getIntent().getStringExtra("title");
+
+        weatherFragment =(TopView)findViewById(R.id.top_column_layout);
+        weatherFragment.setTitle(title);
+        weatherFragment.hideSubTiltle();
+
+        mDetailTitle = (TextView) findViewById(R.id.detail_title);
+        mDetailIntro = (TextView) findViewById(R.id.detail_intro);
+        mDetailPreviewImg = (AsyncImageView) findViewById(R.id.detail_preview_img);
+        mDetailAttributeContainer = (DetailAttributeContainer) findViewById(R.id.detail_attribute_container);
+        related_video_container = (LinearLayout) findViewById(R.id.related_video_container);
+        mMoreContent = (LinearLayout) findViewById(R.id.more_content);
+        detail_price_txt = (TextView) findViewById(R.id.detail_price_txt);
+        detail_duration_txt = (TextView) findViewById(R.id.detail_duration_txt);
+        bean_score = (TextView) findViewById(R.id.bean_score);
+        mLeftBtn = (Button) findViewById(R.id.btn_left);
+        mMiddleBtn = (Button) findViewById(R.id.middle_btn);
+        mRightBtn = (Button) findViewById(R.id.btn_right);
+        mLeftBtn.setOnClickListener(mIdOnClickListener);
+        mMiddleBtn.setOnClickListener(mIdOnClickListener);
+        mRightBtn.setOnClickListener(mIdOnClickListener);
+        mMoreContent.setOnClickListener(mIdOnClickListener);
 
     }
+
     private void isbuy() {
         SimpleRestClient simpleRestClient = new SimpleRestClient();
         simpleRestClient.doSendRequest("/api/order/check/", "post",
@@ -684,7 +696,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                                     // 电影或者电视剧整部购买
                                     try {
                                         remainDay = Util.daysBetween(
-                                                Util.getTime(), info)+1;
+                                                Util.getTime(), info) + 1;
                                         if (remainDay == 0) {
                                             isBuy = false;// 过期了。认为没购买
                                             remainDay = -1;
@@ -700,7 +712,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                                 info = info.substring(1, info.length() - 1);
                                 try {
                                     remainDay = Util.daysBetween(
-                                            Util.getTime(), info)+1;
+                                            Util.getTime(), info) + 1;
                                     if (remainDay == 0) {
                                         isBuy = false;// 过期了。认为没购买
                                         remainDay = -1;
@@ -738,13 +750,14 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         }
         return isDrama;
     }
+
     private void buildRelatedList() {
         for (int i = 0; i < 6 && i < mRelatedItem.length; i++) {
-            View relatedHolder =  LayoutInflater
+            View relatedHolder = LayoutInflater
                     .from(PFilmItemdetailActivity.this).inflate(
                             R.layout.realte_portrait_item, null);
             LinearLayout.LayoutParams layoutParams;
-            layoutParams = new LinearLayout.LayoutParams(254,400);
+            layoutParams = new LinearLayout.LayoutParams(254, 400);
             layoutParams.leftMargin = 8;
             relatedHolder.setLayoutParams(layoutParams);
             TextView titleView = (TextView) relatedHolder
@@ -768,8 +781,8 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 //                imgView.setUrl(mRelatedItem[i].adlet_url);
 //            }
             imgView.setUrl(mRelatedItem[i].list_url);
-            if(mRelatedItem[i].focus!=null)
-            imgView.setFocustitle(mRelatedItem[i].focus);
+            if (mRelatedItem[i].focus != null)
+                imgView.setFocustitle(mRelatedItem[i].focus);
             titleView.setText(mRelatedItem[i].title);
             imgView.setTag(mRelatedItem[i]);
             related_video_container.addView(relatedHolder);
@@ -779,6 +792,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             imgView.setOnClickListener(mRelatedClickListener);
         }
     }
+
     private View.OnClickListener mIdOnClickListener = new View.OnClickListener() {
 
         @Override
@@ -827,10 +841,9 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                         identify = (String) v.getTag();
                         if (identify.equals(PREVIEW_VIDEO)) {
                             // 预告
-                            if(isDrama()){
+                            if (isDrama()) {
                                 tool.initClipInfo(mItem.subitems[0].url, InitPlayerTool.FLAG_URL);
-                            }
-                            else{
+                            } else {
                                 tool.initClipInfo(mItem, InitPlayerTool.FLAG_ITEM, true);
                             }
                         } else if (identify.equals(PLAY_VIDEO)) {
@@ -848,7 +861,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                         if (identify.equals(BUY_VIDEO)) {
                             // 购买
                             if (isDrama()) {
-                               // startDramaListActivity();
+                                // startDramaListActivity();
                             } else {
                                 buyVideo();
                             }
@@ -856,11 +869,11 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                             addFavorite();
                             if (isFavorite()) {
                                 //v.setBackgroundResource(R.drawable.collected_btn_bg_selector);
-                                ((Button)v).setText(getResources().getString(R.string.favorited));
+                                ((Button) v).setText(getResources().getString(R.string.favorited));
 
                             } else {
                                 //v.setBackgroundResource(R.drawable.collect_btn_bg_selector);
-                                ((Button)v).setText(getResources().getString(R.string.favorite));
+                                ((Button) v).setText(getResources().getString(R.string.favorite));
                             }
                         }
                         break;
@@ -870,10 +883,10 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                             addFavorite();
                             if (isFavorite()) {
                                 //v.setBackgroundResource(R.drawable.collected_btn_bg_selector);
-                                ((Button)v).setText(getResources().getString(R.string.favorited));
+                                ((Button) v).setText(getResources().getString(R.string.favorited));
                             } else {
                                 //v.setBackgroundResource(R.drawable.collect_btn_bg_selector);
-                                ((Button)v).setText(getResources().getString(R.string.favorite));
+                                ((Button) v).setText(getResources().getString(R.string.favorite));
                             }
                         } else if (identify.equals(DRAMA_VIDEO)) {
                             intent.setClass(PFilmItemdetailActivity.this,
@@ -922,7 +935,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 //            intent.setAction("tv.ismar.daisy.PFileItem");
 //            intent.putExtra("url", url);
 //            startActivity(intent);
-            DaisyUtils.gotoSpecialPage(PFilmItemdetailActivity.this,itemSection.content_model,itemSection.item_url);
+            DaisyUtils.gotoSpecialPage(PFilmItemdetailActivity.this, itemSection.content_model, itemSection.item_url);
         }
     };
     private DialogInterface.OnCancelListener mLoadingCancelListener = new DialogInterface.OnCancelListener() {

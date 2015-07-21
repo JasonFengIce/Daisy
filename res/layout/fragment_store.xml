@@ -3,14 +3,18 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+
     <GridView
-        android:id="@+id/person_center_packagelist"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:numColumns="4"
-        android:layout_marginRight="73dp"
-        android:layout_marginLeft="10dp"
-        android:stretchMode="columnWidth">
+            android:listSelector="@drawable/launcher_selector"
+            android:id="@+id/person_center_packagelist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="4"
+            android:layout_marginRight="73dp"
+            android:layout_marginLeft="10dp"
+            android:verticalSpacing="30dp"
+            android:horizontalSpacing="30dp"
+            android:stretchMode="columnWidth">
     </GridView>
 
 </LinearLayout>

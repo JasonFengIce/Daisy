@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.gson.JsonSyntaxException;
-import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,7 +25,7 @@ import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.*;
 import tv.ismar.daisy.player.InitPlayerTool;
-import tv.ismar.daisy.ui.widget.TopPanelView;
+import tv.ismar.daisy.ui.widget.TopView;
 import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.*;
 
@@ -36,7 +35,7 @@ import java.util.*;
 /**
  * Created by zhangjiqiang on 15-7-2.
  */
-public class EntertainmentDetailActivity extends BaseActivity implements AsyncImageView.OnImageViewLoadListener{
+public class EntertainmentDetailActivity extends BaseActivity implements AsyncImageView.OnImageViewLoadListener {
 
     private int subitem_show;
     private String mChannel;
@@ -75,19 +74,23 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
     private TextView mDetailIntro;
     private AsyncImageView mDetailPreviewImg;
     private DetailAttributeContainer mDetailAttributeContainer;
-    private TopPanelView top_column_layout;
-    private void initViews(){
+    private TopView weatherFragment;
+
+    private void initViews() {
         large_layout = findViewById(R.id.large_layout);
         mChannel = getIntent().getStringExtra("channel");
         title = getIntent().getStringExtra("title");
-        top_column_layout = (TopPanelView)findViewById(R.id.top_column_layout);
-        top_column_layout.setChannelName(title);
+        weatherFragment =(TopView)findViewById(R.id.top_column_layout);
+        weatherFragment.setTitle(title);
+        weatherFragment.hideSubTiltle();
+
+
         mDetailTitle = (TextView) findViewById(R.id.detail_title);
-        mDetailIntro = (TextView)findViewById(R.id.detail_intro);
+        mDetailIntro = (TextView) findViewById(R.id.detail_intro);
         mDetailPreviewImg = (AsyncImageView) findViewById(R.id.detail_preview_img);
         mDetailAttributeContainer = (DetailAttributeContainer) findViewById(R.id.detail_attribute_container);
-        related_video_container = (LinearLayout)findViewById(R.id.related_video_container);
-        mMoreContent = (LinearLayout)findViewById(R.id.more_content);
+        related_video_container = (LinearLayout) findViewById(R.id.related_video_container);
+        mMoreContent = (LinearLayout) findViewById(R.id.more_content);
         mLeftBtn = (Button) findViewById(R.id.btn_left);
         mMiddleBtn = (Button) findViewById(R.id.middle_btn);
         mRightBtn = (Button) findViewById(R.id.btn_right);
@@ -97,6 +100,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
         mMoreContent.setOnClickListener(mIdOnClickListener);
 
     }
+
     private View.OnClickListener mIdOnClickListener = new View.OnClickListener() {
 
         @Override
@@ -148,17 +152,16 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                         identify = (String) v.getTag();
                         if (identify.equals(PREVIEW_VIDEO)) {
                             // 预告
-                            if(isDrama()){
+                            if (isDrama()) {
                                 tool.initClipInfo(mItem.subitems[0].url, InitPlayerTool.FLAG_URL);
-                            }
-                            else{
+                            } else {
                                 tool.initClipInfo(mItem, InitPlayerTool.FLAG_ITEM, true);
                             }
                         } else if (identify.equals(PLAY_VIDEO)) {
                             // 播放
                             if (isDrama())
                                 tool.initClipInfo(subUrl, InitPlayerTool.FLAG_URL);
-                            else{
+                            else {
                                 tool.initClipInfo(mItem, InitPlayerTool.FLAG_ITEM);
 
                             }
@@ -170,7 +173,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                             // 购买
                             if (isDrama()) {
 
-                                 startDramaListActivity();
+                                startDramaListActivity();
                             } else {
                                 buyVideo();
                             }
@@ -178,11 +181,11 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                             addFavorite();
                             if (isFavorite()) {
                                 //v.setBackgroundResource(R.drawable.collected_btn_bg_selector);
-                                ((Button)v).setText(getResources().getString(R.string.favorited));
+                                ((Button) v).setText(getResources().getString(R.string.favorited));
 
                             } else {
                                 //v.setBackgroundResource(R.drawable.collect_btn_bg_selector);
-                                ((Button)v).setText(getResources().getString(R.string.favorite));
+                                ((Button) v).setText(getResources().getString(R.string.favorite));
                             }
                         }
                         break;
@@ -192,13 +195,13 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                             addFavorite();
                             if (isFavorite()) {
                                 //v.setBackgroundResource(R.drawable.collected_btn_bg_selector);
-                                ((Button)v).setText(getResources().getString(R.string.favorited));
+                                ((Button) v).setText(getResources().getString(R.string.favorited));
                             } else {
                                 //v.setBackgroundResource(R.drawable.collect_btn_bg_selector);
-                                ((Button)v).setText(getResources().getString(R.string.favorite));
+                                ((Button) v).setText(getResources().getString(R.string.favorite));
                             }
                         } else if (identify.equals(DRAMA_VIDEO)) {
-                                 startDramaListActivity();
+                            startDramaListActivity();
                         }
                         break;
                     case R.id.more_content:
@@ -217,6 +220,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             }
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -265,12 +269,12 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 String url = mItem.item_url == null ? mSimpleRestClient.root_url
                         + "/api/item/" + mItem.pk + "/"
                         : mItem.item_url;
-                if(SimpleRestClient.isLogin())
+                if (SimpleRestClient.isLogin())
                     mHistory = DaisyUtils.getHistoryManager(this).getHistoryByUrl(
-                           url,"yes");
+                            url, "yes");
                 else
                     mHistory = DaisyUtils.getHistoryManager(this).getHistoryByUrl(
-                            url,"no");
+                            url, "no");
             }
         }
         for (HashMap.Entry<AsyncImageView, Boolean> entry : mLoadingImageQueue
@@ -280,7 +284,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 entry.setValue(true);
             }
         }
-        if(isPause){
+        if (isPause) {
             if (isFavorite()) {
                 //mCollectBtn.setBackgroundResource(R.drawable.collected_btn_bg_selector);
                 mCollectBtn.setText(getResources().getString(R.string.favorited));
@@ -343,17 +347,16 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
         }
         return isDrama;
     }
+
     private void startDramaListActivity() {
         Intent intent = new Intent();
         mDataCollectionProperties.put("to", "list");
         subitem_show = mItem.subitem_show;
-        if(subitem_show==1){
-            intent.setClass(EntertainmentDetailActivity.this,DramaVarietyNoMonthList.class);
-        }
-        else if(subitem_show==2){
-            intent.setClass(EntertainmentDetailActivity.this,DramaVarietyMonthList.class);
-        }
-        else{
+        if (subitem_show == 1) {
+            intent.setClass(EntertainmentDetailActivity.this, DramaVarietyNoMonthList.class);
+        } else if (subitem_show == 2) {
+            intent.setClass(EntertainmentDetailActivity.this, DramaVarietyMonthList.class);
+        } else {
             intent.setClass(EntertainmentDetailActivity.this, DramaListActivity.class);
         }
         intent.putExtra("title", title);
@@ -407,6 +410,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
         }
 
     }
+
     class GetItemTask extends AsyncTask<String, Void, Void> {
 
         int id = 0;
@@ -420,7 +424,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 mItem = mSimpleRestClient.getItem(url);
 
 
-                Log.i("1","2");
+                Log.i("1", "2");
 
             } catch (ItemOfflineException e) {
                 HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
@@ -475,6 +479,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
         }
         return true;
     }
+
     private void isbuy() {
         SimpleRestClient simpleRestClient = new SimpleRestClient();
         simpleRestClient.doSendRequest("/api/order/check/", "post",
@@ -499,7 +504,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                                     // 电影或者电视剧整部购买
                                     try {
                                         remainDay = Util.daysBetween(
-                                                Util.getTime(), info)+1;
+                                                Util.getTime(), info) + 1;
                                         if (remainDay == 0) {
                                             isBuy = false;// 过期了。认为没购买
                                             remainDay = -1;
@@ -515,7 +520,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                                 info = info.substring(1, info.length() - 1);
                                 try {
                                     remainDay = Util.daysBetween(
-                                            Util.getTime(), info)+1;
+                                            Util.getTime(), info) + 1;
                                     if (remainDay == 0) {
                                         isBuy = false;// 过期了。认为没购买
                                         remainDay = -1;
@@ -553,13 +558,12 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                         + "/";
             }
             Favorite favorite = null;
-            if(!SimpleRestClient.isLogin()){
+            if (!SimpleRestClient.isLogin()) {
                 favorite = DaisyUtils.getFavoriteManager(this)
-                        .getFavoriteByUrl(url,"no");
-            }
-            else{
+                        .getFavoriteByUrl(url, "no");
+            } else {
                 favorite = DaisyUtils.getFavoriteManager(this)
-                        .getFavoriteByUrl(url,"yes");
+                        .getFavoriteByUrl(url, "yes");
             }
             if (favorite != null) {
                 return true;
@@ -568,6 +572,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
 
         return false;
     }
+
     private void showToast(String text) {
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.simple_toast,
@@ -580,14 +585,15 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
         toast.setView(layout);
         toast.show();
     }
-    private void deleteFavoriteByNet(){
-        mSimpleRestClient.doSendRequest("/api/bookmarks/remove/", "post", "access_token="+
-                SimpleRestClient.access_token+"&device_token="+SimpleRestClient.device_token+"&item="+mItem.pk, new SimpleRestClient.HttpPostRequestInterface() {
+
+    private void deleteFavoriteByNet() {
+        mSimpleRestClient.doSendRequest("/api/bookmarks/remove/", "post", "access_token=" +
+                SimpleRestClient.access_token + "&device_token=" + SimpleRestClient.device_token + "&item=" + mItem.pk, new SimpleRestClient.HttpPostRequestInterface() {
 
             @Override
             public void onSuccess(String info) {
                 // TODO Auto-generated method stub
-                if("200".equals(info)){
+                if ("200".equals(info)) {
                     //mCollectBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
 //					showToast(getResources().getString(
 //							R.string.vod_bookmark_remove_success));
@@ -611,20 +617,20 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             }
         });
     }
+
     private void addFavorite() {
         if (isFavorite()) {
             String url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk
                     + "/";
             String isnet = "";
-            if(SimpleRestClient.isLogin()){
+            if (SimpleRestClient.isLogin()) {
                 isnet = "yes";
                 deleteFavoriteByNet();
-            }
-            else{
+            } else {
                 isnet = "no";
             }
             DaisyUtils.getFavoriteManager(EntertainmentDetailActivity.this)
-                    .deleteFavoriteByUrl(url,isnet);
+                    .deleteFavoriteByUrl(url, isnet);
             showToast(getResources().getString(
                     R.string.vod_bookmark_remove_success));
         } else {
@@ -637,21 +643,21 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             favorite.url = url;
             favorite.quality = mItem.quality;
             favorite.is_complex = mItem.is_complex;
-            if(SimpleRestClient.isLogin()){
+            if (SimpleRestClient.isLogin()) {
                 favorite.isnet = "yes";
                 createFavoriteByNet();
-            }
-            else{
+            } else {
                 favorite.isnet = "no";
             }
             DaisyUtils.getFavoriteManager(EntertainmentDetailActivity.this).addFavorite(
-                    favorite,favorite.isnet);
+                    favorite, favorite.isnet);
             showToast(getResources().getString(
                     R.string.vod_bookmark_add_success));
         }
     }
-    private void createFavoriteByNet(){
-        mSimpleRestClient.doSendRequest("/api/bookmarks/create/", "post", "access_token="+SimpleRestClient.access_token+"&device_token="+SimpleRestClient.device_token+"&item="+mItem.pk, new SimpleRestClient.HttpPostRequestInterface() {
+
+    private void createFavoriteByNet() {
+        mSimpleRestClient.doSendRequest("/api/bookmarks/create/", "post", "access_token=" + SimpleRestClient.access_token + "&device_token=" + SimpleRestClient.device_token + "&item=" + mItem.pk, new SimpleRestClient.HttpPostRequestInterface() {
 
             @Override
             public void onSuccess(String info) {
@@ -683,15 +689,16 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
 
         @Override
         public void payResult(boolean result) {
-            if(result){
+            if (result) {
                 isBuy = true;
                 setExpenseStatus();
             }
         }
 
     };
+
     private void setExpenseStatus() {
-		/*
+        /*
 		 * if this item is a drama , the button should split to two. otherwise.
 		 * use one button.
 		 */
@@ -759,6 +766,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             }
         }
     }
+
     private void buyVideo() {
         PaymentDialog dialog = new PaymentDialog(EntertainmentDetailActivity.this,
                 R.style.PaymentDialog, ordercheckListener);
@@ -769,13 +777,13 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
 
     private void buildRelatedList() {
         for (int i = 0; i < 4 && i < mRelatedItem.length; i++) {
-            View relatedHolder =  LayoutInflater
+            View relatedHolder = LayoutInflater
                     .from(EntertainmentDetailActivity.this).inflate(
                             R.layout.realte_entertainment_item, null);
             LinearLayout.LayoutParams layoutParams;
-            layoutParams = new LinearLayout.LayoutParams(336,240);
-            if(i!=0)
-            layoutParams.leftMargin = 74;
+            layoutParams = new LinearLayout.LayoutParams(336, 240);
+            if (i != 0)
+                layoutParams.leftMargin = 74;
             relatedHolder.setLayoutParams(layoutParams);
             TextView titleView = (TextView) relatedHolder
                     .findViewById(R.id.related_title);
@@ -798,8 +806,8 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
 //                imgView.setUrl(mRelatedItem[i].adlet_url);
 //            }
             imgView.setUrl(mRelatedItem[i].list_url);
-            if(mRelatedItem[i].focus!=null)
-              imgView.setFocustitle(mRelatedItem[i].focus);
+            if (mRelatedItem[i].focus != null)
+                imgView.setFocustitle(mRelatedItem[i].focus);
             titleView.setText(mRelatedItem[i].title);
             imgView.setTag(mRelatedItem[i]);
             related_video_container.addView(relatedHolder);
@@ -808,6 +816,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             imgView.setOnClickListener(mRelatedClickListener);
         }
     }
+
     private View.OnClickListener mRelatedClickListener = new View.OnClickListener() {
 
         @Override
@@ -831,7 +840,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
 //            intent.putExtra("url", url);
 //            startActivity(intent);
 
-            DaisyUtils.gotoSpecialPage(EntertainmentDetailActivity.this,itemSection.content_model,itemSection.item_url);
+            DaisyUtils.gotoSpecialPage(EntertainmentDetailActivity.this, itemSection.content_model, itemSection.item_url);
 
         }
     };
@@ -868,19 +877,21 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             return null;
         }
     }
-    private Item getItemByClipPk(int pk){
+
+    private Item getItemByClipPk(int pk) {
         Item item = null;
         Item[] items = mItem.subitems;
         int count = items.length;
-        for(int i=0;i<count;i++){
-            if(mItem.subitems[i].clip.pk==pk){
+        for (int i = 0; i < count; i++) {
+            if (mItem.subitems[i].clip.pk == pk) {
                 item = mItem.subitems[i];
                 break;
             }
         }
         return item;
     }
-    private void initLayout(){
+
+    private void initLayout() {
         mDetailTitle.setText(mItem.title);
 		/*
 		 * Build detail attributes list using a given order according to
@@ -907,7 +918,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 mContentModel.attributes.put("vendor", getResources()
                         .getString(R.string.vendor));
             }
-            if(mContentModel.attributes.get("air_date")==null){
+            if (mContentModel.attributes.get("air_date") == null) {
                 mContentModel.attributes.put("air_date", getResources()
                         .getString(R.string.air_date));
             }
@@ -931,12 +942,12 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 attributeMap.put(key, null);
             }
             attributeMap.put("vendor", mItem.vendor);
-            attributeMap.put("air_date",mItem.attributes.air_date);
+            attributeMap.put("air_date", mItem.attributes.air_date);
 //            if (isDrama()) {
 //                attributeMap.put("episodes", getEpisodes(mItem));
 //            }
-            if(mItem.clip!=null){
-                if(mItem.clip.length>0)
+            if (mItem.clip != null) {
+                if (mItem.clip.length > 0)
                     attributeMap.put("length", getClipLength(mItem.clip));
             }
 
