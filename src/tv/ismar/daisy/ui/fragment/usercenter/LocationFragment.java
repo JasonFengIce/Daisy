@@ -132,6 +132,7 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
                 SharedPreferences.Editor editor = locationSharedPreferences.edit();
                 editor.putString(LOCATION_PREFERENCE_GEOID, String.valueOf(locationTableList.get(position).geo_id));
                 editor.apply();
+                areaPopup.dismiss();
             }
 
             @Override
