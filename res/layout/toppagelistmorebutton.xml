@@ -12,6 +12,7 @@
         android:background="@drawable/launcher_selector"
         android:focusable="true"
         android:gravity="center"
+        android:textColor="#FFFFFFFF"
         android:text="更多"
         android:textSize="50sp" />
 
