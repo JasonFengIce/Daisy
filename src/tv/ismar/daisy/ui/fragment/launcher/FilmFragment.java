@@ -323,6 +323,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
             itemView.setScaleType(ImageView.ScaleType.FIT_XY);
             itemView.setLayoutParams(params);
             itemView.setTag(i);
+            itemView.setTag(R.drawable.launcher_selector, carousels.get(i));
             itemView.setOnClickListener(ItemClickListener);
 
             allItem.add(itemView);
