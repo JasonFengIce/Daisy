@@ -784,15 +784,41 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             if (mRelatedItem[i].focus != null)
                 imgView.setFocustitle(mRelatedItem[i].focus);
             titleView.setText(mRelatedItem[i].title);
-            imgView.setTag(mRelatedItem[i]);
+            relatedHolder.setTag(mRelatedItem[i]);
             related_video_container.addView(relatedHolder);
-//            relatedHolder
-//                    .setOnFocusChangeListener(mRelatedOnFocusChangeListener);
+            relatedHolder
+                    .setOnFocusChangeListener(mRelatedOnFocusChangeListener);
 
-            imgView.setOnClickListener(mRelatedClickListener);
+            relatedHolder.setOnClickListener(mRelatedClickListener);
         }
     }
+    private View.OnFocusChangeListener mRelatedOnFocusChangeListener = new View.OnFocusChangeListener() {
 
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    TextView title = (TextView) v
+                            .findViewById(R.id.related_title);
+                    View img = v.findViewById(R.id.related_preview_img);
+                    title.setTextColor(0xFFF8F8FF);
+                     img.setBackgroundResource(R.drawable.popup_bg_yellow);
+
+                    title.setSelected(true);
+
+                } else {
+                    TextView title = (TextView) v
+                            .findViewById(R.id.related_title);
+                    View img = v.findViewById(R.id.related_preview_img);
+                    title.setTextColor(0xFFF8F8FF);
+
+                    img.setBackgroundColor(android.R.color.transparent);
+                    title.setSelected(false);
+
+                }
+
+
+        }
+    };
     private View.OnClickListener mIdOnClickListener = new View.OnClickListener() {
 
         @Override

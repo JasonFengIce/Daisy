@@ -177,7 +177,7 @@ public class PackageDetailActivity extends BaseActivity implements OnItemClickLi
 			imgView.setUrl(mRelatedItem[i].adlet_url);
 			titleView.setText(mRelatedItem[i].title);
 			focusView.setText(mRelatedItem[i].focus);
-			relatedHolder.setTag(mRelatedItem[i].url);
+			relatedHolder.setTag(mRelatedItem[i]);
 			mRelatedVideoContainer.addView(relatedHolder);
 //			relatedHolder
 //					.setOnFocusChangeListener(mRelatedOnFocusChangeListener);
@@ -444,9 +444,7 @@ public class PackageDetailActivity extends BaseActivity implements OnItemClickLi
 		if(item!=null){
 			Intent intent = new Intent();
 			if(item.is_complex) {
-				intent.setAction("tv.ismar.daisy.Item");
-				intent.putExtra("url", item.url);
-				startActivity(intent);
+                DaisyUtils.gotoSpecialPage(PackageDetailActivity.this,item.content_model,item.url);
 			} else {
 //				InitPlayerTool tool = new InitPlayerTool(PackageDetailActivity.this);
 //				tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
@@ -472,10 +470,10 @@ public class PackageDetailActivity extends BaseActivity implements OnItemClickLi
 
 		@Override
 		public void onClick(View v) {			
-			String url = (String) v.getTag();
+			Item itemSection = (Item) v.getTag();
 			final Item[] relatedItem = mRelatedItem;
 			for (Item item : relatedItem) {
-				if (url.equals(item.item_url)) {
+				if (itemSection.url.equals(item.item_url)) {
 					HashMap<String, Object> properties = new HashMap<String, Object>();
 					properties.put(EventProperty.ITEM, mItem.pk);
 					properties.put(EventProperty.TO_ITEM, item.pk);
@@ -486,10 +484,7 @@ public class PackageDetailActivity extends BaseActivity implements OnItemClickLi
 					break;
 				}
 			}
-			Intent intent = new Intent();
-			intent.setAction("tv.ismar.daisy.packageitem");
-			intent.putExtra("url", url);
-			startActivity(intent);
+            DaisyUtils.gotoSpecialPage(PackageDetailActivity.this,itemSection.content_model,itemSection.url);
 			
 		}
 	};

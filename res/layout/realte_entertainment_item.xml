@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/list_item_layout"
-
+    android:focusable="true"
     >
     <tv.ismar.daisy.views.LabelImageView
         xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
@@ -14,7 +14,6 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:scaleType="fitXY"
-        android:background="@drawable/launcher_selector"
         android:paddingTop="3dip"
         android:paddingBottom="3dip"
         android:paddingLeft="3dip"
@@ -23,8 +22,7 @@
         labelimage:focuspaddingtop="0.90"
         labelimage:focustextpaddingtop="0.97"
         labelimage:focustextsize="24sp"
-        android:focusable="true"
-        android:clickable="true"/>
+   />
     <TextView
         android:layout_width="336dip"
         android:layout_height="match_parent"

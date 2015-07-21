@@ -57,7 +57,7 @@
         android:background="@drawable/vodcategory_gv_item_price"/>
     <TextView
         android:id="@+id/related_title"
-        android:layout_width="wrap_content"
+        android:layout_width="345dip"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/related_item_title_margintop"
         android:layout_marginBottom="@dimen/related_item_title_marginbottom"
@@ -67,10 +67,11 @@
         android:ellipsize="marquee"
         android:textSize="@dimen/related_item_title_textsize"
         android:textColor="#FFF8F8FF"
-        android:layout_marginLeft="@dimen/related_item_text_marginLeft"/>
+        android:layout_marginLeft="@dimen/related_item_text_marginLeft"
+            />
     <TextView
         android:id="@+id/related_focus"
-        android:layout_width="wrap_content"
+        android:layout_width="345dip"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/related_preview_img"
         android:layout_below="@id/related_title"

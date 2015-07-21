@@ -375,7 +375,9 @@ public class PackageListDetailActivity extends BaseActivity implements OnItemSel
 				Expense f = item.expense;
 				intent.setAction("tv.ismar.daisy.Item");
 				intent.putExtra("url", item.url);
-				startActivity(intent);
+				//startActivity(intent);
+
+                DaisyUtils.gotoSpecialPage(PackageListDetailActivity.this,item.content_model,item.url);
 			}
 			else{
 				
