@@ -89,7 +89,8 @@ public class DramaVarietyNoMonthList extends BaseActivity implements AdapterView
         mHGridAdapter = new HGridAdapterImpl(DramaVarietyNoMonthList.this, mItemCollections, false);
         mHGridAdapter.setTemplate(1);
         mHGridAdapter.setList(mItemCollections);
-        if (mHGridAdapter.getCount() > 0) {
+        weatherFragment.setVisibility(View.VISIBLE);
+        if(mHGridAdapter.getCount()>0){
             mHGridView.setAdapter(mHGridAdapter);
             mHGridView.setFocusable(true);
             mItemCollections.get(0).fillItems(0, lists);

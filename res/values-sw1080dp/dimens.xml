@@ -297,7 +297,7 @@
     <dimen name="related_view_list_margintop">5dip</dimen>
     <dimen name="related_view_list_marginright">139dip</dimen>
     <dimen name="related_view_list_horizontalspacing">21dip</dimen>
-    <dimen name="related_view_list_verticalspacing">5dip</dimen>
+    <dimen name="related_view_list_verticalspacing">9dip</dimen>
     <dimen name="related_view_list_columnwidth">348dip</dimen>
     <dimen name="related_view_title_marginTop">15dip</dimen>
     <!-- Toast -->
@@ -390,7 +390,7 @@
     <dimen name="search_autocomplete_item_textsize">22dip</dimen>
     <dimen name="search_gridview_verticalspacing">5dip</dimen>
     <dimen name="search_gridview_marginL">150dip</dimen>
-    <dimen name="search_gridview_marginT">8dip</dimen>
+    <dimen name="search_gridview_marginT">18dip</dimen>
     <dimen name="search_gridview_marginR">150dip</dimen>
     <dimen name="search_gridview_marginB">10dip</dimen>
     <dimen name="search_line_height">2dip</dimen>
@@ -431,10 +431,10 @@
     <dimen name="channel_section_tabs_text_PT">20dip</dimen>
 
     <!-- ZGridview -->
-    <dimen name="ZGridView_related_selectorLeftPadding">15dip</dimen>
+    <dimen name="ZGridView_related_selectorLeftPadding">21dip</dimen>
     <dimen name="ZGridView_related_selectorTopPadding">20dip</dimen>
-    <dimen name="ZGridView_related_selectorRightPadding">15dip</dimen>
-    <dimen name="ZGridView_related_selectorBottomPadding">-27dip</dimen>
+    <dimen name="ZGridView_related_selectorRightPadding">21dip</dimen>
+    <dimen name="ZGridView_related_selectorBottomPadding">-40dip</dimen>
 
     <dimen name="ZGridView_played_selectorLeftPadding">7dip</dimen>
     <dimen name="ZGridView_played_selectorTopPadding">16dip</dimen>
@@ -444,7 +444,7 @@
     <dimen name="ZGridView_search_selectorLeftPadding">7dip</dimen>
     <dimen name="ZGridView_search_selectorTopPadding">21dip</dimen>
     <dimen name="ZGridView_search_selectorRight">21dip</dimen>
-    <dimen name="ZGridView_search_selectorBottom">-70dip</dimen>
+    <dimen name="ZGridView_search_selectorBottom">-40dip</dimen>
 
     <dimen name="ZGridView_packagedetail_selectorLeftPadding">2dip</dimen>
     <dimen name="ZGridView_packagedetail_selectorTopPadding">0dip</dimen>
@@ -475,7 +475,7 @@
     <dimen name="HGridView_related_pselectionLeftPadding">19dip</dimen>
     <dimen name="HGridView_related_pselectionTopPadding">20dip</dimen>
     <dimen name="HGridView_related_pselectionRightPadding">19dip</dimen>
-    <dimen name="HGridView_related_pselectionBottomPadding">-17dip</dimen>
+    <dimen name="HGridView_related_pselectionBottomPadding">-29dip</dimen>
 
 
     <dimen name="HGridView_label_lr_offset">19dip</dimen>

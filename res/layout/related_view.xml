@@ -82,7 +82,7 @@
         sakura:listSelector="@drawable/vod_gv_selector"
         sakura:numColumns="4"
         sakura:stretchMode="columnWidth"
-        sakura:verticalSpace="@dimen/related_view_list_verticalspacing"
+        sakura:verticalSpace="0dip"
         sakura:selectorLeftPadding="@dimen/ZGridView_related_selectorLeftPadding"
         sakura:selectorTopPadding="@dimen/ZGridView_related_selectorTopPadding"
         sakura:selectorRightPadding="@dimen/ZGridView_related_selectorRightPadding"

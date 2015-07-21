@@ -40,7 +40,7 @@
             android:id="@+id/filter_percentage"
             android:layout_width="1475dip"
             android:layout_height="4dip"
-            android:progressDrawable="@drawable/section_percentage_selected"
+            android:progressDrawable="@drawable/progressbg"
             style="@android:style/Widget.ProgressBar.Horizontal"
             android:indeterminate="false"
             android:visibility="visible"
@@ -49,8 +49,6 @@
         android:id="@+id/filter_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fadingEdge="horizontal"
-        android:fadingEdgeLength="@dimen/gridview_main_panel_fadingEdgeLength"
         sakura:horizontalSpacing="44dip"
         sakura:numRows="2"
         sakura:rowHeight="402dip"
@@ -60,7 +58,7 @@
         sakura:selectionTopPadding="@dimen/HGridView_related_PFilterTopPadding"
         sakura:selectionRightPadding="@dimen/HGridView_related_PFilterRightPadding"
         sakura:selectionBottomPadding="@dimen/HGridView_related_PFilterBottomPadding"
-        android:layout_marginTop="2dip"
+        android:layout_marginTop="10dip"
         android:layout_marginLeft="6dip">
     </org.sakuratya.horizontal.ui.HGridView>
  </LinearLayout>

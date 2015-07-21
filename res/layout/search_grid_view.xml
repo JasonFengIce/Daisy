@@ -59,7 +59,7 @@
         android:fadingEdgeLength="@dimen/gridview_main_panel_fadingEdgeLength"
         sakura:horizontalSpacing="@dimen/related_view_list_horizontalspacing"
         sakura:numRows="3"
-        sakura:rowHeight="@dimen/gridview_main_panel_rowHeight"
+        sakura:rowHeight="222dip"
         sakura:selectorDrawable="@drawable/vod_gv_selector"
         sakura:verticalSpacing="@dimen/search_gridview_verticalspacing"
         sakura:selectionLeftPadding="@dimen/ZGridView_search_selectorLeftPadding"

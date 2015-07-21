@@ -385,7 +385,7 @@ public class FilterResultFragment extends BackHandledFragment implements Adapter
         int totalColumnOfSectionX = (int)(FloatMath.ceil((float)mHGridAdapter.getSectionCount(sectionIndex) / (float) rows));
         int percentage = (int) ((float)columnOfX / (float)totalColumnOfSectionX * 100f);
         Log.i("asdfghjkl","percentage=="+percentage);
-        percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_selected));
+       // percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_selected));
         percentageBar.setProgress(percentage);
     }
 
