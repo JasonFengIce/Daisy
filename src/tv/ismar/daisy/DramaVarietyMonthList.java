@@ -153,7 +153,7 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
                             mHGridView.setFocusable(true);
                             mItemCollections.get(0).fillItems(0, lists);
                             mHGridAdapter.setList(mItemCollections);
-                            top_column_layout.setVisibility(View.VISIBLE);
+                            weatherFragment.setVisibility(View.VISIBLE);
                             if(arrow_left.isShown()){
                                 arrow_left.setVisibility(View.INVISIBLE);
                             }
