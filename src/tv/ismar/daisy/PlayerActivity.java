@@ -355,13 +355,13 @@ public class PlayerActivity extends VodMenuAction {
 				adimageDialog.show();
 			}
 		} else {
-			ad_count_view.setVisibility(View.GONE);
-			isadvideoplaying = false;
 			playMainVideo();
 		}
 	}
 
 	protected void playMainVideo() {
+		ad_count_view.setVisibility(View.GONE);
+		isadvideoplaying = false;
 		new initPlayTask().execute();
 	}
 
@@ -591,11 +591,12 @@ public class PlayerActivity extends VodMenuAction {
 				+ "&live_video="
 				+ item.live_video
 				+ "&vendor="
-				+ Base64.encodeToString(item.vendor.getBytes(), Base64.URL_SAFE)
+				+ (item.vendor == null ? "" : Base64.encodeToString(
+						item.vendor.getBytes(), Base64.URL_SAFE))
 				+ "&expense="
 				+ (item.expense == null ? false : true)
 				+ "&length="
-				+ item.clip.length;
+				+ (item.clip == null ? "" : item.clip.length);
 		new GetAdDataTask().execute(adpid, params);
 	}
 
@@ -1385,7 +1386,7 @@ public class PlayerActivity extends VodMenuAction {
 				ret = true;
 				break;
 			case KeyEvent.KEYCODE_BACK:
-				if(isadvideoplaying)
+				if (isadvideoplaying)
 					finish();
 				showPopupDialog(
 						DIALOG_OK_CANCEL,
@@ -1695,7 +1696,7 @@ public class PlayerActivity extends VodMenuAction {
 				if (adsumtime >= 0) {
 					ad_count_view.setText("广告倒计时" + adsumtime);
 					sendEmptyMessageDelayed(AD_COUNT_ACTION, 1000);
-				}else{
+				} else {
 					playMainVideo();
 				}
 				break;

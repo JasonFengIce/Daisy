@@ -4,34 +4,33 @@ import java.util.ArrayList;
 
 import org.apache.commons.lang3.StringUtils;
 
-import android.util.Log;
-import android.widget.*;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.data.HomePagerEntity.Poster;
 import tv.ismar.daisy.exception.NetworkException;
-import tv.ismar.daisy.models.SportsGame;
+import tv.ismar.daisy.models.SportGame;
 import tv.ismar.daisy.models.SportsGameList;
-import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
 import tv.ismar.daisy.views.LabelImageView;
 import tv.ismar.daisy.views.LoadingDialog;
-import android.R.integer;
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -44,7 +43,7 @@ public class SportFragment extends ChannelBaseFragment implements
 	private SimpleRestClient mRestClient = new SimpleRestClient();
 	private LoadingDialog mLoadingDialog;
 	private HomePagerEntity entity;
-	private SportsGameList games;
+	private ArrayList<SportGame> games;
 	private ListView sec_one_list;
 	private ScheduleAdapter adapter;
 	private LabelImageView sport_card1;
@@ -105,7 +104,7 @@ public class SportFragment extends ChannelBaseFragment implements
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		new FetchDataTask().execute();
-		games = new SportsGameList();
+		games = new ArrayList<SportGame>();
 		adapter = new ScheduleAdapter();
 		adapter.setmData(games);
 		sec_one_list.setAdapter(adapter);
@@ -121,21 +120,21 @@ public class SportFragment extends ChannelBaseFragment implements
 		}
 	};
 
-	private void fillData(SportsGameList carousellist,
+	private void fillData(ArrayList<SportGame> carousellist,
 			ArrayList<Carousel> carousels, ArrayList<Poster> postlist) {
 		adapter.setmData(carousellist);
 		adapter.notifyDataSetChanged();
 		sport_card1.setUrl(carousels.get(0).getThumb_image());
 		sport_card1.setFocustitle(carousels.get(0).getIntroduction());
-		sport_card1.setTag(R.drawable.launcher_selector,carousels.get(0));
+		sport_card1.setTag(R.drawable.launcher_selector, carousels.get(0));
 		sport_card1.setOnFocusChangeListener(ItemOnFocusListener);
 		sport_card2.setUrl(carousels.get(1).getThumb_image());
 		sport_card2.setFocustitle(carousels.get(1).getIntroduction());
-		sport_card2.setTag(R.drawable.launcher_selector,carousels.get(1));
+		sport_card2.setTag(R.drawable.launcher_selector, carousels.get(1));
 		sport_card2.setOnFocusChangeListener(ItemOnFocusListener);
 		sport_card3.setUrl(carousels.get(2).getThumb_image());
 		sport_card3.setFocustitle(carousels.get(2).getIntroduction());
-		sport_card3.setTag(R.drawable.launcher_selector,carousels.get(2));
+		sport_card3.setTag(R.drawable.launcher_selector, carousels.get(2));
 		sport_card3.setOnFocusChangeListener(ItemOnFocusListener);
 		looppost.add(carousels.get(0));
 		looppost.add(carousels.get(1));
@@ -196,7 +195,7 @@ public class SportFragment extends ChannelBaseFragment implements
 	}
 
 	private class ScheduleAdapter extends BaseAdapter {
-		private SportsGameList mData;
+		private ArrayList<SportGame> mData;
 		private LayoutInflater mInflater;
 
 		public ScheduleAdapter() {
@@ -210,7 +209,7 @@ public class SportFragment extends ChannelBaseFragment implements
 		}
 
 		@Override
-		public SportsGame getItem(int position) {
+		public SportGame getItem(int position) {
 			return mData.get(position);
 		}
 
@@ -232,17 +231,17 @@ public class SportFragment extends ChannelBaseFragment implements
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			holder.view.setUrl(mData.get(position).poster_url);
-			holder.view.setFocustitle((mData.get(position).name));
+			holder.view.setUrl(mData.get(position).getImageurl());
+			holder.view.setFocustitle((mData.get(position).getName()));
 			holder.view.setModetype(mData.get(position).getGameType());
 			return convertView;
 		}
 
-		public SportsGameList getmData() {
+		public ArrayList<SportGame> getmData() {
 			return mData;
 		}
 
-		public void setmData(SportsGameList mData) {
+		public void setmData(ArrayList<SportGame> mData) {
 			this.mData = mData;
 		}
 
@@ -306,7 +305,8 @@ public class SportFragment extends ChannelBaseFragment implements
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
 			if (hasFocus) {
-				Carousel carousel = (Carousel) v.getTag(R.drawable.launcher_selector);
+				Carousel carousel = (Carousel) v
+						.getTag(R.drawable.launcher_selector);
 				sportspost.setUrl(carousel.getVideo_image());
 				if (StringUtils.isNotEmpty(carousel.getIntroduction())) {
 					sportspost_title.setText(carousel.getIntroduction());
@@ -326,19 +326,21 @@ public class SportFragment extends ChannelBaseFragment implements
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			sportspost.setUrl(looppost.get(++loopindex).getVideo_image());
-			if (StringUtils.isNotEmpty(looppost.get(loopindex).getIntroduction())) {
-				sportspost_title.setText(looppost.get(loopindex).getIntroduction());
+			if (StringUtils.isNotEmpty(looppost.get(loopindex)
+					.getIntroduction())) {
+				sportspost_title.setText(looppost.get(loopindex)
+						.getIntroduction());
 				sportspost_title.setVisibility(View.VISIBLE);
 			} else {
 				sportspost_title.setVisibility(View.GONE);
 			}
-			if(loopindex ==0){
-				sport_card1.requestFocus();
-			}else if(loopindex ==1){
-				sport_card2.requestFocus();
-			}else if(loopindex ==2){
-				sport_card3.requestFocus();
-			}
+//			if (loopindex == 0) {
+//				sport_card1.requestFocus();
+//			} else if (loopindex == 1) {
+//				sport_card2.requestFocus();
+//			} else if (loopindex == 2) {
+//				sport_card3.requestFocus();
+//			}
 			if (loopindex >= 2)
 				loopindex = -1;
 			imageswitch.sendEmptyMessageDelayed(IMAGE_SWITCH_KEY, 6000);
