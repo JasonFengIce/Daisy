@@ -221,7 +221,7 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
             if (position != i) {
                 if (imageView.getAlpha() == 1) {
                     imageView.zoomNormalImage();
-                    imageView.setAlpha((float) 0.5);
+//                    imageView.setAlpha((float) 0.5);
 
 
                 }

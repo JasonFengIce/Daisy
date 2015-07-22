@@ -72,4 +72,5 @@
     <drawable name="button_disable">#7f7f7f</drawable>
 
     <color name="location_text_focus">#ffba00</color>
+    <color name="carousel_focus">#ff9900</color>
 </resources>

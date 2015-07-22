@@ -169,6 +169,7 @@
         <attr name="frontcolor" format="color"/>
         <attr name="focustextpaddingtop" format="float"/>
         <attr name="focuspaddingtop" format="float"/>
+        <attr name="customfocus" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="DaisyViewContainer">

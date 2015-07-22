@@ -24,6 +24,9 @@ public class LabelImageView extends AsyncImageView {
 	private float focustitlepaddingtop;
 	private int frontcolor;
 	private int modetype;
+	private int carouse_color;
+	private boolean customfocus;
+	private boolean customselected;
 
 	public void setModetype(int modetype) {
 		this.modetype = modetype;
@@ -68,6 +71,9 @@ public class LabelImageView extends AsyncImageView {
 		focustitlepaddingtop = a.getFloat(
 				R.styleable.LabelImageView_focustextpaddingtop, 0.97f);
 		frontcolor = a.getInt(R.styleable.LabelImageView_frontcolor, 0);
+		carouse_color = context.getResources().getColor(R.color.carousel_focus);
+		customfocus = a.getBoolean(R.styleable.LabelImageView_customfocus,
+				false);
 		a.recycle();
 
 	}
@@ -140,10 +146,38 @@ public class LabelImageView extends AsyncImageView {
 		}
 		// 绘制遮罩效果
 		if (frontcolor != 0) {
-			if (!isFocused()) {
+			if (!customselected) {
 				paint.setColor(frontcolor);
 				canvas.drawRect(new Rect(0, 0, width, height), paint);
 			}
 		}
+
+		if (customfocus) {
+			if (customselected) {
+				Rect rec = canvas.getClipBounds();
+				rec.bottom -= 2;
+				rec.right -= 1;
+				rec.left += 1;
+				rec.top += 1;
+				paint.setColor(carouse_color);
+				paint.setStyle(Paint.Style.STROKE);
+				paint.setStrokeWidth(4.5f);
+				canvas.drawRect(rec, paint);
+				setPadding(2, 2, 2, 2);
+			} else {
+				setPadding(5, 5, 5, 5);
+			}
+		}
 	}
+
+	public boolean isCustomfocus() {
+		return customselected;
+	}
+
+	public void setCustomfocus(boolean customfocus) {
+		this.customselected = customfocus;
+		invalidate();
+	}
+	
+	
 }
