@@ -164,6 +164,7 @@ public class SportFragment extends ChannelBaseFragment implements
 		sport_card1.setOnClickListener(ItemClickListener);
 		sport_card2.setOnClickListener(ItemClickListener);
 		sport_card3.setOnClickListener(ItemClickListener);
+		sportspost.setOnClickListener(ItemClickListener);
 	}
 
 	@Override
@@ -304,10 +305,12 @@ public class SportFragment extends ChannelBaseFragment implements
 
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
+			((LabelImageView) v).setCustomfocus(hasFocus);
 			if (hasFocus) {
 				Carousel carousel = (Carousel) v
 						.getTag(R.drawable.launcher_selector);
 				sportspost.setUrl(carousel.getVideo_image());
+				sportspost.setTag(R.drawable.launcher_selector, carousel);
 				if (StringUtils.isNotEmpty(carousel.getIntroduction())) {
 					sportspost_title.setText(carousel.getIntroduction());
 					sportspost_title.setVisibility(View.VISIBLE);
@@ -326,6 +329,7 @@ public class SportFragment extends ChannelBaseFragment implements
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			sportspost.setUrl(looppost.get(++loopindex).getVideo_image());
+			sportspost.setTag(R.drawable.launcher_selector, looppost.get(loopindex));
 			if (StringUtils.isNotEmpty(looppost.get(loopindex)
 					.getIntroduction())) {
 				sportspost_title.setText(looppost.get(loopindex)

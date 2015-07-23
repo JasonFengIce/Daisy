@@ -12,8 +12,10 @@ import com.squareup.picasso.Picasso;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.data.usercenter.AccountsOrdersEntity;
+import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.AsyncImageView;
 
+import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -112,20 +114,12 @@ public class AccountOrderAdapter extends BaseAdapter {
 
 
     private int remaindDay(String exprieTime) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date startDate = new GregorianCalendar().getTime();
-        ParsePosition pos = new ParsePosition(0);
-        Date exprietDate = formatter.parse(exprieTime, pos);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(startDate);
-        int startDay = calendar.get(Calendar.DAY_OF_YEAR);
-        calendar.setTime(exprietDate);
-        int exprieDay = calendar.get(Calendar.DAY_OF_YEAR);
-        int remaindDay = exprieDay - startDay;
-        if (remaindDay < 0) {
-            return 0;
-        }
-        return remaindDay;
+    	try {
+			return Util.daysBetween(Util.getTime(), exprieTime) + 1;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+        return 0;
     }
 
 }

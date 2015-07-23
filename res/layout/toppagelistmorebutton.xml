@@ -9,10 +9,9 @@
         android:id="@+id/listmore"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/launcher_selector"
         android:focusable="true"
         android:gravity="center"
-        android:textColor="#FFFFFFFF"
+        android:background="@drawable/launcher_selector"
         android:text="更多"
         android:textSize="50sp" />
 

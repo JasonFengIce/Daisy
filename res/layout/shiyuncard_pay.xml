@@ -34,7 +34,7 @@
         android:background="@drawable/edit_selector"
         android:singleLine="true"
         android:paddingLeft="5dip"
-        android:textSize="21sp"
+        android:textSize="32sp"
         android:textColor="#FFF8F8FF"
          />
 
