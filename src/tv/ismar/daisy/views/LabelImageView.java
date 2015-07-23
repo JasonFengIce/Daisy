@@ -153,7 +153,7 @@ public class LabelImageView extends AsyncImageView {
 		}
 
 		if (customfocus) {
-			if (customselected) {
+			if (isFocused()) {
 				Rect rec = canvas.getClipBounds();
 				rec.bottom -= 2;
 				rec.right -= 1;
@@ -165,13 +165,12 @@ public class LabelImageView extends AsyncImageView {
 				canvas.drawRect(rec, paint);
 				setPadding(2, 2, 2, 2);
 			} else {
-				setPadding(5, 5, 5, 5);
+//				if(!customselected)
+//				setPadding(5, 5, 5, 5);
+//				else
+			    setPadding(0, 0, 0, 0);
 			}
 		}
-	}
-
-	public boolean isCustomfocus() {
-		return customselected;
 	}
 
 	public void setCustomfocus(boolean customfocus) {

@@ -362,16 +362,14 @@ public class GuideFragment extends ChannelBaseFragment implements
 
 	@Override
 	public void change(int position) {
-		 for (int i = 0; i < allItem.size(); i++) {
-			 LabelImageView imageView = allItem.get(i);
-		 if (position != i) {
-		 if (imageView.isCustomfocus()) {
-		 imageView.setCustomfocus(false);
-		 }
-		 } else {
-			 imageView.setCustomfocus(true);
-		 }
-		 }
+		for (int i = 0; i < allItem.size(); i++) {
+			LabelImageView imageView = allItem.get(i);
+			if (position != i) {
+				imageView.setCustomfocus(false);
+			}else {
+				imageView.setCustomfocus(true);
+			}
+		}
 	}
 }
 
