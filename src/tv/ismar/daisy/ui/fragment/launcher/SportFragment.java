@@ -334,13 +334,19 @@ public class SportFragment extends ChannelBaseFragment implements
 			} else {
 				sportspost_title.setVisibility(View.GONE);
 			}
-//			if (loopindex == 0) {
-//				sport_card1.requestFocus();
-//			} else if (loopindex == 1) {
-//				sport_card2.requestFocus();
-//			} else if (loopindex == 2) {
-//				sport_card3.requestFocus();
-//			}
+			if (loopindex == 0) {
+				sport_card1.setCustomfocus(true);
+				sport_card2.setCustomfocus(false);
+				sport_card3.setCustomfocus(false);
+			} else if (loopindex == 1) {
+				sport_card1.setCustomfocus(false);
+				sport_card2.setCustomfocus(true);
+				sport_card3.setCustomfocus(false);
+			} else if (loopindex == 2) {
+				sport_card1.setCustomfocus(false);
+				sport_card2.setCustomfocus(false);
+				sport_card3.setCustomfocus(true);
+			}
 			if (loopindex >= 2)
 				loopindex = -1;
 			imageswitch.sendEmptyMessageDelayed(IMAGE_SWITCH_KEY, 6000);
