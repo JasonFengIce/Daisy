@@ -1,10 +1,13 @@
 package tv.ismar.daisy.views;
 
+import java.io.IOException;
 import java.util.Map;
 
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.player.SmartPlayer;
+import tv.ismar.player.SmartPlayer.OnCompletionListenerUrl;
+import tv.ismar.player.SmartPlayer.OnPreparedListenerUrl;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,7 +37,7 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 	private String TAG = "VideoView";
 	// settable by the client
 	private String dataSource;
-	private String[] addataSource;
+	private String[] paths;
 	private Uri mUri;
 	private Map<String, String> mHeaders;
 	private int mDuration;
@@ -63,6 +66,8 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 	private SmartPlayer.OnPreparedListener mOnPreparedListener;
 	private SmartPlayer.OnSeekCompleteListener mOnSeekCompleteListener;
 	private SmartPlayer.OnBufferingUpdateListener mOnBufferingUpdateListener;
+    private SmartPlayer.OnPreparedListenerUrl mOnPreparedListenerUrl;
+    private SmartPlayer.OnCompletionListenerUrl mOnCompletionListenerUrl;
 	private int mCurrentBufferPercentage;
 	private SmartPlayer.OnErrorListener mOnErrorListener;
 	private SmartPlayer.OnInfoListener mOnInfoListener;
@@ -168,15 +173,18 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 		mCurrentState = STATE_IDLE;
 		mTargetState = STATE_IDLE;
 	}
-
+public void setVideoPaths(String[] paths){
+	this.paths = paths;
+    mUri = Uri.parse(paths[paths.length-1]);
+    mHeaders = null;
+    mSeekWhenPrepared = 0;
+	openVideo();
+	requestLayout();
+	invalidate();
+}
 	public void setVideoPath(String path) {
 		dataSource = path;
 		setVideoURI(Uri.parse(path));
-	}
-
-	public void setAdVideoPath(String[] path) {
-		addataSource = path;
-		setVideoURI(Uri.parse(path[0]));
 	}
 
 	public void setVideoURI(Uri uri) {
@@ -218,22 +226,121 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 			player = new SmartPlayer();
 			player.setSn(SimpleRestClient.sn_token);
 			player.setScreenOnWhilePlaying(true);
-			player.setOnPreparedListener(mPreparedListener);
+		//	player.setOnPreparedListener(mPreparedListener);
 			player.setSDCardisAvailable(true);
 			player.setOnVideoSizeChangedListener(mSizeChangedListener);
 			mDuration = -1;
 			player.setOnSeekCompleteListener(mOnSeekCompleteListener);
-			player.setOnCompletionListener(mOnCompletionListener);
+			//player.setOnCompletionListener(mOnCompletionListener);
 			player.setOnErrorListener(mOnErrorListener);
 			player.setOnInfoListener(mOnInfoListener);
 			player.setOnBufferingUpdateListener(mOnBufferingUpdateListener);
 			player.setOnTsInfoListener(mOnTsInfoListener);
 			mCurrentBufferPercentage = 0;
-			if(addataSource != null)
-				player.setDataSource(addataSource);
-			else
-	        player.setDataSource(dataSource);
+	        player.setDataSource(paths);
 			player.setDisplay(mSurfaceHolder);
+			player.setOnPreparedListenerUrl(new OnPreparedListenerUrl() {
+
+				@Override
+				public void onPrepared(SmartPlayer mp, String url) {
+					// TODO Auto-generated method stub
+                    mCurrentState = STATE_PREPARED;
+                    player = mp;
+                    // Get the capabilities of the player for this stream
+                    // Metadata data = mp.getMetadata(false,
+                    // true);
+                    Metadata data = new Metadata();
+
+                    if (data != null) {
+                        mCanPause = !data.has(Metadata.PAUSE_AVAILABLE)
+                                || data.getBoolean(Metadata.PAUSE_AVAILABLE);
+                        mCanSeekBack = !data.has(Metadata.SEEK_BACKWARD_AVAILABLE)
+                                || data.getBoolean(Metadata.SEEK_BACKWARD_AVAILABLE);
+                        mCanSeekForward = !data.has(Metadata.SEEK_FORWARD_AVAILABLE)
+                                || data.getBoolean(Metadata.SEEK_FORWARD_AVAILABLE);
+                    } else {
+                        mCanPause = mCanSeekBack = mCanSeekForward = true;
+                    }
+
+                    if (mOnPreparedListenerUrl != null) {
+                        mOnPreparedListenerUrl.onPrepared(player,url);
+                    }
+                    if (mMediaController != null) {
+                        mMediaController.setEnabled(true);
+                    }
+                    mVideoWidth = mp.getVideoWidth();
+                    mVideoHeight = mp.getVideoHeight();
+
+                    int seekToPosition = mSeekWhenPrepared; // mSeekWhenPrepared may be
+                    // changed after seekTo()
+                    // call
+                    if (seekToPosition != 0) {
+                        seekTo(seekToPosition);
+                    }
+                    if (mVideoWidth != 0 && mVideoHeight != 0) {
+                        // Log.i("@@@@", "video size: " + mVideoWidth +"/"+
+                        // mVideoHeight);
+                        getHolder().setFixedSize(mVideoWidth, mVideoHeight);
+                        if (mSurfaceWidth == mVideoWidth
+                                && mSurfaceHeight == mVideoHeight) {
+                            // We didn't actually change the size (it was already at the
+                            // size
+                            // we need), so we won't get a "surface changed" callback,
+                            // so
+                            // start the video here instead of in the callback.
+                            if (mTargetState == STATE_PLAYING) {
+                                start();
+                                if (mMediaController != null) {
+                                    mMediaController.show();
+                                }
+                            } else if (!isPlaying()
+                                    && (seekToPosition != 0 || getCurrentPosition() > 0)) {
+                                if (mMediaController != null) {
+                                    // Show the media controls when we're paused into a
+                                    // video and make 'em stick.
+                                    mMediaController.show(0);
+                                }
+                            }
+                        }
+                    } else {
+                        // We don't know the video size yet, but should start anyway.
+                        // The video size might be reported to us later.
+                        if (mTargetState == STATE_PLAYING) {
+                            start();
+                        }
+                    }
+				}
+			});
+
+			player.setOnCompletionListenerUrl(new OnCompletionListenerUrl() {
+				
+				@Override
+				public void onCompletion(SmartPlayer sp, String url) {
+					// TODO Auto-generated method stub
+                    player = sp;
+					//int index = findVideoUrlIndex(url);
+                    if(mOnCompletionListenerUrl!=null){
+                        mOnCompletionListenerUrl.onCompletion(sp,url);
+                    }
+					int currentIndex = sp.getCurrentPlayUrl();
+					
+					if (currentIndex >= 0 && currentIndex<paths.length) {        //如果当前播放的为第一个影片的话，则准备播放第二个影片。
+						try {
+							currentIndex++;
+							sp.playUrl(currentIndex);                               //准备播放第二个影片，传入参数为1，第二个影片在数组中的下标。
+						} catch (IllegalArgumentException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IllegalStateException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+			});
 			player.setAudioStreamType(AudioManager.STREAM_MUSIC);
 			player.setScreenOnWhilePlaying(true);
 			player.prepareAsync();
@@ -255,7 +362,17 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 			return;
 		} 
 	}
-
+private int findVideoUrlIndex(String url){
+	int index = -1;
+	int size = paths.length;
+	for(int i=0;i<size;i++){
+		if(url.equals(paths[i])){
+			index = i;
+			break;
+		}
+	}
+	return index;
+}
 	public void setMediaController(MediaController controller) {
 		if (mMediaController != null) {
 			mMediaController.hide();
@@ -273,7 +390,6 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 			mMediaController.setEnabled(isInPlaybackState());
 		}
 	}
-
 	SmartPlayer.OnPreparedListener mPreparedListener = new SmartPlayer.OnPreparedListener() {
 		public void onPrepared(SmartPlayer mp) {
 			mCurrentState = STATE_PREPARED;
@@ -467,6 +583,12 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 		mOnInfoListener = l;
 	}
 
+    public void setOnPreparedListenerUrl(OnPreparedListenerUrl l){
+        this.mOnPreparedListenerUrl = l;
+    }
+    public void setOnCompletionListenerUrl(OnCompletionListenerUrl l){
+        this.mOnCompletionListenerUrl = l;
+    }
 	SurfaceHolder.Callback mSHCallback = new SurfaceHolder.Callback() {
 		public void surfaceChanged(SurfaceHolder holder, int format, int w,
 				int h) {

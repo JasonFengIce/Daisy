@@ -337,31 +337,62 @@ public class PlayerActivity extends VodMenuAction {
 		}
 		playAdElement();
 	}
+private String[] paths = null;
 
 	private void playAdElement() {
 		if (!adElement.isEmpty()) {
-			AdElement element = adElement.pop();
-			if ("video".equals(element.getMedia_type())) {
-				currPosition = 0;
-				isadvideoplaying = true;
-				mVideoView.setVideoPath(element.getMedia_url());
-				ad_count_view.setVisibility(View.VISIBLE);
-				ad_count_view.setText("广告倒计时" + adsumtime);
-			} else {
-				adimageDialog = new AdImageDialog(this, R.style.UserinfoDialog,
-						element.getMedia_url());
-				adimageDialog.getWindow().clearFlags(
-						WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-				adimageDialog.show();
-			}
-		} else {
-			playMainVideo();
+            int count = adElement.size();
+            if(count>0){
+                paths = new String[count+1];
+                AdElement element;
+                int i = 0;
+
+                while(!adElement.empty()){
+                    //   if ("video".equals(element.getMedia_type())) {
+                    // currPosition = 0;
+                    element = adElement.pop();
+                    if("video".equals(element.getMedia_type())){
+                        paths[i] = element.getMedia_url();
+                        i++;
+                    }
+                    else{
+                        adimageDialog = new AdImageDialog(this, R.style.UserinfoDialog,
+						   element.getMedia_url());
+				        adimageDialog.getWindow().clearFlags(
+						   WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+				        adimageDialog.show();
+                        return;
+                    }
+                    //   }
+                }
+                isadvideoplaying = true;
+                ad_count_view.setVisibility(View.VISIBLE);
+                ad_count_view.setText("广告倒计时" + adsumtime);
+            }
+
+//			if ("video".equals(element.getMedia_type())) {
+//				currPosition = 0;
+//				isadvideoplaying = true;
+//
+//				mVideoView.setVideoPath(element.getMedia_url());
+//				ad_count_view.setVisibility(View.VISIBLE);
+//				ad_count_view.setText("广告倒计时" + adsumtime);
+//			} else {
+//				adimageDialog = new AdImageDialog(this, R.style.UserinfoDialog,
+//						element.getMedia_url());
+//				adimageDialog.getWindow().clearFlags(
+//						WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+//				adimageDialog.show();
+//			}
 		}
+        else {
+			ad_count_view.setVisibility(View.GONE);
+			isadvideoplaying = false;
+		}
+        playMainVideo();
 	}
 
 	protected void playMainVideo() {
-		ad_count_view.setVisibility(View.GONE);
-		isadvideoplaying = false;
 		new initPlayTask().execute();
 	}
 
@@ -388,63 +419,142 @@ public class PlayerActivity extends VodMenuAction {
 				return false;
 			}
 		});
-		mVideoView.setOnPreparedListener(new SmartPlayer.OnPreparedListener() {
-			@Override
-			public void onPrepared(SmartPlayer mp) {
+//		mVideoView.setOnPreparedListener(new SmartPlayer.OnPreparedListener() {
+//			@Override
+//			public void onPrepared(SmartPlayer mp) {
+//
+//				Log.d(TAG, "mVideoView onPrepared tempOffset ==" + tempOffset);
+//				if (!adElement.isEmpty() || StringUtils.isEmpty(sid)) {
+//					if (mHandler.hasMessages(AD_COUNT_ACTION))
+//						mHandler.removeMessages(AD_COUNT_ACTION);
+//					mHandler.sendEmptyMessageDelayed(AD_COUNT_ACTION, 1000);
+//				}
+//				if (mVideoView != null) {
+//					if (live_video) {
+//						timeBar.setEnabled(false);
+//
+//					} else {
+//						clipLength = mVideoView.getDuration();
+//						timeBar.setMax(clipLength);
+//						mp.seekTo(currPosition);
+//						timeBar.setProgress(currPosition);
+//						timeBar.setEnabled(true);
+//					}
+//					if (currPosition == 0)
+//						mp.start();
+//					if (!adElement.isEmpty())
+//						return;
+//					timeTaskStart(0);
+//					checkTaskStart(0);
+//					if (subItem != null) {
+//						callaPlay.videoPlayLoad(
+//								item.pk,
+//								subItem.pk,
+//								item.title,
+//								clip.pk,
+//								currQuality,
+//								(System.currentTimeMillis() - startDuration) / 1000,
+//								0, null, sid);
+//						callaPlay.videoPlayStart(item.pk, subItem.pk,
+//								item.title, clip.pk, currQuality, 0);
+//					} else {
+//						callaPlay.videoPlayLoad(
+//								item.pk,
+//								null,
+//								item.title,
+//								clip.pk,
+//								currQuality,
+//								(System.currentTimeMillis() - startDuration) / 1000,
+//								0, null, sid);
+//						callaPlay.videoPlayStart(item.pk, null, item.title,
+//								clip.pk, currQuality, 0);
+//					}
+//				}
+//			}
+//		});
+        mVideoView.setOnPreparedListenerUrl(new SmartPlayer.OnPreparedListenerUrl() {
+            @Override
+            public void onPrepared(SmartPlayer mp, String url) {
+                    if(paths!=null&&paths[paths.length-1].equals(url)){
 
-				Log.d(TAG, "mVideoView onPrepared tempOffset ==" + tempOffset);
-				if (!adElement.isEmpty() || StringUtils.isEmpty(sid)) {
-					if (mHandler.hasMessages(AD_COUNT_ACTION))
-						mHandler.removeMessages(AD_COUNT_ACTION);
-					mHandler.sendEmptyMessageDelayed(AD_COUNT_ACTION, 1000);
-				}
-				if (mVideoView != null) {
-					if (live_video) {
-						timeBar.setEnabled(false);
+                        if (mVideoView != null) {
+                            if (live_video) {
+                                timeBar.setEnabled(false);
 
-					} else {
-						clipLength = mVideoView.getDuration();
-						timeBar.setMax(clipLength);
-						mp.seekTo(currPosition);
-						timeBar.setProgress(currPosition);
-						timeBar.setEnabled(true);
-					}
-					if (currPosition == 0)
-						mp.start();
-					if (!adElement.isEmpty())
-						return;
-					timeTaskStart(0);
-					checkTaskStart(0);
-					urls[0] = urlInfo.getNormal();
-					urls[1] = urlInfo.getMedium();
-					urls[2] = urlInfo.getHigh();
-					urls[3] = urlInfo.getAdaptive();
-					if (subItem != null) {
-						callaPlay.videoPlayLoad(
-								item.pk,
-								subItem.pk,
-								item.title,
-								clip.pk,
-								currQuality,
-								(System.currentTimeMillis() - startDuration) / 1000,
-								0, null, sid);
-						callaPlay.videoPlayStart(item.pk, subItem.pk,
-								item.title, clip.pk, currQuality, 0);
-					} else {
-						callaPlay.videoPlayLoad(
-								item.pk,
-								null,
-								item.title,
-								clip.pk,
-								currQuality,
-								(System.currentTimeMillis() - startDuration) / 1000,
-								0, null, sid);
-						callaPlay.videoPlayStart(item.pk, null, item.title,
-								clip.pk, currQuality, 0);
-					}
-				}
-			}
-		});
+                            } else {
+                                clipLength = mp.getDuration();
+                                timeBar.setMax(clipLength);
+                                if (currPosition == 0)
+                                    mp.start();
+                                else
+                                    mp.seekTo(currPosition);
+                                isBuffer = true;
+                                showBuffer();
+                                timeBar.setProgress(currPosition);
+                                timeBar.setEnabled(true);
+                            }
+                            timeTaskStart(0);
+                            if (subItem != null) {
+                                callaPlay.videoPlayLoad(
+                                        item.pk,
+                                        subItem.pk,
+                                        item.title,
+                                        clip.pk,
+                                        currQuality,
+                                        (System.currentTimeMillis() - startDuration) / 1000,
+                                        0, null, sid);
+                                callaPlay.videoPlayStart(item.pk, subItem.pk,
+                                        item.title, clip.pk, currQuality, 0);
+                            } else {
+                                callaPlay.videoPlayLoad(
+                                        item.pk,
+                                        null,
+                                        item.title,
+                                        clip.pk,
+                                        currQuality,
+                                        (System.currentTimeMillis() - startDuration) / 1000,
+                                        0, null, sid);
+                                callaPlay.videoPlayStart(item.pk, null, item.title,
+                                        clip.pk, currQuality, 0);
+                            }
+                        }
+
+                    }
+                else{
+                        //广告
+                        if (mHandler.hasMessages(AD_COUNT_ACTION))
+                               mHandler.removeMessages(AD_COUNT_ACTION);
+                        mHandler.sendEmptyMessageDelayed(AD_COUNT_ACTION, 1000);
+                        mp.start();
+                        checkTaskStart(0);
+                    }
+            }
+        });
+        mVideoView.setOnCompletionListenerUrl(new SmartPlayer.OnCompletionListenerUrl() {
+            @Override
+            public void onCompletion(SmartPlayer smartPlayer, String url) {
+                 if(paths!=null&&paths[paths.length-1].equals(url)){
+                     if (item.isPreview) {
+                         mVideoView.stopPlayback();
+                         PaymentDialog dialog = new PaymentDialog(
+                                 PlayerActivity.this,
+                                 R.style.PaymentDialog,
+                                 ordercheckListener);
+                         item.model_name = "item";
+                         dialog.setItem(item);
+                         dialog.show();
+                     } else
+                         gotoFinishPage();
+                 }
+                else if(paths!=null&&paths[paths.length-2].equals(url)){
+                     if (mHandler.hasMessages(AD_COUNT_ACTION))
+                         mHandler.removeMessages(AD_COUNT_ACTION);
+                     ad_count_view.setVisibility(View.GONE);
+                     initPlayerRelatedUI();
+                     isadvideoplaying = false;
+                 }
+            }
+        });
 		mVideoView.setOnErrorListener(new SmartPlayer.OnErrorListener() {
 			@Override
 			public boolean onError(SmartPlayer mp, int what, int extra) {
@@ -455,31 +565,31 @@ public class PlayerActivity extends VodMenuAction {
 			}
 		});
 
-		mVideoView
-				.setOnCompletionListener(new SmartPlayer.OnCompletionListener() {
-
-					@Override
-					public void onCompletion(SmartPlayer mp) {
-						Log.d(TAG, "mVideoView  Completion");
-						if (!adElement.isEmpty() || StringUtils.isEmpty(sid)) {
-							if (mHandler.hasMessages(AD_COUNT_ACTION))
-								mHandler.removeMessages(AD_COUNT_ACTION);
-							playAdElement();
-						} else {
-							if (item.isPreview) {
-								mVideoView.stopPlayback();
-								PaymentDialog dialog = new PaymentDialog(
-										PlayerActivity.this,
-										R.style.PaymentDialog,
-										ordercheckListener);
-								item.model_name = "item";
-								dialog.setItem(item);
-								dialog.show();
-							} else
-								gotoFinishPage();
-						}
-					}
-				});
+//		mVideoView
+//				.setOnCompletionListener(new SmartPlayer.OnCompletionListener() {
+//
+//					@Override
+//					public void onCompletion(SmartPlayer mp) {
+//						Log.d(TAG, "mVideoView  Completion");
+//						if (!adElement.isEmpty() || StringUtils.isEmpty(sid)) {
+//							if (mHandler.hasMessages(AD_COUNT_ACTION))
+//								mHandler.removeMessages(AD_COUNT_ACTION);
+//							playAdElement();
+//						} else {
+//							if (item.isPreview) {
+//								mVideoView.stopPlayback();
+//								PaymentDialog dialog = new PaymentDialog(
+//										PlayerActivity.this,
+//										R.style.PaymentDialog,
+//										ordercheckListener);
+//								item.model_name = "item";
+//								dialog.setItem(item);
+//								dialog.show();
+//							} else
+//								gotoFinishPage();
+//						}
+//					}
+//				});
 
 		mVideoView
 				.setOnSeekCompleteListener(new SmartPlayer.OnSeekCompleteListener() {
@@ -591,12 +701,11 @@ public class PlayerActivity extends VodMenuAction {
 				+ "&live_video="
 				+ item.live_video
 				+ "&vendor="
-				+ (item.vendor == null ? "" : Base64.encodeToString(
-						item.vendor.getBytes(), Base64.URL_SAFE))
+				+ Base64.encodeToString(item.vendor==null?"".getBytes():item.vendor.getBytes(), Base64.URL_SAFE)
 				+ "&expense="
 				+ (item.expense == null ? false : true)
 				+ "&length="
-				+ (item.clip == null ? "" : item.clip.length);
+				+ item.clip.length;
 		new GetAdDataTask().execute(adpid, params);
 	}
 
@@ -808,7 +917,8 @@ public class PlayerActivity extends VodMenuAction {
 							mHistory = historyManager.getHistoryByUrl(itemUrl,
 									"no");
 						}
-						titleText.setText(subItem.title);
+						//titleText.setText(subItem.title);
+                        mTitle = subItem.title;
 					} else {
 
 						if (SimpleRestClient.isLogin()) {
@@ -822,7 +932,8 @@ public class PlayerActivity extends VodMenuAction {
 							mHistory = historyManager.getHistoryByUrl(itemUrl,
 									"no");
 						}
-						titleText.setText(item.title);
+						//titleText.setText(item.title);
+                        mTitle = item.title;
 					}
 					if (mHistory != null) {
 						if (mHistory.is_continue) {
@@ -852,32 +963,42 @@ public class PlayerActivity extends VodMenuAction {
 							isContinue = true;
 						}
 					}
-					initQualtiyText();
-					qualityText.setVisibility(View.VISIBLE);
-					if (tempOffset > 0 && isContinue == true && !live_video) {
-						bufferText.setText("  " + BUFFERCONTINUE
-								+ getTimeString(tempOffset));
-					} else {
-						bufferText.setText(PlAYSTART + "《"
-								+ titleText.getText() + "》");
-					}
-					new LogoImageTask().execute();
-				}
 
-				if (tempOffset > 0 && isContinue) {
-					currPosition = tempOffset;
-					seekPostion = tempOffset;
-				} else {
-					currPosition = 0;
-					seekPostion = 0;
-				}
 
-				Log.d(TAG, "RES_INT_OFFSET currPosition=" + currPosition);
+//					initQualtiyText();
+//                    titleText.setText(subItem.title);
+//					qualityText.setVisibility(View.VISIBLE);
+//					if (tempOffset > 0 && isContinue == true && !live_video) {
+//						bufferText.setText("  " + BUFFERCONTINUE
+//								+ getTimeString(tempOffset));
+//					} else {
+//						bufferText.setText(PlAYSTART + "《"
+//								+ titleText.getText() + "》");
+//					}
+					  // new LogoImageTask().execute();
+				}
+//				if (tempOffset > 0 && isContinue) {
+//					currPosition = tempOffset;
+//					seekPostion = tempOffset;
+//				} else {
+//					currPosition = 0;
+//					seekPostion = 0;
+//				}
 				if (urls != null && mVideoView != null) {
-					TaskStart();// cmstest.tvxio.com
-					sid = VodUserAgent.getSid(urls[currQuality]);
-					mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
-					mVideoView.setVideoPath(urls[currQuality]);
+					//TaskStart();// cmstest.tvxio.com
+					//sid = VodUserAgent.getSid(urls[currQuality]);
+					//mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
+                    if(!isadvideoplaying){
+                        paths = new String[1];
+                        paths[0] = urls[currQuality];
+                        mVideoView.setVideoPaths(paths);
+                    }
+                    else{
+                        if(paths!=null){
+                            paths[paths.length-1] = urls[currQuality];
+                            mVideoView.setVideoPaths(paths);
+                        }
+                    }
 					ismedialplayerinit = false;
 				}
 
@@ -890,6 +1011,44 @@ public class PlayerActivity extends VodMenuAction {
 		}
 	}
 
+private String mTitle;
+private String mBufferTitle;
+
+
+private void initPlayerRelatedUI(){
+
+    titleText.setText(mTitle);
+    initQualtiyText();
+    qualityText.setVisibility(View.VISIBLE);
+    if (tempOffset > 0 && isContinue == true && !live_video) {
+        bufferText.setText("  " + BUFFERCONTINUE
+                + getTimeString(tempOffset));
+    } else {
+        bufferText.setText(PlAYSTART + "《"
+                + titleText.getText() + "》");
+    }
+    new LogoImageTask().execute();
+
+    if (tempOffset > 0 && isContinue) {
+        currPosition = tempOffset;
+        seekPostion = tempOffset;
+    } else {
+        currPosition = 0;
+        seekPostion = 0;
+    }
+
+    TaskStart();// cmstest.tvxio.com
+    sid = VodUserAgent.getSid(urls[currQuality]);
+    mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
+}
+
+    private String getVideoPath(){
+        String url="";
+        if(urlInfo!=null){
+
+        }
+        return url;
+    }
 	private Handler logHandler = new Handler();
 
 	private void TaskStart() {
@@ -1016,6 +1175,10 @@ public class PlayerActivity extends VodMenuAction {
 						isBuffer = false;
 						hideBuffer();
 					}
+                    if(isadvideoplaying&&bufferLayout.isShown()){
+                        isBuffer = false;
+                        hideBuffer();
+                    }
 					if (mVideoView.getAlpha() < 1) {
 						mVideoView.setAlpha(1);
 						bufferText.setText(BUFFERING);
@@ -1386,7 +1549,7 @@ public class PlayerActivity extends VodMenuAction {
 				ret = true;
 				break;
 			case KeyEvent.KEYCODE_BACK:
-				if (isadvideoplaying)
+				if(isadvideoplaying)
 					finish();
 				showPopupDialog(
 						DIALOG_OK_CANCEL,
@@ -1693,11 +1856,10 @@ public class PlayerActivity extends VodMenuAction {
 				break;
 			case AD_COUNT_ACTION:
 				adsumtime--;
-				if (adsumtime >= 0) {
-					ad_count_view.setText("广告倒计时" + adsumtime);
+                ad_count_view.setText("广告倒计时" + adsumtime);
+				if (adsumtime > 0) {
+
 					sendEmptyMessageDelayed(AD_COUNT_ACTION, 1000);
-				} else {
-					playMainVideo();
 				}
 				break;
 			default:
@@ -1850,7 +2012,10 @@ public class PlayerActivity extends VodMenuAction {
 					currQuality = pos;
 					// mVideoView = (IsmatvVideoView)
 					// findViewById(R.id.video_view);
-					mVideoView.setVideoPath(urls[currQuality]);
+                    paths = new String[1];
+                    paths[1] = urls[currQuality];
+                    mVideoView.setVideoPaths(paths);
+					//mVideoView.setVideoPath(urls[currQuality]);
 					historyManager.addOrUpdateQuality(new Quality(0,
 							urls[currQuality], currQuality));
 					mediaip = VodUserAgent.getMediaIp(urls[currQuality]);

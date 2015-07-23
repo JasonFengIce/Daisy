@@ -12,6 +12,7 @@
         android:layout_height="189dp"
         android:id="@+id/list_item_preview_img"
         android:background="@drawable/list_item_preview_bg"
+        android:layout_marginLeft="8dip"
         android:layout_alignParentTop="true"
         android:paddingTop="@dimen/gridview_item_image_PaddingT"
         android:paddingBottom="@dimen/gridview_item_image_PaddingB"

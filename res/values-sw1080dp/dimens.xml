@@ -87,7 +87,7 @@
     <dimen name="gridview_channel_section_tabs_margintop">174dip</dimen>
     <dimen name="gridview_main_panel_height">810dip</dimen>
     <dimen name="gridview_main_panel_fadingEdgeLength">144dip</dimen>
-    <dimen name="gridview_main_panel_horizontalSpacing">42dip</dimen>
+    <dimen name="gridview_main_panel_horizontalSpacing">33dip</dimen>
     <dimen name="gridview_main_panel_verticalSpacing">0dip</dimen>
     <dimen name="gridview_main_panel_rowHeight">252dip</dimen>
     <dimen name="gridview_main_panel_labelTopOffset">8dip</dimen>
@@ -167,7 +167,7 @@
     <dimen name="related_item_layout_marginleft">2dip</dimen>
     <dimen name="related_item_image_H">134dip</dimen>
     <dimen name="related_item_image_W">201dip</dimen>
-    <dimen name="related_item_image_marginleft">31dip</dimen>
+    <dimen name="related_item_image_marginleft">16dip</dimen>
     <dimen name="related_item_image_margintop">23dip</dimen>
     <dimen name="related_item_image_marginright">23dip</dimen>
     <dimen name="related_item_image_marginbottom">23dip</dimen>
@@ -457,7 +457,7 @@
     <dimen name="ZGridView_recommend_selectorBottomPadding">-30dip</dimen>
 
     <!-- HGridView -->
-    <dimen name="HGridView_related_selectionLeftPadding">22dip</dimen>
+    <dimen name="HGridView_related_selectionLeftPadding">15dip</dimen>
     <dimen name="HGridView_related_selectionTopPadding">20dip</dimen>
     <dimen name="HGridView_related_selectionRightPadding">22dip</dimen>
     <dimen name="HGridView_related_selectionBottomPadding">-42dip</dimen>

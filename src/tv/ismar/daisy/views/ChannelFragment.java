@@ -110,8 +110,8 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
         left_shadow = (Button) fragmentView.findViewById(R.id.left_shadow);
         right_shadow = (Button)fragmentView.findViewById(R.id.right_shadow);
-//        mHGridView.leftbtn = left_shadow;
-//        mHGridView.rightbtn = right_shadow;
+        mHGridView.leftbtn = left_shadow;
+        mHGridView.rightbtn = right_shadow;
 //        if(left_shadow!=null&&right_shadow!=null){
 //            left_shadow.setOnClickListener(new OnClickListener() {
 //                @Override

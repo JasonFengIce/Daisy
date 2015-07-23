@@ -14,6 +14,7 @@ import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemCollection;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.AsyncImageView.OnImageViewLoadListener;
+import tv.ismar.daisy.views.LabelImageView;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -121,8 +122,14 @@ public class HGridFilterAdapterImpl extends HGridAdapter<ItemCollection> impleme
             if(mList.get(sectionIndex).isItemReady(indexOfCurrentSection)) {
                 final Item item = mList.get(sectionIndex).objects.get(indexOfCurrentSection);
                 if(item!=null){
+                    if(this.isPortrait){
+                        holder.previewImage.setUrl(item.list_url);
+                        if(item.focus!=null)
+                        ((LabelImageView)holder.previewImage).setFocustitle(item.focus);
+                    }else{
+                        holder.previewImage.setUrl(item.adlet_url);
+                    }
                     holder.title.setText(item.title);
-                    holder.previewImage.setUrl(item.adlet_url);
                 }
             } else {
                 // This ItemCollection's currentIndex has not filled yet.

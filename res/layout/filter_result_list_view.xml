@@ -63,7 +63,8 @@
         sakura:selectionTopPadding="@dimen/HGridView_related_FilterTopPadding"
         sakura:selectionRightPadding="@dimen/HGridView_related_FilterRightPadding"
         sakura:selectionBottomPadding="@dimen/HGridView_related_FilterBottomPadding"
-        android:layout_marginTop="13dip" >
+        android:paddingTop="3dip"
+        android:layout_marginTop="9dip" >
     </org.sakuratya.horizontal.ui.HGridView>
 
 </LinearLayout>

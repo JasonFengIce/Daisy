@@ -83,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/selector_search_left"
-                android:layout_marginLeft="140dip"
+                android:layout_marginLeft="136dip"
                 android:layout_marginTop="340dip"
                 />
         <Button
@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/selector_search_right"
                 android:layout_marginTop="340dip"
-                android:layout_marginRight="140dip"/>
+                android:layout_marginRight="136dip"/>
         <org.sakuratya.horizontal.ui.HGridView
                 android:layout_toLeftOf="@id/right_shadow"
                 android:layout_toRightOf="@id/left_shadow"

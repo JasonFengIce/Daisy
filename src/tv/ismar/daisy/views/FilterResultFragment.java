@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.sakuratya.horizontal.adapter.HGridFilterAdapterImpl;
 import org.sakuratya.horizontal.ui.HGridView;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -346,10 +347,7 @@ public class FilterResultFragment extends BackHandledFragment implements Adapter
         if(item!=null) {
             Intent intent = new Intent();
             if(item.is_complex) {
-                intent.setAction("tv.ismar.daisy.Item");
-                intent.putExtra("url", item.url);
-                //intent.putExtra(EventProperty.SECTION, "");
-                startActivity(intent);
+                DaisyUtils.gotoSpecialPage(getActivity(),item.content_model,item.url);
             } else {
                 InitPlayerTool tool = new InitPlayerTool(getActivity());
                 tool.setonAsyncTaskListener(new InitPlayerTool.onAsyncTaskHandler() {
