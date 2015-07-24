@@ -57,7 +57,7 @@ public class AccessProxy {
 		return jsonToObject(content);
 	}
 
-	public static SdkVideo getQiYiInfo(String content) {
+	public static SdkVideo getQiYiInfo(String content,Definition definition) {
 		SdkVideo qiyiInfo = null;
 		JSONObject json;
 		try {
@@ -65,7 +65,7 @@ public class AccessProxy {
 			String info = json.getString("iqiyi_4_0");
 			String[] array = info.split(":");
 			qiyiInfo = new SdkVideo(array[0], array[1], array[2],
-					Definition.DEFINITON_1080P);
+					definition);
 			// qiyiInfo = new SdkVideo("202153901", "308529000",
 			// "8d301d7723586e7a0e1ecb778ada0cb5",Definition.DEFINITON_1080P);
 		} catch (Exception e) {

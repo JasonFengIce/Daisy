@@ -424,10 +424,8 @@ public class QiYiPlayActivity extends VodMenuAction {
 			mHistory = historyManager.getHistoryByUrl(itemUrl, "no");
 		}
 
-		Quality quality = historyManager.getQuality();
-		if (quality != null) {
-			currQuality = quality.quality;
-		}
+		if (mHistory != null)
+			currQuality = mHistory.last_quality;
 		if (mHistory != null
 				&& (subItemUrl != null && subItemUrl
 						.equalsIgnoreCase(mHistory.sub_url))) {
@@ -460,16 +458,16 @@ public class QiYiPlayActivity extends VodMenuAction {
 			currPosition = 0;
 			seekPostion = 0;
 		}
+		Definition definition = getDefinityByQuality(currQuality);
 		if (info != null && info.contains("iqiyi_4_0")) {
-			mPlayer.setVideo(AccessProxy.getQiYiInfo(info));
+			mPlayer.setVideo(AccessProxy.getQiYiInfo(info,definition));
 		} else {
 			String[] array = info.split(":");
 			SdkVideo qiyiInfo = new SdkVideo(array[0], array[1], array[2],
-					Definition.DEFINITON_1080P);
+					definition);
 			mPlayer.setVideo(qiyiInfo);
 		}
 		isfinish = false;
-		mPlayer.start(seekPostion);
 		initQualtiyText();
 	}
 
@@ -504,6 +502,8 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onBufferEnd() {
+			if (!mPlayer.isPlaying())
+				mPlayer.start();
 			isBuffer = false;
 			hideBuffer();
 			checkTaskStart(0);
@@ -526,14 +526,16 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onMoviePause() {
+			Log.v("aaaa", "onMoviePause");
 		}
 
 		@Override
 		public void onMovieStart() {
 			clipLength = mPlayer.getDuration();
-			 mPlayer.seekTo(currPosition);
+			// if(currPosition >0)
+			// mPlayer.seekTo(currPosition);
 			showPanel();
-			// timeTaskStart();
+			timeTaskStart(500);
 			checkTaskStart(500);
 			if (mHandler.hasMessages(MSG_PLAY_TIME))
 				mHandler.removeMessages(MSG_PLAY_TIME);
@@ -542,7 +544,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onMovieStop() {
-
+			Log.v("aaaa", "onMovieStop");
 		}
 
 		@Override
@@ -569,6 +571,10 @@ public class QiYiPlayActivity extends VodMenuAction {
 		@Override
 		public void onPrepared() {
 			timeBar.setMax(mPlayer.getDuration());
+			if (seekPostion > 0)
+				mPlayer.seekTo(seekPostion);
+			else
+				mPlayer.start();
 		}
 
 		@Override
@@ -838,6 +844,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 			timeTaskPause();
 			removeAllHandler();
 			mPlayer.stop();
+			mPlayer.releasePlayer();
 			mPlayer = null;
 		} catch (Exception e) {
 			Log.d(TAG, "Player close to Home");
@@ -985,9 +992,9 @@ public class QiYiPlayActivity extends VodMenuAction {
 		else
 			callaPlay.videoPlayContinue(item.pk, null, item.title, clip.pk,
 					currQuality, 0, currPosition, sid);
-		if (!isBuffer) {
-			timeTaskStart(0);
-		}
+		// if (!isBuffer) {
+		// timeTaskStart(0);
+		// }
 		paused = false;
 	}
 
@@ -1308,6 +1315,18 @@ public class QiYiPlayActivity extends VodMenuAction {
 		timeText.setText(text);
 	}
 
+	private Definition getDefinityByQuality(int currQuality) {
+		switch (currQuality) {
+		case 0:
+			return Definition.DEFINITON_HIGH;
+		case 1:
+			return Definition.DEFINITON_720P;
+		case 2:
+			return Definition.DEFINITON_1080P;
+		}
+		return Definition.DEFINITON_HIGH;
+	}
+
 	private void initQualtiyText() {
 		switch (currQuality) {
 		case 0:
@@ -1354,6 +1373,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 					} else {
 						mPlayer.switchBitStream(Definition.DEFINITON_1080P);
 					}
+					mPlayer.pause();
 					// historyManager.addOrUpdateQuality(new Quality(0,
 					// urls[currQuality], currQuality));
 					mediaip = "127.0.0.1";
@@ -1600,7 +1620,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 					hideBuffer();
 				}
 				bufferText.setText(BUFFERING);
-				if (!isSeek && !isBuffer && !live_video) {
+				if (!isSeek && !isBuffer && !live_video && mPlayer.isPlaying()) {
 					currPosition = mPlayer.getCurrentPosition();
 					timeBar.setProgress(currPosition);
 				}

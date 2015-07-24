@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.squareup.picasso.Picasso;
+
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.data.HomePagerEntity;
@@ -308,7 +310,9 @@ public class SportFragment extends ChannelBaseFragment implements
 			if (hasFocus) {
 				Carousel carousel = (Carousel) v
 						.getTag(R.drawable.launcher_selector);
-				sportspost.setUrl(carousel.getVideo_image());
+				Picasso.with(context).load(carousel.getVideo_image())
+				.into(sportspost);
+//				sportspost.setUrl(carousel.getVideo_image());
 				sportspost.setTag(R.drawable.launcher_selector, carousel);
 				if (StringUtils.isNotEmpty(carousel.getIntroduction())) {
 					sportspost_title.setText(carousel.getIntroduction());
@@ -348,7 +352,8 @@ public class SportFragment extends ChannelBaseFragment implements
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
-			sportspost.setUrl(looppost.get(++loopindex).getVideo_image());
+			Picasso.with(context).load(looppost.get(++loopindex).getVideo_image()).into(sportspost);
+//			sportspost.setUrl(looppost.get(++loopindex).getVideo_image());
 			sportspost.setTag(R.drawable.launcher_selector, looppost.get(loopindex));
 			if (StringUtils.isNotEmpty(looppost.get(loopindex)
 					.getIntroduction())) {

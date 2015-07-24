@@ -165,9 +165,9 @@ public class LabelImageView extends AsyncImageView {
 				canvas.drawRect(rec, paint);
 				setPadding(2, 2, 2, 2);
 			} else {
-				if(!customselected){
-				setPadding(5, 5, 5, 5);}
-				else{
+				if(customselected){
+//				setPadding(5, 5, 5, 5);}
+//				else{
 			    setPadding(0, 0, 0, 0);}
 			}
 		}
