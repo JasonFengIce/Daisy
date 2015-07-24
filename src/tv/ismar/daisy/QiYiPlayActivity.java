@@ -504,8 +504,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onBufferEnd() {
-			if (!mPlayer.isPlaying())
-				mPlayer.start();
 			isBuffer = false;
 			hideBuffer();
 			checkTaskStart(0);
@@ -575,6 +573,8 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onSeekComplete() {
+			if (!mPlayer.isPlaying())
+				mPlayer.start();
 			isBuffer = false;
 			hideBuffer();
 			checkTaskStart(0);

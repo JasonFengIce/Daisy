@@ -219,7 +219,6 @@ public class GuideFragment extends ChannelBaseFragment implements
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				boolean focusFlag = true;
-				((LabelImageView) v).setCustomfocus(hasFocus);
 				for (ImageView imageView : allItem) {
 					focusFlag = focusFlag && (!imageView.isFocused());
 				}

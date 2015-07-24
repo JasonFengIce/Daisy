@@ -305,7 +305,6 @@ public class SportFragment extends ChannelBaseFragment implements
 
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
-			((LabelImageView) v).setCustomfocus(hasFocus);
 			if (hasFocus) {
 				Carousel carousel = (Carousel) v
 						.getTag(R.drawable.launcher_selector);
@@ -316,6 +315,27 @@ public class SportFragment extends ChannelBaseFragment implements
 					sportspost_title.setVisibility(View.VISIBLE);
 				} else {
 					sportspost_title.setVisibility(View.GONE);
+				}
+				switch (v.getId()) {
+				case R.id.sport_card1:
+					sport_card1.setCustomfocus(true);
+					sport_card2.setCustomfocus(false);
+					sport_card3.setCustomfocus(false);
+					loopindex =-1;
+					break;
+				case R.id.sport_card2:
+					sport_card1.setCustomfocus(false);
+					sport_card2.setCustomfocus(true);
+					sport_card3.setCustomfocus(false);
+					loopindex =0;
+					break;
+				case R.id.sport_card3:
+					sport_card1.setCustomfocus(false);
+					sport_card2.setCustomfocus(false);
+					sport_card3.setCustomfocus(true);
+					loopindex =1;
+				default:
+					break;
 				}
 				imageswitch.removeMessages(IMAGE_SWITCH_KEY);
 			} else {
