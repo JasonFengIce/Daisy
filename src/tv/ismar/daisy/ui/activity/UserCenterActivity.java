@@ -129,6 +129,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+    	int currentViewId = v.getId();
         switch (v.getId()) {
             case R.string.usercenter_store:
                 getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, storeFragment).commit();
@@ -149,6 +150,13 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, locationFragment).commit();
                 break;
         }
+		for (View view : indicatorView) {
+			if (view.getId() == currentViewId) {
+				view.setBackgroundResource(R.drawable.daisy_btn_normal_bg);
+			} else {
+				view.setBackgroundResource(R.drawable.selector_channel_item);
+			}
+		}
     }
 
     public void switchToUserInfoFragment() {
