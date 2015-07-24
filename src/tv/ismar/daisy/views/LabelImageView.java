@@ -27,6 +27,7 @@ public class LabelImageView extends AsyncImageView {
 	private int carouse_color;
 	private boolean customfocus;
 	private boolean customselected;
+	private int maxfocustitle;
 
 	public void setModetype(int modetype) {
 		this.modetype = modetype;
@@ -37,8 +38,6 @@ public class LabelImageView extends AsyncImageView {
 	}
 
 	public void setFocustitle(String focustitle) {
-		if ((StringUtils.isNotEmpty(focustitle)) && focustitle.length() > 8)
-			focustitle = focustitle.substring(0, 8);
 		this.focustitle = focustitle;
 	}
 
@@ -74,6 +73,7 @@ public class LabelImageView extends AsyncImageView {
 		carouse_color = context.getResources().getColor(R.color.carousel_focus);
 		customfocus = a.getBoolean(R.styleable.LabelImageView_customfocus,
 				false);
+		maxfocustitle = a.getInt(R.styleable.LabelImageView_maxfocustitle, 0);
 		a.recycle();
 
 	}
@@ -130,6 +130,9 @@ public class LabelImageView extends AsyncImageView {
 		// 绘制看点背景
 		paint.setColor(Color.WHITE);
 		if (StringUtils.isNotEmpty(focustitle) && focustitle.length() > 0) {
+			if (maxfocustitle > 0 && focustitle.length() > maxfocustitle) {
+				focustitle = focustitle.substring(0, maxfocustitle-1);
+			}
 			paint.setColor(focusbackground);
 			canvas.drawRect(new Rect(getPaddingLeft(),
 					(int) (focuspaddingtop * height), width - paddingright,
@@ -165,10 +168,11 @@ public class LabelImageView extends AsyncImageView {
 				canvas.drawRect(rec, paint);
 				setPadding(2, 2, 2, 2);
 			} else {
-				if(customselected){
-//				setPadding(5, 5, 5, 5);}
-//				else{
-			    setPadding(0, 0, 0, 0);}
+				if (customselected) {
+					// setPadding(5, 5, 5, 5);}
+					// else{
+					setPadding(0, 0, 0, 0);
+				}
 			}
 		}
 	}
@@ -177,6 +181,5 @@ public class LabelImageView extends AsyncImageView {
 		this.customselected = customfocus;
 		invalidate();
 	}
-	
-	
+
 }

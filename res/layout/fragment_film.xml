@@ -25,7 +25,9 @@
             android:src="@drawable/list_item_preview_bg"
             labelimage:focusbackground="#b3303030"
             labelimage:focuspaddingtop="0.89"
-            labelimage:focustextsize="36sp" />
+            labelimage:focustextsize="36sp"
+            labelimage:maxfocustitle="8"
+             />
 
         <FrameLayout
             android:id="@+id/film_post_layout"
