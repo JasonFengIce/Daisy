@@ -238,6 +238,7 @@ public class GuideFragment extends ChannelBaseFragment implements
 		Picasso.with(context).load(carousels.get(0).getThumb_image())
 				.into(toppage_carous_imageView1);
 		toppage_carous_imageView1.setTag(0);
+		toppage_carous_imageView1.setTag(R.drawable.launcher_selector, carousels.get(0));
 		toppage_carous_imageView1.setOnClickListener(ItemClickListener);
 		toppage_carous_imageView1
 				.setOnFocusChangeListener(itemFocusChangeListener);
@@ -245,6 +246,7 @@ public class GuideFragment extends ChannelBaseFragment implements
 		Picasso.with(context).load(carousels.get(1).getThumb_image())
 				.into(toppage_carous_imageView2);
 		toppage_carous_imageView2.setTag(1);
+		toppage_carous_imageView2.setTag(R.drawable.launcher_selector, carousels.get(1));
 		toppage_carous_imageView2.setOnClickListener(ItemClickListener);
 		toppage_carous_imageView2
 				.setOnFocusChangeListener(itemFocusChangeListener);
@@ -252,6 +254,7 @@ public class GuideFragment extends ChannelBaseFragment implements
 		Picasso.with(context).load(carousels.get(2).getThumb_image())
 				.into(toppage_carous_imageView3);
 		toppage_carous_imageView3.setTag(2);
+		toppage_carous_imageView3.setTag(R.drawable.launcher_selector, carousels.get(2));
 		toppage_carous_imageView3.setOnClickListener(ItemClickListener);
 		toppage_carous_imageView3
 				.setOnFocusChangeListener(itemFocusChangeListener);
