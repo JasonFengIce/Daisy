@@ -712,7 +712,11 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 mRightBtn.setTag(DRAMA_VIDEO);
                 mRightBtn.setText(getResources().getString(R.string.vod_itemepisode));
             }
-            mLeftBtn.setText(getResources().getString(R.string.play));
+            Item item = getItemByClipPk(mItem.clip.pk);
+            if(item!=null){
+                mLeftBtn.setText("播放"+item.subtitle);
+            }
+           // mLeftBtn.setText(getResources().getString(R.string.play));
             mMiddleBtn.setText(getResources().getString(R.string.favorite));
             mLeftBtn.setTag(PLAY_VIDEO);
             mMiddleBtn.setTag(COLLECT_VIDEO);
@@ -750,7 +754,11 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                     mRightBtn.setTag(DRAMA_VIDEO);
                 }
                 mLeftBtn.setTag(PLAY_VIDEO);
-                mLeftBtn.setText(getResources().getString(R.string.play));
+                Item item = getItemByClipPk(mItem.clip.pk);
+                if(item!=null){
+                    mLeftBtn.setText("播放"+item.subtitle);
+                }
+                //mLeftBtn.setText(getResources().getString(R.string.play));
                 mMiddleBtn.setText(getResources().getString(R.string.favorite));
                 mMiddleBtn.setTag(COLLECT_VIDEO);
 
@@ -805,7 +813,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
 //            else{
 //                imgView.setUrl(mRelatedItem[i].adlet_url);
 //            }
-            imgView.setUrl(mRelatedItem[i].list_url);
+            imgView.setUrl(mRelatedItem[i].adlet_url);
             if (mRelatedItem[i].focus != null)
                 imgView.setFocustitle(mRelatedItem[i].focus);
             titleView.setText(mRelatedItem[i].title);
@@ -918,7 +926,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
     }
 
     private void initLayout() {
-        mDetailTitle.setText(mItem.title);
+           mDetailTitle.setText(mItem.title);
 		/*
 		 * Build detail attributes list using a given order according to
 		 * ContentModel's define. we also need to add some common attributes

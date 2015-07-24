@@ -70,16 +70,28 @@ public class PurchaseHistoryFragment extends Fragment {
             public void onSuccess(String result) {
                 Log.d(TAG, "fetchAccountsOrders: " + result);
                 AccountsOrdersEntity accountsOrdersEntity = new Gson().fromJson(result, AccountsOrdersEntity.class);
-
+                ArrayList<AccountsOrdersEntity.OrderEntity> arrayList = new ArrayList<AccountsOrdersEntity.OrderEntity>();
                 AccountOrderAdapter accountOrderAdapter;
                 if (!TextUtils.isEmpty(SimpleRestClient.access_token) && !TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
-                    ArrayList<AccountsOrdersEntity.OrderEntity> arrayList = new ArrayList<AccountsOrdersEntity.OrderEntity>();
-                    arrayList.addAll(accountsOrdersEntity.getOrder_list());
-                    arrayList.addAll(accountsOrdersEntity.getSn_order_list());
+
+
+                    for(AccountsOrdersEntity.OrderEntity entity : accountsOrdersEntity.getOrder_list()){
+                        entity.type = "order_list";
+                        arrayList.add(entity);
+                    }
+                    for(AccountsOrdersEntity.OrderEntity entity : accountsOrdersEntity.getSn_order_list()){
+                        entity.type = "snorder_list";
+                        arrayList.add(entity);
+                    }
+                    //arrayList.addAll(accountsOrdersEntity.getOrder_list());
+                   // arrayList.addAll(accountsOrdersEntity.getSn_order_list());
                     accountOrderAdapter = new AccountOrderAdapter(mContext, arrayList);
                 } else {
-
-                    accountOrderAdapter = new AccountOrderAdapter(mContext, accountsOrdersEntity.getSn_order_list());
+                    for(AccountsOrdersEntity.OrderEntity entity : accountsOrdersEntity.getSn_order_list()){
+                        entity.type = "snorder_list";
+                        arrayList.add(entity);
+                    }
+                    accountOrderAdapter = new AccountOrderAdapter(mContext, arrayList);
                 }
                 accountOrderListView.setAdapter(accountOrderAdapter);
             }

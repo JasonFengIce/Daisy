@@ -36,7 +36,7 @@ public class ImageCacheAdapter extends BaseAdapter implements OnImageViewLoadLis
 	private int sourceid;
 	private LayoutInflater mLayoutInflater;
 	// 背景图ID
-	private final int backgroudID = R.drawable.list_item_preview_bgg;
+	private final int backgroudID = R.drawable.list_item_preview_bg;
 	private final int backType = R.drawable.iv_type_comic;
 	private Animation myAnimation;
 	private HashSet<AsyncImageView> mAsyncImageList = new HashSet<AsyncImageView>();

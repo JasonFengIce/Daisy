@@ -21,14 +21,19 @@
         </LinearLayout>
 
             </ScrollView>
+    <ImageView
+            android:background="@drawable/filter_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_marginLeft="223dip"/>
     <Button
             android:visibility="invisible"
             android:id="@+id/filter_submit"
             android:layout_marginTop="87dip"
             android:layout_marginLeft="827dip"
-            android:layout_width="266dip"
+            android:layout_width="300dip"
             android:layout_height="100dip"
-            android:text="确定"
+            android:text="确定提交"
             android:textSize="48sp"
             android:textColor="@android:color/white"
             android:background="@drawable/filter_btn_selector"/>

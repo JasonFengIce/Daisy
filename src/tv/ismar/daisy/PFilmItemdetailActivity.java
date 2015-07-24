@@ -79,7 +79,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.filmitem_portrait_detail_view);
         mSimpleRestClient = new SimpleRestClient();
-
+        long remain = -10/100;
 
         mLoadingDialog = new LoadingDialog(this, getResources().getString(
                 R.string.vod_loading));

@@ -16,7 +16,7 @@
             android:layout_width="@dimen/search_gridview_item_image_W"
             android:layout_height="@dimen/search_gridview_item_image_H"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/list_item_preview_bgg"
+            android:src="@drawable/list_item_preview_bg"
             />
 
         <Button

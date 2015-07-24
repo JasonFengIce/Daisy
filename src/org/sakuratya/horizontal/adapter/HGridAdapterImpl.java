@@ -183,7 +183,6 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
                     else{
                         holder.price.setVisibility(View.GONE);
                     }
-                    holder.title.setText(item.title);
 					if (isPortrait) {
 						holder.previewImage.setUrl(item.list_url);
 					} else {
@@ -191,9 +190,18 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 					}
                     if(isPortrait){
                         holder.previewImage.setFocustitle(item.focus);
+                        holder.title.setText(item.title);
                     }
                     else{
-                        holder.previewImage.setFocustitle("");
+                        if(template==1||template==2){
+                            holder.previewImage.setFocustitle(item.subtitle);
+                            holder.title.setText(item.subtitle);
+                        }
+                        else{
+                            holder.previewImage.setFocustitle("");
+                            holder.title.setText(item.title);
+                        }
+
                     }
                     if(item.bean_score>0){
                         holder.ItemBeanScore.setVisibility(View.VISIBLE);

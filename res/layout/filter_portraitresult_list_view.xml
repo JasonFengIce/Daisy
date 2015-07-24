@@ -109,7 +109,7 @@
                 android:id="@+id/recommend_filter_percentage"
                 android:layout_width="1475dip"
                 android:layout_height="4dip"
-                android:progressDrawable="@drawable/section_percentage_selected"
+                android:progressDrawable="@drawable/progressbg"
                 style="@android:style/Widget.ProgressBar.Horizontal"
                 android:indeterminate="false"
                 android:visibility="visible"

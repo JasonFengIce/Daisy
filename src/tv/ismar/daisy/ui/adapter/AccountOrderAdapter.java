@@ -12,10 +12,8 @@ import com.squareup.picasso.Picasso;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.data.usercenter.AccountsOrdersEntity;
-import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.AsyncImageView;
 
-import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,6 +61,7 @@ public class AccountOrderAdapter extends BaseAdapter {
             holder.icon = (ImageView) convertView.findViewById(R.id.orderlistitem_icon);
             holder.orderlistitem_paychannel = (TextView) convertView.findViewById(R.id.orderlistitem_paychannel);
             holder.purchaseExtra = (TextView) convertView.findViewById(R.id.purchase_extra);
+            holder.mergeTxt = (TextView)convertView.findViewById(R.id.orderlistitem_merge);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -74,15 +73,27 @@ public class AccountOrderAdapter extends BaseAdapter {
         String paySource = mContext.getResources().getString(R.string.personcenter_orderlist_item_paysource);
         holder.title.setText(item.getTitle());
         holder.buydate_txt.setText(String.format(orderday, item.getStart_date()));
-        holder.orderlistitem_remainday.setText(String.format(remainday, remaindDay(item.getExpiry_date())));
+        int day = remaindDay(item.getExpiry_date());
+        if(day>0)
+         holder.orderlistitem_remainday.setText(String.format(remainday, remaindDay(item.getExpiry_date())));
         holder.totalfee.setText(String.format(cost, item.getTotal_fee()));
         holder.orderlistitem_paychannel.setText(String.format(paySource, getValueBySource(item.getSource())));
         Picasso.with(mContext).load(item.getThumb_url()).into(holder.icon);
         if (!TextUtils.isEmpty(item.getInfo())) {
+            String name = item.getInfo().split("@")[0];
+            String mergedate = item.getInfo().split("@")[1];
+
+            if(item.type.equals("order_list")){
+                holder.purchaseExtra.setText("设备"+name+"合并至当前视云账户");
+            }else if(item.type.equals("snorder_list")){
+                holder.purchaseExtra.setText("当前设备合并至视云账户"+name);
+            }
             holder.purchaseExtra.setVisibility(View.VISIBLE);
-            holder.purchaseExtra.setText("(" + item.getInfo() + "合并至视云账户" + SimpleRestClient.mobile_number + ")");
+            holder.mergeTxt.setVisibility(View.VISIBLE);
+            holder.mergeTxt.setText("(合并时间:" + mergedate + ")");
         } else {
             holder.purchaseExtra.setVisibility(View.GONE);
+            holder.mergeTxt.setVisibility(View.GONE);
         }
 
         return convertView;
@@ -96,6 +107,7 @@ public class AccountOrderAdapter extends BaseAdapter {
         TextView orderlistitem_remainday;
         TextView totalfee;
         TextView orderlistitem_paychannel;
+        TextView mergeTxt;
     }
 
     private String getValueBySource(String source) {
@@ -114,12 +126,20 @@ public class AccountOrderAdapter extends BaseAdapter {
 
 
     private int remaindDay(String exprieTime) {
-    	try {
-			return Util.daysBetween(Util.getTime(), exprieTime) + 1;
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-        return 0;
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date startDate = new GregorianCalendar().getTime();
+        ParsePosition pos = new ParsePosition(0);
+        Date exprietDate = formatter.parse(exprieTime, pos);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startDate);
+        int startDay = calendar.get(Calendar.DAY_OF_YEAR);
+        calendar.setTime(exprietDate);
+        int exprieDay = calendar.get(Calendar.DAY_OF_YEAR);
+        int remaindDay = exprieDay - startDay;
+        if (remaindDay < 0) {
+            return 0;
+        }
+        return remaindDay;
     }
 
 }

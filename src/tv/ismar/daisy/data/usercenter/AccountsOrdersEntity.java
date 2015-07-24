@@ -34,6 +34,7 @@ public class AccountsOrdersEntity {
         private String total_fee;
         private String thumb_url;
         private String start_date;
+        public String type;
 
         public String getTitle() {
             return title;

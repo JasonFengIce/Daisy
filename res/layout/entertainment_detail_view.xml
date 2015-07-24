@@ -78,17 +78,18 @@
                     android:visibility="visible">
 
                 <Button
+                        android:singleLine="true"
                         android:id="@+id/btn_left"
-                        android:layout_width="280dip"
+                        android:layout_width="300dip"
                         android:layout_height="@dimen/item_detail_btn_left_height"
                         android:background="@drawable/variety_btn_bg_selector"
-                        android:paddingLeft="15dip"
-                        android:paddingRight="15dip"
+                        android:paddingLeft="1dip"
+                        android:paddingRight="1dip"
                         android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"
                         android:visibility="visible"
                         android:textColor="#FFFFFFFF"
                         android:textSize="@dimen/item_detail_text_size"
-                        android:drawableLeft="@drawable/daisy_left_play"/>
+/>
 
                 <Button
                         android:id="@+id/middle_btn"

@@ -6,98 +6,108 @@
               android:paddingLeft="2dp"
               android:orientation="horizontal"
               android:focusable="false"
-    >
+        >
 
     <ImageView
-        android:id="@+id/orderlistitem_icon"
-        android:layout_width="0dp"
-        android:layout_height="194dp"
-        android:layout_weight="1"
-        android:scaleType="fitXY"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="3dp"
-        android:focusable="true"
-        android:clickable="true"
-        android:background="@drawable/launcher_selector"
-        />
+            android:id="@+id/orderlistitem_icon"
+            android:layout_width="0dp"
+            android:layout_height="194dp"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="3dp"
+            android:focusable="true"
+            android:clickable="true"
+            android:background="@drawable/launcher_selector"
+            />
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="3"
-        android:layout_marginTop="3dp"
-        android:layout_marginLeft="5dp"
-        android:orientation="vertical">
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:layout_marginTop="3dp"
+            android:layout_marginLeft="5dp"
+            android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
             <TextView
-                android:textColor="#FFFFFF"
-                android:id="@+id/orderlistitem_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/h2_text_size"
-                />
+                    android:textColor="#FFFFFF"
+                    android:id="@+id/orderlistitem_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/h2_text_size"
+                    />
             <TextView
-                android:layout_marginLeft="40dp"
-                android:id="@+id/purchase_extra"
-                android:textSize="@dimen/h2_text_size"
-                android:textColor="#FFFFFF"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                    android:layout_marginLeft="20dp"
+                    android:id="@+id/purchase_extra"
+                    android:textSize="@dimen/h2_text_size"
+                    android:textColor="#FFFFFF"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
             <TextView
-                android:textColor="#FFFFFF"
-                android:id="@+id/orderlistitem_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/h2_text_size"
-                />
+                    android:textColor="#FFFFFF"
+                    android:id="@+id/orderlistitem_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/h2_text_size"
+                    />
 
             <TextView
-                android:textColor="#FFFFFF"
-                android:id="@+id/orderlistitem_remainday"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
-                android:textSize="@dimen/h2_text_size"
-                />
+                    android:textColor="#FFFFFF"
+                    android:id="@+id/orderlistitem_remainday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:textSize="@dimen/h2_text_size"
+                    />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
             <TextView
-                android:textColor="#FFFFFF"
-                android:id="@+id/orderlistitem_cost"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/h2_text_size"
-                />
+                    android:textColor="#FFFFFF"
+                    android:id="@+id/orderlistitem_cost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/h2_text_size"
+                    />
 
             <TextView
-                android:textColor="#FFFFFF"
-                android:id="@+id/orderlistitem_paychannel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
-                android:textSize="@dimen/h2_text_size"
-                />
+                    android:textColor="#FFFFFF"
+                    android:id="@+id/orderlistitem_paychannel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:textSize="@dimen/h2_text_size"
+                    />
+            <TextView
+                    android:textColor="#FFFFFF"
+                    android:id="@+id/orderlistitem_merge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:textSize="@dimen/h2_text_size"
+                    />
         </LinearLayout>
+
+
     </LinearLayout>
 
 </LinearLayout>

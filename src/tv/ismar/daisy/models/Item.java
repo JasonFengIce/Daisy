@@ -53,4 +53,5 @@ public class Item implements Serializable {
     public String list_url;
     public String section;
     public String detail_url;
+    public String subtitle;
 }
