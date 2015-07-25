@@ -160,9 +160,10 @@ public class QiYiPlayActivity extends VodMenuAction {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setContentView(R.layout.vod_player);
-		initView();
-
 	}
 
 	public void initView() {
@@ -172,10 +173,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 				R.drawable.fly_down);
 		// bufferHideAnimation =
 		// AnimationUtils.loadAnimation(this,R.drawable.fade_out);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		setContentView(R.layout.vod_player);
 		panelLayout = (LinearLayout) findViewById(R.id.PanelLayout);
 		titleText = (tv.ismar.daisy.views.MarqueeView) findViewById(R.id.TitleText);
 		qualityText = (TextView) findViewById(R.id.QualityText);
@@ -806,10 +803,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (needOnresume) {
-			initQiyiVideoPlayer();
-			needOnresume = false;
-		}
+		initView();
 	}
 
 	@Override
@@ -1732,10 +1726,8 @@ public class QiYiPlayActivity extends VodMenuAction {
 		}
 
 	};
-	boolean needOnresume = false;
 
 	private void startSakura() {
-		needOnresume = true;
 		Intent intent = new Intent();
 		intent.setAction("cn.ismar.sakura.launcher");
 		startActivity(intent);
