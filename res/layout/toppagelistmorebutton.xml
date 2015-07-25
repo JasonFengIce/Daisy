@@ -2,17 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/list_item_more_bg"
+    android:background="@drawable/launcher_selector"
+    android:focusable="true"
     android:orientation="vertical" >
 
     <TextView
         android:id="@+id/listmore"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusable="true"
+        android:background="@drawable/list_item_more_bg"
         android:gravity="center"
-        android:background="@drawable/launcher_selector"
         android:text="更多"
+        android:textColor="#FFFFFFFF"
         android:textSize="50sp" />
 
 </LinearLayout>

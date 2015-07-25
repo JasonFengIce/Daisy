@@ -19,6 +19,7 @@
             android:layout_height="62dp"
             android:gravity="center"
             android:textSize="30sp"
+            android:textColor="#FFFFFFFF"
             android:text="文字"/>
 
 </LinearLayout>
