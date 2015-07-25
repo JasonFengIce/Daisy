@@ -124,13 +124,13 @@ public class HGridFilterAdapterImpl extends HGridAdapter<ItemCollection> impleme
                 if(item!=null){
                     if(this.isPortrait){
                         holder.previewImage.setUrl(item.list_url);
-                        if(item.focus!=null)
-                        ((LabelImageView)holder.previewImage).setFocustitle(item.focus);
                     }else{
                         holder.previewImage.setUrl(item.adlet_url);
                     }
                     holder.title.setText(item.title);
                 }
+                if(item.focus!=null)
+                    ((LabelImageView)holder.previewImage).setFocustitle(item.focus);
             } else {
                 // This ItemCollection's currentIndex has not filled yet.
                 // Show the default info.

@@ -306,6 +306,8 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	}
 
 	private void initView(Context context, AttributeSet attrs) {
+        afterview = new View[3];
+        preview = new View[3];
 		initView();
 		TypedArray a = context.obtainStyledAttributes(attrs,
 				R.styleable.HGridView);
@@ -492,6 +494,21 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		setNextSelectedPositionInt(sectionFirstPosition);
 		mLayoutMode = LAYOUT_JUMP;
 		layoutChildren();
+        int currentSectionCount = mAdapter.getSectionCount(sectionIndex);
+//        for(int i=1;i<=getRows();i++){
+//            if(preview[i-1]!=null){
+//                preview[i-1].setAlpha(1);
+//            }
+//            View v = getChildAt(sectionFirstPosition-1-i);
+//            if(v!=null){
+//                v.setAlpha(1);
+//                preview[i-1] = v;
+//            }
+//        }
+//        getColumn(mSelectedPosition);
+
+        Log.i("zjqzxcvbnm","mFirstPosition=="+mFirstPosition+"//"+getChildCount()+"mSelectedPosition=="
+                +mSelectedPosition+"//mNextSelectedPosition=="+sectionFirstPosition);
 	}
 
 	private void setSelectedPositionInt(int position) {
@@ -782,6 +799,8 @@ public class HGridView extends AdapterView<HGridAdapter> {
 			offsetChildrenLeftAndRight(-offset);
 		}
 	}
+
+
  private int count=0;
 	private View moveSelection(int delta, int childrenLeft, int childrenRight) {
 		final int fadingEdgeLength = getHorizontalFadingEdgeLength();
@@ -871,7 +890,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 
 	/**
 	 * Calculate the right-most pixel that we can draw our selection.
-	 * 
+	 *
 	 * @param childrenLeft
 	 *            the right pixel were children can draw.
 	 * @param fadingEdgeLength
@@ -2295,14 +2314,98 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		// }
 		// }
 	}
-
+    View[] afterview;
+    View[] preview;
+    int mInitVisableCount = -1;
+    private boolean isScrollLeft = false;
+    private boolean isScrollRight = false;
+    boolean isShadow = false;
 	protected void invokeOnScrollListener() {
+        mMaxColumn = getColumn(mAdapter.getCount() - 1);
 		if (mOnScrollListener != null) {
 			mOnScrollListener.onScroll(this, mFirstPosition, getChildCount(),
 					mAdapter.getCount());
+            Log.i("zjqqwertyuiop","mFirstPosition=="+mFirstPosition+"//"+getChildCount()+"//mSelectedPosition=="+mSelectedPosition+"//mNextSelectedPosition=="+mNextSelectedPosition);
+           // initChildren();
+            if(mFirstPosition+getChildCount()<mAdapter.getCount()){
+                if(leftbtn!=null&&rightbtn!=null){
+                    rightbtn.setVisibility(View.VISIBLE);
+                }
+            }
 		}
 	}
+    private void initChildren(){
+        int rows = getRows();
+        int visableCount = getChildCount();
+        int totalCount = mAdapter.getCount();
 
+        if(leftbtn!=null&&rightbtn!=null){
+              if(leftbtn.isShown()){
+                  for(int i=1;i<=rows;i++){
+                      if(preview[i-1]!=null){
+                          preview[i-1].setAlpha(1);
+                      }
+
+                          int sectionIndex = mAdapter.getSectionIndex(mFirstPosition+i-1);
+                          int sectionFirstPosition = mAdapter.getSectionIndex(mSelectedPosition);
+                          if(sectionIndex<sectionFirstPosition){
+                              View v = getChildAt(mFirstPosition+i-1);
+                              if(v!=null){
+                                  preview[i-1] = v;
+                                  v.setAlpha((float)0.3);
+                              }
+                          }
+                  }
+
+                  if(rightbtn.isShown()){
+                      for(int i=1;i<=rows;i++){
+                          if(afterview[i-1]!=null){
+                              afterview[i-1].setAlpha(1);
+                          }
+                          if(mFirstPosition+visableCount<totalCount){
+                              View v = getChildAt(mFirstPosition+visableCount-i);
+                              if(v!=null){
+                                  afterview[i-1] = v;
+                                  v.setAlpha((float)0.3);
+                              }
+                          }
+                      }
+                  }
+              }
+
+
+
+        }
+
+
+//
+//            for(int i=1;i<=rows;i++){
+//                if(afterview[i-1]!=null){
+//                    afterview[i-1].setAlpha(1);
+//                }
+//                if(getChildAt(getChildCount()-i)!=null){
+//                    afterview[i-1] = getChildAt(getChildCount()-i);
+//                    getChildAt(getChildCount()-i).setAlpha((float)0.3);
+//                }
+//                    if(preview[i-1]!=null){
+//                        preview[i-1].setAlpha(1);
+//                    }
+//                    if(preview[getChildCount()-i*5-i]!=null){
+//                        preview[i-1] = preview[getChildCount()-i*5-i];
+//                        preview[getChildCount()-i*5-i].setAlpha((float)0.3);
+//                    }
+//
+//            }
+
+    }
+
+    private void initPrevViews(){
+        int sectionPosition = mAdapter.getSectionIndex(mFirstPosition);
+
+    }
+    private void initNextViews(){
+
+    }
 	/**
 	 * Interface definition for a callback to be invoked when the list or grid
 	 * has been scrolled.
@@ -2658,6 +2761,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	}
 public View leftbtn;
 public View rightbtn;
+
 
 
 }

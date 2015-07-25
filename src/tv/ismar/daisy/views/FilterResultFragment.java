@@ -58,6 +58,8 @@ public class FilterResultFragment extends BackHandledFragment implements Adapter
     private ProgressBar percentageBar;
     private boolean isNoData = false;
     public boolean isPortrait = false;
+    private Button left_shadow;
+    private Button right_shadow;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -80,7 +82,11 @@ public class FilterResultFragment extends BackHandledFragment implements Adapter
                 LinearLayout layout = (LinearLayout)fragmentView.findViewById(R.id.filter_condition_layout);
                 buildFilterListView(layout,conditions);
                 mHGridView = (HGridView)fragmentView.findViewById(R.id.filter_grid);
+                left_shadow = (Button)fragmentView.findViewById(R.id.left_shadow);
+                right_shadow = (Button)fragmentView.findViewById(R.id.right_shadow);
             }else{
+                left_shadow = (Button)fragmentView.findViewById(R.id.recommend_left_shadow);
+                right_shadow = (Button)fragmentView.findViewById(R.id.recommend_right_shadow);
                 View noresult_layout = fragmentView.findViewById(R.id.noresult_layout);
                 View result_layout = fragmentView.findViewById(R.id.result_layout);
                 noresult_layout.setVisibility(View.VISIBLE);
@@ -99,6 +105,8 @@ public class FilterResultFragment extends BackHandledFragment implements Adapter
                 mInitTask = new InitItemTask();
                 new InitItemTask().execute();
             }
+        mHGridView.leftbtn = left_shadow;
+        mHGridView.rightbtn = right_shadow;
         mHGridView.setOnItemClickListener(this);
         mHGridView.setOnItemSelectedListener(this);
         mHGridView.setOnScrollListener(this);
@@ -113,11 +121,12 @@ public class FilterResultFragment extends BackHandledFragment implements Adapter
                     label.setText(labels[i]);
                     label.setTextColor(0xffffffff);
                     label.setBackgroundResource(R.drawable.filter_btn_focused);
-                    label.setTextSize(36);
+                    label.setTextSize(30);
                     label.setGravity(Gravity.CENTER);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 60);
-                    params.rightMargin = 13;
-                    params.topMargin = 13;
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(120, 46);
+                    params.gravity = Gravity.CENTER_VERTICAL;
+                    params.rightMargin = 11;
+                   // params.topMargin = 11;
                     container.addView(label,params);
                 }
             }
@@ -227,8 +236,8 @@ public class FilterResultFragment extends BackHandledFragment implements Adapter
                     if(mHGridAdapter.getCount()>0){
                         mHGridView.setAdapter(mHGridAdapter);
                         mHGridView.setFocusable(true);
-                        mHGridView.setHorizontalFadingEdgeEnabled(true);
-                        mHGridView.setFadingEdgeLength(144);
+                     //   mHGridView.setHorizontalFadingEdgeEnabled(true);
+                       // mHGridView.setFadingEdgeLength(144);
                         mItemCollections.get(0).fillItems(0, items.objects);
                         mHGridAdapter.setList(mItemCollections);
                     }

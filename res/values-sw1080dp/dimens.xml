@@ -105,10 +105,10 @@
     <dimen name="gridview_no_video_container_width">1480dip</dimen>
     <dimen name="gridview_no_video_container_height">711dip</dimen>
     <dimen name="gridview_no_video_container_marginLeft">192dip</dimen>
-    <dimen name="gridview_item_image_PaddingL">1dip</dimen>
-    <dimen name="gridview_item_image_PaddingT">1dip</dimen>
-    <dimen name="gridview_item_image_PaddingR">1dip</dimen>
-    <dimen name="gridview_item_image_PaddingB">1dip</dimen>
+    <dimen name="gridview_item_image_PaddingL">0dip</dimen>
+    <dimen name="gridview_item_image_PaddingT">0dip</dimen>
+    <dimen name="gridview_item_image_PaddingR">0dip</dimen>
+    <dimen name="gridview_item_image_PaddingB">0dip</dimen>
     <dimen name="gridview_item_image_H">226dip</dimen>
     <dimen name="gridview_item_image_W">336dip</dimen>
     <dimen name="gridview_item_image_marginright">14dip</dimen>

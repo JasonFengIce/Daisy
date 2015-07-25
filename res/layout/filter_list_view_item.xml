@@ -4,19 +4,22 @@
     android:layout_height="match_parent"
     android:id="@+id/filter_item_layout"
     >
-    <tv.ismar.daisy.views.AsyncImageView
-        android:layout_width="336dip"
-        android:layout_height="189dip"
-        android:id="@+id/filter_list_item_preview_img"
-        android:background="@drawable/list_item_preview_bg"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:scaleType="fitXY" 
-        android:paddingTop="@dimen/gridview_item_image_PaddingT"
-        android:paddingBottom="@dimen/gridview_item_image_PaddingB"
-        android:paddingLeft="@dimen/gridview_item_image_PaddingL"
-        android:paddingRight="@dimen/gridview_item_image_PaddingR"
-        />
+    <tv.ismar.daisy.views.LabelImageView
+            xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
+            android:layout_width="336dp"
+            android:layout_height="189dp"
+            android:id="@+id/filter_list_item_preview_img"
+            android:background="@drawable/list_item_preview_bg"
+            android:layout_marginLeft="8dip"
+            android:layout_alignParentTop="true"
+            android:paddingTop="@dimen/gridview_item_image_PaddingT"
+            android:paddingBottom="@dimen/gridview_item_image_PaddingB"
+            android:paddingLeft="@dimen/gridview_item_image_PaddingL"
+            android:paddingRight="@dimen/gridview_item_image_PaddingR"
+            labelimage:focuspaddingtop="0.85"
+            labelimage:focustextsize="30sp"
+            labelimage:focusbackground="#b3303030"
+            android:scaleType="fitXY"/>
     <TextView
         android:layout_marginTop="5dip"
         android:layout_width="336dip"

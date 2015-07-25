@@ -45,23 +45,50 @@
             android:indeterminate="false"
             android:visibility="visible"
             android:layout_marginLeft="222dip"/>
-    <org.sakuratya.horizontal.ui.HGridView
-        android:id="@+id/filter_grid"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        sakura:horizontalSpacing="44dip"
-        sakura:numRows="2"
-        sakura:rowHeight="402dip"
-        sakura:selectorDrawable="@drawable/vod_gv_selector"
-        sakura:verticalSpacing="@dimen/gridview_main_panel_verticalSpacing"
-        sakura:selectionLeftPadding="@dimen/HGridView_related_PFilterLeftPadding"
-        sakura:selectionTopPadding="@dimen/HGridView_related_PFilterTopPadding"
-        sakura:selectionRightPadding="@dimen/HGridView_related_PFilterRightPadding"
-        sakura:selectionBottomPadding="@dimen/HGridView_related_PFilterBottomPadding"
-        android:layout_marginTop="9dip"
-        android:padding="3dip"
-        android:layout_marginLeft="6dip">
-    </org.sakuratya.horizontal.ui.HGridView>
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <Button
+                    android:layout_marginLeft="80dip"
+                    android:layout_marginTop="356dip"
+                    android:visibility="invisible"
+                    android:clickable="true"
+                    android:layout_alignParentLeft="true"
+                    android:id="@+id/left_shadow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/selector_search_left"
+                    />
+            <Button
+                    android:layout_marginTop="356dip"
+                    android:layout_marginRight="80dip"
+                    android:visibility="invisible"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/right_shadow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/selector_search_right"
+                    />
+            <org.sakuratya.horizontal.ui.HGridView
+                    android:layout_toLeftOf="@id/right_shadow"
+                    android:layout_toRightOf="@id/left_shadow"
+                    android:id="@+id/filter_grid"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    sakura:horizontalSpacing="14dip"
+                    sakura:numRows="2"
+                    sakura:rowHeight="406dip"
+                    sakura:selectorDrawable="@drawable/vod_gv_selector"
+                    sakura:verticalSpacing="0dip"
+                    sakura:selectionLeftPadding="@dimen/HGridView_related_pselectionLeftPadding"
+                    sakura:selectionTopPadding="@dimen/HGridView_related_pselectionTopPadding"
+                    sakura:selectionRightPadding="@dimen/HGridView_related_pselectionRightPadding"
+                    sakura:selectionBottomPadding="@dimen/HGridView_related_pselectionBottomPadding"
+                    android:layout_marginTop="9dip"
+                    android:padding="3dip"
+                    android:layout_marginBottom="57dip">
+            </org.sakuratya.horizontal.ui.HGridView>
+        </RelativeLayout>
  </LinearLayout>
     <LinearLayout
             android:id="@+id/noresult_layout"
@@ -114,22 +141,49 @@
                 android:indeterminate="false"
                 android:visibility="visible"
                 android:layout_marginLeft="222dip"/>
-        <org.sakuratya.horizontal.ui.HGridView
-                android:id="@+id/recommend_filter_grid"
+        <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fadingEdge="horizontal"
-                android:fadingEdgeLength="@dimen/gridview_main_panel_fadingEdgeLength"
-                sakura:horizontalSpacing="44dip"
-                sakura:numRows="1"
-                sakura:rowHeight="402dip"
-                sakura:selectorDrawable="@drawable/vod_gv_selector"
-                sakura:verticalSpacing="@dimen/gridview_main_panel_verticalSpacing"
-                sakura:selectionLeftPadding="@dimen/HGridView_related_PFilterLeftPadding"
-                sakura:selectionTopPadding="@dimen/HGridView_related_PFilterTopPadding"
-                sakura:selectionRightPadding="@dimen/HGridView_related_PFilterRightPadding"
-                sakura:selectionBottomPadding="@dimen/HGridView_related_PFilterBottomPadding"
-                android:layout_marginTop="10dip" >
-        </org.sakuratya.horizontal.ui.HGridView>
+                android:layout_height="match_parent">
+            <Button
+                    android:layout_marginLeft="80dip"
+                    android:layout_marginTop="172dip"
+                    android:visibility="invisible"
+                    android:clickable="true"
+                    android:layout_alignParentLeft="true"
+                    android:id="@+id/recommend_left_shadow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/selector_search_left"
+                    />
+            <Button
+                    android:layout_marginTop="172dip"
+                    android:layout_marginRight="80dip"
+                    android:visibility="invisible"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/recommend_right_shadow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/selector_search_right"
+                    />
+            <org.sakuratya.horizontal.ui.HGridView
+                    android:layout_toLeftOf="@id/recommend_right_shadow"
+                    android:layout_toRightOf="@id/recommend_left_shadow"
+                    android:id="@+id/recommend_filter_grid"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    sakura:horizontalSpacing="14dip"
+                    sakura:numRows="1"
+                    sakura:rowHeight="406dip"
+                    sakura:selectorDrawable="@drawable/vod_gv_selector"
+                    sakura:verticalSpacing="0dip"
+                    sakura:selectionLeftPadding="@dimen/HGridView_related_pselectionLeftPadding"
+                    sakura:selectionTopPadding="@dimen/HGridView_related_pselectionTopPadding"
+                    sakura:selectionRightPadding="@dimen/HGridView_related_pselectionRightPadding"
+                    sakura:selectionBottomPadding="@dimen/HGridView_related_pselectionBottomPadding"
+                    android:layout_marginTop="9dip"
+                    android:padding="3dip"
+                    android:layout_marginBottom="57dip">
+            </org.sakuratya.horizontal.ui.HGridView>
+        </RelativeLayout>
     </LinearLayout>
 </LinearLayout>
