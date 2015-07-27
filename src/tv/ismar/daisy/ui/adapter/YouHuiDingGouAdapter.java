@@ -1,6 +1,7 @@
 package tv.ismar.daisy.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 /**
  * Created by huaijie on 7/3/15.
  */
-public class YouHuiDingGouAdapter extends BaseAdapter {
+public class YouHuiDingGouAdapter extends BaseAdapter implements View.OnClickListener {
     ArrayList<YouHuiDingGouEntity.Object> mList;
     Context mContext;
     ViewHolder holder;
@@ -59,7 +60,22 @@ public class YouHuiDingGouAdapter extends BaseAdapter {
         YouHuiDingGouEntity.Object item = mList.get(position);
         holder.title.setText(item.getTitle());
         Picasso.with(mContext).load(item.getPoster_url()).into(holder.icon);
+
+        holder.icon.setTag(position);
+        holder.icon.setOnClickListener(this);
+
         return convertView;
+    }
+
+    @Override
+    public void onClick(View v) {
+        int position = (Integer)v.getTag();
+        YouHuiDingGouEntity.Object o =mList.get(position);
+        Intent intent = new Intent();
+        intent.setAction("tv.ismar.daisy.packageitem");
+        intent.putExtra("url", o.getUrl());
+        mContext.startActivity(intent);
+
     }
 
     public static class ViewHolder {

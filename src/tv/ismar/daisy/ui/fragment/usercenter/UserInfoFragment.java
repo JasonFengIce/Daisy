@@ -59,6 +59,8 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
 
     private View snNumberLayout;
 
+    private TextView associationPrompt;
+
     SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -66,11 +68,13 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
             if (TextUtils.isEmpty(phone)) {
                 phoneNumberLayout.setVisibility(View.VISIBLE);
                 associationText.setVisibility(View.GONE);
+                associationPrompt.setVisibility(View.GONE);
                 phoneNumber.setText(phone);
 
             } else {
                 phoneNumberLayout.setVisibility(View.GONE);
                 associationText.setVisibility(View.VISIBLE);
+                associationPrompt.setVisibility(View.VISIBLE);
             }
         }
     };
@@ -94,6 +98,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
         associationText = (Button) fragmentView.findViewById(R.id.association_button);
         userInfoLayout = (LinearLayout) fragmentView.findViewById(R.id.userinfo_layout);
         changeButton = (Button) fragmentView.findViewById(R.id.change);
+        associationPrompt=(TextView)fragmentView.findViewById(R.id.association_prompt);
 
         phoneNumberLayout = fragmentView.findViewById(R.id.phone_number_layout);
         snNumberLayout = fragmentView.findViewById(R.id.sn_number_layout);
@@ -110,6 +115,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
         if (!TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
             phoneNumberLayout.setVisibility(View.VISIBLE);
             associationText.setVisibility(View.GONE);
+            associationPrompt.setVisibility(View.GONE);
 
         }
 

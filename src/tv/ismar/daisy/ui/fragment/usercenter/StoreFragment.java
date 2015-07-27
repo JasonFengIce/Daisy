@@ -24,63 +24,50 @@ import com.google.gson.Gson;
  * Created by huaijie on 7/3/15.
  */
 public class StoreFragment extends Fragment {
-	private static final String TAG = "StoreFragment";
+    private static final String TAG = "StoreFragment";
 
-	private GridView youHuiDingGouGridView;
-	private Context mContext;
+    private GridView youHuiDingGouGridView;
+    private Context mContext;
 
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		this.mContext = activity;
-	}
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.mContext = activity;
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_store, null);
-		youHuiDingGouGridView = (GridView) view
-				.findViewById(R.id.person_center_packagelist);
-		return view;
-	}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_store, null);
+        youHuiDingGouGridView = (GridView) view
+                .findViewById(R.id.person_center_packagelist);
+        return view;
+    }
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		fetchStoreInfo();
-	}
+    @Override
+    public void onResume() {
+        super.onResume();
+        fetchStoreInfo();
+    }
 
-	private void fetchStoreInfo() {
-		String api = SimpleRestClient.root_url
-				+ "/api/tv/section/youhuidinggou/";
-		new IsmartvUrlClient().doRequest(api, new IsmartvUrlClient.CallBack() {
-			@Override
-			public void onSuccess(String result) {
-				Log.d(TAG, "fetchStoreInfo: " + result);
-				final YouHuiDingGouEntity youHuiDingGouEntity = new Gson().fromJson(
-						result, YouHuiDingGouEntity.class);
-				YouHuiDingGouAdapter youHuiDingGouAdapter = new YouHuiDingGouAdapter(
-						mContext, youHuiDingGouEntity.getObjects());
-				youHuiDingGouGridView.setAdapter(youHuiDingGouAdapter);
-				youHuiDingGouGridView
-						.setOnItemClickListener(new OnItemClickListener() {
+    private void fetchStoreInfo() {
+        String api = SimpleRestClient.root_url
+                + "/api/tv/section/youhuidinggou/";
+        new IsmartvUrlClient().doRequest(api, new IsmartvUrlClient.CallBack() {
+            @Override
+            public void onSuccess(String result) {
+                Log.d(TAG, "fetchStoreInfo: " + result);
+                final YouHuiDingGouEntity youHuiDingGouEntity = new Gson().fromJson(
+                        result, YouHuiDingGouEntity.class);
+                YouHuiDingGouAdapter youHuiDingGouAdapter = new YouHuiDingGouAdapter(
+                        mContext, youHuiDingGouEntity.getObjects());
+                youHuiDingGouGridView.setAdapter(youHuiDingGouAdapter);
+            }
 
-							@Override
-							public void onItemClick(AdapterView<?> parent,
-									View view, int position, long id) {
-								YouHuiDingGouEntity.Object o = youHuiDingGouEntity.getObjects().get(position);
-								Intent intent = new Intent();
-								intent.setAction("tv.ismar.daisy.packageitem");
-								intent.putExtra("url", o.getUrl());
-								startActivity(intent);
-							}
-						});
-			}
+            @Override
+            public void onFailed(Exception exception) {
 
-			@Override
-			public void onFailed(Exception exception) {
-
-			}
-		});
-	}
+            }
+        });
+    }
 }
