@@ -33,6 +33,7 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
     public static final String LOCATION_PREFERENCE_NAME = "location";
 
     public static final String LOCATION_PREFERENCE_GEOID = "geo_id";
+    public static final String LOCATION_PREFERENCE_PROVINCE = "province";
 
 
     private Context mContext;
@@ -113,7 +114,8 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
     }
 
 
-    private void showAreaPopup(String provinceId) {
+    private void showAreaPopup(final ProvinceTable provinceTable) {
+        String provinceId = provinceTable.province_id;
         View popupLayout = LayoutInflater.from(mContext).inflate(R.layout.popup_area, null);
         GridView gridView = (GridView) popupLayout.findViewById(R.id.area_grid);
 
@@ -131,6 +133,7 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
             public void onClick(View view, int position) {
                 SharedPreferences.Editor editor = locationSharedPreferences.edit();
                 editor.putString(LOCATION_PREFERENCE_GEOID, String.valueOf(locationTableList.get(position).geo_id));
+                editor.putString(LOCATION_PREFERENCE_PROVINCE, provinceTable.province_name);
                 editor.apply();
                 areaPopup.dismiss();
             }
@@ -162,7 +165,8 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
     @Override
     public void onClick(View view, int position) {
         String provinceId = provinceAdapter.getList().get(position).province_id;
-        showAreaPopup(provinceId);
+        ProvinceTable provinceTable = provinceAdapter.getList().get(position);
+        showAreaPopup(provinceTable);
     }
 
     @Override
