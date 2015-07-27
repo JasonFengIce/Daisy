@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.squareup.picasso.Picasso;
-
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.data.HomePagerEntity;
@@ -13,7 +11,6 @@ import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.data.HomePagerEntity.Poster;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.SportGame;
-import tv.ismar.daisy.models.SportsGameList;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
 import tv.ismar.daisy.views.LabelImageView;
 import tv.ismar.daisy.views.LoadingDialog;
@@ -31,8 +28,11 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -60,7 +60,7 @@ public class SportFragment extends ChannelBaseFragment implements
 	private TextView sport_channel3_subtitle;
 	private LabelImageView sport_channel4_image;
 	private TextView sport_channel4_subtitle;
-	private TextView sport_channel5;
+	private LinearLayout sport_channel5;
 
 	private ImageView arrowUp;
 	private ImageView arrowDown;
@@ -95,7 +95,7 @@ public class SportFragment extends ChannelBaseFragment implements
 				.findViewById(R.id.sport_channel4_image);
 		sport_channel4_subtitle = (TextView) view
 				.findViewById(R.id.sport_channel4_subtitle);
-		sport_channel5 = (TextView) view.findViewById(R.id.listmore);
+		sport_channel5 = (LinearLayout) view.findViewById(R.id.listmore);
 		sportspost_title = (TextView) view.findViewById(R.id.sportspost_title);
 		arrowUp = (ImageView) view.findViewById(R.id.sec_one_list_1_arrowup);
 		arrowDown = (ImageView) view

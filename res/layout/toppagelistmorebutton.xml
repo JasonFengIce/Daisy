@@ -4,10 +4,11 @@
     android:layout_height="match_parent"
     android:background="@drawable/launcher_selector"
     android:focusable="true"
+    android:clickable="true"
+    android:id="@+id/listmore"
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/listmore"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/list_item_more_bg"
