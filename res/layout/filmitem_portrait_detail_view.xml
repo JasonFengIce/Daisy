@@ -16,6 +16,11 @@
             android:paddingRight="@dimen/tv_guide_top_section_padding"
             >
     </tv.ismar.daisy.ui.widget.TopView>
+    <ImageView
+            android:background="@drawable/filter_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_marginLeft="25dip"/>
     <LinearLayout
             android:id="@+id/top_view_layout"
             android:layout_width="match_parent"
@@ -153,7 +158,7 @@
                      android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"
                      android:visibility="visible"
                      android:textColor="#FFFFFFFF"
-                     android:textSize="@dimen/item_detail_text_size"
+                     android:textSize="48sp"
                      android:drawableLeft="@drawable/daisy_left_play"/>
 
              <Button
@@ -165,7 +170,7 @@
                      android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"
                      android:visibility="visible"
                      android:textColor="#FFFFFFFF"
-                     android:textSize="@dimen/item_detail_text_size"/>
+                     android:textSize="48sp"/>
 
              <Button
                      android:id="@+id/btn_right"
@@ -176,7 +181,7 @@
                      android:background="@drawable/variety_btn_bg_selector"
                      android:visibility="visible"
                      android:textColor="#FFFFFFFF"
-                     android:textSize="@dimen/item_detail_text_size" />
+                     android:textSize="48sp" />
          </LinearLayout>
      </RelativeLayout>
  </LinearLayout>
@@ -217,7 +222,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="36sp"
-                    android:textColor="#FFBBBBBB"
+                    android:textColor="@color/white"
                     android:text="更"
                     android:gravity="center"
                     />
@@ -227,7 +232,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="36sp"
-                    android:textColor="#FFBBBBBB"
+                    android:textColor="@color/white"
                     android:text="多"
 
                     />

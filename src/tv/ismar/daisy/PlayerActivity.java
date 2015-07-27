@@ -484,6 +484,9 @@ private String[] paths = null;
                             } else {
                                 clipLength = mp.getDuration();
                                 timeBar.setMax(clipLength);
+                                if(paths!=null&&paths.length==1){
+                                    initPlayerRelatedUI();
+                                }
                                 if (currPosition == 0)
                                     mp.start();
                                 else
@@ -493,6 +496,7 @@ private String[] paths = null;
                                 timeBar.setProgress(currPosition);
                                 timeBar.setEnabled(true);
                             }
+                            checkTaskStart(0);
                             timeTaskStart(0);
                             if (subItem != null) {
                                 callaPlay.videoPlayLoad(
@@ -1171,7 +1175,7 @@ private void initPlayerRelatedUI(){
 		public void run() {
 			if (mVideoView != null) {
 				if (mVideoView.isPlaying()) {
-					if (live_video && (isBuffer || bufferLayout.isShown())) {
+					if ( bufferLayout.isShown()) {
 						isBuffer = false;
 						hideBuffer();
 					}

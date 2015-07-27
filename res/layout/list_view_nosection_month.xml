@@ -41,7 +41,7 @@
 
 
     <Button
-            android:background="@drawable/selector_search_left"
+            android:background="@drawable/channel_arrow_left"
             android:id="@+id/arrow_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
         android:layout_marginRight="24dip">
     </org.sakuratya.horizontal.ui.HGridView>
     <Button
-            android:background="@drawable/selector_search_right"
+            android:background="@drawable/channel_arrow_right"
             android:id="@+id/arrow_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

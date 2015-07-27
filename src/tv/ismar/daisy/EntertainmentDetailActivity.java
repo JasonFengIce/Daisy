@@ -264,19 +264,19 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
 
     @Override
     protected void onResume() {
-        if (isInitialized) {
-            if (isDrama()) {
-                String url = mItem.item_url == null ? mSimpleRestClient.root_url
-                        + "/api/item/" + mItem.pk + "/"
-                        : mItem.item_url;
-                if (SimpleRestClient.isLogin())
-                    mHistory = DaisyUtils.getHistoryManager(this).getHistoryByUrl(
-                            url, "yes");
-                else
-                    mHistory = DaisyUtils.getHistoryManager(this).getHistoryByUrl(
-                            url, "no");
-            }
-        }
+//        if (isInitialized) {
+//            if (isDrama()) {
+//                String url = mItem.item_url == null ? mSimpleRestClient.root_url
+//                        + "/api/item/" + mItem.pk + "/"
+//                        : mItem.item_url;
+//                if (SimpleRestClient.isLogin())
+//                    mHistory = DaisyUtils.getHistoryManager(this).getHistoryByUrl(
+//                            url, "yes");
+//                else
+//                    mHistory = DaisyUtils.getHistoryManager(this).getHistoryByUrl(
+//                            url, "no");
+//            }
+//        }
         for (HashMap.Entry<AsyncImageView, Boolean> entry : mLoadingImageQueue
                 .entrySet()) {
             if (!entry.getValue()) {
@@ -291,6 +291,10 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             } else {
                 //mCollectBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
                 mCollectBtn.setText(getResources().getString(R.string.favorite));
+            }
+            Item item = getItemByClipPk(1);
+            if(item!=null){
+                mLeftBtn.setText(item.subtitle);
             }
             isPause = false;
         }
@@ -912,19 +916,52 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
         }
     }
 
-    private Item getItemByClipPk(int pk) {
+//    private Item getItemByClipPk(int pk) {
+//        Item item = null;
+//        Item[] items = mItem.subitems;
+//        int count = items.length;
+//        for (int i = 0; i < count; i++) {
+//            if (mItem.subitems[i].clip.pk == pk) {
+//                item = mItem.subitems[i];
+//                break;
+//            }
+//        }
+//        return item;
+//    }
+    private Item getItemByClipPk(int pk){
+        if (isDrama()) {
+            String url = mItem.item_url == null ? mSimpleRestClient.root_url
+                    + "/api/item/" + mItem.pk + "/"
+                    : mItem.item_url;
+            if (SimpleRestClient.isLogin())
+                mHistory = DaisyUtils.getHistoryManager(this).getHistoryByUrl(
+                        url, "yes");
+            else
+                mHistory = DaisyUtils.getHistoryManager(this).getHistoryByUrl(
+                        url, "no");
+        }
+
         Item item = null;
         Item[] items = mItem.subitems;
         int count = items.length;
-        for (int i = 0; i < count; i++) {
-            if (mItem.subitems[i].clip.pk == pk) {
-                item = mItem.subitems[i];
-                break;
-            }
-        }
+       if(mHistory==null){
+           for (int i = 0; i < count; i++) {
+               if (mItem.subitems[i].clip.pk == mItem.clip.pk) {
+                   item = mItem.subitems[i];
+                   break;
+               }
+           }
+       }
+        else{
+           for (int i = 0; i < count; i++){
+               if(mItem.subitems[i].url.equals(mHistory.sub_url)){
+                   item = mItem.subitems[i];
+                   break;
+               }
+           }
+       }
         return item;
     }
-
     private void initLayout() {
            mDetailTitle.setText(mItem.title);
 		/*
