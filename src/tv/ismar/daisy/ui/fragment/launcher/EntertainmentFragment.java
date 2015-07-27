@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -55,7 +56,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 	private TextView vaiety_channel3_subtitle;
 	private LabelImageView vaiety_channel4_image;
 	private TextView vaiety_channel4_subtitle;
-	private TextView vaiety_channel5;
+	private LinearLayout vaiety_channel5;
 	private HomePagerEntity entity;
 	private ArrayList<String> looppost = new ArrayList<String>();
 	private int loopindex = 0;
@@ -104,7 +105,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 				.findViewById(R.id.vaiety_channel4_image);
 		vaiety_channel4_subtitle = (TextView) view
 				.findViewById(R.id.vaiety_channel4_subtitle);
-		vaiety_channel5 = (TextView) view.findViewById(R.id.listmore);
+		vaiety_channel5 = (LinearLayout) view.findViewById(R.id.listmore);
 		vaiety_card1_image.setOnClickListener(ItemClickListener);
 		vaiety_card2_image.setOnClickListener(ItemClickListener);
 		vaiety_card3_image.setOnClickListener(ItemClickListener);

@@ -4,7 +4,9 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.IBinder;
+import android.util.Base64;
 import android.util.Log;
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -13,8 +15,10 @@ import retrofit.client.Response;
 import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.advertisement.AdvertisementInfoEntity;
+import tv.ismar.daisy.models.AdElement;
 import tv.ismar.daisy.utils.AppUtils;
 
 import java.io.File;
@@ -87,38 +91,22 @@ public class PosterUpdateService extends Service {
 
     private void fetchAdvertisementInfo(String host) {
 
-
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setLogLevel(AppConstant.LOG_LEVEL)
-                .setEndpoint(host)
-                .build();
-        tv.ismar.daisy.core.client.ClientApi.AdvertisementInfo client =
-                restAdapter.create(tv.ismar.daisy.core.client.ClientApi.AdvertisementInfo.class);
-        String deviceId = SimpleRestClient.sn_token;
-        client.excute(deviceId, new Callback<ArrayList<AdvertisementInfoEntity>>() {
-            @Override
-            public void success(ArrayList<AdvertisementInfoEntity> advertisementInfoEntities, Response response) {
-                if (advertisementInfoEntities != null && !advertisementInfoEntities.isEmpty()) {
-
-                    AdvertisementInfoEntity adverInfo = advertisementInfoEntities.get(0);
-                    Log.i(TAG, "fetchAdvertisementInfo: adver pic url ---> " + adverInfo.getUrl());
-                    if (getLocalPosterFile().exists()) {
-                        String localMd5 = AppUtils.getMd5ByFile(getLocalPosterFile());
-                        String serverMd5 = adverInfo.getMd5();
-                        if (!localMd5.equalsIgnoreCase(serverMd5)) {
-                            downloadPic(adverInfo);
-                        }
-                    } else {
-                        downloadPic(adverInfo);
-                    }
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError retrofitError) {
-                Log.e(TAG, "fetchAdvertisementInfo failed!!!");
-            }
-        });
+    	String params = "channel=" + "" + "&section="
+				+ "" + "&itemid="
+				+ "&topic="
+				+ ""
+				+ "&source="
+				+ "list"
+				+ "&genre="
+				+ "&content_model="
+				+ "&director="
+				+ "&actor="
+				+ "&clipid="
+				+ "&live_video="
+				+ "&vendor="
+				+ "&expense="
+				+ "&length=";
+		new GetAdDataTask().execute("kaipingguanggao", params);
     }
 
 
@@ -192,4 +180,29 @@ public class PosterUpdateService extends Service {
     private File getLocalPosterFile() {
         return getFileStreamPath(POSTER_NAME);
     }
+    
+	class GetAdDataTask extends AsyncTask<String, Void, ArrayList<AdElement>> {
+
+		@Override
+		protected void onPostExecute(ArrayList<AdElement> result) {
+			AdElement element = result.get(0);
+			String  url= element.getMedia_url();
+			String md5 = element.getMd5();
+			int id = element.getMedia_id();
+			AdvertisementInfoEntity entity = new AdvertisementInfoEntity();
+			entity.setUrl(url);
+			entity.setMd5(md5);
+			entity.setId(id);
+			downloadPic(entity);
+		}
+
+		@Override
+		protected ArrayList<AdElement> doInBackground(String... params) {
+			String adpid = params[0];
+			String p = params[1];
+			ArrayList<AdElement> ads = NetworkUtils.getAdByPost(adpid, p);
+			return ads;
+		}
+
+	}
 }
