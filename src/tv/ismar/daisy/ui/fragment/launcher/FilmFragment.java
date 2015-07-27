@@ -309,6 +309,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
         final String tag = getChannelEntity().getChannel();
 
         deleteFile(carousels, tag);
+        downloadVideo(carousels, tag);
 
 
         for (int i = 0; i < carousels.size(); i++) {
