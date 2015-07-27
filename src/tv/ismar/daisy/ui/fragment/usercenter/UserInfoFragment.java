@@ -149,7 +149,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
         Activator activator = Activator.getInstance(mContext);
         String sign = activator.PayRsaEncode("sn=" + SimpleRestClient.sn_token + "&timestamp=" + timestamp);
 
-        HashMap<String, String> params = new HashMap<String, String>();
+        final HashMap<String, String> params = new HashMap<String, String>();
         params.put("timestamp", timestamp);
         params.put("sign", sign);
 
@@ -159,9 +159,15 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
             public void onSuccess(String result) {
                 Log.d(TAG, "fetchAccountsPlayauths: " + result);
                 AccountPlayAuthEntity accountPlayAuthEntity = new Gson().fromJson(result, AccountPlayAuthEntity.class);
-
+                ArrayList<AccountPlayAuthEntity.PlayAuth> playAuths = new ArrayList<AccountPlayAuthEntity.PlayAuth>();;
                 if (!TextUtils.isEmpty(SimpleRestClient.access_token) && !TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
-                    accoutPlayAuthAdapter = new AccoutPlayAuthAdapter(mContext, accountPlayAuthEntity.getPlayauth_list());
+                    if (!accountPlayAuthEntity.getSn_playauth_list().isEmpty()){
+                        playAuths = new ArrayList<AccountPlayAuthEntity.PlayAuth>();
+                        playAuths.addAll(accountPlayAuthEntity.getSn_playauth_list());
+                    }
+
+                    playAuths.addAll(accountPlayAuthEntity.getPlayauth_list());
+                    accoutPlayAuthAdapter = new AccoutPlayAuthAdapter(mContext, playAuths);
                 } else {
                     accoutPlayAuthAdapter = new AccoutPlayAuthAdapter(mContext, accountPlayAuthEntity.getSn_playauth_list());
                 }
