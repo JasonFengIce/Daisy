@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import com.activeandroid.ActiveAndroid;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -25,9 +26,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
     private static final String TAG = "LauncherActivity";
 
 
-    private SakuraImageView indicatorNode;
-    private SakuraImageView indicatorFeedback;
-    private SakuraImageView indicatorHelp;
+    private ImageView indicatorNode;
+    private ImageView indicatorFeedback;
+    private ImageView indicatorHelp;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,9 +40,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
     }
 
     private void initViews() {
-        indicatorNode = (SakuraImageView) findViewById(R.id.indicator_node_image);
-        indicatorFeedback = (SakuraImageView) findViewById(R.id.indicator_feedback_image);
-        indicatorHelp = (SakuraImageView) findViewById(R.id.indicator_help_image);
+        indicatorNode = (ImageView) findViewById(R.id.indicator_node_image);
+        indicatorFeedback = (ImageView) findViewById(R.id.indicator_feedback_image);
+        indicatorHelp = (ImageView) findViewById(R.id.indicator_help_image);
 
         indicatorNode.setOnClickListener(this);
         indicatorFeedback.setOnClickListener(this);
@@ -86,7 +87,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
             }
         });
     }
-
 
 
     /**

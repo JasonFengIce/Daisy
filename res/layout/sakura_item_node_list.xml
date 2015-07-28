@@ -4,8 +4,8 @@
                 android:layout_width="match_parent"
                 android:focusable="false"
                 android:clickable="false"
-                android:minHeight="@dimen/item_node_minHeight"
-                android:layout_height="@dimen/item_node_minHeight"
+                android:minHeight="@dimen/sakura_node_list_item_height"
+                android:layout_height="match_parent"
         >
 
     <FrameLayout
@@ -24,6 +24,7 @@
                 android:src="@drawable/title_icon"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
+
         <TextView
                 android:clickable="false"
                 android:focusable="false"
@@ -47,6 +48,7 @@
             android:layout_width="@dimen/item_node_name_width"
             android:singleLine="true"
             android:layout_height="wrap_content"/>
+
     <TextView
             android:clickable="false"
             android:focusable="false"

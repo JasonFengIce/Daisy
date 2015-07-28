@@ -559,7 +559,7 @@
     <dimen name="list_view_search_H">60dip</dimen>
     <dimen name="list_view_search_ML">990dip</dimen>
 
-  <!-- pay panel -->
+    <!-- pay panel -->
     <dimen name="pay_top_panel_merginleft">20dp</dimen>
     <dimen name="pay_top_panel_panel_label_textsieze">23sp</dimen>
     <dimen name="pay_top_panel_videotitle_textsieze">35sp</dimen>
@@ -704,7 +704,6 @@
     <dimen name="guide_tab_item_wh">64dp</dimen>
 
 
-
     <dimen name="guide_container_width">1774dp</dimen>
     <dimen name="guide_container_height">780dp</dimen>
 
@@ -769,7 +768,6 @@
     <dimen name="account_combine_button_spacing">110dp</dimen>
     <dimen name="account_combine_pop_width">1200dp</dimen>
     <dimen name="account_combine_pop_height">400dp</dimen>
-
 
 
     <!-- child fragment -->
@@ -892,6 +890,18 @@
     <dimen name="location_area_pop_width">1400dp</dimen>
     <dimen name="location_area_pop_height">860dp</dimen>
 
+
+    <!--sakura-->
+
+    <dimen name="sakura_launch_icon_width">220dp</dimen>
+    <dimen name="sakura_launch_icon_height">220dp</dimen>
+    <dimen name="sakura_launch_icon_margin_left">50dp</dimen>
+    <dimen name="sakura_launch_icon_margin_right">50dp</dimen>
+
+    <dimen name="sakura_ismartv_icon_width">220dp</dimen>
+    <dimen name="sakura_ismartv_icon_height">220dp</dimen>
+
+    <dimen name="sakura_node_list_item_height">90dp</dimen>
 
 
 </resources>

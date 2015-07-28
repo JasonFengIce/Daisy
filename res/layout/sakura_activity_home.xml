@@ -3,11 +3,12 @@
                 android:background="@drawable/sakura_background"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
     <ImageView
             android:layout_marginTop="@dimen/home_logo_margin_top"
             android:layout_marginLeft="@dimen/home_logo_margin_left"
-            android:layout_width="@dimen/home_logo_width"
-            android:layout_height="@dimen/home_logo_height"
+            android:layout_width="@dimen/sakura_ismartv_icon_width"
+            android:layout_height="@dimen/sakura_ismartv_icon_height"
             android:src="@drawable/sakura_logo"
             />
 
