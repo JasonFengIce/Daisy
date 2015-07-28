@@ -1,10 +1,7 @@
 package tv.ismar.daisy.ui.fragment.usercenter;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.*;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -42,6 +39,10 @@ import java.util.regex.Pattern;
 public class LoginFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "LoginFragment";
 
+    public static final String ACCOUNT_SHARED_PREFS = "account";
+    public static final String ACCOUNT_COMBINE = "combine";
+
+
     private Context mContext;
 
     private EditText phoneNumberEdit;
@@ -64,6 +65,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private IntentFilter intentFilter;
 
+    private SharedPreferences accountSharedPrefs;
+
 
     public interface OnLoginCallback {
         void onLoginSuccess();
@@ -78,6 +81,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         super.onAttach(activity);
         this.mContext = activity;
+        accountSharedPrefs = activity.getSharedPreferences(ACCOUNT_SHARED_PREFS, Context.MODE_PRIVATE);
     }
 
 
@@ -230,11 +234,18 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         new IsmartvUrlClient().doRequest(IsmartvUrlClient.Method.POST, api, params, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
+                SharedPreferences.Editor editor = accountSharedPrefs.edit();
+                editor.putBoolean(ACCOUNT_COMBINE, true);
+                editor.apply();
+
                 Log.d(TAG, "accountsCombine: " + result);
             }
 
             @Override
             public void onFailed(Exception exception) {
+                SharedPreferences.Editor editor = accountSharedPrefs.edit();
+                editor.putBoolean(ACCOUNT_COMBINE, false);
+                editor.apply();
                 Log.e(TAG, "accountsCombine: " + exception.getMessage());
             }
         });
@@ -269,7 +280,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    private void showAccountsCombinePopup() {
+    public void showAccountsCombinePopup() {
         View popupLayout = LayoutInflater.from(mContext).inflate(R.layout.popup_account_combine, null);
         int width = (int) mContext.getResources().getDimension(R.dimen.login_pop_width);
         int height = (int) mContext.getResources().getDimension(R.dimen.login_pop_height);
@@ -294,6 +305,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences.Editor editor = accountSharedPrefs.edit();
+                editor.putBoolean(ACCOUNT_COMBINE, false);
+                editor.apply();
+
                 combineAccountPop.dismiss();
                 ((UserCenterActivity) mContext).switchToUserInfoFragment();
             }

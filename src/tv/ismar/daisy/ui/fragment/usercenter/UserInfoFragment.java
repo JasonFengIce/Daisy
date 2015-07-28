@@ -61,18 +61,34 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
 
     private TextView associationPrompt;
 
+
+    private boolean isCombined;
+
     SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             String phone = sharedPreferences.getString("mobile_number", "");
             if (TextUtils.isEmpty(phone)) {
                 phoneNumberLayout.setVisibility(View.VISIBLE);
-                associationText.setVisibility(View.GONE);
-                associationPrompt.setVisibility(View.GONE);
+
                 phoneNumber.setText(phone);
 
             } else {
                 phoneNumberLayout.setVisibility(View.GONE);
+
+            }
+        }
+    };
+
+
+    private SharedPreferences.OnSharedPreferenceChangeListener accountSharedPrefsListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            isCombined = sharedPreferences.getBoolean(LoginFragment.ACCOUNT_COMBINE, false);
+            if (isCombined) {
+                associationText.setVisibility(View.GONE);
+                associationPrompt.setVisibility(View.GONE);
+            } else {
                 associationText.setVisibility(View.VISIBLE);
                 associationPrompt.setVisibility(View.VISIBLE);
             }
@@ -98,7 +114,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
         associationText = (Button) fragmentView.findViewById(R.id.association_button);
         userInfoLayout = (LinearLayout) fragmentView.findViewById(R.id.userinfo_layout);
         changeButton = (Button) fragmentView.findViewById(R.id.change);
-        associationPrompt=(TextView)fragmentView.findViewById(R.id.association_prompt);
+        associationPrompt = (TextView) fragmentView.findViewById(R.id.association_prompt);
 
         phoneNumberLayout = fragmentView.findViewById(R.id.phone_number_layout);
         snNumberLayout = fragmentView.findViewById(R.id.sn_number_layout);
@@ -112,11 +128,17 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
         sharedPreferences = mContext.getSharedPreferences("Daisy", Context.MODE_PRIVATE);
         sharedPreferences.registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
 
+        SharedPreferences accountPrefs = mContext.getSharedPreferences(LoginFragment.ACCOUNT_SHARED_PREFS, Context.MODE_PRIVATE);
+        isCombined = accountPrefs.getBoolean(LoginFragment.ACCOUNT_COMBINE, false);
+        accountPrefs.registerOnSharedPreferenceChangeListener(accountSharedPrefsListener);
+
         if (!TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
             phoneNumberLayout.setVisibility(View.VISIBLE);
+        }
+
+        if (isCombined) {
             associationText.setVisibility(View.GONE);
             associationPrompt.setVisibility(View.GONE);
-
         }
 
         return fragmentView;
@@ -126,6 +148,8 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onResume() {
         super.onResume();
+
+
         fetchAccountsBalance();
         fetchAccountsPlayauths();
         initViewByLoginStatus();
@@ -165,9 +189,10 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
             public void onSuccess(String result) {
                 Log.d(TAG, "fetchAccountsPlayauths: " + result);
                 AccountPlayAuthEntity accountPlayAuthEntity = new Gson().fromJson(result, AccountPlayAuthEntity.class);
-                ArrayList<AccountPlayAuthEntity.PlayAuth> playAuths = new ArrayList<AccountPlayAuthEntity.PlayAuth>();;
+                ArrayList<AccountPlayAuthEntity.PlayAuth> playAuths = new ArrayList<AccountPlayAuthEntity.PlayAuth>();
+                ;
                 if (!TextUtils.isEmpty(SimpleRestClient.access_token) && !TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
-                    if (!accountPlayAuthEntity.getSn_playauth_list().isEmpty()){
+                    if (!accountPlayAuthEntity.getSn_playauth_list().isEmpty()) {
                         playAuths = new ArrayList<AccountPlayAuthEntity.PlayAuth>();
                         playAuths.addAll(accountPlayAuthEntity.getSn_playauth_list());
                     }
@@ -191,7 +216,12 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.association_button:
-                showAssociationPopupWindow();
+                if (TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
+                    showAssociationPopupWindow();
+                } else {
+                    loginFragment.showAccountsCombinePopup();
+                }
+
                 break;
             case R.id.change:
                 showAssociationPopupWindow();
