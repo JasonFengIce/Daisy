@@ -97,4 +97,5 @@ public class ChannelBaseFragment extends Fragment {
 			}
 		}
 	};
+	
 }
