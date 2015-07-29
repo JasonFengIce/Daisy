@@ -77,9 +77,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private HashMap<String, TextView> channelHashMap;
 
     private ChannelChange channelChange;
-
-//    private WeatherFragment weatherFragment;
-
     private LaunchHeaderLayout topView;
 
     private Position mCurrentChannelPosition = new Position(new Position.PositioinChangeCallback() {
