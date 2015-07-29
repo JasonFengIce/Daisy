@@ -30,7 +30,7 @@ import java.util.Date;
 /**
  * Created by huaijie on 2015/7/21.
  */
-public class TopView extends FrameLayout
+public class LaunchHeaderLayout extends FrameLayout
         implements View.OnClickListener, View.OnFocusChangeListener {
     private Context context;
 
@@ -45,12 +45,12 @@ public class TopView extends FrameLayout
 
     private SharedPreferences locationSharedPreferences;
 
-    public TopView(Context context) {
+    public LaunchHeaderLayout(Context context) {
         super(context);
         this.context = context;
     }
 
-    public TopView(Context context, AttributeSet attrs) {
+    public LaunchHeaderLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
 

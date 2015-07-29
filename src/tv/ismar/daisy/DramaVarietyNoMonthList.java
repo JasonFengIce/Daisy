@@ -12,7 +12,7 @@ import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemCollection;
 import tv.ismar.daisy.player.InitPlayerTool;
-import tv.ismar.daisy.ui.widget.TopView;
+import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
 import tv.ismar.daisy.views.LoadingDialog;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class DramaVarietyNoMonthList extends BaseActivity implements AdapterView
     private Button arrow_left;
     private Button arrow_right;
 
-    private TopView weatherFragment;
+    private LaunchHeaderLayout weatherFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,7 @@ public class DramaVarietyNoMonthList extends BaseActivity implements AdapterView
     }
 
     private void initView() {
-        weatherFragment = (TopView)findViewById(R.id.top_column_layout);
+        weatherFragment = (LaunchHeaderLayout)findViewById(R.id.top_column_layout);
 
 
         loadDialog = new LoadingDialog(this, getString(R.string.vod_loading));

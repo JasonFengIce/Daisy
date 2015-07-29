@@ -5,7 +5,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <tv.ismar.daisy.ui.widget.TopView
+    <tv.ismar.daisy.ui.widget.LaunchHeaderLayout
         android:id="@+id/top_column_layout"
         android:layout_width="match_parent"
         android:layout_height="99dp"
@@ -13,7 +13,7 @@
         android:paddingLeft="@dimen/tv_guide_top_section_padding"
         android:paddingRight="@dimen/tv_guide_top_section_padding"
         >
-    </tv.ismar.daisy.ui.widget.TopView>
+    </tv.ismar.daisy.ui.widget.LaunchHeaderLayout>
 
     <ImageView
         android:src="@drawable/horizontal_divider_line"

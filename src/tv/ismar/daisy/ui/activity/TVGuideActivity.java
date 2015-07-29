@@ -19,17 +19,14 @@ import android.widget.*;
 import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
 import com.baidu.location.*;
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import com.google.gson.Gson;
 import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.client.ClientApi;
+import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.service.PosterUpdateService;
 import tv.ismar.daisy.core.update.AppUpdateUtils;
 import tv.ismar.daisy.data.ChannelEntity;
@@ -38,7 +35,7 @@ import tv.ismar.daisy.ui.Position;
 import tv.ismar.daisy.ui.fragment.*;
 import tv.ismar.daisy.ui.fragment.launcher.*;
 import tv.ismar.daisy.ui.widget.DaisyButton;
-import tv.ismar.daisy.ui.widget.TopView;
+import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,7 +80,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
 //    private WeatherFragment weatherFragment;
 
-    private TopView topView;
+    private LaunchHeaderLayout topView;
 
     private Position mCurrentChannelPosition = new Position(new Position.PositioinChangeCallback() {
         @Override
@@ -159,7 +156,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_tv_guide, null);
         setContentView(contentView);
 
-        topView = (TopView)findViewById(R.id.top_column_layout);
+        topView = (LaunchHeaderLayout) findViewById(R.id.top_column_layout);
         initViews();
         initTabView();
         activator = Activator.getInstance(this);
@@ -172,8 +169,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     private void initViews() {
         toppanel = (FrameLayout) findViewById(R.id.top_column_layout);
-//        weatherFragment = new WeatherFragment();
-//        getSupportFragmentManager().beginTransaction().add(R.id.top_column_layout, weatherFragment).commit();
         channelListView = (LinearLayout) findViewById(R.id.channel_h_list);
         tabListView = (LinearLayout) findViewById(R.id.tab_list);
         arrow_left = (ImageView) findViewById(R.id.arrow_scroll_left);
@@ -207,10 +202,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         }
 
     }
-//
-//    public void superOnbackPressed() {
-//        super.onBackPressed();
-//    }
 
 
     private void initTabView() {
@@ -238,36 +229,30 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
      * fetch channel
      */
     private void fetchChannels() {
-        String deviceToken = SimpleRestClient.device_token;
-        String host = SimpleRestClient.root_url;
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setLogLevel(AppConstant.LOG_LEVEL)
-                .setEndpoint(host)
-                .build();
-        ClientApi.Channels client = restAdapter.create(ClientApi.Channels.class);
-        client.excute(deviceToken, new Callback<ChannelEntity[]>() {
+        String api = SimpleRestClient.root_url + "/api/tv/channels/";
+        new IsmartvUrlClient().doRequest(api, new IsmartvUrlClient.CallBack() {
             @Override
-            public void success(ChannelEntity[] channelEntities, Response response) {
-                mChannelEntitys = channelEntities;
-                createChannelView(channelEntities);
+            public void onSuccess(String result) {
+                mChannelEntitys = new Gson().fromJson(result, ChannelEntity[].class);
+                createChannelView(mChannelEntitys);
             }
 
             @Override
-            public void failure(RetrofitError retrofitError) {
-                String message = retrofitError.getMessage();
-                if (null != message)
-                    Log.e(TAG, retrofitError.getMessage());
+            public void onFailed(Exception exception) {
+                Log.e(TAG, exception.getMessage());
             }
         });
     }
-  private tv.ismar.daisy.views.MyHorizontalScrollView scroll;
+
+    private tv.ismar.daisy.views.MyHorizontalScrollView scroll;
+
     private void createChannelView(ChannelEntity[] channelEntities) {
-        scroll = (tv.ismar.daisy.views.MyHorizontalScrollView)contentView.findViewById(R.id.scroll);
+        scroll = (tv.ismar.daisy.views.MyHorizontalScrollView) contentView.findViewById(R.id.scroll);
         channelHashMap = new HashMap<String, TextView>();
         scroll.mLeftDistance = 77;
         channelListView.removeAllViews();
         int i;
-        for ( i = 0; i < channelEntities.length; i++) {
+        for (i = 0; i < channelEntities.length; i++) {
             FrameLayout frameLayout = (FrameLayout) LayoutInflater.from(this).inflate(R.layout.item_channel, null);
             Button textView = (Button) frameLayout.findViewById(R.id.channel_item);
             textView.setText(channelEntities[i].getName());
@@ -295,11 +280,11 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         textView3.setTag(i);
 
         channelListView.addView(frameLayout1);
-    //    channelListView.addView(frameLayout2);
-     //   channelListView.addView(frameLayout3);
+        //    channelListView.addView(frameLayout2);
+        //   channelListView.addView(frameLayout3);
 
-      //  scroll.setHorizontalFadingEdgeEnabled(true);
-      //  scroll.setFadingEdgeLength(100);
+        //  scroll.setHorizontalFadingEdgeEnabled(true);
+        //  scroll.setFadingEdgeLength(100);
     }
 
     private void registerUpdateReceiver() {

@@ -25,7 +25,7 @@ import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.*;
 import tv.ismar.daisy.player.InitPlayerTool;
-import tv.ismar.daisy.ui.widget.TopView;
+import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
 import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.*;
 
@@ -74,13 +74,13 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
     private TextView mDetailIntro;
     private AsyncImageView mDetailPreviewImg;
     private DetailAttributeContainer mDetailAttributeContainer;
-    private TopView weatherFragment;
+    private LaunchHeaderLayout weatherFragment;
 
     private void initViews() {
         large_layout = findViewById(R.id.large_layout);
         mChannel = getIntent().getStringExtra("channel");
         title = getIntent().getStringExtra("title");
-        weatherFragment =(TopView)findViewById(R.id.top_column_layout);
+        weatherFragment =(LaunchHeaderLayout)findViewById(R.id.top_column_layout);
         weatherFragment.setTitle(title);
         weatherFragment.hideSubTiltle();
 

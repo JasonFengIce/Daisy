@@ -9,7 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.ui.widget.TopView;
+import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
 import tv.ismar.daisy.views.BackHandledFragment;
 import tv.ismar.daisy.views.BackHandledInterface;
 import tv.ismar.daisy.views.FilterFragment;
@@ -24,7 +24,7 @@ public class FilterActivity extends BaseActivity implements BackHandledInterface
     private SimpleRestClient mRestClient;
     private BackHandledFragment mBackHandedFragment;
 
-    private TopView weatherFragment;
+    private LaunchHeaderLayout weatherFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class FilterActivity extends BaseActivity implements BackHandledInterface
         String mTitle = getIntent().getStringExtra("title");
         mChannel = getIntent().getStringExtra("channel");
 
-        weatherFragment = (TopView) findViewById(R.id.top_column_layout);
+        weatherFragment = (LaunchHeaderLayout) findViewById(R.id.top_column_layout);
         weatherFragment.setTitle(mTitle);
         weatherFragment.hideSubTiltle();
         FilterFragment filterfragment = new FilterFragment();

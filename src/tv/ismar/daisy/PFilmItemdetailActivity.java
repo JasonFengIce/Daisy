@@ -25,7 +25,7 @@ import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.*;
 import tv.ismar.daisy.player.InitPlayerTool;
-import tv.ismar.daisy.ui.widget.TopView;
+import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
 import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.*;
 
@@ -72,7 +72,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
     private View top_view_layout;
     private View bottom_view_layout;
 
-    private TopView weatherFragment;
+    private LaunchHeaderLayout weatherFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -649,7 +649,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         top_view_layout = findViewById(R.id.top_view_layout);
         title = getIntent().getStringExtra("title");
 
-        weatherFragment =(TopView)findViewById(R.id.top_column_layout);
+        weatherFragment =(LaunchHeaderLayout)findViewById(R.id.top_column_layout);
         weatherFragment.setTitle(title);
         weatherFragment.hideSubTiltle();
 

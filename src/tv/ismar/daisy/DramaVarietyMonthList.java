@@ -15,7 +15,7 @@ import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemCollection;
 import tv.ismar.daisy.player.InitPlayerTool;
-import tv.ismar.daisy.ui.widget.TopView;
+import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
 import tv.ismar.daisy.views.LoadingDialog;
 import tv.ismar.daisy.views.MonthSectionButton;
 
@@ -41,7 +41,7 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
     private int mCurrentPosition=-1;
     private int mLastPosition = -1;
 
-    private TopView weatherFragment;
+    private LaunchHeaderLayout weatherFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +57,7 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
     }
 
     private void initView(){
-        weatherFragment = (TopView)findViewById(R.id.top_column_layout);
+        weatherFragment = (LaunchHeaderLayout)findViewById(R.id.top_column_layout);
 
 
         month_section_layout = (LinearLayout) findViewById(R.id.month_section_layout);

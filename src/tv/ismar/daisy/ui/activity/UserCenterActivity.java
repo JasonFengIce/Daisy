@@ -13,7 +13,7 @@ import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.ui.fragment.usercenter.*;
-import tv.ismar.daisy.ui.widget.TopView;
+import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
 
 import java.util.ArrayList;
 
@@ -42,7 +42,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private HelpFragment helpFragment;
     private LocationFragment locationFragment;
 
-    private TopView topView;
+    private LaunchHeaderLayout topView;
 
     private SharedPreferences accountPreference;
 
@@ -87,7 +87,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
 
     private void initViews() {
-        topView = (TopView)findViewById(R.id.top_column_layout);
+        topView = (LaunchHeaderLayout)findViewById(R.id.top_column_layout);
 
 
     }

@@ -30,7 +30,7 @@ import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
-import tv.ismar.daisy.ui.widget.TopView;
+import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -95,14 +95,14 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
     ProgressBar percentage;
     private Button left_shadow;
     private Button right_shadow;
-    private TopView weatherFragment;
+    private LaunchHeaderLayout weatherFragment;
     public void setIsPOrtrait(boolean isPortrait){
         this.isPortrait = isPortrait;
     }
 	private void initViews(View fragmentView) {
         percentage = (ProgressBar) fragmentView.findViewById(R.id.section_percentage);
 
-        weatherFragment = (TopView) fragmentView.findViewById(R.id.top_column_layout);
+        weatherFragment = (LaunchHeaderLayout) fragmentView.findViewById(R.id.top_column_layout);
         weatherFragment.setTitle(mTitle);
         weatherFragment.hideSubTiltle();
 
