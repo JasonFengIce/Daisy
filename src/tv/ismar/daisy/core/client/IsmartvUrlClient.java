@@ -7,10 +7,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import com.squareup.okhttp.*;
-import okio.BufferedSink;
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.sakura.utils.StringUtils;
 
 import java.io.IOException;
 import java.util.HashMap;

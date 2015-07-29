@@ -119,27 +119,6 @@ public class PosterUpdateService extends Service {
     }
 
 
-//    private void fetchAdvertisementInfo() {
-//
-//        String params = "channel=" + "" + "&section="
-//                + "" + "&itemid="
-//                + "&topic="
-//                + ""
-//                + "&source="
-//                + "list"
-//                + "&genre="
-//                + "&content_model="
-//                + "&director="
-//                + "&actor="
-//                + "&clipid="
-//                + "&live_video="
-//                + "&vendor="
-//                + "&expense="
-//                + "&length=";
-//        new GetAdDataTask().execute("kaipingguanggao", params);
-//    }
-
-
     private void downloadPic(final AdvertisementInfoEntity advertisementInfoEntity) {
         new Thread() {
             @Override
@@ -207,30 +186,4 @@ public class PosterUpdateService extends Service {
     private File getLocalPosterFile() {
         return getFileStreamPath(POSTER_NAME);
     }
-
-    class GetAdDataTask extends AsyncTask<String, Void, ArrayList<AdElement>> {
-
-        @Override
-        protected void onPostExecute(ArrayList<AdElement> result) {
-            AdElement element = result.get(0);
-            String  url= element.getMedia_url();
-            String md5 = element.getMd5();
-            int id = element.getMedia_id();
-            AdvertisementInfoEntity entity = new AdvertisementInfoEntity();
-            entity.setUrl(url);
-            entity.setMd5(md5);
-            entity.setId(id);
-            downloadPic(entity);
-        }
-
-        @Override
-        protected ArrayList<AdElement> doInBackground(String... params) {
-            String adpid = params[0];
-            String p = params[1];
-            ArrayList<AdElement> ads = NetworkUtils.getAdByPost(adpid, p);
-            return ads;
-        }
-
-    }
-
 }
