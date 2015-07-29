@@ -530,8 +530,8 @@ private String[] paths = null;
                                mHandler.removeMessages(AD_COUNT_ACTION);
                         mHandler.sendEmptyMessageDelayed(AD_COUNT_ACTION, 1000);
                         mp.start();
-                        checkTaskStart(0);
                     }
+                    checkTaskStart(0);
             }
         });
         mVideoView.setOnCompletionListenerUrl(new SmartPlayer.OnCompletionListenerUrl() {
@@ -632,7 +632,7 @@ private String[] paths = null;
 					showBuffer();
 				} else if (i == 704) {
 					bufferText.setText(BUFFERING + " " + j + "%");
-				} else if (i == SmartPlayer.MEDIA_INFO_BUFFERING_END) {
+				} else if (i == SmartPlayer.MEDIA_INFO_BUFFERING_END || i ==804) {
 					bufferText.setText(BUFFERING + " " + 100 + "%");
 					isBuffer = false;
 					hideBuffer();

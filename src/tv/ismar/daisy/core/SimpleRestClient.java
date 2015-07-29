@@ -255,7 +255,7 @@ public class SimpleRestClient {
 			String jsonStr = NetworkUtils.getJsonStr(url, "");
 			JSONObject rootObject = new JSONObject(jsonStr);
 			JSONArray livingArray = rootObject.getJSONArray("living");
-			JSONArray highlight = rootObject.getJSONArray("highlight");
+
 			for (int i = 0; i < livingArray.length(); i++) {
 				SportGame sports = new SportGame();
 				JSONObject object = livingArray.getJSONObject(i);
@@ -266,14 +266,16 @@ public class SimpleRestClient {
 				sports.setUrl(object.getString("url"));
 				arrays.add(sports);
 			}
-
-			for (int i = 0; i < highlight.length(); i++) {
-				SportGame sports = new SportGame();
-				JSONObject object = highlight.getJSONObject(i);
-				sports.setName(object.getString("title"));
-				sports.setImageurl(object.getString("image"));
-				sports.setUrl(object.getString("url"));
-				arrays.add(sports);
+			if (rootObject.has("highlight")) {
+				JSONArray highlight = rootObject.getJSONArray("highlight");
+				for (int i = 0; i < highlight.length(); i++) {
+					SportGame sports = new SportGame();
+					JSONObject object = highlight.getJSONObject(i);
+					sports.setName(object.getString("title"));
+					sports.setImageurl(object.getString("image"));
+					sports.setUrl(object.getString("url"));
+					arrays.add(sports);
+				}
 			}
 		} catch (JsonSyntaxException e) {
 			e.printStackTrace();

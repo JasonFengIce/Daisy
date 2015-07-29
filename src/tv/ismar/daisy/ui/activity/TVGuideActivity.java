@@ -505,13 +505,13 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         topView.setSubTitle(channelEntity.getName());
         if ("template1".equals(channelEntity.getHomepage_template())) {
             currentFragment = new FilmFragment();
-            contentView.setBackgroundResource(R.color.normal_activity_bg);
+            contentView.setBackgroundResource(R.drawable.main_bg);
         } else if ("template2".equals(channelEntity.getHomepage_template())) {
             currentFragment = new EntertainmentFragment();
-            contentView.setBackgroundResource(R.color.normal_activity_bg);
+            contentView.setBackgroundResource(R.drawable.main_bg);
         } else if ("template3".equals(channelEntity.getHomepage_template())) {
             currentFragment = new SportFragment();
-            contentView.setBackgroundResource(R.color.normal_activity_bg);
+            contentView.setBackgroundResource(R.drawable.main_bg);
         } else if ("template4".equals(channelEntity.getHomepage_template())) {
             currentFragment = new ChildFragment();
             contentView.setBackgroundResource(R.drawable.channel_child_bg);
