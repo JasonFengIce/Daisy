@@ -18,6 +18,7 @@ import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.data.table.DownloadTable;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
 import tv.ismar.daisy.ui.widget.DaisyViewContainer;
+import tv.ismar.daisy.ui.widget.HomeItemContainer;
 import tv.ismar.daisy.utils.HardwareUtils;
 import tv.ismar.daisy.views.LabelImageView;
 import android.content.Intent;
@@ -86,21 +87,37 @@ public class GuideFragment extends ChannelBaseFragment implements
                 String title = carousels.get(flag.getPosition()).getTitle();
                 Intent intent = new Intent();
                 if ("item".equals(model)) {
-                    intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.ItemDetailActivity");
+                    intent.setClassName("tv.ismar.daisy",
+                            "tv.ismar.daisy.ItemDetailActivity");
                     intent.putExtra("url", url);
                 } else if ("topic".equals(model)) {
                     intent.putExtra("url", url);
-                    intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.TopicActivity");
+                    intent.setClassName("tv.ismar.daisy",
+                            "tv.ismar.daisy.TopicActivity");
                 } else if ("section".equals(model)) {
                     intent.putExtra("title", title);
                     intent.putExtra("itemlistUrl", url);
                     intent.putExtra("lableString", title);
-                    intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.PackageListDetailActivity");
+                    intent.setClassName("tv.ismar.daisy",
+                            "tv.ismar.daisy.PackageListDetailActivity");
                 }
                 context.startActivity(intent);
             }
         });
-
+        linkedVideoView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    ((HomeItemContainer) v.getParent())
+                            .setDrawBorder(true);
+                    ((HomeItemContainer) v.getParent()).invalidate();
+                } else {
+                    ((HomeItemContainer) v.getParent())
+                            .setDrawBorder(false);
+                    ((HomeItemContainer) v.getParent()).invalidate();
+                }
+            }
+        });
         return mView;
     }
 
@@ -141,7 +158,7 @@ public class GuideFragment extends ChannelBaseFragment implements
         guideRecommmendList.removeAllViews();
         ArrayList<FrameLayout> imageViews = new ArrayList<FrameLayout>();
         for (int i = 0; i < 8; i++) {
-            FrameLayout frameLayout = (FrameLayout) LayoutInflater
+            tv.ismar.daisy.ui.widget.HomeItemContainer frameLayout = (tv.ismar.daisy.ui.widget.HomeItemContainer) LayoutInflater
                     .from(context).inflate(R.layout.item_poster, null);
             ImageView itemView = (ImageView) frameLayout
                     .findViewById(R.id.poster_image);
@@ -151,7 +168,7 @@ public class GuideFragment extends ChannelBaseFragment implements
                 textView.setText(posters.get(i).getIntroduction());
                 textView.setVisibility(View.VISIBLE);
             } else {
-                frameLayout.setBackgroundResource(R.drawable.launcher_selector);
+//				frameLayout.setBackgroundResource(R.drawable.launcher_selector);
                 frameLayout.setFocusable(true);
                 frameLayout.setClickable(true);
             }
@@ -161,11 +178,13 @@ public class GuideFragment extends ChannelBaseFragment implements
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (hasFocus) {
-                        ((FrameLayout) v.getParent())
-                                .setBackgroundResource(R.drawable.popup_bg_yellow);
+                        ((HomeItemContainer) v.getParent())
+                                .setDrawBorder(true);
+                        ((HomeItemContainer) v.getParent()).invalidate();
                     } else {
-                        ((FrameLayout) v.getParent())
-                                .setBackgroundResource(R.drawable.launcher_selector);
+                        ((HomeItemContainer) v.getParent())
+                                .setDrawBorder(false);
+                        ((HomeItemContainer) v.getParent()).invalidate();
                     }
                 }
             });
@@ -214,26 +233,22 @@ public class GuideFragment extends ChannelBaseFragment implements
 
         View.OnFocusChangeListener itemFocusChangeListener = new View.OnFocusChangeListener() {
             @Override
-            public void onFocusChange(final View v, boolean hasFocus) {
-                v.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        boolean focusFlag = true;
-                        for (ImageView imageView : allItem) {
-                            focusFlag = focusFlag && (!imageView.isFocused());
-                        }
+            public void onFocusChange(View v, boolean hasFocus) {
+                boolean focusFlag = true;
+                for (ImageView imageView : allItem) {
+                    focusFlag = focusFlag && (!imageView.isFocused());
+                }
 
-                        // all view not focus
-                        if (focusFlag) {
-                            linkedVideoView.setOnCompletionListener(loopAllListener);
-                        } else {
-                            flag.setPosition((Integer) v.getTag());
-                            linkedVideoView.setOnCompletionListener(loopCurrentListener);
-                            setVideoPath(linkedVideoView, allVideoUrl.get(flag.getPosition()));
-                        }
-                    }
-                }, 500);
-
+                // all view not focus
+                if (focusFlag) {
+                    linkedVideoView.setOnCompletionListener(loopAllListener);
+                } else {
+                    flag.setPosition((Integer) v.getTag());
+                    linkedVideoView
+                            .setOnCompletionListener(loopCurrentListener);
+                    setVideoPath(linkedVideoView,
+                            allVideoUrl.get(flag.getPosition()));
+                }
             }
         };
         Picasso.with(context).load(carousels.get(0).getThumb_image())
@@ -280,8 +295,8 @@ public class GuideFragment extends ChannelBaseFragment implements
         }
     }
 
-    private void setVideoPath(final VideoView videoView, String url) {
-        final String playPath;
+    private void setVideoPath(VideoView videoView, String url) {
+        String playPath;
         DownloadTable downloadTable = new Select().from(DownloadTable.class)
                 .where(DownloadTable.URL + " = ?", url).executeSingle();
         if (downloadTable == null) {
@@ -299,8 +314,6 @@ public class GuideFragment extends ChannelBaseFragment implements
         Log.d(TAG, "set video path: " + playPath);
         videoView.setVideoPath(playPath);
         videoView.start();
-
-
     }
 
     private void downloadVideo(ArrayList<Carousel> carousels, String tag) {

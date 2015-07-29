@@ -47,7 +47,8 @@ public class DaisyViewContainer extends LinearLayout {
                     if (i != 0) {
                         LayoutParams layoutParams = new LayoutParams(199, 278);
                         layoutParams.setMargins((int) 25, 0, 0, 0);
-                        addView(allViews.get(i), layoutParams);
+                        allViews.get(i).setLayoutParams(layoutParams);
+                        addView(allViews.get(i));
 
                     } else {
 					    LayoutParams layoutParams = new LayoutParams(199, 278);
@@ -61,8 +62,8 @@ public class DaisyViewContainer extends LinearLayout {
                     if (i != 0) {
                         LayoutParams layoutParams = new LayoutParams(297, 166);
                         layoutParams.setMargins(0, (int) spacing, 0, 0);
-                        addView(allViews.get(i), layoutParams);
-
+                        allViews.get(i).setLayoutParams(layoutParams);
+                        addView(allViews.get(i));
                     } else {
                         addView(allViews.get(i));
                     }

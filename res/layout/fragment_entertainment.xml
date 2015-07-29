@@ -2,23 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:orientation="vertical"
     android:paddingLeft="@dimen/fragment_padding_lr"
-    android:paddingRight="@dimen/fragment_padding_lr"
-     >
+    android:paddingRight="@dimen/fragment_padding_lr" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2.06"
         android:layout_marginBottom="13dp"
+        android:layout_marginTop="14dp"
+        android:layout_weight="2.06"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:orientation="horizontal" >
 
         <RelativeLayout
             android:id="@+id/vaiety_lefttop"
             android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1.11"
-            android:layout_height="match_parent" >
+            android:clipChildren="false"
+            android:clipToPadding="false" >
 
             <tv.ismar.daisy.views.AsyncImageView
                 android:id="@+id/vaiety_post"
@@ -75,23 +81,25 @@
         <RelativeLayout
             android:id="@+id/vaiety_righttop"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_marginLeft="27dp" >
+            android:layout_marginLeft="27dp"
+            android:layout_weight="1"
+            android:clipChildren="false"
+            android:clipToPadding="false" >
 
             <LinearLayout
                 android:id="@+id/vaiety_card1"
                 android:layout_width="398dp"
                 android:layout_height="258dp"
-                android:orientation="vertical"
-                 >
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:orientation="vertical" >
 
                 <tv.ismar.daisy.views.LabelImageView
                     xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
                     android:id="@+id/vaiety_card1_image"
                     android:layout_width="398dp"
                     android:layout_height="227dp"
-                    android:background="@drawable/launcher_selector"
                     android:focusable="true"
                     android:scaleType="fitXY"
                     labelimage:focusbackground="#b3303030"
@@ -111,6 +119,8 @@
                 android:layout_height="258dp"
                 android:layout_marginLeft="33dp"
                 android:layout_toRightOf="@+id/vaiety_card1"
+                android:clipChildren="false"
+                android:clipToPadding="false"
                 android:orientation="vertical" >
 
                 <tv.ismar.daisy.views.LabelImageView
@@ -118,7 +128,6 @@
                     android:id="@+id/vaiety_card2_image"
                     android:layout_width="match_parent"
                     android:layout_height="227dp"
-                    android:background="@drawable/launcher_selector"
                     android:focusable="true"
                     android:scaleType="fitXY"
                     android:src="@drawable/list_item_preview_bg"
@@ -138,6 +147,8 @@
                 android:layout_width="398dp"
                 android:layout_height="258dp"
                 android:layout_below="@+id/vaiety_card1"
+                android:clipChildren="false"
+                android:clipToPadding="false"
                 android:orientation="vertical" >
 
                 <tv.ismar.daisy.views.LabelImageView
@@ -145,7 +156,6 @@
                     android:id="@+id/vaiety_card3_image"
                     android:layout_width="match_parent"
                     android:layout_height="227dp"
-                    android:background="@drawable/launcher_selector"
                     android:focusable="true"
                     android:scaleType="fitXY"
                     android:src="@drawable/list_item_preview_bg"
@@ -167,6 +177,8 @@
                 android:layout_below="@+id/vaiety_card2"
                 android:layout_marginLeft="33dp"
                 android:layout_toRightOf="@+id/vaiety_card3"
+                android:clipChildren="false"
+                android:clipToPadding="false"
                 android:orientation="vertical" >
 
                 <tv.ismar.daisy.views.LabelImageView
@@ -174,7 +186,6 @@
                     android:id="@+id/vaiety_card4_image"
                     android:layout_width="match_parent"
                     android:layout_height="227dp"
-                    android:background="@drawable/launcher_selector"
                     android:focusable="true"
                     android:scaleType="fitXY"
                     android:src="@drawable/list_item_preview_bg"
@@ -195,12 +206,16 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:orientation="horizontal" >
 
         <RelativeLayout
             android:id="@+id/vaiety_channel1"
             android:layout_width="332dp"
             android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:orientation="vertical" >
 
             <tv.ismar.daisy.views.LabelImageView
@@ -208,7 +223,6 @@
                 android:id="@+id/vaiety_channel1_image"
                 android:layout_width="332dp"
                 android:layout_height="189dp"
-                android:background="@drawable/launcher_selector"
                 android:focusable="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
@@ -230,6 +244,8 @@
             android:layout_width="332dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="29dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:orientation="vertical" >
 
             <tv.ismar.daisy.views.LabelImageView
@@ -237,7 +253,6 @@
                 android:id="@+id/vaiety_channel2_image"
                 android:layout_width="332dp"
                 android:layout_height="189dp"
-                android:background="@drawable/launcher_selector"
                 android:focusable="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
@@ -258,6 +273,8 @@
             android:layout_width="332dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="28dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:orientation="vertical" >
 
             <tv.ismar.daisy.views.LabelImageView
@@ -265,7 +282,6 @@
                 android:id="@+id/vaiety_channel3_image"
                 android:layout_width="332dp"
                 android:layout_height="189dp"
-                android:background="@drawable/launcher_selector"
                 android:focusable="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
@@ -286,6 +302,8 @@
             android:layout_width="332dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="28dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:orientation="vertical" >
 
             <tv.ismar.daisy.views.LabelImageView
@@ -295,7 +313,6 @@
                 android:layout_height="189dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:background="@drawable/launcher_selector"
                 android:focusable="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
@@ -311,11 +328,11 @@
                 android:textSize="24sp" />
         </RelativeLayout>
 
-    <include layout="@layout/toppagelistmorebutton"
-                android:layout_width="319dp"
-                android:layout_height="189dp"
-                android:layout_marginLeft="29dp"
-         />
+        <include
+            android:layout_width="319dp"
+            android:layout_height="189dp"
+            android:layout_marginLeft="29dp"
+            layout="@layout/toppagelistmorebutton" />
     </LinearLayout>
 
 </LinearLayout>
