@@ -6,6 +6,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.os.Handler;
+import android.os.Message;
 import org.apache.commons.lang3.StringUtils;
 
 import tv.ismar.daisy.R;
@@ -57,6 +59,9 @@ public class GuideFragment extends ChannelBaseFragment implements
     private LabelImageView toppage_carous_imageView1;
     private LabelImageView toppage_carous_imageView2;
     private LabelImageView toppage_carous_imageView3;
+
+    private MediaPlayer.OnCompletionListener loopAllListener;
+    private MediaPlayer.OnCompletionListener loopCurrentListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -207,7 +212,7 @@ public class GuideFragment extends ChannelBaseFragment implements
         deleteFile(carousels, tag);
         downloadVideo(carousels, tag);
 
-        final MediaPlayer.OnCompletionListener loopAllListener = new MediaPlayer.OnCompletionListener() {
+        loopAllListener = new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 if (flag.getPosition() + 1 >= allVideoUrl.size()) {
@@ -220,7 +225,7 @@ public class GuideFragment extends ChannelBaseFragment implements
             }
         };
 
-        final MediaPlayer.OnCompletionListener loopCurrentListener = new MediaPlayer.OnCompletionListener() {
+        loopCurrentListener = new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 setVideoPath(linkedVideoView,
@@ -234,6 +239,14 @@ public class GuideFragment extends ChannelBaseFragment implements
         View.OnFocusChangeListener itemFocusChangeListener = new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+
+//                Message message = new Message();
+//                message.what = 0;
+//                message.obj = v;
+//                loopMessageHandler.removeMessages(0);
+//                loopMessageHandler.sendMessageDelayed(message, 0);
+
+
                 boolean focusFlag = true;
                 for (ImageView imageView : allItem) {
                     focusFlag = focusFlag && (!imageView.isFocused());
@@ -244,36 +257,31 @@ public class GuideFragment extends ChannelBaseFragment implements
                     linkedVideoView.setOnCompletionListener(loopAllListener);
                 } else {
                     flag.setPosition((Integer) v.getTag());
-                    linkedVideoView
-                            .setOnCompletionListener(loopCurrentListener);
-                    setVideoPath(linkedVideoView,
-                            allVideoUrl.get(flag.getPosition()));
+                    linkedVideoView.setOnCompletionListener(loopCurrentListener);
+                    setVideoPath(linkedVideoView, allVideoUrl.get(flag.getPosition()));
                 }
+
             }
         };
-        Picasso.with(context).load(carousels.get(0).getThumb_image())
-                .into(toppage_carous_imageView1);
+
+
+        Picasso.with(context).load(carousels.get(0).getThumb_image()).into(toppage_carous_imageView1);
         toppage_carous_imageView1.setTag(0);
         toppage_carous_imageView1.setTag(R.drawable.launcher_selector, carousels.get(0));
         toppage_carous_imageView1.setOnClickListener(ItemClickListener);
-        toppage_carous_imageView1
-                .setOnFocusChangeListener(itemFocusChangeListener);
+        toppage_carous_imageView1.setOnFocusChangeListener(itemFocusChangeListener);
 
-        Picasso.with(context).load(carousels.get(1).getThumb_image())
-                .into(toppage_carous_imageView2);
+        Picasso.with(context).load(carousels.get(1).getThumb_image()).into(toppage_carous_imageView2);
         toppage_carous_imageView2.setTag(1);
         toppage_carous_imageView2.setTag(R.drawable.launcher_selector, carousels.get(1));
         toppage_carous_imageView2.setOnClickListener(ItemClickListener);
-        toppage_carous_imageView2
-                .setOnFocusChangeListener(itemFocusChangeListener);
+        toppage_carous_imageView2.setOnFocusChangeListener(itemFocusChangeListener);
 
-        Picasso.with(context).load(carousels.get(2).getThumb_image())
-                .into(toppage_carous_imageView3);
+        Picasso.with(context).load(carousels.get(2).getThumb_image()).into(toppage_carous_imageView3);
         toppage_carous_imageView3.setTag(2);
         toppage_carous_imageView3.setTag(R.drawable.launcher_selector, carousels.get(2));
         toppage_carous_imageView3.setOnClickListener(ItemClickListener);
-        toppage_carous_imageView3
-                .setOnFocusChangeListener(itemFocusChangeListener);
+        toppage_carous_imageView3.setOnFocusChangeListener(itemFocusChangeListener);
 
         allItem.add(toppage_carous_imageView1);
         allItem.add(toppage_carous_imageView2);
@@ -295,25 +303,36 @@ public class GuideFragment extends ChannelBaseFragment implements
         }
     }
 
-    private void setVideoPath(VideoView videoView, String url) {
-        String playPath;
-        DownloadTable downloadTable = new Select().from(DownloadTable.class)
-                .where(DownloadTable.URL + " = ?", url).executeSingle();
-        if (downloadTable == null) {
-            playPath = url;
-        } else {
-            File localVideoFile = new File(downloadTable.download_path);
-            String fileMd5Code = localVideoFile.getName().split("\\.")[0];
-            if (fileMd5Code.equalsIgnoreCase(downloadTable.md5)) {
-                playPath = localVideoFile.getAbsolutePath();
-            } else {
-                playPath = url;
-            }
+    private void setVideoPath(final VideoView videoView, final String url) {
+        new Thread() {
+            @Override
+            public void run() {
+                String playPath;
+                DownloadTable downloadTable = new Select().from(DownloadTable.class)
+                        .where(DownloadTable.URL + " = ?", url).executeSingle();
+                if (downloadTable == null) {
+                    playPath = url;
+                } else {
+                    File localVideoFile = new File(downloadTable.download_path);
+                    String fileMd5Code = localVideoFile.getName().split("\\.")[0];
+                    if (fileMd5Code.equalsIgnoreCase(downloadTable.md5)) {
+                        playPath = localVideoFile.getAbsolutePath();
+                    } else {
+                        playPath = url;
+                    }
 
-        }
-        Log.d(TAG, "set video path: " + playPath);
-        videoView.setVideoPath(playPath);
-        videoView.start();
+                }
+                Log.d(TAG, "set video path: " + playPath);
+                Message message = new Message();
+                message.what = 0;
+                message.obj = playPath;
+                loopMessageHandler.sendMessage(message);
+            }
+        }.start();
+
+
+//        videoView.setVideoPath(playPath);
+//        videoView.start();
     }
 
     private void downloadVideo(ArrayList<Carousel> carousels, String tag) {
@@ -389,6 +408,20 @@ public class GuideFragment extends ChannelBaseFragment implements
             }
         }
     }
+
+
+    private Handler loopMessageHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+
+            String playPath = (String) msg.obj;
+
+            linkedVideoView.setVideoPath(playPath);
+            linkedVideoView.start();
+
+        }
+    };
+
 }
 
 class Flag {
@@ -414,4 +447,8 @@ class Flag {
     public interface ChangeCallback {
         void change(int position);
     }
+
 }
+
+
+
