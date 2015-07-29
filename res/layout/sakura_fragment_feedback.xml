@@ -14,7 +14,7 @@
             android:layout_marginBottom="@dimen/feedback_layout_v_margin"
             android:id="@+id/sn_code"
             android:text="您的设备SN号："
-            android:textSize="@dimen/textSize_normal"
+            android:textSize="@dimen/sakura_h5_text_size"
             android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
@@ -54,13 +54,13 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/textSize_normal"
+                android:textSize="@dimen/sakura_h5_text_size"
                 android:text="@string/contact_phone_number"/>
 
         <tv.ismar.sakura.ui.widget.SakuraEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="@dimen/textSize_normal"
+                android:textSize="@dimen/sakura_h5_text_size"
                 android:gravity="center"
                 android:id="@+id/phone_number_edit"
                 android:inputType="phone"
@@ -84,13 +84,13 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/textSize_normal"
+                android:textSize="@dimen/sakura_h5_text_size"
                 android:text="@string/add_description"/>
 
         <tv.ismar.sakura.ui.widget.SakuraEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="@dimen/textSize_normal"
+                android:textSize="@dimen/sakura_h5_text_size"
                 android:maxLength="70"
                 android:gravity="center"
                 android:id="@+id/description_edit"
@@ -105,7 +105,7 @@
             android:layout_marginTop="@dimen/feedback_layout_v_margin"
             android:layout_marginBottom="@dimen/feedback_layout_v_margin"
             android:id="@+id/submit_btn"
-            android:textSize="@dimen/textSize_normal"
+            android:textSize="@dimen/sakura_h5_text_size"
             android:layout_gravity="center"
             android:textColor="#ffffff"
             android:text="@string/submit_text"

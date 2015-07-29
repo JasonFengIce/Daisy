@@ -70,7 +70,7 @@ public class HelpFragment extends Fragment {
 
                     @Override
                     public void failure(RetrofitError retrofitError) {
-                        Log.e(TAG, retrofitError.getMessage());
+                        Log.e(TAG, "fetchTel: error");
                     }
                 }
         );

@@ -49,10 +49,9 @@ public class HomeActivity extends FragmentActivity {
         scroller.initViewPagerScroll(viewPager);
 
         viewPager.setPageTransformer(false, new RotationPagerTransformer());
-
         indicatorAdapter = new IndicatorAdapter(getSupportFragmentManager(), fragments);
-        viewPager.setAdapter(indicatorAdapter);
 
+        viewPager.setAdapter(indicatorAdapter);
         pagerIndicator.setViewPager(viewPager);
 
         pagerIndicator.setCurrentItem(position);

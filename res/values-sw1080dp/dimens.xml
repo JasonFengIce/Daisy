@@ -829,8 +829,8 @@
     <dimen name="home_viewPager_height">800dp</dimen>
     <dimen name="home_indicator_height">200dp</dimen>
     <dimen name="home_indicator_margin_bottom">20dp</dimen>
-    <dimen name="home_indicator_icon_width">140dp</dimen>
-    <dimen name="home_indicator_icon_height">140dp</dimen>
+    <dimen name="home_indicator_icon_width">160dp</dimen>
+    <dimen name="home_indicator_icon_height">160dp</dimen>
 
 
     <!-- fragment_node -->
@@ -892,25 +892,17 @@
 
 
     <!--sakura-->
-
     <dimen name="sakura_launch_icon_width">220dp</dimen>
     <dimen name="sakura_launch_icon_height">220dp</dimen>
     <dimen name="sakura_launch_icon_margin_left">50dp</dimen>
     <dimen name="sakura_launch_icon_margin_right">50dp</dimen>
-
     <dimen name="sakura_ismartv_icon_width">220dp</dimen>
     <dimen name="sakura_ismartv_icon_height">220dp</dimen>
-
     <dimen name="sakura_node_list_item_height">90dp</dimen>
-
     <dimen name="sakura_h1_text_size">50sp</dimen>
     <dimen name="sakura_h5_text_size">30sp</dimen>
     <dimen name="sakura_h7_text_size">24sp</dimen>
-
-
     <dimen name="sakura_node_item_margin_top">20dp</dimen>
-
     <dimen name="sakura_node_testbutton_height">100dp</dimen>
-
-
+    <dimen name="sakura_node_nodename_width">200dp</dimen>
 </resources>

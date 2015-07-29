@@ -62,7 +62,7 @@
                 android:value="ezPBAhZuOKTRS73MKsRl4KhH"/>
 
         <activity
-                android:name=".ui.activity.AdvertisementActivity"
+                android:name="tv.ismar.sakura.LauncherActivity"
                 android:screenOrientation="landscape"
                 android:launchMode="singleTask"
                 android:theme="@android:style/Theme.NoTitleBar.Fullscreen"

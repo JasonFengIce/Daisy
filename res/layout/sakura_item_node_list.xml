@@ -37,17 +37,18 @@
     </FrameLayout>
 
     <TextView
-            android:clickable="false"
-            android:focusable="false"
+            android:id="@+id/node_name"
+            android:layout_width="@dimen/sakura_node_nodename_width"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/list_item_margin"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/title"
-            android:id="@+id/node_name"
             android:textColor="#8f8f8f"
             android:textSize="@dimen/sakura_h5_text_size"
-            android:layout_width="@dimen/item_node_name_width"
             android:singleLine="true"
-            android:layout_height="wrap_content"/>
+            android:clickable="false"
+            android:focusable="false"
+            />
 
     <TextView
             android:clickable="false"
@@ -57,7 +58,7 @@
             android:layout_alignParentRight="true"
             android:id="@+id/select_prompt"
             android:textColor="#8f8f8f"
-            android:textSize="@dimen/list_select_prompt_textSize"
+            android:textSize="@dimen/sakura_h5_text_size"
             android:layout_width="150dp"
             android:layout_height="wrap_content"/>
 

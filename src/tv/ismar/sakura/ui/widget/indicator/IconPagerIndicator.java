@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,7 @@ public class IconPagerIndicator extends LinearLayout implements PagerIndicator, 
         this.viewPager = viewPager;
         viewPager.setOnPageChangeListener(this);
 
+
         initializeView();
     }
 
@@ -71,6 +73,7 @@ public class IconPagerIndicator extends LinearLayout implements PagerIndicator, 
             imageView.setOnClickListener(this);
 
         addView(view, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        icons[0].setSelect(true);
         requestLayout();
 
     }
@@ -91,6 +94,7 @@ public class IconPagerIndicator extends LinearLayout implements PagerIndicator, 
 
     @Override
     public void onPageSelected(int position) {
+        Log.d(TAG, "onPageSelected: " + position);
         for (int i = 0; i < icons.length; i++) {
             if (position == i) {
                 icons[i].setSelect(true);
@@ -108,8 +112,8 @@ public class IconPagerIndicator extends LinearLayout implements PagerIndicator, 
 
     @Override
     public void onClick(View view) {
-        for (int i = 0;i < icons.length; i++){
-            if (icons[i].getId() == view.getId()){
+        for (int i = 0; i < icons.length; i++) {
+            if (icons[i].getId() == view.getId()) {
                 setCurrentItem(i);
             }
         }
