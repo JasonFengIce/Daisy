@@ -295,7 +295,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
 
             @Override
             public void failure(RetrofitError retrofitError) {
-                Log.e(TAG, retrofitError.getMessage());
+
             }
         });
     }
@@ -319,7 +319,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
 
             @Override
             public void failure(RetrofitError retrofitError) {
-                Log.e(TAG, retrofitError.getMessage());
+
             }
         });
     }
@@ -653,10 +653,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
     }
 
     public int getProvincePositionByName(String provinceName) {
-        CityTable cityTable = new Select()
-                .from(CityTable.class)
-                .where(CityTable.NICK + " = ? ", provinceName)
-                .executeSingle();
+        CityTable cityTable = new Select().from(CityTable.class).where(CityTable.NICK + " = ? ", provinceName).executeSingle();
         return cityTable.flag - 1;
     }
 

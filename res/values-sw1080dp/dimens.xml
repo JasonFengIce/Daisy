@@ -903,5 +903,14 @@
 
     <dimen name="sakura_node_list_item_height">90dp</dimen>
 
+    <dimen name="sakura_h1_text_size">50sp</dimen>
+    <dimen name="sakura_h5_text_size">30sp</dimen>
+    <dimen name="sakura_h7_text_size">24sp</dimen>
+
+
+    <dimen name="sakura_node_item_margin_top">20dp</dimen>
+
+    <dimen name="sakura_node_testbutton_height">100dp</dimen>
+
 
 </resources>

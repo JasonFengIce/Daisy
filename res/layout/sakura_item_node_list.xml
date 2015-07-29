@@ -30,7 +30,7 @@
                 android:focusable="false"
                 android:id="@+id/title_number"
                 android:layout_width="match_parent"
-                android:textSize="@dimen/count_number_textSize"
+                android:textSize="@dimen/sakura_h7_text_size"
                 android:textColor="#00a2ff"
                 android:gravity="center"
                 android:layout_height="match_parent"/>
@@ -44,7 +44,7 @@
             android:layout_toRightOf="@id/title"
             android:id="@+id/node_name"
             android:textColor="#8f8f8f"
-            android:textSize="@dimen/textSize_normal"
+            android:textSize="@dimen/sakura_h5_text_size"
             android:layout_width="@dimen/item_node_name_width"
             android:singleLine="true"
             android:layout_height="wrap_content"/>
