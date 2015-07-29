@@ -171,6 +171,7 @@
         <attr name="focuspaddingtop" format="float"/>
         <attr name="customfocus" format="boolean"/>
         <attr name="maxfocustitle" format="integer"/>
+        <attr name="needzoom" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="DaisyViewContainer">

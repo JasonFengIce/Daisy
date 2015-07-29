@@ -4,47 +4,49 @@
     android:id="@+id/root"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="-5dp"
+    android:clipChildren="false"
+    android:clipToPadding="false" 
      >
 
     <tv.ismar.daisy.views.LabelImageView
         xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
         android:id="@+id/toppage_carous_imageView1"
-        android:layout_width="303dp"
-        android:layout_height="169dp"
+        android:layout_width="297dp"
+        android:layout_height="166dp"
         android:descendantFocusability="beforeDescendants"
         android:focusable="true"
         android:scaleType="fitXY"
         labelimage:frontcolor="#d9000000"
         labelimage:customfocus="true"
+        labelimage:needzoom="true"
          />
 
     <tv.ismar.daisy.views.LabelImageView
         xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
         android:id="@+id/toppage_carous_imageView2"
-        android:layout_width="303dp"
-        android:layout_height="169dp"
+        android:layout_width="297dp"
+        android:layout_height="166dp"
         android:layout_below="@+id/toppage_carous_imageView1"
         android:descendantFocusability="beforeDescendants"
         android:focusable="true"
         android:scaleType="fitXY"
-        android:layout_marginTop="-1.5dp"
         labelimage:frontcolor="#d9000000"
         labelimage:customfocus = "true"
+        labelimage:needzoom="true"
          />
 
     <tv.ismar.daisy.views.LabelImageView
         xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
         android:id="@+id/toppage_carous_imageView3"
-        android:layout_width="303dp"
-        android:layout_height="169dp"
+        android:layout_width="297dp"
+        android:layout_height="166dp"
         android:layout_below="@+id/toppage_carous_imageView2"
         android:descendantFocusability="beforeDescendants"
         android:focusable="true"
         android:scaleType="fitXY"
-        android:layout_marginTop="-1.5dp"
         labelimage:frontcolor="#d9000000"
         labelimage:customfocus = "true"
+        labelimage:needzoom="true"
          />
 
 </RelativeLayout>

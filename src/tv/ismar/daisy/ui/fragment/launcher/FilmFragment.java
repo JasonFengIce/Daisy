@@ -33,6 +33,7 @@ import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.data.table.DownloadTable;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
 import tv.ismar.daisy.ui.widget.DaisyVideoView;
+import tv.ismar.daisy.ui.widget.HomeItemContainer;
 import tv.ismar.daisy.utils.HardwareUtils;
 import tv.ismar.daisy.views.LabelImageView;
 
@@ -126,7 +127,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
                 .findViewById(R.id.film_linked_video);
         film_lefttop_image = (LabelImageView) mView
                 .findViewById(R.id.film_lefttop_image);
-        film_post_layout =(FrameLayout)mView.findViewById(R.id.film_post_layout);
+        film_post_layout =(HomeItemContainer)mView.findViewById(R.id.film_post_layout);
         linkedVideoImage = (ImageView) mView.findViewById(R.id.film_linked_image);
         film_linked_title = (TextView) mView.findViewById(R.id.film_linked_title);
         flag = new Flag(this);
@@ -231,11 +232,12 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
             params.setMargins(0, 0, 25, 0);
 //            }
             ImageView itemView = new ImageView(context);
-            itemView.setBackgroundResource(R.drawable.launcher_selector);
+//            itemView.setBackgroundResource(R.drawable.launcher_selector);
             itemView.setFocusable(true);
+            itemView.setLayoutParams(params);
             itemView.setOnClickListener(ItemClickListener);
             if (i <= 7) {
-                FrameLayout frameLayout = (FrameLayout) LayoutInflater.from(context).inflate(R.layout.item_poster, null);
+            	tv.ismar.daisy.ui.widget.HomeItemContainer frameLayout = (tv.ismar.daisy.ui.widget.HomeItemContainer) LayoutInflater.from(context).inflate(R.layout.item_poster, null);
                 ImageView postitemView = (ImageView) frameLayout.findViewById(R.id.poster_image);
                 TextView textView = (TextView) frameLayout.findViewById(R.id.poster_title);
                 if (StringUtils.isNotEmpty(posters.get(i).getIntroduction())) {
@@ -246,23 +248,25 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
 					@Override
 					public void onFocusChange(View v, boolean hasFocus) {
 						if (hasFocus) {
-							((FrameLayout) v.getParent())
-									.setBackgroundResource(R.drawable.popup_bg_yellow);
+							((HomeItemContainer) v.getParent())
+									.setDrawBorder(true);
+							((HomeItemContainer) v.getParent()).invalidate();
 						} else {
-							((FrameLayout) v.getParent())
-									.setBackgroundResource(R.drawable.launcher_selector);
+							((HomeItemContainer) v.getParent())
+							.setDrawBorder(false);
+							((HomeItemContainer) v.getParent()).invalidate();
 						}
 					}
 				});
                 textView.setOnClickListener(ItemClickListener);
                 frameLayout.setOnClickListener(ItemClickListener);
                 Picasso.with(context).load(posters.get(i).getCustom_image()).into(postitemView);
-                textView.setTag(posters.get(i));
+//                textView.setTag(posters.get(i));
                 frameLayout.setTag(posters.get(i));
                 frameLayout.setLayoutParams(params);
                 guideRecommmendList.addView(frameLayout);
             } else {
-            	params.width = 197;
+            	params.width = 199;
                 params.setMargins(0, 0, 0, 0);
                 LinearLayout morelayout = (LinearLayout) LayoutInflater.from(
                         context).inflate(R.layout.toppagelistmorebutton,
@@ -314,10 +318,14 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
 
         for (int i = 0; i < carousels.size(); i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, 0);
-            params.weight = 1;
+            		206, 86);
+//            params.weight = 1;
+            if(i==0)
+            params.topMargin = 0;
+            else
+            params.topMargin = 17;	
             ImageView itemView = new ImageView(context);
-            itemView.setBackgroundResource(R.drawable.launcher_selector);
+//            itemView.setBackgroundResource(R.drawable.launcher_selector);
             itemView.setFocusable(true);
             Picasso.with(context).load(carousels.get(i).getThumb_image())
                     .into(itemView);

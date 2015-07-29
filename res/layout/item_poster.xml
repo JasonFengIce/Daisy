@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<tv.ismar.daisy.ui.widget.HomeItemContainer xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/guide_recommend_item_width"
     android:layout_height="@dimen/guide_recommend_item_height"
     android:layout_marginLeft="23dp"
-    android:background="@drawable/launcher_selector"
     android:clickable="true"
     android:focusable="false">
 
     <ImageView
         android:id="@+id/poster_image"
-        android:layout_width="193dp"
-        android:layout_height="272dp"
+        android:layout_width="@dimen/guide_recommend_item_width"
+        android:layout_height="@dimen/guide_recommend_item_height"
         android:scaleType="fitXY"
         android:layout_gravity="center"
          />
@@ -30,4 +29,4 @@
         android:paddingLeft="3dp"
         android:visibility="gone" />
 
-</FrameLayout>
+</tv.ismar.daisy.ui.widget.HomeItemContainer>
