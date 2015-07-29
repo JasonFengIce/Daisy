@@ -1,5 +1,6 @@
 package tv.ismar.daisy.ui.fragment.launcher;
 
+import android.R.integer;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -61,7 +62,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
     private LabelImageView film_lefttop_image;
 
     private ArrayList<Carousel> carousels;
-    private ArrayList<ImageView> allItem;
+    private ArrayList<LabelImageView> allItem;
 
     private Flag flag;
 
@@ -268,7 +269,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
             } else {
             	params.width = 199;
                 params.setMargins(0, 0, 0, 0);
-                LinearLayout morelayout = (LinearLayout) LayoutInflater.from(
+                tv.ismar.daisy.ui.widget.HomeItemContainer morelayout = (tv.ismar.daisy.ui.widget.HomeItemContainer) LayoutInflater.from(
                         context).inflate(R.layout.toppagelistmorebutton,
                         null);
                 morelayout.setLayoutParams(params);
@@ -308,7 +309,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
 
 
     private void initCarousel(final ArrayList<HomePagerEntity.Carousel> carousels) {
-        allItem = new ArrayList<ImageView>();
+        allItem = new ArrayList<LabelImageView>();
         this.carousels = carousels;
         final String tag = getChannelEntity().getChannel();
 
@@ -323,8 +324,8 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
             if(i==0)
             params.topMargin = 0;
             else
-            params.topMargin = 17;	
-            ImageView itemView = new ImageView(context);
+            params.topMargin = 17;
+            LabelImageView itemView = new LabelImageView(context);
 //            itemView.setBackgroundResource(R.drawable.launcher_selector);
             itemView.setFocusable(true);
             Picasso.with(context).load(carousels.get(i).getThumb_image())
@@ -334,7 +335,8 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
             itemView.setTag(i);
             itemView.setTag(R.drawable.launcher_selector, carousels.get(i));
             itemView.setOnClickListener(ItemClickListener);
-
+            int shadowcolor = getActivity().getResources().getColor(R.color.carousel_focus);
+            itemView.setFrontcolor(shadowcolor);
             allItem.add(itemView);
             carouselLayout.addView(itemView);
         }
@@ -448,14 +450,12 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
     public void change(int position) {
         Log.d(TAG, "changed position: " + position);
         for (int i = 0; i < allItem.size(); i++) {
-            ImageView imageView = allItem.get(i);
-            if (position != i) {
-                if (imageView.getAlpha() == 1) {
-                    imageView.setAlpha((float) 0.5);
-                }
-            } else {
-                imageView.setAlpha((float) 1);
-            }
+        	LabelImageView imageView = allItem.get(i);
+			if (position != i) {
+				imageView.setCustomfocus(false);
+			}else {
+				imageView.setCustomfocus(true);
+			}
         }
     }
 
