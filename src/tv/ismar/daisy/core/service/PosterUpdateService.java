@@ -4,8 +4,11 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.nfc.Tag;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.util.Base64;
 import android.util.Log;
 import retrofit.Callback;
@@ -18,6 +21,7 @@ import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.advertisement.AdvertisementInfoEntity;
+import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.models.AdElement;
 import tv.ismar.daisy.utils.AppUtils;
 
@@ -29,21 +33,31 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 /**
  * Created by huaijie on 3/19/15.
  */
 public class PosterUpdateService extends Service {
     private static final String TAG = "PosterUpdateService";
+
+    private static final int UPDATE_ADVERTISEMENT = 0x0001;
+
     public static final String POSTER_NAME = "poster.png";
     private static final String POSTER_TMP_NAME = "poster_tmp.png";
 
     private File posterFile;
     private File posterTmpFile;
+
+    private Handler messageHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case UPDATE_ADVERTISEMENT:
+                    fetchAdvertisementInfo();
+                    break;
+            }
+        }
+    };
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -77,37 +91,53 @@ public class PosterUpdateService extends Service {
                 if (isPosterExpire() && posterFile.exists()) {
                     posterFile.delete();
                 }
-                String host = getPosterDomain();
 
-                if (null != host && !"".equals(host)) {
-                    fetchAdvertisementInfo(host);
-                }
-
+                messageHandler.sendEmptyMessage(UPDATE_ADVERTISEMENT);
             }
         };
         timer.schedule(tt, 3000, 30 * 1000);
 // ／       timer.schedule(tt, 3000, 15 * 60 * 1000);
     }
 
-    private void fetchAdvertisementInfo(String host) {
+    private void fetchAdvertisementInfo() {
+        String api = SimpleRestClient.ad_domain + "/api/get/ad/";
+        String adpId = "['" + "kaipingguanggao" + "']";
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("adpid", adpId);
 
-    	String params = "channel=" + "" + "&section="
-				+ "" + "&itemid="
-				+ "&topic="
-				+ ""
-				+ "&source="
-				+ "list"
-				+ "&genre="
-				+ "&content_model="
-				+ "&director="
-				+ "&actor="
-				+ "&clipid="
-				+ "&live_video="
-				+ "&vendor="
-				+ "&expense="
-				+ "&length=";
-		new GetAdDataTask().execute("kaipingguanggao", params);
+        new IsmartvUrlClient().doAdvertisementRequest(IsmartvUrlClient.Method.POST, api, params, new IsmartvUrlClient.CallBack() {
+            @Override
+            public void onSuccess(String result) {
+                Log.d(TAG, "fetchAdvertisementInfo:" + result);
+            }
+
+            @Override
+            public void onFailed(Exception exception) {
+                Log.e(TAG, exception.getMessage());
+            }
+        });
     }
+
+
+//    private void fetchAdvertisementInfo() {
+//
+//        String params = "channel=" + "" + "&section="
+//                + "" + "&itemid="
+//                + "&topic="
+//                + ""
+//                + "&source="
+//                + "list"
+//                + "&genre="
+//                + "&content_model="
+//                + "&director="
+//                + "&actor="
+//                + "&clipid="
+//                + "&live_video="
+//                + "&vendor="
+//                + "&expense="
+//                + "&length=";
+//        new GetAdDataTask().execute("kaipingguanggao", params);
+//    }
 
 
     private void downloadPic(final AdvertisementInfoEntity advertisementInfoEntity) {
@@ -173,36 +203,34 @@ public class PosterUpdateService extends Service {
         editor.apply();
     }
 
-    private String getPosterDomain() {
-        return DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.ad_domain, "");
-    }
 
     private File getLocalPosterFile() {
         return getFileStreamPath(POSTER_NAME);
     }
-    
-	class GetAdDataTask extends AsyncTask<String, Void, ArrayList<AdElement>> {
 
-		@Override
-		protected void onPostExecute(ArrayList<AdElement> result) {
-			AdElement element = result.get(0);
-			String  url= element.getMedia_url();
-			String md5 = element.getMd5();
-			int id = element.getMedia_id();
-			AdvertisementInfoEntity entity = new AdvertisementInfoEntity();
-			entity.setUrl(url);
-			entity.setMd5(md5);
-			entity.setId(id);
-			downloadPic(entity);
-		}
+    class GetAdDataTask extends AsyncTask<String, Void, ArrayList<AdElement>> {
 
-		@Override
-		protected ArrayList<AdElement> doInBackground(String... params) {
-			String adpid = params[0];
-			String p = params[1];
-			ArrayList<AdElement> ads = NetworkUtils.getAdByPost(adpid, p);
-			return ads;
-		}
+        @Override
+        protected void onPostExecute(ArrayList<AdElement> result) {
+            AdElement element = result.get(0);
+            String  url= element.getMedia_url();
+            String md5 = element.getMd5();
+            int id = element.getMedia_id();
+            AdvertisementInfoEntity entity = new AdvertisementInfoEntity();
+            entity.setUrl(url);
+            entity.setMd5(md5);
+            entity.setId(id);
+            downloadPic(entity);
+        }
 
-	}
+        @Override
+        protected ArrayList<AdElement> doInBackground(String... params) {
+            String adpid = params[0];
+            String p = params[1];
+            ArrayList<AdElement> ads = NetworkUtils.getAdByPost(adpid, p);
+            return ads;
+        }
+
+    }
+
 }

@@ -2,12 +2,15 @@ package tv.ismar.daisy.core.client;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import com.squareup.okhttp.*;
+import okio.BufferedSink;
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.sakura.utils.StringUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -125,6 +128,50 @@ public class IsmartvUrlClient extends Thread {
         start();
     }
 
+    public void doAdvertisementRequest(Method method, String api, HashMap<String, String> hashMap, CallBack callback) {
+        hashMap.put("channel", " ");
+        hashMap.put("section", " ");
+        hashMap.put("itemid", " ");
+        hashMap.put("topic", " ");
+        hashMap.put("source", " ");
+        hashMap.put("genre", " ");
+        hashMap.put("content_model", " ");
+        hashMap.put("director", " ");
+        hashMap.put("actor", " ");
+        hashMap.put("clipid", " ");
+        hashMap.put("live_video", " ");
+        hashMap.put("vendor", " ");
+        hashMap.put("expense", " ");
+        hashMap.put("length", " ");
+        hashMap.put("modelName", Build.MODEL.replace(" ", "_"));
+        hashMap.put("sn", SimpleRestClient.sn_token);
+        hashMap.put("access_token", SimpleRestClient.access_token);
+        hashMap.put("device_token", SimpleRestClient.device_token);
+        hashMap.put("version", String.valueOf(SimpleRestClient.appVersion));
+        hashMap.put("province", "HB");
+        hashMap.put("city", "SJZ");
+        hashMap.put("app", String.valueOf(SimpleRestClient.appVersion));
+        hashMap.put("resolution", SimpleRestClient.screenWidth + "," + SimpleRestClient.screenHeight);
+        hashMap.put("dpi", String.valueOf(SimpleRestClient.densityDpi));
+
+
+        Iterator<Map.Entry<String, String>> iterator = hashMap.entrySet().iterator();
+        StringBuffer stringBuffer = new StringBuffer();
+        while (iterator.hasNext()) {
+            Map.Entry<String, String> entry = iterator.next();
+            String key = entry.getKey();
+            String value = entry.getValue();
+            stringBuffer.append(key).append("=").append(value).append("&");
+        }
+        stringBuffer.deleteCharAt(stringBuffer.length() - 1);
+        this.params = stringBuffer.toString();
+        this.url = api;
+        this.callback = callback;
+        this.method = method;
+        start();
+    }
+
+
     public enum Method {
         GET,
         POST
@@ -174,9 +221,12 @@ public class IsmartvUrlClient extends Thread {
             OkHttpClient client = new OkHttpClient();
             client.setConnectTimeout(10, TimeUnit.SECONDS);
             RequestBody body = RequestBody.create(JSON, params);
+
             Request request = new Request.Builder()
                     .url(url)
                     .post(body)
+                    .header("Accept-Encoding", "gzip")
+                    .header("Content-Type", "application/x-www-form-urlencoded")
                     .build();
             Response response;
             response = client.newCall(request).execute();
@@ -189,6 +239,7 @@ public class IsmartvUrlClient extends Thread {
                             "\t<--- Response Result: " + "\t" + result + "\n" +
                             "\t---> END"
             );
+
             if (response.code() >= 400 && response.code() < 500) {
                 message.what = FAILURE_4XX;
                 message.obj = new IOException(response.message());
