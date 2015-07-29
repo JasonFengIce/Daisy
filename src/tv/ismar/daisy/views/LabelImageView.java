@@ -107,6 +107,10 @@ public class LabelImageView extends AsyncImageView {
 		}
 	}
 
+	public void setFrontcolor(int frontcolor) {
+		this.frontcolor = frontcolor;
+	}
+
 	@Override
 	public void draw(Canvas canvas) {
 		super.draw(canvas);

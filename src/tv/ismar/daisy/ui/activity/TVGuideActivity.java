@@ -181,7 +181,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             if (currentFragment.getClass().getName().equals(GuideFragment.class.getName())) {
                 showExitPopup(contentView);
             } else {
-                contentView.setBackgroundResource(R.color.normal_activity_bg);
+                contentView.setBackgroundResource(R.drawable.main_bg);
                 currentFragment = new GuideFragment();
                 replaceFragment(currentFragment);
                 topView.setTitle(getText(R.string.ismartv_cinema).toString());
