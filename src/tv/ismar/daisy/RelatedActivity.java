@@ -61,10 +61,17 @@ public class RelatedActivity extends BaseActivity implements OnSectionSelectChan
 	private HashMap<String, Object> mDataCollectionProperties = new HashMap<String, Object>();
 	
 	private String mSection;
+    private boolean isPortrait = false;
 	private void initViews(){
 		mSectionTabs = (RelateScrollableSectionList) findViewById(R.id.related_section_tabs);
 		mSectionTabs.setOnSectionSelectChangeListener(this);
-		mItemListGrid = (ZGridView) findViewById(R.id.related_list);
+        if(!isPortrait){
+            mItemListGrid = (ZGridView)findViewById(R.id.related_list);
+        }
+        else{
+            mItemListGrid = (ZGridView)findViewById(R.id.prelated_list);
+        }
+        mItemListGrid.setVisibility(View.VISIBLE);
 		mItemListGrid.setOnItemClickListener(this);
 		mItemListGrid.setFocusable(true);
 		arrow_left = (ImageView) findViewById(R.id.arrow_left);
@@ -96,7 +103,6 @@ public class RelatedActivity extends BaseActivity implements OnSectionSelectChan
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.related_view);
 		mSimpleRestClient = new SimpleRestClient();
-		initViews();
 		mLoadingDialog = new LoadingDialog(this, getResources().getString(R.string.vod_loading));
 		mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
 		mLoadingDialog.show();
@@ -106,6 +112,11 @@ public class RelatedActivity extends BaseActivity implements OnSectionSelectChan
 			mSection = intent.getStringExtra(EventProperty.SECTION);
 			try {
 				mItem = (Item) bundle.getSerializable("item");
+                if(mItem!=null){
+                    if("movie".equals(mItem.content_model))
+                        isPortrait = true;
+                }
+                initViews();
 				Object relatedlistObj = bundle.getSerializable("related_item");
 				if(relatedlistObj != null) {
 					mRelatedItem = (ArrayList<Item>) relatedlistObj;
@@ -226,13 +237,13 @@ public class RelatedActivity extends BaseActivity implements OnSectionSelectChan
 	}
 	
 	private void buildGridView() {
-		mAdapter = new RelatedAdapter(this, mRelatedItem);
+		mAdapter = new RelatedAdapter(this, mRelatedItem,isPortrait);
 		//mAdapter.setList(mRelatedItem);
 		mItemListGrid.setAdapter(mAdapter);
-		mItemListGrid.setNumColumns(4);
+	//	mItemListGrid.setNumColumns(4);
 		mItemListGrid.setFocusable(true);
-		mItemListGrid.setHorizontalFadingEdgeEnabled(true);
-		mItemListGrid.setFadingEdgeLength(144);
+	//	mItemListGrid.setHorizontalFadingEdgeEnabled(true);
+	//	mItemListGrid.setFadingEdgeLength(144);
 	}
 
 	@Override

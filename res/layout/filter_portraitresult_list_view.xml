@@ -49,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
             <Button
-                    android:layout_marginLeft="80dip"
+                    android:layout_marginLeft="70dip"
                     android:layout_marginTop="356dip"
                     android:visibility="invisible"
                     android:clickable="true"
@@ -57,17 +57,17 @@
                     android:id="@+id/left_shadow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selector_search_left"
+                    android:background="@drawable/channel_arrow_left"
                     />
             <Button
                     android:layout_marginTop="356dip"
-                    android:layout_marginRight="80dip"
+                    android:layout_marginRight="70dip"
                     android:visibility="invisible"
                     android:layout_alignParentRight="true"
                     android:id="@+id/right_shadow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selector_search_right"
+                    android:background="@drawable/channel_arrow_right"
                     />
             <org.sakuratya.horizontal.ui.HGridView
                     android:layout_toLeftOf="@id/right_shadow"
@@ -85,8 +85,10 @@
                     sakura:selectionRightPadding="@dimen/HGridView_related_pselectionRightPadding"
                     sakura:selectionBottomPadding="@dimen/HGridView_related_pselectionBottomPadding"
                     android:layout_marginTop="9dip"
-                    android:padding="3dip"
-                    android:layout_marginBottom="57dip">
+                    android:paddingTop="3dip"
+                    android:layout_marginBottom="57dip"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginRight="30dip">
             </org.sakuratya.horizontal.ui.HGridView>
         </RelativeLayout>
  </LinearLayout>
@@ -145,24 +147,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
             <Button
-                    android:layout_marginLeft="80dip"
+                    android:layout_marginLeft="70dip"
                     android:layout_marginTop="172dip"
                     android:visibility="invisible"
                     android:clickable="true"
                     android:layout_alignParentLeft="true"
                     android:id="@+id/recommend_left_shadow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="41dip"
+                    android:layout_height="82dip"
                     android:background="@drawable/selector_search_left"
                     />
             <Button
                     android:layout_marginTop="172dip"
-                    android:layout_marginRight="80dip"
+                    android:layout_marginRight="70dip"
                     android:visibility="invisible"
                     android:layout_alignParentRight="true"
                     android:id="@+id/recommend_right_shadow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="41dip"
+                    android:layout_height="82dip"
                     android:background="@drawable/selector_search_right"
                     />
             <org.sakuratya.horizontal.ui.HGridView
@@ -181,8 +183,10 @@
                     sakura:selectionRightPadding="@dimen/HGridView_related_pselectionRightPadding"
                     sakura:selectionBottomPadding="@dimen/HGridView_related_pselectionBottomPadding"
                     android:layout_marginTop="9dip"
-                    android:padding="3dip"
-                    android:layout_marginBottom="57dip">
+                    android:paddingTop="3dip"
+                    android:layout_marginBottom="57dip"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginRight="30dip">
             </org.sakuratya.horizontal.ui.HGridView>
         </RelativeLayout>
     </LinearLayout>

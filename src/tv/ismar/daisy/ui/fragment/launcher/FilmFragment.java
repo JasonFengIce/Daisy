@@ -230,8 +230,15 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(199, 278);
 //            params.weight = 1;
 //            if (i != 7) {
-            params.setMargins(0, 0, 25, 0);
+//            params.setMargins(0, 0, 28, 0);
 //            }
+            if(i==6){
+            	params.setMargins(0, 0, 27, 0);  	
+            }else if(i == 7){
+            	params.setMargins(0, 0, 8, 0);
+            }else{
+            	params.setMargins(0, 0, 28, 0);
+            }
             ImageView itemView = new ImageView(context);
 //            itemView.setBackgroundResource(R.drawable.launcher_selector);
             itemView.setFocusable(true);
@@ -267,7 +274,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
                 frameLayout.setLayoutParams(params);
                 guideRecommmendList.addView(frameLayout);
             } else {
-            	params.width = 199;
+            	params.width = 206;
                 params.setMargins(0, 0, 0, 0);
                 tv.ismar.daisy.ui.widget.HomeItemContainer morelayout = (tv.ismar.daisy.ui.widget.HomeItemContainer) LayoutInflater.from(
                         context).inflate(R.layout.toppagelistmorebutton,

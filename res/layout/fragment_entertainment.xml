@@ -11,8 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="13dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginBottom="43dp"
         android:layout_weight="2.06"
         android:clipChildren="false"
         android:clipToPadding="false"
@@ -22,6 +21,7 @@
             android:id="@+id/vaiety_lefttop"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="30dp"
             android:layout_weight="1.11"
             android:clipChildren="false"
             android:clipToPadding="false" >
@@ -82,6 +82,7 @@
             android:id="@+id/vaiety_righttop"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="28dp"
             android:layout_marginLeft="27dp"
             android:layout_weight="1"
             android:clipChildren="false"
@@ -89,11 +90,13 @@
 
             <LinearLayout
                 android:id="@+id/vaiety_card1"
-                android:layout_width="398dp"
-                android:layout_height="258dp"
+                android:layout_width="402dp"
+                android:layout_height="260dp"
                 android:clipChildren="false"
                 android:clipToPadding="false"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:background="@drawable/entertainment_item_bg"
+                 >
 
                 <tv.ismar.daisy.views.LabelImageView
                     xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
@@ -102,8 +105,11 @@
                     android:layout_height="227dp"
                     android:focusable="true"
                     android:scaleType="fitXY"
+                    android:layout_margin="2dp"
                     labelimage:focusbackground="#b3303030"
-                    labelimage:focustextsize="18sp" />
+                    labelimage:focustextsize="18sp"
+                    labelimage:needzoom="true"
+                     />
 
                 <TextView
                     android:id="@+id/vaiety_card1_subtitle"
@@ -115,13 +121,14 @@
 
             <LinearLayout
                 android:id="@+id/vaiety_card2"
-                android:layout_width="398dp"
-                android:layout_height="258dp"
-                android:layout_marginLeft="33dp"
-                android:layout_toRightOf="@+id/vaiety_card1"
+                android:layout_width="402dp"
+                android:layout_height="260dp"
                 android:clipChildren="false"
                 android:clipToPadding="false"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:layout_marginLeft="27dp"
+                android:layout_toRightOf="@+id/vaiety_card1"
+                android:background="@drawable/entertainment_item_bg">
 
                 <tv.ismar.daisy.views.LabelImageView
                     xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
@@ -130,9 +137,12 @@
                     android:layout_height="227dp"
                     android:focusable="true"
                     android:scaleType="fitXY"
+                    android:layout_margin="2dp"
                     android:src="@drawable/list_item_preview_bg"
                     labelimage:focusbackground="#b3303030"
-                    labelimage:focustextsize="18sp" />
+                    labelimage:focustextsize="18sp"
+                    labelimage:needzoom="true"
+                     />
 
                 <TextView
                     android:id="@+id/vaiety_card2_subtitle"
@@ -144,12 +154,14 @@
 
             <LinearLayout
                 android:id="@+id/vaiety_card3"
-                android:layout_width="398dp"
-                android:layout_height="258dp"
-                android:layout_below="@+id/vaiety_card1"
+                android:layout_width="402dp"
+                android:layout_height="260dp"
                 android:clipChildren="false"
                 android:clipToPadding="false"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:layout_below="@+id/vaiety_card1"
+                android:layout_marginTop="31dp"
+                android:background="@drawable/entertainment_item_bg" >
 
                 <tv.ismar.daisy.views.LabelImageView
                     xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
@@ -158,9 +170,12 @@
                     android:layout_height="227dp"
                     android:focusable="true"
                     android:scaleType="fitXY"
+                    android:layout_margin="2dp"
                     android:src="@drawable/list_item_preview_bg"
                     labelimage:focusbackground="#b3303030"
-                    labelimage:focustextsize="18sp" />
+                    labelimage:focustextsize="18sp"
+                    labelimage:needzoom="true"
+                     />
 
                 <TextView
                     android:id="@+id/vaiety_card3_subtitle"
@@ -172,14 +187,16 @@
 
             <LinearLayout
                 android:id="@+id/vaiety_card4"
-                android:layout_width="398dp"
-                android:layout_height="258dp"
-                android:layout_below="@+id/vaiety_card2"
-                android:layout_marginLeft="33dp"
-                android:layout_toRightOf="@+id/vaiety_card3"
+                    android:layout_width="402dp"
+                android:layout_height="260dp"
                 android:clipChildren="false"
                 android:clipToPadding="false"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:layout_toRightOf="@+id/vaiety_card3"
+                android:layout_below="@+id/vaiety_card2"
+                android:layout_marginTop="31dp"
+                android:layout_marginLeft="27dp"
+                android:background="@drawable/entertainment_item_bg"  >
 
                 <tv.ismar.daisy.views.LabelImageView
                     xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
@@ -188,9 +205,12 @@
                     android:layout_height="227dp"
                     android:focusable="true"
                     android:scaleType="fitXY"
+                    android:layout_margin="2dp"
                     android:src="@drawable/list_item_preview_bg"
                     labelimage:focusbackground="#b3303030"
-                    labelimage:focustextsize="18sp" />
+                    labelimage:focustextsize="18sp"
+                    labelimage:needzoom="true"
+                     />
 
                 <TextView
                     android:id="@+id/vaiety_card4_subtitle"

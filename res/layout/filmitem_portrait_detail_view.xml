@@ -28,31 +28,17 @@
             android:orientation="horizontal"
             android:visibility="invisible">
     <RelativeLayout
-            android:layout_width="350dip"
+            android:layout_width="410dip"
             android:layout_height="471dip"
-
             android:layout_marginTop="29dip">
         <tv.ismar.daisy.views.AsyncImageView
                 android:layout_marginLeft="73dip"
                 android:id="@+id/detail_preview_img"
                 android:layout_width="336dip"
                 android:layout_height="471dip"
-                android:padding="@dimen/item_detail_previewimgview_padding"
-                android:scaleType="fitXY"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
             />
-        <!--<TextView-->
-                <!--android:id="@+id/bean_score"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignTop="@id/detail_preview_img"-->
-                <!--android:layout_alignRight="@id/detail_preview_img"-->
-                <!--android:layout_marginTop="@dimen/item_detail_detailquality_margintop"-->
-                <!--android:layout_marginRight="@dimen/item_detail_detailquality_marginright"-->
-                <!--android:background="@drawable/bean_score"-->
-                <!--android:visibility="gone"/>-->
-
         <TextView
                 android:id="@+id/bean_score"
                 android:layout_width="wrap_content"
@@ -68,7 +54,7 @@
                 android:textSize="@dimen/gridview_item_ItemBeanScore_textsize"
                 android:visibility="gone" />
         <TextView
-                android:layout_marginLeft="69dip"
+                android:layout_marginLeft="67dip"
                 android:id="@+id/detail_price_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -101,16 +87,15 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:paddingTop="14dip"
-             android:layout_marginLeft="20dip">
+             android:layout_marginLeft="25dip">
          <TextView
                  android:id="@+id/detail_title"
                  android:layout_width="@dimen/item_detail_detail_title_width"
                  android:layout_height="wrap_content"
                  android:layout_alignParentTop="true"
                  android:layout_alignParentLeft="true"
-                 android:layout_marginLeft="10dip"
                  android:layout_marginTop="4dip"
-                 android:textColor="#FFBBBBBB"
+                 android:textColor="@color/white"
                  android:textSize="@dimen/item_detail_detail_title_textSize"
                  android:ellipsize="end"
                  android:maxLines="1"
@@ -129,17 +114,19 @@
 
          <TextView
                  android:id="@+id/detail_intro"
-                 android:layout_width="@dimen/item_detail_intro_width"
-                 android:layout_height="180dip"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
                  android:layout_alignParentBottom="true"
                  android:layout_alignParentLeft="true"
-                 android:maxLines="4"
                  android:ellipsize="end"
-                 android:textColor="#FFBBBBBB"
-                 android:textSize="@dimen/item_detail_introlabel_textsize" />
+                 android:textColor="@color/white"
+                 android:lineSpacingExtra="9dip"
+                 android:textSize="@dimen/item_detail_introlabel_textsize"
+                 android:layout_marginBottom="17dip"
+                 android:layout_marginRight="73dip"/>
 
          <LinearLayout
-                 android:layout_height="@dimen/item_detail_btn_left_height"
+                 android:layout_height="100dip"
                  android:layout_width="wrap_content"
                  android:layout_alignParentRight="true"
                  android:layout_alignParentTop="true"
@@ -150,8 +137,8 @@
                  android:visibility="visible">
              <Button
                      android:id="@+id/btn_left"
-                     android:layout_width="280dip"
-                     android:layout_height="@dimen/item_detail_btn_left_height"
+                     android:layout_width="wrap_content"
+                     android:layout_height="match_parent"
                      android:background="@drawable/variety_btn_bg_selector"
                      android:paddingLeft="15dip"
                      android:paddingRight="15dip"
@@ -163,10 +150,10 @@
 
              <Button
                      android:id="@+id/middle_btn"
-                     android:layout_width="160dip"
-                     android:layout_height="@dimen/item_detail_btn_left_height"
+                     android:layout_width="wrap_content"
+                     android:layout_height="match_parent"
                      android:layout_marginLeft="@dimen/item_detail_btn_marginleft"
-                     android:background="@drawable/variety_btn_bg_selector"
+                     android:background="@drawable/pdetail_btn_bg_selector"
                      android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"
                      android:visibility="visible"
                      android:textColor="#FFFFFFFF"
@@ -174,11 +161,11 @@
 
              <Button
                      android:id="@+id/btn_right"
-                     android:layout_width="160dip"
-                     android:layout_height="@dimen/item_detail_btn_left_height"
+                     android:layout_width="wrap_content"
+                     android:layout_height="match_parent"
                      android:layout_marginLeft="@dimen/item_detail_btn_marginleft"
                      android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"
-                     android:background="@drawable/variety_btn_bg_selector"
+                     android:background="@drawable/pdetail_btn_bg_selector"
                      android:visibility="visible"
                      android:textColor="#FFFFFFFF"
                      android:textSize="48sp" />
@@ -199,7 +186,7 @@
                   android:layout_height="355dip"
                   android:gravity="fill_vertical"
                   android:textSize="36sp"
-                  android:textColor="#FFBBBBBB"
+                  android:textColor="@color/white"
                   android:text="同类推荐"/>
         <LinearLayout
                 android:id="@+id/related_video_container"

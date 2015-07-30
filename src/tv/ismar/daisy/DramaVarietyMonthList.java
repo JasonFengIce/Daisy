@@ -100,7 +100,7 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
                 monthSection.setText(month + "月");
                 monthSection.setTag(month + "");
                 monthSection.setPosition(k);
-                monthSection.setTextSize(25);
+                monthSection.setTextSize(30);
                 monthSection.setFocusable(true);
                 monthSection.setTextColor(0xffbbbbbb);
                 monthSection.setBackgroundResource(R.drawable.month_btn_normal);
@@ -111,10 +111,12 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
                          int position = ((MonthSectionButton)view).getPosition();
                         if(hasfocus){
                             view.setBackgroundResource(R.drawable.month_btn_pressed);
+                            ((MonthSectionButton) view).setTextSize(36);
                            if(position!=mLastPosition){
-                               View lastView = month_section_layout.getChildAt(mLastPosition);
+                               MonthSectionButton lastView = (MonthSectionButton) month_section_layout.getChildAt(mLastPosition);
                                if(lastView!=null){
                                    lastView.setBackgroundResource(R.drawable.month_btn_normal);
+                                   lastView.setTextSize(30);
                                }
                                mLastPosition = position;
                            }
@@ -134,9 +136,12 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
                             return;
                         }
                         view.setBackgroundResource(R.drawable.month_btn_pressed);
-                        View lastView = month_section_layout.getChildAt(mCurrentPosition);
-                        if(lastView!=null)
+                        ((MonthSectionButton) view).setTextSize(36);
+                        MonthSectionButton lastView = (MonthSectionButton) month_section_layout.getChildAt(mCurrentPosition);
+                        if(lastView!=null){
                             lastView.setBackgroundResource(R.drawable.month_btn_normal);
+                            lastView.setTextSize(30);
+                        }
                         ArrayList<Item> lists = maps.get(key);
                         mItemCollections = new ArrayList<ItemCollection>();
                         int num_pages = (int) FloatMath.ceil((float) lists.size() / (float) ItemCollection.NUM_PER_PAGE);
@@ -166,7 +171,7 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
                         }
                     }
                 });
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(105, ViewGroup.LayoutParams.MATCH_PARENT);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
                 if(currentMonth>0){
                     params.leftMargin = 34;

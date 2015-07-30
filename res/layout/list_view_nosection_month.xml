@@ -28,10 +28,11 @@
             android:orientation="horizontal"
             android:id="@+id/month_section_layout"
             android:layout_width="match_parent"
-            android:layout_height="50dip"
+            android:layout_height="80dip"
             android:layout_marginLeft="187dip"
             android:layout_marginRight="187dip"
-            android:layout_marginTop="55dip">
+            android:layout_marginTop="55dip"
+            android:gravity="center_vertical">
 
     </LinearLayout>
     <LinearLayout

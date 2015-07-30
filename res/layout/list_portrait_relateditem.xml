@@ -21,11 +21,11 @@
         labelimage:focuspaddingtop="0.90"
         labelimage:focustextpaddingtop="0.97"
         labelimage:focustextsize="24sp"
-        labelimage:maxfocustitle="10"
+        labelimage:maxfocustitle="12"
         />
     <TextView
         android:layout_width="254dip"
-        android:layout_height="match_parent"
+        android:layout_height="56dip"
         android:singleLine="true"
         android:ellipsize="marquee"
         android:gravity="center"

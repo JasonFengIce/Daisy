@@ -16,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
+import tv.ismar.daisy.views.LabelImageView;
 
 public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListener {
 	
@@ -23,8 +24,9 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 	private ArrayList<Item> mItemList;
 	
 	private HashSet<AsyncImageView> mOnLoadingImageQueue;
-	
-	public RelatedAdapter(Context context, ArrayList<Item> itemList) {
+	private boolean isPortrait = false;
+	public RelatedAdapter(Context context, ArrayList<Item> itemList,boolean isPortrait) {
+        this.isPortrait = isPortrait;
 		mContext = context;
 		mOnLoadingImageQueue = new HashSet<AsyncImageView>();
 		if(itemList!=null && itemList.size()>0){
@@ -64,7 +66,10 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 		Holder holder = null;
 		if(convertView == null) {
 			holder = new Holder();
-			convertView = LayoutInflater.from(mContext).inflate(R.layout.list_view_related_item, null);
+            if(!isPortrait)
+			   convertView = LayoutInflater.from(mContext).inflate(R.layout.list_view_related_item, null);
+            else
+                convertView = LayoutInflater.from(mContext).inflate(R.layout.list_portrait_relateditem,null);
 //			AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(348, 252);
 //			View titleView = convertView.findViewById(R.id.list_item_title);
 //			titleView.setFocusable(true);
@@ -76,7 +81,13 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 		}
 		holder.previewImage = (AsyncImageView) convertView.findViewById(R.id.list_item_preview_img);
 		holder.title = (TextView) convertView.findViewById(R.id.list_item_title);
-		holder.previewImage.setUrl(mItemList.get(position).adlet_url);
+        if(!isPortrait)
+		   holder.previewImage.setUrl(mItemList.get(position).adlet_url);
+        else{
+            holder.previewImage.setUrl(mItemList.get(position).list_url);
+            if(mItemList.get(position).focus!=null)
+              ((LabelImageView)holder.previewImage).setFocustitle(mItemList.get(position).focus);
+        }
 		holder.title.setText(mItemList.get(position).title);
 		holder.qualityLabel = (ImageView) convertView.findViewById(R.id.list_item_quality_label);
 		holder.ItemBeanScore = (TextView)convertView.findViewById(R.id.ItemBeanScore);

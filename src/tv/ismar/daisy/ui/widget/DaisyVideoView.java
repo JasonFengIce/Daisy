@@ -18,7 +18,7 @@ public class DaisyVideoView  extends VideoView{
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int width = getDefaultSize(0, widthMeasureSpec);
         int height = getDefaultSize(0, heightMeasureSpec);
-        setMeasuredDimension(width, height);
+        setMeasuredDimension(1184, 498);
     }
 
 }

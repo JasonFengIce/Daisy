@@ -64,18 +64,18 @@ public class DetailAttributeContainer extends LinearLayout {
 			int width = getResources().getDimensionPixelSize(R.dimen.item_detail_attribute_width);
 			layoutParams = new LinearLayout.LayoutParams(width,LinearLayout.LayoutParams.WRAP_CONTENT);
 									
-			layoutParams.topMargin =(17);
+			layoutParams.topMargin =(21);
 			infoLine.setLayoutParams(layoutParams);
 			infoLine.setOrientation(LinearLayout.HORIZONTAL);
 			TextView itemName = new TextView(getContext());
 			itemName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-			itemName.setTextColor(0xff999999);
+			itemName.setTextColor(0xffffffff);
 			itemName.setTextSize(textsize);
 			itemName.setText(mContentModel.attributes.get(entry.getKey())+":");
 			infoLine.addView(itemName);
 			TextView itemValue = new TextView(getContext());
             itemValue.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));				
-			itemValue.setTextColor(0xffbbbbbb);
+			itemValue.setTextColor(0xffffffff);
 			itemValue.setTextSize(textsize);
 			itemValue.setText(entry.getValue());
 			itemValue.setMaxLines(1);
