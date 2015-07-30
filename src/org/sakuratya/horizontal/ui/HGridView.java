@@ -2,6 +2,8 @@ package org.sakuratya.horizontal.ui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import android.view.*;
 import tv.ismar.daisy.R;
 import org.sakuratya.horizontal.adapter.HGridAdapter;
 import android.content.Context;
@@ -16,10 +18,6 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.FloatMath;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.Adapter;
 import android.widget.AdapterView;
@@ -780,9 +778,13 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	private void adjustForRightFadingEdge(View childInSelectedRow,
 			int leftSelectionPixel, int rightSelectionPixel) {
 		// Some of newly selected view extends the right edge of the list.
-		if (childInSelectedRow.getRight() > rightSelectionPixel) {
+        final int childrenRight = getRight() - getLeft()
+                - mListPadding.right;
+        int fadingLength = getHorizontalFadingEdgeLength();
+		if (childInSelectedRow.getRight() > childrenRight) {
 			// Find the available left space of the selected view we can scroll
 			// left.
+            Log.i("zxcvbnm",getChildCount()+"");
 			int spaceLeft = childInSelectedRow.getRight() - leftSelectionPixel;
 			int spaceRight = childInSelectedRow.getRight()
 					- rightSelectionPixel;
@@ -902,6 +904,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	private int getRightSelectionPixel(int childrenRight, int fadingEdgeLength,
 			int col) {
 		int rightSelectionPixel = childrenRight;
+
 		if (col <= mMaxColumn) {
 			rightSelectionPixel -= fadingEdgeLength;
 		}
@@ -1238,10 +1241,10 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		final Rect listPadding = mListPadding;
-		listPadding.left = mSelectionLeftPadding + getPaddingLeft();
+		listPadding.left = 0 + getPaddingLeft();
 		listPadding.top = 0 + getPaddingTop();
-		listPadding.right = mSelectionRightPadding + getPaddingRight();
-		listPadding.bottom = mSelectionBottomPadding + getPaddingBottom();
+		listPadding.right = 0 + getPaddingRight();
+		listPadding.bottom = 0 + getPaddingBottom();
 
 		int widthMode = MeasureSpec.getMode(widthMeasureSpec);
 		int heightMode = MeasureSpec.getMode(heightMeasureSpec);
@@ -1322,8 +1325,15 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		return s;
 
 	}
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        // Let the focused view and/or our descendants get the key first
+        return commonKey(event.getKeyCode(), 1, event);
+    }
 
-	private boolean commonKey(int keyCode, int repeatCount, KeyEvent event) {
+
+
+    public boolean commonKey(int keyCode, int repeatCount, KeyEvent event) {
 		if (mAdapter == null) {
 			return false;
 		}

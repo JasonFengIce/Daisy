@@ -77,7 +77,7 @@
                 android:id="@+id/filter_grid"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                sakura:horizontalSpacing="@dimen/gridview_main_panel_horizontalSpacing"
+                sakura:horizontalSpacing="44dip"
                 sakura:numRows="3"
                 sakura:rowHeight="@dimen/gridview_main_panel_rowHeight"
                 sakura:selectorDrawable="@drawable/vod_gv_selector"

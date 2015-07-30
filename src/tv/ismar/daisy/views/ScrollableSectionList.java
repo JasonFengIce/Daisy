@@ -153,7 +153,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
             label.setTextColor(LABEL_TEXT_COLOR_FOCUSED1);
             //percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_hot_selected));
         }
-        percentageBar.getLayoutParams().width = 1500;
+       // percentageBar.getLayoutParams().width = 1690;
 	}
 	
 	private RelativeLayout getSectionLabelLayout(Section section, int width) {

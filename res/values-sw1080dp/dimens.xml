@@ -83,7 +83,7 @@
     <dimen name="gridview_channel_label_marginright">25dip</dimen>
     <dimen name="gridview_channel_label_textsize">72sp</dimen>
     <dimen name="gridview_channel_label_padding">3dip</dimen>
-    <dimen name="gridview_channel_section_tabs_width">1515dip</dimen>
+    <dimen name="gridview_channel_section_tabs_width">1690dip</dimen>
     <dimen name="gridview_channel_section_tabs_margintop">174dip</dimen>
     <dimen name="gridview_main_panel_height">810dip</dimen>
     <dimen name="gridview_main_panel_fadingEdgeLength">144dip</dimen>
@@ -457,10 +457,10 @@
     <dimen name="ZGridView_recommend_selectorBottomPadding">-30dip</dimen>
 
     <!-- HGridView -->
-    <dimen name="HGridView_related_selectionLeftPadding">15dip</dimen>
+    <dimen name="HGridView_related_selectionLeftPadding">21dip</dimen>
     <dimen name="HGridView_related_selectionTopPadding">20dip</dimen>
     <dimen name="HGridView_related_selectionRightPadding">22dip</dimen>
-    <dimen name="HGridView_related_selectionBottomPadding">-42dip</dimen>
+    <dimen name="HGridView_related_selectionBottomPadding">-62dip</dimen>
 
     <dimen name="HGridView_related_PFilterLeftPadding">20dip</dimen>
     <dimen name="HGridView_related_PFilterTopPadding">21dip</dimen>
@@ -472,9 +472,9 @@
     <dimen name="HGridView_related_FilterRightPadding">22dip</dimen>
     <dimen name="HGridView_related_FilterBottomPadding">-40dip</dimen>
 
-    <dimen name="HGridView_related_pselectionLeftPadding">19dip</dimen>
+    <dimen name="HGridView_related_pselectionLeftPadding">20dip</dimen>
     <dimen name="HGridView_related_pselectionTopPadding">20dip</dimen>
-    <dimen name="HGridView_related_pselectionRightPadding">19dip</dimen>
+    <dimen name="HGridView_related_pselectionRightPadding">20dip</dimen>
     <dimen name="HGridView_related_pselectionBottomPadding">-29dip</dimen>
 
 

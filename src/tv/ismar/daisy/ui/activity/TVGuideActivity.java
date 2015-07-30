@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,11 +20,17 @@ import android.widget.*;
 import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
 import com.baidu.location.*;
+import org.sakuratya.horizontal.ui.HGridView;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import com.google.gson.Gson;
 import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
+import tv.ismar.daisy.adapter.ChannelAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
@@ -39,6 +46,7 @@ import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static tv.ismar.daisy.AppConstant.KIND;
 import static tv.ismar.daisy.AppConstant.MANUFACTURE;
@@ -77,6 +85,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private HashMap<String, TextView> channelHashMap;
 
     private ChannelChange channelChange;
+
+//    private WeatherFragment weatherFragment;
+
     private LaunchHeaderLayout topView;
 
     private Position mCurrentChannelPosition = new Position(new Position.PositioinChangeCallback() {
@@ -166,7 +177,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     private void initViews() {
         toppanel = (FrameLayout) findViewById(R.id.top_column_layout);
-        channelListView = (LinearLayout) findViewById(R.id.channel_h_list);
+//        weatherFragment = new WeatherFragment();
+//        getSupportFragmentManager().beginTransaction().add(R.id.top_column_layout, weatherFragment).commit();
+      //  channelListView = (LinearLayout) findViewById(R.id.channel_h_list);
         tabListView = (LinearLayout) findViewById(R.id.tab_list);
         arrow_left = (ImageView) findViewById(R.id.arrow_scroll_left);
         arrow_right = (ImageView) findViewById(R.id.arrow_scroll_right);
@@ -240,50 +253,60 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             }
         });
     }
-
-    private tv.ismar.daisy.views.MyHorizontalScrollView scroll;
-
+  private HGridView scroll;
     private void createChannelView(ChannelEntity[] channelEntities) {
-        scroll = (tv.ismar.daisy.views.MyHorizontalScrollView) contentView.findViewById(R.id.scroll);
-        channelHashMap = new HashMap<String, TextView>();
-        scroll.mLeftDistance = 77;
-        channelListView.removeAllViews();
-        int i;
-        for (i = 0; i < channelEntities.length; i++) {
-            FrameLayout frameLayout = (FrameLayout) LayoutInflater.from(this).inflate(R.layout.item_channel, null);
-            Button textView = (Button) frameLayout.findViewById(R.id.channel_item);
-            textView.setText(channelEntities[i].getName());
-            textView.setOnClickListener(channelClickListener);
-            textView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
-            textView.setTag(i);
-            channelListView.addView(frameLayout);
-            channelHashMap.put(channelEntities[i].getChannel(), textView);
+        List<ChannelEntity> channelList;
+        channelList = new ArrayList<ChannelEntity>();
+        for(ChannelEntity entity : channelEntities){
+            channelList.add(entity);
         }
-        FrameLayout frameLayout1 = (FrameLayout) LayoutInflater.from(this).inflate(R.layout.item_channel, null);
-        Button textView1 = (Button) frameLayout1.findViewById(R.id.channel_item);
-        textView1.setTag(i);
-        textView1.setText("test1");
+        scroll = (HGridView)contentView.findViewById(R.id.h_grid_view);
+        channelHashMap = new HashMap<String, TextView>();
+        int i;
+        ChannelEntity s1 = new ChannelEntity();
+        ChannelEntity s2 = new ChannelEntity();
+        s1.setName("test1");
+        s2.setName("test2");
+        s1.setChannel(channelEntities[0].getChannel());
+        s2.setChannel(channelEntities[0].getChannel());
+        channelList.add(s1);
+        channelList.add(s2);
+        ChannelAdapter imageAdapter = new ChannelAdapter(this, channelList, R.layout.item_channel);
+        scroll.setAdapter(imageAdapter);
+        imageAdapter.setMap(channelHashMap);
+        imageAdapter.setList((ArrayList<ChannelEntity>) channelList);
+        imageAdapter.setOnClickListener(channelClickListener);
+//        for ( i = 0; i < channelEntities.length; i++) {
+//            FrameLayout frameLayout = (FrameLayout) LayoutInflater.from(this).inflate(R.layout.item_channel, null);
+//            Button textView = (Button) frameLayout.findViewById(R.id.channel_item);
+//            textView.setText(channelEntities[i].getName());
+//            textView.setOnClickListener(channelClickListener);
+//            textView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
+//            textView.setTag(i);
+//            channelHashMap.put(channelEntities[i].getChannel(), textView);
+//        }
 
-        FrameLayout frameLayout2 = (FrameLayout) LayoutInflater.from(this).inflate(R.layout.item_channel, null);
-        Button textView2 = (Button) frameLayout2.findViewById(R.id.channel_item);
-        i++;
-        textView2.setTag(i);
-        textView2.setText("test2");
+        //scroll.setFocusable(true);
+        scroll.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Log.i("121","2");
 
-        FrameLayout frameLayout3 = (FrameLayout) LayoutInflater.from(this).inflate(R.layout.item_channel, null);
-        Button textView3 = (Button) frameLayout3.findViewById(R.id.channel_item);
-        textView3.setText("test3");
-        i++;
-        textView3.setTag(i);
+                channelChange = ChannelChange.CLICK_CHANNEL;
 
-        channelListView.addView(frameLayout1);
-        //    channelListView.addView(frameLayout2);
-        //   channelListView.addView(frameLayout3);
-
-        //  scroll.setHorizontalFadingEdgeEnabled(true);
-        //  scroll.setFadingEdgeLength(100);
+                if (arrow_left.getVisibility() == View.GONE) {
+                    arrow_left.setVisibility(View.VISIBLE);
+                }
+                if (arrow_right.getVisibility() == View.GONE) {
+                    arrow_right.setVisibility(View.VISIBLE);
+                }
+                int channelPosition = position;
+                mCurrentChannelPosition.setPosition(channelPosition);
+            }
+        });
+        scroll.setHorizontalFadingEdgeEnabled(true);
+        scroll.setFadingEdgeLength(72);
     }
-
     private void registerUpdateReceiver() {
         appUpdateReceiver = new AppUpdateReceiver();
         IntentFilter intentFilter = new IntentFilter();

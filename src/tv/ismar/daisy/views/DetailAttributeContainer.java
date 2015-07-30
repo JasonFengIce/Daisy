@@ -152,23 +152,28 @@ public class DetailAttributeContainer extends LinearLayout {
 
     }
     private void addChildren(ViewGroup infoLine,String key,String value,int distanceLeft){
+        LinearLayout.LayoutParams itemNameParams;
 
-        TextView itemName = new TextView(getContext());
-        LinearLayout.LayoutParams itemNameParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        itemName.setLayoutParams(itemNameParams);
+        if(distanceLeft>0)
+            itemNameParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        else
+            itemNameParams = new LinearLayout.LayoutParams(550, LinearLayout.LayoutParams.WRAP_CONTENT);
+       // TextView itemName = new TextView(getContext());
+       // itemName.setLayoutParams(itemNameParams);
+      //  itemNameParams.leftMargin = distanceLeft;
+      //  itemName.setTextColor(0xffffffff);
+      //  itemName.setTextSize(textsize);
+      //  itemName.setText(key+":");
+     //   infoLine.addView(itemName);
         itemNameParams.leftMargin = distanceLeft;
-        itemName.setTextColor(0xffbbbbbb);
-        itemName.setTextSize(textsize);
-        itemName.setText(key+":");
-        infoLine.addView(itemName);
         TextView itemValue = new TextView(getContext());
-        LinearLayout.LayoutParams itemValueParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        itemValue.setLayoutParams(itemValueParams);
-        itemValue.setTextColor(0xffbbbbbb);
+       // LinearLayout.LayoutParams itemValueParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        itemValue.setLayoutParams(itemNameParams);
+        itemValue.setTextColor(0xffffffff);
         itemValue.setTextSize(textsize);
-        itemValue.setText(value);
+        itemValue.setText(key+" : " +value);
         itemValue.setMaxLines(1);
-        itemValue.setEllipsize(TruncateAt.END);
+        //itemValue.setEllipsize(TruncateAt.END);
         itemValue.setSingleLine(true);
         infoLine.addView(itemValue);
 
