@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.nfc.Tag;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -160,8 +161,14 @@ public class PosterUpdateService extends Service {
                 cacheFileMd5.equalsIgnoreCase(advertisementData.getMd5())) {
             Log.i(TAG, "replace local poster png");
             posterTmpFile.renameTo(posterFile);
-
-            modifyPosterPreference(Timestamp.valueOf(advertisementData.getEnd()));
+            Timestamp timestamp = null;
+            try {
+                timestamp = Timestamp.valueOf(advertisementData.getEnd_date() + " " + advertisementData.getEnd_time());
+            } catch (IllegalArgumentException e) {
+                Log.e(TAG, "updateLocalPoster: " + e.getMessage());
+                return;
+            }
+            modifyPosterPreference(timestamp);
         }
     }
 
