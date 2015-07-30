@@ -109,7 +109,7 @@
         <tv.ismar.sakura.ui.widget.SakuraButton
                 android:id="@+id/speed_test_btn"
                 android:layout_height="@dimen/sakura_node_testbutton_height"
-                android:layout_weight="0.7"
+                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:textSize="@dimen/sakura_h1_text_size"
                 android:background="@drawable/sakura_selector_button"
