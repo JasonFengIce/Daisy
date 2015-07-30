@@ -62,7 +62,7 @@ public class HomeItemContainer extends FrameLayout {
 		if (isDrawBorder) {
 			System.out.println("HomeItemContainer focus : true ");
 			super.getDrawingRect(mRect);
-			mBound.set(-3+mRect.left, -3+mRect.top, 3+mRect.right, mRect.bottom+2);
+			mBound.set(-3+mRect.left, -3+mRect.top, 3+mRect.right, mRect.bottom+3);
 			mDrawable.setBounds(mBound);
 			canvas.save();
 			mDrawable.draw(canvas);
