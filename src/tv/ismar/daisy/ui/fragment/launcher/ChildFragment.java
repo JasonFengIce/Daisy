@@ -2,6 +2,7 @@ package tv.ismar.daisy.ui.fragment.launcher;
 
 import java.util.ArrayList;
 
+import android.widget.ImageButton;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.HomePagerEntity;
@@ -35,6 +36,8 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
     private ChildThumbImageView[] indicatorImgs;
     private TextView indicatorTitle;
 
+    private ImageButton childMore;
+
     private boolean focusFlag = true;
 
     private Flag flag;
@@ -56,6 +59,8 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
                 (ChildThumbImageView) mView.findViewById(R.id.indicator_3)
         };
         indicatorTitle = (TextView) mView.findViewById(R.id.indicator_title);
+        childMore = (ImageButton) mView.findViewById(R.id.child_more);
+        childMore.setOnClickListener(ItemClickListener);
 
         flag = new Flag(this);
         messageHandler = new MessageHandler();
@@ -64,7 +69,6 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
         fetchChild(channelEntity.getHomepage_url());
     }
 
@@ -75,7 +79,6 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
                 HomePagerEntity homePagerEntity = new Gson().fromJson(result, HomePagerEntity.class);
                 ArrayList<HomePagerEntity.Poster> posters = homePagerEntity.getPosters();
                 ArrayList<HomePagerEntity.Carousel> carousels = homePagerEntity.getCarousels();
-
 
                 initPosters(posters);
                 initCarousel(carousels);
@@ -93,18 +96,12 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
     private void initPosters(ArrayList<HomePagerEntity.Poster> posters) {
         int marginTP = (int) context.getResources().getDimension(R.dimen.child_fragment_item_margin_tp);
 
-        int itemWidht = (int) context.getResources().getDimension(R.dimen.child_fragment_item_width);
+        int itemWidth = (int) context.getResources().getDimension(R.dimen.child_fragment_item_width);
         int itemHeight = (int) context.getResources().getDimension(R.dimen.child_fragment_item_height);
 
         for (int i = 0; i < 7; i++) {
             View itemContainer = LayoutInflater.from(context).inflate(R.layout.item_comic_fragment, null);
-            itemContainer.setBackgroundResource(R.drawable.selector_child_item);
-            itemContainer.setFocusable(true);
-            itemContainer.setFocusableInTouchMode(true);
-            itemContainer.setClickable(true);
-            itemContainer.setOnClickListener(ItemClickListener);
             itemContainer.setTag(posters);
-
             ImageView itemImg = (ImageView) itemContainer.findViewById(R.id.item_img);
             TextView itemText = (TextView) itemContainer.findViewById(R.id.item_title);
 
@@ -116,8 +113,8 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
              */
             if (i >= 0 && i < 3) {
 
-                LinearLayout.LayoutParams verticalParams = new LinearLayout.LayoutParams(itemWidht, itemHeight);
-                verticalParams.width = itemWidht;
+                LinearLayout.LayoutParams verticalParams = new LinearLayout.LayoutParams(itemWidth, itemHeight);
+                verticalParams.width = itemWidth;
                 verticalParams.height = itemHeight;
                 if (i == 1) {
                     verticalParams.setMargins(0, marginTP, 0, marginTP);
@@ -130,8 +127,8 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
              * center layout
              */
             if (i >= 3 && i < 5) {
-                LinearLayout.LayoutParams horizontalParams = new LinearLayout.LayoutParams(itemWidht, itemHeight);
-                horizontalParams.width = itemWidht;
+                LinearLayout.LayoutParams horizontalParams = new LinearLayout.LayoutParams(itemWidth, itemHeight);
+                horizontalParams.width = itemWidth;
                 horizontalParams.height = itemHeight;
 
                 int marginLeft = (int) context.getResources().getDimension(R.dimen.child_fragment_center_layout_item_margin_left);
@@ -148,8 +145,8 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
              * right layout
              */
             if (i >= 5 && i < 7) {
-                LinearLayout.LayoutParams verticalParams = new LinearLayout.LayoutParams(itemWidht, itemHeight);
-                verticalParams.width = itemWidht;
+                LinearLayout.LayoutParams verticalParams = new LinearLayout.LayoutParams(itemWidth, itemHeight);
+                verticalParams.width = itemWidth;
                 verticalParams.height = itemHeight;
 
                 if (i == 6) {
@@ -159,17 +156,6 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
                 rightLayout.addView(itemContainer);
             }
         }
-//        ImageView imageView = new ImageView(context);
-//        imageView.setFocusable(true);
-//        imageView.setFocusableInTouchMode(true);
-//        imageView.setClickable(true);
-//        imageView.setImageResource(R.drawable.selector_child_more);
-//        imageView.setOnClickListener(ItemClickListener);
-//        LinearLayout.LayoutParams verticalParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
-//        verticalParams.weight = 1;
-//        verticalParams.setMargins(0, 0, marginLR, marginTP);
-//        imageView.setLayoutParams(verticalParams);
-//        rightLayout.addView(imageView);
         rightLayout.requestLayout();
     }
 

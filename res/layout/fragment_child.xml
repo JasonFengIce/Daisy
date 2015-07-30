@@ -114,6 +114,15 @@
                 android:layout_height="wrap_content"
                 >
         </LinearLayout>
+
+        <ImageButton
+                android:layout_toRightOf="@id/center_layout"
+                android:layout_marginLeft="@dimen/child_fragment_center_layout_margin_left"
+                android:layout_alignParentBottom="true"
+                android:id="@+id/child_more"
+                android:background="@drawable/selector_child_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
     </RelativeLayout>
 
 
