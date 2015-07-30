@@ -29,13 +29,13 @@
             android:id="@+id/month_section_layout"
             android:layout_width="match_parent"
             android:layout_height="80dip"
-            android:layout_marginLeft="187dip"
-            android:layout_marginRight="187dip"
+            android:layout_marginLeft="177dip"
+            android:layout_marginRight="177dip"
             android:layout_marginTop="55dip"
             android:gravity="center_vertical">
 
     </LinearLayout>
-    <LinearLayout
+    <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -44,35 +44,41 @@
     <Button
             android:background="@drawable/channel_arrow_left"
             android:id="@+id/arrow_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="41dip"
+            android:layout_height="82dip"
             android:visibility="invisible"
-            android:layout_marginLeft="16dip"
-            android:layout_marginTop="411dip"/>
+            android:layout_marginLeft="31dip"
+            android:layout_marginTop="240dip"/>
+        <Button
+            android:background="@drawable/channel_arrow_right"
+            android:id="@+id/arrow_right"
+            android:layout_width="41dip"
+            android:layout_height="82dip"
+            android:visibility="invisible"
+            android:layout_marginRight="31dip"
+            android:layout_marginTop="240dip"/>
     <org.sakuratya.horizontal.ui.HGridView
+        android:layout_toLeftOf="@id/right_shadow"
+        android:layout_toRightOf="@id/left_shadow"
         android:id="@+id/h_grid_view"
-        android:layout_width="1718dip"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         sakura:horizontalSpacing="34dip"
         sakura:numRows="2"
-        sakura:rowHeight="305dip"
+        sakura:rowHeight="332dip"
         sakura:selectorDrawable="@drawable/vod_gv_selector"
         sakura:verticalSpacing="55dip"
         sakura:selectionLeftPadding="@dimen/HGridView_related_selectionLeftPadding"
         sakura:selectionTopPadding="@dimen/HGridView_related_selectionTopPadding"
         sakura:selectionRightPadding="@dimen/HGridView_related_selectionRightPadding"
         sakura:selectionBottomPadding="-58dip"
-        android:layout_marginTop="10dip"
+        android:layout_marginTop="47dip"
+        android:paddingTop="4dip"
         android:layout_marginLeft="24dip"
-        android:layout_marginRight="24dip">
+        android:layout_marginRight="24dip"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
+        android:layout_marginBottom="92dip">
     </org.sakuratya.horizontal.ui.HGridView>
-    <Button
-            android:background="@drawable/channel_arrow_right"
-            android:id="@+id/arrow_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            android:layout_marginRight="16dip"
-            android:layout_marginTop="411dip"/>
-        </LinearLayout>
+        </RelativeLayout>
 </LinearLayout>

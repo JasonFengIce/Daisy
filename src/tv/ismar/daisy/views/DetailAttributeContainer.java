@@ -111,7 +111,7 @@ public class DetailAttributeContainer extends LinearLayout {
                 infoLine.setOrientation(LinearLayout.HORIZONTAL);
                 addView(infoLine);
             }
-            addChildren(infoLine,mContentModel.attributes.get(entry.getKey()),entry.getValue(),layoutLeft);
+            addChildren(infoLine,mContentModel.attributes.get(entry.getKey()),entry.getValue(),layoutLeft,-1);
             i++;
         }
     }
@@ -126,7 +126,7 @@ public class DetailAttributeContainer extends LinearLayout {
             if(entry.getValue()==null || mContentModel.attributes.get(entry.getKey())==null){
                 continue;
             }
-            int layoutLeft = 50;
+            int layoutLeft = 10;
             if(i%2==0&&(i<=3)){
                 layoutLeft = 0;
                 infoLine = new LinearLayout(getContext());
@@ -146,18 +146,28 @@ public class DetailAttributeContainer extends LinearLayout {
                 infoLine.setOrientation(LinearLayout.HORIZONTAL);
                 addView(infoLine);
             }
-            addChildren(infoLine,mContentModel.attributes.get(entry.getKey()),entry.getValue(),layoutLeft);
+            addChildren(infoLine,mContentModel.attributes.get(entry.getKey()),entry.getValue(),layoutLeft,i);
             i++;
         }
 
     }
-    private void addChildren(ViewGroup infoLine,String key,String value,int distanceLeft){
-        LinearLayout.LayoutParams itemNameParams;
+    private void addChildren(ViewGroup infoLine,String key,String value,int distanceLeft,int lineNumber){
+        LinearLayout.LayoutParams itemNameParams = null;
 
         if(distanceLeft>0)
             itemNameParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        else
-            itemNameParams = new LinearLayout.LayoutParams(550, LinearLayout.LayoutParams.WRAP_CONTENT);
+        else if(distanceLeft==0){
+            if(lineNumber==-1){
+                itemNameParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            }
+            else if(lineNumber>=4){
+                itemNameParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            }
+            else{
+                itemNameParams = new LinearLayout.LayoutParams(450, LinearLayout.LayoutParams.WRAP_CONTENT);
+            }
+        }
+
        // TextView itemName = new TextView(getContext());
        // itemName.setLayoutParams(itemNameParams);
       //  itemNameParams.leftMargin = distanceLeft;
@@ -176,20 +186,6 @@ public class DetailAttributeContainer extends LinearLayout {
         //itemValue.setEllipsize(TruncateAt.END);
         itemValue.setSingleLine(true);
         infoLine.addView(itemValue);
-
-//        TextView itemValue1 = new TextView(getContext());
-//        LinearLayout.LayoutParams itemValueParams1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//        itemValue1.setLayoutParams(itemValueParams1);
-//        itemValue1.setTextColor(0xffbbbbbb);
-//        itemValue1.setTextSize(textsize);
-//        itemValue1.setText(value);
-//        //itemValue1.setMaxLines(1);
-//       // itemValue1.setEllipsize(TruncateAt.END);
-//       // itemValue1.setSingleLine(true);
-//        infoLine.addView(itemValue1);
-
-
-        //itemValue.setLineSpacing(3.4f, 1f);
     }
 
 }
