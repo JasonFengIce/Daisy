@@ -77,7 +77,7 @@
     <dimen name="gridview_channel_panel_height">88dip</dimen>
     <dimen name="gridview_channel_panel_marginBottom">35dp</dimen>
     <dimen name="gridview_channel_label_width">375dip</dimen>
-    <dimen name="gridview_channel_label_height">135dip</dimen>
+    <dimen name="gridview_channel_label_height">112dip</dimen>
     <dimen name="gridview_channel_label_marginleft">40dip</dimen>
     <dimen name="gridview_channel_label_margintop">36dip</dimen>
     <dimen name="gridview_channel_label_marginright">25dip</dimen>

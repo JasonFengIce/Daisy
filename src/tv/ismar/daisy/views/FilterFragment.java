@@ -147,7 +147,7 @@ public class FilterFragment extends BackHandledFragment {
                         View view = mInflater.inflate(R.layout.filter_condition_item,null);
                         TextView condition_txt = (TextView) view.findViewById(R.id.condition_txt);
                         MyViewGroup valueViews = (MyViewGroup)view.findViewById(R.id.line_group);
-                        condition_txt.setText(label);
+                        condition_txt.setText(label+" :");
                         RadioButton nolimitRbtn = new RadioButton(getActivity());
 
                         FilterItem noLimitItem = new FilterItem();

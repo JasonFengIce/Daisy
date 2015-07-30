@@ -59,14 +59,14 @@
         sakura:rowHeight="292dip"
         sakura:selectorDrawable="@drawable/vod_gv_selector"
         sakura:verticalSpacing="0dip"
-        sakura:selectionLeftPadding="19dip"
-        sakura:selectionTopPadding="22dip"
-        sakura:selectionRightPadding="@dimen/HGridView_related_selectionRightPadding"
-        sakura:selectionBottomPadding="-80dip"
+        sakura:selectionLeftPadding="21dip"
+        sakura:selectionTopPadding="21dip"
+        sakura:selectionRightPadding="23dip"
+        sakura:selectionBottomPadding="-82dip"
         android:layout_marginTop="9dip"
         android:paddingTop="6dip"
-        android:layout_marginLeft="40dip"
-        android:layout_marginRight="50dip">
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip">
     </org.sakuratya.horizontal.ui.HGridView>
  </RelativeLayout>
 </LinearLayout>

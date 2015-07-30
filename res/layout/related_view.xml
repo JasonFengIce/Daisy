@@ -68,6 +68,7 @@
 <!--     </GridView> -->
 
     <org.sakuratya.horizontal.ui.ZGridView
+        android:visibility="gone"
         xmlns:sakura="http://schemas.android.com/apk/res/tv.ismar.daisy"
         android:id="@+id/related_list"
         android:layout_width="match_parent"
@@ -89,4 +90,28 @@
         sakura:selectorBottomPadding="@dimen/ZGridView_related_selectorBottomPadding" >
     </org.sakuratya.horizontal.ui.ZGridView>
 
+    <org.sakuratya.horizontal.ui.ZGridView
+            android:visibility="gone"
+            xmlns:sakura="http://schemas.android.com/apk/res/tv.ismar.daisy"
+            android:id="@+id/prelated_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/related_view_list_marginleft"
+            android:layout_marginRight="@dimen/related_view_list_marginright"
+            sakura:columnWidth="254dip"
+            sakura:horizontalSpace="14dip"
+            sakura:listSelector="@drawable/vod_gv_selector"
+            sakura:numColumns="6"
+            sakura:stretchMode="columnWidth"
+            sakura:verticalSpace="0dip"
+            sakura:selectorLeftPadding="21dip"
+            sakura:selectorTopPadding="@dimen/HGridView_related_pselectionTopPadding"
+            sakura:selectorRightPadding="21dip"
+            sakura:selectorBottomPadding="-34dip">
+    </org.sakuratya.horizontal.ui.ZGridView>
+
+    <!--<dimen name="HGridView_related_pselectionLeftPadding">19dip</dimen>-->
+    <!--<dimen name="HGridView_related_pselectionTopPadding">20dip</dimen>-->
+    <!--<dimen name="HGridView_related_pselectionRightPadding">19dip</dimen>-->
+    <!--<dimen name="HGridView_related_pselectionBottomPadding">-29dip</dimen>-->
 </LinearLayout>

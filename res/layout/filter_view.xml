@@ -25,7 +25,8 @@
             android:background="@drawable/filter_divider"
             android:layout_width="match_parent"
             android:layout_height="1dip"
-            android:layout_marginLeft="223dip"/>
+            android:layout_marginLeft="223dip"
+            android:layout_marginRight="223dip"/>
     <Button
             android:visibility="invisible"
             android:id="@+id/filter_submit"

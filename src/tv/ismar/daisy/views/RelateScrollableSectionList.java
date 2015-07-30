@@ -314,6 +314,7 @@ public class RelateScrollableSectionList extends HorizontalScrollView {
 //				
 //				lastLabel.setTextSize(getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_textsize)/DBHelper.rate);	
 				changeSelection(index);
+                lastSelectPosition = index;
 				if(mSectionSelectChangedListener!=null) {
 					mSectionSelectChangedListener.onSectionSelectChanged(index);
 				}
@@ -340,6 +341,7 @@ public class RelateScrollableSectionList extends HorizontalScrollView {
 			//label.setBackgroundColor(LABEL_TEXT_BACKGROUND_SELECTED_NOFOCUSED);
 			percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_hot_selected));
 			setSectionTabProperty(sectionHolder, lastSectionHolder);
+            lastSelectPosition = position;
 		}
 //		Log.d("CurrentPercentage", percentage + "");
 		percentageBar.setProgress(percentage);
