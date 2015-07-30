@@ -714,7 +714,7 @@
 
     <dimen name="fragment_padding_lr">73dp</dimen>
 
-    <dimen name="guide_padding">4dp</dimen>
+    <dimen name="guide_padding">7dp</dimen>
     <dimen name="tv_guide_menu_margin">44dp</dimen>
     <dimen name="tv_guide_top_section_padding">14dp</dimen>
     <dimen name="tv_guide_channel_margin_lr">51dp</dimen>

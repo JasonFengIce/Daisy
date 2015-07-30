@@ -46,7 +46,7 @@ public class DaisyViewContainer extends LinearLayout {
                 for (int i = 0; i < allViews.size(); i++) {
                     if (i != 0) {
                         LayoutParams layoutParams = new LayoutParams(199, 278);
-                        layoutParams.setMargins((int) 25, 0, 0, 0);
+                        layoutParams.setMargins((int) 26, 0, 0, 0);
                         allViews.get(i).setLayoutParams(layoutParams);
                         addView(allViews.get(i));
 
