@@ -4,6 +4,7 @@ import tv.ismar.daisy.R;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.NinePatchDrawable;
 import android.util.AttributeSet;
 import android.view.animation.Animation;
@@ -37,7 +38,7 @@ public class HomeItemContainer extends FrameLayout {
 		super(context, attrs);
 		init();
 	}
-	
+
 	protected void init() {
 		setWillNotDraw(false);
 		mRect = new Rect();
