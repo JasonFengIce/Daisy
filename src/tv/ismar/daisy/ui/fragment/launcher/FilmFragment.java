@@ -32,6 +32,7 @@ import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.data.table.DownloadTable;
+import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
 import tv.ismar.daisy.ui.widget.DaisyVideoView;
 import tv.ismar.daisy.ui.widget.HomeItemContainer;
@@ -128,7 +129,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
                 .findViewById(R.id.film_linked_video);
         film_lefttop_image = (LabelImageView) mView
                 .findViewById(R.id.film_lefttop_image);
-        film_post_layout =(HomeItemContainer)mView.findViewById(R.id.film_post_layout);
+        film_post_layout = (HomeItemContainer) mView.findViewById(R.id.film_post_layout);
         linkedVideoImage = (ImageView) mView.findViewById(R.id.film_linked_image);
         film_linked_title = (TextView) mView.findViewById(R.id.film_linked_title);
         flag = new Flag(this);
@@ -161,31 +162,36 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
                 String model = carousels.get(flag.getPosition()).getModel_name();
                 String title = carousels.get(flag.getPosition()).getTitle();
                 Intent intent = new Intent();
+                Log.d(TAG, "item click:\n "
+                        + "model: " + model);
                 if ("item".equals(model)) {
-                    intent.setClassName("tv.ismar.daisy",
-                            "tv.ismar.daisy.ItemDetailActivity");
+                    intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.ItemDetailActivity");
                     intent.putExtra("url", url);
+                    context.startActivity(intent);
                 } else if ("topic".equals(model)) {
-                    intent.putExtra("url",
-                            url);
-                    intent.setClassName("tv.ismar.daisy",
-                            "tv.ismar.daisy.TopicActivity");
+                    intent.putExtra("url", url);
+                    intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.TopicActivity");
+                    context.startActivity(intent);
                 } else if ("section".equals(model)) {
                     intent.putExtra("title", title);
-                    intent.putExtra("itemlistUrl",
-                            url);
-                    intent.putExtra("lableString",
-                            title);
-                    intent.setClassName("tv.ismar.daisy",
-                            "tv.ismar.daisy.PackageListDetailActivity");
+                    intent.putExtra("itemlistUrl", url);
+                    intent.putExtra("lableString", title);
+                    intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.PackageListDetailActivity");
+                    context.startActivity(intent);
+                }else if ("package".equals(model)) {
+                    intent.setAction("tv.ismar.daisy.packageitem");
+                    intent.putExtra("url", url);
+                    context.startActivity(intent);
+                } else if ("clip".equals(model)) {
+                    InitPlayerTool tool = new InitPlayerTool(context);
+                    tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
                 }
-                context.startActivity(intent);
+
             }
         };
 
         linkedVideoView.setOnCompletionListener(loopAllListener);
         film_post_layout.setOnClickListener(viewClickListener);
-//        film_post_layout.setOnClickListener(viewClickListener);
 
         return mView;
     }
@@ -232,12 +238,12 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
 //            if (i != 7) {
 //            params.setMargins(0, 0, 28, 0);
 //            }
-            if(i==6){
-            	params.setMargins(0, 0, 27, 0);  	
-            }else if(i == 7){
-            	params.setMargins(0, 0, 8, 0);
-            }else{
-            	params.setMargins(0, 0, 28, 0);
+            if (i == 6) {
+                params.setMargins(0, 0, 27, 0);
+            } else if (i == 7) {
+                params.setMargins(0, 0, 8, 0);
+            } else {
+                params.setMargins(0, 0, 28, 0);
             }
             ImageView itemView = new ImageView(context);
 //            itemView.setBackgroundResource(R.drawable.launcher_selector);
@@ -245,27 +251,27 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
             itemView.setLayoutParams(params);
             itemView.setOnClickListener(ItemClickListener);
             if (i <= 7) {
-            	tv.ismar.daisy.ui.widget.HomeItemContainer frameLayout = (tv.ismar.daisy.ui.widget.HomeItemContainer) LayoutInflater.from(context).inflate(R.layout.item_poster, null);
+                tv.ismar.daisy.ui.widget.HomeItemContainer frameLayout = (tv.ismar.daisy.ui.widget.HomeItemContainer) LayoutInflater.from(context).inflate(R.layout.item_poster, null);
                 ImageView postitemView = (ImageView) frameLayout.findViewById(R.id.poster_image);
                 TextView textView = (TextView) frameLayout.findViewById(R.id.poster_title);
                 if (StringUtils.isNotEmpty(posters.get(i).getIntroduction())) {
                     textView.setText(posters.get(i).getIntroduction());
                     textView.setVisibility(View.VISIBLE);
                 }
-				textView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-					@Override
-					public void onFocusChange(View v, boolean hasFocus) {
-						if (hasFocus) {
-							((HomeItemContainer) v.getParent())
-									.setDrawBorder(true);
-							((HomeItemContainer) v.getParent()).invalidate();
-						} else {
-							((HomeItemContainer) v.getParent())
-							.setDrawBorder(false);
-							((HomeItemContainer) v.getParent()).invalidate();
-						}
-					}
-				});
+                textView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        if (hasFocus) {
+                            ((HomeItemContainer) v.getParent())
+                                    .setDrawBorder(true);
+                            ((HomeItemContainer) v.getParent()).invalidate();
+                        } else {
+                            ((HomeItemContainer) v.getParent())
+                                    .setDrawBorder(false);
+                            ((HomeItemContainer) v.getParent()).invalidate();
+                        }
+                    }
+                });
                 textView.setOnClickListener(ItemClickListener);
                 frameLayout.setOnClickListener(ItemClickListener);
                 Picasso.with(context).load(posters.get(i).getCustom_image()).into(postitemView);
@@ -274,7 +280,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
                 frameLayout.setLayoutParams(params);
                 guideRecommmendList.addView(frameLayout);
             } else {
-            	params.width = 206;
+                params.width = 206;
                 params.setMargins(0, 0, 0, 0);
                 tv.ismar.daisy.ui.widget.HomeItemContainer morelayout = (tv.ismar.daisy.ui.widget.HomeItemContainer) LayoutInflater.from(
                         context).inflate(R.layout.toppagelistmorebutton,
@@ -326,12 +332,12 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
 
         for (int i = 0; i < carousels.size(); i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-            		206, 86);
+                    206, 86);
 //            params.weight = 1;
-            if(i==0)
-            params.topMargin = 0;
+            if (i == 0)
+                params.topMargin = 0;
             else
-            params.topMargin = 17;
+                params.topMargin = 17;
             LabelImageView itemView = new LabelImageView(context);
 //            itemView.setBackgroundResource(R.drawable.launcher_selector);
             itemView.setFocusable(true);
@@ -457,12 +463,12 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
     public void change(int position) {
         Log.d(TAG, "changed position: " + position);
         for (int i = 0; i < allItem.size(); i++) {
-        	LabelImageView imageView = allItem.get(i);
-			if (position != i) {
-				imageView.setCustomfocus(false);
-			}else {
-				imageView.setCustomfocus(true);
-			}
+            LabelImageView imageView = allItem.get(i);
+            if (position != i) {
+                imageView.setCustomfocus(false);
+            } else {
+                imageView.setCustomfocus(true);
+            }
         }
     }
 

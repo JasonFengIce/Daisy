@@ -4,27 +4,14 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.nfc.Tag;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.util.Base64;
 import android.util.Log;
 import com.google.gson.Gson;
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import tv.ismar.daisy.AppConstant;
-import tv.ismar.daisy.VodApplication;
-import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.advertisement.AdvertisementInfoEntity;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.LaunchAdvertisementEntity;
-import tv.ismar.daisy.models.AdElement;
 import tv.ismar.daisy.utils.AppUtils;
 
 import java.io.File;
@@ -35,7 +22,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by huaijie on 3/19/15.
@@ -111,8 +101,14 @@ public class PosterUpdateService extends Service {
             @Override
             public void onSuccess(String result) {
                 LaunchAdvertisementEntity launchAdvertisementEntity = new Gson().fromJson(result, LaunchAdvertisementEntity.class);
-                LaunchAdvertisementEntity.AdvertisementData advertisementData = launchAdvertisementEntity.getAds().getKaishi()[0];
-                downloadPic(advertisementData);
+                if (null != launchAdvertisementEntity.getAds().getKaishi()) {
+                    LaunchAdvertisementEntity.AdvertisementData advertisementData = launchAdvertisementEntity.getAds().getKaishi()[0];
+                    downloadPic(advertisementData);
+                } else {
+                    Log.e(TAG, "fetch launch app advertisement error:\n"
+                            + "retcode: " + launchAdvertisementEntity.getRetcode() + "\n"
+                            + "retmsg: " + launchAdvertisementEntity.getRetmsg());
+                }
             }
 
             @Override
