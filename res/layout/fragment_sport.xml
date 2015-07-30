@@ -103,6 +103,7 @@
             android:layout_weight="0.95" >
 
             <ListView
+                android:descendantFocusability="blocksDescendants"
                 android:id="@+id/sec_one_list_2"
                 android:layout_width="300dp"
                 android:layout_height="495dp"

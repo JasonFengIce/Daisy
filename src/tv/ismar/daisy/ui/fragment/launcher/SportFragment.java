@@ -12,6 +12,7 @@ import tv.ismar.daisy.data.HomePagerEntity.Poster;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.SportGame;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
+import tv.ismar.daisy.ui.widget.HomeItemContainer;
 import tv.ismar.daisy.views.LabelImageView;
 import tv.ismar.daisy.views.LoadingDialog;
 import android.content.Context;
@@ -60,7 +61,7 @@ public class SportFragment extends ChannelBaseFragment implements
 	private TextView sport_channel3_subtitle;
 	private LabelImageView sport_channel4_image;
 	private TextView sport_channel4_subtitle;
-	private LinearLayout sport_channel5;
+	private HomeItemContainer sport_channel5;
 
 	private ImageView arrowUp;
 	private ImageView arrowDown;
@@ -95,7 +96,7 @@ public class SportFragment extends ChannelBaseFragment implements
 				.findViewById(R.id.sport_channel4_image);
 		sport_channel4_subtitle = (TextView) view
 				.findViewById(R.id.sport_channel4_subtitle);
-		sport_channel5 = (LinearLayout) view.findViewById(R.id.listmore);
+		sport_channel5 = (HomeItemContainer) view.findViewById(R.id.listmore);
 		sportspost_title = (TextView) view.findViewById(R.id.sportspost_title);
 		arrowUp = (ImageView) view.findViewById(R.id.sec_one_list_1_arrowup);
 		arrowDown = (ImageView) view

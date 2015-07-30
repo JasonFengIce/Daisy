@@ -184,7 +184,6 @@ public class AdvertisementActivity extends Activity {
                                 provinceTable.province_name = province;
                                 provinceTable.save();
                             }
-
                         }
                     }
                     ActiveAndroid.setTransactionSuccessful();
