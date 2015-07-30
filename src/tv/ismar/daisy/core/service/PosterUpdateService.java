@@ -11,6 +11,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.util.Base64;
 import android.util.Log;
+import com.google.gson.Gson;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -22,6 +23,7 @@ import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.advertisement.AdvertisementInfoEntity;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.data.LaunchAdvertisementEntity;
 import tv.ismar.daisy.models.AdElement;
 import tv.ismar.daisy.utils.AppUtils;
 
@@ -101,14 +103,16 @@ public class PosterUpdateService extends Service {
 
     private void fetchAdvertisementInfo() {
         String api = SimpleRestClient.ad_domain + "/api/get/ad/";
-        String adpId = "['" + "kaipingguanggao" + "']";
+        String adpId = "['" + "kaishi" + "']";
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("adpid", adpId);
 
         new IsmartvUrlClient().doAdvertisementRequest(IsmartvUrlClient.Method.POST, api, params, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
-                Log.d(TAG, "fetchAdvertisementInfo:" + result);
+                LaunchAdvertisementEntity launchAdvertisementEntity = new Gson().fromJson(result, LaunchAdvertisementEntity.class);
+                LaunchAdvertisementEntity.AdvertisementData advertisementData = launchAdvertisementEntity.getAds().getKaishi()[0];
+                downloadPic(advertisementData);
             }
 
             @Override
@@ -119,14 +123,14 @@ public class PosterUpdateService extends Service {
     }
 
 
-    private void downloadPic(final AdvertisementInfoEntity advertisementInfoEntity) {
+    private void downloadPic(final LaunchAdvertisementEntity.AdvertisementData advertisementData) {
         new Thread() {
             @Override
             public void run() {
                 Log.d(TAG, "downloadPic is running...");
                 try {
                     int byteread;
-                    URL url = new URL(advertisementInfoEntity.getUrl());
+                    URL url = new URL(advertisementData.getMedia_url());
                     Log.i(TAG, "downloadPic ---> " + url);
                     if (!posterTmpFile.exists())
                         posterTmpFile.createNewFile();
@@ -146,21 +150,22 @@ public class PosterUpdateService extends Service {
                     e.printStackTrace();
                 }
                 Log.i(TAG, "downloadPic is end...");
-                updateLocalPoster(advertisementInfoEntity);
+                updateLocalPoster(advertisementData);
             }
         }.start();
 
 
     }
 
-    private void updateLocalPoster(AdvertisementInfoEntity advertisementInfoEntity) {
+    private void updateLocalPoster(LaunchAdvertisementEntity.AdvertisementData advertisementData) {
         Log.i(TAG, "updateLocalPoster is running...");
         String cacheFileMd5 = AppUtils.getMd5ByFile(posterTmpFile);
         if (posterTmpFile.exists() &&
-                cacheFileMd5.equalsIgnoreCase(advertisementInfoEntity.getMd5())) {
+                cacheFileMd5.equalsIgnoreCase(advertisementData.getMd5())) {
             Log.i(TAG, "replace local poster png");
             posterTmpFile.renameTo(posterFile);
-            modifyPosterPreference(advertisementInfoEntity.getEndTimeStamp());
+
+            modifyPosterPreference(Timestamp.valueOf(advertisementData.getEnd()));
         }
     }
 
