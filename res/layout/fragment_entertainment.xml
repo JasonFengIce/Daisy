@@ -55,6 +55,7 @@
                     android:focusable="true"
                     android:paddingBottom="-22dp"
                     android:scaleType="fitXY"
+                    android:layout_marginLeft="1dp"
                     android:src="@drawable/list_item_preview_bg" />
 
                 <tv.ismar.daisy.views.AsyncImageView
@@ -64,6 +65,7 @@
                     android:focusable="true"
                     android:paddingBottom="-22dp"
                     android:scaleType="fitXY"
+                    android:layout_marginLeft="1dp"
                     android:src="@drawable/list_item_preview_bg" />
 
                 <TextView
@@ -72,6 +74,7 @@
                     android:layout_height="52dp"
                     android:layout_gravity="bottom"
                     android:alpha="0.7"
+                    android:layout_marginLeft="1dp"
                     android:background="#303030"
                     android:gravity="center"
                     android:textSize="24sp" />
@@ -108,7 +111,6 @@
                     android:layout_margin="2dp"
                     labelimage:focusbackground="#b3303030"
                     labelimage:focustextsize="18sp"
-                    labelimage:needzoom="true"
                      />
 
                 <TextView
@@ -141,7 +143,6 @@
                     android:src="@drawable/list_item_preview_bg"
                     labelimage:focusbackground="#b3303030"
                     labelimage:focustextsize="18sp"
-                    labelimage:needzoom="true"
                      />
 
                 <TextView
@@ -160,7 +161,6 @@
                 android:clipToPadding="false"
                 android:orientation="vertical"
                 android:layout_below="@+id/vaiety_card1"
-                android:layout_marginTop="31dp"
                 android:background="@drawable/entertainment_item_bg" >
 
                 <tv.ismar.daisy.views.LabelImageView
@@ -174,7 +174,6 @@
                     android:src="@drawable/list_item_preview_bg"
                     labelimage:focusbackground="#b3303030"
                     labelimage:focustextsize="18sp"
-                    labelimage:needzoom="true"
                      />
 
                 <TextView
@@ -194,7 +193,6 @@
                 android:orientation="vertical"
                 android:layout_toRightOf="@+id/vaiety_card3"
                 android:layout_below="@+id/vaiety_card2"
-                android:layout_marginTop="31dp"
                 android:layout_marginLeft="27dp"
                 android:background="@drawable/entertainment_item_bg"  >
 
@@ -209,7 +207,6 @@
                     android:src="@drawable/list_item_preview_bg"
                     labelimage:focusbackground="#b3303030"
                     labelimage:focustextsize="18sp"
-                    labelimage:needzoom="true"
                      />
 
                 <TextView
