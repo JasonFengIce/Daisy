@@ -243,7 +243,7 @@
                 android:focusable="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
-                labelimage:focusbackground="#b3303030"
+                labelimage:focusbackground="@color/shawdow"
                 labelimage:focustextsize="18sp" />
 
             <TextView
@@ -273,7 +273,7 @@
                 android:focusable="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
-                labelimage:focusbackground="#b3303030"
+                labelimage:focusbackground="@color/shawdow"
                 labelimage:focustextsize="18sp" />
 
             <TextView
@@ -302,7 +302,7 @@
                 android:focusable="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
-                labelimage:focusbackground="#b3303030"
+                labelimage:focusbackground="@color/shawdow"
                 labelimage:focustextsize="18sp" />
 
             <TextView
@@ -333,7 +333,7 @@
                 android:focusable="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
-                labelimage:focusbackground="#b3303030"
+                labelimage:focusbackground="@color/shawdow"
                 labelimage:focustextsize="18sp" />
 
             <TextView
