@@ -127,8 +127,6 @@
 
 
     <ImageView
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="-12dp"
             android:scaleType="fitXY"
             android:src="@drawable/bg_child_fragment"
             android:layout_width="match_parent"
