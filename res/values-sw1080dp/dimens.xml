@@ -772,7 +772,7 @@
 
     <!-- child fragment -->
     <dimen name="child_fragment_item_margin_lr">107dp</dimen>
-    <dimen name="child_fragment_item_margin_tp">20dp</dimen>
+    <dimen name="child_fragment_item_margin_tp">18dp</dimen>
     <dimen name="child_fragment_item_img_padding">4dp</dimen>
     <dimen name="child_fragment_centerlayout_margin_lf">113dp</dimen>
     <dimen name="child_fragment_centerlayout_margin_tp">20dp</dimen>
@@ -781,6 +781,23 @@
     <dimen name="child_fragment_indicator_height">85dp</dimen>
 
     <dimen name="child_fragment_indicator_layout_padding_bottom">38dp</dimen>
+
+    <dimen name="child_fragment_toplayout_margin_top">31dp</dimen>
+    <dimen name="child_fragment_leftlayout_margin_left">103dp</dimen>
+
+    <dimen name="child_fragment_item_width">346dp</dimen>
+    <dimen name="child_fragment_item_height">234dp</dimen>
+
+    <dimen name="child_fragment_item_image_width">336dp</dimen>
+    <dimen name="child_fragment_item_image_height">189dp</dimen>
+    <dimen name="child_fragment_item_image_margin_top">4dp</dimen>
+
+    <dimen name="child_fragment_center_layout_width">788dp</dimen>
+    <dimen name="child_fragment_center_layout_height">446dp</dimen>
+    <dimen name="child_fragment_center_layout_margin_left">113dp</dimen>
+
+    <dimen name="child_fragment_center_layout_item_margin_top">58dp</dimen>
+    <dimen name="child_fragment_center_layout_item_margin_left">96dp</dimen>
 
 
     <dimen name="item_boundary_margin">7dp</dimen>

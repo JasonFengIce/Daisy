@@ -3,134 +3,126 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/left_layout"
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_weight="5"
-            android:layout_height="match_parent">
+                android:id="@+id/left_layout"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/child_fragment_toplayout_margin_top"
+                android:layout_marginLeft="@dimen/child_fragment_leftlayout_margin_left"
+                >
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="@dimen/child_fragment_centerlayout_margin_tp"
-            android:layout_marginBottom="@dimen/child_fragment_centerlayout_margin_tp"
-            android:layout_marginLeft="@dimen/child_fragment_centerlayout_margin_lf"
-            android:layout_marginRight="@dimen/child_fragment_centerlayout_margin_lf"
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_weight="9"
-            android:layout_height="match_parent">
+                android:id="@+id/center_layout"
+                android:layout_marginTop="@dimen/child_fragment_toplayout_margin_top"
+                android:layout_marginLeft="@dimen/child_fragment_center_layout_margin_left"
+                android:layout_toRightOf="@id/left_layout"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
             <RelativeLayout
-                android:id="@+id/indicator_layout"
-                android:paddingBottom="@dimen/child_fragment_indicator_layout_padding_bottom"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2">
+                    android:id="@+id/indicator_layout"
+                    android:layout_width="@dimen/child_fragment_center_layout_width"
+                    android:layout_height="@dimen/child_fragment_center_layout_height"
+                    >
 
                 <ImageView
-                    android:scaleType="fitXY"
-                    android:id="@+id/image_switcher"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                        android:scaleType="fitXY"
+                        android:id="@+id/image_switcher"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
                 </ImageView>
 
                 <LinearLayout
-                    android:gravity="bottom"
-                    android:layout_alignParentBottom="true"
-                    android:id="@+id/indicator"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="85dp">
+                        android:gravity="bottom"
+                        android:layout_alignParentBottom="true"
+                        android:id="@+id/indicator"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="85dp">
 
                     <tv.ismar.daisy.ui.widget.child.ChildThumbImageView
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:clickable="true"
-                        android:adjustViewBounds="true"
-                        android:scaleType="fitXY"
-                        android:id="@+id/indicator_1"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/child_fragment_indicator_height"
-                        android:layout_weight="1"
-                        />
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:clickable="true"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitXY"
+                            android:id="@+id/indicator_1"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/child_fragment_indicator_height"
+                            android:layout_weight="1"
+                            />
 
                     <tv.ismar.daisy.ui.widget.child.ChildThumbImageView
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:clickable="true"
-                        android:scaleType="fitXY"
-                        android:id="@+id/indicator_2"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/child_fragment_indicator_height"
-                        android:layout_weight="1"
-                        />
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:clickable="true"
+                            android:scaleType="fitXY"
+                            android:id="@+id/indicator_2"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/child_fragment_indicator_height"
+                            android:layout_weight="1"
+                            />
 
                     <tv.ismar.daisy.ui.widget.child.ChildThumbImageView
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:clickable="true"
-                        android:scaleType="fitXY"
-                        android:id="@+id/indicator_3"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/child_fragment_indicator_height"
-                        android:layout_weight="1"
-                        />
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:clickable="true"
+                            android:scaleType="fitXY"
+                            android:id="@+id/indicator_3"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/child_fragment_indicator_height"
+                            android:layout_weight="1"
+                            />
 
                     <TextView
-                        android:alpha="0.7"
-                        android:background="#303030"
-                        android:gravity="center"
-                        android:textSize="24sp"
-                        android:id="@+id/indicator_title"
-                        android:layout_weight="3"
-                        android:layout_width="0dp"
-                        android:layout_height="55dp"
-                        />
+                            android:alpha="0.7"
+                            android:background="#303030"
+                            android:gravity="center"
+                            android:textSize="24sp"
+                            android:id="@+id/indicator_title"
+                            android:layout_weight="3"
+                            android:layout_width="0dp"
+                            android:layout_height="55dp"
+                            />
                 </LinearLayout>
             </RelativeLayout>
 
             <LinearLayout
-                android:id="@+id/bottom_layout"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                >
+                    android:id="@+id/bottom_layout"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/child_fragment_center_layout_item_margin_top"
+                    >
             </LinearLayout>
-
-
         </LinearLayout>
-
 
         <LinearLayout
-            android:id="@+id/right_layout"
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_weight="5"
-            android:layout_height="match_parent">
-
-
+                android:id="@+id/right_layout"
+                android:layout_marginTop="@dimen/child_fragment_toplayout_margin_top"
+                android:layout_marginLeft="@dimen/child_fragment_center_layout_margin_left"
+                android:layout_toRightOf="@id/center_layout"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
         </LinearLayout>
+    </RelativeLayout>
 
-    </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageView
+    <ImageView
             android:layout_marginTop="12dp"
             android:layout_marginBottom="-12dp"
             android:scaleType="fitXY"
             android:src="@drawable/bg_child_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-    </RelativeLayout>
 
 </FrameLayout>

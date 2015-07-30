@@ -76,8 +76,6 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
                 ArrayList<HomePagerEntity.Poster> posters = homePagerEntity.getPosters();
                 ArrayList<HomePagerEntity.Carousel> carousels = homePagerEntity.getCarousels();
 
-                Log.d(TAG, "posters size: " + posters.size());
-                Log.d(TAG, "carousels size: " + carousels.size());
 
                 initPosters(posters);
                 initCarousel(carousels);
@@ -93,9 +91,10 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
 
 
     private void initPosters(ArrayList<HomePagerEntity.Poster> posters) {
-        int marginLR = (int) context.getResources().getDimension(R.dimen.child_fragment_item_margin_lr);
         int marginTP = (int) context.getResources().getDimension(R.dimen.child_fragment_item_margin_tp);
-        Log.d(TAG, "margin lr: " + marginLR);
+
+        int itemWidht = (int) context.getResources().getDimension(R.dimen.child_fragment_item_width);
+        int itemHeight = (int) context.getResources().getDimension(R.dimen.child_fragment_item_height);
 
         for (int i = 0; i < 7; i++) {
             View itemContainer = LayoutInflater.from(context).inflate(R.layout.item_comic_fragment, null);
@@ -111,53 +110,66 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
 
             Picasso.with(context).load(posters.get(i).getCustom_image()).into(itemImg);
             itemText.setText(posters.get(i).getTitle());
+
+            /**
+             * left layout
+             */
             if (i >= 0 && i < 3) {
-                LinearLayout.LayoutParams verticalParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
-                verticalParams.weight = 1;
-                if (i == 2) {
-                    verticalParams.setMargins(marginLR, marginTP, 0, marginTP);
-                } else {
-                    verticalParams.setMargins(marginLR, marginTP, 0, 0);
+
+                LinearLayout.LayoutParams verticalParams = new LinearLayout.LayoutParams(itemWidht, itemHeight);
+                verticalParams.width = itemWidht;
+                verticalParams.height = itemHeight;
+                if (i == 1) {
+                    verticalParams.setMargins(0, marginTP, 0, marginTP);
                 }
                 itemContainer.setLayoutParams(verticalParams);
                 leftLayout.addView(itemContainer);
             }
 
-
+            /**
+             * center layout
+             */
             if (i >= 3 && i < 5) {
-                LinearLayout.LayoutParams horizontalParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
-                horizontalParams.weight = 1;
-                if (i == 3) {
-                    horizontalParams.setMargins(0, marginTP, (int) context.getResources().getDimension(R.dimen.child_fragment_bottomlayout_margin), 0);
-                } else if (i == 4) {
-                    horizontalParams.setMargins(0, marginTP, 0, 0);
+                LinearLayout.LayoutParams horizontalParams = new LinearLayout.LayoutParams(itemWidht, itemHeight);
+                horizontalParams.width = itemWidht;
+                horizontalParams.height = itemHeight;
+
+                int marginLeft = (int) context.getResources().getDimension(R.dimen.child_fragment_center_layout_item_margin_left);
+
+                if (i == 4) {
+                    horizontalParams.setMargins(marginLeft, 0, 0, 0);
                 }
 
                 itemContainer.setLayoutParams(horizontalParams);
                 bottomLayout.addView(itemContainer);
             }
 
-
+            /**
+             * right layout
+             */
             if (i >= 5 && i < 7) {
-                LinearLayout.LayoutParams verticalParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
-                verticalParams.weight = 1;
+                LinearLayout.LayoutParams verticalParams = new LinearLayout.LayoutParams(itemWidht, itemHeight);
+                verticalParams.width = itemWidht;
+                verticalParams.height = itemHeight;
 
-                verticalParams.setMargins(0, marginTP, marginLR, 0);
+                if (i == 6) {
+                    verticalParams.setMargins(0, marginTP, 0, 0);
+                }
                 itemContainer.setLayoutParams(verticalParams);
                 rightLayout.addView(itemContainer);
             }
         }
-        ImageView imageView = new ImageView(context);
-        imageView.setFocusable(true);
-        imageView.setFocusableInTouchMode(true);
-        imageView.setClickable(true);
-        imageView.setImageResource(R.drawable.selector_child_more);
-        imageView.setOnClickListener(ItemClickListener);
-        LinearLayout.LayoutParams verticalParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
-        verticalParams.weight = 1;
-        verticalParams.setMargins(0, 0, marginLR, marginTP);
-        imageView.setLayoutParams(verticalParams);
-        rightLayout.addView(imageView);
+//        ImageView imageView = new ImageView(context);
+//        imageView.setFocusable(true);
+//        imageView.setFocusableInTouchMode(true);
+//        imageView.setClickable(true);
+//        imageView.setImageResource(R.drawable.selector_child_more);
+//        imageView.setOnClickListener(ItemClickListener);
+//        LinearLayout.LayoutParams verticalParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
+//        verticalParams.weight = 1;
+//        verticalParams.setMargins(0, 0, marginLR, marginTP);
+//        imageView.setLayoutParams(verticalParams);
+//        rightLayout.addView(imageView);
         rightLayout.requestLayout();
     }
 
@@ -221,7 +233,6 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
             if (position != i) {
                 if (imageView.getAlpha() == 1) {
                     imageView.zoomNormalImage();
-//                    imageView.setAlpha((float) 0.5);
 
 
                 }
