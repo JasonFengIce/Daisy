@@ -712,7 +712,7 @@
     <dimen name="tv_guide_cinema_textSize">48sp</dimen>
     <dimen name="tv_guide_history_textSize">24sp</dimen>
 
-    <dimen name="fragment_padding_lr">70dp</dimen>
+    <dimen name="fragment_padding_lr">73dp</dimen>
 
     <dimen name="guide_padding">4dp</dimen>
     <dimen name="tv_guide_menu_margin">44dp</dimen>
