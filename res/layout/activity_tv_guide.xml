@@ -65,26 +65,37 @@
                 android:focusable="true"/>
     </RelativeLayout>
 
+    <!--<tv.ismar.daisy.views.MyHorizontalScrollView-->
+            <!--android:id="@+id/scroll"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:paddingRight="0dip"-->
+            <!--android:paddingLeft="77dip"-->
+            <!--android:layout_weight="0.7"-->
+            <!--android:scrollbars="none">-->
 
-    <tv.ismar.daisy.views.MyHorizontalScrollView
-            android:id="@+id/scroll"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:paddingRight="0dip"
-            android:paddingLeft="77dip"
+        <!--<LinearLayout-->
+
+                <!--android:id="@+id/channel_h_list"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:orientation="horizontal">-->
+        <!--</LinearLayout>-->
+    <!--</tv.ismar.daisy.views.MyHorizontalScrollView>-->
+    <org.sakuratya.horizontal.ui.HGridView
+            xmlns:sakura="http://schemas.android.com/apk/res/tv.ismar.daisy"
             android:layout_weight="0.7"
-
-            android:scrollbars="none">
-
-        <LinearLayout
-
-                android:id="@+id/channel_h_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-        </LinearLayout>
-    </tv.ismar.daisy.views.MyHorizontalScrollView>
-
+            android:id="@+id/h_grid_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            sakura:horizontalSpacing="14dip"
+            sakura:numRows="1"
+            sakura:rowHeight="66dip"
+            android:fadingEdge="horizontal"
+            sakura:selectorDrawable="@null"
+            android:fadingEdgeLength="@dimen/gridview_main_panel_fadingEdgeLength"
+      >
+    </org.sakuratya.horizontal.ui.HGridView>
     <LinearLayout
             android:id="@+id/tab_list"
             android:layout_width="wrap_content"

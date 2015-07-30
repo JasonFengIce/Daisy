@@ -4,34 +4,34 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:id="@+id/list_item_layout"
-    >
+    android:clipChildren="false"
+        android:clipToPadding="false">
 
     <tv.ismar.daisy.views.LabelImageView
+
         xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
         android:layout_width="336dp"
         android:layout_height="189dp"
         android:id="@+id/list_item_preview_img"
         android:background="@drawable/list_item_preview_bg"
-        android:layout_marginLeft="8dip"
         android:layout_alignParentTop="true"
-        android:paddingTop="@dimen/gridview_item_image_PaddingT"
-        android:paddingBottom="@dimen/gridview_item_image_PaddingB"
-        android:paddingLeft="@dimen/gridview_item_image_PaddingL"
-        android:paddingRight="@dimen/gridview_item_image_PaddingR"
         labelimage:focuspaddingtop="0.90"
         labelimage:focustextsize="30sp"
+        labelimage:maxfocustitle="10"
         labelimage:focusbackground="#b3303030"
         android:scaleType="fitXY"/>
 
     <TextView
+        android:gravity="center_horizontal"
         android:layout_width="336dip"
         android:layout_height="match_parent"
         android:singleLine="true"
         android:ellipsize="marquee"
-        android:gravity="center"
+        android:paddingTop="15dip"
+        android:paddingBottom="34dip"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/list_item_preview_img"
-        android:textSize="@dimen/gridview_item_title_textsize"
+        android:textSize="30sp"
         android:id="@+id/list_item_title"
         android:textColor="#FFF8F8FF"
        />

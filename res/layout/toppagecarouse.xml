@@ -11,8 +11,8 @@
     <tv.ismar.daisy.views.LabelImageView
         xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
         android:id="@+id/toppage_carous_imageView1"
-        android:layout_width="297dp"
-        android:layout_height="166dp"
+        android:layout_width="@dimen/toppage_carous_imageView_w"
+        android:layout_height="@dimen/toppage_carous_imageView_h"
         android:descendantFocusability="beforeDescendants"
         android:focusable="true"
         android:scaleType="fitXY"
@@ -24,8 +24,8 @@
     <tv.ismar.daisy.views.LabelImageView
         xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
         android:id="@+id/toppage_carous_imageView2"
-        android:layout_width="297dp"
-        android:layout_height="166dp"
+        android:layout_width="@dimen/toppage_carous_imageView_w"
+        android:layout_height="@dimen/toppage_carous_imageView_h"
         android:layout_below="@+id/toppage_carous_imageView1"
         android:descendantFocusability="beforeDescendants"
         android:focusable="true"
@@ -38,8 +38,8 @@
     <tv.ismar.daisy.views.LabelImageView
         xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
         android:id="@+id/toppage_carous_imageView3"
-        android:layout_width="297dp"
-        android:layout_height="166dp"
+        android:layout_width="@dimen/toppage_carous_imageView_w"
+        android:layout_height="@dimen/toppage_carous_imageView_h"
         android:layout_below="@+id/toppage_carous_imageView2"
         android:descendantFocusability="beforeDescendants"
         android:focusable="true"

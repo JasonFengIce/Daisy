@@ -2,7 +2,6 @@
 <tv.ismar.daisy.ui.widget.HomeItemContainer xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="23dp"
     android:clickable="true"
     android:focusable="false">
 
@@ -17,7 +16,7 @@
     <TextView
         android:id="@+id/poster_title"
         android:layout_width="@dimen/guide_recommend_item_width"
-        android:layout_height="55dp"
+        android:layout_height="@dimen/toppage_fragment_poster_title_h"
         android:layout_gravity="bottom|center"
         android:background="#b3000000"
         android:ellipsize="marquee"
@@ -25,8 +24,8 @@
         android:marqueeRepeatLimit="marquee_forever"
         android:focusable="true"
         android:singleLine="true"
-        android:textSize="36sp"
-        android:paddingLeft="3dp"
+        android:textSize="@dimen/toppage_fragment_poster_title_textsize"
+        android:paddingLeft="@dimen/toppage_fragment_poster_title_padding"
         android:visibility="gone" />
 
 </tv.ismar.daisy.ui.widget.HomeItemContainer>

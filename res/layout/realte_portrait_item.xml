@@ -21,6 +21,7 @@
         labelimage:focusbackground="#b3303030"
         labelimage:focuspaddingtop="0.90"
         labelimage:focustextpaddingtop="0.97"
+        labelimage:maxfocustitle="10"
         labelimage:focustextsize="24sp"
         />
 

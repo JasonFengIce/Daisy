@@ -34,7 +34,7 @@ public class ChannelAdapter extends HGridAdapter<ChannelEntity>  {
 	// 背景图ID
 	private final int backgroudID = R.drawable.list_item_preview_bg;
 	private final int backType = R.drawable.iv_type_comic;
-
+    private HashMap<String, TextView> channelHashMap;
 	// private HashMap<Integer, HashMap<String, Object>> cacheMap = new HashMap<Integer, HashMap<String, Object>>();
 	public ChannelAdapter(Context context, int sourceid) {
 		this.mContext = context;
@@ -63,7 +63,13 @@ public class ChannelAdapter extends HGridAdapter<ChannelEntity>  {
 	public long getItemId(int position) {
 		return position;
 	}
-
+    private View.OnClickListener listener;
+    public void setOnClickListener(View.OnClickListener l){
+        listener = l;
+    }
+    public void setMap(HashMap<String, TextView> map){
+      channelHashMap = map;
+    }
 	private ChannelEntity movieBean;
 	ViewHolder holder;
 	
@@ -79,20 +85,28 @@ public class ChannelAdapter extends HGridAdapter<ChannelEntity>  {
 			// Log.e("create_converView", "new conver");
 			holder = new ViewHolder();
 			convertView = mLayoutInflater.inflate(sourceid, null);
-            holder.channelBtn = (TextView)convertView.findViewById(R.id.channel_item);
+            holder.channelBtn = (Button)convertView.findViewById(R.id.channel_item);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
+        channelHashMap.put(movieBean.getChannel(), holder.channelBtn);
         holder.channelBtn.setText(movieBean.getName());
         holder.channelBtn.setTag(position);
         holder.channelBtn.setOnFocusChangeListener(new ItemViewFocusChangeListener());
+        holder.channelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(listener!=null)
+                    listener.onClick(view);
+            }
+        });
 		return convertView;
 	}
 
 
 	public static class ViewHolder {
-		public TextView channelBtn;
+		public Button channelBtn;
 
 	}
 

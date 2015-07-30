@@ -83,7 +83,7 @@
     <dimen name="gridview_channel_label_marginright">25dip</dimen>
     <dimen name="gridview_channel_label_textsize">72sp</dimen>
     <dimen name="gridview_channel_label_padding">3dip</dimen>
-    <dimen name="gridview_channel_section_tabs_width">1515dip</dimen>
+    <dimen name="gridview_channel_section_tabs_width">1690dip</dimen>
     <dimen name="gridview_channel_section_tabs_margintop">174dip</dimen>
     <dimen name="gridview_main_panel_height">810dip</dimen>
     <dimen name="gridview_main_panel_fadingEdgeLength">144dip</dimen>
@@ -457,10 +457,10 @@
     <dimen name="ZGridView_recommend_selectorBottomPadding">-30dip</dimen>
 
     <!-- HGridView -->
-    <dimen name="HGridView_related_selectionLeftPadding">15dip</dimen>
+    <dimen name="HGridView_related_selectionLeftPadding">21dip</dimen>
     <dimen name="HGridView_related_selectionTopPadding">20dip</dimen>
     <dimen name="HGridView_related_selectionRightPadding">22dip</dimen>
-    <dimen name="HGridView_related_selectionBottomPadding">-42dip</dimen>
+    <dimen name="HGridView_related_selectionBottomPadding">-62dip</dimen>
 
     <dimen name="HGridView_related_PFilterLeftPadding">20dip</dimen>
     <dimen name="HGridView_related_PFilterTopPadding">21dip</dimen>
@@ -472,9 +472,9 @@
     <dimen name="HGridView_related_FilterRightPadding">22dip</dimen>
     <dimen name="HGridView_related_FilterBottomPadding">-40dip</dimen>
 
-    <dimen name="HGridView_related_pselectionLeftPadding">19dip</dimen>
+    <dimen name="HGridView_related_pselectionLeftPadding">20dip</dimen>
     <dimen name="HGridView_related_pselectionTopPadding">20dip</dimen>
-    <dimen name="HGridView_related_pselectionRightPadding">19dip</dimen>
+    <dimen name="HGridView_related_pselectionRightPadding">20dip</dimen>
     <dimen name="HGridView_related_pselectionBottomPadding">-29dip</dimen>
 
 
@@ -681,16 +681,10 @@
 
 
     <!-- fragment guide -->
-    <dimen name="guide_video_width">1470dp</dimen>
-    <dimen name="guide_video_height">498dp</dimen>
 
 
     <dimen name="linked_item_width">297dp</dimen>
     <dimen name="linked_item_height">166dp</dimen>
-
-    <dimen name="guide_recommend_item_width">199dp</dimen>
-    <dimen name="guide_recommend_item_height">278dp</dimen>
-    <dimen name="guide_recommend_item_spacing">22dp</dimen>
 
     <dimen name="guide_recommend_margin_top">4dp</dimen>
 
@@ -708,15 +702,41 @@
     <dimen name="guide_container_height">780dp</dimen>
 
     <!-- tv guide activity -->
+   
+    <!-- top page template -->
+    <dimen name="tv_guide_top_section_padding">14dp</dimen>
+    <dimen name="weather_fragment_h">100dp</dimen>
+    <dimen name="toppage_divide_margin">26dp</dimen>
+    <dimen name="toppage_divide_h">1dp</dimen>
+    <dimen name="toppage_arrow_h">82dp</dimen>
+    <dimen name="toppage_arrow_w">41dp</dimen>
+    <dimen name="toppage_arrow_margin">13dp</dimen>
+    <dimen name="toppage_scroll_padding_left">77dp</dimen>
+    <dimen name="toppage_fragment_padding_lr">73dp</dimen>
+    <dimen name="toppage_fragment_linerlayout_h">498dp</dimen>
+    <dimen name="toppage_fragment_linerlayout_margintop">30dp</dimen>
+    <dimen name="toppage_fragment_linerlayout_marginbottom">16dp</dimen>
+    <dimen name="guide_padding">7dp</dimen>
+    <dimen name="guide_video_width">1470dp</dimen>
+    <dimen name="guide_video_height">498dp</dimen>
+    <dimen name="toppage_fragment_recommend_list_h">278dp</dimen>
+    <dimen name="toppage_fragment_recommend_list_padding">29dp</dimen>
+    <dimen name="toppage_carous_imageView_h">166dp</dimen>
+    <dimen name="toppage_carous_imageView_w">297dp</dimen>
+    <dimen name="guide_recommend_item_spacing">26dp</dimen>
+    <dimen name="guide_recommend_item_width">199dp</dimen>
+    <dimen name="guide_recommend_item_height">278dp</dimen>
+    <dimen name="toppage_fragment_poster_title_h">55dp</dimen>
+    <dimen name="toppage_fragment_poster_title_textsize">36sp</dimen>
+    <dimen name="toppage_fragment_poster_title_padding">3dp</dimen>
+    <!-- top page template end -->
     <dimen name="tv_guide_channel_textSize">36sp</dimen>
     <dimen name="tv_guide_cinema_textSize">48sp</dimen>
     <dimen name="tv_guide_history_textSize">24sp</dimen>
 
     <dimen name="fragment_padding_lr">73dp</dimen>
 
-    <dimen name="guide_padding">7dp</dimen>
     <dimen name="tv_guide_menu_margin">44dp</dimen>
-    <dimen name="tv_guide_top_section_padding">14dp</dimen>
     <dimen name="tv_guide_channel_margin_lr">51dp</dimen>
 
     <!-- guide fragment -->
@@ -889,7 +909,6 @@
     <dimen name="weather_guide_text_margin_lr">20dp</dimen>
     <dimen name="weather_guide_text_margin_margin_top">55dp</dimen>
     <dimen name="weather_guide_text_margin_margin_bottom">20dp</dimen>
-    <dimen name="weather_fragment_h">100dp</dimen>
 
     <dimen name="weather_layout_margin_left">25dp</dimen>
 

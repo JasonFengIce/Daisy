@@ -418,7 +418,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 			isInitTaskLoading = false;
             weatherFragment.setVisibility(View.VISIBLE);
 
-            right_shadow.setVisibility(View.VISIBLE);
+           // right_shadow.setVisibility(View.VISIBLE);
             //top_column_layout.setSecondChannelVisable();
             percentage.setVisibility(View.VISIBLE);
 			if(result!=RESULT_SUCCESS) {
