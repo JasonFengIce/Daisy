@@ -481,17 +481,10 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         @Override
         public void onReceiveLocation(BDLocation location) {
             mLocationClient.stop();
-            DaisyUtils
-                    .getVodApplication(TVGuideActivity.this)
-                    .getEditor()
-                    .putString(VodApplication.LOCATION_INFO,
-                            location.getAddrStr());
-            DaisyUtils.getVodApplication(TVGuideActivity.this).getEditor()
-                    .putString(LOCATION_PROVINCE, location.getProvince());
-            DaisyUtils.getVodApplication(TVGuideActivity.this).getEditor()
-                    .putString(LOCATION_CITY, location.getCity());
-            DaisyUtils.getVodApplication(TVGuideActivity.this).getEditor()
-                    .putString(LOCATION_DISTRICT, location.getDistrict());
+            DaisyUtils.getVodApplication(TVGuideActivity.this).getEditor().putString(VodApplication.LOCATION_INFO, location.getAddrStr());
+            DaisyUtils.getVodApplication(TVGuideActivity.this).getEditor().putString(LOCATION_PROVINCE, location.getProvince());
+            DaisyUtils.getVodApplication(TVGuideActivity.this).getEditor().putString(LOCATION_CITY, location.getCity());
+            DaisyUtils.getVodApplication(TVGuideActivity.this).getEditor().putString(LOCATION_DISTRICT, location.getDistrict());
             DaisyUtils.getVodApplication(TVGuideActivity.this).save();
         }
     }
@@ -536,21 +529,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         SimpleRestClient.log_domain = "http://" + result.getLog_Domain();
         SimpleRestClient.device_token = result.getDevice_token();
         SimpleRestClient.sn_token = result.getSn_Token();
-
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(ad_domain, SimpleRestClient.ad_domain);
-        editor.putString(DEVICE_TOKEN, SimpleRestClient.device_token);
-        editor.putString(DOMAIN, SimpleRestClient.root_url);
-        editor.putString(SN_TOKEN, SimpleRestClient.sn_token);
-        editor.putString(LOG_DOMAIN, SimpleRestClient.log_domain);
-        editor.apply();
-
-        SimpleRestClient.mobile_number = DaisyUtils.getVodApplication(this)
-                .getPreferences()
-                .getString(VodApplication.MOBILE_NUMBER, "");
-        SimpleRestClient.access_token = DaisyUtils.getVodApplication(this)
-                .getPreferences().getString(VodApplication.AUTH_TOKEN, "");
+        SimpleRestClient.mobile_number = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.MOBILE_NUMBER, "");
+        SimpleRestClient.access_token = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.AUTH_TOKEN, "");
     }
 
     private void getHardInfo() {
