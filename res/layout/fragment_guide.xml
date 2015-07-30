@@ -10,9 +10,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="498dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="16dp"
+        android:layout_height="@dimen/toppage_fragment_linerlayout_h"
+        android:layout_marginTop="@dimen/toppage_fragment_linerlayout_margintop"
+        android:layout_marginBottom="@dimen/toppage_fragment_linerlayout_marginbottom"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:orientation="horizontal" >
@@ -54,12 +54,15 @@
         xmlns:app="http://schemas.android.com/apk/res/tv.ismar.daisy"
         android:id="@+id/recommend_list"
         android:layout_width="match_parent"
-        android:layout_height="278dp"
+        android:layout_height="@dimen/toppage_fragment_recommend_list_h"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:orientation="horizontal"
-        android:paddingBottom="29dp"
-        app:horizontal_spacing="@dimen/guide_recommend_item_spacing" >
+        android:paddingBottom="@dimen/toppage_fragment_recommend_list_padding"
+        app:horizontal_spacing="@dimen/guide_recommend_item_spacing"
+        app:item_height="@dimen/guide_recommend_item_height"
+        app:item_width="@dimen/guide_recommend_item_width"
+         >
     </tv.ismar.daisy.ui.widget.DaisyViewContainer>
 
 </LinearLayout>
