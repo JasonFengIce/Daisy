@@ -24,9 +24,9 @@
             android:layout_height="match_parent"
             android:focusable="true"
             android:src="@drawable/list_item_preview_bg"
-            labelimage:focusbackground="#b3303030"
+            labelimage:focusbackground="@color/shawdow"
             labelimage:focuspaddingtop="0.89"
-            labelimage:focustextsize="36sp"
+            labelimage:focustextsize="@dimen/toppage_fragment_poster_title_textsize"
             labelimage:maxfocustitle="8"
              />
 
@@ -45,7 +45,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginRight="@dimen/guide_padding"
-                android:background="@drawable/launcher_selector"
                 android:focusable="false"
                 android:focusableInTouchMode="false" />
 
@@ -61,11 +60,11 @@
             <TextView
                 android:id="@+id/film_linked_title"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="@dimen/toppage_fragment_poster_title_h"
                 android:layout_gravity="bottom|center"
-                android:background="#b3808080"
+                android:background="@color/shawdow"
                 android:gravity="left|center"
-                android:textSize="36sp"
+                android:textSize="@dimen/toppage_fragment_poster_title_textsize"
                 android:paddingLeft="30dp"
                 android:visibility="gone"
                  />

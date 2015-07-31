@@ -174,7 +174,7 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
                 if(currentMonth>0){
-                    params.leftMargin = 34;
+                    params.leftMargin = 26;
                 }
                 month_section_layout.addView(monthSection,params);
                 currentMonth = month;

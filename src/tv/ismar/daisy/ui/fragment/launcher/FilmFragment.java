@@ -56,7 +56,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
 
     private LinearLayout guideRecommmendList;
     private LinearLayout carouselLayout;
-    private FrameLayout film_post_layout;
+    private HomeItemContainer film_post_layout;
     private DaisyVideoView linkedVideoView;
     private ImageView linkedVideoImage;
     private TextView film_linked_title;
@@ -463,6 +463,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
     public void change(int position) {
         Log.d(TAG, "changed position: " + position);
         for (int i = 0; i < allItem.size(); i++) {
+        	film_post_layout.setTag(R.drawable.launcher_selector, carousels.get(i));
             LabelImageView imageView = allItem.get(i);
             if (position != i) {
                 imageView.setCustomfocus(false);

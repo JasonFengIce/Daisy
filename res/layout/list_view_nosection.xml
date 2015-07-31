@@ -18,7 +18,7 @@
     </tv.ismar.daisy.ui.widget.LaunchHeaderLayout>
     <ImageView
             android:layout_width="match_parent"
-            android:layout_height="3dip"
+            android:layout_height="1dip"
             android:background="@drawable/filter_divider"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/tv_guide_top_section_padding"
@@ -36,7 +36,7 @@
                 android:layout_height="82dip"
                 android:visibility="invisible"
                 android:layout_marginLeft="16dip"
-                android:layout_marginTop="400dip"/>
+                android:layout_marginTop="441dip"/>
         <Button
                 android:layout_alignParentRight="true"
                 android:background="@drawable/channel_arrow_right"
@@ -45,7 +45,7 @@
                 android:layout_height="82dip"
                 android:visibility="invisible"
                 android:layout_marginRight="16dip"
-                android:layout_marginTop="400dip"/>
+                android:layout_marginTop="441dip"/>
 
     <org.sakuratya.horizontal.ui.HGridView
 
@@ -54,7 +54,7 @@
         android:layout_toLeftOf="@id/arrow_right"
         android:layout_toRightOf="@id/arrow_left"
         android:layout_height="match_parent"
-        sakura:horizontalSpacing="125dip"
+        sakura:horizontalSpacing="124dip"
         sakura:numRows="3"
         sakura:rowHeight="292dip"
         sakura:selectorDrawable="@drawable/vod_gv_selector"
@@ -63,10 +63,12 @@
         sakura:selectionTopPadding="21dip"
         sakura:selectionRightPadding="23dip"
         sakura:selectionBottomPadding="-82dip"
-        android:layout_marginTop="9dip"
+        android:layout_marginTop="44dip"
         android:paddingTop="6dip"
-        android:layout_marginLeft="20dip"
-        android:layout_marginRight="20dip">
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
+        android:layout_marginLeft="23dip"
+        android:layout_marginRight="23dip">
     </org.sakuratya.horizontal.ui.HGridView>
  </RelativeLayout>
 </LinearLayout>

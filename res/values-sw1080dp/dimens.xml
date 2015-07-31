@@ -715,7 +715,7 @@
     <dimen name="toppage_fragment_padding_lr">73dp</dimen>
     <dimen name="toppage_fragment_linerlayout_h">498dp</dimen>
     <dimen name="toppage_fragment_linerlayout_margintop">30dp</dimen>
-    <dimen name="toppage_fragment_linerlayout_marginbottom">16dp</dimen>
+    <dimen name="toppage_fragment_linerlayout_marginbottom">19dp</dimen>
     <dimen name="guide_padding">7dp</dimen>
     <dimen name="guide_video_width">1470dp</dimen>
     <dimen name="guide_video_height">498dp</dimen>

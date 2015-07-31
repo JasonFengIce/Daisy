@@ -1862,8 +1862,9 @@ private void initPlayerRelatedUI(){
 				adsumtime--;
                 ad_count_view.setText("广告倒计时" + adsumtime);
 				if (adsumtime > 0) {
-
 					sendEmptyMessageDelayed(AD_COUNT_ACTION, 1000);
+				}else {
+					mVideoView.playIndex(paths.length -1);
 				}
 				break;
 			default:
