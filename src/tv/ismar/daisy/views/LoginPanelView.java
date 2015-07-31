@@ -488,10 +488,12 @@ public class LoginPanelView extends LinearLayout {
 
                                 @Override
                                 public void onSuccess(String info) {
+                                	dismiss();
                                 }
 
                                 @Override
                                 public void onFailed(String error) {
+                                	dismiss();
                                 }
 
                             });
