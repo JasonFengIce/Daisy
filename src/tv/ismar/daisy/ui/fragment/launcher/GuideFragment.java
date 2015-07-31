@@ -18,6 +18,7 @@ import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.data.table.DownloadTable;
+import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
 import tv.ismar.daisy.ui.widget.DaisyViewContainer;
 import tv.ismar.daisy.ui.widget.HomeItemContainer;
@@ -92,21 +93,29 @@ public class GuideFragment extends ChannelBaseFragment implements
                 String title = carousels.get(flag.getPosition()).getTitle();
                 Intent intent = new Intent();
                 if ("item".equals(model)) {
-                    intent.setClassName("tv.ismar.daisy",
-                            "tv.ismar.daisy.ItemDetailActivity");
+                    intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.ItemDetailActivity");
                     intent.putExtra("url", url);
+                    context.startActivity(intent);
                 } else if ("topic".equals(model)) {
                     intent.putExtra("url", url);
                     intent.setClassName("tv.ismar.daisy",
                             "tv.ismar.daisy.TopicActivity");
+                    context.startActivity(intent);
                 } else if ("section".equals(model)) {
                     intent.putExtra("title", title);
                     intent.putExtra("itemlistUrl", url);
                     intent.putExtra("lableString", title);
-                    intent.setClassName("tv.ismar.daisy",
-                            "tv.ismar.daisy.PackageListDetailActivity");
+                    intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.PackageListDetailActivity");
+                    context.startActivity(intent);
+                } else if ("package".equals(model)) {
+                    intent.setAction("tv.ismar.daisy.packageitem");
+                    intent.putExtra("url", url);
+                    context.startActivity(intent);
+                } else if ("clip".equals(model)) {
+                    InitPlayerTool tool = new InitPlayerTool(context);
+                    tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
                 }
-                context.startActivity(intent);
+
             }
         });
         linkedVideoView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
