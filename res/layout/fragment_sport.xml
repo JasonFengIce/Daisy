@@ -114,32 +114,22 @@
             android:layout_height="match_parent"
             android:layout_weight="0.95" >
 
-            <ListView
-                android:descendantFocusability="blocksDescendants"
-                android:id="@+id/sec_one_list_2"
-                android:layout_width="300dp"
-                android:layout_height="match_parent"
-                android:dividerHeight="1dp"
-                android:listSelector="@drawable/launcher_selector"
-                android:scrollbars="none" />
+            <ScrollView
+                    android:descendantFocusability="blocksDescendants"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    >
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:id="@+id/sec_one_list_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                </LinearLayout>
+            </ScrollView>
 
-            <ImageView
-                android:id="@+id/sec_one_list_1_arrowdown"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/arrow_down"
-                android:focusable="true" />
 
-            <ImageView
-                android:id="@+id/sec_one_list_1_arrowup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/arrow_up"
-                android:focusable="true" />
         </RelativeLayout>
     </LinearLayout>
 
