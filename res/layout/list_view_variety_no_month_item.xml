@@ -4,7 +4,8 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:id="@+id/list_item_layout"
-    >
+                android:clipChildren="false"
+                android:clipToPadding="false">
 
     <tv.ismar.daisy.views.LabelImageView
         xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
@@ -20,7 +21,7 @@
         android:paddingRight="@dimen/gridview_item_image_PaddingR"
         labelimage:focuspaddingtop="0.87"
         labelimage:focustextpaddingtop="0.98"
-        labelimage:focustextsize="30sp"
+        labelimage:focustextsize="27sp"
         labelimage:maxfocustitle="13"
         labelimage:focusbackground="#b3303030"
         />

@@ -159,15 +159,15 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
                             mItemCollections.get(0).fillItems(0, lists);
                             mHGridAdapter.setList(mItemCollections);
                             weatherFragment.setVisibility(View.VISIBLE);
-                            if(arrow_left.isShown()){
-                                arrow_left.setVisibility(View.INVISIBLE);
-                            }
-                            if(arrow_right.isShown()){
-                                arrow_right.setVisibility(View.INVISIBLE);
-                            }
-                            if(mHGridAdapter.getCount()>8){
-                                arrow_right.setVisibility(View.VISIBLE);
-                            }
+//                            if(arrow_left.isShown()){
+//                                arrow_left.setVisibility(View.INVISIBLE);
+//                            }
+//                            if(arrow_right.isShown()){
+//                                arrow_right.setVisibility(View.INVISIBLE);
+//                            }
+//                            if(mHGridAdapter.getCount()>8){
+//                                arrow_right.setVisibility(View.VISIBLE);
+//                            }
                         }
                     }
                 });
