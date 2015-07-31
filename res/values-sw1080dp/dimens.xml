@@ -457,10 +457,10 @@
     <dimen name="ZGridView_recommend_selectorBottomPadding">-30dip</dimen>
 
     <!-- HGridView -->
-    <dimen name="HGridView_related_selectionLeftPadding">21dip</dimen>
-    <dimen name="HGridView_related_selectionTopPadding">20dip</dimen>
-    <dimen name="HGridView_related_selectionRightPadding">22dip</dimen>
-    <dimen name="HGridView_related_selectionBottomPadding">-62dip</dimen>
+    <dimen name="HGridView_related_selectionLeftPadding">3.5dip</dimen>
+    <dimen name="HGridView_related_selectionTopPadding">3.5dip</dimen>
+    <dimen name="HGridView_related_selectionRightPadding">3.5dip</dimen>
+    <dimen name="HGridView_related_selectionBottomPadding">-80.1dip</dimen>
 
     <dimen name="HGridView_related_PFilterLeftPadding">20dip</dimen>
     <dimen name="HGridView_related_PFilterTopPadding">21dip</dimen>
@@ -472,10 +472,10 @@
     <dimen name="HGridView_related_FilterRightPadding">22dip</dimen>
     <dimen name="HGridView_related_FilterBottomPadding">-40dip</dimen>
 
-    <dimen name="HGridView_related_pselectionLeftPadding">20dip</dimen>
-    <dimen name="HGridView_related_pselectionTopPadding">20dip</dimen>
-    <dimen name="HGridView_related_pselectionRightPadding">20dip</dimen>
-    <dimen name="HGridView_related_pselectionBottomPadding">-29dip</dimen>
+    <dimen name="HGridView_related_pselectionLeftPadding">3.8dip</dimen>
+    <dimen name="HGridView_related_pselectionTopPadding">3.8dip</dimen>
+    <dimen name="HGridView_related_pselectionRightPadding">3.8dip</dimen>
+    <dimen name="HGridView_related_pselectionBottomPadding">-47.2dip</dimen>
 
 
     <dimen name="HGridView_label_lr_offset">19dip</dimen>

@@ -42,43 +42,44 @@
 
 
     <Button
+            android:layout_alignParentLeft="true"
             android:background="@drawable/channel_arrow_left"
             android:id="@+id/arrow_left"
             android:layout_width="41dip"
             android:layout_height="82dip"
             android:visibility="invisible"
             android:layout_marginLeft="31dip"
-            android:layout_marginTop="240dip"/>
+            android:layout_marginTop="260dip"/>
         <Button
+            android:layout_alignParentRight="true"
             android:background="@drawable/channel_arrow_right"
             android:id="@+id/arrow_right"
             android:layout_width="41dip"
             android:layout_height="82dip"
             android:visibility="invisible"
             android:layout_marginRight="31dip"
-            android:layout_marginTop="240dip"/>
+            android:layout_marginTop="260dip"/>
     <org.sakuratya.horizontal.ui.HGridView
-        android:layout_toLeftOf="@id/right_shadow"
-        android:layout_toRightOf="@id/left_shadow"
+        android:layout_toLeftOf="@id/arrow_right"
+        android:layout_toRightOf="@id/arrow_left"
         android:id="@+id/h_grid_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         sakura:horizontalSpacing="34dip"
         sakura:numRows="2"
-        sakura:rowHeight="332dip"
-        sakura:selectorDrawable="@drawable/vod_gv_selector"
-        sakura:verticalSpacing="55dip"
+        sakura:rowHeight="370dip"
+        sakura:selectorDrawable="@drawable/popup_bg_yellow"
         sakura:selectionLeftPadding="@dimen/HGridView_related_selectionLeftPadding"
         sakura:selectionTopPadding="@dimen/HGridView_related_selectionTopPadding"
         sakura:selectionRightPadding="@dimen/HGridView_related_selectionRightPadding"
-        sakura:selectionBottomPadding="-58dip"
-        android:layout_marginTop="47dip"
+        sakura:selectionBottomPadding="-140dip"
+        android:layout_marginTop="46dip"
         android:paddingTop="4dip"
         android:layout_marginLeft="24dip"
         android:layout_marginRight="24dip"
         android:paddingLeft="5dip"
         android:paddingRight="5dip"
-        android:layout_marginBottom="92dip">
+        android:layout_marginBottom="17dip">
     </org.sakuratya.horizontal.ui.HGridView>
         </RelativeLayout>
 </LinearLayout>

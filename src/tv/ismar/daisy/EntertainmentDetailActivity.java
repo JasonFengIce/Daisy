@@ -720,7 +720,10 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             if(item!=null){
                 mLeftBtn.setText("播放"+item.subtitle);
             }
-           // mLeftBtn.setText(getResources().getString(R.string.play));
+            else{
+                mLeftBtn.setText("播放");
+            }
+            // mLeftBtn.setText(getResources().getString(R.string.play));
             mMiddleBtn.setText(getResources().getString(R.string.favorite));
             mLeftBtn.setTag(PLAY_VIDEO);
             mMiddleBtn.setTag(COLLECT_VIDEO);
@@ -762,7 +765,8 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 if(item!=null){
                     mLeftBtn.setText("播放"+item.subtitle);
                 }
-                //mLeftBtn.setText(getResources().getString(R.string.play));
+                else
+                    mLeftBtn.setText(getResources().getString(R.string.play));
                 mMiddleBtn.setText(getResources().getString(R.string.favorite));
                 mMiddleBtn.setTag(COLLECT_VIDEO);
 
@@ -916,7 +920,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
         }
     }
 
-//    private Item getItemByClipPk(int pk) {
+    //    private Item getItemByClipPk(int pk) {
 //        Item item = null;
 //        Item[] items = mItem.subitems;
 //        int count = items.length;
@@ -929,6 +933,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
 //        return item;
 //    }
     private Item getItemByClipPk(int pk){
+        Item item = null;
         if (isDrama()) {
             String url = mItem.item_url == null ? mSimpleRestClient.root_url
                     + "/api/item/" + mItem.pk + "/"
@@ -939,31 +944,32 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             else
                 mHistory = DaisyUtils.getHistoryManager(this).getHistoryByUrl(
                         url, "no");
+
+
+            Item[] items = mItem.subitems;
+            int count = items.length;
+            if(mHistory==null){
+                for (int i = 0; i < count; i++) {
+                    if (mItem.subitems[i].clip.pk == mItem.clip.pk) {
+                        item = mItem.subitems[i];
+                        break;
+                    }
+                }
+            }
+            else{
+                for (int i = 0; i < count; i++){
+                    if(mItem.subitems[i].url.equals(mHistory.sub_url)){
+                        item = mItem.subitems[i];
+                        break;
+                    }
+                }
+            }
         }
 
-        Item item = null;
-        Item[] items = mItem.subitems;
-        int count = items.length;
-       if(mHistory==null){
-           for (int i = 0; i < count; i++) {
-               if (mItem.subitems[i].clip.pk == mItem.clip.pk) {
-                   item = mItem.subitems[i];
-                   break;
-               }
-           }
-       }
-        else{
-           for (int i = 0; i < count; i++){
-               if(mItem.subitems[i].url.equals(mHistory.sub_url)){
-                   item = mItem.subitems[i];
-                   break;
-               }
-           }
-       }
         return item;
     }
     private void initLayout() {
-           mDetailTitle.setText(mItem.title);
+        mDetailTitle.setText(mItem.title);
 		/*
 		 * Build detail attributes list using a given order according to
 		 * ContentModel's define. we also need to add some common attributes
