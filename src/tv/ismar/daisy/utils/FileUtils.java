@@ -6,14 +6,16 @@ import java.net.URL;
 /**
  * Created by huaijie on 7/31/15.
  */
-public class HttpUtils {
+public class FileUtils {
 
-    public static void getFileByUrl(String httpUrl){
+    public static String getFileByUrl(String httpUrl) {
         try {
             URL url = new URL(httpUrl);
-
+            String file = url.getFile();
+            return file;
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+        return "";
     }
 }

@@ -1,9 +1,12 @@
 package tv.ismar.daisy.core.advertisement;
 
 import com.activeandroid.query.Select;
+import tv.ismar.daisy.core.HttpUtil;
 import tv.ismar.daisy.data.LaunchAdvertisementEntity;
 import tv.ismar.daisy.data.table.AdvertisementTable;
+import tv.ismar.daisy.utils.FileUtils;
 
+import java.io.File;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.List;
@@ -50,7 +53,7 @@ public class AdvertisementManager {
                 advertisementTable.start_time = Timestamp.valueOf(advertisementData.getStart_date() + " " + advertisementData.getStart_time());
                 advertisementTable.end_time = Timestamp.valueOf(advertisementData.getEnd_date() + " " + advertisementData.getEnd_time());
                 advertisementTable.url = advertisementData.getMedia_url();
-//                advertisementTable.location = new URL("");
+                advertisementTable.location = FileUtils.getFileByUrl(advertisementData.getMedia_url());
                 advertisementTable.md5 = advertisementData.getMd5();
                 advertisementTable.type = LAUNCH_APP_ADVERTISEMENT;
                 advertisementTable.save();

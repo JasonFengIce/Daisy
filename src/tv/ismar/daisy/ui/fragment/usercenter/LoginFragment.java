@@ -199,14 +199,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         new IsmartvUrlClient().doRequest(IsmartvUrlClient.Method.POST, api, params, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
-                if (loginCallback != null) {
-                    loginCallback.onLoginSuccess();
-                }
-
                 AuthTokenEntity authTokenEntity = new Gson().fromJson(result, AuthTokenEntity.class);
                 saveToLocal(authTokenEntity.getAuth_token(), phoneNumber);
                 submitBtn.clearFocus();
                 showLoginSuccessPopup();
+                if (loginCallback != null) {
+                    loginCallback.onLoginSuccess();
+                }
             }
 
             @Override
@@ -319,11 +318,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
 
     private void saveToLocal(String authToken, String phoneNumber) {
+        SimpleRestClient.access_token = authToken;
+        SimpleRestClient.mobile_number = phoneNumber;
+
         DaisyUtils.getVodApplication(mContext).getEditor().putString(VodApplication.AUTH_TOKEN, authToken);
         DaisyUtils.getVodApplication(mContext).getEditor().putString(VodApplication.MOBILE_NUMBER, phoneNumber);
         DaisyUtils.getVodApplication(mContext).save();
-        SimpleRestClient.access_token = authToken;
-        SimpleRestClient.mobile_number = phoneNumber;
         fetchFavorite();
     }
 

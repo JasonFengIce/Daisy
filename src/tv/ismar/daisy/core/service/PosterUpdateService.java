@@ -11,6 +11,7 @@ import android.os.Message;
 import android.util.Log;
 import com.google.gson.Gson;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.advertisement.AdvertisementManager;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.LaunchAdvertisementEntity;
 import tv.ismar.daisy.utils.AppUtils;
@@ -104,7 +105,9 @@ public class PosterUpdateService extends Service {
                 LaunchAdvertisementEntity launchAdvertisementEntity = new Gson().fromJson(result, LaunchAdvertisementEntity.class);
                 if (null != launchAdvertisementEntity.getAds().getKaishi()) {
                     LaunchAdvertisementEntity.AdvertisementData advertisementData = launchAdvertisementEntity.getAds().getKaishi()[0];
-                    downloadPic(advertisementData);
+//                    downloadPic(advertisementData);
+                    AdvertisementManager.getInstance().updateAppLaunchAdvertisement(launchAdvertisementEntity);
+
                 } else {
                     Log.e(TAG, "fetch launch app advertisement error:\n"
                             + "retcode: " + launchAdvertisementEntity.getRetcode() + "\n"

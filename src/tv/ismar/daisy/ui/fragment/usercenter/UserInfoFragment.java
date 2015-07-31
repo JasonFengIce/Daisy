@@ -125,6 +125,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
         loginFragment = new LoginFragment();
         getChildFragmentManager().beginTransaction().add(R.id.association_phone_layout, loginFragment).commit();
         getChildFragmentManager().beginTransaction().hide(loginFragment).commit();
+
         sharedPreferences = mContext.getSharedPreferences("Daisy", Context.MODE_PRIVATE);
         sharedPreferences.registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
 
@@ -132,14 +133,6 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
         isCombined = accountPrefs.getBoolean(LoginFragment.ACCOUNT_COMBINE, false);
         accountPrefs.registerOnSharedPreferenceChangeListener(accountSharedPrefsListener);
 
-        if (!TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
-            phoneNumberLayout.setVisibility(View.VISIBLE);
-        }
-
-        if (isCombined) {
-            associationText.setVisibility(View.GONE);
-            associationPrompt.setVisibility(View.GONE);
-        }
 
         return fragmentView;
     }
@@ -149,6 +142,14 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
     public void onResume() {
         super.onResume();
 
+        if (!TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
+            phoneNumberLayout.setVisibility(View.VISIBLE);
+        }
+
+        if (isCombined) {
+            associationText.setVisibility(View.GONE);
+            associationPrompt.setVisibility(View.GONE);
+        }
 
         fetchAccountsBalance();
         fetchAccountsPlayauths();
@@ -190,7 +191,6 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
                 Log.d(TAG, "fetchAccountsPlayauths: " + result);
                 AccountPlayAuthEntity accountPlayAuthEntity = new Gson().fromJson(result, AccountPlayAuthEntity.class);
                 ArrayList<AccountPlayAuthEntity.PlayAuth> playAuths = new ArrayList<AccountPlayAuthEntity.PlayAuth>();
-                ;
                 if (!TextUtils.isEmpty(SimpleRestClient.access_token) && !TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
                     if (!accountPlayAuthEntity.getSn_playauth_list().isEmpty()) {
                         playAuths = new ArrayList<AccountPlayAuthEntity.PlayAuth>();
@@ -250,6 +250,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
                 getChildFragmentManager().beginTransaction().hide(loginFragment).commit();
                 playAuthListView.setFocusable(true);
                 associationText.setFocusable(true);
+                onResume();
             }
         });
     }
