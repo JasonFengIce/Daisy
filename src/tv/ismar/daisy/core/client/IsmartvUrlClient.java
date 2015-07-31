@@ -131,7 +131,7 @@ public class IsmartvUrlClient extends Thread {
         hashMap.put("section", " ");
         hashMap.put("itemid", " ");
         hashMap.put("topic", " ");
-        hashMap.put("source", " ");
+        hashMap.put("source", "power");
         hashMap.put("genre", " ");
         hashMap.put("content_model", " ");
         hashMap.put("director", " ");
@@ -148,7 +148,7 @@ public class IsmartvUrlClient extends Thread {
         hashMap.put("version", String.valueOf(SimpleRestClient.appVersion));
         hashMap.put("province", "HB");
         hashMap.put("city", "SJZ");
-        hashMap.put("app", String.valueOf(SimpleRestClient.appVersion));
+        hashMap.put("app", "sky");
         hashMap.put("resolution", SimpleRestClient.screenWidth + "," + SimpleRestClient.screenHeight);
         hashMap.put("dpi", String.valueOf(SimpleRestClient.densityDpi));
 

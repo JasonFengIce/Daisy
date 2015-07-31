@@ -197,4 +197,7 @@ public class AdvertisementActivity extends Activity {
         }.start();
     }
 
+
+
+
 }
