@@ -31,6 +31,11 @@ public class LabelImageView extends AsyncImageView {
 	private boolean customfocus;
 	private boolean customselected;
 	private int maxfocustitle;
+
+	public void setNeedzoom(boolean needzoom) {
+		this.needzoom = needzoom;
+	}
+
 	private boolean needzoom;
 	private Animation scaleSmallAnimation;
 	private Animation scaleBigAnimation;
