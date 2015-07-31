@@ -40,12 +40,12 @@
                     android:id="@+id/orderlistitem_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/h2_text_size"
+                    android:textSize="@dimen/h3_text_size"
                     />
             <TextView
                     android:layout_marginLeft="20dp"
                     android:id="@+id/purchase_extra"
-                    android:textSize="@dimen/h2_text_size"
+                    android:textSize="@dimen/h3_text_size"
                     android:textColor="#FFFFFF"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
@@ -62,7 +62,7 @@
                     android:id="@+id/orderlistitem_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/h2_text_size"
+                    android:textSize="@dimen/h3_text_size"
                     />
 
             <TextView
@@ -71,7 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="50dp"
-                    android:textSize="@dimen/h2_text_size"
+                    android:textSize="@dimen/h3_text_size"
                     />
         </LinearLayout>
 
@@ -86,7 +86,7 @@
                     android:id="@+id/orderlistitem_cost"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/h2_text_size"
+                    android:textSize="@dimen/h3_text_size"
                     />
 
             <TextView
@@ -95,7 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="50dp"
-                    android:textSize="@dimen/h2_text_size"
+                    android:textSize="@dimen/h3_text_size"
                     />
             <TextView
                     android:textColor="#FFFFFF"
@@ -103,7 +103,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="50dp"
-                    android:textSize="@dimen/h2_text_size"
+                    android:textSize="@dimen/h3_text_size"
                     />
         </LinearLayout>
 
