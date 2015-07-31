@@ -23,10 +23,10 @@ public class AdvertisementTable extends Model {
     public String title;
 
     @Column
-    public Timestamp start_time;
+    public long start_time;
 
     @Column
-    public Timestamp end_time;
+    public long end_time;
 
     @Column
     public String url;

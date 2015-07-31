@@ -72,12 +72,6 @@ public class InternalDownloadClient implements Runnable {
             fileOutputStream.flush();
             fileOutputStream.close();
             inputStream.close();
-            DownloadTable downloadTable = new DownloadTable();
-//        downloadTable.download_path = context.getf;
-//        downloadTable.url = url;
-//        downloadTable.save();
-////            downloadTable.md5 = HardwareUtils.getMd5ByFile(downloadFile);
-////            downloadTable.save();
             Log.d(TAG, url + " ---> download complete!!!");
         } catch (IOException e) {
             Log.e(TAG, e.getMessage());

@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import com.activeandroid.ActiveAndroid;
 import com.squareup.picasso.Picasso;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.advertisement.AdvertisementManager;
 import tv.ismar.daisy.core.service.PosterUpdateService;
 import tv.ismar.daisy.data.table.weather.LocationTable;
 import tv.ismar.daisy.data.table.weather.ProvinceTable;
@@ -50,7 +51,8 @@ public class AdvertisementActivity extends Activity {
         setContentView(R.layout.activity_advertisement);
         initViews();
         posterFile = new File(getFilesDir(), PosterUpdateService.POSTER_NAME);
-        placeAdvertisementPic(posterFile.getAbsolutePath());
+//        placeAdvertisementPic(posterFile.getAbsolutePath());
+        placeAdvertisementPic();
         messageHandler = new MessageHandler();
         initLocationTable();
 
@@ -62,10 +64,12 @@ public class AdvertisementActivity extends Activity {
     }
 
 
-    private void placeAdvertisementPic(String path) {
+    private void placeAdvertisementPic() {
+        String path = AdvertisementManager.getInstance(this).getAppLaunchAdvertisement();
+        Log.d(TAG, "fetch advertisement path: " + path);
         Picasso.with(AdvertisementActivity.this)
-                .load("file://" + path)
-                .error(getImageFromAssetsFile("poster.png"))
+                .load(path)
+//                .error(getImageFromAssetsFile("poster.png"))
                 .skipMemoryCache()
                 .into(adverPic, new com.squareup.picasso.Callback() {
                     @Override
@@ -172,7 +176,7 @@ public class AdvertisementActivity extends Activity {
 
                             String provinceId = HardwareUtils.getMd5ByString(province);
 
-                            if (area.equals(city)){
+                            if (area.equals(city)) {
                                 LocationTable locationTable = new LocationTable();
                                 locationTable.geo_id = geoId;
                                 locationTable.province_id = provinceId;
@@ -196,8 +200,6 @@ public class AdvertisementActivity extends Activity {
             }
         }.start();
     }
-
-
 
 
 }

@@ -4,10 +4,14 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.nfc.Tag;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import com.google.gson.Gson;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -42,6 +46,7 @@ public class PosterUpdateService extends Service {
 
     private File posterFile;
     private File posterTmpFile;
+    private Context mContext = this;
 
     private Handler messageHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -61,6 +66,7 @@ public class PosterUpdateService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+
         posterFile = new File(getFilesDir(), POSTER_NAME);
         posterTmpFile = new File(getFilesDir(), POSTER_TMP_NAME);
         posterUpdateTask();
@@ -89,7 +95,7 @@ public class PosterUpdateService extends Service {
                 messageHandler.sendEmptyMessage(UPDATE_ADVERTISEMENT);
             }
         };
-        timer.schedule(tt, 3000, 30 * 1000);
+        timer.schedule(tt, 3000, 20  * 1000);
 // ／       timer.schedule(tt, 3000, 15 * 60 * 1000);
     }
 
@@ -106,7 +112,7 @@ public class PosterUpdateService extends Service {
                 if (null != launchAdvertisementEntity.getAds().getKaishi()) {
                     LaunchAdvertisementEntity.AdvertisementData advertisementData = launchAdvertisementEntity.getAds().getKaishi()[0];
 //                    downloadPic(advertisementData);
-                    AdvertisementManager.getInstance().updateAppLaunchAdvertisement(launchAdvertisementEntity);
+                    AdvertisementManager.getInstance(mContext).updateAppLaunchAdvertisement(launchAdvertisementEntity);
 
                 } else {
                     Log.e(TAG, "fetch launch app advertisement error:\n"
@@ -197,4 +203,5 @@ public class PosterUpdateService extends Service {
     private File getLocalPosterFile() {
         return getFileStreamPath(POSTER_NAME);
     }
+
 }
