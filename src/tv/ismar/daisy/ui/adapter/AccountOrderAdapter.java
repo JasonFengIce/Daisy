@@ -83,6 +83,7 @@ public class AccountOrderAdapter extends BaseAdapter {
             String name = item.getInfo().split("@")[0];
             String mergedate = item.getInfo().split("@")[1];
 
+
             if(item.type.equals("order_list")){
                 holder.purchaseExtra.setText("设备"+name+"合并至当前视云账户");
             }else if(item.type.equals("snorder_list")){

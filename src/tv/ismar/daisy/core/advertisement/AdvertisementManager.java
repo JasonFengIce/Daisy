@@ -36,7 +36,7 @@ public class AdvertisementManager {
             String mediaUrl = advertisementData.getMedia_url();
             String md5 = advertisementData.getMd5();
 
-            List<AdvertisementTable> advertisementTables = new Select()
+            AdvertisementTable advertisementTables = new Select()
                     .from(AdvertisementTable.class)
                     .where(URL + "=?", mediaUrl)
                     .where(MD5 + "=?", md5)
