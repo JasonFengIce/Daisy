@@ -4,6 +4,8 @@ import com.activeandroid.query.Select;
 import tv.ismar.daisy.data.LaunchAdvertisementEntity;
 import tv.ismar.daisy.data.table.AdvertisementTable;
 
+import java.net.URL;
+import java.sql.Timestamp;
 import java.util.List;
 
 import static tv.ismar.daisy.data.table.AdvertisementTable.MD5;
@@ -36,12 +38,26 @@ public class AdvertisementManager {
             String mediaUrl = advertisementData.getMedia_url();
             String md5 = advertisementData.getMd5();
 
-            AdvertisementTable advertisementTables = new Select()
+            AdvertisementTable advertisementTable = new Select()
                     .from(AdvertisementTable.class)
                     .where(URL + "=?", mediaUrl)
                     .where(MD5 + "=?", md5)
                     .executeSingle();
 
+            if (advertisementTable == null) {
+                advertisementTable = new AdvertisementTable();
+                advertisementTable.title = advertisementData.getTitle();
+                advertisementTable.start_time = Timestamp.valueOf(advertisementData.getStart_date() + " " + advertisementData.getStart_time());
+                advertisementTable.end_time = Timestamp.valueOf(advertisementData.getEnd_date() + " " + advertisementData.getEnd_time());
+                advertisementTable.url = advertisementData.getMedia_url();
+//                advertisementTable.location = new URL("");
+                advertisementTable.md5 = advertisementData.getMd5();
+                advertisementTable.type = LAUNCH_APP_ADVERTISEMENT;
+                advertisementTable.save();
+
+            }else {
+                //if advertisement already insert
+            }
         }
     }
 

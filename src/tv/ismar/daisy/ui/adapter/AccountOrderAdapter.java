@@ -14,6 +14,8 @@ import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.data.usercenter.AccountsOrdersEntity;
 import tv.ismar.daisy.views.AsyncImageView;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,7 +63,7 @@ public class AccountOrderAdapter extends BaseAdapter {
             holder.icon = (ImageView) convertView.findViewById(R.id.orderlistitem_icon);
             holder.orderlistitem_paychannel = (TextView) convertView.findViewById(R.id.orderlistitem_paychannel);
             holder.purchaseExtra = (TextView) convertView.findViewById(R.id.purchase_extra);
-            holder.mergeTxt = (TextView)convertView.findViewById(R.id.orderlistitem_merge);
+            holder.mergeTxt = (TextView) convertView.findViewById(R.id.orderlistitem_merge);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -74,24 +76,24 @@ public class AccountOrderAdapter extends BaseAdapter {
         holder.title.setText(item.getTitle());
         holder.buydate_txt.setText(String.format(orderday, item.getStart_date()));
         int day = remaindDay(item.getExpiry_date());
-        if(day>0)
-         holder.orderlistitem_remainday.setText(String.format(remainday, remaindDay(item.getExpiry_date())));
+        if (day > 0)
+            holder.orderlistitem_remainday.setText(String.format(remainday, remaindDay(item.getExpiry_date())));
         holder.totalfee.setText(String.format(cost, item.getTotal_fee()));
         holder.orderlistitem_paychannel.setText(String.format(paySource, getValueBySource(item.getSource())));
         Picasso.with(mContext).load(item.getThumb_url()).into(holder.icon);
         if (!TextUtils.isEmpty(item.getInfo())) {
-            String name = item.getInfo().split("@")[0];
+            String account = item.getInfo().split("@")[0];
             String mergedate = item.getInfo().split("@")[1];
+            SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd");
+            String mergeTime = time.format(Timestamp.valueOf(mergedate));
 
-
-            if(item.type.equals("order_list")){
-                holder.purchaseExtra.setText("设备"+name+"合并至当前视云账户");
-            }else if(item.type.equals("snorder_list")){
-                holder.purchaseExtra.setText("当前设备合并至视云账户"+name);
+            if (item.type.equals("order_list")) {
+                holder.purchaseExtra.setText(mergeTime + "合并至视云账户" + SimpleRestClient.mobile_number);
+            } else if (item.type.equals("snorder_list")) {
+                holder.purchaseExtra.setText(mergeTime + "合并至视云账户" + account);
             }
             holder.purchaseExtra.setVisibility(View.VISIBLE);
-            holder.mergeTxt.setVisibility(View.VISIBLE);
-            holder.mergeTxt.setText("(合并时间:" + mergedate + ")");
+            holder.mergeTxt.setVisibility(View.INVISIBLE);
         } else {
             holder.purchaseExtra.setVisibility(View.GONE);
             holder.mergeTxt.setVisibility(View.GONE);
