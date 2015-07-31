@@ -3,6 +3,7 @@ package org.sakuratya.horizontal.adapter;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import android.util.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.sakuratya.horizontal.ui.HGridView;
 
@@ -194,7 +195,8 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
                     }
                     else{
                         if(template==1||template==2){
-                            holder.previewImage.setFocustitle(item.subtitle);
+                            if(item.focus!=null)
+                                holder.previewImage.setFocustitle(item.focus);
                             holder.title.setText(item.subtitle);
                         }
                         else{

@@ -20,17 +20,20 @@
         labelimage:focuspaddingtop="0.90"
         labelimage:focustextsize="30sp"
         labelimage:focusbackground="#b3303030"
+        labelimage:maxfocustitle="10"
         android:scaleType="fitXY"/>
 
     <TextView
+        android:paddingBottom="34dip"
+        android:paddingTop="15dip"
         android:layout_width="336dip"
-        android:layout_height="63dip"
+        android:layout_height="83dip"
         android:singleLine="true"
         android:ellipsize="marquee"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/list_item_preview_img"
-        android:textSize="@dimen/gridview_item_title_textsize"
+        android:textSize="30sp"
         android:id="@+id/list_item_title"
         android:textColor="#FFF8F8FF"
        />

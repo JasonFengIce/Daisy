@@ -156,6 +156,17 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
                         if(mHGridAdapter.getCount()>0){
                             mHGridView.setAdapter(mHGridAdapter);
                             mHGridView.setFocusable(true);
+                            mHGridView.setOnScrollListener(new HGridView.OnScrollListener() {
+                                @Override
+                                public void onScrollStateChanged(HGridView view, int scrollState) {
+
+                                }
+
+                                @Override
+                                public void onScroll(HGridView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+                                }
+                            });
                             mItemCollections.get(0).fillItems(0, lists);
                             mHGridAdapter.setList(mItemCollections);
                             weatherFragment.setVisibility(View.VISIBLE);

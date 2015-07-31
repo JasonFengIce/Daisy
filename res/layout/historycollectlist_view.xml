@@ -85,24 +85,50 @@
             android:visibility="invisible"
             />
     </LinearLayout>
+    <!--<org.sakuratya.horizontal.ui.HGridView-->
+            <!--android:paddingTop="3dip"-->
+            <!--android:id="@+id/h_grid_view"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--sakura:horizontalSpacing="@dimen/gridview_main_panel_horizontalSpacing"-->
+            <!--sakura:numRows="3"-->
+            <!--sakura:rowHeight="@dimen/gridview_main_panel_rowHeight"-->
+            <!--sakura:selectorDrawable="@drawable/vod_gv_selector"-->
+            <!--sakura:verticalSpacing="@dimen/gridview_main_panel_verticalSpacing"-->
+            <!--sakura:selectionLeftPadding="@dimen/HGridView_related_selectionLeftPadding"-->
+            <!--sakura:selectionTopPadding="@dimen/HGridView_related_selectionTopPadding"-->
+            <!--sakura:selectionRightPadding="@dimen/HGridView_related_selectionRightPadding"-->
+            <!--sakura:selectionBottomPadding="@dimen/HGridView_related_selectionBottomPadding"-->
+            <!--android:layout_marginTop="19dip"-->
+            <!--android:layout_marginBottom="97dip"-->
+            <!-->-->
+    <!--</org.sakuratya.horizontal.ui.HGridView>-->
+
+
     <org.sakuratya.horizontal.ui.HGridView
-            android:paddingTop="3dip"
             android:id="@+id/h_grid_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            sakura:horizontalSpacing="@dimen/gridview_main_panel_horizontalSpacing"
+            sakura:horizontalSpacing="115dip"
             sakura:numRows="3"
-            sakura:rowHeight="@dimen/gridview_main_panel_rowHeight"
-            sakura:selectorDrawable="@drawable/vod_gv_selector"
-            sakura:verticalSpacing="@dimen/gridview_main_panel_verticalSpacing"
+            sakura:rowHeight="272dip"
+            sakura:selectorDrawable="@drawable/popup_bg_yellow"
+            sakura:verticalSpacing="0dip"
             sakura:selectionLeftPadding="@dimen/HGridView_related_selectionLeftPadding"
             sakura:selectionTopPadding="@dimen/HGridView_related_selectionTopPadding"
             sakura:selectionRightPadding="@dimen/HGridView_related_selectionRightPadding"
             sakura:selectionBottomPadding="@dimen/HGridView_related_selectionBottomPadding"
-            android:layout_marginTop="19dip"
-            android:layout_marginBottom="97dip"
-            >
+            android:paddingTop="4dip"
+            android:layout_marginTop="18dip"
+            android:layout_marginBottom="71dip"
+            android:layout_marginLeft="39dip"
+            android:layout_marginRight="39dip"
+            android:paddingRight="5dip"
+            android:paddingLeft="4dip">
     </org.sakuratya.horizontal.ui.HGridView>
+
+
+
     <RelativeLayout
         android:id="@+id/no_video_container"
         android:layout_width="match_parent"

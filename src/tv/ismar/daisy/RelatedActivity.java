@@ -76,8 +76,8 @@ public class RelatedActivity extends BaseActivity implements OnSectionSelectChan
 		mItemListGrid.setFocusable(true);
 		arrow_left = (ImageView) findViewById(R.id.arrow_left);
 		arrow_right = (ImageView)findViewById(R.id.arrow_right);
-		mSectionTabs.left = arrow_left;
-		mSectionTabs.right = arrow_right;
+		//mSectionTabs.left = arrow_left;
+		//mSectionTabs.right = arrow_right;
 		
 		arrow_left.setOnClickListener(new OnClickListener() {
 			
@@ -223,12 +223,12 @@ public class RelatedActivity extends BaseActivity implements OnSectionSelectChan
 			}
 		}
 		//mVirtualSectionList = mTmpSectionList;
-		if(mVirtualSectionList.size()>5)
-			arrow_right.setVisibility(View.VISIBLE);
-		else{
-			mSectionTabs.left = null;
-			mSectionTabs.right = null;
-		}
+//		if(mVirtualSectionList.size()>5)
+//			arrow_right.setVisibility(View.VISIBLE);
+//		else{
+//			mSectionTabs.left = null;
+//			mSectionTabs.right = null;
+//		}
 		mSectionTabs.init(mVirtualSectionList, getResources().getDimensionPixelSize(R.dimen.gridview_channel_section_tabs_width),true);
 		buildGridView();
 		if(mLoadingDialog.isShowing()){

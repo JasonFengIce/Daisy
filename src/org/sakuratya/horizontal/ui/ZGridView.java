@@ -2243,10 +2243,10 @@ public class ZGridView extends AdapterView<ListAdapter> {
 		// super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
 		final Rect listPadding = mListPadding;
-		listPadding.left = mSelectionLeftPadding1 + getPaddingLeft();
-		listPadding.top = mSelectionTopPadding1 + getPaddingTop();
-		listPadding.right = mSelectionRightPadding1 + getPaddingRight();
-		listPadding.bottom = mSelectionBottomPadding1 + getPaddingBottom();
+		listPadding.left = 0 + getPaddingLeft();
+		listPadding.top = 0 + getPaddingTop();
+		listPadding.right = 0 + getPaddingRight();
+		listPadding.bottom = 0 + getPaddingBottom();
 
 		// Check if our previous measured size was at a point where we should
 		// scroll later.

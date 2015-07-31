@@ -49,7 +49,7 @@
             android:layout_height="82dip"
             android:visibility="invisible"
             android:layout_marginLeft="31dip"
-            android:layout_marginTop="260dip"/>
+            android:layout_marginTop="280dip"/>
         <Button
             android:layout_alignParentRight="true"
             android:background="@drawable/channel_arrow_right"
@@ -58,7 +58,7 @@
             android:layout_height="82dip"
             android:visibility="invisible"
             android:layout_marginRight="31dip"
-            android:layout_marginTop="260dip"/>
+            android:layout_marginTop="280dip"/>
     <org.sakuratya.horizontal.ui.HGridView
         android:layout_toLeftOf="@id/arrow_right"
         android:layout_toRightOf="@id/arrow_left"

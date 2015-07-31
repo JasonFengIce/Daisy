@@ -35,7 +35,7 @@
                 android:layout_width="41dip"
                 android:layout_height="82dip"
                 android:visibility="invisible"
-                android:layout_marginLeft="16dip"
+                android:layout_marginLeft="31dip"
                 android:layout_marginTop="441dip"/>
         <Button
                 android:layout_alignParentRight="true"
@@ -44,7 +44,7 @@
                 android:layout_width="41dip"
                 android:layout_height="82dip"
                 android:visibility="invisible"
-                android:layout_marginRight="16dip"
+                android:layout_marginRight="31dip"
                 android:layout_marginTop="441dip"/>
 
     <org.sakuratya.horizontal.ui.HGridView
@@ -57,12 +57,14 @@
         sakura:horizontalSpacing="124dip"
         sakura:numRows="3"
         sakura:rowHeight="292dip"
-        sakura:selectorDrawable="@drawable/vod_gv_selector"
+        sakura:selectorDrawable="@drawable/popup_bg_yellow"
         sakura:verticalSpacing="0dip"
-        sakura:selectionLeftPadding="21dip"
-        sakura:selectionTopPadding="21dip"
-        sakura:selectionRightPadding="23dip"
-        sakura:selectionBottomPadding="-82dip"
+
+
+        sakura:selectionLeftPadding="@dimen/HGridView_related_selectionLeftPadding"
+        sakura:selectionTopPadding="@dimen/HGridView_related_selectionTopPadding"
+        sakura:selectionRightPadding="@dimen/HGridView_related_selectionRightPadding"
+        sakura:selectionBottomPadding="-100dip"
         android:layout_marginTop="44dip"
         android:paddingTop="6dip"
         android:paddingLeft="5dip"

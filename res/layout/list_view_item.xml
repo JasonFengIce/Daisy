@@ -8,7 +8,6 @@
                 android:clipToPadding="false">
 
     <tv.ismar.daisy.views.LabelImageView
-
         xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
         android:layout_width="336dp"
         android:layout_height="189dp"
@@ -70,7 +69,7 @@
         android:gravity="center"
         android:textColor="#ffe3e3e3"
         android:layout_alignBottom="@id/list_item_preview_img"
-        android:layout_alignParentLeft="true"
+        android:layout_alignLeft="@id/list_item_preview_img"
         android:background="@drawable/vodcategory_gv_item_price"
         android:visibility="gone">
     </TextView>

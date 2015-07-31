@@ -14,7 +14,6 @@
         android:id="@+id/list_item_preview_img"
         android:background="@drawable/list_item_preview_bg"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:paddingTop="@dimen/gridview_item_image_PaddingT"
         android:paddingBottom="@dimen/gridview_item_image_PaddingB"
         android:paddingLeft="@dimen/gridview_item_image_PaddingL"
@@ -22,7 +21,7 @@
         labelimage:focuspaddingtop="0.87"
         labelimage:focustextpaddingtop="0.98"
         labelimage:focustextsize="27sp"
-        labelimage:maxfocustitle="13"
+        labelimage:maxfocustitle="10"
         labelimage:focusbackground="#b3303030"
         />
 

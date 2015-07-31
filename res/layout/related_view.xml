@@ -76,14 +76,12 @@
         android:layout_marginLeft="@dimen/related_view_list_marginleft"
         android:layout_marginRight="@dimen/related_view_list_marginright"
         android:layout_marginTop="@dimen/related_view_list_margintop"
-        android:fadingEdge="horizontal"
-        android:fadingEdgeLength="@dimen/gridview_main_panel_fadingEdgeLength"
         sakura:columnWidth="@dimen/gridview_item_image_W"
-        sakura:horizontalSpace="@dimen/related_view_list_horizontalspacing"
-        sakura:listSelector="@drawable/vod_gv_selector"
+        sakura:horizontalSpace="115dip"
+        sakura:listSelector="@drawable/popup_bg_yellow"
         sakura:numColumns="4"
-        sakura:stretchMode="columnWidth"
         sakura:verticalSpace="0dip"
+        android:padding="5dip"
         sakura:selectorLeftPadding="@dimen/ZGridView_related_selectorLeftPadding"
         sakura:selectorTopPadding="@dimen/ZGridView_related_selectorTopPadding"
         sakura:selectorRightPadding="@dimen/ZGridView_related_selectorRightPadding"
@@ -91,6 +89,7 @@
     </org.sakuratya.horizontal.ui.ZGridView>
 
     <org.sakuratya.horizontal.ui.ZGridView
+            android:layout_marginTop="@dimen/related_view_list_margintop"
             android:visibility="gone"
             xmlns:sakura="http://schemas.android.com/apk/res/tv.ismar.daisy"
             android:id="@+id/prelated_list"
@@ -99,15 +98,17 @@
             android:layout_marginLeft="@dimen/related_view_list_marginleft"
             android:layout_marginRight="@dimen/related_view_list_marginright"
             sakura:columnWidth="254dip"
-            sakura:horizontalSpace="14dip"
-            sakura:listSelector="@drawable/vod_gv_selector"
+            sakura:horizontalSpace="33dip"
+            sakura:listSelector="@drawable/popup_bg_yellow"
             sakura:numColumns="6"
-            sakura:stretchMode="columnWidth"
             sakura:verticalSpace="0dip"
-            sakura:selectorLeftPadding="21dip"
-            sakura:selectorTopPadding="@dimen/HGridView_related_pselectionTopPadding"
-            sakura:selectorRightPadding="21dip"
-            sakura:selectorBottomPadding="-34dip">
+            android:paddingLeft="5dip"
+            android:paddingRight="5dip"
+            android:paddingTop="5dip"
+            sakura:selectorLeftPadding="3.8dip"
+            sakura:selectorTopPadding="3.8dip"
+            sakura:selectorRightPadding="3.8dip"
+            sakura:selectorBottomPadding="-48.4dip">
     </org.sakuratya.horizontal.ui.ZGridView>
 
     <!--<dimen name="HGridView_related_pselectionLeftPadding">19dip</dimen>-->
