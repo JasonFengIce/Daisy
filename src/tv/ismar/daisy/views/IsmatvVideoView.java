@@ -203,6 +203,23 @@ public void setVideoPaths(String[] paths){
 		invalidate();
 	}
 
+	public void playIndex(int index) {
+		if (player != null) {
+			try {
+				player.playUrl(index);
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void stopPlayback() {
 		if (player != null) {
 			player.stop();
@@ -212,7 +229,6 @@ public void setVideoPaths(String[] paths){
 			mTargetState = STATE_IDLE;
 		}
 	}
-
 	private void openVideo() {
 		if (mUri == null || mSurfaceHolder == null) {
 			// not ready for playback just yet, will try again later
@@ -322,6 +338,8 @@ public void setVideoPaths(String[] paths){
                     if(mOnCompletionListenerUrl!=null){
                         mOnCompletionListenerUrl.onCompletion(sp,url);
                     }
+                    if(paths.length == 1)
+                    	return;
 					int currentIndex = sp.getCurrentPlayUrl();
 					
 					if (currentIndex >= 0 && currentIndex<paths.length) {        //如果当前播放的为第一个影片的话，则准备播放第二个影片。

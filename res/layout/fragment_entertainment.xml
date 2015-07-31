@@ -75,7 +75,7 @@
                     android:layout_gravity="bottom"
                     android:alpha="0.7"
                     android:layout_marginLeft="1dp"
-                    android:background="#303030"
+                    android:background="@color/shawdow"
                     android:gravity="center"
                     android:textSize="24sp" />
             </LinearLayout>
