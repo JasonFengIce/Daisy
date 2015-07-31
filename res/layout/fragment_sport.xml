@@ -6,23 +6,25 @@
     android:clipChildren="false"
     android:clipToPadding="false"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/fragment_padding_lr"
-    android:paddingRight="@dimen/fragment_padding_lr" >
+    android:paddingLeft="70dp"
+    android:paddingRight="70dp" >
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/section_one"
         android:layout_width="match_parent"
-        android:layout_height="497dp"
-        android:layout_marginTop="31dp"
+        android:layout_height="535dp"
+        android:layout_marginBottom="22dp"
+        android:layout_marginTop="22dp"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:orientation="horizontal" >
 
         <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:id="@+id/sport_lefttop"
+            android:layout_width="297dp"
+            android:layout_height="497dp"
             android:layout_marginRight="5dp"
-            android:layout_weight="1"
+            android:layout_centerVertical="true"
             android:clipChildren="false"
             android:clipToPadding="false"
             android:orientation="vertical" >
@@ -47,8 +49,8 @@
                 android:id="@+id/sport_card2"
                 android:layout_width="297dp"
                 android:layout_height="165dp"
-                android:layout_marginTop="1dp"
                 android:layout_below="@+id/sport_card1"
+                android:layout_marginTop="1dp"
                 android:focusable="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
@@ -57,16 +59,15 @@
                 labelimage:focustextpaddingtop="0.91"
                 labelimage:focustextsize="18sp"
                 labelimage:frontcolor="#b3000000"
-                labelimage:needzoom="true"
-                />
+                labelimage:needzoom="true" />
 
             <tv.ismar.daisy.views.LabelImageView
                 xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
                 android:id="@+id/sport_card3"
                 android:layout_width="297dp"
                 android:layout_height="165dp"
-                android:layout_marginTop="1dp"
                 android:layout_below="@+id/sport_card2"
+                android:layout_marginTop="1dp"
                 android:focusable="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
@@ -75,69 +76,98 @@
                 labelimage:focustextpaddingtop="0.91"
                 labelimage:focustextsize="18sp"
                 labelimage:frontcolor="#b3000000"
-                labelimage:needzoom="true"
-                 />
+                labelimage:needzoom="true" />
         </RelativeLayout>
 
-        <tv.ismar.daisy.ui.widget.HomeItemContainer
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="4"
-            android:focusable="true" >
+        <tv.ismar.daisy.views.LabelImageView
+            xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
+            android:id="@+id/sportspost"
+            android:layout_width="1184dp"
+            android:layout_height="497dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@id/sport_lefttop"
+            android:layout_centerVertical="true"
+            android:focusable="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/list_item_preview_bg"
+            labelimage:focusbackground="@color/shawdow"
+            labelimage:focustextsize="@dimen/toppage_fragment_poster_title_textsize"
+            labelimage:needzoom="true" />
+
+        <RelativeLayout
+            android:id="@+id/sec_one_list_2"
+            android:layout_width="297dp"
+            android:layout_height="529dp"
+            android:layout_marginLeft="1dp"
+            android:layout_toRightOf="@id/sportspost"
+            android:layout_centerVertical="true"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            >
+
+            <ImageView
+                android:id="@+id/sec_one_list_1_arrowup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/shawdow"
+                android:focusable="true"
+                android:layout_marginTop="2dp"
+                android:src="@drawable/arrow_up" />
 
             <tv.ismar.daisy.views.LabelImageView
                 xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
-                android:id="@+id/sportspost"
+                android:id="@+id/sports_live1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="165dp"
+                android:layout_marginTop="1dp"
+                android:layout_below="@id/sec_one_list_1_arrowup"
+                android:focusable="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
-                labelimage:focusbackground="#b3303030"
-                labelimage:focuspaddingtop="70"
-                labelimage:focustextpaddingtop="75"
-                labelimage:focustextsize="18sp" />
+                labelimage:needzoom="true" />
 
-            <TextView
-                android:id="@+id/sportspost_title"
+            <tv.ismar.daisy.views.LabelImageView
+                xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
+                android:id="@+id/sports_live2"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_gravity="bottom|center"
-                android:background="#b3808080"
-                android:gravity="left|center"
-                android:paddingLeft="30dp"
-                android:text="测试的的"
-                android:textSize="24sp" />
-        </tv.ismar.daisy.ui.widget.HomeItemContainer>
+                android:layout_height="165dp"
+                android:layout_below="@id/sports_live1"
+                android:layout_marginTop="1dp"
+                android:focusable="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/list_item_preview_bg"
+                labelimage:needzoom="true" />
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.95" >
+            <tv.ismar.daisy.views.LabelImageView
+                xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
+                android:id="@+id/sports_live3"
+                android:layout_width="match_parent"
+                android:layout_height="165dp"
+                android:layout_below="@id/sports_live2"
+                android:layout_marginTop="1dp"
+                android:focusable="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/list_item_preview_bg"
+                labelimage:needzoom="true" />
 
-            <ScrollView
-                    android:descendantFocusability="blocksDescendants"
-                    android:layout_width="300dp"
-                    android:layout_height="match_parent"
-                    >
-                <LinearLayout
-                        android:orientation="vertical"
-                        android:clipChildren="false"
-                        android:clipToPadding="false"
-                        android:id="@+id/sec_one_list_2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                </LinearLayout>
-            </ScrollView>
-
-
+            <ImageView
+                android:id="@+id/sec_one_list_1_arrowdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:layout_below="@id/sports_live3"
+                android:background="@color/shawdow"
+                android:focusable="true"
+                android:src="@drawable/arrow_down" />
         </RelativeLayout>
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="254dp"
         android:layout_marginBottom="88dp"
-        android:layout_marginTop="49dp"
+        android:layout_marginTop="18dp"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:orientation="horizontal" >
@@ -173,7 +203,7 @@
             android:id="@+id/sport_channel2"
             android:layout_width="332dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="29dp"
+            android:layout_marginLeft="32dp"
             android:clipChildren="false"
             android:clipToPadding="false"
             android:orientation="vertical" >
@@ -201,7 +231,7 @@
             android:id="@+id/sport_channel3"
             android:layout_width="332dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="29dp"
+            android:layout_marginLeft="32dp"
             android:clipChildren="false"
             android:clipToPadding="false"
             android:orientation="vertical" >
@@ -229,7 +259,7 @@
             android:id="@+id/sport_channel4"
             android:layout_width="332dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="28dp"
+            android:layout_marginLeft="32dp"
             android:clipChildren="false"
             android:clipToPadding="false"
             android:orientation="vertical" >
@@ -253,10 +283,10 @@
                 android:textSize="24sp" />
         </LinearLayout>
 
-                <include
+        <include
             android:layout_width="319dp"
             android:layout_height="189dp"
-            android:layout_marginLeft="29dp"
+            android:layout_marginLeft="35dp"
             layout="@layout/toppagelistmorebutton" />
     </LinearLayout>
 
