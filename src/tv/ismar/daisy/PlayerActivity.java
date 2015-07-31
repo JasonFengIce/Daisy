@@ -2164,6 +2164,8 @@ private void initPlayerRelatedUI(){
 					tempOffset = 0;
 					showBuffer();
 					payedItemspk.add(item.pk);
+					bundle.putString("url", null);
+					bundle.putString("item", null);
 					new ItemByUrlTask().execute();
 				} else {
 					PlayerActivity.this.finish();
@@ -2176,6 +2178,8 @@ private void initPlayerRelatedUI(){
 						tempOffset = item.preview.length * 1000;
 					}
 					paystatus = true;
+					bundle.putString("url", null);
+					bundle.putString("item", null);
 					new ItemByUrlTask().execute();
 				} else {
 					PlayerActivity.this.finish();
