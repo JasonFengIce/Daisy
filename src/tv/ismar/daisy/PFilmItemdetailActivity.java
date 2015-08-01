@@ -587,7 +587,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             mDetailAttributeContainer.buildAttributeListOnFilm(attributeMap, mContentModel);
         }
         // Set the content to Introduction View
-        mDetailIntro.setText(mItem.description);
+        mDetailIntro.setText("简介 : "+mItem.description);
         if (mItem.bean_score > 0) {
             bean_score.setVisibility(View.VISIBLE);
             bean_score.setText(mItem.bean_score + "");
@@ -757,7 +757,8 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                     .from(PFilmItemdetailActivity.this).inflate(
                             R.layout.realte_portrait_item, null);
             LinearLayout.LayoutParams layoutParams;
-            layoutParams = new LinearLayout.LayoutParams(254, 400);
+            layoutParams = new LinearLayout.LayoutParams(254, 401);
+            if(i!=0)
             layoutParams.leftMargin = 8;
             relatedHolder.setLayoutParams(layoutParams);
             TextView titleView = (TextView) relatedHolder

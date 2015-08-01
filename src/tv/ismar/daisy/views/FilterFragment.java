@@ -205,9 +205,9 @@ public class FilterFragment extends BackHandledFragment {
                     if(!((RadioButton)view).isChecked()){
                         ((RadioButton)view).setTextSize(48);
                         ((RadioButton)view).setTextColor(LABEL_TEXT_COLOR_FOCUSED);
-                        if(((FilterItem)view.getTag()).nolimitView!=null){
-                            ((FilterItem)view.getTag()).nolimitView.setChecked(false);
-                        }
+//                        if(((FilterItem)view.getTag()).nolimitView!=null){
+//                                ((FilterItem)view.getTag()).nolimitView.setChecked(false);
+//                        }
                     }
                 }else{
                     if(!((RadioButton)view).isChecked()){
@@ -218,6 +218,7 @@ public class FilterFragment extends BackHandledFragment {
 
             }
         });
+
         rbtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -225,6 +226,11 @@ public class FilterFragment extends BackHandledFragment {
                    //  Toast.makeText(getActivity(), ((FilterItem)compoundButton.getTag()).value, Toast.LENGTH_SHORT).show();
                      compoundButton.setTextSize(48);
                      compoundButton.setTextColor(LABEL_TEXT_COLOR_CLICK);
+                     if(((FilterItem)compoundButton.getTag()).nolimitView!=null){
+                         if(((FilterItem)compoundButton.getTag()).nolimitView!=compoundButton){
+                             ((FilterItem)compoundButton.getTag()).nolimitView.setChecked(false);
+                         }
+                     }
                      String str = ((FilterItem)compoundButton.getTag()).value;
                      if(!str.equals("")){
                          conditions.add(str);
@@ -256,9 +262,9 @@ public class FilterFragment extends BackHandledFragment {
                         if(!((RadioButton)view).isChecked()){
                             ((RadioButton)view).setTextSize(48);
                             ((RadioButton)view).setTextColor(LABEL_TEXT_COLOR_FOCUSED);
-                            if(((FilterItem)view.getTag()).nolimitView!=null){
-                                ((FilterItem)view.getTag()).nolimitView.setChecked(false);
-                            }
+//                            if(((FilterItem)view.getTag()).nolimitView!=null){
+//                                ((FilterItem)view.getTag()).nolimitView.setChecked(false);
+//                            }
                         }
                         break;
                     case MotionEvent.ACTION_HOVER_MOVE:
@@ -274,6 +280,7 @@ public class FilterFragment extends BackHandledFragment {
             }
         });
     }
+    private CompoundButton lastview;
     public void showDialog() {
         AlertDialogFragment newFragment = AlertDialogFragment.newInstance(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG);
         newFragment.setPositiveListener(new DialogInterface.OnClickListener() {

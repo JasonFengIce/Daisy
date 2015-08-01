@@ -5,7 +5,8 @@
     android:orientation="vertical"
     android:id="@+id/list_item_layout"
     android:focusable="true"
-   >
+    android:clipChildren="false"
+    android:clipToPadding="false">
     <tv.ismar.daisy.views.LabelImageView
         xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
         android:layout_width="254dip"
@@ -14,10 +15,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:scaleType="fitXY"
-        android:paddingTop="3dip"
-        android:paddingBottom="3dip"
-        android:paddingLeft="3dip"
-        android:paddingRight="3dip"
+
         labelimage:focusbackground="#b3303030"
         labelimage:focuspaddingtop="0.90"
         labelimage:focustextpaddingtop="0.97"
@@ -53,7 +51,7 @@
         android:textSize="@dimen/gridview_item_title_textsize"
         android:id="@+id/related_title"
         android:textColor="#FFF8F8FF"
-        android:layout_marginTop="@dimen/gridview_item_list_item_title_MT"/>
+        android:layout_marginTop="9dip"/>
     <ImageView
         android:layout_width="@dimen/gridview_item_quality_img_H"
         android:layout_height="@dimen/gridview_item_quality_img_W"

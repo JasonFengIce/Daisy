@@ -20,7 +20,7 @@
             android:background="@drawable/filter_divider"
             android:layout_width="match_parent"
             android:layout_height="1dip"
-            android:layout_marginLeft="25dip"/>
+     />
     <LinearLayout
             android:id="@+id/top_view_layout"
             android:layout_width="match_parent"
@@ -53,7 +53,7 @@
                 android:textSize="@dimen/gridview_item_ItemBeanScore_textsize"
                 android:visibility="gone" />
         <TextView
-                android:layout_marginLeft="69dip"
+                android:layout_marginLeft="68dip"
                 android:id="@+id/detail_price_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -85,17 +85,16 @@
      <RelativeLayout
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:paddingTop="14dip"
-             android:layout_marginLeft="25dip">
+             android:layout_marginLeft="28dip">
          <TextView
+                 android:layout_marginTop="30dip"
                  android:id="@+id/detail_title"
-                 android:layout_width="@dimen/item_detail_detail_title_width"
-                 android:layout_height="wrap_content"
+                 android:layout_width="798dip"
+                 android:layout_height="48dip"
                  android:layout_alignParentTop="true"
                  android:layout_alignParentLeft="true"
-                 android:layout_marginTop="4dip"
                  android:textColor="@color/white"
-                 android:textSize="@dimen/item_detail_detail_title_textSize"
+                 android:textSize="48sp"
                  android:ellipsize="end"
                  android:maxLines="1"
                  android:text="美国队长"/>
@@ -107,50 +106,47 @@
                  android:layout_alignParentLeft="true"
                  android:textSize="@dimen/item_detail_introlabel_textsize"
                  android:orientation="vertical"
+                 android:layout_marginTop="19dip"
                  android:id="@+id/detail_attribute_container"
                  >
          </tv.ismar.daisy.views.DetailAttributeContainer>
 
          <TextView
                  android:id="@+id/detail_intro"
-                 android:layout_width="match_parent"
+                 android:layout_width="1410dip"
                  android:layout_height="wrap_content"
                  android:layout_alignParentBottom="true"
                  android:layout_alignParentLeft="true"
                  android:ellipsize="end"
                  android:textColor="@color/white"
-                 android:lineSpacingExtra="9dip"
-                 android:textSize="@dimen/item_detail_introlabel_textsize"
-                 android:layout_marginBottom="17dip"
-                 android:layout_marginRight="73dip"/>
+                 android:lineSpacingExtra="22dip"
+                 android:textSize="24sp"/>
 
          <LinearLayout
-                 android:layout_height="93dip"
+                 android:layout_height="92dip"
                  android:layout_width="wrap_content"
                  android:layout_alignParentRight="true"
                  android:layout_alignParentTop="true"
-                 android:layout_marginLeft="750dip"
+                 android:layout_marginLeft="753dip"
                  android:orientation="horizontal"
                  android:layout_marginTop="30dip"
-                 android:layout_marginRight="63dip"
+                 android:layout_marginRight="72dip"
                  android:visibility="visible">
              <Button
                      android:id="@+id/btn_left"
-                     android:layout_width="276dip"
+                     android:layout_width="274dip"
                      android:layout_height="match_parent"
-                     android:background="@drawable/variety_btn_bg_selector"
+                     android:background="@drawable/pfilm_detail_play_btn_selector"
                      android:gravity="center"
-                     android:paddingLeft="50dip"
-                     android:paddingRight="40dip"
-                     android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"
+                     android:paddingLeft="60dip"
                      android:visibility="visible"
                      android:textColor="#FFFFFFFF"
                      android:textSize="48sp"
-                     android:drawableLeft="@drawable/daisy_left_play"/>
+/>
 
              <Button
                      android:id="@+id/middle_btn"
-                     android:layout_width="175dip"
+                     android:layout_width="174dip"
                      android:layout_height="match_parent"
                      android:layout_marginLeft="18dip"
                      android:background="@drawable/pdetail_btn_bg_selector"
@@ -161,7 +157,7 @@
 
              <Button
                      android:id="@+id/btn_right"
-                     android:layout_width="175dip"
+                     android:layout_width="174dip"
                      android:layout_height="match_parent"
                      android:layout_marginLeft="18dip"
                      android:gravity="center"
@@ -173,7 +169,6 @@
      </RelativeLayout>
  </LinearLayout>
     <LinearLayout
-            android:layout_marginLeft="130dip"
             android:id="@+id/bottom_view_layout"
             android:layout_width="match_parent"
             android:layout_height="439dip"
@@ -181,26 +176,29 @@
             android:visibility="invisible">
         
         <TextView
-                  android:layout_width="wrap_content"
+                  android:layout_marginTop="70dip"
+                  android:layout_width="36dip"
                   android:ems="1"
-                  android:layout_height="355dip"
+                  android:layout_height="179dip"
+                  android:layout_marginLeft="111dip"
                   android:gravity="fill_vertical"
                   android:textSize="36sp"
                   android:textColor="@color/white"
                   android:text="同类推荐"/>
         <LinearLayout
+                android:layout_marginLeft="31dip"
                 android:id="@+id/related_video_container"
-                android:layout_width="1575dip"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 >
         </LinearLayout>
         <LinearLayout
                 android:focusable="true"
-                android:layout_marginLeft="17dip"
+                android:layout_marginLeft="8dip"
                 android:id="@+id/more_content"
                 android:clickable="true"
-                android:layout_width="100dip"
+                android:layout_width="98dip"
                 android:layout_height="355dip"
                 android:orientation="vertical"
                 android:gravity="center"

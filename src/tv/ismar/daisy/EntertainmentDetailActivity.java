@@ -294,7 +294,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             }
             Item item = getItemByClipPk(1);
             if(item!=null){
-                mLeftBtn.setText("播放"+item.subtitle);
+                mLeftBtn.setText("播放 "+item.subtitle);
             }
             else
                isPause = false;
@@ -719,7 +719,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             }
             Item item = getItemByClipPk(mItem.clip.pk);
             if(item!=null){
-                mLeftBtn.setText("播放"+item.subtitle);
+                mLeftBtn.setText("播放 "+item.subtitle);
             }
             else{
                 mLeftBtn.setText("播放");
@@ -764,7 +764,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 mLeftBtn.setTag(PLAY_VIDEO);
                 Item item = getItemByClipPk(mItem.clip.pk);
                 if(item!=null){
-                    mLeftBtn.setText("播放"+item.subtitle);
+                    mLeftBtn.setText("播放 "+item.subtitle);
                 }
                 else
                     mLeftBtn.setText(getResources().getString(R.string.play));

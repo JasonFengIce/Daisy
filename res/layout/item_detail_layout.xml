@@ -15,7 +15,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="影片详情:"
-    android:textColor="#FFBBBBBB"
+    android:textColor="@color/white"
     android:textSize="@dimen/item_detail_text_size"
     android:layout_alignParentTop="true"
     android:layout_marginTop="@dimen/item_detail_title_txt_MT"
@@ -30,7 +30,7 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="@dimen/item_detail_detail_title_marginleft"
             android:layout_marginTop="@dimen/item_detail_detail_title_margintop"
-            android:textColor="#FFBBBBBB"
+            android:textColor="@color/white"
             android:textSize="@dimen/item_detail_detail_title_textSize"
             android:ellipsize="end"
             android:maxLines="1"/>
@@ -56,14 +56,13 @@
             android:layout_alignParentLeft="true"
             android:layout_marginBottom="@dimen/item_detail_intro_bottom"
             android:layout_marginLeft="@dimen/item_detail_intro_marginleft"
-            android:background="@drawable/detail_intro_bg"
             android:lineSpacingExtra="@dimen/item_detail_intro_lineSpacingExtra"
             android:maxLines="4"
             android:ellipsize="end"
             android:paddingLeft="@dimen/item_detail_intro_paddingleft"
             android:paddingRight="@dimen/item_detail_intro_paddingright"
             android:paddingTop="@dimen/item_detail_intro_paddingtop"
-            android:textColor="#FFBBBBBB"
+            android:textColor="@color/white"
             android:textSize="@dimen/item_detail_intro_textsize" />
 
         <RelativeLayout
@@ -117,7 +116,7 @@
               android:ellipsize="end"
               android:gravity="center"
               android:singleLine="true"
-              android:textColor="#ffe3e3e3"
+              android:textColor="@color/white"
               android:textSize="@dimen/item_detail_detail_price_textsize"
               android:background="@drawable/vod_detail_unpayment_price"
               android:visibility="gone"/>
@@ -133,7 +132,7 @@
             android:ellipsize="end"
             android:gravity="center"
             android:singleLine="true"
-            android:textColor="#ffe3e3e3"
+            android:textColor="@color/white"
             android:textSize="@dimen/item_detail_detail_price_textsize"
             android:background="@drawable/vod_detail_unpayment_duration"/>
         </RelativeLayout>
@@ -223,12 +222,14 @@
         </LinearLayout>
 
         <Button
+            android:text="更多内容"
+            android:textColor="@color/white"
             android:id="@+id/more_content"
             android:layout_width="@dimen/item_detail_more_content_width"
             android:layout_height="@dimen/item_detail_more_content_height"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:background="@drawable/more_content_btn_bg_selector"
+            android:background="@drawable/daisy_btn_bg_selector"
             android:textSize="@dimen/item_detail_more_content_textsize" 
             android:layout_marginTop="@dimen/item_detail_btn_layout_marginB"/>
     </LinearLayout>
