@@ -1115,6 +1115,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 				break;
 			case LAYOUT_MOVE_SELECTION:
 				delta = mNextSelectedPosition - mSelectedPosition;
+                Log.i("zxcvbnm","mNextSelectedPosition=="+mNextSelectedPosition+"//mSelectedPosition=="+mSelectedPosition);
 				break;
 			default:
 				// Remember the previously selected view.
@@ -1325,11 +1326,28 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		return s;
 
 	}
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        // Let the focused view and/or our descendants get the key first
-        return commonKey(event.getKeyCode(), 1, event);
-    }
+//    @Override
+//    public boolean dispatchKeyEvent(KeyEvent event) {
+////        if(event.getKeyCode()==KeyEvent.KEYCODE_DPAD_LEFT||event.getKeyCode()==KeyEvent.KEYCODE_DPAD_RIGHT)
+////        // Let the focused view and/or our descendants get the key first
+////           return commonKey(event.getKeyCode(), 1, event);
+////        else{
+////            if(event.getKeyCode()==KeyEvent.KEYCODE_DPAD_LEFT||event.getKeyCode()==KeyEvent.KEYCODE_DPAD_RIGHT){
+////
+////            }
+////            return true;
+////        }
+//        switch (event.getAction()) {
+//            case KeyEvent.ACTION_DOWN:
+//                return onKeyDown(event.getKeyCode(), event);
+//            case KeyEvent.ACTION_UP:
+//                return onKeyUp(event.getKeyCode(), event);
+//            case KeyEvent.ACTION_MULTIPLE:
+//                return onKeyMultiple(event.getKeyCode(), 1, event);
+//            default:
+//                return false;
+//        }
+//    }
 
 
 
@@ -1978,11 +1996,23 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		}
 		if (closestChildIndex >= 0) {
 			setSelection(closestChildIndex + mFirstPosition);
+            if(mFocusListener!=null){
+               View v = getChildAt(closestChildIndex + mFirstPosition);
+                if(v!=null){
+                    mFocusListener.onFocusChange(v,true);
+                }
+            }
 		} else {
+            if(mFocusListener!=null){
+                View v = getSelectedView();
+                if(v!=null){
+                    mFocusListener.onFocusChange(v,false);
+                }
+            }
 			requestLayout();
 		}
 	}
-
+    public OnFocusChangeListener mFocusListener;
 	/**
 	 * What is the distance between the source and destination rectangles given
 	 * the direction of focus navigation between them? The direction basically

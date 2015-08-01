@@ -139,6 +139,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 			//percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_hot_selected));
 		}
         if(mContainer.getChildAt(1)!=null){
+            mContainer.getChildAt(1).setFocusable(true);
             mContainer.getChildAt(1).requestFocus();
             View v = mContainer.getChildAt(1);
             TextView label = (TextView) v.findViewById(R.id.section_label);
