@@ -116,8 +116,9 @@
                 <TextView
                     android:id="@+id/vaiety_card1_subtitle"
                     android:layout_width="match_parent"
-                    android:layout_height="31dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:textColor="#FFFFFFFF"
                     android:textSize="24sp" />
             </LinearLayout>
 
@@ -148,8 +149,9 @@
                 <TextView
                     android:id="@+id/vaiety_card2_subtitle"
                     android:layout_width="match_parent"
-                    android:layout_height="31dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:textColor="#FFFFFFFF"
                     android:textSize="24sp" />
             </LinearLayout>
 
@@ -179,8 +181,9 @@
                 <TextView
                     android:id="@+id/vaiety_card3_subtitle"
                     android:layout_width="match_parent"
-                    android:layout_height="31dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:textColor="#FFFFFFFF"
                     android:textSize="24sp" />
             </LinearLayout>
 
@@ -212,8 +215,9 @@
                 <TextView
                     android:id="@+id/vaiety_card4_subtitle"
                     android:layout_width="match_parent"
-                    android:layout_height="31dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:textColor="#FFFFFFFF"
                     android:textSize="24sp" />
             </LinearLayout>
         </RelativeLayout>
@@ -249,10 +253,11 @@
             <TextView
                 android:id="@+id/vaiety_channel1_subtitle"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="8dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/vaiety_channel1_image"
+                android:layout_marginTop="15dp"
                 android:gravity="center"
+                android:textColor="#FFFFFFFF"
                 android:textSize="24sp" />
         </RelativeLayout>
 
@@ -279,9 +284,11 @@
             <TextView
                 android:id="@+id/vaiety_channel2_subtitle"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_alignParentBottom="true"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/vaiety_channel2_image"
+                android:layout_marginTop="15dp"
                 android:gravity="center"
+                android:textColor="#FFFFFFFF"
                 android:textSize="24sp" />
         </RelativeLayout>
 
@@ -308,9 +315,11 @@
             <TextView
                 android:id="@+id/vaiety_channel3_subtitle"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_alignParentBottom="true"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/vaiety_channel3_image"
+                android:layout_marginTop="15dp"
                 android:gravity="center"
+                android:textColor="#FFFFFFFF"
                 android:textSize="24sp" />
         </RelativeLayout>
 
@@ -339,14 +348,16 @@
             <TextView
                 android:id="@+id/vaiety_channel4_subtitle"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_alignParentBottom="true"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/vaiety_channel4_image"
+                android:layout_marginTop="15dp"
                 android:gravity="center"
+                android:textColor="#FFFFFFFF"
                 android:textSize="24sp" />
         </RelativeLayout>
 
         <include
-            android:layout_width="319dp"
+            android:layout_width="332dp"
             android:layout_height="189dp"
             android:layout_marginLeft="29dp"
             layout="@layout/toppagelistmorebutton" />

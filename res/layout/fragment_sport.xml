@@ -193,9 +193,10 @@
             <TextView
                 android:id="@+id/sport_channel1_subtitle"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="17dp"
                 android:gravity="center"
+                android:textColor="#FFFFFFFF"
                 android:textSize="24sp" />
         </LinearLayout>
 
@@ -221,9 +222,10 @@
             <TextView
                 android:id="@+id/sport_channel2_subtitle"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="17dp"
                 android:gravity="center"
+                android:textColor="#FFFFFFFF"
                 android:textSize="24sp" />
         </LinearLayout>
 
@@ -249,9 +251,10 @@
             <TextView
                 android:id="@+id/sport_channel3_subtitle"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="17dp"
                 android:gravity="center"
+                android:textColor="#FFFFFFFF"
                 android:textSize="24sp" />
         </LinearLayout>
 
@@ -277,9 +280,10 @@
             <TextView
                 android:id="@+id/sport_channel4_subtitle"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="17dp"
                 android:gravity="center"
+                android:textColor="#FFFFFFFF"
                 android:textSize="24sp" />
         </LinearLayout>
 

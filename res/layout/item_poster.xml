@@ -19,6 +19,7 @@
         android:layout_height="@dimen/toppage_fragment_poster_title_h"
         android:layout_gravity="bottom|center"
         android:background="#b3000000"
+        android:textColor="#FFFFFFFF"
         android:ellipsize="marquee"
         android:gravity="center"
         android:marqueeRepeatLimit="marquee_forever"
