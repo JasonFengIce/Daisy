@@ -135,6 +135,8 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
 
                 if (i == 4) {
                     horizontalParams.setMargins(marginLeft, 0, 0, 0);
+                    itemContainer.setId(12435688);
+                    childMore.setNextFocusLeftId(12435688);
                 }
 
                 itemContainer.setLayoutParams(horizontalParams);

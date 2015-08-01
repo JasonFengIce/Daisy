@@ -286,6 +286,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
                 guideRecommmendList.addView(frameLayout);
             } else {
                 params.width = 206;
+                params.height = 277;
                 params.setMargins(0, 0, 0, 0);
                 tv.ismar.daisy.ui.widget.HomeItemContainer morelayout = (tv.ismar.daisy.ui.widget.HomeItemContainer) LayoutInflater.from(
                         context).inflate(R.layout.toppagelistmorebutton,

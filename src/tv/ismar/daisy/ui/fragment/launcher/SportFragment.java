@@ -46,7 +46,6 @@ public class SportFragment extends ChannelBaseFragment {
 	private LoadingDialog mLoadingDialog;
 	private HomePagerEntity entity;
 	private ArrayList<SportGame> games;
-	private RelativeLayout sec_one_list;
 	private LabelImageView sport_card1;
 	private LabelImageView sport_card2;
 	private LabelImageView sport_card3;
@@ -74,7 +73,6 @@ public class SportFragment extends ChannelBaseFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_sport, null);
-		sec_one_list = (RelativeLayout) view.findViewById(R.id.sec_one_list_2);
 		mLoadingDialog = new LoadingDialog(getActivity(), getResources()
 				.getString(R.string.loading));
 		sport_card1 = (LabelImageView) view.findViewById(R.id.sport_card1);
@@ -133,15 +131,15 @@ public class SportFragment extends ChannelBaseFragment {
 	private void fillData(ArrayList<Carousel> carousels,
 			ArrayList<Poster> postlist) {
 		sport_card1.setUrl(carousels.get(0).getThumb_image());
-		sport_card1.setFocustitle(carousels.get(0).getIntroduction());
+//		sport_card1.setFocustitle(carousels.get(0).getIntroduction());
 		sport_card1.setTag(R.drawable.launcher_selector, carousels.get(0));
 		sport_card1.setOnFocusChangeListener(ItemOnFocusListener);
 		sport_card2.setUrl(carousels.get(1).getThumb_image());
-		sport_card2.setFocustitle(carousels.get(1).getIntroduction());
+//		sport_card2.setFocustitle(carousels.get(1).getIntroduction());
 		sport_card2.setTag(R.drawable.launcher_selector, carousels.get(1));
 		sport_card2.setOnFocusChangeListener(ItemOnFocusListener);
 		sport_card3.setUrl(carousels.get(2).getThumb_image());
-		sport_card3.setFocustitle(carousels.get(2).getIntroduction());
+//		sport_card3.setFocustitle(carousels.get(2).getIntroduction());
 		sport_card3.setTag(R.drawable.launcher_selector, carousels.get(2));
 		sport_card3.setOnFocusChangeListener(ItemOnFocusListener);
 		looppost.add(carousels.get(0));
@@ -238,6 +236,8 @@ public class SportFragment extends ChannelBaseFragment {
 				sportspost.setTag(R.drawable.launcher_selector, carousel);
 				if (StringUtils.isNotEmpty(carousel.getIntroduction())) {
 					sportspost.setFocustitle(carousel.getIntroduction());
+				}else{
+					sportspost.setFocustitle(null);
 				}
 				switch (v.getId()) {
 				case R.id.sport_card1:
@@ -280,6 +280,8 @@ public class SportFragment extends ChannelBaseFragment {
 					.getIntroduction())) {
 				sportspost.setFocustitle(looppost.get(loopindex)
 						.getIntroduction());
+			}else{
+				sportspost.setFocustitle(null);				
 			}
 			if (loopindex == 0) {
 				sport_card1.setCustomfocus(true);
@@ -343,25 +345,40 @@ public class SportFragment extends ChannelBaseFragment {
 				Picasso.with(context).load(games.get(position).getImageurl())
 						.into(sports_live1);
 				sports_live1.setTag(games.get(position).getUrl());
+				if(games.get(position).isLiving()){
+					sports_live1.setModetype(4);
+				}else{
+					sports_live1.setModetype(6);	
+				}
 				break;
 			case 1:
 				sports_live2.setUrl(games.get(position).getImageurl());
 				Picasso.with(context).load(games.get(position).getImageurl())
 						.into(sports_live2);
 				sports_live2.setTag(games.get(position).getUrl());
+				if(games.get(position).isLiving()){
+					sports_live2.setModetype(4);
+				}else{
+					sports_live2.setModetype(6);	
+				}
 				break;
 			case 2:
 				sports_live3.setUrl(games.get(position).getImageurl());
 				Picasso.with(context).load(games.get(position).getImageurl())
 						.into(sports_live3);
 				sports_live3.setTag(games.get(position).getUrl());
+				if(games.get(position).isLiving()){
+					sports_live3.setModetype(4);
+				}else{
+					sports_live3.setModetype(6);	
+				}
 				break;
 			}
 		}
 		if (games.size() - currentLiveIndex > 3) {
 			arrowDown.setVisibility(View.VISIBLE);
 		} else {
-			arrowDown.setVisibility(View.GONE);
+			arrowDown.setVisibility(View.INVISIBLE);
 		}
 		if (currentLiveIndex > 0) {
 			arrowUp.setVisibility(View.VISIBLE);

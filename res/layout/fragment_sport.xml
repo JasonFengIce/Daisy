@@ -12,9 +12,9 @@
     <RelativeLayout
         android:id="@+id/section_one"
         android:layout_width="match_parent"
-        android:layout_height="535dp"
+        android:layout_height="570dp"
         android:layout_marginBottom="22dp"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="5dp"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:orientation="horizontal" >
@@ -91,6 +91,8 @@
             android:focusable="true"
             android:scaleType="fitXY"
             android:src="@drawable/list_item_preview_bg"
+            labelimage:focustextpaddingtop="0.97"
+            labelimage:focuspaddingtop="0.89"
             labelimage:focusbackground="@color/shawdow"
             labelimage:focustextsize="@dimen/toppage_fragment_poster_title_textsize"
             labelimage:needzoom="true" />
@@ -98,7 +100,7 @@
         <RelativeLayout
             android:id="@+id/sec_one_list_2"
             android:layout_width="297dp"
-            android:layout_height="529dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="1dp"
             android:layout_toRightOf="@id/sportspost"
             android:layout_centerVertical="true"
@@ -109,10 +111,10 @@
             <ImageView
                 android:id="@+id/sec_one_list_1_arrowup"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/shawdow"
+                android:layout_height="30dp"
+                android:background="#b2000000"
                 android:focusable="true"
-                android:layout_marginTop="2dp"
+                android:scaleType="center"
                 android:src="@drawable/arrow_up" />
 
             <tv.ismar.daisy.views.LabelImageView
@@ -154,11 +156,12 @@
             <ImageView
                 android:id="@+id/sec_one_list_1_arrowdown"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_marginTop="1dp"
                 android:layout_below="@id/sports_live3"
-                android:background="@color/shawdow"
+                android:background="#b2000000"
                 android:focusable="true"
+                android:scaleType="center"
                 android:src="@drawable/arrow_down" />
         </RelativeLayout>
     </RelativeLayout>
@@ -167,7 +170,7 @@
         android:layout_width="match_parent"
         android:layout_height="254dp"
         android:layout_marginBottom="88dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="1dp"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:orientation="horizontal" >
@@ -194,7 +197,7 @@
                 android:id="@+id/sport_channel1_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="17dp"
+                android:layout_marginTop="15dp"
                 android:gravity="center"
                 android:textColor="#FFFFFFFF"
                 android:textSize="24sp" />
@@ -204,7 +207,7 @@
             android:id="@+id/sport_channel2"
             android:layout_width="332dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="32dp"
+            android:layout_marginLeft="31dp"
             android:clipChildren="false"
             android:clipToPadding="false"
             android:orientation="vertical" >
@@ -223,7 +226,7 @@
                 android:id="@+id/sport_channel2_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="17dp"
+                android:layout_marginTop="15dp"
                 android:gravity="center"
                 android:textColor="#FFFFFFFF"
                 android:textSize="24sp" />
@@ -233,7 +236,7 @@
             android:id="@+id/sport_channel3"
             android:layout_width="332dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="32dp"
+            android:layout_marginLeft="31dp"
             android:clipChildren="false"
             android:clipToPadding="false"
             android:orientation="vertical" >
@@ -252,7 +255,7 @@
                 android:id="@+id/sport_channel3_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="17dp"
+                android:layout_marginTop="15dp"
                 android:gravity="center"
                 android:textColor="#FFFFFFFF"
                 android:textSize="24sp" />
@@ -262,7 +265,7 @@
             android:id="@+id/sport_channel4"
             android:layout_width="332dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="32dp"
+            android:layout_marginLeft="31dp"
             android:clipChildren="false"
             android:clipToPadding="false"
             android:orientation="vertical" >
@@ -281,16 +284,16 @@
                 android:id="@+id/sport_channel4_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="17dp"
+                android:layout_marginTop="15dp"
                 android:gravity="center"
                 android:textColor="#FFFFFFFF"
                 android:textSize="24sp" />
         </LinearLayout>
 
         <include
-            android:layout_width="319dp"
+            android:layout_width="332dp"
             android:layout_height="189dp"
-            android:layout_marginLeft="35dp"
+            android:layout_marginLeft="29dp"
             layout="@layout/toppagelistmorebutton" />
     </LinearLayout>
 
