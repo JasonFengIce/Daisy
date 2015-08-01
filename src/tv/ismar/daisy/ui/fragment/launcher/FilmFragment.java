@@ -189,7 +189,15 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
 
         linkedVideoView.setOnCompletionListener(loopAllListener);
         film_post_layout.setOnClickListener(viewClickListener);
-
+        linkedVideoView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    ((HomeItemContainer) v.getParent())
+                            .requestFocus();
+                }
+            }
+        });
         return mView;
     }
 
