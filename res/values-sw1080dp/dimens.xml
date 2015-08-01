@@ -66,7 +66,7 @@
     <dimen name="item_detail_more_content_marginT">50dip</dimen>
     <dimen name="item_detail_btn_marginleft">51dip</dimen>
     <dimen name="item_detail_related_H">158dip</dimen>
-    <dimen name="item_detail_related_W">638dip</dimen>
+    <dimen name="item_detail_related_W">618dip</dimen>
     <dimen name="item_detail_btn_layout_marginB">20dip</dimen>
     <dimen name="item_detail_Btn_Layout_marginT">18dip</dimen>
     <dimen name="item_detail_title_txt_MT">100dip</dimen>
@@ -167,7 +167,7 @@
     <dimen name="related_item_layout_marginleft">2dip</dimen>
     <dimen name="related_item_image_H">134dip</dimen>
     <dimen name="related_item_image_W">201dip</dimen>
-    <dimen name="related_item_image_marginleft">16dip</dimen>
+    <dimen name="related_item_image_marginleft">18dip</dimen>
     <dimen name="related_item_image_margintop">23dip</dimen>
     <dimen name="related_item_image_marginright">23dip</dimen>
     <dimen name="related_item_image_marginbottom">23dip</dimen>

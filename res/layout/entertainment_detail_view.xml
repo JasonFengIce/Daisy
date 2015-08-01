@@ -52,13 +52,14 @@
                 android:scaleType="fitXY"
                 />
 
-        <LinearLayout
+        <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
             <tv.ismar.daisy.views.DetailAttributeContainer
-                    android:layout_marginLeft="81dip"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="80dip"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/item_detail_introlabel_textsize"
@@ -68,53 +69,52 @@
             </tv.ismar.daisy.views.DetailAttributeContainer>
 
             <LinearLayout
-                    android:layout_height="@dimen/item_detail_btn_left_height"
+                    android:layout_height="72dip"
                     android:layout_width="wrap_content"
                     android:layout_marginLeft="168dip"
                     android:orientation="horizontal"
-                    android:layout_marginTop="80dip"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="57dip"
                     android:layout_marginRight="73dip"
                     android:visibility="visible">
 
                 <Button
                         android:singleLine="true"
                         android:id="@+id/btn_left"
-                        android:layout_width="300dip"
-                        android:layout_height="@dimen/item_detail_btn_left_height"
+                        android:layout_width="374dip"
+                        android:layout_height="match_parent"
                         android:background="@drawable/variety_btn_bg_selector"
-                        android:paddingLeft="1dip"
-                        android:paddingRight="1dip"
-                        android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"
+                        android:gravity="center"
                         android:visibility="visible"
                         android:textColor="#FFFFFFFF"
                         android:textSize="@dimen/item_detail_text_size"
 />
 
                 <Button
+                        android:gravity="center"
                         android:id="@+id/middle_btn"
-                        android:layout_width="160dip"
-                        android:layout_height="@dimen/item_detail_btn_left_height"
+                        android:layout_width="214dip"
+                        android:layout_height="match_parent"
                         android:layout_marginLeft="71dip"
-                        android:background="@drawable/variety_btn_bg_selector"
+                        android:background="@drawable/pdetail_btn_bg_selector"
                         android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"
                         android:visibility="visible"
                         android:textColor="#FFFFFFFF"
                         android:textSize="@dimen/item_detail_text_size"/>
 
                 <Button
+                        android:gravity="center"
                         android:id="@+id/btn_right"
-                        android:layout_width="170dip"
-                        android:layout_height="@dimen/item_detail_btn_left_height"
+                        android:layout_width="214dip"
+                        android:layout_height="match_parent"
                         android:layout_marginLeft="71dip"
-                        android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"
-                        android:paddingLeft="1dip"
-                        android:paddingRight="1dip"
-                        android:background="@drawable/variety_btn_bg_selector"
+                        android:background="@drawable/pdetail_btn_bg_selector"
                         android:visibility="visible"
                         android:textColor="#FFFFFFFF"
                         android:textSize="@dimen/item_detail_text_size"/>
             </LinearLayout>
-        </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 
         <TextView
@@ -155,11 +155,10 @@
 
         <LinearLayout
                 android:focusable="true"
-                android:layout_marginTop="6dip"
                 android:layout_marginLeft="85dip"
                 android:id="@+id/more_content"
                 android:clickable="true"
-                android:layout_width="130dip"
+                android:layout_width="123dip"
                 android:layout_height="189dip"
                 android:orientation="vertical"
                 android:gravity="center"
@@ -168,7 +167,7 @@
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/item_detail_detail_title_textSize"
+                    android:textSize="48sp"
                     android:textColor="@color/white"
                     android:text="更"
                     android:gravity="center"
@@ -179,7 +178,7 @@
                     android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/item_detail_detail_title_textSize"
+                    android:textSize="48sp"
                     android:textColor="@color/white"
                     android:text="多"
                     />

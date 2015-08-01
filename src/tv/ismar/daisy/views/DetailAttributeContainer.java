@@ -105,10 +105,10 @@ public class DetailAttributeContainer extends LinearLayout {
             if(i%3==0){
                 layoutLeft = 0;
                 infoLine = new LinearLayout(getContext());
-                layoutParamsInfo = new LayoutParams(1213, LayoutParams.WRAP_CONTENT);
+                layoutParamsInfo = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
                 if(i>=3)
                 layoutParamsInfo.topMargin = 30;
-               // layoutParamsInfo.rightMargin = 73;
+                layoutParamsInfo.rightMargin = 73;
                 infoLine.setLayoutParams(layoutParamsInfo);
                 infoLine.setOrientation(LinearLayout.HORIZONTAL);
                 addView(infoLine);
@@ -128,12 +128,14 @@ public class DetailAttributeContainer extends LinearLayout {
             if(entry.getValue()==null || mContentModel.attributes.get(entry.getKey())==null){
                 continue;
             }
-            int layoutLeft = 10;
+            int layoutLeft = 9;
             if(i%2==0&&(i<=3)){
                 layoutLeft = 0;
                 infoLine = new LinearLayout(getContext());
                 layoutParamsInfo = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-                layoutParamsInfo.topMargin = 15;
+                if(i>1)
+                layoutParamsInfo.topMargin = 22;
+
                 infoLine.setLayoutParams(layoutParamsInfo);
                 infoLine.setOrientation(LinearLayout.HORIZONTAL);
                 addView(infoLine);
@@ -143,7 +145,7 @@ public class DetailAttributeContainer extends LinearLayout {
                 infoLine = new LinearLayout(getContext());
                 infoLine.setOrientation(LinearLayout.HORIZONTAL);
                 layoutParamsInfo = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-                layoutParamsInfo.topMargin = 15;
+                layoutParamsInfo.topMargin = 22;
                 infoLine.setLayoutParams(layoutParamsInfo);
                 infoLine.setOrientation(LinearLayout.HORIZONTAL);
                 addView(infoLine);
@@ -155,14 +157,14 @@ public class DetailAttributeContainer extends LinearLayout {
     }
     private void addChildrenByZY(ViewGroup infoLine,String key,String value,int distanceLeft,int position){
         LinearLayout.LayoutParams itemNameParams = null;
-        if(position+1%3==0){
-            itemNameParams = new LinearLayout.LayoutParams(263, 31);
+        TextView itemValue = new TextView(getContext());
+        if((position+1)%3==0){
+            itemNameParams = new LinearLayout.LayoutParams(390, 31);
         }
         else{
-            itemNameParams = new LinearLayout.LayoutParams(453, 31);
+            itemNameParams = new LinearLayout.LayoutParams(390, 31);
         }
         itemNameParams.leftMargin = distanceLeft;
-        TextView itemValue = new TextView(getContext());
         // LinearLayout.LayoutParams itemValueParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         itemValue.setLayoutParams(itemNameParams);
         itemValue.setTextColor(0xffffffff);
@@ -177,17 +179,17 @@ public class DetailAttributeContainer extends LinearLayout {
         LinearLayout.LayoutParams itemNameParams = null;
 
         if(distanceLeft>0){
-            itemNameParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            itemNameParams = new LinearLayout.LayoutParams(289, 24);
         }
         else if(distanceLeft==0){
             if(lineNumber==-1){
                 itemNameParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             }
             else if(lineNumber>=4){
-                itemNameParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                itemNameParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,24);
             }
             else{
-                itemNameParams = new LinearLayout.LayoutParams(450, LinearLayout.LayoutParams.WRAP_CONTENT);
+                itemNameParams = new LinearLayout.LayoutParams(441, 24);
             }
         }
 
@@ -203,10 +205,10 @@ public class DetailAttributeContainer extends LinearLayout {
        // LinearLayout.LayoutParams itemValueParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         itemValue.setLayoutParams(itemNameParams);
         itemValue.setTextColor(0xffffffff);
-        itemValue.setTextSize(textsize);
+        itemValue.setTextSize(24);
         itemValue.setText(key+" : " +value);
         itemValue.setMaxLines(1);
-        //itemValue.setEllipsize(TruncateAt.END);
+        itemValue.setEllipsize(TruncateAt.END);
         itemValue.setSingleLine(true);
         infoLine.addView(itemValue);
     }
