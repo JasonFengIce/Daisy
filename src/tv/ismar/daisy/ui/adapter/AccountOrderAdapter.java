@@ -88,7 +88,7 @@ public class AccountOrderAdapter extends BaseAdapter {
             String mergeTime = time.format(Timestamp.valueOf(mergedate));
 
             if (item.type.equals("order_list")) {
-                holder.purchaseExtra.setText(mergeTime + "合并至视云账户" + SimpleRestClient.mobile_number);
+                holder.purchaseExtra.setText("( "+mergeTime + "合并至视云账户" + SimpleRestClient.mobile_number + " )");
             } else if (item.type.equals("snorder_list")) {
                 holder.purchaseExtra.setText(mergeTime + "合并至视云账户" + account);
             }

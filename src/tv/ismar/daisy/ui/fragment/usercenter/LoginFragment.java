@@ -387,7 +387,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     public void setBackground(boolean background) {
         if (background) {
-            getView().setBackgroundColor(0xD6000000);
+            getView().setBackgroundColor(0xe5000000);
         } else {
             getView().setBackgroundColor(0x00000000);
         }

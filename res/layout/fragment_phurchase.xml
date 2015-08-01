@@ -14,11 +14,7 @@
             android:layout_marginTop="23dp"
             android:divider="@drawable/orderlistdivide"
             android:dividerHeight="1px"
-            android:fadeScrollbars="false"
             android:listSelector="#00000000"
-            android:scrollbarFadeDuration="0"
-            android:scrollbarSize="@dimen/person_info_privilegelist_scrollbarSize"
-            android:scrollbarStyle="outsideInset"
-            android:scrollbars="vertical"
+            android:scrollbars="none"
             />
 </LinearLayout>

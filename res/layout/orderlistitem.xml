@@ -2,12 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:paddingTop="3dp"
               android:paddingLeft="2dp"
+              android:minHeight="201dp"
               android:orientation="horizontal"
         >
 
     <ImageView
+            android:layout_marginTop="6dp"
             android:id="@+id/orderlistitem_icon"
             android:layout_width="336dp"
             android:layout_height="189dp"
@@ -24,7 +25,7 @@
             android:orientation="vertical">
 
         <LinearLayout
-                android:layout_marginTop="@dimen/purchase_history_text_margin_top"
+                android:layout_marginTop="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -38,7 +39,7 @@
                     />
 
             <TextView
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="40dp"
                     android:id="@+id/purchase_extra"
                     android:textSize="@dimen/h4_text_size"
                     android:textColor="#FFFFFF"
