@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import cn.ismartv.activator.Activator;
 import com.google.gson.Gson;
+import org.w3c.dom.Text;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
@@ -22,17 +23,20 @@ import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.usercenter.AccountBalanceEntity;
 import tv.ismar.daisy.data.usercenter.AccountPlayAuthEntity;
+import tv.ismar.daisy.models.Channel;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.ui.adapter.AccountOrderAdapter;
 import tv.ismar.daisy.ui.adapter.AccoutPlayAuthAdapter;
+import tv.ismar.daisy.utils.Util;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  * Created by huaijie on 7/3/15.
  */
-public class UserInfoFragment extends Fragment implements View.OnClickListener{
+public class UserInfoFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "UserInfoFragment";
 
     private Context mContext;
@@ -43,7 +47,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener{
     private TextView balanceTextView;
     private TextView deviceNameTextView;
 
-    private ListView playAuthListView;
+    private LinearLayout playAuthListView;
     private Button associationText;
     private Button changeButton;
     private TextView phoneNumber;
@@ -102,10 +106,12 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener{
         deviceNumber = (TextView) fragmentView.findViewById(R.id.device_number);
         balanceTextView = (TextView) fragmentView.findViewById(R.id.remain_money_value);
         deviceNameTextView = (TextView) fragmentView.findViewById(R.id.device_name);
-        playAuthListView = (ListView) fragmentView.findViewById(R.id.privilegelist);
+        playAuthListView = (LinearLayout) fragmentView.findViewById(R.id.privilegelist);
         associationText = (Button) fragmentView.findViewById(R.id.association_button);
         userInfoLayout = (LinearLayout) fragmentView.findViewById(R.id.userinfo_layout);
         changeButton = (Button) fragmentView.findViewById(R.id.change);
+        changeButton.setNextFocusUpId(changeButton.getId());
+
         associationPrompt = (TextView) fragmentView.findViewById(R.id.association_prompt);
 
         phoneNumberLayout = fragmentView.findViewById(R.id.phone_number_layout);
@@ -127,6 +133,8 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener{
         isCombined = accountPrefs.getBoolean(LoginFragment.ACCOUNT_COMBINE, false);
         accountPrefs.registerOnSharedPreferenceChangeListener(accountSharedPrefsListener);
 
+        changeButton.setNextFocusRightId(associationText.getId());
+        associationText.setNextFocusLeftId(changeButton.getId());
 
         return fragmentView;
     }
@@ -192,11 +200,13 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener{
                     }
 
                     playAuths.addAll(accountPlayAuthEntity.getPlayauth_list());
-                    accoutPlayAuthAdapter = new AccoutPlayAuthAdapter(mContext, playAuths);
+//                    accoutPlayAuthAdapter = new AccoutPlayAuthAdapter(mContext, playAuths);
+                    createPlayAuthListView(playAuths);
                 } else {
-                    accoutPlayAuthAdapter = new AccoutPlayAuthAdapter(mContext, accountPlayAuthEntity.getSn_playauth_list());
+//                    accoutPlayAuthAdapter = new AccoutPlayAuthAdapter(mContext, accountPlayAuthEntity.getSn_playauth_list());
+                    createPlayAuthListView(accountPlayAuthEntity.getSn_playauth_list());
                 }
-                playAuthListView.setAdapter(accoutPlayAuthAdapter);
+//                playAuthListView.setAdapter(accoutPlayAuthAdapter);
             }
 
             @Override
@@ -204,6 +214,81 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener{
 
             }
         });
+    }
+
+    private View.OnFocusChangeListener playAuthFocusListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            TextView titleTextView = (TextView) v.findViewById(R.id.title_txt);
+            TextView remaindDay = (TextView) v.findViewById(R.id.buydate_txt);
+            if (hasFocus) {
+                titleTextView.setTextColor(mContext.getResources().getColor(R.color.location_text_focus));
+                titleTextView.setTextSize(mContext.getResources().getDimension(R.dimen.userinfo_playauth_item_focus_textsize));
+                remaindDay.setTextColor(mContext.getResources().getColor(R.color.location_text_focus));
+                remaindDay.setTextSize(mContext.getResources().getDimension(R.dimen.userinfo_playauth_item_focus_textsize));
+            } else {
+                titleTextView.setTextColor(mContext.getResources().getColor(R.color.white));
+                titleTextView.setTextSize(mContext.getResources().getDimension(R.dimen.userinfo_playauth_item_normal_textsize));
+                remaindDay.setTextColor(mContext.getResources().getColor(R.color.white));
+                remaindDay.setTextSize(mContext.getResources().getDimension(R.dimen.userinfo_playauth_item_normal_textsize));
+            }
+
+        }
+    };
+
+    private View.OnClickListener playAuthClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String url = ((AccountPlayAuthEntity.PlayAuth) v.getTag()).getUrl();
+            if (!TextUtils.isEmpty(url)) {
+                InitPlayerTool tool = new InitPlayerTool(mContext);
+                tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
+            }
+        }
+    };
+
+    private void createPlayAuthListView(ArrayList<AccountPlayAuthEntity.PlayAuth> playAuths) {
+        playAuthListView.removeAllViews();
+        String remainday = mContext.getResources().getString(R.string.personcenter_orderlist_item_remainday);
+        for (int i = 0; i < playAuths.size(); i++) {
+            View convertView = LayoutInflater.from(mContext).inflate(R.layout.privilege_listview_item, null);
+            TextView title = (TextView) convertView.findViewById(R.id.title_txt);
+            TextView buydate_txt = (TextView) convertView.findViewById(R.id.buydate_txt);
+            convertView.setTag(playAuths.get(i));
+            buydate_txt.setText(String.format(remainday, remaindDay(playAuths.get(i).getExpiry_date())));
+            title.setText(playAuths.get(i).getTitle());
+            convertView.setOnFocusChangeListener(playAuthFocusListener);
+            convertView.setOnClickListener(playAuthClickListener);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+            if (i == 0) {
+                convertView.setId(643432);
+                convertView.setNextFocusUpId(changeButton.getId());
+                changeButton.setNextFocusDownId(convertView.getId());
+            }
+
+            if (i != 0) {
+                layoutParams.setMargins(0, 51, 0, 0);
+
+            }
+            if (i == playAuths.size() - 1) {
+                convertView.setId(7845345);
+                convertView.setNextFocusDownId(7845345);
+            }
+            convertView.setLayoutParams(layoutParams);
+            playAuthListView.addView(convertView);
+
+        }
+    }
+
+
+    private int remaindDay(String exprieTime) {
+        try {
+            return Util.daysBetween(Util.getTime(), exprieTime) + 1;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     @Override

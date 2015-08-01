@@ -176,18 +176,22 @@
 
             </TextView>
 
-            <ListView
-                    android:id="@+id/privilegelist"
+            <ScrollView
                     android:layout_toRightOf="@id/privilege_txt"
                     android:layout_marginRight="@dimen/person_login_phone_view_ML"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:divider="@android:color/transparent"
-                    android:descendantFocusability="afterDescendants"
-                    android:dividerHeight="51dp"
-
                     >
-            </ListView>
+
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:id="@+id/privilegelist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                </LinearLayout>
+            </ScrollView>
+
 
         </RelativeLayout>
 
