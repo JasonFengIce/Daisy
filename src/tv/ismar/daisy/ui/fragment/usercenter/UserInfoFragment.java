@@ -32,7 +32,7 @@ import java.util.HashMap;
 /**
  * Created by huaijie on 7/3/15.
  */
-public class UserInfoFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
+public class UserInfoFragment extends Fragment implements View.OnClickListener{
     private static final String TAG = "UserInfoFragment";
 
     private Context mContext;
@@ -103,8 +103,6 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
         balanceTextView = (TextView) fragmentView.findViewById(R.id.remain_money_value);
         deviceNameTextView = (TextView) fragmentView.findViewById(R.id.device_name);
         playAuthListView = (ListView) fragmentView.findViewById(R.id.privilegelist);
-        playAuthListView.setOnItemClickListener(this);
-        playAuthListView.setOnItemSelectedListener(this);
         associationText = (Button) fragmentView.findViewById(R.id.association_button);
         userInfoLayout = (LinearLayout) fragmentView.findViewById(R.id.userinfo_layout);
         changeButton = (Button) fragmentView.findViewById(R.id.change);
@@ -113,8 +111,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
         phoneNumberLayout = fragmentView.findViewById(R.id.phone_number_layout);
         snNumberLayout = fragmentView.findViewById(R.id.sn_number_layout);
 
-        String deviceNameString = mContext.getString(R.string.userinfo_device_name);
-        deviceNameTextView.setText(String.format(deviceNameString, Build.MODEL));
+        deviceNameTextView.setText(Build.MODEL);
 
         associationText.setOnClickListener(this);
         changeButton.setOnClickListener(this);
@@ -227,9 +224,9 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
     }
 
     private void initViewByLoginStatus() {
-        deviceNumber.setText("SN： " + SimpleRestClient.sn_token);
+        deviceNumber.setText(SimpleRestClient.sn_token);
         if (!DaisyUtils.getVodApplication(mContext).getPreferences().getString(VodApplication.AUTH_TOKEN, "").equals("")) {
-            phoneNumber.setText("手机号：" + SimpleRestClient.mobile_number);
+            phoneNumber.setText(SimpleRestClient.mobile_number);
         }
     }
 
@@ -252,14 +249,6 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
         });
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        String url = accoutPlayAuthAdapter.getList().get(position).getUrl();
-        if (!TextUtils.isEmpty(url)) {
-            InitPlayerTool tool = new InitPlayerTool(mContext);
-            tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
-        }
-    }
 
     public boolean isLoginFragmentShowing() {
         if (loginFragment != null && loginFragment.isVisible()) {
@@ -275,13 +264,4 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
         getChildFragmentManager().beginTransaction().hide(loginFragment).commit();
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Log.d(TAG, "onItemSelected: " + position);
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
 }

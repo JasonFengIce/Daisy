@@ -23,7 +23,7 @@
         android:layout_width="336dp"
         android:layout_height="62dp"
         android:gravity="center"
-        android:textSize="30sp"
+        android:textSize="@dimen/h2_text_size"
         android:textColor="#FFFFFFFF"
         android:text="文字"/>
 

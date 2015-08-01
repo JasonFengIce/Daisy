@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import android.text.TextUtils;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.data.usercenter.AccountPlayAuthEntity;
+import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.utils.Util;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -20,7 +22,7 @@ import android.widget.TextView;
 /**
  * Created by huaijie on 7/3/15.
  */
-public class AccoutPlayAuthAdapter extends BaseAdapter implements View.OnFocusChangeListener {
+public class AccoutPlayAuthAdapter extends BaseAdapter implements View.OnFocusChangeListener, View.OnClickListener {
     ArrayList<AccountPlayAuthEntity.PlayAuth> mList;
     Context mContext;
     ViewHolder holder;
@@ -53,15 +55,17 @@ public class AccoutPlayAuthAdapter extends BaseAdapter implements View.OnFocusCh
             holder = new ViewHolder();
             holder.title = (TextView) convertView.findViewById(R.id.title_txt);
             holder.buydate_txt = (TextView) convertView.findViewById(R.id.buydate_txt);
+            holder.position = position;
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
         convertView.setOnFocusChangeListener(this);
+        convertView.setOnClickListener(this);
 
-        String remainday = mContext.getResources().getString(
-                R.string.personcenter_orderlist_item_remainday);
+
+        String remainday = mContext.getResources().getString(R.string.personcenter_orderlist_item_remainday);
         AccountPlayAuthEntity.PlayAuth item = mList.get(position);
         holder.title.setText(item.getTitle());
         holder.buydate_txt.setText(String.format(remainday, remaindDay(item.getExpiry_date())));
@@ -71,7 +75,7 @@ public class AccoutPlayAuthAdapter extends BaseAdapter implements View.OnFocusCh
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         TextView titleTextView = (TextView) v.findViewById(R.id.title_txt);
-        TextView remaindDay = (TextView)v.findViewById(R.id.buydate_txt);
+        TextView remaindDay = (TextView) v.findViewById(R.id.buydate_txt);
         if (hasFocus) {
             titleTextView.setTextColor(mContext.getResources().getColor(R.color.location_text_focus));
             titleTextView.setTextSize(mContext.getResources().getDimension(R.dimen.userinfo_playauth_item_focus_textsize));
@@ -83,9 +87,23 @@ public class AccoutPlayAuthAdapter extends BaseAdapter implements View.OnFocusCh
             remaindDay.setTextColor(mContext.getResources().getColor(R.color.white));
             remaindDay.setTextSize(mContext.getResources().getDimension(R.dimen.userinfo_playauth_item_normal_textsize));
         }
+
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        int position = ((ViewHolder) v.getTag()).position;
+        String url = mList.get(position).getUrl();
+        if (!TextUtils.isEmpty(url)) {
+            InitPlayerTool tool = new InitPlayerTool(mContext);
+            tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
+        }
+
     }
 
     public static class ViewHolder {
+        int position;
         TextView title;
         TextView buydate_txt;
     }

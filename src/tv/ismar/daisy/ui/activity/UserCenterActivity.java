@@ -84,7 +84,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
         getSupportFragmentManager().beginTransaction().add(R.id.user_center_container, storeFragment).commit();
 
-        indicatorView.get(0).setBackgroundResource(R.drawable.daisy_btn_normal_bg);
+        indicatorView.get(0).setBackgroundResource(R.drawable.table_selected_bg);
     }
 
 
@@ -154,7 +154,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         }
 		for (View view : indicatorView) {
 			if (view.getId() == currentViewId) {
-				view.setBackgroundResource(R.drawable.daisy_btn_normal_bg);
+				view.setBackgroundResource(R.drawable.table_selected_bg);
 			} else {
 				view.setBackgroundResource(R.drawable.selector_channel_item);
 			}

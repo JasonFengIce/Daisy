@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
+                android:background="@drawable/launcher_selector"
                 android:focusable="true"
-                android:layout_height="@dimen/privilege_item_layout_H"
+                android:focusableInTouchMode="true"
+                android:clickable="true"
+                android:layout_height="wrap_content"
+                android:minHeight="31dp"
                 android:gravity="center_vertical">
 
     <TextView
             android:id="@+id/title_txt"
             android:gravity="center_vertical"
             android:layout_width="@dimen/privilege_item_title_txt_W"
-            android:layout_height="@dimen/privilege_item_layout_H"
+            android:layout_height="wrap_content"
             android:paddingLeft="@dimen/privilege_item_title_txt_PL"
             android:textColor="#FFF8F8FF"
             android:textSize="@dimen/userinfo_playauth_item_normal_textsize"
@@ -20,7 +24,7 @@
             android:id="@+id/buydate_txt"
             android:gravity="center_vertical"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/privilege_item_layout_H"
+            android:layout_height="wrap_content"
             android:layout_toRightOf="@id/title_txt"
             android:textColor="#FFF8F8FF"
             android:textSize="@dimen/userinfo_playauth_item_normal_textsize"
