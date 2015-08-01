@@ -87,10 +87,18 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
     private VideoEntity tvHome;
     private Item[] FavoriteList;
     private Button search_btn;
+    private Button left_shadow;
+    private Button right_shadow;
+    private View gideview_layuot;
 	private void initViews(View fragmentView) {
         View vv = fragmentView.findViewById(R.id.tabs_layout);
         vv.setVisibility(View.GONE);
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
+        left_shadow = (Button)fragmentView.findViewById(R.id.left_shadow);
+        right_shadow = (Button)fragmentView.findViewById(R.id.right_shadow);
+        gideview_layuot = fragmentView.findViewById(R.id.gideview_layuot);
+        mHGridView.leftbtn = left_shadow;
+        mHGridView.rightbtn = right_shadow;
 		mHGridView.setOnItemClickListener(this);
 		mHGridView.setOnItemSelectedListener(this);
 		mScrollableSectionList = (ScrollableSectionList) fragmentView.findViewById(R.id.section_tabs);
@@ -102,8 +110,6 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		
 		mNoVideoContainer = (RelativeLayout) fragmentView.findViewById(R.id.no_video_container);
 		recommend_gridview = (ZGridView)fragmentView.findViewById(R.id.recommend_gridview);
-		divider = (View)fragmentView.findViewById(R.id.divider);
-		divider.setVisibility(View.VISIBLE);
 		recommend_txt = (TextView)fragmentView.findViewById(R.id.recommend_txt);
 		collect_or_history_txt = (TextView)fragmentView.findViewById(R.id.collect_or_history_txt);
 		search_btn = (Button)fragmentView.findViewById(R.id.list_view_search);
@@ -158,8 +164,8 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 					if(mHGridAdapter.getCount()>0){
 						mHGridView.setAdapter(mHGridAdapter);
 						mHGridView.setFocusable(true);
-						mHGridView.setHorizontalFadingEdgeEnabled(true);
-						mHGridView.setFadingEdgeLength(144);
+						//mHGridView.setHorizontalFadingEdgeEnabled(true);
+						//mHGridView.setFadingEdgeLength(144);
 						ArrayList<Item> items  = new ArrayList<Item>();
 						for(Item i:FavoriteList){
 							items.add(i);
@@ -253,8 +259,8 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			mHGridAdapter = new HGridAdapterImpl(getActivity(), mItemCollections);
 			mHGridView.setAdapter(mHGridAdapter);
 			mHGridView.setFocusable(true);
-			mHGridView.setHorizontalFadingEdgeEnabled(true);
-			mHGridView.setFadingEdgeLength(144);
+		//	mHGridView.setHorizontalFadingEdgeEnabled(true);
+			//mHGridView.setFadingEdgeLength(144);
 			int num_rows = mHGridView.getRows();
 			int totalColumnsOfSectionX = (int) FloatMath.ceil((float)mItemCollections.get(mCurrentSectionPosition).count / (float) num_rows);
 //			mScrollableSectionList.setPercentage(mCurrentSectionPosition, (int)(1f/(float)totalColumnsOfSectionX*100f));
@@ -409,6 +415,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	private void no_video() {
 		mNoVideoContainer.setVisibility(View.VISIBLE);
 		mNoVideoContainer.setBackgroundResource(R.drawable.no_record);
+        gideview_layuot.setVisibility(View.GONE);
 //		mScrollableSectionList.setVisibility(View.GONE);
 		mHGridView.setVisibility(View.GONE);
 		collect_or_history_txt.setText(getResources().getString(R.string.no_collect_record));

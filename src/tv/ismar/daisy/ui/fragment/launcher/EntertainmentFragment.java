@@ -311,6 +311,8 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 			}
 			if (loopindex >= 2)
 				loopindex = -1;
+			if(imageswitch.hasMessages(IMAGE_SWITCH_KEY))
+				imageswitch.removeMessages(IMAGE_SWITCH_KEY);
 			imageswitch.sendEmptyMessageDelayed(IMAGE_SWITCH_KEY, 6000);
 			// pendingView.requestFocus();
 		}

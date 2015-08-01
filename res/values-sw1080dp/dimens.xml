@@ -61,7 +61,7 @@
     <dimen name="item_detail_related_divider_marginleft">40dp</dimen>
     <dimen name="item_detail_related_video_container_height">700dip</dimen>
     <dimen name="item_detail_more_content_width">247dip</dimen>
-    <dimen name="item_detail_more_content_height">68dip</dimen>
+    <dimen name="item_detail_more_content_height">92dip</dimen>
     <dimen name="item_detail_more_content_textsize">35dip</dimen>
     <dimen name="item_detail_more_content_marginT">50dip</dimen>
     <dimen name="item_detail_btn_marginleft">51dip</dimen>
@@ -136,7 +136,7 @@
     <dimen name="grid_view_main_collect_or_history_txt_PL">60dip</dimen>
     <dimen name="grid_view_main_recommend_txt_H">100dip</dimen>
     <dimen name="grid_view_main_recommend_txt_size">60sp</dimen>
-    <dimen name="grid_view_main_recommend_txt_PL">30dip</dimen>
+    <dimen name="grid_view_main_recommend_txt_PL">25dip</dimen>
     <dimen name="grid_view_main_recommend_gridview_H">250dip</dimen>
     <dimen name="grid_view_main_horizontalSpace">16dip</dimen>
     <dimen name="gridview_item_list_item_title_MT">7dip</dimen>
@@ -446,15 +446,15 @@
     <dimen name="ZGridView_search_selectorRight">21dip</dimen>
     <dimen name="ZGridView_search_selectorBottom">-40dip</dimen>
 
-    <dimen name="ZGridView_packagedetail_selectorLeftPadding">2dip</dimen>
-    <dimen name="ZGridView_packagedetail_selectorTopPadding">0dip</dimen>
-    <dimen name="ZGridView_packagedetail_selectorRight">1dip</dimen>
-    <dimen name="ZGridView_packagedetail_selectorBottom">-22dip</dimen>
+    <dimen name="ZGridView_packagedetail_selectorLeftPadding">-19.3dip</dimen>
+    <dimen name="ZGridView_packagedetail_selectorTopPadding">-19dip</dimen>
+    <dimen name="ZGridView_packagedetail_selectorRight">-18dip</dimen>
+    <dimen name="ZGridView_packagedetail_selectorBottom">-39dip</dimen>
 
-    <dimen name="ZGridView_recommend_selectorLeftPadding">21dip</dimen>
-    <dimen name="ZGridView_recommend_selectorTopPadding">0dip</dimen>
-    <dimen name="ZGridView_recommend_selectorRightPadding">21dip</dimen>
-    <dimen name="ZGridView_recommend_selectorBottomPadding">-30dip</dimen>
+    <dimen name="ZGridView_recommend_selectorLeftPadding">4dip</dimen>
+    <dimen name="ZGridView_recommend_selectorTopPadding">-19dip</dimen>
+    <dimen name="ZGridView_recommend_selectorRightPadding">2dip</dimen>
+    <dimen name="ZGridView_recommend_selectorBottomPadding">-49dip</dimen>
 
     <!-- HGridView -->
     <dimen name="HGridView_related_selectionLeftPadding">3.5dip</dimen>

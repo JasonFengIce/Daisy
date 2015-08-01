@@ -98,20 +98,22 @@ public class DetailAttributeContainer extends LinearLayout {
 
 
         for(Map.Entry<String, String> entry: attrMap.entrySet()){
-            int layoutLeft = 50;
+            int layoutLeft = 22;
             if(entry.getValue()==null || mContentModel.attributes.get(entry.getKey())==null){
                 continue;
             }
             if(i%3==0){
                 layoutLeft = 0;
                 infoLine = new LinearLayout(getContext());
-                layoutParamsInfo = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-                layoutParamsInfo.topMargin = 20;
+                layoutParamsInfo = new LayoutParams(1213, LayoutParams.WRAP_CONTENT);
+                if(i>=3)
+                layoutParamsInfo.topMargin = 30;
+               // layoutParamsInfo.rightMargin = 73;
                 infoLine.setLayoutParams(layoutParamsInfo);
                 infoLine.setOrientation(LinearLayout.HORIZONTAL);
                 addView(infoLine);
             }
-            addChildren(infoLine,mContentModel.attributes.get(entry.getKey()),entry.getValue(),layoutLeft,-1);
+            addChildrenByZY(infoLine,mContentModel.attributes.get(entry.getKey()),entry.getValue(),layoutLeft,i);
             i++;
         }
     }
@@ -151,11 +153,32 @@ public class DetailAttributeContainer extends LinearLayout {
         }
 
     }
+    private void addChildrenByZY(ViewGroup infoLine,String key,String value,int distanceLeft,int position){
+        LinearLayout.LayoutParams itemNameParams = null;
+        if(position+1%3==0){
+            itemNameParams = new LinearLayout.LayoutParams(263, 31);
+        }
+        else{
+            itemNameParams = new LinearLayout.LayoutParams(453, 31);
+        }
+        itemNameParams.leftMargin = distanceLeft;
+        TextView itemValue = new TextView(getContext());
+        // LinearLayout.LayoutParams itemValueParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        itemValue.setLayoutParams(itemNameParams);
+        itemValue.setTextColor(0xffffffff);
+        itemValue.setTextSize(textsize);
+        itemValue.setText(key+" : " +value);
+        itemValue.setMaxLines(1);
+        itemValue.setEllipsize(TruncateAt.END);
+        itemValue.setSingleLine(true);
+        infoLine.addView(itemValue);
+    }
     private void addChildren(ViewGroup infoLine,String key,String value,int distanceLeft,int lineNumber){
         LinearLayout.LayoutParams itemNameParams = null;
 
-        if(distanceLeft>0)
+        if(distanceLeft>0){
             itemNameParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        }
         else if(distanceLeft==0){
             if(lineNumber==-1){
                 itemNameParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);

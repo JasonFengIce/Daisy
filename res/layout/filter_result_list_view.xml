@@ -41,13 +41,14 @@
     <ProgressBar
             android:layout_marginTop="10dip"
             android:id="@+id/filter_percentage"
-            android:layout_width="1475dip"
+            android:layout_width="1690dip"
             android:layout_height="4dip"
             android:progressDrawable="@drawable/progressbg"
             style="@android:style/Widget.ProgressBar.Horizontal"
             android:indeterminate="false"
             android:visibility="visible"
-            android:layout_marginLeft="222dip"/>
+            android:layout_marginLeft="115dip"
+            android:layout_marginRight="115dip"/>
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -142,13 +143,14 @@
         </LinearLayout>
         <ProgressBar
                 android:id="@+id/recommend_filter_percentage"
-                android:layout_width="1475dip"
+                android:layout_width="1690dip"
                 android:layout_height="4dip"
                 android:progressDrawable="@drawable/progressbg"
                 style="@android:style/Widget.ProgressBar.Horizontal"
                 android:indeterminate="false"
                 android:visibility="visible"
-                android:layout_marginLeft="222dip"/>
+                android:layout_marginLeft="115dip"
+                android:layout_marginRight="115dip"/>
         <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">

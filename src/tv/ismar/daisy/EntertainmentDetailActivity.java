@@ -294,9 +294,10 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             }
             Item item = getItemByClipPk(1);
             if(item!=null){
-                mLeftBtn.setText(item.subtitle);
+                mLeftBtn.setText("播放"+item.subtitle);
             }
-            isPause = false;
+            else
+               isPause = false;
         }
         super.onResume();
     }
@@ -797,7 +798,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                     .from(EntertainmentDetailActivity.this).inflate(
                             R.layout.realte_entertainment_item, null);
             LinearLayout.LayoutParams layoutParams;
-            layoutParams = new LinearLayout.LayoutParams(336, 240);
+            layoutParams = new LinearLayout.LayoutParams(336, 237);
             if (i != 0)
                 layoutParams.leftMargin = 74;
             relatedHolder.setLayoutParams(layoutParams);
@@ -1051,7 +1052,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             mDetailAttributeContainer.buildAttributeListOnZY(attributeMap, mContentModel);
         }
         // Set the content to Introduction View
-        mDetailIntro.setText(mItem.description);
+        mDetailIntro.setText("简介 : "+mItem.description);
         if (mItem.poster_url != null) {
             mDetailPreviewImg.setTag(mItem.poster_url);
             mDetailPreviewImg.setUrl(mItem.poster_url);
