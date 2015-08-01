@@ -65,6 +65,8 @@ public class PackageListDetailActivity extends BaseActivity implements OnItemSel
 	private Button btn_search;
 	private String itemlistUrl;
 	private String lableString;
+    private Button left_shadow;
+    private Button right_shadow;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -93,10 +95,14 @@ public class PackageListDetailActivity extends BaseActivity implements OnItemSel
 
 		        section_tabs = (ScrollableSectionList)findViewById(R.id.section_tabs);
 		        section_tabs.setVisibility(View.GONE);
+                left_shadow = (Button)findViewById(R.id.left_shadow);
+                right_shadow = (Button)findViewById(R.id.right_shadow);
 				mHGridView = (HGridView)findViewById(R.id.h_grid_view);
 				mHGridView.setOnItemClickListener(this);
 				mHGridView.setOnItemSelectedListener(this);
 				mHGridView.setOnScrollListener(this);
+                mHGridView.leftbtn = left_shadow;
+                mHGridView.rightbtn = right_shadow;
 				btn_search = (Button)findViewById(R.id.list_view_search);
 				btn_search.setOnClickListener(new OnClickListener() {
 						
@@ -181,8 +187,8 @@ public class PackageListDetailActivity extends BaseActivity implements OnItemSel
 					if(mHGridAdapter.getCount()>0){
 						mHGridView.setAdapter(mHGridAdapter);
 						mHGridView.setFocusable(true);
-						mHGridView.setHorizontalFadingEdgeEnabled(true);
-						mHGridView.setFadingEdgeLength(144);
+					//	mHGridView.setHorizontalFadingEdgeEnabled(true);
+						//mHGridView.setFadingEdgeLength(144);
 						mItemCollections.get(0).fillItems(0, items.objects);
 						mHGridAdapter.setList(mItemCollections);
 					}

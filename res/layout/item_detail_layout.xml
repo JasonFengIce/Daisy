@@ -215,6 +215,7 @@
             android:visibility="invisible"/>
 
         <LinearLayout
+            android:layout_marginLeft="20dip"
             android:id="@+id/related_video_container"
             android:layout_width="match_parent"
             android:layout_height="@dimen/item_detail_related_video_container_height"
@@ -226,6 +227,7 @@
             android:layout_width="@dimen/item_detail_more_content_width"
             android:layout_height="@dimen/item_detail_more_content_height"
             android:layout_gravity="center_horizontal"
+            android:gravity="center"
             android:background="@drawable/more_content_btn_bg_selector"
             android:textSize="@dimen/item_detail_more_content_textsize" 
             android:layout_marginTop="@dimen/item_detail_btn_layout_marginB"/>

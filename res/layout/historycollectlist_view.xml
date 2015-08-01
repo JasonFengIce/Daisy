@@ -10,17 +10,15 @@
     <LinearLayout
         android:id="@+id/arrow_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="112dip"
         android:orientation="horizontal">
     <TextView
         android:id="@+id/channel_label"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/gridview_channel_label_marginleft"
         android:layout_marginRight="@dimen/gridview_channel_label_marginright"
-        android:layout_marginTop="@dimen/gridview_channel_label_margintop"
         android:gravity="center"
-        android:padding="@dimen/gridview_channel_label_padding"
         android:textColor="#FFBBBBBB"
         android:textSize="@dimen/gridview_channel_label_textsize" />
     <ImageView
@@ -42,21 +40,19 @@
 </LinearLayout>
 
     <ImageView
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/grid_view_main_divider_H"
-        android:layout_marginLeft="@dimen/channel_section_tabs_layout_marginLeft"
-        android:layout_marginRight="@dimen/channel_section_tabs_layout_marginLeft"
-        android:background="@drawable/divider_person"
-        android:layout_marginTop="@dimen/grid_view_main_divider_MT"
-        android:visibility="gone" />
+            android:layout_marginLeft="26dp"
+            android:layout_marginRight="26dp"
+            android:layout_width="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/orderlistdivide"
+            android:layout_height="1dp"/>
     <LinearLayout
         android:id="@+id/tabs_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/gridview_channel_panel_height"
         android:layout_marginLeft="@dimen/channel_section_tabs_layout_marginLeft"
         android:orientation="horizontal"
-         android:visibility="visible"
+         android:visibility="gone"
         >
            <ImageView
             android:id="@+id/arrow_left"
@@ -68,6 +64,7 @@
            />
            
         <tv.ismar.daisy.views.ScrollableSectionList
+            android:visibility="gone"
             android:id="@+id/section_tabs"
             android:layout_width="@dimen/gridview_channel_section_tabs_width"
             android:layout_height="match_parent"
@@ -104,8 +101,35 @@
             <!-->-->
     <!--</org.sakuratya.horizontal.ui.HGridView>-->
 
+<RelativeLayout
+                android:id="@+id/gideview_layuot"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
+
+    <Button
+            android:visibility="invisible"
+            android:clickable="true"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/left_shadow"
+            android:layout_width="41dip"
+            android:layout_height="82dip"
+            android:background="@drawable/channel_arrow_left"
+            android:layout_marginLeft="31dip"
+            android:layout_marginTop="352dip"
+            />
+    <Button
+            android:visibility="invisible"
+            android:layout_alignParentRight="true"
+            android:id="@+id/right_shadow"
+            android:layout_width="41dip"
+            android:layout_height="82dip"
+            android:background="@drawable/channel_arrow_right"
+            android:layout_marginTop="352dip"
+            android:layout_marginRight="31dip"/>
     <org.sakuratya.horizontal.ui.HGridView
+            android:layout_toLeftOf="@id/right_shadow"
+            android:layout_toRightOf="@id/left_shadow"
             android:id="@+id/h_grid_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -127,7 +151,7 @@
             android:paddingLeft="4dip">
     </org.sakuratya.horizontal.ui.HGridView>
 
-
+</RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/no_video_container"
@@ -164,8 +188,10 @@
         android:layout_marginLeft="@dimen/grid_view_main_recommend_txt_PL"
         android:layout_marginRight="@dimen/grid_view_main_recommend_txt_PL"
         sakura:horizontalSpace="@dimen/grid_view_main_horizontalSpace"
-        sakura:listSelector="@drawable/vod_gv_selector"
+        sakura:listSelector="@drawable/popup_bg_yellow"
         sakura:numColumns="6"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
         sakura:stretchMode="columnWidth"
         sakura:selectorLeftPadding="@dimen/ZGridView_recommend_selectorLeftPadding"
         sakura:selectorTopPadding="@dimen/ZGridView_recommend_selectorTopPadding"
@@ -174,6 +200,20 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/grid_view_main_divider_MT"
          />
+
+        <!--<GridView-->
+                <!--android:descendantFocusability="afterDescendants"-->
+                <!--android:id="@+id/recommend_gridview"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/grid_view_main_recommend_gridview_H"-->
+                <!--android:layout_marginLeft="@dimen/grid_view_main_recommend_txt_PL"-->
+                <!--android:layout_marginRight="@dimen/grid_view_main_recommend_txt_PL"-->
+                <!--android:horizontalSpacing="@dimen/grid_view_main_horizontalSpace"-->
+                <!--android:stretchMode="columnWidth"-->
+                <!--android:numColumns="6"-->
+                <!--android:layout_alignParentBottom="true"-->
+                <!--android:layout_marginBottom="@dimen/grid_view_main_divider_MT"-->
+                <!--/>-->
     </RelativeLayout>
 
 </LinearLayout>

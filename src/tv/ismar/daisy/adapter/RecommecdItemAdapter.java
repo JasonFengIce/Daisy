@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.models.VideoEntity;
 import tv.ismar.daisy.models.VideoEntity.Objects;
+import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.views.AsyncImageView;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -68,9 +70,22 @@ public class RecommecdItemAdapter extends BaseAdapter {
 		}
 		else
 			holder = (ViewHolder) convertView.getTag();
-		
+        holder.previewImage.setTag(position);
 		holder.title.setText(mList.get(position).getTitle());
 		holder.previewImage.setUrl(mList.get(position).getImage());
+//        holder.previewImage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                int index = (Integer) view.getTag();
+//                if(mList.get(index).isIs_complex()){
+//                    DaisyUtils.gotoSpecialPage(view.getContext(), mList.get(index).getContent_model(), mList.get(index).getItem_url());
+//                }
+//                else{
+//                    InitPlayerTool tool = new InitPlayerTool(view.getContext());
+//                    tool.initClipInfo(mList.get(index).getItem_url(), InitPlayerTool.FLAG_URL);
+//                }
+//            }
+//        });
 		return convertView;
 	}
 	public static class ViewHolder {

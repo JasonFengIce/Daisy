@@ -31,10 +31,10 @@
         android:gravity="center_horizontal"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/related_preview_img"
-        android:textSize="@dimen/gridview_item_title_textsize"
+        android:textSize="30sp"
         android:id="@+id/related_title"
-        android:textColor="#FFF8F8FF"
-        android:layout_marginTop="@dimen/gridview_item_list_item_title_MT"/>
+        android:textColor="@color/white"
+        android:layout_marginTop="17dip"/>
     <ImageView
         android:layout_width="@dimen/gridview_item_quality_img_H"
         android:layout_height="@dimen/gridview_item_quality_img_W"

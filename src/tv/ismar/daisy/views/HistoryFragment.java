@@ -13,12 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
@@ -94,6 +91,9 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 	private Item[] mHistoriesByNet;
 	private Button search_btn;
 	private ItemCollection mHistoryItemList;
+    private Button left_shadow;
+    private Button right_shadow;
+    private View gideview_layuot;
 	private long getTodayStartPoint() {
 		long currentTime = System.currentTimeMillis();
 		GregorianCalendar currentCalendar = new GregorianCalendar();
@@ -112,6 +112,11 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
         View vv = fragmentView.findViewById(R.id.tabs_layout);
         vv.setVisibility(View.GONE);
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
+        left_shadow = (Button)fragmentView.findViewById(R.id.left_shadow);
+        right_shadow = (Button)fragmentView.findViewById(R.id.right_shadow);
+        gideview_layuot = fragmentView.findViewById(R.id.gideview_layuot);
+        mHGridView.leftbtn = left_shadow;
+        mHGridView.rightbtn = right_shadow;
 		mHGridView.setOnItemClickListener(this);
 		mHGridView.setOnItemSelectedListener(this);
 		mScrollableSectionList = (ScrollableSectionList) fragmentView.findViewById(R.id.section_tabs);
@@ -123,8 +128,6 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		mNoVideoContainer = (RelativeLayout) fragmentView.findViewById(R.id.no_video_container);
 		collect_or_history_txt = (TextView)fragmentView.findViewById(R.id.collect_or_history_txt);
 		recommend_gridview = (ZGridView)fragmentView.findViewById(R.id.recommend_gridview);
-		divider = (View)fragmentView.findViewById(R.id.divider);
-		divider.setVisibility(View.VISIBLE);
 		recommend_txt = (TextView)fragmentView.findViewById(R.id.recommend_txt);
 		
 		search_btn = (Button)fragmentView.findViewById(R.id.list_view_search);
@@ -199,8 +202,8 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 					if(mHGridAdapter.getCount()>0){
 						mHGridView.setAdapter(mHGridAdapter);
 						mHGridView.setFocusable(true);
-						mHGridView.setHorizontalFadingEdgeEnabled(true);
-						mHGridView.setFadingEdgeLength(144);
+						//mHGridView.setHorizontalFadingEdgeEnabled(true);
+						//mHGridView.setFadingEdgeLength(144);
 						ArrayList<Item> items  = new ArrayList<Item>();
 						for(Item i:mHistoriesByNet){
 							items.add(i);
@@ -344,8 +347,8 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 				mHGridAdapter = new HGridAdapterImpl(getActivity(), itemCollections,false);
 				mHGridView.setAdapter(mHGridAdapter);
 				mHGridView.setFocusable(true);
-				mHGridView.setHorizontalFadingEdgeEnabled(true);
-				mHGridView.setFadingEdgeLength(144);
+				//mHGridView.setHorizontalFadingEdgeEnabled(true);
+				//mHGridView.setFadingEdgeLength(144);
 				//int rows = mHGridView.getRows();
 				//int totalColumnsOfSectionX = (int) FloatMath.ceil((float)mHGridAdapter.getSectionCount(mCurrentSectionPosition) / (float)rows);
 				//mScrollableSectionList.setPercentage(mCurrentSectionPosition, (int)(1f/(float)totalColumnsOfSectionX*100f));
@@ -533,6 +536,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 	private void no_video() {
 		mNoVideoContainer.setVisibility(View.VISIBLE);
 		mNoVideoContainer.setBackgroundResource(R.drawable.no_record);
+        gideview_layuot.setVisibility(View.GONE);
 		mScrollableSectionList.setVisibility(View.GONE);
 		mHGridView.setVisibility(View.GONE);
 		collect_or_history_txt.setText(getResources().getString(R.string.no_history_record));
@@ -685,8 +689,8 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 				tool.initClipInfo(tvHome.getObjects().get(position).getItem_url(), InitPlayerTool.FLAG_URL);
 			}
 
-            InitPlayerTool tool = new InitPlayerTool(getActivity());
-            tool.initClipInfo(tvHome.getObjects().get(position).getItem_url(), InitPlayerTool.FLAG_URL);
+//            InitPlayerTool tool = new InitPlayerTool(getActivity());
+//            tool.initClipInfo(tvHome.getObjects().get(position).getItem_url(), InitPlayerTool.FLAG_URL);
 			break;
 		}
 	}
@@ -708,6 +712,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 					recommend_gridview.setAdapter(recommendAdapter);
 					recommend_gridview.setFocusable(true);
 					recommend_gridview.setOnItemClickListener(this);
+                    recommend_gridview.setOnItemSelectedListener(this);
 				}
 			}catch(Exception e){
 				recommend_txt.setVisibility(View.INVISIBLE);
