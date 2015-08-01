@@ -702,7 +702,7 @@
     <dimen name="guide_container_height">780dp</dimen>
 
     <!-- tv guide activity -->
-   
+
     <!-- top page template -->
     <dimen name="tv_guide_top_section_padding">14dp</dimen>
     <dimen name="weather_fragment_h">100dp</dimen>
@@ -769,6 +769,8 @@
     <dimen name="association_phone_margin_top">60dp</dimen>
     <dimen name="association_fetch_verification_button_width">250dp</dimen>
     <dimen name="association_submit_width">290dp</dimen>
+
+    <dimen name="user_info_item_vertical_spacing">35dp</dimen>
 
     <dimen name="login_fragmet_view_margin_top">230dp</dimen>
     <dimen name="login_pop_msg_margin_top">100dp</dimen>

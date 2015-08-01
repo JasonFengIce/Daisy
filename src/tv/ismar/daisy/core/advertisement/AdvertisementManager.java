@@ -12,6 +12,9 @@ import tv.ismar.daisy.utils.HardwareUtils;
 
 import java.io.File;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +30,8 @@ public class AdvertisementManager {
 
     private static AdvertisementManager instance;
     private static Context mContext;
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 
     private AdvertisementManager() {
 
@@ -44,23 +49,21 @@ public class AdvertisementManager {
     public void updateAppLaunchAdvertisement(LaunchAdvertisementEntity launchAdvertisementEntity) {
         String type = LAUNCH_APP_ADVERTISEMENT;
         LaunchAdvertisementEntity.AdvertisementData[] advertisementDatas = launchAdvertisementEntity.getAds().getKaishi();
+
+
         new Delete().from(AdvertisementTable.class).execute();
         for (LaunchAdvertisementEntity.AdvertisementData advertisementData : advertisementDatas) {
-//            String mediaUrl = advertisementData.getMedia_url();
-//            String md5 = advertisementData.getMd5();
-//
-//            AdvertisementTable advertisementTable = new Select()
-//                    .from(AdvertisementTable.class)
-//                    .where(URL + "=?", mediaUrl)
-//                    .where(MD5 + "=?", md5)
-//                    .executeSingle();
-//
-//
-//            if (advertisementTable == null) {
             AdvertisementTable advertisementTable = new AdvertisementTable();
             advertisementTable.title = advertisementData.getTitle();
-            advertisementTable.start_time = Timestamp.valueOf(advertisementData.getStart_date() + " " + advertisementData.getStart_time()).getTime();
-            advertisementTable.end_time = Timestamp.valueOf(advertisementData.getEnd_date() + " " + advertisementData.getEnd_time()).getTime();
+            try {
+                advertisementTable.start_date = dateFormat.parse(advertisementData.getStart_date()).getTime();
+                advertisementTable.end_date = dateFormat.parse(advertisementData.getEnd_date()).getTime();
+                advertisementTable.everyday_time_from = timeFormat.parse(advertisementData.getStart_time()).getTime();
+                advertisementTable.everyday_time_to = timeFormat.parse(advertisementData.getEnd_time()).getTime();
+            } catch (ParseException e) {
+                Log.d(TAG, "updateAppLaunchAdvertisement: " + e.getMessage());
+            }
+
             advertisementTable.url = advertisementData.getMedia_url();
             advertisementTable.location = FileUtils.getFileByUrl(advertisementData.getMedia_url());
             advertisementTable.md5 = advertisementData.getMd5();
@@ -90,10 +93,21 @@ public class AdvertisementManager {
 
 
     public String getAppLaunchAdvertisement() {
-        long todayDateTime = new Date().getTime();
+        Date todayDate = new Date();
+        long todayDateTime = todayDate.getTime();
+        long todayHour = 0;
+        try {
+            todayHour = timeFormat.parse(timeFormat.format(todayDate)).getTime();
+        } catch (ParseException e) {
+            Log.e(TAG, "getAppLaunchAdvertisement: " + e.getMessage());
+        }
+
+
         List<AdvertisementTable> advertisementTables = new Select().from(AdvertisementTable.class)
-                .where(START_TIME + " < ?", todayDateTime)
-                .where(END_TIME + " > ?", todayDateTime)
+                .where(START_DATE + " < ?", todayDateTime)
+                .where(END_DATE + " > ?", todayDateTime)
+                .where(EVERYDAY_TIME_FROM + " < ?", todayHour)
+                .where(EVERYDAY_TIME_TO + " > ?", todayHour)
                 .execute();
         if (advertisementTables != null && !advertisementTables.isEmpty()) {
             return "file://" + mContext.getFilesDir() + "/" + advertisementTables.get(0).location;

@@ -181,6 +181,8 @@
         <attr name="item_width" format="dimension"/>
     </declare-styleable>
 
-
     <declare-styleable name="DaisyVideoView"/>
+
+
+
 </resources>

@@ -301,4 +301,5 @@
     <string name="change_account">切换</string>
     <string name="association_prompt">(<font color='red'>您的设备未关联手机号，设备损坏或更换是账户和余额特权将清零</font>)</string>
 
+    <string name="userinfo_device_name">设备：%1$s</string>
 </resources>

@@ -3,6 +3,7 @@ package tv.ismar.daisy.ui.fragment.usercenter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -31,34 +32,26 @@ import java.util.HashMap;
 /**
  * Created by huaijie on 7/3/15.
  */
-public class UserInfoFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class UserInfoFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
     private static final String TAG = "UserInfoFragment";
 
     private Context mContext;
+    private AccoutPlayAuthAdapter accoutPlayAuthAdapter;
+    private SharedPreferences sharedPreferences;
 
     private TextView deviceNumber;
     private TextView balanceTextView;
+    private TextView deviceNameTextView;
+
     private ListView playAuthListView;
     private Button associationText;
     private Button changeButton;
-
     private TextView phoneNumber;
-
-
     private View fragmentView;
-
     private LoginFragment loginFragment;
-
     private LinearLayout userInfoLayout;
-
-    private AccoutPlayAuthAdapter accoutPlayAuthAdapter;
-
-    private SharedPreferences sharedPreferences;
-
     private View phoneNumberLayout;
-
     private View snNumberLayout;
-
     private TextView associationPrompt;
 
 
@@ -104,13 +97,14 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         fragmentView = inflater.inflate(R.layout.fragment_userinfo, null);
         phoneNumber = (TextView) fragmentView.findViewById(R.id.phone_number);
         deviceNumber = (TextView) fragmentView.findViewById(R.id.device_number);
         balanceTextView = (TextView) fragmentView.findViewById(R.id.remain_money_value);
+        deviceNameTextView = (TextView) fragmentView.findViewById(R.id.device_name);
         playAuthListView = (ListView) fragmentView.findViewById(R.id.privilegelist);
         playAuthListView.setOnItemClickListener(this);
+        playAuthListView.setOnItemSelectedListener(this);
         associationText = (Button) fragmentView.findViewById(R.id.association_button);
         userInfoLayout = (LinearLayout) fragmentView.findViewById(R.id.userinfo_layout);
         changeButton = (Button) fragmentView.findViewById(R.id.change);
@@ -118,6 +112,9 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
 
         phoneNumberLayout = fragmentView.findViewById(R.id.phone_number_layout);
         snNumberLayout = fragmentView.findViewById(R.id.sn_number_layout);
+
+        String deviceNameString = mContext.getString(R.string.userinfo_device_name);
+        deviceNameTextView.setText(String.format(deviceNameString, Build.MODEL));
 
         associationText.setOnClickListener(this);
         changeButton.setOnClickListener(this);
@@ -276,5 +273,15 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
         associationText.setFocusable(true);
         playAuthListView.setFocusable(true);
         getChildFragmentManager().beginTransaction().hide(loginFragment).commit();
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Log.d(TAG, "onItemSelected: " + position);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }
