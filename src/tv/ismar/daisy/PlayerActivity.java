@@ -1277,7 +1277,8 @@ private void initPlayerRelatedUI(){
 		if (payedItemspk.contains(pk) || item.expense == null) {
 			isBuffer = true;
 			showBuffer();
-			new ItemByUrlTask().execute();
+//			new ItemByUrlTask().execute();
+			getAdInfo("qiantiepian");
 		} else {
 			for (Item i : listItems) {
 				if (i.pk == pk) {
@@ -2167,7 +2168,8 @@ private void initPlayerRelatedUI(){
 					payedItemspk.add(item.pk);
 					bundle.putString("url", null);
 					bundle.putString("item", null);
-					new ItemByUrlTask().execute();
+					getAdInfo("qiantiepian");
+//					new ItemByUrlTask().execute();
 				} else {
 					PlayerActivity.this.finish();
 				}
@@ -2179,7 +2181,8 @@ private void initPlayerRelatedUI(){
 						tempOffset = item.preview.length * 1000;
 					}
 					paystatus = true;
-					new ItemByUrlTask().execute();
+//					new ItemByUrlTask().execute();
+					getAdInfo("qiantiepian");
 				} else {
 					PlayerActivity.this.finish();
 				}
