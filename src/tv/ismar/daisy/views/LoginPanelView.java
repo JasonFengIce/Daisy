@@ -514,9 +514,9 @@ public class LoginPanelView extends LinearLayout {
         private void resizeWindow() {
             Window dialogWindow = getWindow();
             WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-            lp.width = ((int) (width * 0.60));
-            lp.height = ((int) (height * 0.38));
-            lp.x = ((int) (width * 0.29));
+            lp.width = ((int) (width * 0.55));
+            lp.height = ((int) (height * 0.39));
+            lp.x = ((int) (width * 0.335));
             lp.y = ((int) (height * 0.3));
             lp.gravity = Gravity.LEFT | Gravity.TOP;
         }
