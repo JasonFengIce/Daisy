@@ -1864,7 +1864,8 @@ private void initPlayerRelatedUI(){
 				if (adsumtime > 0) {
 					sendEmptyMessageDelayed(AD_COUNT_ACTION, 1000);
 				}else {
-					mVideoView.playIndex(paths.length -1);
+//					mVideoView.playIndex(paths.length -1);
+					ad_count_view.setVisibility(View.GONE);
 				}
 				break;
 			default:
@@ -2178,8 +2179,6 @@ private void initPlayerRelatedUI(){
 						tempOffset = item.preview.length * 1000;
 					}
 					paystatus = true;
-					bundle.putString("url", null);
-					bundle.putString("item", null);
 					new ItemByUrlTask().execute();
 				} else {
 					PlayerActivity.this.finish();

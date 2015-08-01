@@ -11,6 +11,14 @@ public class SportGame {
 	private String name;
 	private String imageurl;
 	private String url;
+    private boolean living;
+	public boolean isLiving() {
+		return living;
+	}
+
+	public void setLiving(boolean living) {
+		this.living = living;
+	}
 
 	public String getStart_time() {
 		return start_time;

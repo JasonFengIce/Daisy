@@ -73,10 +73,10 @@
                     android:layout_width="520dp"
                     android:layout_height="52dp"
                     android:layout_gravity="bottom"
-                    android:alpha="0.7"
                     android:layout_marginLeft="1dp"
                     android:background="@color/shawdow"
                     android:gravity="center"
+                    android:textColor="#FFFFFFFF"
                     android:textSize="24sp" />
             </LinearLayout>
         </RelativeLayout>
@@ -248,7 +248,7 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="@color/shawdow"
-                labelimage:focustextsize="18sp" />
+                labelimage:focustextsize="24sp" />
 
             <TextView
                 android:id="@+id/vaiety_channel1_subtitle"
@@ -258,7 +258,7 @@
                 android:layout_marginTop="15dp"
                 android:gravity="center"
                 android:textColor="#FFFFFFFF"
-                android:textSize="24sp" />
+                android:textSize="30sp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -279,7 +279,7 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="@color/shawdow"
-                labelimage:focustextsize="18sp" />
+                labelimage:focustextsize="24sp" />
 
             <TextView
                 android:id="@+id/vaiety_channel2_subtitle"
@@ -289,7 +289,7 @@
                 android:layout_marginTop="15dp"
                 android:gravity="center"
                 android:textColor="#FFFFFFFF"
-                android:textSize="24sp" />
+                android:textSize="30sp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -310,7 +310,7 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="@color/shawdow"
-                labelimage:focustextsize="18sp" />
+                labelimage:focustextsize="24sp" />
 
             <TextView
                 android:id="@+id/vaiety_channel3_subtitle"
@@ -320,7 +320,7 @@
                 android:layout_marginTop="15dp"
                 android:gravity="center"
                 android:textColor="#FFFFFFFF"
-                android:textSize="24sp" />
+                android:textSize="30sp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -343,7 +343,7 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="@color/shawdow"
-                labelimage:focustextsize="18sp" />
+                labelimage:focustextsize="24sp" />
 
             <TextView
                 android:id="@+id/vaiety_channel4_subtitle"
@@ -353,13 +353,13 @@
                 android:layout_marginTop="15dp"
                 android:gravity="center"
                 android:textColor="#FFFFFFFF"
-                android:textSize="24sp" />
+                android:textSize="30sp" />
         </RelativeLayout>
 
         <include
             android:layout_width="332dp"
             android:layout_height="189dp"
-            android:layout_marginLeft="29dp"
+            android:layout_marginLeft="28dp"
             layout="@layout/toppagelistmorebutton" />
     </LinearLayout>
 
