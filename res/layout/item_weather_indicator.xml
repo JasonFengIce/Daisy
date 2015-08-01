@@ -6,7 +6,6 @@
 
     <TextView
             android:focusable="true"
-            android:focusableInTouchMode="true"
             android:clickable="true"
             android:textSize="@dimen/h3_text_size"
             android:textColor="#FFFFFF"

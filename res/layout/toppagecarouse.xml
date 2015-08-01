@@ -16,7 +16,7 @@
         android:descendantFocusability="beforeDescendants"
         android:focusable="true"
         android:scaleType="fitXY"
-        labelimage:frontcolor="#d9000000"
+        labelimage:frontcolor="#B2000000"
         labelimage:customfocus="true"
         labelimage:needzoom="true"
          />
@@ -30,7 +30,7 @@
         android:descendantFocusability="beforeDescendants"
         android:focusable="true"
         android:scaleType="fitXY"
-        labelimage:frontcolor="#d9000000"
+        labelimage:frontcolor="#B2000000"
         labelimage:customfocus = "true"
         labelimage:needzoom="true"
          />
@@ -44,7 +44,7 @@
         android:descendantFocusability="beforeDescendants"
         android:focusable="true"
         android:scaleType="fitXY"
-        labelimage:frontcolor="#d9000000"
+        labelimage:frontcolor="#B2000000"
         labelimage:customfocus = "true"
         labelimage:needzoom="true"
          />

@@ -424,7 +424,8 @@ public class GuideFragment extends ChannelBaseFragment implements
         public void handleMessage(Message msg) {
 
             String playPath = (String) msg.obj;
-
+            linkedVideoView.pause();
+            linkedVideoView.stopPlayback();
             linkedVideoView.setVideoPath(playPath);
             linkedVideoView.start();
 
