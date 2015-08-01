@@ -3,6 +3,7 @@ package tv.ismar.daisy.core.advertisement;
 import android.content.Context;
 import android.util.Log;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import tv.ismar.daisy.data.LaunchAdvertisementEntity;
 import tv.ismar.daisy.data.table.AdvertisementTable;
@@ -43,28 +44,28 @@ public class AdvertisementManager {
     public void updateAppLaunchAdvertisement(LaunchAdvertisementEntity launchAdvertisementEntity) {
         String type = LAUNCH_APP_ADVERTISEMENT;
         LaunchAdvertisementEntity.AdvertisementData[] advertisementDatas = launchAdvertisementEntity.getAds().getKaishi();
+        new Delete().from(AdvertisementTable.class).execute();
         for (LaunchAdvertisementEntity.AdvertisementData advertisementData : advertisementDatas) {
-            String mediaUrl = advertisementData.getMedia_url();
-            String md5 = advertisementData.getMd5();
-
-            AdvertisementTable advertisementTable = new Select()
-                    .from(AdvertisementTable.class)
-                    .where(URL + "=?", mediaUrl)
-                    .where(MD5 + "=?", md5)
-                    .executeSingle();
-
-
-            if (advertisementTable == null) {
-                advertisementTable = new AdvertisementTable();
-                advertisementTable.title = advertisementData.getTitle();
-                advertisementTable.start_time = Timestamp.valueOf(advertisementData.getStart_date() + " " + advertisementData.getStart_time()).getTime();
-                advertisementTable.end_time = Timestamp.valueOf(advertisementData.getEnd_date() + " " + advertisementData.getEnd_time()).getTime();
-                advertisementTable.url = advertisementData.getMedia_url();
-                advertisementTable.location = FileUtils.getFileByUrl(advertisementData.getMedia_url());
-                advertisementTable.md5 = advertisementData.getMd5();
-                advertisementTable.type = type;
-                advertisementTable.save();
-            }
+//            String mediaUrl = advertisementData.getMedia_url();
+//            String md5 = advertisementData.getMd5();
+//
+//            AdvertisementTable advertisementTable = new Select()
+//                    .from(AdvertisementTable.class)
+//                    .where(URL + "=?", mediaUrl)
+//                    .where(MD5 + "=?", md5)
+//                    .executeSingle();
+//
+//
+//            if (advertisementTable == null) {
+            AdvertisementTable advertisementTable = new AdvertisementTable();
+            advertisementTable.title = advertisementData.getTitle();
+            advertisementTable.start_time = Timestamp.valueOf(advertisementData.getStart_date() + " " + advertisementData.getStart_time()).getTime();
+            advertisementTable.end_time = Timestamp.valueOf(advertisementData.getEnd_date() + " " + advertisementData.getEnd_time()).getTime();
+            advertisementTable.url = advertisementData.getMedia_url();
+            advertisementTable.location = FileUtils.getFileByUrl(advertisementData.getMedia_url());
+            advertisementTable.md5 = advertisementData.getMd5();
+            advertisementTable.type = type;
+            advertisementTable.save();
         }
 
         List<AdvertisementTable> advertisementTables = new Select().from(AdvertisementTable.class).execute();
