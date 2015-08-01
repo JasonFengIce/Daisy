@@ -772,6 +772,9 @@
 
     <dimen name="user_info_item_vertical_spacing">35dp</dimen>
 
+    <dimen name="userinfo_playauth_item_normal_textsize">30sp</dimen>
+    <dimen name="userinfo_playauth_item_focus_textsize">36sp</dimen>
+
     <dimen name="login_fragmet_view_margin_top">230dp</dimen>
     <dimen name="login_pop_msg_margin_top">100dp</dimen>
 
@@ -833,6 +836,7 @@
     <dimen name="h1_text_size">48sp</dimen>
     <dimen name="h2_text_size">36sp</dimen>
     <dimen name="h3_text_size">24sp</dimen>
+    <dimen name="h4_text_size">30sp</dimen>
     <!--update-->
     <dimen name="update_notice_textsize">40sp</dimen>
     <dimen name="update_title_textsize">32sp</dimen>
@@ -923,9 +927,9 @@
     <dimen name="location_divider_margin_left">36dp</dimen>
     <dimen name="location_divider_width">1314dp</dimen>
 
-    <dimen name="location_grid_margin_top">21dp</dimen>
+    <dimen name="location_grid_margin_top">57dp</dimen>
 
-    <dimen name="location_area_pop_width">1400dp</dimen>
+    <dimen name="location_area_pop_width">1420dp</dimen>
     <dimen name="location_area_pop_height">860dp</dimen>
 
 
@@ -943,4 +947,10 @@
     <dimen name="sakura_node_item_margin_top">20dp</dimen>
     <dimen name="sakura_node_testbutton_height">100dp</dimen>
     <dimen name="sakura_node_nodename_width">200dp</dimen>
+
+
+    <dimen name="purchase_history_text_margin_top">23dp</dimen>
+    <dimen name="purchase_history_item_margin_left">24dp</dimen>
+
+    <dimen name="location_item_text_horizontal_spacing">72dp</dimen>
 </resources>

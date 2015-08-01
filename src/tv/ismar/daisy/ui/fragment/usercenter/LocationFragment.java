@@ -124,7 +124,7 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
         areaPopup = new PopupWindow(popupLayout, width, height);
         areaPopup.setFocusable(true);
         areaPopup.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.transparent));
-        areaPopup.showAtLocation(fragmentView, Gravity.CENTER, 170, 0);
+        areaPopup.showAtLocation(fragmentView, Gravity.CENTER, 180, 0);
 
         final List<LocationTable> locationTableList = new Select().from(LocationTable.class).where("province_id=?", provinceId).execute();
         CityAdapter cityAdapter = new CityAdapter(mContext, locationTableList);

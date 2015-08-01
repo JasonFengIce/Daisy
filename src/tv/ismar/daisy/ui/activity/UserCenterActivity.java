@@ -83,6 +83,8 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
 
         getSupportFragmentManager().beginTransaction().add(R.id.user_center_container, storeFragment).commit();
+
+        indicatorView.get(0).setBackgroundResource(R.drawable.daisy_btn_normal_bg);
     }
 
 

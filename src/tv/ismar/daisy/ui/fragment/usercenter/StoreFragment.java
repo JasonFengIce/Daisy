@@ -1,24 +1,20 @@
 package tv.ismar.daisy.ui.fragment.usercenter;
 
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.client.IsmartvUrlClient;
-import tv.ismar.daisy.data.usercenter.YouHuiDingGouEntity;
-import tv.ismar.daisy.ui.adapter.YouHuiDingGouAdapter;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-
 import com.google.gson.Gson;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.data.usercenter.YouHuiDingGouEntity;
+import tv.ismar.daisy.ui.adapter.YouHuiDingGouAdapter;
 
 /**
  * Created by huaijie on 7/3/15.

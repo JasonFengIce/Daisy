@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
+                android:focusable="true"
                 android:layout_height="@dimen/privilege_item_layout_H"
-                android:descendantFocusability="blocksDescendants"
                 android:gravity="center_vertical">
 
     <TextView
-        android:background="@drawable/launcher_selector"
-        android:focusable="true"
-        android:gravity="center_vertical"
-        android:id="@+id/title_txt"
-        android:layout_width="@dimen/privilege_item_title_txt_W"
-        android:layout_height="@dimen/privilege_item_layout_H"
-        android:paddingLeft="@dimen/privilege_item_title_txt_PL"
-        android:textColor="#FFF8F8FF"
-        android:textSize="@dimen/privilege_item_textsize"/>
+            android:id="@+id/title_txt"
+            android:gravity="center_vertical"
+            android:layout_width="@dimen/privilege_item_title_txt_W"
+            android:layout_height="@dimen/privilege_item_layout_H"
+            android:paddingLeft="@dimen/privilege_item_title_txt_PL"
+            android:textColor="#FFF8F8FF"
+            android:textSize="@dimen/userinfo_playauth_item_normal_textsize"
+            />
 
 
     <TextView
-        android:gravity="center_vertical"
-        android:id="@+id/buydate_txt"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/privilege_item_layout_H"
-        android:layout_toRightOf="@id/title_txt"
-        android:textColor="#FFF8F8FF"
-        android:textSize="@dimen/privilege_item_textsize"/>
+            android:id="@+id/buydate_txt"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/privilege_item_layout_H"
+            android:layout_toRightOf="@id/title_txt"
+            android:textColor="#FFF8F8FF"
+            android:textSize="@dimen/userinfo_playauth_item_normal_textsize"
+            />
 </RelativeLayout>

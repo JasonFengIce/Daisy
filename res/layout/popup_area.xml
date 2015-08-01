@@ -8,14 +8,17 @@
     <GridView
             android:descendantFocusability="afterDescendants"
             android:focusable="true"
-            android:verticalSpacing="60dp"
+            android:verticalSpacing="65dp"
             android:layout_marginTop="@dimen/location_grid_margin_top"
             android:gravity="center"
             android:layout_gravity="center"
             android:id="@+id/area_grid"
             android:numColumns="9"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            >
     </GridView>
 
 </LinearLayout>
