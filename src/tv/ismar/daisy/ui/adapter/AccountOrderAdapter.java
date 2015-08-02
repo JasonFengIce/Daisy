@@ -2,6 +2,7 @@ package tv.ismar.daisy.ui.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,19 +13,19 @@ import com.squareup.picasso.Picasso;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.data.usercenter.AccountsOrdersEntity;
+import tv.ismar.daisy.utils.Util;
 
 import java.sql.Timestamp;
-import java.text.ParsePosition;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 /**
  * Created by huaijie on 7/3/15.
  */
 public class AccountOrderAdapter extends BaseAdapter {
+    private static final String TAG = "AccountOrderAdapter";
+
     ArrayList<AccountsOrdersEntity.OrderEntity> mList;
     Context mContext;
     ViewHolder holder;
@@ -73,9 +74,8 @@ public class AccountOrderAdapter extends BaseAdapter {
         String paySource = mContext.getResources().getString(R.string.personcenter_orderlist_item_paysource);
         holder.title.setText(item.getTitle());
         holder.buydate_txt.setText(String.format(orderday, item.getStart_date()));
-        int day = remaindDay(item.getExpiry_date());
-        if (day > 0)
-            holder.orderlistitem_remainday.setText(String.format(remainday, remaindDay(item.getExpiry_date())));
+        holder.orderlistitem_remainday.setText(String.format(remainday, remaindDay(item.getExpiry_date())));
+        Log.d(TAG, "remainday: " + remaindDay(item.getExpiry_date()));
         holder.totalfee.setText(String.format(cost, item.getTotal_fee()));
         holder.orderlistitem_paychannel.setText(String.format(paySource, getValueBySource(item.getSource())));
         Picasso.with(mContext).load(item.getThumb_url()).into(holder.icon);
@@ -90,11 +90,12 @@ public class AccountOrderAdapter extends BaseAdapter {
             } else if (item.type.equals("snorder_list")) {
                 holder.purchaseExtra.setText(mergeTime + "合并至视云账户" + account);
             }
+
             holder.purchaseExtra.setVisibility(View.VISIBLE);
             holder.mergeTxt.setVisibility(View.INVISIBLE);
         } else {
-            holder.purchaseExtra.setVisibility(View.GONE);
-            holder.mergeTxt.setVisibility(View.GONE);
+            holder.purchaseExtra.setVisibility(View.INVISIBLE);
+            holder.mergeTxt.setVisibility(View.INVISIBLE);
         }
 
         return convertView;
@@ -126,21 +127,31 @@ public class AccountOrderAdapter extends BaseAdapter {
     }
 
 
+//    private int remaindDay(String exprieTime) {
+//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        Date startDate = new GregorianCalendar().getTime();
+//        ParsePosition pos = new ParsePosition(0);
+//        Date exprietDate = formatter.parse(exprieTime, pos);
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(startDate);
+//        int startDay = calendar.get(Calendar.DAY_OF_YEAR);
+//        calendar.setTime(exprietDate);
+//        int exprieDay = calendar.get(Calendar.DAY_OF_YEAR);
+//        int remaindDay = exprieDay - startDay;
+//        if (remaindDay < 0) {
+//            return 0;
+//        }
+//        return remaindDay;
+//    }
+
     private int remaindDay(String exprieTime) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date startDate = new GregorianCalendar().getTime();
-        ParsePosition pos = new ParsePosition(0);
-        Date exprietDate = formatter.parse(exprieTime, pos);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(startDate);
-        int startDay = calendar.get(Calendar.DAY_OF_YEAR);
-        calendar.setTime(exprietDate);
-        int exprieDay = calendar.get(Calendar.DAY_OF_YEAR);
-        int remaindDay = exprieDay - startDay;
-        if (remaindDay < 0) {
-            return 0;
+        try {
+            return Util.daysBetween(Util.getTime(), exprieTime) + 1;
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-        return remaindDay;
+        return 0;
     }
+
 
 }

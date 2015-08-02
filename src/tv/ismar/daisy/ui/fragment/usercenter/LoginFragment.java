@@ -54,6 +54,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private TextView phoneNumberPrompt;
     private TextView verificationPrompt;
 
+    private TextView phoneNumberMsg;
+
     private PopupWindow loginPopup;
     private PopupWindow combineAccountPop;
 
@@ -110,6 +112,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         submitBtn.setOnClickListener(this);
         phoneNumberPrompt = (TextView) fragmentView.findViewById(R.id.phone_number_prompt);
         verificationPrompt = (TextView) fragmentView.findViewById(R.id.verification_prompt);
+        phoneNumberMsg =(TextView)fragmentView.findViewById(R.id.phone_number_msg);
 
         return fragmentView;
     }
@@ -159,7 +162,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         new IsmartvUrlClient().doRequest(IsmartvUrlClient.Method.POST, api, params, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
-                phoneNumberPrompt.setText(R.string.fetch_verification_success);
+//                phoneNumberPrompt.setText(R.string.fetch_verification_success);
+                phoneNumberMsg.setText(R.string.fetch_verification_success);
                 TimeCountdownBroadcastSender.getInstance(mContext).start(60);
             }
 

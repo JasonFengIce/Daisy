@@ -19,7 +19,7 @@
             />
 
     <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/purchase_history_item_margin_left"
             android:orientation="vertical">
@@ -63,9 +63,9 @@
 
             <TextView
                     android:textColor="#FFFFFF"
-                    android:id="@+id/orderlistitem_remainday"
                     android:singleLine="true"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/orderlistitem_remainday"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="89dp"
                     android:textSize="@dimen/h4_text_size"
