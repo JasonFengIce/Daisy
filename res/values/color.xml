@@ -74,5 +74,7 @@
     <color name="location_text_focus">#ffba00</color>
     <color name="carousel_focus">#d9000000</color>
     <color name="shawdow">#d9000000</color>
+
+    <color name="history_divider">#515a6c</color>
     
 </resources>

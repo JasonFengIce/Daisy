@@ -1,19 +1,20 @@
 package tv.ismar.sakura.ui.fragment;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.sakura.core.FeedbackProblem;
@@ -26,6 +27,7 @@ import tv.ismar.sakura.data.http.ProblemEntity;
 import tv.ismar.sakura.ui.adapter.FeedbackListAdapter;
 import tv.ismar.sakura.ui.widget.FeedBackListView;
 import tv.ismar.sakura.ui.widget.MessageSubmitButton;
+import tv.ismar.sakura.ui.widget.SakuraButton;
 import tv.ismar.sakura.ui.widget.SakuraEditText;
 
 import java.util.List;
@@ -41,6 +43,7 @@ public class FeedbackFragment extends Fragment implements RadioGroup.OnCheckedCh
         View.OnClickListener {
     private static final String TAG = "FeedbackFragment";
 
+    private Context mContext;
 
     private int problemTextFlag = 6;
     private RadioGroup problemType;
@@ -52,6 +55,13 @@ public class FeedbackFragment extends Fragment implements RadioGroup.OnCheckedCh
     private SakuraEditText descriptioinText;
 
     private String snCode = TextUtils.isEmpty(SimpleRestClient.sn_token) ? "sn is null" : SimpleRestClient.sn_token;
+
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.mContext = activity;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -85,7 +95,7 @@ public class FeedbackFragment extends Fragment implements RadioGroup.OnCheckedCh
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.submit_btn:
-                uploadFeedback();
+                initPopWindow();
                 break;
         }
     }
@@ -159,11 +169,16 @@ public class FeedbackFragment extends Fragment implements RadioGroup.OnCheckedCh
                 @Override
                 public void success(String msg) {
                     Log.d(TAG, "uploadFeedback: " + msg);
+                    fetchFeedback(snCode, "10");
+                    Toast.makeText(mContext, "提交成功!", Toast.LENGTH_LONG).show();
+                    submitButton.setEnabled(true);
                 }
 
                 @Override
                 public void failure(String msg) {
                     Log.d(TAG, "uploadFeedback: " + msg);
+                    Toast.makeText(mContext, "提交失败!", Toast.LENGTH_LONG).show();
+                    submitButton.setEnabled(true);
                 }
             });
         }
@@ -208,4 +223,47 @@ public class FeedbackFragment extends Fragment implements RadioGroup.OnCheckedCh
         return b;
     }
 
+    private void initPopWindow() {
+        submitButton.clearFocus();
+
+        View contentView = LayoutInflater.from(mContext)
+                .inflate(R.layout.popup_confirm_submit_feedback, null);
+        contentView.setBackgroundResource(R.drawable.bg_popup);
+        final PopupWindow popupWindow = new PopupWindow(null, 600, 180);
+        popupWindow.setContentView(contentView);
+        popupWindow.setFocusable(true);
+        popupWindow.showAtLocation(getView(), Gravity.CENTER, 0, 0);
+
+
+        Button confirmButton = (Button) contentView.findViewById(R.id.confirm_btn);
+        Button cancleButton = (Button) contentView.findViewById(R.id.cancle_btn);
+
+        confirmButton.requestFocusFromTouch();
+        confirmButton.requestFocus();
+
+
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindow.dismiss();
+
+                if (AppConstant.DEBUG)
+                    Log.d(TAG, "submit problem feedback");
+                submitButton.setEnabled(false);
+//                CacheManager.updatFeedBack(mActivity, phone.getText().toString());
+
+
+                uploadFeedback();
+            }
+        });
+        cancleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindow.dismiss();
+
+            }
+        });
+
+
+    }
 }

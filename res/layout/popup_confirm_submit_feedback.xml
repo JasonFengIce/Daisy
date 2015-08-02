@@ -15,7 +15,7 @@
             android:textColor="#ff6b6b6b"
             android:gravity="center"
             android:focusable="true"
-            android:text="@string/confirm_submit_feedback_msg"
+            android:text="是否提交反馈信息?"
             />
     <LinearLayout
             android:layout_width="match_parent"
@@ -25,26 +25,26 @@
             >
 
 
-        <cn.ismartv.speedtester.ui.widget.SakuraButton
+        <Button
                 android:gravity="center"
                 android:textSize="22sp"
                 android:textColor="#ffffffff"
 
                 android:id="@+id/confirm_btn"
                 android:clickable="true"
-                android:text="@string/button_label_OK"
+                android:text="确定"
                 android:focusable="true"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/selector_button_2"
                 android:layout_width="120dp"
                 android:layout_height="60dp"/>
 
-        <cn.ismartv.speedtester.ui.widget.SakuraButton
+        <Button
                 android:layout_marginLeft="100dp"
                 android:id="@+id/cancle_btn"
                 android:clickable="true"
                 android:focusable="true"
-                android:text="@string/cancle"
+                android:text="取消"
                 android:textSize="22sp"
                 android:gravity="center"
                 android:textColor="#ffffffff"

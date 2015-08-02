@@ -902,7 +902,7 @@
     <dimen name="feedback_radiogroup_margin">20dp</dimen>
 
     <dimen name="feedback_item_title_textSize">20sp</dimen>
-    <dimen name="feedback_item_time_textSize">18sp</dimen>
+    <dimen name="feedback_item_time_textSize">28sp</dimen>
 
     <dimen name="feedback_item_minHeight">40dp</dimen>
     <dimen name="feedback_item_v_margin">5dp</dimen>
