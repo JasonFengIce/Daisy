@@ -2,15 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#aa000000"
+    android:background="#f2000000"
     android:gravity="center"
     android:orientation="vertical" >
 
     <TextView
         android:id="@+id/account_bind_warn_msg"
-        android:layout_width="871dp"
+        android:layout_width="890dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="106dp"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
         android:textColor="#FFFFFFFF"
         android:lineSpacingExtra="32dp"
         android:textSize="@dimen/person_login_phone_text_size" />

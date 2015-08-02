@@ -44,7 +44,7 @@
             android:id="@+id/top_login"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/pay_channel_weixin_height"
-            android:layout_alignParentTop="true"
+            android:layout_marginTop="18dp"
             android:layout_centerHorizontal="true"
             android:background="@drawable/person_btn_selector"
             android:text="@string/pay_top_login_label"
@@ -53,10 +53,13 @@
 
         <TextView
             android:id="@+id/warntitle"
-            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_width="470dp"
+            android:layout_marginTop="35dp"
+            android:layout_below="@id/top_login"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:text="@string/pay_warntitle"
+            android:lineSpacingExtra="5dp"
             android:textColor="#fe8109"
             android:textSize="@dimen/pay_top_panel_warntitle_textsieze" />
     </RelativeLayout>

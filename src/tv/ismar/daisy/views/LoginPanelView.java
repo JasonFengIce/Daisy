@@ -528,7 +528,7 @@ public class LoginPanelView extends LinearLayout {
 			lp.width = ((int) (width * 0.55));
 			lp.height = ((int) (height * 0.39));
 			lp.x = ((int) (width * 0.335));
-			lp.y = ((int) (height * 0.3));
+			lp.y = ((int) (height * 0.39));
 			lp.gravity = Gravity.LEFT | Gravity.TOP;
 		}
 
