@@ -4,17 +4,12 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <ListView
-            android:descendantFocusability="afterDescendants"
+    <tv.ismar.daisy.ui.widget.recycleview.widget.RecyclerView
             android:id="@+id/orderlist"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="@dimen/person_login_phone_view_ML"
             android:layout_marginTop="23dp"
-            android:divider="@drawable/orderlistdivide"
-            android:dividerHeight="1px"
-            android:listSelector="#00000000"
-            android:scrollbars="none"
             />
 </LinearLayout>

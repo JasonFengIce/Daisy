@@ -2,6 +2,10 @@ package tv.ismar.daisy.ui.fragment.usercenter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -9,15 +13,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.ImageView;
+import android.widget.TextView;
 import cn.ismartv.activator.Activator;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.usercenter.AccountsOrdersEntity;
-import tv.ismar.daisy.ui.adapter.AccountOrderAdapter;
+import tv.ismar.daisy.ui.widget.recycleview.widget.DefaultItemAnimator;
+import tv.ismar.daisy.ui.widget.recycleview.widget.LinearLayoutManager;
+import tv.ismar.daisy.ui.widget.recycleview.widget.RecyclerView;
+import tv.ismar.daisy.utils.Util;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -31,7 +43,7 @@ public class PurchaseHistoryFragment extends Fragment {
     private Context mContext;
 
 
-    private ListView accountOrderListView;
+    private RecyclerView accountOrderListView;
 
     @Override
     public void onAttach(Activity activity) {
@@ -42,7 +54,10 @@ public class PurchaseHistoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_phurchase, null);
-        accountOrderListView = (ListView) view.findViewById(R.id.orderlist);
+        accountOrderListView = (RecyclerView) view.findViewById(R.id.orderlist);
+        accountOrderListView.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL_LIST));
+        accountOrderListView.setItemAnimator(new DefaultItemAnimator());
+        accountOrderListView.setLayoutManager(new LinearLayoutManager(mContext));
         return view;
     }
 
@@ -104,7 +119,6 @@ public class PurchaseHistoryFragment extends Fragment {
 //    }
 
 
-
     private void fetchAccountsOrders() {
         String api = SimpleRestClient.root_url + "/accounts/orders/";
         Activator activator = Activator.getInstance(mContext);
@@ -123,28 +137,30 @@ public class PurchaseHistoryFragment extends Fragment {
                 Log.d(TAG, "fetchAccountsOrders: " + result);
                 AccountsOrdersEntity accountsOrdersEntity = new Gson().fromJson(result, AccountsOrdersEntity.class);
                 ArrayList<AccountsOrdersEntity.OrderEntity> arrayList = new ArrayList<AccountsOrdersEntity.OrderEntity>();
-                AccountOrderAdapter accountOrderAdapter;
+                HomeAdapter accountOrderAdapter;
                 if (!TextUtils.isEmpty(SimpleRestClient.access_token) && !TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
 
 
-                    for(AccountsOrdersEntity.OrderEntity entity : accountsOrdersEntity.getOrder_list()){
+                    for (AccountsOrdersEntity.OrderEntity entity : accountsOrdersEntity.getOrder_list()) {
                         entity.type = "order_list";
                         arrayList.add(entity);
                     }
-                    for(AccountsOrdersEntity.OrderEntity entity : accountsOrdersEntity.getSn_order_list()){
+                    for (AccountsOrdersEntity.OrderEntity entity : accountsOrdersEntity.getSn_order_list()) {
                         entity.type = "snorder_list";
                         arrayList.add(entity);
                     }
                     //arrayList.addAll(accountsOrdersEntity.getOrder_list());
                     // arrayList.addAll(accountsOrdersEntity.getSn_order_list());
-                    accountOrderAdapter = new AccountOrderAdapter(mContext, arrayList);
+                    accountOrderAdapter = new HomeAdapter(mContext, arrayList);
                 } else {
-                    for(AccountsOrdersEntity.OrderEntity entity : accountsOrdersEntity.getSn_order_list()){
+                    for (AccountsOrdersEntity.OrderEntity entity : accountsOrdersEntity.getSn_order_list()) {
                         entity.type = "snorder_list";
                         arrayList.add(entity);
                     }
-                    accountOrderAdapter = new AccountOrderAdapter(mContext, arrayList);
+                    accountOrderAdapter = new HomeAdapter(mContext, arrayList);
                 }
+
+
                 accountOrderListView.setAdapter(accountOrderAdapter);
             }
 
@@ -156,6 +172,196 @@ public class PurchaseHistoryFragment extends Fragment {
     }
 
 
+    class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> {
+        private Context homeContext;
+        private ArrayList<AccountsOrdersEntity.OrderEntity> mArrayList;
 
+        public HomeAdapter(Context context, ArrayList<AccountsOrdersEntity.OrderEntity> arrayList) {
+            this.homeContext = context;
+            this.mArrayList = arrayList;
+        }
+
+
+        @Override
+
+        public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.orderlistitem, viewGroup, false);
+            MyViewHolder holder = new MyViewHolder(view);
+            return holder;
+        }
+
+        @Override
+        public void onBindViewHolder(MyViewHolder holder, int position) {
+            AccountsOrdersEntity.OrderEntity item = mArrayList.get(position);
+            String orderday = homeContext.getResources().getString(R.string.personcenter_orderlist_item_orderday);
+            String remainday = homeContext.getResources().getString(R.string.personcenter_orderlist_item_remainday);
+            String cost = homeContext.getResources().getString(R.string.personcenter_orderlist_item_cost);
+            String paySource = homeContext.getResources().getString(R.string.personcenter_orderlist_item_paysource);
+            holder.title.setText(item.getTitle());
+            holder.buydate_txt.setText(String.format(orderday, item.getStart_date()));
+            holder.orderlistitem_remainday.setText(String.format(remainday, remaindDay(item.getExpiry_date())));
+            Log.d(TAG, "remainday: " + remaindDay(item.getExpiry_date()));
+            holder.totalfee.setText(String.format(cost, item.getTotal_fee()));
+            holder.orderlistitem_paychannel.setText(String.format(paySource, getValueBySource(item.getSource())));
+            Picasso.with(homeContext).load(item.getThumb_url()).into(holder.icon);
+            if (!TextUtils.isEmpty(item.getInfo())) {
+                String account = item.getInfo().split("@")[0];
+                String mergedate = item.getInfo().split("@")[1];
+                SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd");
+                String mergeTime = time.format(Timestamp.valueOf(mergedate));
+
+                if (item.type.equals("order_list")) {
+                    holder.purchaseExtra.setText("( " + mergeTime + "合并至视云账户" + SimpleRestClient.mobile_number + " )");
+                } else if (item.type.equals("snorder_list")) {
+                    holder.purchaseExtra.setText(mergeTime + "合并至视云账户" + account);
+                }
+
+                holder.purchaseExtra.setVisibility(View.VISIBLE);
+                holder.mergeTxt.setVisibility(View.INVISIBLE);
+            } else {
+                holder.purchaseExtra.setVisibility(View.INVISIBLE);
+                holder.mergeTxt.setVisibility(View.INVISIBLE);
+            }
+        }
+
+        private String getValueBySource(String source) {
+            if (source.equals("weixin")) {
+                return "微信";
+            } else if (source.equals("alipay")) {
+                return "支付宝";
+            } else if (source.equals("balance")) {
+                return "余额";
+            } else if (source.equals("card")) {
+                return "卡";
+            } else {
+                return source;
+            }
+        }
+
+        private int remaindDay(String exprieTime) {
+            try {
+                return Util.daysBetween(Util.getTime(), exprieTime) + 1;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return 0;
+        }
+
+        @Override
+        public int getItemCount() {
+            return mArrayList.size();
+        }
+
+
+        class MyViewHolder extends RecyclerView.ViewHolder {
+            TextView purchaseExtra;
+            ImageView icon;
+            TextView title;
+            TextView buydate_txt;
+            TextView orderlistitem_remainday;
+            TextView totalfee;
+            TextView orderlistitem_paychannel;
+            TextView mergeTxt;
+
+            public MyViewHolder(View convertView) {
+                super(convertView);
+//                textView = (ImageView) itemView.findViewById(R.id.id_number);
+
+                title = (TextView) convertView.findViewById(R.id.orderlistitem_title);
+                buydate_txt = (TextView) convertView.findViewById(R.id.orderlistitem_time);
+                orderlistitem_remainday = (TextView) convertView.findViewById(R.id.orderlistitem_remainday);
+                totalfee = (TextView) convertView.findViewById(R.id.orderlistitem_cost);
+                icon = (ImageView) convertView.findViewById(R.id.orderlistitem_icon);
+                orderlistitem_paychannel = (TextView) convertView.findViewById(R.id.orderlistitem_paychannel);
+                purchaseExtra = (TextView) convertView.findViewById(R.id.purchase_extra);
+                mergeTxt = (TextView) convertView.findViewById(R.id.orderlistitem_merge);
+            }
+        }
+
+    }
+
+
+    class DividerItemDecoration extends RecyclerView.ItemDecoration {
+
+        final int[] ATTRS = new int[]{
+                android.R.attr.listDivider
+        };
+
+        public static final int HORIZONTAL_LIST = LinearLayoutManager.HORIZONTAL;
+
+        public static final int VERTICAL_LIST = LinearLayoutManager.VERTICAL;
+
+        private Drawable mDivider;
+
+        private int mOrientation;
+
+        public DividerItemDecoration(Context context, int orientation) {
+            final TypedArray a = context.obtainStyledAttributes(ATTRS);
+            mDivider = a.getDrawable(0);
+            a.recycle();
+            setOrientation(orientation);
+        }
+
+        public void setOrientation(int orientation) {
+            if (orientation != HORIZONTAL_LIST && orientation != VERTICAL_LIST) {
+                throw new IllegalArgumentException("invalid orientation");
+            }
+            mOrientation = orientation;
+        }
+
+        @Override
+        public void onDraw(Canvas c, RecyclerView parent) {
+            if (mOrientation == VERTICAL_LIST) {
+                drawVertical(c, parent);
+            } else {
+                drawHorizontal(c, parent);
+            }
+
+        }
+
+
+        public void drawVertical(Canvas c, RecyclerView parent) {
+            final int left = parent.getPaddingLeft();
+            final int right = parent.getWidth() - parent.getPaddingRight();
+
+            final int childCount = parent.getChildCount();
+            for (int i = 0; i < childCount; i++) {
+                final View child = parent.getChildAt(i);
+                RecyclerView v = new RecyclerView(parent.getContext());
+                final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child
+                        .getLayoutParams();
+                final int top = child.getBottom() + params.bottomMargin;
+                final int bottom = top + mDivider.getIntrinsicHeight();
+                mDivider.setBounds(left, top, right, bottom);
+                mDivider.draw(c);
+            }
+        }
+
+        public void drawHorizontal(Canvas c, RecyclerView parent) {
+            final int top = parent.getPaddingTop();
+            final int bottom = parent.getHeight() - parent.getPaddingBottom();
+
+            final int childCount = parent.getChildCount();
+            for (int i = 0; i < childCount; i++) {
+                final View child = parent.getChildAt(i);
+                final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child
+                        .getLayoutParams();
+                final int left = child.getRight() + params.rightMargin;
+                final int right = left + mDivider.getIntrinsicHeight();
+                mDivider.setBounds(left, top, right, bottom);
+                mDivider.draw(c);
+            }
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, int itemPosition, RecyclerView parent) {
+            if (mOrientation == VERTICAL_LIST) {
+                outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
+            } else {
+                outRect.set(0, 0, mDivider.getIntrinsicWidth(), 0);
+            }
+        }
+
+    }
 }
 
