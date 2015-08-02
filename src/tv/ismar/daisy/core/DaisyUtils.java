@@ -67,7 +67,11 @@ public class DaisyUtils {
 		} else if ("movie".equals(contentMode)) {
 			intent.setAction("tv.ismar.daisy.PFileItem");
 			intent.putExtra("title", "电影");
-		} else {
+		}
+        else if("package".equals(contentMode)){
+            intent.setAction("tv.ismar.daisy.packageitem");
+            intent.putExtra("title", "礼包详情");
+        }else {
 			intent.setClassName("tv.ismar.daisy",
 					"tv.ismar.daisy.ItemDetailActivity");
 		}

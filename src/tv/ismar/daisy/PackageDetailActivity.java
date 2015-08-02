@@ -484,7 +484,7 @@ public class PackageDetailActivity extends BaseActivity implements OnItemClickLi
 					break;
 				}
 			}
-            DaisyUtils.gotoSpecialPage(PackageDetailActivity.this,itemSection.content_model,itemSection.url);
+            DaisyUtils.gotoSpecialPage(PackageDetailActivity.this,"package",itemSection.url);
 			
 		}
 	};

@@ -262,8 +262,10 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private View.OnFocusChangeListener mFocusListener = new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View view, boolean b) {
+            View channelBtn;
                if(b){
-                   view.setBackgroundResource(R.drawable.channel_item_focus);
+                    channelBtn = (TextView)view.findViewById(R.id.channel_item);
+                   channelBtn.setBackgroundResource(R.drawable.channel_item_focus);
                    AnimationSet animationSet = new AnimationSet(true);
                    ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
                            Animation.RELATIVE_TO_SELF, 0.5f,
@@ -271,9 +273,10 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                    scaleAnimation.setDuration(200);
                    animationSet.addAnimation(scaleAnimation);
                    animationSet.setFillAfter(true);
-                   view.startAnimation(animationSet);
+                   channelBtn.startAnimation(animationSet);
                }else{
-                   view.setBackgroundResource(R.drawable.channel_item_normal);
+                    channelBtn = (TextView)view.findViewById(R.id.channel_item);
+                   channelBtn.setBackgroundResource(R.drawable.channel_item_normal);
                    AnimationSet animationSet = new AnimationSet(true);
                    ScaleAnimation scaleAnimation = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
                            Animation.RELATIVE_TO_SELF, 0.5f,
@@ -281,9 +284,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                    scaleAnimation.setDuration(200);
                    animationSet.addAnimation(scaleAnimation);
                    animationSet.setFillAfter(true);
-                   view.startAnimation(animationSet);
+                   channelBtn.startAnimation(animationSet);
                }
-            lastview = view;
+            lastview = channelBtn;
         }
     };
 
@@ -326,6 +329,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         scroll.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+               View channelBtn = (TextView)view.findViewById(R.id.channel_item);
                 if(lastview!=null){
 
 
@@ -340,7 +344,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                     animationSet1.setFillAfter(true);
                     lastview.startAnimation(animationSet1);
                 }
-                view.setBackgroundResource(R.drawable.channel_item_focus);
+                channelBtn.setBackgroundResource(R.drawable.channel_item_focus);
                 AnimationSet animationSet = new AnimationSet(true);
                 ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
                         Animation.RELATIVE_TO_SELF, 0.5f,
@@ -348,8 +352,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 scaleAnimation.setDuration(200);
                 animationSet.addAnimation(scaleAnimation);
                 animationSet.setFillAfter(true);
-                view.startAnimation(animationSet);
-                lastview = view;
+                channelBtn.startAnimation(animationSet);
+                lastview = channelBtn;
 
             }
 
