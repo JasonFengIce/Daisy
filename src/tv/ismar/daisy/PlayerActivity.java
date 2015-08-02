@@ -1362,7 +1362,7 @@ private void initPlayerRelatedUI(){
 	}
 
 	private void showPanel() {
-		if (isVodMenuVisible() || isadvideoplaying)
+		if (isVodMenuVisible() || isadvideoplaying || !mVideoView.isPlaying())
 			return;
 		if (!panelShow) {
 			panelLayout.startAnimation(panelShowAnimation);
