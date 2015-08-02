@@ -320,7 +320,7 @@ public class PlayerActivity extends VodMenuAction {
 		}
 	}
 
-	protected void showAd(ArrayList<AdElement> result) {
+	protected void showAd(ArrayList<AdElement> result,String adpid) {
 		adElement = new Stack<AdElement>();
 		for (int i = 0; i < result.size(); i++) {
 			AdElement element = result.get(i);
@@ -335,6 +335,8 @@ public class PlayerActivity extends VodMenuAction {
 				adElement.push(element);
 			}
 		}
+		if("zanting".equals(adpid) && adElement.isEmpty())
+			return;
 		playAdElement();
 	}
 private String[] paths = null;
@@ -484,7 +486,7 @@ private String[] paths = null;
                             } else {
                                 clipLength = mp.getDuration();
                                 timeBar.setMax(clipLength);
-                                if(paths!=null&&paths.length==1){
+                                if(paths!=null){
                                     initPlayerRelatedUI();
                                 }
                                 if (currPosition == 0)
@@ -1041,7 +1043,7 @@ private void initPlayerRelatedUI(){
         currPosition = 0;
         seekPostion = 0;
     }
-
+    showPanel();
     TaskStart();// cmstest.tvxio.com
     sid = VodUserAgent.getSid(urls[currQuality]);
     mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
@@ -1176,10 +1178,10 @@ private void initPlayerRelatedUI(){
 		public void run() {
 			if (mVideoView != null) {
 				if (mVideoView.isPlaying()) {
-					if ( bufferLayout.isShown()) {
-						isBuffer = false;
-						hideBuffer();
-					}
+//					if ( bufferLayout.isShown()) {
+//						isBuffer = false;
+//						hideBuffer();
+//					}
                     if(isadvideoplaying&&bufferLayout.isShown()){
                         isBuffer = false;
                         hideBuffer();
@@ -1866,6 +1868,7 @@ private void initPlayerRelatedUI(){
 				if (adsumtime > 0) {
 					sendEmptyMessageDelayed(AD_COUNT_ACTION, 1000);
 				}else {
+					isadvideoplaying = false;
 					mVideoView.playIndex(paths.length -1);
 					ad_count_view.setVisibility(View.GONE);
 				}
@@ -2183,8 +2186,8 @@ private void initPlayerRelatedUI(){
 						tempOffset = item.preview.length * 1000;
 					}
 					paystatus = true;
-//					new ItemByUrlTask().execute();
-					getAdInfo("qiantiepian");
+					new ItemByUrlTask().execute();
+//					getAdInfo("qiantiepian");
 				} else {
 					PlayerActivity.this.finish();
 				}
@@ -2199,7 +2202,7 @@ private void initPlayerRelatedUI(){
 			int what = event.getAction();
 			switch (what) {
 			case MotionEvent.ACTION_HOVER_MOVE:
-				if (!StringUtils.isEmpty(sid))
+				if (!isadvideoplaying)
 					showPanel();
 				break;
 			}

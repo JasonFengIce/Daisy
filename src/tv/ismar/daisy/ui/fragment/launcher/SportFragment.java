@@ -64,7 +64,7 @@ public class SportFragment extends ChannelBaseFragment {
 	private ImageView arrowUp;
 	private ImageView arrowDown;
 	private ArrayList<Carousel> looppost = new ArrayList<Carousel>();
-	private int loopindex = 0;
+	private int loopindex = -1;
 	private int currentLiveIndex = 0;
 
 	@Override

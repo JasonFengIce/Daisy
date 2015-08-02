@@ -82,19 +82,20 @@ public abstract class VodMenuAction extends BaseActivity {
 	protected void playMainVideo() {
 	}
 
-	protected void showAd(ArrayList<AdElement> result) {
+	protected void showAd(ArrayList<AdElement> result,String adpid) {
 	}
 
 	class GetAdDataTask extends AsyncTask<String, Void, ArrayList<AdElement>> {
 
+		private String adpid;
 		@Override
 		protected void onPostExecute(ArrayList<AdElement> result) {
-			showAd(result);
+			showAd(result,adpid);
 		}
 
 		@Override
 		protected ArrayList<AdElement> doInBackground(String... params) {
-			String adpid = params[0];
+		    adpid = params[0];
 			String p = params[1];
 			ArrayList<AdElement> ads = NetworkUtils.getAdByPost(adpid, p);
 			return ads;
