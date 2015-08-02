@@ -2,10 +2,6 @@ package tv.ismar.daisy.ui.fragment.launcher;
 
 import java.util.ArrayList;
 
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
-import android.widget.*;
 import org.apache.commons.lang3.StringUtils;
 
 import tv.ismar.daisy.R;
@@ -17,21 +13,23 @@ import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.SportGame;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
-import tv.ismar.daisy.ui.widget.HomeItemContainer;
 import tv.ismar.daisy.views.LabelImageView;
 import tv.ismar.daisy.views.LoadingDialog;
-import android.R.integer;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnKeyListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -62,7 +60,7 @@ public class SportFragment extends ChannelBaseFragment {
 	private LabelImageView sport_channel4_image;
 	private TextView sport_channel4_subtitle;
 	private tv.ismar.daisy.ui.widget.HomeItemContainer sport_channel5;
-
+	private Animation scaleBigAnimation;
 	private ImageView arrowUp;
 	private ImageView arrowDown;
 	private ArrayList<Carousel> looppost = new ArrayList<Carousel>();
@@ -76,6 +74,7 @@ public class SportFragment extends ChannelBaseFragment {
 		mLoadingDialog = new LoadingDialog(getActivity(), getResources()
 				.getString(R.string.loading));
 		sport_card1 = (LabelImageView) view.findViewById(R.id.sport_card1);
+		sport_card1.setFocusable(false);
 		sport_card2 = (LabelImageView) view.findViewById(R.id.sport_card2);
 		sport_card3 = (LabelImageView) view.findViewById(R.id.sport_card3);
 		sportspost = (LabelImageView) view.findViewById(R.id.sportspost);
@@ -105,11 +104,49 @@ public class SportFragment extends ChannelBaseFragment {
 		sports_live3 = (LabelImageView) view.findViewById(R.id.sports_live3);
 		arrowUp.setOnFocusChangeListener(arrowFocusChangeListener);
 		arrowDown.setOnFocusChangeListener(arrowFocusChangeListener);
-		arrowUp.setOnClickListener(arrowClickListener);
-		arrowDown.setOnClickListener(arrowClickListener);
+		 arrowUp.setOnClickListener(arrowClickListener);
+		 arrowDown.setOnClickListener(arrowClickListener);
 		sports_live1.setOnClickListener(arrowClickListener);
 		sports_live2.setOnClickListener(arrowClickListener);
 		sports_live3.setOnClickListener(arrowClickListener);
+//		sports_live1.setOnKeyListener(new OnKeyListener() {
+//
+//			@Override
+//			public boolean onKey(View view, int i, KeyEvent keyevent) {
+//				if (i == KeyEvent.KEYCODE_DPAD_UP
+//						&& keyevent.getAction() == KeyEvent.ACTION_UP
+//						&& arrowUp.getVisibility() == View.VISIBLE && sports_live1.isFocused()) {
+//					if (games.size() == 6 && currentLiveIndex == 1) {
+//						currentLiveIndex -= 3;
+//					} else {
+//						currentLiveIndex -= 1;
+//					}
+//					fillLiveData();
+//					arrowUp.startAnimation(scaleBigAnimation);
+//					return true;
+//				}
+//				return false;
+//			}
+//		});
+//		sports_live3.setOnKeyListener(new OnKeyListener() {
+//
+//			@Override
+//			public boolean onKey(View view, int i, KeyEvent keyevent) {
+//				if (keyevent.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN
+//						&& keyevent.getAction() == KeyEvent.ACTION_UP
+//						&& arrowDown.getVisibility() == View.VISIBLE && sports_live3.isFocused()) {
+//					if (games.size() == 6) {
+//						currentLiveIndex += 3;
+//					} else {
+//						currentLiveIndex += 1;
+//					}
+//					fillLiveData();
+//					arrowDown.startAnimation(scaleBigAnimation);
+//					return true;
+//				}
+//				return false;
+//			}
+//		});
 		return view;
 	}
 
@@ -118,6 +155,7 @@ public class SportFragment extends ChannelBaseFragment {
 		new FetchDataTask().execute();
 		games = new ArrayList<SportGame>();
 		mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
+		initzoom();
 	}
 
 	private OnCancelListener mLoadingCancelListener = new OnCancelListener() {
@@ -131,15 +169,15 @@ public class SportFragment extends ChannelBaseFragment {
 	private void fillData(ArrayList<Carousel> carousels,
 			ArrayList<Poster> postlist) {
 		sport_card1.setUrl(carousels.get(0).getThumb_image());
-//		sport_card1.setFocustitle(carousels.get(0).getIntroduction());
+		// sport_card1.setFocustitle(carousels.get(0).getIntroduction());
 		sport_card1.setTag(R.drawable.launcher_selector, carousels.get(0));
 		sport_card1.setOnFocusChangeListener(ItemOnFocusListener);
 		sport_card2.setUrl(carousels.get(1).getThumb_image());
-//		sport_card2.setFocustitle(carousels.get(1).getIntroduction());
+		// sport_card2.setFocustitle(carousels.get(1).getIntroduction());
 		sport_card2.setTag(R.drawable.launcher_selector, carousels.get(1));
 		sport_card2.setOnFocusChangeListener(ItemOnFocusListener);
 		sport_card3.setUrl(carousels.get(2).getThumb_image());
-//		sport_card3.setFocustitle(carousels.get(2).getIntroduction());
+		// sport_card3.setFocustitle(carousels.get(2).getIntroduction());
 		sport_card3.setTag(R.drawable.launcher_selector, carousels.get(2));
 		sport_card3.setOnFocusChangeListener(ItemOnFocusListener);
 		looppost.add(carousels.get(0));
@@ -171,6 +209,9 @@ public class SportFragment extends ChannelBaseFragment {
 		sport_card2.setOnClickListener(ItemClickListener);
 		sport_card3.setOnClickListener(ItemClickListener);
 		sportspost.setOnClickListener(ItemClickListener);
+		sport_card1.setFocusable(true);
+		sport_card2.setFocusable(true);
+		sport_card3.setFocusable(true);
 		fillLiveData();
 	}
 
@@ -236,7 +277,7 @@ public class SportFragment extends ChannelBaseFragment {
 				sportspost.setTag(R.drawable.launcher_selector, carousel);
 				if (StringUtils.isNotEmpty(carousel.getIntroduction())) {
 					sportspost.setFocustitle(carousel.getIntroduction());
-				}else{
+				} else {
 					sportspost.setFocustitle(null);
 				}
 				switch (v.getId()) {
@@ -280,8 +321,8 @@ public class SportFragment extends ChannelBaseFragment {
 					.getIntroduction())) {
 				sportspost.setFocustitle(looppost.get(loopindex)
 						.getIntroduction());
-			}else{
-				sportspost.setFocustitle(null);				
+			} else {
+				sportspost.setFocustitle(null);
 			}
 			if (loopindex == 0) {
 				sport_card1.setCustomfocus(true);
@@ -323,7 +364,8 @@ public class SportFragment extends ChannelBaseFragment {
 				fillLiveData();
 			} else {
 				InitPlayerTool tool = new InitPlayerTool(context);
-				tool.initClipInfo(arg0.getTag().toString(), InitPlayerTool.FLAG_URL);
+				tool.initClipInfo(arg0.getTag().toString(),
+						InitPlayerTool.FLAG_URL);
 			}
 		}
 	};
@@ -345,10 +387,10 @@ public class SportFragment extends ChannelBaseFragment {
 				Picasso.with(context).load(games.get(position).getImageurl())
 						.into(sports_live1);
 				sports_live1.setTag(games.get(position).getUrl());
-				if(games.get(position).isLiving()){
+				if (games.get(position).isLiving()) {
 					sports_live1.setModetype(4);
-				}else{
-					sports_live1.setModetype(6);	
+				} else {
+					sports_live1.setModetype(6);
 				}
 				break;
 			case 1:
@@ -356,10 +398,10 @@ public class SportFragment extends ChannelBaseFragment {
 				Picasso.with(context).load(games.get(position).getImageurl())
 						.into(sports_live2);
 				sports_live2.setTag(games.get(position).getUrl());
-				if(games.get(position).isLiving()){
+				if (games.get(position).isLiving()) {
 					sports_live2.setModetype(4);
-				}else{
-					sports_live2.setModetype(6);	
+				} else {
+					sports_live2.setModetype(6);
 				}
 				break;
 			case 2:
@@ -367,10 +409,10 @@ public class SportFragment extends ChannelBaseFragment {
 				Picasso.with(context).load(games.get(position).getImageurl())
 						.into(sports_live3);
 				sports_live3.setTag(games.get(position).getUrl());
-				if(games.get(position).isLiving()){
+				if (games.get(position).isLiving()) {
 					sports_live3.setModetype(4);
-				}else{
-					sports_live3.setModetype(6);	
+				} else {
+					sports_live3.setModetype(6);
 				}
 				break;
 			}
@@ -390,6 +432,13 @@ public class SportFragment extends ChannelBaseFragment {
 		}
 		if (arrowUp.getVisibility() == View.VISIBLE) {
 			arrowUp.bringToFront();
+		}
+	}
+
+	private void initzoom() {
+		if (scaleBigAnimation == null) {
+			scaleBigAnimation = AnimationUtils.loadAnimation(getActivity(),
+					R.anim.anim_scale_big);
 		}
 	}
 }
