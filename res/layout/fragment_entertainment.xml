@@ -109,7 +109,8 @@
                     android:focusable="true"
                     android:scaleType="fitXY"
                     android:layout_margin="2dp"
-                    labelimage:focusbackground="#b3303030"
+                    labelimage:focusbackground="@color/shawdow"
+                    labelimage:focuspaddingtop="0.89"
                     labelimage:focustextsize="18sp"
                      />
 
@@ -141,8 +142,9 @@
                     android:focusable="true"
                     android:scaleType="fitXY"
                     android:layout_margin="2dp"
+                    labelimage:focusbackground="@color/shawdow"
+                    labelimage:focuspaddingtop="0.89"
                     android:src="@drawable/list_item_preview_bg"
-                    labelimage:focusbackground="#b3303030"
                     labelimage:focustextsize="18sp"
                      />
 
@@ -173,8 +175,9 @@
                     android:focusable="true"
                     android:scaleType="fitXY"
                     android:layout_margin="2dp"
+                    labelimage:focusbackground="@color/shawdow"
+                    labelimage:focuspaddingtop="0.89"
                     android:src="@drawable/list_item_preview_bg"
-                    labelimage:focusbackground="#b3303030"
                     labelimage:focustextsize="18sp"
                      />
 
@@ -207,8 +210,9 @@
                     android:focusable="true"
                     android:scaleType="fitXY"
                     android:layout_margin="2dp"
+                    labelimage:focusbackground="@color/shawdow"
+                    labelimage:focuspaddingtop="0.89"
                     android:src="@drawable/list_item_preview_bg"
-                    labelimage:focusbackground="#b3303030"
                     labelimage:focustextsize="18sp"
                      />
 
