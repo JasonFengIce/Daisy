@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/background">
+    android:background="@drawable/main_bg">
 
     <tv.ismar.daisy.ui.widget.LaunchHeaderLayout
             android:id="@+id/top_column_layout"

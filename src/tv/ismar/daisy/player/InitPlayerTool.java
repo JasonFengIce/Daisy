@@ -19,6 +19,7 @@ public class InitPlayerTool {
     public final static String FLAG_URL = "url";
     public final static String FLAG_ITEM = "item";
     private boolean mIsPreviewVideo = false;
+    private int price = 0;
 	public InitPlayerTool(Context context){
 		this.mContext = context;
 		intent = new Intent();
@@ -34,6 +35,11 @@ public class InitPlayerTool {
 		this.mIsPreviewVideo = isPreviewVideo;
 		new ItemByUrlTask().execute(item,flag);
 	}
+    public void initClipInfo(Object item,String flag,int price ) {
+        simpleRestClient = new SimpleRestClient();
+        this.price = price;
+        new ItemByUrlTask().execute(item,flag);
+    }
 	// 初始化播放地址url
 	private class ItemByUrlTask extends AsyncTask<Object, Void, String> {
 

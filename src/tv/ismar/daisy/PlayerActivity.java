@@ -495,6 +495,7 @@ private String[] paths = null;
                                 showBuffer();
                                 timeBar.setProgress(currPosition);
                                 timeBar.setEnabled(true);
+                                isadvideoplaying = false;
                             }
                             checkTaskStart(0);
                             timeTaskStart(0);
@@ -2020,7 +2021,8 @@ private void initPlayerRelatedUI(){
 					// mVideoView = (IsmatvVideoView)
 					// findViewById(R.id.video_view);
                     paths = new String[1];
-                    paths[1] = urls[currQuality];
+                    paths[0] = urls[currQuality];
+                    tempOffset = seekPostion;
                     mVideoView.setVideoPaths(paths);
 					//mVideoView.setVideoPath(urls[currQuality]);
 					historyManager.addOrUpdateQuality(new Quality(0,

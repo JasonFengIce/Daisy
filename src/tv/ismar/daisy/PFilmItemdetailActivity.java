@@ -998,4 +998,16 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             return null;
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        if(resultCode==20){
+            if(data.getBooleanExtra("result", false)){
+                isBuy = true;
+                setExpenseStatus();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

@@ -371,6 +371,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		item.content_model = history.content_model;
 		item.quality = history.quality;
 		item.title = history.title;
+
 		return item;
 	}
 
@@ -520,10 +521,12 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
                     }
                 });
                 if(item.subitems!=null&&item.subitems.length>0&&history!=null){
-                    tool.initClipInfo(history.sub_url, InitPlayerTool.FLAG_URL);
+                    tool.initClipInfo(history.sub_url, InitPlayerTool.FLAG_URL,history.price);
                 }
-                else
-                  tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
+                else{
+                    tool.initClipInfo(url, InitPlayerTool.FLAG_URL,history.price);
+                }
+
 			}
 			if(mLoadingDialog!=null && mLoadingDialog.isShowing()) {
 				mLoadingDialog.dismiss();

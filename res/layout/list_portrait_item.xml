@@ -68,9 +68,9 @@
        android:textStyle="bold"
        android:textSize="@dimen/gridview_item_expense_txt_size"
        android:textColor="#ffe3e3e3"
-       android:layout_alignTop="@id/list_item_preview_img"
-       android:layout_alignRight="@id/list_item_preview_img"
-       android:layout_marginRight="1dip"
+
+       android:layout_alignParentRight="true"
+       android:layout_alignParentTop="true"
        android:background="@drawable/price_bg"
        android:visibility="gone" >
     </tv.ismar.daisy.views.RotateTextView>
