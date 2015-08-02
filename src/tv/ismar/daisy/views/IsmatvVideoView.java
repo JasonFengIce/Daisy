@@ -5,6 +5,7 @@ import java.util.Map;
 
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.SystemFileUtil;
 import tv.ismar.player.SmartPlayer;
 import tv.ismar.player.SmartPlayer.OnCompletionListenerUrl;
 import tv.ismar.player.SmartPlayer.OnPreparedListenerUrl;
@@ -243,7 +244,10 @@ public void setVideoPaths(String[] paths){
 			player.setSn(SimpleRestClient.sn_token);
 			player.setScreenOnWhilePlaying(true);
 		//	player.setOnPreparedListener(mPreparedListener);
-			player.setSDCardisAvailable(true);
+            if (SystemFileUtil.isCanWriteSD())
+			   player.setSDCardisAvailable(true);
+            else
+                player.setSDCardisAvailable(false);
 			player.setOnVideoSizeChangedListener(mSizeChangedListener);
 			mDuration = -1;
 			player.setOnSeekCompleteListener(mOnSeekCompleteListener);

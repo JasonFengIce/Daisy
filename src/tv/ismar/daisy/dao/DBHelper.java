@@ -222,7 +222,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public History queryHistoryByUrl(String url,String isnet) {
         History history = null;
-        Cursor cur = db.query(DBFields.HistroyTable.TABLE_NAME, null, DBFields.HistroyTable.URL + " = ? and " + DBFields.HistroyTable.ISNET + "= ?", new String[]{url,isnet}, null, null, " _id desc");
+        String[] aa = url.split("/");
+        String pk = aa[aa.length-1];
+        Cursor cur = db.query(DBFields.HistroyTable.TABLE_NAME, null, DBFields.HistroyTable.URL + " like ? and " + DBFields.HistroyTable.ISNET + "= ?", new String[]{"%"+pk+"%",isnet}, null, null, " _id desc");
         if(cur!=null) {
             if(cur.moveToFirst()) {
                 history = new History(cur);

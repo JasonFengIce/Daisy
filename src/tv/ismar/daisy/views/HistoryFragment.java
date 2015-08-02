@@ -412,7 +412,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		private static final int TASK_CANCELLED = 3;
 
 		private Item item;
-		
+
 		@Override
 		protected void onPreExecute() {
 			if(mLoadingDialog!=null && !mLoadingDialog.isShowing()) {
@@ -468,7 +468,12 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 			} else if(result == ITEM_SUCCESS_GET){
 				String url = SimpleRestClient.sRoot_url + "/api/item/" + item.pk + "/";
 				mCurrentGetItemTask.remove(url);
-				History history = DaisyUtils.getHistoryManager(getActivity()).getHistoryByUrl(url,"no");
+                History history = null;
+                if(SimpleRestClient.isLogin())
+				     history = DaisyUtils.getHistoryManager(getActivity()).getHistoryByUrl(url,"yes");
+                else{
+                    history = DaisyUtils.getHistoryManager(getActivity()).getHistoryByUrl(url,"no");
+                }
 				// Use to data collection.
 				mDataCollectionProperties = new HashMap<String, Object>();
 				int id = SimpleRestClient.getItemId(url, new boolean[1]);
@@ -520,13 +525,13 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
                         mLoadingDialog.dismiss();
                     }
                 });
-                if(item.subitems!=null&&item.subitems.length>0&&history!=null){
-                    tool.initClipInfo(history.sub_url, InitPlayerTool.FLAG_URL,history.price);
-                }
-                else{
-                    tool.initClipInfo(url, InitPlayerTool.FLAG_URL,history.price);
-                }
-
+//                if(item.subitems!=null&&item.subitems.length>0&&history!=null){
+//                    tool.initClipInfo(history.sub_url, InitPlayerTool.FLAG_URL,history.price);
+//                }
+//                else{
+//
+//                }
+                tool.initClipInfo(url, InitPlayerTool.FLAG_URL,history.price);
 			}
 			if(mLoadingDialog!=null && mLoadingDialog.isShowing()) {
 				mLoadingDialog.dismiss();

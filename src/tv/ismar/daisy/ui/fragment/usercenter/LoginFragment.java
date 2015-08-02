@@ -26,6 +26,7 @@ import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.receiver.TimeCountdownBroadcastSender;
 import tv.ismar.daisy.data.usercenter.AuthTokenEntity;
 import tv.ismar.daisy.models.Favorite;
+import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.ui.activity.UserCenterActivity;
 
@@ -68,7 +69,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private IntentFilter intentFilter;
 
     private SharedPreferences accountSharedPrefs;
-
+    private Item[] mHistoriesByNet;
 
     public interface OnLoginCallback {
         void onLoginSuccess();
@@ -100,7 +101,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         super.onPause();
         mContext.unregisterReceiver(countdownReceiver);
     }
-
+    SimpleRestClient mSimpleRestClient;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_login, null);
@@ -113,6 +114,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         phoneNumberPrompt = (TextView) fragmentView.findViewById(R.id.phone_number_prompt);
         verificationPrompt = (TextView) fragmentView.findViewById(R.id.verification_prompt);
         phoneNumberMsg =(TextView)fragmentView.findViewById(R.id.phone_number_msg);
+        mSimpleRestClient = new SimpleRestClient();
 
         return fragmentView;
     }
@@ -329,9 +331,59 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         DaisyUtils.getVodApplication(mContext).getEditor().putString(VodApplication.MOBILE_NUMBER, phoneNumber);
         DaisyUtils.getVodApplication(mContext).save();
         fetchFavorite();
+        getHistoryByNet();
     }
+    private void addHistory(Item item) {
+        History history = new History();
+        history.title = item.title;
+        history.adlet_url = item.adlet_url;
+        history.content_model = item.content_model;
+        history.is_complex = item.is_complex;
+        history.last_position = item.offset;
+        history.last_quality = item.quality;
+        history.url = item.url;
+        history.sub_url = item.item_url;
+        history.is_continue = true;
+        if (SimpleRestClient.isLogin())
+            DaisyUtils.getHistoryManager(getActivity()).addHistory(history,
+                    "yes");
+        else
+            DaisyUtils.getHistoryManager(getActivity())
+                    .addHistory(history, "no");
 
+    }
+    private void getHistoryByNet() {
 
+        mSimpleRestClient.doSendRequest("/api/histories/", "get", "",
+                new SimpleRestClient.HttpPostRequestInterface() {
+
+                    @Override
+                    public void onSuccess(String info) {
+                        // TODO Auto-generated method stub
+                        // Log.i(tag, msg);
+
+                        // 解析json
+                        mHistoriesByNet = mSimpleRestClient.getItems(info);
+                        if (mHistoriesByNet != null) {
+                            for (Item i : mHistoriesByNet) {
+                                addHistory(i);
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onPrepare() {
+                        // TODO Auto-generated method stub
+                    }
+
+                    @Override
+                    public void onFailed(String error) {
+                        // TODO Auto-generated method stub
+                        // Log.i(tag, msg);
+                    }
+                });
+    }
     private void fetchFavorite() {
         String api = SimpleRestClient.root_url + "/api/bookmarks/";
 
