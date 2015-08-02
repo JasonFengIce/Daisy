@@ -356,7 +356,7 @@ public class PackageDetailActivity extends BaseActivity implements OnItemClickLi
 								vod_payment_duration.setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
 								vod_payment_price.setBackgroundResource(R.drawable.vod_detail_already_payment_price);
 								vod_payment_buyButton.setEnabled(false);
-								vod_payment_buyButton.setVisibility(View.INVISIBLE);
+								//vod_payment_buyButton.setVisibility(View.INVISIBLE);
 								//isbuy_label.setVisibility(View.VISIBLE);
 							}
 						} catch (ParseException e1) {
@@ -538,7 +538,7 @@ public class PackageDetailActivity extends BaseActivity implements OnItemClickLi
 				vod_payment_duration.setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
 				vod_payment_price.setBackgroundResource(R.drawable.vod_detail_already_payment_price);
 				vod_payment_buyButton.setEnabled(false);
-				vod_payment_buyButton.setVisibility(View.INVISIBLE);
+				//vod_payment_buyButton.setVisibility(View.INVISIBLE);
 				isbuy_label.setVisibility(View.INVISIBLE);
 			}
 		}

@@ -5,13 +5,12 @@
     android:layout_height="wrap_content"
     >
 
-    <Button
+    <TextView
         android:id="@+id/channel_item"
         android:textSize="@dimen/tv_guide_channel_text_size"
-        android:background="@drawable/selector_channel_item"
         android:textColor="@color/white"
         android:gravity="center"
         android:layout_width="@dimen/tv_guide_channel_item_width"
         android:layout_height="@dimen/tv_guide_channel_item_height">
-    </Button>
+    </TextView>
 </FrameLayout>

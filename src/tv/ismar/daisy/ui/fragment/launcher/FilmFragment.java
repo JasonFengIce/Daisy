@@ -442,6 +442,13 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
         }
 
         String url = carousels.get(flag.getPosition()).getVideo_url();
+        String intro = carousels.get(flag.getPosition()).getIntroduction();
+        if (StringUtils.isNotEmpty(intro)) {
+            film_linked_title.setVisibility(View.VISIBLE);
+            film_linked_title.setText(intro);
+        } else {
+            film_linked_title.setVisibility(View.GONE);
+        }
         String playPath;
         DownloadTable downloadTable = new Select().from(DownloadTable.class).where(DownloadTable.URL + " = ?", url).executeSingle();
         if (downloadTable == null) {

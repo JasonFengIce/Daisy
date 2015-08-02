@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import org.sakuratya.horizontal.adapter.HGridAdapter;
 import tv.ismar.daisy.R;
@@ -72,41 +73,37 @@ public class ChannelAdapter extends HGridAdapter<ChannelEntity>  {
     }
 	private ChannelEntity movieBean;
 	ViewHolder holder;
-	
-	
-   private int count = 0;
+
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		// startTime = System.nanoTime();
-		count++;
-		
 		movieBean = (ChannelEntity) getItem(position);
 		if (null == convertView) {
-			// Log.e("create_converView", "new conver");
 			holder = new ViewHolder();
 			convertView = mLayoutInflater.inflate(sourceid, null);
-            holder.channelBtn = (Button)convertView.findViewById(R.id.channel_item);
+            holder.channelBtn = (TextView)convertView.findViewById(R.id.channel_item);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
+        convertView.setBackgroundResource(R.drawable.channel_item_normal);
         channelHashMap.put(movieBean.getChannel(), holder.channelBtn);
         holder.channelBtn.setText(movieBean.getName());
         holder.channelBtn.setTag(position);
-        holder.channelBtn.setOnFocusChangeListener(new ItemViewFocusChangeListener());
-        holder.channelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(listener!=null)
-                    listener.onClick(view);
-            }
-        });
+      //  convertView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
+//        holder.channelBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if(listener!=null)
+//                    listener.onClick(view);
+//            }
+//        });
 		return convertView;
 	}
 
 
 	public static class ViewHolder {
-		public Button channelBtn;
+		public TextView channelBtn;
 
 	}
 

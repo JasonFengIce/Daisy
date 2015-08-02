@@ -16,6 +16,9 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.*;
 import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
@@ -254,6 +257,36 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         });
     }
   private HGridView scroll;
+    private View lastview;
+
+    private View.OnFocusChangeListener mFocusListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View view, boolean b) {
+               if(b){
+                   view.setBackgroundResource(R.drawable.channel_item_focus);
+                   AnimationSet animationSet = new AnimationSet(true);
+                   ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
+                           Animation.RELATIVE_TO_SELF, 0.5f,
+                           Animation.RELATIVE_TO_SELF, 0.5f);
+                   scaleAnimation.setDuration(200);
+                   animationSet.addAnimation(scaleAnimation);
+                   animationSet.setFillAfter(true);
+                   view.startAnimation(animationSet);
+               }else{
+                   view.setBackgroundResource(R.drawable.channel_item_normal);
+                   AnimationSet animationSet = new AnimationSet(true);
+                   ScaleAnimation scaleAnimation = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
+                           Animation.RELATIVE_TO_SELF, 0.5f,
+                           Animation.RELATIVE_TO_SELF, 0.5f);
+                   scaleAnimation.setDuration(200);
+                   animationSet.addAnimation(scaleAnimation);
+                   animationSet.setFillAfter(true);
+                   view.startAnimation(animationSet);
+               }
+            lastview = view;
+        }
+    };
+
     private void createChannelView(ChannelEntity[] channelEntities) {
         List<ChannelEntity> channelList;
         channelList = new ArrayList<ChannelEntity>();
@@ -286,12 +319,48 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 //            channelHashMap.put(channelEntities[i].getChannel(), textView);
 //        }
 
-        //scroll.setFocusable(true);
+        scroll.setFocusable(true);
+
+        scroll.mFocusListener = mFocusListener;
+
+        scroll.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(lastview!=null){
+
+
+
+                    lastview.setBackgroundResource(R.drawable.channel_item_normal);
+                    AnimationSet animationSet1 = new AnimationSet(true);
+                    ScaleAnimation scaleAnimation1 = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
+                            Animation.RELATIVE_TO_SELF, 0.5f,
+                            Animation.RELATIVE_TO_SELF, 0.5f);
+                    scaleAnimation1.setDuration(200);
+                    animationSet1.addAnimation(scaleAnimation1);
+                    animationSet1.setFillAfter(true);
+                    lastview.startAnimation(animationSet1);
+                }
+                view.setBackgroundResource(R.drawable.channel_item_focus);
+                AnimationSet animationSet = new AnimationSet(true);
+                ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
+                        Animation.RELATIVE_TO_SELF, 0.5f,
+                        Animation.RELATIVE_TO_SELF, 0.5f);
+                scaleAnimation.setDuration(200);
+                animationSet.addAnimation(scaleAnimation);
+                animationSet.setFillAfter(true);
+                view.startAnimation(animationSet);
+                lastview = view;
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         scroll.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Log.i("121","2");
-
                 channelChange = ChannelChange.CLICK_CHANNEL;
 
                 if (arrow_left.getVisibility() == View.GONE) {
@@ -307,6 +376,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         scroll.setHorizontalFadingEdgeEnabled(true);
         scroll.setFadingEdgeLength(72);
     }
+
     private void registerUpdateReceiver() {
         appUpdateReceiver = new AppUpdateReceiver();
         IntentFilter intentFilter = new IntentFilter();
