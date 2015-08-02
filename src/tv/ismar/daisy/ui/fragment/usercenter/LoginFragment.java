@@ -138,7 +138,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
     private void fetchVerificationCode() {
-//        phoneNumberEdit.setText("15370770697");
+        phoneNumberEdit.setText("15370770697");
         String phoneNumber = phoneNumberEdit.getText().toString();
         if (TextUtils.isEmpty(phoneNumber)) {
             phoneNumberPrompt.setText(mContext.getText(R.string.phone_number_not_be_null));
@@ -275,7 +275,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         loginPopup = new PopupWindow(popupLayout, width, height);
         loginPopup.setFocusable(true);
         loginPopup.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.transparent));
-        loginPopup.showAtLocation(fragmentView, Gravity.CENTER, 200, 0);
+        loginPopup.showAtLocation(fragmentView, Gravity.CENTER, 200, 50);
     }
 
 
@@ -286,7 +286,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         combineAccountPop = new PopupWindow(popupLayout, width, height);
         combineAccountPop.setFocusable(true);
         combineAccountPop.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.transparent));
-        combineAccountPop.showAtLocation(fragmentView, Gravity.CENTER, 200, 0);
+        combineAccountPop.showAtLocation(fragmentView, Gravity.CENTER, 200, 25);
 
         Button confirm = (Button) popupLayout.findViewById(R.id.confirm_account_combine);
         Button cancel = (Button) popupLayout.findViewById(R.id.cancel_account_combine);

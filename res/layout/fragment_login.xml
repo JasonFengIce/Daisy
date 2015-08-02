@@ -10,7 +10,7 @@
             android:layout_marginTop="@dimen/login_fragmet_view_margin_top"
             android:textSize="@dimen/h3_text_size"
             android:gravity="center"
-            android:textColor="#ffffff"
+            android:textColor="@android:color/holo_red_dark"
             android:id="@+id/phone_number_prompt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -59,8 +59,8 @@
     <TextView
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
-            android:textColor="@android:color/holo_red_dark"
-            android:textSize="@dimen/h3_text_size"
+            android:textColor="#ffffff"
+            android:textSize="24sp"
             android:text="@string/login_phone_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -71,7 +71,7 @@
             android:layout_marginTop="@dimen/association_phone_margin_top"
             android:textSize="@dimen/h3_text_size"
             android:gravity="center"
-            android:textColor="#ffffff"
+            android:textColor="@android:color/holo_red_dark"
             android:id="@+id/verification_prompt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -99,6 +99,7 @@
                 android:textSize="@dimen/h2_text_size"
                 android:gravity="center"
                 android:textColor="#FFFFFF"
+
                 android:text="@string/association_verification_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -107,10 +108,10 @@
     </RelativeLayout>
 
     <TextView
+            android:textColor="#FFFFFF"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
-            android:textColor="@android:color/holo_red_dark"
-            android:textSize="@dimen/h3_text_size"
+            android:textSize="24sp"
             android:text="@string/login_verification_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

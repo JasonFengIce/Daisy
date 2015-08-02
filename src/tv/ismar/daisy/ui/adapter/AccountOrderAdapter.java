@@ -12,9 +12,7 @@ import com.squareup.picasso.Picasso;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.data.usercenter.AccountsOrdersEntity;
-import tv.ismar.daisy.views.AsyncImageView;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -88,7 +86,7 @@ public class AccountOrderAdapter extends BaseAdapter {
             String mergeTime = time.format(Timestamp.valueOf(mergedate));
 
             if (item.type.equals("order_list")) {
-                holder.purchaseExtra.setText("( "+mergeTime + "合并至视云账户" + SimpleRestClient.mobile_number + " )");
+                holder.purchaseExtra.setText("( " + mergeTime + "合并至视云账户" + SimpleRestClient.mobile_number + " )");
             } else if (item.type.equals("snorder_list")) {
                 holder.purchaseExtra.setText(mergeTime + "合并至视云账户" + account);
             }
