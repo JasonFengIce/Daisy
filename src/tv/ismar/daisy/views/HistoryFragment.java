@@ -398,7 +398,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		mDataCollectionProperties = null;
 		super.onPause();
 	}
-	
+
 	@Override
 	public void onSectionSelectChanged(int index) {
 		mHGridView.jumpToSection(index);
@@ -525,13 +525,20 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
                         mLoadingDialog.dismiss();
                     }
                 });
-//                if(item.subitems!=null&&item.subitems.length>0&&history!=null){
-//                    tool.initClipInfo(history.sub_url, InitPlayerTool.FLAG_URL,history.price);
-//                }
-//                else{
-//
-//                }
-                tool.initClipInfo(url, InitPlayerTool.FLAG_URL,history.price);
+                if(history!=null){
+
+
+                    int  c = history.url.lastIndexOf("api");
+                    String url1 =  history.url.substring(c,history.url.length());
+                    url1 = SimpleRestClient.sRoot_url + "/" + url1;
+                    tool.initClipInfo(url1, InitPlayerTool.FLAG_URL,history.price);
+                }
+                else{
+                    tool.initClipInfo(url, InitPlayerTool.FLAG_URL,history.price);
+                }
+
+
+
 			}
 			if(mLoadingDialog!=null && mLoadingDialog.isShowing()) {
 				mLoadingDialog.dismiss();
