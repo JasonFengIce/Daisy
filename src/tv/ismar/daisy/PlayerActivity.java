@@ -748,7 +748,7 @@ private String[] paths = null;
 								+ item.item_pk + "/";
 						// Item item1 = simpleRestClient.getItem(itemUrl);
 					}
-					if (item.expense != null) {
+					if (item.expense != null && !isPreview) {
 						orderCheck();
 					}
 				}
@@ -1865,7 +1865,7 @@ private void initPlayerRelatedUI(){
 				if (adsumtime > 0) {
 					sendEmptyMessageDelayed(AD_COUNT_ACTION, 1000);
 				}else {
-//					mVideoView.playIndex(paths.length -1);
+					mVideoView.playIndex(paths.length -1);
 					ad_count_view.setVisibility(View.GONE);
 				}
 				break;
@@ -2232,7 +2232,17 @@ private void initPlayerRelatedUI(){
 		@Override
 		public void onSuccess(String info) {
 			if (info != null && "0".equals(info)) {
+				if(listItems ==null || (listItems != null && listItems.size() ==0)){
+                    PaymentDialog dialog = new PaymentDialog(
+                            PlayerActivity.this,
+                            R.style.PaymentDialog,
+                            ordercheckListener);
+                    item.model_name = "item";
+                    dialog.setItem(item);
+                    dialog.show();					
+				}
 			} else {
+				isPreview = false;
 				try {
 					JSONArray array = new JSONArray(info);
 					for (int i = 0; i < array.length(); i++) {
