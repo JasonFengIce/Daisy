@@ -1,5 +1,6 @@
 package tv.ismar.daisy.core.client;
 
+import android.text.TextUtils;
 import android.util.Log;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -51,10 +52,23 @@ public class JavaHttpClient {
         }
     }
 
+    public void doRequest(String api, Callback callback) {
+        this.mApi = api;
+        this.mCallback = callback;
+
+        doGet();
+    }
+
 
     private void doGet() {
+        String api;
         try {
-            String api = mApi + "?" + mParams;
+            if (TextUtils.isEmpty(mParams)) {
+                api = mApi;
+            } else {
+                api = mApi + "?" + mParams;
+            }
+
             OkHttpClient client = new OkHttpClient();
             client.setConnectTimeout(10, TimeUnit.SECONDS);
             Request request = new Request.Builder()

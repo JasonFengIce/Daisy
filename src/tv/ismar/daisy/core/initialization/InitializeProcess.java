@@ -10,7 +10,9 @@ import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.HttpMethod;
 import tv.ismar.daisy.core.client.HttpResponseMessage;
 import tv.ismar.daisy.core.client.JavaHttpClient;
+import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.data.http.CdnListEntity;
+import tv.ismar.daisy.data.http.IpLookUpEntity;
 import tv.ismar.daisy.data.table.location.*;
 import tv.ismar.daisy.utils.HardwareUtils;
 import tv.ismar.daisy.utils.StringUtils;
@@ -56,6 +58,7 @@ public class InitializeProcess implements Runnable {
         initalizeCity();
         initializeIsp();
         fetchCdnList();
+        fetchLocation();
     }
 
 
@@ -86,8 +89,14 @@ public class InitializeProcess implements Runnable {
                     String[] provinceArray = mContext.getResources().getStringArray(PROVINCE_STRING_ARRAY_RES[i]);
                     for (String province : provinceArray) {
                         ProvinceTable provinceTable = new ProvinceTable();
+                        String[] strs = province.split(",");
+                        String provinceName = strs[0];
+                        String provincePinYin = strs[1];
+
+                        provinceTable.province_name = provinceName;
+                        provinceTable.pinyin = provincePinYin;
+
                         provinceTable.province_id = StringUtils.getMd5Code(province);
-                        provinceTable.province_name = province;
                         provinceTable.district_id = StringUtils.getMd5Code(mDistrictArray[i]);
                         provinceTable.save();
                     }
@@ -180,8 +189,8 @@ public class InitializeProcess implements Runnable {
                 cdnTable.cdn_nick = cdnEntity.getNick();
                 cdnTable.cdn_flag = cdnEntity.getFlag();
                 cdnTable.cdn_ip = cdnEntity.getUrl();
-                cdnTable.district_id = "";
-                cdnTable.isp_id = "";
+                cdnTable.district_id = getDistrictId(cdnEntity.getNick());
+                cdnTable.isp_id = getIspId(cdnEntity.getNick());
                 cdnTable.route_trace = cdnEntity.getRoute_trace();
                 cdnTable.speed = 0;
                 cdnTable.checked = false;
@@ -193,13 +202,45 @@ public class InitializeProcess implements Runnable {
         }
     }
 
+
+    private void fetchLocation() {
+        String api = "http://lily.tvxio.com/iplookup";
+        new JavaHttpClient().doRequest(api, new JavaHttpClient.Callback() {
+            @Override
+            public void onSuccess(HttpResponseMessage result) {
+                IpLookUpEntity ipLookUpEntity = new Gson().fromJson(result.responseResult, IpLookUpEntity.class);
+                initializeLocation(ipLookUpEntity);
+            }
+
+            @Override
+            public void onFailed(HttpResponseMessage error) {
+                Log.e(TAG, "fetchLocation: error");
+            }
+        });
+
+
+    }
+
+    private void initializeLocation(IpLookUpEntity ipLookUpEntity) {
+        AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance(mContext);
+        accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.PROVINCE, ipLookUpEntity.getProv());
+        accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.CITY, ipLookUpEntity.getCity());
+
+        ProvinceTable provinceTable = new Select().from(ProvinceTable.class)
+                .where(ProvinceTable.PROVINCE_NAME + " = ?", ipLookUpEntity.getProv()).executeSingle();
+        if (provinceTable != null) {
+            accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.PROVINCE_PY, provinceTable.pinyin);
+        }
+    }
+
     private String getDistrictId(String cdnNick) {
         for (String district : mDistrictArray) {
             if (cdnNick.contains(district)) {
                 return StringUtils.getMd5Code(district);
             }
         }
-        return "";
+        // 第三方节点返回 "0"
+        return "0";
     }
 
     private String getIspId(String cdnNick) {
@@ -208,6 +249,6 @@ public class InitializeProcess implements Runnable {
                 return StringUtils.getMd5Code(isp);
             }
         }
-        return "";
+        return StringUtils.getMd5Code(mIspArray[mIspArray.length - 1]);
     }
 }

@@ -4,15 +4,15 @@
           android:versionName="65">
 
     <supports-screens
-            android:anyDensity="true"
-            android:largeScreens="true"
-            android:normalScreens="true"
-            android:resizeable="true"
-            android:smallScreens="true"/>
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true"/>
 
     <uses-sdk
-            android:minSdkVersion="14"
-            android:targetSdkVersion="14"/>
+        android:minSdkVersion="14"
+        android:targetSdkVersion="14"/>
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -38,35 +38,35 @@
     <uses-permission android:name="android.permission.READ_LOGS">
     </uses-permission>
     <application
-            android:name=".VodApplication"
-            android:icon="@drawable/ic_launcher"
-            android:label="@string/app_name">
+        android:name=".VodApplication"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name">
 
         <meta-data
-                android:name="AA_DB_NAME"
-                android:value="sakura.db"/>
+            android:name="AA_DB_NAME"
+            android:value="sakura.db"/>
         <meta-data
-                android:name="AA_DB_VERSION"
-                android:value="4"/>
+            android:name="AA_DB_VERSION"
+            android:value="5"/>
 
         <service
-                android:name="com.baidu.location.f"
-                android:enabled="true"
-                android:process=":remote">
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote">
         </service>
 
         <!--android:name=".ui.activity.AdvertisementActivity"-->
 
         <meta-data
-                android:name="com.baidu.lbsapi.API_KEY"
-                android:value="ezPBAhZuOKTRS73MKsRl4KhH"/>
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="ezPBAhZuOKTRS73MKsRl4KhH"/>
 
         <activity
-                android:name=".ui.activity.AdvertisementActivity"
-                android:screenOrientation="landscape"
-                android:launchMode="singleTask"
-                android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-                >
+            android:name=".ui.activity.AdvertisementActivity"
+            android:screenOrientation="landscape"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -75,18 +75,18 @@
         </activity>
 
         <activity
-                android:name=".ui.activity.TVGuideActivity"
-                android:screenOrientation="landscape"
-                android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:name=".ui.activity.TVGuideActivity"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
 
 
         </activity>
 
         <activity
-                android:name=".TopicActivity"
-                android:screenOrientation="landscape"
-                android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-                android:windowSoftInputMode="adjustUnspecified|stateHidden">
+            android:name=".TopicActivity"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden">
             <intent-filter>
                 <action android:name="tv.ismar.daisy.Topic"/>
 
@@ -94,10 +94,10 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".FilterActivity"
-                android:screenOrientation="landscape"
-                android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-                android:windowSoftInputMode="adjustUnspecified|stateHidden">
+            android:name=".FilterActivity"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden">
             <intent-filter>
                 <action android:name="tv.ismar.daisy.Filter"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -105,10 +105,10 @@
         </activity>
 
         <activity
-                android:name=".ItemDetailActivity"
-                android:screenOrientation="landscape"
-                android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-                android:windowSoftInputMode="adjustUnspecified|stateHidden">
+            android:name=".ItemDetailActivity"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden">
             <intent-filter>
                 <action android:name="tv.ismar.daisy.Item"/>
 
@@ -116,10 +116,10 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".PFilmItemdetailActivity"
-                android:screenOrientation="landscape"
-                android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-                android:windowSoftInputMode="adjustUnspecified|stateHidden">
+            android:name=".PFilmItemdetailActivity"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden">
             <intent-filter>
                 <action android:name="tv.ismar.daisy.PFileItem"/>
 
@@ -127,10 +127,10 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".EntertainmentDetailActivity"
-                android:screenOrientation="landscape"
-                android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-                android:windowSoftInputMode="adjustUnspecified|stateHidden">
+            android:name=".EntertainmentDetailActivity"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden">
             <intent-filter>
                 <action android:name="tv.ismar.daisy.EntertainmentItem"/>
 
@@ -138,10 +138,10 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".PackageDetailActivity"
-                android:screenOrientation="landscape"
-                android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-                >
+            android:name=".PackageDetailActivity"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            >
             <intent-filter>
                 <action android:name="tv.ismar.daisy.packageitem"/>
 
@@ -149,10 +149,10 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".PackageListDetailActivity"
-                android:screenOrientation="landscape"
-                android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-                >
+            android:name=".PackageListDetailActivity"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            >
             <intent-filter>
                 <action android:name="tv.ismar.daisy.packagelist"/>
 
@@ -161,11 +161,11 @@
         </activity>
 
         <activity
-                android:name="SearchActivity"
-                android:label="@string/app_name"
-                android:launchMode="singleTask"
-                android:screenOrientation="landscape"
-                android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:name="SearchActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="tv.ismar.daisy.Search"/>
 
@@ -173,9 +173,9 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".PlayFinishedActivity"
-                android:screenOrientation="landscape"
-                android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:name=".PlayFinishedActivity"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="tv.ismar.daisy.PlayFinished"/>
 
@@ -183,9 +183,9 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".PlayerActivity"
-                android:screenOrientation="landscape"
-                android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:name=".PlayerActivity"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="tv.ismar.daisy.Play"/>
 
@@ -193,9 +193,9 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".QiYiPlayActivity"
-                android:screenOrientation="landscape"
-                android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:name=".QiYiPlayActivity"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="tv.ismar.daisy.qiyiPlay"/>
 
@@ -203,10 +203,10 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".ChannelListActivity"
-                android:hardwareAccelerated="true"
-                android:screenOrientation="landscape"
-                android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:name=".ChannelListActivity"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="tv.ismar.daisy.Channel"/>
 
@@ -214,29 +214,29 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".DramaListActivity"
-                android:screenOrientation="landscape"
-                android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:name=".DramaListActivity"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
         <activity
-                android:name=".DramaVarietyMonthList"
-                android:screenOrientation="landscape"
-                android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:name=".DramaVarietyMonthList"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
         <activity
-                android:name=".DramaVarietyNoMonthList"
-                android:screenOrientation="landscape"
-                android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:name=".DramaVarietyNoMonthList"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
         <activity
-                android:name=".RelatedActivity"
-                android:screenOrientation="landscape"
-                android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:name=".RelatedActivity"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
         <activity
-                android:name=".ui.activity.UserCenterActivity"
-                android:screenOrientation="landscape"
-                android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:name=".ui.activity.UserCenterActivity"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
 
 
@@ -248,10 +248,10 @@
         <!-- =============================================================================== -->
         <!-- sakura -->
         <activity
-                android:launchMode="singleTask"
-                android:name="tv.ismar.sakura.LauncherActivity"
-                android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
-                >
+            android:launchMode="singleTask"
+            android:name="tv.ismar.sakura.LauncherActivity"
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
+            >
             <intent-filter>
                 <action android:name="cn.ismar.sakura.launcher"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -259,15 +259,15 @@
         </activity>
 
         <activity
-                android:launchMode="singleTask"
-                android:name="tv.ismar.sakura.ui.activity.HomeActivity"
-                android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
-                />
+            android:launchMode="singleTask"
+            android:name="tv.ismar.sakura.ui.activity.HomeActivity"
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
+            />
         <!--content provider-->
         <provider
-                android:authorities="tv.ismar.daisy"
-                android:exported="false"
-                android:name="com.activeandroid.content.ContentProvider"/>
+            android:authorities="tv.ismar.daisy"
+            android:exported="false"
+            android:name="com.activeandroid.content.ContentProvider"/>
 
     </application>
 

@@ -54,6 +54,7 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             String stringRes = mContext.getString(R.string.location_current_position);
             String geoId = sharedPreferences.getString(LOCATION_PREFERENCE_GEOID, "101020100");
+
             LocationTable locationTable = new Select().from(LocationTable.class).where("geo_id=?", geoId).executeSingle();
             if (null != locationTable) {
                 currentPostion.setText(String.format(stringRes, locationTable.city));
