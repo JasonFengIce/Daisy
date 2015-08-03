@@ -13,8 +13,7 @@
         android:id="@+id/section_one"
         android:layout_width="match_parent"
         android:layout_height="570dp"
-        android:layout_marginBottom="22dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginBottom="15dp"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:orientation="horizontal" >
@@ -112,7 +111,7 @@
                 android:id="@+id/sec_one_list_1_arrowup"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:background="#b2000000"
+                android:background="#b3303030"
                 android:focusable="true"
                 android:scaleType="center"
                 android:src="@drawable/arrow_up" />
@@ -159,7 +158,7 @@
                 android:layout_height="30dp"
                 android:layout_marginTop="1dp"
                 android:layout_below="@id/sports_live3"
-                android:background="#b2000000"
+                android:background="#b3303030"
                 android:focusable="true"
                 android:scaleType="center"
                 android:src="@drawable/arrow_down" />
