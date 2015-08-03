@@ -32,7 +32,7 @@ public class AccountsOrdersEntity {
         private String source;
         private String expiry_date;
         private String total_fee;
-        private String thumb_url;
+        private String image_url;
         private String start_date;
         public String type;
 
@@ -77,11 +77,11 @@ public class AccountsOrdersEntity {
         }
 
         public String getThumb_url() {
-            return thumb_url;
+            return image_url;
         }
 
         public void setThumb_url(String thumb_url) {
-            this.thumb_url = thumb_url;
+            this.image_url = thumb_url;
         }
 
         public String getStart_date() {

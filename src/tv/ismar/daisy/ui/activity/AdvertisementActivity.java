@@ -14,6 +14,7 @@ import com.activeandroid.ActiveAndroid;
 import com.squareup.picasso.Picasso;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.advertisement.AdvertisementManager;
+import tv.ismar.daisy.core.initialization.InitializeProcess;
 import tv.ismar.daisy.core.service.PosterUpdateService;
 import tv.ismar.daisy.data.table.weather.LocationTable;
 import tv.ismar.daisy.data.table.weather.ProvinceTable;
@@ -54,7 +55,7 @@ public class AdvertisementActivity extends Activity {
 //        placeAdvertisementPic(posterFile.getAbsolutePath());
         placeAdvertisementPic();
         messageHandler = new MessageHandler();
-        initLocationTable();
+        new Thread(new InitializeProcess(this)).start();
 
     }
 
@@ -155,51 +156,51 @@ public class AdvertisementActivity extends Activity {
     }
 
 
-    private void initLocationTable() {
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    InputStream inputStream = getResources().getAssets().open("location.txt");
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                    String s;
-                    ActiveAndroid.beginTransaction();
-                    while ((s = bufferedReader.readLine()) != null) {
-                        if (null != s && !s.equals("")) {
-                            String[] strings = s.split("\\,");
-
-
-                            Long geoId = Long.parseLong(strings[0]);
-                            String area = strings[1];
-                            String city = strings[2];
-                            String province = strings[3];
-
-                            String provinceId = HardwareUtils.getMd5ByString(province);
-
-                            if (area.equals(city)) {
-                                LocationTable locationTable = new LocationTable();
-                                locationTable.geo_id = geoId;
-                                locationTable.province_id = provinceId;
-                                locationTable.city = city;
-                                locationTable.save();
-
-                                ProvinceTable provinceTable = new ProvinceTable();
-                                provinceTable.province_id = provinceId;
-                                provinceTable.province_name = province;
-                                provinceTable.save();
-                            }
-                        }
-                    }
-                    ActiveAndroid.setTransactionSuccessful();
-
-                } catch (IOException e) {
-                    Log.d(TAG, "initLocationTable failed: " + e.getMessage());
-                } finally {
-                    ActiveAndroid.endTransaction();
-                }
-            }
-        }.start();
-    }
+//    private void initLocationTable() {
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                try {
+//                    InputStream inputStream = getResources().getAssets().open("location.txt");
+//                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+//                    String s;
+//                    ActiveAndroid.beginTransaction();
+//                    while ((s = bufferedReader.readLine()) != null) {
+//                        if (null != s && !s.equals("")) {
+//                            String[] strings = s.split("\\,");
+//
+//
+//                            Long geoId = Long.parseLong(strings[0]);
+//                            String area = strings[1];
+//                            String city = strings[2];
+//                            String province = strings[3];
+//
+//                            String provinceId = HardwareUtils.getMd5ByString(province);
+//
+//                            if (area.equals(city)) {
+//                                LocationTable locationTable = new LocationTable();
+//                                locationTable.geo_id = geoId;
+//                                locationTable.province_id = provinceId;
+//                                locationTable.city = city;
+//                                locationTable.save();
+//
+//                                ProvinceTable provinceTable = new ProvinceTable();
+//                                provinceTable.province_id = provinceId;
+//                                provinceTable.province_name = province;
+//                                provinceTable.save();
+//                            }
+//                        }
+//                    }
+//                    ActiveAndroid.setTransactionSuccessful();
+//
+//                } catch (IOException e) {
+//                    Log.d(TAG, "initLocationTable failed: " + e.getMessage());
+//                } finally {
+//                    ActiveAndroid.endTransaction();
+//                }
+//            }
+//        }.start();
+//    }
 
 
 }
