@@ -230,7 +230,7 @@ public class NetworkUtils {
 				+ SimpleRestClient.appVersion + "&accessToken="
 				+ SimpleRestClient.access_token + "&deviceToken="
 				+ SimpleRestClient.device_token + "&province=" + "HB"
-				+ "&city=" + "SJZ" + "&app=" + SimpleRestClient.appVersion
+				+ "&city=" + "SJZ" + "&app=" + "sky"
 				+ "&resolution=" + SimpleRestClient.screenWidth + ","
 				+ SimpleRestClient.screenHeight + "&dpi="
 				+ SimpleRestClient.densityDpi + "&adpid=" + "['" + adpid + "']";

@@ -152,8 +152,6 @@ public class PlayerActivity extends VodMenuAction {
 
 		DisplayMetrics metric = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metric);
-		int height = metric.heightPixels; // 屏幕高度（像素）
-		int densityDpi = metric.densityDpi; // 屏幕密度DPI（120 / 160 / 240）
 	}
 
 	@Override
@@ -745,6 +743,10 @@ public class PlayerActivity extends VodMenuAction {
 	}
 
 	private void initPlayer() {
+		if (item.pk != item.item_pk) {
+			subItemUrl = SimpleRestClient.root_url + "/api/subitem/" + item.pk
+					+ "/";
+		}
 		try {
 			if (urlInfo != null) {
 				urls[0] = urlInfo.getNormal();
@@ -872,7 +874,6 @@ public class PlayerActivity extends VodMenuAction {
 	}
 
 	private String mTitle;
-	private String mBufferTitle;
 
 	private void initPlayerRelatedUI() {
 
@@ -898,14 +899,6 @@ public class PlayerActivity extends VodMenuAction {
 		TaskStart();// cmstest.tvxio.com
 		sid = VodUserAgent.getSid(urls[currQuality]);
 		mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
-	}
-
-	private String getVideoPath() {
-		String url = "";
-		if (urlInfo != null) {
-
-		}
-		return url;
 	}
 
 	private Handler logHandler = new Handler();
@@ -1068,7 +1061,7 @@ public class PlayerActivity extends VodMenuAction {
 			if (listItems != null && listItems.size() > 0
 					&& currNum < (listItems.size() - 1)) {
 				item = listItems.get(currNum + 1);
-				subItemUrl = simpleRestClient.root_url + "/api/subitem/"
+				subItemUrl = SimpleRestClient.root_url + "/api/subitem/"
 						+ item.pk + "/";
 				bundle.remove("url");
 				bundle.putString("url", subItemUrl);
@@ -1429,12 +1422,6 @@ public class PlayerActivity extends VodMenuAction {
 					menu = new ISTVVodMenu(this);
 					ret = createMenu(menu);
 				}
-				String net = "";
-				if (SimpleRestClient.isLogin()) {
-					net = "yes";
-				} else {
-					net = "no";
-				}
 				if (onVodMenuOpened(menu)) {
 					menu.show();
 					hideMenuHandler.postDelayed(hideMenuRunnable, 60000);
@@ -1749,7 +1736,7 @@ public class PlayerActivity extends VodMenuAction {
 			sub = menu.addSubMenu(100,
 					getResources().getString(R.string.serie_switch));
 			for (Item i : listItems) {
-				String tempurl = simpleRestClient.root_url + "/api/subitem/"
+				String tempurl = SimpleRestClient.root_url + "/api/subitem/"
 						+ i.pk + "/";
 				if (subItemUrl.equalsIgnoreCase(tempurl)) {
 					sub.addItem(i.pk, i.title, true, true);
@@ -1912,7 +1899,7 @@ public class PlayerActivity extends VodMenuAction {
 		}
 
 		if (id > 100) {
-			subItemUrl = simpleRestClient.root_url + "/api/subitem/" + id + "/";
+			subItemUrl = SimpleRestClient.root_url + "/api/subitem/" + id + "/";
 			bundle.remove("url");
 			bundle.putString("url", subItemUrl);
 			addHistory(0);
