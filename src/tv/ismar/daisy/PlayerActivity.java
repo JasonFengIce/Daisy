@@ -1081,7 +1081,21 @@ public class PlayerActivity extends VodMenuAction {
 		if (mVideoView != null) {
 			if (listItems != null && listItems.size() > 0
 					&& currNum < (listItems.size() - 1)) {
+
+                if (menu == null) {
+                    createWindow();
+                    menu = new ISTVVodMenu(this);
+                    createMenu(menu);
+                }
+                ISTVVodMenuItem ii1 = menu.findItem(item.pk);
+                if(ii1!=null){
+                    ii1.unselect();
+                }
 				item = listItems.get(currNum + 1);
+                ISTVVodMenuItem ii2 = menu.findItem(item.pk);
+                if(ii2!=null){
+                    ii2.select();
+                }
 				subItemUrl = SimpleRestClient.root_url + "/api/subitem/"
 						+ item.pk + "/";
 				bundle.remove("url");
