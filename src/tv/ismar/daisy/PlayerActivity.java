@@ -312,7 +312,17 @@ public class PlayerActivity extends VodMenuAction {
 			// new ItemByUrlTask().execute();
 			String info = bundle.getString("ismartv");
 			urlInfo = AccessProxy.getIsmartvClipInfo(info);
-			getAdInfo("qiantiepian");
+			if (item.item_pk == item.pk)
+				itemUrl = SimpleRestClient.root_url + "/api/item/" + item.pk
+						+ "/";
+			else
+				itemUrl = SimpleRestClient.root_url + "/api/item/"
+						+ item.item_pk + "/";
+			if (isPreview) {
+				initPlayer();
+			} else {
+				getAdInfo("qiantiepian");
+			}
 		}
 	}
 
@@ -376,11 +386,6 @@ public class PlayerActivity extends VodMenuAction {
 	}
 
 	protected void playMainVideo() {
-		if (item.item_pk == item.pk)
-			itemUrl = SimpleRestClient.root_url + "/api/item/" + item.pk + "/";
-		else
-			itemUrl = SimpleRestClient.root_url + "/api/item/" + item.item_pk
-					+ "/";
 		if (item.expense != null && !item.ispayed && !isPreview) {
 			orderCheck();
 		} else {
@@ -415,7 +420,7 @@ public class PlayerActivity extends VodMenuAction {
 						listItems = new ArrayList<Item>();
 						for (int i = 0; i < serialItem.subitems.length; i++) {
 							serialItem.subitems[i].content_model = serialItem.content_model;
-                            serialItem.subitems[i].expense = serialItem.expense;
+							serialItem.subitems[i].expense = serialItem.expense;
 							listItems.add(serialItem.subitems[i]);
 						}
 					}
@@ -572,8 +577,9 @@ public class PlayerActivity extends VodMenuAction {
 							mHandler.sendEmptyMessageDelayed(AD_COUNT_ACTION,
 									1000);
 							mp.start();
+							checkTaskStart(0);
 						}
-						//checkTaskStart(0);
+
 					}
 				});
 		mVideoView
@@ -864,6 +870,8 @@ public class PlayerActivity extends VodMenuAction {
 					// TaskStart();// cmstest.tvxio.com
 					// sid = VodUserAgent.getSid(urls[currQuality]);
 					// mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
+					isBuffer = true;
+					showBuffer();
 					if (!isadvideoplaying) {
 						paths = new String[1];
 						paths[0] = urls[currQuality];
@@ -874,10 +882,6 @@ public class PlayerActivity extends VodMenuAction {
 							mVideoView.setVideoPaths(paths);
 						}
 					}
-					for (int i = 0; i < paths.length; i++) {
-						Log.v("aaaa", paths[i]);
-					}
-
 					ismedialplayerinit = false;
 				}
 
@@ -1040,14 +1044,14 @@ public class PlayerActivity extends VodMenuAction {
 		public void run() {
 			if (mVideoView != null) {
 				if (mVideoView.isPlaying()) {
-					if ( bufferLayout.isShown()) {
-					isBuffer = false;
-					hideBuffer();
+					if (bufferLayout.isShown()) {
+						isBuffer = false;
+						hideBuffer();
 					}
-//					if (isadvideoplaying && bufferLayout.isShown()) {
-//						isBuffer = false;
-//						hideBuffer();
-//					}
+					// if (isadvideoplaying && bufferLayout.isShown()) {
+					// isBuffer = false;
+					// hideBuffer();
+					// }
 					if (mVideoView.getAlpha() < 1) {
 						mVideoView.setAlpha(1);
 						bufferText.setText(BUFFERING);
@@ -1191,10 +1195,10 @@ public class PlayerActivity extends VodMenuAction {
 			} else {
 				history.title = item.title;
 			}
-            if(item.expense!=null)
-               history.price = (int)item.expense.price;
-            else
-                history.price = 0;
+			if (item.expense != null)
+				history.price = (int) item.expense.price;
+			else
+				history.price = 0;
 			history.adlet_url = item.adlet_url;
 			history.content_model = item.content_model;
 			history.is_complex = item.is_complex;
@@ -1244,7 +1248,10 @@ public class PlayerActivity extends VodMenuAction {
 	}
 
 	private void showPanel() {
-		if (isVodMenuVisible() || isadvideoplaying || !mVideoView.isPlaying())
+		if (isVodMenuVisible()
+				|| isadvideoplaying
+				|| !mVideoView.isPlaying()
+				&& (mVideoView.getmCurrentState() != IsmatvVideoView.STATE_PAUSED))
 			return;
 		if (!panelShow) {
 			panelLayout.startAnimation(panelShowAnimation);
@@ -1364,8 +1371,11 @@ public class PlayerActivity extends VodMenuAction {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean ret = false;
-		if (keyCode != KeyEvent.KEYCODE_BACK && isadvideoplaying)
-			return ret;
+		if (keyCode == KeyEvent.KEYCODE_BACK && isadvideoplaying) {
+			mVideoView.stopPlayback();
+			finish();
+			return true;
+		}
 		if (!isVodMenuVisible() && mVideoView != null) {
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
@@ -1627,7 +1637,7 @@ public class PlayerActivity extends VodMenuAction {
 			bufferLayout.setVisibility(View.VISIBLE);
 			bufferDuration = System.currentTimeMillis();
 		}
-		//mHandler.sendEmptyMessageDelayed(BUFFER_COUNTDOWN_ACTION, 1000);
+		// mHandler.sendEmptyMessageDelayed(BUFFER_COUNTDOWN_ACTION, 1000);
 	}
 
 	protected void hideBuffer() {
@@ -1728,8 +1738,8 @@ public class PlayerActivity extends VodMenuAction {
 					}
 					showDialog("网络不给力，请检查网络或稍后再试!");
 				} else {
-//					mHandler.sendEmptyMessageDelayed(BUFFER_COUNTDOWN_ACTION,
-//							1000);
+					// mHandler.sendEmptyMessageDelayed(BUFFER_COUNTDOWN_ACTION,
+					// 1000);
 				}
 				break;
 			case DISMISS_AD_DIALOG:
@@ -1743,8 +1753,8 @@ public class PlayerActivity extends VodMenuAction {
 					sendEmptyMessageDelayed(AD_COUNT_ACTION, 1000);
 				} else {
 					isadvideoplaying = false;
-//                    if(mVideoView!=null)
-//					   mVideoView.playIndex(paths.length - 1);
+					// if(mVideoView!=null)
+					// mVideoView.playIndex(paths.length - 1);
 					ad_count_view.setVisibility(View.GONE);
 				}
 				break;
@@ -1994,8 +2004,10 @@ public class PlayerActivity extends VodMenuAction {
 	protected void onPause() {
 		needOnresume = true;
 		try {
-			createHistory(seekPostion);
-			addHistory(seekPostion);
+			if (!isadvideoplaying) {
+				createHistory(seekPostion);
+				addHistory(seekPostion);
+			}
 			checkTaskPause();
 			timeTaskPause();
 			removeAllHandler();
