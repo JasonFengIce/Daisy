@@ -75,7 +75,8 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
     private AsyncImageView mDetailPreviewImg;
     private DetailAttributeContainer mDetailAttributeContainer;
     private LaunchHeaderLayout weatherFragment;
-
+    private String channel;
+    private String slug;
     private void initViews() {
         large_layout = findViewById(R.id.large_layout);
         mChannel = getIntent().getStringExtra("channel");
@@ -111,6 +112,8 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 intent.putExtra(EventProperty.SECTION, "");
                 InitPlayerTool tool = new InitPlayerTool(
                         EntertainmentDetailActivity.this);
+                tool.slug = slug;
+                tool.channel = channel;
                 tool.setonAsyncTaskListener(new InitPlayerTool.onAsyncTaskHandler() {
 
                     @Override
@@ -235,6 +238,8 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
         Intent intent = getIntent();
         if (intent != null) {
             if (intent.getSerializableExtra("item") != null) {
+                channel = intent.getStringExtra("channel");
+                slug = intent.getStringExtra(EventProperty.SECTION);
                 mItem = (Item) intent.getSerializableExtra("item");
                 if (mItem != null) {
                     try {

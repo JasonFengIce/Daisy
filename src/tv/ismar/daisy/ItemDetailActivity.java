@@ -125,6 +125,8 @@ public class ItemDetailActivity extends BaseActivity implements
 	private Drawable drawableleftcollect;
 	private Drawable drawableleftdrama;
 	private Drawable drawableleftbuy;
+    private String slug;
+    private String channel;
 	private void initViews() {
 		isbuy_label = (ImageView)findViewById(R.id.isbuy_label);
 		mDetailLeftContainer = (RelativeLayout) findViewById(R.id.detail_left_container);
@@ -182,6 +184,8 @@ public class ItemDetailActivity extends BaseActivity implements
 		initViews();
 		Intent intent = getIntent();
 		if (intent != null) {
+            channel = intent.getStringExtra("channel");
+            slug = intent.getStringExtra(EventProperty.SECTION);
 			if (intent.getSerializableExtra("item") != null) {
 				mItem = (Item) intent.getSerializableExtra("item");
 				if (mItem != null) {
@@ -876,6 +880,8 @@ private boolean isPause = false;
 				intent.putExtra(EventProperty.SECTION, mSection);
 				InitPlayerTool tool = new InitPlayerTool(
 						ItemDetailActivity.this);
+                tool.channel = channel;
+                tool.slug = slug;
 				tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
 
 					@Override
@@ -929,8 +935,10 @@ private boolean isPause = false;
 						// 播放
 						if (isDrama())
 							tool.initClipInfo(subUrl, InitPlayerTool.FLAG_URL);
-						else
-							tool.initClipInfo(mItem, InitPlayerTool.FLAG_ITEM);
+						else{
+                            tool.initClipInfo(mItem, InitPlayerTool.FLAG_ITEM);
+                        }
+
 					}
 
 					// tool.initClipInfo(subUrl,InitPlayerTool.FLAG_URL);
