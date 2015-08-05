@@ -13,11 +13,13 @@ import android.os.Message;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.util.Log;
+import com.activeandroid.query.Delete;
 import com.google.gson.Gson;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.advertisement.AdvertisementManager;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.LaunchAdvertisementEntity;
+import tv.ismar.daisy.data.table.AdvertisementTable;
 import tv.ismar.daisy.utils.AppUtils;
 
 import java.io.File;
@@ -115,6 +117,7 @@ public class PosterUpdateService extends Service {
                     AdvertisementManager.getInstance(mContext).updateAppLaunchAdvertisement(launchAdvertisementEntity);
 
                 } else {
+                    new Delete().from(AdvertisementTable.class).execute();
                     Log.e(TAG, "fetch launch app advertisement error:\n"
                             + "retcode: " + launchAdvertisementEntity.getRetcode() + "\n"
                             + "retmsg: " + launchAdvertisementEntity.getRetmsg());
