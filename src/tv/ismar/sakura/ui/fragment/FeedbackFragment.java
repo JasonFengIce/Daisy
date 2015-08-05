@@ -53,6 +53,10 @@ public class FeedbackFragment extends Fragment implements RadioGroup.OnCheckedCh
     private SakuraEditText phoneNumberText;
     private SakuraEditText descriptioinText;
 
+    private ImageView arrowUp;
+    private ImageView arrowDown;
+
+
     private String snCode = TextUtils.isEmpty(SimpleRestClient.sn_token) ? "sn is null" : SimpleRestClient.sn_token;
 
 
@@ -81,6 +85,11 @@ public class FeedbackFragment extends Fragment implements RadioGroup.OnCheckedCh
         phoneNumberText = (SakuraEditText) view.findViewById(R.id.phone_number_edit);
         descriptioinText = (SakuraEditText) view.findViewById(R.id.description_edit);
 
+        arrowUp = (ImageView) view.findViewById(R.id.arrow_up);
+        arrowDown = (ImageView) view.findViewById(R.id.arrow_down);
+
+        arrowUp.setOnClickListener(this);
+        arrowDown.setOnClickListener(this);
     }
 
     @Override
@@ -95,6 +104,12 @@ public class FeedbackFragment extends Fragment implements RadioGroup.OnCheckedCh
         switch (view.getId()) {
             case R.id.submit_btn:
                 initPopWindow();
+                break;
+            case R.id.arrow_down:
+                feedBackListView.smoothScrollBy(100, 1);
+                break;
+            case R.id.arrow_up:
+                feedBackListView.smoothScrollBy(-100, 1);
                 break;
         }
     }
