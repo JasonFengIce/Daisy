@@ -101,7 +101,8 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
 
         for (int i = 0; i < 7; i++) {
             View itemContainer = LayoutInflater.from(context).inflate(R.layout.item_comic_fragment, null);
-            itemContainer.setTag(posters);
+            itemContainer.setTag(posters.get(i));
+            itemContainer.setOnClickListener(ItemClickListener);
             ImageView itemImg = (ImageView) itemContainer.findViewById(R.id.item_img);
             TextView itemText = (TextView) itemContainer.findViewById(R.id.item_title);
 

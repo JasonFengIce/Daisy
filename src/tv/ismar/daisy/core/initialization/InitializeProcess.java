@@ -7,6 +7,7 @@ import android.widget.TextView;
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
+import com.baidu.location.*;
 import com.google.gson.Gson;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.HttpMethod;
@@ -61,7 +62,7 @@ public class InitializeProcess implements Runnable {
         initializeIsp();
         fetchCdnList();
         if (TextUtils.isEmpty(AccountSharedPrefs.getInstance(mContext).getSharedPrefs(AccountSharedPrefs.CITY))) {
-            fetchLocation();
+            fetchLocationByIP();
         }
 
     }
@@ -208,7 +209,20 @@ public class InitializeProcess implements Runnable {
     }
 
 
-    private void fetchLocation() {
+    private void fetchLocationByGPS() {
+        LocationClient locationClient = new LocationClient(mContext);
+        locationClient.registerLocationListener(new BDLocationListener() {
+            @Override
+            public void onReceiveLocation(BDLocation bdLocation) {
+
+            }
+        });
+
+        GeofenceClient geofenceClient = new GeofenceClient(mContext);
+        LocationClientOption locationClientOption = new LocationClientOption();
+    }
+
+    private void fetchLocationByIP() {
         String api = "http://lily.tvxio.com/iplookup";
         new JavaHttpClient().doRequest(api, new JavaHttpClient.Callback() {
             @Override
