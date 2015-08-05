@@ -22,6 +22,7 @@ public class InitPlayerTool {
     private int price = 0;
     public String slug;
     public String channel;
+    public boolean isSubitemPreview = false;
 	public InitPlayerTool(Context context){
 		this.mContext = context;
 		intent = new Intent();
@@ -96,7 +97,12 @@ public class InitPlayerTool {
             	if(!mIsPreviewVideo)
             	    clip = item.clip;
             	else{
-            		clip = item.preview;
+                    if(isSubitemPreview){
+                        clip = item.clip;
+                    }
+                    else{
+                        clip = item.preview;
+                    }
             		item.isPreview = true;
             	}
             	if(item.clip != null&&clip!=null){
