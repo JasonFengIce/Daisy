@@ -377,14 +377,14 @@ public class PlayerActivity extends VodMenuAction {
 
 	protected void playMainVideo() {
 		if (item.item_pk == item.pk)
+			itemUrl = SimpleRestClient.root_url + "/api/item/" + item.pk + "/";
+		else
 			itemUrl = SimpleRestClient.root_url + "/api/item/" + item.item_pk
 					+ "/";
 		if (item.expense != null && !item.ispayed && !isPreview) {
 			orderCheck();
 		} else {
 			if (urlInfo != null && item.pk == item.item_pk) {// 单集节目
-				itemUrl = SimpleRestClient.root_url + "/api/item/"
-						+ item.item_pk + "/";
 				initPlayer();
 			} else {// 电视剧单集,需要反查父类
 				new FetchSeriallTask().execute();
@@ -396,7 +396,7 @@ public class PlayerActivity extends VodMenuAction {
 	class FetchSeriallTask extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected void onPostExecute(Boolean result) {
-			if (result) {
+			if (result) { // 免费或已经付费的电视剧单集直接播放
 				initPlayer();
 			}
 		}
@@ -407,15 +407,31 @@ public class PlayerActivity extends VodMenuAction {
 			try {
 				currNum = item.position;
 				Log.d(TAG, "currNum ===" + currNum);
-				if (listItems.size() == 0) {
+				if (listItems.size() == 0) { // 剧集列表为空，第一次请求需要将所有剧集添加
 					String seriaUrl = SimpleRestClient.root_url + "/api/item/"
 							+ item.item_pk + "/";
 					serialItem = simpleRestClient.getItem(seriaUrl);
 					if (serialItem != null && serialItem.subitems != null) {
 						listItems = new ArrayList<Item>();
 						for (int i = 0; i < serialItem.subitems.length; i++) {
+							serialItem.subitems[i].content_model = serialItem.content_model;
 							listItems.add(serialItem.subitems[i]);
 						}
+					}
+				} else { // 电视剧联播，非第一集需要重新获取clip
+					clip = item.clip;
+					urlInfo = AccessProxy.parse(SimpleRestClient.root_url
+							+ "/api/clip/" + clip.pk + "/", VodUserAgent
+							.getAccessToken(SimpleRestClient.sn_token),
+							PlayerActivity.this);
+					result = true;
+					if (urlInfo.getIqiyi_4_0().length() > 0) {
+						Intent intent = new Intent();
+						intent.setAction("tv.ismar.daisy.qiyiPlay");
+						intent.putExtra("iqiyi", urlInfo.getIqiyi_4_0());
+						intent.putExtra("item", item);
+						startActivity(intent);
+						PlayerActivity.this.finish();
 					}
 				}
 				result = true;
@@ -430,7 +446,7 @@ public class PlayerActivity extends VodMenuAction {
 				result = false;
 			}
 			if (serialItem != null && serialItem.expense != null
-					&& payedItemspk.contains(item.pk)) {
+					&& !payedItemspk.contains(item.pk)) {
 				orderCheck();
 				return false;
 			}
@@ -1121,12 +1137,29 @@ public class PlayerActivity extends VodMenuAction {
 
 	}
 
-	private void checkContinueOrPay(int pk) {
-		if (payedItemspk.contains(pk) || item.expense == null) {
+	private void checkContinueOrPay(final int pk) {
+		if (payedItemspk.contains(pk) || item.expense == null) { // 已经付费或免费
 			isBuffer = true;
 			showBuffer();
-			// new ItemByUrlTask().execute();
-			getAdInfo("qiantiepian");
+			new Thread() {
+				@Override
+				public void run() {
+					super.run();
+					subItemUrl = SimpleRestClient.root_url + "/api/subitem/"
+							+ pk + "/";
+					try {
+						item = simpleRestClient.getItem(subItemUrl);
+						getAdInfo("qiantiepian");
+					} catch (JsonSyntaxException e) {
+						e.printStackTrace();
+					} catch (ItemOfflineException e) {
+						e.printStackTrace();
+					} catch (NetworkException e) {
+						e.printStackTrace();
+					}
+				}
+
+			}.start();
 		} else {
 			for (Item i : listItems) {
 				if (i.pk == pk) {
@@ -1998,7 +2031,7 @@ public class PlayerActivity extends VodMenuAction {
 
 		@Override
 		public void payResult(boolean result) {
-			if (item.subitems != null && item.expense != null) {
+			if (item.subitems != null && item.expense != null) {// 剧集且未付费
 				if (result) {
 					isBuffer = true;
 					seekPostion = 0;
@@ -2011,7 +2044,7 @@ public class PlayerActivity extends VodMenuAction {
 					PlayerActivity.this.finish();
 				}
 			} else {
-				if (result) {
+				if (result) { // 单集,预告片或着历史记录,收藏进入
 					if (mHistory != null) {
 						mHistory.last_position = item.preview.length * 1000;
 					} else {
