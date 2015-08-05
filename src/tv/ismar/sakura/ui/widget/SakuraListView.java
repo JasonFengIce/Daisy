@@ -33,26 +33,24 @@ public class SakuraListView extends ListView {
 
     @Override
     public boolean dispatchHoverEvent(MotionEvent event) {
-        int position = pointToPosition((int) event.getX(), (int) event.getY());
-
-        if (AppConstant.DEBUG) {
-
-            Log.d(TAG, "list position is --->" + position);
-            Log.d(TAG, "hover event is --->" + event.getAction());
-        }
-        if ((event.getAction() == MotionEvent.ACTION_HOVER_ENTER && position != -1) || (event.getAction() == MotionEvent.ACTION_HOVER_MOVE && position != -1)) {
-
-            setFocusableInTouchMode(true);
-            setFocusable(true);
-            requestFocusFromTouch();
-            requestFocus();
-            setSelection(position);
-
-        } else {
-            clearFocus();
-
-        }
-        return true;
+//        int position = pointToPosition((int) event.getX(), (int) event.getY());
+//
+//        if (AppConstant.DEBUG) {
+//
+//            Log.d(TAG, "list position is --->" + position);
+//            Log.d(TAG, "hover event is --->" + event.getAction());
+//        }
+//        if ((event.getAction() == MotionEvent.ACTION_HOVER_ENTER && position != -1) || (event.getAction() == MotionEvent.ACTION_HOVER_MOVE && position != -1)) {
+//
+//            setFocusable(true);
+//            requestFocus();
+//            setSelection(position);
+//
+//        } else {
+//            clearFocus();
+//
+//        }
+        return false;
     }
 
     public void setMySelection(int position) {

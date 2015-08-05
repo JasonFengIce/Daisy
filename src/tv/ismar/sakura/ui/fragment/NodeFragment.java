@@ -128,6 +128,9 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
 
         speedTestButton.setOnClickListener(this);
         nodeListView.setOnItemClickListener(this);
+        unbindButton.setOnClickListener(this);
+
+        nodeListView.setNextFocusDownId(nodeListView.getId());
         return view;
     }
 

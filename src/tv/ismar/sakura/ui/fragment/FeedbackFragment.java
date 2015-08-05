@@ -87,7 +87,7 @@ public class FeedbackFragment extends Fragment implements RadioGroup.OnCheckedCh
     public void onResume() {
         super.onResume();
         createProblemsRadio(FeedbackProblem.getInstance().getCache());
-//        fetchFeedback(snCode, "5");
+        fetchFeedback(snCode, "5");
     }
 
     @Override
