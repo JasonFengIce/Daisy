@@ -56,8 +56,8 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         HttpDownloadTask.OnCompleteListener, View.OnClickListener, AdapterView.OnItemClickListener {
     private static final String TAG = "NodeFragment";
 
-    private static String NORMAL_SELECTION = CdnTable.DISTRICT_ID + "=? and " + CdnTable.ISP_ID + "=?" + " or " + CdnTable.CDN_FLAG + "  <> ?" + " ORDER BY " + CdnTable.ISP_ID + "," + CdnTable.SPEED + " DESC";
-    private static String OTHER_SELECTION = CdnTable.DISTRICT_ID + "=? and " + CdnTable.ISP_ID + " in (?, ?)" + " or " + CdnTable.CDN_FLAG + "  <> ?" + " ORDER BY " + CdnTable.ISP_ID + "," + CdnTable.SPEED + " DESC";
+    private static String NORMAL_SELECTION = CdnTable.DISTRICT_ID + "=? and " + CdnTable.ISP_ID + "=?" + " or " + CdnTable.CDN_FLAG + "  <> ?" + " ORDER BY " + CdnTable.ISP_ID + " DESC," + CdnTable.SPEED + " DESC";
+    private static String OTHER_SELECTION = CdnTable.DISTRICT_ID + "=? and " + CdnTable.ISP_ID + " in (?, ?)" + " or " + CdnTable.CDN_FLAG + "  <> ?" + " ORDER BY " + CdnTable.ISP_ID + " DESC," + CdnTable.SPEED + " DESC";
 
     private static final String NOT_THIRD_CDN = "0";
 
@@ -127,6 +127,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         speedTestButton = (SakuraButton) view.findViewById(R.id.speed_test_btn);
 
         speedTestButton.setOnClickListener(this);
+        nodeListView.setOnItemClickListener(this);
         return view;
     }
 
@@ -158,6 +159,8 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         }
         setSpinnerItemSelectedListener();
         getLoaderManager().initLoader(NORMAL_ISP_FLAG, null, this);
+
+
     }
 
     @Override
@@ -183,6 +186,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         cdnCollections = cursorToList(data);
         nodeListAdapter.swapCursor(data);
+        updateCurrentNode();
     }
 
 
@@ -405,7 +409,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                bindCdn(SimpleRestClient.sn_token, cndId);
+                bindCdn(SimpleRestClient.sn_token, cndId);
                 selectNodePup.dismiss();
             }
         });
