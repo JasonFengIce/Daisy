@@ -20,6 +20,8 @@ public class InitPlayerTool {
     public final static String FLAG_ITEM = "item";
     private boolean mIsPreviewVideo = false;
     private int price = 0;
+    public String slug;
+    public String channel;
 	public InitPlayerTool(Context context){
 		this.mContext = context;
 		intent = new Intent();
@@ -98,6 +100,8 @@ public class InitPlayerTool {
             		item.isPreview = true;
             	}
             	if(item.clip != null&&clip!=null){
+                    item.channel = channel;
+                    item.slug = slug;
                 	intent.putExtra("item", item);
     				info = AccessProxy.getVideoInfo(SimpleRestClient.root_url
     						+ "/api/clip/" + clip.pk + "/",

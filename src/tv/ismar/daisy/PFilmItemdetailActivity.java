@@ -71,7 +71,8 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
     private TextView bean_score;
     private View top_view_layout;
     private View bottom_view_layout;
-
+    private String channel;
+    private String slug;
     private LaunchHeaderLayout weatherFragment;
 
     @Override
@@ -90,6 +91,8 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         Intent intent = getIntent();
         if (intent != null) {
             if (intent.getSerializableExtra("item") != null) {
+                channel = intent.getStringExtra("channel");
+                slug = intent.getStringExtra(EventProperty.SECTION);
                 mItem = (Item) intent.getSerializableExtra("item");
                 if (mItem != null) {
                     try {
@@ -830,6 +833,8 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 intent.putExtra(EventProperty.SECTION, "");
                 InitPlayerTool tool = new InitPlayerTool(
                         PFilmItemdetailActivity.this);
+                tool.channel = channel;
+                tool.slug = slug;
                 tool.setonAsyncTaskListener(new InitPlayerTool.onAsyncTaskHandler() {
 
                     @Override

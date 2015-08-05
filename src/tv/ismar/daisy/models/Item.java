@@ -55,4 +55,6 @@ public class Item implements Serializable {
     public String detail_url;
     public String subtitle;
     public boolean ispayed;
+    public String channel;
+    public String slug;
 }

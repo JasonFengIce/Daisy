@@ -49,7 +49,7 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 	private static final int STATE_PREPARING = 1;
 	private static final int STATE_PREPARED = 2;
 	private static final int STATE_PLAYING = 3;
-	private static final int STATE_PAUSED = 4;
+	public static final int STATE_PAUSED = 4;
 	private static final int STATE_PLAYBACK_COMPLETED = 5;
 	private int mCurrentState = STATE_IDLE;
 	private int mTargetState = STATE_IDLE;
@@ -804,6 +804,10 @@ private int findVideoUrlIndex(String url){
 	private boolean isInPlaybackState() {
 		return (player != null && mCurrentState != STATE_ERROR
 				&& mCurrentState != STATE_IDLE && mCurrentState != STATE_PREPARING);
+	}
+
+	public int getmCurrentState() {
+		return mCurrentState;
 	}
 
 	public boolean canPause() {
