@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import tv.ismar.daisy.R;
 import tv.ismar.sakura.LauncherActivity;
@@ -16,7 +17,7 @@ import tv.ismar.sakura.LauncherActivity;
  * Created by huaijie on 7/3/15.
  */
 public class HelpFragment extends Fragment implements View.OnClickListener {
-    private ImageView ismartvIcon;
+    private ImageButton ismartvIcon;
 
     private Context mContext;
 
@@ -29,7 +30,7 @@ public class HelpFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_help, null);
-        ismartvIcon = (ImageView) view.findViewById(R.id.ismartv_icon);
+        ismartvIcon = (ImageButton) view.findViewById(R.id.ismartv_icon);
         ismartvIcon.setOnClickListener(this);
         return view;
     }
