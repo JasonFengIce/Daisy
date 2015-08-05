@@ -1180,17 +1180,10 @@ public class PlayerActivity extends VodMenuAction {
 
 			}.start();
 		} else {
-			for (Item i : listItems) {
-				if (i.pk == pk) {
-					item = i;
-					break;
-				}
-			}
 			mVideoView.stopPlayback();
 			PaymentDialog dialog = new PaymentDialog(PlayerActivity.this,
 					R.style.PaymentDialog, ordercheckListener);
 			item.model_name = "subitem";
-			item.pk = pk;
 			dialog.setItem(item);
 			dialog.show();
 		}
@@ -1969,8 +1962,13 @@ public class PlayerActivity extends VodMenuAction {
 			if (mVideoView != null) {
 				mVideoView.setAlpha(0);
 			}
-
-			checkContinueOrPay(id);
+			for (Item i : listItems) {
+				if (i.pk == id) {
+					item = i;
+					break;
+				}
+			}
+			checkContinueOrPay(item.pk);
 		}
 
 		return true;
@@ -2063,7 +2061,7 @@ public class PlayerActivity extends VodMenuAction {
 
 		@Override
 		public void payResult(boolean result) {
-			if (item.subitems != null && item.expense != null) {// 剧集且未付费
+			if (item.item_pk != item.pk) {// 剧集且未付费
 				if (result) {
 					isBuffer = true;
 					seekPostion = 0;
