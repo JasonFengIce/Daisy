@@ -589,6 +589,10 @@ public class PlayerActivity extends VodMenuAction {
 						if (paths != null && url != null
 								&& paths[paths.length - 1].equals(url)) {
 							if (item.isPreview) {
+								if(item.expense == null){
+									finish();
+									return;
+								}
 								mVideoView.stopPlayback();
 								PaymentDialog dialog = new PaymentDialog(
 										PlayerActivity.this,
