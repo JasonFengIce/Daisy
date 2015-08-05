@@ -341,8 +341,16 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         history.is_complex = item.is_complex;
         history.last_position = item.offset;
         history.last_quality = item.quality;
-        history.url = item.url;
-        history.sub_url = item.item_url;
+        if("subitem".equals(item.model_name)){
+            history.sub_url = item.url;
+            history.url = SimpleRestClient.root_url + "/api/item/" + item.item_pk + "/";
+        }
+        else{
+            history.url = item.url;
+
+        }
+
+
         history.is_continue = true;
         if (SimpleRestClient.isLogin())
             DaisyUtils.getHistoryManager(getActivity()).addHistory(history,
