@@ -118,7 +118,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         currentNodeTextView = (TextView) view.findViewById(R.id.current_node_text);
         unbindButton = (SakuraButton) view.findViewById(R.id.unbind_node);
         nodeListView = (SakuraListView) view.findViewById(R.id.node_list);
-        nodeListAdapter = new NodeListAdapter(getActivity(), null, true);
+        nodeListAdapter = new NodeListAdapter(mContext, null, true);
         nodeListView.setAdapter(nodeListAdapter);
 
         provinceSpinner = (Spinner) view.findViewById(R.id.province_spinner);
@@ -313,7 +313,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         client.excute(snCode, cdnId, new Callback<Empty>() {
             @Override
             public void success(Empty empty, Response response) {
-                Toast.makeText(getActivity(), R.string.node_bind_success, Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, R.string.node_bind_success, Toast.LENGTH_LONG).show();
                 fetchBindedCdn(snCode);
             }
 
@@ -399,7 +399,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
      * @param cndId
      */
     private void showSelectNodePop(final int cndId) {
-        View contentView = LayoutInflater.from(getActivity())
+        View contentView = LayoutInflater.from(mContext)
                 .inflate(R.layout.sakura_popup_select_node, null);
         contentView.setBackgroundResource(R.drawable.sakura_bg_popup);
         selectNodePup = new PopupWindow(contentView, 600, 180);
@@ -428,14 +428,14 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
 
 
     private void showCdnTestDialog() {
-        cdnTestDialog = new Dialog(getActivity(), R.style.ProgressDialog);
+        cdnTestDialog = new Dialog(mContext, R.style.ProgressDialog);
         Window dialogWindow = cdnTestDialog.getWindow();
         dialogWindow.setGravity(Gravity.CENTER);
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
 
         lp.width = 400;
         lp.height = 150;
-        View mView = LayoutInflater.from(getActivity()).inflate(R.layout.sakura_dialog_cdn_test_progress, null);
+        View mView = LayoutInflater.from(mContext).inflate(R.layout.sakura_dialog_cdn_test_progress, null);
         cdnTestDialog.setContentView(mView, lp);
         cdnTestDialog.setCanceledOnTouchOutside(false);
 
@@ -459,7 +459,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
                 /**
                  * 开始测速
                  */
-                httpDownloadTask = new HttpDownloadTask(getActivity());
+                httpDownloadTask = new HttpDownloadTask(mContext);
                 httpDownloadTask.setCompleteListener(NodeFragment.this);
                 httpDownloadTask.execute(cdnCollections);
             }
@@ -490,7 +490,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         }
 
 
-        View contentView = LayoutInflater.from(getActivity())
+        View contentView = LayoutInflater.from(mContext)
                 .inflate(R.layout.sakura_popup_cdn_test_complete, null);
         /**
          * 标题
@@ -531,9 +531,8 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         speedLog.setCdn_name(nodeName);
         speedLog.setSpeed(speed);
 
-        SharedPreferences preferences = getActivity().getSharedPreferences("user_location_info", Context.MODE_PRIVATE);
-        speedLog.setLocation(preferences.getString("user_default_city", ""));
-        speedLog.setLocation(preferences.getString("user_default_isp", ""));
+        speedLog.setLocation(AccountSharedPrefs.getInstance(mContext).getSharedPrefs(AccountSharedPrefs.CITY));
+        speedLog.setLocation(AccountSharedPrefs.getInstance(mContext).getSharedPrefs(AccountSharedPrefs.ISP));
 
 
         Gson gson = new Gson();
