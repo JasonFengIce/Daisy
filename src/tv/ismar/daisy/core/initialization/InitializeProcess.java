@@ -1,7 +1,9 @@
 package tv.ismar.daisy.core.initialization;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
+import android.widget.TextView;
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
@@ -58,7 +60,10 @@ public class InitializeProcess implements Runnable {
         initalizeCity();
         initializeIsp();
         fetchCdnList();
-        fetchLocation();
+        if (TextUtils.isEmpty(AccountSharedPrefs.getInstance(mContext).getSharedPrefs(AccountSharedPrefs.CITY))) {
+            fetchLocation();
+        }
+
     }
 
 
@@ -96,7 +101,7 @@ public class InitializeProcess implements Runnable {
                         provinceTable.province_name = provinceName;
                         provinceTable.pinyin = provincePinYin;
 
-                        provinceTable.province_id = StringUtils.getMd5Code(province);
+                        provinceTable.province_id = StringUtils.getMd5Code(provinceName);
                         provinceTable.district_id = StringUtils.getMd5Code(mDistrictArray[i]);
                         provinceTable.save();
                     }
@@ -225,6 +230,8 @@ public class InitializeProcess implements Runnable {
         AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance(mContext);
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.PROVINCE, ipLookUpEntity.getProv());
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.CITY, ipLookUpEntity.getCity());
+        accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.ISP, ipLookUpEntity.getIsp());
+        accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.IP, ipLookUpEntity.getIp());
 
         ProvinceTable provinceTable = new Select().from(ProvinceTable.class)
                 .where(ProvinceTable.PROVINCE_NAME + " = ?", ipLookUpEntity.getProv()).executeSingle();

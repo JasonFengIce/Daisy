@@ -1,5 +1,6 @@
 package tv.ismar.sakura.ui.fragment;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -17,7 +19,6 @@ import android.view.*;
 import android.widget.*;
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.content.ContentProvider;
-import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.google.gson.Gson;
 import retrofit.Callback;
@@ -25,29 +26,45 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
+import tv.ismar.daisy.data.table.location.CdnTable;
+import tv.ismar.daisy.data.table.location.IspTable;
+import tv.ismar.daisy.data.table.location.ProvinceTable;
+import tv.ismar.daisy.utils.StringUtils;
 import tv.ismar.sakura.core.CdnCacheLoader;
 import tv.ismar.sakura.core.HttpDownloadTask;
 import tv.ismar.sakura.core.SakuraClientAPI;
-import tv.ismar.sakura.data.http.*;
-import tv.ismar.sakura.data.table.CdnCacheTable;
-import tv.ismar.sakura.data.table.CityTable;
+import tv.ismar.sakura.data.http.BindedCdnEntity;
+import tv.ismar.sakura.data.http.Empty;
+import tv.ismar.sakura.data.http.SpeedLogEntity;
+import tv.ismar.sakura.ui.adapter.IspSpinnerAdapter;
 import tv.ismar.sakura.ui.adapter.NodeListAdapter;
+import tv.ismar.sakura.ui.adapter.ProvinceSpinnerAdapter;
 import tv.ismar.sakura.ui.widget.SakuraButton;
 import tv.ismar.sakura.ui.widget.SakuraListView;
-import tv.ismar.sakura.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static tv.ismar.sakura.core.SakuraClientAPI.*;
+import static tv.ismar.sakura.core.SakuraClientAPI.restAdapter_WX_API_TVXIO;
+import static tv.ismar.sakura.core.SakuraClientAPI.restAdapter_SPEED_CALLA_TVXIO;
 
 /**
  * Created by huaijie on 2015/4/8.
  */
 public class NodeFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
-        AdapterView.OnItemClickListener, View.OnClickListener, HttpDownloadTask.OnCompleteListener,
-        SharedPreferences.OnSharedPreferenceChangeListener {
+        HttpDownloadTask.OnCompleteListener, View.OnClickListener, AdapterView.OnItemClickListener {
     private static final String TAG = "NodeFragment";
+
+    private static String NORMAL_SELECTION = CdnTable.DISTRICT_ID + "=? and " + CdnTable.ISP_ID + "=?" + " or " + CdnTable.CDN_FLAG + "  <> ?" + " ORDER BY " + CdnTable.ISP_ID + "," + CdnTable.SPEED + " DESC";
+    private static String OTHER_SELECTION = CdnTable.DISTRICT_ID + "=? and " + CdnTable.ISP_ID + " in (?, ?)" + " or " + CdnTable.CDN_FLAG + "  <> ?" + " ORDER BY " + CdnTable.ISP_ID + "," + CdnTable.SPEED + " DESC";
+
+    private static final String NOT_THIRD_CDN = "0";
+
+    private static final int NORMAL_ISP_FLAG = 01245;
+    private static final int OTHER_ISP_FLAG = 3;
+
+    private String TIE_TONG = "";
 
     private SakuraListView nodeListView;
     private NodeListAdapter nodeListAdapter;
@@ -61,30 +78,38 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
     private Dialog cdnTestDialog;
     private PopupWindow cdnTestCompletedPop;
 
-    private int provincesPosition;
-    private int ispPosition;
 
-    private String[] selectionArgs;
+    private String[] selectionArgs = {"0", "0"};
     private String[] cities;
+
+    private String mDistrictId = "";
+    private String mIspId = "";
+
     /**
      * 传入下载中的 CDN 节点 ID
      */
     private List<Integer> cdnCollections;
-    private HttpDownloadTask httpDownloadTask;
 
     private String snCode = TextUtils.isEmpty(SimpleRestClient.sn_token) ? "sn is null" : SimpleRestClient.sn_token;
 
-    SharedPreferences ipLookupPreferences;
 
+    private Context mContext;
+
+    private HttpDownloadTask httpDownloadTask;
+
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.mContext = activity;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ipLookupPreferences = getActivity().getSharedPreferences("user_location_info", Context.MODE_PRIVATE);
-        ipLookupPreferences.registerOnSharedPreferenceChangeListener(this);
-        cities = getResources().getStringArray(R.array.citys);
-        fetchCdnList();
-        fetchIpLookup();
+
+        TIE_TONG = StringUtils.getMd5Code("铁通");
+
     }
 
     @Override
@@ -92,9 +117,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         View view = inflater.inflate(R.layout.sakura_fragment_node, null);
         currentNodeTextView = (TextView) view.findViewById(R.id.current_node_text);
         unbindButton = (SakuraButton) view.findViewById(R.id.unbind_node);
-        unbindButton.setOnClickListener(this);
         nodeListView = (SakuraListView) view.findViewById(R.id.node_list);
-        nodeListView.setOnItemClickListener(this);
         nodeListAdapter = new NodeListAdapter(getActivity(), null, true);
         nodeListView.setAdapter(nodeListAdapter);
 
@@ -102,6 +125,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         ispSpinner = (Spinner) view.findViewById(R.id.isp_spinner);
 
         speedTestButton = (SakuraButton) view.findViewById(R.id.speed_test_btn);
+
         speedTestButton.setOnClickListener(this);
         return view;
     }
@@ -109,26 +133,74 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getLoaderManager().initLoader(0, null, this);
 
-        ArrayAdapter<CharSequence> provinceSpinnerAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.citys, R.layout.sakura_spinner_text);
-        provinceSpinnerAdapter.setDropDownViewResource(R.layout.sakura_item_spinner_dropdown);
+
+        List<ProvinceTable> provinceTables = new Select().from(ProvinceTable.class).execute();
+        ProvinceSpinnerAdapter provinceSpinnerAdapter = new ProvinceSpinnerAdapter(mContext, provinceTables);
         provinceSpinner.setAdapter(provinceSpinnerAdapter);
+        String accountProvince = AccountSharedPrefs.getInstance(mContext).getSharedPrefs(AccountSharedPrefs.PROVINCE);
 
-        ArrayAdapter<CharSequence> operatorSpinnerAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.isps, R.layout.sakura_spinner_text);
-        operatorSpinnerAdapter.setDropDownViewResource(R.layout.sakura_item_spinner_dropdown);
-        ispSpinner.setAdapter(operatorSpinnerAdapter);
+        ProvinceTable provinceTable = new Select().from(ProvinceTable.class).
+                where(ProvinceTable.PROVINCE_NAME + " = ?", accountProvince).executeSingle();
+        if (provinceTable != null) {
+            provinceSpinner.setSelection((provinceTable.getId().intValue() - 1));
+        }
+
+
+        List<IspTable> ispTables = new Select().from(IspTable.class).execute();
+        IspSpinnerAdapter ispSpinnerAdapter = new IspSpinnerAdapter(mContext, ispTables);
+        ispSpinner.setAdapter(ispSpinnerAdapter);
+
+        String accountIsp = AccountSharedPrefs.getInstance(mContext).getSharedPrefs(AccountSharedPrefs.ISP);
+        IspTable ispTable = new Select().from(IspTable.class).where(IspTable.ISP_NAME + " = ?", accountIsp).executeSingle();
+        if (ispTable != null) {
+            ispSpinner.setSelection(ispTable.getId().intValue() - 1);
+        }
         setSpinnerItemSelectedListener();
+        getLoaderManager().initLoader(NORMAL_ISP_FLAG, null, this);
+    }
+
+    @Override
+    public Loader onCreateLoader(int flag, Bundle args) {
+        CursorLoader cacheLoader = new CdnCacheLoader(mContext, ContentProvider.createUri(CdnTable.class, null),
+                null, null, null, null);
+        switch (flag) {
+            case NORMAL_ISP_FLAG:
+                cacheLoader.setSelection(NORMAL_SELECTION);
+                cacheLoader.setSelectionArgs(selectionArgs);
+                break;
+            case OTHER_ISP_FLAG:
+                cacheLoader.setSelection(OTHER_SELECTION);
+                cacheLoader.setSelectionArgs(selectionArgs);
+                break;
+            default:
+                break;
+        }
+        return cacheLoader;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        cdnCollections = cursorToList(data);
+        nodeListAdapter.swapCursor(data);
+    }
+
+
+    @Override
+    public void onLoaderReset(Loader loader) {
+        nodeListAdapter.swapCursor(null);
     }
 
     private void setSpinnerItemSelectedListener() {
         provinceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                provincesPosition = position;
-                notifiySourceChanged();
+                ProvinceTable provinceTable = new Select().from(ProvinceTable.class).where("_id = ?", position + 1).executeSingle();
+                if (provinceTable != null) {
+                    mDistrictId = provinceTable.district_id;
+                    notifiySourceChanged();
+                }
+
             }
 
             @Override
@@ -140,8 +212,12 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         ispSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                ispPosition = position + 1;
-                notifiySourceChanged();
+                IspTable ispTable = new Select().from(IspTable.class).where("_id = ?", position + 1).executeSingle();
+                if (ispTable != null) {
+                    mIspId = ispTable.isp_id;
+                    notifiySourceChanged();
+                }
+
             }
 
             @Override
@@ -152,15 +228,20 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
     }
 
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    private void notifiySourceChanged() {
+        if (mIspId.equals(TIE_TONG)) {
 
-    }
+            String unicom = StringUtils.getMd5Code("联通");
+            String chinaMobile = StringUtils.getMd5Code("移动");
+            selectionArgs = new String[]{mDistrictId, chinaMobile, unicom, NOT_THIRD_CDN};
+            getLoaderManager().destroyLoader(NORMAL_ISP_FLAG);
+            getLoaderManager().restartLoader(OTHER_ISP_FLAG, null, NodeFragment.this).forceLoad();
+        } else {
+            selectionArgs = new String[]{mDistrictId, mIspId, NOT_THIRD_CDN};
+            getLoaderManager().destroyLoader(OTHER_ISP_FLAG);
+            getLoaderManager().restartLoader(NORMAL_ISP_FLAG, null, NodeFragment.this).forceLoad();
+        }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -175,26 +256,9 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
             cdnTestDialog.dismiss();
         }
 
-        if (null != ipLookupPreferences) {
-            ipLookupPreferences.unregisterOnSharedPreferenceChangeListener(this);
-        }
         super.onDestroy();
     }
 
-
-    private void notifiySourceChanged() {
-        if (ispPosition == 4) {
-            selectionArgs = new String[]{String.valueOf(StringUtils.getAreaCodeByProvince(cities[provincesPosition])),
-                    String.valueOf(2), String.valueOf(3), "0"};
-            getLoaderManager().destroyLoader(0);
-            getLoaderManager().restartLoader(1, null, this).forceLoad();
-        } else {
-            selectionArgs = new String[]{String.valueOf(StringUtils.getAreaCodeByProvince(cities[provincesPosition])),
-                    String.valueOf(ispPosition), "0"};
-            getLoaderManager().destroyLoader(1);
-            getLoaderManager().restartLoader(0, null, this).forceLoad();
-        }
-    }
 
     @Override
     public void onClick(View view) {
@@ -213,98 +277,11 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         showSelectNodePop((Integer) view.getTag());
     }
 
-
-    /**
-     * @param flag
-     * @param bundle
-     * @return
-     */
-    @Override
-    public Loader<Cursor> onCreateLoader(int flag, Bundle bundle) {
-        String selection1 = "area" + "=? and " + "isp" + "=?" + " or cdn_flag  <> ?" + " ORDER BY isp,speed DESC";
-        String selection2 = "area" + "=? and " + "isp" + " in (?, ?)" + " or cdn_flag  <> ?" + " ORDER BY isp,speed DESC";
-        CdnCacheLoader cacheLoader = new CdnCacheLoader(getActivity(), ContentProvider.createUri(CdnCacheTable.class, null),
-                null,
-                null, null, null);
-        switch (flag) {
-            case 0:
-                cacheLoader.setSelection(selection1);
-                cacheLoader.setSelectionArgs(selectionArgs);
-                break;
-            case 1:
-                cacheLoader.setSelection(selection2);
-                cacheLoader.setSelectionArgs(selectionArgs);
-                break;
-            default:
-                break;
-        }
-        return cacheLoader;
-    }
-
-    /**
-     * @param loader
-     * @param cursor
-     */
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        Log.d(TAG, "cursor count: " + cursor.getCount());
-        cdnCollections = cursorToList(cursor);
-        nodeListAdapter.swapCursor(cursor);
-        updateCurrentNode();
-    }
-
-    /**
-     * @param loader
-     */
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        nodeListAdapter.swapCursor(null);
-    }
-
-    /**
-     * fetchCdnList
-     */
-    private void fetchCdnList() {
-        SakuraClientAPI.CdnList client = restAdapter_WX_API_TVXIO.create(SakuraClientAPI.CdnList.class);
-        client.execute(new Callback<CdnListEntity>() {
-            @Override
-            public void success(CdnListEntity cdnListEntity, Response response) {
-                ActiveAndroid.beginTransaction();
-                new Delete().from(CdnCacheTable.class).execute();
-                try {
-                    for (CdnListEntity.CdnEntity cdnEntity : cdnListEntity.getCdn_list()) {
-                        CdnCacheTable cdnCacheTable = new CdnCacheTable();
-                        cdnCacheTable.cdn_id = cdnEntity.getCdnID();
-                        cdnCacheTable.cdn_name = cdnEntity.getName();
-                        cdnCacheTable.cdn_nick = cdnEntity.getNick();
-                        cdnCacheTable.cdn_flag = cdnEntity.getFlag();
-                        cdnCacheTable.cdn_ip = cdnEntity.getUrl();
-                        cdnCacheTable.area = cdnEntity.getArea();
-                        cdnCacheTable.isp = cdnEntity.getIsp();
-                        cdnCacheTable.route_trace = cdnEntity.getRoute_trace();
-                        cdnCacheTable.save();
-                    }
-                    ActiveAndroid.setTransactionSuccessful();
-                } finally {
-                    ActiveAndroid.endTransaction();
-                }
-
-                fetchBindedCdn(SimpleRestClient.sn_token);
-            }
-
-            @Override
-            public void failure(RetrofitError retrofitError) {
-
-            }
-        });
-    }
-
-    /**
-     * fetchBindedCdn
-     *
-     * @param snCode
-     */
+    //    /**
+//     * fetchBindedCdn
+//     *
+//     * @param snCode
+//     */
     private void fetchBindedCdn(final String snCode) {
         SakuraClientAPI.GetBindCdn client = restAdapter_WX_API_TVXIO.create(SakuraClientAPI.GetBindCdn.class);
         client.excute(snCode, new Callback<BindedCdnEntity>() {
@@ -365,13 +342,13 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         ActiveAndroid.beginTransaction();
 
         try {
-            CdnCacheTable checkedItem = new Select().from(CdnCacheTable.class).where("checked = ?", true).executeSingle();
+            CdnTable checkedItem = new Select().from(CdnTable.class).where(CdnTable.CHECKED + " = ?", true).executeSingle();
             if (null != checkedItem) {
                 checkedItem.checked = false;
                 checkedItem.save();
             }
 
-            CdnCacheTable cdnCacheTable = new Select().from(CdnCacheTable.class).where("cdn_id = ?", cdnId).executeSingle();
+            CdnTable cdnCacheTable = new Select().from(CdnTable.class).where(CdnTable.CDN_ID + " = ?", cdnId).executeSingle();
             if (null != cdnCacheTable) {
                 cdnCacheTable.checked = true;
                 cdnCacheTable.save();
@@ -387,7 +364,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
      * clearCheck
      */
     private void clearCheck() {
-        CdnCacheTable checkedItem = new Select().from(CdnCacheTable.class).where("checked = ?", true).executeSingle();
+        CdnTable checkedItem = new Select().from(CdnTable.class).where("checked = ?", true).executeSingle();
         if (null != checkedItem) {
             checkedItem.checked = false;
             checkedItem.save();
@@ -395,7 +372,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
     }
 
     private void updateCurrentNode() {
-        CdnCacheTable cdnCacheTable = new Select().from(CdnCacheTable.class).where("checked = ?", true).executeSingle();
+        CdnTable cdnCacheTable = new Select().from(CdnTable.class).where("checked = ?", true).executeSingle();
         if (cdnCacheTable != null) {
             currentNodeTextView.setText(getText(R.string.current_node) + cdnCacheTable.cdn_nick);
             unbindButton.setText(R.string.switch_to_auto);
@@ -407,6 +384,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         }
 
     }
+
 
     /**
      * showSelectNodePop
@@ -427,7 +405,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bindCdn(SimpleRestClient.sn_token, cndId);
+//                bindCdn(SimpleRestClient.sn_token, cndId);
                 selectNodePup.dismiss();
             }
         });
@@ -617,53 +595,8 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         return cdnCollections;
     }
 
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        Log.d(TAG, "onSharedPreferenceChanged");
-
-        int provincePosition = getProvincePositionByName(sharedPreferences.getString("user_default_city", ""));
-        int ispPosition = getIspPositionByName(sharedPreferences.getString("user_default_isp", ""));
-
-        provinceSpinner.setSelection(provincePosition);
-        ispSpinner.setSelection(ispPosition);
-    }
-
-
     enum Status {
         CANCEL,
         COMPLETE
-    }
-
-    private void fetchIpLookup() {
-        SakuraClientAPI.IpLookUp client = restAdapter_LILY_TVXIO_HOST.create(SakuraClientAPI.IpLookUp.class);
-        client.execute(new Callback<IpLookUpEntity>() {
-            @Override
-            public void success(IpLookUpEntity ipLookUpEntity, Response response) {
-                SharedPreferences.Editor editor = ipLookupPreferences.edit();
-                editor.putString("user_default_city", ipLookUpEntity.getCity());
-                editor.putString("user_default_isp", ipLookUpEntity.getIsp());
-                editor.apply();
-            }
-
-            @Override
-            public void failure(RetrofitError retrofitError) {
-                Log.e(TAG, "fetchIpLookup: " + retrofitError.getMessage());
-            }
-        });
-    }
-
-    public int getProvincePositionByName(String provinceName) {
-        CityTable cityTable = new Select().from(CityTable.class).where(CityTable.NICK + " = ? ", provinceName).executeSingle();
-        return cityTable.flag - 1;
-    }
-
-    public int getIspPositionByName(String ispName) {
-        String[] isps = getResources().getStringArray(R.array.isps);
-        for (int i = 0; i < isps.length; ++i) {
-            if (ispName.equals(isps[i])) {
-                return i;
-            }
-        }
-        return -1;
     }
 }

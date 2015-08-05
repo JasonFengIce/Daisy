@@ -16,6 +16,9 @@ public class AccountSharedPrefs {
     public static final String PROVINCE = "province";
     public static final String CITY = "city";
     public static final String PROVINCE_PY = "province_py";
+    public static final String ISP = "isp";
+    public static final String IP = "ip";
+
 
     private static AccountSharedPrefs instance;
     private Context mContext;

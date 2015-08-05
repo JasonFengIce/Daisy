@@ -16,8 +16,6 @@ import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.advertisement.AdvertisementManager;
 import tv.ismar.daisy.core.initialization.InitializeProcess;
 import tv.ismar.daisy.core.service.PosterUpdateService;
-import tv.ismar.daisy.data.table.weather.LocationTable;
-import tv.ismar.daisy.data.table.weather.ProvinceTable;
 import tv.ismar.daisy.utils.HardwareUtils;
 
 import java.io.*;

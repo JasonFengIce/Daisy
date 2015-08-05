@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.activeandroid.query.Select;
-import tv.ismar.sakura.data.table.CdnCacheTable;
+import tv.ismar.daisy.data.table.location.CdnTable;
 import tv.ismar.sakura.utils.DeviceUtils;
 
 import java.io.File;
@@ -66,7 +66,7 @@ public class HttpDownloadTask extends AsyncTask<List<Integer>, String, Long> {
             /**
              * 获取数据库信息
              */
-            CdnCacheTable cacheTable = new Select().from(CdnCacheTable.class).where("cdn_id=?", cdnID).executeSingle();
+            CdnTable cacheTable = new Select().from(CdnTable.class).where("cdn_id=?", cdnID).executeSingle();
 
 
             /**

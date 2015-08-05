@@ -60,14 +60,6 @@ public class SakuraClientAPI {
     }
 
 
-    /**
-     * cdn list
-     */
-    public interface CdnList {
-        @GET("/shipinkefu/getCdninfo?actiontype=getcdnlist")
-        void execute(Callback<CdnListEntity> callback);
-    }
-
     public interface GetBindCdn {
         @GET("/shipinkefu/getCdninfo?actiontype=getBindcdn")
         void excute(
@@ -121,7 +113,8 @@ public class SakuraClientAPI {
     }
 
     public interface UploadResult {
-       public static final String ACTION_TYPE ="submitTestData";
+        public static final String ACTION_TYPE = "submitTestData";
+
         @FormUrlEncoded
         @POST("/shipinkefu/getCdninfo")
         void excute(
@@ -133,10 +126,4 @@ public class SakuraClientAPI {
         );
     }
 
-    public interface IpLookUp {
-        @GET("/iplookup")
-        void execute(
-                Callback<IpLookUpEntity> callback
-        );
-    }
 }

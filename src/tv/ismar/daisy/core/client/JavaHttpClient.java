@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  * Created by huaijie on 8/3/15.
  */
 public class JavaHttpClient {
-    private static final String TAG = "javahttpclient";
+    private static final String TAG = "JavaHttpClient";
 
     private String mApi;
     private String mParams;

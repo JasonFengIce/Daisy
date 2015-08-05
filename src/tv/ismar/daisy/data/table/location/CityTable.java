@@ -9,6 +9,12 @@ import com.activeandroid.annotation.Table;
  */
 @Table(name = "app_city")
 public class CityTable extends Model {
+
+    public static final String GEO_ID = "geo_id";
+    public static final String CITY = "city";
+    public static final String PROVINCE_ID = "province_id";
+
+
     @Column(unique = true, onUniqueConflict = Column.ConflictAction.IGNORE)
     public long geo_id;
 

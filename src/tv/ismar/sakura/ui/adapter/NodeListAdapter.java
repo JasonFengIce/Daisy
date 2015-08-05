@@ -7,7 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+import com.activeandroid.query.Select;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.data.table.location.CdnTable;
+import tv.ismar.daisy.data.table.location.IspTable;
 import tv.ismar.sakura.ui.widget.SakuraProgressBar;
 import tv.ismar.sakura.utils.StringUtils;
 
@@ -40,16 +43,17 @@ public class NodeListAdapter extends CursorAdapter {
             TextView message = (TextView) view.findViewById(R.id.select_prompt);
             SakuraProgressBar speedProgress = (SakuraProgressBar) view.findViewById(R.id.speed_progress);
             titleNumber.setText(String.valueOf(cursor.getPosition() + 1));
-            String node = cursor.getString(cursor.getColumnIndex("cdn_nick"));
-            int progress = cursor.getInt(cursor.getColumnIndex("speed"));
-            int isp = cursor.getInt(cursor.getColumnIndex("isp"));
+            String node = cursor.getString(cursor.getColumnIndex(CdnTable.CDN_NICK));
+            int progress = cursor.getInt(cursor.getColumnIndex(CdnTable.SPEED));
+            String ispId = cursor.getString(cursor.getColumnIndex(CdnTable.ISP_ID));
+            IspTable ispTable = new Select().from(IspTable.class).where(IspTable.ISP_ID + " = ?", ispId).executeSingle();
             speedProgress.setProgress((int) (progress / 20.84));
-            if ((progress / 20.84) < 60 || isp == StringUtils.OTHERS_CODE)
+            if ((progress / 20.84) < 60 || ispTable.isp_name.equals("其它"))
                 message.setText(R.string.tring);
             else
                 message.setText(R.string.can_select);
             nodeNmae.setText(node);
-            view.setTag((cursor.getInt(cursor.getColumnIndex("cdn_id"))));
+            view.setTag((cursor.getInt(cursor.getColumnIndex(CdnTable.CDN_ID))));
         }
     }
 }

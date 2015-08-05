@@ -17,8 +17,8 @@ import retrofit.client.Response;
 import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.sakura.core.FeedbackProblem;
-import tv.ismar.sakura.core.IpLookUpCache;
 import tv.ismar.sakura.core.SakuraClientAPI;
 import tv.ismar.sakura.core.UploadFeedback;
 import tv.ismar.sakura.data.http.ChatMsgEntity;
@@ -27,7 +27,6 @@ import tv.ismar.sakura.data.http.ProblemEntity;
 import tv.ismar.sakura.ui.adapter.FeedbackListAdapter;
 import tv.ismar.sakura.ui.widget.FeedBackListView;
 import tv.ismar.sakura.ui.widget.MessageSubmitButton;
-import tv.ismar.sakura.ui.widget.SakuraButton;
 import tv.ismar.sakura.ui.widget.SakuraEditText;
 
 import java.util.List;
@@ -88,7 +87,7 @@ public class FeedbackFragment extends Fragment implements RadioGroup.OnCheckedCh
     public void onResume() {
         super.onResume();
         createProblemsRadio(FeedbackProblem.getInstance().getCache());
-        fetchFeedback(snCode, "5");
+//        fetchFeedback(snCode, "5");
     }
 
     @Override
@@ -155,16 +154,16 @@ public class FeedbackFragment extends Fragment implements RadioGroup.OnCheckedCh
             Toast.makeText(getActivity(), R.string.you_should_give_an_phone_number, Toast.LENGTH_LONG).show();
 
         } else {
+            AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance(mContext);
 
-            IpLookUpCache ipLookUpCache = IpLookUpCache.getInstance(getActivity());
             FeedBackEntity feedBack = new FeedBackEntity();
             feedBack.setDescription(descriptioinText.getText().toString());
             feedBack.setPhone(contactNumber);
             feedBack.setOption(problemTextFlag);
-            feedBack.setCity(ipLookUpCache.getUserCity());
-            feedBack.setIp(ipLookUpCache.getUserIp());
-            feedBack.setIsp(ipLookUpCache.getUserIsp());
-            feedBack.setLocation(ipLookUpCache.getUserProvince());
+            feedBack.setCity(accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.CITY));
+            feedBack.setIp(accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.IP));
+            feedBack.setIsp(accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.ISP));
+            feedBack.setLocation(accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.PROVINCE));
             UploadFeedback.getInstance().excute(feedBack, snCode, new UploadFeedback.Callback() {
                 @Override
                 public void success(String msg) {

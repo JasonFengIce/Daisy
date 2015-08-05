@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import tv.ismar.daisy.R;
-import tv.ismar.daisy.data.table.weather.ProvinceTable;
+import tv.ismar.daisy.data.table.location.ProvinceTable;
 
 import java.util.List;
 

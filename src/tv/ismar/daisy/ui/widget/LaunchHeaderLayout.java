@@ -16,9 +16,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.activeandroid.query.Select;
 import com.google.gson.Gson;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
+import tv.ismar.daisy.data.table.location.CityTable;
 import tv.ismar.daisy.data.weather.WeatherEntity;
 import tv.ismar.daisy.ui.fragment.usercenter.LocationFragment;
 
@@ -43,7 +46,7 @@ public class LaunchHeaderLayout extends FrameLayout
 
     private LinearLayout guideLayout;
 
-    private SharedPreferences locationSharedPreferences;
+//    private SharedPreferences locationSharedPreferences;
 
     public LaunchHeaderLayout(Context context) {
         super(context);
@@ -67,13 +70,17 @@ public class LaunchHeaderLayout extends FrameLayout
         titleTextView.setText(R.string.app_name);
         subTitleTextView.setText(R.string.front_page);
 
-        locationSharedPreferences = context.getSharedPreferences(LocationFragment.LOCATION_PREFERENCE_NAME, Context.MODE_PRIVATE);
-        locationSharedPreferences.registerOnSharedPreferenceChangeListener(changeListener);
+//        locationSharedPreferences = context.getSharedPreferences(LocationFragment.LOCATION_PREFERENCE_NAME, Context.MODE_PRIVATE);
+        AccountSharedPrefs.getInstance(context).getSharedPreferences().registerOnSharedPreferenceChangeListener(changeListener);
         createGuideIndicator();
+        String cityName = AccountSharedPrefs.getInstance(context).getSharedPrefs(AccountSharedPrefs.CITY);
 
-        String geoId = locationSharedPreferences.getString(LocationFragment.LOCATION_PREFERENCE_GEOID, "101020100");
-        fetchWeatherInfo(geoId);
+//        String geoId = locationSharedPreferences.getString(LocationFragment.LOCATION_PREFERENCE_GEOID, "101020100");
 
+        CityTable cityTable = new Select().from(CityTable.class).where(CityTable.CITY + " = ?", cityName).executeSingle();
+        if (cityTable != null) {
+            fetchWeatherInfo(String.valueOf(cityTable.geo_id));
+        }
         addView(view);
     }
 
@@ -89,8 +96,15 @@ public class LaunchHeaderLayout extends FrameLayout
     private SharedPreferences.OnSharedPreferenceChangeListener changeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            String geoId = locationSharedPreferences.getString(LocationFragment.LOCATION_PREFERENCE_GEOID, "101020100");
-            fetchWeatherInfo(geoId);
+//            String geoId = locationSharedPreferences.getString(LocationFragment.LOCATION_PREFERENCE_GEOID, "101020100");
+
+            String cityName = AccountSharedPrefs.getInstance(context).getSharedPrefs(AccountSharedPrefs.CITY);
+            CityTable cityTable = new Select().from(CityTable.class).where(CityTable.CITY + " = ?", cityName).executeSingle();
+
+            if (cityTable != null) {
+                fetchWeatherInfo(String.valueOf(cityTable.geo_id));
+            }
+
         }
     };
 
@@ -108,14 +122,14 @@ public class LaunchHeaderLayout extends FrameLayout
     }
 
     public void setTitle(String title) {
-            titleTextView.setText(title);
+        titleTextView.setText(title);
     }
 
     public void setSubTitle(String subTitle) {
         subTitleTextView.setText(subTitle);
     }
 
-    public void hideSubTiltle(){
+    public void hideSubTiltle() {
         subTitleTextView.setVisibility(View.GONE);
         dividerImage.setVisibility(View.GONE);
 

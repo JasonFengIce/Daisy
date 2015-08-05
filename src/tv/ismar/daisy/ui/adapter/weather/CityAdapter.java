@@ -8,7 +8,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import tv.ismar.daisy.R;
-import tv.ismar.daisy.data.table.weather.LocationTable;
+import tv.ismar.daisy.data.table.location.CityTable;
 
 import java.util.List;
 
@@ -16,12 +16,12 @@ import java.util.List;
  * Created by huaijie on 7/13/15.
  */
 public class CityAdapter extends BaseAdapter implements AdapterView.OnClickListener, View.OnFocusChangeListener {
-    private List<LocationTable> locationTableList;
+    private List<CityTable> locationTableList;
     private Context context;
 
     private OnItemListener onItemListener;
 
-    public CityAdapter(Context context, List<LocationTable> locationTableList) {
+    public CityAdapter(Context context, List<CityTable> locationTableList) {
         this.context = context;
         this.locationTableList = locationTableList;
     }
@@ -82,7 +82,7 @@ public class CityAdapter extends BaseAdapter implements AdapterView.OnClickListe
         private TextView provinceTextView;
     }
 
-    public List<LocationTable> getList() {
+    public List<CityTable> getList() {
         return locationTableList;
     }
 

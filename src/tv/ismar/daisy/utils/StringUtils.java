@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class StringUtils {
     public static String getMd5Code(String string) {
-        String value = null;
+        String value = "";
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
             messageDigest.update(string.getBytes());

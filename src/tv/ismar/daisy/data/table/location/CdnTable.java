@@ -10,6 +10,17 @@ import com.activeandroid.annotation.Table;
 
 @Table(name = "app_cdn")
 public class CdnTable extends Model {
+    public static final String CDN_ID = "cdn_id";
+    public static final String CDN_NAME = "cdn_name";
+    public static final String CDN_NICK = "cdn_nick";
+    public static final String CDN_FLAG = "cdn_flag";
+    public static final String CDN_IP = "cdn_ip";
+    public static final String DISTRICT_ID = "district_id";
+    public static final String ISP_ID = "isp_id";
+    public static final String ROUTE_TRACE = "route_trace";
+    public static final String SPEED = "speed";
+    public static final String CHECKED = "checked";
+
 
     @Column(unique = true, onUniqueConflict = Column.ConflictAction.IGNORE)
     public long cdn_id;
@@ -27,7 +38,7 @@ public class CdnTable extends Model {
     public String cdn_ip;
 
     @Column
-    public String  district_id;
+    public String district_id;
 
     @Column
     public String isp_id;
