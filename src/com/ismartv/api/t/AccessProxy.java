@@ -17,6 +17,7 @@ import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.qiyimediaplayer.SdkVideo;
 
@@ -109,6 +110,9 @@ public class AccessProxy {
 		// .append("&device_token=").append(SimpleRestClient.device_token)
 		// .append("&sign=").append(getAES(access_token)).toString();
 		StringBuffer buffer = new StringBuffer(String.valueOf(url));
+        if (SimpleRestClient.device_token == null||"".equals(SimpleRestClient.device_token)){
+            VodApplication.setDevice_Token();
+        }
 		buffer.append("?access_token=").append(SimpleRestClient.access_token)
 				.append("&device_token=").append(SimpleRestClient.device_token)
 				.append("&sign=").append(getAES(access_token)).toString();

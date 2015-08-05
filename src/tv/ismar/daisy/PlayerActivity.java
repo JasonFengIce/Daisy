@@ -415,6 +415,7 @@ public class PlayerActivity extends VodMenuAction {
 						listItems = new ArrayList<Item>();
 						for (int i = 0; i < serialItem.subitems.length; i++) {
 							serialItem.subitems[i].content_model = serialItem.content_model;
+                            serialItem.subitems[i].expense = serialItem.expense;
 							listItems.add(serialItem.subitems[i]);
 						}
 					}
@@ -572,7 +573,7 @@ public class PlayerActivity extends VodMenuAction {
 									1000);
 							mp.start();
 						}
-						checkTaskStart(0);
+						//checkTaskStart(0);
 					}
 				});
 		mVideoView
@@ -1039,14 +1040,14 @@ public class PlayerActivity extends VodMenuAction {
 		public void run() {
 			if (mVideoView != null) {
 				if (mVideoView.isPlaying()) {
-					// if ( bufferLayout.isShown()) {
-					// isBuffer = false;
-					// hideBuffer();
-					// }
-					if (isadvideoplaying && bufferLayout.isShown()) {
-						isBuffer = false;
-						hideBuffer();
+					if ( bufferLayout.isShown()) {
+					isBuffer = false;
+					hideBuffer();
 					}
+//					if (isadvideoplaying && bufferLayout.isShown()) {
+//						isBuffer = false;
+//						hideBuffer();
+//					}
 					if (mVideoView.getAlpha() < 1) {
 						mVideoView.setAlpha(1);
 						bufferText.setText(BUFFERING);
@@ -1190,6 +1191,10 @@ public class PlayerActivity extends VodMenuAction {
 			} else {
 				history.title = item.title;
 			}
+            if(item.expense!=null)
+               history.price = (int)item.expense.price;
+            else
+                history.price = 0;
 			history.adlet_url = item.adlet_url;
 			history.content_model = item.content_model;
 			history.is_complex = item.is_complex;
@@ -1622,7 +1627,7 @@ public class PlayerActivity extends VodMenuAction {
 			bufferLayout.setVisibility(View.VISIBLE);
 			bufferDuration = System.currentTimeMillis();
 		}
-		mHandler.sendEmptyMessageDelayed(BUFFER_COUNTDOWN_ACTION, 1000);
+		//mHandler.sendEmptyMessageDelayed(BUFFER_COUNTDOWN_ACTION, 1000);
 	}
 
 	protected void hideBuffer() {
@@ -1723,8 +1728,8 @@ public class PlayerActivity extends VodMenuAction {
 					}
 					showDialog("网络不给力，请检查网络或稍后再试!");
 				} else {
-					mHandler.sendEmptyMessageDelayed(BUFFER_COUNTDOWN_ACTION,
-							1000);
+//					mHandler.sendEmptyMessageDelayed(BUFFER_COUNTDOWN_ACTION,
+//							1000);
 				}
 				break;
 			case DISMISS_AD_DIALOG:
@@ -1738,7 +1743,8 @@ public class PlayerActivity extends VodMenuAction {
 					sendEmptyMessageDelayed(AD_COUNT_ACTION, 1000);
 				} else {
 					isadvideoplaying = false;
-					mVideoView.playIndex(paths.length - 1);
+//                    if(mVideoView!=null)
+//					   mVideoView.playIndex(paths.length - 1);
 					ad_count_view.setVisibility(View.GONE);
 				}
 				break;

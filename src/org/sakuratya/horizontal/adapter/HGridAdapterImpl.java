@@ -190,7 +190,11 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 						holder.previewImage.setUrl(item.adlet_url);
 					}
                     if(isPortrait){
-                        holder.previewImage.setFocustitle(item.focus);
+                        if(item.focus!=null){
+                            holder.previewImage.setFocustitle(item.focus);
+                            Log.i("zhangjiqiangzxcvbnm","film focus=="+item.focus);
+                        }
+
                         holder.title.setText(item.title);
                     }
                     else{

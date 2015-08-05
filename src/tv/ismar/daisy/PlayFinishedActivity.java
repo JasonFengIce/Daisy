@@ -1,5 +1,6 @@
 package tv.ismar.daisy;
 
+import android.util.Log;
 import org.sakuratya.horizontal.ui.ZGridView;
 
 import tv.ismar.daisy.adapter.PlayFinishedAdapter;
@@ -37,7 +38,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PlayFinishedActivity extends Activity implements OnFocusChangeListener, OnItemClickListener, OnClickListener {
+public class PlayFinishedActivity extends BaseActivity implements OnFocusChangeListener, OnItemClickListener, OnClickListener {
 	
 	private static final String TAG = "PlayFinishedActivity";
 	private Item item = new Item();
@@ -104,7 +105,8 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		public void run() {
 			try {
 				items = simpleRest.getRelatedItem("/api/tv/relate/" + item.item_pk+"/");
-			} catch (NetworkException e) {
+                Log.i("09876tgbvfredc","relate=="+item.item_pk);
+            } catch (NetworkException e) {
 				e.printStackTrace();
 			}
 			if (items == null || items.length == 0) {
@@ -141,7 +143,6 @@ public class PlayFinishedActivity extends Activity implements OnFocusChangeListe
 		gridview = (ZGridView) findViewById(R.id.gridview_related);
 		gridview.setOnFocusChangeListener(this);
 		gridview.setOnItemClickListener(this);
-		
 //		gridview.setNumColumns(3);
 //		int H = DaisyUtils.getVodApplication(this).getheightPixels(this);
 //		if(H==720){
