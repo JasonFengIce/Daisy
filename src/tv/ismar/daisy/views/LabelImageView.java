@@ -161,8 +161,8 @@ public class LabelImageView extends AsyncImageView {
 		paint.setColor(Color.WHITE);
 		if (StringUtils.isNotEmpty(focustitle) && focustitle.length() > 0) {
 			if (maxfocustitle > 0 && focustitle.length() > maxfocustitle) {
-				focustitle = focustitle.substring(0, maxfocustitle - 1);
-			}
+				focustitle = focustitle.substring(0, maxfocustitle);
+            }
 			paint.setColor(focusbackground);
 			canvas.drawRect(new Rect(getPaddingLeft(),
 					(int) (focuspaddingtop * height), width - paddingright,

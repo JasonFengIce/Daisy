@@ -57,7 +57,7 @@ public class NetworkUtils {
 			throws ItemOfflineException, NetworkException {
 		String urlStr = target;
 		try {
-			if (SimpleRestClient.device_token == null) {
+			if (SimpleRestClient.device_token == null||"".equals(SimpleRestClient.device_token)) {
 				VodApplication.setDevice_Token();
 			}
 			URL url = new URL(urlStr + "?device_token="

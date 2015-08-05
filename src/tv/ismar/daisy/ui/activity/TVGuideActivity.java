@@ -625,6 +625,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         SimpleRestClient.ad_domain = "http://" + result.getAd_domain();
         SimpleRestClient.log_domain = "http://" + result.getLog_Domain();
         SimpleRestClient.device_token = result.getDevice_token();
+        DaisyUtils.getVodApplication(context).getEditor().putString(VodApplication.DEVICE_TOKEN, SimpleRestClient.device_token);
+        DaisyUtils.getVodApplication(context).save();
         SimpleRestClient.sn_token = result.getSn_Token();
         SimpleRestClient.mobile_number = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.MOBILE_NUMBER, "");
         SimpleRestClient.access_token = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.AUTH_TOKEN, "");

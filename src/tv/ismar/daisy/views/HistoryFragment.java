@@ -371,7 +371,13 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		item.content_model = history.content_model;
 		item.quality = history.quality;
 		item.title = history.title;
-
+        if(history.price==0){
+            item.expense = null;
+        }
+        else{
+            item.expense = new Expense();
+            item.expense.price = history.price;
+        }
 		return item;
 	}
 

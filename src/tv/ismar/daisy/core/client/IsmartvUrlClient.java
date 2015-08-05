@@ -8,6 +8,7 @@ import android.os.Message;
 import android.util.Log;
 import com.squareup.okhttp.*;
 import tv.ismar.daisy.BaseActivity;
+import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 
@@ -89,6 +90,9 @@ public class IsmartvUrlClient extends Thread {
 
     public void doRequest(Method method, String api, HashMap<String, String> hashMap, CallBack callback) {
         hashMap.put("access_token", SimpleRestClient.access_token);
+        if (SimpleRestClient.device_token == null||"".equals(SimpleRestClient.device_token)){
+            VodApplication.setDevice_Token();
+        }
         hashMap.put("device_token", SimpleRestClient.device_token);
         Iterator<Map.Entry<String, String>> iterator = hashMap.entrySet().iterator();
         StringBuffer stringBuffer = new StringBuffer();

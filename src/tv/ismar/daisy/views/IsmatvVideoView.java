@@ -266,6 +266,7 @@ public void setVideoPaths(String[] paths){
 					// TODO Auto-generated method stub
                     mCurrentState = STATE_PREPARED;
                     player = mp;
+                    Log.i("zhangjiqiangtest", "onPrepared state url ==" + url);
                     // Get the capabilities of the player for this stream
                     // Metadata data = mp.getMetadata(false,
                     // true);
@@ -285,50 +286,50 @@ public void setVideoPaths(String[] paths){
                     if (mOnPreparedListenerUrl != null) {
                         mOnPreparedListenerUrl.onPrepared(player,url);
                     }
-                    if (mMediaController != null) {
-                        mMediaController.setEnabled(true);
-                    }
-                    mVideoWidth = mp.getVideoWidth();
-                    mVideoHeight = mp.getVideoHeight();
-
-                    int seekToPosition = mSeekWhenPrepared; // mSeekWhenPrepared may be
-                    // changed after seekTo()
-                    // call
-                    if (seekToPosition != 0) {
-                        seekTo(seekToPosition);
-                    }
-                    if (mVideoWidth != 0 && mVideoHeight != 0) {
-                        // Log.i("@@@@", "video size: " + mVideoWidth +"/"+
-                        // mVideoHeight);
-                        getHolder().setFixedSize(mVideoWidth, mVideoHeight);
-                        if (mSurfaceWidth == mVideoWidth
-                                && mSurfaceHeight == mVideoHeight) {
-                            // We didn't actually change the size (it was already at the
-                            // size
-                            // we need), so we won't get a "surface changed" callback,
-                            // so
-                            // start the video here instead of in the callback.
-                            if (mTargetState == STATE_PLAYING) {
-                                start();
-                                if (mMediaController != null) {
-                                    mMediaController.show();
-                                }
-                            } else if (!isPlaying()
-                                    && (seekToPosition != 0 || getCurrentPosition() > 0)) {
-                                if (mMediaController != null) {
-                                    // Show the media controls when we're paused into a
-                                    // video and make 'em stick.
-                                    mMediaController.show(0);
-                                }
-                            }
-                        }
-                    } else {
-                        // We don't know the video size yet, but should start anyway.
-                        // The video size might be reported to us later.
-                        if (mTargetState == STATE_PLAYING) {
-                            start();
-                        }
-                    }
+//                    if (mMediaController != null) {
+//                        mMediaController.setEnabled(true);
+//                    }
+//                    mVideoWidth = mp.getVideoWidth();
+//                    mVideoHeight = mp.getVideoHeight();
+//
+//                    int seekToPosition = mSeekWhenPrepared; // mSeekWhenPrepared may be
+//                    // changed after seekTo()
+//                    // call
+//                    if (seekToPosition != 0) {
+//                        seekTo(seekToPosition);
+//                    }
+//                    if (mVideoWidth != 0 && mVideoHeight != 0) {
+//                        // Log.i("@@@@", "video size: " + mVideoWidth +"/"+
+//                        // mVideoHeight);
+//                        getHolder().setFixedSize(mVideoWidth, mVideoHeight);
+//                        if (mSurfaceWidth == mVideoWidth
+//                                && mSurfaceHeight == mVideoHeight) {
+//                            // We didn't actually change the size (it was already at the
+//                            // size
+//                            // we need), so we won't get a "surface changed" callback,
+//                            // so
+//                            // start the video here instead of in the callback.
+//                            if (mTargetState == STATE_PLAYING) {
+//                                start();
+//                                if (mMediaController != null) {
+//                                    mMediaController.show();
+//                                }
+//                            } else if (!isPlaying()
+//                                    && (seekToPosition != 0 || getCurrentPosition() > 0)) {
+//                                if (mMediaController != null) {
+//                                    // Show the media controls when we're paused into a
+//                                    // video and make 'em stick.
+//                                    mMediaController.show(0);
+//                                }
+//                            }
+//                        }
+//                    } else {
+//                        // We don't know the video size yet, but should start anyway.
+//                        // The video size might be reported to us later.
+//                        if (mTargetState == STATE_PLAYING) {
+//                            start();
+//                        }
+//                    }
 				}
 			});
 
@@ -338,15 +339,16 @@ public void setVideoPaths(String[] paths){
 				public void onCompletion(SmartPlayer sp, String url) {
 					// TODO Auto-generated method stub
                     player = sp;
+                    int currentIndex = sp.getCurrentPlayUrl();
+                    Log.i("zhangjiqiangtest","onCompletion state url index=="+currentIndex);
 					//int index = findVideoUrlIndex(url);
                     if(mOnCompletionListenerUrl!=null){
                         mOnCompletionListenerUrl.onCompletion(sp,url);
                     }
-                    if(paths.length == 1)
-                    	return;
-					int currentIndex = sp.getCurrentPlayUrl();
-					
-					if (currentIndex >= 0 && currentIndex<paths.length) {        //如果当前播放的为第一个影片的话，则准备播放第二个影片。
+//                    if(paths.length == 1)
+//                    	return;
+
+					if (currentIndex >= 0 && currentIndex<paths.length-1) {        //如果当前播放的为第一个影片的话，则准备播放第二个影片。
 						try {
 							currentIndex++;
 							sp.playUrl(currentIndex);                               //准备播放第二个影片，传入参数为1，第二个影片在数组中的下标。
@@ -359,7 +361,13 @@ public void setVideoPaths(String[] paths){
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
-						}
+                            try {
+                                sp.playUrl(currentIndex);
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+
+                        }
 					}
 				}
 			});
