@@ -403,7 +403,76 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 	public void onSectionSelectChanged(int index) {
 		mHGridView.jumpToSection(index);
 	}
-	
+    private Item item;
+    private void ExeCuteItemclick(Item i){
+        item = i;
+        String url;
+
+        if(item.model_name.equals("subitem"))
+            url = SimpleRestClient.root_url + "/api/item/" + item.item_pk + "/";
+        else
+            url = SimpleRestClient.root_url + "/api/item/" + item.pk + "/";
+
+        Log.i("qazwsxcde","item model=="+item.model_name + "item url=="+url);
+
+        mCurrentGetItemTask.remove(url);
+        History history = null;
+        if(SimpleRestClient.isLogin())
+            history = DaisyUtils.getHistoryManager(getActivity()).getHistoryByUrl(url,"yes");
+        else{
+            history = DaisyUtils.getHistoryManager(getActivity()).getHistoryByUrl(url,"no");
+        }
+        // Use to data collection.
+        mDataCollectionProperties = new HashMap<String, Object>();
+        int id = SimpleRestClient.getItemId(url, new boolean[1]);
+        mDataCollectionProperties.put("to_item", id);
+        if(history.sub_url!=null && item.subitems!=null) {
+            int sub_id = SimpleRestClient.getItemId(history.sub_url, new boolean[1]);
+            mDataCollectionProperties.put("to_subitem", sub_id);
+            for(Item subitem: item.subitems) {
+                if(sub_id==subitem.pk) {
+                    mDataCollectionProperties.put("to_clip", subitem.clip.pk);
+                    break;
+                }
+            }
+        } else {
+            mDataCollectionProperties.put("to_subitem", item.clip.pk);
+        }
+        mDataCollectionProperties.put("to_title", item.title);
+        mDataCollectionProperties.put("position", history.last_position);
+        String[] qualitys = new String[]{"normal", "high", "ultra", "adaptive"};
+        mDataCollectionProperties.put("quality", qualitys[(history.quality >=0 && history.quality < qualitys.length)?history.quality:0]);
+        // start a new activity.
+        Intent intent = new Intent();
+
+        InitPlayerTool tool = new InitPlayerTool(getActivity());
+        tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
+
+            @Override
+            public void onPreExecute(Intent intent) {
+                // TODO Auto-generated method stub
+                mLoadingDialog.show();
+            }
+
+            @Override
+            public void onPostExecute() {
+                // TODO Auto-generated method stub
+                mLoadingDialog.dismiss();
+            }
+        });
+        if(history!=null){
+
+
+            int  c = history.url.lastIndexOf("api");
+            String url1 =  history.url.substring(c,history.url.length());
+            url1 = SimpleRestClient.sRoot_url + "/" + url1;
+            tool.initClipInfo(url1, InitPlayerTool.FLAG_URL,history.price);
+        }
+        else{
+            tool.initClipInfo(url, InitPlayerTool.FLAG_URL,history.price);
+        }
+    }
+    private Item netItem;
 	class GetItemTask extends AsyncTask<Item, Void, Integer> {
 		
 		private static final int ITEM_OFFLINE = 0;
@@ -411,7 +480,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		private static final int NETWORK_EXCEPTION = 2;
 		private static final int TASK_CANCELLED = 3;
 
-		private Item item;
+
 
 		@Override
 		protected void onPreExecute() {
@@ -431,10 +500,25 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		@Override
 		protected Integer doInBackground(Item... params) {
 			item = params[0];
+            netItem = params[0];
 			mCurrentGetItemTask.put(item.url, this);
 			Item i;
 			try {
-				i = mRestClient.getItem(item.url);
+                String url;
+                if(SimpleRestClient.isLogin()){
+                    if(item.model_name.equals("subitem"))
+                        url = SimpleRestClient.root_url + "/api/item/" + item.item_pk + "/";
+                    else
+                        url = SimpleRestClient.root_url + "/api/item/" + item.pk + "/";
+                }
+
+                else{
+
+                    int id = SimpleRestClient.getItemId(item.url, new boolean[1]);
+                    url = SimpleRestClient.root_url + "/api/item/" + id + "/";
+                }
+
+				i = mRestClient.getItem(url);
 			} catch (ItemOfflineException e) {
 				e.printStackTrace();
 				return ITEM_OFFLINE;
@@ -496,19 +580,6 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 				mDataCollectionProperties.put("quality", qualitys[(history.quality >=0 && history.quality < qualitys.length)?history.quality:0]);
 				// start a new activity.
 				Intent intent = new Intent();
-//				if(item.is_complex) {
-//					if("variety".equals(item.content_model)){
-//						intent.setAction("tv.ismar.daisy.EntertainmentItem");
-//						intent.putExtra("channel", "娱乐综艺");
-//					}else {
-//						intent.setAction("tv.ismar.daisy.Item");
-//					}
-//					intent.putExtra("url", url);
-//					startActivity(intent);
-//				} else {
-//
-//				}
-
 
                 InitPlayerTool tool = new InitPlayerTool(getActivity());
                 tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
@@ -528,13 +599,22 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
                 if(history!=null){
 
 
-                    int  c = history.url.lastIndexOf("api");
-                    String url1 =  history.url.substring(c,history.url.length());
-                    url1 = SimpleRestClient.sRoot_url + "/" + url1;
-                    tool.initClipInfo(url1, InitPlayerTool.FLAG_URL,history.price);
+                        if(item.subitems!=null&&item.subitems.length>0){
+                            tool.initClipInfo(history.sub_url, InitPlayerTool.FLAG_URL,history.price);
+                        }
+                        else{
+                            tool.initClipInfo(url, InitPlayerTool.FLAG_URL,history.price);
+                        }
+//                    else{
+//                        int  c = history.url.lastIndexOf("api");
+//                        String url1 =  history.url.substring(c,history.url.length());
+//                        url1 = SimpleRestClient.sRoot_url + "/" + url1;
+//                        tool.initClipInfo(url1, InitPlayerTool.FLAG_URL,history.price);
+//                    }
                 }
                 else{
-                    tool.initClipInfo(url, InitPlayerTool.FLAG_URL,history.price);
+                     if(SimpleRestClient.isLogin())
+                        tool.initClipInfo(netItem.url, InitPlayerTool.FLAG_URL,history.price);
                 }
 
 
@@ -693,6 +773,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		case R.id.h_grid_view:
 			Item item = mHGridAdapter.getItem(position);
 			new GetItemTask().execute(item);
+           // ExeCuteItemclick(item);
 			break;
 
 		case R.id.recommend_gridview:

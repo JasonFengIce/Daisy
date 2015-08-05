@@ -104,49 +104,44 @@ public class SportFragment extends ChannelBaseFragment {
 		sports_live3 = (LabelImageView) view.findViewById(R.id.sports_live3);
 		arrowUp.setOnFocusChangeListener(arrowFocusChangeListener);
 		arrowDown.setOnFocusChangeListener(arrowFocusChangeListener);
-		 arrowUp.setOnClickListener(arrowClickListener);
-		 arrowDown.setOnClickListener(arrowClickListener);
+		// arrowUp.setOnClickListener(arrowClickListener);
+		// arrowDown.setOnClickListener(arrowClickListener);
 		sports_live1.setOnClickListener(arrowClickListener);
 		sports_live2.setOnClickListener(arrowClickListener);
 		sports_live3.setOnClickListener(arrowClickListener);
-//		sports_live1.setOnKeyListener(new OnKeyListener() {
-//
-//			@Override
-//			public boolean onKey(View view, int i, KeyEvent keyevent) {
-//				if (i == KeyEvent.KEYCODE_DPAD_UP
-//						&& keyevent.getAction() == KeyEvent.ACTION_UP
-//						&& arrowUp.getVisibility() == View.VISIBLE && sports_live1.isFocused()) {
-//					if (games.size() == 6 && currentLiveIndex == 1) {
-//						currentLiveIndex -= 3;
-//					} else {
-//						currentLiveIndex -= 1;
-//					}
-//					fillLiveData();
-//					arrowUp.startAnimation(scaleBigAnimation);
-//					return true;
-//				}
-//				return false;
-//			}
-//		});
-//		sports_live3.setOnKeyListener(new OnKeyListener() {
-//
-//			@Override
-//			public boolean onKey(View view, int i, KeyEvent keyevent) {
-//				if (keyevent.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN
-//						&& keyevent.getAction() == KeyEvent.ACTION_UP
-//						&& arrowDown.getVisibility() == View.VISIBLE && sports_live3.isFocused()) {
-//					if (games.size() == 6) {
-//						currentLiveIndex += 3;
-//					} else {
-//						currentLiveIndex += 1;
-//					}
-//					fillLiveData();
-//					arrowDown.startAnimation(scaleBigAnimation);
-//					return true;
-//				}
-//				return false;
-//			}
-//		});
+		sports_live1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View arg0, boolean arg1) {
+				if (!arg1 && arrowUp.isFocused()) {
+					if (games.size() == 6 && currentLiveIndex == 1) {
+						currentLiveIndex -= 3;
+					} else {
+						currentLiveIndex -= 1;
+					}
+					Message msg = new Message();
+					msg.arg1 = 1;
+					test.sendMessage(msg);
+				}
+			}
+		});
+		sports_live3.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View arg0, boolean arg1) {
+				if (!arg1 && arrowDown.isFocused()) {
+					if (games.size() == 6) {
+						currentLiveIndex += 3;
+					} else {
+						currentLiveIndex += 1;
+					}
+					Message msg = new Message();
+					msg.arg1 = 2;
+					test.sendMessage(msg);
+				}
+			}
+		});
+
 		return view;
 	}
 
@@ -435,10 +430,25 @@ public class SportFragment extends ChannelBaseFragment {
 		}
 	}
 
+	private Handler test = new Handler() {
+
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			fillLiveData();
+			if (msg.arg1 == 1) {
+				sports_live1.requestFocus();
+			} else {
+				sports_live3.requestFocus();
+			}
+		}
+
+	};
+
 	private void initzoom() {
 		if (scaleBigAnimation == null) {
 			scaleBigAnimation = AnimationUtils.loadAnimation(getActivity(),
-					R.anim.anim_scale_big);
+					R.anim.sport_arrow_anim);
 		}
 	}
 }
