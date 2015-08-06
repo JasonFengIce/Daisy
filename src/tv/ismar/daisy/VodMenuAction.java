@@ -3,6 +3,7 @@ package tv.ismar.daisy;
 import java.util.ArrayList;
 
 import tv.ismar.daisy.core.NetworkUtils;
+import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.models.AdElement;
 import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.player.ISTVVodMenu;
@@ -97,7 +98,8 @@ public abstract class VodMenuAction extends BaseActivity {
 		protected ArrayList<AdElement> doInBackground(String... params) {
 		    adpid = params[0];
 			String p = params[1];
-			ArrayList<AdElement> ads = NetworkUtils.getAdByPost(adpid, p);
+			String province = AccountSharedPrefs.getInstance(VodMenuAction.this).getSharedPrefs(AccountSharedPrefs.PROVINCE_PY);
+			ArrayList<AdElement> ads = NetworkUtils.getAdByPost(adpid, p,province);
 			return ads;
 		}
 

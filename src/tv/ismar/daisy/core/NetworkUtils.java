@@ -222,15 +222,15 @@ public class NetworkUtils {
 		return response.toString();
 	}
 
-	public static ArrayList<AdElement> getAdByPost(String adpid, String values) {
+	public static ArrayList<AdElement> getAdByPost(String adpid, String values,String province) {
 		StringBuffer response = new StringBuffer();
 		ArrayList<AdElement> result = new ArrayList<AdElement>();
 		String baseparams = "sn=" + SimpleRestClient.sn_token + "&modelName="
 				+ Build.MODEL.replace(" ", "_") + "&version="
 				+ SimpleRestClient.appVersion + "&accessToken="
 				+ SimpleRestClient.access_token + "&deviceToken="
-				+ SimpleRestClient.device_token + "&province=" + "HB"
-				+ "&city=" + "SJZ" + "&app=" + "sky"
+				+ SimpleRestClient.device_token + "&province=" + province
+				+ "&city=" + "" + "&app=" + "sky"
 				+ "&resolution=" + SimpleRestClient.screenWidth + ","
 				+ SimpleRestClient.screenHeight + "&dpi="
 				+ SimpleRestClient.densityDpi + "&adpid=" + "['" + adpid + "']";

@@ -301,8 +301,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         int i;
         ChannelEntity s1 = new ChannelEntity();
         ChannelEntity s2 = new ChannelEntity();
-        s1.setName("test1");
-        s2.setName("test2");
         s1.setChannel(channelEntities[0].getChannel());
         s2.setChannel(channelEntities[0].getChannel());
         channelList.add(s1);
