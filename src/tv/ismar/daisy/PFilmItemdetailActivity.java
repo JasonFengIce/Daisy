@@ -80,7 +80,6 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.filmitem_portrait_detail_view);
         mSimpleRestClient = new SimpleRestClient();
-        long remain = -10/100;
 
         mLoadingDialog = new LoadingDialog(this, getResources().getString(
                 R.string.vod_loading));
@@ -755,14 +754,16 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
     }
 
     private void buildRelatedList() {
+        float rate = DaisyUtils.getVodApplication(this).getRate(this);
         for (int i = 0; i < 6 && i < mRelatedItem.length; i++) {
             View relatedHolder = LayoutInflater
                     .from(PFilmItemdetailActivity.this).inflate(
                             R.layout.realte_portrait_item, null);
             LinearLayout.LayoutParams layoutParams;
-            layoutParams = new LinearLayout.LayoutParams(254, 401);
+
+            layoutParams = new LinearLayout.LayoutParams((int)(254/rate), (int)(401/rate));
             if(i!=0)
-            layoutParams.leftMargin = 8;
+            layoutParams.leftMargin = (int)(8/rate);
             relatedHolder.setLayoutParams(layoutParams);
             TextView titleView = (TextView) relatedHolder
                     .findViewById(R.id.related_title);

@@ -57,4 +57,5 @@ public class Item implements Serializable {
     public boolean ispayed;
     public String channel;
     public String slug;
+    public String fromPage;
 }

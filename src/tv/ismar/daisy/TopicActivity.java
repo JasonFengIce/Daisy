@@ -240,6 +240,7 @@ public class TopicActivity extends BaseActivity implements View.OnFocusChangeLis
         }
         else{
             InitPlayerTool tool = new InitPlayerTool(TopicActivity.this);
+            tool.fromPage = "topic";
             tool.setonAsyncTaskListener(new InitPlayerTool.onAsyncTaskHandler() {
 
                 @Override

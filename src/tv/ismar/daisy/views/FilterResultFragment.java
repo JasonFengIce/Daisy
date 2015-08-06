@@ -359,6 +359,7 @@ public class FilterResultFragment extends BackHandledFragment implements Adapter
                 DaisyUtils.gotoSpecialPage(getActivity(),item.content_model,item.url);
             } else {
                 InitPlayerTool tool = new InitPlayerTool(getActivity());
+                tool.fromPage = "retrieval";
                 tool.setonAsyncTaskListener(new InitPlayerTool.onAsyncTaskHandler() {
 
                     @Override

@@ -14,6 +14,7 @@ import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemList;
 import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
+import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.views.LoadingDialog;
 import tv.ismar.daisy.views.RelateScrollableSectionList;
 import tv.ismar.daisy.views.RelateScrollableSectionList.OnSectionSelectChangedListener;
@@ -346,9 +347,13 @@ public class RelatedActivity extends BaseActivity implements OnSectionSelectChan
 //		intent.putExtra("url", item.item_url);
 //        intent.putExtra(EventProperty.SECTION, mSection);
 //		startActivity(intent);
-
-        DaisyUtils.gotoSpecialPage(this,item.content_model,item.item_url);
-
+        if(item.is_complex)
+            DaisyUtils.gotoSpecialPage(this,item.content_model,item.item_url);
+        else{
+            InitPlayerTool tool = new InitPlayerTool(RelatedActivity.this);
+            tool.fromPage = "related";
+            tool.initClipInfo(item.item_url, InitPlayerTool.FLAG_URL);
+        }
 	}
 	
 	
