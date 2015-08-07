@@ -298,28 +298,11 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         }
         scroll = (HGridView) contentView.findViewById(R.id.h_grid_view);
         channelHashMap = new HashMap<String, TextView>();
-        int i;
-        ChannelEntity s1 = new ChannelEntity();
-        ChannelEntity s2 = new ChannelEntity();
-        s1.setChannel(channelEntities[0].getChannel());
-        s2.setChannel(channelEntities[0].getChannel());
-        channelList.add(s1);
-        channelList.add(s2);
         ChannelAdapter imageAdapter = new ChannelAdapter(this, channelList, R.layout.item_channel);
         scroll.setAdapter(imageAdapter);
         imageAdapter.setMap(channelHashMap);
         imageAdapter.setList((ArrayList<ChannelEntity>) channelList);
         imageAdapter.setOnClickListener(channelClickListener);
-//        for ( i = 0; i < channelEntities.length; i++) {
-//            FrameLayout frameLayout = (FrameLayout) LayoutInflater.from(this).inflate(R.layout.item_channel, null);
-//            Button textView = (Button) frameLayout.findViewById(R.id.channel_item);
-//            textView.setText(channelEntities[i].getName());
-//            textView.setOnClickListener(channelClickListener);
-//            textView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
-//            textView.setTag(i);
-//            channelHashMap.put(channelEntities[i].getChannel(), textView);
-//        }
-
         scroll.setFocusable(true);
 
         scroll.mFocusListener = mFocusListener;
