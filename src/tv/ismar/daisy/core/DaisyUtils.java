@@ -76,6 +76,7 @@ public class DaisyUtils {
 					"tv.ismar.daisy.ItemDetailActivity");
 		}
         intent.putExtra("url", url);
+        intent.putExtra("fromPage","list");
 		context.startActivity(intent);
 	}
 

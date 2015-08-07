@@ -761,6 +761,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 						intent.putExtra("url", item.url);
                         intent.putExtra("title",mTitle);
 						intent.putExtra("channel",mChannel);
+						intent.putExtra("fromPage","list");
 						intent.putExtra(EventProperty.SECTION, s.slug);
 						startActivity(intent);
 					} else {

@@ -127,6 +127,7 @@ public class ItemDetailActivity extends BaseActivity implements
 	private Drawable drawableleftbuy;
     private String slug;
     private String channel;
+    private String fromPage;
 	private void initViews() {
 		isbuy_label = (ImageView)findViewById(R.id.isbuy_label);
 		mDetailLeftContainer = (RelativeLayout) findViewById(R.id.detail_left_container);
@@ -186,6 +187,7 @@ public class ItemDetailActivity extends BaseActivity implements
 		if (intent != null) {
             channel = intent.getStringExtra("channel");
             slug = intent.getStringExtra(EventProperty.SECTION);
+            fromPage= intent.getStringExtra("fromPage");
 			if (intent.getSerializableExtra("item") != null) {
 				mItem = (Item) intent.getSerializableExtra("item");
 				if (mItem != null) {
@@ -882,6 +884,7 @@ private boolean isPause = false;
 						ItemDetailActivity.this);
                 tool.channel = channel;
                 tool.slug = slug;
+                tool.fromPage = fromPage;
 				tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
 
 					@Override
