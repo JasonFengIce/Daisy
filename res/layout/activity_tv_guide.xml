@@ -88,12 +88,12 @@
             android:id="@+id/h_grid_view"
             android:layout_width="match_parent"
             android:layout_height="0dip"
-            sakura:horizontalSpacing="14dip"
+            sakura:horizontalSpacing="@dimen/tv_guide_h_grid_view_horizontalSpacing"
             sakura:numRows="1"
-            sakura:rowHeight="66dip"
+            sakura:rowHeight="@dimen/tv_guide_h_grid_view_rowHeight"
             android:fadingEdge="horizontal"
             sakura:selectorDrawable="@null"
-            android:fadingEdgeLength="@dimen/gridview_main_panel_fadingEdgeLength"
+         
       >
     </org.sakuratya.horizontal.ui.HGridView>
     <LinearLayout
