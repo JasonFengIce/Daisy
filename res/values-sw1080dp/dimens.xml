@@ -1,5 +1,6 @@
 <resources>
-    <!-- item detail page-->
+
+    <!-- item detail page -->
     <dimen name="item_detail_detail_left_container_width">1291dip</dimen>
     <dimen name="item_detail_vod_watermark_width">669dip</dimen>
     <dimen name="item_detail_vod_watermark_height">155dip</dimen>
@@ -73,7 +74,7 @@
     <dimen name="item_detail_text_size">36sp</dimen>
     <dimen name="item_detail_detail_price_txt_ML">2dip</dimen>
     <dimen name="item_detail_detail_price_textsize">24sp</dimen>
-    <!-- grid listview page-->
+    <!-- grid listview page -->
     <dimen name="gridview_channel_panel_height">88dip</dimen>
     <dimen name="gridview_channel_panel_marginBottom">35dp</dimen>
     <dimen name="gridview_channel_label_width">375dip</dimen>
@@ -171,10 +172,10 @@
     <dimen name="related_item_image_margintop">23dip</dimen>
     <dimen name="related_item_image_marginright">23dip</dimen>
     <dimen name="related_item_image_marginbottom">23dip</dimen>
-    <!--     <dimen name="related_item_image_paddingleft">7dip</dimen> -->
-    <!--     <dimen name="related_item_image_paddingtop">3dip</dimen> -->
-    <!--     <dimen name="related_item_image_paddingright">7dip</dimen> -->
-    <!--     <dimen name="related_item_image_paddingbottom">12dip</dimen> -->
+    <!-- <dimen name="related_item_image_paddingleft">7dip</dimen> -->
+    <!-- <dimen name="related_item_image_paddingtop">3dip</dimen> -->
+    <!-- <dimen name="related_item_image_paddingright">7dip</dimen> -->
+    <!-- <dimen name="related_item_image_paddingbottom">12dip</dimen> -->
     <dimen name="related_item_image_paddingleft">1dip</dimen>
     <dimen name="related_item_image_paddingtop">1dip</dimen>
     <dimen name="related_item_image_paddingright">1dip</dimen>
@@ -435,22 +436,18 @@
     <dimen name="ZGridView_related_selectorTopPadding">3.8dip</dimen>
     <dimen name="ZGridView_related_selectorRightPadding">3.8dip</dimen>
     <dimen name="ZGridView_related_selectorBottomPadding">-75dip</dimen>
-
     <dimen name="ZGridView_played_selectorLeftPadding">7dip</dimen>
     <dimen name="ZGridView_played_selectorTopPadding">16dip</dimen>
     <dimen name="ZGridView_played_selectorRightPadding">7dip</dimen>
     <dimen name="ZGridView_played_selectorBottomPadding">-33dip</dimen>
-
     <dimen name="ZGridView_search_selectorLeftPadding">7dip</dimen>
     <dimen name="ZGridView_search_selectorTopPadding">21dip</dimen>
     <dimen name="ZGridView_search_selectorRight">21dip</dimen>
     <dimen name="ZGridView_search_selectorBottom">-40dip</dimen>
-
     <dimen name="ZGridView_packagedetail_selectorLeftPadding">-19.3dip</dimen>
     <dimen name="ZGridView_packagedetail_selectorTopPadding">-19dip</dimen>
     <dimen name="ZGridView_packagedetail_selectorRight">-18dip</dimen>
     <dimen name="ZGridView_packagedetail_selectorBottom">-39dip</dimen>
-
     <dimen name="ZGridView_recommend_selectorLeftPadding">4dip</dimen>
     <dimen name="ZGridView_recommend_selectorTopPadding">-19dip</dimen>
     <dimen name="ZGridView_recommend_selectorRightPadding">2dip</dimen>
@@ -461,23 +458,18 @@
     <dimen name="HGridView_related_selectionTopPadding">3.5dip</dimen>
     <dimen name="HGridView_related_selectionRightPadding">3.5dip</dimen>
     <dimen name="HGridView_related_selectionBottomPadding">-80.1dip</dimen>
-
     <dimen name="HGridView_related_PFilterLeftPadding">20dip</dimen>
     <dimen name="HGridView_related_PFilterTopPadding">21dip</dimen>
     <dimen name="HGridView_related_PFilterRightPadding">21dip</dimen>
     <dimen name="HGridView_related_PFilterBottomPadding">-26dip</dimen>
-
     <dimen name="HGridView_related_FilterLeftPadding">21dip</dimen>
     <dimen name="HGridView_related_FilterTopPadding">20dip</dimen>
     <dimen name="HGridView_related_FilterRightPadding">22dip</dimen>
     <dimen name="HGridView_related_FilterBottomPadding">-40dip</dimen>
-
     <dimen name="HGridView_related_pselectionLeftPadding">3.8dip</dimen>
     <dimen name="HGridView_related_pselectionTopPadding">3.8dip</dimen>
     <dimen name="HGridView_related_pselectionRightPadding">3.8dip</dimen>
     <dimen name="HGridView_related_pselectionBottomPadding">-47.2dip</dimen>
-
-
     <dimen name="HGridView_label_lr_offset">19dip</dimen>
     <dimen name="HGridView_label_textleft">24dip</dimen>
     <dimen name="HGridView_label_texttop">56dip</dimen>
@@ -554,6 +546,7 @@
     <dimen name="package_item_ItemText_PLR">8dip</dimen>
 
     <!-- personal center -->
+
 
     <!-- list_view -->
     <dimen name="list_view_search_H">60dip</dimen>
@@ -643,7 +636,7 @@
     <dimen name="privilege_item_textsize">35sp</dimen>
     <dimen name="privilege_item_title_txt_PL">50dip</dimen>
 
-    <!--launcher activity-->
+    <!-- launcher activity -->
     <dimen name="launcher_layout_padding_bottom">40dp</dimen>
     <dimen name="launcher_weather_layout_margin_top">640dp</dimen>
     <dimen name="launcher_channel_img_height">80dp</dimen>
@@ -655,13 +648,12 @@
     <dimen name="recommend_item__W">230dip</dimen>
     <dimen name="recommend_item_image__H">150dip</dimen>
 
-    <!--menu  -->
+    <!-- menu -->
     <dimen name="menu_list_PaddingTB">50dip</dimen>
     <dimen name="menu_item_PaddingTB">30dip</dimen>
     <dimen name="menu_item_text_size">48sp</dimen>
 
-
-    <!--activity_tv_guide-->
+    <!-- activity_tv_guide -->
     <dimen name="tv_guide_container_margin_top">10dp</dimen>
     <dimen name="tv_guide_channel_item_width">188dp</dimen>
     <dimen name="tv_guide_channel_item_height">66dp</dimen>
@@ -669,41 +661,31 @@
     <dimen name="tv_guide_arrow_scroll_w">41dp</dimen>
     <dimen name="tv_guide_arrow_scroll_h">82dp</dimen>
     <dimen name="tv_guide_arrow_scroll_margin">13dp</dimen>
-    <!--guide activity-->
+    <!-- guide activity -->
     <dimen name="guide_title_size">48sp</dimen>
     <dimen name="guide_channel_size">36sp</dimen>
     <dimen name="guide_history_size">24sp</dimen>
-
     <dimen name="guide_title_margin_lr">13dp</dimen>
-
     <dimen name="guide_channel_margin_lr">58dp</dimen>
     <dimen name="guide_fragment_margin_top">10dp</dimen>
     <dimen name="guide_fragment_margin_bottom">4dp</dimen>
     <dimen name="guide_fragment_margin_lr">73dp</dimen>
 
-
     <!-- fragment guide -->
-
 
     <dimen name="linked_item_width">297dp</dimen>
     <dimen name="linked_item_height">166dp</dimen>
-
     <dimen name="guide_recommend_margin_top">4dp</dimen>
-
     <dimen name="guide_linked_item_margin_left">7dp</dimen>
     <dimen name="guide_channel_margin_top">4dp</dimen>
-
-
     <dimen name="guide_tab_margin_top">32dp</dimen>
     <dimen name="guide_tab_margin_rl">68dp</dimen>
-
     <dimen name="guide_tab_item_wh">64dp</dimen>
-
-
     <dimen name="guide_container_width">1774dp</dimen>
     <dimen name="guide_container_height">780dp</dimen>
 
     <!-- tv guide activity -->
+
 
     <!-- top page template -->
     <dimen name="tv_guide_top_section_padding">14dp</dimen>
@@ -735,9 +717,7 @@
     <dimen name="tv_guide_channel_textSize">36sp</dimen>
     <dimen name="tv_guide_cinema_textSize">48sp</dimen>
     <dimen name="tv_guide_history_textSize">24sp</dimen>
-
     <dimen name="fragment_padding_lr">73dp</dimen>
-
     <dimen name="tv_guide_menu_margin">44dp</dimen>
     <dimen name="tv_guide_channel_margin_lr">51dp</dimen>
 
@@ -771,21 +751,15 @@
     <dimen name="association_phone_margin_top">60dp</dimen>
     <dimen name="association_fetch_verification_button_width">250dp</dimen>
     <dimen name="association_submit_width">290dp</dimen>
-
     <dimen name="user_info_item_vertical_spacing">40dp</dimen>
-
     <dimen name="userinfo_playauth_item_normal_textsize">30sp</dimen>
     <dimen name="userinfo_playauth_item_focus_textsize">36sp</dimen>
-
     <dimen name="login_fragmet_view_margin_top">230dp</dimen>
     <dimen name="login_pop_msg_margin_top">100dp</dimen>
-
     <dimen name="login_pop_button_width">300dp</dimen>
     <dimen name="login_pop_button_height">70dp</dimen>
-
     <dimen name="login_pop_width">1200dp</dimen>
     <dimen name="login_pop_height">500dp</dimen>
-
     <dimen name="user_center_logout_width">80dp</dimen>
     <dimen name="user_center_logout_height">40dp</dimen>
     <dimen name="account_combine_text_margin_top">60dp</dimen>
@@ -796,7 +770,6 @@
     <dimen name="account_combine_pop_width">1200dp</dimen>
     <dimen name="account_combine_pop_height">400dp</dimen>
 
-
     <!-- child fragment -->
     <dimen name="child_fragment_item_margin_lr">107dp</dimen>
     <dimen name="child_fragment_item_margin_tp">18dp</dimen>
@@ -806,59 +779,45 @@
     <dimen name="child_fragment_bottomlayout_margin">96dp</dimen>
     <dimen name="child_fragment_indicator_width">151dp</dimen>
     <dimen name="child_fragment_indicator_height">85dp</dimen>
-
     <dimen name="child_fragment_indicator_layout_padding_bottom">38dp</dimen>
-
     <dimen name="child_fragment_toplayout_margin_top">31dp</dimen>
     <dimen name="child_fragment_leftlayout_margin_left">103dp</dimen>
-
     <dimen name="child_fragment_item_width">346dp</dimen>
     <dimen name="child_fragment_item_height">234dp</dimen>
-
     <dimen name="child_fragment_item_image_width">336dp</dimen>
     <dimen name="child_fragment_item_image_height">189dp</dimen>
     <dimen name="child_fragment_item_image_margin_top">4dp</dimen>
-
     <dimen name="child_fragment_center_layout_width">788dp</dimen>
     <dimen name="child_fragment_center_layout_height">446dp</dimen>
     <dimen name="child_fragment_center_layout_margin_left">113dp</dimen>
-
     <dimen name="child_fragment_center_layout_item_margin_top">58dp</dimen>
     <dimen name="child_fragment_center_layout_item_margin_left">96dp</dimen>
-
-
     <dimen name="item_boundary_margin">7dp</dimen>
 
-    <!-- Filter-->
+    <!-- Filter -->
     <dimen name="condition_height">100dip</dimen>
     <dimen name="submit_btn_width">150dip</dimen>
     <dimen name="submit_btn_height">100dip</dimen>
-
-
     <dimen name="h1_text_size">48sp</dimen>
     <dimen name="h2_text_size">36sp</dimen>
     <dimen name="h3_text_size">30sp</dimen>
     <dimen name="h4_text_size">30sp</dimen>
-    <!--update-->
+    <!-- update -->
     <dimen name="update_notice_textsize">40sp</dimen>
     <dimen name="update_title_textsize">32sp</dimen>
     <dimen name="update_msg_textsize">28sp</dimen>
-
     <dimen name="update_notice_margin_top">60dp</dimen>
-
     <dimen name="update_confirm_button_width">250dp</dimen>
     <dimen name="update_confirm_button_height">60dp</dimen>
-
     <dimen name="update_confirm_button_margin_bottom">50dp</dimen>
-
 
     <!-- ====================================================== -->
     <!-- sakura -->
 
+
     <!-- text size -->
     <dimen name="textSize_normal">22sp</dimen>
     <dimen name="textSize_testButton">30sp</dimen>
-
 
     <!-- launcher activity -->
     <dimen name="sakura_launcher_indicator_height">150dp</dimen>
@@ -877,17 +836,14 @@
     <dimen name="home_indicator_icon_width">160dp</dimen>
     <dimen name="home_indicator_icon_height">160dp</dimen>
 
-
     <!-- fragment_node -->
     <dimen name="layout_margin">10dp</dimen>
     <dimen name="test_button_height">60dp</dimen>
     <dimen name="layout_border_padding">20dp</dimen>
     <dimen name="list_title_height">40dp</dimen>
     <dimen name="list_select_prompt_textSize">26sp</dimen>
-
     <dimen name="list_item_margin">30dp</dimen>
     <dimen name="spinner_text">20sp</dimen>
-
 
     <!-- sakura_item_node_list -->
     <dimen name="count_layout_width">40dp</dimen>
@@ -896,16 +852,13 @@
     <dimen name="item_node_name_width">130dp</dimen>
     <dimen name="item_node_minHeight">55dp</dimen>
 
-
     <!-- feedback fragment -->
     <dimen name="feedback_layout_h_margin">40dp</dimen>
     <dimen name="feedback_layout_v_margin">10dp</dimen>
     <dimen name="feedback_radio_button_textSize">18sp</dimen>
     <dimen name="feedback_radiogroup_margin">20dp</dimen>
-
     <dimen name="feedback_item_title_textSize">20sp</dimen>
     <dimen name="feedback_item_time_textSize">28sp</dimen>
-
     <dimen name="feedback_item_minHeight">40dp</dimen>
     <dimen name="feedback_item_v_margin">5dp</dimen>
     <dimen name="feedback_item_h_margin">10dp</dimen>
@@ -913,29 +866,21 @@
     <!-- help fragment -->
     <dimen name="help_item__h_margin">10dp</dimen>
     <dimen name="test_height">300dip</dimen>
-
     <dimen name="weather_guide_text_margin_lr">20dp</dimen>
     <dimen name="weather_guide_text_margin_margin_top">55dp</dimen>
     <dimen name="weather_guide_text_margin_margin_bottom">20dp</dimen>
-
     <dimen name="weather_layout_margin_left">25dp</dimen>
-
     <dimen name="weather_divider_width">50dp</dimen>
     <dimen name="weather_divider_height">5dp</dimen>
     <dimen name="weather_divider_margin_bottom">40dp</dimen>
-
     <dimen name="location_fragment_current_position_height">204dp</dimen>
-
     <dimen name="location_divider_margin_left">36dp</dimen>
     <dimen name="location_divider_width">1314dp</dimen>
-
     <dimen name="location_grid_margin_top">57dp</dimen>
-
     <dimen name="location_area_pop_width">1420dp</dimen>
     <dimen name="location_area_pop_height">860dp</dimen>
 
-
-    <!--sakura-->
+    <!-- sakura -->
     <dimen name="sakura_launch_icon_width">220dp</dimen>
     <dimen name="sakura_launch_icon_height">220dp</dimen>
     <dimen name="sakura_launch_icon_margin_left">50dp</dimen>
@@ -949,23 +894,49 @@
     <dimen name="sakura_node_item_margin_top">20dp</dimen>
     <dimen name="sakura_node_testbutton_height">100dp</dimen>
     <dimen name="sakura_node_nodename_width">200dp</dimen>
-
-
     <dimen name="purchase_history_text_margin_top">23dp</dimen>
     <dimen name="purchase_history_item_margin_left">24dp</dimen>
-
     <dimen name="location_item_text_horizontal_spacing">72dp</dimen>
     <!-- fragment film -->
     <dimen name="film_linearLayout_h">498dp</dimen>
     <dimen name="film_linearLayout_margin">33dp</dimen>
     <dimen name="film_lefttop_image_w">368dp</dimen>
     <dimen name="film_post_layout_w">1184dp</dimen>
-    <dimen name="film_post_layout_h">498dp</dimen> 
+    <dimen name="film_post_layout_h">498dp</dimen>
     <dimen name="film_post_layout_ml">8dp</dimen>
     <dimen name="film_linked_title_padding">30dp</dimen>
     <dimen name="film_carousel_layout_w">206dp</dimen>
     <dimen name="film_recommend_list_h">278dp</dimen>
     <dimen name="film_recommend_list_mt">16dp</dimen>
     <dimen name="film_recommend_list_padding">29dp</dimen>
-    <!-- fragment film end-->
+    <!-- fragment film end -->
+    <!-- fragment entertainment -->
+    <dimen name="entertainment_linearLayout_margin">43dp</dimen>
+    <dimen name="entertainment_vaiety_lefttop_margin">30dp</dimen>
+    <dimen name="entertainment_vaiety_thumb_w">132dp</dimen>
+    <dimen name="entertainment_vaiety_thumb_h">74dp</dimen>
+    <dimen name="entertainment_vaiety_thumb_padding">-22dp</dimen>
+    <dimen name="entertainment_vaiety_fouce_label_w">520dp</dimen>
+    <dimen name="entertainment_vaiety_fouce_label_h">52dp</dimen>
+    <dimen name="entertainment_vaiety_fouce_label_margin">1dp</dimen>
+    <dimen name="entertainment_vaiety_fouce_label_textsize">24sp</dimen>
+    <dimen name="entertainment_vaiety_righttop_mt">28dp</dimen>
+    <dimen name="entertainment_vaiety_righttop_ml">27dp</dimen>
+    <dimen name="entertainment_vaiety_card_w">402dp</dimen>
+    <dimen name="entertainment_vaiety_card_h">260dp</dimen>
+    <dimen name="entertainment_vaiety_card_ml">27dp</dimen>
+    <dimen name="entertainment_vaiety_card_image_w">398dp</dimen>
+    <dimen name="entertainment_vaiety_card_image_h">227dp</dimen>
+    <dimen name="entertainment_vaiety_card_image_margin">2dp</dimen>
+    <dimen name="entertainment_vaiety_card_image_textsize">18sp</dimen>
+    <dimen name="entertainment_vaiety_card_subtitle_textsize">24sp</dimen>
+    <dimen name="entertainment_vaiety_channel_w">332dp</dimen>
+    <dimen name="entertainment_vaiety_channel_ml">28dp</dimen>
+    <dimen name="entertainment_vaiety_channel_ml_1">29dp</dimen>
+    <dimen name="entertainment_vaiety_channel_image_w">332dp</dimen>
+    <dimen name="entertainment_vaiety_channel_image_h">189dp</dimen>
+    <dimen name="entertainment_vaiety_channel_title_mt">15dp</dimen>
+    <dimen name="entertainment_vaiety_channel_title_textsize">30sp</dimen>
+    <!-- fragment entertainment end -->
+
 </resources>
