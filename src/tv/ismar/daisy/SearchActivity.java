@@ -479,6 +479,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
                 DaisyUtils.gotoSpecialPage(SearchActivity.this,movieList.get(position).content_model,movieList.get(position).url);
 			} else {
 				InitPlayerTool tool = new InitPlayerTool(SearchActivity.this);
+                tool.fromPage = "search";
 				tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
 					
 					@Override

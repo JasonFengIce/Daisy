@@ -18,6 +18,8 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 
+import java.text.DecimalFormat;
+
 public class ScrollableSectionList extends HorizontalScrollView {
 	
 	private static final String TAG = "ScrollableSectionList";
@@ -53,6 +55,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
     public String title;
     public String channel;
     public boolean isPortrait = false;
+    float rate;
 	public ScrollableSectionList(Context context, AttributeSet attrs,
 			int defStyle) {
 		super(context, attrs, defStyle);
@@ -75,6 +78,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 	}
 
 	public void init(SectionList sectionLists, int totalWidth,boolean isChangeBarStyle) {
+        rate = DaisyUtils.getVodApplication(getContext()).getRate(getContext());
 		mContainer = new LinearLayout(getContext());
 		this.isChangeBarStyle = isChangeBarStyle;
 //		int H = DaisyUtils.getVodApplication(getContext()).getheightPixels(getContext());
@@ -160,14 +164,13 @@ public class ScrollableSectionList extends HorizontalScrollView {
 	private RelativeLayout getSectionLabelLayout(Section section, int width) {
 		RelativeLayout sectionHolder = (RelativeLayout) LayoutInflater.from(getContext()).inflate(R.layout.section_list_item, null);
 
-				LinearLayout.LayoutParams layoutParams;
-//		if(H==720)
-//		    layoutParams = new LinearLayout.LayoutParams(width, 44);
-//		else
-//			layoutParams = new LinearLayout.LayoutParams(width, 66);
+		LinearLayout.LayoutParams layoutParams;
 
         layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-		layoutParams.rightMargin = 50;
+        DecimalFormat fnum = new DecimalFormat("##0.00");
+        String dd = fnum.format(50 / rate);
+		layoutParams.rightMargin = (int)Float.parseFloat(dd);
+
 		sectionHolder.setLayoutParams(layoutParams);
 		sectionHolder.setFocusable(true);
 		TextView label = (TextView) sectionHolder.findViewById(R.id.section_label);
@@ -180,7 +183,9 @@ public class ScrollableSectionList extends HorizontalScrollView {
         RelativeLayout sectionHolder = (RelativeLayout) LayoutInflater.from(getContext()).inflate(R.layout.section_list_item, null);
         LinearLayout.LayoutParams layoutParams;
         layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        layoutParams.rightMargin = 50;
+        DecimalFormat fnum = new DecimalFormat("##0.00");
+        String dd = fnum.format(50 / rate);
+        layoutParams.rightMargin = (int)Float.parseFloat(dd);
         sectionHolder.setLayoutParams(layoutParams);
         sectionHolder.setFocusable(true);
         TextView label = (TextView) sectionHolder.findViewById(R.id.section_label);

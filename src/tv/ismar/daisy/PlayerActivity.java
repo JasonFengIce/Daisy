@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -589,7 +590,7 @@ public class PlayerActivity extends VodMenuAction {
 						if (paths != null && url != null
 								&& paths[paths.length - 1].equals(url)) {
 							if (item.isPreview) {
-								if(item.expense == null){
+								if (item.expense == null) {
 									finish();
 									return;
 								}
@@ -714,13 +715,21 @@ public class PlayerActivity extends VodMenuAction {
 					genresBuffer.append("]");
 			}
 		}
-		String params = "channel=" + "chinesemovie" + "&section="
-				+ "xinpianshangxian" + "&itemid="
+
+		String channelSection = "channel=" + "" + "&section=" + "";
+		if (StringUtils.isNotEmpty(item.channel)
+				&& StringUtils.isNotEmpty(item.slug)) {
+			channelSection = "channel=" + item.channel + "&section="
+					+ item.slug;
+		}
+
+		String params = channelSection
+				+ "&itemid="
 				+ item.pk
 				+ "&topic="
 				+ ""
 				+ "&source="
-				+ "list"
+				+ item.fromPage
 				+ "&genre="
 				+ genresBuffer.toString()
 				+ "&content_model="
@@ -736,8 +745,7 @@ public class PlayerActivity extends VodMenuAction {
 				+ "&vendor="
 				+ Base64.encodeToString(item.vendor == null ? "".getBytes()
 						: item.vendor.getBytes(), Base64.URL_SAFE)
-				+ "&expense="
-				+ (item.expense == null ? false : true)
+				+ "&expense=" + (item.expense == null ? false : true)
 				+ "&length=" + item.clip.length;
 		new GetAdDataTask().execute(adpid, params);
 	}
@@ -1086,20 +1094,20 @@ public class PlayerActivity extends VodMenuAction {
 			if (listItems != null && listItems.size() > 0
 					&& currNum < (listItems.size() - 1)) {
 
-                if (menu == null) {
-                    createWindow();
-                    menu = new ISTVVodMenu(this);
-                    createMenu(menu);
-                }
-                ISTVVodMenuItem ii1 = menu.findItem(item.pk);
-                if(ii1!=null){
-                    ii1.unselect();
-                }
+				if (menu == null) {
+					createWindow();
+					menu = new ISTVVodMenu(this);
+					createMenu(menu);
+				}
+				ISTVVodMenuItem ii1 = menu.findItem(item.pk);
+				if (ii1 != null) {
+					ii1.unselect();
+				}
 				item = listItems.get(currNum + 1);
-                ISTVVodMenuItem ii2 = menu.findItem(item.pk);
-                if(ii2!=null){
-                    ii2.select();
-                }
+				ISTVVodMenuItem ii2 = menu.findItem(item.pk);
+				if (ii2 != null) {
+					ii2.select();
+				}
 				subItemUrl = SimpleRestClient.root_url + "/api/subitem/"
 						+ item.pk + "/";
 				bundle.remove("url");

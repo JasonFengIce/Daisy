@@ -35,8 +35,17 @@ public class HomePagerEntity {
         private String thumb_image;
         private String model_name;
         private String content_model;
+        private int corner;
 
-        public String getContent_model() {
+        public int getCorner() {
+			return corner;
+		}
+
+		public void setCorner(int corner) {
+			this.corner = corner;
+		}
+
+		public String getContent_model() {
 			return content_model;
 		}
 
@@ -119,7 +128,16 @@ public class HomePagerEntity {
         private String model_name;
         private String custom_image;
         private String content_model;
-        public String getContent_model() {
+        private int corner;
+        public int getCorner() {
+			return corner;
+		}
+
+		public void setCorner(int corner) {
+			this.corner = corner;
+		}
+
+		public String getContent_model() {
 			return content_model;
 		}
 

@@ -358,6 +358,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
                     DaisyUtils.gotoSpecialPage(getActivity(),item.content_model,item.url);
 				} else {
 					InitPlayerTool tool = new InitPlayerTool(getActivity());
+                    tool.fromPage = "favorite";
 					tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
 						
 						@Override
@@ -552,6 +553,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			}
 			else{
 				InitPlayerTool tool = new InitPlayerTool(getActivity());
+                tool.fromPage = "tvhome";
 				tool.initClipInfo(tvHome.getObjects().get(position).getItem_url(), InitPlayerTool.FLAG_URL);
 			}
 			break;

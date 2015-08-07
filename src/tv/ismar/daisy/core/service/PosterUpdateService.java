@@ -97,8 +97,8 @@ public class PosterUpdateService extends Service {
                 messageHandler.sendEmptyMessage(UPDATE_ADVERTISEMENT);
             }
         };
+//        timer.schedule(tt, 3000, 20  * 1000);
         timer.schedule(tt, 3000, 15 * 60 * 1000);
-// ／       timer.schedule(tt, 3000, 15 * 60 * 1000);
     }
 
     private void fetchAdvertisementInfo() {

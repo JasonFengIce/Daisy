@@ -452,6 +452,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
         Intent intent = new Intent();
 
         InitPlayerTool tool = new InitPlayerTool(getActivity());
+        tool.fromPage = "history";
         tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
 
             @Override
@@ -788,6 +789,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 			}
 			else{
 				InitPlayerTool tool = new InitPlayerTool(getActivity());
+                tool.fromPage = "tvhome";
 				tool.initClipInfo(tvHome.getObjects().get(position).getItem_url(), InitPlayerTool.FLAG_URL);
 			}
 

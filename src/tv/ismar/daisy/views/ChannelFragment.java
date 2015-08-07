@@ -765,6 +765,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 						startActivity(intent);
 					} else {
 						InitPlayerTool tool = new InitPlayerTool(getActivity());
+                        tool.fromPage = "list";
 						tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
 							
 							@Override

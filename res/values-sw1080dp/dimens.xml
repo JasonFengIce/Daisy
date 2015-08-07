@@ -666,7 +666,9 @@
     <dimen name="tv_guide_channel_item_width">188dp</dimen>
     <dimen name="tv_guide_channel_item_height">66dp</dimen>
     <dimen name="tv_guide_channel_text_size">36sp</dimen>
-
+    <dimen name="tv_guide_arrow_scroll_w">41dp</dimen>
+    <dimen name="tv_guide_arrow_scroll_h">82dp</dimen>
+    <dimen name="tv_guide_arrow_scroll_margin">13dp</dimen>
     <!--guide activity-->
     <dimen name="guide_title_size">48sp</dimen>
     <dimen name="guide_channel_size">36sp</dimen>
@@ -953,4 +955,17 @@
     <dimen name="purchase_history_item_margin_left">24dp</dimen>
 
     <dimen name="location_item_text_horizontal_spacing">72dp</dimen>
+    <!-- fragment film -->
+    <dimen name="film_linearLayout_h">498dp</dimen>
+    <dimen name="film_linearLayout_margin">33dp</dimen>
+    <dimen name="film_lefttop_image_w">368dp</dimen>
+    <dimen name="film_post_layout_w">1184dp</dimen>
+    <dimen name="film_post_layout_h">498dp</dimen> 
+    <dimen name="film_post_layout_ml">8dp</dimen>
+    <dimen name="film_linked_title_padding">30dp</dimen>
+    <dimen name="film_carousel_layout_w">206dp</dimen>
+    <dimen name="film_recommend_list_h">278dp</dimen>
+    <dimen name="film_recommend_list_mt">16dp</dimen>
+    <dimen name="film_recommend_list_padding">29dp</dimen>
+    <!-- fragment film end-->
 </resources>

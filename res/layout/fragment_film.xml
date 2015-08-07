@@ -10,8 +10,8 @@
 
     <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="498dp"
-            android:layout_marginTop="33dp"
+            android:layout_height="@dimen/film_linearLayout_h"
+            android:layout_marginTop="@dimen/film_linearLayout_margin"
             android:orientation="horizontal"
             android:clipChildren="false"
             android:clipToPadding="false"
@@ -20,7 +20,7 @@
         <tv.ismar.daisy.views.LabelImageView
                 xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
                 android:id="@+id/film_lefttop_image"
-                android:layout_width="368dp"
+                android:layout_width="@dimen/film_lefttop_image_w"
                 android:layout_height="match_parent"
                 android:focusable="true"
                 android:src="@drawable/list_item_preview_bg"
@@ -32,10 +32,10 @@
 
         <tv.ismar.daisy.ui.widget.HomeItemContainer
                 android:id="@+id/film_post_layout"
-                android:layout_width="1184dp"
-                android:layout_height="498dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_width="@dimen/film_post_layout_w"
+                android:layout_height="@dimen/film_post_layout_h"
+                android:layout_marginLeft="@dimen/film_post_layout_ml"
+                android:layout_marginRight="@dimen/film_post_layout_ml"
                 android:focusable="true"
                 android:clickable="true"
                 >
@@ -66,14 +66,14 @@
                     android:background="@color/shawdow"
                     android:gravity="left|center"
                     android:textSize="@dimen/toppage_fragment_poster_title_textsize"
-                    android:paddingLeft="30dp"
+                    android:paddingLeft="@dimen/film_linked_title_padding"
                     android:visibility="gone"
                     />
         </tv.ismar.daisy.ui.widget.HomeItemContainer>
 
         <LinearLayout
                 android:id="@+id/film_carousel_layout"
-                android:layout_width="206dp"
+                android:layout_width="@dimen/film_carousel_layout_w"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:clipChildren="false"
@@ -85,9 +85,9 @@
     <LinearLayout
             android:id="@+id/film_recommend_list"
             android:layout_width="match_parent"
-            android:layout_height="278dp"
-            android:layout_marginTop="16dp"
-            android:paddingBottom="29dp"
+            android:layout_height="@dimen/film_recommend_list_h"
+            android:layout_marginTop="@dimen/film_recommend_list_mt"
+            android:paddingBottom="@dimen/film_recommend_list_padding"
             android:orientation="horizontal"
             android:clipChildren="false"
             android:clipToPadding="false"

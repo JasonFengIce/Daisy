@@ -107,7 +107,8 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 				.findViewById(R.id.vaiety_channel4_image);
 		vaiety_channel4_subtitle = (TextView) view
 				.findViewById(R.id.vaiety_channel4_subtitle);
-		vaiety_channel5 = (tv.ismar.daisy.ui.widget.HomeItemContainer) view.findViewById(R.id.listmore);
+		vaiety_channel5 = (tv.ismar.daisy.ui.widget.HomeItemContainer) view
+				.findViewById(R.id.listmore);
 		vaiety_card1_image.setOnClickListener(ItemClickListener);
 		vaiety_card2_image.setOnClickListener(ItemClickListener);
 		vaiety_card3_image.setOnClickListener(ItemClickListener);
@@ -135,7 +136,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 					vaiety_thumb3.setPadding(0, 22, 0, -22);
 					if (v.getTag() != null) {
 						Picasso.with(context).load(v.getTag().toString())
-						.into(vaiety_post);
+								.into(vaiety_post);
 						vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post)
 								.toString());
 					}
@@ -154,7 +155,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 					vaiety_thumb1.setPadding(0, 22, 0, -22);
 					vaiety_thumb3.setPadding(0, 22, 0, -22);
 					Picasso.with(context).load(v.getTag().toString())
-					.into(vaiety_post);
+							.into(vaiety_post);
 					vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post)
 							.toString());
 					imageswitch.removeMessages(IMAGE_SWITCH_KEY);
@@ -172,7 +173,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 					vaiety_thumb2.setPadding(0, 22, 0, -22);
 					vaiety_thumb1.setPadding(0, 22, 0, -22);
 					Picasso.with(context).load(v.getTag().toString())
-					.into(vaiety_post);
+							.into(vaiety_post);
 					vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post)
 							.toString());
 					imageswitch.removeMessages(IMAGE_SWITCH_KEY);
@@ -196,19 +197,18 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 	private void fillData(ArrayList<Carousel> carousellist,
 			ArrayList<Poster> postlist) {
 		// vaiety_post.setUrl(carousellist.get(0).getVideo_image());
-		vaiety_thumb1
-				.setUrl(carousellist.get(0).getThumb_image());
+		vaiety_thumb1.setUrl(carousellist.get(0).getThumb_image());
 		vaiety_thumb1.setTag(carousellist.get(0).getVideo_image());
 		vaiety_thumb1.setTag(R.id.vaiety_post, carousellist.get(0).getTitle());
-		vaiety_thumb1.setTag(R.drawable.launcher_selector,carousellist.get(0));
+		vaiety_thumb1.setTag(R.drawable.launcher_selector, carousellist.get(0));
 		vaiety_thumb2.setUrl(carousellist.get(1).getThumb_image());
 		vaiety_thumb2.setTag(carousellist.get(1).getVideo_image());
 		vaiety_thumb2.setTag(R.id.vaiety_post, carousellist.get(1).getTitle());
-		vaiety_thumb2.setTag(R.drawable.launcher_selector,carousellist.get(1));
+		vaiety_thumb2.setTag(R.drawable.launcher_selector, carousellist.get(1));
 		vaiety_thumb3.setUrl(carousellist.get(2).getThumb_image());
 		vaiety_thumb3.setTag(carousellist.get(2).getVideo_image());
 		vaiety_thumb3.setTag(R.id.vaiety_post, carousellist.get(2).getTitle());
-		vaiety_thumb3.setTag(R.drawable.launcher_selector,carousellist.get(2));
+		vaiety_thumb3.setTag(R.drawable.launcher_selector, carousellist.get(2));
 		looppost.add(carousellist.get(0).getVideo_image());
 		looppost.add(carousellist.get(1).getVideo_image());
 		looppost.add(carousellist.get(2).getVideo_image());
@@ -218,34 +218,74 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		vaiety_card1_image.setFocustitle(postlist.get(0).getIntroduction());
 		vaiety_card1_image.setTag(postlist.get(0));
 		vaiety_card1_subtitle.setText(postlist.get(0).getTitle());
+		if (postlist.get(0).getCorner() == 2) {
+			vaiety_card1_image.setModetype(1);
+		} else if (postlist.get(0).getCorner() == 3) {
+			vaiety_card1_image.setModetype(2);
+		}
 		vaiety_card2_image.setUrl(postlist.get(1).getCustom_image());
 		vaiety_card2_image.setFocustitle(postlist.get(1).getIntroduction());
 		vaiety_card2_image.setTag(postlist.get(1));
 		vaiety_card2_subtitle.setText(postlist.get(1).getTitle());
+		if (postlist.get(1).getCorner() == 2) {
+			vaiety_card2_image.setModetype(1);
+		} else if (postlist.get(1).getCorner() == 3) {
+			vaiety_card2_image.setModetype(2);
+		}
 		vaiety_card3_image.setUrl(postlist.get(2).getCustom_image());
 		vaiety_card3_image.setFocustitle(postlist.get(2).getIntroduction());
 		vaiety_card3_subtitle.setText(postlist.get(2).getTitle());
 		vaiety_card3_image.setTag(postlist.get(2));
+		if (postlist.get(2).getCorner() == 2) {
+			vaiety_card3_image.setModetype(1);
+		} else if (postlist.get(2).getCorner() == 3) {
+			vaiety_card3_image.setModetype(2);
+		}
 		vaiety_card4_image.setUrl(postlist.get(3).getCustom_image());
 		vaiety_card4_image.setFocustitle(postlist.get(3).getIntroduction());
 		vaiety_card4_subtitle.setText(postlist.get(3).getTitle());
 		vaiety_card4_image.setTag(postlist.get(3));
+		if (postlist.get(3).getCorner() == 2) {
+			vaiety_card4_image.setModetype(1);
+		} else if (postlist.get(3).getCorner() == 3) {
+			vaiety_card4_image.setModetype(2);
+		}
 		vaiety_channel1_image.setUrl(postlist.get(4).getCustom_image());
 		vaiety_channel1_image.setFocustitle(postlist.get(4).getIntroduction());
 		vaiety_channel1_subtitle.setText(postlist.get(4).getTitle());
 		vaiety_channel1_image.setTag(postlist.get(4));
+		if (postlist.get(4).getCorner() == 2) {
+			vaiety_channel1_image.setModetype(1);
+		} else if (postlist.get(4).getCorner() == 3) {
+			vaiety_channel1_image.setModetype(2);
+		}
 		vaiety_channel2_image.setUrl(postlist.get(5).getCustom_image());
 		vaiety_channel2_image.setFocustitle(postlist.get(5).getIntroduction());
 		vaiety_channel2_subtitle.setText(postlist.get(5).getTitle());
 		vaiety_channel2_image.setTag(postlist.get(5));
+		if (postlist.get(5).getCorner() == 2) {
+			vaiety_channel2_image.setModetype(1);
+		} else if (postlist.get(5).getCorner() == 3) {
+			vaiety_channel2_image.setModetype(2);
+		}
 		vaiety_channel3_image.setUrl(postlist.get(6).getCustom_image());
 		vaiety_channel3_image.setFocustitle(postlist.get(6).getIntroduction());
 		vaiety_channel3_subtitle.setText(postlist.get(6).getTitle());
 		vaiety_channel3_image.setTag(postlist.get(6));
+		if (postlist.get(6).getCorner() == 2) {
+			vaiety_channel3_image.setModetype(1);
+		} else if (postlist.get(6).getCorner() == 3) {
+			vaiety_channel3_image.setModetype(2);
+		}
 		vaiety_channel4_image.setUrl(postlist.get(7).getCustom_image());
 		vaiety_channel4_image.setFocustitle(postlist.get(7).getIntroduction());
 		vaiety_channel4_subtitle.setText(postlist.get(7).getTitle());
 		vaiety_channel4_image.setTag(postlist.get(7));
+		if (postlist.get(7).getCorner() == 2) {
+			vaiety_channel4_image.setModetype(1);
+		} else if (postlist.get(7).getCorner() == 3) {
+			vaiety_channel4_image.setModetype(2);
+		}
 	}
 
 	class FetchDataTask extends AsyncTask<String, Void, Integer> {
@@ -295,7 +335,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			Picasso.with(context).load(looppost.get(++loopindex))
-			.into(vaiety_post);
+					.into(vaiety_post);
 			if (loopindex == 0) {
 				vaiety_thumb1.setPadding(0, 0, 0, 0);
 				vaiety_thumb2.setPadding(0, 22, 0, -22);
@@ -317,7 +357,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 			}
 			if (loopindex >= 2)
 				loopindex = -1;
-			if(imageswitch.hasMessages(IMAGE_SWITCH_KEY))
+			if (imageswitch.hasMessages(IMAGE_SWITCH_KEY))
 				imageswitch.removeMessages(IMAGE_SWITCH_KEY);
 			imageswitch.sendEmptyMessageDelayed(IMAGE_SWITCH_KEY, 6000);
 			// pendingView.requestFocus();
