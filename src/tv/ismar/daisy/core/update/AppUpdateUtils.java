@@ -15,6 +15,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.core.client.ClientApi;
+import tv.ismar.daisy.utils.HardwareUtils;
 
 import java.io.*;
 import java.math.BigInteger;
@@ -73,7 +74,7 @@ public class AppUpdateUtils {
                 if (packageInfo.versionCode < Integer.parseInt(versionInfoEntity.getVersion())) {
                     if (apkFile.exists()) {
                         String serverMd5Code = versionInfoEntity.getMd5();
-                        String localMd5Code = getMd5ByFile(apkFile);
+                        String localMd5Code = HardwareUtils.getMd5ByFile(apkFile);
                         Log.d(TAG, "local md5 ---> " + localMd5Code);
                         Log.d(TAG, "server md5 ---> " + serverMd5Code);
                         String currentActivityName = getCurrentActivityName(mContext);
@@ -149,30 +150,6 @@ public class AppUpdateUtils {
         }.start();
     }
 
-
-    public String getMd5ByFile(File file) {
-        String value = null;
-        FileInputStream in = null;
-        try {
-            in = new FileInputStream(file);
-            MappedByteBuffer byteBuffer = in.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, file.length());
-            MessageDigest md5 = MessageDigest.getInstance("MD5");
-            md5.update(byteBuffer);
-            BigInteger bi = new BigInteger(1, md5.digest());
-            value = bi.toString(16);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (null != in) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return value;
-    }
 
     private void sendUpdateBroadcast(Context context, Bundle bundle) {
         Intent intent = new Intent();
