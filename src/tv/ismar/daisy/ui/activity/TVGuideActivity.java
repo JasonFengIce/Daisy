@@ -1,6 +1,9 @@
 package tv.ismar.daisy.ui.activity;
 
-import android.content.*;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -12,7 +15,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,12 +25,8 @@ import android.widget.*;
 import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
 import com.baidu.location.*;
-import org.sakuratya.horizontal.ui.HGridView;
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 import com.google.gson.Gson;
+import org.sakuratya.horizontal.ui.HGridView;
 import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
@@ -37,12 +35,13 @@ import tv.ismar.daisy.adapter.ChannelAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.core.service.PosterUpdateService;
 import tv.ismar.daisy.core.update.AppUpdateUtils;
 import tv.ismar.daisy.data.ChannelEntity;
 import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
 import tv.ismar.daisy.ui.Position;
-import tv.ismar.daisy.ui.fragment.*;
+import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
 import tv.ismar.daisy.ui.fragment.launcher.*;
 import tv.ismar.daisy.ui.widget.DaisyButton;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
@@ -54,6 +53,8 @@ import java.util.List;
 import static tv.ismar.daisy.AppConstant.KIND;
 import static tv.ismar.daisy.AppConstant.MANUFACTURE;
 import static tv.ismar.daisy.VodApplication.*;
+import static tv.ismar.daisy.core.preferences.AccountSharedPrefs.*;
+import static tv.ismar.daisy.core.preferences.AccountSharedPrefs.DEVICE_TOKEN;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -163,10 +164,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         registerUpdateReceiver();
-        AppUpdateUtils.getInstance().checkUpdate(this);
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_tv_guide, null);
         setContentView(contentView);
-
         topView = (LaunchHeaderLayout) findViewById(R.id.top_column_layout);
         initViews();
         initTabView();
@@ -182,7 +181,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         toppanel = (FrameLayout) findViewById(R.id.top_column_layout);
 //        weatherFragment = new WeatherFragment();
 //        getSupportFragmentManager().beginTransaction().add(R.id.top_column_layout, weatherFragment).commit();
-      //  channelListView = (LinearLayout) findViewById(R.id.channel_h_list);
+        //  channelListView = (LinearLayout) findViewById(R.id.channel_h_list);
         tabListView = (LinearLayout) findViewById(R.id.tab_list);
         arrow_left = (ImageView) findViewById(R.id.arrow_scroll_left);
         arrow_right = (ImageView) findViewById(R.id.arrow_scroll_right);
@@ -256,36 +255,37 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             }
         });
     }
-  private HGridView scroll;
+
+    private HGridView scroll;
     private View lastview;
 
     private View.OnFocusChangeListener mFocusListener = new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View view, boolean b) {
             View channelBtn;
-               if(b){
-                    channelBtn = (TextView)view.findViewById(R.id.channel_item);
-                   channelBtn.setBackgroundResource(R.drawable.channel_item_focus);
-                   AnimationSet animationSet = new AnimationSet(true);
-                   ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
-                           Animation.RELATIVE_TO_SELF, 0.5f,
-                           Animation.RELATIVE_TO_SELF, 0.5f);
-                   scaleAnimation.setDuration(200);
-                   animationSet.addAnimation(scaleAnimation);
-                   animationSet.setFillAfter(true);
-                   channelBtn.startAnimation(animationSet);
-               }else{
-                    channelBtn = (TextView)view.findViewById(R.id.channel_item);
-                   channelBtn.setBackgroundResource(R.drawable.channel_item_normal);
-                   AnimationSet animationSet = new AnimationSet(true);
-                   ScaleAnimation scaleAnimation = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
-                           Animation.RELATIVE_TO_SELF, 0.5f,
-                           Animation.RELATIVE_TO_SELF, 0.5f);
-                   scaleAnimation.setDuration(200);
-                   animationSet.addAnimation(scaleAnimation);
-                   animationSet.setFillAfter(true);
-                   channelBtn.startAnimation(animationSet);
-               }
+            if (b) {
+                channelBtn = (TextView) view.findViewById(R.id.channel_item);
+                channelBtn.setBackgroundResource(R.drawable.channel_item_focus);
+                AnimationSet animationSet = new AnimationSet(true);
+                ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
+                        Animation.RELATIVE_TO_SELF, 0.5f,
+                        Animation.RELATIVE_TO_SELF, 0.5f);
+                scaleAnimation.setDuration(200);
+                animationSet.addAnimation(scaleAnimation);
+                animationSet.setFillAfter(true);
+                channelBtn.startAnimation(animationSet);
+            } else {
+                channelBtn = (TextView) view.findViewById(R.id.channel_item);
+                channelBtn.setBackgroundResource(R.drawable.channel_item_normal);
+                AnimationSet animationSet = new AnimationSet(true);
+                ScaleAnimation scaleAnimation = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
+                        Animation.RELATIVE_TO_SELF, 0.5f,
+                        Animation.RELATIVE_TO_SELF, 0.5f);
+                scaleAnimation.setDuration(200);
+                animationSet.addAnimation(scaleAnimation);
+                animationSet.setFillAfter(true);
+                channelBtn.startAnimation(animationSet);
+            }
             lastview = channelBtn;
         }
     };
@@ -293,10 +293,10 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private void createChannelView(ChannelEntity[] channelEntities) {
         List<ChannelEntity> channelList;
         channelList = new ArrayList<ChannelEntity>();
-        for(ChannelEntity entity : channelEntities){
+        for (ChannelEntity entity : channelEntities) {
             channelList.add(entity);
         }
-        scroll = (HGridView)contentView.findViewById(R.id.h_grid_view);
+        scroll = (HGridView) contentView.findViewById(R.id.h_grid_view);
         channelHashMap = new HashMap<String, TextView>();
         int i;
         ChannelEntity s1 = new ChannelEntity();
@@ -327,9 +327,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         scroll.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-               View channelBtn = (TextView)view.findViewById(R.id.channel_item);
-                if(lastview!=null){
-
+                View channelBtn = (TextView) view.findViewById(R.id.channel_item);
+                if (lastview != null) {
 
 
                     lastview.setBackgroundResource(R.drawable.channel_item_normal);
@@ -509,16 +508,35 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     @Override
     public void onSuccess(Result result) {
-
+        saveActivedInfo(result);
         saveSimpleRestClientPreferences(this, result);
         DaisyUtils.getVodApplication(TVGuideActivity.this).getNewContentModel();
         fetchChannels();
+
 
         currentFragment = new GuideFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.container, currentFragment).commit();
         sendLoncationRequest();
+        String appUpdateHost = "http://" + result.getUpgrade_domain();
+        AppUpdateUtils.getInstance(this).checkUpdate(appUpdateHost);
     }
+
+    private void saveActivedInfo(Result result) {
+        AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance(this);
+        accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.APP_UPDATE_DOMAIN, result.getUpgrade_domain());
+        accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.LOG_DOMAIN, result.getLog_Domain());
+        accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.API_DOMAIN, result.getDomain());
+        accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.ADVERTISEMENT_DOMAIN, result.getAd_domain());
+
+        accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.DEVICE_TOKEN, result.getDevice_token());
+        accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.SN_TOKEN, result.getSn_Token());
+
+        accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.PACKAGE_INFO, result.getPackageInfo());
+        accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.EXPIRY_DATE, result.getExpiry_date());
+
+    }
+
 
     @Override
     public void onFailed(String erro) {

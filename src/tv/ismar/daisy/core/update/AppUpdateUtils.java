@@ -15,6 +15,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.core.client.ClientApi;
+import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.utils.HardwareUtils;
 
 import java.io.*;
@@ -39,23 +40,28 @@ public class AppUpdateUtils {
 
     private String path;
 
-    private AppUpdateUtils() {
+    private Context mContext;
+
+    private String appUpdateHost;
+
+    private AppUpdateUtils(Context context) {
+        this.mContext = context;
 
     }
 
-    public static AppUpdateUtils getInstance() {
+    public static AppUpdateUtils getInstance(Context context) {
         if (instance == null) {
-            instance = new AppUpdateUtils();
+            instance = new AppUpdateUtils(context);
         }
         return instance;
     }
 
-    public void checkUpdate(final Context mContext) {
+    public void checkUpdate(String host) {
+        this.appUpdateHost = host;
         path = mContext.getFilesDir().getAbsolutePath();
-//        path = "/sdcard";
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setLogLevel(AppConstant.LOG_LEVEL)
-                .setEndpoint(ClientApi.APP_UPDATE_HOST)
+                .setEndpoint(host)
                 .build();
 
         ClientApi.AppVersionInfo client = restAdapter.create(ClientApi.AppVersionInfo.class);
@@ -145,7 +151,7 @@ public class AppUpdateUtils {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                checkUpdate(mContext);
+                checkUpdate(appUpdateHost);
             }
         }.start();
     }
