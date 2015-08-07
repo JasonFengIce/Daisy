@@ -75,6 +75,7 @@
         </activity>
 
         <activity
+                android:launchMode="singleTask"
                 android:name=".ui.activity.TVGuideActivity"
                 android:screenOrientation="landscape"
                 android:theme="@android:style/Theme.NoTitleBar.Fullscreen">

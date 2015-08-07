@@ -101,6 +101,7 @@ public class AdvertisementActivity extends Activity {
 
     private void intentToLauncher() {
         Intent intent = new Intent(this, TVGuideActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 
