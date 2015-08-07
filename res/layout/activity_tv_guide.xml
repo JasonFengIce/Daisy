@@ -45,7 +45,7 @@
         <ImageView
                 android:id="@+id/arrow_scroll_left"
                 android:layout_width="@dimen/tv_guide_arrow_scroll_w"
-                android:layout_height="@dimen/tv_guide_arrow_scroll_w"
+                android:layout_height="@dimen/tv_guide_arrow_scroll_h"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/tv_guide_arrow_scroll_margin"
