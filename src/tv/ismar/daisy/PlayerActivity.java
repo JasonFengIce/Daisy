@@ -662,7 +662,7 @@ public class PlayerActivity extends VodMenuAction {
 				} else if (i == 704) {
 					bufferText.setText(BUFFERING + " " + j + "%");
 				} else if (i == SmartPlayer.MEDIA_INFO_BUFFERING_END
-						|| i == 810) {
+						|| i == 808) {
 					bufferText.setText(BUFFERING + " " + 100 + "%");
 					isBuffer = false;
 					hideBuffer();
@@ -888,6 +888,7 @@ public class PlayerActivity extends VodMenuAction {
 						paths = new String[1];
 						paths[0] = urls[currQuality];
 						mVideoView.setVideoPaths(paths);
+						initPlayerRelatedUI();
 					} else {
 						if (paths != null) {
 							paths[paths.length - 1] = urls[currQuality];
