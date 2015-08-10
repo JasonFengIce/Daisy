@@ -2,29 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginRight="7dp"
+              android:layout_marginRight="@dimen/usercenter_storefragment_packagelist_item_layout_marginRight"
               android:gravity="center"
               android:orientation="vertical">
 
     <ImageView
-        android:background="@drawable/launcher_selector"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:clickable="true"
-        android:scaleType="fitXY"
-        android:id="@+id/package_grid_image"
-        android:layout_width="336dp"
-        android:layout_height="189dp"
+            android:background="@drawable/launcher_selector"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:clickable="true"
+            android:scaleType="fitXY"
+            android:id="@+id/package_grid_image"
+            android:layout_width="@dimen/usercenter_storefragment_packagelist_item_image_width"
+            android:layout_height="@dimen/usercenter_storefragment_packagelist_item_image_height"
 
-        />
+            />
 
     <TextView
-        android:id="@+id/package_grid_title"
-        android:layout_width="336dp"
-        android:layout_height="62dp"
-        android:gravity="center"
-        android:textSize="@dimen/h2_text_size"
-        android:textColor="#FFFFFFFF"
-        android:text="文字"/>
+            android:id="@+id/package_grid_title"
+            android:layout_width="@dimen/usercenter_storefragment_packagelist_item_text_width"
+            android:layout_height="@dimen/usercenter_storefragment_packagelist_item_text_height"
+            android:gravity="center"
+            android:textSize="@dimen/h2_text_size"
+            android:textColor="#FFFFFFFF"
+            android:text="文字"/>
 
 </LinearLayout>
