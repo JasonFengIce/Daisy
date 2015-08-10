@@ -387,9 +387,9 @@
     <dimen name="channel_section_tabs_label_marginL">7dip</dimen>
     <dimen name="channel_section_tabs_label_marginR">7dip</dimen>
     <dimen name="channel_section_tabs_label_marginB">4dip</dimen>
-    <dimen name="channel_section_tabs_label_textsize">27sp</dimen>
+    <dimen name="channel_section_tabs_label_textsize">20sp</dimen>
     <dimen name="channel_section_tabs_percentage_H">8dip</dimen>
-    <dimen name="channel_section_tabs_label_ctextsize">35sp</dimen>
+    <dimen name="channel_section_tabs_label_ctextsize">24sp</dimen>
     <dimen name="channel_section_tabs_label_paddingT">10dip</dimen>
     <dimen name="channel_section_tabs_percentage_PLR">7dip</dimen>
     <dimen name="channel_section_tabs_layout_marginLeft">110dip</dimen>
