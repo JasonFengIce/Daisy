@@ -801,14 +801,15 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
     }
 
     private void buildRelatedList() {
+        float rate = DaisyUtils.getVodApplication(EntertainmentDetailActivity.this).getRate(EntertainmentDetailActivity.this);
         for (int i = 0; i < 4 && i < mRelatedItem.length; i++) {
             View relatedHolder = LayoutInflater
                     .from(EntertainmentDetailActivity.this).inflate(
                             R.layout.realte_entertainment_item, null);
             LinearLayout.LayoutParams layoutParams;
-            layoutParams = new LinearLayout.LayoutParams(336, 237);
+            layoutParams = new LinearLayout.LayoutParams((int)(336/rate), (int)(237/rate));
             if (i != 0)
-                layoutParams.leftMargin = 74;
+                layoutParams.leftMargin = (int)(74/rate);
             relatedHolder.setLayoutParams(layoutParams);
             TextView titleView = (TextView) relatedHolder
                     .findViewById(R.id.related_title);

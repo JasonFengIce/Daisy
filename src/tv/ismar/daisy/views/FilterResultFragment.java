@@ -60,9 +60,10 @@ public class FilterResultFragment extends BackHandledFragment implements Adapter
     public boolean isPortrait = false;
     private Button left_shadow;
     private Button right_shadow;
+    private float rate;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        rate = DaisyUtils.getVodApplication(getActivity()).getRate(getActivity());
         if(fragmentView==null){
             mLoadingDialog = new LoadingDialog(getActivity(), getResources().getString(R.string.loading));
             mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
@@ -121,11 +122,11 @@ public class FilterResultFragment extends BackHandledFragment implements Adapter
                     label.setText(labels[i]);
                     label.setTextColor(0xffffffff);
                     label.setBackgroundResource(R.drawable.filter_btn_focused);
-                    label.setTextSize(30);
+                    label.setTextSize(30/rate);
                     label.setGravity(Gravity.CENTER);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(120, 46);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int)(120/rate), (int)(46/rate));
                     params.gravity = Gravity.CENTER_VERTICAL;
-                    params.rightMargin = 11;
+                    params.rightMargin = (int)(11/rate);
                    // params.topMargin = 11;
                     container.addView(label,params);
                 }

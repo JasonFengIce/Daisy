@@ -1063,4 +1063,7 @@
     <dimen name="locationFragment_areaGridItem_minHeght">65dp</dimen>
 
 
+    <!--zjq -->
+    <dimen name="top_panel_view_height">112dip</dimen>
+    <dimen name="divider_margin_MLR">26dip</dimen>
 </resources>
