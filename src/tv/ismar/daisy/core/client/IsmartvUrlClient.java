@@ -39,6 +39,8 @@ public class IsmartvUrlClient extends Thread {
 
     private static Context mContext;
 
+    private ErrorHandler errorHandler = ErrorHandler.SEND_BROADCAST;
+
     public static void initializeWithContext(Context context) {
         mContext = context;
     }
@@ -72,14 +74,26 @@ public class IsmartvUrlClient extends Thread {
                     break;
                 case FAILURE:
                     callback.onFailed((Exception) msg.obj);
-                    sendConnectErrorBroadcast(((Exception) msg.obj).getMessage());
+                    switch (errorHandler) {
+                        case LOG_MESSAGE:
+                            break;
+                        case SEND_BROADCAST:
+                            sendConnectErrorBroadcast(((Exception) msg.obj).getMessage());
+                            break;
+                    }
                     break;
                 case FAILURE_4XX:
                     callback.onFailed((Exception) msg.obj);
                     break;
                 case FAILURE_5XX:
                     callback.onFailed((Exception) msg.obj);
-                    sendConnectErrorBroadcast(((Exception) msg.obj).getMessage());
+                    switch (errorHandler) {
+                        case LOG_MESSAGE:
+                            break;
+                        case SEND_BROADCAST:
+                            sendConnectErrorBroadcast(((Exception) msg.obj).getMessage());
+                            break;
+                    }
                     break;
                 default:
                     break;
@@ -90,7 +104,7 @@ public class IsmartvUrlClient extends Thread {
 
     public void doRequest(Method method, String api, HashMap<String, String> hashMap, CallBack callback) {
         hashMap.put("access_token", SimpleRestClient.access_token);
-        if (SimpleRestClient.device_token == null||"".equals(SimpleRestClient.device_token)){
+        if (SimpleRestClient.device_token == null || "".equals(SimpleRestClient.device_token)) {
             VodApplication.setDevice_Token();
         }
         hashMap.put("device_token", SimpleRestClient.device_token);
@@ -172,6 +186,7 @@ public class IsmartvUrlClient extends Thread {
         this.url = api;
         this.callback = callback;
         this.method = method;
+        this.errorHandler = ErrorHandler.LOG_MESSAGE;
         start();
     }
 
@@ -179,6 +194,11 @@ public class IsmartvUrlClient extends Thread {
     public enum Method {
         GET,
         POST
+    }
+
+    public enum ErrorHandler {
+        LOG_MESSAGE,
+        SEND_BROADCAST
     }
 
     private void doGet() {
