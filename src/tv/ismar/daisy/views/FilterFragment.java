@@ -13,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.FilterItem;
 import java.util.ArrayList;
@@ -44,8 +45,10 @@ public class FilterFragment extends BackHandledFragment {
     private ArrayList<String> realNames;
     private String realFilterStr="";
     public boolean isPortrait = false;
+    private float rate;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        rate = DaisyUtils.getVodApplication(getActivity()).getRate(getActivity());
         if(fragmentView==null){
             fragmentView = inflater.inflate(R.layout.filter_view, container, false);
             conditions = new ArrayList<String>();
@@ -165,7 +168,7 @@ public class FilterFragment extends BackHandledFragment {
                         initRadioButton(nolimitRbtn);
 
                         nolimitRbtn.setChecked(true);
-                        valueViews.addView(nolimitRbtn,new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,100));
+                        valueViews.addView(nolimitRbtn,new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,(int)(100/rate)));
                         for(int i=0; i<arrayCount; i++){
                             JSONArray subArray = values.getJSONArray(i);
                             FilterItem item = new FilterItem();
@@ -177,9 +180,9 @@ public class FilterFragment extends BackHandledFragment {
                             rbtn.setText(subArray.getString(1));
                             rbtn.setTag(item);
                             initRadioButton(rbtn);
-                            valueViews.addView(rbtn,new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,100));
+                            valueViews.addView(rbtn,new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,(int)(100/rate)));
                         }
-                        filtermenulayout.addView(view,new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,165));
+                        filtermenulayout.addView(view,new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,(int)(165/rate)));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -196,14 +199,14 @@ public class FilterFragment extends BackHandledFragment {
     private void initRadioButton(RadioButton rbtn){
         rbtn.setButtonDrawable(android.R.color.transparent);
         rbtn.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
-        rbtn.setTextSize(36);
+        rbtn.setTextSize(36/rate);
 
         rbtn.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if(b){
                     if(!((RadioButton)view).isChecked()){
-                        ((RadioButton)view).setTextSize(48);
+                        ((RadioButton)view).setTextSize(48/rate);
                         ((RadioButton)view).setTextColor(LABEL_TEXT_COLOR_FOCUSED);
 //                        if(((FilterItem)view.getTag()).nolimitView!=null){
 //                                ((FilterItem)view.getTag()).nolimitView.setChecked(false);
@@ -211,7 +214,7 @@ public class FilterFragment extends BackHandledFragment {
                     }
                 }else{
                     if(!((RadioButton)view).isChecked()){
-                        ((RadioButton)view).setTextSize(36);
+                        ((RadioButton)view).setTextSize(36/rate);
                         ((RadioButton)view).setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
                     }
                 }
@@ -224,7 +227,7 @@ public class FilterFragment extends BackHandledFragment {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                  if(b){
                    //  Toast.makeText(getActivity(), ((FilterItem)compoundButton.getTag()).value, Toast.LENGTH_SHORT).show();
-                     compoundButton.setTextSize(48);
+                     compoundButton.setTextSize(48/rate);
                      compoundButton.setTextColor(LABEL_TEXT_COLOR_CLICK);
                      if(((FilterItem)compoundButton.getTag()).nolimitView!=null){
                          if(((FilterItem)compoundButton.getTag()).nolimitView!=compoundButton){
@@ -241,7 +244,7 @@ public class FilterFragment extends BackHandledFragment {
 
                  }
                  else{
-                     compoundButton.setTextSize(36);
+                     compoundButton.setTextSize(36/rate);
                      compoundButton.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
                      String str = ((FilterItem)compoundButton.getTag()).value;
                      if(!"".equals(str)){
@@ -260,7 +263,7 @@ public class FilterFragment extends BackHandledFragment {
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_HOVER_ENTER:
                         if(!((RadioButton)view).isChecked()){
-                            ((RadioButton)view).setTextSize(48);
+                            ((RadioButton)view).setTextSize(48/rate);
                             ((RadioButton)view).setTextColor(LABEL_TEXT_COLOR_FOCUSED);
 //                            if(((FilterItem)view.getTag()).nolimitView!=null){
 //                                ((FilterItem)view.getTag()).nolimitView.setChecked(false);
@@ -271,7 +274,7 @@ public class FilterFragment extends BackHandledFragment {
                         break;
                     case MotionEvent.ACTION_HOVER_EXIT:
                         if(!((RadioButton)view).isChecked()){
-                            ((RadioButton)view).setTextSize(36);
+                            ((RadioButton)view).setTextSize(36/rate);
                             ((RadioButton)view).setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
                         }
                         break;

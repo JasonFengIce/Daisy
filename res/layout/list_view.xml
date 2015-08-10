@@ -10,14 +10,14 @@
     <tv.ismar.daisy.ui.widget.LaunchHeaderLayout
             android:id="@+id/top_column_layout"
             android:layout_width="match_parent"
-            android:layout_height="112dip"
+            android:layout_height="@dimen/top_panel_view_height"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/tv_guide_top_section_padding"
             android:paddingRight="@dimen/tv_guide_top_section_padding"
             android:visibility="invisible">
     </tv.ismar.daisy.ui.widget.LaunchHeaderLayout>
     <ImageView
-            android:layout_marginLeft="26dp"
+            android:layout_marginLeft="@dimen/divider_margin_MLR"
             android:layout_marginRight="26dp"
             android:layout_width="match_parent"
             android:scaleType="fitXY"

@@ -41,7 +41,7 @@ import tv.ismar.daisy.core.update.AppUpdateUtils;
 import tv.ismar.daisy.data.ChannelEntity;
 import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
 import tv.ismar.daisy.ui.Position;
-import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
+import tv.ismar.daisy.ui.fragment.*;
 import tv.ismar.daisy.ui.fragment.launcher.*;
 import tv.ismar.daisy.ui.widget.DaisyButton;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
@@ -53,8 +53,6 @@ import java.util.List;
 import static tv.ismar.daisy.AppConstant.KIND;
 import static tv.ismar.daisy.AppConstant.MANUFACTURE;
 import static tv.ismar.daisy.VodApplication.*;
-import static tv.ismar.daisy.core.preferences.AccountSharedPrefs.*;
-import static tv.ismar.daisy.core.preferences.AccountSharedPrefs.DEVICE_TOKEN;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -164,24 +162,27 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         registerUpdateReceiver();
+        AppUpdateUtils.getInstance().checkUpdate(this);
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_tv_guide, null);
         setContentView(contentView);
+
         topView = (LaunchHeaderLayout) findViewById(R.id.top_column_layout);
         initViews();
         initTabView();
         activator = Activator.getInstance(this);
         activator.setOnCompleteListener(this);
         String localInfo = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.LOCATION_INFO, "");
-        activator.active(MANUFACTURE, KIND, String.valueOf(SimpleRestClient.appVersion), localInfo);
         getHardInfo();
         updatePoster();
+
+        activator.active(MANUFACTURE, KIND, String.valueOf(SimpleRestClient.appVersion), localInfo);
     }
 
     private void initViews() {
         toppanel = (FrameLayout) findViewById(R.id.top_column_layout);
 //        weatherFragment = new WeatherFragment();
 //        getSupportFragmentManager().beginTransaction().add(R.id.top_column_layout, weatherFragment).commit();
-        //  channelListView = (LinearLayout) findViewById(R.id.channel_h_list);
+      //  channelListView = (LinearLayout) findViewById(R.id.channel_h_list);
         tabListView = (LinearLayout) findViewById(R.id.tab_list);
         arrow_left = (ImageView) findViewById(R.id.arrow_scroll_left);
         arrow_right = (ImageView) findViewById(R.id.arrow_scroll_right);
@@ -255,38 +256,40 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             }
         });
     }
-
     private HGridView scroll;
-    private View lastview;
-
+    private View lastview=null;
+    private View clickView=null;
     private View.OnFocusChangeListener mFocusListener = new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View view, boolean b) {
             View channelBtn;
-            if (b) {
-                channelBtn = (TextView) view.findViewById(R.id.channel_item);
-                channelBtn.setBackgroundResource(R.drawable.channel_item_focus);
-                AnimationSet animationSet = new AnimationSet(true);
-                ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
-                        Animation.RELATIVE_TO_SELF, 0.5f,
-                        Animation.RELATIVE_TO_SELF, 0.5f);
-                scaleAnimation.setDuration(200);
-                animationSet.addAnimation(scaleAnimation);
-                animationSet.setFillAfter(true);
-                channelBtn.startAnimation(animationSet);
-            } else {
-                channelBtn = (TextView) view.findViewById(R.id.channel_item);
-                channelBtn.setBackgroundResource(R.drawable.channel_item_normal);
-                AnimationSet animationSet = new AnimationSet(true);
-                ScaleAnimation scaleAnimation = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
-                        Animation.RELATIVE_TO_SELF, 0.5f,
-                        Animation.RELATIVE_TO_SELF, 0.5f);
-                scaleAnimation.setDuration(200);
-                animationSet.addAnimation(scaleAnimation);
-                animationSet.setFillAfter(true);
-                channelBtn.startAnimation(animationSet);
+            if(view==clickView&&clickView!=null){
+                return;
             }
-            lastview = channelBtn;
+               if(b){
+                    channelBtn = (TextView)view.findViewById(R.id.channel_item);
+                   channelBtn.setBackgroundResource(R.drawable.channel_item_focus);
+                   AnimationSet animationSet = new AnimationSet(true);
+                   ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
+                           Animation.RELATIVE_TO_SELF, 0.5f,
+                           Animation.RELATIVE_TO_SELF, 0.5f);
+                   scaleAnimation.setDuration(200);
+                   animationSet.addAnimation(scaleAnimation);
+                   animationSet.setFillAfter(true);
+                   channelBtn.startAnimation(animationSet);
+               }else{
+                    channelBtn = (TextView)view.findViewById(R.id.channel_item);
+                   channelBtn.setBackgroundResource(R.drawable.channel_item_normal);
+                   AnimationSet animationSet = new AnimationSet(true);
+                   ScaleAnimation scaleAnimation = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
+                           Animation.RELATIVE_TO_SELF, 0.5f,
+                           Animation.RELATIVE_TO_SELF, 0.5f);
+                   scaleAnimation.setDuration(200);
+                   animationSet.addAnimation(scaleAnimation);
+                   animationSet.setFillAfter(true);
+                   channelBtn.startAnimation(animationSet);
+               }
+            lastview = view;
         }
     };
 
@@ -310,11 +313,14 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         scroll.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                View channelBtn = (TextView) view.findViewById(R.id.channel_item);
-                if (lastview != null) {
+               View channelBtn = (TextView)view.findViewById(R.id.channel_item);
 
 
-                    lastview.setBackgroundResource(R.drawable.channel_item_normal);
+                if(lastview!=null&&lastview!=clickView){
+
+
+                    TextView mlastview = (TextView)lastview.findViewById(R.id.channel_item);
+                    mlastview.setBackgroundResource(R.drawable.channel_item_normal);
                     AnimationSet animationSet1 = new AnimationSet(true);
                     ScaleAnimation scaleAnimation1 = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
                             Animation.RELATIVE_TO_SELF, 0.5f,
@@ -322,7 +328,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                     scaleAnimation1.setDuration(200);
                     animationSet1.addAnimation(scaleAnimation1);
                     animationSet1.setFillAfter(true);
-                    lastview.startAnimation(animationSet1);
+                    mlastview.startAnimation(animationSet1);
                 }
                 channelBtn.setBackgroundResource(R.drawable.channel_item_focus);
                 AnimationSet animationSet = new AnimationSet(true);
@@ -333,7 +339,10 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 animationSet.addAnimation(scaleAnimation);
                 animationSet.setFillAfter(true);
                 channelBtn.startAnimation(animationSet);
-                lastview = channelBtn;
+
+
+
+                lastview = view;
 
             }
 
@@ -354,6 +363,38 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                     arrow_right.setVisibility(View.VISIBLE);
                 }
                 int channelPosition = position;
+
+                if(clickView!=null){
+                    if(clickView==view){
+                        return;
+                    }
+                   else{
+                        View textview = (TextView)clickView.findViewById(R.id.channel_item);
+                        textview.setBackgroundResource(R.drawable.channel_item_normal);
+                        AnimationSet animationSet1 = new AnimationSet(true);
+                        ScaleAnimation scaleAnimation1 = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
+                                Animation.RELATIVE_TO_SELF, 0.5f,
+                                Animation.RELATIVE_TO_SELF, 0.5f);
+                        scaleAnimation1.setDuration(200);
+                        animationSet1.addAnimation(scaleAnimation1);
+                        animationSet1.setFillAfter(true);
+                        textview.startAnimation(animationSet1);
+                    }
+                }
+
+                clickView = view;
+
+                TextView channelBtn = (TextView)view.findViewById(R.id.channel_item);
+                channelBtn.setBackgroundResource(R.drawable.channel_item_focus);
+                AnimationSet animationSet = new AnimationSet(true);
+                ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
+                        Animation.RELATIVE_TO_SELF, 0.5f,
+                        Animation.RELATIVE_TO_SELF, 0.5f);
+                scaleAnimation.setDuration(200);
+                animationSet.addAnimation(scaleAnimation);
+                animationSet.setFillAfter(true);
+                channelBtn.startAnimation(animationSet);
+
                 mCurrentChannelPosition.setPosition(channelPosition);
             }
         });

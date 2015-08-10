@@ -996,4 +996,7 @@
     <dimen name="list_item_title_w">254dp</dimen>
     <dimen name="list_item_title_pt">2dp</dimen>
     <dimen name="list_item_ItemBeanScore_ml">-1dp</dimen>
+    <!--zjq -->
+    <dimen name="top_panel_view_height">112dip</dimen>
+    <dimen name="divider_margin_MLR">26dip</dimen>
 </resources>

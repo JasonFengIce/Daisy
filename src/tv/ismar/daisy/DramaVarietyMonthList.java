@@ -40,12 +40,13 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
     private Button arrow_right;
     private int mCurrentPosition=-1;
     private int mLastPosition = -1;
-
+    private float rate;
     private LaunchHeaderLayout weatherFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_view_nosection_month);
+        rate = DaisyUtils.getVodApplication(this).getRate(this);
         maps = new HashMap<String, ArrayList<Item>>();
         DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
         initView();
@@ -100,7 +101,7 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
                 monthSection.setText(month + "月");
                 monthSection.setTag(month + "");
                 monthSection.setPosition(k);
-                monthSection.setTextSize(30);
+                monthSection.setTextSize(30/rate);
                 monthSection.setFocusable(true);
                 monthSection.setTextColor(0xffbbbbbb);
                 monthSection.setBackgroundResource(R.drawable.month_btn_normal);
@@ -111,12 +112,12 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
                          int position = ((MonthSectionButton)view).getPosition();
                         if(hasfocus){
                             view.setBackgroundResource(R.drawable.month_btn_pressed);
-                            ((MonthSectionButton) view).setTextSize(36);
+                            ((MonthSectionButton) view).setTextSize(36/rate);
                            if(position!=mLastPosition){
                                MonthSectionButton lastView = (MonthSectionButton) month_section_layout.getChildAt(mLastPosition);
                                if(lastView!=null){
                                    lastView.setBackgroundResource(R.drawable.month_btn_normal);
-                                   lastView.setTextSize(30);
+                                   lastView.setTextSize(30/rate);
                                }
                                mLastPosition = position;
                            }
@@ -136,11 +137,11 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
                             return;
                         }
                         view.setBackgroundResource(R.drawable.month_btn_pressed);
-                        ((MonthSectionButton) view).setTextSize(36);
+                        ((MonthSectionButton) view).setTextSize(36/rate);
                         MonthSectionButton lastView = (MonthSectionButton) month_section_layout.getChildAt(mCurrentPosition);
                         if(lastView!=null){
                             lastView.setBackgroundResource(R.drawable.month_btn_normal);
-                            lastView.setTextSize(30);
+                            lastView.setTextSize(30/rate);
                         }
                         ArrayList<Item> lists = maps.get(key);
                         mItemCollections = new ArrayList<ItemCollection>();
@@ -185,7 +186,7 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
                 if(currentMonth>0){
-                    params.leftMargin = 26;
+                    params.leftMargin = (int)(26/rate);
                 }
                 month_section_layout.addView(monthSection,params);
                 currentMonth = month;

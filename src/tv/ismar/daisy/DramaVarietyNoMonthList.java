@@ -33,10 +33,11 @@ public class DramaVarietyNoMonthList extends BaseActivity implements AdapterView
     private Button arrow_right;
 
     private LaunchHeaderLayout weatherFragment;
-
+    private float rate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        rate = DaisyUtils.getVodApplication(this).getRate(this);
         setContentView(R.layout.list_view_nosection);
         DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
         initView();
