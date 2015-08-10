@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:gravity="center"
-              android:minHeight="65dp"
+              android:minHeight="@dimen/locationFragment_areaGridItem_minHeght"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 

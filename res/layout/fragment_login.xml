@@ -16,9 +16,9 @@
             android:layout_height="wrap_content"/>
 
     <RelativeLayout
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/loginfragment_phoneNumberLayout_marginTop"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="@dimen/loginfragment_phoneNumberLayout_height">
 
         <EditText
                 android:gravity="center"
@@ -27,13 +27,13 @@
                 android:inputType="phone"
                 android:layout_centerHorizontal="true"
                 android:layout_width="@dimen/association_phone_edit_width"
-                android:layout_height="66dp"
+                android:layout_height="@dimen/loginfragment_phoneNumber_edit_height"
                 />
 
         <TextView
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@id/login_phone_edit"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="@dimen/loginfragment_phoneNumber_edit_marginRright"
                 android:textSize="@dimen/h2_text_size"
                 android:gravity="center"
                 android:textColor="#FFFFFF"
@@ -48,7 +48,7 @@
                 android:textSize="@dimen/h2_text_size"
                 android:background="@drawable/selector_channel_item"
                 android:layout_toRightOf="@id/login_phone_edit"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="@dimen/loginfragment_phoneNumber_fetchCode_marginLeft"
                 android:text="@string/association_fetch_verification"
                 android:layout_width="@dimen/association_fetch_verification_button_width"
                 android:layout_height="@dimen/association_phone_edit_height"/>
@@ -61,7 +61,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:textColor="#ffffff"
-            android:textSize="24sp"
+            android:textSize="@dimen/loginfragment_textSize"
             android:text="@string/login_phone_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -79,7 +79,7 @@
 
     <RelativeLayout
 
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/loginfragment_phoneNumberLayout_marginTop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -96,7 +96,7 @@
         <TextView
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@id/login_verification_edit"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="@dimen/loginfragment_phoneNumber_edit_marginRright"
                 android:textSize="@dimen/h2_text_size"
                 android:gravity="center"
                 android:textColor="#FFFFFF"
@@ -111,8 +111,8 @@
     <TextView
             android:textColor="#FFFFFF"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:textSize="24sp"
+            android:layout_marginTop="@dimen/loginfragment_phoneNumberLayout_marginTop"
+            android:textSize="@dimen/loginfragment_textSize"
             android:text="@string/login_verification_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

@@ -28,7 +28,7 @@
                     android:textColor="#FFFFFF"
                     android:gravity="center_vertical"
                     android:textSize="@dimen/h4_text_size"
-                    android:layout_width="140dp"
+                    android:layout_width="@dimen/userinfo_phoneNumber_title_width"
                     android:layout_height="wrap_content"/>
 
             <TextView
@@ -47,7 +47,7 @@
                     android:layout_gravity="center"
                     android:textSize="@dimen/h4_text_size"
                     android:text="@string/change_account"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="@dimen/userinfo_changeButton_marginLeft"
                     android:textColor="#FFFFFF"
                     android:id="@+id/change"
                     android:layout_width="@dimen/user_center_logout_width"
@@ -70,7 +70,7 @@
                     android:textColor="#FFFFFF"
                     android:gravity="center_vertical"
                     android:textSize="@dimen/h4_text_size"
-                    android:layout_width="140dp"
+                    android:layout_width="@dimen/userinfo_snNumber_title_width"
                     android:layout_height="wrap_content"/>
 
             <TextView
@@ -85,8 +85,8 @@
 
             <TextView
                     android:id="@+id/association_prompt"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="@dimen/userinfo_association_prompt_marigin_lr"
+                    android:layout_marginRight="@dimen/userinfo_association_prompt_marigin_lr"
                     android:textColor="#FFFFFF"
                     android:gravity="center_vertical"
                     android:textSize="@dimen/h4_text_size"
@@ -98,10 +98,10 @@
                     android:background="@drawable/selector_channel_item"
                     android:textSize="@dimen/h4_text_size"
                     android:text="@string/association"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="@dimen/userinfo_association_marginLeft"
                     android:textColor="#FFFFFF"
                     android:id="@+id/association_button"
-                    android:layout_width="100dp"
+                    android:layout_width="@dimen/userinfo_association_width"
                     android:layout_height="@dimen/user_center_logout_height"/>
         </LinearLayout>
 
@@ -117,7 +117,7 @@
                     android:text="设备："
                     android:textColor="@color/white"
                     android:textSize="@dimen/h4_text_size"
-                    android:layout_width="140dp"
+                    android:layout_width="@dimen/userinfo_deviceName_title_width"
                     android:layout_height="wrap_content"/>
 
             <TextView
@@ -140,7 +140,7 @@
 
             <TextView
                     android:singleLine="true"
-                    android:layout_width="140dp"
+                    android:layout_width="@dimen/userinfo_balance_title_width"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:text="余额："
@@ -158,7 +158,7 @@
 
 
         <RelativeLayout
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="@dimen/userinfo_privilege_layout_marginTop"
                 android:layout_marginLeft="@dimen/usercenter_info_layout_margin_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -167,7 +167,7 @@
             <TextView
                     android:singleLine="true"
                     android:id="@+id/privilege_txt"
-                    android:layout_width="140dp"
+                    android:layout_width="@dimen/userinfo_privilege_title_width"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:text="特权："
