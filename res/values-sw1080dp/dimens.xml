@@ -954,4 +954,60 @@
     <dimen name="usercenter_storefragment_packagelist_item_text_height">62dp</dimen>
 
 
+    <!-- fragment sport -->
+    <dimen name="sport_linearLayout_margin_t">31dp</dimen>
+    <dimen name="sport_linearLayout_margin_l">70dp</dimen>
+    <dimen name="sport_section_one_h">570dp</dimen>
+    <dimen name="sport_section_one_margin">15dp</dimen>
+    <dimen name="sport_lefttop_w">297dp</dimen>
+    <dimen name="sport_lefttop_h">497dp</dimen>
+    <dimen name="sport_lefttop_margin">5dp</dimen>
+    <dimen name="sport_card_w">297dp</dimen>
+    <dimen name="sport_card_h">165dp</dimen>
+    <dimen name="sport_card_focustextsize">18sp</dimen>
+    <dimen name="sportspost_w">1184dp</dimen>
+    <dimen name="sportspost_h">497dp</dimen>
+    <dimen name="sportspost_mr">5dp</dimen>
+    <dimen name="sportspost_mt">20dp</dimen>
+    <dimen name="sec_one_list_2_w">297dp</dimen>
+    <dimen name="sec_one_list_2_ml">1dp</dimen>
+    <dimen name="sec_one_list_1_arrowup_h">30dp</dimen>
+    <dimen name="sports_live_h">165dp</dimen>
+    <dimen name="sports_live_mt">1dp</dimen>
+    <dimen name="sport_linearLayout2_h">254dp</dimen>
+    <dimen name="sport_linearLayout2_mb">88dp</dimen>
+    <dimen name="sport_linearLayout2_mt">1dp</dimen>
+    <dimen name="sport_channel_w">332dp</dimen>
+    <dimen name="sport_channel_ml">31dp</dimen>
+    <dimen name="sport_channel_ml_1">29dp</dimen>
+    <dimen name="sport_channel_image_w">332dp</dimen>
+    <dimen name="sport_channel_image_h">189dp</dimen>
+    <dimen name="sport_channel_image_focustextsize">18sp</dimen>
+    <dimen name="sport_channel_subtitle_textSize">24sp</dimen>
+    <dimen name="sport_channel_subtitle_mt">15dp</dimen>
+    <!-- fragment sport end -->
+    <!-- listportait -->
+    <dimen name="listportait_top_column_layout_h">112dp</dimen>
+    <dimen name="listportait_imageview_margin">26dp</dimen>
+    <dimen name="listportait_imageview_h">1dp</dimen>
+    <dimen name="listportait_tabs_layout_margin">115dp</dimen>
+    <dimen name="listportait_shadow_ml">31dip</dimen>
+    <dimen name="listportait_shadow_mt">354dip</dimen>
+    <dimen name="listportait_shadow_w">41dip</dimen>
+    <dimen name="listportait_shadow_h">82dip</dimen>
+    <dimen name="listportait_h_grid_view_horizontalSpacing">33dip</dimen>
+    <dimen name="listportait_h_grid_view_rowHeight">406dip</dimen>
+    <dimen name="listportait_h_grid_view_mt">2dip</dimen>
+    <dimen name="listportait_h_grid_view_pt">10dip</dimen>
+    <dimen name="listportait_h_grid_view_mb">52dip</dimen>
+    <dimen name="listportait_h_grid_view_ml">34dip</dimen>
+    <dimen name="listportait_h_grid_view_pr">10dip</dimen>
+    <dimen name="listportait_h_grid_view_pl">9dip</dimen>
+    <!-- listportait end -->
+     <!-- listportait item -->
+    <dimen name="list_item_preview_img_w">254dp</dimen>
+    <dimen name="list_item_preview_img_h">355dp</dimen>
+    <dimen name="list_item_title_w">254dp</dimen>
+    <dimen name="list_item_title_pt">2dp</dimen>
+    <dimen name="list_item_ItemBeanScore_ml">-1dp</dimen>
 </resources>
