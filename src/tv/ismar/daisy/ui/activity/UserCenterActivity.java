@@ -1,10 +1,12 @@
 package tv.ismar.daisy.ui.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -46,7 +48,9 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     private SharedPreferences accountPreference;
 
-    private SharedPreferences.OnSharedPreferenceChangeListener  changeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+    public static final String LOCATION_FRAGMENT = "location";
+
+    private SharedPreferences.OnSharedPreferenceChangeListener changeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             String accessToken = accountPreference.getString("auth_token", "");
@@ -78,18 +82,23 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         helpFragment = new HelpFragment();
         locationFragment = new LocationFragment();
 
+
         initViews();
         createIndicatorView();
 
-
-        getSupportFragmentManager().beginTransaction().add(R.id.user_center_container, storeFragment).commit();
-
-        indicatorView.get(0).setBackgroundResource(R.drawable.table_selected_bg);
+        String flag = getIntent().getStringExtra("flag");
+        if (!TextUtils.isEmpty(flag) && flag.equals(LOCATION_FRAGMENT)) {
+            getSupportFragmentManager().beginTransaction().add(R.id.user_center_container, locationFragment).commit();
+            indicatorView.get(5).setBackgroundResource(R.drawable.table_selected_bg);
+        } else {
+            getSupportFragmentManager().beginTransaction().add(R.id.user_center_container, storeFragment).commit();
+            indicatorView.get(0).setBackgroundResource(R.drawable.table_selected_bg);
+        }
     }
 
 
     private void initViews() {
-        topView = (LaunchHeaderLayout)findViewById(R.id.top_column_layout);
+        topView = (LaunchHeaderLayout) findViewById(R.id.top_column_layout);
 
 
     }
@@ -131,7 +140,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-    	int currentViewId = v.getId();
+        int currentViewId = v.getId();
         switch (v.getId()) {
             case R.string.usercenter_store:
                 getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, storeFragment).commit();
@@ -152,13 +161,13 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, locationFragment).commit();
                 break;
         }
-		for (View view : indicatorView) {
-			if (view.getId() == currentViewId) {
-				view.setBackgroundResource(R.drawable.table_selected_bg);
-			} else {
-				view.setBackgroundResource(R.drawable.selector_channel_item);
-			}
-		}
+        for (View view : indicatorView) {
+            if (view.getId() == currentViewId) {
+                view.setBackgroundResource(R.drawable.table_selected_bg);
+            } else {
+                view.setBackgroundResource(R.drawable.selector_channel_item);
+            }
+        }
     }
 
     public void switchToUserInfoFragment() {

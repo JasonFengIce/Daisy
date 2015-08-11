@@ -235,6 +235,7 @@
                 android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
         <activity
+                android:exported="true"
                 android:name=".ui.activity.UserCenterActivity"
                 android:screenOrientation="landscape"
                 android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
