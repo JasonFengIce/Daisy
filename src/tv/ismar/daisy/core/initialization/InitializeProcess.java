@@ -241,11 +241,16 @@ public class InitializeProcess implements Runnable {
     }
 
     private void initializeLocation(IpLookUpEntity ipLookUpEntity) {
+        CityTable cityTable = new Select().from(CityTable.class).where(CityTable.CITY + " = ?", ipLookUpEntity.getCity()).executeSingle();
+
         AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance(mContext);
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.PROVINCE, ipLookUpEntity.getProv());
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.CITY, ipLookUpEntity.getCity());
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.ISP, ipLookUpEntity.getIsp());
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.IP, ipLookUpEntity.getIp());
+        if (cityTable != null) {
+            accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.GEO_ID, String.valueOf(cityTable.geo_id));
+        }
 
         ProvinceTable provinceTable = new Select().from(ProvinceTable.class)
                 .where(ProvinceTable.PROVINCE_NAME + " = ?", ipLookUpEntity.getProv()).executeSingle();

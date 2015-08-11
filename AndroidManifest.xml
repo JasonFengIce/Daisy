@@ -270,6 +270,12 @@
                 android:exported="false"
                 android:name="com.activeandroid.content.ContentProvider"/>
 
+        <provider
+                android:authorities="cn.ismartv.daisy.provider.location"
+                android:name=".core.provider.LocationProvider"
+                android:exported="true"
+                />
+
     </application>
 
 

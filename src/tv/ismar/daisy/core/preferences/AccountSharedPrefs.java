@@ -29,6 +29,7 @@ public class AccountSharedPrefs {
     public static final String PROVINCE_PY = "province_py";
     public static final String ISP = "isp";
     public static final String IP = "ip";
+    public static final String GEO_ID = "geo_id";
 
 
     private static AccountSharedPrefs instance;

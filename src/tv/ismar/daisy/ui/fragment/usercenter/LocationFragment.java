@@ -127,8 +127,15 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
         cityAdapter.setOnItemListener(new OnItemListener() {
             @Override
             public void onClick(View view, int position) {
-                AccountSharedPrefs.getInstance(mContext).setSharedPrefs(AccountSharedPrefs.CITY, locationTableList.get(position).city);
-                AccountSharedPrefs.getInstance(mContext).setSharedPrefs(AccountSharedPrefs.PROVINCE, provinceTable.province_name);
+                String city = locationTableList.get(position).city;
+                AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance(mContext);
+                accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.CITY, city);
+                accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.PROVINCE, provinceTable.province_name);
+
+                CityTable cityTable = new Select().from(CityTable.class).where(CityTable.CITY + " = ?", city).executeSingle();
+                if (cityTable != null) {
+                    accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.GEO_ID, String.valueOf(cityTable.geo_id));
+                }
                 areaPopup.dismiss();
             }
 
