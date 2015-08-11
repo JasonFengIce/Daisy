@@ -2,18 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:paddingLeft="2dp"
-              android:minHeight="201dp"
+              android:paddingLeft="@dimen/purchaseFragment_item_paddingLeft"
+              android:minHeight="@dimen/purchaseFragment_item_minHeight"
               android:orientation="horizontal"
         >
 
     <ImageView
             android:focusable="true"
             android:background="@drawable/launcher_selector"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="@dimen/purchaseFragment_item_icon_marginTop"
             android:id="@+id/orderlistitem_icon"
-            android:layout_width="336dp"
-            android:layout_height="189dp"
+            android:layout_width="@dimen/purchaseFragment_item_image_width"
+            android:layout_height="@dimen/purchaseFragment_item_image_height"
             android:scaleType="fitXY"
             />
 
@@ -24,7 +24,7 @@
             android:orientation="vertical">
 
         <LinearLayout
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/purchaseFragment_item_order_title_marginTop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -38,7 +38,7 @@
                     />
 
             <TextView
-                    android:layout_marginLeft="40dp"
+                    android:layout_marginLeft="@dimen/purchaseFragment_item_order_extra_marginLeft"
                     android:id="@+id/purchase_extra"
                     android:textSize="@dimen/h4_text_size"
                     android:textColor="#FFFFFF"
@@ -66,7 +66,7 @@
                     android:id="@+id/orderlistitem_remainday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="89dp"
+                    android:layout_marginLeft="@dimen/purchaseFragment_item_marginLeft"
                     android:textSize="@dimen/h4_text_size"
                     />
         </LinearLayout>
@@ -90,7 +90,7 @@
                     android:id="@+id/orderlistitem_paychannel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="89dp"
+                    android:layout_marginLeft="@dimen/purchaseFragment_item_marginLeft"
                     android:textSize="@dimen/h4_text_size"
                     />
 
@@ -99,7 +99,7 @@
                     android:id="@+id/orderlistitem_merge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="89dp"
+                    android:layout_marginLeft="@dimen/purchaseFragment_item_marginLeft"
                     android:textSize="@dimen/h4_text_size"
                     />
         </LinearLayout>

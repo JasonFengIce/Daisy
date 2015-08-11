@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RadioGroup;
+import tv.ismar.daisy.core.DaisyUtils;
 
 
 /**
@@ -14,13 +15,15 @@ import android.widget.RadioGroup;
 public class MyViewGroup extends RadioGroup {
     private final static int VIEW_MARGIN_X = 31;
     private final static int VIEW_MARGIN_Y = 40;
+    private float rate;
     public MyViewGroup(Context context) {
         super(context);
+        rate = DaisyUtils.getVodApplication(getContext()).getRate(getContext());
     }
 
     public MyViewGroup(Context context, AttributeSet attrs) {
-
         super(context, attrs);
+        rate = DaisyUtils.getVodApplication(getContext()).getRate(getContext());
     }
 
 //    public MyViewGroup(Context context, AttributeSet attrs, int defStyle) {
@@ -126,12 +129,12 @@ protected void onLayout(boolean changed, int l, int t, int r, int b) {
         if (child.getVisibility() != View.GONE) {
             int width = child.getMeasuredWidth();
             int height = child.getMeasuredHeight();
-            x += width+VIEW_MARGIN_X;
-            y = row * (height + VIEW_MARGIN_Y ) + height ;
+            x += width+VIEW_MARGIN_X/rate;
+            y = row * (height + (int)(VIEW_MARGIN_Y/rate) ) + height;
             if (x > maxWidth) {
-                x = width + VIEW_MARGIN_X;
+                x = width + (int)(VIEW_MARGIN_X/rate);
                 row++;
-                y = row * (height + VIEW_MARGIN_Y) + height  ;
+                y = row * (height + (int)(VIEW_MARGIN_Y/rate)) + height  ;
             }
             child.layout(x - width, y - height, x, y);
         }

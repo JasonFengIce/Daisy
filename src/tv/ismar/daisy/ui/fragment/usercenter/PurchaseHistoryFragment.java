@@ -55,9 +55,6 @@ public class PurchaseHistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_phurchase, null);
         accountOrderListView = (LinearLayout) view.findViewById(R.id.orderlist);
-//        accountOrderListView.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL_LIST));
-//        accountOrderListView.setItemAnimator(new DefaultItemAnimator());
-//        accountOrderListView.setLayoutManager(new LinearLayoutManager(mContext));
         return view;
     }
 
@@ -67,56 +64,6 @@ public class PurchaseHistoryFragment extends Fragment {
         super.onResume();
         fetchAccountsOrders();
     }
-
-//    private void fetchAccountsOrders() {
-//        String api = SimpleRestClient.root_url + "/accounts/orders/";
-//        Activator activator = Activator.getInstance(mContext);
-//
-//        String timestamp = String.valueOf(System.currentTimeMillis());
-//        String sign = activator.PayRsaEncode("sn=" + SimpleRestClient.sn_token + "&timestamp=" + timestamp);
-//
-//        HashMap<String, String> params = new HashMap<String, String>();
-//        params.put("timestamp", timestamp);
-//        params.put("sign", sign);
-//
-//
-//        new IsmartvUrlClient().doRequest(IsmartvUrlClient.Method.POST, api, params, new IsmartvUrlClient.CallBack() {
-//            @Override
-//            public void onSuccess(String result) {
-//                Log.d(TAG, "fetchAccountsOrders: " + result);
-//                AccountsOrdersEntity accountsOrdersEntity = new Gson().fromJson(result, AccountsOrdersEntity.class);
-//                ArrayList<AccountsOrdersEntity.OrderEntity> arrayList = new ArrayList<AccountsOrdersEntity.OrderEntity>();
-//                AccountOrderAdapter accountOrderAdapter;
-//                if (!TextUtils.isEmpty(SimpleRestClient.access_token) && !TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
-//
-//
-//                    for (AccountsOrdersEntity.OrderEntity entity : accountsOrdersEntity.getOrder_list()) {
-//                        entity.type = "order_list";
-//                        arrayList.add(entity);
-//                    }
-//                    for (AccountsOrdersEntity.OrderEntity entity : accountsOrdersEntity.getSn_order_list()) {
-//                        entity.type = "snorder_list";
-//                        arrayList.add(entity);
-//                    }
-//                    //arrayList.addAll(accountsOrdersEntity.getOrder_list());
-//                    // arrayList.addAll(accountsOrdersEntity.getSn_order_list());
-//                    accountOrderAdapter = new AccountOrderAdapter(mContext, arrayList);
-//                } else {
-//                    for (AccountsOrdersEntity.OrderEntity entity : accountsOrdersEntity.getSn_order_list()) {
-//                        entity.type = "snorder_list";
-//                        arrayList.add(entity);
-//                    }
-//                    accountOrderAdapter = new AccountOrderAdapter(mContext, arrayList);
-//                }
-//                accountOrderListView.setAdapter(accountOrderAdapter);
-//            }
-//
-//            @Override
-//            public void onFailed(Exception exception) {
-//
-//            }
-//        });
-//    }
 
 
     private void fetchAccountsOrders() {
@@ -149,9 +96,6 @@ public class PurchaseHistoryFragment extends Fragment {
                         entity.type = "snorder_list";
                         arrayList.add(entity);
                     }
-                    //arrayList.addAll(accountsOrdersEntity.getOrder_list());
-                    // arrayList.addAll(accountsOrdersEntity.getSn_order_list());
-//                    accountOrderAdapter = new HomeAdapter(mContext, arrayList);
                     createHistoryListView(arrayList);
 
                 } else {
@@ -161,11 +105,9 @@ public class PurchaseHistoryFragment extends Fragment {
                     }
 
                     createHistoryListView(arrayList);
-//                    accountOrderAdapter = new HomeAdapter(mContext, arrayList);
                 }
 
 
-//                accountOrderListView.setAdapter(accountOrderAdapter);
             }
 
             @Override

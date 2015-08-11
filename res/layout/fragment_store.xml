@@ -5,18 +5,18 @@
               android:layout_height="match_parent">
 
     <GridView
-        android:descendantFocusability="afterDescendants"
-        android:id="@+id/person_center_packagelist"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:numColumns="4"
-        android:layout_marginRight="73dp"
-        android:layout_marginLeft="17dp"
-        android:verticalSpacing="6dp"
-        android:horizontalSpacing="15dp"
-        android:layout_marginTop="23dp"
-        android:scrollbars="vertical"
-        android:stretchMode="columnWidth">
+            android:descendantFocusability="afterDescendants"
+            android:id="@+id/person_center_packagelist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="4"
+            android:layout_marginRight="@dimen/usercenter_storefragment_packagelist_marginRight"
+            android:layout_marginLeft="@dimen/usercenter_storefragment_packagelist_marginLeft"
+            android:verticalSpacing="@dimen/usercenter_storefragment_packagelist_verticalSpacing"
+            android:horizontalSpacing="@dimen/usercenter_storefragment_packagelist_horizontalSpacing"
+            android:layout_marginTop="@dimen/usercenter_storefragment_packagelist_marginTop"
+            android:scrollbars="vertical"
+            android:stretchMode="columnWidth">
     </GridView>
 
 </LinearLayout>

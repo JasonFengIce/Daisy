@@ -940,6 +940,20 @@
     <dimen name="entertainment_vaiety_channel_title_mt">15dp</dimen>
     <dimen name="entertainment_vaiety_channel_title_textsize">30sp</dimen>
     <!-- fragment entertainment end -->
+
+    <dimen name="usercenter_storefragment_packagelist_marginRight">73dp</dimen>
+    <dimen name="usercenter_storefragment_packagelist_marginLeft">17dp</dimen>
+    <dimen name="usercenter_storefragment_packagelist_verticalSpacing">6dp</dimen>
+    <dimen name="usercenter_storefragment_packagelist_horizontalSpacing">15dp</dimen>
+    <dimen name="usercenter_storefragment_packagelist_marginTop">23dp</dimen>
+
+    <dimen name="usercenter_storefragment_packagelist_item_layout_marginRight">7dp</dimen>
+    <dimen name="usercenter_storefragment_packagelist_item_image_width">336dp</dimen>
+    <dimen name="usercenter_storefragment_packagelist_item_image_height">189dp</dimen>
+    <dimen name="usercenter_storefragment_packagelist_item_text_width">336dp</dimen>
+    <dimen name="usercenter_storefragment_packagelist_item_text_height">62dp</dimen>
+
+
     <!-- fragment sport -->
     <dimen name="sport_linearLayout_margin_t">31dp</dimen>
     <dimen name="sport_linearLayout_margin_l">70dp</dimen>
@@ -990,10 +1004,66 @@
     <dimen name="listportait_h_grid_view_pr">10dip</dimen>
     <dimen name="listportait_h_grid_view_pl">9dip</dimen>
     <!-- listportait end -->
-     <!-- listportait item -->
+    <!-- listportait item -->
     <dimen name="list_item_preview_img_w">254dp</dimen>
     <dimen name="list_item_preview_img_h">355dp</dimen>
     <dimen name="list_item_title_w">254dp</dimen>
     <dimen name="list_item_title_pt">2dp</dimen>
     <dimen name="list_item_ItemBeanScore_ml">-1dp</dimen>
+
+    <dimen name="userinfo_phoneNumber_title_width">140dp</dimen>
+    <dimen name="userinfo_changeButton_marginLeft">20dp</dimen>
+
+    <dimen name="userinfo_snNumber_title_width">140dp</dimen>
+    <dimen name="userinfo_association_prompt_marigin_lr">20dp</dimen>
+
+    <dimen name="userinfo_association_marginLeft">20dp</dimen>
+    <dimen name="userinfo_association_width">100dp</dimen>
+
+    <dimen name="userinfo_deviceName_title_width">140dp</dimen>
+
+    <dimen name="userinfo_balance_title_width">140dp</dimen>
+
+    <dimen name="userinfo_privilege_layout_marginTop">50dp</dimen>
+
+    <dimen name="userinfo_privilege_title_width">140dp</dimen>
+
+    <dimen name="loginfragment_successPop_xOffset">200dp</dimen>
+    <dimen name="loginfragment_successPop_yOffset">50dp</dimen>
+
+    <dimen name="loginfragment_CombinePop_xOffset">200dp</dimen>
+    <dimen name="loginfragment_combinePop_yOffset">25dp</dimen>
+    <dimen name="loginfragment_phoneNumberLayout_marginTop">10dp</dimen>
+    <dimen name="loginfragment_phoneNumberLayout_height">70dp</dimen>
+    <dimen name="loginfragment_phoneNumber_edit_height">66dp</dimen>
+    <dimen name="loginfragment_phoneNumber_edit_marginRright">10dp</dimen>
+    <dimen name="loginfragment_phoneNumber_fetchCode_marginLeft">10dp</dimen>
+
+    <dimen name="loginfragment_textSize">24sp</dimen>
+
+    <dimen name="purchaseFragment_item_paddingLeft">2dp</dimen>
+    <dimen name="purchaseFragment_item_minHeight">201dp</dimen>
+    <dimen name="purchaseFragment_item_image_width">336dp</dimen>
+    <dimen name="purchaseFragment_item_image_height">189dp</dimen>
+
+    <dimen name="purchaseFragment_item_order_title_marginTop">20dp</dimen>
+
+    <dimen name="purchaseFragment_item_order_extra_marginLeft">40dp</dimen>
+
+    <dimen name="purchaseFragment_item_marginLeft">89dp</dimen>
+
+    <dimen name="purchaseFragment_item_icon_marginTop">6dp</dimen>
+
+    <dimen name="locationFragment_areaPop_xOffset">179dp</dimen>
+    <dimen name="locationFragment_areaPop_yOffset">10dp</dimen>
+
+    <dimen name="locationFragment_provinceGrid_verticalSpacing">65dp</dimen>
+    <dimen name="locationFragment_provinceGrid_marginLR">30dp</dimen>
+
+    <dimen name="locationFragment_areaGridItem_minHeght">65dp</dimen>
+
+
+    <!--zjq -->
+    <dimen name="top_panel_view_height">112dip</dimen>
+    <dimen name="divider_margin_MLR">26dip</dimen>
 </resources>

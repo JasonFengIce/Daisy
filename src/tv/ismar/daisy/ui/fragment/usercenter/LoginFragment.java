@@ -101,7 +101,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         super.onPause();
         mContext.unregisterReceiver(countdownReceiver);
     }
+
     SimpleRestClient mSimpleRestClient;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_login, null);
@@ -113,7 +115,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         submitBtn.setOnClickListener(this);
         phoneNumberPrompt = (TextView) fragmentView.findViewById(R.id.phone_number_prompt);
         verificationPrompt = (TextView) fragmentView.findViewById(R.id.verification_prompt);
-        phoneNumberMsg =(TextView)fragmentView.findViewById(R.id.phone_number_msg);
+        phoneNumberMsg = (TextView) fragmentView.findViewById(R.id.phone_number_msg);
         mSimpleRestClient = new SimpleRestClient();
 
         return fragmentView;
@@ -281,7 +283,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         loginPopup = new PopupWindow(popupLayout, width, height);
         loginPopup.setFocusable(true);
         loginPopup.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.transparent));
-        loginPopup.showAtLocation(fragmentView, Gravity.CENTER, 200, 50);
+        int xOffset = (int) mContext.getResources().getDimension(R.dimen.loginfragment_successPop_xOffset);
+        int yOffset = (int) mContext.getResources().getDimension(R.dimen.loginfragment_successPop_yOffset);
+
+        loginPopup.showAtLocation(fragmentView, Gravity.CENTER, xOffset, yOffset);
     }
 
 
@@ -292,7 +297,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         combineAccountPop = new PopupWindow(popupLayout, width, height);
         combineAccountPop.setFocusable(true);
         combineAccountPop.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.transparent));
-        combineAccountPop.showAtLocation(fragmentView, Gravity.CENTER, 200, 25);
+        int xOffset = (int) mContext.getResources().getDimension(R.dimen.loginfragment_successPop_xOffset);
+        int yOffset = (int) mContext.getResources().getDimension(R.dimen.loginfragment_successPop_yOffset);
+        combineAccountPop.showAtLocation(fragmentView, Gravity.CENTER, xOffset, yOffset);
 
         Button confirm = (Button) popupLayout.findViewById(R.id.confirm_account_combine);
         Button cancel = (Button) popupLayout.findViewById(R.id.cancel_account_combine);
@@ -333,6 +340,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         fetchFavorite();
         getHistoryByNet();
     }
+
     private void addHistory(Item item) {
         History history = new History();
         history.title = item.title;
@@ -341,11 +349,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         history.is_complex = item.is_complex;
         history.last_position = item.offset;
         history.last_quality = item.quality;
-        if("subitem".equals(item.model_name)){
+        if ("subitem".equals(item.model_name)) {
             history.sub_url = item.url;
             history.url = SimpleRestClient.root_url + "/api/item/" + item.item_pk + "/";
-        }
-        else{
+        } else {
             history.url = item.url;
 
         }
@@ -360,6 +367,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     .addHistory(history, "no");
 
     }
+
     private void getHistoryByNet() {
 
         mSimpleRestClient.doSendRequest("/api/histories/", "get", "",
@@ -392,6 +400,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     }
                 });
     }
+
     private void fetchFavorite() {
         String api = SimpleRestClient.root_url + "/api/bookmarks/";
 
