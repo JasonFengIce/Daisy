@@ -129,12 +129,12 @@ protected void onLayout(boolean changed, int l, int t, int r, int b) {
         if (child.getVisibility() != View.GONE) {
             int width = child.getMeasuredWidth();
             int height = child.getMeasuredHeight();
-            x += width+VIEW_MARGIN_X/rate;
-            y = row * (height + (int)(VIEW_MARGIN_Y/rate) ) + height;
+            x += width+VIEW_MARGIN_X/1;
+            y = row * (height + (int)(VIEW_MARGIN_Y/1) ) + height;
             if (x > maxWidth) {
-                x = width + (int)(VIEW_MARGIN_X/rate);
+                x = width + (int)(VIEW_MARGIN_X/1);
                 row++;
-                y = row * (height + (int)(VIEW_MARGIN_Y/rate)) + height  ;
+                y = row * (height + (int)(VIEW_MARGIN_Y/1)) + height  ;
             }
             child.layout(x - width, y - height, x, y);
         }

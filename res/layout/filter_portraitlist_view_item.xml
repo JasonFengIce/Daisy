@@ -6,8 +6,8 @@
     >
     <tv.ismar.daisy.views.LabelImageView
             xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
-            android:layout_width="254dip"
-            android:layout_height="355dip"
+            android:layout_width="@dimen/list_item_preview_img_w"
+            android:layout_height="@dimen/list_item_preview_img_h"
             android:id="@+id/filter_list_item_preview_img"
             android:background="@drawable/list_item_ppreview_bg"
             android:layout_alignParentTop="true"
@@ -19,12 +19,12 @@
             labelimage:focuspaddingtop="0.9"
             labelimage:focustextpaddingtop="0.97"
             labelimage:maxfocustitle="10"
-            labelimage:focustextsize="24sp"
+            labelimage:focustextsize="@dimen/item_detail_detail_price_textsize"
             labelimage:focusbackground="#b3303030"
             />
     <TextView
-        android:paddingTop="2dip"
-        android:layout_width="254dip"
+        android:paddingTop="@dimen/search_line_height"
+        android:layout_width="@dimen/list_item_preview_img_w"
         android:layout_height="match_parent"
         android:singleLine="true"
         android:ellipsize="marquee"

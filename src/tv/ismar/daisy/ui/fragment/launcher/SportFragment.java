@@ -17,6 +17,7 @@ import tv.ismar.daisy.views.LabelImageView;
 import tv.ismar.daisy.views.LoadingDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -343,20 +344,12 @@ public class SportFragment extends ChannelBaseFragment {
 
 		@Override
 		public void onClick(View arg0) {
-			if (arg0.getId() == R.id.sec_one_list_1_arrowdown) {
-				if (games.size() == 6) {
-					currentLiveIndex += 3;
-				} else {
-					currentLiveIndex += 1;
-				}
-				fillLiveData();
-			} else if (arg0.getId() == R.id.sec_one_list_1_arrowup) {
-				if (games.size() == 6 && currentLiveIndex == 1) {
-					currentLiveIndex -= 3;
-				} else {
-					currentLiveIndex -= 1;
-				}
-				fillLiveData();
+			SportGame data = (SportGame) arg0.getTag();
+			if (data.getGameType() == 5) {
+				Intent intent = new Intent();
+				intent.setAction("tv.ismar.daisy.Item");
+				intent.putExtra("url", data.getUrl());
+				context.startActivity(intent);
 			} else {
 				InitPlayerTool tool = new InitPlayerTool(context);
 				tool.initClipInfo(arg0.getTag().toString(),
@@ -381,34 +374,25 @@ public class SportFragment extends ChannelBaseFragment {
 				sports_live1.setUrl(games.get(position).getImageurl());
 				Picasso.with(context).load(games.get(position).getImageurl())
 						.into(sports_live1);
-				sports_live1.setTag(games.get(position).getUrl());
-				if (games.get(position).isLiving()) {
-					sports_live1.setModetype(4);
-				} else {
-					sports_live1.setModetype(6);
-				}
+				sports_live1.setTag(games.get(position));
+				sports_live1.setModetype(games.get(position).getGameType());
+				sports_live1.setFocustitle(games.get(position).getName());
 				break;
 			case 1:
 				sports_live2.setUrl(games.get(position).getImageurl());
 				Picasso.with(context).load(games.get(position).getImageurl())
 						.into(sports_live2);
-				sports_live2.setTag(games.get(position).getUrl());
-				if (games.get(position).isLiving()) {
-					sports_live2.setModetype(4);
-				} else {
-					sports_live2.setModetype(6);
-				}
+				sports_live2.setTag(games.get(position));
+				sports_live2.setModetype(games.get(position).getGameType());
+				sports_live2.setFocustitle(games.get(position).getName());
 				break;
 			case 2:
 				sports_live3.setUrl(games.get(position).getImageurl());
 				Picasso.with(context).load(games.get(position).getImageurl())
 						.into(sports_live3);
-				sports_live3.setTag(games.get(position).getUrl());
-				if (games.get(position).isLiving()) {
-					sports_live3.setModetype(4);
-				} else {
-					sports_live3.setModetype(6);
-				}
+				sports_live3.setTag(games.get(position));
+				sports_live3.setModetype(games.get(position).getGameType());
+				sports_live3.setFocustitle(games.get(position).getName());
 				break;
 			}
 		}
