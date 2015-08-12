@@ -302,4 +302,10 @@
     <string name="association_prompt">( <font color='red'>您的设备未关联手机号，设备损坏或更换是账户和余额特权将清零</font> )</string>
 
     <string name="userinfo_device_name">设备：%1$s</string>
+
+    <string name="location_currentPosition_title">当前位置&#160;:&#160;</string>
+    <string name="location_selectedPosition_title">选中位置&#160;:&#160;</string>
+    <string name="confirm_selected_position_prompt">您是否确定要将当前位置更换为选中位置?</string>
+
+
 </resources>

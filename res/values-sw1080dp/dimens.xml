@@ -880,7 +880,7 @@
     <dimen name="location_divider_width">1314dp</dimen>
     <dimen name="location_grid_margin_top">57dp</dimen>
     <dimen name="location_area_pop_width">1420dp</dimen>
-    <dimen name="location_area_pop_height">860dp</dimen>
+    <dimen name="location_area_pop_height">675dp</dimen>
 
     <!-- sakura -->
     <dimen name="sakura_launch_icon_width">220dp</dimen>
@@ -1056,12 +1056,27 @@
     <dimen name="purchaseFragment_item_icon_marginTop">6dp</dimen>
 
     <dimen name="locationFragment_areaPop_xOffset">179dp</dimen>
-    <dimen name="locationFragment_areaPop_yOffset">10dp</dimen>
+    <dimen name="locationFragment_areaPop_yOffset">105dp</dimen>
 
     <dimen name="locationFragment_provinceGrid_verticalSpacing">65dp</dimen>
     <dimen name="locationFragment_provinceGrid_marginLR">30dp</dimen>
 
     <dimen name="locationFragment_areaGridItem_minHeght">65dp</dimen>
+
+    <dimen name="locationFragment_currentPositionTitle_marginLeft">31dp</dimen>
+    <dimen name="locationFragment_selectedPositionTitle_marginLeft">170dp</dimen>
+    <dimen name="locationFragment_todayLayout_marginLeft">180dp</dimen>
+    <dimen name="locationFragment_tomorrowLayout_marginLeft">120dp</dimen>
+    <dimen name="locatiionFragment_areaPop_height">415dp</dimen>
+    <dimen name="locationFragment_areaPop_btn_width">235dp</dimen>
+    <dimen name="locationFragment_areaPop_btn_height">85dp</dimen>
+    <dimen name="locatoinFragment_areaPop_cancelBtn_marginLeft">85dp</dimen>
+    <dimen name="locationFragment_areaPop_Btn_marginTop">40dp</dimen>
+
+
+    <dimen name="locationFragment_h1_textSize">48sp</dimen>
+    <dimen name="locationFragment_h2_textSize">36sp</dimen>
+    <dimen name="locationFragment_h3_textSize">30sp</dimen>
 
 
     <!--zjq -->
@@ -1108,4 +1123,6 @@
     <dimen name="filmitem_portrait_more_content_h">355dip</dimen>
     <dimen name="filmitem_portrait_tongleituijian_textview_mt">30dip</dimen>
     <!-- filmportait item end-->
+
+
 </resources>

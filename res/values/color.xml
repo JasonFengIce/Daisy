@@ -76,5 +76,7 @@
     <color name="shawdow">#d9000000</color>
 
     <color name="history_divider">#515a6c</color>
+
+    <color name="blue">#00a9ff</color>
     
 </resources>

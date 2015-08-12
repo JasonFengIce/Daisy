@@ -4,13 +4,65 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <TextView
-            android:id="@+id/current_position"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="@dimen/h1_text_size"
+
+    <LinearLayout
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/location_fragment_current_position_height"/>
+            android:layout_height="@dimen/location_fragment_current_position_height">
+
+        <TextView
+                android:textColor="@color/white"
+                android:id="@+id/currentPosition_title"
+                android:text="@string/location_currentPosition_title"
+                android:textSize="@dimen/locationFragment_h2_textSize"
+                android:layout_marginLeft="@dimen/locationFragment_currentPositionTitle_marginLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:textColor="@color/white"
+                android:id="@+id/currentPosition"
+                android:textSize="@dimen/locationFragment_h1_textSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:visibility="invisible"
+                android:textColor="@color/white"
+                android:id="@+id/selectedPosition_title"
+                android:textSize="@dimen/locationFragment_h2_textSize"
+                android:text="@string/location_selectedPosition_title"
+                android:layout_marginLeft="@dimen/locationFragment_selectedPositionTitle_marginLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:visibility="invisible"
+                android:textColor="@color/white"
+                android:id="@+id/selectedPosition"
+                android:textSize="@dimen/locationFragment_h1_textSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_marginLeft="@dimen/locationFragment_todayLayout_marginLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+        </LinearLayout>
+
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_marginLeft="@dimen/locationFragment_tomorrowLayout_marginLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+        </LinearLayout>
+
+
+    </LinearLayout>
 
     <ImageView
             android:src="@drawable/horizontal_divider_line"
