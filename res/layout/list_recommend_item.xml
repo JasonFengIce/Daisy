@@ -19,7 +19,6 @@
         android:scaleType="fitXY" />
 
     <TextView
-        android:focusable="true"
         android:id="@+id/ItemText"
         android:layout_width="@dimen/recommend_item__W"
         android:layout_height="wrap_content"
