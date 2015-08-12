@@ -262,7 +262,7 @@ public class SimpleRestClient {
 				sports.setStart_time(object.getString("start_time"));
 				sports.setExpiry_date(object.getString("expiry_date"));
 				sports.setName(object.getString("name"));
-				sports.setImageurl(object.getString("poster_url"));
+				sports.setImageurl(object.getString("image"));
 				sports.setUrl(object.getString("url"));
 				sports.setLiving(true);
 				arrays.add(sports);

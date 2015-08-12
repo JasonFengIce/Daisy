@@ -23,12 +23,13 @@ public class DetailAttributeContainer extends LinearLayout {
 	
 	private ContentModel mContentModel;
 	private Context myContext;
-	private float textsize; 
+	private float textsize;
+	private float rate;
 	public DetailAttributeContainer(Context context, AttributeSet attrs,
 			int defStyle) {
 		super(context, attrs, defStyle);
 		myContext = context;
-		float rate = DaisyUtils.getVodApplication(context).getRate(context);
+		rate = DaisyUtils.getVodApplication(context).getRate(context);
 		textsize = myContext.getResources().getDimension(R.dimen.item_detail_introlabel_textsize)/rate;
 		// TODO Auto-generated constructor stub
 	}
@@ -36,7 +37,7 @@ public class DetailAttributeContainer extends LinearLayout {
 	public DetailAttributeContainer(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		myContext = context;
-		float rate = DaisyUtils.getVodApplication(getContext()).getRate(getContext());
+		rate = DaisyUtils.getVodApplication(getContext()).getRate(getContext());
 		textsize = myContext.getResources().getDimension(R.dimen.item_detail_introlabel_textsize)/rate;
 		// TODO Auto-generated constructor stub
 	}
@@ -64,7 +65,7 @@ public class DetailAttributeContainer extends LinearLayout {
 			int width = getResources().getDimensionPixelSize(R.dimen.item_detail_attribute_width);
 			layoutParams = new LinearLayout.LayoutParams(width,LinearLayout.LayoutParams.WRAP_CONTENT);
 									
-			layoutParams.topMargin =(21);
+			layoutParams.topMargin =((int)(21/1));
 			infoLine.setLayoutParams(layoutParams);
 			infoLine.setOrientation(LinearLayout.HORIZONTAL);
 			TextView itemName = new TextView(getContext());
@@ -98,7 +99,7 @@ public class DetailAttributeContainer extends LinearLayout {
 
 
         for(Map.Entry<String, String> entry: attrMap.entrySet()){
-            int layoutLeft = 22;
+            int layoutLeft = (int)(22/1);
             if(entry.getValue()==null || mContentModel.attributes.get(entry.getKey())==null){
                 continue;
             }
@@ -107,8 +108,8 @@ public class DetailAttributeContainer extends LinearLayout {
                 infoLine = new LinearLayout(getContext());
                 layoutParamsInfo = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
                 if(i>=3)
-                layoutParamsInfo.topMargin = 30;
-                layoutParamsInfo.rightMargin = 73;
+                layoutParamsInfo.topMargin = (int)(30/1);
+                layoutParamsInfo.rightMargin = (int)(73/1);
                 infoLine.setLayoutParams(layoutParamsInfo);
                 infoLine.setOrientation(LinearLayout.HORIZONTAL);
                 addView(infoLine);
@@ -128,13 +129,13 @@ public class DetailAttributeContainer extends LinearLayout {
             if(entry.getValue()==null || mContentModel.attributes.get(entry.getKey())==null){
                 continue;
             }
-            int layoutLeft = 9;
+            int layoutLeft = (int)(9);
             if(i%2==0&&(i<=3)){
                 layoutLeft = 0;
                 infoLine = new LinearLayout(getContext());
                 layoutParamsInfo = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
                 if(i>1)
-                layoutParamsInfo.topMargin = 22;
+                layoutParamsInfo.topMargin = (int)(22);
 
                 infoLine.setLayoutParams(layoutParamsInfo);
                 infoLine.setOrientation(LinearLayout.HORIZONTAL);
@@ -145,7 +146,7 @@ public class DetailAttributeContainer extends LinearLayout {
                 infoLine = new LinearLayout(getContext());
                 infoLine.setOrientation(LinearLayout.HORIZONTAL);
                 layoutParamsInfo = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-                layoutParamsInfo.topMargin = 22;
+                layoutParamsInfo.topMargin = (int)(22/1);
                 infoLine.setLayoutParams(layoutParamsInfo);
                 infoLine.setOrientation(LinearLayout.HORIZONTAL);
                 addView(infoLine);
@@ -159,10 +160,10 @@ public class DetailAttributeContainer extends LinearLayout {
         LinearLayout.LayoutParams itemNameParams = null;
         TextView itemValue = new TextView(getContext());
         if((position+1)%3==0){
-            itemNameParams = new LinearLayout.LayoutParams(390, 31);
+            itemNameParams = new LinearLayout.LayoutParams((int)(390/1), (int)(31/1));
         }
         else{
-            itemNameParams = new LinearLayout.LayoutParams(390, 31);
+            itemNameParams = new LinearLayout.LayoutParams((int)(390/1), (int)(31/1));
         }
         itemNameParams.leftMargin = distanceLeft;
         // LinearLayout.LayoutParams itemValueParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -179,17 +180,17 @@ public class DetailAttributeContainer extends LinearLayout {
         LinearLayout.LayoutParams itemNameParams = null;
 
         if(distanceLeft>0){
-            itemNameParams = new LinearLayout.LayoutParams(289, 24);
+            itemNameParams = new LinearLayout.LayoutParams((int)(289/1), (int)(26/1));
         }
         else if(distanceLeft==0){
             if(lineNumber==-1){
                 itemNameParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             }
             else if(lineNumber>=4){
-                itemNameParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,24);
+                itemNameParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,(int)(26/1));
             }
             else{
-                itemNameParams = new LinearLayout.LayoutParams(441, 24);
+                itemNameParams = new LinearLayout.LayoutParams((int)(441/1), (int)(26/1));
             }
         }
 
@@ -205,7 +206,7 @@ public class DetailAttributeContainer extends LinearLayout {
        // LinearLayout.LayoutParams itemValueParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         itemValue.setLayoutParams(itemNameParams);
         itemValue.setTextColor(0xffffffff);
-        itemValue.setTextSize(24);
+        itemValue.setTextSize((int)(24/rate));
         itemValue.setText(key+" : " +value);
         itemValue.setMaxLines(1);
         itemValue.setEllipsize(TruncateAt.END);

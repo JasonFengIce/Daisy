@@ -114,7 +114,7 @@ public class SportFragment extends ChannelBaseFragment {
 			@Override
 			public void onFocusChange(View arg0, boolean arg1) {
 				if (!arg1 && arrowUp.isFocused()) {
-					if (games.size() == 6 && currentLiveIndex == 1) {
+					if (games.size() == 6 && currentLiveIndex == 3) {
 						currentLiveIndex -= 3;
 					} else {
 						currentLiveIndex -= 1;

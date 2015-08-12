@@ -64,27 +64,24 @@ public class ChannelBaseFragment extends Fragment {
 			Intent intent = new Intent();
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			if (url == null) {
+				intent.setAction("tv.ismar.daisy.Channel");
 				intent.putExtra("title", channelEntity.getName());
 				intent.putExtra("url", channelEntity.getUrl());
 				intent.putExtra("channel", channelEntity.getChannel());
 				intent.putExtra("portraitflag", channelEntity.getStyle());
-				intent.setClassName("tv.ismar.daisy",
-						"tv.ismar.daisy.ChannelListActivity");
 				context.startActivity(intent);
 			} else {
 				if ("item".equals(mode_name)) {
 					DaisyUtils.gotoSpecialPage(context,contentMode,url);
 				} else if ("topic".equals(mode_name)) {
+					intent.setAction("tv.ismar.daisy.Topic");
 					intent.putExtra("url", url);
-					intent.setClassName("tv.ismar.daisy",
-							"tv.ismar.daisy.TopicActivity");
 					context.startActivity(intent);
 				} else if ("section".equals(mode_name)) {
+					intent.setAction("tv.ismar.daisy.packagelist");
 					intent.putExtra("title", title);
 					intent.putExtra("itemlistUrl", url);
 					intent.putExtra("lableString", title);
-					intent.setClassName("tv.ismar.daisy",
-							"tv.ismar.daisy.PackageListDetailActivity");
 					context.startActivity(intent);
 				} else if ("package".equals(mode_name)) {
 					intent.setAction("tv.ismar.daisy.packageitem");
@@ -97,5 +94,5 @@ public class ChannelBaseFragment extends Fragment {
 			}
 		}
 	};
-	
+
 }

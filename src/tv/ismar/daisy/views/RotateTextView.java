@@ -36,8 +36,8 @@ public class RotateTextView extends TextView {
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.save();
-        canvas.translate(getCompoundPaddingLeft()+11/rate, getExtendedPaddingTop()-14/rate);
-        canvas.rotate(45/rate, this.getWidth() / 2f, this.getHeight() / 2f);
+        canvas.translate(getCompoundPaddingLeft()+11, getExtendedPaddingTop()-14);
+        canvas.rotate(45, this.getWidth() / 2f, this.getHeight() / 2f);
         super.onDraw(canvas);
         canvas.restore();
     }

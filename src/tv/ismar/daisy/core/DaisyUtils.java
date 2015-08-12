@@ -72,8 +72,7 @@ public class DaisyUtils {
             intent.setAction("tv.ismar.daisy.packageitem");
             intent.putExtra("title", "礼包详情");
         }else {
-			intent.setClassName("tv.ismar.daisy",
-					"tv.ismar.daisy.ItemDetailActivity");
+			intent.setAction("tv.ismar.daisy.Item");
 		}
         intent.putExtra("url", url);
         intent.putExtra("fromPage","list");

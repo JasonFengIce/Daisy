@@ -1007,6 +1007,7 @@
     <!-- listportait item -->
     <dimen name="list_item_preview_img_w">254dp</dimen>
     <dimen name="list_item_preview_img_h">355dp</dimen>
+    <dimen name="list_item_preview_img_mt">9dip</dimen>
     <dimen name="list_item_title_w">254dp</dimen>
     <dimen name="list_item_title_pt">2dp</dimen>
     <dimen name="list_item_ItemBeanScore_ml">-1dp</dimen>
@@ -1066,4 +1067,45 @@
     <!--zjq -->
     <dimen name="top_panel_view_height">112dip</dimen>
     <dimen name="divider_margin_MLR">26dip</dimen>
+    <!-- filmportait item -->
+    <dimen name="filmitem_portrait_top_column_layout">112dip</dimen>
+    <dimen name="filmitem_portrait_filter_divider_h">1dip</dimen>
+    <dimen name="filmitem_portrait_top_view_layout_h">520dip</dimen>
+    <dimen name="filmitem_portrait_relativeLayout_w">410dip</dimen>
+    <dimen name="filmitem_portrait_relativeLayout_h">471dip</dimen>
+    <dimen name="filmitem_portrait_relativeLayout_mt">29dip</dimen>
+    <dimen name="filmitem_portrait_detail_preview_img_ml">73dip</dimen>
+    <dimen name="filmitem_portrait_detail_preview_img_w">336dip</dimen>
+    <dimen name="filmitem_portrait_detail_preview_img_h">471dip</dimen>
+    <dimen name="filmitem_portrait_detail_price_txt_ml">68dip</dimen>
+    <dimen name="filmitem_portrait_relativeLayout2_ml">28dip</dimen>
+    <dimen name="filmitem_portrait_detail_title_mt">30dip</dimen>
+    <dimen name="filmitem_portrait_detail_title_w">798dip</dimen>
+    <dimen name="filmitem_portrait_detail_title_h">48dip</dimen>
+    <dimen name="filmitem_portrait_detail_title_size">48sp</dimen>
+    <dimen name="filmitem_portrait_detail_attribute_container_mt">19dip</dimen>
+    <dimen name="filmitem_portrait_detail_intro_w">1410dip</dimen>
+    <dimen name="filmitem_portrait_detail_intro_lineSpacingExtra">22dip</dimen>
+    <dimen name="filmitem_portrait_detail_intro_textsize">24sp</dimen>
+    <dimen name="filmitem_portrait_linearLayout_h">92dip</dimen>
+    <dimen name="filmitem_portrait_linearLayout_ml">753dip</dimen>
+    <dimen name="filmitem_portrait_linearLayout_mt">30dip</dimen>
+    <dimen name="filmitem_portrait_linearLayout_mr">72dip</dimen>
+    <dimen name="filmitem_portrait_btn_left_w">274dip</dimen>
+    <dimen name="filmitem_portrait_btn_left_pl">60dip</dimen>
+    <dimen name="filmitem_portrait_btn_left_textsize">48sp</dimen>
+    <dimen name="filmitem_portrait_middle_btn_w">174dip</dimen>
+    <dimen name="filmitem_portrait_middle_btn_ml">18dip</dimen>
+    <dimen name="filmitem_portrait_bottom_view_layout_h">439dip</dimen>
+    <dimen name="filmitem_portrait_tongleituijian_mt">70dip</dimen>
+    <dimen name="filmitem_portrait_tongleituijian_w">36dip</dimen>
+    <dimen name="filmitem_portrait_tongleituijian_h">179dip</dimen>
+    <dimen name="filmitem_portrait_tongleituijian_ml">111dip</dimen>
+    <dimen name="filmitem_portrait_tongleituijian_textsize">36dip</dimen>
+    <dimen name="filmitem_portrait_related_video_container_ml">31dip</dimen>
+    <dimen name="filmitem_portrait_more_content_ml">8dip</dimen>
+    <dimen name="filmitem_portrait_more_content_w">98dip</dimen>
+    <dimen name="filmitem_portrait_more_content_h">355dip</dimen>
+    <dimen name="filmitem_portrait_tongleituijian_textview_mt">30dip</dimen>
+    <!-- filmportait item end-->
 </resources>

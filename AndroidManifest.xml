@@ -79,7 +79,10 @@
                 android:name=".ui.activity.TVGuideActivity"
                 android:screenOrientation="landscape"
                 android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-
+            <intent-filter>
+                <action android:name="tv.ismar.daisy.tvguide"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
 
         </activity>
 
@@ -239,6 +242,11 @@
                 android:name=".ui.activity.UserCenterActivity"
                 android:screenOrientation="landscape"
                 android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+         <intent-filter>
+                <action android:name="tv.ismar.daisy.usercenter"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+         </intent-filter>
         </activity>
 
 
