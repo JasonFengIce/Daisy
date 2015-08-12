@@ -185,6 +185,8 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
                 if (cityTable != null) {
                     accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.GEO_ID, String.valueOf(cityTable.geo_id));
                 }
+                selectedPosition.setVisibility(View.INVISIBLE);
+                selectedPositionTitle.setVisibility(View.INVISIBLE);
                 areaPopup.dismiss();
             }
         });
@@ -194,10 +196,11 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
             public void onClick(View v) {
                 {
                     selectedPosition.setVisibility(View.INVISIBLE);
+                    selectedPositionTitle.setVisibility(View.INVISIBLE);
                     selectPrompt.setVisibility(View.INVISIBLE);
                     confirmBtn.setVisibility(View.INVISIBLE);
                     cancelBtn.setVisibility(View.INVISIBLE);
-                    selectedPositionTitle.setVisibility(View.INVISIBLE);
+
                 }
                 selectedAreaPositon = 0;
                 selectedAreaTextView.setTextColor(mContext.getResources().getColor(R.color.white));
