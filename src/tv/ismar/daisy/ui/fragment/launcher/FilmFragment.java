@@ -278,6 +278,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
                     }
                 });
                 textView.setOnClickListener(ItemClickListener);
+                textView.setTag(posters.get(i));
                 frameLayout.setOnClickListener(ItemClickListener);
                 Picasso.with(context).load(posters.get(i).getCustom_image()).into(postitemView);
 //                textView.setTag(posters.get(i));
