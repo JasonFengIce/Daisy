@@ -740,7 +740,7 @@ public class PlayerActivity extends VodMenuAction {
 				+ "&topic="
 				+ ""
 				+ "&source="
-				+ (item.fromPage == null?"":item.fromPage)
+				+ item.fromPage
 				+ "&genre="
 				+ genresBuffer.toString()
 				+ "&content_model="
