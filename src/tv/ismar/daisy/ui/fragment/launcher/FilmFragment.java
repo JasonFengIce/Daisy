@@ -456,7 +456,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
             playPath = url;
         } else {
             File localVideoFile = new File(downloadTable.download_path);
-            String fileMd5Code = localVideoFile.getName().split("\\.")[0];
+            String fileMd5Code = HardwareUtils.getMd5ByFile(localVideoFile);
             if (fileMd5Code.equalsIgnoreCase(downloadTable.md5)) {
                 playPath = localVideoFile.getAbsolutePath();
             } else {

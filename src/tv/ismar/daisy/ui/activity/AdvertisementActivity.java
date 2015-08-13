@@ -77,6 +77,7 @@ public class AdvertisementActivity extends Activity {
 
                     @Override
                     public void onError() {
+                        Picasso.with(AdvertisementActivity.this).load("file:///android_asset/poster.png").into(adverPic);
                         timerCountDown();
                     }
                 });

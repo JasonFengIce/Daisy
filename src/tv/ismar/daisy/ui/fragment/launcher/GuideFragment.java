@@ -182,7 +182,6 @@ public class GuideFragment extends ChannelBaseFragment implements
                 textView.setText(posters.get(i).getIntroduction());
                 textView.setVisibility(View.VISIBLE);
             } else {
-//				frameLayout.setBackgroundResource(R.drawable.launcher_selector);
                 frameLayout.setFocusable(true);
                 frameLayout.setClickable(true);
             }
@@ -206,8 +205,6 @@ public class GuideFragment extends ChannelBaseFragment implements
                     .into(itemView);
             textView.setTag(posters.get(i));
             frameLayout.setTag(posters.get(i));
-            // itemView.setOnFocusChangeListener(new
-            // ItemViewFocusChangeListener());
             imageViews.add(frameLayout);
         }
         guideRecommmendList.addAllViews(imageViews);
@@ -229,16 +226,16 @@ public class GuideFragment extends ChannelBaseFragment implements
                 } else {
                     flag.setPosition(flag.getPosition() + 1);
                 }
-                setVideoPath(linkedVideoView,
-                        allVideoUrl.get(flag.getPosition()));
+                Log.d(TAG, "loopAllListener: setVideoPath");
+                setVideoPath(linkedVideoView, allVideoUrl.get(flag.getPosition()));
             }
         };
 
         loopCurrentListener = new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                setVideoPath(linkedVideoView,
-                        allVideoUrl.get(flag.getPosition()));
+                Log.d(TAG, "loopCurrentListener: setVideoPath");
+                setVideoPath(linkedVideoView, allVideoUrl.get(flag.getPosition()));
             }
         };
 
@@ -248,14 +245,6 @@ public class GuideFragment extends ChannelBaseFragment implements
         View.OnFocusChangeListener itemFocusChangeListener = new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-
-//                Message message = new Message();
-//                message.what = 0;
-//                message.obj = v;
-//                loopMessageHandler.removeMessages(0);
-//                loopMessageHandler.sendMessageDelayed(message, 0);
-
-
                 boolean focusFlag = true;
                 for (ImageView imageView : allItem) {
                     focusFlag = focusFlag && (!imageView.isFocused());
@@ -263,11 +252,18 @@ public class GuideFragment extends ChannelBaseFragment implements
 
                 // all view not focus
                 if (focusFlag) {
+                    linkedVideoView.setOnCompletionListener(null);
                     linkedVideoView.setOnCompletionListener(loopAllListener);
                 } else {
-                    flag.setPosition((Integer) v.getTag());
-                    linkedVideoView.setOnCompletionListener(loopCurrentListener);
-                    setVideoPath(linkedVideoView, allVideoUrl.get(flag.getPosition()));
+                    if (hasFocus){
+                        flag.setPosition((Integer) v.getTag());
+                        linkedVideoView.setOnCompletionListener(null);
+                        linkedVideoView.setOnCompletionListener(loopCurrentListener);
+                        Log.d(TAG, "flag position: " + flag.getPosition());
+                        Log.d(TAG, "itemFocusChangeListener: setVideoPath");
+
+                        setVideoPath(linkedVideoView, allVideoUrl.get(flag.getPosition()));
+                    }
                 }
 
             }
@@ -300,16 +296,8 @@ public class GuideFragment extends ChannelBaseFragment implements
         allVideoUrl.add(carousels.get(2).getVideo_url());
         flag.setPosition(0);
         linkedVideoView.setOnCompletionListener(loopAllListener);
-        View view = getView();
-        if (view != null) {
-            view.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    setVideoPath(linkedVideoView,
-                            carousels.get(flag.getPosition()).getVideo_url());
-                }
-            }, 1000);
-        }
+        setVideoPath(linkedVideoView, carousels.get(flag.getPosition()).getVideo_url());
+
     }
 
     private void setVideoPath(final VideoView videoView, final String url) {
@@ -317,19 +305,18 @@ public class GuideFragment extends ChannelBaseFragment implements
             @Override
             public void run() {
                 String playPath;
-                DownloadTable downloadTable = new Select().from(DownloadTable.class)
-                        .where(DownloadTable.URL + " = ?", url).executeSingle();
+                DownloadTable downloadTable = new Select().from(DownloadTable.class).where(DownloadTable.URL + " = ?", url).executeSingle();
                 if (downloadTable == null) {
                     playPath = url;
                 } else {
                     File localVideoFile = new File(downloadTable.download_path);
-                    String fileMd5Code = localVideoFile.getName().split("\\.")[0];
+                    String fileMd5Code = HardwareUtils.getMd5ByFile(localVideoFile);
+                    Log.d(TAG, "local md5: " + fileMd5Code + " | " + "server md5: " + downloadTable.md5);
                     if (fileMd5Code.equalsIgnoreCase(downloadTable.md5)) {
                         playPath = localVideoFile.getAbsolutePath();
                     } else {
                         playPath = url;
                     }
-
                 }
                 Log.d(TAG, "set video path: " + playPath);
                 Message message = new Message();
@@ -338,10 +325,6 @@ public class GuideFragment extends ChannelBaseFragment implements
                 loopMessageHandler.sendMessage(message);
             }
         }.start();
-
-
-//        videoView.setVideoPath(playPath);
-//        videoView.start();
     }
 
     private void downloadVideo(ArrayList<Carousel> carousels, String tag) {
@@ -422,10 +405,11 @@ public class GuideFragment extends ChannelBaseFragment implements
     private Handler loopMessageHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-
             String playPath = (String) msg.obj;
-            linkedVideoView.pause();
-            linkedVideoView.stopPlayback();
+            if (linkedVideoView.isPlaying()) {
+                linkedVideoView.pause();
+                linkedVideoView.stopPlayback();
+            }
             linkedVideoView.setVideoPath(playPath);
             linkedVideoView.start();
 
