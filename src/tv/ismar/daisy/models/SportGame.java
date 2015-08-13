@@ -11,13 +11,23 @@ public class SportGame {
 	private String name;
 	private String imageurl;
 	private String url;
-    private boolean living;
+	private boolean living;
+	private boolean is_complex;
+
 	public boolean isLiving() {
 		return living;
 	}
 
 	public void setLiving(boolean living) {
 		this.living = living;
+	}
+
+	public boolean isIs_complex() {
+		return is_complex;
+	}
+
+	public void setIs_complex(boolean is_complex) {
+		this.is_complex = is_complex;
 	}
 
 	public String getStart_time() {
