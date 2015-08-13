@@ -11,7 +11,7 @@
     <tv.ismar.daisy.ui.widget.LaunchHeaderLayout
             android:id="@+id/top_column_layout"
             android:layout_width="match_parent"
-            android:layout_height="112dip"
+            android:layout_height="@dimen/top_panel_view_height"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/tv_guide_top_section_padding"
             android:paddingRight="@dimen/tv_guide_top_section_padding"
@@ -20,7 +20,7 @@
 
     <ImageView
             android:layout_width="match_parent"
-            android:layout_height="3dip"
+            android:layout_height="@dimen/entertainment_detail_view_filter_divider_h"
             android:background="@drawable/filter_divider"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/tv_guide_top_section_padding"
@@ -28,26 +28,26 @@
 
     <TextView
             android:id="@+id/detail_title"
-            android:layout_width="960dip"
-            android:layout_height="41dip"
-            android:layout_marginLeft="73dip"
-            android:layout_marginTop="30dip"
+            android:layout_width="@dimen/entertainment_detail_view_detail_title_w"
+            android:layout_height="@dimen/entertainment_detail_view_detail_title_h"
+            android:layout_marginLeft="@dimen/entertainment_detail_view_detail_title_ml"
+            android:layout_marginTop="@dimen/entertainment_detail_view_detail_title_mt"
             android:textColor="@color/white"
-            android:textSize="40sp"
+            android:textSize="@dimen/entertainment_detail_view_detail_title_textsize"
             android:maxLines="1"
             android:text="美国队长"/>
 
     <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="326dip"
+            android:layout_height="@dimen/entertainment_detail_view_linearLayout2_h"
             android:orientation="horizontal"
-            android:layout_marginTop="26dip">
+            android:layout_marginTop="@dimen/entertainment_detail_view_linearLayout2_mt">
 
         <tv.ismar.daisy.views.AsyncImageView
-                android:layout_marginLeft="73dip"
+                android:layout_marginLeft="@dimen/entertainment_detail_preview_img_ml"
                 android:id="@+id/detail_preview_img"
-                android:layout_width="480dip"
-                android:layout_height="270dip"
+                android:layout_width="@dimen/entertainment_detail_preview_img_w"
+                android:layout_height="@dimen/entertainment_detail_preview_img_h"
                 android:scaleType="fitXY"
                 />
 
@@ -58,7 +58,7 @@
 
             <tv.ismar.daisy.views.DetailAttributeContainer
                     android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="80dip"
+                    android:layout_marginLeft="@dimen/entertainment_detail_attribute_container_ml"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/item_detail_introlabel_textsize"
@@ -68,20 +68,20 @@
             </tv.ismar.daisy.views.DetailAttributeContainer>
 
             <LinearLayout
-                    android:layout_height="72dip"
+                    android:layout_height="@dimen/entertainment_detail_view_linearLayout3_h"
                     android:layout_width="wrap_content"
-                    android:layout_marginLeft="168dip"
+                    android:layout_marginLeft="@dimen/entertainment_detail_view_linearLayout3_ml"
                     android:orientation="horizontal"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="57dip"
-                    android:layout_marginRight="73dip"
+                    android:layout_marginBottom="@dimen/entertainment_detail_view_linearLayout3_mb"
+                    android:layout_marginRight="@dimen/entertainment_detail_view_linearLayout3_mr"
                     android:visibility="visible">
 
                 <Button
                         android:singleLine="true"
                         android:id="@+id/btn_left"
-                        android:layout_width="374dip"
+                        android:layout_width="@dimen/entertainment_detail_btn_left_w"
                         android:layout_height="match_parent"
                         android:background="@drawable/variety_btn_bg_selector"
                         android:gravity="center"
@@ -93,9 +93,9 @@
                 <Button
                         android:gravity="center"
                         android:id="@+id/middle_btn"
-                        android:layout_width="214dip"
+                        android:layout_width="@dimen/entertainment_detail_middle_btn_w"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="71dip"
+                        android:layout_marginLeft="@dimen/entertainment_detail_btn_right_ml"
                         android:background="@drawable/pdetail_btn_bg_selector"
                         android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"
                         android:visibility="visible"
@@ -105,9 +105,9 @@
                 <Button
                         android:gravity="center"
                         android:id="@+id/btn_right"
-                        android:layout_width="214dip"
+                        android:layout_width="@dimen/entertainment_detail_middle_btn_w"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="71dip"
+                        android:layout_marginLeft="@dimen/entertainment_detail_btn_right_ml"
                         android:background="@drawable/pdetail_btn_bg_selector"
                         android:visibility="visible"
                         android:textColor="#FFFFFFFF"
@@ -117,32 +117,32 @@
     </LinearLayout>
 
         <TextView
-                android:lineSpacingExtra="28dip"
-                android:layout_marginLeft="73dip"
+                android:lineSpacingExtra="@dimen/entertainment_detail_intro_lineSpacingExtra"
+                android:layout_marginLeft="@dimen/entertainment_detail_intro_ml"
                 android:id="@+id/detail_intro"
-                android:layout_width="1774dip"
-                android:layout_height="95dip"
+                android:layout_width="@dimen/entertainment_detail_intro_w"
+                android:layout_height="@dimen/entertainment_detail_intro_h"
                 android:maxLines="2"
                 android:ellipsize="end"
                 android:textColor="@color/white"
                 android:textSize="@dimen/item_detail_introlabel_textsize"/>
     <TextView
-            android:layout_marginLeft="73dip"
-            android:layout_marginTop="58dip"
-            android:layout_width="144dip"
-            android:layout_height="36dip"
+            android:layout_marginLeft="@dimen/entertainment_detail_textView_ml"
+            android:layout_marginTop="@dimen/entertainment_detail_textView_mt"
+            android:layout_width="@dimen/entertainment_detail_textView_w"
+            android:layout_height="@dimen/entertainment_detail_textView_h"
             android:gravity="center"
-            android:textSize="36sp"
+            android:textSize="@dimen/h2_text_size"
             android:textColor="@color/white"
             android:text="同类推荐"/>
 
     <LinearLayout
-            android:layout_marginTop="35dip"
+            android:layout_marginTop="@dimen/entertainment_detail_view_linearLayout4_mt"
             android:orientation="horizontal"
-            android:layout_marginRight="73dip"
-            android:layout_marginLeft="73dip"
+            android:layout_marginRight="@dimen/entertainment_detail_view_linearLayout4_margin"
+            android:layout_marginLeft="@dimen/entertainment_detail_view_linearLayout4_margin"
             android:layout_width="match_parent"
-            android:layout_height="237dip">
+            android:layout_height="@dimen/entertainment_detail_view_linearLayout4_h">
 
         <LinearLayout
                 android:id="@+id/related_video_container"
@@ -154,11 +154,11 @@
 
         <LinearLayout
                 android:focusable="true"
-                android:layout_marginLeft="85dip"
+                android:layout_marginLeft="@dimen/entertainment_detail_view_linearLayout5_ml"
                 android:id="@+id/more_content"
                 android:clickable="true"
-                android:layout_width="123dip"
-                android:layout_height="189dip"
+                android:layout_width="@dimen/entertainment_detail_view_linearLayout5_w"
+                android:layout_height="@dimen/entertainment_detail_view_linearLayout5_h"
                 android:orientation="vertical"
                 android:gravity="center"
                 android:background="@drawable/more_btn_sector">
@@ -166,18 +166,18 @@
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="48sp"
+                    android:textSize="@dimen/h1_text_size"
                     android:textColor="@color/white"
                     android:text="更"
                     android:gravity="center"
                     />
 
             <TextView
-                    android:layout_marginTop="20dip"
+                    android:layout_marginTop="@dimen/item_detail_btn_layout_marginB"
                     android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="48sp"
+                    android:textSize="@dimen/h1_text_size"
                     android:textColor="@color/white"
                     android:text="多"
                     />

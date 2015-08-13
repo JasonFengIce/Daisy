@@ -234,14 +234,15 @@ public class PlayFinishedActivity extends BaseActivity implements OnFocusChangeL
 
 	@Override
 	public void onItemClick(AdapterView<?> adapterView, View view, int position, long postions) {
-		Intent intent = new Intent();
-		intent.putExtra("url", items[position].item_url);
-		intent.setAction("tv.ismar.daisy.Item");
-		try {
-			startActivity(intent);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		//Intent intent = new Intent();
+		//intent.putExtra("url", items[position].item_url);
+		//intent.setAction("tv.ismar.daisy.Item");
+        DaisyUtils.gotoSpecialPage(PlayFinishedActivity.this,items[position].content_model,items[position].item_url);
+//		try {
+//			startActivity(intent);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package tv.ismar.daisy;
 
 import java.util.ArrayList;
 
+import android.os.Handler;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.models.AdElement;
@@ -109,15 +110,21 @@ public abstract class VodMenuAction extends BaseActivity {
 		private int width;
 		private int height;
 		private String url;
+        private int media_id;
+        private long duration;
 		private AsyncImageView zanting_image;
+        private String title;
 		private ImageView close_btn;
 
-		public AdImageDialog(Context context, int theme, String imageurl) {
+
+		public AdImageDialog(Context context, int theme, String imageurl,String title,int id ) {
 			super(context, theme);
 			WindowManager wm = (WindowManager) getContext().getSystemService(
 					Context.WINDOW_SERVICE);
 			width = wm.getDefaultDisplay().getWidth();
 			height = wm.getDefaultDisplay().getHeight();
+            this.title = title;
+            this.media_id = id;
 			url = imageurl;
 		}
 
@@ -129,6 +136,7 @@ public abstract class VodMenuAction extends BaseActivity {
 			close_btn = (ImageView) this.findViewById(R.id.zanting_close);
 			close_btn.setVisibility(View.VISIBLE);
 			zanting_image.setUrl(url);
+            duration = System.currentTimeMillis();
 			resizeWindow();
 		}
 
@@ -143,6 +151,9 @@ public abstract class VodMenuAction extends BaseActivity {
 
 				@Override
 				public void onClick(View v) {
+                    duration = System.currentTimeMillis()-duration;
+                    CallaPlay play = new CallaPlay();
+                    play.pause_ad_play(title,media_id,url,duration);
 					dismiss();
 				}
 			});

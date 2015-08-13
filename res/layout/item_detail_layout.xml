@@ -32,8 +32,8 @@
             android:layout_marginTop="@dimen/item_detail_detail_title_margintop"
             android:textColor="@color/white"
             android:textSize="@dimen/item_detail_detail_title_textSize"
-            android:ellipsize="end"
-            android:maxLines="1"/>
+
+            />
         
         <tv.ismar.daisy.views.DetailAttributeContainer
             android:layout_width="@dimen/item_detail_attribute_width"
@@ -214,7 +214,7 @@
             android:visibility="invisible"/>
 
         <LinearLayout
-            android:layout_marginLeft="20dip"
+            android:layout_marginLeft="@dimen/item_detail_related_video_container_ml"
             android:id="@+id/related_video_container"
             android:layout_width="match_parent"
             android:layout_height="@dimen/item_detail_related_video_container_height"

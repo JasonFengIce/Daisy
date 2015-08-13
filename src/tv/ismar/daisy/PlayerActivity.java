@@ -5,6 +5,7 @@ import static tv.ismar.daisy.DramaListActivity.ORDER_CHECK_BASE_URL;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 import org.apache.commons.lang3.StringUtils;
@@ -145,7 +146,7 @@ public class PlayerActivity extends VodMenuAction {
 	private AdImageDialog adimageDialog;
 	private int adsumtime;
 	private boolean isadvideoplaying = false;
-
+    private int speed;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -366,9 +367,10 @@ public class PlayerActivity extends VodMenuAction {
 						i++;
 					} else {
 						adimageDialog = new AdImageDialog(this,
-								R.style.UserinfoDialog, element.getMedia_url());
+								R.style.UserinfoDialog, element.getMedia_url(),element.getTitle(),element.getMedia_id());
+
 						adimageDialog.getWindow().clearFlags(
-								WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+								WindowManager.LayoutParams.FLAG_DIM_BEHIND);;
 						adimageDialog.show();
 						paths = null;
 						return;
@@ -522,6 +524,7 @@ public class PlayerActivity extends VodMenuAction {
 								&& paths[paths.length - 1].equals(url)) {
 
 							if (mVideoView != null) {
+                                TaskStart();
 								if (live_video) {
 									timeBar.setEnabled(false);
 
@@ -551,10 +554,10 @@ public class PlayerActivity extends VodMenuAction {
 											clip.pk,
 											currQuality,
 											(System.currentTimeMillis() - startDuration) / 1000,
-											0, null, sid);
+                                            speed, null, sid);
 									callaPlay.videoPlayStart(item.item_pk,
 											item.pk, item.title, clip.pk,
-											currQuality, 0);
+											currQuality, speed);
 								} else {
 									callaPlay.videoPlayLoad(
 											item.pk,
@@ -563,11 +566,11 @@ public class PlayerActivity extends VodMenuAction {
 											clip.pk,
 											currQuality,
 											(System.currentTimeMillis() - startDuration) / 1000,
-											0, null, sid);
+                                            speed, null, sid);
 									callaPlay
 											.videoPlayStart(item.pk, null,
 													item.title, clip.pk,
-													currQuality, 0);
+													currQuality, speed);
 								}
 							}
 
@@ -670,6 +673,14 @@ public class PlayerActivity extends VodMenuAction {
 				return false;
 			}
 		});
+        mVideoView.setOnTsInfoListener(new SmartPlayer.OnTsInfoListener() {
+            @Override
+            public void onTsInfo(SmartPlayer smartPlayer, Map<String, String> stringStringMap) {
+                String spd = stringStringMap.get("TsDownLoadSpeed");
+                speed = Integer.parseInt(spd);
+                speed = speed/1024*8;
+            }
+        });
 	}
 
 	private void getAdInfo(String adpid) {
@@ -729,7 +740,7 @@ public class PlayerActivity extends VodMenuAction {
 				+ "&topic="
 				+ ""
 				+ "&source="
-				+ (item.fromPage == null?"":item.fromPage)
+				+ item.fromPage == null?"":item.fromPage
 				+ "&genre="
 				+ genresBuffer.toString()
 				+ "&content_model="
@@ -930,7 +941,6 @@ public class PlayerActivity extends VodMenuAction {
 			seekPostion = 0;
 		}
 		showPanel();
-		TaskStart();// cmstest.tvxio.com
 		sid = VodUserAgent.getSid(urls[currQuality]);
 		mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
 	}
@@ -953,10 +963,10 @@ public class PlayerActivity extends VodMenuAction {
 				startDuration = System.currentTimeMillis();
 				if (item != null)
 					callaPlay.videoStart(item, item.pk, item.title,
-							currQuality, null, 0, mSection, sid);
+							currQuality, null, speed, mSection, sid);
 				else
 					callaPlay.videoStart(item, null, item.title, currQuality,
-							null, 0, mSection, sid);
+							null, speed, mSection, sid);
 				timeTaskStop();
 			} catch (Exception e) {
 				Log.e(TAG, " Sender log videoPlayStart " + e.toString());
@@ -1000,11 +1010,11 @@ public class PlayerActivity extends VodMenuAction {
 					if (item != null)
 						callaPlay.videoExcept("noplayaddress", content,
 								item.item_pk, item.pk, item.title, clip.pk,
-								currQuality, 0);
+								currQuality, speed);
 					else
 						callaPlay.videoExcept("noplayaddress", content,
 								item.pk, null, item.title, clip.pk,
-								currQuality, 0);
+								currQuality, speed);
 				} catch (Exception e) {
 					Log.e(TAG,
 							" Sender log videoExcept noplayaddress "
@@ -1308,10 +1318,10 @@ public class PlayerActivity extends VodMenuAction {
 			getAdInfo("zanting");
 		if (item.pk != item.item_pk)
 			callaPlay.videoPlayPause(item.item_pk, item.pk, item.title,
-					clip.pk, currQuality, 0, currPosition, sid);
+					clip.pk, currQuality, speed, currPosition, sid);
 		else
 			callaPlay.videoPlayPause(item.pk, null, item.title, clip.pk,
-					currQuality, 0, currPosition, sid);
+					currQuality, speed, currPosition, sid);
 
 	}
 
@@ -1324,10 +1334,10 @@ public class PlayerActivity extends VodMenuAction {
 
 		if (item.pk != item.item_pk)
 			callaPlay.videoPlayContinue(item.item_pk, item.pk, item.title,
-					clip.pk, currQuality, 0, currPosition, sid);
+					clip.pk, currQuality, speed, currPosition, sid);
 		else
 			callaPlay.videoPlayContinue(item.pk, null, item.title, clip.pk,
-					currQuality, 0, currPosition, sid);
+					currQuality, speed, currPosition, sid);
 		if (!isBuffer) {
 			timeTaskStart(0);
 		}
@@ -1565,7 +1575,7 @@ public class PlayerActivity extends VodMenuAction {
 											item.title,
 											clip.pk,
 											currQuality,
-											0,
+											speed,
 											"detail",
 											currPosition,
 											(System.currentTimeMillis() - startDuration) / 1000,
@@ -1578,7 +1588,7 @@ public class PlayerActivity extends VodMenuAction {
 											item.title,
 											clip.pk,
 											currQuality,
-											0,
+											speed,
 											"detail",
 											currPosition,
 											(System.currentTimeMillis() - startDuration) / 1000,
@@ -1681,7 +1691,7 @@ public class PlayerActivity extends VodMenuAction {
 										item.title,
 										clip.pk,
 										currQuality,
-										0,
+                                        speed,
 										currPosition,
 										(System.currentTimeMillis() - bufferDuration) / 1000,
 										mediaip, sid);
@@ -1694,7 +1704,7 @@ public class PlayerActivity extends VodMenuAction {
 										item.title,
 										clip.pk,
 										currQuality,
-										0,
+                                        speed,
 										currPosition,
 										(System.currentTimeMillis() - bufferDuration) / 1000,
 										mediaip, sid);
@@ -1707,7 +1717,7 @@ public class PlayerActivity extends VodMenuAction {
 									item.title,
 									clip.pk,
 									currQuality,
-									0,
+									speed,
 									currPosition,
 									(System.currentTimeMillis() - bufferDuration) / 1000,
 									mediaip, sid);
@@ -1720,7 +1730,7 @@ public class PlayerActivity extends VodMenuAction {
 									item.title,
 									clip.pk,
 									currQuality,
-									0,
+                                    speed,
 									currPosition,
 									(System.currentTimeMillis() - bufferDuration) / 1000,
 									mediaip, sid);
@@ -1742,10 +1752,10 @@ public class PlayerActivity extends VodMenuAction {
 				mVideoView.seekTo(currPosition);
 				if (item.pk != item.item_pk)
 					callaPlay.videoPlaySeek(item.item_pk, item.pk, item.title,
-							clip.pk, currQuality, 0, currPosition, sid);
+							clip.pk, currQuality, speed, currPosition, sid);
 				else
 					callaPlay.videoPlayContinue(item.pk, null, item.title,
-							clip.pk, currQuality, 0, currPosition, sid);
+							clip.pk, currQuality, speed, currPosition, sid);
 				isSeekBuffer = true;
 				Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
 				isSeek = false;
@@ -1766,8 +1776,9 @@ public class PlayerActivity extends VodMenuAction {
 				}
 				break;
 			case DISMISS_AD_DIALOG:
-				if (adimageDialog != null && adimageDialog.isShowing())
-					adimageDialog.dismiss();
+				if (adimageDialog != null && adimageDialog.isShowing()){
+                    adimageDialog.dismiss();
+                }
 				break;
 			case AD_COUNT_ACTION:
 				adsumtime--;

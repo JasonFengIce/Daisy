@@ -8,9 +8,6 @@
 
     <ImageView
             android:background="@drawable/launcher_selector"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:clickable="true"
             android:scaleType="fitXY"
             android:id="@+id/package_grid_image"
             android:layout_width="@dimen/usercenter_storefragment_packagelist_item_image_width"
@@ -19,6 +16,8 @@
             />
 
     <TextView
+            android:ellipsize="marquee"
+            android:singleLine="true"
             android:id="@+id/package_grid_title"
             android:layout_width="@dimen/usercenter_storefragment_packagelist_item_text_width"
             android:layout_height="@dimen/usercenter_storefragment_packagelist_item_text_height"

@@ -28,4 +28,8 @@ public class EventProperty {
     public final static String TO_ITEM = "to_item";
     public final static String Q = "q";
     public final static String CONTENT_TYPE = "content_type";
+    public final static String PK = "pk";
+    public final static String TYPE = "type";
+    public final static String MEDIA_ID = "media_id";
+    public final static String MEDIA_URL = "media_url";
 }

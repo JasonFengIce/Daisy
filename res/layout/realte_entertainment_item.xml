@@ -9,8 +9,8 @@
     android:clipToPadding="false">
     <tv.ismar.daisy.views.LabelImageView
         xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
-        android:layout_width="336dip"
-        android:layout_height="189dip"
+        android:layout_width="@dimen/realte_entertainment_item_related_preview_img_w"
+        android:layout_height="@dimen/realte_entertainment_item_related_preview_img_h"
         android:id="@+id/related_preview_img"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -18,20 +18,20 @@
         labelimage:focusbackground="#b3303030"
         labelimage:focuspaddingtop="0.86"
         labelimage:focustextpaddingtop="0.97"
-        labelimage:focustextsize="24sp"
+        labelimage:focustextsize="@dimen/realte_entertainment_item_related_preview_img_textsize"
    />
     <TextView
-        android:layout_width="336dip"
+        android:layout_width="@dimen/realte_entertainment_item_related_preview_img_w"
         android:layout_height="match_parent"
         android:singleLine="true"
         android:ellipsize="marquee"
         android:gravity="center_horizontal"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/related_preview_img"
-        android:textSize="30sp"
+        android:textSize="@dimen/realte_entertainment_item_related_title_textsize"
         android:id="@+id/related_title"
         android:textColor="@color/white"
-        android:layout_marginTop="17dip"/>
+        android:layout_marginTop="@dimen/realte_entertainment_item_related_title_mt"/>
     <ImageView
         android:layout_width="@dimen/gridview_item_quality_img_H"
         android:layout_height="@dimen/gridview_item_quality_img_W"
