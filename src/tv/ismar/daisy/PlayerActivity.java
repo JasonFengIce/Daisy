@@ -1268,6 +1268,9 @@ public class PlayerActivity extends VodMenuAction {
 	}
 
 	private void showPanel() {
+        if(mVideoView==null){
+            return;
+        }
 		if (isVodMenuVisible()
 				|| isadvideoplaying
 				|| !mVideoView.isPlaying()
