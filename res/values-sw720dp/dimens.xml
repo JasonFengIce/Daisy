@@ -1193,5 +1193,26 @@
     <dimen name="realte_entertainment_item_related_title_textsize">20.00sp</dimen>
 
     <!-- realte_entertainment_item end -->
-
+    <dimen name="variety_dramalist_layout_mt">294dip</dimen>
+    <dimen name="variety_dramalist_gridview_hs">82.67dip</dimen>
+    <dimen name="variety_dramalist_rowHeight">194.67dip</dimen>
+    <dimen name="variety_dramalist_selector_paddingBottom">-66.67dip</dimen>
+    <dimen name="variety_dramalist_gridview_mt">29.34dip</dimen>
+    <dimen name="variety_dramalist_gridview_PaddingT">4dip</dimen>
+    <dimen name="variety_dramalist_focustextsize">18sp</dimen>
+    <dimen name="variety_dramalist_monthlayout_H">53.34dip</dimen>
+    <dimen name="variety_dramalist_monthlayout_LR">118dip</dimen>
+    <dimen name="variety_dramalist_monthlayout_MT">36.67dip</dimen>
+    <dimen name="variety_dramalist_channel_arrow_MT">186.67dip</dimen>
+    <dimen name="variety_dramalist_month_gridview_hs">22.67dip</dimen>
+    <dimen name="variety_dramalist_month_gridview_rowheight">246.67dip</dimen>
+    <dimen name="variety_dramalist_selector_month_paddingBottom">-93.34dip</dimen>
+    <dimen name="variety_dramalist_month_gridview_mt">30.67dip</dimen>
+    <dimen name="variety_dramalist_gridview_mlr">16dip</dimen>
+    <dimen name="variety_dramalist_gridview_mb">11.34dip</dimen>
+    <dimen name="variety_dramalist_gridview_pt">2.67dip</dimen>
+    <dimen name="variety_dramalist_gridview_plr">3.34dip</dimen>
+    <dimen name="variety_dramalist_gridview_month_item_w">269.34dip</dimen>
+    <dimen name="variety_dramalist_gridview_month_item_pt">19.34dip</dimen>
+    <dimen name="variety_dramalist_gridview_month_item_pb">50dip</dimen>
 </resources>
