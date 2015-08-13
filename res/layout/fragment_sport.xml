@@ -125,6 +125,8 @@
                 android:focusable="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
+                labelimage:focusbackground="#b3303030"
+                labelimage:focustextsize="@dimen/sport_channel_image_focustextsize" 
                 labelimage:needzoom="true" />
 
             <tv.ismar.daisy.views.LabelImageView
@@ -137,6 +139,8 @@
                 android:focusable="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
+                labelimage:focusbackground="#b3303030"
+                labelimage:focustextsize="@dimen/sport_channel_image_focustextsize" 
                 labelimage:needzoom="true" />
 
             <tv.ismar.daisy.views.LabelImageView
@@ -149,6 +153,8 @@
                 android:focusable="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
+                labelimage:focusbackground="#b3303030"
+                labelimage:focustextsize="@dimen/sport_channel_image_focustextsize" 
                 labelimage:needzoom="true" />
 
             <ImageView

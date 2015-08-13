@@ -124,9 +124,9 @@ public class FilterResultFragment extends BackHandledFragment implements Adapter
                     label.setBackgroundResource(R.drawable.filter_btn_focused);
                     label.setTextSize(30/rate);
                     label.setGravity(Gravity.CENTER);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int)(120/rate), (int)(46/rate));
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int)(120/1), (int)(46/1));
                     params.gravity = Gravity.CENTER_VERTICAL;
-                    params.rightMargin = (int)(11/rate);
+                    params.rightMargin = (int)(11/1);
                    // params.topMargin = 11;
                     container.addView(label,params);
                 }

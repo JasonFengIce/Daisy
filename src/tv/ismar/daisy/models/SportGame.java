@@ -78,6 +78,6 @@ public class SportGame {
 				e.printStackTrace();
 			}
 		}
-		return 0;
+		return 6;
 	}
 }

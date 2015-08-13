@@ -168,7 +168,7 @@ public class FilterFragment extends BackHandledFragment {
                         initRadioButton(nolimitRbtn);
 
                         nolimitRbtn.setChecked(true);
-                        valueViews.addView(nolimitRbtn,new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,(int)(100/rate)));
+                        valueViews.addView(nolimitRbtn,new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,(int)(100/1)));
                         for(int i=0; i<arrayCount; i++){
                             JSONArray subArray = values.getJSONArray(i);
                             FilterItem item = new FilterItem();
@@ -180,9 +180,9 @@ public class FilterFragment extends BackHandledFragment {
                             rbtn.setText(subArray.getString(1));
                             rbtn.setTag(item);
                             initRadioButton(rbtn);
-                            valueViews.addView(rbtn,new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,(int)(100/rate)));
+                            valueViews.addView(rbtn,new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,(int)(100/1)));
                         }
-                        filtermenulayout.addView(view,new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,(int)(165/rate)));
+                        filtermenulayout.addView(view,new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,(int)(165/1)));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

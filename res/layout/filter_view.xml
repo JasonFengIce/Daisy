@@ -7,16 +7,16 @@
                 >
 
     <ScrollView android:layout_width="match_parent"
-                android:layout_height="661dip"
+                android:layout_height="@dimen/filter_view_scrollView_h"
                 android:scrollbars="vertical"
                 >
         <LinearLayout
-        android:paddingTop="70dip"
+        android:paddingTop="@dimen/filter_view_filtermenulayout_pt"
         android:id="@+id/filtermenulayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginLeft="223dip"
+        android:layout_marginLeft="@dimen/filter_view_filtermenulayout_ml"
         >
         </LinearLayout>
 
@@ -24,18 +24,18 @@
     <ImageView
             android:background="@drawable/filter_divider"
             android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:layout_marginLeft="223dip"
-            android:layout_marginRight="223dip"/>
+            android:layout_height="@dimen/filmitem_portrait_filter_divider_h"
+            android:layout_marginLeft="@dimen/filter_view_filtermenulayout_ml"
+            android:layout_marginRight="@dimen/filter_view_filtermenulayout_ml"/>
     <Button
             android:visibility="invisible"
             android:id="@+id/filter_submit"
-            android:layout_marginTop="87dip"
-            android:layout_marginLeft="827dip"
-            android:layout_width="300dip"
-            android:layout_height="100dip"
+            android:layout_marginTop="@dimen/filter_view_filter_submit_mt"
+            android:layout_marginLeft="@dimen/filter_view_filter_submit_ml"
+            android:layout_width="@dimen/filter_view_filter_submit_w"
+            android:layout_height="@dimen/filter_view_filter_submit_h"
             android:text="确定提交"
-            android:textSize="48sp"
+            android:textSize="@dimen/h1_text_size"
             android:textColor="@android:color/white"
             android:background="@drawable/filter_btn_selector"/>
 </LinearLayout>

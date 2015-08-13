@@ -16,9 +16,9 @@
     <LinearLayout
         android:id="@+id/top_layout"
         android:layout_width="match_parent"
-        android:layout_height="88dip"
+        android:layout_height="@dimen/gridview_channel_panel_height"
         android:orientation="horizontal"
-        android:layout_marginLeft="222dip">
+        android:layout_marginLeft="@dimen/filter_portraitresult_top_layout_ml">
     <TextView
         android:text="搜索结果 :"
         android:id="@+id/filter_result_txt"
@@ -26,7 +26,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:textColor="@android:color/white"
-        android:textSize="48sp" />
+        android:textSize="@dimen/h1_text_size" />
 
      <LinearLayout
         android:orientation="horizontal"
@@ -39,16 +39,16 @@
 
 </LinearLayout>
     <ProgressBar
-            android:layout_marginTop="10dip"
+            android:layout_marginTop="@dimen/filter_portraitresult_filter_grid_pt"
             android:id="@+id/filter_percentage"
-            android:layout_width="1690dip"
-            android:layout_height="4dip"
+            android:layout_width="@dimen/filter_portraitresult_filter_percentage_w"
+            android:layout_height="@dimen/filter_portraitresult_filter_percentage_h"
             android:progressDrawable="@drawable/progressbg"
             style="@android:style/Widget.ProgressBar.Horizontal"
             android:indeterminate="false"
             android:visibility="visible"
-            android:layout_marginLeft="115dip"
-            android:layout_marginRight="115dip"/>
+            android:layout_marginLeft="@dimen/filter_portraitresult_filter_percentage_margin"
+            android:layout_marginRight="@dimen/filter_portraitresult_filter_percentage_margin"/>
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -57,43 +57,43 @@
                 android:clickable="true"
                 android:layout_alignParentLeft="true"
                 android:id="@+id/left_shadow"
-                android:layout_width="41dip"
-                android:layout_height="82dip"
+                android:layout_width="@dimen/filter_portraitresult_shadow_w"
+                android:layout_height="@dimen/filter_portraitresult_shadow_h"
                 android:background="@drawable/channel_arrow_left"
-                android:layout_marginLeft="31dip"
-                android:layout_marginTop="354dip"
+                android:layout_marginLeft="@dimen/filter_portraitresult_shadow_ml"
+                android:layout_marginTop="@dimen/filter_portraitresult_shadow_mt"
                 />
         <Button
                 android:visibility="invisible"
                 android:layout_alignParentRight="true"
                 android:id="@+id/right_shadow"
-                android:layout_width="41dip"
-                android:layout_height="82dip"
+                android:layout_width="@dimen/filter_portraitresult_shadow_w"
+                android:layout_height="@dimen/filter_portraitresult_shadow_h"
                 android:background="@drawable/channel_arrow_right"
-                android:layout_marginTop="354dip"
-                android:layout_marginRight="31dip"/>
+                android:layout_marginTop="@dimen/filter_portraitresult_shadow_mt"
+                android:layout_marginRight="@dimen/filter_portraitresult_shadow_ml"/>
         <org.sakuratya.horizontal.ui.HGridView
                 android:layout_toLeftOf="@id/right_shadow"
                 android:layout_toRightOf="@id/left_shadow"
                 android:id="@+id/filter_grid"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                sakura:horizontalSpacing="115dip"
+                sakura:horizontalSpacing="@dimen/filter_portraitresult_filter_percentage_margin"
                 sakura:numRows="3"
-                sakura:rowHeight="272dip"
+                sakura:rowHeight="@dimen/filter_result_list_view_rowHeight"
                 sakura:selectorDrawable="@drawable/popup_bg_yellow"
                 sakura:verticalSpacing="0dip"
                 sakura:selectionLeftPadding="@dimen/HGridView_related_selectionLeftPadding"
                 sakura:selectionTopPadding="@dimen/HGridView_related_selectionTopPadding"
                 sakura:selectionRightPadding="@dimen/HGridView_related_selectionRightPadding"
                 sakura:selectionBottomPadding="@dimen/HGridView_related_selectionBottomPadding"
-                android:paddingTop="4dip"
-                android:layout_marginTop="8dip"
-                android:layout_marginLeft="39dip"
-                android:layout_marginRight="39dip"
-                android:layout_marginBottom="71dip"
-                android:paddingRight="5dip"
-                android:paddingLeft="4dip">
+                android:paddingTop="@dimen/filter_result_list_filter_grid_pt"
+                android:layout_marginTop="@dimen/filter_result_list_filter_grid_mt"
+                android:layout_marginLeft="@dimen/filter_result_list_filter_grid_ml"
+                android:layout_marginRight="@dimen/filter_result_list_filter_grid_ml"
+                android:layout_marginBottom="@dimen/filter_result_list_filter_grid_mb"
+                android:paddingRight="@dimen/filter_result_list_filter_grid_pr"
+                android:paddingLeft="@dimen/filter_result_list_filter_grid_pl">
         </org.sakuratya.horizontal.ui.HGridView>
     </RelativeLayout>
 
@@ -108,49 +108,49 @@
         <LinearLayout
                 android:id="@+id/nofilter_top_layout"
                 android:layout_width="match_parent"
-                android:layout_height="300dip"
+                android:layout_height="@dimen/test_height"
                 android:orientation="vertical"
                 >
             <TextView
-                    android:layout_marginTop="30dip"
+                    android:layout_marginTop="@dimen/filmitem_portrait_detail_title_mt"
                     android:text="抱歉,您的筛选条件太多了,没有找到匹配的内容"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textColor="@android:color/white"
-                    android:textSize="48sp" />
+                    android:textSize="@dimen/h1_text_size" />
 
             <Button
-                    android:layout_marginTop="50dip"
+                    android:layout_marginTop="@dimen/menu_list_PaddingTB"
                     android:layout_gravity="center_horizontal"
                     android:text="重新筛选"
-                    android:textSize="48sp"
+                    android:textSize="@dimen/h1_text_size"
                     android:gravity="center"
                     android:id="@+id/refilter_btn"
                     android:layout_width="wrap_content"
-                    android:layout_height="100dip"
+                    android:layout_height="@dimen/condition_height"
                     android:background="@drawable/filter_btn_selector"
                     android:textColor="@android:color/white">
             </Button>
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="222dip"
-                    android:layout_marginTop="20dip"
-                    android:textSize="36sp"
+                    android:layout_marginLeft="@dimen/filter_portraitresult_top_layout_ml"
+                    android:layout_marginTop="@dimen/gridview_main_panel_labelTextMarginTop"
+                    android:textSize="@dimen/h2_text_size"
                     android:textColor="@android:color/white"
                     android:text="当前大家正在看"/>
         </LinearLayout>
         <ProgressBar
                 android:id="@+id/recommend_filter_percentage"
-                android:layout_width="1690dip"
-                android:layout_height="4dip"
+                android:layout_width="@dimen/filter_portraitresult_filter_percentage_w"
+                android:layout_height="@dimen/filter_portraitresult_filter_percentage_h"
                 android:progressDrawable="@drawable/progressbg"
                 style="@android:style/Widget.ProgressBar.Horizontal"
                 android:indeterminate="false"
                 android:visibility="visible"
-                android:layout_marginLeft="115dip"
-                android:layout_marginRight="115dip"/>
+                android:layout_marginLeft="@dimen/filter_portraitresult_filter_percentage_margin"
+                android:layout_marginRight="@dimen/filter_portraitresult_filter_percentage_margin"/>
         <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -159,43 +159,43 @@
                     android:clickable="true"
                     android:layout_alignParentLeft="true"
                     android:id="@+id/recommend_left_shadow"
-                    android:layout_width="41dip"
-                    android:layout_height="82dip"
+                    android:layout_width="@dimen/filter_portraitresult_shadow_w"
+                    android:layout_height="@dimen/filter_portraitresult_shadow_h"
                     android:background="@drawable/channel_arrow_left"
-                    android:layout_marginLeft="31dip"
-                    android:layout_marginTop="220dip"
+                    android:layout_marginLeft="@dimen/listportait_shadow_ml"
+                    android:layout_marginTop="@dimen/vod_player_titletext_marginleft"
                     />
             <Button
                     android:visibility="invisible"
                     android:layout_alignParentRight="true"
                     android:id="@+id/recommend_right_shadow"
-                    android:layout_width="41dip"
-                    android:layout_height="82dip"
+                    android:layout_width="@dimen/filter_portraitresult_shadow_w"
+                    android:layout_height="@dimen/filter_portraitresult_shadow_h"
                     android:background="@drawable/channel_arrow_right"
-                    android:layout_marginTop="220dip"
-                    android:layout_marginRight="31dip"/>
+                    android:layout_marginTop="@dimen/vod_player_titletext_marginleft"
+                    android:layout_marginRight="@dimen/listportait_shadow_ml"/>
             <org.sakuratya.horizontal.ui.HGridView
                     android:layout_toLeftOf="@id/recommend_right_shadow"
                     android:layout_toRightOf="@id/recommend_left_shadow"
                     android:id="@+id/recommend_filter_grid"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    sakura:horizontalSpacing="115dip"
+                    sakura:horizontalSpacing="@dimen/filter_portraitresult_filter_percentage_margin"
                     sakura:numRows="2"
-                    sakura:rowHeight="272dip"
+                    sakura:rowHeight="@dimen/filter_result_list_view_rowHeight"
                     sakura:selectorDrawable="@drawable/popup_bg_yellow"
                     sakura:verticalSpacing="@dimen/gridview_main_panel_verticalSpacing"
                     sakura:selectionLeftPadding="@dimen/HGridView_related_selectionLeftPadding"
                     sakura:selectionTopPadding="@dimen/HGridView_related_selectionTopPadding"
                     sakura:selectionRightPadding="@dimen/HGridView_related_selectionRightPadding"
                     sakura:selectionBottomPadding="@dimen/HGridView_related_selectionBottomPadding"
-                    android:paddingTop="4dip"
-                    android:layout_marginTop="8dip"
-                    android:layout_marginLeft="39dip"
-                    android:layout_marginRight="39dip"
-                    android:layout_marginBottom="71dip"
-                    android:paddingRight="5dip"
-                    android:paddingLeft="4dip">
+                   android:paddingTop="@dimen/filter_result_list_filter_grid_pt"
+                android:layout_marginTop="@dimen/filter_result_list_filter_grid_mt"
+                android:layout_marginLeft="@dimen/filter_result_list_filter_grid_ml"
+                android:layout_marginRight="@dimen/filter_result_list_filter_grid_ml"
+                android:layout_marginBottom="@dimen/filter_result_list_filter_grid_mb"
+                android:paddingRight="@dimen/filter_result_list_filter_grid_pr"
+                android:paddingLeft="@dimen/filter_result_list_filter_grid_pl">
             </org.sakuratya.horizontal.ui.HGridView>
         </RelativeLayout>
   </LinearLayout>
