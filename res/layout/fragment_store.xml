@@ -4,20 +4,41 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <GridView
-            android:descendantFocusability="afterDescendants"
+    <!--<GridView-->
+            <!--android:descendantFocusability="beforeDescendants"-->
+            <!--android:id="@+id/person_center_packagelist"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:numColumns="4"-->
+            <!--android:listSelector="@android:color/transparent"-->
+            <!--android:layout_marginRight="@dimen/usercenter_storefragment_packagelist_marginRight"-->
+            <!--android:layout_marginLeft="@dimen/usercenter_storefragment_packagelist_marginLeft"-->
+            <!--android:verticalSpacing="@dimen/usercenter_storefragment_packagelist_verticalSpacing"-->
+            <!--android:horizontalSpacing="@dimen/usercenter_storefragment_packagelist_horizontalSpacing"-->
+            <!--android:layout_marginTop="@dimen/usercenter_storefragment_packagelist_marginTop"-->
+            <!--android:layout_marginBottom="@dimen/usercenter_storefragment_packagelist_marginBottom"-->
+            <!--android:stretchMode="columnWidth"-->
+            <!-->-->
+    <!--</GridView>-->
+    <org.sakuratya.horizontal.ui.ZGridView
+            xmlns:sakura="http://schemas.android.com/apk/res/tv.ismar.daisy"
             android:id="@+id/person_center_packagelist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:numColumns="4"
-            android:layout_marginRight="@dimen/usercenter_storefragment_packagelist_marginRight"
-            android:layout_marginLeft="@dimen/usercenter_storefragment_packagelist_marginLeft"
-            android:verticalSpacing="@dimen/usercenter_storefragment_packagelist_verticalSpacing"
-            android:horizontalSpacing="@dimen/usercenter_storefragment_packagelist_horizontalSpacing"
+            sakura:horizontalSpace="@dimen/usercenter_storefragment_packagelist_horizontalSpacing"
+            sakura:verticalSpace="@dimen/usercenter_storefragment_packagelist_verticalSpacing"
+            sakura:listSelector="@drawable/popup_bg_yellow"
+            sakura:numColumns="4"
+            sakura:stretchMode="columnWidth"
+            sakura:selectorLeftPadding="@dimen/usercenter_storefragment_packagelist_selectorLeftPadding"
+            sakura:selectorTopPadding="@dimen/usercenter_storefragment_packagelist_selectorTopPadding"
+            sakura:selectorRightPadding="@dimen/usercenter_storefragment_packagelist_selectorRightPadding"
+            sakura:selectorBottomPadding="@dimen/usercenter_storefragment_packagelist_selectorBottomPadding"
             android:layout_marginTop="@dimen/usercenter_storefragment_packagelist_marginTop"
             android:layout_marginBottom="@dimen/usercenter_storefragment_packagelist_marginBottom"
-            android:stretchMode="columnWidth"
-            >
-    </GridView>
-
+            android:layout_marginRight="@dimen/usercenter_storefragment_packagelist_marginRight"
+            android:layout_marginLeft="@dimen/usercenter_storefragment_packagelist_marginLeft"
+            android:paddingTop="@dimen/usercenter_storefragment_packagelist_gridview_P"
+            android:paddingLeft="@dimen/usercenter_storefragment_packagelist_gridview_P"
+         />
 </LinearLayout>

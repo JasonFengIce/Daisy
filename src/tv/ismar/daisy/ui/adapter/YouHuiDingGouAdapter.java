@@ -62,7 +62,7 @@ public class YouHuiDingGouAdapter extends BaseAdapter implements View.OnClickLis
         Picasso.with(mContext).load(item.getPoster_url()).into(holder.icon);
 
         holder.icon.setTag(position);
-        holder.icon.setOnClickListener(this);
+       // holder.icon.setOnClickListener(this);
 
         return convertView;
     }

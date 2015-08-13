@@ -992,7 +992,11 @@
     <dimen name="usercenter_storefragment_packagelist_item_image_height">126.00dp</dimen>
     <dimen name="usercenter_storefragment_packagelist_item_text_width">224.00dp</dimen>
     <dimen name="usercenter_storefragment_packagelist_item_text_height">41.33dp</dimen>
-
+    <dimen name="usercenter_storefragment_packagelist_selectorLeftPadding">0.6dip</dimen>
+    <dimen name="usercenter_storefragment_packagelist_selectorTopPadding">0.6dip</dimen>
+    <dimen name="usercenter_storefragment_packagelist_selectorRightPadding">0.4dip</dimen>
+    <dimen name="usercenter_storefragment_packagelist_selectorBottomPadding">-41.34dip</dimen>
+    <dimen name="usercenter_storefragment_packagelist_gridview_P">3.34dip</dimen>
     <!-- fragment sport -->
     <dimen name="sport_linearLayout_margin_t">20.67dp</dimen>
     <dimen name="sport_linearLayout_margin_l">46.67dp</dimen>

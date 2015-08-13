@@ -109,7 +109,7 @@ public class InitPlayerTool {
             	if(item.clip != null&&clip!=null){
                     item.channel = channel;
                     item.slug = slug;
-                    if(!fromPage.equals(""))
+                    if(fromPage!=null&&!fromPage.equals(""))
                         item.fromPage = fromPage;
                 	intent.putExtra("item", item);
     				info = AccessProxy.getVideoInfo(SimpleRestClient.root_url

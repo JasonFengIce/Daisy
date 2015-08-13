@@ -952,7 +952,11 @@ public class NetworkUtils {
      */
     public static final String PAUSE_AD_PLAY = "pause_ad_play";
     /**
-     *
+     *暂停广告下载
      */
     public static final String PAUSE_AD_DOWNLOAD = "pause_ad_download";
+    /**
+     * 暂停广告异常
+     */
+    public static final String PAUSE_AD_EXCEPT = "pause_ad_except";
 }
