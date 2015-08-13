@@ -60,6 +60,7 @@
     <dimen name="item_detail_related_divider_margintop">5dip</dimen>
     <dimen name="item_detail_related_divider_marginbottom">15dip</dimen>
     <dimen name="item_detail_related_divider_marginleft">40dp</dimen>
+    <dimen name="item_detail_related_video_container_ml">20dip</dimen>
     <dimen name="item_detail_related_video_container_height">700dip</dimen>
     <dimen name="item_detail_more_content_width">247dip</dimen>
     <dimen name="item_detail_more_content_height">92dip</dimen>
@@ -986,14 +987,12 @@
     <dimen name="usercenter_storefragment_packagelist_verticalSpacing">6dp</dimen>
     <dimen name="usercenter_storefragment_packagelist_horizontalSpacing">15dp</dimen>
     <dimen name="usercenter_storefragment_packagelist_marginTop">23dp</dimen>
-
     <dimen name="usercenter_storefragment_packagelist_item_layout_marginRight">7dp</dimen>
     <dimen name="usercenter_storefragment_packagelist_item_image_width">336dp</dimen>
     <dimen name="usercenter_storefragment_packagelist_item_image_height">189dp</dimen>
     <dimen name="usercenter_storefragment_packagelist_item_text_width">336dp</dimen>
     <dimen name="usercenter_storefragment_packagelist_item_text_height">62dp</dimen>
     <dimen name="usercenter_storefragment_packagelist_marginBottom">50dp</dimen>
-
 
     <!-- fragment sport -->
     <dimen name="sport_linearLayout_margin_t">31dp</dimen>
@@ -1052,27 +1051,18 @@
     <dimen name="list_item_title_w">254dp</dimen>
     <dimen name="list_item_title_pt">2dp</dimen>
     <dimen name="list_item_ItemBeanScore_ml">-1dp</dimen>
-
     <dimen name="userinfo_phoneNumber_title_width">140dp</dimen>
     <dimen name="userinfo_changeButton_marginLeft">20dp</dimen>
-
     <dimen name="userinfo_snNumber_title_width">140dp</dimen>
     <dimen name="userinfo_association_prompt_marigin_lr">20dp</dimen>
-
     <dimen name="userinfo_association_marginLeft">20dp</dimen>
     <dimen name="userinfo_association_width">100dp</dimen>
-
     <dimen name="userinfo_deviceName_title_width">140dp</dimen>
-
     <dimen name="userinfo_balance_title_width">140dp</dimen>
-
     <dimen name="userinfo_privilege_layout_marginTop">50dp</dimen>
-
     <dimen name="userinfo_privilege_title_width">140dp</dimen>
-
     <dimen name="loginfragment_successPop_xOffset">200dp</dimen>
     <dimen name="loginfragment_successPop_yOffset">50dp</dimen>
-
     <dimen name="loginfragment_CombinePop_xOffset">200dp</dimen>
     <dimen name="loginfragment_combinePop_yOffset">25dp</dimen>
     <dimen name="loginfragment_phoneNumberLayout_marginTop">10dp</dimen>
@@ -1080,30 +1070,20 @@
     <dimen name="loginfragment_phoneNumber_edit_height">66dp</dimen>
     <dimen name="loginfragment_phoneNumber_edit_marginRright">10dp</dimen>
     <dimen name="loginfragment_phoneNumber_fetchCode_marginLeft">10dp</dimen>
-
     <dimen name="loginfragment_textSize">24sp</dimen>
-
     <dimen name="purchaseFragment_item_paddingLeft">2dp</dimen>
     <dimen name="purchaseFragment_item_minHeight">201dp</dimen>
     <dimen name="purchaseFragment_item_image_width">336dp</dimen>
     <dimen name="purchaseFragment_item_image_height">189dp</dimen>
-
     <dimen name="purchaseFragment_item_order_title_marginTop">20dp</dimen>
-
     <dimen name="purchaseFragment_item_order_extra_marginLeft">40dp</dimen>
-
     <dimen name="purchaseFragment_item_marginLeft">89dp</dimen>
-
     <dimen name="purchaseFragment_item_icon_marginTop">6dp</dimen>
-
     <dimen name="locationFragment_areaPop_xOffset">179dp</dimen>
     <dimen name="locationFragment_areaPop_yOffset">105dp</dimen>
-
     <dimen name="locationFragment_provinceGrid_verticalSpacing">65dp</dimen>
     <dimen name="locationFragment_provinceGrid_marginLR">30dp</dimen>
-
     <dimen name="locationFragment_areaGridItem_minHeght">65dp</dimen>
-
     <dimen name="locationFragment_currentPositionTitle_marginLeft">31dp</dimen>
     <dimen name="locationFragment_selectedPositionTitle_marginLeft">170dp</dimen>
     <dimen name="locationFragment_todayLayout_marginLeft">180dp</dimen>
@@ -1113,14 +1093,11 @@
     <dimen name="locationFragment_areaPop_btn_height">85dp</dimen>
     <dimen name="locatoinFragment_areaPop_cancelBtn_marginLeft">85dp</dimen>
     <dimen name="locationFragment_areaPop_Btn_marginTop">40dp</dimen>
-
-
     <dimen name="locationFragment_h1_textSize">48sp</dimen>
     <dimen name="locationFragment_h2_textSize">36sp</dimen>
     <dimen name="locationFragment_h3_textSize">30sp</dimen>
 
-
-    <!--zjq -->
+    <!-- zjq -->
     <dimen name="top_panel_view_height">112dip</dimen>
     <dimen name="divider_margin_MLR">26dip</dimen>
     <!-- filmportait item -->
@@ -1163,7 +1140,54 @@
     <dimen name="filmitem_portrait_more_content_w">98dip</dimen>
     <dimen name="filmitem_portrait_more_content_h">355dip</dimen>
     <dimen name="filmitem_portrait_tongleituijian_textview_mt">30dip</dimen>
-    <!-- filmportait item end-->
-
-
+    <!-- filmportait item end -->
+    <!-- list_view_item -->
+    <dimen name="list_view_item_expense_txt_w">94dip</dimen>
+    <dimen name="list_view_item_expense_txt_h">27dip</dimen>
+    <!-- list_view_item end -->
+    <!-- entertainment_detail_view -->
+    <dimen name="entertainment_detail_view_filter_divider_h">3dip</dimen>
+    <dimen name="entertainment_detail_view_detail_title_w">960dip</dimen>
+    <dimen name="entertainment_detail_view_detail_title_h">41dip</dimen>
+    <dimen name="entertainment_detail_view_detail_title_ml">73dip</dimen>
+    <dimen name="entertainment_detail_view_detail_title_mt">30dip</dimen>
+    <dimen name="entertainment_detail_view_detail_title_textsize">40sp</dimen>
+    <dimen name="entertainment_detail_view_linearLayout_h">326dip</dimen>
+    <dimen name="entertainment_detail_view_linearLayout_mt">26dip</dimen>
+    <dimen name="entertainment_detail_preview_img_ml">73dip</dimen>
+    <dimen name="entertainment_detail_preview_img_w">480dip</dimen>
+    <dimen name="entertainment_detail_preview_img_h">270dip</dimen>
+    <dimen name="entertainment_detail_attribute_container_ml">80dip</dimen>
+    <dimen name="entertainment_detail_view_linearLayout2_h">326dip</dimen>
+    <dimen name="entertainment_detail_view_linearLayout2_mt">26dip</dimen>
+    <dimen name="entertainment_detail_view_linearLayout3_h">72dip</dimen>
+    <dimen name="entertainment_detail_view_linearLayout3_ml">168dip</dimen>
+    <dimen name="entertainment_detail_view_linearLayout3_mb">57dip</dimen>
+    <dimen name="entertainment_detail_view_linearLayout3_mr">73dip</dimen>
+    <dimen name="entertainment_detail_btn_left_w">374dip</dimen>
+    <dimen name="entertainment_detail_middle_btn_w">214dip</dimen>
+    <dimen name="entertainment_detail_btn_right_ml">71dip</dimen>
+    <dimen name="entertainment_detail_intro_lineSpacingExtra">28dip</dimen>
+    <dimen name="entertainment_detail_intro_ml">73dip</dimen>
+    <dimen name="entertainment_detail_intro_w">1774dip</dimen>
+    <dimen name="entertainment_detail_intro_h">95dip</dimen>
+    <dimen name="entertainment_detail_textView_ml">73dip</dimen>
+    <dimen name="entertainment_detail_textView_mt">58dip</dimen>
+    <dimen name="entertainment_detail_textView_w">144dip</dimen>
+    <dimen name="entertainment_detail_textView_h">36dip</dimen>
+    <dimen name="entertainment_detail_view_linearLayout4_mt">35dip</dimen>
+    <dimen name="entertainment_detail_view_linearLayout4_margin">73dip</dimen>
+    <dimen name="entertainment_detail_view_linearLayout4_h">237dip</dimen>
+    <dimen name="entertainment_detail_view_linearLayout5_ml">85dip</dimen>
+    <dimen name="entertainment_detail_view_linearLayout5_w">123dip</dimen>
+    <dimen name="entertainment_detail_view_linearLayout5_h">189dip</dimen>
+    <!-- entertainment_detail_view end -->
+    <!-- realte_entertainment_item -->
+    <dimen name="realte_entertainment_item_related_preview_img_w">336dip</dimen>
+    <dimen name="realte_entertainment_item_related_preview_img_h">189dip</dimen>
+    <dimen name="realte_entertainment_item_related_preview_img_textsize">24sp</dimen>
+    <dimen name="realte_entertainment_item_related_title_mt">17dip</dimen>
+    <dimen name="realte_entertainment_item_related_title_textsize">30sp</dimen>
+    
+    <!-- realte_entertainment_item end-->
 </resources>
