@@ -992,11 +992,13 @@
     <dimen name="usercenter_storefragment_packagelist_item_image_height">126.00dp</dimen>
     <dimen name="usercenter_storefragment_packagelist_item_text_width">224.00dp</dimen>
     <dimen name="usercenter_storefragment_packagelist_item_text_height">41.33dp</dimen>
-    <dimen name="usercenter_storefragment_packagelist_selectorLeftPadding">0.6dip</dimen>
-    <dimen name="usercenter_storefragment_packagelist_selectorTopPadding">0.6dip</dimen>
-    <dimen name="usercenter_storefragment_packagelist_selectorRightPadding">0.4dip</dimen>
-    <dimen name="usercenter_storefragment_packagelist_selectorBottomPadding">-41.34dip</dimen>
-    <dimen name="usercenter_storefragment_packagelist_gridview_P">3.34dip</dimen>
+    <dimen name="usercenter_storefragment_packagelist_marginBottom">33.33dp</dimen>
+    <dimen name="usercenter_storefragment_packagelist_selectorLeftPadding">0.60dip</dimen>
+    <dimen name="usercenter_storefragment_packagelist_selectorTopPadding">0.60dip</dimen>
+    <dimen name="usercenter_storefragment_packagelist_selectorRightPadding">0.40dip</dimen>
+    <dimen name="usercenter_storefragment_packagelist_selectorBottomPadding">-41.33dip</dimen>
+    <dimen name="usercenter_storefragment_packagelist_gridview_P">3.33dip</dimen>
+
     <!-- fragment sport -->
     <dimen name="sport_linearLayout_margin_t">20.67dp</dimen>
     <dimen name="sport_linearLayout_margin_l">46.67dp</dimen>
@@ -1089,16 +1091,18 @@
     <dimen name="locationFragment_areaGridItem_minHeght">43.33dp</dimen>
     <dimen name="locationFragment_currentPositionTitle_marginLeft">20.67dp</dimen>
     <dimen name="locationFragment_selectedPositionTitle_marginLeft">113.33dp</dimen>
-    <dimen name="locationFragment_todayLayout_marginLeft">120.00dp</dimen>
-    <dimen name="locationFragment_tomorrowLayout_marginLeft">80.00dp</dimen>
+    <dimen name="locationFragment_todayLayout_marginLeft">80.00dp</dimen>
+    <dimen name="locationFragment_tomorrowLayout_marginLeft">46.67dp</dimen>
     <dimen name="locatiionFragment_areaPop_height">276.67dp</dimen>
     <dimen name="locationFragment_areaPop_btn_width">156.67dp</dimen>
     <dimen name="locationFragment_areaPop_btn_height">56.67dp</dimen>
     <dimen name="locatoinFragment_areaPop_cancelBtn_marginLeft">56.67dp</dimen>
     <dimen name="locationFragment_areaPop_Btn_marginTop">26.67dp</dimen>
+    <dimen name="locationFragment_weatherLayout_width">146.67dp</dimen>
     <dimen name="locationFragment_h1_textSize">32.00sp</dimen>
     <dimen name="locationFragment_h2_textSize">24.00sp</dimen>
     <dimen name="locationFragment_h3_textSize">20.00sp</dimen>
+    <dimen name="locationFragment_h4_textSize">16.00sp</dimen>
 
     <!-- zjq -->
     <dimen name="top_panel_view_height">74.67dip</dimen>
@@ -1193,26 +1197,47 @@
     <dimen name="realte_entertainment_item_related_title_textsize">20.00sp</dimen>
 
     <!-- realte_entertainment_item end -->
-    <dimen name="variety_dramalist_layout_mt">294dip</dimen>
+
+    <dimen name="variety_dramalist_layout_mt">294.00dip</dimen>
     <dimen name="variety_dramalist_gridview_hs">82.67dip</dimen>
     <dimen name="variety_dramalist_rowHeight">194.67dip</dimen>
     <dimen name="variety_dramalist_selector_paddingBottom">-66.67dip</dimen>
-    <dimen name="variety_dramalist_gridview_mt">29.34dip</dimen>
-    <dimen name="variety_dramalist_gridview_PaddingT">4dip</dimen>
-    <dimen name="variety_dramalist_focustextsize">18sp</dimen>
-    <dimen name="variety_dramalist_monthlayout_H">53.34dip</dimen>
-    <dimen name="variety_dramalist_monthlayout_LR">118dip</dimen>
+    <dimen name="variety_dramalist_gridview_mt">29.33dip</dimen>
+    <dimen name="variety_dramalist_gridview_PaddingT">4.00dip</dimen>
+    <dimen name="variety_dramalist_focustextsize">18.00sp</dimen>
+    <dimen name="variety_dramalist_monthlayout_H">53.33dip</dimen>
+    <dimen name="variety_dramalist_monthlayout_LR">118.00dip</dimen>
     <dimen name="variety_dramalist_monthlayout_MT">36.67dip</dimen>
     <dimen name="variety_dramalist_channel_arrow_MT">186.67dip</dimen>
     <dimen name="variety_dramalist_month_gridview_hs">22.67dip</dimen>
     <dimen name="variety_dramalist_month_gridview_rowheight">246.67dip</dimen>
-    <dimen name="variety_dramalist_selector_month_paddingBottom">-93.34dip</dimen>
+    <dimen name="variety_dramalist_selector_month_paddingBottom">-93.33dip</dimen>
     <dimen name="variety_dramalist_month_gridview_mt">30.67dip</dimen>
-    <dimen name="variety_dramalist_gridview_mlr">16dip</dimen>
-    <dimen name="variety_dramalist_gridview_mb">11.34dip</dimen>
+    <dimen name="variety_dramalist_gridview_mlr">16.00dip</dimen>
+    <dimen name="variety_dramalist_gridview_mb">11.33dip</dimen>
     <dimen name="variety_dramalist_gridview_pt">2.67dip</dimen>
-    <dimen name="variety_dramalist_gridview_plr">3.34dip</dimen>
-    <dimen name="variety_dramalist_gridview_month_item_w">269.34dip</dimen>
-    <dimen name="variety_dramalist_gridview_month_item_pt">19.34dip</dimen>
-    <dimen name="variety_dramalist_gridview_month_item_pb">50dip</dimen>
+    <dimen name="variety_dramalist_gridview_plr">3.33dip</dimen>
+    <dimen name="variety_dramalist_gridview_month_item_w">269.33dip</dimen>
+    <dimen name="variety_dramalist_gridview_month_item_pt">19.33dip</dimen>
+    <dimen name="variety_dramalist_gridview_month_item_pb">50.00dip</dimen>
+    <!-- pay_person_login -->
+    <dimen name="pay_person_login_linearLayout_h">53.33dip</dimen>
+    <dimen name="pay_person_login_textview_w">123.33dip</dimen>
+    <dimen name="pay_person_login_textview_textsize">23.33sp</dimen>
+    <dimen name="pay_person_login_pay_edit_mobile_w">333.33dip</dimen>
+    <dimen name="pay_person_login_pay_edit_mobile_marginLeft">26.67dip</dimen>
+    <dimen name="pay_person_login_pay_edit_mobile_pl">6.67dip</dimen>
+    <dimen name="pay_person_login_pay_edit_mobile_textsize">20.00sp</dimen>
+    <dimen name="pay_person_login_pay_identifyCodeBtn_w">133.33dip</dimen>
+    <dimen name="pay_person_login_pay_identifyCodeBtn_h">50.00dip</dimen>
+    <dimen name="pay_person_login_pay_identifyCodeBtn_ml">26.67dip</dimen>
+    <dimen name="pay_person_login_pay_count_tip_h">40.00dip</dimen>
+    <dimen name="pay_person_login_pay_count_tip_textsize">13.33sp</dimen>
+    <dimen name="pay_person_login_linearLayout2_mt">13.33dip</dimen>
+    <dimen name="pay_person_login_pay_btn_submit_w">200.00dip</dimen>
+    <dimen name="pay_person_login_pay_btn_submit_h">50.00dip</dimen>
+    <dimen name="pay_person_login_pay_btn_submit_mt">66.67dip</dimen>
+    <dimen name="pay_person_login_pay_btn_submit_ml">223.33dip</dimen>
+    <!-- pay_person_login end -->
+
 </resources>
