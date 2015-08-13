@@ -527,7 +527,7 @@ public class PlayerActivity extends VodMenuAction {
                                 TaskStart();
 								if (live_video) {
 									timeBar.setEnabled(false);
-
+									mp.start();
 								} else {
 									clipLength = mp.getDuration();
 									timeBar.setMax(clipLength);
