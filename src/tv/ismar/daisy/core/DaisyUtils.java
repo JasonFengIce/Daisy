@@ -59,7 +59,7 @@ public class DaisyUtils {
 		return getVodApplication(context).getFavoriteManager();
 	}
 
-	public static void gotoSpecialPage(Context context, String contentMode,String url) {
+	public static void gotoSpecialPage(Context context, String contentMode,String url,String from) {
 		Intent intent = new Intent();
 		if ("variety".equals(contentMode)||"entertainment".equals(contentMode)) {
 			intent.setAction("tv.ismar.daisy.EntertainmentItem");
@@ -75,7 +75,7 @@ public class DaisyUtils {
 			intent.setAction("tv.ismar.daisy.Item");
 		}
         intent.putExtra("url", url);
-        intent.putExtra("fromPage","list");
+        intent.putExtra("fromPage",from);
 		context.startActivity(intent);
 	}
 

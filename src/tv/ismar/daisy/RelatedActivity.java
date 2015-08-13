@@ -348,7 +348,7 @@ public class RelatedActivity extends BaseActivity implements OnSectionSelectChan
 //        intent.putExtra(EventProperty.SECTION, mSection);
 //		startActivity(intent);
         if(item.is_complex)
-            DaisyUtils.gotoSpecialPage(this,item.content_model,item.item_url);
+            DaisyUtils.gotoSpecialPage(this,item.content_model,item.item_url,"related");
         else{
             InitPlayerTool tool = new InitPlayerTool(RelatedActivity.this);
             tool.fromPage = "related";

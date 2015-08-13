@@ -355,7 +355,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 //					}
 //					intent.putExtra("url", item.url);
 //					startActivity(intent);
-                    DaisyUtils.gotoSpecialPage(getActivity(),item.content_model,item.url);
+                    DaisyUtils.gotoSpecialPage(getActivity(),item.content_model,item.url,"favorite");
 				} else {
 					InitPlayerTool tool = new InitPlayerTool(getActivity());
                     tool.fromPage = "favorite";
@@ -548,7 +548,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 
 		case R.id.recommend_gridview:
 			if(tvHome.getObjects().get(position).isIs_complex()){
-                DaisyUtils.gotoSpecialPage(getActivity(),tvHome.getObjects().get(position).getContent_model(),tvHome.getObjects().get(position).getItem_url());
+                DaisyUtils.gotoSpecialPage(getActivity(),tvHome.getObjects().get(position).getContent_model(),tvHome.getObjects().get(position).getItem_url(),"tvhome");
 				//startActivity(intent);
 			}
 			else{

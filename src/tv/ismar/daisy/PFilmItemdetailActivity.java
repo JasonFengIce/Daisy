@@ -971,7 +971,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 //            intent.setAction("tv.ismar.daisy.PFileItem");
 //            intent.putExtra("url", url);
 //            startActivity(intent);
-            DaisyUtils.gotoSpecialPage(PFilmItemdetailActivity.this, itemSection.content_model, itemSection.item_url);
+            DaisyUtils.gotoSpecialPage(PFilmItemdetailActivity.this, itemSection.content_model, itemSection.item_url,fromPage);
         }
     };
     private DialogInterface.OnCancelListener mLoadingCancelListener = new DialogInterface.OnCancelListener() {

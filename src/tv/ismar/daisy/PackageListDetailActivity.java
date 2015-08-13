@@ -383,7 +383,7 @@ public class PackageListDetailActivity extends BaseActivity implements OnItemSel
 				intent.putExtra("url", item.url);
 				//startActivity(intent);
 
-                DaisyUtils.gotoSpecialPage(PackageListDetailActivity.this,item.content_model,item.url);
+                DaisyUtils.gotoSpecialPage(PackageListDetailActivity.this,item.content_model,item.url,"unknown");
 			}
 			else{
 				

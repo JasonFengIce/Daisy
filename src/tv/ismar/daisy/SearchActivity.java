@@ -476,7 +476,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 		}){}.start();
 		try {
 			if (movieList.get(position).is_complex) {
-                DaisyUtils.gotoSpecialPage(SearchActivity.this,movieList.get(position).content_model,movieList.get(position).url);
+                DaisyUtils.gotoSpecialPage(SearchActivity.this,movieList.get(position).content_model,movieList.get(position).url,"search");
 			} else {
 				InitPlayerTool tool = new InitPlayerTool(SearchActivity.this);
                 tool.fromPage = "search";

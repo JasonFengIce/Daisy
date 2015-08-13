@@ -785,11 +785,11 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 
 		case R.id.recommend_gridview:
 			if(tvHome.getObjects().get(position).isIs_complex()){
-                DaisyUtils.gotoSpecialPage(getActivity(),tvHome.getObjects().get(position).getContent_model(),tvHome.getObjects().get(position).getItem_url());
+                DaisyUtils.gotoSpecialPage(getActivity(),tvHome.getObjects().get(position).getContent_model(),tvHome.getObjects().get(position).getItem_url(),"history");
 			}
 			else{
 				InitPlayerTool tool = new InitPlayerTool(getActivity());
-                tool.fromPage = "tvhome";
+                tool.fromPage = "history";
 				tool.initClipInfo(tvHome.getObjects().get(position).getItem_url(), InitPlayerTool.FLAG_URL);
 			}
 

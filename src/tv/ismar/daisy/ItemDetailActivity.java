@@ -812,7 +812,7 @@ private boolean isPause = false;
 //			intent.setAction(action);
 //			intent.putExtra("url", url);
 //			startActivity(intent);
-            DaisyUtils.gotoSpecialPage(ItemDetailActivity.this,itemSection.content_model,itemSection.item_url);
+            DaisyUtils.gotoSpecialPage(ItemDetailActivity.this,itemSection.content_model,itemSection.item_url,fromPage);
 		}
 	};
 
