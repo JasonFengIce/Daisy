@@ -3,26 +3,32 @@ package tv.ismar.daisy.ui.fragment.usercenter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.GridView;
-import android.widget.PopupWindow;
-import android.widget.TextView;
+import android.widget.*;
 import com.activeandroid.query.Select;
+import com.google.gson.Gson;
 import org.w3c.dom.Text;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.data.table.location.CityTable;
 import tv.ismar.daisy.data.table.location.ProvinceTable;
+import tv.ismar.daisy.data.weather.WeatherEntity;
 import tv.ismar.daisy.ui.adapter.weather.CityAdapter;
 import tv.ismar.daisy.ui.adapter.weather.CityAdapter.OnItemListener;
 import tv.ismar.daisy.ui.adapter.weather.ProvinceAdapter;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -45,15 +51,40 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
     private TextView selectedPositionTitle;
     private TextView selectedPosition;
 
-
     private int selectedAreaPositon;
     private TextView selectedAreaTextView;
+
+
+    private ImageView todayWeatherIcon1;
+    private TextView todayWeatherDivider;
+    private ImageView todayWeatherIcon2;
+    private TextView todayWeatherInfo;
+    private TextView todayWeatherTemperature;
+
+    private ImageView tomorrowWeatherIcon1;
+    private TextView tomorrowWeatherDivider;
+    private ImageView tomorrowtherIcon2;
+    private TextView tomorrowWeatherInfo;
+    private TextView tomorrowWeatherTemperature;
+
+
+    private static HashMap<String, Integer> weatherIconMap;
+
+    static {
+        weatherIconMap = new HashMap<String, Integer>();
+        weatherIconMap.put("风", R.drawable.wind);
+        weatherIconMap.put("冰雹", R.drawable.hall);
+        weatherIconMap.put("多云", R.drawable.cloudy);
+        weatherIconMap.put("夜间少云", R.drawable.night_cloudy);
+    }
+
 
     private SharedPreferences.OnSharedPreferenceChangeListener changeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             String cityName = AccountSharedPrefs.getInstance(mContext).getSharedPrefs(AccountSharedPrefs.CITY);
             currentPostion.setText(cityName);
+            fetchWeatherInfo(AccountSharedPrefs.getInstance(mContext).getSharedPrefs(AccountSharedPrefs.GEO_ID));
         }
     };
 
@@ -77,7 +108,20 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
         currentPostion = (TextView) fragmentView.findViewById(R.id.currentPosition);
         selectedPosition = (TextView) fragmentView.findViewById(R.id.selectedPosition);
         provinceListView = (GridView) fragmentView.findViewById(R.id.province_list);
-        selectedPositionTitle  =(TextView)fragmentView.findViewById(R.id.selectedPosition_title);
+        selectedPositionTitle = (TextView) fragmentView.findViewById(R.id.selectedPosition_title);
+
+
+        todayWeatherIcon1 = (ImageView) fragmentView.findViewById(R.id.today_weather_icon1);
+        todayWeatherDivider = (TextView) fragmentView.findViewById(R.id.today_weather_divider);
+        todayWeatherIcon2 = (ImageView) fragmentView.findViewById(R.id.today_weather_icon2);
+        todayWeatherInfo = (TextView) fragmentView.findViewById(R.id.today_weather_info);
+        todayWeatherTemperature = (TextView) fragmentView.findViewById(R.id.today_weather_temperature);
+
+        tomorrowWeatherIcon1 = (ImageView) fragmentView.findViewById(R.id.tomorrow_weather_icon1);
+        tomorrowWeatherDivider = (TextView) fragmentView.findViewById(R.id.tomorrow_weather_divider);
+        tomorrowtherIcon2 = (ImageView) fragmentView.findViewById(R.id.tomorrow_weather_icon2);
+        tomorrowWeatherInfo = (TextView) fragmentView.findViewById(R.id.tomorrow_weather_info);
+        tomorrowWeatherTemperature = (TextView) fragmentView.findViewById(R.id.tomorrow_weather_temperature);
 
         return fragmentView;
     }
@@ -86,12 +130,8 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         String cityName = AccountSharedPrefs.getInstance(mContext).getSharedPrefs(AccountSharedPrefs.CITY);
-
-//        CityTable cityTable = new Select().from(CityTable.class).where(CityTable.CITY + " = ?", cityName).executeSingle();
-//        if (null != cityTable) {
         currentPostion.setText(cityName);
-//        }
-
+        fetchWeatherInfo(AccountSharedPrefs.getInstance(mContext).getSharedPrefs(AccountSharedPrefs.GEO_ID));
     }
 
     @Override
@@ -239,5 +279,28 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
             textView.setTextColor(mContext.getResources().getColor(R.color.white));
             textView.setTextSize(mContext.getResources().getDimension(R.dimen.h2_text_size));
         }
+    }
+
+    private void fetchWeatherInfo(String geoId) {
+        String api = "http://media.lily.tvxio.com/" + geoId + ".json";
+        new IsmartvUrlClient().doRequest(api, new IsmartvUrlClient.CallBack() {
+            @Override
+            public void onSuccess(String result) {
+                WeatherEntity weatherEntity = new Gson().fromJson(result, WeatherEntity.class);
+                WeatherEntity.Detail todayDetail = weatherEntity.getToday();
+                WeatherEntity.Detail tomorrowDetail = weatherEntity.getTomorrow();
+
+                todayWeatherTemperature.setText(todayDetail.getTemperature() + " ℃");
+                todayWeatherInfo.setText(todayDetail.getPhenomenon());
+
+                tomorrowWeatherTemperature.setText(tomorrowDetail.getTemperature() + " ℃");
+                tomorrowWeatherInfo.setText(tomorrowDetail.getPhenomenon());
+
+            }
+
+            @Override
+            public void onFailed(Exception exception) {
+            }
+        });
     }
 }

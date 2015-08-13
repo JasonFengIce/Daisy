@@ -308,4 +308,6 @@
     <string name="confirm_selected_position_prompt">您是否确定要将当前位置更换为选中位置?</string>
 
 
+    <string name="today_text">今天</string>
+    <string name="tomorrow_text">明天</string>
 </resources>
