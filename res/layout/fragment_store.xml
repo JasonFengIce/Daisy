@@ -15,8 +15,9 @@
             android:verticalSpacing="@dimen/usercenter_storefragment_packagelist_verticalSpacing"
             android:horizontalSpacing="@dimen/usercenter_storefragment_packagelist_horizontalSpacing"
             android:layout_marginTop="@dimen/usercenter_storefragment_packagelist_marginTop"
-            android:scrollbars="vertical"
-            android:stretchMode="columnWidth">
+            android:layout_marginBottom="@dimen/usercenter_storefragment_packagelist_marginBottom"
+            android:stretchMode="columnWidth"
+            >
     </GridView>
 
 </LinearLayout>

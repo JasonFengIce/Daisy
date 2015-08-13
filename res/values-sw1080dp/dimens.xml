@@ -952,6 +952,7 @@
     <dimen name="usercenter_storefragment_packagelist_item_image_height">189dp</dimen>
     <dimen name="usercenter_storefragment_packagelist_item_text_width">336dp</dimen>
     <dimen name="usercenter_storefragment_packagelist_item_text_height">62dp</dimen>
+    <dimen name="usercenter_storefragment_packagelist_marginBottom">50dp</dimen>
 
 
     <!-- fragment sport -->
