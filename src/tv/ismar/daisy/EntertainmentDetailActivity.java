@@ -807,9 +807,9 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                     .from(EntertainmentDetailActivity.this).inflate(
                             R.layout.realte_entertainment_item, null);
             LinearLayout.LayoutParams layoutParams;
-            layoutParams = new LinearLayout.LayoutParams((int)(336/rate), (int)(237/rate));
+            layoutParams = new LinearLayout.LayoutParams(336, 237);
             if (i != 0)
-                layoutParams.leftMargin = (int)(74/rate);
+                layoutParams.leftMargin = 74;
             relatedHolder.setLayoutParams(layoutParams);
             TextView titleView = (TextView) relatedHolder
                     .findViewById(R.id.related_title);

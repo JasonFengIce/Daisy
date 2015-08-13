@@ -214,7 +214,7 @@
             android:visibility="invisible"/>
 
         <LinearLayout
-            android:layout_marginLeft="20dip"
+            android:layout_marginLeft="@dimen/item_detail_related_video_container_ml"
             android:id="@+id/related_video_container"
             android:layout_width="match_parent"
             android:layout_height="@dimen/item_detail_related_video_container_height"
