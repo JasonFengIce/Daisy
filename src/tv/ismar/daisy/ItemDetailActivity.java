@@ -453,7 +453,7 @@ private boolean isPause = false;
 	private void initLayout() {
 		mDataCollectionProperties.put(EventProperty.ITEM, mItem.pk);
 		mDataCollectionProperties.put(EventProperty.TITLE, mItem.title);
-
+        mDataCollectionProperties.put(EventProperty.SOURCE,fromPage);
 
 
 		new NetworkUtils.DataCollectionTask().execute(

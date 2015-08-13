@@ -531,7 +531,33 @@ public class QiYiPlayActivity extends VodMenuAction {
 			clipLength = mPlayer.getDuration();
 			// if(currPosition >0)
 			// mPlayer.seekTo(currPosition);
-			showPanel();
+            if (item.pk != item.pk) {
+                callaPlay.videoPlayLoad(
+                        item.item_pk,
+                        item.pk,
+                        item.title,
+                        clip.pk,
+                        currQuality,
+                        (System.currentTimeMillis() - startDuration) / 1000,
+                        0, null, sid);
+                callaPlay.videoPlayStart(item.item_pk,
+                        item.pk, item.title, clip.pk,
+                        currQuality, 0);
+            } else {
+                callaPlay.videoPlayLoad(
+                        item.pk,
+                        null,
+                        item.title,
+                        clip.pk,
+                        currQuality,
+                        (System.currentTimeMillis() - startDuration) / 1000,
+                        0, null, sid);
+                callaPlay
+                        .videoPlayStart(item.pk, null,
+                                item.title, clip.pk,
+                                currQuality, 0);
+            }
+            showPanel();
 			timeTaskStart(500);
 			checkTaskStart(500);
 			if (mHandler.hasMessages(MSG_PLAY_TIME))
@@ -567,6 +593,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onPrepared() {
+            TaskStart();
 			timeBar.setMax(mPlayer.getDuration());
 			if (seekPostion > 0)
 				mPlayer.seekTo(seekPostion);
@@ -688,7 +715,32 @@ public class QiYiPlayActivity extends VodMenuAction {
 			}
 		}
 	}
+    private Runnable logTaskRunnable = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                startDuration = System.currentTimeMillis();
+                if (item != null)
+                    callaPlay.videoStart(item, item.pk, item.title,
+                            currQuality, null, 0, mSection, sid);
+                else
+                    callaPlay.videoStart(item, null, item.title, currQuality,
+                            null, 0, mSection, sid);
+                timeTaskStop();
+            } catch (Exception e) {
+                Log.e(TAG, " Sender log videoPlayStart " + e.toString());
+            }
+        }
+    };
+    private Handler logHandler = new Handler();
+    private void TaskStart() {
+        logHandler.removeCallbacks(logTaskRunnable);
+        logHandler.post(logTaskRunnable);
+    }
 
+    private void timeTaskStop() {
+        logHandler.removeCallbacks(logTaskRunnable);
+    }
 	private Handler mHandler = new Handler(Looper.getMainLooper()) {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
@@ -1208,6 +1260,38 @@ public class QiYiPlayActivity extends VodMenuAction {
 							checkTaskPause();
 							timeTaskPause();
 							popupDlg.dismiss();
+                            try {
+                                if (item.pk != item.item_pk)
+                                    callaPlay.videoExit(
+                                            item.item_pk,
+                                            item.pk,
+                                            item.title,
+                                            clip.pk,
+                                            currQuality,
+                                            0,
+                                            "detail",
+                                            currPosition,
+                                            (System.currentTimeMillis() - startDuration) / 1000,
+                                            mSection, sid, "list",
+                                            item.content_model);
+                                else
+                                    callaPlay.videoExit(
+                                            item.pk,
+                                            null,
+                                            item.title,
+                                            clip.pk,
+                                            currQuality,
+                                            0,
+                                            "detail",
+                                            currPosition,
+                                            (System.currentTimeMillis() - startDuration) / 1000,
+                                            mSection, sid, "list",
+                                            item.content_model);
+                            } catch (Exception e) {
+                                Log.e(TAG,
+                                        " Sender log videoPlayStart "
+                                                + e.toString());
+                            }
 							releasePlayer();
 							finish();
 						}

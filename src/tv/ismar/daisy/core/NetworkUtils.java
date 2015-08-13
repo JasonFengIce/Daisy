@@ -28,6 +28,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 
+import com.squareup.okhttp.Call;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,6 +43,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
+import tv.ismar.daisy.player.CallaPlay;
 
 public class NetworkUtils {
 	private static String UA = "A11/V1 Unknown";
@@ -296,6 +298,8 @@ public class NetworkUtils {
 						ad.setDuration(element.getInt("duration"));
 						ad.setReport_url(element.getString("report_url"));
 						result.add(ad);
+                        CallaPlay play = new CallaPlay();
+                        play.pause_ad_download(ad.getTitle(),ad.getMedia_url(),ad.getMedia_id());
 					}
 					Collections.sort(result, new Comparator<AdElement>() {
 						@Override
@@ -310,12 +314,19 @@ public class NetworkUtils {
 					result.add(ad);
 				}
 			}
+            else{
+                CallaPlay play = new CallaPlay();
+                play.pause_ad_except(status,status+"");
+            }
 			connection.disconnect();
 		} catch (Exception e) {
 			AdElement ad = new AdElement();
 			ad.setRoot_retcode(status);
 			ad.setRoot_retmsg(e.getMessage());
 			result.add(ad);
+
+            CallaPlay play = new CallaPlay();
+            play.pause_ad_except(status,e.getMessage());
 		}
 		return result;
 	}
@@ -932,4 +943,16 @@ public class NetworkUtils {
 	public static final String VIDEO_DRAMALIST_OUT = "video_dramalist_out";
 
 	public static final String FRONT_PAGE_VIDEO = "frontpagevideo";
+    /**
+     * 用户点击推荐影片
+     */
+    public static final String HOMEPAGE_VOD_CLICK = "homepage_vod_click";
+    /**
+     * 暂停广告播放
+     */
+    public static final String PAUSE_AD_PLAY = "pause_ad_play";
+    /**
+     *
+     */
+    public static final String PAUSE_AD_DOWNLOAD = "pause_ad_download";
 }

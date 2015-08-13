@@ -32,8 +32,8 @@
             android:layout_marginTop="@dimen/item_detail_detail_title_margintop"
             android:textColor="@color/white"
             android:textSize="@dimen/item_detail_detail_title_textSize"
-            android:ellipsize="end"
-            android:maxLines="1"/>
+
+            />
         
         <tv.ismar.daisy.views.DetailAttributeContainer
             android:layout_width="@dimen/item_detail_attribute_width"

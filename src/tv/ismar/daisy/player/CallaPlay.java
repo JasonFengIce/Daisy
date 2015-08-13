@@ -35,6 +35,7 @@ public class CallaPlay {
 		tempMap.put("userid", userid);
 		tempMap.put(EventProperty.CHANNEL, item.content_model);
 		tempMap.put(EventProperty.SECTION, section);
+        tempMap.put("speed", speed+"KByte/s");
 		tempMap.put(EventProperty.SID, sid);
 		eventName =	NetworkUtils.VIDEO_START;
 		properties = tempMap;
@@ -66,7 +67,7 @@ public class CallaPlay {
 		tempMap.put(EventProperty.CLIP, clip);
 		tempMap.put(EventProperty.QUALITY, switchQuality(quality));
 		tempMap.put(EventProperty.DURATION, duration);
-		//tempMap.put("speed", speed);
+		tempMap.put("speed", speed+"KByte/s");
 		tempMap.put(EventProperty.MEDIAIP,mediaip);
 		tempMap.put(EventProperty.SID, sid);
 		eventName =	NetworkUtils.VIDEO_PLAY_LOAD;
@@ -103,6 +104,7 @@ public class CallaPlay {
 		tempMap.put(EventProperty.CLIP, clip);
 		tempMap.put(EventProperty.QUALITY, switchQuality(quality));
 		//tempMap.put("speed", speed);
+        tempMap.put("speed", speed+"KByte/s");
 		eventName =	NetworkUtils.VIDEO_PLAY_START;
 		properties = tempMap;
 		//new LogTask().execute();
@@ -135,6 +137,7 @@ public class CallaPlay {
 		tempMap.put(EventProperty.QUALITY, switchQuality(currQuality));
 		tempMap.put(EventProperty.POSITION, position/1000);
 		tempMap.put(EventProperty.SID, sid);
+        tempMap.put("speed", speed+"KByte/s");
 		//tempMap.put("speed", speed);
 		eventName =	NetworkUtils.VIDEO_PLAY_PAUSE;
 		properties = tempMap;
@@ -165,6 +168,7 @@ public class CallaPlay {
 			tempMap.put(EventProperty.TITLE, title);
 			tempMap.put(EventProperty.CLIP, clip);
 			tempMap.put(EventProperty.QUALITY, switchQuality(quality));
+            tempMap.put("speed", speed+"KByte/s");
 			//tempMap.put("speed", speed);
 			tempMap.put(EventProperty.POSITION, position/1000);
 			tempMap.put(EventProperty.SID, sid);
@@ -198,6 +202,7 @@ public class CallaPlay {
 		tempMap.put(EventProperty.TITLE, title);
 		tempMap.put(EventProperty.CLIP, clip);
 		tempMap.put(EventProperty.QUALITY, switchQuality(quality));
+        tempMap.put("speed", speed+"KByte/s");
 		//tempMap.put("speed", speed);
 		tempMap.put(EventProperty.POSITION, position/1000);
 		tempMap.put(EventProperty.SID, sid);
@@ -234,6 +239,7 @@ public class CallaPlay {
 		tempMap.put(EventProperty.CLIP, clip);
 		tempMap.put(EventProperty.QUALITY, switchQuality(quality));
 		//tempMap.put("speed", speed);
+        tempMap.put("speed", speed+"KByte/s");
 		tempMap.put(EventProperty.DURATION, duration);
 		tempMap.put(EventProperty.POSITION, position/1000);
 		tempMap.put(EventProperty.MEDIAIP, mediaip);
@@ -272,6 +278,7 @@ public class CallaPlay {
 		tempMap.put(EventProperty.QUALITY, switchQuality(quality));
 		//tempMap.put("speed", speed);
 		//tempMap.put("position", position/1000);
+        tempMap.put("speed", speed+"KByte/s");
 		tempMap.put(EventProperty.DURATION, duration);
 		tempMap.put(EventProperty.MEDIAIP, mediaip);
 		tempMap.put(EventProperty.SID, sid);
@@ -340,6 +347,7 @@ public class CallaPlay {
 		tempMap.put(EventProperty.CLIP, clip);
 		tempMap.put(EventProperty.QUALITY, switchQuality(quality));
 		//tempMap.put("speed", speed);
+        tempMap.put("speed", speed+"KByte/s");
 		tempMap.put(EventProperty.MEDIAIP, mediaip);
 		tempMap.put(EventProperty.SID, sid);
 		eventName =	NetworkUtils.VIDEO_LOW_SPEED;
@@ -372,6 +380,7 @@ public class CallaPlay {
 		tempMap.put(EventProperty.CLIP, clip);
 		tempMap.put(EventProperty.QUALITY, switchQuality(quality));
 		//tempMap.put("speed", speed);
+        tempMap.put("speed", speed+"KByte/s");
 		tempMap.put(EventProperty.TO, to);
 		tempMap.put(EventProperty.POSITION, position);
 		tempMap.put(EventProperty.DURATION, duration);
@@ -414,7 +423,6 @@ public class CallaPlay {
 		tempMap.put(EventProperty.CLIP, clip);
 		tempMap.put(EventProperty.POSITION, position/1000);
 		tempMap.put(EventProperty.QUALITY, switchQuality(quality));
-		//tempMap.put("speed", speed);
 		eventName =	NetworkUtils.VIDEO_EXCEPT;
 		properties = tempMap;
 		//new LogTask().execute();
@@ -448,6 +456,7 @@ public class CallaPlay {
 		tempMap.put(EventProperty.CLIP, clip);
 		tempMap.put(EventProperty.QUALITY, switchQuality(quality));
 		//tempMap.put("speed", speed);
+        tempMap.put("speed", speed+"KByte/s");
 		tempMap.put(EventProperty.MODE, mode);
 		tempMap.put("userid", userid);
 		tempMap.put(EventProperty.MEDIAIP, mediaip);
@@ -455,12 +464,40 @@ public class CallaPlay {
 		tempMap.put(EventProperty.LOCATION, "detail");
 		eventName =	NetworkUtils.VIDEO_SWITCH_STREAM;
 		properties = tempMap;
-		//new LogTask().execute();
 		new NetworkUtils.DataCollectionTask().execute(eventName,properties);
 		return tempMap;
 
 	}
-	
+    public void pause_ad_play(String title,int media_id,String media_url,Long duration){
+          HashMap<String,Object> tempMap = new HashMap<String, Object>();
+          tempMap.put(EventProperty.TITLE,title);
+          tempMap.put(EventProperty.MEDIA_ID,media_id);
+          tempMap.put(EventProperty.MEDIA_URL,media_url);
+          tempMap.put(EventProperty.DURATION,duration/1000);
+          eventName = NetworkUtils.PAUSE_AD_PLAY;
+          properties = tempMap;
+          new NetworkUtils.DataCollectionTask().execute(eventName,properties);
+    }
+    public void pause_ad_download(String title,String media_url,int media_id){
+
+    }
+    public void pause_ad_except(Integer errcode,String errorContent){
+        HashMap<String,Object> tempMap = new HashMap<String, Object>();
+        tempMap.put(EventProperty.CODE,errcode);
+        tempMap.put(EventProperty.CONTENT,errorContent);
+
+    }
+    public void homepage_vod_click(int pk,String title,String channel,Integer position,String type){
+        HashMap<String,Object> tempMap =  new HashMap<String,Object>();
+        tempMap.put(EventProperty.PK,pk);
+        tempMap.put(EventProperty.TITLE,title);
+        tempMap.put(EventProperty.CHANNEL,channel);
+        tempMap.put(EventProperty.POSITION,position);
+        tempMap.put(EventProperty.TYPE,type);
+        eventName = NetworkUtils.HOMEPAGE_VOD_CLICK;
+        properties = tempMap;
+        new NetworkUtils.DataCollectionTask().execute(eventName,properties);
+    }
 	private  String switchQuality(Integer currQuality)
 	{
 		String quality ="";
