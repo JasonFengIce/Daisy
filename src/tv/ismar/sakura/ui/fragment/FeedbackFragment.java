@@ -151,7 +151,7 @@ public class FeedbackFragment extends Fragment implements RadioGroup.OnCheckedCh
 
             @Override
             public void failure(RetrofitError retrofitError) {
-                Log.e(TAG, "fetchFeedback: " + retrofitError.getMessage());
+//                Log.e(TAG, "fetchFeedback: " + retrofitError.getMessage());
             }
         });
     }
@@ -190,7 +190,7 @@ public class FeedbackFragment extends Fragment implements RadioGroup.OnCheckedCh
 
                 @Override
                 public void failure(String msg) {
-                    Log.d(TAG, "uploadFeedback: " + msg);
+//                    Log.d(TAG, "uploadFeedback: " + msg);
                     Toast.makeText(mContext, "提交失败!", Toast.LENGTH_LONG).show();
                     submitButton.setEnabled(true);
                 }

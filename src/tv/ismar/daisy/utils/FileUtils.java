@@ -24,8 +24,8 @@ public class FileUtils {
             return localFile.getName();
         } catch (MalformedURLException e) {
             e.printStackTrace();
+            return "";
         }
-        return "";
     }
 
     public static Drawable getImageFromAssetsFile(Context context, String fileName) {

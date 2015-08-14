@@ -10,15 +10,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.widget.ImageView;
-import com.activeandroid.ActiveAndroid;
 import com.squareup.picasso.Picasso;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.advertisement.AdvertisementManager;
 import tv.ismar.daisy.core.initialization.InitializeProcess;
 import tv.ismar.daisy.core.service.PosterUpdateService;
-import tv.ismar.daisy.utils.HardwareUtils;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by huaijie on 3/10/15.

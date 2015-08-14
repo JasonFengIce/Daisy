@@ -311,8 +311,8 @@ public class GuideFragment extends ChannelBaseFragment implements
                 } else {
                     File localVideoFile = new File(downloadTable.download_path);
                     String fileMd5Code = HardwareUtils.getMd5ByFile(localVideoFile);
-                    Log.d(TAG, "local md5: " + fileMd5Code + " | " + "server md5: " + downloadTable.md5);
-                    if (fileMd5Code.equalsIgnoreCase(downloadTable.md5)) {
+                    Log.d(TAG, "local md5: " + fileMd5Code + " | " + "server md5: " + downloadTable.server_md5);
+                    if (fileMd5Code.equalsIgnoreCase(downloadTable.server_md5)) {
                         playPath = localVideoFile.getAbsolutePath();
                     } else {
                         playPath = url;
@@ -338,7 +338,7 @@ public class GuideFragment extends ChannelBaseFragment implements
                 String localFilePath = downloadTables.get(0).download_path;
                 File localFile = new File(localFilePath);
                 String fileMd5Code = localFile.getName().split("\\.")[0];
-                if (!fileMd5Code.equalsIgnoreCase(downloadTables.get(0).md5)) {
+                if (!fileMd5Code.equalsIgnoreCase(downloadTables.get(0).server_md5)) {
                     for (DownloadTable downloadTable : downloadTables) {
                         File file = new File(downloadTable.download_path);
                         if (file.exists()) {

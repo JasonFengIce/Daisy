@@ -175,7 +175,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
                     intent.putExtra("lableString", title);
                     intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.PackageListDetailActivity");
                     context.startActivity(intent);
-                }else if ("package".equals(model)) {
+                } else if ("package".equals(model)) {
                     intent.setAction("tv.ismar.daisy.packageitem");
                     intent.putExtra("url", url);
                     context.startActivity(intent);
@@ -457,7 +457,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
         } else {
             File localVideoFile = new File(downloadTable.download_path);
             String fileMd5Code = HardwareUtils.getMd5ByFile(localVideoFile);
-            if (fileMd5Code.equalsIgnoreCase(downloadTable.md5)) {
+            if (fileMd5Code.equalsIgnoreCase(downloadTable.server_md5)) {
                 playPath = localVideoFile.getAbsolutePath();
             } else {
                 playPath = url;
@@ -477,7 +477,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
     public void change(int position) {
         Log.d(TAG, "changed position: " + position);
         for (int i = 0; i < allItem.size(); i++) {
-        	film_post_layout.setTag(R.drawable.launcher_selector, carousels.get(i));
+            film_post_layout.setTag(R.drawable.launcher_selector, carousels.get(i));
             LabelImageView imageView = allItem.get(i);
             if (position != i) {
                 imageView.setCustomfocus(false);
@@ -513,7 +513,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
                     String localFilePath = downloadTables.get(0).download_path;
                     File localFile = new File(localFilePath);
                     String fileMd5Code = localFile.getName().split("\\.")[0];
-                    if (!fileMd5Code.equalsIgnoreCase(downloadTables.get(0).md5)) {
+                    if (!fileMd5Code.equalsIgnoreCase(downloadTables.get(0).server_md5)) {
                         for (DownloadTable downloadTable : downloadTables) {
                             File file = new File(downloadTable.download_path);
                             if (file.exists()) {

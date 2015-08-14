@@ -26,6 +26,9 @@ public class DownloadTable extends Model {
     public String download_path;
 
     @Column
-    public String md5;
+    public String local_md5;
+
+    @Column
+    public String server_md5;
 
 }
