@@ -357,7 +357,7 @@ public class FilterResultFragment extends BackHandledFragment implements Adapter
         if(item!=null) {
             Intent intent = new Intent();
             if(item.is_complex) {
-                DaisyUtils.gotoSpecialPage(getActivity(),item.content_model,item.url);
+                DaisyUtils.gotoSpecialPage(getActivity(),item.content_model,item.url,"retrieval");
             } else {
                 InitPlayerTool tool = new InitPlayerTool(getActivity());
                 tool.fromPage = "retrieval";

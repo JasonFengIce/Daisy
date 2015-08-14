@@ -345,14 +345,14 @@ public class SportFragment extends ChannelBaseFragment {
 		@Override
 		public void onClick(View arg0) {
 			SportGame data = (SportGame) arg0.getTag();
-			if (data.getGameType() == 5) {
+			if (data.isIs_complex()) {
 				Intent intent = new Intent();
 				intent.setAction("tv.ismar.daisy.Item");
 				intent.putExtra("url", data.getUrl());
 				context.startActivity(intent);
 			} else {
 				InitPlayerTool tool = new InitPlayerTool(context);
-				tool.initClipInfo(arg0.getTag().toString(),
+				tool.initClipInfo(data.getUrl(),
 						InitPlayerTool.FLAG_URL);
 			}
 		}
@@ -375,7 +375,11 @@ public class SportFragment extends ChannelBaseFragment {
 				Picasso.with(context).load(games.get(position).getImageurl())
 						.into(sports_live1);
 				sports_live1.setTag(games.get(position));
-				sports_live1.setModetype(games.get(position).getGameType());
+				if (games.get(position).isLiving()) {
+					sports_live1.setModetype(4);
+				} else {
+					sports_live1.setModetype(6);
+				}
 				sports_live1.setFocustitle(games.get(position).getName());
 				break;
 			case 1:
@@ -383,7 +387,11 @@ public class SportFragment extends ChannelBaseFragment {
 				Picasso.with(context).load(games.get(position).getImageurl())
 						.into(sports_live2);
 				sports_live2.setTag(games.get(position));
-				sports_live2.setModetype(games.get(position).getGameType());
+				if (games.get(position).isLiving()) {
+					sports_live2.setModetype(4);
+				} else {
+					sports_live2.setModetype(6);
+				}
 				sports_live2.setFocustitle(games.get(position).getName());
 				break;
 			case 2:
@@ -391,7 +399,11 @@ public class SportFragment extends ChannelBaseFragment {
 				Picasso.with(context).load(games.get(position).getImageurl())
 						.into(sports_live3);
 				sports_live3.setTag(games.get(position));
-				sports_live3.setModetype(games.get(position).getGameType());
+				if (games.get(position).isLiving()) {
+					sports_live3.setModetype(4);
+				} else {
+					sports_live3.setModetype(6);
+				}
 				sports_live3.setFocustitle(games.get(position).getName());
 				break;
 			}

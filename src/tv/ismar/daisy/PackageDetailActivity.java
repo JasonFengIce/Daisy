@@ -444,7 +444,7 @@ public class PackageDetailActivity extends BaseActivity implements OnItemClickLi
 		if(item!=null){
 			Intent intent = new Intent();
 			if(item.is_complex) {
-                DaisyUtils.gotoSpecialPage(PackageDetailActivity.this,item.content_model,item.url);
+                DaisyUtils.gotoSpecialPage(PackageDetailActivity.this,item.content_model,item.url,"unknown");
 			} else {
 //				InitPlayerTool tool = new InitPlayerTool(PackageDetailActivity.this);
 //				tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
@@ -484,7 +484,7 @@ public class PackageDetailActivity extends BaseActivity implements OnItemClickLi
 					break;
 				}
 			}
-            DaisyUtils.gotoSpecialPage(PackageDetailActivity.this,"package",itemSection.url);
+            DaisyUtils.gotoSpecialPage(PackageDetailActivity.this,"package",itemSection.url,"unknown");
 			
 		}
 	};

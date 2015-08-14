@@ -264,7 +264,8 @@ public class SimpleRestClient {
 				sports.setName(object.getString("name"));
 				sports.setImageurl(object.getString("poster_url"));
 				sports.setUrl(object.getString("url"));
-//				sports.setLiving(true);
+				sports.setIs_complex(object.getBoolean("is_complex"));
+				sports.setLiving(true);
 				arrays.add(sports);
 			}
 			if (rootObject.has("highlight")) {
@@ -275,7 +276,8 @@ public class SimpleRestClient {
 					sports.setName(object.getString("title"));
 					sports.setImageurl(object.getString("image"));
 					sports.setUrl(object.getString("url"));
-//					sports.setLiving(false);
+					sports.setIs_complex(object.getBoolean("is_complex"));
+					sports.setLiving(false);
 					arrays.add(sports);
 				}
 			}
