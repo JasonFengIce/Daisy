@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -46,6 +47,7 @@ import tv.ismar.daisy.ui.fragment.*;
 import tv.ismar.daisy.ui.fragment.launcher.*;
 import tv.ismar.daisy.ui.widget.DaisyButton;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
+import tv.ismar.daisy.utils.BitmapUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -74,7 +76,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private LinearLayout channelListView;
     private LinearLayout tabListView;
 
-    private View contentView;
+    private LinearLayout contentView;
     private Activator activator;
 
     private LocationClient mLocationClient;
@@ -163,7 +165,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         registerUpdateReceiver();
-        contentView = LayoutInflater.from(this).inflate(R.layout.activity_tv_guide, null);
+        contentView = (LinearLayout)LayoutInflater.from(this).inflate(R.layout.activity_tv_guide, null);
         setContentView(contentView);
 
         topView = (LaunchHeaderLayout) findViewById(R.id.top_column_layout);
@@ -633,16 +635,17 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         topView.setSubTitle(channelEntity.getName());
         if ("template1".equals(channelEntity.getHomepage_template())) {
             currentFragment = new FilmFragment();
-            contentView.setBackgroundResource(R.drawable.main_bg);
+            contentView.setBackground(BitmapUtils.getDrawableByResId(this,R.drawable.main_bg));
+
         } else if ("template2".equals(channelEntity.getHomepage_template())) {
             currentFragment = new EntertainmentFragment();
-            contentView.setBackgroundResource(R.drawable.main_bg);
+            contentView.setBackground(BitmapUtils.getDrawableByResId(this,R.drawable.main_bg));
         } else if ("template3".equals(channelEntity.getHomepage_template())) {
             currentFragment = new SportFragment();
-            contentView.setBackgroundResource(R.drawable.main_bg);
+            contentView.setBackground(BitmapUtils.getDrawableByResId(this,R.drawable.main_bg));
         } else if ("template4".equals(channelEntity.getHomepage_template())) {
             currentFragment = new ChildFragment();
-            contentView.setBackgroundResource(R.drawable.channel_child_bg);
+            contentView.setBackground(BitmapUtils.getDrawableByResId(this, R.drawable.channel_child_bg));
         }
         currentFragment.setChannelEntity(channelEntity);
         replaceFragment(currentFragment);
