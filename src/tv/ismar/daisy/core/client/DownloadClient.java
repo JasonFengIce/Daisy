@@ -1,6 +1,7 @@
 package tv.ismar.daisy.core.client;
 
 import android.util.Log;
+import android.view.KeyEvent;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -40,8 +41,8 @@ public class DownloadClient implements Runnable {
     public void run() {
 
         try {
-            String videoName = new File(new URL(url).getFile()).getName();
-            downloadFile = new File(mSavePath, videoName);
+
+            downloadFile = new File(mSavePath, mLocalFileName);
             if (!downloadFile.exists()) {
                 downloadFile.getParentFile().mkdirs();
                 downloadFile.createNewFile();
@@ -105,6 +106,7 @@ public class DownloadClient implements Runnable {
             Log.e(TAG, e.getMessage());
             return;
         }
+
 
     }
 }
