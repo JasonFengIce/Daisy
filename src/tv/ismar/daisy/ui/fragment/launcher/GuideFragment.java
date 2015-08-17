@@ -63,7 +63,7 @@ public class GuideFragment extends ChannelBaseFragment implements
 
     private MediaPlayer.OnCompletionListener loopAllListener;
     private MediaPlayer.OnCompletionListener loopCurrentListener;
-
+    private IsmartvUrlClient datafetch;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -141,9 +141,18 @@ public class GuideFragment extends ChannelBaseFragment implements
         fetchHomePage();
     }
 
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		loopMessageHandler.removeMessages(0);
+		if(datafetch != null && datafetch.isAlive())
+			datafetch.interrupt();
+	}
+
     public void fetchHomePage() {
         String api = SimpleRestClient.root_url + "/api/tv/homepage/top/";
-        new IsmartvUrlClient().doRequest(api, new IsmartvUrlClient.CallBack() {
+        datafetch = new IsmartvUrlClient();
+        datafetch.doRequest(api, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
                 HomePagerEntity homePagerEntity = new Gson().fromJson(result,

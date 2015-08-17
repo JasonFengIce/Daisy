@@ -67,7 +67,7 @@ public class SportFragment extends ChannelBaseFragment {
 	private ArrayList<Carousel> looppost = new ArrayList<Carousel>();
 	private int loopindex = -1;
 	private int currentLiveIndex = 0;
-
+    private FetchDataTask datafetch;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -122,6 +122,7 @@ public class SportFragment extends ChannelBaseFragment {
 					}
 					Message msg = new Message();
 					msg.arg1 = 1;
+					msg.what = 0;
 					test.sendMessage(msg);
 				}
 			}
@@ -138,6 +139,7 @@ public class SportFragment extends ChannelBaseFragment {
 					}
 					Message msg = new Message();
 					msg.arg1 = 2;
+					msg.what = 0;
 					test.sendMessage(msg);
 				}
 			}
@@ -147,8 +149,18 @@ public class SportFragment extends ChannelBaseFragment {
 	}
 
 	@Override
+	public void onDetach() {
+		super.onDetach();
+		imageswitch.removeMessages(IMAGE_SWITCH_KEY);
+		test.removeMessages(0);
+		if(datafetch != null && !datafetch.isCancelled())
+			datafetch.cancel(true);
+	}
+
+	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
-		new FetchDataTask().execute();
+		datafetch =new FetchDataTask();
+		datafetch.execute();
 		games = new ArrayList<SportGame>();
 		mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
 		initzoom();

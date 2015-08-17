@@ -74,7 +74,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
     private boolean focusFlag = true;
 
     private BroadcastReceiver externalStorageReceiver;
-
+    private IsmartvUrlClient datafetch;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -209,8 +209,17 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
 
     }
 
+    @Override
+ 	public void onDetach() {
+ 		super.onDetach();
+ 		messageHandler.removeMessages(0);
+ 		if(datafetch != null && datafetch.isAlive())
+ 			datafetch.interrupt();
+ 	}
+
     private void fetchHomePage(String url) {
-        new IsmartvUrlClient().doRequest(url, new IsmartvUrlClient.CallBack() {
+    	datafetch = new IsmartvUrlClient();
+    	datafetch.doRequest(url, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
                 HomePagerEntity homePagerEntity = new Gson().fromJson(result, HomePagerEntity.class);
