@@ -10,7 +10,7 @@
     <dimen name="item_detail_detail_title_textSize">40.00sp</dimen>
     <dimen name="item_detail_attribute_width">367.33dip</dimen>
     <dimen name="item_detail_attribute_left">53.33dip</dimen>
-    <dimen name="item_detail_attribute_top">12.00dip</dimen>
+    <dimen name="item_detail_attribute_top">10.00dip</dimen>
     <dimen name="item_detail_intro_width">781.33dip</dimen>
     <dimen name="item_detail_intro_height">182.00dip</dimen>
     <dimen name="item_detail_intro_bottom">46.67dp</dimen>
@@ -116,7 +116,7 @@
     <dimen name="gridview_item_image_marginright">9.33dip</dimen>
     <dimen name="gridview_item_image_marginleft">2.00dip</dimen>
     <dimen name="gridview_item_title_W">200.00dip</dimen>
-    <dimen name="gridview_item_title_textsize">23.33sp</dimen>
+    <dimen name="gridview_item_title_textsize">23sp</dimen>
     <dimen name="gridview_item_quality_img_marginT">0.67dip</dimen>
     <dimen name="gridview_item_quality_img_marginR">1.33dip</dimen>
     <dimen name="gridview_item_quality_img_H">38.00dip</dimen>
@@ -143,7 +143,7 @@
     <dimen name="grid_view_main_horizontalSpace">10.67dip</dimen>
     <dimen name="gridview_item_list_item_title_MT">4.67dip</dimen>
     <dimen name="gridview_item_ItemBeanScore_MR">5.33dip</dimen>
-    <dimen name="gridview_item_ItemBeanScore_MT">0.67dip</dimen>
+    <dimen name="gridview_item_ItemBeanScore_MT">0dip</dimen>
     <dimen name="gridview_item_ItemBeanScore_PT">3.33dip</dimen>
     <dimen name="gridview_item_ItemBeanScore_textsize">24.00sp</dimen>
     <dimen name="gridview_item_expense_txt_W">82.00dip</dimen>
@@ -302,6 +302,21 @@
     <dimen name="related_view_list_verticalspacing">6.00dip</dimen>
     <dimen name="related_view_list_columnwidth">232.00dip</dimen>
     <dimen name="related_view_title_marginTop">10.00dip</dimen>
+    <dimen name="related_view_gridview_W">169.34dip</dimen>
+    <dimen name="related_view_gridview_ltr">3.34dip</dimen>
+    <dimen name="related_view_gridview_selector_PL">2.54dip</dimen>
+    <dimen name="related_view_gridview_selector_PT">2.54dip</dimen>
+    <dimen name="related_view_gridview_selector_PR">2.54dip</dimen>
+    <dimen name="related_view_gridview_selector_PB">-32.27dip</dimen>
+    <dimen name="related_view_hgridview_horizontalSpace">76.67dip</dimen>
+    <dimen name="related_view_hgridview_item_textview_h">55.34dip</dimen>
+    <dimen name="related_view_hgridview_item_pt">10dip</dimen>
+    <dimen name="related_view_hgridview_item_pb">22.67dip</dimen>
+    <dimen name="related_view_hgridview_item_score_H">42dip</dimen>
+    <dimen name="related_view_gridview_item_text_pt">1.33dip</dimen>
+    <dimen name="related_view_gridview_item_text_h">34dip</dimen>
+    <dimen name="related_view_gridview_item_score_ml">-0.67dip</dimen>
+    <!-- Toast -->
     <!-- Toast -->
     <dimen name="toast_layout_W">354.67dip</dimen>
     <dimen name="toast_layout_H">114.67dip</dimen>
@@ -452,13 +467,13 @@
     <dimen name="ZGridView_recommend_selectorLeftPadding">2.67dip</dimen>
     <dimen name="ZGridView_recommend_selectorTopPadding">-12.67dip</dimen>
     <dimen name="ZGridView_recommend_selectorRightPadding">1.33dip</dimen>
-    <dimen name="ZGridView_recommend_selectorBottomPadding">-32.67dip</dimen>
+    <dimen name="ZGridView_recommend_selectorBottomPadding">-31.67dip</dimen>
 
     <!-- HGridView -->
     <dimen name="HGridView_related_selectionLeftPadding">2.33dip</dimen>
     <dimen name="HGridView_related_selectionTopPadding">2.33dip</dimen>
     <dimen name="HGridView_related_selectionRightPadding">2.33dip</dimen>
-    <dimen name="HGridView_related_selectionBottomPadding">-53.40dip</dimen>
+    <dimen name="HGridView_related_selectionBottomPadding">-52.7dip</dimen>
     <dimen name="HGridView_related_PFilterLeftPadding">13.33dip</dimen>
     <dimen name="HGridView_related_PFilterTopPadding">14.00dip</dimen>
     <dimen name="HGridView_related_PFilterRightPadding">14.00dip</dimen>
@@ -996,7 +1011,7 @@
     <dimen name="usercenter_storefragment_packagelist_selectorLeftPadding">0.60dip</dimen>
     <dimen name="usercenter_storefragment_packagelist_selectorTopPadding">0.60dip</dimen>
     <dimen name="usercenter_storefragment_packagelist_selectorRightPadding">0.40dip</dimen>
-    <dimen name="usercenter_storefragment_packagelist_selectorBottomPadding">-41.33dip</dimen>
+    <dimen name="usercenter_storefragment_packagelist_selectorBottomPadding">-42.33dip</dimen>
     <dimen name="usercenter_storefragment_packagelist_gridview_P">3.33dip</dimen>
 
     <!-- fragment sport -->
@@ -1052,7 +1067,7 @@
     <!-- listportait item -->
     <dimen name="list_item_preview_img_w">169.33dp</dimen>
     <dimen name="list_item_preview_img_h">236.67dp</dimen>
-    <dimen name="list_item_preview_img_mt">6.00dip</dimen>
+    <dimen name="list_item_preview_img_mt">5.00dip</dimen>
     <dimen name="list_item_title_w">169.33dp</dimen>
     <dimen name="list_item_title_pt">1.33dp</dimen>
     <dimen name="list_item_ItemBeanScore_ml">-0.67dp</dimen>
@@ -1121,7 +1136,7 @@
     <dimen name="filmitem_portrait_relativeLayout2_ml">18.67dip</dimen>
     <dimen name="filmitem_portrait_detail_title_mt">20.00dip</dimen>
     <dimen name="filmitem_portrait_detail_title_w">532.00dip</dimen>
-    <dimen name="filmitem_portrait_detail_title_h">32.00dip</dimen>
+    <dimen name="filmitem_portrait_detail_title_h">35.00dip</dimen>
     <dimen name="filmitem_portrait_detail_title_size">32.00sp</dimen>
     <dimen name="filmitem_portrait_detail_attribute_container_mt">12.67dip</dimen>
     <dimen name="filmitem_portrait_detail_intro_w">940.00dip</dimen>
@@ -1155,7 +1170,7 @@
     <!-- entertainment_detail_view -->
     <dimen name="entertainment_detail_view_filter_divider_h">2.00dip</dimen>
     <dimen name="entertainment_detail_view_detail_title_w">640.00dip</dimen>
-    <dimen name="entertainment_detail_view_detail_title_h">27.33dip</dimen>
+    <dimen name="entertainment_detail_view_detail_title_h">29dip</dimen>
     <dimen name="entertainment_detail_view_detail_title_ml">48.67dip</dimen>
     <dimen name="entertainment_detail_view_detail_title_mt">20.00dip</dimen>
     <dimen name="entertainment_detail_view_detail_title_textsize">26.67sp</dimen>
@@ -1179,10 +1194,10 @@
     <dimen name="entertainment_detail_intro_w">1182.67dip</dimen>
     <dimen name="entertainment_detail_intro_h">63.33dip</dimen>
     <dimen name="entertainment_detail_textView_ml">48.67dip</dimen>
-    <dimen name="entertainment_detail_textView_mt">38.67dip</dimen>
+    <dimen name="entertainment_detail_textView_mt">38dip</dimen>
     <dimen name="entertainment_detail_textView_w">96.00dip</dimen>
-    <dimen name="entertainment_detail_textView_h">24.00dip</dimen>
-    <dimen name="entertainment_detail_view_linearLayout4_mt">23.33dip</dimen>
+    <dimen name="entertainment_detail_textView_h">28.00dip</dimen>
+    <dimen name="entertainment_detail_view_linearLayout4_mt">23dip</dimen>
     <dimen name="entertainment_detail_view_linearLayout4_margin">48.67dip</dimen>
     <dimen name="entertainment_detail_view_linearLayout4_h">158.00dip</dimen>
     <dimen name="entertainment_detail_view_linearLayout5_ml">56.67dip</dimen>
@@ -1193,7 +1208,7 @@
     <dimen name="realte_entertainment_item_related_preview_img_w">224.00dip</dimen>
     <dimen name="realte_entertainment_item_related_preview_img_h">126.00dip</dimen>
     <dimen name="realte_entertainment_item_related_preview_img_textsize">16.00sp</dimen>
-    <dimen name="realte_entertainment_item_related_title_mt">11.33dip</dimen>
+    <dimen name="realte_entertainment_item_related_title_mt">10dip</dimen>
     <dimen name="realte_entertainment_item_related_title_textsize">20.00sp</dimen>
 
     <!-- realte_entertainment_item end -->
@@ -1239,5 +1254,6 @@
     <dimen name="pay_person_login_pay_btn_submit_mt">66.67dip</dimen>
     <dimen name="pay_person_login_pay_btn_submit_ml">223.33dip</dimen>
     <!-- pay_person_login end -->
-
+    <!-- history and collect -->
+    <dimen name="history_collect_shadow_mt">234.67dip</dimen>
 </resources>

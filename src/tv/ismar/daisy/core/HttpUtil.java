@@ -19,7 +19,7 @@ public class HttpUtil {
 	// 接口入口地址
     //public static String ROOT_URL = SimpleRestClient.root_url+"/";
    // public static String ROOT_URL = "http://cord.tvxio.com/";//http://cord.tvxio.com/v2_0/A21/dto
-    public static String ROOT_URL = "http://cord.tvxio.com/v2_0/A21/dto/";
+    public static String ROOT_URL = SimpleRestClient.root_url+"/";
 	//public static String ROOT_URL = "http://127.0.0.1:21098/cord/";
 	// 搜索接口
 	public static String search_URL = "api/tv/search/";

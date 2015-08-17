@@ -302,6 +302,20 @@
     <dimen name="related_view_list_verticalspacing">9dip</dimen>
     <dimen name="related_view_list_columnwidth">348dip</dimen>
     <dimen name="related_view_title_marginTop">15dip</dimen>
+    <dimen name="related_view_gridview_W">254dip</dimen>
+    <dimen name="related_view_gridview_ltr">5dip</dimen>
+    <dimen name="related_view_gridview_selector_PL">3.8dip</dimen>
+    <dimen name="related_view_gridview_selector_PT">3.8dip</dimen>
+    <dimen name="related_view_gridview_selector_PR">3.8dip</dimen>
+    <dimen name="related_view_gridview_selector_PB">-48.4dip</dimen>
+    <dimen name="related_view_hgridview_horizontalSpace">115dip</dimen>
+    <dimen name="related_view_hgridview_item_textview_h">83dip</dimen>
+    <dimen name="related_view_hgridview_item_pt">15dip</dimen>
+    <dimen name="related_view_hgridview_item_pb">34dip</dimen>
+    <dimen name="related_view_hgridview_item_score_H">63dip</dimen>
+    <dimen name="related_view_gridview_item_text_pt">2dip</dimen>
+    <dimen name="related_view_gridview_item_text_h">51dip</dimen>
+    <dimen name="related_view_gridview_item_score_ml">-1dip</dimen>
     <!-- Toast -->
     <dimen name="toast_layout_W">532dip</dimen>
     <dimen name="toast_layout_H">172dip</dimen>
@@ -1242,4 +1256,7 @@
     <dimen name="pay_person_login_pay_btn_submit_mt">100dip</dimen>
     <dimen name="pay_person_login_pay_btn_submit_ml">335dip</dimen>
     <!-- pay_person_login end-->
+
+    <!-- history and collect -->
+    <dimen name="history_collect_shadow_mt">352dip</dimen>
 </resources>

@@ -18,7 +18,7 @@
     </tv.ismar.daisy.ui.widget.LaunchHeaderLayout>
     <ImageView
             android:layout_marginLeft="@dimen/divider_margin_MLR"
-            android:layout_marginRight="26dp"
+            android:layout_marginRight="@dimen/divider_margin_MLR"
             android:layout_width="match_parent"
             android:scaleType="fitXY"
             android:src="@drawable/orderlistdivide"

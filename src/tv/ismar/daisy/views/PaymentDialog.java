@@ -115,6 +115,7 @@ public class PaymentDialog extends Dialog {
 		this.setContentView(R.layout.paymentselect);
 		initView();
 		resizeWindow();
+        purchaseCheck();
 	}
 
 	@Override
@@ -203,10 +204,13 @@ public class PaymentDialog extends Dialog {
 		public void onClick(View view) {
 			switch (view.getId()) {
 			case R.id.weixin: {
+                if(urlHandler.hasMessages(PURCHASE_CHECK_RESULT))
+                    urlHandler.removeMessages(PURCHASE_CHECK_RESULT);
 				changeQrcodePayPanelState(true, true);
 				changeLoginPanelState(false);
 				changeYuePayPanelState(false,false);
 				changeshiyuncardPanelState(false);
+                purchaseCheck();
 			}
 				break;
 			case R.id.videocard: {
@@ -219,10 +223,13 @@ public class PaymentDialog extends Dialog {
 			}
 				break;
 			case R.id.zhifubao: {
+                if(urlHandler.hasMessages(PURCHASE_CHECK_RESULT))
+                    urlHandler.removeMessages(PURCHASE_CHECK_RESULT);
 				changeQrcodePayPanelState(true, false);
 				changeLoginPanelState(false);
 				changeYuePayPanelState(false,false);
 				changeshiyuncardPanelState(false);
+                purchaseCheck();
 			}
 				break;
 			case R.id.balance_pay: {
@@ -235,6 +242,8 @@ public class PaymentDialog extends Dialog {
 			}
 				break;
 			case R.id.top_login: {
+                if(urlHandler.hasMessages(PURCHASE_CHECK_RESULT))
+                    urlHandler.removeMessages(PURCHASE_CHECK_RESULT);
 				flag = true;
 				changeQrcodePayPanelState(false, false);
 				changeLoginPanelState(true);

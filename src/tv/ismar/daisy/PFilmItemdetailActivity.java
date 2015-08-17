@@ -939,6 +939,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
 
                         intent.putExtra("item", mItem);
+                        mItem.content_model = "movie";
                         intent.setClass(PFilmItemdetailActivity.this,
                                 RelatedActivity.class);
                         startActivity(intent);

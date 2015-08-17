@@ -8,6 +8,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -27,7 +29,6 @@ import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
 import com.baidu.location.*;
 import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
 import org.sakuratya.horizontal.ui.HGridView;
 import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.BaseActivity;
@@ -38,6 +39,7 @@ import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
+import tv.ismar.daisy.core.provider.LocationProvider;
 import tv.ismar.daisy.core.service.PosterUpdateService;
 import tv.ismar.daisy.core.update.AppUpdateUtils;
 import tv.ismar.daisy.data.ChannelEntity;
@@ -47,8 +49,8 @@ import tv.ismar.daisy.ui.fragment.*;
 import tv.ismar.daisy.ui.fragment.launcher.*;
 import tv.ismar.daisy.ui.widget.DaisyButton;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
-import tv.ismar.daisy.utils.BitmapUtils;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -76,7 +78,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private LinearLayout channelListView;
     private LinearLayout tabListView;
 
-    private LinearLayout contentView;
+    private View contentView;
     private Activator activator;
 
     private LocationClient mLocationClient;
@@ -165,7 +167,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         registerUpdateReceiver();
-        contentView = (LinearLayout)LayoutInflater.from(this).inflate(R.layout.activity_tv_guide, null);
+        contentView = LayoutInflater.from(this).inflate(R.layout.activity_tv_guide, null);
         setContentView(contentView);
 
         topView = (LaunchHeaderLayout) findViewById(R.id.top_column_layout);
@@ -633,25 +635,55 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private void selectChannelByPosition(int position) {
         ChannelEntity channelEntity = mChannelEntitys[position];
         topView.setSubTitle(channelEntity.getName());
+        currentFragment = null;
+        destroybackground();
         if ("template1".equals(channelEntity.getHomepage_template())) {
             currentFragment = new FilmFragment();
-            contentView.setBackground(BitmapUtils.getDrawableByResId(this,R.drawable.main_bg));
-
+            //contentView.setBackgroundResource(R.drawable.main_bg);
+            setbackground(R.drawable.main_bg);
         } else if ("template2".equals(channelEntity.getHomepage_template())) {
             currentFragment = new EntertainmentFragment();
-            contentView.setBackground(BitmapUtils.getDrawableByResId(this,R.drawable.main_bg));
+            //contentView.setBackgroundResource(R.drawable.main_bg);
+            setbackground(R.drawable.main_bg);
         } else if ("template3".equals(channelEntity.getHomepage_template())) {
             currentFragment = new SportFragment();
-            contentView.setBackground(BitmapUtils.getDrawableByResId(this,R.drawable.main_bg));
+           // contentView.setBackgroundResource(R.drawable.main_bg);
+            setbackground(R.drawable.main_bg);
         } else if ("template4".equals(channelEntity.getHomepage_template())) {
             currentFragment = new ChildFragment();
-            contentView.setBackground(BitmapUtils.getDrawableByResId(this, R.drawable.channel_child_bg));
+           // contentView.setBackgroundResource(R.drawable.channel_child_bg);
+            setbackground(R.drawable.channel_child_bg);
         }
+       // currentFragment.view = scroll;
+        //currentFragment.position = position;
         currentFragment.setChannelEntity(channelEntity);
         replaceFragment(currentFragment);
     }
 
+    private void setbackground(int id){
+        BitmapFactory.Options opt = new BitmapFactory.Options();
 
+        opt.inPreferredConfig = Bitmap.Config.RGB_565;
+
+        opt.inPurgeable = true;
+
+        opt.inInputShareable = true;
+
+        InputStream is = getResources().openRawResource(
+
+               id );
+
+        Bitmap bm = BitmapFactory.decodeStream(is, null, opt);
+
+        BitmapDrawable bd = new BitmapDrawable(getResources(), bm);
+        contentView.setBackgroundDrawable(bd);
+    }
+    private void destroybackground(){
+        BitmapDrawable bd = (BitmapDrawable)contentView.getBackground();
+        contentView.setBackgroundResource(0);//别忘了把背景设为null，避免onDraw刷新背景时候出现used a recycled bitmap错误
+        bd.setCallback(null);
+        bd.getBitmap().recycle();
+    }
     private void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction();

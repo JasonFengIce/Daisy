@@ -108,7 +108,7 @@ public class DetailAttributeContainer extends LinearLayout {
                 infoLine = new LinearLayout(getContext());
                 layoutParamsInfo = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
                 if(i>=3)
-                layoutParamsInfo.topMargin = (int)(30/1);
+                   layoutParamsInfo.topMargin = (int)(30/1);
                 layoutParamsInfo.rightMargin = (int)(73/1);
                 infoLine.setLayoutParams(layoutParamsInfo);
                 infoLine.setOrientation(LinearLayout.HORIZONTAL);
@@ -160,10 +160,10 @@ public class DetailAttributeContainer extends LinearLayout {
         LinearLayout.LayoutParams itemNameParams = null;
         TextView itemValue = new TextView(getContext());
         if((position+1)%3==0){
-            itemNameParams = new LinearLayout.LayoutParams((int)(390/1), (int)(31/1));
+            itemNameParams = new LinearLayout.LayoutParams((int)(390/1), (int)(32/1));
         }
         else{
-            itemNameParams = new LinearLayout.LayoutParams((int)(390/1), (int)(31/1));
+            itemNameParams = new LinearLayout.LayoutParams((int)(390/1), (int)(32/1));
         }
         itemNameParams.leftMargin = distanceLeft;
         // LinearLayout.LayoutParams itemValueParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -180,17 +180,17 @@ public class DetailAttributeContainer extends LinearLayout {
         LinearLayout.LayoutParams itemNameParams = null;
 
         if(distanceLeft>0){
-            itemNameParams = new LinearLayout.LayoutParams((int)(289/1), (int)(26/1));
+            itemNameParams = new LinearLayout.LayoutParams((int)(289/1), (int)(27/1));
         }
         else if(distanceLeft==0){
             if(lineNumber==-1){
                 itemNameParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             }
             else if(lineNumber>=4){
-                itemNameParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,(int)(26/1));
+                itemNameParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,(int)(27/1));
             }
             else{
-                itemNameParams = new LinearLayout.LayoutParams((int)(441/1), (int)(26/1));
+                itemNameParams = new LinearLayout.LayoutParams((int)(441/1), (int)(27/1));
             }
         }
 

@@ -8,8 +8,8 @@
 
     <tv.ismar.daisy.views.LabelImageView
         xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
-        android:layout_width="336dp"
-        android:layout_height="189dp"
+        android:layout_width="@dimen/filter_list_item_title_w"
+        android:layout_height="@dimen/filter_list_item_preview_img_h"
         android:id="@+id/list_item_preview_img"
         android:background="@drawable/list_item_preview_bg"
         android:layout_alignParentTop="true"
@@ -18,22 +18,22 @@
         android:paddingLeft="@dimen/gridview_item_image_PaddingL"
         android:paddingRight="@dimen/gridview_item_image_PaddingR"
         labelimage:focuspaddingtop="0.90"
-        labelimage:focustextsize="30sp"
+        labelimage:focustextsize="@dimen/entertainment_vaiety_channel_title_textsize"
         labelimage:focusbackground="#b3303030"
         labelimage:maxfocustitle="10"
         android:scaleType="fitXY"/>
 
     <TextView
-        android:paddingBottom="34dip"
-        android:paddingTop="15dip"
-        android:layout_width="336dip"
-        android:layout_height="83dip"
+        android:paddingBottom="@dimen/related_view_hgridview_item_pb"
+        android:paddingTop="@dimen/related_view_hgridview_item_pt"
+        android:layout_width="@dimen/filter_list_item_title_w"
+        android:layout_height="@dimen/related_view_hgridview_item_textview_h"
         android:singleLine="true"
         android:ellipsize="marquee"
         android:gravity="center_horizontal"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/list_item_preview_img"
-        android:textSize="30sp"
+        android:textSize="@dimen/entertainment_vaiety_channel_title_textsize"
         android:id="@+id/list_item_title"
         android:textColor="#FFF8F8FF"
        />
@@ -51,7 +51,7 @@
     <TextView
         android:id="@+id/ItemBeanScore"
         android:layout_width="wrap_content"
-        android:layout_height="63dip"
+        android:layout_height="@dimen/related_view_hgridview_item_score_H"
         android:layout_alignTop="@id/list_item_preview_img"
         android:layout_alignRight="@id/list_item_preview_img"
         android:layout_marginTop="@dimen/gridview_item_ItemBeanScore_MT"
