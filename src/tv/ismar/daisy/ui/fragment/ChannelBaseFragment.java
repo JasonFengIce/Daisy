@@ -35,6 +35,13 @@ public class ChannelBaseFragment extends Fragment {
 	}
 
 	@Override
+	public void onDetach() {
+		context = null;
+		ItemClickListener = null;
+		super.onDetach();
+	}
+
+	@Override
 	public void onResume() {
 		super.onResume();
 		if (null != channelEntity

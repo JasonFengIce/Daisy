@@ -10,6 +10,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.widget.ImageView;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.advertisement.AdvertisementManager;
@@ -67,8 +69,8 @@ public class AdvertisementActivity extends Activity {
         Log.d(TAG, "fetch advertisement path: " + path);
         Picasso.with(AdvertisementActivity.this)
                 .load(path)
-//                .error(getImageFromAssetsFile("poster.png"))
-                .skipMemoryCache()
+                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
                 .into(adverPic, new com.squareup.picasso.Callback() {
                     @Override
                     public void onSuccess() {

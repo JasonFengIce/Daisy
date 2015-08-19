@@ -3,6 +3,7 @@ package tv.ismar.daisy.ui.fragment.launcher;
 import java.util.ArrayList;
 
 import android.widget.ImageButton;
+import com.squareup.picasso.MemoryPolicy;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.HomePagerEntity;
@@ -92,6 +93,11 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
 
     }
 
+    @Override
+    public void onDetach() {
+        messageHandler.removeMessages(0);
+        super.onDetach();
+    }
 
     private void initPosters(ArrayList<HomePagerEntity.Poster> posters) {
         int marginTP = (int) context.getResources().getDimension(R.dimen.child_fragment_item_margin_tp);
@@ -106,7 +112,7 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
             ImageView itemImg = (ImageView) itemContainer.findViewById(R.id.item_img);
             TextView itemText = (TextView) itemContainer.findViewById(R.id.item_title);
 
-            Picasso.with(context).load(posters.get(i).getCustom_image()).into(itemImg);
+            Picasso.with(context).load(posters.get(i).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(itemImg);
             itemText.setText(posters.get(i).getTitle());
 
             /**
@@ -189,7 +195,7 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
             indicatorImgs[i].setOnFocusChangeListener(itemFocusChangeListener);
             indicatorImgs[i].setOnClickListener(ItemClickListener);
             indicatorImgs[i].setTag(R.drawable.launcher_selector, carousels.get(i));
-            Picasso.with(context).load(carousels.get(i).getThumb_image()).into(indicatorImgs[i]);
+            Picasso.with(context).load(carousels.get(i).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(indicatorImgs[i]);
         }
 
         flag.setPosition(0);
@@ -199,7 +205,7 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
 
     private void playCarousel() {
         messageHandler.removeMessages(0);
-        Picasso.with(context).load(carousels.get(flag.getPosition()).getVideo_image()).into(imageSwitcher, new Callback() {
+        Picasso.with(context).load(carousels.get(flag.getPosition()).getVideo_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(imageSwitcher, new Callback() {
             int pauseTime = Integer.parseInt(carousels.get(flag.getPosition()).getPause_time());
 
             @Override

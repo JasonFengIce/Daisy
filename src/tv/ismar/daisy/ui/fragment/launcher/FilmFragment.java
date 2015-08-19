@@ -20,6 +20,7 @@ import android.widget.*;
 import com.activeandroid.query.Select;
 import com.google.gson.Gson;
 import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import tv.ismar.daisy.R;
@@ -289,7 +290,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
                 textView.setOnClickListener(ItemClickListener);
                 textView.setTag(posters.get(i));
                 frameLayout.setOnClickListener(ItemClickListener);
-                Picasso.with(context).load(posters.get(i).getCustom_image()).into(postitemView);
+                Picasso.with(context).load(posters.get(i).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(postitemView);
 //                textView.setTag(posters.get(i));
                 frameLayout.setTag(posters.get(i));
                 frameLayout.setLayoutParams(params);
@@ -357,7 +358,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
             LabelImageView itemView = new LabelImageView(context);
 //            itemView.setBackgroundResource(R.drawable.launcher_selector);
             itemView.setFocusable(true);
-            Picasso.with(context).load(carousels.get(i).getThumb_image())
+            Picasso.with(context).load(carousels.get(i).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE)
                     .into(itemView);
             itemView.setScaleType(ImageView.ScaleType.FIT_XY);
             itemView.setLayoutParams(params);
@@ -426,7 +427,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
         } else {
             film_linked_title.setVisibility(View.GONE);
         }
-        Picasso.with(context).load(url).into(linkedVideoImage, new Callback() {
+        Picasso.with(context).load(url).memoryPolicy(MemoryPolicy.NO_STORE).into(linkedVideoImage, new Callback() {
             int pauseTime = Integer.parseInt(carousels.get(flag.getPosition()).getPause_time());
 
             @Override

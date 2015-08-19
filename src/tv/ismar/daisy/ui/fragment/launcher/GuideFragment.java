@@ -8,6 +8,7 @@ import java.util.List;
 
 import android.os.Handler;
 import android.os.Message;
+import com.squareup.picasso.MemoryPolicy;
 import org.apache.commons.lang3.StringUtils;
 
 import tv.ismar.daisy.R;
@@ -64,6 +65,7 @@ public class GuideFragment extends ChannelBaseFragment implements
     private MediaPlayer.OnCompletionListener loopAllListener;
     private MediaPlayer.OnCompletionListener loopCurrentListener;
     private IsmartvUrlClient datafetch;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -141,13 +143,13 @@ public class GuideFragment extends ChannelBaseFragment implements
         fetchHomePage();
     }
 
-	@Override
-	public void onDetach() {
-		super.onDetach();
-		loopMessageHandler.removeMessages(0);
-		if(datafetch != null && datafetch.isAlive())
-			datafetch.interrupt();
-	}
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        loopMessageHandler.removeMessages(0);
+        if (datafetch != null && datafetch.isAlive())
+            datafetch.interrupt();
+    }
 
     public void fetchHomePage() {
         String api = SimpleRestClient.root_url + "/api/tv/homepage/top/";
@@ -210,7 +212,7 @@ public class GuideFragment extends ChannelBaseFragment implements
                     }
                 }
             });
-            Picasso.with(context).load(posters.get(i).getCustom_image())
+            Picasso.with(context).load(posters.get(i).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE)
                     .into(itemView);
             textView.setTag(posters.get(i));
             frameLayout.setTag(posters.get(i));
@@ -264,7 +266,7 @@ public class GuideFragment extends ChannelBaseFragment implements
                     linkedVideoView.setOnCompletionListener(null);
                     linkedVideoView.setOnCompletionListener(loopAllListener);
                 } else {
-                    if (hasFocus){
+                    if (hasFocus) {
                         flag.setPosition((Integer) v.getTag());
                         linkedVideoView.setOnCompletionListener(null);
                         linkedVideoView.setOnCompletionListener(loopCurrentListener);
@@ -279,19 +281,19 @@ public class GuideFragment extends ChannelBaseFragment implements
         };
 
 
-        Picasso.with(context).load(carousels.get(0).getThumb_image()).into(toppage_carous_imageView1);
+        Picasso.with(context).load(carousels.get(0).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(toppage_carous_imageView1);
         toppage_carous_imageView1.setTag(0);
         toppage_carous_imageView1.setTag(R.drawable.launcher_selector, carousels.get(0));
         toppage_carous_imageView1.setOnClickListener(ItemClickListener);
         toppage_carous_imageView1.setOnFocusChangeListener(itemFocusChangeListener);
 
-        Picasso.with(context).load(carousels.get(1).getThumb_image()).into(toppage_carous_imageView2);
+        Picasso.with(context).load(carousels.get(1).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(toppage_carous_imageView2);
         toppage_carous_imageView2.setTag(1);
         toppage_carous_imageView2.setTag(R.drawable.launcher_selector, carousels.get(1));
         toppage_carous_imageView2.setOnClickListener(ItemClickListener);
         toppage_carous_imageView2.setOnFocusChangeListener(itemFocusChangeListener);
 
-        Picasso.with(context).load(carousels.get(2).getThumb_image()).into(toppage_carous_imageView3);
+        Picasso.with(context).load(carousels.get(2).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(toppage_carous_imageView3);
         toppage_carous_imageView3.setTag(2);
         toppage_carous_imageView3.setTag(R.drawable.launcher_selector, carousels.get(2));
         toppage_carous_imageView3.setOnClickListener(ItemClickListener);

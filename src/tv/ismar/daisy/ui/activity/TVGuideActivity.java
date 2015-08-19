@@ -29,6 +29,8 @@ import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
 import com.baidu.location.*;
 import com.google.gson.Gson;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 import org.sakuratya.horizontal.ui.HGridView;
 import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.BaseActivity;
@@ -39,13 +41,12 @@ import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
-import tv.ismar.daisy.core.provider.LocationProvider;
 import tv.ismar.daisy.core.service.PosterUpdateService;
 import tv.ismar.daisy.core.update.AppUpdateUtils;
 import tv.ismar.daisy.data.ChannelEntity;
 import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
 import tv.ismar.daisy.ui.Position;
-import tv.ismar.daisy.ui.fragment.*;
+import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
 import tv.ismar.daisy.ui.fragment.launcher.*;
 import tv.ismar.daisy.ui.widget.DaisyButton;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
@@ -241,6 +242,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             imageView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
             tabListView.addView(imageView);
         }
+
+
     }
 
     /**
@@ -563,6 +566,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.PACKAGE_INFO, result.getPackageInfo());
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.EXPIRY_DATE, result.getExpiry_date());
+
+
 
     }
 

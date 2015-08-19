@@ -2,6 +2,7 @@ package tv.ismar.daisy.ui.fragment.launcher;
 
 import java.util.ArrayList;
 
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import tv.ismar.daisy.R;
@@ -135,7 +136,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 					vaiety_thumb2.setPadding(0, 22, 0, -22);
 					vaiety_thumb3.setPadding(0, 22, 0, -22);
 					if (v.getTag() != null) {
-						Picasso.with(context).load(v.getTag().toString())
+						Picasso.with(context).load(v.getTag().toString()).memoryPolicy(MemoryPolicy.NO_STORE)
 								.into(vaiety_post);
 						vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post)
 								.toString());
@@ -154,7 +155,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 					v.setPadding(0, 0, 0, 0);
 					vaiety_thumb1.setPadding(0, 22, 0, -22);
 					vaiety_thumb3.setPadding(0, 22, 0, -22);
-					Picasso.with(context).load(v.getTag().toString())
+					Picasso.with(context).load(v.getTag().toString()).memoryPolicy(MemoryPolicy.NO_STORE).memoryPolicy(MemoryPolicy.NO_STORE)
 							.into(vaiety_post);
 					vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post)
 							.toString());
@@ -172,7 +173,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 					v.setPadding(0, 0, 0, 0);
 					vaiety_thumb2.setPadding(0, 22, 0, -22);
 					vaiety_thumb1.setPadding(0, 22, 0, -22);
-					Picasso.with(context).load(v.getTag().toString())
+					Picasso.with(context).load(v.getTag().toString()).memoryPolicy(MemoryPolicy.NO_STORE)
 							.into(vaiety_post);
 					vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post)
 							.toString());
@@ -334,7 +335,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
-			Picasso.with(context).load(looppost.get(++loopindex))
+			Picasso.with(context).load(looppost.get(++loopindex)).memoryPolicy(MemoryPolicy.NO_STORE)
 					.into(vaiety_post);
 			if (loopindex == 0) {
 				vaiety_thumb1.setPadding(0, 0, 0, 0);
@@ -363,4 +364,10 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 			// pendingView.requestFocus();
 		}
 	};
+
+	@Override
+	public void onDetach() {
+		imageswitch.removeMessages(IMAGE_SWITCH_KEY);
+		super.onDetach();
+	}
 }

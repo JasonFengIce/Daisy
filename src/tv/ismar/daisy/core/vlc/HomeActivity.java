@@ -76,9 +76,9 @@ public class HomeActivity extends Activity implements IVLCVout.Callback, LibVLC.
         mAudioManager = (AudioManager) SampleApplication.getAppContext().getSystemService(AUDIO_SERVICE);
         mAudioMax = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
 
-        setContentView(R.layout.main);
-
-        mSurface = (SurfaceView) findViewById(R.id.player_surface);
+//        setContentView(R.layout.main);
+//
+//        mSurface = (SurfaceView) findViewById(R.id.player_surface);
 
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
