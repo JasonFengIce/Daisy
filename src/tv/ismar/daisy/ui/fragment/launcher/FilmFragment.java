@@ -105,19 +105,19 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
         intentFilter.addAction(Intent.ACTION_MEDIA_REMOVED);
         intentFilter.addAction(Intent.ACTION_MEDIA_BAD_REMOVAL);
         intentFilter.addDataScheme("file");
-        context.registerReceiver(externalStorageReceiver, intentFilter);
+        mContext.registerReceiver(externalStorageReceiver, intentFilter);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        context.unregisterReceiver(externalStorageReceiver);
+        mContext.unregisterReceiver(externalStorageReceiver);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View mView = LayoutInflater.from(context).inflate(
+        View mView = LayoutInflater.from(mContext).inflate(
                 R.layout.fragment_film, null);
         guideRecommmendList = (LinearLayout) mView
                 .findViewById(R.id.film_recommend_list);
@@ -165,23 +165,23 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
                 if ("item".equals(model)) {
                     intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.ItemDetailActivity");
                     intent.putExtra("url", url);
-                    context.startActivity(intent);
+                    mContext.startActivity(intent);
                 } else if ("topic".equals(model)) {
                     intent.putExtra("url", url);
                     intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.TopicActivity");
-                    context.startActivity(intent);
+                    mContext.startActivity(intent);
                 } else if ("section".equals(model)) {
                     intent.putExtra("title", title);
                     intent.putExtra("itemlistUrl", url);
                     intent.putExtra("lableString", title);
                     intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.PackageListDetailActivity");
-                    context.startActivity(intent);
+                    mContext.startActivity(intent);
                 } else if ("package".equals(model)) {
                     intent.setAction("tv.ismar.daisy.packageitem");
                     intent.putExtra("url", url);
-                    context.startActivity(intent);
+                    mContext.startActivity(intent);
                 } else if ("clip".equals(model)) {
-                    InitPlayerTool tool = new InitPlayerTool(context);
+                    InitPlayerTool tool = new InitPlayerTool(mContext);
                     tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
                 }
 
@@ -260,13 +260,13 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
             } else {
                 params.setMargins(0, 0, 28, 0);
             }
-            ImageView itemView = new ImageView(context);
+            ImageView itemView = new ImageView(mContext);
 //            itemView.setBackgroundResource(R.drawable.launcher_selector);
             itemView.setFocusable(true);
             itemView.setLayoutParams(params);
             itemView.setOnClickListener(ItemClickListener);
             if (i <= 7) {
-                tv.ismar.daisy.ui.widget.HomeItemContainer frameLayout = (tv.ismar.daisy.ui.widget.HomeItemContainer) LayoutInflater.from(context).inflate(R.layout.item_poster, null);
+                tv.ismar.daisy.ui.widget.HomeItemContainer frameLayout = (tv.ismar.daisy.ui.widget.HomeItemContainer) LayoutInflater.from(mContext).inflate(R.layout.item_poster, null);
                 ImageView postitemView = (ImageView) frameLayout.findViewById(R.id.poster_image);
                 TextView textView = (TextView) frameLayout.findViewById(R.id.poster_title);
                 if (StringUtils.isNotEmpty(posters.get(i).getIntroduction())) {
@@ -290,7 +290,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
                 textView.setOnClickListener(ItemClickListener);
                 textView.setTag(posters.get(i));
                 frameLayout.setOnClickListener(ItemClickListener);
-                Picasso.with(context).load(posters.get(i).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(postitemView);
+                Picasso.with(mContext).load(posters.get(i).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(postitemView);
 //                textView.setTag(posters.get(i));
                 frameLayout.setTag(posters.get(i));
                 frameLayout.setLayoutParams(params);
@@ -300,7 +300,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
                 params.height = 277;
                 params.setMargins(0, 0, 0, 0);
                 tv.ismar.daisy.ui.widget.HomeItemContainer morelayout = (tv.ismar.daisy.ui.widget.HomeItemContainer) LayoutInflater.from(
-                        context).inflate(R.layout.toppagelistmorebutton,
+                        mContext).inflate(R.layout.toppagelistmorebutton,
                         null);
                 morelayout.setLayoutParams(params);
                 View view = morelayout.findViewById(R.id.listmore);
@@ -355,10 +355,10 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
                 params.topMargin = 0;
             else
                 params.topMargin = 17;
-            LabelImageView itemView = new LabelImageView(context);
+            LabelImageView itemView = new LabelImageView(mContext);
 //            itemView.setBackgroundResource(R.drawable.launcher_selector);
             itemView.setFocusable(true);
-            Picasso.with(context).load(carousels.get(i).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE)
+            Picasso.with(mContext).load(carousels.get(i).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE)
                     .into(itemView);
             itemView.setScaleType(ImageView.ScaleType.FIT_XY);
             itemView.setLayoutParams(params);
@@ -427,7 +427,7 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
         } else {
             film_linked_title.setVisibility(View.GONE);
         }
-        Picasso.with(context).load(url).memoryPolicy(MemoryPolicy.NO_STORE).into(linkedVideoImage, new Callback() {
+        Picasso.with(mContext).load(url).memoryPolicy(MemoryPolicy.NO_STORE).into(linkedVideoImage, new Callback() {
             int pauseTime = Integer.parseInt(carousels.get(flag.getPosition()).getPause_time());
 
             @Override
@@ -555,13 +555,13 @@ public class FilmFragment extends ChannelBaseFragment implements Flag.ChangeCall
 
 
     private void download(String url, String tag) {
-        String savePath = HardwareUtils.getCachePath(context) + "/" + tag + "/";
+        String savePath = HardwareUtils.getCachePath(mContext) + "/" + tag + "/";
         DownloadClient downloadClient = new DownloadClient(url, savePath);
         DownloadThreadPool.getInstance().add(downloadClient);
     }
 
     private void deleteFile(ArrayList<HomePagerEntity.Carousel> carousels, String tag) {
-        String savePath = HardwareUtils.getCachePath(context) + "/" + tag + "/";
+        String savePath = HardwareUtils.getCachePath(mContext) + "/" + tag + "/";
         ArrayList<String> exceptsPaths = new ArrayList<String>();
         for (HomePagerEntity.Carousel carousel : carousels) {
             String url = carousel.getVideo_url();

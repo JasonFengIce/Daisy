@@ -16,6 +16,7 @@ import org.videolan.libvlc.LibVLC;
 import org.videolan.libvlc.Media;
 import org.videolan.libvlc.MediaPlayer;
 import org.videolan.libvlc.util.VLCUtil;
+import tv.ismar.daisy.VodApplication;
 
 public class HomeActivity extends Activity implements IVLCVout.Callback, LibVLC.HardwareAccelerationError,
         PlaybackService.Client.Callback, PlaybackService.Callback {
@@ -73,7 +74,7 @@ public class HomeActivity extends Activity implements IVLCVout.Callback, LibVLC.
 
 
         /* Services and miscellaneous */
-        mAudioManager = (AudioManager) SampleApplication.getAppContext().getSystemService(AUDIO_SERVICE);
+        mAudioManager = (AudioManager) VodApplication.getAppContext().getSystemService(AUDIO_SERVICE);
         mAudioMax = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
 
 //        setContentView(R.layout.main);

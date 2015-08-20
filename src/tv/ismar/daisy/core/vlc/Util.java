@@ -36,6 +36,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.widget.TextView;
 import org.videolan.libvlc.util.AndroidUtil;
+import tv.ismar.daisy.VodApplication;
 
 import java.io.*;
 import java.util.List;
@@ -49,7 +50,7 @@ public class Util {
 
 
     public static int convertPxToDp(int px) {
-        DisplayMetrics metrics = SampleApplication.getAppResources().getDisplayMetrics();
+        DisplayMetrics metrics = VodApplication.getAppResources().getDisplayMetrics();
         float logicalDensity = metrics.density;
         int dp = Math.round(px / logicalDensity);
         return dp;
@@ -58,7 +59,7 @@ public class Util {
     public static int convertDpToPx(int dp) {
         return Math.round(
                 TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
-                        SampleApplication.getAppResources().getDisplayMetrics())
+                        VodApplication.getAppResources().getDisplayMetrics())
         );
     }
 
@@ -66,7 +67,7 @@ public class Util {
         InputStream is = null;
         BufferedReader r = null;
         try {
-            is = SampleApplication.getAppResources().getAssets().open(assetName);
+            is = VodApplication.getAppResources().getAssets().open(assetName);
             r = new BufferedReader(new InputStreamReader(is, "UTF8"));
             StringBuilder sb = new StringBuilder();
             String line = r.readLine();
@@ -110,7 +111,7 @@ public class Util {
      * @return the color id
      */
     public static int getColorFromAttribute(Context context, int attrId) {
-        return SampleApplication.getAppResources().getColor(getResourceFromAttribute(context, attrId));
+        return VodApplication.getAppResources().getColor(getResourceFromAttribute(context, attrId));
     }
 
     /**
@@ -155,13 +156,13 @@ public class Util {
     public static void actionScanStart() {
         Intent intent = new Intent();
         intent.setAction(ACTION_SCAN_START);
-        SampleApplication.getAppContext().sendBroadcast(intent);
+        VodApplication.getAppContext().sendBroadcast(intent);
     }
 
     public static void actionScanStop() {
         Intent intent = new Intent();
         intent.setAction(ACTION_SCAN_STOP);
-        SampleApplication.getAppContext().sendBroadcast(intent);
+        VodApplication.getAppContext().sendBroadcast(intent);
     }
 
     private static class DialogCallback implements PlaybackService.Client.Callback {
@@ -303,7 +304,7 @@ public class Util {
         path = Uri.decode(Strings.removeFileProtocole(path));
         //Delete from Android Medialib, for consistency with device MTP storing and other apps listing content:// media
         if (AndroidUtil.isHoneycombOrLater()) {
-            ContentResolver cr = SampleApplication.getAppContext().getContentResolver();
+            ContentResolver cr = VodApplication.getAppContext().getContentResolver();
             String[] selectionArgs = {path};
             deleted = cr.delete(MediaStore.Files.getContentUri("external"),
                     MediaStore.Files.FileColumns.DATA + "=?", selectionArgs) > 0;
@@ -353,13 +354,13 @@ public class Util {
     }
 
     public static boolean isCallable(Intent intent) {
-        List<ResolveInfo> list = SampleApplication.getAppContext().getPackageManager().queryIntentActivities(intent,
+        List<ResolveInfo> list = VodApplication.getAppContext().getPackageManager().queryIntentActivities(intent,
                 PackageManager.MATCH_DEFAULT_ONLY);
         return list.size() > 0;
     }
 
     public static boolean isBlackThemeEnabled() {
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(SampleApplication.getAppContext());
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(VodApplication.getAppContext());
         return pref.getBoolean("enable_black_theme", false);
     }
 }

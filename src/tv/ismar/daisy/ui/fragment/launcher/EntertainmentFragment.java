@@ -136,7 +136,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 					vaiety_thumb2.setPadding(0, 22, 0, -22);
 					vaiety_thumb3.setPadding(0, 22, 0, -22);
 					if (v.getTag() != null) {
-						Picasso.with(context).load(v.getTag().toString()).memoryPolicy(MemoryPolicy.NO_STORE)
+						Picasso.with(mContext).load(v.getTag().toString()).memoryPolicy(MemoryPolicy.NO_STORE)
 								.into(vaiety_post);
 						vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post)
 								.toString());
@@ -155,7 +155,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 					v.setPadding(0, 0, 0, 0);
 					vaiety_thumb1.setPadding(0, 22, 0, -22);
 					vaiety_thumb3.setPadding(0, 22, 0, -22);
-					Picasso.with(context).load(v.getTag().toString()).memoryPolicy(MemoryPolicy.NO_STORE).memoryPolicy(MemoryPolicy.NO_STORE)
+					Picasso.with(mContext).load(v.getTag().toString()).memoryPolicy(MemoryPolicy.NO_STORE).memoryPolicy(MemoryPolicy.NO_STORE)
 							.into(vaiety_post);
 					vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post)
 							.toString());
@@ -173,7 +173,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 					v.setPadding(0, 0, 0, 0);
 					vaiety_thumb2.setPadding(0, 22, 0, -22);
 					vaiety_thumb1.setPadding(0, 22, 0, -22);
-					Picasso.with(context).load(v.getTag().toString()).memoryPolicy(MemoryPolicy.NO_STORE)
+					Picasso.with(mContext).load(v.getTag().toString()).memoryPolicy(MemoryPolicy.NO_STORE)
 							.into(vaiety_post);
 					vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post)
 							.toString());
@@ -335,7 +335,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
-			Picasso.with(context).load(looppost.get(++loopindex)).memoryPolicy(MemoryPolicy.NO_STORE)
+			Picasso.with(mContext).load(looppost.get(++loopindex)).memoryPolicy(MemoryPolicy.NO_STORE)
 					.into(vaiety_post);
 			if (loopindex == 0) {
 				vaiety_thumb1.setPadding(0, 0, 0, 0);

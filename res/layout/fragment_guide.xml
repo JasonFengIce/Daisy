@@ -48,6 +48,39 @@
             layout="@layout/toppagecarouse"
             android:clipChildren="false"
             android:clipToPadding="false" />
+
+
+        <tv.ismar.daisy.ui.widget.HomeItemContainer
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/guide_padding"
+                android:clickable="false"
+                android:focusable="true" >
+            <SurfaceView
+                    android:id="@+id/guide_linked_video"
+                    android:layout_width="@dimen/guide_video_width"
+                    android:layout_height="@dimen/guide_video_height"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true" />
+        </tv.ismar.daisy.ui.widget.HomeItemContainer>
+
+        <tv.ismar.daisy.ui.widget.DaisyViewContainer
+                xmlns:app="http://schemas.android.com/apk/res/tv.ismar.daisy"
+                android:id="@+id/carousel_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:vertical_spacing="0dp" >
+        </tv.ismar.daisy.ui.widget.DaisyViewContainer>
+
+        <include
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                layout="@layout/toppagecarouse"
+                android:clipChildren="false"
+                android:clipToPadding="false" />
     </LinearLayout>
 
     <tv.ismar.daisy.ui.widget.DaisyViewContainer

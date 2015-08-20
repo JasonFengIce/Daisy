@@ -3,6 +3,7 @@ package tv.ismar.daisy;
 import android.app.Activity;
 import android.content.*;
 import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -36,8 +37,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class VodApplication extends Application {
-
     private static final String TAG = "VodApplication";
+
+    public final static String SLEEP_INTENT = "org.videolan.vlc.SleepIntent";
+    public final static String INCOMING_CALL_INTENT = "org.videolan.vlc.IncomingCallIntent";
+    public final static String CALL_ENDED_INTENT = "org.videolan.vlc.CallEndedIntent";
+
 
     public static final String domain = "";
     public static final String ad_domain = "ad_domain";
@@ -74,6 +79,8 @@ public class VodApplication extends Application {
     public SharedPreferences.Editor getEditor() {
         return mEditor;
     }
+
+    private static VodApplication instance;
 
     public void load(Context a) {
         try {
@@ -127,6 +134,7 @@ public class VodApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
         /**
          * initialize ActiveAndroid
          */
@@ -136,6 +144,18 @@ public class VodApplication extends Application {
         load(this);
         registerReceiver(mCloseReceiver, new IntentFilter("com.amlogic.dvbplayer.homekey"));
         registerReceiver(mSleepReceiver, new IntentFilter("com.alpha.lenovo.powerKey"));
+    }
+
+
+    public static Context getAppContext() {
+        return instance;
+    }
+
+    /**
+     * @return the main resources from the Application
+     */
+    public static Resources getAppResources() {
+        return instance.getResources();
     }
 
     public void getContentModelFromAssets() {

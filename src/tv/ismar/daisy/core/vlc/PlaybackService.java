@@ -42,6 +42,7 @@ import android.util.Log;
 import android.widget.Toast;
 import org.videolan.libvlc.*;
 import org.videolan.libvlc.util.AndroidUtil;
+import tv.ismar.daisy.VodApplication;
 
 import java.io.File;
 import java.net.URI;
@@ -183,7 +184,7 @@ public class PlaybackService extends Service implements IVLCVout.Callback {
 
         // Make sure the audio player will acquire a wake-lock while playing. If we don't do
         // that, the CPU might go to sleep while the song is playing, causing playback to stop.
-        PowerManager pm = (PowerManager) SampleApplication.getAppContext().getSystemService(Context.POWER_SERVICE);
+        PowerManager pm = (PowerManager) VodApplication.getAppContext().getSystemService(Context.POWER_SERVICE);
         mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
 
         IntentFilter filter = new IntentFilter();
@@ -199,10 +200,10 @@ public class PlaybackService extends Service implements IVLCVout.Callback {
         filter.addAction(ACTION_WIDGET_INIT);
         filter.addAction(Intent.ACTION_HEADSET_PLUG);
         filter.addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
-        filter.addAction(SampleApplication.SLEEP_INTENT);
+        filter.addAction(VodApplication.SLEEP_INTENT);
         if (readPhoneState()) {
-            filter.addAction(SampleApplication.INCOMING_CALL_INTENT);
-            filter.addAction(SampleApplication.CALL_ENDED_INTENT);
+            filter.addAction(VodApplication.INCOMING_CALL_INTENT);
+            filter.addAction(VodApplication.CALL_ENDED_INTENT);
         }
         registerReceiver(mReceiver, filter);
         registerV21();
@@ -447,7 +448,7 @@ public class PlaybackService extends Service implements IVLCVout.Callback {
                 /*
                  * Incoming Call : Pause if VLC is playing audio or video.
                  */
-                if (action.equalsIgnoreCase(SampleApplication.INCOMING_CALL_INTENT)) {
+                if (action.equalsIgnoreCase(VodApplication.INCOMING_CALL_INTENT)) {
                     mWasPlayingAudio = mMediaPlayer.isPlaying() && hasCurrentMedia();
                     if (mWasPlayingAudio)
                         pause();
@@ -456,14 +457,14 @@ public class PlaybackService extends Service implements IVLCVout.Callback {
                 /*
                  * Call ended : Play only if VLC was playing audio.
                  */
-                if (action.equalsIgnoreCase(SampleApplication.CALL_ENDED_INTENT)
+                if (action.equalsIgnoreCase(VodApplication.CALL_ENDED_INTENT)
                         && mWasPlayingAudio) {
                     play();
                 }
             }
 
             // skip all headsets events if there is a call
-            TelephonyManager telManager = (TelephonyManager) SampleApplication.getAppContext().getSystemService(Context.TELEPHONY_SERVICE);
+            TelephonyManager telManager = (TelephonyManager) VodApplication.getAppContext().getSystemService(Context.TELEPHONY_SERVICE);
             if (telManager != null && telManager.getCallState() != TelephonyManager.CALL_STATE_IDLE)
                 return;
 
@@ -523,7 +524,7 @@ public class PlaybackService extends Service implements IVLCVout.Callback {
             /*
              * Sleep
              */
-            if (action.equalsIgnoreCase(SampleApplication.SLEEP_INTENT)) {
+            if (action.equalsIgnoreCase(VodApplication.SLEEP_INTENT)) {
                 stop();
             }
         }
@@ -733,7 +734,7 @@ public class PlaybackService extends Service implements IVLCVout.Callback {
             return false;
         if (!mMediaPlayer.getVLCVout().areViewsAttached()) {
             Log.d(TAG, "switchToVideo");
-//            VideoPlayerActivity.startOpened(SampleApplication.getAppContext(), mCurrentIndex);
+//            VideoPlayerActivity.startOpened(VodApplication.getAppContext(), mCurrentIndex);
         }
 
 
@@ -801,7 +802,7 @@ public class PlaybackService extends Service implements IVLCVout.Callback {
                     final Bundle bundle = msg.getData();
                     final String text = bundle.getString("text");
                     final int duration = bundle.getInt("duration");
-                    Toast.makeText(SampleApplication.getAppContext(), text + "" + duration, Toast.LENGTH_LONG).show();
+                    Toast.makeText(VodApplication.getAppContext(), text + "" + duration, Toast.LENGTH_LONG).show();
                     break;
             }
         }

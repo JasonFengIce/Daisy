@@ -23,6 +23,7 @@ package tv.ismar.daisy.core.vlc;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import tv.ismar.daisy.VodApplication;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,7 +31,7 @@ import java.util.Arrays;
 public class CustomDirectories {
 
     public static void addCustomDirectory(String path) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SampleApplication.getAppContext());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(VodApplication.getAppContext());
 
         ArrayList<String> dirs = new ArrayList<String>(
                 Arrays.asList(CustomDirectories.getCustomDirectories()));
@@ -47,7 +48,7 @@ public class CustomDirectories {
     }
 
     public static void removeCustomDirectory(String path) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SampleApplication.getAppContext());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(VodApplication.getAppContext());
         if(!preferences.getString("custom_paths", "").contains(path))
             return;
         ArrayList<String> dirs = new ArrayList<String>(
@@ -72,7 +73,7 @@ public class CustomDirectories {
     }
 
     public static String[] getCustomDirectories() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SampleApplication.getAppContext());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(VodApplication.getAppContext());
         final String custom_paths = preferences.getString("custom_paths", "");
         if(custom_paths.equals(""))
             return new String[0];

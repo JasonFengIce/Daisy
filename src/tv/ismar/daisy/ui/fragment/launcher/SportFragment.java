@@ -280,7 +280,7 @@ public class SportFragment extends ChannelBaseFragment {
 			if (hasFocus) {
 				Carousel carousel = (Carousel) v
 						.getTag(R.drawable.launcher_selector);
-				Picasso.with(context).load(carousel.getVideo_image()).memoryPolicy(MemoryPolicy.NO_STORE)
+				Picasso.with(mContext).load(carousel.getVideo_image()).memoryPolicy(MemoryPolicy.NO_STORE)
 						.into(sportspost);
 				// sportspost.setUrl(carousel.getVideo_image());
 				sportspost.setTag(R.drawable.launcher_selector, carousel);
@@ -321,7 +321,7 @@ public class SportFragment extends ChannelBaseFragment {
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
-			Picasso.with(context)
+			Picasso.with(mContext)
 					.load(looppost.get(++loopindex).getVideo_image()).memoryPolicy(MemoryPolicy.NO_STORE)
 					.into(sportspost);
 			sportspost.setTag(R.drawable.launcher_selector,
@@ -362,9 +362,9 @@ public class SportFragment extends ChannelBaseFragment {
 				Intent intent = new Intent();
 				intent.setAction("tv.ismar.daisy.Item");
 				intent.putExtra("url", data.getUrl());
-				context.startActivity(intent);
+				mContext.startActivity(intent);
 			} else {
-				InitPlayerTool tool = new InitPlayerTool(context);
+				InitPlayerTool tool = new InitPlayerTool(mContext);
 				tool.initClipInfo(data.getUrl(),
 						InitPlayerTool.FLAG_URL);
 			}
@@ -385,7 +385,7 @@ public class SportFragment extends ChannelBaseFragment {
 			switch (index++) {
 			case 0:
 //				sports_live1.setUrl(games.get(position).getImageurl());
-				Picasso.with(context).load(games.get(position).getImageurl()).memoryPolicy(MemoryPolicy.NO_STORE)
+				Picasso.with(mContext).load(games.get(position).getImageurl()).memoryPolicy(MemoryPolicy.NO_STORE)
 						.into(sports_live1);
 				sports_live1.setTag(games.get(position));
 				if (games.get(position).isLiving()) {
@@ -397,7 +397,7 @@ public class SportFragment extends ChannelBaseFragment {
 				break;
 			case 1:
 //				sports_live2.setUrl(games.get(position).getImageurl());
-				Picasso.with(context).load(games.get(position).getImageurl()).memoryPolicy(MemoryPolicy.NO_STORE)
+				Picasso.with(mContext).load(games.get(position).getImageurl()).memoryPolicy(MemoryPolicy.NO_STORE)
 						.into(sports_live2);
 				sports_live2.setTag(games.get(position));
 				if (games.get(position).isLiving()) {
@@ -409,7 +409,7 @@ public class SportFragment extends ChannelBaseFragment {
 				break;
 			case 2:
 //				sports_live3.setUrl(games.get(position).getImageurl());
-				Picasso.with(context).load(games.get(position).getImageurl()).memoryPolicy(MemoryPolicy.NO_STORE)
+				Picasso.with(mContext).load(games.get(position).getImageurl()).memoryPolicy(MemoryPolicy.NO_STORE)
 						.into(sports_live3);
 				sports_live3.setTag(games.get(position));
 				if (games.get(position).isLiving()) {

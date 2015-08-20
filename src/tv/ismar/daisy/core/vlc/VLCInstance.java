@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import org.videolan.libvlc.LibVLC;
 import org.videolan.libvlc.util.VLCUtil;
+import tv.ismar.daisy.VodApplication;
 
 /**
  * Created by huaijie on 8/12/15.
@@ -21,7 +22,7 @@ public class VLCInstance {
         if (sLibVLC == null) {
             Thread.setDefaultUncaughtExceptionHandler(new VLCCrashHandler());
 
-            final Context context = SampleApplication.getAppContext();
+            final Context context = VodApplication.getAppContext();
             if (!VLCUtil.hasCompatibleCPU(context)) {
                 Log.e(TAG, VLCUtil.getErrorMsg());
                 throw new IllegalStateException("LibVLC initialisation failed: " + VLCUtil.getErrorMsg());

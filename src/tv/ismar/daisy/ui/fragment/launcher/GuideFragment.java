@@ -1,55 +1,62 @@
 package tv.ismar.daisy.ui.fragment.launcher;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
+import android.app.Activity;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import com.squareup.picasso.MemoryPolicy;
-import org.apache.commons.lang3.StringUtils;
-
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.client.DownloadClient;
-import tv.ismar.daisy.core.client.DownloadThreadPool;
-import tv.ismar.daisy.core.client.IsmartvUrlClient;
-import tv.ismar.daisy.data.HomePagerEntity;
-import tv.ismar.daisy.data.HomePagerEntity.Carousel;
-import tv.ismar.daisy.data.table.DownloadTable;
-import tv.ismar.daisy.player.InitPlayerTool;
-import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
-import tv.ismar.daisy.ui.widget.DaisyViewContainer;
-import tv.ismar.daisy.ui.widget.HomeItemContainer;
-import tv.ismar.daisy.utils.HardwareUtils;
-import tv.ismar.daisy.views.LabelImageView;
-import android.content.Intent;
-import android.media.MediaPlayer;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
-
 import com.activeandroid.query.Select;
 import com.google.gson.Gson;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
+import org.apache.commons.lang3.StringUtils;
+import org.videolan.libvlc.IVLCVout;
+import org.videolan.libvlc.LibVLC;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.client.DownloadClient;
+import tv.ismar.daisy.core.client.DownloadThreadPool;
+import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.core.vlc.MediaWrapper;
+import tv.ismar.daisy.core.vlc.PlaybackService;
+import tv.ismar.daisy.core.vlc.PlaybackServiceActivity;
+import tv.ismar.daisy.core.vlc.VLCInstance;
+import tv.ismar.daisy.data.HomePagerEntity;
+import tv.ismar.daisy.data.HomePagerEntity.Carousel;
+import tv.ismar.daisy.data.table.DownloadTable;
+import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
+import tv.ismar.daisy.ui.widget.DaisyViewContainer;
+import tv.ismar.daisy.ui.widget.HomeItemContainer;
+import tv.ismar.daisy.utils.HardwareUtils;
+import tv.ismar.daisy.views.LabelImageView;
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by huaijie on 5/18/15.
  */
-public class GuideFragment extends ChannelBaseFragment implements
-        Flag.ChangeCallback {
+public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCallback, PlaybackService.Client.Callback, IVLCVout.Callback {
     private String TAG = "GuideFragment";
+
+    private static final int START_PLAYBACK = 0x0000;
+
     private DaisyViewContainer guideRecommmendList;
     private DaisyViewContainer carouselLayout;
-    private VideoView linkedVideoView;
 
     private int itemViewBoundaryMargin;
 
@@ -66,74 +73,123 @@ public class GuideFragment extends ChannelBaseFragment implements
     private MediaPlayer.OnCompletionListener loopCurrentListener;
     private IsmartvUrlClient datafetch;
 
+    private SurfaceView mSurfaceView;
+
+
+
+
+    private PlaybackServiceActivity.Helper mHelper;
+    private PlaybackService mService;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View mView = LayoutInflater.from(context).inflate(
-                R.layout.fragment_guide, null);
-        guideRecommmendList = (DaisyViewContainer) mView
-                .findViewById(R.id.recommend_list);
-        carouselLayout = (DaisyViewContainer) mView
-                .findViewById(R.id.carousel_layout);
-        linkedVideoView = (VideoView) mView.findViewById(R.id.linked_video);
-        itemViewBoundaryMargin = (int) context.getResources().getDimension(
-                R.dimen.item_boundary_margin);
-        toppage_carous_imageView1 = (LabelImageView) mView
-                .findViewById(R.id.toppage_carous_imageView1);
-        toppage_carous_imageView2 = (LabelImageView) mView
-                .findViewById(R.id.toppage_carous_imageView2);
-        toppage_carous_imageView3 = (LabelImageView) mView
-                .findViewById(R.id.toppage_carous_imageView3);
+    public void onConnected(PlaybackService service) {
+        mService = service;
+        mHandler.sendEmptyMessage(START_PLAYBACK);
+    }
+
+    @Override
+    public void onDisconnected() {
+        mService = null;
+    }
+
+
+    @Override
+    public void onNewLayout(IVLCVout vlcVout, int width, int height, int visibleWidth, int visibleHeight, int sarNum, int sarDen) {
+
+    }
+
+    @Override
+    public void onSurfacesCreated(IVLCVout vlcVout) {
+
+    }
+
+    @Override
+    public void onSurfacesDestroyed(IVLCVout vlcVout) {
+
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        activity.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+    }
+
+    /**
+     * vlc
+     */
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View mView = LayoutInflater.from(mContext).inflate(R.layout.fragment_guide, null);
+        guideRecommmendList = (DaisyViewContainer) mView.findViewById(R.id.recommend_list);
+        carouselLayout = (DaisyViewContainer) mView.findViewById(R.id.carousel_layout);
+        itemViewBoundaryMargin = (int) mContext.getResources().getDimension(R.dimen.item_boundary_margin);
+        toppage_carous_imageView1 = (LabelImageView) mView.findViewById(R.id.toppage_carous_imageView1);
+        toppage_carous_imageView2 = (LabelImageView) mView.findViewById(R.id.toppage_carous_imageView2);
+        toppage_carous_imageView3 = (LabelImageView) mView.findViewById(R.id.toppage_carous_imageView3);
+
+        mSurfaceView = (SurfaceView) mView.findViewById(R.id.guide_linked_video);
+
         flag = new Flag(this);
 
-        linkedVideoView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = carousels.get(flag.getPosition()).getUrl();
-                String model = carousels.get(flag.getPosition())
-                        .getModel_name();
-                String title = carousels.get(flag.getPosition()).getTitle();
-                Intent intent = new Intent();
-                if ("item".equals(model)) {
-                    intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.ItemDetailActivity");
-                    intent.putExtra("url", url);
-                    context.startActivity(intent);
-                } else if ("topic".equals(model)) {
-                    intent.putExtra("url", url);
-                    intent.setClassName("tv.ismar.daisy",
-                            "tv.ismar.daisy.TopicActivity");
-                    context.startActivity(intent);
-                } else if ("section".equals(model)) {
-                    intent.putExtra("title", title);
-                    intent.putExtra("itemlistUrl", url);
-                    intent.putExtra("lableString", title);
-                    intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.PackageListDetailActivity");
-                    context.startActivity(intent);
-                } else if ("package".equals(model)) {
-                    intent.setAction("tv.ismar.daisy.packageitem");
-                    intent.putExtra("url", url);
-                    context.startActivity(intent);
-                } else if ("clip".equals(model)) {
-                    InitPlayerTool tool = new InitPlayerTool(context);
-                    tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
-                }
+//        linkedVideoView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String url = carousels.get(flag.getPosition()).getUrl();
+//                String model = carousels.get(flag.getPosition())
+//                        .getModel_name();
+//                String title = carousels.get(flag.getPosition()).getTitle();
+//                Intent intent = new Intent();
+//                if ("item".equals(model)) {
+//                    intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.ItemDetailActivity");
+//                    intent.putExtra("url", url);
+//                    mContext.startActivity(intent);
+//                } else if ("topic".equals(model)) {
+//                    intent.putExtra("url", url);
+//                    intent.setClassName("tv.ismar.daisy",
+//                            "tv.ismar.daisy.TopicActivity");
+//                    mContext.startActivity(intent);
+//                } else if ("section".equals(model)) {
+//                    intent.putExtra("title", title);
+//                    intent.putExtra("itemlistUrl", url);
+//                    intent.putExtra("lableString", title);
+//                    intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.PackageListDetailActivity");
+//                    mContext.startActivity(intent);
+//                } else if ("package".equals(model)) {
+//                    intent.setAction("tv.ismar.daisy.packageitem");
+//                    intent.putExtra("url", url);
+//                    mContext.startActivity(intent);
+//                } else if ("clip".equals(model)) {
+//                    InitPlayerTool tool = new InitPlayerTool(mContext);
+//                    tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
+//                }
+//
+//            }
+//        });
+//        linkedVideoView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus) {
+//                    ((HomeItemContainer) v.getParent())
+//                            .setDrawBorder(true);
+//                    ((HomeItemContainer) v.getParent()).invalidate();
+//                } else {
+//                    ((HomeItemContainer) v.getParent())
+//                            .setDrawBorder(false);
+//                    ((HomeItemContainer) v.getParent()).invalidate();
+//                }
+//            }
+//        });
 
-            }
-        });
-        linkedVideoView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    ((HomeItemContainer) v.getParent())
-                            .setDrawBorder(true);
-                    ((HomeItemContainer) v.getParent()).invalidate();
-                } else {
-                    ((HomeItemContainer) v.getParent())
-                            .setDrawBorder(false);
-                    ((HomeItemContainer) v.getParent()).invalidate();
-                }
-            }
-        });
+
         return mView;
     }
 
@@ -146,7 +202,7 @@ public class GuideFragment extends ChannelBaseFragment implements
     @Override
     public void onDetach() {
         super.onDetach();
-        loopMessageHandler.removeMessages(0);
+//        loopMessageHandler.removeMessages(0);
         if (datafetch != null && datafetch.isAlive())
             datafetch.interrupt();
     }
@@ -184,7 +240,7 @@ public class GuideFragment extends ChannelBaseFragment implements
         ArrayList<FrameLayout> imageViews = new ArrayList<FrameLayout>();
         for (int i = 0; i < 8; i++) {
             tv.ismar.daisy.ui.widget.HomeItemContainer frameLayout = (tv.ismar.daisy.ui.widget.HomeItemContainer) LayoutInflater
-                    .from(context).inflate(R.layout.item_poster, null);
+                    .from(mContext).inflate(R.layout.item_poster, null);
             ImageView itemView = (ImageView) frameLayout
                     .findViewById(R.id.poster_image);
             TextView textView = (TextView) frameLayout
@@ -212,7 +268,7 @@ public class GuideFragment extends ChannelBaseFragment implements
                     }
                 }
             });
-            Picasso.with(context).load(posters.get(i).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE)
+            Picasso.with(mContext).load(posters.get(i).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE)
                     .into(itemView);
             textView.setTag(posters.get(i));
             frameLayout.setTag(posters.get(i));
@@ -229,75 +285,79 @@ public class GuideFragment extends ChannelBaseFragment implements
         deleteFile(carousels, tag);
         downloadVideo(carousels, tag);
 
-        loopAllListener = new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                if (flag.getPosition() + 1 >= allVideoUrl.size()) {
-                    flag.setPosition(0);
-                } else {
-                    flag.setPosition(flag.getPosition() + 1);
-                }
-                Log.d(TAG, "loopAllListener: setVideoPath");
-                setVideoPath(linkedVideoView, allVideoUrl.get(flag.getPosition()));
-            }
-        };
+        mHelper = new PlaybackServiceActivity.Helper(mContext, this);
+        mHelper.onStart();
 
-        loopCurrentListener = new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                Log.d(TAG, "loopCurrentListener: setVideoPath");
-                setVideoPath(linkedVideoView, allVideoUrl.get(flag.getPosition()));
-            }
-        };
+
+//        loopAllListener = new MediaPlayer.OnCompletionListener() {
+//            @Override
+//            public void onCompletion(MediaPlayer mp) {
+//                if (flag.getPosition() + 1 >= allVideoUrl.size()) {
+//                    flag.setPosition(0);
+//                } else {
+//                    flag.setPosition(flag.getPosition() + 1);
+//                }
+//                Log.d(TAG, "loopAllListener: setVideoPath");
+//                setVideoPath(linkedVideoView, allVideoUrl.get(flag.getPosition()));
+//            }
+//        };
+//
+//        loopCurrentListener = new MediaPlayer.OnCompletionListener() {
+//            @Override
+//            public void onCompletion(MediaPlayer mp) {
+//                Log.d(TAG, "loopCurrentListener: setVideoPath");
+//                setVideoPath(linkedVideoView, allVideoUrl.get(flag.getPosition()));
+//            }
+//        };
 
         allItem = new ArrayList<LabelImageView>();
         allVideoUrl = new ArrayList<String>();
+//
+//        View.OnFocusChangeListener itemFocusChangeListener = new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                boolean focusFlag = true;
+//                for (ImageView imageView : allItem) {
+//                    focusFlag = focusFlag && (!imageView.isFocused());
+//                }
+//
+//                // all view not focus
+//                if (focusFlag) {
+//                    linkedVideoView.setOnCompletionListener(null);
+//                    linkedVideoView.setOnCompletionListener(loopAllListener);
+//                } else {
+//                    if (hasFocus) {
+//                        flag.setPosition((Integer) v.getTag());
+//                        linkedVideoView.setOnCompletionListener(null);
+//                        linkedVideoView.setOnCompletionListener(loopCurrentListener);
+//                        Log.d(TAG, "flag position: " + flag.getPosition());
+//                        Log.d(TAG, "itemFocusChangeListener: setVideoPath");
+//
+//                        setVideoPath(linkedVideoView, allVideoUrl.get(flag.getPosition()));
+//                    }
+//                }
+//
+//            }
+//        };
 
-        View.OnFocusChangeListener itemFocusChangeListener = new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                boolean focusFlag = true;
-                for (ImageView imageView : allItem) {
-                    focusFlag = focusFlag && (!imageView.isFocused());
-                }
 
-                // all view not focus
-                if (focusFlag) {
-                    linkedVideoView.setOnCompletionListener(null);
-                    linkedVideoView.setOnCompletionListener(loopAllListener);
-                } else {
-                    if (hasFocus) {
-                        flag.setPosition((Integer) v.getTag());
-                        linkedVideoView.setOnCompletionListener(null);
-                        linkedVideoView.setOnCompletionListener(loopCurrentListener);
-                        Log.d(TAG, "flag position: " + flag.getPosition());
-                        Log.d(TAG, "itemFocusChangeListener: setVideoPath");
-
-                        setVideoPath(linkedVideoView, allVideoUrl.get(flag.getPosition()));
-                    }
-                }
-
-            }
-        };
-
-
-        Picasso.with(context).load(carousels.get(0).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(toppage_carous_imageView1);
+        Picasso.with(mContext).load(carousels.get(0).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(toppage_carous_imageView1);
         toppage_carous_imageView1.setTag(0);
         toppage_carous_imageView1.setTag(R.drawable.launcher_selector, carousels.get(0));
         toppage_carous_imageView1.setOnClickListener(ItemClickListener);
-        toppage_carous_imageView1.setOnFocusChangeListener(itemFocusChangeListener);
+//        toppage_carous_imageView1.setOnFocusChangeListener(itemFocusChangeListener);
 
-        Picasso.with(context).load(carousels.get(1).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(toppage_carous_imageView2);
+        Picasso.with(mContext).load(carousels.get(1).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(toppage_carous_imageView2);
         toppage_carous_imageView2.setTag(1);
         toppage_carous_imageView2.setTag(R.drawable.launcher_selector, carousels.get(1));
         toppage_carous_imageView2.setOnClickListener(ItemClickListener);
-        toppage_carous_imageView2.setOnFocusChangeListener(itemFocusChangeListener);
+//        toppage_carous_imageView2.setOnFocusChangeListener(itemFocusChangeListener);
 
-        Picasso.with(context).load(carousels.get(2).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(toppage_carous_imageView3);
+        Picasso.with(mContext).load(carousels.get(2).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(toppage_carous_imageView3);
         toppage_carous_imageView3.setTag(2);
         toppage_carous_imageView3.setTag(R.drawable.launcher_selector, carousels.get(2));
         toppage_carous_imageView3.setOnClickListener(ItemClickListener);
-        toppage_carous_imageView3.setOnFocusChangeListener(itemFocusChangeListener);
+//        toppage_carous_imageView3.setOnFocusChangeListener(itemFocusChangeListener);
 
         allItem.add(toppage_carous_imageView1);
         allItem.add(toppage_carous_imageView2);
@@ -306,8 +366,8 @@ public class GuideFragment extends ChannelBaseFragment implements
         allVideoUrl.add(carousels.get(1).getVideo_url());
         allVideoUrl.add(carousels.get(2).getVideo_url());
         flag.setPosition(0);
-        linkedVideoView.setOnCompletionListener(loopAllListener);
-        setVideoPath(linkedVideoView, carousels.get(flag.getPosition()).getVideo_url());
+//        linkedVideoView.setOnCompletionListener(loopAllListener);
+//        setVideoPath(linkedVideoView, carousels.get(flag.getPosition()).getVideo_url());
 
     }
 
@@ -333,7 +393,7 @@ public class GuideFragment extends ChannelBaseFragment implements
                 Message message = new Message();
                 message.what = 0;
                 message.obj = playPath;
-                loopMessageHandler.sendMessage(message);
+//                loopMessageHandler.sendMessage(message);
             }
         }.start();
     }
@@ -379,14 +439,14 @@ public class GuideFragment extends ChannelBaseFragment implements
     }
 
     private void download(String url, String tag) {
-        String savePath = HardwareUtils.getCachePath(context) + "/" + tag + "/";
+        String savePath = HardwareUtils.getCachePath(mContext) + "/" + tag + "/";
         DownloadClient downloadClient = new DownloadClient(url, savePath);
         DownloadThreadPool.getInstance().add(downloadClient);
     }
 
     private void deleteFile(ArrayList<HomePagerEntity.Carousel> carousels,
                             String tag) {
-        String savePath = HardwareUtils.getCachePath(context) + "/" + tag + "/";
+        String savePath = HardwareUtils.getCachePath(mContext) + "/" + tag + "/";
         ArrayList<String> exceptsPaths = new ArrayList<String>();
         for (HomePagerEntity.Carousel carousel : carousels) {
             try {
@@ -412,20 +472,51 @@ public class GuideFragment extends ChannelBaseFragment implements
         }
     }
 
+//
+//    private Handler loopMessageHandler = new Handler() {
+//        @Override
+//        public void handleMessage(Message msg) {
+//            String playPath = (String) msg.obj;
+//            if (linkedVideoView.isPlaying()) {
+//                linkedVideoView.pause();
+//                linkedVideoView.stopPlayback();
+//            }
+//            linkedVideoView.setVideoPath(playPath);
+//            linkedVideoView.start();
+//
+//        }
+//    };
 
-    private Handler loopMessageHandler = new Handler() {
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            String playPath = (String) msg.obj;
-            if (linkedVideoView.isPlaying()) {
-                linkedVideoView.pause();
-                linkedVideoView.stopPlayback();
+            switch (msg.what) {
+                case START_PLAYBACK:
+                    startPlayback();
+                    break;
             }
-            linkedVideoView.setVideoPath(playPath);
-            linkedVideoView.start();
 
         }
     };
+
+    private static LibVLC LibVLC() {
+        return VLCInstance.get();
+    }
+
+    private void startPlayback() {
+        Log.d(TAG, "startPlayback is invoke...");
+
+        IVLCVout vlcVout = mService.getVLCVout();
+        vlcVout.setVideoView(mSurfaceView);
+        vlcVout.addCallback(this);
+        vlcVout.attachViews();
+
+        MediaWrapper mediaWrapper = new MediaWrapper(Uri.parse(carousels.get(0).getVideo_url()));
+        mediaWrapper.removeFlags(MediaWrapper.MEDIA_FORCE_AUDIO);
+        mediaWrapper.addFlags(MediaWrapper.MEDIA_VIDEO);
+        mService.load(mediaWrapper);
+        mService.play();
+    }
 
 }
 
