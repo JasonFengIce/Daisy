@@ -161,6 +161,11 @@ public class HomeActivity extends Activity implements IVLCVout.Callback, LibVLC.
     }
 
     @Override
+    public void onMediaIndexChange(MediaWrapperList mediaWrapperList, int position) {
+
+    }
+
+    @Override
     public void eventHardwareAccelerationError() {
 
     }

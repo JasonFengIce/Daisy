@@ -79,6 +79,8 @@ public class PlaybackService extends Service implements IVLCVout.Callback {
         void onMediaEvent(Media.Event event);
 
         void onMediaPlayerEvent(MediaPlayer.Event event);
+
+        void onMediaIndexChange(MediaWrapperList mediaWrapperList, int position);
     }
 
     private class LocalBinder extends Binder {
@@ -693,6 +695,7 @@ public class PlaybackService extends Service implements IVLCVout.Callback {
 
         @Override
         public void onItemMoved(int indexBefore, int indexAfter, String mrl) {
+            Log.d(TAG, "MediaWrapperList EventListener onItemMoved currentIndex:" + mCurrentIndex);
             Log.i(TAG, "CustomMediaListItemMoved");
             if (mCurrentIndex == indexBefore) {
                 mCurrentIndex = indexAfter;
@@ -1546,6 +1549,9 @@ public class PlaybackService extends Service implements IVLCVout.Callback {
         changeAudioFocus(true);
         mMediaPlayer.setEventListener(mMediaPlayerListener);
         mMediaPlayer.play();
+
+        for (Callback callback : mCallbacks)
+            callback.onMediaIndexChange(mMediaList, mCurrentIndex);
 
         notifyTrackChanged();
         determinePrevAndNextIndices();

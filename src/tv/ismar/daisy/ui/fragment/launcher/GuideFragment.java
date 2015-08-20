@@ -2,7 +2,6 @@ package tv.ismar.daisy.ui.fragment.launcher;
 
 import android.app.Activity;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,12 +21,15 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import org.apache.commons.lang3.StringUtils;
 import org.videolan.libvlc.IVLCVout;
+import org.videolan.libvlc.Media;
+import org.videolan.libvlc.MediaPlayer;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.DownloadClient;
 import tv.ismar.daisy.core.client.DownloadThreadPool;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.vlc.MediaWrapper;
+import tv.ismar.daisy.core.vlc.MediaWrapperList;
 import tv.ismar.daisy.core.vlc.PlaybackService;
 import tv.ismar.daisy.core.vlc.PlaybackServiceActivity;
 import tv.ismar.daisy.data.HomePagerEntity;
@@ -48,7 +50,8 @@ import java.util.List;
 /**
  * Created by huaijie on 5/18/15.
  */
-public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCallback, PlaybackService.Client.Callback {
+public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCallback, PlaybackService.Client.Callback,
+        PlaybackService.Callback {
     private String TAG = "GuideFragment";
 
     private static final int START_PLAYBACK = 0x0000;
@@ -67,8 +70,6 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
     private LabelImageView toppage_carous_imageView2;
     private LabelImageView toppage_carous_imageView3;
 
-    private MediaPlayer.OnCompletionListener loopAllListener;
-    private MediaPlayer.OnCompletionListener loopCurrentListener;
     private IsmartvUrlClient datafetch;
 
     private SurfaceView mSurfaceView;
@@ -89,6 +90,37 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
         mService = null;
     }
 
+
+    @Override
+    public void update() {
+
+    }
+
+    @Override
+    public void updateProgress() {
+
+    }
+
+    @Override
+    public void onMediaEvent(Media.Event event) {
+
+    }
+
+    @Override
+    public void onMediaPlayerEvent(MediaPlayer.Event event) {
+//        switch (event.type) {
+//            case MediaPlayer.Event.PositionChanged:
+//                Log.d(TAG, "PositionChanged: " + event.getPositionChanged());
+//                break;
+//
+//        }
+    }
+
+    @Override
+    public void onMediaIndexChange(MediaWrapperList mediaWrapperList, int position) {
+        Log.d(TAG, "onMediaIndexChange position: " + position);
+
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -504,8 +536,9 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
         vlcVout.setVideoView(mSurfaceView);
         vlcVout.attachViews();
 
-        ArrayList<MediaWrapper> mediaWrapperList = new ArrayList<MediaWrapper>();
+        mService.addCallback(this);
 
+        ArrayList<MediaWrapper> mediaWrapperList = new ArrayList<MediaWrapper>();
         for (Carousel carousel : carousels) {
             MediaWrapper mediaWrapper = new MediaWrapper(Uri.parse(carousel.getVideo_url()));
             mediaWrapper.removeFlags(MediaWrapper.MEDIA_FORCE_AUDIO);
@@ -520,8 +553,11 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
     private void stopPlayback() {
         IVLCVout vlcVout = mService.getVLCVout();
         vlcVout.detachViews();
+        mService.addCallback(null);
         mService.stop();
     }
+
+
 }
 
 class Flag {
