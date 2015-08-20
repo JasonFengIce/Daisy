@@ -31,6 +31,7 @@ import android.telephony.TelephonyManager;
 import android.view.InputDevice;
 import android.view.MotionEvent;
 import org.videolan.libvlc.util.AndroidUtil;
+import tv.ismar.daisy.VodApplication;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -53,7 +54,7 @@ public class AndroidDevices {
         devicesWithoutNavBar.add("HTC One XL");
         hasNavBar = AndroidUtil.isICSOrLater()
                 && !devicesWithoutNavBar.contains(android.os.Build.MODEL);
-        hasTsp = SampleApplication.getAppContext().getPackageManager().hasSystemFeature("android.hardware.touchscreen");
+        hasTsp = VodApplication.getAppContext().getPackageManager().hasSystemFeature("android.hardware.touchscreen");
     }
 
     public static boolean hasExternalStorage() {
@@ -73,7 +74,7 @@ public class AndroidDevices {
     }
 
     public static boolean isPhone(){
-        TelephonyManager manager = (TelephonyManager)SampleApplication.getAppContext().getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager manager = (TelephonyManager) VodApplication.getAppContext().getSystemService(Context.TELEPHONY_SERVICE);
         return manager.getPhoneType() != TelephonyManager.PHONE_TYPE_NONE;
     }
 
@@ -164,7 +165,7 @@ public class AndroidDevices {
 
     public static boolean hasLANConnection(){
         boolean networkEnabled = false;
-        ConnectivityManager connectivity = (ConnectivityManager)(SampleApplication.getAppContext().getSystemService(Context.CONNECTIVITY_SERVICE));
+        ConnectivityManager connectivity = (ConnectivityManager)(VodApplication.getAppContext().getSystemService(Context.CONNECTIVITY_SERVICE));
         if (connectivity != null) {
             NetworkInfo networkInfo = connectivity.getActiveNetworkInfo();
             if (networkInfo != null && networkInfo.isConnected() &&

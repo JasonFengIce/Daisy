@@ -1,9 +1,12 @@
 package tv.ismar.daisy.ui.fragment.launcher;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -23,15 +26,13 @@ import com.squareup.picasso.Picasso;
 import org.apache.commons.lang3.StringUtils;
 import org.videolan.libvlc.IVLCVout;
 import org.videolan.libvlc.LibVLC;
+import org.videolan.libvlc.Media;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.DownloadClient;
 import tv.ismar.daisy.core.client.DownloadThreadPool;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
-import tv.ismar.daisy.core.vlc.MediaWrapper;
-import tv.ismar.daisy.core.vlc.PlaybackService;
-import tv.ismar.daisy.core.vlc.PlaybackServiceActivity;
-import tv.ismar.daisy.core.vlc.VLCInstance;
+import tv.ismar.daisy.core.vlc.*;
 import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.data.table.DownloadTable;
@@ -50,7 +51,7 @@ import java.util.List;
 /**
  * Created by huaijie on 5/18/15.
  */
-public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCallback, PlaybackService.Client.Callback, IVLCVout.Callback {
+public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCallback, PlaybackService.Client.Callback {
     private String TAG = "GuideFragment";
 
     private static final int START_PLAYBACK = 0x0000;
@@ -76,10 +77,9 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
     private SurfaceView mSurfaceView;
 
 
-
-
     private PlaybackServiceActivity.Helper mHelper;
     private PlaybackService mService;
+
 
     @Override
     public void onConnected(PlaybackService service) {
@@ -92,21 +92,6 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
         mService = null;
     }
 
-
-    @Override
-    public void onNewLayout(IVLCVout vlcVout, int width, int height, int visibleWidth, int visibleHeight, int sarNum, int sarDen) {
-
-    }
-
-    @Override
-    public void onSurfacesCreated(IVLCVout vlcVout) {
-
-    }
-
-    @Override
-    public void onSurfacesDestroyed(IVLCVout vlcVout) {
-
-    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -136,7 +121,7 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
         toppage_carous_imageView2 = (LabelImageView) mView.findViewById(R.id.toppage_carous_imageView2);
         toppage_carous_imageView3 = (LabelImageView) mView.findViewById(R.id.toppage_carous_imageView3);
 
-        mSurfaceView = (SurfaceView) mView.findViewById(R.id.guide_linked_video);
+        mSurfaceView = (SurfaceView) mView.findViewById(R.id.linked_video);
 
         flag = new Flag(this);
 
@@ -199,12 +184,27 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
         fetchHomePage();
     }
 
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+
     @Override
     public void onDetach() {
         super.onDetach();
 //        loopMessageHandler.removeMessages(0);
         if (datafetch != null && datafetch.isAlive())
             datafetch.interrupt();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        stopPlayback();
+
+        mHelper.onStop();
     }
 
     public void fetchHomePage() {
@@ -499,25 +499,32 @@ public class GuideFragment extends ChannelBaseFragment implements Flag.ChangeCal
         }
     };
 
-    private static LibVLC LibVLC() {
-        return VLCInstance.get();
-    }
 
     private void startPlayback() {
         Log.d(TAG, "startPlayback is invoke...");
 
         IVLCVout vlcVout = mService.getVLCVout();
         vlcVout.setVideoView(mSurfaceView);
-        vlcVout.addCallback(this);
         vlcVout.attachViews();
 
-        MediaWrapper mediaWrapper = new MediaWrapper(Uri.parse(carousels.get(0).getVideo_url()));
-        mediaWrapper.removeFlags(MediaWrapper.MEDIA_FORCE_AUDIO);
-        mediaWrapper.addFlags(MediaWrapper.MEDIA_VIDEO);
-        mService.load(mediaWrapper);
+        ArrayList<MediaWrapper> mediaWrapperList = new ArrayList<MediaWrapper>();
+
+        for (Carousel carousel : carousels) {
+            MediaWrapper mediaWrapper = new MediaWrapper(Uri.parse(carousel.getVideo_url()));
+            mediaWrapper.removeFlags(MediaWrapper.MEDIA_FORCE_AUDIO);
+            mediaWrapper.addFlags(MediaWrapper.MEDIA_VIDEO);
+            mediaWrapperList.add(mediaWrapper);
+        }
+        mService.load(mediaWrapperList, 0);
+        mService.setRepeatType(PlaybackService.RepeatType.All);
         mService.play();
     }
 
+    private void stopPlayback() {
+        IVLCVout vlcVout = mService.getVLCVout();
+        vlcVout.detachViews();
+        mService.stop();
+    }
 }
 
 class Flag {

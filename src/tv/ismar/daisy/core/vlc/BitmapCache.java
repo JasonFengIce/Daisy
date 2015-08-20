@@ -30,6 +30,7 @@ import android.support.v4.util.LruCache;
 import android.util.Log;
 import android.view.View;
 import org.videolan.libvlc.util.AndroidUtil;
+import tv.ismar.daisy.VodApplication;
 
 public class BitmapCache {
 
@@ -50,7 +51,7 @@ public class BitmapCache {
 
         // Get memory class of this device, exceeding this amount will throw an
         // OutOfMemory exception.
-        final ActivityManager am = ((ActivityManager) SampleApplication.getAppContext().getSystemService(
+        final ActivityManager am = ((ActivityManager) VodApplication.getAppContext().getSystemService(
                 Context.ACTIVITY_SERVICE));
         final int memClass = AndroidUtil.isHoneycombOrLater() ? am.getLargeMemoryClass() : am.getMemoryClass();
 
