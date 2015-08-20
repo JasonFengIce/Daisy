@@ -1,11 +1,5 @@
 package tv.ismar.daisy.views;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
-import org.xmlpull.v1.XmlPullParserException;
-
-import tv.ismar.daisy.R;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
@@ -17,12 +11,13 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import org.xmlpull.v1.XmlPullParserException;
+import tv.ismar.daisy.R;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class MenuFragment extends DialogFragment implements OnItemClickListener {
 	

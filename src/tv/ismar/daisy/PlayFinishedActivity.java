@@ -1,8 +1,20 @@
 package tv.ismar.daisy;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.view.ViewGroup;
+import android.widget.*;
+import android.widget.AdapterView.OnItemClickListener;
 import org.sakuratya.horizontal.ui.ZGridView;
-
 import tv.ismar.daisy.adapter.PlayFinishedAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -18,25 +30,6 @@ import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
 import tv.ismar.daisy.views.AlertDialogFragment;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.LoadingDialog;
-import android.app.Activity;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class PlayFinishedActivity extends BaseActivity implements OnFocusChangeListener, OnItemClickListener, OnClickListener {
 	

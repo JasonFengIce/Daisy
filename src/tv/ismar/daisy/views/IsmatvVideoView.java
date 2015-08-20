@@ -1,14 +1,5 @@
 package tv.ismar.daisy.views;
 
-import java.io.IOException;
-import java.util.Map;
-
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.SystemFileUtil;
-import tv.ismar.player.SmartPlayer;
-import tv.ismar.player.SmartPlayer.OnCompletionListenerUrl;
-import tv.ismar.player.SmartPlayer.OnPreparedListenerUrl;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,15 +9,20 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.View;
+import android.view.*;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.MediaController;
 import android.widget.MediaController.MediaPlayerControl;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.SystemFileUtil;
+import tv.ismar.player.SmartPlayer;
+import tv.ismar.player.SmartPlayer.OnCompletionListenerUrl;
+import tv.ismar.player.SmartPlayer.OnPreparedListenerUrl;
+
+import java.io.IOException;
+import java.util.Map;
 
 /**
  * Displays a video file. The VideoView class can load images from various

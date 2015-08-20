@@ -1,6 +1,5 @@
 package tv.ismar.daisy.ui.fragment.launcher;
 
-import android.R.integer;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,14 +14,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
-
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import com.activeandroid.query.Select;
 import com.google.gson.Gson;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
-
+import org.apache.commons.lang3.StringUtils;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.DownloadClient;
 import tv.ismar.daisy.core.client.DownloadThreadPool;
@@ -43,8 +43,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by huaijie on 5/18/15.

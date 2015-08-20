@@ -1,7 +1,6 @@
 package tv.ismar.daisy.core.client;
 
 import android.util.Log;
-import android.view.KeyEvent;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -13,7 +12,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 
 /**
  * Created by huaijie on 6/19/15.

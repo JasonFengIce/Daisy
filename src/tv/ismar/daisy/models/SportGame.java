@@ -1,9 +1,10 @@
 package tv.ismar.daisy.models;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.apache.commons.lang3.StringUtils;
 
 public class SportGame {
 	private String start_time;

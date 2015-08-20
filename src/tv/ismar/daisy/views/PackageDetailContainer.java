@@ -1,17 +1,16 @@
 package tv.ismar.daisy.views;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.VodApplication;
-import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.models.ContentModel;
 import android.content.Context;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.models.ContentModel;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class PackageDetailContainer extends LinearLayout {
 	

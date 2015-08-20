@@ -1,8 +1,8 @@
 package tv.ismar.daisy.qiyimediaplayer;
 
-import tv.ismar.daisy.views.IsmatvVideoView;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import tv.ismar.daisy.views.IsmatvVideoView;
 
 public class IsmartvPlayer extends MediaPlayView{
 

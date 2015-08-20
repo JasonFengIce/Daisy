@@ -1,16 +1,16 @@
 package tv.ismar.daisy.dao;
 
-import java.util.ArrayList;
-
-import tv.ismar.daisy.models.Favorite;
-import tv.ismar.daisy.models.History;
-import tv.ismar.daisy.models.Quality;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
+import tv.ismar.daisy.models.Favorite;
+import tv.ismar.daisy.models.History;
+import tv.ismar.daisy.models.Quality;
+
+import java.util.ArrayList;
 
 public class DBHelper extends SQLiteOpenHelper {
 

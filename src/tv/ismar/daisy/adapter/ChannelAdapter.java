@@ -1,27 +1,15 @@
 package tv.ismar.daisy.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import org.sakuratya.horizontal.adapter.HGridAdapter;
 import tv.ismar.daisy.R;
-import tv.ismar.daisy.core.ImageLabelUtils;
 import tv.ismar.daisy.data.ChannelEntity;
-import tv.ismar.daisy.models.MovieBean;
-import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
-import tv.ismar.daisy.views.AsyncImageView;
-import tv.ismar.daisy.views.AsyncImageView.OnImageViewLoadListener;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 public class ChannelAdapter extends HGridAdapter<ChannelEntity>  {

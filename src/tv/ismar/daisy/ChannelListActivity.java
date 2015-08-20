@@ -1,15 +1,5 @@
 package tv.ismar.daisy;
 
-import android.view.View;
-import android.view.animation.TranslateAnimation;
-import org.sakuratya.horizontal.ui.HGridView;
-import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.views.ActivityToFragmentListener;
-import tv.ismar.daisy.views.ChannelFragment;
-import tv.ismar.daisy.views.FavoriteFragment;
-import tv.ismar.daisy.views.HistoryFragment;
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -17,6 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
+import org.sakuratya.horizontal.ui.HGridView;
+import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.views.ChannelFragment;
+import tv.ismar.daisy.views.FavoriteFragment;
+import tv.ismar.daisy.views.HistoryFragment;
 
 public class ChannelListActivity extends BaseActivity {
 	

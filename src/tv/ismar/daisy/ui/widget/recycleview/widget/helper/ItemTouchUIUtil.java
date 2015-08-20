@@ -17,8 +17,8 @@
 package tv.ismar.daisy.ui.widget.recycleview.widget.helper;
 
 import android.graphics.Canvas;
-import tv.ismar.daisy.ui.widget.recycleview.widget.RecyclerView;
 import android.view.View;
+import tv.ismar.daisy.ui.widget.recycleview.widget.RecyclerView;
 
 /**
  * Utility class for {@link ItemTouchHelper} which handles item transformations for different

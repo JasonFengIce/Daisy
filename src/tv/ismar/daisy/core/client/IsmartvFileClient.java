@@ -7,8 +7,8 @@ import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
-import tv.ismar.daisy.utils.HardwareUtils;
 import tv.ismar.daisy.data.HomePagerEntity;
+import tv.ismar.daisy.utils.HardwareUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;

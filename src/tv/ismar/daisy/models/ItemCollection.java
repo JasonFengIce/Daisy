@@ -1,9 +1,9 @@
 package tv.ismar.daisy.models;
 
+import android.util.SparseArray;
+
 import java.io.Serializable;
 import java.util.ArrayList;
-
-import android.util.SparseArray;
 
 /**
  * This is a easy to operated model of ItemList.

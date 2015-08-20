@@ -1,49 +1,27 @@
 package tv.ismar.daisy.core;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.ConnectException;
-import java.net.HttpURLConnection;	
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.zip.GZIPInputStream;
-
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-
-import com.squareup.okhttp.Call;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import tv.ismar.daisy.VodApplication;
-import tv.ismar.daisy.exception.ItemOfflineException;
-import tv.ismar.daisy.exception.NetworkException;
-import tv.ismar.daisy.models.AdElement;
-import tv.ismar.daisy.models.AdRequestElement;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import tv.ismar.daisy.VodApplication;
+import tv.ismar.daisy.exception.ItemOfflineException;
+import tv.ismar.daisy.exception.NetworkException;
+import tv.ismar.daisy.models.AdElement;
 import tv.ismar.daisy.player.CallaPlay;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import java.io.*;
+import java.net.*;
+import java.util.*;
+import java.util.zip.GZIPInputStream;
 
 public class NetworkUtils {
 	private static String UA = "A11/V1 Unknown";

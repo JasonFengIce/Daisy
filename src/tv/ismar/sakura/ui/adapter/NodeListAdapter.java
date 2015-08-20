@@ -12,7 +12,6 @@ import tv.ismar.daisy.R;
 import tv.ismar.daisy.data.table.location.CdnTable;
 import tv.ismar.daisy.data.table.location.IspTable;
 import tv.ismar.sakura.ui.widget.SakuraProgressBar;
-import tv.ismar.sakura.utils.StringUtils;
 
 /**
  * Created by huaijie on 14-10-31.

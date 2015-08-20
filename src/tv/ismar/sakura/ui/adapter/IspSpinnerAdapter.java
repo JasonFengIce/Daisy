@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.data.table.location.IspTable;
-import tv.ismar.daisy.data.table.location.ProvinceTable;
 
 import java.util.List;
 

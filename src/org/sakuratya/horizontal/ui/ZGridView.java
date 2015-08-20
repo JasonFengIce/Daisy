@@ -1,8 +1,5 @@
 package org.sakuratya.horizontal.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-import tv.ismar.daisy.R;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
@@ -14,33 +11,17 @@ import android.os.Debug;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.os.SystemClock;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.util.SparseArray;
-import android.util.SparseBooleanArray;
-import android.util.StateSet;
-import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.SoundEffectConstants;
-import android.view.VelocityTracker;
-import android.view.View;
-import android.view.ViewConfiguration;
-import android.view.ViewDebug;
-import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.view.ViewTreeObserver;
+import android.util.*;
+import android.view.*;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
-import android.widget.AbsListView;
-import android.widget.Adapter;
-import android.widget.AdapterView;
-import android.widget.Checkable;
-import android.widget.EdgeEffect;
-import android.widget.ListAdapter;
-import android.widget.OverScroller;
+import android.widget.*;
 import android.widget.AbsListView.RecyclerListener;
+import tv.ismar.daisy.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ZGridView extends AdapterView<ListAdapter> {
 

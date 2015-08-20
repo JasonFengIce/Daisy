@@ -3,9 +3,6 @@ package tv.ismar.daisy.ui.widget.child;
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 
 /**

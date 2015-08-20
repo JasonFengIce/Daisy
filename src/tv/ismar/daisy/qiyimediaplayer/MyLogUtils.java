@@ -1,8 +1,7 @@
 package tv.ismar.daisy.qiyimediaplayer;
 
-import com.qiyi.video.utils.LogUtils;
-
 import android.util.Log;
+import com.qiyi.video.utils.LogUtils;
 
 public class MyLogUtils {
     private static boolean mIsDebug = LogUtils.mIsDebug;

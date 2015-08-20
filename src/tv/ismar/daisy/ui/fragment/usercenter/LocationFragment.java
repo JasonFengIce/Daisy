@@ -3,7 +3,6 @@ package tv.ismar.daisy.ui.fragment.usercenter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.activeandroid.query.Select;
 import com.google.gson.Gson;
-import org.w3c.dom.Text;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
@@ -24,10 +22,6 @@ import tv.ismar.daisy.ui.adapter.weather.CityAdapter;
 import tv.ismar.daisy.ui.adapter.weather.CityAdapter.OnItemListener;
 import tv.ismar.daisy.ui.adapter.weather.ProvinceAdapter;
 
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 

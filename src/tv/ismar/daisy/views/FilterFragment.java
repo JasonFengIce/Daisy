@@ -3,7 +3,6 @@ package tv.ismar.daisy.views;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,6 +15,7 @@ import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.models.FilterItem;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;

@@ -1,15 +1,14 @@
 package tv.ismar.daisy.qiyimediaplayer;
 
-import java.util.List;
-
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import com.qiyi.video.player.IVideoStateListener;
 import com.qiyi.video.player.QiyiVideoPlayer;
 import com.qiyi.video.player.data.Definition;
 import com.qiyi.video.player.data.IPlaybackInfo;
 import com.qiyi.video.player.error.ISdkError;
 
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import java.util.List;
 
 public class QiyiMediaPlayer extends MediaPlayView{
 	private QiyiVideoPlayer mPlayer;

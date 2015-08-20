@@ -1,23 +1,19 @@
 package tv.ismar.daisy.ui.adapter;
 
-import java.text.ParseException;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
-import android.text.TextUtils;
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.data.usercenter.AccountPlayAuthEntity;
-import tv.ismar.daisy.player.InitPlayerTool;
-import tv.ismar.daisy.utils.Util;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.data.usercenter.AccountPlayAuthEntity;
+import tv.ismar.daisy.player.InitPlayerTool;
+import tv.ismar.daisy.utils.Util;
+
+import java.text.ParseException;
+import java.util.ArrayList;
 
 /**
  * Created by huaijie on 7/3/15.

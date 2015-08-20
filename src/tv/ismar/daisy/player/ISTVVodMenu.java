@@ -1,7 +1,5 @@
 package tv.ismar.daisy.player;
 
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.VodMenuAction;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -14,6 +12,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.VodMenuAction;
 
 public class ISTVVodMenu extends ISTVVodMenuItem {
 	private static final String TAG = "ISTVVodMenu";

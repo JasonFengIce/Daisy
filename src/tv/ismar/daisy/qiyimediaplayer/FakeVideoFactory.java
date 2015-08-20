@@ -1,10 +1,10 @@
 package tv.ismar.daisy.qiyimediaplayer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.qiyi.video.player.data.Definition;
 import com.qiyi.video.player.data.IPlaybackInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Fake video data source.

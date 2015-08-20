@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.data.usercenter.YouHuiDingGouEntity;
-import tv.ismar.daisy.views.AsyncImageView;
 
 import java.util.ArrayList;
 

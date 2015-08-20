@@ -1,9 +1,7 @@
 package tv.ismar.daisy.models;
 
 import java.io.Serializable;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class SportsGame implements Serializable {
 

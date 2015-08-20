@@ -1,11 +1,11 @@
 package tv.ismar.daisy.core;
 
-import java.lang.ref.SoftReference;
-import java.util.HashMap;
-
-import tv.ismar.daisy.VodApplication.OnLowMemoryListener;
 import android.content.Context;
 import android.graphics.Bitmap;
+import tv.ismar.daisy.VodApplication.OnLowMemoryListener;
+
+import java.lang.ref.SoftReference;
+import java.util.HashMap;
 
 /**
  * A very basing implementation of an Bitmap cache

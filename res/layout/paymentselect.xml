@@ -1,11 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="@dimen/pay_paymentselect_marginleft"
-    android:layout_marginRight="@dimen/pay_paymentselect_marginright"
-    android:baselineAligned="false"
-    android:orientation="vertical" >
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_marginLeft="@dimen/pay_paymentselect_marginleft"
+              android:layout_marginRight="@dimen/pay_paymentselect_marginright"
+              android:baselineAligned="false"
+              android:orientation="vertical">
 
     <!-- top panel -->
 

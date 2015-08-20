@@ -1,10 +1,22 @@
 package tv.ismar.daisy.ui.fragment.launcher;
 
-import java.util.ArrayList;
-
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.TextView;
 import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
 import org.apache.commons.lang3.StringUtils;
-
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.data.HomePagerEntity;
@@ -16,24 +28,8 @@ import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
 import tv.ismar.daisy.views.LabelImageView;
 import tv.ismar.daisy.views.LoadingDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnKeyListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import java.util.ArrayList;
 
 /**
  * Created by huaijie on 5/18/15.

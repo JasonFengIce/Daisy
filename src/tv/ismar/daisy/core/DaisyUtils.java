@@ -1,13 +1,13 @@
 package tv.ismar.daisy.core;
 
-import java.util.concurrent.ExecutorService;
-
+import android.content.Context;
+import android.content.Intent;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.persistence.FavoriteManager;
 import tv.ismar.daisy.persistence.HistoryManager;
-import android.content.Context;
-import android.content.Intent;
+
+import java.util.concurrent.ExecutorService;
 
 public class DaisyUtils {
 

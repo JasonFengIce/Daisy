@@ -15,17 +15,12 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.core.client.ClientApi;
-import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.utils.HardwareUtils;
 
 import java.io.*;
-import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
-import java.security.MessageDigest;
 
 /**
  * Created by huaijie on 3/9/15.

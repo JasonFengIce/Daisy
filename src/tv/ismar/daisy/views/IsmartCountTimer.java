@@ -1,9 +1,8 @@
 package tv.ismar.daisy.views;
 
-import tv.ismar.daisy.R;
 import android.os.CountDownTimer;
-import android.widget.Button;
 import android.widget.TextView;
+import tv.ismar.daisy.R;
 
 public class IsmartCountTimer extends CountDownTimer {
 

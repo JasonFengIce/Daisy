@@ -1,26 +1,18 @@
 package tv.ismar.daisy.views;
 
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.VodApplication;
-import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.models.Section;
-import tv.ismar.daisy.models.SectionList;
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.FocusFinder;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.HorizontalScrollView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.*;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.models.Section;
+import tv.ismar.daisy.models.SectionList;
 
 public class RelateScrollableSectionList extends HorizontalScrollView {
 	

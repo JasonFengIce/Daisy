@@ -1,8 +1,8 @@
 package tv.ismar.daisy.persistence;
 
-import java.util.ArrayList;
-
 import tv.ismar.daisy.models.Favorite;
+
+import java.util.ArrayList;
 
 public interface FavoriteManager {
 	/**

@@ -11,11 +11,8 @@ import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Arrays;

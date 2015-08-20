@@ -18,9 +18,9 @@ package tv.ismar.daisy.ui.widget.recycleview.widget.helper;
 
 import android.graphics.Canvas;
 import android.support.v4.view.ViewCompat;
+import android.view.View;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.ui.widget.recycleview.widget.RecyclerView;
-import android.view.View;
 
 
 /**

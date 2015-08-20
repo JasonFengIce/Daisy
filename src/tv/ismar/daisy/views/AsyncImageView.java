@@ -15,11 +15,6 @@
  */
 package tv.ismar.daisy.views;
 
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.ImageProcessor;
-import tv.ismar.daisy.core.ImageRequest;
-import tv.ismar.daisy.core.ImageRequest.ImageRequestCallback;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -35,6 +30,11 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.ImageProcessor;
+import tv.ismar.daisy.core.ImageRequest;
+import tv.ismar.daisy.core.ImageRequest.ImageRequestCallback;
 
 /**
  * <p>

@@ -1,33 +1,34 @@
 package tv.ismar.daisy;
 
-import static tv.ismar.daisy.DramaListActivity.ORDER_CHECK_BASE_URL;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
-
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.media.AudioManager;
+import android.os.*;
+import android.util.Base64;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.*;
+import android.view.View.OnHoverListener;
+import android.view.View.OnTouchListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.*;
+import com.google.gson.JsonSyntaxException;
+import com.ismartv.api.t.AccessProxy;
+import com.ismartv.bean.ClipInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.EventProperty;
-import tv.ismar.daisy.core.ImageUtils;
-import tv.ismar.daisy.core.NetworkUtils;
-import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.*;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
-import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
-import tv.ismar.daisy.models.AdElement;
-import tv.ismar.daisy.models.Attribute;
-import tv.ismar.daisy.models.Clip;
-import tv.ismar.daisy.models.History;
-import tv.ismar.daisy.models.Item;
-import tv.ismar.daisy.models.Quality;
+import tv.ismar.daisy.models.*;
 import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.player.ISTVVodMenu;
@@ -36,41 +37,14 @@ import tv.ismar.daisy.views.IsmatvVideoView;
 import tv.ismar.daisy.views.MarqueeView;
 import tv.ismar.daisy.views.PaymentDialog;
 import tv.ismar.player.SmartPlayer;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
-import android.media.AudioManager;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.util.Base64;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnHoverListener;
-import android.view.View.OnTouchListener;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
 
-import com.google.gson.JsonSyntaxException;
-import com.ismartv.api.t.AccessProxy;
-import com.ismartv.bean.ClipInfo;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
+
+import static tv.ismar.daisy.DramaListActivity.ORDER_CHECK_BASE_URL;
 
 public class PlayerActivity extends VodMenuAction {
 

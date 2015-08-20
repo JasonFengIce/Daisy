@@ -1,6 +1,5 @@
 package tv.ismar.daisy.views;
 
-import android.app.ActionBar;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,24 +12,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import org.apache.commons.lang3.StringUtils;
 import org.sakuratya.horizontal.adapter.HGridFilterAdapterImpl;
 import org.sakuratya.horizontal.ui.HGridView;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.EventProperty;
-import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemCollection;
 import tv.ismar.daisy.models.ItemList;
-import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.player.InitPlayerTool;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**

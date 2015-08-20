@@ -4,8 +4,6 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
-import java.sql.Timestamp;
-
 /**
  * Created by huaijie on 7/31/15.
  */

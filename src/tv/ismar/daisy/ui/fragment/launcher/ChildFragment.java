@@ -1,14 +1,5 @@
 package tv.ismar.daisy.ui.fragment.launcher;
 
-import java.util.ArrayList;
-
-import android.widget.ImageButton;
-import com.squareup.picasso.MemoryPolicy;
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.core.client.IsmartvUrlClient;
-import tv.ismar.daisy.data.HomePagerEntity;
-import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
-import tv.ismar.daisy.ui.widget.child.ChildThumbImageView;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,13 +7,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.google.gson.Gson;
 import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.data.HomePagerEntity;
+import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
+import tv.ismar.daisy.ui.widget.child.ChildThumbImageView;
+
+import java.util.ArrayList;
 
 /**
  * Created by huaijie on 5/18/15.

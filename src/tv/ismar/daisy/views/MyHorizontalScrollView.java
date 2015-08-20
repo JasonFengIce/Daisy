@@ -16,12 +16,7 @@ package tv.ismar.daisy.views;
  * limitations under the License.
  */
 
-import android.os.Parcel;
-
-
-
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Build;
@@ -38,8 +33,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.EdgeEffect;
 import android.widget.FrameLayout;
 import android.widget.OverScroller;
-import android.widget.ScrollView;
-import tv.ismar.daisy.R;
 
 import java.util.List;
 

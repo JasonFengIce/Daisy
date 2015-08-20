@@ -1,10 +1,5 @@
 package tv.ismar.daisy.core;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,6 +8,11 @@ import android.os.Message;
 import android.os.Process;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+
+import java.io.InputStream;
+import java.net.URL;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 public class ImageLoader {
 

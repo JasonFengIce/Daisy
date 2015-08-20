@@ -1,10 +1,10 @@
 package tv.ismar.daisy.persistence;
 
-import java.util.ArrayList;
-
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.Quality;
+
+import java.util.ArrayList;
 
 /**
  * An History Manager.

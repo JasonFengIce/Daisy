@@ -1,14 +1,9 @@
 package tv.ismar.daisy.views;
 
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.TimeZone;
-
 import android.os.Parcel;
 import android.util.Log;
+
+import java.util.*;
 
 
 /**

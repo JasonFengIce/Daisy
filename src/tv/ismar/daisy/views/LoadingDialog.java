@@ -1,10 +1,10 @@
 package tv.ismar.daisy.views;
 
-import tv.ismar.daisy.R;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.MotionEvent;
 import android.widget.TextView;
+import tv.ismar.daisy.R;
 
 /**
  * 自定义Dialog

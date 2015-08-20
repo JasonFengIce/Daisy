@@ -1,22 +1,19 @@
 package tv.ismar.daisy.views;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.content.Intent;
-import android.view.*;
-import android.widget.*;
-import tv.ismar.daisy.FilterActivity;
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.VodApplication;
-import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.models.Section;
-import tv.ismar.daisy.models.SectionList;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.FocusFinder;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.*;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.models.Section;
+import tv.ismar.daisy.models.SectionList;
 
 import java.text.DecimalFormat;
 

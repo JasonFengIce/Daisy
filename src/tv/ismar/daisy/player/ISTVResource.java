@@ -1,9 +1,9 @@
 package tv.ismar.daisy.player;
 
+import android.graphics.Bitmap;
+
 import java.net.URL;
 import java.util.HashMap;
-
-import android.graphics.Bitmap;
 
 public class ISTVResource{
 	int    type;

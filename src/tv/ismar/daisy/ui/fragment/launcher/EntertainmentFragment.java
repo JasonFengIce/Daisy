@@ -1,21 +1,5 @@
 package tv.ismar.daisy.ui.fragment.launcher;
 
-import java.util.ArrayList;
-
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.Picasso;
-
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.data.HomePagerEntity;
-import tv.ismar.daisy.data.HomePagerEntity.Carousel;
-import tv.ismar.daisy.data.HomePagerEntity.Poster;
-import tv.ismar.daisy.exception.NetworkException;
-import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
-import tv.ismar.daisy.views.AsyncImageView;
-import tv.ismar.daisy.views.LabelImageView;
-import tv.ismar.daisy.views.LoadingDialog;
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask;
@@ -26,8 +10,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.data.HomePagerEntity;
+import tv.ismar.daisy.data.HomePagerEntity.Carousel;
+import tv.ismar.daisy.data.HomePagerEntity.Poster;
+import tv.ismar.daisy.exception.NetworkException;
+import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
+import tv.ismar.daisy.views.AsyncImageView;
+import tv.ismar.daisy.views.LabelImageView;
+import tv.ismar.daisy.views.LoadingDialog;
+
+import java.util.ArrayList;
 
 /**
  * Created by huaijie on 5/18/15.

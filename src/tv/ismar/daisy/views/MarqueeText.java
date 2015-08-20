@@ -1,9 +1,7 @@
 package tv.ismar.daisy.views;
 
 import android.content.Context;
-import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.view.ViewDebug.ExportedProperty;
 import android.widget.TextView;
 
 public class MarqueeText extends TextView {

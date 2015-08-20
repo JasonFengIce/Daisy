@@ -1,14 +1,19 @@
 package tv.ismar.daisy.views;
 
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import android.util.FloatMath;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.res.TypedArray;
+import android.os.Bundle;
+import android.util.AttributeSet;
+import android.view.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import cn.ismartv.activator.Activator;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
-
-import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
@@ -17,25 +22,9 @@ import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.res.TypedArray;
-import android.os.Bundle;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import cn.ismartv.activator.Activator;
-import tv.ismar.daisy.models.ItemCollection;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LoginPanelView extends LinearLayout {
 

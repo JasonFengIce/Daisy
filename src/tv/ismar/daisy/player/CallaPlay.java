@@ -1,11 +1,11 @@
 package tv.ismar.daisy.player;
 
-import java.util.HashMap;
-
+import android.os.AsyncTask;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.models.Item;
-import android.os.AsyncTask;
+
+import java.util.HashMap;
 
 public class CallaPlay {
 

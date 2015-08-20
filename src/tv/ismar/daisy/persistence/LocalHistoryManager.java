@@ -1,13 +1,9 @@
 package tv.ismar.daisy.persistence;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.NetworkUtils;
@@ -16,6 +12,9 @@ import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.dao.DBHelper.DBFields;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Quality;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class LocalHistoryManager implements HistoryManager {
 	

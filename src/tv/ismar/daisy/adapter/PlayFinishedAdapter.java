@@ -1,8 +1,5 @@
 package tv.ismar.daisy.adapter;
 
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.core.FinshedImageService;
-import tv.ismar.daisy.models.Item;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -12,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.FinshedImageService;
+import tv.ismar.daisy.models.Item;
 
 public class PlayFinishedAdapter extends BaseAdapter {
 	Context mContext;

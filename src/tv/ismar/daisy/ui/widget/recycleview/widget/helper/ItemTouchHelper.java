@@ -19,32 +19,25 @@ package tv.ismar.daisy.ui.widget.recycleview.widget.helper;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Build;
-import android.support.v4.animation.ValueAnimatorCompat;
 import android.support.v4.animation.AnimatorCompatHelper;
 import android.support.v4.animation.AnimatorListenerCompat;
 import android.support.v4.animation.AnimatorUpdateListenerCompat;
+import android.support.v4.animation.ValueAnimatorCompat;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.VelocityTrackerCompat;
 import android.support.v4.view.ViewCompat;
+import android.util.Log;
+import android.view.*;
+import android.view.animation.Interpolator;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.ui.widget.recycleview.widget.LinearLayoutManager;
 import tv.ismar.daisy.ui.widget.recycleview.widget.RecyclerView;
-import android.util.Log;
-import android.view.GestureDetector;
-import android.view.HapticFeedbackConstants;
-import android.view.MotionEvent;
-import android.view.VelocityTracker;
-import android.view.View;
-import android.view.ViewConfiguration;
-import android.view.ViewParent;
+import tv.ismar.daisy.ui.widget.recycleview.widget.RecyclerView.OnItemTouchListener;
+import tv.ismar.daisy.ui.widget.recycleview.widget.RecyclerView.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import tv.ismar.daisy.ui.widget.recycleview.widget.RecyclerView.OnItemTouchListener;
-import tv.ismar.daisy.ui.widget.recycleview.widget.RecyclerView.ViewHolder;
-import android.view.animation.Interpolator;
 
 /**
  * This is a utility class to add swipe to dismiss and drag & drop support to RecyclerView.

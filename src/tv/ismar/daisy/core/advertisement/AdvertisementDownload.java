@@ -2,7 +2,6 @@ package tv.ismar.daisy.core.advertisement;
 
 import android.content.Context;
 import android.util.Log;
-import com.activeandroid.annotation.Table;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;

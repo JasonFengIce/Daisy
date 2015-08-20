@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
@@ -46,8 +45,8 @@ import tv.ismar.sakura.ui.widget.SakuraListView;
 import java.util.ArrayList;
 import java.util.List;
 
-import static tv.ismar.sakura.core.SakuraClientAPI.restAdapter_WX_API_TVXIO;
 import static tv.ismar.sakura.core.SakuraClientAPI.restAdapter_SPEED_CALLA_TVXIO;
+import static tv.ismar.sakura.core.SakuraClientAPI.restAdapter_WX_API_TVXIO;
 
 /**
  * Created by huaijie on 2015/4/8.

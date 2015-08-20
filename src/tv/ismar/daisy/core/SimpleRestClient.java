@@ -1,36 +1,23 @@
 package tv.ismar.daisy.core;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import android.os.AsyncTask;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import tv.ismar.daisy.data.HomePagerEntity;
+import tv.ismar.daisy.exception.ItemOfflineException;
+import tv.ismar.daisy.exception.NetworkException;
+import tv.ismar.daisy.models.*;
+
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import tv.ismar.daisy.data.HomePagerEntity;
-import tv.ismar.daisy.exception.ItemOfflineException;
-import tv.ismar.daisy.exception.NetworkException;
-import tv.ismar.daisy.models.Attribute;
-import tv.ismar.daisy.models.ChannelList;
-import tv.ismar.daisy.models.ContentModelList;
-import tv.ismar.daisy.models.Item;
-import tv.ismar.daisy.models.ItemList;
-import tv.ismar.daisy.models.SectionList;
-import tv.ismar.daisy.models.SportGame;
-import tv.ismar.daisy.models.SportsGameList;
-import android.os.AsyncTask;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
 
 public class SimpleRestClient {
 	// public String root_url = "http://cord.tvxio.com";

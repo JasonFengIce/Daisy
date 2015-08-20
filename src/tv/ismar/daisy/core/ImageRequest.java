@@ -15,12 +15,12 @@
  */
 package tv.ismar.daisy.core;
 
-import java.util.concurrent.Future;
-
-import tv.ismar.daisy.core.ImageLoader.ImageLoaderCallback;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import tv.ismar.daisy.core.ImageLoader.ImageLoaderCallback;
+
+import java.util.concurrent.Future;
 
 /**
  * An {@link ImageRequest} may be used to request an image from the network. The

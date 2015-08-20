@@ -1,8 +1,8 @@
 package tv.ismar.daisy.core;
 
-import java.util.ArrayList;
-
 import android.util.Log;
+
+import java.util.ArrayList;
 
 public class MessageQueue {
 

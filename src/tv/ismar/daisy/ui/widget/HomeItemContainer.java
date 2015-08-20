@@ -1,15 +1,14 @@
 package tv.ismar.daisy.ui.widget;
 
-import tv.ismar.daisy.R;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.NinePatchDrawable;
 import android.util.AttributeSet;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import tv.ismar.daisy.R;
 
 
 public class HomeItemContainer extends FrameLayout {

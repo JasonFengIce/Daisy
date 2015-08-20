@@ -3,8 +3,6 @@ package tv.ismar.daisy.core.preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import java.security.Key;
-
 /**
  * Created by huaijie on 8/3/15.
  */

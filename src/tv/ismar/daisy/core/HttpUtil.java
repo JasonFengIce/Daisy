@@ -1,6 +1,9 @@
 package tv.ismar.daisy.core;
 
 
+import android.util.Log;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -8,11 +11,6 @@ import java.net.NetworkInterface;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-
-import android.util.Log;
 
 public class HttpUtil {
 	public final static String TAG = HttpUtil.class.getSimpleName();

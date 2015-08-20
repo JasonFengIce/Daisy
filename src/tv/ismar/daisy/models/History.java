@@ -1,9 +1,9 @@
 package tv.ismar.daisy.models;
 
-import java.io.Serializable;
-
-import tv.ismar.daisy.dao.DBHelper.DBFields;
 import android.database.Cursor;
+import tv.ismar.daisy.dao.DBHelper.DBFields;
+
+import java.io.Serializable;
 
 public class History implements Serializable, Comparable<History> {
 	

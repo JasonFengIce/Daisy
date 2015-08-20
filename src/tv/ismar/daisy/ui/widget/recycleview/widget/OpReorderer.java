@@ -16,14 +16,11 @@
 
 package tv.ismar.daisy.ui.widget.recycleview.widget;
 
-import java.util.List;
-
 import tv.ismar.daisy.ui.widget.recycleview.widget.AdapterHelper.UpdateOp;
 
-import static tv.ismar.daisy.ui.widget.recycleview.widget.AdapterHelper.UpdateOp.ADD;
-import static tv.ismar.daisy.ui.widget.recycleview.widget.AdapterHelper.UpdateOp.MOVE;
-import static tv.ismar.daisy.ui.widget.recycleview.widget.AdapterHelper.UpdateOp.REMOVE;
-import static tv.ismar.daisy.ui.widget.recycleview.widget.AdapterHelper.UpdateOp.UPDATE;
+import java.util.List;
+
+import static tv.ismar.daisy.ui.widget.recycleview.widget.AdapterHelper.UpdateOp.*;
 
 class OpReorderer {
 

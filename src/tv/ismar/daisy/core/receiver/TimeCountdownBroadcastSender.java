@@ -2,9 +2,7 @@ package tv.ismar.daisy.core.receiver;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
-import java.sql.Time;
 import java.util.Timer;
 import java.util.TimerTask;
 

@@ -3,7 +3,6 @@ package tv.ismar.daisy.data.table;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
-import com.google.gson.Gson;
 
 /**
  * Created by huaijie on 6/24/15.

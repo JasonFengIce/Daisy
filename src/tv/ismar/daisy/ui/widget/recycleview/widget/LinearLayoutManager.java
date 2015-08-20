@@ -24,11 +24,11 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.accessibility.AccessibilityEventCompat;
 import android.support.v4.view.accessibility.AccessibilityRecordCompat;
 import android.util.AttributeSet;
-import tv.ismar.daisy.ui.widget.recycleview.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
+import tv.ismar.daisy.ui.widget.recycleview.widget.helper.ItemTouchHelper;
 
 import java.util.List;
 

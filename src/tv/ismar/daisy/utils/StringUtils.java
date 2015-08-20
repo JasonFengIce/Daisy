@@ -1,7 +1,5 @@
 package tv.ismar.daisy.utils;
 
-import android.util.Log;
-
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

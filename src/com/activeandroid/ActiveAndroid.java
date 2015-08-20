@@ -18,7 +18,6 @@ package com.activeandroid;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 public final class ActiveAndroid {
 	//////////////////////////////////////////////////////////////////////////////////////

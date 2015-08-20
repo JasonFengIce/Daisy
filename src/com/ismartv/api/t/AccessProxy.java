@@ -2,24 +2,22 @@ package com.ismartv.api.t;
 
 import android.content.Context;
 import android.util.Log;
-
 import cn.ismartv.activator.core.rsa.AESOperator;
-
 import com.ismartv.api.AESDemo;
 import com.ismartv.bean.ClipInfo;
 import com.pplive.android.player.PlayCodeUtil;
 import com.qiyi.video.player.data.Definition;
-
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.qiyimediaplayer.SdkVideo;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Date;
 
 public class AccessProxy {
 

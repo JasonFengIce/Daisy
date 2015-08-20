@@ -1,6 +1,5 @@
 package tv.ismar.daisy.views;
 
-import tv.ismar.daisy.R;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.TextView;
+import tv.ismar.daisy.R;
 
 public class CustomDialog extends Dialog {
 

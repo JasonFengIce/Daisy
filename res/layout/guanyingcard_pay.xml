@@ -1,12 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/guanyingcard_pay_panel"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/pay_qrcode_pay_panel_marginleft"
-    android:layout_marginTop="@dimen/pay_guanyingcard_margintop"
-    android:layout_weight="2.1"
-    android:orientation="vertical" >
+              android:id="@+id/guanyingcard_pay_panel"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="@dimen/pay_qrcode_pay_panel_marginleft"
+              android:layout_marginTop="@dimen/pay_guanyingcard_margintop"
+              android:layout_weight="2.1"
+              android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/card_balance_title"

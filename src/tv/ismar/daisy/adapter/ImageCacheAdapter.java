@@ -1,31 +1,25 @@
 package tv.ismar.daisy.adapter;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.core.ImageLabelUtils;
-import tv.ismar.daisy.models.MovieBean;
-import tv.ismar.daisy.views.AsyncImageView;
-import tv.ismar.daisy.views.AsyncImageView.OnImageViewLoadListener;
-import tv.ismar.daisy.views.MarqueeText;
-import android.R.anim;
 import android.content.Context;
-import android.graphics.AvoidXfermode.Mode;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.TextView;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.ImageLabelUtils;
+import tv.ismar.daisy.models.MovieBean;
+import tv.ismar.daisy.views.AsyncImageView;
+import tv.ismar.daisy.views.AsyncImageView.OnImageViewLoadListener;
+import tv.ismar.daisy.views.MarqueeText;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 public class ImageCacheAdapter extends BaseAdapter implements OnImageViewLoadListener {
 

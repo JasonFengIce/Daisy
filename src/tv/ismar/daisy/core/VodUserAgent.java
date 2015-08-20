@@ -1,11 +1,11 @@
 package tv.ismar.daisy.core;
 
-import java.net.NetworkInterface;
-import java.util.UUID;
-
 import android.content.Context;
 import android.os.Build;
 import android.telephony.TelephonyManager;
+
+import java.net.NetworkInterface;
+import java.util.UUID;
 
 public class VodUserAgent {
 	

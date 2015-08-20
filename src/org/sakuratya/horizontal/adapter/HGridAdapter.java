@@ -1,8 +1,9 @@
 package org.sakuratya.horizontal.adapter;
 
 
-import java.util.ArrayList;
 import android.widget.BaseAdapter;
+
+import java.util.ArrayList;
 
 public abstract class HGridAdapter<E> extends BaseAdapter {
 	

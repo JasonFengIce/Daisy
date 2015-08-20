@@ -1,9 +1,9 @@
 package tv.ismar.daisy.core;
 
+import tv.ismar.daisy.models.MovieBean;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import tv.ismar.daisy.models.MovieBean;
 
 /**
  * 查询，单例类

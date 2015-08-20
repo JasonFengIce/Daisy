@@ -1,20 +1,18 @@
 package tv.ismar.daisy.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.models.VideoEntity;
-import tv.ismar.daisy.models.VideoEntity.Objects;
-import tv.ismar.daisy.player.InitPlayerTool;
-import tv.ismar.daisy.views.AsyncImageView;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.models.VideoEntity;
+import tv.ismar.daisy.models.VideoEntity.Objects;
+import tv.ismar.daisy.views.AsyncImageView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RecommecdItemAdapter extends BaseAdapter {
 

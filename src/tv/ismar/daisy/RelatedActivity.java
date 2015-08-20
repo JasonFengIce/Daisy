@@ -1,25 +1,7 @@
 package tv.ismar.daisy;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import org.sakuratya.horizontal.ui.ZGridView;
-import tv.ismar.daisy.adapter.RelatedAdapter;
-import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.EventProperty;
-import tv.ismar.daisy.core.NetworkUtils;
-import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.models.Attribute;
-import tv.ismar.daisy.models.Item;
-import tv.ismar.daisy.models.ItemList;
-import tv.ismar.daisy.models.Section;
-import tv.ismar.daisy.models.SectionList;
-import tv.ismar.daisy.player.InitPlayerTool;
-import tv.ismar.daisy.views.LoadingDialog;
-import tv.ismar.daisy.views.RelateScrollableSectionList;
-import tv.ismar.daisy.views.RelateScrollableSectionList.OnSectionSelectChangedListener;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,10 +11,25 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
+import org.sakuratya.horizontal.ui.ZGridView;
+import tv.ismar.daisy.adapter.RelatedAdapter;
+import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.EventProperty;
+import tv.ismar.daisy.core.NetworkUtils;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.models.*;
+import tv.ismar.daisy.player.InitPlayerTool;
+import tv.ismar.daisy.views.LoadingDialog;
+import tv.ismar.daisy.views.RelateScrollableSectionList;
+import tv.ismar.daisy.views.RelateScrollableSectionList.OnSectionSelectChangedListener;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 public class RelatedActivity extends BaseActivity implements OnSectionSelectChangedListener, OnItemClickListener {
 	

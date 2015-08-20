@@ -1,27 +1,5 @@
 package tv.ismar.daisy;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.sakuratya.horizontal.ui.HGridView;
-import org.sakuratya.horizontal.ui.ZGridView;
-import tv.ismar.daisy.adapter.ImageCacheAdapter;
-import tv.ismar.daisy.adapter.SearchAdapter;
-import tv.ismar.daisy.core.ConnectionHelper;
-import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.EventProperty;
-import tv.ismar.daisy.core.NetworkUtils;
-import tv.ismar.daisy.core.SearchMovieService;
-import tv.ismar.daisy.core.SearchPromptDialog;
-import tv.ismar.daisy.core.SortMovieUtils;
-import tv.ismar.daisy.models.MovieBean;
-import tv.ismar.daisy.player.InitPlayerTool;
-import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
-import tv.ismar.daisy.views.LoadingDialog;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -36,16 +14,22 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
+import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
+import org.sakuratya.horizontal.ui.HGridView;
+import tv.ismar.daisy.adapter.SearchAdapter;
+import tv.ismar.daisy.core.*;
+import tv.ismar.daisy.models.MovieBean;
+import tv.ismar.daisy.player.InitPlayerTool;
+import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
+import tv.ismar.daisy.views.LoadingDialog;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SearchActivity extends BaseActivity implements OnClickListener, OnItemClickListener {
 

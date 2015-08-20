@@ -1,12 +1,8 @@
 package tv.ismar.daisy.persistence;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.AsyncTask;
-
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.NetworkUtils;
@@ -14,6 +10,9 @@ import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.dao.DBHelper.DBFields;
 import tv.ismar.daisy.models.Favorite;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class LocalFavoriteManager implements FavoriteManager {
 	

@@ -1,26 +1,24 @@
 package org.sakuratya.horizontal.adapter;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-
-import android.util.Log;
-import org.apache.commons.lang3.StringUtils;
-import org.sakuratya.horizontal.ui.HGridView;
-
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.models.Item;
-import tv.ismar.daisy.models.ItemCollection;
-import tv.ismar.daisy.views.AsyncImageView;
-import tv.ismar.daisy.views.AsyncImageView.OnImageViewLoadListener;
-import tv.ismar.daisy.views.LabelImageView;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import org.sakuratya.horizontal.ui.HGridView;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.models.ItemCollection;
+import tv.ismar.daisy.views.AsyncImageView;
+import tv.ismar.daisy.views.AsyncImageView.OnImageViewLoadListener;
+import tv.ismar.daisy.views.LabelImageView;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements OnImageViewLoadListener {
 	

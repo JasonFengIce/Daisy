@@ -2,7 +2,6 @@ package tv.ismar.daisy.core.advertisement;
 
 import android.content.Context;
 import android.util.Log;
-import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import tv.ismar.daisy.data.LaunchAdvertisementEntity;
@@ -11,7 +10,6 @@ import tv.ismar.daisy.utils.FileUtils;
 import tv.ismar.daisy.utils.HardwareUtils;
 
 import java.io.File;
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

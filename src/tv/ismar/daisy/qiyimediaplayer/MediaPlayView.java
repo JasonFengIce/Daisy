@@ -1,6 +1,5 @@
 package tv.ismar.daisy.qiyimediaplayer;
 
-import android.content.Context;
 import android.view.ViewGroup;
 public class MediaPlayView {
 

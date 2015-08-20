@@ -1,8 +1,14 @@
 package tv.ismar.daisy;
 
-import java.util.ArrayList;
-
-import android.os.Handler;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.view.*;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.models.AdElement;
@@ -10,19 +16,8 @@ import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.player.ISTVVodMenu;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.CustomDialog;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public abstract class VodMenuAction extends BaseActivity {
 	static final int MSG_SEK_ACTION = 103;

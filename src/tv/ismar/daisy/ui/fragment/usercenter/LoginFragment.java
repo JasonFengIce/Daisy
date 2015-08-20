@@ -3,8 +3,6 @@ package tv.ismar.daisy.ui.fragment.usercenter;
 import android.app.Activity;
 import android.content.*;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;

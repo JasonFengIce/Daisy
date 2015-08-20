@@ -1,5 +1,9 @@
 package tv.ismar.daisy.player;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
 import com.google.gson.JsonSyntaxException;
 import com.ismartv.api.t.AccessProxy;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -8,10 +12,6 @@ import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.Clip;
 import tv.ismar.daisy.models.Item;
-import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.app.Activity;
 public class InitPlayerTool {
     Context mContext;
     Intent intent;

@@ -3,7 +3,6 @@ package tv.ismar.daisy.core.initialization;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.TextView;
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;

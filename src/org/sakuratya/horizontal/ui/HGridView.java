@@ -1,11 +1,5 @@
 package org.sakuratya.horizontal.ui;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import android.view.*;
-import tv.ismar.daisy.R;
-import org.sakuratya.horizontal.adapter.HGridAdapter;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
@@ -18,10 +12,19 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.FloatMath;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import org.sakuratya.horizontal.adapter.HGridAdapter;
+import tv.ismar.daisy.R;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * These is a horizontal scroll GridView with arrow key action support and a

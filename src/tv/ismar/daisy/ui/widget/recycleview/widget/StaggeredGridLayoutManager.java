@@ -36,10 +36,7 @@ import java.util.Arrays;
 import java.util.BitSet;
 import java.util.List;
 
-import static tv.ismar.daisy.ui.widget.recycleview.widget.LayoutState.LAYOUT_START;
-import static tv.ismar.daisy.ui.widget.recycleview.widget.LayoutState.LAYOUT_END;
-import static tv.ismar.daisy.ui.widget.recycleview.widget.LayoutState.ITEM_DIRECTION_HEAD;
-import static tv.ismar.daisy.ui.widget.recycleview.widget.LayoutState.ITEM_DIRECTION_TAIL;
+import static tv.ismar.daisy.ui.widget.recycleview.widget.LayoutState.*;
 import static tv.ismar.daisy.ui.widget.recycleview.widget.RecyclerView.NO_POSITION;
 
 /**

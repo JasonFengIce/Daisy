@@ -1,22 +1,16 @@
 package tv.ismar.daisy.views;
 
-import java.io.InputStream;
-
-import org.apache.commons.lang3.StringUtils;
-
-import tv.ismar.daisy.R;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
+import android.graphics.*;
 import android.graphics.drawable.NinePatchDrawable;
 import android.util.AttributeSet;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import org.apache.commons.lang3.StringUtils;
+import tv.ismar.daisy.R;
+
+import java.io.InputStream;
 
 public class LabelImageView extends AsyncImageView {
 

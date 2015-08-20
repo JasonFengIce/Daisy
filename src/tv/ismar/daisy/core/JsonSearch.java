@@ -1,16 +1,14 @@
 package tv.ismar.daisy.core;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import android.text.TextUtils;
+import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import tv.ismar.daisy.models.MovieBean;
-import android.text.TextUtils;
 
-import com.google.gson.Gson;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Json解析Utils

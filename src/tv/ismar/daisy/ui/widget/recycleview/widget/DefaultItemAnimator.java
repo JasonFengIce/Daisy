@@ -18,8 +18,8 @@ package tv.ismar.daisy.ui.widget.recycleview.widget;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.support.v4.view.ViewPropertyAnimatorListener;
-import tv.ismar.daisy.ui.widget.recycleview.widget.RecyclerView.ViewHolder;
 import android.view.View;
+import tv.ismar.daisy.ui.widget.recycleview.widget.RecyclerView.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;

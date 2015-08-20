@@ -1,17 +1,11 @@
 package tv.ismar.daisy.core;
 
+import com.google.gson.*;
+import tv.ismar.daisy.models.Attribute;
+
 import java.lang.reflect.Type;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import tv.ismar.daisy.models.Attribute;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 
 public class AttributeDeserializer implements JsonDeserializer<Attribute> {
 

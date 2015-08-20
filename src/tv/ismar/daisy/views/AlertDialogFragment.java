@@ -1,10 +1,10 @@
 package tv.ismar.daisy.views;
 
-import tv.ismar.daisy.R;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import tv.ismar.daisy.R;
 
 public class AlertDialogFragment extends DialogFragment {
 	
