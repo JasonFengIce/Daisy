@@ -1,23 +1,16 @@
 package tv.ismar.daisy.views;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.FloatMath;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.*;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
@@ -25,23 +18,33 @@ import org.sakuratya.horizontal.ui.HGridView;
 import org.sakuratya.horizontal.ui.HGridView.OnScrollListener;
 import tv.ismar.daisy.ChannelListActivity;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
-import tv.ismar.daisy.models.*;
+import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.models.ItemCollection;
+import tv.ismar.daisy.models.ItemList;
+import tv.ismar.daisy.models.Section;
+import tv.ismar.daisy.models.SectionList;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.DialogInterface.OnCancelListener;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.FloatMath;
+import android.util.Log;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 public class ChannelFragment extends Fragment implements OnItemSelectedListener, OnItemClickListener,
         OnScrollListener, ActivityToFragmentListener, ChannelListActivity.OnMenuToggleListener,
@@ -98,6 +101,8 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
         this.isPortrait = isPortrait;
     }
 	private void initViews(View fragmentView) {
+        View vv = fragmentView.findViewById(R.id.large_layout);
+        DaisyUtils.setbackground(R.drawable.main_bg,vv);
         percentage = (ProgressBar) fragmentView.findViewById(R.id.section_percentage);
 
         weatherFragment = (LaunchHeaderLayout) fragmentView.findViewById(R.id.top_column_layout);

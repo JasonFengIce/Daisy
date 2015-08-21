@@ -1,5 +1,30 @@
 package tv.ismar.daisy.views;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import android.graphics.drawable.BitmapDrawable;
+import org.apache.commons.lang3.StringUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import cn.ismartv.activator.Activator;
+
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
+import tv.ismar.daisy.models.Item;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -13,27 +38,12 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.*;
-import cn.ismartv.activator.Activator;
-import org.apache.commons.lang3.StringUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
-import tv.ismar.daisy.models.Item;
-
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class PaymentDialog extends Dialog {
 
@@ -107,6 +117,7 @@ public class PaymentDialog extends Dialog {
 		initView();
 		resizeWindow();
         purchaseCheck();
+
 	}
 
 	@Override
@@ -135,8 +146,33 @@ public class PaymentDialog extends Dialog {
 		lp.width = ((int) (width * 0.83));
 		lp.height = ((int) (height * 0.83));
 	}
+    private void setbackground(int id,View v){
 
+
+
+
+        BitmapFactory.Options opt = new BitmapFactory.Options();
+
+        opt.inPreferredConfig = Bitmap.Config.ALPHA_8;
+
+        opt.inPurgeable = true;
+
+        opt.inInputShareable = true;
+        //opt.inTargetDensity = mycontext.getResources().getDisplayMetrics().densityDpi;
+       // opt.inDensity = mycontext.getResources().getDisplayMetrics().densityDpi;
+
+        InputStream is = mycontext.getResources().openRawResource(
+
+                id );
+
+        Bitmap bm = BitmapFactory.decodeStream(is, null, opt);
+
+        BitmapDrawable bd = new BitmapDrawable(mycontext.getResources(), bm);
+        v.setBackgroundDrawable(bd);
+    }
 	private void initView() {
+       // View v = findViewById(R.id.large_layout);
+        //setbackground(R.drawable.person_center_bg,v);
 		weixinpay_button = (Button) findViewById(R.id.weixin);
 		guanyingcard_button = (Button) findViewById(R.id.videocard);
 		zhifubao_button = (Button) findViewById(R.id.zhifubao);

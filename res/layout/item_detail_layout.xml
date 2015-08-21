@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"             
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_bg"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+        android:id="@+id/large_layout">
     <RelativeLayout
         android:id="@+id/detail_left_container"
         android:layout_width="@dimen/item_detail_detail_left_container_width"

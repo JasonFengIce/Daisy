@@ -15,6 +15,11 @@
  */
 package tv.ismar.daisy.views;
 
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.ImageProcessor;
+import tv.ismar.daisy.core.ImageRequest;
+import tv.ismar.daisy.core.ImageRequest.ImageRequestCallback;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -30,11 +35,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.ImageProcessor;
-import tv.ismar.daisy.core.ImageRequest;
-import tv.ismar.daisy.core.ImageRequest.ImageRequestCallback;
 
 /**
  * <p>
@@ -142,7 +142,12 @@ public class AsyncImageView extends ImageView implements ImageRequestCallback {
 
         a.recycle();
     }
-
+    public Bitmap getmBitmap(){
+        return mBitmap;
+    }
+    public void setmBitmap(){
+        mBitmap = null;
+    }
     private void initializeDefaultValues() {
         mImageSource = IMAGE_SOURCE_UNKNOWN;
         mPaused = false;
@@ -215,6 +220,7 @@ public class AsyncImageView extends ImageView implements ImageRequestCallback {
             mOptions.inDither = true;
             mOptions.inScaled = true;
             mOptions.inTargetDensity = getContext().getResources().getDisplayMetrics().densityDpi;
+           // mOptions.inPreferredConfig = Bitmap.Config.ALPHA_8;
         }
 
         mOptions.inDensity = mOptions.inTargetDensity;

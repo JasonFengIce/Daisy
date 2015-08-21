@@ -81,7 +81,8 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.filmitem_portrait_detail_view);
         mSimpleRestClient = new SimpleRestClient();
-
+        View vv = findViewById(R.id.large_layout);
+        DaisyUtils.setbackground(R.drawable.main_bg,vv);
         mLoadingDialog = new LoadingDialog(this, getResources().getString(
                 R.string.vod_loading));
         mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
@@ -372,6 +373,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
     private void buyVideo() {
         PaymentDialog dialog = new PaymentDialog(PFilmItemdetailActivity.this,
                 R.style.PaymentDialog, ordercheckListener);
+
         mItem.model_name = "item";
         dialog.setItem(mItem);
         dialog.show();

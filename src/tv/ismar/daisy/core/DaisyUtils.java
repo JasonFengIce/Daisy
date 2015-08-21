@@ -1,13 +1,18 @@
 package tv.ismar.daisy.core;
 
-import android.content.Context;
-import android.content.Intent;
+import java.io.InputStream;
+import java.util.concurrent.ExecutorService;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.view.View;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.persistence.FavoriteManager;
 import tv.ismar.daisy.persistence.HistoryManager;
-
-import java.util.concurrent.ExecutorService;
+import android.content.Context;
+import android.content.Intent;
 
 public class DaisyUtils {
 
@@ -78,5 +83,28 @@ public class DaisyUtils {
         intent.putExtra("fromPage",from);
 		context.startActivity(intent);
 	}
+    public static void setbackground(int id,View v){
 
+
+
+
+        BitmapFactory.Options opt = new BitmapFactory.Options();
+
+        opt.inPreferredConfig = Bitmap.Config.ALPHA_8;
+
+        opt.inPurgeable = true;
+
+        opt.inInputShareable = true;
+//        opt.inTargetDensity = v.getContext().getResources().getDisplayMetrics().densityDpi;
+//        opt.inDensity = v.getContext().getResources().getDisplayMetrics().densityDpi;
+
+        InputStream is = v.getContext().getResources().openRawResource(
+
+                id );
+
+        Bitmap bm = BitmapFactory.decodeStream(is, null, opt);
+
+        BitmapDrawable bd = new BitmapDrawable(v.getContext().getResources(), bm);
+        v.setBackgroundDrawable(bd);
+    }
 }
