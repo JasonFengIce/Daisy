@@ -313,13 +313,7 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
             mWrapperList.add(mediaWrapper);
         }
 
-//        String tag = "guide";
-//        deleteFile(carousels, tag);
-//        downloadVideo(carousels, tag);
-
-
         mHelper.onStart();
-
 
         allItem = new ArrayList<LabelImageView>();
         allVideoUrl = new ArrayList<String>();
@@ -351,111 +345,6 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
         allVideoUrl.add(carousels.get(2).getVideo_url());
 
     }
-
-//    private void setVideoPath(final VideoView videoView, final String url) {
-//        new Thread() {
-//            @Override
-//            public void run() {
-//                String playPath;
-//                DownloadTable downloadTable = new Select().from(DownloadTable.class).where(DownloadTable.URL + " = ?", url).executeSingle();
-//                if (downloadTable == null) {
-//                    playPath = url;
-//                } else {
-//                    File localVideoFile = new File(downloadTable.download_path);
-//                    String fileMd5Code = HardwareUtils.getMd5ByFile(localVideoFile);
-//                    Log.d(TAG, "local md5: " + fileMd5Code + " | " + "server md5: " + downloadTable.server_md5);
-//                    if (fileMd5Code.equalsIgnoreCase(downloadTable.server_md5)) {
-//                        playPath = localVideoFile.getAbsolutePath();
-//                    } else {
-//                        playPath = url;
-//                    }
-//                }
-//                Log.d(TAG, "set video path: " + playPath);
-//                Message message = new Message();
-//                message.what = 0;
-//                message.obj = playPath;
-////                loopMessageHandler.sendMessage(message);
-//            }
-//        }.start();
-//    }
-
-//    private void downloadVideo(ArrayList<Carousel> carousels, String tag) {
-//        for (Carousel carousel : carousels) {
-//            String url = carousel.getVideo_url();
-//            List<DownloadTable> downloadTables = new Select()
-//                    .from(DownloadTable.class)
-//                    .where(DownloadTable.URL + " = ?", carousel.getVideo_url())
-//                    .execute();
-//            if (!downloadTables.isEmpty()) {
-//                String localFilePath = downloadTables.get(0).download_path;
-//                File localFile = new File(localFilePath);
-//                String fileMd5Code = localFile.getName().split("\\.")[0];
-//                if (!fileMd5Code.equalsIgnoreCase(downloadTables.get(0).server_md5)) {
-//                    for (DownloadTable downloadTable : downloadTables) {
-//                        File file = new File(downloadTable.download_path);
-//                        if (file.exists()) {
-//                            file.delete();
-//                        }
-//                        downloadTable.delete();
-//                    }
-//                    // download file
-//                    download(url, tag);
-//                } else {
-//                    for (DownloadTable downloadTable : downloadTables) {
-//                        File file = new File(downloadTable.download_path);
-//                        if (!file.exists()) {
-//                            downloadTable.delete();
-//                            download(url, tag);
-//                        } else {
-//                            // nothing file already download
-//                        }
-//                    }
-//
-//                }
-//                // if table is empty download video
-//            } else {
-//                download(url, tag);
-//            }
-//        }
-//    }
-
-//    private void download(String url, String tag) {
-//        String savePath = HardwareUtils.getCachePath(mContext) + "/" + tag + "/";
-//        DownloadClient downloadClient = new DownloadClient(url, savePath);
-//        DownloadThreadPool.getInstance().add(downloadClient);
-//    }
-//
-//    private void deleteFile(ArrayList<HomePagerEntity.Carousel> carousels,
-//                            String tag) {
-//        String savePath = HardwareUtils.getCachePath(mContext) + "/" + tag + "/";
-//        ArrayList<String> exceptsPaths = new ArrayList<String>();
-//        for (HomePagerEntity.Carousel carousel : carousels) {
-//            try {
-//                File file = new File(new URL(carousel.getVideo_url()).getFile());
-//                exceptsPaths.add(file.getName());
-//            } catch (MalformedURLException e) {
-//                Log.e(TAG, e.getMessage());
-//            }
-//
-//        }
-//        HardwareUtils.deleteFiles(savePath, exceptsPaths);
-//    }
-
-
-//
-//    private Handler loopMessageHandler = new Handler() {
-//        @Override
-//        public void handleMessage(Message msg) {
-//            String playPath = (String) msg.obj;
-//            if (linkedVideoView.isPlaying()) {
-//                linkedVideoView.pause();
-//                linkedVideoView.stopPlayback();
-//            }
-//            linkedVideoView.setVideoPath(playPath);
-//            linkedVideoView.start();
-//
-//        }
-//    };
 
     private Handler mHandler = new Handler() {
         @Override
