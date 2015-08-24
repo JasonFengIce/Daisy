@@ -132,8 +132,11 @@ public class PaymentDialog extends Dialog {
 			urlHandler.removeMessages(REFRESH_PAY_STATUS);
 		if (urlHandler.hasMessages(LOGIN_SUCESS))
 			urlHandler.removeMessages(LOGIN_SUCESS);
+		if (qrcodeBitmap != null && qrcodeBitmap.isRecycled()) {
+			qrcodeBitmap.recycle();
+			qrcodeBitmap = null;
+		}
 		super.dismiss();
-
 	}
 
 	public void setItem(Item item) {
@@ -229,6 +232,10 @@ public class PaymentDialog extends Dialog {
 
 		@Override
 		public void onClick(View view) {
+			if (qrcodeBitmap != null && qrcodeBitmap.isRecycled()) {
+				qrcodeBitmap.recycle();
+				qrcodeBitmap = null;
+			}
 			switch (view.getId()) {
 			case R.id.weixin: {
                 if(urlHandler.hasMessages(PURCHASE_CHECK_RESULT))
@@ -350,6 +357,7 @@ public class PaymentDialog extends Dialog {
 				qrcodeview.setImageBitmap(qrcodeBitmap);
 				if (qrcodeBitmap != null && qrcodeBitmap.isRecycled())
 					qrcodeBitmap.recycle();
+				qrcodeBitmap = null;
 				break;
 			}
 			case REFRESH_PAY_STATUS: {
@@ -459,7 +467,15 @@ public class PaymentDialog extends Dialog {
 				code = connection.getResponseCode();
 			}
 			InputStream is = connection.getInputStream();
-			bitmap = BitmapFactory.decodeStream(is);
+			BitmapFactory.Options opt = new BitmapFactory.Options();
+			opt.inPreferredConfig = Bitmap.Config.ARGB_4444;
+			opt.inPurgeable = true;
+			opt.inInputShareable = true;
+//			opt.inTempStorage = new byte[1024];
+			if(params.contains("alipay")) {
+				opt.inSampleSize = 2;
+			}
+			bitmap = BitmapFactory.decodeStream(is,null,opt);
 			is.close();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();

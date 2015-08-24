@@ -78,5 +78,5 @@
     <color name="history_divider">#515a6c</color>
 
     <color name="blue">#00a9ff</color>
-    
+    <color name="payment_dialog_bg">#012239</color>
 </resources>
