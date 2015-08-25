@@ -107,6 +107,8 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
     public void onMediaPlayerEvent(MediaPlayer.Event event) {
         switch (event.type) {
             case MediaPlayer.Event.EndReached:
+                stopPlayback();
+                mHelper.onStop();
                 mHandler.sendEmptyMessage(CAROUSEL_NEXT);
                 break;
         }
@@ -492,6 +494,8 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
                 mCarouselRepeatType = CarouselRepeatType.All;
             } else {
                 if (hasFocus) {
+                    stopPlayback();
+                    mHelper.onStop();
                     int position = (Integer) v.getTag();
                     mCarouselRepeatType = CarouselRepeatType.Once;
                     mCurrentCarouselIndex = position;
