@@ -765,5 +765,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             exitPopupWindow.dismiss();
         }
         super.onDestroy();
+        System.exit(0);
     }
 }

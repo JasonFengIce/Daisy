@@ -39,7 +39,7 @@ public class SportFragment extends ChannelBaseFragment {
 
 	private final int IMAGE_SWITCH_KEY = 0X11;
 	private SimpleRestClient mRestClient = new SimpleRestClient();
-	private LoadingDialog mLoadingDialog;
+//	private LoadingDialog mLoadingDialog;
 	private HomePagerEntity entity;
 	private ArrayList<SportGame> games;
 	private LabelImageView sport_card1;
@@ -69,8 +69,8 @@ public class SportFragment extends ChannelBaseFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_sport, null);
-		mLoadingDialog = new LoadingDialog(getActivity(), getResources()
-				.getString(R.string.loading));
+//		mLoadingDialog = new LoadingDialog(getActivity(), getResources()
+//				.getString(R.string.loading));
 		sport_card1 = (LabelImageView) view.findViewById(R.id.sport_card1);
 		sport_card1.setFocusable(false);
 		sport_card2 = (LabelImageView) view.findViewById(R.id.sport_card2);
@@ -159,7 +159,7 @@ public class SportFragment extends ChannelBaseFragment {
 		datafetch =new FetchDataTask();
 		datafetch.execute();
 		games = new ArrayList<SportGame>();
-		mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
+//		mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
 		initzoom();
 	}
 
@@ -173,15 +173,18 @@ public class SportFragment extends ChannelBaseFragment {
 
 	private void fillData(ArrayList<Carousel> carousels,
 			ArrayList<Poster> postlist) {
-		sport_card1.setUrl(carousels.get(0).getThumb_image());
+		Picasso.with(mContext).load(carousels.get(0).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE)
+		.into(sport_card1);
 		// sport_card1.setFocustitle(carousels.get(0).getIntroduction());
 		sport_card1.setTag(R.drawable.launcher_selector, carousels.get(0));
 		sport_card1.setOnFocusChangeListener(ItemOnFocusListener);
-		sport_card2.setUrl(carousels.get(1).getThumb_image());
+		Picasso.with(mContext).load(carousels.get(1).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE)
+		.into(sport_card2);
 		// sport_card2.setFocustitle(carousels.get(1).getIntroduction());
 		sport_card2.setTag(R.drawable.launcher_selector, carousels.get(1));
 		sport_card2.setOnFocusChangeListener(ItemOnFocusListener);
-		sport_card3.setUrl(carousels.get(2).getThumb_image());
+		Picasso.with(mContext).load(carousels.get(2).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE)
+		.into(sport_card3);
 		// sport_card3.setFocustitle(carousels.get(2).getIntroduction());
 		sport_card3.setTag(R.drawable.launcher_selector, carousels.get(2));
 		sport_card3.setOnFocusChangeListener(ItemOnFocusListener);
@@ -189,16 +192,20 @@ public class SportFragment extends ChannelBaseFragment {
 		looppost.add(carousels.get(1));
 		looppost.add(carousels.get(2));
 		imageswitch.sendEmptyMessage(IMAGE_SWITCH_KEY);
-		sport_channel1_image.setUrl(postlist.get(0).getCustom_image());
+		Picasso.with(mContext).load(postlist.get(0).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE)
+		.into(sport_channel1_image);
 		sport_channel1_image.setFocustitle(postlist.get(0).getIntroduction());
 		sport_channel1_subtitle.setText(postlist.get(0).getTitle());
-		sport_channel2_image.setUrl(postlist.get(1).getCustom_image());
+		Picasso.with(mContext).load(postlist.get(1).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE)
+		.into(sport_channel2_image);
 		sport_channel2_image.setFocustitle(postlist.get(1).getIntroduction());
 		sport_channel2_subtitle.setText(postlist.get(1).getTitle());
-		sport_channel3_image.setUrl(postlist.get(2).getCustom_image());
+		Picasso.with(mContext).load(postlist.get(2).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE)
+		.into(sport_channel3_image);
 		sport_channel3_image.setFocustitle(postlist.get(2).getIntroduction());
 		sport_channel3_subtitle.setText(postlist.get(2).getTitle());
-		sport_channel4_image.setUrl(postlist.get(3).getCustom_image());
+		Picasso.with(mContext).load(postlist.get(3).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE)
+		.into(sport_channel4_image);
 		sport_channel4_image.setFocustitle(postlist.get(3).getIntroduction());
 		sport_channel4_subtitle.setText(postlist.get(3).getTitle());
 		sport_channel1_image.setOnClickListener(ItemClickListener);
@@ -226,9 +233,9 @@ public class SportFragment extends ChannelBaseFragment {
 
 		@Override
 		protected void onPreExecute() {
-			if (mLoadingDialog != null && !mLoadingDialog.isShowing()) {
-				mLoadingDialog.show();
-			}
+//			if (mLoadingDialog != null && !mLoadingDialog.isShowing()) {
+//				mLoadingDialog.show();
+//			}
 			super.onPreExecute();
 		}
 
@@ -256,9 +263,9 @@ public class SportFragment extends ChannelBaseFragment {
 
 		@Override
 		protected void onPostExecute(Integer result) {
-			if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
-				mLoadingDialog.dismiss();
-			}
+//			if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
+//				mLoadingDialog.dismiss();
+//			}
 			if (result != RESULT_SUCCESS) {
 				return;
 			} else {
