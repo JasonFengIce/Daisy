@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.ui.fragment.usercenter.*;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
@@ -68,7 +69,8 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usercenter);
-
+        View background = findViewById(R.id.large_layout);
+        DaisyUtils.setbackground(R.drawable.main_bg, background);
         accountPreference = getSharedPreferences("Daisy", Context.MODE_PRIVATE);
         accountPreference.registerOnSharedPreferenceChangeListener(changeListener);
 

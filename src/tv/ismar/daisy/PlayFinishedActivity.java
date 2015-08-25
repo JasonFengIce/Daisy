@@ -122,6 +122,8 @@ public class PlayFinishedActivity extends BaseActivity implements OnFocusChangeL
 	}
 
 	private void initViews() {
+        View background = findViewById(R.id.large_layout);
+        DaisyUtils.setbackground(R.drawable.main_bg,background);
 		linearLeft = (LinearLayout) findViewById(R.id.linear_left);
 		linearRight = (LinearLayout) findViewById(R.id.linear_right);
 		tvVodName = (TextView) findViewById(R.id.tv_vodie_name);

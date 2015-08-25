@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,6 +31,8 @@ public class FilterActivity extends BaseActivity implements BackHandledInterface
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.filter_layout);
+        View vv = findViewById(R.id.large_layout);
+        DaisyUtils.setbackground(R.drawable.main_bg,vv);
         DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
         mRestClient = new SimpleRestClient();
         initView();

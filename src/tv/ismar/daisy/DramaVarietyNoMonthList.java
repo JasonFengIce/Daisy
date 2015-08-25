@@ -39,6 +39,8 @@ public class DramaVarietyNoMonthList extends BaseActivity implements AdapterView
         super.onCreate(savedInstanceState);
         rate = DaisyUtils.getVodApplication(this).getRate(this);
         setContentView(R.layout.list_view_nosection);
+        View background = findViewById(R.id.large_layout);
+        DaisyUtils.setbackground(R.drawable.main_bg,background);
         DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
         initView();
         getData();

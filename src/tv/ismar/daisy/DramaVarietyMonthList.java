@@ -46,6 +46,8 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_view_nosection_month);
+        View background = findViewById(R.id.large_layout);
+        DaisyUtils.setbackground(R.drawable.main_bg,background);
         rate = DaisyUtils.getVodApplication(this).getRate(this);
         maps = new HashMap<String, ArrayList<Item>>();
         DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);

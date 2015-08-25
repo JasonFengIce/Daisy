@@ -66,6 +66,8 @@ public class PackageDetailActivity extends BaseActivity implements OnItemClickLi
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.payment_package_detail_layout);
+        View background = findViewById(R.id.large_layout);
+        DaisyUtils.setbackground(R.drawable.main_bg,background);
 		mSimpleRestClient = new SimpleRestClient();
 		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
 		initView();
