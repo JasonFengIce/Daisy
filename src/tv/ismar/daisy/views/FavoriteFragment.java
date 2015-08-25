@@ -97,6 +97,8 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
     private Button right_shadow;
     private View gideview_layuot;
 	private void initViews(View fragmentView) {
+        View background = fragmentView.findViewById(R.id.large_layout);
+        DaisyUtils.setbackground(R.drawable.main_bg,background);
         View vv = fragmentView.findViewById(R.id.tabs_layout);
         vv.setVisibility(View.GONE);
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);

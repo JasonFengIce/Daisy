@@ -100,6 +100,8 @@ public class RelatedActivity extends BaseActivity implements OnSectionSelectChan
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.related_view);
+        View background = findViewById(R.id.large_layout);
+        DaisyUtils.setbackground(R.drawable.main_bg,background);
 		mSimpleRestClient = new SimpleRestClient();
 		mLoadingDialog = new LoadingDialog(this, getResources().getString(R.string.vod_loading));
 		mLoadingDialog.setOnCancelListener(mLoadingCancelListener);

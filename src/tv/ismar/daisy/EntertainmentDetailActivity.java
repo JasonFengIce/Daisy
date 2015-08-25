@@ -231,6 +231,8 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
         super.onCreate(savedInstanceState);
         mSimpleRestClient = new SimpleRestClient();
         setContentView(R.layout.entertainment_detail_view);
+        View background = findViewById(R.id.large_layout);
+        DaisyUtils.setbackground(R.drawable.main_bg,background);
         mLoadingDialog = new LoadingDialog(this, getResources().getString(
                 R.string.vod_loading));
         mLoadingDialog.setOnCancelListener(mLoadingCancelListener);

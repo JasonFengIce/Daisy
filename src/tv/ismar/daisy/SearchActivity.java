@@ -90,6 +90,8 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.search_main);
+        View background = findViewById(R.id.large_layout);
+        DaisyUtils.setbackground(R.drawable.main_bg,background);
 		movieList = new ArrayList<MovieBean>();
 		initViews();
 		InputMethodManager m = (InputMethodManager) autoCompleteTextView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
