@@ -1,27 +1,30 @@
 package tv.ismar.daisy;
 
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
-import android.widget.*;
-import com.google.gson.JsonSyntaxException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import tv.ismar.daisy.core.*;
+
+import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.EventProperty;
+import tv.ismar.daisy.core.ImageUtils;
+import tv.ismar.daisy.core.NetworkUtils;
+import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
-import tv.ismar.daisy.models.*;
+import tv.ismar.daisy.models.Attribute;
+import tv.ismar.daisy.models.Clip;
+import tv.ismar.daisy.models.ContentModel;
+import tv.ismar.daisy.models.Favorite;
+import tv.ismar.daisy.models.History;
+import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
 import tv.ismar.daisy.utils.Util;
@@ -30,9 +33,29 @@ import tv.ismar.daisy.views.AsyncImageView.OnImageViewLoadListener;
 import tv.ismar.daisy.views.DetailAttributeContainer;
 import tv.ismar.daisy.views.LoadingDialog;
 import tv.ismar.daisy.views.PaymentDialog;
-
-import java.text.ParseException;
-import java.util.*;
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+import com.google.gson.JsonSyntaxException;
 
 public class ItemDetailActivity extends BaseActivity implements
 		OnImageViewLoadListener {
@@ -152,6 +175,8 @@ public class ItemDetailActivity extends BaseActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.item_detail_layout);
+        View vv = findViewById(R.id.large_layout);
+        DaisyUtils.setbackground(R.drawable.main_bg,vv);
 		mSimpleRestClient = new SimpleRestClient();
 		// Log.e("START", System.currentTimeMillis()+"");
 		mLoadingDialog = new LoadingDialog(this, getResources().getString(
@@ -1141,6 +1166,7 @@ private boolean isPause = false;
 				 isBuy = true;
 			     setExpenseStatus();
 			}
+			ordercheckListener =null;
 		}
 
 	};

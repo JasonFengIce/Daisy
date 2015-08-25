@@ -39,12 +39,13 @@ import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
+import tv.ismar.daisy.core.provider.LocationProvider;
 import tv.ismar.daisy.core.service.PosterUpdateService;
 import tv.ismar.daisy.core.update.AppUpdateUtils;
 import tv.ismar.daisy.data.ChannelEntity;
 import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
 import tv.ismar.daisy.ui.Position;
-import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
+import tv.ismar.daisy.ui.fragment.*;
 import tv.ismar.daisy.ui.fragment.launcher.*;
 import tv.ismar.daisy.ui.widget.DaisyButton;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
@@ -95,11 +96,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 //    private WeatherFragment weatherFragment;
 
     private LaunchHeaderLayout topView;
-
-    /**
-     * vlc
-     */
-
 
     private Position mCurrentChannelPosition = new Position(new Position.PositioinChangeCallback() {
         @Override
@@ -173,7 +169,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         registerUpdateReceiver();
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_tv_guide, null);
         setContentView(contentView);
-
+        View vv = findViewById(R.id.large_layout);
+        DaisyUtils.setbackground(R.drawable.main_bg,vv);
         topView = (LaunchHeaderLayout) findViewById(R.id.top_column_layout);
         initViews();
         initTabView();
@@ -187,16 +184,11 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
     private void initViews() {
         toppanel = (FrameLayout) findViewById(R.id.top_column_layout);
 //        weatherFragment = new WeatherFragment();
 //        getSupportFragmentManager().beginTransaction().add(R.id.top_column_layout, weatherFragment).commit();
-        //  channelListView = (LinearLayout) findViewById(R.id.channel_h_list);
+      //  channelListView = (LinearLayout) findViewById(R.id.channel_h_list);
         tabListView = (LinearLayout) findViewById(R.id.tab_list);
         arrow_left = (ImageView) findViewById(R.id.arrow_scroll_left);
         arrow_right = (ImageView) findViewById(R.id.arrow_scroll_right);
@@ -250,8 +242,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             imageView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
             tabListView.addView(imageView);
         }
-
-
     }
 
     /**
@@ -272,40 +262,39 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             }
         });
     }
-
     private HGridView scroll;
-    private View lastview = null;
-    private View clickView = null;
+    private View lastview=null;
+    private View clickView=null;
     private View.OnFocusChangeListener mFocusListener = new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View view, boolean b) {
             View channelBtn;
-            if (view == clickView && clickView != null) {
+            if(view==clickView&&clickView!=null){
                 return;
             }
-            if (b) {
-                channelBtn = (TextView) view.findViewById(R.id.channel_item);
-                channelBtn.setBackgroundResource(R.drawable.channel_item_focus);
-                AnimationSet animationSet = new AnimationSet(true);
-                ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
-                        Animation.RELATIVE_TO_SELF, 0.5f,
-                        Animation.RELATIVE_TO_SELF, 0.5f);
-                scaleAnimation.setDuration(200);
-                animationSet.addAnimation(scaleAnimation);
-                animationSet.setFillAfter(true);
-                channelBtn.startAnimation(animationSet);
-            } else {
-                channelBtn = (TextView) view.findViewById(R.id.channel_item);
-                channelBtn.setBackgroundResource(R.drawable.channel_item_normal);
-                AnimationSet animationSet = new AnimationSet(true);
-                ScaleAnimation scaleAnimation = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
-                        Animation.RELATIVE_TO_SELF, 0.5f,
-                        Animation.RELATIVE_TO_SELF, 0.5f);
-                scaleAnimation.setDuration(200);
-                animationSet.addAnimation(scaleAnimation);
-                animationSet.setFillAfter(true);
-                channelBtn.startAnimation(animationSet);
-            }
+               if(b){
+                    channelBtn = (TextView)view.findViewById(R.id.channel_item);
+                   channelBtn.setBackgroundResource(R.drawable.channel_item_focus);
+                   AnimationSet animationSet = new AnimationSet(true);
+                   ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
+                           Animation.RELATIVE_TO_SELF, 0.5f,
+                           Animation.RELATIVE_TO_SELF, 0.5f);
+                   scaleAnimation.setDuration(200);
+                   animationSet.addAnimation(scaleAnimation);
+                   animationSet.setFillAfter(true);
+                   channelBtn.startAnimation(animationSet);
+               }else{
+                    channelBtn = (TextView)view.findViewById(R.id.channel_item);
+                   channelBtn.setBackgroundResource(R.drawable.channel_item_normal);
+                   AnimationSet animationSet = new AnimationSet(true);
+                   ScaleAnimation scaleAnimation = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
+                           Animation.RELATIVE_TO_SELF, 0.5f,
+                           Animation.RELATIVE_TO_SELF, 0.5f);
+                   scaleAnimation.setDuration(200);
+                   animationSet.addAnimation(scaleAnimation);
+                   animationSet.setFillAfter(true);
+                   channelBtn.startAnimation(animationSet);
+               }
             lastview = view;
         }
     };
@@ -330,13 +319,13 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         scroll.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                View channelBtn = (TextView) view.findViewById(R.id.channel_item);
+               View channelBtn = (TextView)view.findViewById(R.id.channel_item);
 
 
-                if (lastview != null && lastview != clickView) {
+                if(lastview!=null&&lastview!=clickView){
 
 
-                    TextView mlastview = (TextView) lastview.findViewById(R.id.channel_item);
+                    TextView mlastview = (TextView)lastview.findViewById(R.id.channel_item);
                     mlastview.setBackgroundResource(R.drawable.channel_item_normal);
                     AnimationSet animationSet1 = new AnimationSet(true);
                     ScaleAnimation scaleAnimation1 = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
@@ -356,6 +345,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 animationSet.addAnimation(scaleAnimation);
                 animationSet.setFillAfter(true);
                 channelBtn.startAnimation(animationSet);
+
 
 
                 lastview = view;
@@ -380,11 +370,12 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 }
                 int channelPosition = position;
 
-                if (clickView != null) {
-                    if (clickView == view) {
+                if(clickView!=null){
+                    if(clickView==view){
                         return;
-                    } else {
-                        View textview = (TextView) clickView.findViewById(R.id.channel_item);
+                    }
+                   else{
+                        View textview = (TextView)clickView.findViewById(R.id.channel_item);
                         textview.setBackgroundResource(R.drawable.channel_item_normal);
                         AnimationSet animationSet1 = new AnimationSet(true);
                         ScaleAnimation scaleAnimation1 = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
@@ -399,7 +390,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
                 clickView = view;
 
-                TextView channelBtn = (TextView) view.findViewById(R.id.channel_item);
+                TextView channelBtn = (TextView)view.findViewById(R.id.channel_item);
                 channelBtn.setBackgroundResource(R.drawable.channel_item_focus);
                 AnimationSet animationSet = new AnimationSet(true);
                 ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
@@ -436,7 +427,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
 
     }
-
 
     /**
      * receive app update broadcast, and show update popup window
@@ -575,7 +565,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.PACKAGE_INFO, result.getPackageInfo());
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.EXPIRY_DATE, result.getExpiry_date());
 
-
     }
 
 
@@ -659,45 +648,49 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             setbackground(R.drawable.main_bg);
         } else if ("template3".equals(channelEntity.getHomepage_template())) {
             currentFragment = new SportFragment();
-            // contentView.setBackgroundResource(R.drawable.main_bg);
+           // contentView.setBackgroundResource(R.drawable.main_bg);
             setbackground(R.drawable.main_bg);
         } else if ("template4".equals(channelEntity.getHomepage_template())) {
             currentFragment = new ChildFragment();
-            // contentView.setBackgroundResource(R.drawable.channel_child_bg);
+           // contentView.setBackgroundResource(R.drawable.channel_child_bg);
             setbackground(R.drawable.channel_child_bg);
         }
-        // currentFragment.view = scroll;
+       // currentFragment.view = scroll;
         //currentFragment.position = position;
         currentFragment.setChannelEntity(channelEntity);
         replaceFragment(currentFragment);
     }
 
-    private void setbackground(int id) {
+    private void setbackground(int id){
+
+
+
+
         BitmapFactory.Options opt = new BitmapFactory.Options();
 
-        opt.inPreferredConfig = Bitmap.Config.RGB_565;
+        opt.inPreferredConfig = Bitmap.Config.ALPHA_8;
 
         opt.inPurgeable = true;
 
         opt.inInputShareable = true;
+        opt.inTargetDensity = getResources().getDisplayMetrics().densityDpi;
+        opt.inDensity = getResources().getDisplayMetrics().densityDpi;
 
         InputStream is = getResources().openRawResource(
 
-                id);
+               id );
 
         Bitmap bm = BitmapFactory.decodeStream(is, null, opt);
 
         BitmapDrawable bd = new BitmapDrawable(getResources(), bm);
         contentView.setBackgroundDrawable(bd);
     }
-
-    private void destroybackground() {
-        BitmapDrawable bd = (BitmapDrawable) contentView.getBackground();
+    private void destroybackground(){
+        BitmapDrawable bd = (BitmapDrawable)contentView.getBackground();
         contentView.setBackgroundResource(0);//别忘了把背景设为null，避免onDraw刷新背景时候出现used a recycled bitmap错误
         bd.setCallback(null);
         bd.getBitmap().recycle();
     }
-
     private void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction();

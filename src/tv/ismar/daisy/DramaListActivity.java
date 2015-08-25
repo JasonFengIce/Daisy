@@ -1,23 +1,15 @@
 package tv.ismar.daisy;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.sakuratya.horizontal.ui.ZGridView;
 import org.sakuratya.horizontal.ui.ZGridView.OnScrollListener;
+
 import tv.ismar.daisy.adapter.DaramAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
@@ -31,11 +23,21 @@ import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.LoadingDialog;
 import tv.ismar.daisy.views.PaymentDialog;
-
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 public class DramaListActivity extends BaseActivity implements
 		OnItemSelectedListener, OnItemClickListener {
@@ -71,6 +73,8 @@ public class DramaListActivity extends BaseActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.drama_list_main);
+        View vv = findViewById(R.id.large_layout);
+        DaisyUtils.setbackground(R.drawable.main_bg,vv);
 		initViews();
 		if (loadDialog != null && !loadDialog.isShowing()) {
 			loadDialog.show();
