@@ -65,6 +65,15 @@ public class HardwareUtils {
             Log.e("getMd5ByFile", e.getMessage());
             return "";
         }
+
+        int offset = 32 - value.length();
+        if (offset > 0) {
+            String data = new String();
+            for (int i = 0; i < offset; i++) {
+                data = data + "0";
+            }
+            value = data + value;
+        }
         return value;
     }
 
@@ -73,7 +82,7 @@ public class HardwareUtils {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
             messageDigest.update(string.getBytes());
-             value = new BigInteger(1, messageDigest.digest()).toString(16);
+            value = new BigInteger(1, messageDigest.digest()).toString(16);
         } catch (Exception e) {
             Log.e("getMd5ByFile", e.getMessage());
             return "";

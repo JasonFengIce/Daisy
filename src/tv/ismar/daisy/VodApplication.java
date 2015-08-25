@@ -16,6 +16,7 @@ import tv.ismar.daisy.core.ImageCache;
 import tv.ismar.daisy.core.MessageQueue;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.cache.CacheManager;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.models.ContentModel;
@@ -135,11 +136,9 @@ public class VodApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        /**
-         * initialize ActiveAndroid
-         */
         ActiveAndroid.initialize(this);
         IsmartvUrlClient.initializeWithContext(this);
+        CacheManager.initialize(this);
         getContentModelFromAssets();
         load(this);
         registerReceiver(mCloseReceiver, new IntentFilter("com.amlogic.dvbplayer.homekey"));

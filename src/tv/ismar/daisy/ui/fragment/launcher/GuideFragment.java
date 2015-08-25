@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceView;
@@ -23,6 +24,8 @@ import org.videolan.libvlc.Media;
 import org.videolan.libvlc.MediaPlayer;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.cache.CacheManager;
+import tv.ismar.daisy.core.client.DownloadClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.vlc.MediaWrapper;
 import tv.ismar.daisy.core.vlc.MediaWrapperList;
@@ -31,11 +34,13 @@ import tv.ismar.daisy.core.vlc.PlaybackServiceActivity;
 import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
+import tv.ismar.daisy.ui.listener.ItemDetailClickListener;
 import tv.ismar.daisy.ui.widget.DaisyViewContainer;
 import tv.ismar.daisy.ui.widget.HomeItemContainer;
 import tv.ismar.daisy.views.LabelImageView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -46,6 +51,7 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
     private String TAG = "GuideFragment";
 
     private static final int START_PLAYBACK = 0x0000;
+    private static final int CAROUSEL_NEXT = 0x0010;
 
     private DaisyViewContainer guideRecommmendList;
     private DaisyViewContainer carouselLayout;
@@ -54,7 +60,7 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
     private ArrayList<String> allVideoUrl;
     private ArrayList<LabelImageView> allItem;
 
-    private ArrayList<Carousel> carousels;
+    private ArrayList<Carousel> mCarousels;
     private LabelImageView toppage_carous_imageView1;
     private LabelImageView toppage_carous_imageView2;
     private LabelImageView toppage_carous_imageView3;
@@ -67,6 +73,8 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
     private PlaybackServiceActivity.Helper mHelper;
     private PlaybackService mService;
     private List<MediaWrapper> mWrapperList;
+    private int mCurrentCarouselIndex = -1;
+    private CarouselRepeatType mCarouselRepeatType = CarouselRepeatType.All;
 
 
     @Override
@@ -98,25 +106,32 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
 
     @Override
     public void onMediaPlayerEvent(MediaPlayer.Event event) {
-//        switch (event.type) {
-//            case MediaPlayer.Event.PositionChanged:
-//                Log.d(TAG, "PositionChanged: " + event.getPositionChanged());
-//                break;
-//
-//        }
+        switch (event.type) {
+            case MediaPlayer.Event.EndReached:
+                stopPlayback();
+                mHelper.onStop();
+                mHandler.sendEmptyMessage(CAROUSEL_NEXT);
+                break;
+        }
     }
 
     @Override
     public void onMediaIndexChange(MediaWrapperList mediaWrapperList, int position) {
-        Log.d(TAG, "onMediaIndexChange position: " + position);
-        for (int i = 0; i < allItem.size(); i++) {
-            LabelImageView imageView = allItem.get(i);
-            if (position != i) {
-                imageView.setCustomfocus(false);
-            } else {
-                imageView.setCustomfocus(true);
-            }
-        }
+//        Log.d(TAG, "onMediaIndexChange position: " + position);
+//        for (int i = 0; i < allItem.size(); i++) {
+//            LabelImageView imageView = allItem.get(i);
+//            if (position != i) {
+//                imageView.setCustomfocus(false);
+//            } else {
+//                imageView.setCustomfocus(true);
+//            }
+//        }
+//
+//        HashMap<String, String> hashMap = new HashMap<String, String>();
+//        hashMap.put(ItemDetailClickListener.MODEL, mCarousels.get(position).getModel_name());
+//        hashMap.put(ItemDetailClickListener.URL, mCarousels.get(position).getUrl());
+//        hashMap.put(ItemDetailClickListener.TITLE, mCarousels.get(position).getTitle());
+//        mSurfaceView.setTag(hashMap);
 
     }
 
@@ -148,58 +163,7 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
         toppage_carous_imageView3 = (LabelImageView) mView.findViewById(R.id.toppage_carous_imageView3);
 
         mSurfaceView = (SurfaceView) mView.findViewById(R.id.linked_video);
-
-
-//        linkedVideoView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String url = carousels.get(flag.getPosition()).getUrl();
-//                String model = carousels.get(flag.getPosition())
-//                        .getModel_name();
-//                String title = carousels.get(flag.getPosition()).getTitle();
-//                Intent intent = new Intent();
-//                if ("item".equals(model)) {
-//                    intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.ItemDetailActivity");
-//                    intent.putExtra("url", url);
-//                    mContext.startActivity(intent);
-//                } else if ("topic".equals(model)) {
-//                    intent.putExtra("url", url);
-//                    intent.setClassName("tv.ismar.daisy",
-//                            "tv.ismar.daisy.TopicActivity");
-//                    mContext.startActivity(intent);
-//                } else if ("section".equals(model)) {
-//                    intent.putExtra("title", title);
-//                    intent.putExtra("itemlistUrl", url);
-//                    intent.putExtra("lableString", title);
-//                    intent.setClassName("tv.ismar.daisy", "tv.ismar.daisy.PackageListDetailActivity");
-//                    mContext.startActivity(intent);
-//                } else if ("package".equals(model)) {
-//                    intent.setAction("tv.ismar.daisy.packageitem");
-//                    intent.putExtra("url", url);
-//                    mContext.startActivity(intent);
-//                } else if ("clip".equals(model)) {
-//                    InitPlayerTool tool = new InitPlayerTool(mContext);
-//                    tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
-//                }
-//
-//            }
-//        });
-//        linkedVideoView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if (hasFocus) {
-//                    ((HomeItemContainer) v.getParent())
-//                            .setDrawBorder(true);
-//                    ((HomeItemContainer) v.getParent()).invalidate();
-//                } else {
-//                    ((HomeItemContainer) v.getParent())
-//                            .setDrawBorder(false);
-//                    ((HomeItemContainer) v.getParent()).invalidate();
-//                }
-//            }
-//        });
-
-
+        mSurfaceView.setOnClickListener(new ItemDetailClickListener(mContext));
         return mView;
     }
 
@@ -304,17 +268,7 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
     }
 
     private void initCarousel(final ArrayList<HomePagerEntity.Carousel> carousels) {
-        mWrapperList = new ArrayList<MediaWrapper>();
-
-        for (Carousel carousel : carousels) {
-            MediaWrapper mediaWrapper = new MediaWrapper(Uri.parse(carousel.getVideo_url()));
-            mediaWrapper.removeFlags(MediaWrapper.MEDIA_FORCE_AUDIO);
-            mediaWrapper.addFlags(MediaWrapper.MEDIA_VIDEO);
-            mWrapperList.add(mediaWrapper);
-        }
-
-        mHelper.onStart();
-
+        mCarousels = carousels;
         allItem = new ArrayList<LabelImageView>();
         allVideoUrl = new ArrayList<String>();
 
@@ -344,6 +298,52 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
         allVideoUrl.add(carousels.get(1).getVideo_url());
         allVideoUrl.add(carousels.get(2).getVideo_url());
 
+        playCarousel();
+
+    }
+
+    private void playCarousel() {
+        mHandler.removeMessages(CAROUSEL_NEXT);
+        switch (mCarouselRepeatType) {
+            case Once:
+
+                break;
+            case All:
+                if (mCurrentCarouselIndex == mCarousels.size() - 1) {
+                    mCurrentCarouselIndex = 0;
+                } else {
+                    mCurrentCarouselIndex = mCurrentCarouselIndex + 1;
+                }
+                break;
+        }
+
+        for (int i = 0; i < allItem.size(); i++) {
+            LabelImageView imageView = allItem.get(i);
+            if (mCurrentCarouselIndex != i) {
+                imageView.setCustomfocus(false);
+            } else {
+                imageView.setCustomfocus(true);
+            }
+        }
+
+        HashMap<String, String> hashMap = new HashMap<String, String>();
+        hashMap.put(ItemDetailClickListener.MODEL, mCarousels.get(mCurrentCarouselIndex).getModel_name());
+        hashMap.put(ItemDetailClickListener.URL, mCarousels.get(mCurrentCarouselIndex).getUrl());
+        hashMap.put(ItemDetailClickListener.TITLE, mCarousels.get(mCurrentCarouselIndex).getTitle());
+        mSurfaceView.setTag(hashMap);
+
+        mHelper.onStart();
+
+
+    }
+
+    private void switchVideo() {
+        String videoUrl = CacheManager.getInstance().doRequest(mCarousels.get(mCurrentCarouselIndex).getVideo_url(),
+                "guide_" + mCurrentCarouselIndex + ".mp4", DownloadClient.StoreType.Internal);
+        MediaWrapper mediaWrapper = new MediaWrapper(Uri.parse(videoUrl));
+        mediaWrapper.removeFlags(MediaWrapper.MEDIA_FORCE_AUDIO);
+        mediaWrapper.addFlags(MediaWrapper.MEDIA_VIDEO);
+        mService.load(mediaWrapper);
     }
 
     private Handler mHandler = new Handler() {
@@ -352,6 +352,9 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
             switch (msg.what) {
                 case START_PLAYBACK:
                     startPlayback();
+                    break;
+                case CAROUSEL_NEXT:
+                    playCarousel();
                     break;
             }
 
@@ -365,8 +368,7 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
         vlcVout.setVideoView(mSurfaceView);
         vlcVout.attachViews();
         mService.addCallback(this);
-        mService.load(mWrapperList, 0);
-        mService.setRepeatType(PlaybackService.RepeatType.All);
+        switchVideo();
         mService.play();
     }
 
@@ -388,16 +390,24 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
 
             // all view not focus
             if (focusFlag) {
-                mService.setRepeatType(PlaybackService.RepeatType.All);
+                mCarouselRepeatType = CarouselRepeatType.All;
             } else {
                 if (hasFocus) {
+                    stopPlayback();
+                    mHelper.onStop();
                     int position = (Integer) v.getTag();
-                    mService.setRepeatType(PlaybackService.RepeatType.Once);
-                    mService.load(mWrapperList, position);
+                    mCarouselRepeatType = CarouselRepeatType.Once;
+                    mCurrentCarouselIndex = position;
+                    playCarousel();
                 }
             }
         }
     };
+
+    enum CarouselRepeatType {
+        All,
+        Once
+    }
 }
 
 class Flag {

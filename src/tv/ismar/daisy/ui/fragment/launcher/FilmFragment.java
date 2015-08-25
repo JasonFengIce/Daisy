@@ -27,6 +27,8 @@ import org.videolan.libvlc.IVLCVout;
 import org.videolan.libvlc.Media;
 import org.videolan.libvlc.MediaPlayer;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.cache.CacheManager;
+import tv.ismar.daisy.core.client.DownloadClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.vlc.MediaWrapper;
 import tv.ismar.daisy.core.vlc.MediaWrapperList;
@@ -50,7 +52,6 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
         PlaybackService.Callback {
     private static final String TAG = "FilmFragment";
     private static final int START_PLAYBACK = 0x0000;
-
     private static final int CAROUSEL_NEXT = 0x0010;
 
     private LinearLayout guideRecommmendList;
@@ -74,6 +75,8 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
 
     private int mCurrentCarouselIndex = -1;
     private CarouselRepeatType mCarouselRepeatType = CarouselRepeatType.All;
+
+    private String mChannelName;
 
 
     @Override
@@ -191,6 +194,7 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
     }
 
     private void fetchHomePage(String url) {
+        mChannelName = getChannelEntity().getChannel();
         datafetch = new IsmartvUrlClient();
         datafetch.doRequest(url, new IsmartvUrlClient.CallBack() {
             @Override
@@ -448,7 +452,9 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
 
 
     private void switchVideo() {
-        MediaWrapper mediaWrapper = new MediaWrapper(Uri.parse(mCarousels.get(mCurrentCarouselIndex).getVideo_url()));
+        String videoUrl = CacheManager.getInstance().doRequest(mCarousels.get(mCurrentCarouselIndex).getVideo_url(),
+                mChannelName + "_" + mCurrentCarouselIndex + ".mp4", DownloadClient.StoreType.External);
+        MediaWrapper mediaWrapper = new MediaWrapper(Uri.parse(videoUrl));
         mediaWrapper.removeFlags(MediaWrapper.MEDIA_FORCE_AUDIO);
         mediaWrapper.addFlags(MediaWrapper.MEDIA_VIDEO);
         mService.load(mediaWrapper);
