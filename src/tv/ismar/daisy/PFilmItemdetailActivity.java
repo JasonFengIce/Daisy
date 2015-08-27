@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.gson.JsonSyntaxException;
+import com.tencent.msdk.api.WGPlatform;
+import com.tencent.msdk.consts.EPlatform;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -75,10 +77,11 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
     private String slug;
     private String fromPage;
     private LaunchHeaderLayout weatherFragment;
-
+    private boolean isFirstLogin = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.filmitem_portrait_detail_view);
         mSimpleRestClient = new SimpleRestClient();
         View vv = findViewById(R.id.large_layout);
@@ -120,6 +123,8 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
         DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(),
                 this);
+        init();
+        isFirstLogin = true;
     }
 
     @Override
@@ -150,7 +155,19 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             }
             isPause = false;
         }
+
+
+        // TODO GAME 模拟游戏自动登录，这里需要游戏添加加载动画
+        // WGLogin是一个异步接口, 传入ePlatform_None则调用本地票据验证票据是否有效
+        // 如果从未登录过，则会立即在onLoginNotify中返回flag为eFlag_Local_Invalid，此时应该拉起授权界面
+        // 建议在此时机调用WGLogin,它应该在handlecallback之后进行调用。
+
         super.onResume();
+        WGPlatform.onResume();
+        if(isFirstLogin) {
+            isFirstLogin = false;
+            WGPlatform.WGLogin(EPlatform.ePlatform_None);
+        }
     }
 
     private boolean isFavorite() {
@@ -400,6 +417,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             }
         }
         super.onPause();
+        WGPlatform.onPause();
     }
 
     @Override
@@ -426,6 +444,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         DaisyUtils.getVodApplication(this).removeActivtyFromPool(
                 this.toString());
         super.onDestroy();
+        WGPlatform.onDestory(this);
     }
 
     @Override
@@ -1021,5 +1040,6 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+        WGPlatform.onActivityResult(requestCode, resultCode, data);
     }
 }

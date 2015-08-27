@@ -21,6 +21,7 @@ import org.json.JSONObject;
 
 import cn.ismartv.activator.Activator;
 
+import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
@@ -45,7 +46,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class PaymentDialog extends Dialog {
+public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallback{
 
 	private static final String QRCODE_BASE_URL = "/api/order/create/";
 	private static final String BALANCEPAY_BASE_URL = "/api/order/create/";
@@ -114,6 +115,7 @@ public class PaymentDialog extends Dialog {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.paymentselect);
+        ((BaseActivity)mycontext).setLoginCallback(this);
 		initView();
 		resizeWindow();
         purchaseCheck();
@@ -279,10 +281,7 @@ public class PaymentDialog extends Dialog {
                 if(urlHandler.hasMessages(PURCHASE_CHECK_RESULT))
                     urlHandler.removeMessages(PURCHASE_CHECK_RESULT);
 				flag = true;
-				changeQrcodePayPanelState(false, false);
-				changeLoginPanelState(true);
-				changeYuePayPanelState(false,false);
-				changeshiyuncardPanelState(false);
+                ((BaseActivity)mycontext).loginQQorWX();
 			}
 				break;
 
@@ -755,7 +754,23 @@ public class PaymentDialog extends Dialog {
 		dismiss();
 	}
 
-	public interface OrderResultListener {
+    @Override
+    public void onLoginSuccess(String result) {
+
+
+
+        changeQrcodePayPanelState(false, false);
+        changeLoginPanelState(true);
+        changeYuePayPanelState(false,false);
+        changeshiyuncardPanelState(false);
+    }
+
+    @Override
+    public void onLoginFailed() {
+
+    }
+
+    public interface OrderResultListener {
 		public void payResult(boolean result);
 	}
 

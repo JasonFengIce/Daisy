@@ -1,27 +1,35 @@
 package tv.ismar.daisy.ui.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import tv.ismar.daisy.BaseActivity;
-import tv.ismar.daisy.R;
+import android.widget.*;
+import com.google.gson.Gson;
+import com.tencent.msdk.api.*;
+import com.tencent.msdk.consts.CallbackFlag;
+import com.tencent.msdk.consts.EPlatform;
+import com.tencent.msdk.tools.Logger;
+import tv.ismar.daisy.*;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.data.usercenter.AuthTokenEntity;
 import tv.ismar.daisy.ui.fragment.usercenter.*;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by huaijie on 7/3/15.
  */
-public class UserCenterActivity extends BaseActivity implements View.OnClickListener {
+public class UserCenterActivity extends BaseActivity implements View.OnClickListener,BaseActivity.OnLoginCallback {
 
     private static final int[] INDICATOR_TEXT_RES_ARRAY = {
             R.string.usercenter_store,
@@ -48,7 +56,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private SharedPreferences accountPreference;
 
     public static final String LOCATION_FRAGMENT = "location";
-
+    private boolean isFirstLogin = false;
     private SharedPreferences.OnSharedPreferenceChangeListener changeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -67,6 +75,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setIsinitMSDK(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usercenter);
         View background = findViewById(R.id.large_layout);
@@ -83,6 +92,9 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         locationFragment = new LocationFragment();
 
 
+        setLoginCallback(this);
+
+
         initViews();
         createIndicatorView();
 
@@ -94,6 +106,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             getSupportFragmentManager().beginTransaction().add(R.id.user_center_container, storeFragment).commit();
             indicatorView.get(0).setBackgroundResource(R.drawable.table_selected_bg);
         }
+        isFirstLogin = true;
     }
 
 
@@ -149,7 +162,11 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, userInfoFragment).commit();
                 break;
             case R.string.usercenter_login:
-                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, loginFragment).commit();
+               // getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, loginFragment).commit();
+
+               loginQQorWX();
+
+
                 break;
             case R.string.usercenter_purchase_history:
                 getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, historyFragment).commit();
@@ -184,5 +201,54 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         }
     }
 
+    private void saveToLocal(String authToken, String phoneNumber) {
+        SimpleRestClient.access_token = authToken;
+        SimpleRestClient.mobile_number = phoneNumber;
 
+        DaisyUtils.getVodApplication(UserCenterActivity.this).getEditor().putString(VodApplication.AUTH_TOKEN, authToken);
+        DaisyUtils.getVodApplication(UserCenterActivity.this).getEditor().putString(VodApplication.MOBILE_NUMBER, phoneNumber);
+        DaisyUtils.getVodApplication(UserCenterActivity.this).save();
+        //fetchFavorite();
+       // getHistoryByNet();
+    }
+
+    @Override
+    public void onLoginSuccess(String result) {
+        AuthTokenEntity authTokenEntity = new Gson().fromJson(result, AuthTokenEntity.class);
+        Log.i("pangziinfo", "authTokenEntity.getAuth_token()==" + authTokenEntity.getAuth_token());
+    }
+
+    @Override
+    public void onLoginFailed() {
+
+    }
+
+
+//    private void showLoginSuccessPopup() {
+//        View popupLayout = LayoutInflater.from(UserCenterActivity.this).inflate(R.layout.popup_login_success, null);
+//        TextView textView = (TextView) popupLayout.findViewById(R.id.login_success_msg);
+//        String msg = mContext.getText(R.string.login_success).toString();
+//        String phoneNumber = phoneNumberEdit.getText().toString();
+//        textView.setText(String.format(msg, phoneNumber));
+//
+//        Button button = (Button) popupLayout.findViewById(R.id.login_success_btn);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                loginPopup.dismiss();
+//                showAccountsCombinePopup();
+//            }
+//        });
+//
+//
+//        int width = (int) mContext.getResources().getDimension(R.dimen.login_pop_width);
+//        int height = (int) mContext.getResources().getDimension(R.dimen.login_pop_height);
+//        loginPopup = new PopupWindow(popupLayout, width, height);
+//        loginPopup.setFocusable(true);
+//        loginPopup.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.transparent));
+//        int xOffset = (int) mContext.getResources().getDimension(R.dimen.loginfragment_successPop_xOffset);
+//        int yOffset = (int) mContext.getResources().getDimension(R.dimen.loginfragment_successPop_yOffset);
+//
+//        loginPopup.showAtLocation(fragmentView, Gravity.CENTER, xOffset, yOffset);
+//    }
 }

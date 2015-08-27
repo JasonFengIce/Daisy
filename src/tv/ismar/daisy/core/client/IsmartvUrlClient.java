@@ -249,7 +249,6 @@ public class IsmartvUrlClient extends Thread {
             Request request = new Request.Builder()
                     .url(url)
                     .post(body)
-                    .header("Accept-Encoding", "gzip")
                     .header("Content-Type", "application/x-www-form-urlencoded")
                     .build();
             Response response;

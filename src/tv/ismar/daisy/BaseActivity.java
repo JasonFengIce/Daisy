@@ -7,13 +7,25 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.PopupWindow;
+import android.widget.Toast;
+import com.tencent.msdk.api.LoginRet;
+import com.tencent.msdk.api.MsdkBaseInfo;
+import com.tencent.msdk.api.WGPlatform;
+import com.tencent.msdk.api.WGQZonePermissions;
+import com.tencent.msdk.consts.CallbackFlag;
+import com.tencent.msdk.consts.EPlatform;
+import com.tencent.msdk.tools.Logger;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.client.IsmartvUrlClient;
+
+import java.util.HashMap;
 
 public class BaseActivity extends FragmentActivity {
 
@@ -23,8 +35,8 @@ public class BaseActivity extends FragmentActivity {
     private IntentFilter intentFilter;
 
     private PopupWindow netErrorPopupWindow;
-
-
+    private boolean isFirstLogin = false;
+    private boolean isinitMSDK = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +50,8 @@ public class BaseActivity extends FragmentActivity {
             SimpleRestClient.mobile_number = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.MOBILE_NUMBER, "");
             SimpleRestClient.access_token = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.AUTH_TOKEN, "");
         }
+
+
         intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_CONNECT_ERROR);
         connectionErrorReceiver = new ConnectionErrorReceiver();
@@ -45,21 +59,122 @@ public class BaseActivity extends FragmentActivity {
         createNetErrorPopup();
 
     }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        registerBroadcastReceiver();
+    public void setIsinitMSDK(boolean isInit){
+        this.isinitMSDK = isInit;
     }
+   public void init(){
+
+       MsdkBaseInfo baseInfo = new MsdkBaseInfo();
+       baseInfo.qqAppId = "100703379";
+       baseInfo.qqAppKey = "4578e54fb3a1bd18e0681bc1c734514e";
 
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        unRegisterBroadcastReceiver();
+       // baseInfo.wxAppId = "wxcde873f99466f74a";
 
-    }
+       baseInfo.msdkKey = "5d1467a4d2866771c3b289965db335f4";
+       baseInfo.offerId = "100703379";
+       WGPlatform.WGSetObserver(new MsdkCallback(this));
+       // 应用宝更新回调类，游戏自行实现
+       WGPlatform.WGSetSaveUpdateObserver(new SaveUpdateDemoObserver());
+       // 广告的回调设置
+       WGPlatform.WGSetADObserver(new MsdkADCallback());
+       //QQ 加群加好友回调
+       WGPlatform.WGSetGroupObserver(new MsdkGroupCallback());
+       // 注意：传入Initialized的activity即this，在游戏运行期间不能被销毁，否则会产生Crash
+       WGPlatform.Initialized(this, baseInfo);
+       // 设置拉起QQ时候需要用户授权的项
+       WGPlatform.WGSetPermission(WGQZonePermissions.eOPEN_ALL);
+
+       if (WGPlatform.wakeUpFromHall(this.getIntent())) {
+           // 拉起平台为大厅
+           Logger.d("LoginPlatform is Hall");
+           Logger.d(this.getIntent());
+       } else {
+           // 拉起平台不是大厅
+           Logger.d("LoginPlatform is not Hall");
+           Logger.d(this.getIntent());
+           WGPlatform.handleCallback(this.getIntent());
+       }
+
+       //isFirstLogin = true;
+   }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//
+//        if(isinitMSDK){
+//            WGPlatform.onResume();
+//
+//            // TODO GAME 模拟游戏自动登录，这里需要游戏添加加载动画
+//            // WGLogin是一个异步接口, 传入ePlatform_None则调用本地票据验证票据是否有效
+//            // 如果从未登录过，则会立即在onLoginNotify中返回flag为eFlag_Local_Invalid，此时应该拉起授权界面
+//            // 建议在此时机调用WGLogin,它应该在handlecallback之后进行调用。
+//            if(isFirstLogin) {
+//                isFirstLogin = false;
+//                WGPlatform.WGLogin(EPlatform.ePlatform_None);
+//            }
+//        }
+//
+//        registerBroadcastReceiver();
+//    }
+//    @Override
+//    protected void onRestart() {
+//        super.onRestart();
+//        if(isinitMSDK)
+//            WGPlatform.onRestart();
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        if(isinitMSDK)
+//          WGPlatform.onStop();
+//    }
+//
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        if(isinitMSDK)
+//          WGPlatform.onPause();
+//        unRegisterBroadcastReceiver();
+//
+//    }
+//
+//    // TODO GAME 在onActivityResult中需要调用WGPlatform.onActivityResult
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if(isinitMSDK)
+//           WGPlatform.onActivityResult(requestCode, resultCode, data);
+//    }
+//
+//    // TODO GAME 在onNewIntent中需要调用handleCallback将平台带来的数据交给MSDK处理
+//    @Override
+//    protected void onNewIntent(Intent intent) {
+//        Logger.d("onNewIntent");
+//        super.onNewIntent(intent);
+//        if(isinitMSDK){
+//            // TODO GAME 处理游戏被拉起的情况
+//            // launchActivity的onCreat()和onNewIntent()中必须调用
+//            // WGPlatform.handleCallback()。否则会造成微信登录无回调
+//            if (WGPlatform.wakeUpFromHall(intent)) {
+//                Logger.d("LoginPlatform is Hall");
+//                Logger.d(intent);
+//            } else {
+//                Logger.d("LoginPlatform is not Hall");
+//                Logger.d(intent);
+//                WGPlatform.handleCallback(intent);
+//            }
+//        }
+//
+//    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        if(isinitMSDK)
+//           WGPlatform.onDestory(this);
+//    }
 
     private void registerBroadcastReceiver() {
         registerReceiver(connectionErrorReceiver, intentFilter);
@@ -104,5 +219,69 @@ public class BaseActivity extends FragmentActivity {
     private void showNetErrorPopup() {
         netErrorPopupWindow.showAtLocation(netErrorPopupWindow.getContentView(), Gravity.CENTER, 0, 0);
 
+    }
+
+    public interface OnLoginCallback {
+        void onLoginSuccess(String result);
+        void onLoginFailed();
+    }
+    OnLoginCallback loginCallback;
+    public void setLoginCallback(OnLoginCallback loginCallback) {
+        this.loginCallback = loginCallback;
+    }
+
+    public void letUserLogin(String token,String refresh_token,String openid){
+
+        String api = SimpleRestClient.root_url + "/accounts/oauth_login/";
+        HashMap params = new HashMap();
+        params.put("device_token", SimpleRestClient.device_token);
+        params.put("app_id","100703379");
+        params.put("open_id",openid);
+        params.put("refresh_token","refresh_token");
+        params.put("kind","qq");
+        params.put("token",token);
+        new IsmartvUrlClient().doRequest(IsmartvUrlClient.Method.POST, api, params, new IsmartvUrlClient.CallBack() {
+            @Override
+            public void onSuccess(String result) {
+
+                if (loginCallback != null) {
+                    loginCallback.onLoginSuccess(result);
+                }
+            }
+
+            @Override
+            public void onFailed(Exception exception) {
+                //  verificationPrompt.setText(R.string.login_failure);
+                Log.i("pangziinfo","shibai");
+                if(loginCallback!=null){
+                    loginCallback.onLoginFailed();
+                }
+            }
+        });
+
+    }
+
+    // 获取当前登录平台
+    public EPlatform getPlatform() {
+        LoginRet ret = new LoginRet();
+        WGPlatform.WGGetLoginRecord(ret);
+        if (ret.flag == CallbackFlag.eFlag_Succ) {
+            return EPlatform.getEnum(ret.platform);
+        }
+        return EPlatform.ePlatform_None;
+    }
+
+    public void loginQQorWX(){
+        if (getPlatform() == EPlatform.ePlatform_QQ) {
+            // 如已登录直接进入相应模块视图
+            //startModule();
+            Toast.makeText(this, "loginout", Toast.LENGTH_SHORT).show();
+            WGPlatform.WGLogout();
+        } else if (getPlatform() == EPlatform.ePlatform_None) {
+            Toast.makeText(this,"Login",Toast.LENGTH_SHORT).show();
+            WGPlatform.WGLogin(EPlatform.ePlatform_QQ);
+        } else {
+
+        }
     }
 }
