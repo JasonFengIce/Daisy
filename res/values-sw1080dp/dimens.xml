@@ -1136,9 +1136,9 @@
     <dimen name="filmitem_portrait_detail_preview_img_h">471dip</dimen>
     <dimen name="filmitem_portrait_detail_price_txt_ml">68dip</dimen>
     <dimen name="filmitem_portrait_relativeLayout2_ml">28dip</dimen>
-    <dimen name="filmitem_portrait_detail_title_mt">30dip</dimen>
+    <dimen name="filmitem_portrait_detail_title_mt">28dip</dimen>
     <dimen name="filmitem_portrait_detail_title_w">798dip</dimen>
-    <dimen name="filmitem_portrait_detail_title_h">48dip</dimen>
+    <dimen name="filmitem_portrait_detail_title_h">50dip</dimen>
     <dimen name="filmitem_portrait_detail_title_size">48sp</dimen>
     <dimen name="filmitem_portrait_detail_attribute_container_mt">19dip</dimen>
     <dimen name="filmitem_portrait_detail_intro_w">1410dip</dimen>
