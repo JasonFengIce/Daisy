@@ -20,6 +20,7 @@ import com.tencent.msdk.api.WGPlatform;
 import com.tencent.msdk.api.WGQZonePermissions;
 import com.tencent.msdk.consts.CallbackFlag;
 import com.tencent.msdk.consts.EPlatform;
+import com.tencent.msdk.remote.api.PersonInfo;
 import com.tencent.msdk.tools.Logger;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -224,6 +225,7 @@ public class BaseActivity extends FragmentActivity {
     public interface OnLoginCallback {
         void onLoginSuccess(String result);
         void onLoginFailed();
+        void oncallWGQueryQQUserInfo(PersonInfo info);
     }
     OnLoginCallback loginCallback;
     public void setLoginCallback(OnLoginCallback loginCallback) {
@@ -272,16 +274,24 @@ public class BaseActivity extends FragmentActivity {
     }
 
     public void loginQQorWX(){
-        if (getPlatform() == EPlatform.ePlatform_QQ) {
+        WGPlatform.WGLogin(EPlatform.ePlatform_QQ);
+    }
+    public void changaccount(){
+
             // 如已登录直接进入相应模块视图
             //startModule();
-            Toast.makeText(this, "loginout", Toast.LENGTH_SHORT).show();
-            WGPlatform.WGLogout();
-        } else if (getPlatform() == EPlatform.ePlatform_None) {
-            Toast.makeText(this,"Login",Toast.LENGTH_SHORT).show();
-            WGPlatform.WGLogin(EPlatform.ePlatform_QQ);
-        } else {
+          //  WGPlatform.WGLogout();
+        WGPlatform.WGLogin(EPlatform.ePlatform_QQ);
 
-        }
+    }
+
+    public void callWGQueryQQUserInfo() {
+        WGPlatform.WGQueryQQMyInfo();
+    }
+
+    public void getWGQueryQQUserInfo(PersonInfo info){
+         if(loginCallback != null){
+             loginCallback.oncallWGQueryQQUserInfo(info);
+         }
     }
 }

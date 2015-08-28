@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.tencent.msdk.api.*;
 import com.tencent.msdk.consts.CallbackFlag;
 import com.tencent.msdk.consts.EPlatform;
+import com.tencent.msdk.remote.api.PersonInfo;
 import com.tencent.msdk.tools.Logger;
 import tv.ismar.daisy.*;
 import tv.ismar.daisy.core.DaisyUtils;
@@ -78,6 +79,9 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private SimpleRestClient mSimpleRestClient;
     private Item[] mHistoriesByNet;
 
+    private String mAccessToken;
+    private String mNickName;
+
     private SharedPreferences.OnSharedPreferenceChangeListener changeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -97,7 +101,6 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         mContext = this;
-        setIsinitMSDK(true);
         super.onCreate(savedInstanceState);
         accountSharedPrefs = getSharedPreferences(ACCOUNT_SHARED_PREFS, Context.MODE_PRIVATE);
         mContentView = LayoutInflater.from(this).inflate(R.layout.activity_usercenter, null);
@@ -133,9 +136,30 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             getSupportFragmentManager().beginTransaction().add(R.id.user_center_container, storeFragment).commit();
             indicatorView.get(0).setBackgroundResource(R.drawable.table_selected_bg);
         }
+        init();
         isFirstLogin = true;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        WGPlatform.onResume();
+        if (!SimpleRestClient.isLogin()) {
+            WGPlatform.WGLogin(EPlatform.ePlatform_None);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        WGPlatform.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        WGPlatform.onDestory(this);
+    }
 
     private void initViews() {
         topView = (LaunchHeaderLayout) findViewById(R.id.top_column_layout);
@@ -231,18 +255,22 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onLoginSuccess(String result) {
+        callWGQueryQQUserInfo();
         AuthTokenEntity authTokenEntity = new Gson().fromJson(result, AuthTokenEntity.class);
         Log.i("pangziinfo", "authTokenEntity.getAuth_token()==" + authTokenEntity.getAuth_token());
-
-        saveToLocal(authTokenEntity.getAuth_token(), authTokenEntity.getAuth_token());
-        showLoginSuccessPopup();
-
-
+        mAccessToken = authTokenEntity.getAuth_token();
     }
 
     @Override
     public void onLoginFailed() {
 
+    }
+
+    @Override
+    public void oncallWGQueryQQUserInfo(PersonInfo info) {
+        mNickName = info.nickName;
+        saveToLocal(mAccessToken, mNickName);
+        showLoginSuccessPopup();
     }
 
 
@@ -285,7 +313,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         View popupLayout = LayoutInflater.from(mContext).inflate(R.layout.popup_login_success, null);
         TextView textView = (TextView) popupLayout.findViewById(R.id.login_success_msg);
         String msg = mContext.getText(R.string.login_success).toString();
-        String phoneNumber = "hello world!!!";
+        String phoneNumber = mNickName;
         textView.setText(String.format(msg, phoneNumber));
 
         Button button = (Button) popupLayout.findViewById(R.id.login_success_btn);

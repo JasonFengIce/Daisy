@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import cn.ismartv.activator.Activator;
 import com.google.gson.Gson;
+import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
@@ -301,7 +302,8 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
 
                 break;
             case R.id.change:
-                showAssociationPopupWindow();
+               // showAssociationPopupWindow();
+                ((BaseActivity)getActivity()).changaccount();
                 break;
         }
     }

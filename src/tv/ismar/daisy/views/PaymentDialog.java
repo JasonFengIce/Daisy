@@ -15,6 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.graphics.drawable.BitmapDrawable;
+import com.tencent.msdk.remote.api.PersonInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -371,10 +372,8 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
 			case LOGIN_SUCESS: {
 				welocome_tip.setVisibility(View.VISIBLE);
 				top_login_panel.setVisibility(View.GONE);
-				String welocome = mycontext.getResources().getString(
-						R.string.welocome_tip);
-				welocome_tip.setText(String.format(welocome,
-						SimpleRestClient.mobile_number));
+                ((BaseActivity)mycontext).callWGQueryQQUserInfo();
+
 			}
 			}
 		}
@@ -763,6 +762,14 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
     @Override
     public void onLoginFailed() {
 
+    }
+
+    @Override
+    public void oncallWGQueryQQUserInfo(PersonInfo info) {
+        String welocome = mycontext.getResources().getString(
+                R.string.welocome_tip);
+        welocome_tip.setText(String.format(welocome,
+                info.nickName));
     }
 
     public interface OrderResultListener {

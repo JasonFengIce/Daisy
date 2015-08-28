@@ -169,7 +169,9 @@ public class MsdkCallback implements WGPlatformObserver {
     	String result = relationRet.toString();
         Logger.d("OnRelationNotify" + result);
         // 发送结果到结果展示界面
-        sendResult(result);
+        String name = relationRet.persons.get(0).nickName;
+        mainActivity.getWGQueryQQUserInfo(relationRet.persons.elementAt(0));
+        //sendResult(a);
     }
 
     @Override
