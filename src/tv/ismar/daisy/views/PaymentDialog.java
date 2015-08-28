@@ -756,13 +756,8 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
 
     @Override
     public void onLoginSuccess(String result) {
-
-
-
-        changeQrcodePayPanelState(false, false);
-        changeLoginPanelState(true);
-        changeYuePayPanelState(false,false);
-        changeshiyuncardPanelState(false);
+		urlHandler.sendEmptyMessage(LOGIN_SUCESS);
+		getBalanceByToken();
     }
 
     @Override
