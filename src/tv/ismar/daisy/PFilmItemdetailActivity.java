@@ -164,7 +164,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
         super.onResume();
         WGPlatform.onResume();
-        if(isFirstLogin) {
+        if(!SimpleRestClient.isLogin()) {
             isFirstLogin = false;
             WGPlatform.WGLogin(EPlatform.ePlatform_None);
         }

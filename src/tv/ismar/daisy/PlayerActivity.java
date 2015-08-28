@@ -20,6 +20,8 @@ import android.widget.*;
 import com.google.gson.JsonSyntaxException;
 import com.ismartv.api.t.AccessProxy;
 import com.ismartv.bean.ClipInfo;
+import com.tencent.msdk.api.WGPlatform;
+import com.tencent.msdk.consts.EPlatform;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -128,6 +130,7 @@ public class PlayerActivity extends VodMenuAction {
 
 		DisplayMetrics metric = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metric);
+        init();
 	}
 
 	@Override
@@ -139,6 +142,10 @@ public class PlayerActivity extends VodMenuAction {
 			initPlayer();
 			needOnresume = false;
 		}
+        WGPlatform.onResume();
+        if(!SimpleRestClient.isLogin()) {
+            WGPlatform.WGLogin(EPlatform.ePlatform_None);
+        }
 	}
 
 	private void setView() {
@@ -2029,6 +2036,7 @@ public class PlayerActivity extends VodMenuAction {
 			Log.d(TAG, "Player close to Home");
 		}
 		super.onPause();
+        WGPlatform.onPause();
 	}
 
 	@Override
@@ -2042,6 +2050,7 @@ public class PlayerActivity extends VodMenuAction {
 				this.toString());
 		sendPlayComplete();
 		super.onDestroy();
+        WGPlatform.onDestory(this);
 	}
 
 	private void removeAllHandler() {
