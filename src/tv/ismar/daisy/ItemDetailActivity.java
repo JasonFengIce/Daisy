@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
+import com.tencent.msdk.api.WGPlatform;
+import com.tencent.msdk.consts.EPlatform;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -128,6 +130,7 @@ public class ItemDetailActivity extends BaseActivity implements
     private String slug;
     private String channel;
     private String fromPage;
+    private boolean isFirstLogin = false;
 	private void initViews() {
 		isbuy_label = (ImageView)findViewById(R.id.isbuy_label);
 		mDetailLeftContainer = (RelativeLayout) findViewById(R.id.detail_left_container);
@@ -216,6 +219,8 @@ public class ItemDetailActivity extends BaseActivity implements
 
 		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(),
 				this);
+        init();
+        isFirstLogin = true;
 	}
 
 	@Override
@@ -247,6 +252,11 @@ public class ItemDetailActivity extends BaseActivity implements
 			isPause = false;
 		}
 		super.onResume();
+        WGPlatform.onResume();
+        if(isFirstLogin) {
+            isFirstLogin = false;
+            WGPlatform.WGLogin(EPlatform.ePlatform_None);
+        }
 	}
 private void setLeftDrawable(Drawable drawable,Button btn){
 	drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
@@ -277,6 +287,7 @@ private boolean isPause = false;
 			mDataCollectionProperties.remove(EventProperty.SUBITEM);
 		}
 		super.onPause();
+        WGPlatform.onPause();
 	}
 
 	@Override

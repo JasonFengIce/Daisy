@@ -20,6 +20,7 @@ import com.tencent.msdk.api.WGPlatform;
 import com.tencent.msdk.api.WGQZonePermissions;
 import com.tencent.msdk.consts.CallbackFlag;
 import com.tencent.msdk.consts.EPlatform;
+import com.tencent.msdk.remote.api.PersonInfo;
 import com.tencent.msdk.tools.Logger;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -224,6 +225,7 @@ public class BaseActivity extends FragmentActivity {
     public interface OnLoginCallback {
         void onLoginSuccess(String result);
         void onLoginFailed();
+        void oncallWGQueryQQUserInfo(PersonInfo info);
     }
     OnLoginCallback loginCallback;
     public void setLoginCallback(OnLoginCallback loginCallback) {
@@ -283,5 +285,16 @@ public class BaseActivity extends FragmentActivity {
         } else {
 
         }
+    }
+
+
+    public void callWGQueryQQUserInfo() {
+        WGPlatform.WGQueryQQMyInfo();
+    }
+
+    public void getWGQueryQQUserInfo(PersonInfo info){
+         if(loginCallback != null){
+             loginCallback.oncallWGQueryQQUserInfo(info);
+         }
     }
 }
