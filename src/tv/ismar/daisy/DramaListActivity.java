@@ -4,6 +4,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import com.tencent.msdk.api.WGPlatform;
+import com.tencent.msdk.consts.EPlatform;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -144,6 +147,7 @@ public class DramaListActivity extends BaseActivity implements
 				mDramaView.pageScroll(View.FOCUS_UP);
 			}
 		});
+        init();
 	}
 
 	@Override
@@ -151,6 +155,11 @@ public class DramaListActivity extends BaseActivity implements
 		super.onResume();
 		if (mItem.expense != null)
 			orderCheck();
+
+        WGPlatform.onResume();
+        if(!SimpleRestClient.isLogin()) {
+            WGPlatform.WGLogin(EPlatform.ePlatform_None);
+        }
 	}
 
 	@Override
@@ -358,6 +367,7 @@ public class DramaListActivity extends BaseActivity implements
 		DaisyUtils.getVodApplication(this).removeActivtyFromPool(
 				this.toString());
 		super.onDestroy();
+        WGPlatform.onDestory(this);
 	}
 
 	@Override
@@ -375,6 +385,7 @@ public class DramaListActivity extends BaseActivity implements
 			mDataCollectionProperties.remove("subitem");
 		}
 		super.onPause();
+        WGPlatform.onPause();
 	}
 
 	private PaymentDialog.OrderResultListener ordercheckListener = new PaymentDialog.OrderResultListener() {

@@ -253,7 +253,7 @@ public class ItemDetailActivity extends BaseActivity implements
 		}
 		super.onResume();
         WGPlatform.onResume();
-        if(isFirstLogin) {
+        if(!SimpleRestClient.isLogin()) {
             isFirstLogin = false;
             WGPlatform.WGLogin(EPlatform.ePlatform_None);
         }
