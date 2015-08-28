@@ -405,9 +405,9 @@
     <dimen name="search_autocomplete_item_padding">15dip</dimen>
     <dimen name="search_autocomplete_item_textsize">22dip</dimen>
     <dimen name="search_gridview_verticalspacing">5dip</dimen>
-    <dimen name="search_gridview_marginL">150dip</dimen>
+    <dimen name="search_gridview_marginL">160dip</dimen>
     <dimen name="search_gridview_marginT">18dip</dimen>
-    <dimen name="search_gridview_marginR">150dip</dimen>
+    <dimen name="search_gridview_marginR">160dip</dimen>
     <dimen name="search_gridview_marginB">10dip</dimen>
     <dimen name="search_line_height">2dip</dimen>
     <dimen name="search_gridview_item_main_layout_W">240dip</dimen>

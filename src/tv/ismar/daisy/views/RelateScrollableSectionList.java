@@ -35,11 +35,13 @@ public class RelateScrollableSectionList extends HorizontalScrollView {
 	
 //	private boolean isSectionWidthResized = false;
 	
-	private static final int LABEL_TEXT_COLOR_NOFOCUSED = 0xffbbbbbb;
+	private static final int LABEL_TEXT_COLOR_NOFOCUSED = 0xffffffff;
 	
-	private static final int LABEL_TEXT_COLOR_FOCUSED = 0xffF8F8FF;
-	
-	private static final int LABEL_TEXT_BACKGROUND_COLOR_FOCUSED = 0xffe5aa50;
+	private static final int LABEL_TEXT_COLOR_FOCUSED = 0xffffba00;
+
+    private static final int LABEL_TEXT_COLOR_CLICKED = 0xff00a8ff;
+
+    private static final int LABEL_TEXT_BACKGROUND_COLOR_FOCUSED = 0xffe5aa50;
 	
 	private static final int LABEL_TEXT_BACKGROUND_SELECTED_NOFOCUSED = 0x80e5aa50;
 	
@@ -99,7 +101,7 @@ public class RelateScrollableSectionList extends HorizontalScrollView {
 		}
 		this.addView(mContainer);
 		if(mContainer.getChildAt(0)!=null){
-			mContainer.getChildAt(0).requestFocus();
+			//mContainer.getChildAt(0).requestFocus();
 			View v = mContainer.getChildAt(0);
 			TextView label = (TextView) v.findViewById(R.id.section_label);
 			ProgressBar percentageBar = (ProgressBar) v.findViewById(R.id.section_percentage);
@@ -110,7 +112,7 @@ public class RelateScrollableSectionList extends HorizontalScrollView {
 			float rate = DaisyUtils.getVodApplication(getContext()).getRate(getContext());
 			 textsize = (int) (textsize/rate);
 			 label.setTextSize(textsize);
-			label.setTextColor(LABEL_TEXT_COLOR_FOCUSED);
+			label.setTextColor(LABEL_TEXT_COLOR_CLICKED);
 			percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_hot_selected));
 		}
 
@@ -159,63 +161,24 @@ public class RelateScrollableSectionList extends HorizontalScrollView {
 			}
 			TextView label = (TextView) v.findViewById(R.id.section_label);
 			ProgressBar percentageBar = (ProgressBar) v.findViewById(R.id.section_percentage);
-			if(hasFocus){
-			//	label.setBackgroundColor(LABEL_TEXT_BACKGROUND_COLOR_FOCUSED);
-				label.setPadding(label.getPaddingLeft(), getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_text_PT), label.getPaddingRight(), label.getPaddingBottom());
-				
-				//percentageBar.setProgress(0);
-				int textsize = getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_ctextsize);
-				 textsize = (int) (textsize/rate);
-				 label.setTextSize(textsize);
-				label.setTextColor(LABEL_TEXT_COLOR_FOCUSED);
-				if(index==lastSelectPosition) {
-					Log.i("zhangjiqiang", "index==mSelectPosition hasFocus:// index=="+index+"//mSelectPosition=="+mSelectPosition+"//size=="+getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_ctextsize));
-					if(!isChangeBarStyle)
-					    percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_hot_selected));
-					else{
-						percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.progress_line));
-					}
-				} else {//section_percentage_noselected
-					Log.i("zhangjiqiang", "index!=mSelectPosition hasFocus:// index=="+index+"//mSelectPosition=="+mSelectPosition);
-					if(!isChangeBarStyle)
-					    percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_hot_noselected));
-					else
-						percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.progress_line));	
-					if(lastView!=null){
-						TextView lastlabel = (TextView) lastView.findViewById(R.id.section_label);
-						ProgressBar lastPercentageBar = (ProgressBar) lastView.findViewById(R.id.section_percentage); 
-						lastlabel.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
-						lastlabel.setPadding(label.getPaddingLeft(), getResources().
-								getDimensionPixelSize(R.dimen.channel_section_tabs_label_paddingT), label.getPaddingRight(), label.getPaddingBottom());
-						
-						lastlabel.setTextSize(getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_textsize)/rate);	
-						
-						lastPercentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_noselected));
-					}	
-					
-				}
-				lastView = mContainer.getChildAt(index);
-				lastSelectPosition = index;
-				//mSelectPosition = index;
-					
-			} else {
 
-				if(index==lastSelectPosition) {
-					Log.i("zhangjiqiang", "index==mSelectPosition nohasFocus:// index=="+index+"//mSelectPosition=="+mSelectPosition);
-					//label.setBackgroundColor(LABEL_TEXT_BACKGROUND_SELECTED_NOFOCUSED);
-					if(!isChangeBarStyle)
-					percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_selected));
-					label.setTextColor(LABEL_TEXT_COLOR_FOCUSED);
-				} else {
-					//label.setBackgroundColor(LABEL_TEXT_BACKGROUND_NOSELECTED_NOFOCUSED);
-//					label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
-//					label.setPadding(label.getPaddingLeft(), 8, label.getPaddingRight(), label.getPaddingBottom());
-//					label.setTextSize(24);
-					Log.i("zhangjiqiang", "index!=mSelectPosition nohasFocus:// index=="+index+"//mSelectPosition=="+mSelectPosition);
-					if(!isChangeBarStyle)
-					percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_noselected));
-				}
-			}
+            if(hasFocus){
+                if(index==mSelectPosition){
+                    return;
+                }
+
+                else{
+                    label.setTextColor(LABEL_TEXT_COLOR_FOCUSED);
+                }
+
+
+            } else {
+                if(index==mSelectPosition){
+                    return;
+                }
+                label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
+
+            }
 		}
 	};
 	
@@ -234,7 +197,7 @@ public class RelateScrollableSectionList extends HorizontalScrollView {
 		int textsize = getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_ctextsize);
 		textsize = (int) (textsize/rate);
 		label.setTextSize(textsize);
-		label.setTextColor(LABEL_TEXT_COLOR_FOCUSED);
+		label.setTextColor(LABEL_TEXT_COLOR_CLICKED);
 	}
 //	private OnTouchListener mOnTouchListener = new OnTouchListener() {
 //		
@@ -289,24 +252,8 @@ public class RelateScrollableSectionList extends HorizontalScrollView {
 				ProgressBar lastPercentageBar = (ProgressBar) lastSelectedView.findViewById(R.id.section_percentage);
 				lastPercentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_noselected));
 				setSectionTabProperty(v,lastSelectedView);
-//				TextView label = (TextView) v.findViewById(R.id.section_label);
-//				TextView lastLabel = (TextView) lastSelectedView.findViewById(R.id.section_label);
-//				label.setPadding(label.getPaddingLeft(), getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_text_PT), 
-//						label.getPaddingRight(), label.getPaddingBottom());
-				
-				//percentageBar.setProgress(0);
-//				int textsize = getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_ctextsize);
-//				textsize = (int) (textsize/DBHelper.rate);
-//				label.setTextSize(textsize);
-//				label.setTextColor(LABEL_TEXT_COLOR_FOCUSED);
-			//	lastLabel.setBackgroundColor(LABEL_TEXT_BACKGROUND_NOSELECTED_NOFOCUSED);
-//				lastLabel.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
-//				lastLabel.setPadding(lastLabel.getPaddingLeft(), getResources().
-//						getDimensionPixelSize(R.dimen.channel_section_tabs_label_paddingT), lastLabel.getPaddingRight(), lastLabel.getPaddingBottom());
-//				
-//				lastLabel.setTextSize(getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_textsize)/DBHelper.rate);	
 				changeSelection(index);
-                lastSelectPosition = index;
+               // lastSelectPosition = index;
 				if(mSectionSelectChangedListener!=null) {
 					mSectionSelectChangedListener.onSectionSelectChanged(index);
 				}
@@ -333,7 +280,7 @@ public class RelateScrollableSectionList extends HorizontalScrollView {
 			//label.setBackgroundColor(LABEL_TEXT_BACKGROUND_SELECTED_NOFOCUSED);
 			percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_hot_selected));
 			setSectionTabProperty(sectionHolder, lastSectionHolder);
-            lastSelectPosition = position;
+           // lastSelectPosition = position;
 		}
 //		Log.d("CurrentPercentage", percentage + "");
 		percentageBar.setProgress(percentage);

@@ -23,6 +23,7 @@ import com.tencent.msdk.api.WakeupRet;
 import com.tencent.msdk.consts.CallbackFlag;
 import com.tencent.msdk.consts.TokenType;
 import com.tencent.msdk.myapp.autoupdate.WGSaveUpdateObserver;
+import com.tencent.msdk.remote.api.PersonInfo;
 import com.tencent.msdk.remote.api.RelationRet;
 import com.tencent.msdk.tools.Logger;
 import com.tencent.tmassistantbase.common.TMAssistantDownloadTaskState;
@@ -169,8 +170,16 @@ public class MsdkCallback implements WGPlatformObserver {
     	String result = relationRet.toString();
         Logger.d("OnRelationNotify" + result);
         // 发送结果到结果展示界面
+        if(relationRet.persons!=null&&relationRet.persons.size()>0){
+            mainActivity.getWGQueryQQUserInfo(relationRet.persons.elementAt(0));
+        }
+        else{
+            PersonInfo info = new PersonInfo();
+            info.nickName = "unknow";
+            mainActivity.getWGQueryQQUserInfo(info);
+        }
         String name = relationRet.persons.get(0).nickName;
-        mainActivity.getWGQueryQQUserInfo(relationRet.persons.elementAt(0));
+
         //sendResult(a);
     }
 

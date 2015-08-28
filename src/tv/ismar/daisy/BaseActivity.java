@@ -239,7 +239,7 @@ public class BaseActivity extends FragmentActivity {
         params.put("device_token", SimpleRestClient.device_token);
         params.put("app_id","100703379");
         params.put("open_id",openid);
-        params.put("refresh_token","refresh_token");
+        params.put("refresh_token",refresh_token);
         params.put("kind","qq");
         params.put("token",token);
         new IsmartvUrlClient().doRequest(IsmartvUrlClient.Method.POST, api, params, new IsmartvUrlClient.CallBack() {
