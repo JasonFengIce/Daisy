@@ -298,7 +298,7 @@
     <dimen name="related_view_list_marginleft">110dip</dimen>
     <dimen name="related_view_list_margintop">17dip</dimen>
     <dimen name="related_view_list_marginright">110dip</dimen>
-    <dimen name="related_view_list_horizontalspacing">21dip</dimen>
+    <dimen name="related_view_list_horizontalspacing">25dip</dimen>
     <dimen name="related_view_list_verticalspacing">9dip</dimen>
     <dimen name="related_view_list_columnwidth">348dip</dimen>
     <dimen name="related_view_title_marginTop">15dip</dimen>

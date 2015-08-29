@@ -21,8 +21,6 @@ import com.qiyi.video.player.QiyiVideoPlayer;
 import com.qiyi.video.player.data.Definition;
 import com.qiyi.video.player.data.IPlaybackInfo;
 import com.qiyi.video.player.error.ISdkError;
-import com.tencent.msdk.api.WGPlatform;
-import com.tencent.msdk.consts.EPlatform;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
@@ -146,7 +144,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		setContentView(R.layout.vod_player);
-        init();
 	}
 
 	public void initView() {
@@ -839,10 +836,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 	public void onResume() {
 		super.onResume();
 		initView();
-        WGPlatform.onResume();
-        if(!SimpleRestClient.isLogin()) {
-            WGPlatform.WGLogin(EPlatform.ePlatform_None);
-        }
 	}
 
 	@Override
@@ -857,7 +850,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 		DaisyUtils.getVodApplication(this).removeActivtyFromPool(
 				this.toString());
 		super.onDestroy();
-        WGPlatform.onDestory(this);
 	}
 
 	private void removeAllHandler() {
@@ -884,7 +876,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 			Log.d(TAG, "Player close to Home");
 		}
 		super.onPause();
-        WGPlatform.onPause();
 	}
 
 	private void releasePlayer() {

@@ -9,19 +9,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import android.graphics.drawable.BitmapDrawable;
-import com.tencent.msdk.remote.api.PersonInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import cn.ismartv.activator.Activator;
-
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -765,11 +759,11 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
     }
 
     @Override
-    public void oncallWGQueryQQUserInfo(PersonInfo info) {
+    public void oncallWGQueryQQUserInfo(String nickName) {
         String welocome = mycontext.getResources().getString(
                 R.string.welocome_tip);
         welocome_tip.setText(String.format(welocome,
-                info.nickName));
+                nickName));
     }
 
     public interface OrderResultListener {

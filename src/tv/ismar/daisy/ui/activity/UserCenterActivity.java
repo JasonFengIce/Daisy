@@ -12,11 +12,6 @@ import android.view.View;
 import android.widget.*;
 import cn.ismartv.activator.Activator;
 import com.google.gson.Gson;
-import com.tencent.msdk.api.*;
-import com.tencent.msdk.consts.CallbackFlag;
-import com.tencent.msdk.consts.EPlatform;
-import com.tencent.msdk.remote.api.PersonInfo;
-import com.tencent.msdk.tools.Logger;
 import tv.ismar.daisy.*;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -136,29 +131,21 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             getSupportFragmentManager().beginTransaction().add(R.id.user_center_container, storeFragment).commit();
             indicatorView.get(0).setBackgroundResource(R.drawable.table_selected_bg);
         }
-        init();
-        isFirstLogin = true;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        WGPlatform.onResume();
-        if (!SimpleRestClient.isLogin()) {
-            WGPlatform.WGLogin(EPlatform.ePlatform_None);
-        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        WGPlatform.onPause();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        WGPlatform.onDestory(this);
     }
 
     private void initViews() {
@@ -267,8 +254,8 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     }
 
     @Override
-    public void oncallWGQueryQQUserInfo(PersonInfo info) {
-        mNickName = info.nickName;
+    public void oncallWGQueryQQUserInfo(String nickName) {
+        mNickName = nickName;
         saveToLocal(mAccessToken, mNickName);
         showLoginSuccessPopup();
     }

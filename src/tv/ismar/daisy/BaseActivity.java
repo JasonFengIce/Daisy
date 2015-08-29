@@ -7,21 +7,20 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.PopupWindow;
-import android.widget.Toast;
-import com.tencent.msdk.api.LoginRet;
-import com.tencent.msdk.api.MsdkBaseInfo;
-import com.tencent.msdk.api.WGPlatform;
-import com.tencent.msdk.api.WGQZonePermissions;
-import com.tencent.msdk.consts.CallbackFlag;
-import com.tencent.msdk.consts.EPlatform;
-import com.tencent.msdk.remote.api.PersonInfo;
-import com.tencent.msdk.tools.Logger;
+import com.tencent.connect.UserInfo;
+import com.tencent.connect.common.Constants;
+import com.tencent.tauth.IUiListener;
+import com.tencent.tauth.Tencent;
+import com.tencent.tauth.UiError;
+import org.json.JSONException;
+import org.json.JSONObject;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
@@ -36,8 +35,8 @@ public class BaseActivity extends FragmentActivity {
     private IntentFilter intentFilter;
 
     private PopupWindow netErrorPopupWindow;
-    private boolean isFirstLogin = false;
-    private boolean isinitMSDK = false;
+    Tencent mTencent;
+    String APP_ID = "1104828726";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,124 +57,11 @@ public class BaseActivity extends FragmentActivity {
         connectionErrorReceiver = new ConnectionErrorReceiver();
 
         createNetErrorPopup();
-
+        mTencent = Tencent.createInstance(APP_ID, getApplicationContext());
     }
-    public void setIsinitMSDK(boolean isInit){
-        this.isinitMSDK = isInit;
-    }
-   public void init(){
-
-       MsdkBaseInfo baseInfo = new MsdkBaseInfo();
-       baseInfo.qqAppId = "100703379";
-       baseInfo.qqAppKey = "4578e54fb3a1bd18e0681bc1c734514e";
 
 
-       // baseInfo.wxAppId = "wxcde873f99466f74a";
 
-       baseInfo.msdkKey = "5d1467a4d2866771c3b289965db335f4";
-       baseInfo.offerId = "100703379";
-       WGPlatform.WGSetObserver(new MsdkCallback(this));
-       // 应用宝更新回调类，游戏自行实现
-       WGPlatform.WGSetSaveUpdateObserver(new SaveUpdateDemoObserver());
-       // 广告的回调设置
-       WGPlatform.WGSetADObserver(new MsdkADCallback());
-       //QQ 加群加好友回调
-       WGPlatform.WGSetGroupObserver(new MsdkGroupCallback());
-       // 注意：传入Initialized的activity即this，在游戏运行期间不能被销毁，否则会产生Crash
-       WGPlatform.Initialized(this, baseInfo);
-       // 设置拉起QQ时候需要用户授权的项
-       WGPlatform.WGSetPermission(WGQZonePermissions.eOPEN_ALL);
-
-       if (WGPlatform.wakeUpFromHall(this.getIntent())) {
-           // 拉起平台为大厅
-           Logger.d("LoginPlatform is Hall");
-           Logger.d(this.getIntent());
-       } else {
-           // 拉起平台不是大厅
-           Logger.d("LoginPlatform is not Hall");
-           Logger.d(this.getIntent());
-           WGPlatform.handleCallback(this.getIntent());
-       }
-
-       //isFirstLogin = true;
-   }
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//
-//        if(isinitMSDK){
-//            WGPlatform.onResume();
-//
-//            // TODO GAME 模拟游戏自动登录，这里需要游戏添加加载动画
-//            // WGLogin是一个异步接口, 传入ePlatform_None则调用本地票据验证票据是否有效
-//            // 如果从未登录过，则会立即在onLoginNotify中返回flag为eFlag_Local_Invalid，此时应该拉起授权界面
-//            // 建议在此时机调用WGLogin,它应该在handlecallback之后进行调用。
-//            if(isFirstLogin) {
-//                isFirstLogin = false;
-//                WGPlatform.WGLogin(EPlatform.ePlatform_None);
-//            }
-//        }
-//
-//        registerBroadcastReceiver();
-//    }
-//    @Override
-//    protected void onRestart() {
-//        super.onRestart();
-//        if(isinitMSDK)
-//            WGPlatform.onRestart();
-//    }
-//
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        if(isinitMSDK)
-//          WGPlatform.onStop();
-//    }
-//
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        if(isinitMSDK)
-//          WGPlatform.onPause();
-//        unRegisterBroadcastReceiver();
-//
-//    }
-//
-//    // TODO GAME 在onActivityResult中需要调用WGPlatform.onActivityResult
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if(isinitMSDK)
-//           WGPlatform.onActivityResult(requestCode, resultCode, data);
-//    }
-//
-//    // TODO GAME 在onNewIntent中需要调用handleCallback将平台带来的数据交给MSDK处理
-//    @Override
-//    protected void onNewIntent(Intent intent) {
-//        Logger.d("onNewIntent");
-//        super.onNewIntent(intent);
-//        if(isinitMSDK){
-//            // TODO GAME 处理游戏被拉起的情况
-//            // launchActivity的onCreat()和onNewIntent()中必须调用
-//            // WGPlatform.handleCallback()。否则会造成微信登录无回调
-//            if (WGPlatform.wakeUpFromHall(intent)) {
-//                Logger.d("LoginPlatform is Hall");
-//                Logger.d(intent);
-//            } else {
-//                Logger.d("LoginPlatform is not Hall");
-//                Logger.d(intent);
-//                WGPlatform.handleCallback(intent);
-//            }
-//        }
-//
-//    }
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        if(isinitMSDK)
-//           WGPlatform.onDestory(this);
-//    }
 
     private void registerBroadcastReceiver() {
         registerReceiver(connectionErrorReceiver, intentFilter);
@@ -225,7 +111,8 @@ public class BaseActivity extends FragmentActivity {
     public interface OnLoginCallback {
         void onLoginSuccess(String result);
         void onLoginFailed();
-        void oncallWGQueryQQUserInfo(PersonInfo info);
+        void oncallWGQueryQQUserInfo(String info);
+
     }
     OnLoginCallback loginCallback;
     public void setLoginCallback(OnLoginCallback loginCallback) {
@@ -237,7 +124,7 @@ public class BaseActivity extends FragmentActivity {
         String api = SimpleRestClient.root_url + "/accounts/oauth_login/";
         HashMap params = new HashMap();
         params.put("device_token", SimpleRestClient.device_token);
-        params.put("app_id","100703379");
+        params.put("app_id","1104828726");
         params.put("open_id",openid);
         params.put("refresh_token",refresh_token);
         params.put("kind","qq");
@@ -263,35 +150,133 @@ public class BaseActivity extends FragmentActivity {
 
     }
 
-    // 获取当前登录平台
-    public EPlatform getPlatform() {
-        LoginRet ret = new LoginRet();
-        WGPlatform.WGGetLoginRecord(ret);
-        if (ret.flag == CallbackFlag.eFlag_Succ) {
-            return EPlatform.getEnum(ret.platform);
-        }
-        return EPlatform.ePlatform_None;
-    }
-
     public void loginQQorWX(){
-        WGPlatform.WGLogin(EPlatform.ePlatform_QQ);
+        mTencent.login(BaseActivity.this, "all", loginListener);
     }
     public void changaccount(){
-
-            // 如已登录直接进入相应模块视图
-            //startModule();
-          //  WGPlatform.WGLogout();
-        WGPlatform.WGLogin(EPlatform.ePlatform_QQ);
+        mTencent.logout(BaseActivity.this);
+        mTencent.login(BaseActivity.this, "all", loginListener);
 
     }
 
     public void callWGQueryQQUserInfo() {
-        WGPlatform.WGQueryQQMyInfo();
+        UserInfo mInfo = new UserInfo(BaseActivity.this, mTencent.getQQToken());
+        mInfo.getUserInfo(getUserInfoListener);
     }
 
-    public void getWGQueryQQUserInfo(PersonInfo info){
-         if(loginCallback != null){
-             loginCallback.oncallWGQueryQQUserInfo(info);
+    public void getWGQueryQQUserInfo(String nickname){
+
+         if(loginCallback!=null){
+             loginCallback.oncallWGQueryQQUserInfo(nickname);
          }
     }
+
+
+
+    public  void initOpenidAndToken(JSONObject jsonObject) {
+        try {
+            String token = jsonObject.getString(Constants.PARAM_ACCESS_TOKEN);
+            String expires = jsonObject.getString(Constants.PARAM_EXPIRES_IN);
+            String openId = jsonObject.getString(Constants.PARAM_OPEN_ID);
+            String paytoken="";
+            if(jsonObject.has("pay_token")){
+                paytoken = jsonObject.getString("pay_token");
+            }
+            if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(expires)
+                    && !TextUtils.isEmpty(openId)) {
+                mTencent.setAccessToken(token, expires);
+                mTencent.setOpenId(openId);
+                letUserLogin(token,paytoken,openId);
+            }
+        } catch(Exception e) {
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // mTencent.onActivityResult(requestCode, resultCode, data);
+
+        // Log.d(TAG, "-->onActivityResult " + requestCode  + " resultCode=" + resultCode);
+        if(loginListener!=null){
+            mTencent.onActivityResultData(requestCode,resultCode,data,loginListener);
+            if(requestCode == Constants.REQUEST_API) {
+                if(resultCode == Constants.RESULT_LOGIN) {
+                    Tencent.handleResultData(data, loginListener);
+                    //  Log.d(TAG, "-->onActivityResult handle logindata");
+                }
+            } else if (requestCode == Constants.REQUEST_APPBAR) { //app内应用吧登录
+                if (resultCode == Constants.RESULT_LOGIN) {
+                    // updateUserInfo();
+                    // updateLoginButton();
+                    //  Util.showResultDialog(MainActivity.this, data.getStringExtra(Constants.LOGIN_INFO), "登录成功");
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+    IUiListener loginListener = new BaseUiListener() {
+        @Override
+        protected void doComplete(Object values) {
+            Log.i("zhangjiqiangfuck","getUserInfoListener");
+            if(null == values){
+                //获取失败
+                return;
+            }
+            JSONObject jsonResponse = (JSONObject) values;
+            if(null != jsonResponse && jsonResponse.length() == 0){
+                //失败
+                return;
+            }
+            if(jsonResponse.has(Constants.PARAM_OPEN_ID)){
+                initOpenidAndToken(jsonResponse);
+                Log.i("zhangjiqiangfuck", "AuthorSwitch_SDK:" + "doComplete"+"values=="+values.toString());
+            }
+        }
+    };
+    IUiListener getUserInfoListener = new BaseUiListener(){
+        @Override
+        protected void doComplete(Object values) {
+            Log.i("zhangjiqiangfuck","getUserInfoListener");
+            if(null == values){
+                //获取失败
+                return;
+            }
+            JSONObject jsonResponse = (JSONObject) values;
+            if(null != jsonResponse && jsonResponse.length() == 0){
+                //失败
+                return;
+            }
+            Log.i("zhangjiqiangfuck","info=="+jsonResponse.toString());
+            if(jsonResponse.has("nickname")){
+                try {
+                    getWGQueryQQUserInfo(jsonResponse.getString("nickname"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    };
+    private class BaseUiListener implements IUiListener {
+
+        @Override
+        public void onComplete(Object response) {
+            Log.i("zhangjiqiangfuck","onComplete");
+            doComplete(response);
+        }
+
+        protected void doComplete(Object values) {
+
+        }
+
+        @Override
+        public void onError(UiError e) {
+            Log.i("zhangjiqiangfuck","onError");
+        }
+
+        @Override
+        public void onCancel() {
+            Log.i("zhangjiqiangfuck","onCancel");
+        }
+    }
+
+
 }

@@ -14,8 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.gson.JsonSyntaxException;
-import com.tencent.msdk.api.WGPlatform;
-import com.tencent.msdk.consts.EPlatform;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -77,7 +75,6 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
     private String slug;
     private String fromPage;
     private LaunchHeaderLayout weatherFragment;
-    private boolean isFirstLogin = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,8 +120,6 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
         DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(),
                 this);
-        init();
-        isFirstLogin = true;
     }
 
     @Override
@@ -163,11 +158,6 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         // 建议在此时机调用WGLogin,它应该在handlecallback之后进行调用。
 
         super.onResume();
-        WGPlatform.onResume();
-        if(!SimpleRestClient.isLogin()) {
-            isFirstLogin = false;
-            WGPlatform.WGLogin(EPlatform.ePlatform_None);
-        }
     }
 
     private boolean isFavorite() {
@@ -417,7 +407,6 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             }
         }
         super.onPause();
-        WGPlatform.onPause();
     }
 
     @Override
@@ -443,8 +432,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         mRelatedItem = null;
         DaisyUtils.getVodApplication(this).removeActivtyFromPool(
                 this.toString());
-        super.onDestroy();
-        WGPlatform.onDestory(this);
+        super.onDestroy();;
     }
 
     @Override
@@ -1040,6 +1028,5 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
-        WGPlatform.onActivityResult(requestCode, resultCode, data);
     }
 }

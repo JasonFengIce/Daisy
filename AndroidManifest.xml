@@ -296,20 +296,21 @@
         <!-- TODO SDK接入 QQ接入配置 START -->
         <activity
                 android:name="com.tencent.tauth.AuthActivity"
+                android:noHistory="true"
                 android:launchMode="singleTask"
-                android:noHistory="true" >
+                android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="tencent100703379" />
+                <data android:scheme="tencent1104828726" />
             </intent-filter>
         </activity>
-        <activity
-                android:name="com.tencent.connect.common.AssistActivity"
-                android:configChanges="orientation|screenSize|keyboardHidden"
-                android:screenOrientation="portrait"
-                android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name="com.tencent.connect.common.AssistActivity"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
+                  android:configChanges="orientation|keyboardHidden|screenSize"
+                  android:screenOrientation="portrait"
+                />
         <!-- TODO SDK接入 QQ接入配置 END -->
 
         <!-- service -->
