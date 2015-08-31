@@ -220,7 +220,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             if (view.getId() == currentViewId) {
                 view.setBackgroundResource(R.drawable.usercenter_table_focus);
             } else {
-                view.setBackgroundResource(R.drawable.usercenter_table_normal);
+                view.setBackgroundResource(R.drawable.selector_usercenter_tab);
             }
         }
     }
