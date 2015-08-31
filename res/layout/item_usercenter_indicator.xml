@@ -13,7 +13,7 @@
         android:layout_marginTop="@dimen/usercenter_fragment_indicator_item_margin_top"
         android:layout_marginRight="@dimen/usercenter_fragment_indicator_item_margin_right"
         android:id="@+id/usercenter_indicator_text"
-        android:background="@drawable/selector_channel_item"
+        android:background="@drawable/selector_usercenter_tab"
         android:layout_width="@dimen/usercenter_fragment_indicator_item_width"
         android:layout_height="@dimen/usercenter_fragment_indicator_item_height"/>
 </RelativeLayout>

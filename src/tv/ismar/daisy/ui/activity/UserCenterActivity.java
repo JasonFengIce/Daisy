@@ -126,10 +126,10 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         String flag = getIntent().getStringExtra("flag");
         if (!TextUtils.isEmpty(flag) && flag.equals(LOCATION_FRAGMENT)) {
             getSupportFragmentManager().beginTransaction().add(R.id.user_center_container, locationFragment).commit();
-            indicatorView.get(5).setBackgroundResource(R.drawable.table_selected_bg);
+            indicatorView.get(5).setBackgroundResource(R.drawable.usercenter_table_focus);
         } else {
             getSupportFragmentManager().beginTransaction().add(R.id.user_center_container, storeFragment).commit();
-            indicatorView.get(0).setBackgroundResource(R.drawable.table_selected_bg);
+            indicatorView.get(0).setBackgroundResource(R.drawable.usercenter_table_focus);
         }
     }
 
@@ -218,9 +218,9 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         }
         for (View view : indicatorView) {
             if (view.getId() == currentViewId) {
-                view.setBackgroundResource(R.drawable.table_selected_bg);
+                view.setBackgroundResource(R.drawable.usercenter_table_focus);
             } else {
-                view.setBackgroundResource(R.drawable.selector_channel_item);
+                view.setBackgroundResource(R.drawable.usercenter_table_normal);
             }
         }
     }

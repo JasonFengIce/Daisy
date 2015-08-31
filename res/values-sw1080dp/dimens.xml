@@ -744,7 +744,7 @@
     <!-- user center fragment -->
     <dimen name="usercenter_fragment_indicator_layout_width">425dp</dimen>
     <dimen name="usercenter_fragment_indicator_item_width">325dp</dimen>
-    <dimen name="usercenter_fragment_indicator_item_height">115dp</dimen>
+    <dimen name="usercenter_fragment_indicator_item_height">74dp</dimen>
     <dimen name="usercenter_fragment_indicator_item_margin_top">20dp</dimen>
     <dimen name="usercenter_fragment_indicator_item_margin_right">25dp</dimen>
     <dimen name="usercenter_fragment_indicator_item_text_size">48sp</dimen>
