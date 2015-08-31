@@ -69,7 +69,7 @@
     <dimen name="item_detail_btn_marginleft">51dip</dimen>
     <dimen name="item_detail_related_H">158dip</dimen>
     <dimen name="item_detail_related_W">618dip</dimen>
-    <dimen name="item_detail_btn_layout_marginB">20dip</dimen>
+    <dimen name="item_detail_btn_layout_marginB">5dip</dimen>
     <dimen name="item_detail_Btn_Layout_marginT">18dip</dimen>
     <dimen name="item_detail_title_txt_MT">100dip</dimen>
     <dimen name="item_detail_text_size">36sp</dimen>

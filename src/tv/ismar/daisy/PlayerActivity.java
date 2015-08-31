@@ -1444,16 +1444,39 @@ public class PlayerActivity extends VodMenuAction {
 				break;
 			case KeyEvent.KEYCODE_DPAD_UP:
 
-				am.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-						AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
-				showPanel();
-				ret = true;
+//				am.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+//						AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+//				showPanel();
+                if (menu != null && menu.isVisible())
+                    return false;
+                if (menu == null) {
+                    createWindow();
+                    menu = new ISTVVodMenu(this);
+                    ret = createMenu(menu);
+                }
+                if (onVodMenuOpened(menu)) {
+                    menu.show();
+                    hideMenuHandler.postDelayed(hideMenuRunnable, 60000);
+                }
+				//ret = true;
 
 				break;
 			case KeyEvent.KEYCODE_DPAD_DOWN:
-				am.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-						AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
-				ret = true;
+//				am.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+//						AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+
+                if (menu != null && menu.isVisible())
+                    return false;
+                if (menu == null) {
+                    createWindow();
+                    menu = new ISTVVodMenu(this);
+                    ret = createMenu(menu);
+                }
+                if (onVodMenuOpened(menu)) {
+                    menu.show();
+                    hideMenuHandler.postDelayed(hideMenuRunnable, 60000);
+                }
+				//ret = true;
 				break;
 			case KeyEvent.KEYCODE_BACK:
 				if (isadvideoplaying)
