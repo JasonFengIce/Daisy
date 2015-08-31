@@ -27,6 +27,8 @@ import tv.ismar.daisy.core.client.IsmartvUrlClient;
 
 import java.util.HashMap;
 
+import org.json.JSONException;
+
 public class BaseActivity extends FragmentActivity {
 
     public static final String ACTION_CONNECT_ERROR = "tv.ismar.daisy.CONNECT_ERROR";
@@ -132,7 +134,24 @@ public class BaseActivity extends FragmentActivity {
         new IsmartvUrlClient().doRequest(IsmartvUrlClient.Method.POST, api, params, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
-
+            	org.json.JSONObject json;
+				try {
+					json = new org.json.JSONObject(
+							result);
+				String auth_token = json
+						.getString(VodApplication.AUTH_TOKEN);
+				DaisyUtils
+						.getVodApplication(getApplicationContext())
+						.getEditor()
+						.putString(
+								VodApplication.AUTH_TOKEN,
+								auth_token);
+				DaisyUtils.getVodApplication(getApplicationContext())
+						.save();
+				SimpleRestClient.access_token = auth_token;
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
                 if (loginCallback != null) {
                     loginCallback.onLoginSuccess(result);
                 }

@@ -18,9 +18,14 @@ import org.json.JSONObject;
 import cn.ismartv.activator.Activator;
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.VodApplication;
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
+import tv.ismar.daisy.models.Favorite;
+import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.views.LoginPanelView.AccountAboutDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -30,6 +35,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -89,7 +95,8 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
 	private OrderResultListener paylistener;
 	private int ordercheckcount;
 	private boolean flag = true;
-
+	private SimpleRestClient mSimpleRestClient;
+	private Item[] mHistoriesByNet;
 	public PaymentDialog(Context context) {
 		super(context);
 	}
@@ -104,6 +111,7 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
 		mycontext = context;
 		getBalanceByToken();
 		this.paylistener = paylistener;
+		mSimpleRestClient = new SimpleRestClient();
 	}
 
 	@Override
@@ -749,6 +757,16 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
 
     @Override
     public void onLoginSuccess(String result) {
+    	GetFavoriteByNet();
+		getHistoryByNet();
+		AccountAboutDialog dialog = new AccountAboutDialog(
+				getContext(),
+				R.style.UserinfoDialog);
+		dialog.setIscancelshow(false);
+		dialog.setWarningmessage("恭喜"
+				+ SimpleRestClient.mobile_number
+				+ "，您已成功注册/登陆视云账户!");
+		dialog.show();
 		urlHandler.sendEmptyMessage(LOGIN_SUCESS);
 		getBalanceByToken();
     }
@@ -764,10 +782,267 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
                 R.string.welocome_tip);
         welocome_tip.setText(String.format(welocome,
                 nickName));
+        DaisyUtils
+		.getVodApplication(getContext())
+		.getEditor()
+		.putString(
+				VodApplication.MOBILE_NUMBER,
+				nickName);
+        DaisyUtils.getVodApplication(getContext())
+		.save();
+        SimpleRestClient.mobile_number = nickName;
     }
 
     public interface OrderResultListener {
 		public void payResult(boolean result);
 	}
 
+    class AccountAboutDialog extends Dialog {
+		private int width;
+		private int height;
+		private TextView warnmsg_view;
+		private Button ok_bt;
+		private Button cancel_btButton;
+		private Button account_bind_ok1_bt;
+		private boolean iscancelshow;
+		private String warningmessage;
+		private LinearLayout account_bind_panel;
+
+		public String getWarningmessage() {
+			return warningmessage;
+		}
+
+		public void setWarningmessage(String warningmessage) {
+			this.warningmessage = warningmessage;
+		}
+
+		public AccountAboutDialog(Context context, int theme) {
+			super(context, theme);
+			WindowManager wm = (WindowManager) getContext().getSystemService(
+					Context.WINDOW_SERVICE);
+			width = wm.getDefaultDisplay().getWidth();
+			height = wm.getDefaultDisplay().getHeight();
+		}
+
+		@Override
+		protected void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+			this.setContentView(R.layout.account_bind_dialog);
+			warnmsg_view = (TextView) findViewById(R.id.account_bind_warn_msg);
+			cancel_btButton = (Button) findViewById(R.id.account_bind_cancel_bt);
+			account_bind_ok1_bt = (Button) findViewById(R.id.account_bind_ok1_bt);
+			ok_bt = (Button) findViewById(R.id.account_bind_ok_bt);
+			account_bind_panel = (LinearLayout) findViewById(R.id.account_bind_panel);
+			account_bind_ok1_bt.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					if (StringUtils.isNotEmpty(SimpleRestClient.access_token)) {
+						warnmsg_view
+								.setText(R.string.account_bind_dialog_bindmsg);
+						account_bind_panel.setVisibility(View.VISIBLE);
+						account_bind_ok1_bt.setVisibility(View.GONE);
+					}
+				}
+			});
+
+			ok_bt.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					long timestamp = System.currentTimeMillis();
+					Activator activator = Activator.getInstance(getContext());
+					String rsaResult = activator.PayRsaEncode("sn="
+							+ SimpleRestClient.sn_token + "&timestamp="
+							+ timestamp);
+					Log.v("aaaa", "sn="
+							+ SimpleRestClient.sn_token + "&timestamp="
+							+ timestamp);
+					String params = "device_token="
+							+ SimpleRestClient.device_token + "&access_token="
+							+ SimpleRestClient.access_token + "&timestamp="
+							+ timestamp + "&sign=" + rsaResult;
+					mSimpleRestClient.doSendRequest(SimpleRestClient.root_url
+							+ "/accounts/combine/", "post", params,
+							new HttpPostRequestInterface() {
+
+								@Override
+								public void onPrepare() {
+								}
+
+								@Override
+								public void onSuccess(String info) {
+									dismiss();
+								}
+
+								@Override
+								public void onFailed(String error) {
+									dismiss();
+								}
+
+							});
+				}
+			});
+			cancel_btButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dismiss();
+				}
+			});
+			warnmsg_view.setText(warningmessage);
+			resizeWindow();
+		}
+
+		public boolean isIscancelshow() {
+			return iscancelshow;
+		}
+
+		public void setIscancelshow(boolean iscancelshow) {
+			this.iscancelshow = iscancelshow;
+		}
+
+		private void resizeWindow() {
+			Window dialogWindow = getWindow();
+			WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+			lp.width = ((int) (width * 0.55));
+			lp.height = ((int) (height * 0.39));
+			lp.x = ((int) (width * 0.335));
+			lp.y = ((int) (height * 0.39));
+			lp.gravity = Gravity.LEFT | Gravity.TOP;
+		}
+
+		@Override
+		public boolean onKeyDown(int keyCode, KeyEvent event) {
+			switch (keyCode) {
+			case KeyEvent.KEYCODE_BACK:
+				dismiss();
+				return true;
+			}
+			return super.onKeyDown(keyCode, event);
+		}
+	}
+    private void getHistoryByNet() {
+		mSimpleRestClient.doSendRequest("/api/histories/", "get", "",
+				new HttpPostRequestInterface() {
+
+					@Override
+					public void onSuccess(String info) {
+						// TODO Auto-generated method stub
+						// Log.i(tag, msg);
+
+						// 解析json
+						mHistoriesByNet = mSimpleRestClient.getItems(info);
+						if (mHistoriesByNet != null) {
+							for (Item i : mHistoriesByNet) {
+								addHistory(i);
+							}
+						}
+
+					}
+
+					@Override
+					public void onPrepare() {
+						// TODO Auto-generated method stub
+					}
+
+					@Override
+					public void onFailed(String error) {
+						// TODO Auto-generated method stub
+						// Log.i(tag, msg);
+					}
+				});
+	}
+    private Item[] FavoriteList;
+	private void GetFavoriteByNet() {
+		mSimpleRestClient.doSendRequest("/api/bookmarks/", "get", "",
+				new HttpPostRequestInterface() {
+
+					@Override
+					public void onSuccess(String info) {
+						// TODO Auto-generated method stub
+						FavoriteList = mSimpleRestClient.getItems(info);
+						if (FavoriteList != null) {
+							// 添加记录到本地
+							for (Item i : FavoriteList) {
+								addFavorite(i);
+							}
+						}
+					}
+
+					@Override
+					public void onPrepare() {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onFailed(String error) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+	}
+	private void addHistory(Item item) {
+		History history = new History();
+		history.title = item.title;
+		history.adlet_url = item.adlet_url;
+		history.content_model = item.content_model;
+		history.is_complex = item.is_complex;
+		history.last_position = item.offset;
+		history.last_quality = item.quality;
+        if("subitem".equals(item.model_name)){
+            history.sub_url = item.url;
+            history.url = SimpleRestClient.root_url + "/api/item/" + item.item_pk + "/";
+        }
+        else{
+            history.url = item.url;
+
+        }
+		history.is_continue = true;
+		if (SimpleRestClient.isLogin())
+			DaisyUtils.getHistoryManager(getContext()).addHistory(history,
+					"yes");
+		else
+			DaisyUtils.getHistoryManager(getContext())
+					.addHistory(history, "no");
+
+	}
+	private boolean isFavorite(Item mItem) {
+		if (mItem != null) {
+			String url = mItem.item_url;
+			if (url == null && mItem.pk != 0) {
+				url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk
+						+ "/";
+			}
+			Favorite favorite = null;
+			favorite = DaisyUtils.getFavoriteManager(getContext())
+					.getFavoriteByUrl(url, "yes");
+			if (favorite != null) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+	
+	private void addFavorite(Item mItem) {
+		if (isFavorite(mItem)) {
+			String url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk
+					+ "/";
+			// DaisyUtils.getFavoriteManager(getContext())
+			// .deleteFavoriteByUrl(url,"yes");
+		} else {
+			String url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk
+					+ "/";
+			Favorite favorite = new Favorite();
+			favorite.title = mItem.title;
+			favorite.adlet_url = mItem.adlet_url;
+			favorite.content_model = mItem.content_model;
+			favorite.url = url;
+			favorite.quality = mItem.quality;
+			favorite.is_complex = mItem.is_complex;
+			favorite.isnet = "yes";
+			DaisyUtils.getFavoriteManager(getContext()).addFavorite(favorite,
+					favorite.isnet);
+		}
+	}
 }
