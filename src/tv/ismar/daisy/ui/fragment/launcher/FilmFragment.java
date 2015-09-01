@@ -173,11 +173,6 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
     public void onResume() {
         super.onResume();
         mHelper.onStart();
-//        if(focusView!=null){
-//
-//            focusView.setDrawBorder(true);
-//            focusView.invalidate();
-//        }
     }
 
     @Override
