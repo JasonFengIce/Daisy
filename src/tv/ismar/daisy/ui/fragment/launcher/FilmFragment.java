@@ -82,7 +82,8 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
     @Override
     public void onConnected(PlaybackService service) {
         mService = service;
-        mHandler.sendEmptyMessage(START_PLAYBACK);
+        fetchHomePage(channelEntity.getHomepage_url());
+//        mHandler.sendEmptyMessage(START_PLAYBACK);
     }
 
     @Override
@@ -111,7 +112,6 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
         switch (event.type) {
             case MediaPlayer.Event.EndReached:
                 stopPlayback();
-                mHelper.onStop();
                 mHandler.sendEmptyMessage(CAROUSEL_NEXT);
                 break;
         }
@@ -168,7 +168,8 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
     @Override
     public void onResume() {
         super.onResume();
-        fetchHomePage(channelEntity.getHomepage_url());
+        mHelper.onStart();
+
     }
 
     @Override
@@ -405,7 +406,6 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
 
         if (mService != null && mService.isVideoPlaying()) {
             stopPlayback();
-            mHelper.onStop();
         }
 
         String url = mCarousels.get(mCurrentCarouselIndex).getVideo_image();
@@ -447,7 +447,7 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
         } else {
             film_linked_title.setVisibility(View.GONE);
         }
-        mHelper.onStart();
+        mHandler.sendEmptyMessage(START_PLAYBACK);
     }
 
 
@@ -501,7 +501,6 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
             } else {
                 if (hasFocus) {
                     stopPlayback();
-                    mHelper.onStop();
                     int position = (Integer) v.getTag();
                     mCarouselRepeatType = CarouselRepeatType.Once;
                     mCurrentCarouselIndex = position;

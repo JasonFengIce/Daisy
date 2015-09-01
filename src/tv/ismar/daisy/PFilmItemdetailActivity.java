@@ -375,6 +375,9 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 mCollectBtn = mMiddleBtn;
             }
         }
+
+        mLeftBtn.setFocusable(true);
+        mLeftBtn.requestFocus();
     }
 
     private void buyVideo() {

@@ -80,7 +80,8 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
     @Override
     public void onConnected(PlaybackService service) {
         mService = service;
-        mHandler.sendEmptyMessage(START_PLAYBACK);
+//        mHandler.sendEmptyMessage(START_PLAYBACK);
+        fetchHomePage();
     }
 
     @Override
@@ -109,7 +110,7 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
         switch (event.type) {
             case MediaPlayer.Event.EndReached:
                 stopPlayback();
-                mHelper.onStop();
+//                mHelper.onStop();
                 mHandler.sendEmptyMessage(CAROUSEL_NEXT);
                 break;
         }
@@ -170,7 +171,7 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
     @Override
     public void onResume() {
         super.onResume();
-        fetchHomePage();
+        mHelper.onStart();
     }
 
 
@@ -192,8 +193,6 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
     @Override
     public void onStop() {
         super.onStop();
-
-
     }
 
     public void fetchHomePage() {
@@ -332,7 +331,8 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
         hashMap.put(ItemDetailClickListener.TITLE, mCarousels.get(mCurrentCarouselIndex).getTitle());
         mSurfaceView.setTag(hashMap);
 
-        mHelper.onStart();
+//        mHelper.onStart();
+        mHandler.sendEmptyMessage(START_PLAYBACK);
 
 
     }
@@ -394,7 +394,7 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
             } else {
                 if (hasFocus) {
                     stopPlayback();
-                    mHelper.onStop();
+//                    mHelper.onStop();
                     int position = (Integer) v.getTag();
                     mCarouselRepeatType = CarouselRepeatType.Once;
                     mCurrentCarouselIndex = position;

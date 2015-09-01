@@ -75,7 +75,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private Item[] mHistoriesByNet;
 
     private String mAccessToken;
-    private String mNickName="";
+    private String mNickName;
 
     private SharedPreferences.OnSharedPreferenceChangeListener changeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
@@ -242,13 +242,12 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onLoginSuccess(String result) {
-        callWGQueryQQUserInfo();
         AuthTokenEntity authTokenEntity = new Gson().fromJson(result, AuthTokenEntity.class);
         Log.i("pangziinfo", "authTokenEntity.getAuth_token()==" + authTokenEntity.getAuth_token());
         mAccessToken = authTokenEntity.getAuth_token();
-        savetokenToLocal(mAccessToken);
+
         indicatorView.get(2).setBackgroundResource(R.drawable.button_disable);
-        showLoginSuccessPopup();
+        callWGQueryQQUserInfo();
     }
 
     @Override
@@ -258,8 +257,10 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void oncallWGQueryQQUserInfo(String nickName) {
-       saveaccountToLocal(mNickName);
-
+        mNickName = nickName;
+        saveToLocal(mAccessToken, mNickName);
+        indicatorView.get(2).setBackgroundResource(R.drawable.button_disable);
+        showLoginSuccessPopup();
     }
 
 
@@ -367,20 +368,15 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     }
 
 
-    private void savetokenToLocal(String authToken) {
+    private void saveToLocal(String authToken, String phoneNumber) {
         SimpleRestClient.access_token = authToken;
-
+        SimpleRestClient.mobile_number = phoneNumber;
 
         DaisyUtils.getVodApplication(mContext).getEditor().putString(VodApplication.AUTH_TOKEN, authToken);
+        DaisyUtils.getVodApplication(mContext).getEditor().putString(VodApplication.MOBILE_NUMBER, phoneNumber);
         DaisyUtils.getVodApplication(mContext).save();
         fetchFavorite();
         getHistoryByNet();
-    }
-
-    private void saveaccountToLocal(String phoneNumber) {
-        SimpleRestClient.mobile_number = phoneNumber;
-        DaisyUtils.getVodApplication(mContext).getEditor().putString(VodApplication.MOBILE_NUMBER, phoneNumber);
-        DaisyUtils.getVodApplication(mContext).save();
     }
 
     private void addHistory(Item item) {

@@ -2,6 +2,7 @@ package tv.ismar.daisy.ui.fragment.usercenter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -294,8 +295,8 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.association_button:
-                if (TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
-                    showAssociationPopupWindow();
+                if (!SimpleRestClient.isLogin()) {
+                    ((BaseActivity)getActivity()).loginQQorWX();
                 } else {
                     loginFragment.showAccountsCombinePopup();
                 }
@@ -348,5 +349,6 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
         playAuthListView.setFocusable(true);
         getChildFragmentManager().beginTransaction().hide(loginFragment).commit();
     }
+
 
 }

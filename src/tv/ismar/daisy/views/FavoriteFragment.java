@@ -313,24 +313,25 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			item = params[0];
 			mCurrentGetItemTask.put(item.url, this);
 			Item i;
-			try {
-				i = mRestClient.getItem(item.url);
-			} catch (ItemOfflineException e) {
-				e.printStackTrace();
-				return ITEM_OFFLINE;
-			} catch (JsonSyntaxException e) {
-				e.printStackTrace();
-				return NETWORK_EXCEPTION;
-			} catch (NetworkException e) {
-				e.printStackTrace();
-				return NETWORK_EXCEPTION;
-			}
-			if(i==null) {
-				return NETWORK_EXCEPTION;
-			} else {
-				return ITEM_SUCCESS_GET;
-			}
-			
+//			try {
+//			//	i = mRestClient.getItem(item.url);
+//                return ITEM_SUCCESS_GET;
+//			} catch (ItemOfflineException e) {
+//				e.printStackTrace();
+//				return ITEM_OFFLINE;
+//			} catch (JsonSyntaxException e) {
+//				e.printStackTrace();
+//				return NETWORK_EXCEPTION;
+//			} catch (NetworkException e) {
+//				e.printStackTrace();
+//				return NETWORK_EXCEPTION;
+//			}
+//			if(i==null) {
+//				return NETWORK_EXCEPTION;
+//			} else {
+//				return ITEM_SUCCESS_GET;
+//			}
+            return ITEM_SUCCESS_GET;
 		}
 
 		@Override
@@ -363,7 +364,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 //					}
 //					intent.putExtra("url", item.url);
 //					startActivity(intent);
-                    DaisyUtils.gotoSpecialPage(getActivity(),item.content_model,item.url,"favorite");
+                    DaisyUtils.gotoSpecialPage(getActivity(),item.content_model,SimpleRestClient.sRoot_url+"/api/item/"+id+"/","favorite");
 				} else {
 					InitPlayerTool tool = new InitPlayerTool(getActivity());
                     tool.fromPage = "favorite";
@@ -381,7 +382,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 							mLoadingDialog.dismiss();
 						}
 					});
-					tool.initClipInfo(item.url, InitPlayerTool.FLAG_URL);
+					tool.initClipInfo(SimpleRestClient.sRoot_url+"/api/item/"+id+"/", InitPlayerTool.FLAG_URL);
 				}
 			}
 			

@@ -1156,6 +1156,8 @@ private boolean isPause = false;
 				mCollectBtn = mMiddleBtn;
 			}
 		}
+        mLeftBtn.setFocusable(true);
+        mLeftBtn.requestFocus();
 	}
 
 	private PaymentDialog.OrderResultListener ordercheckListener = new PaymentDialog.OrderResultListener() {

@@ -205,7 +205,7 @@ public class BaseActivity extends FragmentActivity {
                     && !TextUtils.isEmpty(openId)) {
                 mTencent.setAccessToken(token, expires);
                 mTencent.setOpenId(openId);
-                letUserLogin(token,paytoken,openId);
+                letUserLogin(token, paytoken, openId);
             }
         } catch(Exception e) {
         }
@@ -265,6 +265,16 @@ public class BaseActivity extends FragmentActivity {
                 return;
             }
             Log.i("zhangjiqiangfuck","info=="+jsonResponse.toString());
+
+            try {
+                int ret = jsonResponse.getInt("ret");
+                if (ret == 100030) {
+                    getWGQueryQQUserInfo("");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
             if(jsonResponse.has("nickname")){
                 try {
                     getWGQueryQQUserInfo(jsonResponse.getString("nickname"));
