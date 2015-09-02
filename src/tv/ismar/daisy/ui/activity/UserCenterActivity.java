@@ -247,7 +247,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         mAccessToken = authTokenEntity.getAuth_token();
 
         indicatorView.get(2).setBackgroundResource(R.drawable.button_disable);
-        callWGQueryQQUserInfo();
+       // callWGQueryQQUserInfo();
     }
 
     @Override
@@ -261,10 +261,14 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         saveToLocal(mAccessToken, mNickName);
         indicatorView.get(2).setBackgroundResource(R.drawable.button_disable);
         showLoginSuccessPopup();
+        if(listener!=null){
+            listener.onLoginSuccess();
+            listener = null;
+        }
     }
 
 
-    private void accountsCombine() {
+    public void accountsCombine() {
         String api = SimpleRestClient.root_url + "/accounts/combine/";
         long timestamp = System.currentTimeMillis();
         Activator activator = Activator.getInstance(mContext);
@@ -495,5 +499,14 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         return false;
     }
 
+    public interface OnLoginByChangeCallback {
+        void onLoginSuccess();
+    }
 
+    private OnLoginByChangeCallback listener;
+
+    public void setAccountListener(OnLoginByChangeCallback l){
+
+        listener = l;
+    }
 }

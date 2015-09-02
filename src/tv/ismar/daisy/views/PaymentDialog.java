@@ -374,7 +374,7 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
 			case LOGIN_SUCESS: {
 				welocome_tip.setVisibility(View.VISIBLE);
 				top_login_panel.setVisibility(View.GONE);
-                ((BaseActivity)mycontext).callWGQueryQQUserInfo();
+                //((BaseActivity)mycontext).callWGQueryQQUserInfo();
 
 			}
 			}
@@ -759,14 +759,7 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
     public void onLoginSuccess(String result) {
     	GetFavoriteByNet();
 		getHistoryByNet();
-		AccountAboutDialog dialog = new AccountAboutDialog(
-				getContext(),
-				R.style.UserinfoDialog);
-		dialog.setIscancelshow(false);
-		dialog.setWarningmessage("恭喜"
-				+ SimpleRestClient.mobile_number
-				+ "，您已成功注册/登陆视云账户!");
-		dialog.show();
+
 		urlHandler.sendEmptyMessage(LOGIN_SUCESS);
 		getBalanceByToken();
     }
@@ -791,6 +784,17 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
         DaisyUtils.getVodApplication(getContext())
 		.save();
         SimpleRestClient.mobile_number = nickName;
+
+
+
+        AccountAboutDialog dialog = new AccountAboutDialog(
+                getContext(),
+                R.style.UserinfoDialog);
+        dialog.setIscancelshow(false);
+        dialog.setWarningmessage("恭喜"
+                + SimpleRestClient.mobile_number
+                + "，您已成功注册/登陆视云账户!");
+        dialog.show();
     }
 
     public interface OrderResultListener {

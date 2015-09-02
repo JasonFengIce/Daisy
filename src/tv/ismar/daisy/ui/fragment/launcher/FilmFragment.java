@@ -169,7 +169,11 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
     public void onResume() {
         super.onResume();
         mHelper.onStart();
-
+//        if(focusView!=null){
+//
+//            focusView.setDrawBorder(true);
+//            focusView.invalidate();
+//        }
     }
 
     @Override
@@ -218,7 +222,7 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
         });
 
     }
-
+    private HomeItemContainer focusView;
     private void initPosters(ArrayList<HomePagerEntity.Poster> posters) {
         guideRecommmendList.removeAllViews();
         film_lefttop_image.setUrl(posters.get(0).getCustom_image());
@@ -258,6 +262,7 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
                             ((HomeItemContainer) v.getParent())
                                     .setDrawBorder(true);
                             ((HomeItemContainer) v.getParent()).invalidate();
+                            focusView = ((HomeItemContainer) v.getParent());
                         } else {
                             ((HomeItemContainer) v.getParent())
                                     .setDrawBorder(false);
@@ -273,6 +278,9 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
                 frameLayout.setTag(posters.get(i));
                 frameLayout.setLayoutParams(params);
                 guideRecommmendList.addView(frameLayout);
+
+
+
             } else {
                 params.width = 206;
                 params.height = 277;

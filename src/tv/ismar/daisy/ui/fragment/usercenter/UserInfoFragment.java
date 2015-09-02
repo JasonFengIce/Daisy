@@ -26,6 +26,7 @@ import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.usercenter.AccountBalanceEntity;
 import tv.ismar.daisy.data.usercenter.AccountPlayAuthEntity;
 import tv.ismar.daisy.player.InitPlayerTool;
+import tv.ismar.daisy.ui.activity.UserCenterActivity;
 import tv.ismar.daisy.ui.adapter.AccoutPlayAuthAdapter;
 import tv.ismar.daisy.utils.Util;
 
@@ -36,7 +37,7 @@ import java.util.HashMap;
 /**
  * Created by huaijie on 7/3/15.
  */
-public class UserInfoFragment extends Fragment implements View.OnClickListener {
+public class UserInfoFragment extends Fragment implements View.OnClickListener{
     private static final String TAG = "UserInfoFragment";
 
     private Context mContext;
@@ -145,6 +146,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
         super.onResume();
 
         if (!TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
+            Log.i("qihuanzhanghu","phoneNumberLayout VISIBLE");
             phoneNumberLayout.setVisibility(View.VISIBLE);
         }
 
@@ -304,6 +306,18 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.change:
                // showAssociationPopupWindow();
+                playAuthListView.setFocusable(false);
+                associationText.setFocusable(false);
+                ((UserCenterActivity)getActivity()).setAccountListener(new UserCenterActivity.OnLoginByChangeCallback(){
+
+                    @Override
+                    public void onLoginSuccess() {
+                        Log.i("qihuanzhanghu","onLoginSuccess");
+                        playAuthListView.setFocusable(true);
+                        associationText.setFocusable(true);
+                        onResume();
+                    }
+                });
                 ((BaseActivity)getActivity()).changaccount();
                 break;
         }
@@ -311,7 +325,9 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
 
     private void initViewByLoginStatus() {
         deviceNumber.setText(SimpleRestClient.sn_token);
+        Log.i("qihuanzhanghu","mobile_number=="+SimpleRestClient.mobile_number);
         if (!DaisyUtils.getVodApplication(mContext).getPreferences().getString(VodApplication.AUTH_TOKEN, "").equals("")) {
+            Log.i("qihuanzhanghu","mobile_number mobile_number");
             phoneNumber.setText(SimpleRestClient.mobile_number);
         }
     }
@@ -349,6 +365,11 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
         playAuthListView.setFocusable(true);
         getChildFragmentManager().beginTransaction().hide(loginFragment).commit();
     }
+
+
+
+
+
 
 
 }

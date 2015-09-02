@@ -26,6 +26,7 @@ import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import org.json.JSONException;
 
@@ -170,10 +171,16 @@ public class BaseActivity extends FragmentActivity {
     }
 
     public void loginQQorWX(){
+        IntentFilter nFilter=new IntentFilter("com.tencent.gamestation.qrlogin");
+        registerReceiver(mUserInfoReceiver, nFilter);
         mTencent.login(BaseActivity.this, "all", loginListener);
     }
     public void changaccount(){
+
         mTencent.logout(BaseActivity.this);
+
+        IntentFilter nFilter=new IntentFilter("com.tencent.gamestation.qrlogin");
+        registerReceiver(mUserInfoReceiver, nFilter);
         mTencent.login(BaseActivity.this, "all", loginListener);
 
     }
@@ -191,13 +198,15 @@ public class BaseActivity extends FragmentActivity {
     }
 
 
-
+    private String token="";
+    private String openId="";
+    private String paytoken="";
     public  void initOpenidAndToken(JSONObject jsonObject) {
         try {
-            String token = jsonObject.getString(Constants.PARAM_ACCESS_TOKEN);
+             token = jsonObject.getString(Constants.PARAM_ACCESS_TOKEN);
             String expires = jsonObject.getString(Constants.PARAM_EXPIRES_IN);
-            String openId = jsonObject.getString(Constants.PARAM_OPEN_ID);
-            String paytoken="";
+             openId = jsonObject.getString(Constants.PARAM_OPEN_ID);
+
             if(jsonObject.has("pay_token")){
                 paytoken = jsonObject.getString("pay_token");
             }
@@ -236,6 +245,7 @@ public class BaseActivity extends FragmentActivity {
         @Override
         protected void doComplete(Object values) {
             Log.i("zhangjiqiangfuck","getUserInfoListener");
+
             if(null == values){
                 //获取失败
                 return;
@@ -269,7 +279,9 @@ public class BaseActivity extends FragmentActivity {
             try {
                 int ret = jsonResponse.getInt("ret");
                 if (ret == 100030) {
-                    getWGQueryQQUserInfo("");
+                    UUID uuid = UUID.randomUUID();
+                    String tmp = uuid.toString().substring(0,7);
+                    getWGQueryQQUserInfo("qq用户"+tmp.replaceAll("-", ""));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -308,4 +320,41 @@ public class BaseActivity extends FragmentActivity {
     }
 
 
+    public BroadcastReceiver mUserInfoReceiver=new BroadcastReceiver()
+    {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // TODO Auto-generated method stub
+            Log.e("XXXXXXXXX", intent.getAction());
+            if("com.tencent.gamestation.qrlogin".equalsIgnoreCase(intent.getAction()))
+            {
+                String nNick=intent.getStringExtra("nick");
+                String nIconUrl=intent.getStringExtra("imgurl");
+                Log.e("XXXXXXXXXXXXXXXXXXXXXX", "user info nick="+nNick+" nIconUrl="+nIconUrl);
+                getWGQueryQQUserInfo(nNick);
+                unregisterReceiver(mUserInfoReceiver);
+            }
+        }
+
+    };
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+      //  unregisterReceiver(mUserInfoReceiver);
+    }
 }
