@@ -37,6 +37,7 @@ import tv.ismar.daisy.core.vlc.PlaybackServiceActivity;
 import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
+import tv.ismar.daisy.ui.listener.ItemDetailClickListener;
 import tv.ismar.daisy.ui.widget.HomeItemContainer;
 import tv.ismar.daisy.utils.HardwareUtils;
 import tv.ismar.daisy.views.LabelImageView;
@@ -157,7 +158,8 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
         film_post_layout = (HomeItemContainer) mView.findViewById(R.id.film_post_layout);
         linkedVideoImage = (ImageView) mView.findViewById(R.id.film_linked_image);
         film_linked_title = (TextView) mView.findViewById(R.id.film_linked_title);
-
+        film_post_layout.setOnClickListener(ItemClickListener);
+        film_post_layout.requestFocus();
         return mView;
     }
 
@@ -378,9 +380,8 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
                 }
                 break;
         }
-
+        film_post_layout.setTag(R.drawable.launcher_selector, mCarousels.get(mCurrentCarouselIndex));
         for (int i = 0; i < allItem.size(); i++) {
-            film_post_layout.setTag(R.drawable.launcher_selector, mCarousels.get(i));
             LabelImageView imageView = allItem.get(i);
             if (mCurrentCarouselIndex != i) {
                 imageView.setCustomfocus(false);
