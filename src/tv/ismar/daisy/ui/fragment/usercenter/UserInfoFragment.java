@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import cn.ismartv.activator.Activator;
 import com.google.gson.Gson;
@@ -25,6 +26,7 @@ import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.usercenter.AccountBalanceEntity;
 import tv.ismar.daisy.data.usercenter.AccountPlayAuthEntity;
+import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.ui.activity.UserCenterActivity;
 import tv.ismar.daisy.ui.adapter.AccoutPlayAuthAdapter;
@@ -136,10 +138,28 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener{
 
         changeButton.setNextFocusRightId(associationText.getId());
         associationText.setNextFocusLeftId(changeButton.getId());
-
+        mSimpleRestClient = new SimpleRestClient();
         return fragmentView;
     }
+   public void changge(){
 
+
+       playAuthListView.setFocusable(false);
+       associationText.setFocusable(false);
+       if (!TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
+           Log.i("qihuanzhanghu","phoneNumberLayout VISIBLE");
+           phoneNumberLayout.setVisibility(View.VISIBLE);
+       }
+
+       if (isCombined) {
+           associationText.setVisibility(View.GONE);
+           associationPrompt.setVisibility(View.GONE);
+       }
+
+       fetchAccountsBalance();
+       fetchAccountsPlayauths();
+       initViewByLoginStatus();
+   }
 
     @Override
     public void onResume() {
@@ -370,6 +390,8 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener{
 
 
 
-
-
+    private PopupWindow loginPopup;
+    private PopupWindow combineAccountPop;
+    private SimpleRestClient mSimpleRestClient;
+    private Item[] mHistoriesByNet;
 }

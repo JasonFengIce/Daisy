@@ -260,11 +260,16 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         mNickName = nickName;
         saveToLocal(mAccessToken, mNickName);
         indicatorView.get(2).setBackgroundResource(R.drawable.button_disable);
-        showLoginSuccessPopup();
+
+
         if(listener!=null){
-            listener.onLoginSuccess();
+            // listener.onLoginSuccess();
+           // userInfoFragment.changge();
+            userInfoFragment = new UserInfoFragment();
             listener = null;
         }
+
+        showLoginSuccessPopup();
     }
 
 
