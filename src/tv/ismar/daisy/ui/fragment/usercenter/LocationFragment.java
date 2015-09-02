@@ -13,6 +13,7 @@ import android.widget.*;
 import com.activeandroid.query.Select;
 import com.google.gson.Gson;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.data.table.location.CityTable;
@@ -61,6 +62,7 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
     private TextView tomorrowWeatherInfo;
     private TextView tomorrowWeatherTemperature;
 
+    private float rate;
 
     private static HashMap<String, Integer> weatherIconMap;
 
@@ -92,6 +94,8 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        rate = DaisyUtils.getVodApplication(getActivity()).getRate(getActivity());
+
         AccountSharedPrefs.getInstance(mContext).getSharedPreferences().registerOnSharedPreferenceChangeListener(changeListener);
     }
 
@@ -196,11 +200,11 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
                 TextView textView = (TextView) v;
                 if (hasFocus) {
                     textView.setTextColor(mContext.getResources().getColor(R.color.location_text_focus));
-                    textView.setTextSize(mContext.getResources().getDimension(R.dimen.h1_text_size));
+                    textView.setTextSize(mContext.getResources().getDimension(R.dimen.h1_text_size) / rate);
                 } else {
                     if (selectedAreaTextView != v) {
                         textView.setTextColor(mContext.getResources().getColor(R.color.white));
-                        textView.setTextSize(mContext.getResources().getDimension(R.dimen.h2_text_size));
+                        textView.setTextSize(mContext.getResources().getDimension(R.dimen.h2_text_size) / rate);
                     }
 
                 }
@@ -267,11 +271,11 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
         TextView textView = (TextView) v;
         if (hasFocus) {
             textView.setTextColor(mContext.getResources().getColor(R.color.location_text_focus));
-            textView.setTextSize(mContext.getResources().getDimension(R.dimen.h1_text_size));
+            textView.setTextSize(mContext.getResources().getDimension(R.dimen.h1_text_size) / rate);
 
         } else {
             textView.setTextColor(mContext.getResources().getColor(R.color.white));
-            textView.setTextSize(mContext.getResources().getDimension(R.dimen.h2_text_size));
+            textView.setTextSize(mContext.getResources().getDimension(R.dimen.h2_text_size) / rate);
         }
     }
 
