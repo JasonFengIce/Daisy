@@ -81,7 +81,11 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
     public void onConnected(PlaybackService service) {
         mService = service;
 //        mHandler.sendEmptyMessage(START_PLAYBACK);
+        if(mCarousels == null){
         fetchHomePage();
+        }else{
+        	playCarousel();
+        }
     }
 
     @Override
@@ -214,6 +218,7 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
                 if (!posters.isEmpty()) {
                     initPosters(posters);
                 }
+                mSurfaceView.requestFocus();
             }
 
             @Override
