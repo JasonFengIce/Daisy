@@ -82,7 +82,11 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
     @Override
     public void onConnected(PlaybackService service) {
         mService = service;
+        if(mCarousels == null){
         fetchHomePage(channelEntity.getHomepage_url());
+        }else{
+        	playCarousel();
+        }
 //        mHandler.sendEmptyMessage(START_PLAYBACK);
     }
 
@@ -169,11 +173,6 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
     public void onResume() {
         super.onResume();
         mHelper.onStart();
-//        if(focusView!=null){
-//
-//            focusView.setDrawBorder(true);
-//            focusView.invalidate();
-//        }
     }
 
     @Override

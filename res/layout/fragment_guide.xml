@@ -21,10 +21,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/guide_padding"
-                android:clickable="false"
+                android:clickable="true"
                 android:focusable="true" >
             <SurfaceView
                     android:id="@+id/linked_video"
+                    android:background="@drawable/launcher_selector"
                     android:layout_width="@dimen/guide_video_width"
                     android:layout_height="@dimen/guide_video_height"
                     android:clickable="true"
