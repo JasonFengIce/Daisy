@@ -1378,9 +1378,11 @@ public class PlayerActivity extends VodMenuAction {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean ret = false;
-		if (keyCode == KeyEvent.KEYCODE_BACK && isadvideoplaying) {
-			mVideoView.stopPlayback();
-			finish();
+		if(isadvideoplaying){
+			if (keyCode == KeyEvent.KEYCODE_BACK) {
+				mVideoView.stopPlayback();
+				finish();
+			}
 			return true;
 		}
 		if (!isVodMenuVisible() && mVideoView != null) {
