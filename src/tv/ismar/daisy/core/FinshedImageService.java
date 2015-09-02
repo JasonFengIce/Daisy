@@ -1,6 +1,7 @@
 package tv.ismar.daisy.core;
 
 import android.content.Context;
+import android.util.Log;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.models.Item;
 
@@ -15,7 +16,7 @@ public class FinshedImageService {
 //		else
 //			object[0] = ImageUtils.getBitmapFromInputStream(NetworkUtils.getInputStream(item.adlet_url), (int)(282), (int)(158));
 		
-		object[0] = ImageUtils.getBitmapFromInputStream(NetworkUtils.getInputStream(item.adlet_url), 
+		object[0] = ImageUtils.getBitmapFromInputStream(NetworkUtils.getInputStream(item.adlet_url),
 				context.getResources().getDimensionPixelSize(R.dimen.play_finished_image_vodie_backgroud_W), 
 				context.getResources().getDimensionPixelSize(R.dimen.play_finished_image_vodie_backgroud_H));
 //		object[0] = (BitmapFactory.decodeStream(HttpUtil.getHttpConnectionByGet(item.adlet_url).getInputStream()));

@@ -103,14 +103,20 @@ public class LaunchHeaderLayout extends FrameLayout
 
 
     private void createGuideIndicator() {
+        int i=0;
         for (int res : INDICATOR_RES_LIST) {
+
             View view = LayoutInflater.from(context).inflate(R.layout.item_weather_indicator, null);
             TextView textView = (TextView) view.findViewById(R.id.weather_indicator);
             textView.setOnClickListener(this);
             textView.setOnFocusChangeListener(this);
             textView.setText(res);
             textView.setId(res);
+            if(i==INDICATOR_RES_LIST.length-1){
+                textView.setNextFocusRightId(res);
+            }
             guideLayout.addView(view);
+            i++;
         }
     }
 

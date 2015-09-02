@@ -245,6 +245,7 @@
     <dimen name="vod_player_qualitytext_margintop">8.00dip</dimen>
 
     <!-- play_finished -->
+    <dimen name="play_finished_gridview_Padding">5.33dip</dimen>
     <dimen name="play_finished_leftlayout_PL">40.00dip</dimen>
     <dimen name="play_finished_leftlayout_W">502.00dip</dimen>
     <dimen name="play_finished_leftlayout_PR">66.67dip</dimen>

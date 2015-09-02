@@ -159,7 +159,8 @@
             sakura:selectorTopPadding="@dimen/ZGridView_played_selectorTopPadding"
             sakura:selectorRightPadding="@dimen/ZGridView_played_selectorRightPadding"
             sakura:selectorBottomPadding="@dimen/ZGridView_played_selectorBottomPadding"
-            >
+            android:paddingLeft="@dimen/play_finished_gridview_Padding"
+            android:paddingTop="@dimen/play_finished_gridview_Padding">
         </org.sakuratya.horizontal.ui.ZGridView>
     </LinearLayout>
     <!-- 右边整块 -->

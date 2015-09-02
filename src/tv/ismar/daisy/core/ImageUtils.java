@@ -11,9 +11,15 @@ public class ImageUtils {
 			BitmapFactory.Options options = new BitmapFactory.Options();
 			options.outWidth = width;
 			options.outHeight = height;
+            options.inDither = true;
+            options.inScaled = true;
+            options.inTargetDensity = 160;
+            options.inDensity = 160;
 			return BitmapFactory.decodeStream(in, null, options);
 		} else {
 			return null;
 		}
 	}
+
+
 }

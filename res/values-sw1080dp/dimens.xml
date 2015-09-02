@@ -245,6 +245,7 @@
     <dimen name="vod_player_qualitytext_margintop">12dip</dimen>
 
     <!-- play_finished -->
+    <dimen name="play_finished_gridview_Padding">8dip</dimen>
     <dimen name="play_finished_leftlayout_PL">60dip</dimen>
     <dimen name="play_finished_leftlayout_W">753dip</dimen>
     <dimen name="play_finished_leftlayout_PR">100dip</dimen>
@@ -271,7 +272,7 @@
     <dimen name="play_finished_rightlayout_W">1170dip</dimen>
     <dimen name="play_finished_tv_releted_margintop">100dip</dimen>
     <dimen name="play_finished_tv_releted_textsize">40dip</dimen>
-    <dimen name="play_finished_gridview_related_margin">30dip</dimen>
+    <dimen name="play_finished_gridview_related_margin">22dip</dimen>
     <dimen name="play_finished_gridview_related_horizontalSpace">53dip</dimen>
     <dimen name="play_finished_gridview_related_verticalSpace">15dip</dimen>
 
@@ -280,7 +281,7 @@
     <dimen name="playfinish_gridview_item_margintop">5dip</dimen>
     <dimen name="playfinish_gridview_item_marginright">15dip</dimen>
     <dimen name="playfinish_gridview_item_marginbottom">20dip</dimen>
-    <dimen name="playfinish_gridview_item_linearimage_W">280dip</dimen>
+    <dimen name="playfinish_gridview_item_linearimage_W">284dip</dimen>
     <dimen name="playfinish_gridview_item_linearimage_H">160dip</dimen>
     <dimen name="playfinish_gridview_item_itemImage_PL">1dip</dimen>
     <dimen name="playfinish_gridview_item_itemText_marginleft">6dip</dimen>
@@ -451,10 +452,10 @@
     <dimen name="ZGridView_related_selectorTopPadding">3.8dip</dimen>
     <dimen name="ZGridView_related_selectorRightPadding">3.8dip</dimen>
     <dimen name="ZGridView_related_selectorBottomPadding">-75dip</dimen>
-    <dimen name="ZGridView_played_selectorLeftPadding">6dip</dimen>
-    <dimen name="ZGridView_played_selectorTopPadding">16dip</dimen>
-    <dimen name="ZGridView_played_selectorRightPadding">6dip</dimen>
-    <dimen name="ZGridView_played_selectorBottomPadding">-43dip</dimen>
+    <dimen name="ZGridView_played_selectorLeftPadding">23dip</dimen>
+    <dimen name="ZGridView_played_selectorTopPadding">19dip</dimen>
+    <dimen name="ZGridView_played_selectorRightPadding">22dip</dimen>
+    <dimen name="ZGridView_played_selectorBottomPadding">-23dip</dimen>
     <dimen name="ZGridView_search_selectorLeftPadding">7dip</dimen>
     <dimen name="ZGridView_search_selectorTopPadding">21dip</dimen>
     <dimen name="ZGridView_search_selectorRight">21dip</dimen>
@@ -1067,7 +1068,7 @@
     <!-- listportait item -->
     <dimen name="list_item_preview_img_w">254dp</dimen>
     <dimen name="list_item_preview_img_h">355dp</dimen>
-    <dimen name="list_item_preview_img_mt">9dip</dimen>
+    <dimen name="list_item_preview_img_mt">7dip</dimen>
     <dimen name="list_item_title_w">254dp</dimen>
     <dimen name="list_item_title_pt">2dp</dimen>
     <dimen name="list_item_ItemBeanScore_ml">-1dp</dimen>
@@ -1138,7 +1139,7 @@
     <dimen name="filmitem_portrait_relativeLayout2_ml">28dip</dimen>
     <dimen name="filmitem_portrait_detail_title_mt">28dip</dimen>
     <dimen name="filmitem_portrait_detail_title_w">798dip</dimen>
-    <dimen name="filmitem_portrait_detail_title_h">50dip</dimen>
+    <dimen name="filmitem_portrait_detail_title_h">54dip</dimen>
     <dimen name="filmitem_portrait_detail_title_size">48sp</dimen>
     <dimen name="filmitem_portrait_detail_attribute_container_mt">19dip</dimen>
     <dimen name="filmitem_portrait_detail_intro_w">1410dip</dimen>
