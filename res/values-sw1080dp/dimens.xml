@@ -891,8 +891,8 @@
     <dimen name="home_viewPager_height">800dp</dimen>
     <dimen name="home_indicator_height">200dp</dimen>
     <dimen name="home_indicator_margin_bottom">20dp</dimen>
-    <dimen name="home_indicator_icon_width">160dp</dimen>
-    <dimen name="home_indicator_icon_height">160dp</dimen>
+    <dimen name="home_indicator_icon_width">80dp</dimen>
+    <dimen name="home_indicator_icon_height">80dp</dimen>
 
     <!-- fragment_node -->
     <dimen name="layout_margin">10dp</dimen>

@@ -29,8 +29,6 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sakura_h5_text_size"
                 android:textColor="@color/white"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 />
 
         <tv.ismar.sakura.ui.widget.SakuraButton

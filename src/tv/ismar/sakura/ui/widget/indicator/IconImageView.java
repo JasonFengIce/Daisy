@@ -1,7 +1,9 @@
 package tv.ismar.sakura.ui.widget.indicator;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
@@ -16,35 +18,37 @@ public class IconImageView extends ImageView {
 
     public IconImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setScaleY(0.5f);
-        setScaleX(0.5f);
     }
 
 
     public void setSelect(boolean selected) {
-
         if (selected) {
-            AnimationSet animationSet = new AnimationSet(true);
-            ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.5f, 1, 1.5f,
-                    Animation.RELATIVE_TO_SELF, 0.5f,
-                    Animation.RELATIVE_TO_SELF, 0.5f);
-            scaleAnimation.setDuration(200);
-            animationSet.addAnimation(scaleAnimation);
-            animationSet.setFillAfter(true);
-            startAnimation(animationSet);
-
+            scaleToLarge(this);
         } else if (this.selected) {
-            AnimationSet animationSet = new AnimationSet(true);
-            ScaleAnimation scaleAnimation = new ScaleAnimation(1.5f, 1f, 1.5f, 1f,
-                    Animation.RELATIVE_TO_SELF, 0.5f,
-                    Animation.RELATIVE_TO_SELF, 0.5f);
-            scaleAnimation.setDuration(200);
-            animationSet.addAnimation(scaleAnimation);
-            animationSet.setFillAfter(true);
-            startAnimation(animationSet);
+            scaleToNormal(this);
         }
         this.selected = selected;
         invalidate();
+    }
+
+
+    private void scaleToLarge(View view) {
+        ObjectAnimator objectAnimatorX = ObjectAnimator.ofFloat(view, SCALE_X, new float[]{1.0F, 1.5F});
+        objectAnimatorX.setDuration(100L);
+        objectAnimatorX.start();
+        ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(view, SCALE_Y, new float[]{1.0F, 1.5F});
+        objectAnimatorY.setDuration(100L);
+        objectAnimatorY.start();
+    }
+
+
+    private void scaleToNormal(View view) {
+        ObjectAnimator objectAnimatorX = ObjectAnimator.ofFloat(view, SCALE_X, new float[]{1.5F, 1.0F});
+        objectAnimatorX.setDuration(100L);
+        objectAnimatorX.start();
+        ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(view, SCALE_Y, new float[]{1.5F, 1.0F});
+        objectAnimatorY.setDuration(100L);
+        objectAnimatorY.start();
     }
 
 
