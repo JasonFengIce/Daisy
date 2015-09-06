@@ -130,6 +130,8 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         } else {
             getSupportFragmentManager().beginTransaction().add(R.id.user_center_container, storeFragment).commit();
             indicatorView.get(0).setBackgroundResource(R.drawable.usercenter_table_focus);
+            indicatorView.get(0).setFocusable(true);
+            indicatorView.get(0).requestFocus();
         }
     }
 
@@ -245,8 +247,8 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         AuthTokenEntity authTokenEntity = new Gson().fromJson(result, AuthTokenEntity.class);
         Log.i("pangziinfo", "authTokenEntity.getAuth_token()==" + authTokenEntity.getAuth_token());
         mAccessToken = authTokenEntity.getAuth_token();
-
         indicatorView.get(2).setBackgroundResource(R.drawable.button_disable);
+        indicatorView.get(1).setBackgroundResource(R.drawable.usercenter_table_focus);
        // callWGQueryQQUserInfo();
     }
 

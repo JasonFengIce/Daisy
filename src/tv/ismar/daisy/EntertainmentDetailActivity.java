@@ -811,7 +811,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                     .from(EntertainmentDetailActivity.this).inflate(
                             R.layout.realte_entertainment_item, null);
             LinearLayout.LayoutParams layoutParams;
-            layoutParams = new LinearLayout.LayoutParams(336, 240);
+            layoutParams = new LinearLayout.LayoutParams(336, 242);
             if (i != 0)
                 layoutParams.leftMargin = 74;
             relatedHolder.setLayoutParams(layoutParams);

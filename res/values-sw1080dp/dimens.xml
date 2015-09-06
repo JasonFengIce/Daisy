@@ -1211,7 +1211,7 @@
     <dimen name="realte_entertainment_item_related_preview_img_w">336dip</dimen>
     <dimen name="realte_entertainment_item_related_preview_img_h">189dip</dimen>
     <dimen name="realte_entertainment_item_related_preview_img_textsize">24sp</dimen>
-    <dimen name="realte_entertainment_item_related_title_mt">17dip</dimen>
+    <dimen name="realte_entertainment_item_related_title_mt">15dip</dimen>
     <dimen name="realte_entertainment_item_related_title_textsize">30sp</dimen>
     
     <!-- realte_entertainment_item end-->
