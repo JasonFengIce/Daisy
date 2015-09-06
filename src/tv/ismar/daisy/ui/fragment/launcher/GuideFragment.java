@@ -80,16 +80,21 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
     @Override
     public void onConnected(PlaybackService service) {
         mService = service;
+        IVLCVout vlcVout = mService.getVLCVout();
+        vlcVout.setVideoView(mSurfaceView);
+        vlcVout.attachViews();
 //        mHandler.sendEmptyMessage(START_PLAYBACK);
-        if(mCarousels == null){
-        fetchHomePage();
-        }else{
-        	playCarousel();
+        if (mCarousels == null) {
+            fetchHomePage();
+        } else {
+            playCarousel();
         }
     }
 
     @Override
     public void onDisconnected() {
+        IVLCVout vlcVout = mService.getVLCVout();
+        vlcVout.detachViews();
         mService = null;
     }
 
@@ -369,9 +374,7 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
 
     private void startPlayback() {
         Log.d(TAG, "startPlayback is invoke...");
-        IVLCVout vlcVout = mService.getVLCVout();
-        vlcVout.setVideoView(mSurfaceView);
-        vlcVout.attachViews();
+
         mService.addCallback(this);
         switchVideo();
         mService.play();
@@ -379,8 +382,7 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
 
     private void stopPlayback() {
         mService.removeCallback(this);
-        IVLCVout vlcVout = mService.getVLCVout();
-        vlcVout.detachViews();
+
         mService.stop();
     }
 
