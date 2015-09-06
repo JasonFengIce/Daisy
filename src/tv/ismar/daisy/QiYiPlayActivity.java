@@ -479,6 +479,8 @@ public class QiYiPlayActivity extends VodMenuAction {
 
 		@Override
 		public void onBufferEnd() {
+			if(mPlayer == null)
+				return;
 			if (!mPlayer.isPlaying())
 				mPlayer.start();
 			isBuffer = false;
