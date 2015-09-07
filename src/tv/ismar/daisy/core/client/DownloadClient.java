@@ -42,8 +42,6 @@ public class DownloadClient implements Runnable {
     public void run() {
 
 
-
-
         FileOutputStream fileOutputStream = null;
         switch (mStoreType) {
             case Internal:
@@ -107,6 +105,7 @@ public class DownloadClient implements Runnable {
 
         downloadTable.download_state = DownloadState.complete.name();
         downloadTable.local_md5 = HardwareUtils.getMd5ByFile(downloadFile);
+        downloadTable.save();
 
 
         Log.d(TAG, "url is: " + url);

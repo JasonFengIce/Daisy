@@ -48,11 +48,16 @@ public class CacheManager {
             return url;
         } else {
             String serverMD5 = FileUtils.getFileByUrl(url).split("\\.")[0];
-            String localMD5 = HardwareUtils.getMd5ByFile(downloadFile);
+            String localMD5 = downloadTable.local_md5;
             if (serverMD5.equalsIgnoreCase(localMD5)) {
                 return "file://" + downloadTable.download_path;
             } else {
-                DownloadThreadPool.getInstance().add(new DownloadClient(mContext, url, saveName, storeType));
+                if (downloadTable.download_state.equals(DownloadClient.DownloadState.run.name())) {
+                    //--------
+                } else if (downloadTable.download_state.equals(DownloadClient.DownloadState.complete.name())) {
+                    downloadTable.delete();
+                    DownloadThreadPool.getInstance().add(new DownloadClient(mContext, url, saveName, storeType));
+                }
                 return url;
             }
         }

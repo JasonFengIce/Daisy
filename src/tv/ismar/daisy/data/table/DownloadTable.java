@@ -33,8 +33,4 @@ public class DownloadTable extends Model {
 
     @Column
     public String download_state;
-
-    @Column
-    public String download_state_2;
-
 }
