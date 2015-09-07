@@ -136,7 +136,7 @@ public class VodApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        ActiveAndroid.initialize(this);
+        ActiveAndroid.initialize(this, true);
         IsmartvUrlClient.initializeWithContext(this);
         CacheManager.initialize(this);
         getContentModelFromAssets();
