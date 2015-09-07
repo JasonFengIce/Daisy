@@ -865,8 +865,8 @@ public class PlayerActivity extends VodMenuAction {
 				// }
 				if (urls != null && mVideoView != null) {
 					// TaskStart();// cmstest.tvxio.com
-					// sid = VodUserAgent.getSid(urls[currQuality]);
-					// mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
+					 sid = VodUserAgent.getSid(urls[currQuality]);
+					 mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
 					isBuffer = true;
 					showBuffer();
 					if (!isadvideoplaying) {
