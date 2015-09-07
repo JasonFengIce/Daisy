@@ -1,4 +1,4 @@
-package com.activeandroid.util;
+package com.activeandroid;
 
 /*
  * Copyright (C) 2010 Michael Pardo
@@ -19,7 +19,6 @@ package com.activeandroid.util;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.util.Log;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.serializer.TypeSerializer;
@@ -29,7 +28,6 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 
 public final class ReflectionUtils {
-    private static final String TAG = "ReflectionUtils";
 	//////////////////////////////////////////////////////////////////////////////////////
 	// PUBLIC METHODS
 	//////////////////////////////////////////////////////////////////////////////////////
@@ -55,7 +53,7 @@ public final class ReflectionUtils {
 			}
 		}
 		catch (Exception e) {
-			Log.w(TAG, "Couldn't find meta-data: " + name);
+			Log.w("Couldn't find meta-data: " + name);
 		}
 
 		return null;

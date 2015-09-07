@@ -1,5 +1,5 @@
 
-package com.activeandroid.util;
+package com.activeandroid;
 
 /*
  * Copyright (C) 2014 Markus Pfeiffer
@@ -18,23 +18,20 @@ package com.activeandroid.util;
  */
 
 import android.database.Cursor;
-import android.util.Log;
 
 import java.io.Closeable;
 import java.io.IOException;
 
 
 public class IOUtils {
-    private static final String TAG = "IOUtils";
 
     /**
      * <p>
-     * Unconditionally close a {@link java.io.Closeable}.
+     * Unconditionally close a {@link Closeable}.
      * </p>
-     * Equivalent to {@link java.io.Closeable#close()}, except any exceptions will be ignored. This is
+     * Equivalent to {@link Closeable#close()}, except any exceptions will be ignored. This is
      * typically used in finally blocks.
-     *
-     * @param closeable A {@link java.io.Closeable} to close.
+     * @param closeable A {@link Closeable} to close.
      */
     public static void closeQuietly(final Closeable closeable) {
 
@@ -45,18 +42,17 @@ public class IOUtils {
         try {
             closeable.close();
         } catch (final IOException e) {
-            Log.e(TAG, "Couldn't close closeable.", e);
+            Log.e("Couldn't close closeable.", e);
         }
     }
 
     /**
      * <p>
-     * Unconditionally close a {@link android.database.Cursor}.
+     * Unconditionally close a {@link Cursor}.
      * </p>
-     * Equivalent to {@link android.database.Cursor#close()}, except any exceptions will be ignored. This is
+     * Equivalent to {@link Cursor#close()}, except any exceptions will be ignored. This is
      * typically used in finally blocks.
-     *
-     * @param cursor A {@link android.database.Cursor} to close.
+     * @param cursor A {@link Cursor} to close.
      */
     public static void closeQuietly(final Cursor cursor) {
 
@@ -67,7 +63,7 @@ public class IOUtils {
         try {
             cursor.close();
         } catch (final Exception e) {
-            Log.e("Couldn't close cursor.", e.getMessage());
+            Log.e("Couldn't close cursor.", e);
         }
     }
 }

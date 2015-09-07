@@ -40,6 +40,10 @@ public class DownloadClient implements Runnable {
 
     @Override
     public void run() {
+
+
+
+
         FileOutputStream fileOutputStream = null;
         switch (mStoreType) {
             case Internal:
@@ -68,6 +72,20 @@ public class DownloadClient implements Runnable {
                 break;
         }
 
+        //database
+        DownloadTable downloadTable = new Select().from(DownloadTable.class).where(DownloadTable.DOWNLOAD_PATH + " =? ", downloadFile.getAbsolutePath()).executeSingle();
+        if (downloadTable == null) {
+            downloadTable = new DownloadTable();
+        }
+
+        downloadTable.file_name = downloadFile.getName();
+        downloadTable.download_path = downloadFile.getAbsolutePath();
+        downloadTable.url = url;
+        downloadTable.server_md5 = mServerMD5;
+
+        downloadTable.download_state = DownloadState.run.name();
+        downloadTable.save();
+
 
         try {
             OkHttpClient client = new OkHttpClient();
@@ -87,17 +105,9 @@ public class DownloadClient implements Runnable {
         }
 
 
-        DownloadTable downloadTable = new Select().from(DownloadTable.class).where(DownloadTable.DOWNLOAD_PATH + " =? ", downloadFile.getAbsolutePath()).executeSingle();
-        if (downloadTable == null) {
-            downloadTable = new DownloadTable();
-        }
-
-        downloadTable.file_name = downloadFile.getName();
-        downloadTable.download_path = downloadFile.getAbsolutePath();
-        downloadTable.url = url;
-        downloadTable.server_md5 = mServerMD5;
+        downloadTable.download_state = DownloadState.complete.name();
         downloadTable.local_md5 = HardwareUtils.getMd5ByFile(downloadFile);
-        downloadTable.save();
+
 
         Log.d(TAG, "url is: " + url);
         Log.d(TAG, "server md5 is: " + mServerMD5);
@@ -111,6 +121,11 @@ public class DownloadClient implements Runnable {
         External
     }
 
+    public enum DownloadState {
+        run,
+        pause,
+        complete
+    }
 }
 
 //                    Request request = new Request.Builder()

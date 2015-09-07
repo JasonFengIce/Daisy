@@ -1,5 +1,5 @@
 
-package com.activeandroid.util;
+package com.activeandroid;
 
 /*
  * Copyright (C) 2014 Markus Pfeiffer

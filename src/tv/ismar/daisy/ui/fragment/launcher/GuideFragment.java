@@ -350,6 +350,7 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
     private void switchVideo() {
         String videoUrl = CacheManager.getInstance().doRequest(mCarousels.get(mCurrentCarouselIndex).getVideo_url(),
                 "guide_" + mCurrentCarouselIndex + ".mp4", DownloadClient.StoreType.Internal);
+        Log.d(TAG, "play video: " + videoUrl);
         MediaWrapper mediaWrapper = new MediaWrapper(Uri.parse(videoUrl));
         mediaWrapper.removeFlags(MediaWrapper.MEDIA_FORCE_AUDIO);
         mediaWrapper.addFlags(MediaWrapper.MEDIA_VIDEO);

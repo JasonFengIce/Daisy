@@ -1,4 +1,4 @@
-package com.activeandroid.util;
+package com.activeandroid;
 
 /*
  * Copyright (C) 2010 Michael Pardo
@@ -19,7 +19,6 @@ package com.activeandroid.util;
 import android.database.Cursor;
 import android.os.Build;
 import android.text.TextUtils;
-import android.util.Log;
 import com.activeandroid.Cache;
 import com.activeandroid.Model;
 import com.activeandroid.TableInfo;
@@ -32,7 +31,6 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 public final class SQLiteUtils {
-    private static final String TAG = "SQLiteUtils";
     //////////////////////////////////////////////////////////////////////////////////////
     // ENUMERATIONS
     //////////////////////////////////////////////////////////////////////////////////////
@@ -246,6 +244,7 @@ public final class SQLiteUtils {
                 TextUtils.join(", ", definitions));
     }
 
+
     @SuppressWarnings("unchecked")
     public static String createColumnDefinition(TableInfo tableInfo, Field field) {
         StringBuilder definition = new StringBuilder();
@@ -305,7 +304,7 @@ public final class SQLiteUtils {
                 definition.append(column.onUpdate().toString().replace("_", " "));
             }
         } else {
-            Log.e(TAG, "No type mapping for: " + type.toString());
+            Log.e("No type mapping for: " + type.toString());
         }
 
         return definition.toString();
@@ -348,7 +347,7 @@ public final class SQLiteUtils {
                             "2. populate fields"
             );
         } catch (Exception e) {
-            Log.e("Failed to process cursor.", e.getMessage());
+            Log.e("Failed to process cursor.", e);
         }
 
         return entities;

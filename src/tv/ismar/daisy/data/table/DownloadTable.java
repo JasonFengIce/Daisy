@@ -14,6 +14,7 @@ public class DownloadTable extends Model {
     public static final String URL = "url";
     public static final String DOWNLOAD_PATH = "download_path";
     public static final String MD5 = "md5";
+    public static final String DOWNLOAD_STATE = "download_state";
 
     @Column
     public String file_name;
@@ -29,5 +30,11 @@ public class DownloadTable extends Model {
 
     @Column
     public String server_md5;
+
+    @Column
+    public String download_state;
+
+    @Column
+    public String download_state_2;
 
 }

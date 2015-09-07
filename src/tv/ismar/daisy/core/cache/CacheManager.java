@@ -48,7 +48,7 @@ public class CacheManager {
             return url;
         } else {
             String serverMD5 = FileUtils.getFileByUrl(url).split("\\.")[0];
-            String localMD5 = downloadTable.local_md5;
+            String localMD5 = HardwareUtils.getMd5ByFile(downloadFile);
             if (serverMD5.equalsIgnoreCase(localMD5)) {
                 return "file://" + downloadTable.download_path;
             } else {
