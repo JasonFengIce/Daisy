@@ -61,7 +61,6 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private SharedPreferences accountPreference;
 
     public static final String LOCATION_FRAGMENT = "location";
-    private boolean isFirstLogin = false;
 
 
     private PopupWindow loginPopup;
@@ -77,18 +76,24 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private String mAccessToken;
     private String mNickName;
 
+
+
     private SharedPreferences.OnSharedPreferenceChangeListener changeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             String accessToken = accountPreference.getString("auth_token", "");
             String phoneNumber = accountPreference.getString("mobile_number", "");
             if (!TextUtils.isEmpty(accessToken) && !TextUtils.isEmpty(phoneNumber)) {
-                indicatorView.get(2).setEnabled(false);
+
+                indicatorView.get(2).setBackgroundResource(R.drawable.button_disable);
                 indicatorView.get(2).setFocusable(false);
+                indicatorView.get(2).setEnabled(false);
 
             } else {
-                indicatorView.get(2).setEnabled(true);
+                indicatorView.get(2).setBackgroundResource(R.drawable.usercenter_table_normal);
                 indicatorView.get(2).setFocusable(true);
+                indicatorView.get(2).setEnabled(false);
+
             }
         }
     };
@@ -173,6 +178,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         for (int res : INDICATOR_TEXT_RES_ARRAY) {
             RelativeLayout frameLayout = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_usercenter_indicator, null);
             Button textView = (Button) frameLayout.findViewById(R.id.usercenter_indicator_text);
+            textView.setOnFocusChangeListener(indicatorBtnFocusChangeListener);
             textView.setText(res);
             textView.setId(res);
             textView.setOnClickListener(this);
@@ -181,10 +187,13 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         }
 
         if (!TextUtils.isEmpty(SimpleRestClient.access_token) && !TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
-            indicatorView.get(2).setEnabled(false);
+
+            indicatorView.get(2).setBackgroundResource(R.drawable.button_disable);
             indicatorView.get(2).setFocusable(false);
+            indicatorView.get(2).setEnabled(false);
 
         } else {
+            indicatorView.get(2).setBackgroundResource(R.drawable.usercenter_table_normal);
             indicatorView.get(2).setEnabled(true);
             indicatorView.get(2).setFocusable(true);
         }
@@ -205,8 +214,6 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 // getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, loginFragment).commit();
 
                 loginQQorWX();
-
-
                 break;
             case R.string.usercenter_purchase_history:
                 getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, historyFragment).commit();
@@ -222,7 +229,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             if (view.getId() == currentViewId) {
                 view.setBackgroundResource(R.drawable.usercenter_table_focus);
             } else {
-                view.setBackgroundResource(R.drawable.selector_usercenter_tab);
+                view.setBackgroundResource(R.drawable.usercenter_table_normal);
             }
         }
     }
@@ -249,7 +256,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         mAccessToken = authTokenEntity.getAuth_token();
         indicatorView.get(2).setBackgroundResource(R.drawable.button_disable);
         indicatorView.get(1).setBackgroundResource(R.drawable.usercenter_table_focus);
-       // callWGQueryQQUserInfo();
+        // callWGQueryQQUserInfo();
     }
 
     @Override
@@ -264,7 +271,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         indicatorView.get(2).setBackgroundResource(R.drawable.button_disable);
 
 
-        if(listener!=null){
+        if (listener != null) {
             userInfoFragment = new UserInfoFragment();
             listener = null;
         }
@@ -510,8 +517,20 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     private OnLoginByChangeCallback listener;
 
-    public void setAccountListener(OnLoginByChangeCallback l){
+    public void setAccountListener(OnLoginByChangeCallback l) {
 
         listener = l;
     }
+
+    private View.OnFocusChangeListener indicatorBtnFocusChangeListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            Button btn = (Button)v;
+            if (hasFocus){
+                btn.setTextColor(mContext.getResources().getColor(R.color._ffba00));
+            }else {
+                btn.setTextColor(mContext.getResources().getColor(R.color._ffffff));
+            }
+        }
+    };
 }

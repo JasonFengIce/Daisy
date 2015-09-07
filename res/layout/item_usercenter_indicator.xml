@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
 
     <Button
-        android:textColor="#FFFFFF"
-        android:layout_alignParentRight="true"
-        android:gravity="center"
-        android:textSize="@dimen/usercenter_fragment_indicator_item_text_size"
-        android:layout_marginTop="@dimen/usercenter_fragment_indicator_item_margin_top"
-        android:layout_marginRight="@dimen/usercenter_fragment_indicator_item_margin_right"
-        android:id="@+id/usercenter_indicator_text"
-        android:background="@drawable/selector_usercenter_tab"
-        android:layout_width="@dimen/usercenter_fragment_indicator_item_width"
-        android:layout_height="@dimen/usercenter_fragment_indicator_item_height"/>
+            android:textColor="#FFFFFF"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:textSize="@dimen/usercenter_fragment_indicator_item_text_size"
+            android:layout_marginTop="@dimen/usercenter_fragment_indicator_item_margin_top"
+            android:layout_marginRight="@dimen/usercenter_fragment_indicator_item_margin_right"
+            android:id="@+id/usercenter_indicator_text"
+            android:background="@drawable/usercenter_table_normal"
+            android:layout_width="@dimen/usercenter_fragment_indicator_item_width"
+            android:layout_height="@dimen/usercenter_fragment_indicator_item_height"/>
 </RelativeLayout>
 

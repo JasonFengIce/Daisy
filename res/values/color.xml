@@ -79,4 +79,7 @@
 
     <color name="blue">#00a9ff</color>
     <color name="payment_dialog_bg">#012239</color>
+
+    <color name="_ffba00">#ffba00</color>
+    <color name="_ffffff">#ffffff</color>
 </resources>

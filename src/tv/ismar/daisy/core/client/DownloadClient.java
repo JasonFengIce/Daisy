@@ -80,7 +80,7 @@ public class DownloadClient implements Runnable {
         downloadTable.download_path = downloadFile.getAbsolutePath();
         downloadTable.url = url;
         downloadTable.server_md5 = mServerMD5;
-
+        downloadTable.local_md5 = "";
         downloadTable.download_state = DownloadState.run.name();
         downloadTable.save();
 
