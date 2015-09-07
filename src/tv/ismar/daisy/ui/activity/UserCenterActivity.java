@@ -265,8 +265,6 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
 
         if(listener!=null){
-            // listener.onLoginSuccess();
-           // userInfoFragment.changge();
             userInfoFragment = new UserInfoFragment();
             listener = null;
         }

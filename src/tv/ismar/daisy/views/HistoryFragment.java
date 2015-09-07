@@ -159,7 +159,35 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		
 		mHistoryItemList = new ItemCollection(1,0,"1","1");
 	}
-	
+    private void addHistory(Item item) {
+        History history = new History();
+        history.title = item.title;
+        history.adlet_url = item.adlet_url;
+        history.content_model = item.content_model;
+        history.is_complex = item.is_complex;
+        history.last_position = item.offset;
+        history.last_quality = item.quality;
+        if ("subitem".equals(item.model_name)) {
+          //  history.sub_url = item.url;
+            history.sub_url =  SimpleRestClient.root_url + "/api/subitem/" + item.pk + "/";
+            history.url = SimpleRestClient.root_url + "/api/item/" + item.item_pk + "/";
+        } else {
+            history.url = item.url;
+
+        }
+
+
+        history.is_continue = true;
+        if (SimpleRestClient.isLogin())
+            DaisyUtils.getHistoryManager(getActivity()).addHistory(history,
+                    "yes");
+        else
+            DaisyUtils.getHistoryManager(getActivity())
+                    .addHistory(history, "no");
+
+    }
+
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -198,6 +226,9 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 				//解析json
 				mHistoriesByNet = mRestClient.getItems(info);
 				if(mHistoriesByNet!=null&&mHistoriesByNet.length>0){
+                    for(Item i : mHistoriesByNet){
+                        addHistory(i);
+                    }
 					mItemCollections = new ArrayList<ItemCollection>();
 				    int num_pages = (int) FloatMath.ceil((float)mHistoriesByNet.length / (float)ItemCollection.NUM_PER_PAGE);
 					ItemCollection itemCollection = new ItemCollection(num_pages, mHistoriesByNet.length, "1", "1");
@@ -612,6 +643,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 
 
                         if(item.subitems!=null&&item.subitems.length>0){
+
                             tool.initClipInfo(history.sub_url, InitPlayerTool.FLAG_URL,history.price);
                         }
                         else{
