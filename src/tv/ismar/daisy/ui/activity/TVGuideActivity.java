@@ -29,6 +29,8 @@ import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
 import com.baidu.location.*;
 import com.google.gson.Gson;
+
+import org.apache.commons.lang3.StringUtils;
 import org.sakuratya.horizontal.ui.HGridView;
 import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.BaseActivity;
@@ -91,8 +93,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private ChannelEntity[] mChannelEntitys;
     private HashMap<String, TextView> channelHashMap;
 
-    private ChannelChange channelChange;
-
+    private ChannelChange channelChange =ChannelChange.CLICK_CHANNEL;
+    private String homepage_template;
+    private String homepage_url;
 //    private WeatherFragment weatherFragment;
 
     private LaunchHeaderLayout topView;
@@ -116,8 +119,29 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 arrow_right.setVisibility(View.VISIBLE);
             }
             selectChannelByPosition(position);
-            scroll.setSelection(position);
-            clickView = scroll.getSelectedView();
+           // scroll.setSelection(position);
+
+
+
+          //  scroll.performItemClick(scroll.getChildAt(position),position,scroll.getChildAt(position).getId());
+            View newclickView = scroll.getChildAt(position);
+            if(clickView!=null&&newclickView!=null){
+                if(newclickView!=clickView){
+                    TextView channelBtn = (TextView)newclickView.findViewById(R.id.channel_item);
+                    channelBtn.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
+                    channelBtn.setBackgroundResource(R.drawable.channel_item_focus);
+                    AnimationSet animationSet = new AnimationSet(true);
+                    ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
+                            Animation.RELATIVE_TO_SELF, 0.5f,
+                            Animation.RELATIVE_TO_SELF, 0.5f);
+                    scaleAnimation.setDuration(200);
+                    animationSet.addAnimation(scaleAnimation);
+                    animationSet.setFillAfter(true);
+                    channelBtn.startAnimation(animationSet);
+                    clickView = newclickView;
+                }
+
+            }
         }
     });
 
@@ -125,8 +149,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private OnClickListener arrowViewListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-        	View textview = (TextView)clickView.findViewById(R.id.channel_item);
+            TextView textview = (TextView)clickView.findViewById(R.id.channel_item);
             textview.setBackgroundResource(R.drawable.channel_item_normal);
+            textview.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
             AnimationSet animationSet1 = new AnimationSet(true);
             ScaleAnimation scaleAnimation1 = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
                     Animation.RELATIVE_TO_SELF, 0.5f,
@@ -179,6 +204,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         registerUpdateReceiver();
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_tv_guide, null);
         setContentView(contentView);
+        homepage_template = getIntent().getStringExtra("homepage_template");
+        homepage_url = getIntent().getStringExtra("homepage_url");
         View vv = findViewById(R.id.large_layout);
         DaisyUtils.setbackground(R.drawable.main_bg,vv);
         topView = (LaunchHeaderLayout) findViewById(R.id.top_column_layout);
@@ -225,8 +252,10 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 if (arrow_right.getVisibility() == View.VISIBLE) {
                     arrow_right.setVisibility(View.GONE);
                 }
-                View textview = (TextView)clickView.findViewById(R.id.channel_item);
+                if(clickView != null){
+                    TextView textview = (TextView)clickView.findViewById(R.id.channel_item);
                 textview.setBackgroundResource(R.drawable.channel_item_normal);
+                textview.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
                 AnimationSet animationSet1 = new AnimationSet(true);
                 ScaleAnimation scaleAnimation1 = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
                         Animation.RELATIVE_TO_SELF, 0.5f,
@@ -236,6 +265,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 animationSet1.setFillAfter(true);
                 textview.startAnimation(animationSet1);
                 clickView = null;
+                }
             }
         } else {
             showExitPopup(contentView);
@@ -275,6 +305,19 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             public void onSuccess(String result) {
                 mChannelEntitys = new Gson().fromJson(result, ChannelEntity[].class);
                 createChannelView(mChannelEntitys);
+                if(StringUtils.isNotEmpty(homepage_template)){
+                	for(int i = 0;i<mChannelEntitys.length;i++){
+                		if(homepage_template.equals(mChannelEntitys[i].getHomepage_template()) && mChannelEntitys[i].getHomepage_url().contains(homepage_url) ){
+                			selectChannelByPosition(i);
+                		}
+                	}
+                }
+				if (currentFragment == null) {
+					currentFragment = new GuideFragment();
+					FragmentTransaction transaction = getSupportFragmentManager()
+							.beginTransaction();
+					transaction.add(R.id.container, currentFragment).commit();
+				}
             }
 
             @Override
@@ -289,37 +332,46 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private View.OnFocusChangeListener mFocusListener = new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View view, boolean b) {
-            View channelBtn;
-            if(view==clickView&&clickView!=null){
-                return;
-            }
+            TextView channelBtn;
+//            if(view==clickView&&clickView!=null){
+//                return;
+//            }
                if(b){
-                    channelBtn = (TextView)view.findViewById(R.id.channel_item);
-                   channelBtn.setBackgroundResource(R.drawable.channel_item_focus);
-                   AnimationSet animationSet = new AnimationSet(true);
-                   ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
-                           Animation.RELATIVE_TO_SELF, 0.5f,
-                           Animation.RELATIVE_TO_SELF, 0.5f);
-                   scaleAnimation.setDuration(200);
-                   animationSet.addAnimation(scaleAnimation);
-                   animationSet.setFillAfter(true);
-                   channelBtn.startAnimation(animationSet);
+                   if(view!=clickView){
+                       channelBtn = (TextView)view.findViewById(R.id.channel_item);
+                       channelBtn.setBackgroundResource(R.drawable.channel_focus_frame);
+                       channelBtn.setTextColor(FOCUS_CHANNEL_TEXTCOLOR);
+                       AnimationSet animationSet = new AnimationSet(true);
+                       ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
+                               Animation.RELATIVE_TO_SELF, 0.5f,
+                               Animation.RELATIVE_TO_SELF, 0.5f);
+                       scaleAnimation.setDuration(200);
+                       animationSet.addAnimation(scaleAnimation);
+                       animationSet.setFillAfter(true);
+                       channelBtn.startAnimation(animationSet);
+                   }
+
                }else{
-                    channelBtn = (TextView)view.findViewById(R.id.channel_item);
-                   channelBtn.setBackgroundResource(R.drawable.channel_item_normal);
-                   AnimationSet animationSet = new AnimationSet(true);
-                   ScaleAnimation scaleAnimation = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
-                           Animation.RELATIVE_TO_SELF, 0.5f,
-                           Animation.RELATIVE_TO_SELF, 0.5f);
-                   scaleAnimation.setDuration(200);
-                   animationSet.addAnimation(scaleAnimation);
-                   animationSet.setFillAfter(true);
-                   channelBtn.startAnimation(animationSet);
+                   if(view!=clickView){
+                       channelBtn = (TextView)view.findViewById(R.id.channel_item);
+                       channelBtn.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
+                       channelBtn.setBackgroundResource(R.drawable.channel_item_normal);
+                       AnimationSet animationSet = new AnimationSet(true);
+                       ScaleAnimation scaleAnimation = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
+                               Animation.RELATIVE_TO_SELF, 0.5f,
+                               Animation.RELATIVE_TO_SELF, 0.5f);
+                       scaleAnimation.setDuration(200);
+                       animationSet.addAnimation(scaleAnimation);
+                       animationSet.setFillAfter(true);
+                       channelBtn.startAnimation(animationSet);
+                   }
                }
             lastview = view;
         }
     };
-
+    private int FOCUS_CHANNEL_BG = 0xffffba00;
+    private int FOCUS_CHANNEL_TEXTCOLOR = 0xffffba00;
+    private int NORMAL_CHANNEL_TEXTCOLOR = 0xffffffff;
     private void createChannelView(ChannelEntity[] channelEntities) {
         List<ChannelEntity> channelList;
         channelList = new ArrayList<ChannelEntity>();
@@ -340,14 +392,15 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         scroll.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-               View channelBtn = (TextView)view.findViewById(R.id.channel_item);
+                TextView channelBtn = (TextView)view.findViewById(R.id.channel_item);
 
 
-                if(lastview!=null&&lastview!=clickView){
+                if(lastview!=null&&lastview!=view&&lastview!=clickView){
 
 
                     TextView mlastview = (TextView)lastview.findViewById(R.id.channel_item);
                     mlastview.setBackgroundResource(R.drawable.channel_item_normal);
+                    mlastview.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
                     AnimationSet animationSet1 = new AnimationSet(true);
                     ScaleAnimation scaleAnimation1 = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
                             Animation.RELATIVE_TO_SELF, 0.5f,
@@ -357,19 +410,20 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                     animationSet1.setFillAfter(true);
                     mlastview.startAnimation(animationSet1);
                 }
-                channelBtn.setBackgroundResource(R.drawable.channel_item_focus);
-                AnimationSet animationSet = new AnimationSet(true);
-                ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
-                        Animation.RELATIVE_TO_SELF, 0.5f,
-                        Animation.RELATIVE_TO_SELF, 0.5f);
-                scaleAnimation.setDuration(200);
-                animationSet.addAnimation(scaleAnimation);
-                animationSet.setFillAfter(true);
-                channelBtn.startAnimation(animationSet);
+                if(view!=clickView){
+                    channelBtn.setBackgroundResource(R.drawable.channel_focus_frame);
+                    channelBtn.setTextColor(FOCUS_CHANNEL_TEXTCOLOR);
+                    AnimationSet animationSet = new AnimationSet(true);
+                    ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
+                            Animation.RELATIVE_TO_SELF, 0.5f,
+                            Animation.RELATIVE_TO_SELF, 0.5f);
+                    scaleAnimation.setDuration(200);
+                    animationSet.addAnimation(scaleAnimation);
+                    animationSet.setFillAfter(true);
+                    channelBtn.startAnimation(animationSet);
+                    lastview = view;
+                }
 
-
-
-                lastview = view;
 
             }
 
@@ -396,8 +450,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                         return;
                     }
                    else{
-                        View textview = (TextView)clickView.findViewById(R.id.channel_item);
+                        TextView textview = (TextView)clickView.findViewById(R.id.channel_item);
                         textview.setBackgroundResource(R.drawable.channel_item_normal);
+                        textview.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
                         AnimationSet animationSet1 = new AnimationSet(true);
                         ScaleAnimation scaleAnimation1 = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
                                 Animation.RELATIVE_TO_SELF, 0.5f,
@@ -412,6 +467,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 clickView = view;
 
                 TextView channelBtn = (TextView)view.findViewById(R.id.channel_item);
+                channelBtn.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
                 channelBtn.setBackgroundResource(R.drawable.channel_item_focus);
                 AnimationSet animationSet = new AnimationSet(true);
                 ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
@@ -786,6 +842,5 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             exitPopupWindow.dismiss();
         }
         super.onDestroy();
-        System.exit(0);
     }
 }
