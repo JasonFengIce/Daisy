@@ -1,6 +1,9 @@
 package tv.ismar.daisy.core.client;
 
 import android.util.Log;
+import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Select;
+import tv.ismar.daisy.data.table.DownloadTable;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -27,8 +30,18 @@ public class DownloadThreadPool {
         return instance;
     }
 
-    public void add(Runnable client) {
-        Log.i(TAG, "DownloadThreadPool add...");
+    public void add(DownloadClient client) {
+        Log.i(TAG, "DownloadThreadPool add invoke...");
+        //database
+        DownloadTable downloadTable = new DownloadTable();
+        downloadTable.file_name = client.getmSaveName();
+        downloadTable.download_path = client.getDownloadFile().getAbsolutePath();
+        downloadTable.url = client.getUrl();
+        downloadTable.server_md5 = client.getmServerMD5();
+        downloadTable.local_md5 = "";
+        downloadTable.download_state = DownloadClient.DownloadState.run.name();
+        downloadTable.save();
+
         executorService.execute(client);
     }
 }

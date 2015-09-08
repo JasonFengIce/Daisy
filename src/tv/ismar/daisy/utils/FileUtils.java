@@ -28,6 +28,10 @@ public class FileUtils {
         }
     }
 
+
+
+
+
     public static Drawable getImageFromAssetsFile(Context context, String fileName) {
         Drawable image = null;
         AssetManager am = context.getResources().getAssets();

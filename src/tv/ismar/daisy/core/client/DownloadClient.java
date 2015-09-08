@@ -21,28 +21,21 @@ public class DownloadClient implements Runnable {
     private String url;
     private File downloadFile;
     private String mServerMD5;
-    private String mLocalFileName;
+    private String mSaveName;
 
     private StoreType mStoreType;
-    private String mSaveName;
     private Context mContext;
+
+    private FileOutputStream fileOutputStream;
 
 
     public DownloadClient(Context context, String downloadUrl, String saveName, StoreType storeType) {
         mContext = context;
         url = downloadUrl;
-        mLocalFileName = FileUtils.getFileByUrl(downloadUrl);
-        mServerMD5 = mLocalFileName.split("\\.")[0];
+        mServerMD5 = FileUtils.getFileByUrl(downloadUrl).split("\\.")[0];
         mStoreType = storeType;
         mSaveName = saveName;
-    }
 
-
-    @Override
-    public void run() {
-
-
-        FileOutputStream fileOutputStream = null;
         switch (mStoreType) {
             case Internal:
                 try {
@@ -69,22 +62,13 @@ public class DownloadClient implements Runnable {
                 }
                 break;
         }
+    }
 
+
+    @Override
+    public void run() {
         //database
         DownloadTable downloadTable = new Select().from(DownloadTable.class).where(DownloadTable.DOWNLOAD_PATH + " =? ", downloadFile.getAbsolutePath()).executeSingle();
-        if (downloadTable == null) {
-            downloadTable = new DownloadTable();
-        }
-
-        downloadTable.file_name = downloadFile.getName();
-        downloadTable.download_path = downloadFile.getAbsolutePath();
-        downloadTable.url = url;
-        downloadTable.server_md5 = mServerMD5;
-        downloadTable.local_md5 = "";
-        downloadTable.download_state = DownloadState.run.name();
-        downloadTable.save();
-
-
         try {
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder().url(url).build();
@@ -102,7 +86,7 @@ public class DownloadClient implements Runnable {
             Log.d(TAG, e.getMessage());
         }
 
-
+        downloadTable.download_path = downloadFile.getAbsolutePath();
         downloadTable.download_state = DownloadState.complete.name();
         downloadTable.local_md5 = HardwareUtils.getMd5ByFile(downloadFile);
         downloadTable.save();
@@ -125,6 +109,28 @@ public class DownloadClient implements Runnable {
         pause,
         complete
     }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public File getDownloadFile() {
+        return downloadFile;
+    }
+
+    public String getmServerMD5() {
+        return mServerMD5;
+    }
+
+    public StoreType getmStoreType() {
+        return mStoreType;
+    }
+
+    public String getmSaveName() {
+        return mSaveName;
+    }
+
+
 }
 
 //                    Request request = new Request.Builder()
