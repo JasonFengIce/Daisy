@@ -253,7 +253,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                     arrow_right.setVisibility(View.GONE);
                 }
                 if(clickView != null){
-                    TextView textview = (TextView)clickView.findViewById(R.id.channel_item);
+                TextView textview = (TextView)clickView.findViewById(R.id.channel_item);
                 textview.setBackgroundResource(R.drawable.channel_item_normal);
                 textview.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
                 AnimationSet animationSet1 = new AnimationSet(true);
@@ -304,6 +304,21 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             @Override
             public void onSuccess(String result) {
                 mChannelEntitys = new Gson().fromJson(result, ChannelEntity[].class);
+
+                ChannelEntity[] tmp = mChannelEntitys;
+               // tmp = mChannelEntitys;
+                mChannelEntitys = new ChannelEntity[tmp.length+1];
+                int k=0;
+
+                ChannelEntity launcher = new ChannelEntity();
+                launcher.setChannel("launcher");
+                launcher.setName("首页");
+                launcher.setHomepage_template("launcher");
+                mChannelEntitys[0] = launcher;
+                for(ChannelEntity e : tmp){
+                    mChannelEntitys[k+1] = e;
+                    k++;
+                }
                 createChannelView(mChannelEntitys);
                 if(StringUtils.isNotEmpty(homepage_template)){
                 	for(int i = 0;i<mChannelEntitys.length;i++){
@@ -317,6 +332,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 					FragmentTransaction transaction = getSupportFragmentManager()
 							.beginTransaction();
 					transaction.add(R.id.container, currentFragment).commit();
+
+
 				}
             }
 
@@ -329,6 +346,47 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private HGridView scroll;
     private View lastview=null;
     private View clickView=null;
+    private void setFocusChannelView(View view){
+        TextView channelBtn = (TextView)view.findViewById(R.id.channel_item);
+        channelBtn.setBackgroundResource(R.drawable.channel_focus_frame);
+        channelBtn.setTextColor(FOCUS_CHANNEL_TEXTCOLOR);
+        AnimationSet animationSet = new AnimationSet(true);
+        ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        scaleAnimation.setDuration(200);
+        animationSet.addAnimation(scaleAnimation);
+        animationSet.setFillAfter(true);
+        channelBtn.startAnimation(animationSet);
+    }
+
+    private void setLostFocusChannel(View view){
+        TextView channelBtn = (TextView)view.findViewById(R.id.channel_item);
+        channelBtn.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
+        channelBtn.setBackgroundResource(R.drawable.channel_item_normal);
+        AnimationSet animationSet = new AnimationSet(true);
+        ScaleAnimation scaleAnimation = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        scaleAnimation.setDuration(200);
+        animationSet.addAnimation(scaleAnimation);
+        animationSet.setFillAfter(true);
+        channelBtn.startAnimation(animationSet);
+    }
+
+    private void setClickChannelView(View view){
+        TextView channelBtn = (TextView)view.findViewById(R.id.channel_item);
+        channelBtn.setBackgroundResource(R.drawable.channel_focus_frame);
+        channelBtn.setTextColor(FOCUS_CHANNEL_TEXTCOLOR);
+        AnimationSet animationSet = new AnimationSet(true);
+        ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        scaleAnimation.setDuration(200);
+        animationSet.addAnimation(scaleAnimation);
+        animationSet.setFillAfter(true);
+        channelBtn.startAnimation(animationSet);
+    }
     private View.OnFocusChangeListener mFocusListener = new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View view, boolean b) {
@@ -374,13 +432,25 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private int NORMAL_CHANNEL_TEXTCOLOR = 0xffffffff;
     private void createChannelView(ChannelEntity[] channelEntities) {
         List<ChannelEntity> channelList;
+//        ChannelEntity launcher = new ChannelEntity();
+//        launcher.setChannel("launcher");
+//        launcher.setName("首页");
+//        launcher.setHomepage_template("launcher");
         channelList = new ArrayList<ChannelEntity>();
+       // channelList.add(launcher);
         for (ChannelEntity entity : channelEntities) {
             channelList.add(entity);
         }
         scroll = (HGridView) contentView.findViewById(R.id.h_grid_view);
         channelHashMap = new HashMap<String, TextView>();
-        ChannelAdapter imageAdapter = new ChannelAdapter(this, channelList, R.layout.item_channel);
+        final ChannelAdapter imageAdapter = new ChannelAdapter(this, channelList, R.layout.item_channel);
+        imageAdapter.setOnClickCallback(new ChannelAdapter.OnClickCallback() {
+            @Override
+            public void onClickView(View v) {
+                setClickChannelView(v);
+                imageAdapter.setOnClickCallback(null);
+            }
+        });
         scroll.setAdapter(imageAdapter);
         imageAdapter.setMap(channelHashMap);
         imageAdapter.setList((ArrayList<ChannelEntity>) channelList);
@@ -621,9 +691,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         fetchChannels();
 
 
-        currentFragment = new GuideFragment();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.container, currentFragment).commit();
+
         sendLoncationRequest();
         String appUpdateHost = "http://" + result.getUpgrade_domain();
         AppUpdateUtils.getInstance(this).checkUpdate(appUpdateHost);
@@ -731,6 +799,10 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             currentFragment = new ChildFragment();
            // contentView.setBackgroundResource(R.drawable.channel_child_bg);
             setbackground(R.drawable.channel_child_bg);
+        }
+        else{
+            currentFragment = new GuideFragment();
+            setbackground(R.drawable.main_bg);
         }
        // currentFragment.view = scroll;
         //currentFragment.position = position;

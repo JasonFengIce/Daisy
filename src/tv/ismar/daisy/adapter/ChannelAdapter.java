@@ -74,10 +74,16 @@ public class ChannelAdapter extends HGridAdapter<ChannelEntity>  {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
+        if(position==0){
+            if(mListener!=null){
+                mListener.onClickView(convertView);
+            }
+        }
         convertView.setBackgroundResource(R.drawable.channel_item_normal);
         channelHashMap.put(movieBean.getChannel(), holder.channelBtn);
         holder.channelBtn.setText(movieBean.getName());
         holder.channelBtn.setTag(position);
+
       //  convertView.setOnFocusChangeListener(new ItemViewFocusChangeListener());
 //        holder.channelBtn.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -116,4 +122,16 @@ public class ChannelAdapter extends HGridAdapter<ChannelEntity>  {
 	public boolean hasSection() {
 		return false;
 	}
+
+    public interface OnClickCallback{
+        public void onClickView(View v);
+    }
+
+    OnClickCallback mListener;
+
+
+
+    public void setOnClickCallback(OnClickCallback l){
+        mListener = l;
+    }
 }
