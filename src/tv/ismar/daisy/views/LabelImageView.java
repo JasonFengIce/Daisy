@@ -88,7 +88,7 @@ public class LabelImageView extends AsyncImageView {
 		mRect = new Rect();
 		mBound = new Rect();
 		mDrawable = (NinePatchDrawable) getResources().getDrawable(
-				R.drawable.popup_bg_yellow);
+				R.drawable.vod_gv_selector);
 	}
 
 	protected void onFocusChanged(boolean gainFocus, int direction,
@@ -181,8 +181,7 @@ public class LabelImageView extends AsyncImageView {
 
 		// if (customfocus) {
 		if (hasFocus()) {
-			mBound.set(-3 + mRect.left, -3 + mRect.top, 3 + mRect.right,
-					mRect.bottom + 3);
+			mBound.set(-21+mRect.left, -21+mRect.top, 21+mRect.right, mRect.bottom+21);
 			mDrawable.setBounds(mBound);
 			canvas.save();
 			mDrawable.draw(canvas);

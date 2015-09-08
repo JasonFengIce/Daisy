@@ -81,8 +81,8 @@ public class LaunchHeaderLayout extends FrameLayout
     private static final int[] INDICATOR_RES_LIST = {
             R.string.guide_play_history,
             R.string.guide_my_favorite,
-            R.string.guide_user_center
-//            R.string.guide_search
+            R.string.guide_user_center,
+            R.string.guide_search
     };
 
 

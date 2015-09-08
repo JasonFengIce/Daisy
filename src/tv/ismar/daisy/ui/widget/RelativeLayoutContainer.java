@@ -63,8 +63,8 @@ public class RelativeLayoutContainer extends FrameLayout {
 		if (isDrawBorder) {
 			System.out.println("HomeItemContainer focus : true ");
 			super.getDrawingRect(mRect);
-			mBound.set(-3 + mRect.left, -3 + mRect.top, 3 + mRect.right,
-					mRect.bottom + 2);
+			mBound.set(-21 + mRect.left, -21 + mRect.top, 21 + mRect.right,
+					mRect.bottom + 21);
 			mDrawable.setBounds(mBound);
 			canvas.save();
 			mDrawable.draw(canvas);

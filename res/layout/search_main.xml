@@ -55,6 +55,7 @@
                             android:paddingLeft="@dimen/search_main_autocomplete_PL"
                             android:paddingRight="@dimen/search_main_autocomplete_PR"
                             android:singleLine="true"
+                            android:imeOptions="actionSearch"
                             android:textSize="@dimen/search_main_autocomplete_textsize"
                             android:nextFocusRight="@+id/ibtn_search"/>
 

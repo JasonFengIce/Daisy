@@ -59,7 +59,7 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
 
     private ArrayList<String> allVideoUrl;
     private ArrayList<LabelImageView> allItem;
-
+    private HomeItemContainer film_post_layout;
     private ArrayList<Carousel> mCarousels;
     private LabelImageView toppage_carous_imageView1;
     private LabelImageView toppage_carous_imageView2;
@@ -171,9 +171,19 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
         toppage_carous_imageView1 = (LabelImageView) mView.findViewById(R.id.toppage_carous_imageView1);
         toppage_carous_imageView2 = (LabelImageView) mView.findViewById(R.id.toppage_carous_imageView2);
         toppage_carous_imageView3 = (LabelImageView) mView.findViewById(R.id.toppage_carous_imageView3);
-
+        film_post_layout = (HomeItemContainer) mView.findViewById(R.id.guide_center_layoutview);
         mSurfaceView = (SurfaceView) mView.findViewById(R.id.linked_video);
-        mSurfaceView.setOnClickListener(new ItemDetailClickListener(mContext));
+        mSurfaceView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View arg0, boolean arg1) {
+				if(arg1){
+					film_post_layout.requestFocus();	
+				}
+			}
+		});
+        film_post_layout.setOnClickListener(ItemClickListener);
+        film_post_layout.requestFocus();
         return mView;
     }
 
@@ -335,11 +345,11 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
             }
         }
 
-        HashMap<String, String> hashMap = new HashMap<String, String>();
-        hashMap.put(ItemDetailClickListener.MODEL, mCarousels.get(mCurrentCarouselIndex).getModel_name());
-        hashMap.put(ItemDetailClickListener.URL, mCarousels.get(mCurrentCarouselIndex).getUrl());
-        hashMap.put(ItemDetailClickListener.TITLE, mCarousels.get(mCurrentCarouselIndex).getTitle());
-        mSurfaceView.setTag(hashMap);
+//        HashMap<String, String> hashMap = new HashMap<String, String>();
+//        hashMap.put(ItemDetailClickListener.MODEL, mCarousels.get(mCurrentCarouselIndex).getModel_name());
+//        hashMap.put(ItemDetailClickListener.URL, mCarousels.get(mCurrentCarouselIndex).getUrl());
+//        hashMap.put(ItemDetailClickListener.TITLE, mCarousels.get(mCurrentCarouselIndex).getTitle());
+        film_post_layout.setTag(R.drawable.launcher_selector,mCarousels.get(mCurrentCarouselIndex));
 
 //        mHelper.onStart();
         mHandler.sendEmptyMessage(START_PLAYBACK);

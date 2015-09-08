@@ -41,7 +41,7 @@ public class LinerLayoutContainer extends FrameLayout {
 		setWillNotDraw(false);
 		mRect = new Rect();
 		mBound = new Rect();
-		mDrawable = (NinePatchDrawable)getResources().getDrawable(R.drawable.popup_bg_yellow);//nav_focused_2,poster_shadow_4
+		mDrawable = (NinePatchDrawable)getResources().getDrawable(R.drawable.vod_gv_selector);//nav_focused_2,poster_shadow_4
 		setChildrenDrawingOrderEnabled(true);
 	}
 
@@ -60,7 +60,7 @@ public class LinerLayoutContainer extends FrameLayout {
 		if (isDrawBorder) {
 			System.out.println("HomeItemContainer focus : true ");
 			super.getDrawingRect(mRect);
-			mBound.set(-3+mRect.left, -3+mRect.top, 3+mRect.right, mRect.bottom+2);
+			mBound.set(-21+mRect.left, -21+mRect.top, 21+mRect.right, mRect.bottom+21);
 			mDrawable.setBounds(mBound);
 			canvas.save();
 			mDrawable.draw(canvas);

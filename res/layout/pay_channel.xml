@@ -42,7 +42,6 @@
         android:text="@string/guanyingcard_pay_button_title"
         android:textColor="#FFFFFF"
         android:textSize="@dimen/pay_channel_weixin_textsize"
-        android:visibility="gone"
          />
 
     <Button
@@ -57,7 +56,6 @@
         android:text="@string/yu_e_pay_button_title"
         android:textColor="#FFFFFF"
         android:textSize="@dimen/pay_channel_weixin_textsize"
-        android:visibility="gone"
          />
 
 </RelativeLayout>
