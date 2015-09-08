@@ -378,7 +378,7 @@ public class PlayerActivity extends VodMenuAction {
 	class FetchSeriallTask extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected void onPostExecute(Boolean result) {
-			if (result) { // 免费或已经付费的电视剧单集直接播放
+			if (result || currNum==0) { // 免费或已经付费的电视剧单集直接播放
 				initPlayer();
 			}
 		}
