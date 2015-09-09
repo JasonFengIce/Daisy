@@ -8,9 +8,10 @@ import android.util.AttributeSet;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import tv.ismar.daisy.R;
 
-public class LinerLayoutContainer extends FrameLayout {
+public class LinerLayoutContainer extends LinearLayout {
 	
 	private Rect mBound;
 	private NinePatchDrawable mDrawable;
@@ -75,12 +76,12 @@ public class LinerLayoutContainer extends FrameLayout {
 		if (gainFocus) {
 			isDrawBorder = true;
 			bringToFront();
-//			getRootView().requestLayout();
-//			getRootView().invalidate();
-//			zoomOut();
+			getRootView().requestLayout();
+			getRootView().invalidate();
+			zoomOut();
 		} else {
 			isDrawBorder = false;
-//			zoomIn();
+			zoomIn();
 		}
 	}
 

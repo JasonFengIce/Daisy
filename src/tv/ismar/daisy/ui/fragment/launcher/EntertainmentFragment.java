@@ -1,5 +1,18 @@
 package tv.ismar.daisy.ui.fragment.launcher;
 
+import java.util.ArrayList;
+
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.data.HomePagerEntity;
+import tv.ismar.daisy.data.HomePagerEntity.Carousel;
+import tv.ismar.daisy.data.HomePagerEntity.Poster;
+import tv.ismar.daisy.exception.NetworkException;
+import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
+import tv.ismar.daisy.ui.widget.LinerLayoutContainer;
+import tv.ismar.daisy.views.AsyncImageView;
+import tv.ismar.daisy.views.LabelImageView;
+import tv.ismar.daisy.views.LoadingDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask;
@@ -11,20 +24,9 @@ import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.data.HomePagerEntity;
-import tv.ismar.daisy.data.HomePagerEntity.Carousel;
-import tv.ismar.daisy.data.HomePagerEntity.Poster;
-import tv.ismar.daisy.exception.NetworkException;
-import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
-import tv.ismar.daisy.views.AsyncImageView;
-import tv.ismar.daisy.views.LabelImageView;
-import tv.ismar.daisy.views.LoadingDialog;
-
-import java.util.ArrayList;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -40,12 +42,16 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 	private AsyncImageView vaiety_thumb2;
 	private AsyncImageView vaiety_thumb3;
 	private TextView vaiety_fouce_label;
+	private LinerLayoutContainer vaiety_card1;
 	private LabelImageView vaiety_card1_image;
 	private TextView vaiety_card1_subtitle;
+	private LinerLayoutContainer vaiety_card2;
 	private LabelImageView vaiety_card2_image;
 	private TextView vaiety_card2_subtitle;
+	private LinerLayoutContainer vaiety_card3;
 	private LabelImageView vaiety_card3_image;
 	private TextView vaiety_card3_subtitle;
+	private LinerLayoutContainer vaiety_card4;
 	private LabelImageView vaiety_card4_image;
 	private TextView vaiety_card4_subtitle;
 	private LabelImageView vaiety_channel1_image;
@@ -73,18 +79,22 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		vaiety_thumb3 = (AsyncImageView) view.findViewById(R.id.vaiety_thumb3);
 		vaiety_fouce_label = (TextView) view
 				.findViewById(R.id.vaiety_fouce_label);
+		vaiety_card1 = (LinerLayoutContainer)view.findViewById(R.id.vaiety_card1);
 		vaiety_card1_image = (LabelImageView) view
 				.findViewById(R.id.vaiety_card1_image);
 		vaiety_card1_subtitle = (TextView) view
 				.findViewById(R.id.vaiety_card1_subtitle);
+		vaiety_card2 = (LinerLayoutContainer)view.findViewById(R.id.vaiety_card2);
 		vaiety_card2_image = (LabelImageView) view
 				.findViewById(R.id.vaiety_card2_image);
 		vaiety_card2_subtitle = (TextView) view
 				.findViewById(R.id.vaiety_card2_subtitle);
+		vaiety_card3 = (LinerLayoutContainer)view.findViewById(R.id.vaiety_card3);
 		vaiety_card3_image = (LabelImageView) view
 				.findViewById(R.id.vaiety_card3_image);
 		vaiety_card3_subtitle = (TextView) view
 				.findViewById(R.id.vaiety_card3_subtitle);
+		vaiety_card4 = (LinerLayoutContainer)view.findViewById(R.id.vaiety_card4);
 		vaiety_card4_image = (LabelImageView) view
 				.findViewById(R.id.vaiety_card4_image);
 		vaiety_card4_subtitle = (TextView) view
@@ -107,10 +117,10 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 				.findViewById(R.id.vaiety_channel4_subtitle);
 		vaiety_channel5 = (tv.ismar.daisy.ui.widget.HomeItemContainer) view
 				.findViewById(R.id.listmore);
-		vaiety_card1_image.setOnClickListener(ItemClickListener);
-		vaiety_card2_image.setOnClickListener(ItemClickListener);
-		vaiety_card3_image.setOnClickListener(ItemClickListener);
-		vaiety_card4_image.setOnClickListener(ItemClickListener);
+		vaiety_card1.setOnClickListener(ItemClickListener);
+		vaiety_card2.setOnClickListener(ItemClickListener);
+		vaiety_card3.setOnClickListener(ItemClickListener);
+		vaiety_card4.setOnClickListener(ItemClickListener);
 		vaiety_channel1_image.setOnClickListener(ItemClickListener);
 		vaiety_channel2_image.setOnClickListener(ItemClickListener);
 		vaiety_channel3_image.setOnClickListener(ItemClickListener);
@@ -214,7 +224,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		vaiety_fouce_label.setText(carousellist.get(0).getTitle());
 		Picasso.with(mContext).load(postlist.get(0).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(vaiety_card1_image);
 		vaiety_card1_image.setFocustitle(postlist.get(0).getIntroduction());
-		vaiety_card1_image.setTag(postlist.get(0));
+		vaiety_card1.setTag(postlist.get(0));
 		vaiety_card1_subtitle.setText(postlist.get(0).getTitle());
 		if (postlist.get(0).getCorner() == 2) {
 			vaiety_card1_image.setModetype(1);
@@ -223,7 +233,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		}
 		Picasso.with(mContext).load(postlist.get(1).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(vaiety_card2_image);
 		vaiety_card2_image.setFocustitle(postlist.get(1).getIntroduction());
-		vaiety_card2_image.setTag(postlist.get(1));
+		vaiety_card2.setTag(postlist.get(1));
 		vaiety_card2_subtitle.setText(postlist.get(1).getTitle());
 		if (postlist.get(1).getCorner() == 2) {
 			vaiety_card2_image.setModetype(1);
@@ -233,7 +243,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		Picasso.with(mContext).load(postlist.get(2).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(vaiety_card3_image);
 		vaiety_card3_image.setFocustitle(postlist.get(2).getIntroduction());
 		vaiety_card3_subtitle.setText(postlist.get(2).getTitle());
-		vaiety_card3_image.setTag(postlist.get(2));
+		vaiety_card3.setTag(postlist.get(2));
 		if (postlist.get(2).getCorner() == 2) {
 			vaiety_card3_image.setModetype(1);
 		} else if (postlist.get(2).getCorner() == 3) {
@@ -242,7 +252,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		Picasso.with(mContext).load(postlist.get(3).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(vaiety_card4_image);
 		vaiety_card4_image.setFocustitle(postlist.get(3).getIntroduction());
 		vaiety_card4_subtitle.setText(postlist.get(3).getTitle());
-		vaiety_card4_image.setTag(postlist.get(3));
+		vaiety_card4.setTag(postlist.get(3));
 		if (postlist.get(3).getCorner() == 2) {
 			vaiety_card4_image.setModetype(1);
 		} else if (postlist.get(3).getCorner() == 3) {
