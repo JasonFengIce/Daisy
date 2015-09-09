@@ -331,6 +331,8 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 			if (result != RESULT_SUCCESS) {
 				return;
 			} else {
+				if(mContext == null)
+					return;
 				ArrayList<Carousel> carousellist = entity.getCarousels();
 				ArrayList<Poster> postlist = entity.getPosters();
 				fillData(carousellist, postlist);

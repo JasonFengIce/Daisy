@@ -210,6 +210,8 @@ public class GuideFragment extends ChannelBaseFragment implements
         datafetch.doRequest(api, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
+            	if(mContext == null)
+            		return;
                 HomePagerEntity homePagerEntity = new Gson().fromJson(result,
                         HomePagerEntity.class);
                 ArrayList<HomePagerEntity.Carousel> carousels = homePagerEntity
@@ -348,6 +350,8 @@ public class GuideFragment extends ChannelBaseFragment implements
     }
 
     private void switchVideo() {
+    	if(mContext ==null)
+    		return;
         String videoUrl = CacheManager.getInstance().doRequest(mCarousels.get(mCurrentCarouselIndex).getVideo_url(),
                 "guide_" + mCurrentCarouselIndex + ".mp4", DownloadClient.StoreType.Internal);
         Log.d(TAG, "play video: " + videoUrl);
