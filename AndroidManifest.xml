@@ -91,7 +91,7 @@
                 android:value="sakura.db"/>
         <meta-data
                 android:name="AA_DB_VERSION"
-                android:value="11"/>
+                android:value="12"/>
 
         <service
                 android:name="com.baidu.location.f"

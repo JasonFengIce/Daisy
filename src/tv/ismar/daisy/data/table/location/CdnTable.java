@@ -8,7 +8,7 @@ import com.activeandroid.annotation.Table;
  * Created by huaijie on 8/3/15.
  */
 
-@Table(name = "app_cdn")
+@Table(name = "app_cdn", id = "_id")
 public class CdnTable extends Model {
     public static final String CDN_ID = "cdn_id";
     public static final String CDN_NAME = "cdn_name";
