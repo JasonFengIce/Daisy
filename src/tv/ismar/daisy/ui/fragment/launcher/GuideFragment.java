@@ -74,8 +74,6 @@ public class GuideFragment extends ChannelBaseFragment implements
     private CarouselRepeatType mCarouselRepeatType = CarouselRepeatType.All;
 
 
-
-
     @Override
     public void update() {
 
@@ -169,6 +167,7 @@ public class GuideFragment extends ChannelBaseFragment implements
         IVLCVout vlcVout = mService.getVLCVout();
         vlcVout.setVideoView(mSurfaceView);
         vlcVout.attachViews();
+
 
     }
 
@@ -376,12 +375,16 @@ public class GuideFragment extends ChannelBaseFragment implements
 
     private void startPlayback() {
         Log.d(TAG, "startPlayback is invoke...");
+
+
+
         mService.addCallback(this);
         switchVideo();
         mService.play();
     }
 
     private void stopPlayback() {
+
 
         mService.removeCallback(this);
         mService.stop();

@@ -148,8 +148,19 @@ public class FilmFragment extends ChannelBaseFragment implements
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        IVLCVout vlcVout = mService.getVLCVout();
+        vlcVout.setVideoView(mSurfaceView);
+        vlcVout.attachViews();
 
 
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        IVLCVout vlcVout = mService.getVLCVout();
+        vlcVout.detachViews();
     }
 
     @Override
@@ -312,12 +323,14 @@ public class FilmFragment extends ChannelBaseFragment implements
 
     private void startPlayback() {
         Log.d(TAG, "startPlayback is invoke...");
+
         mService.addCallback(this);
         switchVideo();
         mService.play();
     }
 
     private void stopPlayback() {
+
         mService.removeCallback(this);
         mService.stop();
     }
@@ -379,6 +392,8 @@ public class FilmFragment extends ChannelBaseFragment implements
 
     private void playImage() {
         if (mSurfaceView.getVisibility() == View.VISIBLE) {
+            IVLCVout vlcVout = mService.getVLCVout();
+            vlcVout.detachViews();
             mSurfaceView.setVisibility(View.GONE);
         }
 
@@ -417,6 +432,9 @@ public class FilmFragment extends ChannelBaseFragment implements
     private void playVideo() {
         if (mSurfaceView.getVisibility() == View.GONE) {
             mSurfaceView.setVisibility(View.VISIBLE);
+            IVLCVout vlcVout = mService.getVLCVout();
+            vlcVout.setVideoView(mSurfaceView);
+            vlcVout.attachViews();
         }
 
         if (linkedVideoImage.getVisibility() == View.VISIBLE) {
