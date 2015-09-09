@@ -83,6 +83,7 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
     @Override
     public void onConnected(PlaybackService service) {
         mService = service;
+        Log.i("TestVLC","mService=="+mService);
         if(mCarousels == null){
         fetchHomePage(channelEntity.getHomepage_url());
         }else{

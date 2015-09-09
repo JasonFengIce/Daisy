@@ -93,9 +93,11 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
 
     @Override
     public void onDisconnected() {
-        IVLCVout vlcVout = mService.getVLCVout();
-        vlcVout.detachViews();
-        mService = null;
+        if(mService!=null){
+            IVLCVout vlcVout = mService.getVLCVout();
+            vlcVout.detachViews();
+            mService = null;
+        }
     }
 
 
@@ -392,9 +394,10 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
     }
 
     private void stopPlayback() {
-        mService.removeCallback(this);
-
-        mService.stop();
+        if(mService!=null){
+            mService.removeCallback(this);
+            mService.stop();
+        }
     }
 
 

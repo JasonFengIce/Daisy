@@ -61,7 +61,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/tv_guide_arrow_scroll_margin"
                 android:src="@drawable/channel_arrow_right"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:focusable="true"/>
     </RelativeLayout>
 
