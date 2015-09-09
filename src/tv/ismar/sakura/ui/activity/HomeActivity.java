@@ -41,7 +41,7 @@ public class HomeActivity extends FragmentActivity {
 
         fragments = new ArrayList<Fragment>();
         fragments.add(new NodeFragment());
-//        fragments.add(new FeedbackFragment());
+        fragments.add(new FeedbackFragment());
         fragments.add(new HelpFragment());
 
         ViewPagerScroller scroller = new ViewPagerScroller(this);

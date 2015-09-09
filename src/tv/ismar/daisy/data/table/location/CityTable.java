@@ -7,7 +7,7 @@ import com.activeandroid.annotation.Table;
 /**
  * Created by huaijie on 8/3/15.
  */
-@Table(name = "app_city")
+@Table(name = "app_city", id = "_id")
 public class CityTable extends Model {
 
     public static final String GEO_ID = "geo_id";

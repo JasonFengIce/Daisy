@@ -23,6 +23,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 
 
     private ImageView indicatorNode;
+    private ImageView indicatorFeedback;
     private ImageView indicatorHelp;
 
     @Override
@@ -35,10 +36,14 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 
     private void initViews() {
         indicatorNode = (ImageView) findViewById(R.id.indicator_node_image);
+        indicatorFeedback = (ImageView) findViewById(R.id.indicator_feedback_image);
         indicatorHelp = (ImageView) findViewById(R.id.indicator_help_image);
 
         indicatorNode.setOnClickListener(this);
+        indicatorFeedback.setOnClickListener(this);
         indicatorHelp.setOnClickListener(this);
+
+
     }
 
     @Override
@@ -50,8 +55,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
             case R.id.indicator_node_image:
                 intent.putExtra("position", 0);
                 break;
-            case R.id.indicator_help_image:
+            case R.id.indicator_feedback_image:
                 intent.putExtra("position", 1);
+                break;
+
+            case R.id.indicator_help_image:
+                intent.putExtra("position", 2);
                 break;
         }
         startActivity(intent);
