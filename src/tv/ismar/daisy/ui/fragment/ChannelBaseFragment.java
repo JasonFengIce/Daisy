@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.vlc.PlaybackService;
 import tv.ismar.daisy.data.ChannelEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.data.HomePagerEntity.Poster;
@@ -17,6 +18,7 @@ import tv.ismar.daisy.ui.activity.TVGuideActivity;
 public class ChannelBaseFragment extends Fragment {
     protected ChannelEntity channelEntity;
     protected TVGuideActivity mContext;
+    protected PlaybackService mService;
 
     public ChannelEntity getChannelEntity() {
         return channelEntity;
@@ -30,6 +32,8 @@ public class ChannelBaseFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mContext = (TVGuideActivity) activity;
+        mService = mContext.getService();
+
     }
 
     @Override
