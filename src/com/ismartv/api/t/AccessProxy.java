@@ -161,6 +161,7 @@ public class AccessProxy {
 				break;
 			} catch (Exception e) {
 				i++;
+                result = "";
 				Log.e("Exception", e.toString());
 			}
 		while (i < 3);

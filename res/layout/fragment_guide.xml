@@ -25,10 +25,12 @@
                 android:clickable="true"
                 android:focusable="true" >
             <SurfaceView
+                    android:background="@drawable/launcher_selector"
                     android:id="@+id/linked_video"
                     android:layout_width="@dimen/guide_video_width"
                     android:layout_height="@dimen/guide_video_height"
-                    android:focusableInTouchMode="true" />
+                    android:focusableInTouchMode="false"
+                    android:focusable="false"/>
         </tv.ismar.daisy.ui.widget.HomeItemContainer>
 
         <tv.ismar.daisy.ui.widget.DaisyViewContainer

@@ -159,7 +159,7 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
         linkedVideoImage = (ImageView) mView.findViewById(R.id.film_linked_image);
         film_linked_title = (TextView) mView.findViewById(R.id.film_linked_title);
         film_post_layout.setOnClickListener(ItemClickListener);
-        film_post_layout.requestFocus();
+        //film_post_layout.requestFocus();
         return mView;
     }
 

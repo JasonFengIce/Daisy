@@ -173,17 +173,17 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
         toppage_carous_imageView3 = (LabelImageView) mView.findViewById(R.id.toppage_carous_imageView3);
         film_post_layout = (HomeItemContainer) mView.findViewById(R.id.guide_center_layoutview);
         mSurfaceView = (SurfaceView) mView.findViewById(R.id.linked_video);
-        mSurfaceView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			
-			@Override
-			public void onFocusChange(View arg0, boolean arg1) {
-				if(arg1){
-					film_post_layout.requestFocus();	
-				}
-			}
-		});
+//        mSurfaceView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//
+//			@Override
+//			public void onFocusChange(View arg0, boolean arg1) {
+//				if(arg1){
+//					film_post_layout.requestFocus();
+//				}
+//			}
+//		});
         film_post_layout.setOnClickListener(ItemClickListener);
-        film_post_layout.requestFocus();
+        //film_post_layout.requestFocus();
         return mView;
     }
 
