@@ -130,19 +130,19 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         @Override
         public void onChange(int position) {
             if (position == 0) {
-             //   arrow_left.setVisibility(View.GONE);
+                arrow_left.setVisibility(View.GONE);
                 if (channelChange != null && channelChange != ChannelChange.CLICK_CHANNEL)
                     channelChange = ChannelChange.RIGHT_ARROW;
             } else {
-              //  arrow_left.setVisibility(View.VISIBLE);
+                arrow_left.setVisibility(View.VISIBLE);
             }
 
             if (position == mChannelEntitys.length - 1) {
-              //  arrow_right.setVisibility(View.GONE);
+                arrow_right.setVisibility(View.GONE);
                 if (channelChange != null && channelChange != ChannelChange.CLICK_CHANNEL)
                     channelChange = ChannelChange.LEFT_ARROW;
             } else {
-               // arrow_right.setVisibility(View.VISIBLE);
+                arrow_right.setVisibility(View.VISIBLE);
             }
             selectChannelByPosition(position);
             scroll.setSelection(position);
@@ -171,11 +171,49 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         }
     });
 
+   private View.OnFocusChangeListener scrollViewListener = new View.OnFocusChangeListener() {
+       @Override
+       public void onFocusChange(View v, boolean hasFocus) {
 
+
+           if(hasFocus){
+               TextView textview = (TextView)lastview.findViewById(R.id.channel_item);
+               textview.setBackgroundResource(R.drawable.channel_item_normal);
+               textview.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
+               AnimationSet animationSet1 = new AnimationSet(true);
+               ScaleAnimation scaleAnimation1 = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
+                       Animation.RELATIVE_TO_SELF, 0.5f,
+                       Animation.RELATIVE_TO_SELF, 0.5f);
+               scaleAnimation1.setDuration(200);
+               animationSet1.addAnimation(scaleAnimation1);
+               animationSet1.setFillAfter(true);
+               textview.startAnimation(animationSet1);
+
+               switch (v.getId()){
+                   case R.id.arrow_scroll_left:
+                       channelChange = ChannelChange.LEFT_ARROW;
+                       if (mCurrentChannelPosition.getPosition() - 1 >= 0) {
+                           mCurrentChannelPosition.setPosition(mCurrentChannelPosition.getPosition() - 1);
+                       } else {
+                           mCurrentChannelPosition.setPosition(0);
+                       }
+                       break;
+                   case R.id.arrow_scroll_right:
+                       channelChange = ChannelChange.RIGHT_ARROW;
+                       if (mCurrentChannelPosition.getPosition() + 1 <= mChannelEntitys.length - 1) {
+                           mCurrentChannelPosition.setPosition(mCurrentChannelPosition.getPosition() + 1);
+                       } else {
+                           mCurrentChannelPosition.setPosition(mChannelEntitys.length - 1);
+                       }
+                       break;
+               }
+           }
+       }
+   };
     private OnClickListener arrowViewListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            TextView textview = (TextView)clickView.findViewById(R.id.channel_item);
+            TextView textview = (TextView)lastview.findViewById(R.id.channel_item);
             textview.setBackgroundResource(R.drawable.channel_item_normal);
             textview.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
             AnimationSet animationSet1 = new AnimationSet(true);
@@ -236,10 +274,18 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         setContentView(contentView);
 
 
-        contentView.setOnKeyListener(new View.OnKeyListener() {
+
+        homepage_template = getIntent().getStringExtra("homepage_template");
+        homepage_url = getIntent().getStringExtra("homepage_url");
+        View vv = findViewById(R.id.large_layout);
+        DaisyUtils.setbackground(R.drawable.main_bg,vv);
+
+
+
+        vv.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                 boolean ret = false;
+                boolean ret = false;
                 switch (keyCode){
                     case KeyEvent.KEYCODE_DPAD_LEFT:
                         Log.i("zhangjiqiang","KEYCODE_DPAD_LEFT getNextFocusRightId=="+v.getNextFocusLeftId()+"//getLeft"+v.getLeft());
@@ -254,10 +300,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             }
         });
 
-        homepage_template = getIntent().getStringExtra("homepage_template");
-        homepage_url = getIntent().getStringExtra("homepage_url");
-        View vv = findViewById(R.id.large_layout);
-        DaisyUtils.setbackground(R.drawable.main_bg,vv);
         topView = (LaunchHeaderLayout) findViewById(R.id.top_column_layout);
         initViews();
         initTabView();
@@ -284,6 +326,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         arrow_right = (ImageView) findViewById(R.id.arrow_scroll_right);
         //arrow_left.setOnClickListener(arrowViewListener);
        // arrow_right.setOnClickListener(arrowViewListener);
+        arrow_left.setOnFocusChangeListener(scrollViewListener);
+        arrow_right.setOnFocusChangeListener(scrollViewListener);
     }
 
     @Override
@@ -299,9 +343,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 topView.setTitle(getText(R.string.ismartv_cinema).toString());
                 topView.setSubTitle("首页");
 
-//                if (arrow_left.getVisibility() == View.VISIBLE) {
-//                    arrow_left.setVisibility(View.GONE);
-//                }
+                if (arrow_left.getVisibility() == View.VISIBLE) {
+                    arrow_left.setVisibility(View.GONE);
+                }
 //                if (arrow_right.getVisibility() == View.VISIBLE) {
 //                    arrow_right.setVisibility(View.GONE);
 //                }
@@ -522,12 +566,12 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 TextView channelBtn = (TextView)view.findViewById(R.id.channel_item);
                 channelChange = ChannelChange.CLICK_CHANNEL;
 
-//                if (arrow_left.getVisibility() == View.GONE) {
-//                    arrow_left.setVisibility(View.VISIBLE);
-//                }
-//                if (arrow_right.getVisibility() == View.GONE) {
-//                    arrow_right.setVisibility(View.VISIBLE);
-//                }
+                if (arrow_left.getVisibility() == View.GONE) {
+                    arrow_left.setVisibility(View.VISIBLE);
+                }
+                if (arrow_right.getVisibility() == View.GONE) {
+                    arrow_right.setVisibility(View.VISIBLE);
+                }
 
                 int channelPosition = i;
 
@@ -975,12 +1019,12 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 channelHashMap.get(channel).requestFocusFromTouch();
                 break;
             case LEFT_ARROW:
-             //   arrow_left.requestFocus();
-              //  arrow_left.requestFocusFromTouch();
+                arrow_left.requestFocus();
+                arrow_left.requestFocusFromTouch();
                 break;
             case RIGHT_ARROW:
-             //   arrow_right.requestFocus();
-            //    arrow_right.requestFocusFromTouch();
+                arrow_right.requestFocus();
+                arrow_right.requestFocusFromTouch();
                 break;
         }
 

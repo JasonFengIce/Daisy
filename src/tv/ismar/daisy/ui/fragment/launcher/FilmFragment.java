@@ -77,6 +77,7 @@ public class FilmFragment extends ChannelBaseFragment implements
 
     private String mChannelName;
 
+
     @Override
     public void update() {
 

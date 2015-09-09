@@ -382,6 +382,7 @@ public class GuideFragment extends ChannelBaseFragment implements
     }
 
     private void stopPlayback() {
+
         mService.removeCallback(this);
         mService.stop();
     }

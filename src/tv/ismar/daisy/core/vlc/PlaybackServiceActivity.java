@@ -108,8 +108,8 @@ public class PlaybackServiceActivity extends Activity implements PlaybackService
 
             @Override
             public void onDisconnected() {
-                mService = null;
                 mActivityCallback.onDisconnected();
+                mService = null;
                 for (PlaybackService.Client.Callback connectCb : mFragmentCallbacks)
                     connectCb.onDisconnected();
             }
