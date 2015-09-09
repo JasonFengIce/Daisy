@@ -69,6 +69,8 @@ public class IconPagerIndicator extends LinearLayout implements PagerIndicator, 
         icons[1] = feedbackIcon;
         icons[2] = helpIcon;
 
+        
+
         for (IconImageView imageView : icons)
             imageView.setOnClickListener(this);
 
@@ -100,6 +102,9 @@ public class IconPagerIndicator extends LinearLayout implements PagerIndicator, 
                 icons[i].setSelect(true);
             } else {
                 icons[i].setSelect(false);
+
+
+                
             }
 
         }
