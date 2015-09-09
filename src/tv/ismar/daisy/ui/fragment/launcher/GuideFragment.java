@@ -46,7 +46,7 @@ import java.util.List;
 /**
  * Created by huaijie on 5/18/15.
  */
-public class GuideFragment extends ChannelBaseFragment implements PlaybackService.Client.Callback,
+public class GuideFragment extends ChannelBaseFragment implements
         PlaybackService.Callback {
     private String TAG = "GuideFragment";
 
@@ -70,33 +70,10 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
     private SurfaceView mSurfaceView;
 
 
-    private PlaybackServiceActivity.Helper mHelper;
-    private PlaybackService mService;
-    private List<MediaWrapper> mWrapperList;
     private int mCurrentCarouselIndex = -1;
     private CarouselRepeatType mCarouselRepeatType = CarouselRepeatType.All;
 
 
-    @Override
-    public void onConnected(PlaybackService service) {
-        mService = service;
-        IVLCVout vlcVout = mService.getVLCVout();
-        vlcVout.setVideoView(mSurfaceView);
-        vlcVout.attachViews();
-//        mHandler.sendEmptyMessage(START_PLAYBACK);
-        if (mCarousels == null) {
-            fetchHomePage();
-        } else {
-            playCarousel();
-        }
-    }
-
-    @Override
-    public void onDisconnected() {
-        IVLCVout vlcVout = mService.getVLCVout();
-        vlcVout.detachViews();
-        mService = null;
-    }
 
 
     @Override
@@ -159,7 +136,6 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mHelper = new PlaybackServiceActivity.Helper(mContext, this);
 
     }
 
@@ -188,9 +164,25 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        IVLCVout vlcVout = mService.getVLCVout();
+        vlcVout.setVideoView(mSurfaceView);
+        vlcVout.attachViews();
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        IVLCVout vlcVout = mService.getVLCVout();
+        vlcVout.detachViews();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        mHelper.onStart();
+        fetchHomePage();
     }
 
 
@@ -198,7 +190,6 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
     public void onPause() {
         super.onPause();
         stopPlayback();
-        mHelper.onStop();
     }
 
 
@@ -349,7 +340,7 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
 //        hashMap.put(ItemDetailClickListener.MODEL, mCarousels.get(mCurrentCarouselIndex).getModel_name());
 //        hashMap.put(ItemDetailClickListener.URL, mCarousels.get(mCurrentCarouselIndex).getUrl());
 //        hashMap.put(ItemDetailClickListener.TITLE, mCarousels.get(mCurrentCarouselIndex).getTitle());
-        film_post_layout.setTag(R.drawable.launcher_selector,mCarousels.get(mCurrentCarouselIndex));
+        film_post_layout.setTag(R.drawable.launcher_selector, mCarousels.get(mCurrentCarouselIndex));
 
 //        mHelper.onStart();
         mHandler.sendEmptyMessage(START_PLAYBACK);
@@ -385,7 +376,6 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
 
     private void startPlayback() {
         Log.d(TAG, "startPlayback is invoke...");
-
         mService.addCallback(this);
         switchVideo();
         mService.play();
@@ -393,7 +383,6 @@ public class GuideFragment extends ChannelBaseFragment implements PlaybackServic
 
     private void stopPlayback() {
         mService.removeCallback(this);
-
         mService.stop();
     }
 

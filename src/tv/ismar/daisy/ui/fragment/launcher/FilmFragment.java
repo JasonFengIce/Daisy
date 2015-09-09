@@ -49,7 +49,7 @@ import java.util.ArrayList;
 /**
  * Created by huaijie on 5/18/15.
  */
-public class FilmFragment extends ChannelBaseFragment implements PlaybackService.Client.Callback,
+public class FilmFragment extends ChannelBaseFragment implements
         PlaybackService.Callback {
     private static final String TAG = "FilmFragment";
     private static final int START_PLAYBACK = 0x0000;
@@ -71,31 +71,11 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
 
 
     private SurfaceView mSurfaceView;
-    private PlaybackServiceActivity.Helper mHelper;
-    private PlaybackService mService;
 
     private int mCurrentCarouselIndex = -1;
     private CarouselRepeatType mCarouselRepeatType = CarouselRepeatType.All;
 
     private String mChannelName;
-
-
-    @Override
-    public void onConnected(PlaybackService service) {
-        mService = service;
-        if(mCarousels == null){
-        fetchHomePage(channelEntity.getHomepage_url());
-        }else{
-        	playCarousel();
-        }
-//        mHandler.sendEmptyMessage(START_PLAYBACK);
-    }
-
-    @Override
-    public void onDisconnected() {
-        mService = null;
-    }
-
 
     @Override
     public void update() {
@@ -132,7 +112,7 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mHelper = new PlaybackServiceActivity.Helper(mContext, this);
+
     }
 
     @Override
@@ -174,7 +154,8 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
     @Override
     public void onResume() {
         super.onResume();
-        mHelper.onStart();
+        fetchHomePage(channelEntity.getHomepage_url());
+
     }
 
     @Override
@@ -182,7 +163,6 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
         super.onPause();
         mHandler.removeMessages(CAROUSEL_NEXT);
         stopPlayback();
-        mHelper.onStop();
 
     }
 
@@ -223,7 +203,9 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
         });
 
     }
+
     private HomeItemContainer focusView;
+
     private void initPosters(ArrayList<HomePagerEntity.Poster> posters) {
         guideRecommmendList.removeAllViews();
         film_lefttop_image.setUrl(posters.get(0).getCustom_image());
@@ -281,7 +263,6 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
                 guideRecommmendList.addView(frameLayout);
 
 
-
             } else {
                 params.width = 206;
                 params.height = 277;
@@ -330,21 +311,14 @@ public class FilmFragment extends ChannelBaseFragment implements PlaybackService
 
     private void startPlayback() {
         Log.d(TAG, "startPlayback is invoke...");
-        IVLCVout vlcVout = mService.getVLCVout();
-        vlcVout.setVideoView(mSurfaceView);
-        vlcVout.attachViews();
         mService.addCallback(this);
         switchVideo();
         mService.play();
     }
 
     private void stopPlayback() {
-        if (mService != null) {
-            mService.removeCallback(this);
-            IVLCVout vlcVout = mService.getVLCVout();
-            vlcVout.detachViews();
-            mService.stop();
-        }
+        mService.removeCallback(this);
+        mService.stop();
     }
 
 

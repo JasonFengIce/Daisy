@@ -45,6 +45,8 @@ import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.core.provider.LocationProvider;
 import tv.ismar.daisy.core.service.PosterUpdateService;
 import tv.ismar.daisy.core.update.AppUpdateUtils;
+import tv.ismar.daisy.core.vlc.PlaybackService;
+import tv.ismar.daisy.core.vlc.PlaybackServiceActivity;
 import tv.ismar.daisy.data.ChannelEntity;
 import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
 import tv.ismar.daisy.ui.Position;
@@ -65,7 +67,10 @@ import static tv.ismar.daisy.VodApplication.*;
 /**
  * Created by huaijie on 5/18/15.
  */
-public class TVGuideActivity extends BaseActivity implements Activator.OnComplete ,HGridView.OnScrollListener{
+public class TVGuideActivity extends BaseActivity implements Activator.OnComplete ,HGridView.OnScrollListener,PlaybackService.Client.Callback{
+
+
+
     private static final String TAG = "TVGuideActivity";
 
     private AppUpdateReceiver appUpdateReceiver;
@@ -100,6 +105,26 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 //    private WeatherFragment weatherFragment;
 
     private LaunchHeaderLayout topView;
+    private PlaybackServiceActivity.Helper mHelper;
+    private PlaybackService mService;
+
+
+
+    @Override
+    public void onConnected(PlaybackService service) {
+        mService = service;
+//        mHandler.sendEmptyMessage(START_PLAYBACK);
+    }
+
+    @Override
+    public void onDisconnected() {
+        mService = null;
+    }
+
+    public PlaybackService getService(){
+        return mService;
+    }
+
 
     private Position mCurrentChannelPosition = new Position(new Position.PositioinChangeCallback() {
         @Override
@@ -202,6 +227,10 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mHelper = new PlaybackServiceActivity.Helper(this, this);
+        mHelper.onStart();
+
         registerUpdateReceiver();
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_tv_guide, null);
         setContentView(contentView);
@@ -241,6 +270,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         activator.active(MANUFACTURE, KIND, String.valueOf(SimpleRestClient.appVersion), localInfo);
 
     }
+
+
+
 
     private void initViews() {
         toppanel = (FrameLayout) findViewById(R.id.top_column_layout);
@@ -630,6 +662,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
            }
     }
 
+
+
     /**
      * receive app update broadcast, and show update popup window
      */
@@ -961,6 +995,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     @Override
     protected void onDestroy() {
+        mHelper.onStop();
         unregisterReceiver(appUpdateReceiver);
         if (!(updatePopupWindow == null)) {
             updatePopupWindow.dismiss();
