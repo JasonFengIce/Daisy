@@ -193,6 +193,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal|top" 
                     android:textColor="#FFFFFFFF"
+                    android:layout_marginTop="@dimen/entertainment_vaiety_card_subtitle_mt"
                     android:textSize="@dimen/entertainment_vaiety_card_subtitle_textsize" />
             </tv.ismar.daisy.ui.widget.LinerLayoutContainer>
 
@@ -229,6 +230,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal|top" 
+                    android:layout_marginTop="@dimen/entertainment_vaiety_card_subtitle_mt"
                     android:textColor="#FFFFFFFF"
                     android:textSize="@dimen/entertainment_vaiety_card_subtitle_textsize" />
             </tv.ismar.daisy.ui.widget.LinerLayoutContainer>
