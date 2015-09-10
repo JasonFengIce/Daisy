@@ -1,31 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" >
+
 
     <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/linearLayout1"
-        android:layout_width="@dimen/search_gridview_item_image_W"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/search_gridview_item_main_layout_marginB"
-        android:layout_marginLeft="@dimen/search_gridview_item_main_layout_marginL"
+        android:layout_width="@dimen/filter_list_item_title_w"
+        android:layout_height="match_parent"
   >
 
         <tv.ismar.daisy.views.AsyncImageView
             android:id="@+id/itemImage"
-            android:layout_width="@dimen/search_gridview_item_image_W"
-            android:layout_height="@dimen/search_gridview_item_image_H"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/list_item_preview_bg"
-            />
+            android:layout_width="@dimen/filter_list_item_title_w"
+            android:layout_height="@dimen/filter_list_item_preview_img_h"
+            android:layout_alignParentTop="true"
+            android:scaleType="fitXY"
+            android:background="@drawable/list_item_preview_bg"/>
 
         <Button
             android:id="@+id/iv_type"
             android:layout_width="@dimen/search_gridview_item_btn_type_W"
             android:layout_height="@dimen/search_gridview_item_btn_type_H"
-            android:layout_marginTop="@dimen/search_gridview_item_iv_type_MT"
             android:layout_alignLeft="@+id/itemImage"
-            android:layout_alignParentTop="true"
+            android:layout_alignTop="@id/itemImage"
             android:layout_marginLeft="@dimen/search_gridview_item_btn_type_marginL"
             android:focusable="false"
             android:textColor="@color/hotwords_text_color"
@@ -45,10 +41,12 @@
     </TextView>
         <tv.ismar.daisy.views.MarqueeText
             android:id="@+id/itemText"
-            android:layout_width="@dimen/search_gridview_item_image_W"
+            android:layout_width="@dimen/filter_list_item_title_w"
             android:layout_height="match_parent"
             android:layout_below="@+id/itemImage"
-            android:layout_marginTop="@dimen/search_gridview_item_text_marginT"
+            android:paddingTop="@dimen/filter_list_item_title_mt"
+            android:paddingBottom="@dimen/filter_list_item_title_pb"
+            android:layout_centerHorizontal="true"
             android:gravity="center"
             android:ellipsize="marquee"
             android:singleLine="true"
@@ -62,15 +60,17 @@
 
         </tv.ismar.daisy.views.MarqueeText>
 
-    </RelativeLayout>
+
 
     <tv.ismar.daisy.views.AsyncImageView
-        android:id="@+id/iv_label"
-        android:layout_width="@dimen/search_gridview_item_label_W"
-        android:layout_height="@dimen/search_gridview_item_label_H"
-        android:layout_gravity="right"
-        android:layout_marginRight="@dimen/search_gridview_item_label_marginR"
-        android:layout_marginTop="@dimen/search_gridview_item_label_marginT" 
-        android:visibility="gone"/>
+            android:id="@+id/iv_label"
+            android:layout_width="@dimen/search_gridview_item_label_W"
+            android:layout_height="@dimen/search_gridview_item_label_H"
+            android:layout_gravity="right"
+            android:layout_marginRight="@dimen/search_gridview_item_label_marginR"
+            android:layout_marginTop="@dimen/search_gridview_item_label_marginT"
+            android:visibility="gone"/>
 
-</FrameLayout>
+    </RelativeLayout>
+
+

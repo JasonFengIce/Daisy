@@ -127,32 +127,32 @@
 
 
         <include
-                android:id="@id/serarc_gridview" layout="@layout/search_grid_view"/>
+                 layout="@layout/search_grid_view"/>
 
     </LinearLayout>
 
-    <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
-        <Button
-                android:background="@drawable/selector_search_left"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:id="@+id/arrow_left"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="invisible"
-                android:layout_marginLeft="@dimen/search_arrow_btn_MLR"/>
+    <!--<RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">-->
+        <!--<Button-->
+                <!--android:background="@drawable/channel_arrow_left"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:id="@+id/arrow_left"-->
+                <!--android:layout_width="@dimen/listportait_shadow_w"-->
+                <!--android:layout_height="@dimen/listportait_shadow_h"-->
+                <!--android:visibility="visible"-->
+                <!--android:layout_marginLeft="@dimen/listportait_shadow_ml"/>-->
 
-        <Button
-                android:background="@drawable/selector_search_right"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:id="@+id/arrow_right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="invisible"
-                android:layout_marginRight="@dimen/search_arrow_btn_MLR"/>
+        <!--<Button-->
+                <!--android:background="@drawable/channel_arrow_right"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:id="@+id/arrow_right"-->
+                <!--android:layout_width="@dimen/listportait_shadow_w"-->
+                <!--android:layout_height="@dimen/listportait_shadow_h"-->
+                <!--android:visibility="invisible"-->
+                <!--android:layout_marginRight="@dimen/listportait_shadow_ml"/>-->
 
-    </RelativeLayout>
+    <!--</RelativeLayout>-->
 
 </FrameLayout>
 
