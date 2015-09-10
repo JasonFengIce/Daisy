@@ -375,6 +375,7 @@ public class NetworkUtils {
 			String jsonContent = base64Code(Content);
 			//String url = "http://ismartv.calla.tvxio.com/log";
             String url = SimpleRestClient.log_domain + "/log";
+//			String url = "http://192.168.1.108:8080/log";
 			java.net.URL connURL = new java.net.URL(url);
 			java.net.HttpURLConnection httpConn = (java.net.HttpURLConnection) connURL
 					.openConnection();

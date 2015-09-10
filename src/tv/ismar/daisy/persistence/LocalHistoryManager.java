@@ -191,6 +191,9 @@ public class LocalHistoryManager implements HistoryManager {
 				}
 				properties.put(EventProperty.TITLE, history.title);
 				properties.put(EventProperty.POSITION, history.last_position);
+				properties.put("userid", SimpleRestClient.device_token);
+
+
 				NetworkUtils.SaveLogToLocal(NetworkUtils.VIDEO_HISTORY, properties);
 			}
 			return null;

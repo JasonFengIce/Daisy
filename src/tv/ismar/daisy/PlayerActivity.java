@@ -528,7 +528,7 @@ public class PlayerActivity extends VodMenuAction {
 											clip.pk,
 											currQuality,
 											(System.currentTimeMillis() - startDuration) / 1000,
-                                            speed, null, sid);
+                                            speed, mediaip, sid);
 									callaPlay.videoPlayStart(item.item_pk,
 											item.pk, item.title, clip.pk,
 											currQuality, speed);
@@ -540,7 +540,7 @@ public class PlayerActivity extends VodMenuAction {
 											clip.pk,
 											currQuality,
 											(System.currentTimeMillis() - startDuration) / 1000,
-                                            speed, null, sid);
+                                            speed, mediaip, sid);
 									callaPlay
 											.videoPlayStart(item.pk, null,
 													item.title, clip.pk,
@@ -1123,7 +1123,7 @@ public class PlayerActivity extends VodMenuAction {
 										"end",
 										currPosition,
 										(System.currentTimeMillis() - startDuration) / 1000,
-										mSection, sid, "list",
+										item.slug, sid, "list",
 										item.content_model);// String
 					// section,String
 					// sid,String
@@ -1141,7 +1141,7 @@ public class PlayerActivity extends VodMenuAction {
 										"end",
 										currPosition,
 										(System.currentTimeMillis() - startDuration) / 1000,
-										mSection, sid, "list",
+										item.slug, sid, "list",
 										item.content_model);
 				} catch (Exception e) {
 					Log.e(TAG, " log Sender videoExit end " + e.toString());
@@ -1578,7 +1578,7 @@ public class PlayerActivity extends VodMenuAction {
 											"detail",
 											currPosition,
 											(System.currentTimeMillis() - startDuration) / 1000,
-											mSection, sid, "list",
+											item.slug, sid, "list",
 											item.content_model);
 								else
 									callaPlay.videoExit(
@@ -1591,7 +1591,7 @@ public class PlayerActivity extends VodMenuAction {
 											"detail",
 											currPosition,
 											(System.currentTimeMillis() - startDuration) / 1000,
-											mSection, sid, "list",
+											item.slug, sid, "list",
 											item.content_model);
 							} catch (Exception e) {
 								Log.e(TAG,
