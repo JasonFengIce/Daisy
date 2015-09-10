@@ -91,12 +91,14 @@
             android:clipChildren="false"
             android:clipToPadding="false" >
 
-            <LinearLayout
+            <tv.ismar.daisy.ui.widget.LinerLayoutContainer
                 android:id="@+id/vaiety_card1"
                 android:layout_width="@dimen/entertainment_vaiety_card_w"
                 android:layout_height="@dimen/entertainment_vaiety_card_h"
                 android:clipChildren="false"
                 android:clipToPadding="false"
+                android:focusable="true"
+                android:clickable="true"
                 android:orientation="vertical"
                 android:background="@drawable/entertainment_item_bg"
                  >
@@ -121,14 +123,16 @@
                     android:gravity="center"
                     android:textColor="#FFFFFFFF"
                     android:textSize="@dimen/entertainment_vaiety_card_subtitle_textsize" />
-            </LinearLayout>
+            </tv.ismar.daisy.ui.widget.LinerLayoutContainer>
 
-            <LinearLayout
+            <tv.ismar.daisy.ui.widget.LinerLayoutContainer
                 android:id="@+id/vaiety_card2"
                 android:layout_width="@dimen/entertainment_vaiety_card_w"
                 android:layout_height="@dimen/entertainment_vaiety_card_h"
                 android:clipChildren="false"
                 android:clipToPadding="false"
+                android:focusable="true"
+                android:clickable="true"
                 android:orientation="vertical"
                 android:layout_marginLeft="@dimen/entertainment_vaiety_card_ml"
                 android:layout_toRightOf="@+id/vaiety_card1"
@@ -155,9 +159,9 @@
                     android:gravity="center"
                     android:textColor="#FFFFFFFF"
                     android:textSize="@dimen/entertainment_vaiety_card_subtitle_textsize" />
-            </LinearLayout>
+            </tv.ismar.daisy.ui.widget.LinerLayoutContainer>
 
-            <LinearLayout
+            <tv.ismar.daisy.ui.widget.LinerLayoutContainer
                 android:id="@+id/vaiety_card3"
                 android:layout_width="@dimen/entertainment_vaiety_card_w"
                 android:layout_height="@dimen/entertainment_vaiety_card_h"
@@ -165,6 +169,8 @@
                 android:clipToPadding="false"
                 android:orientation="vertical"
                 android:layout_below="@+id/vaiety_card1"
+                android:focusable="true"
+                android:clickable="true"
                 android:background="@drawable/entertainment_item_bg" >
 
                 <tv.ismar.daisy.views.LabelImageView
@@ -185,17 +191,19 @@
                     android:id="@+id/vaiety_card3_subtitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:gravity="center_horizontal|top" 
                     android:textColor="#FFFFFFFF"
                     android:textSize="@dimen/entertainment_vaiety_card_subtitle_textsize" />
-            </LinearLayout>
+            </tv.ismar.daisy.ui.widget.LinerLayoutContainer>
 
-            <LinearLayout
+            <tv.ismar.daisy.ui.widget.LinerLayoutContainer
                 android:id="@+id/vaiety_card4"
                 android:layout_width="@dimen/entertainment_vaiety_card_w"
                 android:layout_height="@dimen/entertainment_vaiety_card_h"
                 android:clipChildren="false"
                 android:clipToPadding="false"
+                android:focusable="true"
+                android:clickable="true"
                 android:orientation="vertical"
                 android:layout_toRightOf="@+id/vaiety_card3"
                 android:layout_below="@+id/vaiety_card2"
@@ -220,10 +228,10 @@
                     android:id="@+id/vaiety_card4_subtitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:gravity="center_horizontal|top" 
                     android:textColor="#FFFFFFFF"
                     android:textSize="@dimen/entertainment_vaiety_card_subtitle_textsize" />
-            </LinearLayout>
+            </tv.ismar.daisy.ui.widget.LinerLayoutContainer>
         </RelativeLayout>
     </LinearLayout>
 

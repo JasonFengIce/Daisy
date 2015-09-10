@@ -269,6 +269,8 @@ public class SportFragment extends ChannelBaseFragment {
 			if (result != RESULT_SUCCESS) {
 				return;
 			} else {
+				if(mContext == null)
+					return;
 				ArrayList<Poster> postlist = entity.getPosters();
 				ArrayList<Carousel> carousels = entity.getCarousels();
 				fillData(carousels, postlist);

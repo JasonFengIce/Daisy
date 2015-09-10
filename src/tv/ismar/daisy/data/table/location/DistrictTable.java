@@ -7,7 +7,7 @@ import com.activeandroid.annotation.Table;
 /**
  * Created by huaijie on 8/3/15.
  */
-@Table(name = "app_district")
+@Table(name = "app_district", id = "_id")
 public class DistrictTable extends Model {
 
     @Column(unique = true, onUniqueConflict = Column.ConflictAction.IGNORE)

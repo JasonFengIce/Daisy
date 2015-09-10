@@ -76,6 +76,8 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
         new IsmartvUrlClient().doRequest(url, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
+            	if(mContext == null)
+            		return;
                 HomePagerEntity homePagerEntity = new Gson().fromJson(result, HomePagerEntity.class);
                 ArrayList<HomePagerEntity.Poster> posters = homePagerEntity.getPosters();
                 ArrayList<HomePagerEntity.Carousel> carousels = homePagerEntity.getCarousels();
