@@ -181,7 +181,12 @@ public class GuideFragment extends ChannelBaseFragment implements
     @Override
     public void onResume() {
         super.onResume();
-        fetchHomePage();
+		if (mCarousels == null) {
+			fetchHomePage();
+		} else {
+			playCarousel();
+		}
+
     }
 
 

@@ -983,6 +983,7 @@
     <dimen name="entertainment_vaiety_card_w">402dp</dimen>
     <dimen name="entertainment_vaiety_card_h">260dp</dimen>
     <dimen name="entertainment_vaiety_card_ml">27dp</dimen>
+    <dimen name="entertainment_vaiety_card_subtitle_mt">-5dp</dimen>
     <dimen name="entertainment_vaiety_card_image_w">398dp</dimen>
     <dimen name="entertainment_vaiety_card_image_h">227dp</dimen>
     <dimen name="entertainment_vaiety_card_image_margin">2dp</dimen>
