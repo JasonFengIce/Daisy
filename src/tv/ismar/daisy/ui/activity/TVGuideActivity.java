@@ -144,9 +144,13 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             } else {
                 arrow_right.setVisibility(View.VISIBLE);
             }
+            Log.i("TestFragment","position=="+position);
             selectChannelByPosition(position);
+            lastview = scroll.getChildAt(position);
             scroll.setSelection(position);
-
+            scroll.requestFocus();
+            //   setClickChannelView(scroll.getChildAt(position));
+          //  lastview = scroll.getChildAt(position);
 
 
           //  scroll.performItemClick(scroll.getChildAt(position),position,scroll.getChildAt(position).getId());
@@ -200,6 +204,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                        break;
                    case R.id.arrow_scroll_right:
                        channelChange = ChannelChange.RIGHT_ARROW;
+                       Log.i("TestFragment","mCurrentChannelPosition.getPosition()"+mCurrentChannelPosition.getPosition());
                        if (mCurrentChannelPosition.getPosition() + 1 <= mChannelEntitys.length - 1) {
                            mCurrentChannelPosition.setPosition(mCurrentChannelPosition.getPosition() + 1);
                        } else {
@@ -361,8 +366,10 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 animationSet1.addAnimation(scaleAnimation1);
                 animationSet1.setFillAfter(true);
                 textview.startAnimation(animationSet1);
-                setClickChannelView(scroll.getChildAt(0));
                 }
+
+                setClickChannelView(scroll.getChildAt(0));
+                lastview = scroll.getChildAt(0);
             }
         } else {
             showExitPopup(contentView);
@@ -473,8 +480,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     }
 
     private void setClickChannelView(View view){
-
-        Log.i("zhangjiqiajg","setClickChannelView");
         TextView channelBtn = (TextView)view.findViewById(R.id.channel_item);
         channelBtn.setBackgroundResource(R.drawable.channel_item_focus);
         channelBtn.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
@@ -557,7 +562,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         imageAdapter.setList((ArrayList<ChannelEntity>) channelList);
         imageAdapter.setOnClickListener(channelClickListener);
         scroll.setFocusable(true);
-
+        scroll.requestFocus();
         scroll.mFocusListener = mFocusListener;
 
         scroll.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -566,14 +571,16 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 TextView channelBtn = (TextView)view.findViewById(R.id.channel_item);
                 channelChange = ChannelChange.CLICK_CHANNEL;
 
-                if (arrow_left.getVisibility() == View.GONE) {
-                    arrow_left.setVisibility(View.VISIBLE);
-                }
-                if (arrow_right.getVisibility() == View.GONE) {
-                    arrow_right.setVisibility(View.VISIBLE);
-                }
+//                if (arrow_left.getVisibility() == View.GONE) {
+//                    arrow_left.setVisibility(View.VISIBLE);
+//                }
+//                if (arrow_right.getVisibility() == View.GONE) {
+//                    arrow_right.setVisibility(View.VISIBLE);
+//                }
 
                 int channelPosition = i;
+
+
 
                 if(lastview!=null){
 

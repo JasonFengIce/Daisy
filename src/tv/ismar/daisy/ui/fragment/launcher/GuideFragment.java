@@ -239,6 +239,9 @@ public class GuideFragment extends ChannelBaseFragment implements
         guideRecommmendList.removeAllViews();
         ArrayList<FrameLayout> imageViews = new ArrayList<FrameLayout>();
         for (int i = 0; i < 8; i++) {
+            if(mContext==null){
+                return;
+            }
             tv.ismar.daisy.ui.widget.HomeItemContainer frameLayout = (tv.ismar.daisy.ui.widget.HomeItemContainer) LayoutInflater
                     .from(mContext).inflate(R.layout.item_poster, null);
             ImageView itemView = (ImageView) frameLayout

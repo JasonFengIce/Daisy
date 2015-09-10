@@ -101,6 +101,9 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
     }
 
     private void initPosters(ArrayList<HomePagerEntity.Poster> posters) {
+        if(mContext==null){
+            return;
+        }
         int marginTP = (int) mContext.getResources().getDimension(R.dimen.child_fragment_item_margin_tp);
 
         int itemWidth = (int) mContext.getResources().getDimension(R.dimen.child_fragment_item_width);
@@ -112,7 +115,8 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
             itemContainer.setOnClickListener(ItemClickListener);
             ImageView itemImg = (ImageView) itemContainer.findViewById(R.id.item_img);
             TextView itemText = (TextView) itemContainer.findViewById(R.id.item_title);
-
+            if(mContext==null)
+                return;
             Picasso.with(mContext).load(posters.get(i).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(itemImg);
             itemText.setText(posters.get(i).getTitle());
 
