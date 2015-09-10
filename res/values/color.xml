@@ -48,8 +48,8 @@
     <color name="secondary_progress_color">#407e8f</color>
 
     <!-- update -->
-    <color name="bg_update_bt_focus">#f27f0a</color>
-    <color name="bg_update_bt_normal">#3aa0eb</color>
+    <color name="bg_update_bt_normal">#f27f0a</color>
+    <color name="bg_update_bt_focus">#3aa0eb</color>
 
     <color name="white">#FFFFFF</color>
     <color name="channel_more">#00a8ff</color>
