@@ -122,9 +122,19 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		return view;
 	}
 
+    @Override
+    public void onPause() {
+        if(task!=null){
+            task.cancel(true);
+        }
+        super.onPause();
+    }
+
+    private FetchDataTask task;
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
-		new FetchDataTask().execute();
+        task = new FetchDataTask();
+        task.execute();
 		vaiety_thumb1.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
@@ -195,6 +205,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 	private void fillData(ArrayList<Carousel> carousellist,
 			ArrayList<Poster> postlist) {
 		// vaiety_post.setUrl(carousellist.get(0).getVideo_image());
+
 		Picasso.with(mContext).load(carousellist.get(0).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(vaiety_thumb1);
 		vaiety_thumb1.setTag(carousellist.get(0).getVideo_image());
 		vaiety_thumb1.setTag(R.id.vaiety_post, carousellist.get(0).getTitle());

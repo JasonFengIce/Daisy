@@ -113,7 +113,6 @@ public class FilmFragment extends ChannelBaseFragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -192,9 +191,9 @@ public class FilmFragment extends ChannelBaseFragment implements
 
                 Log.d(TAG, "posters size: " + posters.size());
                 Log.d(TAG, "carousels size: " + carousels.size());
+                    initPosters(posters);
+                    initCarousel(carousels);
 
-                initPosters(posters);
-                initCarousel(carousels);
             }
 
             @Override
@@ -226,6 +225,8 @@ public class FilmFragment extends ChannelBaseFragment implements
             } else {
                 params.setMargins(0, 0, 28, 0);
             }
+            if(mContext==null)
+                return;
             ImageView itemView = new ImageView(mContext);
 //            itemView.setBackgroundResource(R.drawable.launcher_selector);
             itemView.setFocusable(true);
@@ -291,6 +292,8 @@ public class FilmFragment extends ChannelBaseFragment implements
                 params.topMargin = 0;
             else
                 params.topMargin = 17;
+            if(mContext==null)
+                return;
             LabelImageView itemView = new LabelImageView(mContext);
             itemView.setFocusable(true);
             Picasso.with(mContext).load(carousels.get(i).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE)
