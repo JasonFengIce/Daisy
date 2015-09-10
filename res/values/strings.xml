@@ -134,7 +134,7 @@
 
     <!-- launcher -->
     <string name="search_text">搜索</string>
-    <string name="user_center">用户中心</string>
+    <string name="user_center">个人中心</string>
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
     <string name="exit_prompt">你是否确定退出视云影院</string>

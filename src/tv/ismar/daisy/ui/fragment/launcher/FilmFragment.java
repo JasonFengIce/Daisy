@@ -165,7 +165,11 @@ public class FilmFragment extends ChannelBaseFragment implements
     @Override
     public void onResume() {
         super.onResume();
-        fetchHomePage(channelEntity.getHomepage_url());
+		if (mCarousels == null) {
+			fetchHomePage(channelEntity.getHomepage_url());
+		} else {
+			playCarousel();
+		}
 
     }
 
