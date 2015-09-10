@@ -35,6 +35,7 @@
         android:paddingLeft="5dip"
         android:textSize="32sp"
         android:textColor="#FFF8F8FF"
+        android:nextFocusDown="@+id/shiyuncard_submit"
          />
 
     <Button
