@@ -21,6 +21,7 @@
         android:scaleType="fitXY"/>
 
     <TextView
+
         android:gravity="center_horizontal"
         android:layout_width="@dimen/filter_list_item_title_w"
         android:layout_height="match_parent"

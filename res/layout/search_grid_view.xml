@@ -45,50 +45,98 @@
 <!--     </org.sakuratya.horizontal.ui.ZGridView> -->
 
 
+<!--<org.sakuratya.horizontal.ui.HGridView-->
+        <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--xmlns:sakura="http://schemas.android.com/apk/res-auto"-->
+        <!--android:id="@+id/serarc_gridview"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_marginLeft="@dimen/search_gridview_marginL"-->
+        <!--android:layout_marginTop="@dimen/search_gridview_marginT"-->
+        <!--android:layout_marginBottom="@dimen/search_gridview_marginB"-->
+        <!--android:layout_marginRight="@dimen/search_gridview_marginR"-->
+        <!--sakura:horizontalSpacing="@dimen/related_view_list_horizontalspacing"-->
+        <!--sakura:numRows="3"-->
+        <!--sakura:rowHeight="@dimen/filter_portraitresult_top_layout_ml"-->
+        <!--sakura:selectorDrawable="@drawable/vod_gv_selector"-->
+        <!--sakura:verticalSpacing="@dimen/search_gridview_verticalspacing"-->
+        <!--sakura:selectionLeftPadding="@dimen/ZGridView_search_selectorLeftPadding"-->
+        <!--sakura:selectionTopPadding="@dimen/ZGridView_search_selectorTopPadding"-->
+        <!--sakura:selectionRightPadding="@dimen/ZGridView_search_selectorRight"-->
+        <!--sakura:selectionBottomPadding="@dimen/ZGridView_search_selectorBottom">-->
+<!--</org.sakuratya.horizontal.ui.HGridView>-->
+
+<!--<org.sakuratya.horizontal.ui.HGridView-->
+<!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--xmlns:sakura="http://schemas.android.com/apk/res-auto"-->
+<!--android:id="@+id/serarc_gridview"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent"-->
+<!--sakura:horizontalSpacing="@dimen/listportait_tabs_layout_margin"-->
+<!--sakura:numRows="3"-->
+<!--sakura:rowHeight="@dimen/filter_result_list_view_rowHeight"-->
+<!--sakura:selectorDrawable="@drawable/popup_bg_yellow"-->
+<!--sakura:verticalSpacing="0dip"-->
+<!--sakura:selectionLeftPadding="@dimen/HGridView_related_selectionLeftPadding"-->
+<!--sakura:selectionTopPadding="@dimen/HGridView_related_selectionTopPadding"-->
+<!--sakura:selectionRightPadding="@dimen/HGridView_related_selectionRightPadding"-->
+<!--sakura:selectionBottomPadding="@dimen/HGridView_related_selectionBottomPadding"-->
+<!--android:paddingTop="@dimen/filter_result_list_filter_grid_pl"-->
+<!--android:layout_marginTop="@dimen/filmitem_portrait_middle_btn_ml"-->
+<!--android:layout_marginLeft="70dip"-->
+<!--android:layout_marginRight="70dip"-->
+<!--android:paddingRight="@dimen/filter_result_list_filter_grid_pr"-->
+<!--android:paddingLeft="@dimen/filter_result_list_filter_grid_pl">-->
+<!--</org.sakuratya.horizontal.ui.HGridView>-->
+
+
+
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:sakura="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+<Button
+        android:visibility="invisible"
+        android:clickable="true"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/arrow_left"
+        android:layout_width="@dimen/listportait_shadow_w"
+        android:layout_height="@dimen/listportait_shadow_h"
+        android:background="@drawable/channel_arrow_left"
+        android:layout_marginLeft="@dimen/listportait_shadow_ml"
+        android:layout_marginTop="@dimen/listportait_shadow_mt"
+        />
+<Button
+        android:visibility="invisible"
+        android:layout_alignParentRight="true"
+        android:id="@+id/arrow_right"
+        android:layout_width="@dimen/listportait_shadow_w"
+        android:layout_height="@dimen/listportait_shadow_h"
+        android:background="@drawable/channel_arrow_right"
+        android:layout_marginTop="@dimen/listportait_shadow_mt"
+        android:layout_marginRight="@dimen/listportait_shadow_ml"/>
 <org.sakuratya.horizontal.ui.HGridView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:sakura="http://schemas.android.com/apk/res-auto"
+
+        android:layout_toLeftOf="@id/arrow_right"
+        android:layout_toRightOf="@id/arrow_left"
         android:id="@+id/serarc_gridview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/search_gridview_marginL"
-        android:layout_marginTop="@dimen/search_gridview_marginT"
-        android:layout_marginBottom="@dimen/search_gridview_marginB"
-        android:layout_marginRight="@dimen/search_gridview_marginR"
-        sakura:horizontalSpacing="@dimen/related_view_list_horizontalspacing"
+        sakura:horizontalSpacing="@dimen/listportait_tabs_layout_margin"
         sakura:numRows="3"
-        sakura:rowHeight="@dimen/filter_portraitresult_top_layout_ml"
-        sakura:selectorDrawable="@drawable/vod_gv_selector"
-        sakura:verticalSpacing="@dimen/search_gridview_verticalspacing"
-        sakura:selectionLeftPadding="@dimen/ZGridView_search_selectorLeftPadding"
-        sakura:selectionTopPadding="@dimen/ZGridView_search_selectorTopPadding"
-        sakura:selectionRightPadding="@dimen/ZGridView_search_selectorRight"
-        sakura:selectionBottomPadding="@dimen/ZGridView_search_selectorBottom">
+        sakura:rowHeight="@dimen/filter_result_list_view_rowHeight"
+        sakura:selectorDrawable="@drawable/popup_bg_yellow"
+        sakura:verticalSpacing="0dip"
+        sakura:selectionLeftPadding="@dimen/HGridView_related_selectionLeftPadding"
+        sakura:selectionTopPadding="@dimen/HGridView_related_selectionTopPadding"
+        sakura:selectionRightPadding="@dimen/HGridView_related_selectionRightPadding"
+        sakura:selectionBottomPadding="@dimen/HGridView_related_selectionBottomPadding"
+        android:paddingTop="@dimen/filter_result_list_filter_grid_pl"
+        android:layout_marginTop="@dimen/filmitem_portrait_middle_btn_ml"
+        android:layout_marginLeft="@dimen/filter_result_list_filter_grid_ml"
+        android:layout_marginRight="@dimen/filter_result_list_filter_grid_ml"
+        android:paddingRight="@dimen/filter_result_list_filter_grid_pr"
+        android:paddingLeft="@dimen/filter_result_list_filter_grid_pl">
 </org.sakuratya.horizontal.ui.HGridView>
-
-        <!--    <org.sakuratya.horizontal.ui.HGridView -->
-        <!--              xmlns:android="http://schemas.android.com/apk/res/android" -->
-        <!--         xmlns:sakura="http://schemas.android.com/apk/res/tv.ismar.daisy" -->
-        <!--         android:id="@+id/serarc_gridview" -->
-        <!--         android:layout_width="match_parent" -->
-        <!--         android:layout_height="match_parent" -->
-        <!--         android:layout_marginLeft="@dimen/search_gridview_marginL"  -->
-        <!--         android:layout_marginTop="@dimen/search_gridview_marginT" -->
-        <!--         android:layout_marginBottom="@dimen/search_gridview_marginB" -->
-        <!--         android:layout_marginRight="@dimen/search_gridview_marginR" -->
-        <!--         android:fadingEdge="horizontal" -->
-        <!--         android:fadingEdgeLength="@dimen/gridview_main_panel_fadingEdgeLength" -->
-        <!--         sakura:horizontalSpacing="@dimen/gridview_main_panel_horizontalSpacing" -->
-        <!--         sakura:numRows="3" -->
-        <!--         sakura:rowHeight="@dimen/gridview_main_panel_rowHeight" -->
-        <!--         sakura:selectorDrawable="@drawable/vod_gv_selector" -->
-        <!--         sakura:verticalSpacing="@dimen/gridview_main_panel_verticalSpacing" -->
-        <!--         sakura:selectionLeftPadding="@dimen/HGridView_related_selectionLeftPadding" -->
-        <!--         sakura:selectionTopPadding="@dimen/HGridView_related_selectionTopPadding" -->
-        <!--         sakura:selectionRightPadding="@dimen/HGridView_related_selectionRightPadding" -->
-        <!--         sakura:selectionBottomPadding="@dimen/HGridView_related_selectionBottomPadding" -->
-        <!--         > -->
-        <!--     </org.sakuratya.horizontal.ui.HGridView> -->
-
-
-
+</RelativeLayout>
