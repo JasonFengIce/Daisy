@@ -39,7 +39,7 @@
                 android:layout_alignParentBottom="true"
                 android:orientation="horizontal" >
 
-                <tv.ismar.daisy.views.AsyncImageView
+                <tv.ismar.daisy.views.LabelImageView
                     android:id="@+id/vaiety_thumb1"
                     android:layout_width="@dimen/entertainment_vaiety_thumb_w"
                     android:layout_height="@dimen/entertainment_vaiety_thumb_h"
@@ -48,7 +48,7 @@
                     android:scaleType="fitXY"
                     android:src="@drawable/list_item_preview_bg" />
 
-                <tv.ismar.daisy.views.AsyncImageView
+                <tv.ismar.daisy.views.LabelImageView
                     android:id="@+id/vaiety_thumb2"
                     android:layout_width="@dimen/entertainment_vaiety_thumb_w"
                     android:layout_height="@dimen/entertainment_vaiety_thumb_h"
@@ -58,7 +58,7 @@
                     android:layout_marginLeft="@dimen/entertainment_vaiety_fouce_label_margin"
                     android:src="@drawable/list_item_preview_bg" />
 
-                <tv.ismar.daisy.views.AsyncImageView
+                <tv.ismar.daisy.views.LabelImageView
                     android:id="@+id/vaiety_thumb3"
                     android:layout_width="@dimen/entertainment_vaiety_thumb_w"
                     android:layout_height="@dimen/entertainment_vaiety_thumb_h"
