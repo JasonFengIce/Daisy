@@ -260,9 +260,19 @@ public class DramaListActivity extends BaseActivity implements
 		}
 		// 名称
 		mTvDramaName.setText(mItem.title);
+
+
+        if (mItem.subitems.length > 0){
+            String update_to_episode = getResources().getString(
+                    R.string.update_to_episode);
+            mTvDramaAll.setText(
+                    String.format(update_to_episode, mItem.subitems.length)
+                    );
+        }
+
 		// 集数
-		mTvDramaAll.setText(mItem.episode + getString(R.string.daram_ji)
-				+ getString(R.string.daram_all) + "  /");
+//		mTvDramaAll.setText(mItem.episode + getString(R.string.daram_ji)
+//				+ getString(R.string.daram_all) + "  /");
 		// 显示图片
 		switch (mItem.quality) {
 		case 3:
@@ -286,7 +296,6 @@ public class DramaListActivity extends BaseActivity implements
 			loadDialog.dismiss();
 		}
 	}
-
 //	@Override
 //	public void onFocusChange(View v, boolean hasFocus) {
 //		// TODO Auto-generated method stub
