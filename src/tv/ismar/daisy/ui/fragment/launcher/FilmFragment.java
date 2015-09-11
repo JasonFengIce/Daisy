@@ -100,6 +100,7 @@ public class FilmFragment extends ChannelBaseFragment {
         carouselLayout = (LinearLayout) mView.findViewById(R.id.film_carousel_layout);
         mSurfaceView = (VideoView) mView.findViewById(R.id.film_linked_video);
         mSurfaceView.setOnCompletionListener(mOnCompletionListener);
+        mSurfaceView.setOnErrorListener(mVideoOnErrorListener);
 
         film_lefttop_image = (LabelImageView) mView.findViewById(R.id.film_lefttop_image);
         film_post_layout = (HomeItemContainer) mView.findViewById(R.id.film_post_layout);
@@ -467,6 +468,16 @@ public class FilmFragment extends ChannelBaseFragment {
         public void onCompletion(android.media.MediaPlayer mp) {
             stopPlayback();
             mHandler.sendEmptyMessage(CAROUSEL_NEXT);
+        }
+    };
+
+    private android.media.MediaPlayer.OnErrorListener mVideoOnErrorListener = new android.media.MediaPlayer.OnErrorListener() {
+        @Override
+        public boolean onError(android.media.MediaPlayer mp, int what, int extra) {
+
+            Log.e(TAG, "play video error!!!");
+
+            return true;
         }
     };
 

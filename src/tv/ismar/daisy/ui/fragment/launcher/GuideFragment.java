@@ -92,6 +92,8 @@ public class GuideFragment extends ChannelBaseFragment {
         film_post_layout = (HomeItemContainer) mView.findViewById(R.id.guide_center_layoutview);
         mSurfaceView = (VideoView) mView.findViewById(R.id.linked_video);
         mSurfaceView.setOnCompletionListener(videoPlayEndListener);
+        mSurfaceView.setOnErrorListener(mVideoOnErrorListener);
+
         film_post_layout.setOnClickListener(ItemClickListener);
         return mView;
     }
@@ -355,6 +357,7 @@ public class GuideFragment extends ChannelBaseFragment {
         }
     };
 
+
     enum CarouselRepeatType {
         All,
         Once
@@ -367,6 +370,17 @@ public class GuideFragment extends ChannelBaseFragment {
         public void onCompletion(android.media.MediaPlayer mp) {
             stopPlayback();
             mHandler.sendEmptyMessage(CAROUSEL_NEXT);
+        }
+    };
+
+
+    private android.media.MediaPlayer.OnErrorListener mVideoOnErrorListener = new android.media.MediaPlayer.OnErrorListener() {
+        @Override
+        public boolean onError(android.media.MediaPlayer mp, int what, int extra) {
+
+            Log.e(TAG, "play video error!!!");
+
+            return true;
         }
     };
 }
