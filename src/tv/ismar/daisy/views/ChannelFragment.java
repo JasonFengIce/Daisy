@@ -129,18 +129,57 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 //                }
 //            });
 //        }
-		mHGridView.setOnItemClickListener(this);
-		mHGridView.setOnItemSelectedListener(this);
-		mHGridView.setOnScrollListener(this);
-		mScrollableSectionList = (ScrollableSectionList) fragmentView.findViewById(R.id.section_tabs);
-		mScrollableSectionList.setOnSectionSelectChangeListener(mOnSectionSelectChangedListener);
+
+
+        left_shadow.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                  if(hasFocus){
+                      mHGridView.pageScroll(View.FOCUS_LEFT);
+                  }
+            }
+        });
+
+        right_shadow.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                 if(hasFocus){
+                     mHGridView.pageScroll(View.FOCUS_RIGHT);
+                 }
+            }
+        });
+        mScrollableSectionList = (ScrollableSectionList) fragmentView.findViewById(R.id.section_tabs);
+        mScrollableSectionList.setOnSectionSelectChangeListener(mOnSectionSelectChangedListener);
         mScrollableSectionList.percentageBar = percentage;
         mScrollableSectionList.channel = mChannel;
         mScrollableSectionList.title = mTitle;
         mScrollableSectionList.isPortrait = isPortrait;
+		mHGridView.setOnItemClickListener(this);
+		mHGridView.setOnItemSelectedListener(this);
+		mHGridView.setOnScrollListener(this);
+
+        mHGridView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    Log.i("testHGRIDVIEW","focus");
+                    if(mScrollableSectionList!=null){
+                        mScrollableSectionList.currentState = ScrollableSectionList.STATE_GOTO_GRIDVIEW;
+                        mScrollableSectionList.sectionWhenGoto.setTextColor(LABEL_TEXT_COLOR_FOCUSED1);
+                    }
+                }else{
+                   Log.i("testHGRIDVIEW","lostfocus");
+                    if(mScrollableSectionList!=null)
+                    mScrollableSectionList.currentState = ScrollableSectionList.STATE_LEAVE_GRIDVIEW;
+                }
+            }
+        });
+
+
+
 	}
 
-
+    private static final int LABEL_TEXT_COLOR_FOCUSED1 = 0xffffba00;
 	View fragmentView;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

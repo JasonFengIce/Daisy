@@ -5,6 +5,7 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.views.LoadingDialog;
 import tv.ismar.daisy.views.RelateScrollableSectionList;
 import tv.ismar.daisy.views.RelateScrollableSectionList.OnSectionSelectChangedListener;
+import tv.ismar.daisy.views.ScrollableSectionList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,6 +62,7 @@ public class RelatedActivity extends BaseActivity implements OnSectionSelectChan
 	
 	private String mSection;
     private boolean isPortrait = false;
+    private static final int LABEL_TEXT_COLOR_FOCUSED1 = 0xffffba00;
 	private void initViews(){
 		mSectionTabs = (RelateScrollableSectionList) findViewById(R.id.related_section_tabs);
 		mSectionTabs.setOnSectionSelectChangeListener(this);
@@ -72,6 +75,22 @@ public class RelatedActivity extends BaseActivity implements OnSectionSelectChan
         mItemListGrid.setVisibility(View.VISIBLE);
 		mItemListGrid.setOnItemClickListener(this);
 		mItemListGrid.setFocusable(true);
+        mItemListGrid.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    Log.i("testHGRIDVIEW", "focus");
+                    if(mSectionTabs!=null){
+                        mSectionTabs.currentState = ScrollableSectionList.STATE_GOTO_GRIDVIEW;
+                        mSectionTabs.sectionWhenGoto.setTextColor(LABEL_TEXT_COLOR_FOCUSED1);
+                    }
+                }else{
+                    Log.i("testHGRIDVIEW","lostfocus");
+                    if(mSectionTabs!=null)
+                        mSectionTabs.currentState = ScrollableSectionList.STATE_LEAVE_GRIDVIEW;
+                }
+            }
+        });
 		arrow_left = (ImageView) findViewById(R.id.arrow_left);
 		arrow_right = (ImageView)findViewById(R.id.arrow_right);
 		//mSectionTabs.left = arrow_left;

@@ -1229,6 +1229,7 @@
     <dimen name="variety_dramalist_month_gridview_hs">22.67dip</dimen>
     <dimen name="variety_dramalist_month_gridview_rowheight">246.67dip</dimen>
     <dimen name="variety_dramalist_selector_month_paddingBottom">-93.33dip</dimen>
+    <dimen name="list_view_nosection_month_paddingBottom">-80dip</dimen>
     <dimen name="variety_dramalist_month_gridview_mt">30.67dip</dimen>
     <dimen name="variety_dramalist_gridview_mlr">16.00dip</dimen>
     <dimen name="variety_dramalist_gridview_mb">11.33dip</dimen>

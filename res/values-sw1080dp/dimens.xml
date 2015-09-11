@@ -464,16 +464,16 @@
     <dimen name="ZGridView_packagedetail_selectorTopPadding">-19dip</dimen>
     <dimen name="ZGridView_packagedetail_selectorRight">-18dip</dimen>
     <dimen name="ZGridView_packagedetail_selectorBottom">-39dip</dimen>
-    <dimen name="ZGridView_recommend_selectorLeftPadding">4dip</dimen>
-    <dimen name="ZGridView_recommend_selectorTopPadding">-19dip</dimen>
-    <dimen name="ZGridView_recommend_selectorRightPadding">2dip</dimen>
-    <dimen name="ZGridView_recommend_selectorBottomPadding">-49dip</dimen>
+    <dimen name="ZGridView_recommend_selectorLeftPadding">24dip</dimen>
+    <dimen name="ZGridView_recommend_selectorTopPadding">1dip</dimen>
+    <dimen name="ZGridView_recommend_selectorRightPadding">22dip</dimen>
+    <dimen name="ZGridView_recommend_selectorBottomPadding">-29dip</dimen>
 
     <!-- HGridView -->
-    <dimen name="HGridView_related_selectionLeftPadding">3.5dip</dimen>
-    <dimen name="HGridView_related_selectionTopPadding">3.5dip</dimen>
-    <dimen name="HGridView_related_selectionRightPadding">3.5dip</dimen>
-    <dimen name="HGridView_related_selectionBottomPadding">-80.1dip</dimen>
+    <dimen name="HGridView_related_selectionLeftPadding">23.5dip</dimen>
+    <dimen name="HGridView_related_selectionTopPadding">23.5dip</dimen>
+    <dimen name="HGridView_related_selectionRightPadding">23.5dip</dimen>
+    <dimen name="HGridView_related_selectionBottomPadding">-60.1dip</dimen>
     <dimen name="HGridView_related_PFilterLeftPadding">20dip</dimen>
     <dimen name="HGridView_related_PFilterTopPadding">21dip</dimen>
     <dimen name="HGridView_related_PFilterRightPadding">21dip</dimen>
@@ -482,10 +482,10 @@
     <dimen name="HGridView_related_FilterTopPadding">20dip</dimen>
     <dimen name="HGridView_related_FilterRightPadding">22dip</dimen>
     <dimen name="HGridView_related_FilterBottomPadding">-40dip</dimen>
-    <dimen name="HGridView_related_pselectionLeftPadding">3.8dip</dimen>
-    <dimen name="HGridView_related_pselectionTopPadding">3.8dip</dimen>
-    <dimen name="HGridView_related_pselectionRightPadding">3.8dip</dimen>
-    <dimen name="HGridView_related_pselectionBottomPadding">-47.2dip</dimen>
+    <dimen name="HGridView_related_pselectionLeftPadding">23.8dip</dimen>
+    <dimen name="HGridView_related_pselectionTopPadding">23.8dip</dimen>
+    <dimen name="HGridView_related_pselectionRightPadding">23.8dip</dimen>
+    <dimen name="HGridView_related_pselectionBottomPadding">-27.2dip</dimen>
     <dimen name="HGridView_label_lr_offset">19dip</dimen>
     <dimen name="HGridView_label_textleft">24dip</dimen>
     <dimen name="HGridView_label_texttop">56dip</dimen>
@@ -844,10 +844,10 @@
     <dimen name="filter_result_list_view_rowHeight">272dip</dimen>
     <dimen name="filter_result_list_filter_grid_pt">4dip</dimen>
     <dimen name="filter_result_list_filter_grid_mt">8dip</dimen>
-    <dimen name="filter_result_list_filter_grid_ml">39dip</dimen>
+    <dimen name="filter_result_list_filter_grid_ml">37dip</dimen>
     <dimen name="filter_result_list_filter_grid_mb">71dip</dimen>
     <dimen name="filter_result_list_filter_grid_pr">5dip</dimen>
-    <dimen name="filter_result_list_filter_grid_pl">4dip</dimen>
+    <dimen name="filter_result_list_filter_grid_pl">6dip</dimen>
     <dimen name="filter_view_scrollView_h">661dip</dimen>
     <dimen name="filter_view_filtermenulayout_pt">70dip</dimen>
     <dimen name="filter_view_filtermenulayout_ml">223dip</dimen>
@@ -1231,6 +1231,7 @@
     <dimen name="variety_dramalist_month_gridview_hs">34dip</dimen>
     <dimen name="variety_dramalist_month_gridview_rowheight">370dip</dimen>
     <dimen name="variety_dramalist_selector_month_paddingBottom">-140dip</dimen>
+    <dimen name="list_view_nosection_month_paddingBottom">-120dip</dimen>
     <dimen name="variety_dramalist_month_gridview_mt">46dip</dimen>
     <dimen name="variety_dramalist_gridview_mlr">24dip</dimen>
     <dimen name="variety_dramalist_gridview_mb">17dip</dimen>

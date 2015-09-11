@@ -137,6 +137,11 @@ public class RelateScrollableSectionList extends HorizontalScrollView {
 		return sectionHolder;
 	}
 	private View lastView = null;
+    public TextView sectionWhenGoto;
+    public static int STATE_GOTO_GRIDVIEW = 2;
+    public static int STATE_SECTION = 3;
+    public static int STATE_LEAVE_GRIDVIEW = 4;
+    public int currentState = STATE_SECTION;
 	private OnFocusChangeListener mOnFocusChangeListener = new OnFocusChangeListener() {
 		
 		@Override
@@ -161,19 +166,29 @@ public class RelateScrollableSectionList extends HorizontalScrollView {
 			}
 			TextView label = (TextView) v.findViewById(R.id.section_label);
 			ProgressBar percentageBar = (ProgressBar) v.findViewById(R.id.section_percentage);
-
+            int textsize = getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_ctextsize);
+            textsize = (int) (textsize/rate);
             if(hasFocus){
                 if(index==mSelectPosition){
+                    label.setTextColor(LABEL_TEXT_COLOR_CLICKED);
+                    label.setTextSize(textsize);
                     return;
                 }
 
                 else{
-                    label.setTextColor(LABEL_TEXT_COLOR_FOCUSED);
+
+                    if(currentState==STATE_LEAVE_GRIDVIEW){
+                        currentState = STATE_SECTION;
+                        mContainer.getChildAt(mSelectPosition).requestFocus();
+                    }else if(currentState==STATE_SECTION){
+                        label.setTextColor(LABEL_TEXT_COLOR_CLICKED);
+                        label.setTextSize(textsize);
+                        v.performClick();
+                    }
                 }
-
-
             } else {
                 if(index==mSelectPosition){
+                    sectionWhenGoto = label;
                     return;
                 }
                 label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);

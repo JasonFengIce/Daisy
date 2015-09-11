@@ -105,7 +105,7 @@
                 sakura:horizontalSpacing="@dimen/listportait_tabs_layout_margin"
                 sakura:numRows="3"
                 sakura:rowHeight="@dimen/filter_result_list_view_rowHeight"
-                sakura:selectorDrawable="@drawable/popup_bg_yellow"
+                sakura:selectorDrawable="@drawable/vod_gv_selector"
                 sakura:verticalSpacing="0dip"
                 sakura:selectionLeftPadding="@dimen/HGridView_related_selectionLeftPadding"
                 sakura:selectionTopPadding="@dimen/HGridView_related_selectionTopPadding"

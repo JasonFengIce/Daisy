@@ -3,6 +3,8 @@ package tv.ismar.daisy.views;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.FocusFinder;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.MessageGZIP;
 import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
 
@@ -211,39 +214,74 @@ public class ScrollableSectionList extends HorizontalScrollView {
 
 			TextView label = (TextView) v.findViewById(R.id.section_label);
 			if(hasFocus){
+                int textsize = getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_ctextsize);
+                textsize = (int) (textsize/rate);
+                Log.i("testHGRIDVIEW","sectionfocus");
                 if(index==mSelectPosition){
+                    label.setTextColor(LABEL_TEXT_COLOR_CLICKED);
+                    label.setTextSize(textsize);
                     return;
                 }
 
                 else{
-                    label.setTextColor(LABEL_TEXT_COLOR_FOCUSED1);
+
+                    if(currentState==STATE_LEAVE_GRIDVIEW){
+
+                       // setsectionview(mContainer.getChildAt(mSelectPosition));
+                        currentState = STATE_SECTION;
+                        mContainer.getChildAt(mSelectPosition).requestFocus();
+                    }else if(currentState==STATE_SECTION){
+                        label.setTextColor(LABEL_TEXT_COLOR_CLICKED);
+                        label.setTextSize(textsize);
+                      //  label.setBackgroundResource(R.drawable.channel_focus_frame);
+                     //   setsectionview(mContainer.getChildAt(index));
+                        Message msg = new Message();
+                        msg.obj = v;
+                        mHandler.sendMessageDelayed(msg,500);
+                    }
+
+
+
                 }
 
-					
 			} else {
+                Log.i("testHGRIDVIEW","sectionfocus");
                      if(index==mSelectPosition){
+                        // label.setTextColor(LABEL_TEXT_COLOR_FOCUSED1);
+                         sectionWhenGoto = label;
                          return;
                      }
                      label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
+                    // label.setBackgroundResource(android.R.color.transparent);
 
 			}
 		}
 	};
-	
+    public TextView sectionWhenGoto;
+   public static int STATE_GOTO_GRIDVIEW = 2;
+    public static int STATE_SECTION = 3;
+    public static int STATE_LEAVE_GRIDVIEW = 4;
+    public int currentState = STATE_SECTION;
+   private  static int START_CLICK = 1;
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+                   View v = (View) msg.obj;
+                   v.performClick();
+            }
+    };
+
+
+
 	public void setSectionTabProperty(View currentView,View lastSelectedView){
 		float rate = DaisyUtils.getVodApplication(getContext()).getRate(getContext());
 		TextView lastLabel = (TextView) lastSelectedView.findViewById(R.id.section_label);
 		lastLabel.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
-//		lastLabel.setPadding(lastLabel.getPaddingLeft(), getResources().
-//				getDimensionPixelSize(R.dimen.channel_section_tabs_label_paddingT), lastLabel.getPaddingRight(), lastLabel.getPaddingBottom());
-       // if(((Integer)lastSelectedView.getTag())!=0)
-		    lastLabel.setTextSize(getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_textsize)/rate);
+        lastLabel.setBackgroundResource(android.R.color.transparent);
+		lastLabel.setTextSize(getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_textsize)/rate);
 
 
 		TextView label = (TextView) currentView.findViewById(R.id.section_label);
-		//label.setPadding(label.getPaddingLeft(), getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_text_PT), label.getPaddingRight(), label.getPaddingBottom());
-		
-		//percentageBar.setProgress(0);
 		int textsize = getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_ctextsize);
 		textsize = (int) (textsize/rate);
 		label.setTextSize(textsize);
@@ -283,6 +321,23 @@ public class ScrollableSectionList extends HorizontalScrollView {
 //			return false;
 //		}
 //	};
+
+    private void setsectionview(View v){
+        int index = (Integer) v.getTag();
+        if(index==0){
+            percentageBar.setProgress(0);
+            View lastSelectedView = mContainer.getChildAt(mSelectPosition);
+            setSectionTabProperty(v,lastSelectedView);
+            changeSelection(index);
+        }else{
+            if(index!=mSelectPosition){
+                percentageBar.setProgress(0);
+                View lastSelectedView = mContainer.getChildAt(mSelectPosition);
+                setSectionTabProperty(v,lastSelectedView);
+                changeSelection(index);
+            }
+        }
+    }
 	private OnClickListener mOnClickListener = new OnClickListener() {
 		
 		@Override
@@ -291,16 +346,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 			int index = (Integer) v.getTag();
             if(index==0){
 
-                   percentageBar.setProgress(0);
-                   View lastSelectedView = mContainer.getChildAt(mSelectPosition);
-                   setSectionTabProperty(v,lastSelectedView);
-                   changeSelection(index);
-//                if(lastSelectPosition!=mSelectPosition){
-//                    View lastSelectedView1 = mContainer.getChildAt(lastSelectPosition);
-//                    setSectionTabProperty(v,lastSelectedView1);
-//                }
-                   //lastView = v;
-                //   lastSelectPosition = index;
+                   setsectionview(v);
                    Intent intent = new Intent();
                    intent.putExtra("title",title);
                    intent.putExtra("channel",channel);
@@ -308,21 +354,15 @@ public class ScrollableSectionList extends HorizontalScrollView {
                       intent.putExtra("isPortrait",true);
                    else
                       intent.putExtra("isPortrait",false);
-                 //  intent.setClass(getContext(), FilterActivity.class);
                    intent.setAction("tv.ismar.daisy.Filter");
                    getContext().startActivity(intent);
             }else{
                 if(index!=mSelectPosition){
-                    percentageBar.setProgress(0);
-                    View lastSelectedView = mContainer.getChildAt(mSelectPosition);
-                    setSectionTabProperty(v,lastSelectedView);
-                    changeSelection(index);
-//                    if(lastSelectPosition!=mSelectPosition){
-//                        View lastSelectedView1 = mContainer.getChildAt(lastSelectPosition);
-//                        setSectionTabProperty(v,lastSelectedView1);
-//                    }
-                  //  lastView = v;
-                   // lastSelectPosition = index;
+//                    percentageBar.setProgress(0);
+//                    View lastSelectedView = mContainer.getChildAt(mSelectPosition);
+//                    setSectionTabProperty(v,lastSelectedView);
+//                    changeSelection(index);
+                    setsectionview(v);
                     if(mSectionSelectChangedListener!=null) {
                         mSectionSelectChangedListener.onSectionSelectChanged(index-1);
                     }
