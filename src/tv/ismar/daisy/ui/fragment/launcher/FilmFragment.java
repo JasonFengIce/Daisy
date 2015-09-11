@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.VideoView;
 import com.google.gson.Gson;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
@@ -32,7 +33,6 @@ import tv.ismar.daisy.core.client.DownloadClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.vlc.MediaWrapper;
 import tv.ismar.daisy.core.vlc.MediaWrapperList;
-import tv.ismar.daisy.core.vlc.PlaybackService;
 import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
@@ -47,8 +47,7 @@ import java.util.ArrayList;
 /**
  * Created by huaijie on 5/18/15.
  */
-public class FilmFragment extends ChannelBaseFragment implements
-        PlaybackService.Callback {
+public class FilmFragment extends ChannelBaseFragment {
     private static final String TAG = "FilmFragment";
     private static final int START_PLAYBACK = 0x0000;
     private static final int CAROUSEL_NEXT = 0x0010;
@@ -68,44 +67,12 @@ public class FilmFragment extends ChannelBaseFragment implements
     private IsmartvUrlClient datafetch;
 
 
-    private SurfaceView mSurfaceView;
+    private VideoView mSurfaceView;
 
     private int mCurrentCarouselIndex = -1;
     private CarouselRepeatType mCarouselRepeatType = CarouselRepeatType.All;
 
     private String mChannelName;
-
-
-    @Override
-    public void update() {
-
-    }
-
-    @Override
-    public void updateProgress() {
-
-    }
-
-    @Override
-    public void onMediaEvent(Media.Event event) {
-
-    }
-
-    @Override
-    public void onMediaPlayerEvent(MediaPlayer.Event event) {
-        switch (event.type) {
-            case MediaPlayer.Event.EndReached:
-                stopPlayback();
-                mHandler.sendEmptyMessage(CAROUSEL_NEXT);
-                break;
-        }
-
-    }
-
-    @Override
-    public void onMediaIndexChange(MediaWrapperList mediaWrapperList, int position) {
-
-    }
 
 
     @Override
@@ -131,7 +98,9 @@ public class FilmFragment extends ChannelBaseFragment implements
         View mView = LayoutInflater.from(mContext).inflate(R.layout.fragment_film, null);
         guideRecommmendList = (LinearLayout) mView.findViewById(R.id.film_recommend_list);
         carouselLayout = (LinearLayout) mView.findViewById(R.id.film_carousel_layout);
-        mSurfaceView = (SurfaceView) mView.findViewById(R.id.film_linked_video);
+        mSurfaceView = (VideoView) mView.findViewById(R.id.film_linked_video);
+        mSurfaceView.setOnCompletionListener(mOnCompletionListener);
+
         film_lefttop_image = (LabelImageView) mView.findViewById(R.id.film_lefttop_image);
         film_post_layout = (HomeItemContainer) mView.findViewById(R.id.film_post_layout);
         linkedVideoImage = (ImageView) mView.findViewById(R.id.film_linked_image);
@@ -158,9 +127,6 @@ public class FilmFragment extends ChannelBaseFragment implements
     @Override
     public void onResume() {
         super.onResume();
-        IVLCVout vlcVout = mService.getVLCVout();
-        vlcVout.setVideoView(mSurfaceView);
-        vlcVout.attachViews();
 
         if (mCarousels == null) {
             fetchHomePage(channelEntity.getHomepage_url());
@@ -173,9 +139,6 @@ public class FilmFragment extends ChannelBaseFragment implements
     @Override
     public void onPause() {
         super.onPause();
-        IVLCVout vlcVout = mService.getVLCVout();
-        vlcVout.detachViews();
-        mHandler.removeMessages(CAROUSEL_NEXT);
         stopPlayback();
 
     }
@@ -331,16 +294,13 @@ public class FilmFragment extends ChannelBaseFragment implements
 
     private void startPlayback() {
         Log.d(TAG, "startPlayback is invoke...");
-
-        mService.addCallback(this);
-        switchVideo();
-        mService.play();
+        mSurfaceView.setVideoURI(Uri.parse(mCarousels.get(mCurrentCarouselIndex).getVideo_url()));
+        mSurfaceView.start();
     }
 
     private void stopPlayback() {
-
-        mService.removeCallback(this);
-        mService.stop();
+        mSurfaceView.pause();
+        mSurfaceView.stopPlayback();
     }
 
 
@@ -400,8 +360,6 @@ public class FilmFragment extends ChannelBaseFragment implements
 
     private void playImage() {
         if (mSurfaceView.getVisibility() == View.VISIBLE) {
-            IVLCVout vlcVout = mService.getVLCVout();
-            vlcVout.detachViews();
             mSurfaceView.setVisibility(View.GONE);
         }
 
@@ -409,10 +367,6 @@ public class FilmFragment extends ChannelBaseFragment implements
             linkedVideoImage.setVisibility(View.VISIBLE);
         }
 
-
-        if (mService != null && mService.isVideoPlaying()) {
-            stopPlayback();
-        }
 
         String url = mCarousels.get(mCurrentCarouselIndex).getVideo_image();
         String intro = mCarousels.get(mCurrentCarouselIndex).getIntroduction();
@@ -440,9 +394,6 @@ public class FilmFragment extends ChannelBaseFragment implements
     private void playVideo() {
         if (mSurfaceView.getVisibility() == View.GONE) {
             mSurfaceView.setVisibility(View.VISIBLE);
-            IVLCVout vlcVout = mService.getVLCVout();
-            vlcVout.setVideoView(mSurfaceView);
-            vlcVout.attachViews();
         }
 
         if (linkedVideoImage.getVisibility() == View.VISIBLE) {
@@ -460,15 +411,6 @@ public class FilmFragment extends ChannelBaseFragment implements
         mHandler.sendEmptyMessageDelayed(START_PLAYBACK, 500);
     }
 
-
-    private void switchVideo() {
-        String videoUrl = CacheManager.getInstance().doRequest(mCarousels.get(mCurrentCarouselIndex).getVideo_url(),
-                mChannelName + "_" + mCurrentCarouselIndex + ".mp4", DownloadClient.StoreType.External);
-        MediaWrapper mediaWrapper = new MediaWrapper(Uri.parse(videoUrl));
-        mediaWrapper.removeFlags(MediaWrapper.MEDIA_FORCE_AUDIO);
-        mediaWrapper.addFlags(MediaWrapper.MEDIA_VIDEO);
-        mService.load(mediaWrapper);
-    }
 
     private Handler mHandler = new Handler() {
         @Override
@@ -517,6 +459,14 @@ public class FilmFragment extends ChannelBaseFragment implements
                     playCarousel();
                 }
             }
+        }
+    };
+
+    private android.media.MediaPlayer.OnCompletionListener mOnCompletionListener = new android.media.MediaPlayer.OnCompletionListener() {
+        @Override
+        public void onCompletion(android.media.MediaPlayer mp) {
+            stopPlayback();
+            mHandler.sendEmptyMessage(CAROUSEL_NEXT);
         }
     };
 

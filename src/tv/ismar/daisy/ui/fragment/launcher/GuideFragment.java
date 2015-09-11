@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceView;
@@ -15,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.VideoView;
 import com.google.gson.Gson;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
@@ -30,24 +30,19 @@ import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.vlc.MediaWrapper;
 import tv.ismar.daisy.core.vlc.MediaWrapperList;
 import tv.ismar.daisy.core.vlc.PlaybackService;
-import tv.ismar.daisy.core.vlc.PlaybackServiceActivity;
 import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
-import tv.ismar.daisy.ui.listener.ItemDetailClickListener;
 import tv.ismar.daisy.ui.widget.DaisyViewContainer;
 import tv.ismar.daisy.ui.widget.HomeItemContainer;
 import tv.ismar.daisy.views.LabelImageView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by huaijie on 5/18/15.
  */
-public class GuideFragment extends ChannelBaseFragment implements
-        PlaybackService.Callback {
+public class GuideFragment extends ChannelBaseFragment {
     private String TAG = "GuideFragment";
 
     private static final int START_PLAYBACK = 0x0000;
@@ -67,7 +62,7 @@ public class GuideFragment extends ChannelBaseFragment implements
 
     private IsmartvUrlClient datafetch;
 
-    private SurfaceView mSurfaceView;
+    private VideoView mSurfaceView;
 
 
     private int mCurrentCarouselIndex = -1;
@@ -75,61 +70,10 @@ public class GuideFragment extends ChannelBaseFragment implements
 
 
     @Override
-    public void update() {
-
-    }
-
-    @Override
-    public void updateProgress() {
-
-    }
-
-    @Override
-    public void onMediaEvent(Media.Event event) {
-
-    }
-
-    @Override
-    public void onMediaPlayerEvent(MediaPlayer.Event event) {
-        switch (event.type) {
-            case MediaPlayer.Event.EndReached:
-                stopPlayback();
-//                mHelper.onStop();
-                mHandler.sendEmptyMessage(CAROUSEL_NEXT);
-                break;
-        }
-    }
-
-    @Override
-    public void onMediaIndexChange(MediaWrapperList mediaWrapperList, int position) {
-//        Log.d(TAG, "onMediaIndexChange position: " + position);
-//        for (int i = 0; i < allItem.size(); i++) {
-//            LabelImageView imageView = allItem.get(i);
-//            if (position != i) {
-//                imageView.setCustomfocus(false);
-//            } else {
-//                imageView.setCustomfocus(true);
-//            }
-//        }
-//
-//        HashMap<String, String> hashMap = new HashMap<String, String>();
-//        hashMap.put(ItemDetailClickListener.MODEL, mCarousels.get(position).getModel_name());
-//        hashMap.put(ItemDetailClickListener.URL, mCarousels.get(position).getUrl());
-//        hashMap.put(ItemDetailClickListener.TITLE, mCarousels.get(position).getTitle());
-//        mSurfaceView.setTag(hashMap);
-
-    }
-
-    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         activity.setVolumeControlStream(AudioManager.STREAM_MUSIC);
     }
-
-    /**
-     * vlc
-     */
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -146,18 +90,9 @@ public class GuideFragment extends ChannelBaseFragment implements
         toppage_carous_imageView2 = (LabelImageView) mView.findViewById(R.id.toppage_carous_imageView2);
         toppage_carous_imageView3 = (LabelImageView) mView.findViewById(R.id.toppage_carous_imageView3);
         film_post_layout = (HomeItemContainer) mView.findViewById(R.id.guide_center_layoutview);
-        mSurfaceView = (SurfaceView) mView.findViewById(R.id.linked_video);
-//        mSurfaceView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//
-//			@Override
-//			public void onFocusChange(View arg0, boolean arg1) {
-//				if(arg1){
-//					film_post_layout.requestFocus();
-//				}
-//			}
-//		});
+        mSurfaceView = (VideoView) mView.findViewById(R.id.linked_video);
+        mSurfaceView.setOnCompletionListener(videoPlayEndListener);
         film_post_layout.setOnClickListener(ItemClickListener);
-        //film_post_layout.requestFocus();
         return mView;
     }
 
@@ -177,9 +112,6 @@ public class GuideFragment extends ChannelBaseFragment implements
     @Override
     public void onResume() {
         super.onResume();
-        IVLCVout vlcVout = mService.getVLCVout();
-        vlcVout.setVideoView(mSurfaceView);
-        vlcVout.attachViews();
         if (mCarousels == null) {
             fetchHomePage();
         } else {
@@ -192,8 +124,6 @@ public class GuideFragment extends ChannelBaseFragment implements
     @Override
     public void onPause() {
         super.onPause();
-        IVLCVout vlcVout = mService.getVLCVout();
-        vlcVout.detachViews();
         stopPlayback();
     }
 
@@ -359,17 +289,17 @@ public class GuideFragment extends ChannelBaseFragment implements
 
     }
 
-    private void switchVideo() {
-        if (mContext == null)
-            return;
-        String videoUrl = CacheManager.getInstance().doRequest(mCarousels.get(mCurrentCarouselIndex).getVideo_url(),
-                "guide_" + mCurrentCarouselIndex + ".mp4", DownloadClient.StoreType.Internal);
-        Log.d(TAG, "play video: " + videoUrl);
-        MediaWrapper mediaWrapper = new MediaWrapper(Uri.parse(videoUrl));
-        mediaWrapper.removeFlags(MediaWrapper.MEDIA_FORCE_AUDIO);
-        mediaWrapper.addFlags(MediaWrapper.MEDIA_VIDEO);
-        mService.load(mediaWrapper);
-    }
+//    private void switchVideo() {
+//        if (mContext == null)
+//            return;
+//        String videoUrl = CacheManager.getInstance().doRequest(mCarousels.get(mCurrentCarouselIndex).getVideo_url(),
+//                "guide_" + mCurrentCarouselIndex + ".mp4", DownloadClient.StoreType.Internal);
+//        Log.d(TAG, "play video: " + videoUrl);
+//        MediaWrapper mediaWrapper = new MediaWrapper(Uri.parse(videoUrl));
+//        mediaWrapper.removeFlags(MediaWrapper.MEDIA_FORCE_AUDIO);
+//        mediaWrapper.addFlags(MediaWrapper.MEDIA_VIDEO);
+//        mService.load(mediaWrapper);
+//    }
 
     private Handler mHandler = new Handler() {
         @Override
@@ -389,18 +319,15 @@ public class GuideFragment extends ChannelBaseFragment implements
 
     private void startPlayback() {
         Log.d(TAG, "startPlayback is invoke...");
+        mSurfaceView.setVideoPath(allVideoUrl.get(mCurrentCarouselIndex));
+        mSurfaceView.start();
 
-
-        mService.addCallback(this);
-        switchVideo();
-        mService.play();
     }
 
     private void stopPlayback() {
+        mSurfaceView.pause();
+        mSurfaceView.stopPlayback();
 
-
-        mService.removeCallback(this);
-        mService.stop();
     }
 
 
@@ -432,6 +359,16 @@ public class GuideFragment extends ChannelBaseFragment implements
         All,
         Once
     }
+
+
+    private android.media.MediaPlayer.OnCompletionListener videoPlayEndListener = new android.media.MediaPlayer.OnCompletionListener() {
+
+        @Override
+        public void onCompletion(android.media.MediaPlayer mp) {
+            stopPlayback();
+            mHandler.sendEmptyMessage(CAROUSEL_NEXT);
+        }
+    };
 }
 
 class Flag {

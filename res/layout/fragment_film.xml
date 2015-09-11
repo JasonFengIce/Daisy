@@ -40,7 +40,7 @@
                 android:clickable="true"
                 >
 
-            <SurfaceView
+            <VideoView
                     android:background="@drawable/launcher_selector"
                     android:id="@+id/film_linked_video"
                     android:layout_width="match_parent"

@@ -18,7 +18,7 @@ import tv.ismar.daisy.ui.activity.TVGuideActivity;
 public class ChannelBaseFragment extends Fragment {
     protected ChannelEntity channelEntity;
     protected TVGuideActivity mContext;
-    protected PlaybackService mService;
+//    protected PlaybackService mService;
 
     public ChannelEntity getChannelEntity() {
         return channelEntity;
@@ -32,7 +32,7 @@ public class ChannelBaseFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mContext = (TVGuideActivity) activity;
-        mService = mContext.getService();
+//        mService = mContext.getService();
 
     }
 
