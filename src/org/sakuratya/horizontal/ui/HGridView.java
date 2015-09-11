@@ -1474,8 +1474,8 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	 * @return true if an arrow key is handled. false if there is no room for
 	 *         arrow scroll.
 	 */
-	private boolean arrowScroll(int direction) {
-
+	public boolean arrowScroll(int direction) {
+        Log.v("aaaa", "direction ="+direction);
 		int nextSelectedPosition = lookForSelectablePositionOnScreen(direction);
 		// Log.d(TAG,
 		// "mSelectedPosition="+mSelectedPosition+" nextSelectedPosition=" +

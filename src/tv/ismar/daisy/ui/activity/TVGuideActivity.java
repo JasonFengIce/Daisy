@@ -179,21 +179,23 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
                 switch (v.getId()) {
                     case R.id.arrow_scroll_left:
-                        channelChange = ChannelChange.LEFT_ARROW;
-                        if (mCurrentChannelPosition.getPosition() - 1 >= 0) {
-                            mCurrentChannelPosition.setPosition(mCurrentChannelPosition.getPosition() - 1);
-                        } else {
-                            mCurrentChannelPosition.setPosition(0);
-                        }
+//                        channelChange = ChannelChange.LEFT_ARROW;
+//                        if (mCurrentChannelPosition.getPosition() - 1 >= 0) {
+//                            mCurrentChannelPosition.setPosition(mCurrentChannelPosition.getPosition() - 1);
+//                        } else {
+//                            mCurrentChannelPosition.setPosition(0);
+//                        }
+                    	scroll.arrowScroll(View.FOCUS_LEFT);
                         break;
                     case R.id.arrow_scroll_right:
-                        channelChange = ChannelChange.RIGHT_ARROW;
-                        Log.i("TestFragment", "mCurrentChannelPosition.getPosition()" + mCurrentChannelPosition.getPosition());
-                        if (mCurrentChannelPosition.getPosition() + 1 <= mChannelEntitys.length - 1) {
-                            mCurrentChannelPosition.setPosition(mCurrentChannelPosition.getPosition() + 1);
-                        } else {
-                            mCurrentChannelPosition.setPosition(mChannelEntitys.length - 1);
-                        }
+//                        channelChange = ChannelChange.RIGHT_ARROW;
+//                        Log.i("TestFragment", "mCurrentChannelPosition.getPosition()" + mCurrentChannelPosition.getPosition());
+//                        if (mCurrentChannelPosition.getPosition() + 1 <= mChannelEntitys.length - 1) {
+//                            mCurrentChannelPosition.setPosition(mCurrentChannelPosition.getPosition() + 1);
+//                        } else {
+//                            mCurrentChannelPosition.setPosition(mChannelEntitys.length - 1);
+//                        }
+                    	scroll.arrowScroll(View.FOCUS_RIGHT);
                         break;
                 }
             }
@@ -599,7 +601,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
                 lastview = view;
                 // }
-
                 mCurrentChannelPosition.setPosition(channelPosition);
             }
 
