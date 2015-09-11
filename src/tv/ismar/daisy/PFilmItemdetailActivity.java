@@ -834,7 +834,6 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                     title.setTextColor(0xFFF8F8FF);
                     img.setDrawBorder(false);
                     img.invalidate();
-                    img.setBackgroundColor(android.R.color.transparent);
                     title.setSelected(false);
 
                 }

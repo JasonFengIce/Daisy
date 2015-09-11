@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-                   android:clipChildren="false"
+    android:clipChildren="false"
     android:clipToPadding="false">
 
     <tv.ismar.daisy.ui.widget.LaunchHeaderLayout
@@ -23,8 +23,8 @@
             android:layout_height="@dimen/filmitem_portrait_filter_divider_h"
      />
     <LinearLayout
-                       android:clipChildren="false"
-    android:clipToPadding="false"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:id="@+id/top_view_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/filmitem_portrait_top_view_layout_h"
@@ -172,8 +172,8 @@
      </RelativeLayout>
  </LinearLayout>
     <LinearLayout
-                       android:clipChildren="false"
-    android:clipToPadding="false"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:id="@+id/bottom_view_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/filmitem_portrait_bottom_view_layout_h"
@@ -196,8 +196,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                    android:clipChildren="false"
-    android:clipToPadding="false"
+                android:clipChildren="false"
+                android:clipToPadding="false"
                 >
         </LinearLayout>
         <LinearLayout
