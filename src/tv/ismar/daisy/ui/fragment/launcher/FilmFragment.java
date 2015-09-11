@@ -109,19 +109,19 @@ public class FilmFragment extends ChannelBaseFragment {
         film_post_layout.setOnClickListener(ItemClickListener);
         //film_post_layout.requestFocus();
         mSurfaceView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(View arg0, boolean arg1) {
-				if(arg1)
-					film_post_layout.requestFocus();
-			}
-		});
+            @Override
+            public void onFocusChange(View arg0, boolean arg1) {
+                if (arg1)
+                    film_post_layout.requestFocus();
+            }
+        });
         mSurfaceView.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				film_post_layout.performClick();
-			}
-		});
+
+            @Override
+            public void onClick(View arg0) {
+                film_post_layout.performClick();
+            }
+        });
         return mView;
     }
 
@@ -309,8 +309,12 @@ public class FilmFragment extends ChannelBaseFragment {
 
     private void startPlayback() {
         Log.d(TAG, "startPlayback is invoke...");
+        mSurfaceView.setFocusable(false);
+        mSurfaceView.setFocusableInTouchMode(false);
         mSurfaceView.setVideoURI(Uri.parse(mCarousels.get(mCurrentCarouselIndex).getVideo_url()));
         mSurfaceView.start();
+        mSurfaceView.setFocusable(true);
+        mSurfaceView.setFocusableInTouchMode(true);
     }
 
     private void stopPlayback() {

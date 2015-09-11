@@ -2,13 +2,11 @@ package tv.ismar.daisy.ui.fragment.launcher;
 
 import android.app.Activity;
 import android.media.AudioManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -19,17 +17,9 @@ import com.google.gson.Gson;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import org.apache.commons.lang3.StringUtils;
-import org.videolan.libvlc.IVLCVout;
-import org.videolan.libvlc.Media;
-import org.videolan.libvlc.MediaPlayer;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.cache.CacheManager;
-import tv.ismar.daisy.core.client.DownloadClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
-import tv.ismar.daisy.core.vlc.MediaWrapper;
-import tv.ismar.daisy.core.vlc.MediaWrapperList;
-import tv.ismar.daisy.core.vlc.PlaybackService;
 import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
@@ -95,19 +85,19 @@ public class GuideFragment extends ChannelBaseFragment {
         mSurfaceView.setOnErrorListener(mVideoOnErrorListener);
         mSurfaceView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
-			@Override
-			public void onFocusChange(View arg0, boolean arg1) {
-				if(arg1)
-					film_post_layout.requestFocus();
-			}
-		});
+            @Override
+            public void onFocusChange(View arg0, boolean arg1) {
+                if (arg1)
+                    film_post_layout.requestFocus();
+            }
+        });
         mSurfaceView.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View arg0) {
-				film_post_layout.performClick();
-			}
-		});
+            @Override
+            public void onClick(View arg0) {
+                film_post_layout.performClick();
+            }
+        });
         film_post_layout.setOnClickListener(ItemClickListener);
         return mView;
     }
@@ -335,8 +325,12 @@ public class GuideFragment extends ChannelBaseFragment {
 
     private void startPlayback() {
         Log.d(TAG, "startPlayback is invoke...");
+        mSurfaceView.setFocusable(false);
+        mSurfaceView.setFocusableInTouchMode(false);
         mSurfaceView.setVideoPath(allVideoUrl.get(mCurrentCarouselIndex));
         mSurfaceView.start();
+        mSurfaceView.setFocusable(true);
+        mSurfaceView.setFocusableInTouchMode(true);
 
     }
 
