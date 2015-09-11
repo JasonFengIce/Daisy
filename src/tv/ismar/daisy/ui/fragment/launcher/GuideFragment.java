@@ -93,7 +93,21 @@ public class GuideFragment extends ChannelBaseFragment {
         mSurfaceView = (VideoView) mView.findViewById(R.id.linked_video);
         mSurfaceView.setOnCompletionListener(videoPlayEndListener);
         mSurfaceView.setOnErrorListener(mVideoOnErrorListener);
+        mSurfaceView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
+			@Override
+			public void onFocusChange(View arg0, boolean arg1) {
+				if(arg1)
+					film_post_layout.requestFocus();
+			}
+		});
+        mSurfaceView.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				film_post_layout.performClick();
+			}
+		});
         film_post_layout.setOnClickListener(ItemClickListener);
         return mView;
     }
