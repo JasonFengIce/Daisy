@@ -176,7 +176,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 animationSet1.addAnimation(scaleAnimation1);
                 animationSet1.setFillAfter(true);
                 textview.startAnimation(animationSet1);
-
+                scroll.requestFocus();
                 switch (v.getId()) {
                     case R.id.arrow_scroll_left:
 //                        channelChange = ChannelChange.LEFT_ARROW;

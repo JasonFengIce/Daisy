@@ -108,6 +108,20 @@ public class FilmFragment extends ChannelBaseFragment {
         film_linked_title = (TextView) mView.findViewById(R.id.film_linked_title);
         film_post_layout.setOnClickListener(ItemClickListener);
         //film_post_layout.requestFocus();
+        mSurfaceView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View arg0, boolean arg1) {
+				if(arg1)
+					film_post_layout.requestFocus();
+			}
+		});
+        mSurfaceView.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				film_post_layout.performClick();
+			}
+		});
         return mView;
     }
 

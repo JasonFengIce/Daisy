@@ -38,9 +38,9 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 	private LoadingDialog mLoadingDialog;
 
 	private AsyncImageView vaiety_post;
-	private AsyncImageView vaiety_thumb1;
-	private AsyncImageView vaiety_thumb2;
-	private AsyncImageView vaiety_thumb3;
+	private tv.ismar.daisy.views.LabelImageView vaiety_thumb1;
+	private tv.ismar.daisy.views.LabelImageView vaiety_thumb2;
+	private tv.ismar.daisy.views.LabelImageView vaiety_thumb3;
 	private TextView vaiety_fouce_label;
 	private LinerLayoutContainer vaiety_card1;
 	private LabelImageView vaiety_card1_image;
@@ -74,9 +74,9 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 //		mLoadingDialog = new LoadingDialog(getActivity(), getResources()
 //				.getString(R.string.loading));
 		vaiety_post = (AsyncImageView) view.findViewById(R.id.vaiety_post);
-		vaiety_thumb1 = (AsyncImageView) view.findViewById(R.id.vaiety_thumb1);
-		vaiety_thumb2 = (AsyncImageView) view.findViewById(R.id.vaiety_thumb2);
-		vaiety_thumb3 = (AsyncImageView) view.findViewById(R.id.vaiety_thumb3);
+		vaiety_thumb1 = (tv.ismar.daisy.views.LabelImageView) view.findViewById(R.id.vaiety_thumb1);
+		vaiety_thumb2 = (tv.ismar.daisy.views.LabelImageView) view.findViewById(R.id.vaiety_thumb2);
+		vaiety_thumb3 = (tv.ismar.daisy.views.LabelImageView) view.findViewById(R.id.vaiety_thumb3);
 		vaiety_fouce_label = (TextView) view
 				.findViewById(R.id.vaiety_fouce_label);
 		vaiety_card1 = (LinerLayoutContainer)view.findViewById(R.id.vaiety_card1);
