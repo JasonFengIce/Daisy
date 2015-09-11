@@ -147,10 +147,6 @@ public class FilmFragment extends ChannelBaseFragment implements
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        IVLCVout vlcVout = mService.getVLCVout();
-        vlcVout.setVideoView(mSurfaceView);
-        vlcVout.attachViews();
-
 
     }
 
@@ -158,24 +154,29 @@ public class FilmFragment extends ChannelBaseFragment implements
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        IVLCVout vlcVout = mService.getVLCVout();
-        vlcVout.detachViews();
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-		if (mCarousels == null) {
-			fetchHomePage(channelEntity.getHomepage_url());
-		} else {
-			playCarousel();
-		}
+        IVLCVout vlcVout = mService.getVLCVout();
+        vlcVout.setVideoView(mSurfaceView);
+        vlcVout.attachViews();
 
+        if (mCarousels == null) {
+            fetchHomePage(channelEntity.getHomepage_url());
+        } else {
+            playCarousel();
+        }
     }
+
 
     @Override
     public void onPause() {
         super.onPause();
+        IVLCVout vlcVout = mService.getVLCVout();
+        vlcVout.detachViews();
         mHandler.removeMessages(CAROUSEL_NEXT);
         stopPlayback();
 
@@ -200,16 +201,16 @@ public class FilmFragment extends ChannelBaseFragment implements
         datafetch.doRequest(url, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
-            	if(mContext == null)
-            		return;
+                if (mContext == null)
+                    return;
                 HomePagerEntity homePagerEntity = new Gson().fromJson(result, HomePagerEntity.class);
                 ArrayList<HomePagerEntity.Poster> posters = homePagerEntity.getPosters();
                 ArrayList<HomePagerEntity.Carousel> carousels = homePagerEntity.getCarousels();
 
                 Log.d(TAG, "posters size: " + posters.size());
                 Log.d(TAG, "carousels size: " + carousels.size());
-                    initPosters(posters);
-                    initCarousel(carousels);
+                initPosters(posters);
+                initCarousel(carousels);
 
             }
 
@@ -242,7 +243,7 @@ public class FilmFragment extends ChannelBaseFragment implements
             } else {
                 params.setMargins(0, 0, 28, 0);
             }
-            if(mContext==null)
+            if (mContext == null)
                 return;
             ImageView itemView = new ImageView(mContext);
 //            itemView.setBackgroundResource(R.drawable.launcher_selector);
@@ -309,7 +310,7 @@ public class FilmFragment extends ChannelBaseFragment implements
                 params.topMargin = 0;
             else
                 params.topMargin = 17;
-            if(mContext==null)
+            if (mContext == null)
                 return;
             LabelImageView itemView = new LabelImageView(mContext);
             itemView.setFocusable(true);
@@ -457,7 +458,8 @@ public class FilmFragment extends ChannelBaseFragment implements
         } else {
             film_linked_title.setVisibility(View.GONE);
         }
-        mHandler.sendEmptyMessage(START_PLAYBACK);
+        mHandler.removeMessages(START_PLAYBACK);
+        mHandler.sendEmptyMessageDelayed(START_PLAYBACK, 500);
     }
 
 

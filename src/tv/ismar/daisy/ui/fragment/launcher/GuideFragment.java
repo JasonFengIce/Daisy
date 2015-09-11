@@ -164,9 +164,6 @@ public class GuideFragment extends ChannelBaseFragment implements
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        IVLCVout vlcVout = mService.getVLCVout();
-        vlcVout.setVideoView(mSurfaceView);
-        vlcVout.attachViews();
 
 
     }
@@ -174,18 +171,20 @@ public class GuideFragment extends ChannelBaseFragment implements
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        IVLCVout vlcVout = mService.getVLCVout();
-        vlcVout.detachViews();
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-		if (mCarousels == null) {
-			fetchHomePage();
-		} else {
-			playCarousel();
-		}
+        IVLCVout vlcVout = mService.getVLCVout();
+        vlcVout.setVideoView(mSurfaceView);
+        vlcVout.attachViews();
+        if (mCarousels == null) {
+            fetchHomePage();
+        } else {
+            playCarousel();
+        }
 
     }
 
@@ -193,6 +192,8 @@ public class GuideFragment extends ChannelBaseFragment implements
     @Override
     public void onPause() {
         super.onPause();
+        IVLCVout vlcVout = mService.getVLCVout();
+        vlcVout.detachViews();
         stopPlayback();
     }
 
@@ -215,8 +216,8 @@ public class GuideFragment extends ChannelBaseFragment implements
         datafetch.doRequest(api, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
-            	if(mContext == null)
-            		return;
+                if (mContext == null)
+                    return;
                 HomePagerEntity homePagerEntity = new Gson().fromJson(result,
                         HomePagerEntity.class);
                 ArrayList<HomePagerEntity.Carousel> carousels = homePagerEntity
@@ -244,7 +245,7 @@ public class GuideFragment extends ChannelBaseFragment implements
         guideRecommmendList.removeAllViews();
         ArrayList<FrameLayout> imageViews = new ArrayList<FrameLayout>();
         for (int i = 0; i < 8; i++) {
-            if(mContext==null){
+            if (mContext == null) {
                 return;
             }
             tv.ismar.daisy.ui.widget.HomeItemContainer frameLayout = (tv.ismar.daisy.ui.widget.HomeItemContainer) LayoutInflater
@@ -352,14 +353,15 @@ public class GuideFragment extends ChannelBaseFragment implements
         film_post_layout.setTag(R.drawable.launcher_selector, mCarousels.get(mCurrentCarouselIndex));
 
 //        mHelper.onStart();
-        mHandler.sendEmptyMessage(START_PLAYBACK);
+        mHandler.removeMessages(START_PLAYBACK);
+        mHandler.sendEmptyMessageDelayed(START_PLAYBACK, 500);
 
 
     }
 
     private void switchVideo() {
-    	if(mContext ==null)
-    		return;
+        if (mContext == null)
+            return;
         String videoUrl = CacheManager.getInstance().doRequest(mCarousels.get(mCurrentCarouselIndex).getVideo_url(),
                 "guide_" + mCurrentCarouselIndex + ".mp4", DownloadClient.StoreType.Internal);
         Log.d(TAG, "play video: " + videoUrl);
@@ -387,7 +389,6 @@ public class GuideFragment extends ChannelBaseFragment implements
 
     private void startPlayback() {
         Log.d(TAG, "startPlayback is invoke...");
-
 
 
         mService.addCallback(this);
