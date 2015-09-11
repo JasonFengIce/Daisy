@@ -1,9 +1,10 @@
 package tv.ismar.daisy.ui.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -12,7 +13,9 @@ import android.view.View;
 import android.widget.*;
 import cn.ismartv.activator.Activator;
 import com.google.gson.Gson;
-import tv.ismar.daisy.*;
+import tv.ismar.daisy.BaseActivity;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
@@ -32,6 +35,8 @@ import java.util.HashMap;
 public class UserCenterActivity extends BaseActivity implements View.OnClickListener, BaseActivity.OnLoginCallback {
 
     private static final String TAG = "UserCenterActivity";
+
+    private static final int MSG_INDICATOR_CHANGE = 0x0001;
 
     public static final String ACCOUNT_SHARED_PREFS = "account";
     public static final String ACCOUNT_COMBINE = "combine";
@@ -202,36 +207,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        int currentViewId = v.getId();
-        switch (v.getId()) {
-            case R.string.usercenter_store:
-                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, storeFragment).commit();
-                break;
-            case R.string.usercenter_userinfo:
-                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, userInfoFragment).commit();
-                break;
-            case R.string.usercenter_login:
-                // getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, loginFragment).commit();
-
-                loginQQorWX();
-                break;
-            case R.string.usercenter_purchase_history:
-                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, historyFragment).commit();
-                break;
-            case R.string.usercenter_help:
-                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, helpFragment).commit();
-                break;
-            case R.string.usercenter_location:
-                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, locationFragment).commit();
-                break;
-        }
-        for (View view : indicatorView) {
-            if (view.getId() == currentViewId) {
-                view.setBackgroundResource(R.drawable.usercenter_table_focus);
-            } else {
-                view.setBackgroundResource(R.drawable.usercenter_table_normal);
-            }
-        }
+        handlerClick(v);
     }
 
     public void switchToUserInfoFragment() {
@@ -528,9 +504,60 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             Button btn = (Button) v;
             if (hasFocus) {
                 btn.setTextColor(mContext.getResources().getColor(R.color._ffba00));
+                messageHandler.removeMessages(MSG_INDICATOR_CHANGE);
+                Message message = messageHandler.obtainMessage(MSG_INDICATOR_CHANGE, v);
+                messageHandler.sendMessageDelayed(message, 500);
             } else {
                 btn.setTextColor(mContext.getResources().getColor(R.color._ffffff));
             }
+        }
+    };
+
+
+    private void handlerClick(View v) {
+        int currentViewId = v.getId();
+        switch (v.getId()) {
+            case R.string.usercenter_store:
+                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, storeFragment).commit();
+                break;
+            case R.string.usercenter_userinfo:
+                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, userInfoFragment).commit();
+                break;
+            case R.string.usercenter_login:
+                // getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, loginFragment).commit();
+
+                loginQQorWX();
+                break;
+            case R.string.usercenter_purchase_history:
+                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, historyFragment).commit();
+                break;
+            case R.string.usercenter_help:
+                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, helpFragment).commit();
+                break;
+            case R.string.usercenter_location:
+                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, locationFragment).commit();
+                break;
+        }
+        for (View view : indicatorView) {
+            if (view.getId() == currentViewId) {
+                view.setBackgroundResource(R.drawable.usercenter_table_focus);
+            } else {
+                view.setBackgroundResource(R.drawable.usercenter_table_normal);
+            }
+        }
+    }
+
+
+    private Handler messageHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_INDICATOR_CHANGE:
+                    View view = (View) msg.obj;
+                    handlerClick(view);
+                    break;
+            }
+
         }
     };
 }
