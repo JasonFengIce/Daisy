@@ -77,7 +77,6 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private String mNickName;
 
 
-
     private SharedPreferences.OnSharedPreferenceChangeListener changeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -157,6 +156,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     private void initViews() {
         topView = (LaunchHeaderLayout) findViewById(R.id.top_column_layout);
+        topView.hideIndicatorTable();
 
 
     }
@@ -525,10 +525,10 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private View.OnFocusChangeListener indicatorBtnFocusChangeListener = new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
-            Button btn = (Button)v;
-            if (hasFocus){
+            Button btn = (Button) v;
+            if (hasFocus) {
                 btn.setTextColor(mContext.getResources().getColor(R.color._ffba00));
-            }else {
+            } else {
                 btn.setTextColor(mContext.getResources().getColor(R.color._ffffff));
             }
         }

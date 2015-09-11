@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.activeandroid.query.Select;
 import com.google.gson.Gson;
+import org.w3c.dom.Text;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
@@ -20,8 +21,10 @@ import tv.ismar.daisy.data.weather.WeatherEntity;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by huaijie on 2015/7/21.
@@ -41,6 +44,8 @@ public class LaunchHeaderLayout extends FrameLayout
 
 //    private SharedPreferences locationSharedPreferences;
 
+    private List<TextView> indicatorTableList;
+
     public LaunchHeaderLayout(Context context) {
         super(context);
         this.context = context;
@@ -49,7 +54,7 @@ public class LaunchHeaderLayout extends FrameLayout
     public LaunchHeaderLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-
+        indicatorTableList = new ArrayList<TextView>();
 
         View view = LayoutInflater.from(context).inflate(R.layout.fragment_weather, null);
 
@@ -103,7 +108,8 @@ public class LaunchHeaderLayout extends FrameLayout
 
 
     private void createGuideIndicator() {
-        int i=0;
+        int i = 0;
+        indicatorTableList.clear();
         for (int res : INDICATOR_RES_LIST) {
 
             View view = LayoutInflater.from(context).inflate(R.layout.item_weather_indicator, null);
@@ -112,10 +118,11 @@ public class LaunchHeaderLayout extends FrameLayout
             textView.setOnFocusChangeListener(this);
             textView.setText(res);
             textView.setId(res);
-            if(i==INDICATOR_RES_LIST.length-1){
+            if (i == INDICATOR_RES_LIST.length - 1) {
                 textView.setNextFocusRightId(res);
             }
             guideLayout.addView(view);
+            indicatorTableList.add(textView);
             i++;
         }
     }
@@ -200,6 +207,12 @@ public class LaunchHeaderLayout extends FrameLayout
             ((TextView) v).setTextColor(getResources().getColor(R.color.association_focus));
         } else {
             ((TextView) v).setTextColor(getResources().getColor(R.color.association_normal));
+        }
+    }
+
+    public void hideIndicatorTable() {
+        for (TextView textView : indicatorTableList) {
+            textView.setVisibility(View.GONE);
         }
     }
 
