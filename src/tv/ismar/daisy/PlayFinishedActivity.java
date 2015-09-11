@@ -180,7 +180,7 @@ public class PlayFinishedActivity extends BaseActivity implements OnFocusChangeL
 //				loadDialogShow();
 //				break;
 			case NETWORK_EXCEPTION:
-				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, mRelatedTask);
+//				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, mRelatedTask);
 				break;
 			}
 		}
