@@ -94,6 +94,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     private ImageView arrow_left;
     private ImageView arrow_right;
+    private ImageView arrow_left_visible;
+    private ImageView arrow_right_visible;
     private FrameLayout toppanel;
     private ChannelEntity[] mChannelEntitys;
     private HashMap<String, TextView> channelHashMap;
@@ -110,22 +112,25 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         public void onChange(int position) {
             if (position == 0) {
                 arrow_left.setVisibility(View.GONE);
+                arrow_left_visible.setVisibility(View.GONE);
                 if (channelChange != null && channelChange != ChannelChange.CLICK_CHANNEL)
                     channelChange = ChannelChange.RIGHT_ARROW;
             } else {
                 arrow_left.setVisibility(View.VISIBLE);
+                arrow_left_visible.setVisibility(View.VISIBLE);
             }
 
             if (position == mChannelEntitys.length - 1) {
                 arrow_right.setVisibility(View.GONE);
+                arrow_right_visible.setVisibility(View.GONE);
                 if (channelChange != null && channelChange != ChannelChange.CLICK_CHANNEL)
                     channelChange = ChannelChange.LEFT_ARROW;
             } else {
                 arrow_right.setVisibility(View.VISIBLE);
+                arrow_right_visible.setVisibility(View.VISIBLE);
             }
             Log.i("TestFragment", "position==" + position);
             selectChannelByPosition(position);
-            lastview = scroll.getChildAt(position);
             scroll.setSelection(position);
             scroll.requestFocus();
             //   setClickChannelView(scroll.getChildAt(position));
@@ -302,6 +307,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         tabListView = (LinearLayout) findViewById(R.id.tab_list);
         arrow_left = (ImageView) findViewById(R.id.arrow_scroll_left);
         arrow_right = (ImageView) findViewById(R.id.arrow_scroll_right);
+        arrow_left_visible = (ImageView) findViewById(R.id.arrow_scroll_left_visible);
+        arrow_right_visible = (ImageView) findViewById(R.id.arrow_scroll_right_visible);
         //arrow_left.setOnClickListener(arrowViewListener);
         // arrow_right.setOnClickListener(arrowViewListener);
         arrow_left.setOnFocusChangeListener(scrollViewListener);
@@ -894,6 +901,25 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
 
     private void selectChannelByPosition(int position) {
+    	if (position == 0) {
+            arrow_left.setVisibility(View.GONE);
+            arrow_left_visible.setVisibility(View.GONE);
+            if (channelChange != null && channelChange != ChannelChange.CLICK_CHANNEL)
+                channelChange = ChannelChange.RIGHT_ARROW;
+        } else {
+            arrow_left.setVisibility(View.VISIBLE);
+            arrow_left_visible.setVisibility(View.VISIBLE);
+        }
+
+        if (position == mChannelEntitys.length - 1) {
+            arrow_right.setVisibility(View.GONE);
+            arrow_right_visible.setVisibility(View.GONE);
+            if (channelChange != null && channelChange != ChannelChange.CLICK_CHANNEL)
+                channelChange = ChannelChange.LEFT_ARROW;
+        } else {
+            arrow_right.setVisibility(View.VISIBLE);
+            arrow_right_visible.setVisibility(View.VISIBLE);
+        }
         ChannelEntity channelEntity = mChannelEntitys[position];
         topView.setSubTitle(channelEntity.getName());
         currentFragment = null;
