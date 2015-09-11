@@ -25,6 +25,11 @@ public class LabelImageView extends AsyncImageView {
 	private boolean customfocus;
 	private boolean customselected;
 	private int maxfocustitle;
+    private boolean drawBorder;
+    
+	public void setDrawBorder(boolean drawBorder) {
+		this.drawBorder = drawBorder;
+	}
 
 	public void setNeedzoom(boolean needzoom) {
 		this.needzoom = needzoom;
@@ -180,7 +185,7 @@ public class LabelImageView extends AsyncImageView {
 		}
 
 		// if (customfocus) {
-		if (hasFocus()) {
+		if (hasFocus() || drawBorder) {
 			mBound.set(-21+mRect.left, -21+mRect.top, 21+mRect.right, mRect.bottom+21);
 			mDrawable.setBounds(mBound);
 			canvas.save();
