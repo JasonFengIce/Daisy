@@ -41,6 +41,12 @@
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 />
+        <TextView  android:id="@+id/toppage_divide_view"
+                   android:layout_width="match_parent"
+                   android:layout_height="1dip"
+                   android:layout_below="@id/container"
+                   android:focusable="true"
+                   />
         <ImageView
             android:id="@+id/arrow_scroll_left_visible"
                 android:layout_width="@dimen/tv_guide_arrow_scroll_w"

@@ -105,7 +105,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private String homepage_url;
 
     private LaunchHeaderLayout topView;
-
+    private View toppage_divide_view;
 
     private Position mCurrentChannelPosition = new Position(new Position.PositioinChangeCallback() {
         @Override
@@ -303,6 +303,16 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     private void initViews() {
         toppanel = (FrameLayout) findViewById(R.id.top_column_layout);
+        toppage_divide_view = findViewById(R.id.toppage_divide_view);
+        toppage_divide_view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+			if(hasFocus){
+				scroll.requestFocus();
+			}
+			}
+		});
 //        weatherFragment = new WeatherFragment();
 //        getSupportFragmentManager().beginTransaction().add(R.id.top_column_layout, weatherFragment).commit();
         //  channelListView = (LinearLayout) findViewById(R.id.channel_h_list);
@@ -315,6 +325,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         // arrow_right.setOnClickListener(arrowViewListener);
         arrow_left.setOnFocusChangeListener(scrollViewListener);
         arrow_right.setOnFocusChangeListener(scrollViewListener);
+
     }
 
     @Override
