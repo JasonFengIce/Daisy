@@ -19,6 +19,7 @@ import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.data.usercenter.AuthTokenEntity;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
@@ -96,7 +97,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             } else {
                 indicatorView.get(2).setBackgroundResource(R.drawable.usercenter_table_normal);
                 indicatorView.get(2).setFocusable(true);
-                indicatorView.get(2).setEnabled(false);
+                indicatorView.get(2).setEnabled(true);
 
             }
         }
@@ -230,8 +231,10 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         AuthTokenEntity authTokenEntity = new Gson().fromJson(result, AuthTokenEntity.class);
         Log.i("pangziinfo", "authTokenEntity.getAuth_token()==" + authTokenEntity.getAuth_token());
         mAccessToken = authTokenEntity.getAuth_token();
-        indicatorView.get(2).setBackgroundResource(R.drawable.button_disable);
-        indicatorView.get(1).setBackgroundResource(R.drawable.usercenter_table_focus);
+//        indicatorView.get(2).setBackgroundResource(R.drawable.button_disable);
+//        indicatorView.get(2).setFocusable(false);
+//        indicatorView.get(2).setEnabled(false);
+//        indicatorView.get(1).setBackgroundResource(R.drawable.usercenter_table_focus);
         // callWGQueryQQUserInfo();
     }
 
@@ -244,7 +247,9 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     public void oncallWGQueryQQUserInfo(String nickName) {
         mNickName = nickName;
         saveToLocal(mAccessToken, mNickName);
-        indicatorView.get(2).setBackgroundResource(R.drawable.button_disable);
+//        indicatorView.get(2).setBackgroundResource(R.drawable.button_disable);
+//        indicatorView.get(2).setFocusable(false);
+//        indicatorView.get(2).setEnabled(false);
 
 
         if (listener != null) {
@@ -363,6 +368,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private void saveToLocal(String authToken, String phoneNumber) {
         SimpleRestClient.access_token = authToken;
         SimpleRestClient.mobile_number = phoneNumber;
+
 
         DaisyUtils.getVodApplication(mContext).getEditor().putString(VodApplication.AUTH_TOKEN, authToken);
         DaisyUtils.getVodApplication(mContext).getEditor().putString(VodApplication.MOBILE_NUMBER, phoneNumber);
@@ -542,7 +548,16 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             if (view.getId() == currentViewId) {
                 view.setBackgroundResource(R.drawable.usercenter_table_focus);
             } else {
-                view.setBackgroundResource(R.drawable.usercenter_table_normal);
+
+                if (view == indicatorView.get(2)){
+                    if (TextUtils.isEmpty(SimpleRestClient.access_token)){
+                        view.setBackgroundResource(R.drawable.usercenter_table_normal);
+                    }else {
+                        view.setBackgroundResource(R.drawable.button_disable);
+                    }
+                }else {
+                    view.setBackgroundResource(R.drawable.usercenter_table_normal);
+                }
             }
         }
     }
@@ -560,4 +575,6 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
         }
     };
+
+
 }

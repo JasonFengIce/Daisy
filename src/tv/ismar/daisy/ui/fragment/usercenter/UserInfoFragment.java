@@ -394,4 +394,5 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener{
     private PopupWindow combineAccountPop;
     private SimpleRestClient mSimpleRestClient;
     private Item[] mHistoriesByNet;
+
 }
