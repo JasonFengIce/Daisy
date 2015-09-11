@@ -40,7 +40,7 @@
                 android:clickable="true"
                 >
 
-            <VideoView
+            <tv.ismar.daisy.ui.widget.DaisyVideoView
                     android:id="@+id/film_linked_video"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

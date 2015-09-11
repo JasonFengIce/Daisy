@@ -67,7 +67,7 @@ public class FilmFragment extends ChannelBaseFragment {
     private IsmartvUrlClient datafetch;
 
 
-    private VideoView mSurfaceView;
+    private tv.ismar.daisy.ui.widget.DaisyVideoView mSurfaceView;
 
     private int mCurrentCarouselIndex = -1;
     private CarouselRepeatType mCarouselRepeatType = CarouselRepeatType.All;
@@ -98,7 +98,7 @@ public class FilmFragment extends ChannelBaseFragment {
         View mView = LayoutInflater.from(mContext).inflate(R.layout.fragment_film, null);
         guideRecommmendList = (LinearLayout) mView.findViewById(R.id.film_recommend_list);
         carouselLayout = (LinearLayout) mView.findViewById(R.id.film_carousel_layout);
-        mSurfaceView = (VideoView) mView.findViewById(R.id.film_linked_video);
+        mSurfaceView = (tv.ismar.daisy.ui.widget.DaisyVideoView) mView.findViewById(R.id.film_linked_video);
         mSurfaceView.setOnCompletionListener(mOnCompletionListener);
         mSurfaceView.setOnErrorListener(mVideoOnErrorListener);
 
