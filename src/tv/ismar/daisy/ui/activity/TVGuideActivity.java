@@ -334,44 +334,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     @Override
     public void onBackPressed() {
-
-        if (currentFragment != null) {
-            if (currentFragment.getClass().getName().equals(GuideFragment.class.getName())) {
-                showExitPopup(contentView);
-            } else {
-                contentView.setBackgroundResource(R.drawable.main_bg);
-                currentFragment = new GuideFragment();
-                replaceFragment(currentFragment);
-                topView.setTitle(getText(R.string.ismartv_cinema).toString());
-                topView.setSubTitle("首页");
-
-                if (arrow_left.getVisibility() == View.VISIBLE) {
-                    arrow_left.setVisibility(View.GONE);
-                }
-//                if (arrow_right.getVisibility() == View.VISIBLE) {
-//                    arrow_right.setVisibility(View.GONE);
-//                }
-                if (lastview != null) {
-                    TextView textview = (TextView) lastview.findViewById(R.id.channel_item);
-                    textview.setBackgroundResource(R.drawable.channel_item_normal);
-                    textview.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
-                    AnimationSet animationSet1 = new AnimationSet(true);
-                    ScaleAnimation scaleAnimation1 = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
-                            Animation.RELATIVE_TO_SELF, 0.5f,
-                            Animation.RELATIVE_TO_SELF, 0.5f);
-                    scaleAnimation1.setDuration(200);
-                    animationSet1.addAnimation(scaleAnimation1);
-                    animationSet1.setFillAfter(true);
-                    textview.startAnimation(animationSet1);
-                }
-
-                setClickChannelView(scroll.getChildAt(0));
-                lastview = scroll.getChildAt(0);
-            }
-        } else {
-            showExitPopup(contentView);
-        }
-
+      showExitPopup(contentView);
     }
 
 

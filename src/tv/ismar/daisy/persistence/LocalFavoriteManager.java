@@ -3,7 +3,7 @@ package tv.ismar.daisy.persistence;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.AsyncTask;
-import org.videolan.libvlc.LibVLC;
+//import org.videolan.libvlc.LibVLC;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.NetworkUtils;
