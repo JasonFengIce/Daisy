@@ -153,6 +153,8 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onPause() {
         super.onPause();
+        if(messageHandler.hasMessages(MSG_INDICATOR_CHANGE))
+        messageHandler.removeMessages(MSG_INDICATOR_CHANGE);
     }
 
     @Override

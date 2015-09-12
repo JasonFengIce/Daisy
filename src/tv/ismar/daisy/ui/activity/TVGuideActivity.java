@@ -1063,6 +1063,12 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         RIGHT_ARROW
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(fragmentSwitch.hasMessages(SWITCH_PAGE))
+        	fragmentSwitch.removeMessages(SWITCH_PAGE);
+    }
 
     @Override
     protected void onDestroy() {
