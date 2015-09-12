@@ -202,7 +202,8 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			}
 		});
 	}
-	class GetFavoriteTask extends AsyncTask<Void, Void, Void> {
+    ArrayList<Item> FavoriteLists;
+    class GetFavoriteTask extends AsyncTask<Void, Void, Void> {
 
 		@Override
 		protected void onPreExecute() {
@@ -216,39 +217,53 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		protected Void doInBackground(Void... params) {
 			ArrayList<Favorite> favorites = DaisyUtils.getFavoriteManager(getActivity()).getAllFavorites("no");			
 			mSectionList = new SectionList();
+            FavoriteLists = new ArrayList<Item>();
+
+            int i=0;
 			HashMap<String, ItemCollection> itemCollectionMap = new HashMap<String, ItemCollection>();
 			for(Favorite favorite: favorites) {
 				String content_model = favorite.content_model;
 				Item item = getItem(favorite);
 				if(item!=null) {
-					ItemCollection itemCollection = itemCollectionMap.get(content_model);
-					if(itemCollection==null) {
-						Section section = new Section();
-						section.slug = content_model;
-						for(ContentModel cm: mContentModels) {
-							if(cm.content_model.equals(content_model)) {
-								section.title = cm.title;
-								break;
-							}
-						}
-						itemCollection = new ItemCollection(1, 0, content_model, section.title);
-						mSectionList.add(section);
-						itemCollectionMap.put(content_model, itemCollection);
-					}
-					itemCollection.objects.put(itemCollection.count++, item);
+                    FavoriteLists.add(item);
+
+
+
+
+
+
+//					ItemCollection itemCollection = itemCollectionMap.get(content_model);
+//					if(itemCollection==null) {
+//						Section section = new Section();
+//						section.slug = content_model;
+//						for(ContentModel cm: mContentModels) {
+//							if(cm.content_model.equals(content_model)) {
+//								section.title = cm.title;
+//								break;
+//							}
+//						}
+//						itemCollection = new ItemCollection(1, 0, content_model, section.title);
+//						mSectionList.add(section);
+//						itemCollectionMap.put(content_model, itemCollection);
+//					}
+//					itemCollection.objects.put(itemCollection.count++, item);
 				}
 			}
 			mItemCollections = new ArrayList<ItemCollection>();
-			for(Section section:mSectionList) {
-				ItemCollection itemCollection= itemCollectionMap.get(section.slug);
-				int count = itemCollection.objects.size();
-				itemCollection.num_pages = (int)FloatMath.ceil((float)count / (float)ItemCollection.NUM_PER_PAGE);
-				section.count = count;
-				// we have already complete data collection.
-				itemCollection.hasFilledValidItem = new boolean[itemCollection.num_pages];
-				Arrays.fill(itemCollection.hasFilledValidItem, true);
-				mItemCollections.add(itemCollection);
-			}
+            int num_pages = (int) FloatMath.ceil((float)FavoriteLists.size() / (float)ItemCollection.NUM_PER_PAGE);
+            ItemCollection itemCollection = new ItemCollection(num_pages, FavoriteLists.size(), "1", "1");
+            mItemCollections.add(itemCollection);
+           // mItemCollections.get(0).fillItems(0, FavoriteLists);
+//			for(Section section:mSectionList) {
+//				ItemCollection itemCollection= itemCollectionMap.get(section.slug);
+//				int count = itemCollection.objects.size();
+//				itemCollection.num_pages = (int)FloatMath.ceil((float)count / (float)ItemCollection.NUM_PER_PAGE);
+//				section.count = count;
+//				// we have already complete data collection.
+//				itemCollection.hasFilledValidItem = new boolean[itemCollection.num_pages];
+//				Arrays.fill(itemCollection.hasFilledValidItem, true);
+//				mItemCollections.add(itemCollection);
+//			}
 			return null;
 		}
 
@@ -259,14 +274,19 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			}
 			
 			isInGetFavoriteTask = false;
-			if(mSectionList.size()==0) {
-				no_video();
-				return;
-			}
+
 //			mScrollableSectionList.init(mSectionList, 1365,false);
-			mHGridAdapter = new HGridAdapterImpl(getActivity(), mItemCollections);
+
+			mHGridAdapter = new HGridAdapterImpl(getActivity(), mItemCollections,false);
+            mHGridAdapter.setList(mItemCollections);
+            if(mHGridAdapter.getCount()==0) {
+                no_video();
+                return;
+            }
 			mHGridView.setAdapter(mHGridAdapter);
 			mHGridView.setFocusable(true);
+            mItemCollections.get(0).fillItems(0, FavoriteLists);
+            mHGridAdapter.setList(mItemCollections);
 		//	mHGridView.setHorizontalFadingEdgeEnabled(true);
 			//mHGridView.setFadingEdgeLength(144);
 			int num_rows = mHGridView.getRows();

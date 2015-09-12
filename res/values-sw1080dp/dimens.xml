@@ -451,7 +451,7 @@
     <dimen name="ZGridView_related_selectorLeftPadding">23.8dip</dimen>
     <dimen name="ZGridView_related_selectorTopPadding">23.8dip</dimen>
     <dimen name="ZGridView_related_selectorRightPadding">23.8dip</dimen>
-    <dimen name="ZGridView_related_selectorBottomPadding">-55dip</dimen>
+    <dimen name="ZGridView_related_selectorBottomPadding">-60dip</dimen>
     <dimen name="ZGridView_played_selectorLeftPadding">23dip</dimen>
     <dimen name="ZGridView_played_selectorTopPadding">19dip</dimen>
     <dimen name="ZGridView_played_selectorRightPadding">22dip</dimen>
@@ -461,9 +461,9 @@
     <dimen name="ZGridView_search_selectorRight">21dip</dimen>
     <dimen name="ZGridView_search_selectorBottom">-40dip</dimen>
     <dimen name="ZGridView_packagedetail_selectorLeftPadding">0.7dip</dimen>
-    <dimen name="ZGridView_packagedetail_selectorTopPadding">1dip</dimen>
-    <dimen name="ZGridView_packagedetail_selectorRight">2dip</dimen>
-    <dimen name="ZGridView_packagedetail_selectorBottom">-19dip</dimen>
+    <dimen name="ZGridView_packagedetail_selectorTopPadding">0dip</dimen>
+    <dimen name="ZGridView_packagedetail_selectorRight">1dip</dimen>
+    <dimen name="ZGridView_packagedetail_selectorBottom">-25dip</dimen>
     <dimen name="ZGridView_recommend_selectorLeftPadding">24dip</dimen>
     <dimen name="ZGridView_recommend_selectorTopPadding">1dip</dimen>
     <dimen name="ZGridView_recommend_selectorRightPadding">22dip</dimen>

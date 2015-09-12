@@ -410,7 +410,11 @@ public class QiYiPlayActivity extends VodMenuAction {
             isContinue = mHistory.is_continue;
             tempOffset = (int) mHistory.last_position;
         }
-
+        else if (mHistory!=null&&mHistory.sub_url == null
+                && mHistory.url != null){
+            isContinue = mHistory.is_continue;
+            tempOffset = (int) mHistory.last_position;
+        }
         setQiyiVideo();
     }
 

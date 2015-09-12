@@ -146,6 +146,9 @@ public class FilterFragment extends BackHandledFragment {
                         String label = jsonObj.getString("label");
                         JSONArray values = jsonObj.getJSONArray("values");
                         int arrayCount = values.length();
+                        if(getActivity()==null){
+                            return;
+                        }
                         LayoutInflater mInflater = LayoutInflater.from(getActivity());
                         View view = mInflater.inflate(R.layout.filter_condition_item,null);
                         TextView condition_txt = (TextView) view.findViewById(R.id.condition_txt);

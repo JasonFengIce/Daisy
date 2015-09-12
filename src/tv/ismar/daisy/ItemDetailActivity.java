@@ -316,6 +316,9 @@ private boolean isPause = false;
 				url = params[0];
 				id = SimpleRestClient.getItemId(url, new boolean[1]);
 				mItem = mSimpleRestClient.getItem(url);
+				mItem.slug = slug;
+				mItem.channel = channel;
+				mItem.fromPage = fromPage;
 			} catch (ItemOfflineException e) {
 				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
 				exceptionProperties.put(EventProperty.CODE, "nodetail");
