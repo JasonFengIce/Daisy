@@ -340,6 +340,7 @@ public class DramaListActivity extends BaseActivity implements
 						loadDialog.dismiss();
 				}
 			});
+			tool.fromPage = mItem.fromPage;
 			tool.initClipInfo(mSubItem.url, InitPlayerTool.FLAG_URL);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -564,8 +564,21 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         imageAdapter.setOnClickListener(channelClickListener);
         scroll.setFocusable(true);
         scroll.requestFocus();
-        scroll.mFocusListener = mFocusListener;
-
+        //scroll.mFocusListener = mFocusListener;
+        scroll.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View view, boolean flag) {
+				TextView v = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
+				if(flag){
+					v.setTextColor(getResources().getColor(R.color._ffba00));
+				}else{
+					//v.setTextColor(R.color._ffffff);
+					v.setTextColor(getResources().getColor(R.color._ffffff));
+				}
+				v.invalidate();
+			}
+		});
         scroll.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -599,7 +612,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 }
                 // if(view!=clickView){
                 channelBtn.setBackgroundResource(R.drawable.channel_item_focus);
-                channelBtn.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
+                channelBtn.setTextColor(getResources().getColor(R.color._ffba00));
                 AnimationSet animationSet = new AnimationSet(true);
                 ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
                         Animation.RELATIVE_TO_SELF, 0.5f,
@@ -709,6 +722,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             // scroll.setSelection(0);
             setClickChannelView(scroll.getChildAt(0));
             lastview = scroll.getChildAt(0);
+            TextView v = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
+		    v.setTextColor(getResources().getColor(R.color._ffba00));
             scroll.setOnScrollListener(null);
         }
     }
