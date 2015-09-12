@@ -162,6 +162,14 @@
             android:paddingLeft="@dimen/play_finished_gridview_Padding"
             android:paddingTop="@dimen/play_finished_gridview_Padding">
         </org.sakuratya.horizontal.ui.ZGridView>
+        <TextView
+                android:id="@+id/tv_releted_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/play_finished_tv_releted_margintop"
+                android:text="无相关推荐"
+                android:textSize="@dimen/play_finished_tv_releted_textsize"/>
     </LinearLayout>
     <!-- 右边整块 -->
 

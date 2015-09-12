@@ -197,7 +197,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         userCenterIndicatorLayout.removeAllViews();
         for (int res : INDICATOR_TEXT_RES_ARRAY) {
             RelativeLayout frameLayout = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_usercenter_indicator, null);
-            Button textView = (Button) frameLayout.findViewById(R.id.usercenter_indicator_text);
+            tv.ismar.daisy.ui.widget.ImageTextButton textView = (tv.ismar.daisy.ui.widget.ImageTextButton) frameLayout.findViewById(R.id.usercenter_indicator_text);
 //            textView.setOnFocusChangeListener(indicatorBtnFocusChangeListener);
             textView.setText(res);
             textView.setId(res);
