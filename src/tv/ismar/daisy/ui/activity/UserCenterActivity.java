@@ -559,7 +559,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 btn.setTextColor(mContext.getResources().getColor(R.color._ffba00));
                 messageHandler.removeMessages(MSG_INDICATOR_CHANGE);
                 Message message = messageHandler.obtainMessage(MSG_INDICATOR_CHANGE, v);
-                messageHandler.sendMessageDelayed(message, 300);
+                messageHandler.sendMessageDelayed(message, 500);
             }
 
 

@@ -177,6 +177,7 @@
             </TextView>
 
             <ScrollView
+                    android:layout_marginLeft="50dp"
                     android:layout_toRightOf="@id/privilege_txt"
                     android:layout_marginRight="@dimen/person_login_phone_view_ML"
                     android:layout_width="wrap_content"
