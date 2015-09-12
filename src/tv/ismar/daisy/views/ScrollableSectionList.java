@@ -233,9 +233,12 @@ public class ScrollableSectionList extends HorizontalScrollView {
                     }else if(currentState==STATE_SECTION){
                         label.setTextColor(LABEL_TEXT_COLOR_CLICKED);
                         label.setTextSize(textsize);
+                        View lastSelectedView = mContainer.getChildAt(mSelectPosition);
+                        setSectionTabProperty(v,lastSelectedView);
                       //  label.setBackgroundResource(R.drawable.channel_focus_frame);
                      //   setsectionview(mContainer.getChildAt(index));
                         Message msg = new Message();
+                        msg.what = START_CLICK;
                         msg.obj = v;
                         mHandler.sendMessageDelayed(msg,500);
                     }
@@ -258,12 +261,12 @@ public class ScrollableSectionList extends HorizontalScrollView {
 		}
 	};
     public TextView sectionWhenGoto;
-   public static int STATE_GOTO_GRIDVIEW = 2;
+    public static int STATE_GOTO_GRIDVIEW = 2;
     public static int STATE_SECTION = 3;
     public static int STATE_LEAVE_GRIDVIEW = 4;
     public int currentState = STATE_SECTION;
-   private  static int START_CLICK = 1;
-    private Handler mHandler = new Handler() {
+    public  static int START_CLICK = 1;
+    public Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
                    View v = (View) msg.obj;

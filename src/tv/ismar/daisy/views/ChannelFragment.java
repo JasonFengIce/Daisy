@@ -108,7 +108,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
         weatherFragment = (LaunchHeaderLayout) fragmentView.findViewById(R.id.top_column_layout);
         weatherFragment.setTitle(mTitle);
         weatherFragment.hideSubTiltle();
-
+        weatherFragment.hideIndicatorTable();
         large_layout = fragmentView.findViewById(R.id.large_layout);
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
         left_shadow = (Button) fragmentView.findViewById(R.id.left_shadow);
@@ -595,6 +595,9 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		// We don't want to load when this page has been invisible.
 		// This can prevent onScroll event to put new task to mCurrentLoadingTask.
 		mIsBusy = true;
+        if(mScrollableSectionList!=null&&mScrollableSectionList.mHandler!=null){
+            mScrollableSectionList.mHandler.removeMessages(ScrollableSectionList.START_CLICK);
+        }
 		// Prevent AsyncImageView loading
 		if(mHGridAdapter!=null) {
 			mHGridAdapter.cancel();

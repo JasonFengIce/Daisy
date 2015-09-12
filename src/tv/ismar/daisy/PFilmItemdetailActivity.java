@@ -668,7 +668,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         weatherFragment =(LaunchHeaderLayout)findViewById(R.id.top_column_layout);
         weatherFragment.setTitle(title);
         weatherFragment.hideSubTiltle();
-
+        weatherFragment.hideIndicatorTable();
         mDetailTitle = (TextView) findViewById(R.id.detail_title);
         mDetailIntro = (TextView) findViewById(R.id.detail_intro);
         mDetailPreviewImg = (AsyncImageView) findViewById(R.id.detail_preview_img);
