@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.view.View;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.vlc.PlaybackService;
 import tv.ismar.daisy.data.ChannelEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.data.HomePagerEntity.Poster;
