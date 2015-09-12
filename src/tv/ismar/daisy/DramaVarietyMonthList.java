@@ -90,6 +90,7 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
             return;
         weatherFragment.setTitle((getIntent().getStringExtra("title")));
         weatherFragment.hideSubTiltle();
+        weatherFragment.hideIndicatorTable();
         mItem = (Item) bundle.get("item");
         Item[] subItems = mItem.subitems;
         ArrayList<Item> list = null;

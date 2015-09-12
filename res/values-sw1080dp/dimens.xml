@@ -305,10 +305,10 @@
     <dimen name="related_view_title_marginTop">15dip</dimen>
     <dimen name="related_view_gridview_W">254dip</dimen>
     <dimen name="related_view_gridview_ltr">5dip</dimen>
-    <dimen name="related_view_gridview_selector_PL">3.8dip</dimen>
-    <dimen name="related_view_gridview_selector_PT">3.8dip</dimen>
-    <dimen name="related_view_gridview_selector_PR">3.8dip</dimen>
-    <dimen name="related_view_gridview_selector_PB">-48.4dip</dimen>
+    <dimen name="related_view_gridview_selector_PL">23.8dip</dimen>
+    <dimen name="related_view_gridview_selector_PT">23.8dip</dimen>
+    <dimen name="related_view_gridview_selector_PR">23.8dip</dimen>
+    <dimen name="related_view_gridview_selector_PB">-28.4dip</dimen>
     <dimen name="related_view_hgridview_horizontalSpace">115dip</dimen>
     <dimen name="related_view_hgridview_item_textview_h">83dip</dimen>
     <dimen name="related_view_hgridview_item_pt">15dip</dimen>
@@ -448,10 +448,10 @@
     <dimen name="channel_section_tabs_text_PT">20dip</dimen>
 
     <!-- ZGridview -->
-    <dimen name="ZGridView_related_selectorLeftPadding">3.8dip</dimen>
-    <dimen name="ZGridView_related_selectorTopPadding">3.8dip</dimen>
-    <dimen name="ZGridView_related_selectorRightPadding">3.8dip</dimen>
-    <dimen name="ZGridView_related_selectorBottomPadding">-75dip</dimen>
+    <dimen name="ZGridView_related_selectorLeftPadding">23.8dip</dimen>
+    <dimen name="ZGridView_related_selectorTopPadding">23.8dip</dimen>
+    <dimen name="ZGridView_related_selectorRightPadding">23.8dip</dimen>
+    <dimen name="ZGridView_related_selectorBottomPadding">-55dip</dimen>
     <dimen name="ZGridView_played_selectorLeftPadding">23dip</dimen>
     <dimen name="ZGridView_played_selectorTopPadding">19dip</dimen>
     <dimen name="ZGridView_played_selectorRightPadding">22dip</dimen>
@@ -460,10 +460,10 @@
     <dimen name="ZGridView_search_selectorTopPadding">21dip</dimen>
     <dimen name="ZGridView_search_selectorRight">21dip</dimen>
     <dimen name="ZGridView_search_selectorBottom">-40dip</dimen>
-    <dimen name="ZGridView_packagedetail_selectorLeftPadding">-19.3dip</dimen>
-    <dimen name="ZGridView_packagedetail_selectorTopPadding">-19dip</dimen>
-    <dimen name="ZGridView_packagedetail_selectorRight">-18dip</dimen>
-    <dimen name="ZGridView_packagedetail_selectorBottom">-39dip</dimen>
+    <dimen name="ZGridView_packagedetail_selectorLeftPadding">0.7dip</dimen>
+    <dimen name="ZGridView_packagedetail_selectorTopPadding">1dip</dimen>
+    <dimen name="ZGridView_packagedetail_selectorRight">2dip</dimen>
+    <dimen name="ZGridView_packagedetail_selectorBottom">-19dip</dimen>
     <dimen name="ZGridView_recommend_selectorLeftPadding">24dip</dimen>
     <dimen name="ZGridView_recommend_selectorTopPadding">1dip</dimen>
     <dimen name="ZGridView_recommend_selectorRightPadding">22dip</dimen>
@@ -1009,10 +1009,10 @@
     <dimen name="usercenter_storefragment_packagelist_item_text_width">336dp</dimen>
     <dimen name="usercenter_storefragment_packagelist_item_text_height">62dp</dimen>
     <dimen name="usercenter_storefragment_packagelist_marginBottom">50dp</dimen>
-    <dimen name="usercenter_storefragment_packagelist_selectorLeftPadding">0.9dip</dimen>
-    <dimen name="usercenter_storefragment_packagelist_selectorTopPadding">0.9dip</dimen>
-    <dimen name="usercenter_storefragment_packagelist_selectorRightPadding">0.6dip</dimen>
-    <dimen name="usercenter_storefragment_packagelist_selectorBottomPadding">-62dip</dimen>
+    <dimen name="usercenter_storefragment_packagelist_selectorLeftPadding">20.9dip</dimen>
+    <dimen name="usercenter_storefragment_packagelist_selectorTopPadding">20.9dip</dimen>
+    <dimen name="usercenter_storefragment_packagelist_selectorRightPadding">20.6dip</dimen>
+    <dimen name="usercenter_storefragment_packagelist_selectorBottomPadding">-42dip</dimen>
     <dimen name="usercenter_storefragment_packagelist_gridview_P">5dip</dimen>
 
 
@@ -1231,7 +1231,7 @@
     <dimen name="variety_dramalist_month_gridview_hs">34dip</dimen>
     <dimen name="variety_dramalist_month_gridview_rowheight">370dip</dimen>
     <dimen name="variety_dramalist_selector_month_paddingBottom">-140dip</dimen>
-    <dimen name="list_view_nosection_month_paddingBottom">-120dip</dimen>
+    <dimen name="list_view_nosection_month_paddingBottom">-80dip</dimen>
     <dimen name="variety_dramalist_month_gridview_mt">46dip</dimen>
     <dimen name="variety_dramalist_gridview_mlr">24dip</dimen>
     <dimen name="variety_dramalist_gridview_mb">17dip</dimen>

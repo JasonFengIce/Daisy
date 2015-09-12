@@ -45,6 +45,7 @@ public class FilterActivity extends BaseActivity implements BackHandledInterface
         weatherFragment = (LaunchHeaderLayout) findViewById(R.id.top_column_layout);
         weatherFragment.setTitle(mTitle);
         weatherFragment.hideSubTiltle();
+        weatherFragment.hideIndicatorTable();
         FilterFragment filterfragment = new FilterFragment();
         filterfragment.mChannel = mChannel;
         filterfragment.isPortrait = getIntent().getBooleanExtra("isPortrait", false);

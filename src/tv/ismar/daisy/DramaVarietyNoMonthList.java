@@ -78,6 +78,7 @@ public class DramaVarietyNoMonthList extends BaseActivity implements AdapterView
             return;
         weatherFragment.setTitle(getIntent().getStringExtra("title"));
         weatherFragment.hideSubTiltle();
+        weatherFragment.hideIndicatorTable();
         mItem = (Item) bundle.get("item");
         Item[] subItems = mItem.subitems;
         ArrayList<Item> lists = new ArrayList<Item>();
