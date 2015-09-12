@@ -26,11 +26,12 @@
             android:clipChildren="false"
             android:clipToPadding="false" >
 
-            <tv.ismar.daisy.views.AsyncImageView
+            <tv.ismar.daisy.views.LabelImageView
                 android:id="@+id/vaiety_post"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
+                android:focusable="true"
                 android:src="@drawable/list_item_preview_bg" />
 
             <LinearLayout
@@ -43,7 +44,7 @@
                     android:id="@+id/vaiety_thumb1"
                     android:layout_width="@dimen/entertainment_vaiety_thumb_w"
                     android:layout_height="@dimen/entertainment_vaiety_thumb_h"
-                    android:focusable="true"
+                    android:focusable="false"
                     android:paddingBottom="@dimen/entertainment_vaiety_thumb_padding"
                     android:scaleType="fitXY"
                     android:src="@drawable/list_item_preview_bg" />
@@ -52,7 +53,7 @@
                     android:id="@+id/vaiety_thumb2"
                     android:layout_width="@dimen/entertainment_vaiety_thumb_w"
                     android:layout_height="@dimen/entertainment_vaiety_thumb_h"
-                    android:focusable="true"
+                    android:focusable="false"
                     android:paddingBottom="@dimen/entertainment_vaiety_thumb_padding"
                     android:scaleType="fitXY"
                     android:layout_marginLeft="@dimen/entertainment_vaiety_fouce_label_margin"
@@ -62,7 +63,7 @@
                     android:id="@+id/vaiety_thumb3"
                     android:layout_width="@dimen/entertainment_vaiety_thumb_w"
                     android:layout_height="@dimen/entertainment_vaiety_thumb_h"
-                    android:focusable="true"
+                    android:focusable="false"
                     android:paddingBottom="@dimen/entertainment_vaiety_thumb_padding"
                     android:scaleType="fitXY"
                     android:layout_marginLeft="@dimen/entertainment_vaiety_fouce_label_margin"

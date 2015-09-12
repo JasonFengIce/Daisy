@@ -37,7 +37,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 	private SimpleRestClient mRestClient = new SimpleRestClient();
 	private LoadingDialog mLoadingDialog;
 
-	private AsyncImageView vaiety_post;
+	private tv.ismar.daisy.views.LabelImageView vaiety_post;
 	private tv.ismar.daisy.views.LabelImageView vaiety_thumb1;
 	private tv.ismar.daisy.views.LabelImageView vaiety_thumb2;
 	private tv.ismar.daisy.views.LabelImageView vaiety_thumb3;
@@ -73,7 +73,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		View view = inflater.inflate(R.layout.fragment_entertainment, null);
 //		mLoadingDialog = new LoadingDialog(getActivity(), getResources()
 //				.getString(R.string.loading));
-		vaiety_post = (AsyncImageView) view.findViewById(R.id.vaiety_post);
+		vaiety_post = (tv.ismar.daisy.views.LabelImageView) view.findViewById(R.id.vaiety_post);
 		vaiety_thumb1 = (tv.ismar.daisy.views.LabelImageView) view.findViewById(R.id.vaiety_thumb1);
 		vaiety_thumb2 = (tv.ismar.daisy.views.LabelImageView) view.findViewById(R.id.vaiety_thumb2);
 		vaiety_thumb3 = (tv.ismar.daisy.views.LabelImageView) view.findViewById(R.id.vaiety_thumb3);
@@ -126,20 +126,28 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		vaiety_channel3_image.setOnClickListener(ItemClickListener);
 		vaiety_channel4_image.setOnClickListener(ItemClickListener);
 		vaiety_channel5.setOnClickListener(ItemClickListener);
-		vaiety_thumb1.setOnClickListener(ItemClickListener);
-		vaiety_thumb2.setOnClickListener(ItemClickListener);
-		vaiety_thumb3.setOnClickListener(ItemClickListener);
+//		vaiety_thumb1.setOnClickListener(ItemClickListener);
+//		vaiety_thumb2.setOnClickListener(ItemClickListener);
+//		vaiety_thumb3.setOnClickListener(ItemClickListener);
+		vaiety_post.setOnClickListener(ItemClickListener);
 		return view;
 	}
 
+	@Override
+    public void onResume() {
+		imageswitch.sendEmptyMessageDelayed(IMAGE_SWITCH_KEY, 6000);
+        super.onResume();
+    }
+
     @Override
     public void onPause() {
+    	imageswitch.removeMessages(IMAGE_SWITCH_KEY);
         if(task!=null){
             task.cancel(true);
         }
         super.onPause();
     }
-
+    
     private FetchDataTask task;
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -159,6 +167,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 								.toString());
 					}
 					imageswitch.removeMessages(IMAGE_SWITCH_KEY);
+					vaiety_post.setTag(R.drawable.launcher_selector,v.getTag(R.drawable.launcher_selector));
 				} else {
 					v.setPadding(0, 22, 0, -22);
 					imageswitch.sendEmptyMessageDelayed(IMAGE_SWITCH_KEY, 6000);
@@ -177,6 +186,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 					vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post)
 							.toString());
 					imageswitch.removeMessages(IMAGE_SWITCH_KEY);
+					vaiety_post.setTag(R.drawable.launcher_selector,v.getTag(R.drawable.launcher_selector));
 				} else {
 					v.setPadding(0, 22, 0, -22);
 					imageswitch.sendEmptyMessageDelayed(IMAGE_SWITCH_KEY, 6000);
@@ -195,6 +205,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 					vaiety_fouce_label.setText(v.getTag(R.id.vaiety_post)
 							.toString());
 					imageswitch.removeMessages(IMAGE_SWITCH_KEY);
+					vaiety_post.setTag(R.drawable.launcher_selector,v.getTag(R.drawable.launcher_selector));
 				} else {
 					v.setPadding(0, 22, 0, -22);
 					imageswitch.sendEmptyMessageDelayed(IMAGE_SWITCH_KEY, 6000);
@@ -363,19 +374,23 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 				vaiety_thumb3.setPadding(0, 22, 0, -22);
 				vaiety_fouce_label.setText(vaiety_thumb1.getTag(
 						R.id.vaiety_post).toString());
+				vaiety_post.setTag(R.drawable.launcher_selector,vaiety_thumb1.getTag(R.drawable.launcher_selector));
 			} else if (loopindex == 1) {
 				vaiety_thumb1.setPadding(0, 22, 0, -22);
 				vaiety_thumb2.setPadding(0, 0, 0, 0);
 				vaiety_thumb3.setPadding(0, 22, 0, -22);
 				vaiety_fouce_label.setText(vaiety_thumb2.getTag(
 						R.id.vaiety_post).toString());
+				vaiety_post.setTag(R.drawable.launcher_selector,vaiety_thumb2.getTag(R.drawable.launcher_selector));
 			} else if (loopindex == 2) {
 				vaiety_thumb1.setPadding(0, 22, 0, -22);
 				vaiety_thumb2.setPadding(0, 22, 0, -22);
 				vaiety_thumb3.setPadding(0, 0, 0, 0);
 				vaiety_fouce_label.setText(vaiety_thumb3.getTag(
 						R.id.vaiety_post).toString());
+				vaiety_post.setTag(R.drawable.launcher_selector,vaiety_thumb3.getTag(R.drawable.launcher_selector));
 			}
+			
 			if (loopindex >= 2)
 				loopindex = -1;
 			if (imageswitch.hasMessages(IMAGE_SWITCH_KEY))
