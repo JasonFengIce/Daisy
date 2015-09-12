@@ -92,6 +92,7 @@ public class DaramAdapter extends BaseAdapter implements OnHoverListener,
 				} else {
 					try {
 						InitPlayerTool tool = new InitPlayerTool(v.getContext());
+						tool.fromPage = dramaItem.fromPage;
 						tool.initClipInfo(subitem.url, InitPlayerTool.FLAG_URL);
 					} catch (Exception e) {
 						e.printStackTrace();

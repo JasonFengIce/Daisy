@@ -334,44 +334,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     @Override
     public void onBackPressed() {
-
-        if (currentFragment != null) {
-            if (currentFragment.getClass().getName().equals(GuideFragment.class.getName())) {
-                showExitPopup(contentView);
-            } else {
-                contentView.setBackgroundResource(R.drawable.main_bg);
-                currentFragment = new GuideFragment();
-                replaceFragment(currentFragment);
-                topView.setTitle(getText(R.string.ismartv_cinema).toString());
-                topView.setSubTitle("首页");
-
-                if (arrow_left.getVisibility() == View.VISIBLE) {
-                    arrow_left.setVisibility(View.GONE);
-                }
-//                if (arrow_right.getVisibility() == View.VISIBLE) {
-//                    arrow_right.setVisibility(View.GONE);
-//                }
-                if (lastview != null) {
-                    TextView textview = (TextView) lastview.findViewById(R.id.channel_item);
-                    textview.setBackgroundResource(R.drawable.channel_item_normal);
-                    textview.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
-                    AnimationSet animationSet1 = new AnimationSet(true);
-                    ScaleAnimation scaleAnimation1 = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
-                            Animation.RELATIVE_TO_SELF, 0.5f,
-                            Animation.RELATIVE_TO_SELF, 0.5f);
-                    scaleAnimation1.setDuration(200);
-                    animationSet1.addAnimation(scaleAnimation1);
-                    animationSet1.setFillAfter(true);
-                    textview.startAnimation(animationSet1);
-                }
-
-                setClickChannelView(scroll.getChildAt(0));
-                lastview = scroll.getChildAt(0);
-            }
-        } else {
-            showExitPopup(contentView);
-        }
-
+      showExitPopup(contentView);
     }
 
 
@@ -564,8 +527,21 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         imageAdapter.setOnClickListener(channelClickListener);
         scroll.setFocusable(true);
         scroll.requestFocus();
-        scroll.mFocusListener = mFocusListener;
-
+        //scroll.mFocusListener = mFocusListener;
+        scroll.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View view, boolean flag) {
+				TextView v = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
+				if(flag){
+					v.setTextColor(getResources().getColor(R.color._ffba00));
+				}else{
+					//v.setTextColor(R.color._ffffff);
+					v.setTextColor(getResources().getColor(R.color._ffffff));
+				}
+				v.invalidate();
+			}
+		});
         scroll.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -599,7 +575,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 }
                 // if(view!=clickView){
                 channelBtn.setBackgroundResource(R.drawable.channel_item_focus);
-                channelBtn.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
+                channelBtn.setTextColor(getResources().getColor(R.color._ffba00));
                 AnimationSet animationSet = new AnimationSet(true);
                 ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
                         Animation.RELATIVE_TO_SELF, 0.5f,
@@ -709,6 +685,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             // scroll.setSelection(0);
             setClickChannelView(scroll.getChildAt(0));
             lastview = scroll.getChildAt(0);
+            TextView v = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
+		    v.setTextColor(getResources().getColor(R.color._ffba00));
             scroll.setOnScrollListener(null);
         }
     }
