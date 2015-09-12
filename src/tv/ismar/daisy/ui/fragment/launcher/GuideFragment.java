@@ -52,7 +52,7 @@ public class GuideFragment extends ChannelBaseFragment {
 
     private IsmartvUrlClient datafetch;
 
-    private VideoView mSurfaceView;
+    private tv.ismar.daisy.ui.widget.DaisyVideoView mSurfaceView;
 
 
     private int mCurrentCarouselIndex = -1;
@@ -80,7 +80,7 @@ public class GuideFragment extends ChannelBaseFragment {
         toppage_carous_imageView2 = (LabelImageView) mView.findViewById(R.id.toppage_carous_imageView2);
         toppage_carous_imageView3 = (LabelImageView) mView.findViewById(R.id.toppage_carous_imageView3);
         film_post_layout = (HomeItemContainer) mView.findViewById(R.id.guide_center_layoutview);
-        mSurfaceView = (VideoView) mView.findViewById(R.id.linked_video);
+        mSurfaceView = (tv.ismar.daisy.ui.widget.DaisyVideoView) mView.findViewById(R.id.linked_video);
         mSurfaceView.setOnCompletionListener(videoPlayEndListener);
         mSurfaceView.setOnErrorListener(mVideoOnErrorListener);
         mSurfaceView.setOnFocusChangeListener(new View.OnFocusChangeListener() {

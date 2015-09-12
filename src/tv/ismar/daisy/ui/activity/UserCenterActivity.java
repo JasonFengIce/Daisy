@@ -163,6 +163,8 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onPause() {
         super.onPause();
+        if(messageHandler.hasMessages(MSG_INDICATOR_CHANGE))
+        messageHandler.removeMessages(MSG_INDICATOR_CHANGE);
     }
 
     @Override
@@ -659,10 +661,12 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         int currentViewId = v.getId();
         switch (v.getId()) {
             case R.string.usercenter_store:
-                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, storeFragment).commit();
+                 if(!isDestroyed())
+                     getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, storeFragment).commitAllowingStateLoss();
                 break;
             case R.string.usercenter_userinfo:
-                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, userInfoFragment).commit();
+                if(!isDestroyed())
+                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, userInfoFragment).commitAllowingStateLoss();
                 break;
             case R.string.usercenter_login:
                 // getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, loginFragment).commit();
@@ -670,13 +674,16 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 loginQQorWX();
                 break;
             case R.string.usercenter_purchase_history:
-                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, historyFragment).commit();
+                if(!isDestroyed())
+                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, historyFragment).commitAllowingStateLoss();
                 break;
             case R.string.usercenter_help:
-                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, helpFragment).commit();
+                if(!isDestroyed())
+                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, helpFragment).commitAllowingStateLoss();
                 break;
             case R.string.usercenter_location:
-                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, locationFragment).commit();
+                if(!isDestroyed())
+                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, locationFragment).commitAllowingStateLoss();
                 break;
         }
         for (View view : indicatorView) {

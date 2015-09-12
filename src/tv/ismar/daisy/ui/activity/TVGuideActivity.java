@@ -12,6 +12,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -71,7 +73,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
 
     private static final String TAG = "TVGuideActivity";
-
+    private static final int SWITCH_PAGE =0X01;
     private AppUpdateReceiver appUpdateReceiver;
     private ChannelBaseFragment currentFragment;
 
@@ -105,7 +107,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private String homepage_url;
 
     private LaunchHeaderLayout topView;
-
+    private View toppage_divide_view;
 
     private Position mCurrentChannelPosition = new Position(new Position.PositioinChangeCallback() {
         @Override
@@ -130,7 +132,13 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 arrow_right_visible.setVisibility(View.VISIBLE);
             }
             Log.i("TestFragment", "position==" + position);
-            selectChannelByPosition(position);
+            Message msg = new Message();
+            msg.arg1 = position;
+            msg.what = SWITCH_PAGE;
+            if(fragmentSwitch.hasMessages(SWITCH_PAGE))
+            	fragmentSwitch.removeMessages(SWITCH_PAGE);
+            fragmentSwitch.sendMessageDelayed(msg, 800);
+//            selectChannelByPosition(position);
             scroll.setSelection(position);
             scroll.requestFocus();
             //   setClickChannelView(scroll.getChildAt(position));
@@ -303,6 +311,16 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     private void initViews() {
         toppanel = (FrameLayout) findViewById(R.id.top_column_layout);
+        toppage_divide_view = findViewById(R.id.toppage_divide_view);
+        toppage_divide_view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+			if(hasFocus){
+				scroll.requestFocus();
+			}
+			}
+		});
 //        weatherFragment = new WeatherFragment();
 //        getSupportFragmentManager().beginTransaction().add(R.id.top_column_layout, weatherFragment).commit();
         //  channelListView = (LinearLayout) findViewById(R.id.channel_h_list);
@@ -315,6 +333,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         // arrow_right.setOnClickListener(arrowViewListener);
         arrow_left.setOnFocusChangeListener(scrollViewListener);
         arrow_right.setOnFocusChangeListener(scrollViewListener);
+
     }
 
     @Override
@@ -1044,6 +1063,12 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         RIGHT_ARROW
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(fragmentSwitch.hasMessages(SWITCH_PAGE))
+        	fragmentSwitch.removeMessages(SWITCH_PAGE);
+    }
 
     @Override
     protected void onDestroy() {
@@ -1056,5 +1081,19 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         }
         super.onDestroy();
     }
+
+    private Handler fragmentSwitch = new Handler(){
+
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			switch (msg.what) {
+			case SWITCH_PAGE:
+				selectChannelByPosition(msg.arg1);
+				break;
+			}
+		}
+
+    };
 
 }

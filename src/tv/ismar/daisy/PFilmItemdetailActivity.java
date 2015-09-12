@@ -815,22 +815,25 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
+        	 
                 if (hasFocus) {
                     TextView title = (TextView) v
                             .findViewById(R.id.related_title);
-                    View img = v.findViewById(R.id.related_preview_img);
+                    LabelImageView img = (LabelImageView)v.findViewById(R.id.related_preview_img);
+                    img.setDrawBorder(true);
+                    img.invalidate();
                     title.setTextColor(0xFFF8F8FF);
-                     img.setBackgroundResource(R.drawable.popup_bg_yellow);
+                    // img.setBackgroundResource(R.drawable.popup_bg_yellow);
 
                     title.setSelected(true);
 
                 } else {
                     TextView title = (TextView) v
                             .findViewById(R.id.related_title);
-                    View img = v.findViewById(R.id.related_preview_img);
+                    LabelImageView img = (LabelImageView)v.findViewById(R.id.related_preview_img);
                     title.setTextColor(0xFFF8F8FF);
-
-                    img.setBackgroundColor(android.R.color.transparent);
+                    img.setDrawBorder(false);
+                    img.invalidate();
                     title.setSelected(false);
 
                 }

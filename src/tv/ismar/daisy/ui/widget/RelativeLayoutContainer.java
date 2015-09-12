@@ -8,9 +8,10 @@ import android.util.AttributeSet;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import tv.ismar.daisy.R;
 
-public class RelativeLayoutContainer extends FrameLayout {
+public class RelativeLayoutContainer extends RelativeLayout {
 
 	private Rect mBound;
 	private NinePatchDrawable mDrawable;
@@ -44,7 +45,7 @@ public class RelativeLayoutContainer extends FrameLayout {
 		mRect = new Rect();
 		mBound = new Rect();
 		mDrawable = (NinePatchDrawable) getResources().getDrawable(
-				R.drawable.popup_bg_yellow);// nav_focused_2,poster_shadow_4
+				R.drawable.vod_gv_selector);// nav_focused_2,poster_shadow_4
 		setChildrenDrawingOrderEnabled(true);
 	}
 
