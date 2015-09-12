@@ -2,6 +2,7 @@ package tv.ismar.daisy.ui.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.widget.*;
 import cn.ismartv.activator.Activator;
 import com.google.gson.Gson;
@@ -27,13 +29,14 @@ import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.ui.fragment.usercenter.*;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
 
+import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  * Created by huaijie on 7/3/15.
  */
-public class UserCenterActivity extends BaseActivity implements View.OnClickListener, BaseActivity.OnLoginCallback {
+public class UserCenterActivity extends BaseActivity implements View.OnClickListener, BaseActivity.OnLoginCallback, OnFocusChangeListener {
 
     private static final String TAG = "UserCenterActivity";
 
@@ -41,6 +44,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     public static final String ACCOUNT_SHARED_PREFS = "account";
     public static final String ACCOUNT_COMBINE = "combine";
+
 
     private static final int[] INDICATOR_TEXT_RES_ARRAY = {
             R.string.usercenter_store,
@@ -50,6 +54,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             R.string.usercenter_help,
             R.string.usercenter_location
     };
+
 
     private ArrayList<View> indicatorView;
 
@@ -82,6 +87,11 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private String mAccessToken;
     private String mNickName;
 
+    private static ImageView verticalDividerView;
+
+    private boolean mIndicatorLostFocus = false;
+
+    private IndicatorType mIndicatorType;
 
     private SharedPreferences.OnSharedPreferenceChangeListener changeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
@@ -164,8 +174,10 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         topView = (LaunchHeaderLayout) findViewById(R.id.top_column_layout);
         topView.hideIndicatorTable();
 
-
+        verticalDividerView = (ImageView) findViewById(R.id.vertical_divider_line);
+        verticalDividerView.setOnFocusChangeListener(this);
     }
+
 
     @Override
     protected void onResumeFragments() {
@@ -184,10 +196,12 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         for (int res : INDICATOR_TEXT_RES_ARRAY) {
             RelativeLayout frameLayout = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_usercenter_indicator, null);
             Button textView = (Button) frameLayout.findViewById(R.id.usercenter_indicator_text);
-            textView.setOnFocusChangeListener(indicatorBtnFocusChangeListener);
+//            textView.setOnFocusChangeListener(indicatorBtnFocusChangeListener);
             textView.setText(res);
             textView.setId(res);
             textView.setOnClickListener(this);
+            textView.setOnFocusChangeListener(this);
+            textView.setNextFocusRightId(R.id.vertical_divider_line);
             indicatorView.add(textView);
             userCenterIndicatorLayout.addView(frameLayout);
         }
@@ -493,6 +507,127 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         return false;
     }
 
+//
+//    if (hasFocus) {
+//        btn.setTextColor(mContext.getResources().getColor(R.color._ffba00));
+//        messageHandler.removeMessages(MSG_INDICATOR_CHANGE);
+//        Message message = messageHandler.obtainMessage(MSG_INDICATOR_CHANGE, v);
+//        messageHandler.sendMessageDelayed(message, 500);
+//    } else {
+//        btn.setTextColor(mContext.getResources().getColor(R.color._ffffff));
+//    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (hasFocus) {
+            switch (v.getId()) {
+                case R.id.vertical_divider_line:
+                    Log.d(TAG, "onFocusChange: " + "vertical_divider_line");
+//                    mIndicatorLostFocus = false;
+                    deliverFocusEvent();
+                    break;
+                case R.string.usercenter_store:
+                    verticalDividerView.setFocusable(false);
+                    mIndicatorType = IndicatorType.STORE;
+                    break;
+                case R.string.usercenter_userinfo:
+                    verticalDividerView.setFocusable(false);
+                    mIndicatorType = IndicatorType.USERINFO;
+                    break;
+                case R.string.usercenter_login:
+                    verticalDividerView.setFocusable(false);
+                    mIndicatorType = IndicatorType.LOGIN;
+                    break;
+                case R.string.usercenter_purchase_history:
+                    verticalDividerView.setFocusable(false);
+                    mIndicatorType = IndicatorType.HISTORY;
+                    break;
+                case R.string.usercenter_help:
+                    verticalDividerView.setFocusable(false);
+                    mIndicatorType = IndicatorType.HELP;
+                    break;
+                case R.string.usercenter_location:
+                    verticalDividerView.setFocusable(false);
+                    mIndicatorType = IndicatorType.LOCATION;
+                    break;
+            }
+
+            if (v.getId() != R.id.vertical_divider_line) {
+                Button btn = (Button) v;
+                btn.setTextColor(mContext.getResources().getColor(R.color._ffba00));
+                messageHandler.removeMessages(MSG_INDICATOR_CHANGE);
+                Message message = messageHandler.obtainMessage(MSG_INDICATOR_CHANGE, v);
+                messageHandler.sendMessageDelayed(message, 300);
+            }
+
+
+        } else {
+            switch (v.getId()) {
+                case R.id.vertical_divider_line:
+                    break;
+                case R.string.usercenter_store:
+                case R.string.usercenter_userinfo:
+                case R.string.usercenter_purchase_history:
+                case R.string.usercenter_help:
+                case R.string.usercenter_location:
+                    verticalDividerView.setFocusable(true);
+                    break;
+            }
+
+
+            if (v.getId() != R.id.vertical_divider_line) {
+                Button btn = (Button) v;
+                btn.setTextColor(mContext.getResources().getColor(R.color._ffffff));
+            }
+        }
+    }
+
+
+    //    case R.string.usercenter_store:
+//    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, storeFragment).commit();
+//    break;
+//    case R.string.usercenter_userinfo:
+//    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, userInfoFragment).commit();
+//    break;
+//    case R.string.usercenter_login:
+//    // getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, loginFragment).commit();
+//
+//    loginQQorWX();
+//    break;
+//    case R.string.usercenter_purchase_history:
+//    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, historyFragment).commit();
+//    break;
+//    case R.string.usercenter_help:
+//    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, helpFragment).commit();
+//    break;
+//    case R.string.usercenter_location:
+//    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, locationFragment).commit();
+//    break;
+
+    private void deliverFocusEvent() {
+        switch (mIndicatorType) {
+            case STORE:
+                indicatorView.get(0).requestFocus();
+                break;
+            case USERINFO:
+                indicatorView.get(1).requestFocus();
+                break;
+            case LOGIN:
+                indicatorView.get(2).requestFocus();
+                break;
+            case HISTORY:
+                indicatorView.get(3).requestFocus();
+                break;
+            case HELP:
+                indicatorView.get(4).requestFocus();
+                break;
+            case LOCATION:
+                indicatorView.get(5).requestFocus();
+                break;
+        }
+
+    }
+
     public interface OnLoginByChangeCallback {
         void onLoginSuccess();
     }
@@ -504,20 +639,20 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         listener = l;
     }
 
-    private View.OnFocusChangeListener indicatorBtnFocusChangeListener = new View.OnFocusChangeListener() {
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            Button btn = (Button) v;
-            if (hasFocus) {
-                btn.setTextColor(mContext.getResources().getColor(R.color._ffba00));
-                messageHandler.removeMessages(MSG_INDICATOR_CHANGE);
-                Message message = messageHandler.obtainMessage(MSG_INDICATOR_CHANGE, v);
-                messageHandler.sendMessageDelayed(message, 500);
-            } else {
-                btn.setTextColor(mContext.getResources().getColor(R.color._ffffff));
-            }
-        }
-    };
+//    private OnFocusChangeListener indicatorBtnFocusChangeListener = new OnFocusChangeListener() {
+//        @Override
+//        public void onFocusChange(View v, boolean hasFocus) {
+//            Button btn = (Button) v;
+//            if (hasFocus) {
+//                btn.setTextColor(mContext.getResources().getColor(R.color._ffba00));
+//                messageHandler.removeMessages(MSG_INDICATOR_CHANGE);
+//                Message message = messageHandler.obtainMessage(MSG_INDICATOR_CHANGE, v);
+//                messageHandler.sendMessageDelayed(message, 500);
+//            } else {
+//                btn.setTextColor(mContext.getResources().getColor(R.color._ffffff));
+//            }
+//        }
+//    };
 
 
     private void handlerClick(View v) {
@@ -549,13 +684,13 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 view.setBackgroundResource(R.drawable.usercenter_table_focus);
             } else {
 
-                if (view == indicatorView.get(2)){
-                    if (TextUtils.isEmpty(SimpleRestClient.access_token)){
+                if (view == indicatorView.get(2)) {
+                    if (TextUtils.isEmpty(SimpleRestClient.access_token)) {
                         view.setBackgroundResource(R.drawable.usercenter_table_normal);
-                    }else {
+                    } else {
                         view.setBackgroundResource(R.drawable.button_disable);
                     }
-                }else {
+                } else {
                     view.setBackgroundResource(R.drawable.usercenter_table_normal);
                 }
             }
@@ -575,6 +710,15 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
         }
     };
+
+    private enum IndicatorType {
+        STORE,
+        USERINFO,
+        LOGIN,
+        HISTORY,
+        HELP,
+        LOCATION,
+    }
 
 
 }
