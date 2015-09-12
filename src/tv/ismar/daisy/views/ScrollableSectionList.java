@@ -358,6 +358,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
                    else
                       intent.putExtra("isPortrait",false);
                    intent.setAction("tv.ismar.daisy.Filter");
+                sectionWhenGoto = (TextView) v.findViewById(R.id.section_label);
                    getContext().startActivity(intent);
             }else{
                 if(index!=mSelectPosition){
