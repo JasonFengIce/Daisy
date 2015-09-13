@@ -130,7 +130,7 @@ public class PurchaseHistoryFragment extends Fragment {
             TextView buydate_txt = (TextView) convertView.findViewById(R.id.orderlistitem_time);
             TextView orderlistitem_remainday = (TextView) convertView.findViewById(R.id.orderlistitem_remainday);
             TextView totalfee = (TextView) convertView.findViewById(R.id.orderlistitem_cost);
-            ImageView icon = (ImageView) convertView.findViewById(R.id.orderlistitem_icon);
+            tv.ismar.daisy.views.LabelImageView icon = (tv.ismar.daisy.views.LabelImageView) convertView.findViewById(R.id.orderlistitem_icon);
             TextView orderlistitem_paychannel = (TextView) convertView.findViewById(R.id.orderlistitem_paychannel);
             TextView purchaseExtra = (TextView) convertView.findViewById(R.id.purchase_extra);
             TextView mergeTxt = (TextView) convertView.findViewById(R.id.orderlistitem_merge);

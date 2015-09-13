@@ -5,16 +5,18 @@
               android:paddingLeft="@dimen/purchaseFragment_item_paddingLeft"
               android:minHeight="@dimen/purchaseFragment_item_minHeight"
               android:orientation="horizontal"
+              android:clipChildren="false"
+              android:clipToPadding="false"
         >
 
-    <ImageView
+    <tv.ismar.daisy.views.LabelImageView
             android:focusable="true"
-            android:background="@drawable/launcher_selector"
             android:layout_marginTop="@dimen/purchaseFragment_item_icon_marginTop"
             android:id="@+id/orderlistitem_icon"
             android:layout_width="@dimen/purchaseFragment_item_image_width"
             android:layout_height="@dimen/purchaseFragment_item_image_height"
             android:scaleType="fitXY"
+            android:nextFocusLeft="@+id/vertical_divider_line"
             />
 
     <LinearLayout
