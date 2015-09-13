@@ -28,7 +28,7 @@ public class AccountSharedPrefs {
     public static final String ISP = "isp";
     public static final String IP = "ip";
     public static final String GEO_ID = "geo_id";
-
+    public static final String FIRST_USE="first_use";
 
     private static AccountSharedPrefs instance;
 

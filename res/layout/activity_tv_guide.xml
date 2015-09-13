@@ -75,6 +75,7 @@
                 android:layout_marginLeft="@dimen/tv_guide_arrow_scroll_margin"
                 android:src="@drawable/arrow_left_right"
                 android:visibility="gone"
+                android:layout_alignParentBottom="true"
                 android:focusable="true"/>
 
         <ImageView
@@ -85,6 +86,7 @@
                 android:layout_marginRight="@dimen/tv_guide_arrow_scroll_margin"
                 android:src="@drawable/arrow_left_right"
                 android:visibility="visible"
+                android:layout_alignParentBottom="true"
                 android:focusable="true"/>
     </RelativeLayout>
 
