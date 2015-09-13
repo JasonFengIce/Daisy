@@ -165,7 +165,8 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
                     Log.i("testHGRIDVIEW","focus");
                     if(mScrollableSectionList!=null){
                         mScrollableSectionList.currentState = ScrollableSectionList.STATE_GOTO_GRIDVIEW;
-                        mScrollableSectionList.sectionWhenGoto.setTextColor(LABEL_TEXT_COLOR_FOCUSED1);
+                        mScrollableSectionList.sectionWhenGoto.setTextColor(0xffffffff);
+                        mScrollableSectionList.sectionWhenGoto.setBackgroundResource(R.drawable.gotogridview);
                     }
                 }else{
                    Log.i("testHGRIDVIEW","lostfocus");
@@ -179,7 +180,8 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 
 	}
 
-    private static final int LABEL_TEXT_COLOR_FOCUSED1 = 0xffffba00;
+    private static final int LABEL_TEXT_COLOR_CLICKED = 0xff00a8ff;
+    private static final int LABEL_TEXT_COLOR_NOFOCUSED = 0xffffffff;
 	View fragmentView;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

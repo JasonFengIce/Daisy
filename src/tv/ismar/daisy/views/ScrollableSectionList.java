@@ -160,9 +160,9 @@ public class ScrollableSectionList extends HorizontalScrollView {
 
 		LinearLayout.LayoutParams layoutParams;
 
-        layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        layoutParams = new LinearLayout.LayoutParams(233, LinearLayout.LayoutParams.MATCH_PARENT);
         DecimalFormat fnum = new DecimalFormat("##0.00");
-        String dd = fnum.format(50 / rate);
+        String dd = fnum.format(1 / rate);
 		layoutParams.rightMargin = (int)Float.parseFloat(dd);
 
 		sectionHolder.setLayoutParams(layoutParams);
@@ -176,9 +176,9 @@ public class ScrollableSectionList extends HorizontalScrollView {
     private RelativeLayout getSectionFilterLabel(int width){
         RelativeLayout sectionHolder = (RelativeLayout) LayoutInflater.from(getContext()).inflate(R.layout.section_list_item, null);
         LinearLayout.LayoutParams layoutParams;
-        layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        layoutParams = new LinearLayout.LayoutParams(233, LinearLayout.LayoutParams.MATCH_PARENT);
         DecimalFormat fnum = new DecimalFormat("##0.00");
-        String dd = fnum.format(50 / rate);
+        String dd = fnum.format(1 / rate);
         layoutParams.rightMargin = (int)Float.parseFloat(dd);
         sectionHolder.setLayoutParams(layoutParams);
         sectionHolder.setFocusable(true);
@@ -218,8 +218,9 @@ public class ScrollableSectionList extends HorizontalScrollView {
                 textsize = (int) (textsize/rate);
                 Log.i("testHGRIDVIEW","sectionfocus");
                 if(index==mSelectPosition){
-                    label.setTextColor(LABEL_TEXT_COLOR_CLICKED);
+                    label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
                     label.setTextSize(textsize);
+                    label.setBackgroundResource(R.drawable.sectionfocus);
                     return;
                 }
 
@@ -231,7 +232,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
                         currentState = STATE_SECTION;
                         mContainer.getChildAt(mSelectPosition).requestFocus();
                     }else if(currentState==STATE_SECTION){
-                        label.setTextColor(LABEL_TEXT_COLOR_CLICKED);
+                        label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
                         label.setTextSize(textsize);
                         View lastSelectedView = mContainer.getChildAt(mSelectPosition);
                         setSectionTabProperty(v,lastSelectedView);
@@ -240,7 +241,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
                         Message msg = new Message();
                         msg.what = START_CLICK;
                         msg.obj = v;
-                        mHandler.sendMessageDelayed(msg,500);
+                        mHandler.sendMessageDelayed(msg,0);
                     }
 
 
@@ -255,7 +256,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
                          return;
                      }
                      label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
-                    // label.setBackgroundResource(android.R.color.transparent);
+                     label.setBackgroundResource(android.R.color.transparent);
 
 			}
 		}
@@ -288,7 +289,8 @@ public class ScrollableSectionList extends HorizontalScrollView {
 		int textsize = getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_ctextsize);
 		textsize = (int) (textsize/rate);
 		label.setTextSize(textsize);
-		label.setTextColor(LABEL_TEXT_COLOR_CLICKED);
+		label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
+        label.setBackgroundResource(R.drawable.sectionfocus);
 	}
 //	private OnTouchListener mOnTouchListener = new OnTouchListener() {
 //		

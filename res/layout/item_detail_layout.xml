@@ -151,36 +151,30 @@
                 android:id="@+id/btn_left"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/item_detail_btn_left_height"
-                android:background="@drawable/daisy_btn_bg_selector"
-                android:paddingLeft="@dimen/item_detail_btn_favorite_paddingleft"
-                android:paddingRight="@dimen/item_detail_btn_favorite_paddingright"
-                android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"            
                 android:visibility="visible"
                 android:textColor="#FFFFFFFF"
-                android:textSize="@dimen/item_detail_text_size"/>
+                android:textSize="@dimen/item_detail_text_size"
+                android:gravity="center"
+                  android:paddingLeft="45dip"/>
                  
            <Button
+                   android:paddingLeft="45dip"
+                android:gravity="center"
                 android:id="@+id/middle_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/item_detail_btn_left_height"
                 android:layout_marginLeft="@dimen/item_detail_btn_marginleft"
-                android:background="@drawable/daisy_btn_bg_selector"
-                android:paddingLeft="@dimen/item_detail_btn_favorite_paddingleft"
-                android:paddingRight="@dimen/item_detail_btn_favorite_paddingright"
-                android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop" 
                 android:visibility="visible"
                 android:textColor="#FFFFFFFF"
                 android:textSize="@dimen/item_detail_text_size"/>
 
            <Button
+                   android:paddingLeft="45dip"
+                android:gravity="center"
                 android:id="@+id/btn_right"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/item_detail_btn_left_height"
-                android:layout_marginLeft="@dimen/item_detail_btn_marginleft" 
-                android:paddingLeft="@dimen/item_detail_btn_favorite_paddingleft"
-                android:paddingRight="@dimen/item_detail_btn_favorite_paddingright"
-                android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"            
-                android:background="@drawable/daisy_btn_bg_selector"
+                android:layout_marginLeft="@dimen/item_detail_btn_marginleft"
                 android:visibility="visible"
                 android:textColor="#FFFFFFFF"
                 android:textSize="@dimen/item_detail_text_size" />                            
