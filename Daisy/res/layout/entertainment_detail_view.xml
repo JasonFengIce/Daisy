@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:sakura="http://schemas.android.com/apk/res/tv.ismar.daisy"
               android:id="@+id/large_layout"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -95,7 +94,7 @@
                         android:visibility="visible"
                         android:textColor="#FFFFFFFF"
                         android:textSize="@dimen/item_detail_text_size"
-/>
+                        />
 
                 <Button
                         android:paddingLeft="45dip"
@@ -123,16 +122,17 @@
         </RelativeLayout>
     </LinearLayout>
 
-        <TextView
-                android:lineSpacingExtra="@dimen/entertainment_detail_intro_lineSpacingExtra"
-                android:layout_marginLeft="@dimen/entertainment_detail_intro_ml"
-                android:id="@+id/detail_intro"
-                android:layout_width="@dimen/entertainment_detail_intro_w"
-                android:layout_height="@dimen/entertainment_detail_intro_h"
-                android:maxLines="2"
-                android:ellipsize="end"
-                android:textColor="@color/white"
-                android:textSize="@dimen/item_detail_introlabel_textsize"/>
+    <TextView
+            android:lineSpacingExtra="@dimen/entertainment_detail_intro_lineSpacingExtra"
+            android:layout_marginLeft="@dimen/entertainment_detail_intro_ml"
+            android:id="@+id/detail_intro"
+            android:layout_width="@dimen/entertainment_detail_intro_w"
+            android:layout_height="@dimen/entertainment_detail_intro_h"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textColor="@color/white"
+            android:textSize="@dimen/item_detail_introlabel_textsize"/>
+
     <TextView
             android:layout_marginLeft="@dimen/entertainment_detail_textView_ml"
             android:layout_marginTop="@dimen/entertainment_detail_textView_mt"
