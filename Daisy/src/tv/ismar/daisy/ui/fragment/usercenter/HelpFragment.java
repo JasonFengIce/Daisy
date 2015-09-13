@@ -30,6 +30,9 @@ public class HelpFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_help, null);
         ismartvIcon = (ImageButton) view.findViewById(R.id.ismartv_icon);
+        ismartvIcon.setNextFocusRightId(ismartvIcon.getId());
+        ismartvIcon.setNextFocusUpId(ismartvIcon.getId());
+        ismartvIcon.setNextFocusDownId(ismartvIcon.getId());
         ismartvIcon.setOnClickListener(this);
         return view;
     }
