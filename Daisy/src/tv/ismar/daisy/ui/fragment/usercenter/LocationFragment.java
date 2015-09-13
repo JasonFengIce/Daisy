@@ -90,7 +90,8 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
         mContext = activity;
     }
 
-
+    public boolean isfirst =false;
+    private View focusItem;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,7 +108,16 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
         selectedPosition = (TextView) fragmentView.findViewById(R.id.selectedPosition);
         provinceListView = (GridView) fragmentView.findViewById(R.id.province_list);
         selectedPositionTitle = (TextView) fragmentView.findViewById(R.id.selectedPosition_title);
-
+        View transfocus = fragmentView.findViewById(R.id.transfocus);
+        transfocus.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                  if(focusItem!=null)
+                      focusItem.requestFocus();
+                }
+            }
+        });
 
         todayWeatherIcon1 = (ImageView) fragmentView.findViewById(R.id.today_weather_icon1);
         todayWeatherDivider = (TextView) fragmentView.findViewById(R.id.today_weather_divider);
@@ -146,8 +156,14 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
     public void onResume() {
         super.onResume();
         createLocationView();
+        isfirst = true;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        isfirst = false;
+    }
 
     private void createLocationView() {
         List<ProvinceTable> provinceTables = new Select().from(ProvinceTable.class).execute();
@@ -155,10 +171,11 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
             provinceAdapter = new ProvinceAdapter(mContext, provinceTables);
             provinceAdapter.setOnItemListener(this);
             provinceListView.setAdapter(provinceAdapter);
+
         }
     }
 
-
+   public View focus;
     private void showAreaPopup(final ProvinceTable provinceTable) {
         String provinceId = provinceTable.province_id;
         View popupLayout = LayoutInflater.from(mContext).inflate(R.layout.popup_area, null);
@@ -279,7 +296,14 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         TextView textView = (TextView) v;
+        int position = (Integer)v.getTag();
         if (hasFocus) {
+            if(isfirst&&position==0){
+                isfirst = false;
+                focus.requestFocus();
+                return;
+            }
+            focusItem = v;
             textView.setTextColor(mContext.getResources().getColor(R.color.location_text_focus));
             textView.setTextSize(mContext.getResources().getDimension(R.dimen.h1_text_size) / rate);
 

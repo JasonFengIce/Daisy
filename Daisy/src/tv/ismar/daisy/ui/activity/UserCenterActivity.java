@@ -682,8 +682,11 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, helpFragment).commitAllowingStateLoss();
                 break;
             case R.string.usercenter_location:
-                if(!isDestroyed())
-                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, locationFragment).commitAllowingStateLoss();
+                if(!isDestroyed()){
+                    locationFragment.focus = indicatorView.get(5);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, locationFragment).commitAllowingStateLoss();
+                }
+
                 break;
         }
         for (View view : indicatorView) {
