@@ -143,7 +143,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
 
 
         if (TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
-            phoneNumberLayout.setVisibility(View.INVISIBLE);
+            phoneNumberLayout.setVisibility(View.GONE);
             changeButton.setFocusable(false);
         } else {
             phoneNumberLayout.setVisibility(View.VISIBLE);
