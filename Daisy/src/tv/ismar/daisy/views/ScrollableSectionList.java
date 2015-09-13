@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import org.sakuratya.horizontal.ui.HGridView;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.MessageGZIP;
@@ -25,7 +26,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 	private static final String TAG = "ScrollableSectionList";
 	
 	private boolean isChangeBarStyle = false;
-	private LinearLayout mContainer;
+	public LinearLayout mContainer;
 	
 	/*
 	 * current selected section index. don't change this value directly.Always use ScrollableSectionList.changeSelection(int position) to change this value.
@@ -77,7 +78,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 		this.setFadingEdgeLength(100);
 		this.setHorizontalFadingEdgeEnabled(true);
 	}
-
+    public HGridView mGridView;
 	public void init(SectionList sectionLists, int totalWidth,boolean isChangeBarStyle) {
         rate = DaisyUtils.getVodApplication(getContext()).getRate(getContext());
 		mContainer = new LinearLayout(getContext());

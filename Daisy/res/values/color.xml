@@ -86,4 +86,5 @@
     <drawable name="exit_focus_bg_color">#ff9c3c</drawable>
 
     <color name="detail_more_bg">#33ffffff</color>
+    <color name="search_bg_focus">#ffffba00</color>
 </resources>

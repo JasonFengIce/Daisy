@@ -37,8 +37,8 @@ public class FilterFragment extends BackHandledFragment {
     private ArrayList<String>labels;
     private HashMap<String,ArrayList<String>> mapValues;
     private static final int LABEL_TEXT_COLOR_NOFOCUSED = 0xffffffff;
-    private static final int LABEL_TEXT_COLOR_FOCUSED = 0xff00a8ff;
-    private static final int LABEL_TEXT_COLOR_CLICK = 0xffffb400;
+    private static final int LABEL_TEXT_COLOR_FOCUSED = 0xffffb400;
+    private static final int LABEL_TEXT_COLOR_CLICK = 0xff00a8ff;
     private String submitFilteStr = "";
     private Button submitBtn;
     private ArrayList<String> conditions;

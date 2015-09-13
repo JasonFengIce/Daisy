@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
 public class SearchActivity extends BaseActivity implements OnClickListener, OnItemClickListener {
 
 	// 搜索
-	ImageButton ibtnSearch;
+    Button ibtnSearch;
 	// 缓存适配器android:minSdkVersion
 	SearchAdapter imageAdapter;
 	// CacheAdapter cacheAdapter;
@@ -170,7 +170,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 	//	gridView.setVerticalSpacing(5);
 		gridView.setOnItemClickListener(SearchActivity.this);
 		imageAdapter = new SearchAdapter(SearchActivity.this, R.layout.search_grid_view_item);
-		ibtnSearch = (ImageButton) findViewById(R.id.ibtn_search);
+		ibtnSearch = (Button) findViewById(R.id.ibtn_search);
 		ibtnSearch.setOnClickListener(this);
 		tvSearchCount = (TextView) findViewById(R.id.tv_search_count);
 		linearSearch = (LinearLayout) findViewById(R.id.liner_search_result);
