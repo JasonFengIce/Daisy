@@ -3,6 +3,7 @@ package tv.ismar.daisy.ui.widget;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,8 +30,7 @@ import java.util.List;
 /**
  * Created by huaijie on 2015/7/21.
  */
-public class LaunchHeaderLayout extends FrameLayout
-        implements View.OnClickListener, View.OnFocusChangeListener {
+public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListener, View.OnFocusChangeListener {
     private Context context;
 
 
@@ -44,7 +44,7 @@ public class LaunchHeaderLayout extends FrameLayout
 
 //    private SharedPreferences locationSharedPreferences;
 
-    private List<TextView> indicatorTableList;
+    private List<View> indicatorTableList;
 
     public LaunchHeaderLayout(Context context) {
         super(context);
@@ -54,7 +54,7 @@ public class LaunchHeaderLayout extends FrameLayout
     public LaunchHeaderLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        indicatorTableList = new ArrayList<TextView>();
+        indicatorTableList = new ArrayList<View>();
 
         View view = LayoutInflater.from(context).inflate(R.layout.fragment_weather, null);
 
@@ -114,15 +114,15 @@ public class LaunchHeaderLayout extends FrameLayout
 
             View view = LayoutInflater.from(context).inflate(R.layout.item_weather_indicator, null);
             TextView textView = (TextView) view.findViewById(R.id.weather_indicator);
-            textView.setOnClickListener(this);
-            textView.setOnFocusChangeListener(this);
+            view.setOnClickListener(this);
+            view.setOnFocusChangeListener(this);
             textView.setText(res);
-            textView.setId(res);
+            view.setId(res);
             if (i == INDICATOR_RES_LIST.length - 1) {
-                textView.setNextFocusRightId(res);
+                view.setNextFocusRightId(res);
             }
             guideLayout.addView(view);
-            indicatorTableList.add(textView);
+            indicatorTableList.add(view);
             i++;
         }
     }
@@ -203,15 +203,21 @@ public class LaunchHeaderLayout extends FrameLayout
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
+        ImageView imageView = (ImageView)v.findViewById(R.id.indicator_image);
+        TextView textView = (TextView)v.findViewById(R.id.weather_indicator);
         if (hasFocus) {
-            ((TextView) v).setTextColor(getResources().getColor(R.color.association_focus));
+            textView.setTextColor(getResources().getColor(R.color._ff9c3c));
+
+            imageView.setVisibility(View.VISIBLE);
+
         } else {
-            ((TextView) v).setTextColor(getResources().getColor(R.color.association_normal));
+            textView.setTextColor(getResources().getColor(R.color.association_normal));
+            imageView.setVisibility(View.INVISIBLE);
         }
     }
 
     public void hideIndicatorTable() {
-        for (TextView textView : indicatorTableList) {
+        for (View textView : indicatorTableList) {
             textView.setVisibility(View.GONE);
         }
     }
