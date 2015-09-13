@@ -52,9 +52,9 @@ public class ISTVVodMenu extends ISTVVodMenuItem {
 			}
 		});
 		showAnimation = AnimationUtils.loadAnimation(activity,
-				R.layout.fly_left);
+				R.anim.fly_left);
 		hideAnimation = AnimationUtils.loadAnimation(activity,
-				R.layout.fly_right);
+				R.anim.fly_right);
 	}
 
 	private ISTVVodMenuItem getCurrMenu() {

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:sakura="http://schemas.android.com/apk/res/tv.ismar.daisy"
-    android:id="@+id/large_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:clipChildren="false"
-    android:clipToPadding="false">
+              android:id="@+id/large_layout"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:clipChildren="false"
+              android:clipToPadding="false">
 
     <tv.ismar.daisy.ui.widget.LaunchHeaderLayout
             android:id="@+id/top_column_layout"
@@ -17,11 +16,13 @@
             android:paddingRight="@dimen/tv_guide_top_section_padding"
             >
     </tv.ismar.daisy.ui.widget.LaunchHeaderLayout>
+
     <ImageView
             android:background="@drawable/filter_divider"
             android:layout_width="match_parent"
             android:layout_height="@dimen/filmitem_portrait_filter_divider_h"
-     />
+            />
+
     <LinearLayout
             android:clipChildren="false"
             android:clipToPadding="false"
@@ -30,146 +31,155 @@
             android:layout_height="@dimen/filmitem_portrait_top_view_layout_h"
             android:orientation="horizontal"
             android:visibility="invisible">
-    <RelativeLayout
-            android:layout_width="@dimen/filmitem_portrait_relativeLayout_w"
-            android:layout_height="@dimen/filmitem_portrait_relativeLayout_h"
-            android:layout_marginTop="@dimen/filmitem_portrait_relativeLayout_mt">
-        <tv.ismar.daisy.views.AsyncImageView
-                android:layout_marginLeft="@dimen/filmitem_portrait_detail_preview_img_ml"
-                android:id="@+id/detail_preview_img"
-                android:layout_width="@dimen/filmitem_portrait_detail_preview_img_w"
-                android:layout_height="@dimen/filmitem_portrait_detail_preview_img_h"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-            />
-        <TextView
-                android:id="@+id/bean_score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@id/detail_preview_img"
-                android:layout_alignRight="@id/detail_preview_img"
-                android:layout_marginTop="@dimen/gridview_item_ItemBeanScore_MT"
-                android:background="@drawable/bean_score"
-                android:gravity="top|center"
-                android:paddingTop="@dimen/gridview_item_ItemBeanScore_PT"
-                android:textColor="#ffffffff"
-                android:textSize="@dimen/gridview_item_ItemBeanScore_textsize"
-                android:visibility="gone" />
-        <TextView
-                android:layout_marginLeft="@dimen/filmitem_portrait_detail_price_txt_ml"
-                android:id="@+id/detail_price_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/detail_preview_img"
-                android:layout_alignParentLeft="true"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:singleLine="true"
-                android:textColor="#ffe3e3e3"
-                android:textSize="@dimen/item_detail_detail_price_textsize"
-                android:background="@drawable/vod_detail_unpayment_price"
-                android:visibility="gone"/>
-        <TextView
-                android:id="@+id/detail_duration_txt"
-                android:text="有效期7天"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/detail_price_txt"
-                android:layout_alignTop="@id/detail_price_txt"
-                android:layout_alignBottom="@id/detail_price_txt"
-                android:visibility="gone"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:singleLine="true"
-                android:textColor="#ffe3e3e3"
-                android:textSize="@dimen/item_detail_detail_price_textsize"
-                android:background="@drawable/vod_detail_unpayment_duration"/>
-    </RelativeLayout>
-     <RelativeLayout
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:layout_marginLeft="@dimen/filmitem_portrait_relativeLayout2_ml">
-         <TextView
-                 android:layout_marginTop="@dimen/filmitem_portrait_detail_title_mt"
-                 android:id="@+id/detail_title"
-                 android:layout_width="@dimen/filmitem_portrait_detail_title_w"
-                 android:layout_height="@dimen/filmitem_portrait_detail_title_h"
-                 android:layout_alignParentTop="true"
-                 android:layout_alignParentLeft="true"
-                 android:textColor="@color/white"
-                 android:textSize="@dimen/filmitem_portrait_detail_title_size"
-                 android:ellipsize="end"
-                 android:maxLines="1"
-                 android:text="美国队长"/>
 
-         <tv.ismar.daisy.views.DetailAttributeContainer
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_below="@id/detail_title"
-                 android:layout_alignParentLeft="true"
-                 android:textSize="@dimen/item_detail_introlabel_textsize"
-                 android:orientation="vertical"
-                 android:layout_marginTop="@dimen/filmitem_portrait_detail_attribute_container_mt"
-                 android:id="@+id/detail_attribute_container"
-                 >
-         </tv.ismar.daisy.views.DetailAttributeContainer>
+        <RelativeLayout
+                android:layout_width="@dimen/filmitem_portrait_relativeLayout_w"
+                android:layout_height="@dimen/filmitem_portrait_relativeLayout_h"
+                android:layout_marginTop="@dimen/filmitem_portrait_relativeLayout_mt">
 
-         <TextView
-                 android:id="@+id/detail_intro"
-                 android:layout_width="@dimen/filmitem_portrait_detail_intro_w"
-                 android:layout_height="wrap_content"
-                 android:layout_alignParentBottom="true"
-                 android:layout_alignParentLeft="true"
-                 android:ellipsize="end"
-                 android:textColor="@color/white"
-                 android:lineSpacingExtra="@dimen/filmitem_portrait_detail_intro_lineSpacingExtra"
-                 android:textSize="@dimen/filmitem_portrait_detail_intro_textsize"/>
+            <tv.ismar.daisy.views.AsyncImageView
+                    android:layout_marginLeft="@dimen/filmitem_portrait_detail_preview_img_ml"
+                    android:id="@+id/detail_preview_img"
+                    android:layout_width="@dimen/filmitem_portrait_detail_preview_img_w"
+                    android:layout_height="@dimen/filmitem_portrait_detail_preview_img_h"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    />
 
-         <LinearLayout
-                 android:layout_height="@dimen/filmitem_portrait_linearLayout_h"
-                 android:layout_width="wrap_content"
-                 android:layout_alignParentRight="true"
-                 android:layout_alignParentTop="true"
-                 android:layout_marginLeft="@dimen/filmitem_portrait_linearLayout_ml"
-                 android:orientation="horizontal"
-                 android:layout_marginTop="@dimen/filmitem_portrait_linearLayout_mt"
-                 android:layout_marginRight="@dimen/filmitem_portrait_linearLayout_mr"
-                 android:visibility="visible">
-             <Button
-                     android:id="@+id/btn_left"
-                     android:layout_width="wrap_content"
-                     android:layout_height="match_parent"
-                     android:gravity="center"
-                     android:paddingLeft="@dimen/filmitem_portrait_btn_left_pl"
-                     android:visibility="visible"
-                     android:textColor="#FFFFFFFF"
-                     android:textSize="@dimen/filmitem_portrait_btn_left_textsize"
-/>
+            <TextView
+                    android:id="@+id/bean_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/detail_preview_img"
+                    android:layout_alignRight="@id/detail_preview_img"
+                    android:layout_marginTop="@dimen/gridview_item_ItemBeanScore_MT"
+                    android:background="@drawable/bean_score"
+                    android:gravity="top|center"
+                    android:paddingTop="@dimen/gridview_item_ItemBeanScore_PT"
+                    android:textColor="#ffffffff"
+                    android:textSize="@dimen/gridview_item_ItemBeanScore_textsize"
+                    android:visibility="gone"/>
 
-             <Button
-                     android:paddingLeft="@dimen/filmitem_portrait_btn_left_pl"
-                     android:id="@+id/middle_btn"
-                     android:layout_width="wrap_content"
-                     android:layout_height="match_parent"
-                     android:layout_marginLeft="@dimen/filmitem_portrait_middle_btn_ml"
-                     android:gravity="center"
-                     android:visibility="visible"
-                     android:textColor="#FFFFFFFF"
-                     android:textSize="@dimen/filmitem_portrait_btn_left_textsize"/>
+            <TextView
+                    android:layout_marginLeft="@dimen/filmitem_portrait_detail_price_txt_ml"
+                    android:id="@+id/detail_price_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/detail_preview_img"
+                    android:layout_alignParentLeft="true"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="#ffe3e3e3"
+                    android:textSize="@dimen/item_detail_detail_price_textsize"
+                    android:background="@drawable/vod_detail_unpayment_price"
+                    android:visibility="gone"/>
 
-             <Button
-                     android:paddingLeft="@dimen/filmitem_portrait_btn_left_pl"
-                     android:id="@+id/btn_right"
-                     android:layout_width="wrap_content"
-                     android:layout_height="match_parent"
-                     android:layout_marginLeft="@dimen/filmitem_portrait_middle_btn_ml"
-                     android:gravity="center"
-                     android:visibility="visible"
-                     android:textColor="#FFFFFFFF"
-                     android:textSize="@dimen/filmitem_portrait_btn_left_textsize" />
-         </LinearLayout>
-     </RelativeLayout>
- </LinearLayout>
+            <TextView
+                    android:id="@+id/detail_duration_txt"
+                    android:text="有效期7天"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/detail_price_txt"
+                    android:layout_alignTop="@id/detail_price_txt"
+                    android:layout_alignBottom="@id/detail_price_txt"
+                    android:visibility="gone"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="#ffe3e3e3"
+                    android:textSize="@dimen/item_detail_detail_price_textsize"
+                    android:background="@drawable/vod_detail_unpayment_duration"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/filmitem_portrait_relativeLayout2_ml">
+
+            <TextView
+                    android:layout_marginTop="@dimen/filmitem_portrait_detail_title_mt"
+                    android:id="@+id/detail_title"
+                    android:layout_width="@dimen/filmitem_portrait_detail_title_w"
+                    android:layout_height="@dimen/filmitem_portrait_detail_title_h"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/filmitem_portrait_detail_title_size"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="美国队长"/>
+
+            <tv.ismar.daisy.views.DetailAttributeContainer
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/detail_title"
+                    android:layout_alignParentLeft="true"
+                    android:textSize="@dimen/item_detail_introlabel_textsize"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/filmitem_portrait_detail_attribute_container_mt"
+                    android:id="@+id/detail_attribute_container"
+                    >
+            </tv.ismar.daisy.views.DetailAttributeContainer>
+
+            <TextView
+                    android:id="@+id/detail_intro"
+                    android:layout_width="@dimen/filmitem_portrait_detail_intro_w"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:ellipsize="end"
+                    android:textColor="@color/white"
+                    android:lineSpacingExtra="@dimen/filmitem_portrait_detail_intro_lineSpacingExtra"
+                    android:textSize="@dimen/filmitem_portrait_detail_intro_textsize"/>
+
+            <LinearLayout
+                    android:layout_height="@dimen/filmitem_portrait_linearLayout_h"
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="@dimen/filmitem_portrait_linearLayout_ml"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/filmitem_portrait_linearLayout_mt"
+                    android:layout_marginRight="@dimen/filmitem_portrait_linearLayout_mr"
+                    android:visibility="visible">
+
+                <Button
+                        android:id="@+id/btn_left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:paddingLeft="@dimen/filmitem_portrait_btn_left_pl"
+                        android:visibility="visible"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="@dimen/filmitem_portrait_btn_left_textsize"
+                        />
+
+                <Button
+                        android:paddingLeft="@dimen/filmitem_portrait_btn_left_pl"
+                        android:id="@+id/middle_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/filmitem_portrait_middle_btn_ml"
+                        android:gravity="center"
+                        android:visibility="visible"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="@dimen/filmitem_portrait_btn_left_textsize"/>
+
+                <Button
+                        android:paddingLeft="@dimen/filmitem_portrait_btn_left_pl"
+                        android:id="@+id/btn_right"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/filmitem_portrait_middle_btn_ml"
+                        android:gravity="center"
+                        android:visibility="visible"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="@dimen/filmitem_portrait_btn_left_textsize"/>
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
     <LinearLayout
             android:clipChildren="false"
             android:clipToPadding="false"
@@ -178,17 +188,18 @@
             android:layout_height="@dimen/filmitem_portrait_bottom_view_layout_h"
             android:orientation="horizontal"
             android:visibility="invisible">
-        
+
         <TextView
-                  android:layout_marginTop="@dimen/filmitem_portrait_tongleituijian_mt"
-                  android:layout_width="@dimen/filmitem_portrait_tongleituijian_w"
-                  android:ems="1"
-                  android:layout_height="@dimen/filmitem_portrait_tongleituijian_h"
-                  android:layout_marginLeft="@dimen/filmitem_portrait_tongleituijian_ml"
-                  android:gravity="fill_vertical"
-                  android:textSize="@dimen/filmitem_portrait_tongleituijian_textsize"
-                  android:textColor="@color/white"
-                  android:text="同类推荐"/>
+                android:layout_marginTop="@dimen/filmitem_portrait_tongleituijian_mt"
+                android:layout_width="@dimen/filmitem_portrait_tongleituijian_w"
+                android:ems="1"
+                android:layout_height="@dimen/filmitem_portrait_tongleituijian_h"
+                android:layout_marginLeft="@dimen/filmitem_portrait_tongleituijian_ml"
+                android:gravity="fill_vertical"
+                android:textSize="@dimen/filmitem_portrait_tongleituijian_textsize"
+                android:textColor="@color/white"
+                android:text="同类推荐"/>
+
         <LinearLayout
                 android:layout_marginLeft="@dimen/filmitem_portrait_related_video_container_ml"
                 android:id="@+id/related_video_container"
@@ -199,6 +210,7 @@
                 android:clipToPadding="false"
                 >
         </LinearLayout>
+
         <LinearLayout
                 android:focusable="true"
                 android:layout_marginLeft="@dimen/filmitem_portrait_more_content_ml"
@@ -209,6 +221,7 @@
                 android:orientation="vertical"
                 android:gravity="center"
                 android:background="@drawable/more_btn_sector">
+
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -217,6 +230,7 @@
                     android:text="更"
                     android:gravity="center"
                     />
+
             <TextView
                     android:layout_marginTop="@dimen/filmitem_portrait_tongleituijian_textview_mt"
                     android:gravity="center"
@@ -227,7 +241,7 @@
                     android:text="多"
 
                     />
-                </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>

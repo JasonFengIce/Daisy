@@ -174,9 +174,9 @@ public class PlayerActivity extends VodMenuAction {
 
 	private void setView() {
 		panelShowAnimation = AnimationUtils.loadAnimation(this,
-				R.drawable.fly_up);
+				R.anim.fly_up);
 		panelHideAnimation = AnimationUtils.loadAnimation(this,
-				R.drawable.fly_down);
+				R.anim.fly_down);
 		// bufferHideAnimation =
 		// AnimationUtils.loadAnimation(this,R.drawable.fade_out);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
