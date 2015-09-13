@@ -1,34 +1,34 @@
 package tv.ismar.daisy;
 
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
-import android.media.AudioManager;
-import android.os.*;
-import android.util.Base64;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.*;
-import android.view.View.OnHoverListener;
-import android.view.View.OnTouchListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.*;
-import com.google.gson.JsonSyntaxException;
-import com.ismartv.api.t.AccessProxy;
-import com.ismartv.bean.ClipInfo;
+import static tv.ismar.daisy.DramaListActivity.ORDER_CHECK_BASE_URL;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
+
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import tv.ismar.daisy.core.*;
+
+import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.EventProperty;
+import tv.ismar.daisy.core.ImageUtils;
+import tv.ismar.daisy.core.NetworkUtils;
+import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
+import tv.ismar.daisy.core.VodUserAgent;
+import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
-import tv.ismar.daisy.models.*;
+import tv.ismar.daisy.models.AdElement;
+import tv.ismar.daisy.models.Attribute;
+import tv.ismar.daisy.models.Clip;
+import tv.ismar.daisy.models.History;
+import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.models.Quality;
 import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.player.ISTVVodMenu;
@@ -37,14 +37,41 @@ import tv.ismar.daisy.views.IsmatvVideoView;
 import tv.ismar.daisy.views.MarqueeView;
 import tv.ismar.daisy.views.PaymentDialog;
 import tv.ismar.player.SmartPlayer;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.media.AudioManager;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.util.Base64;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnHoverListener;
+import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
-
-import static tv.ismar.daisy.DramaListActivity.ORDER_CHECK_BASE_URL;
+import com.google.gson.JsonSyntaxException;
+import com.ismartv.api.t.AccessProxy;
+import com.ismartv.bean.ClipInfo;
 
 public class PlayerActivity extends VodMenuAction {
 
@@ -121,13 +148,17 @@ public class PlayerActivity extends VodMenuAction {
 	private int adsumtime;
 	private boolean isadvideoplaying = false;
     private int speed;
+    private AccountSharedPrefs shardpref;
+    private ImageView gesture_tipview;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		shardpref = AccountSharedPrefs.getInstance(this);
 		setView();
 
 		DisplayMetrics metric = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metric);
+		
 	}
 
 	@Override
@@ -172,6 +203,7 @@ public class PlayerActivity extends VodMenuAction {
 		panelLayout.setVisibility(View.GONE);
 		bufferLayout.setVisibility(View.GONE);
 		qualityText.setVisibility(View.GONE);
+		gesture_tipview = (ImageView)findViewById(R.id.gesture_tipview);
 		am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		playPauseImage.setOnTouchListener(new OnTouchListener() {
 
@@ -260,7 +292,11 @@ public class PlayerActivity extends VodMenuAction {
 
 		mVideoView.setOnHoverListener(onhoverlistener);
 		setVideoActionListener();
-		initClipInfo();
+		if("false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
+			initClipInfo();
+		}else{
+			gesture_tipview.setVisibility(View.VISIBLE);
+		}
 	}
 
 	protected void initClipInfo() {
@@ -1378,6 +1414,12 @@ public class PlayerActivity extends VodMenuAction {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean ret = false;
+		if(keyCode == KeyEvent.KEYCODE_BACK && !"false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
+			gesture_tipview.setVisibility(View.GONE);
+			shardpref.setSharedPrefs(AccountSharedPrefs.FIRST_USE, "false");
+			initClipInfo();
+			return false;
+		}
 		if(isadvideoplaying){
 			if (keyCode == KeyEvent.KEYCODE_BACK) {
 				mVideoView.stopPlayback();
