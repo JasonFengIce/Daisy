@@ -18,6 +18,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import cn.ismartv.activator.Activator;
 import com.google.gson.Gson;
+import org.w3c.dom.Text;
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
@@ -70,12 +71,14 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
             String phone = sharedPreferences.getString("mobile_number", "");
             if (TextUtils.isEmpty(phone)) {
                 phoneNumberLayout.setVisibility(View.VISIBLE);
-
+                changeButton.setEnabled(true);
                 phoneNumber.setText(phone);
 
-            } else {
-                phoneNumberLayout.setVisibility(View.GONE);
 
+            } else {
+                changeButton.setEnabled(false);
+                phoneNumberLayout.setVisibility(View.GONE);
+                changeButton.setFocusable(false);
             }
         }
     };
@@ -88,9 +91,11 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
             if (isCombined) {
                 associationText.setVisibility(View.GONE);
                 associationPrompt.setVisibility(View.GONE);
+
             } else {
                 associationText.setVisibility(View.VISIBLE);
                 associationPrompt.setVisibility(View.VISIBLE);
+
             }
         }
     };
@@ -136,9 +141,33 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
         isCombined = accountPrefs.getBoolean(LoginFragment.ACCOUNT_COMBINE, false);
         accountPrefs.registerOnSharedPreferenceChangeListener(accountSharedPrefsListener);
 
-        changeButton.setNextFocusRightId(associationText.getId());
-        associationText.setNextFocusLeftId(changeButton.getId());
+
+        if (TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
+            phoneNumberLayout.setVisibility(View.INVISIBLE);
+            changeButton.setFocusable(false);
+        } else {
+            phoneNumberLayout.setVisibility(View.VISIBLE);
+            changeButton.setFocusable(true);
+            changeButton.setNextFocusRightId(associationText.getId());
+            associationText.setNextFocusLeftId(changeButton.getId());
+        }
+
         mSimpleRestClient = new SimpleRestClient();
+
+
+        fragmentView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    if (!TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
+                        changeButton.requestFocus();
+                    } else {
+                        associationText.requestFocus();
+                    }
+
+                }
+            }
+        });
         return fragmentView;
     }
 
