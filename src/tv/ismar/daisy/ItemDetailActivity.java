@@ -1171,7 +1171,6 @@ private boolean isPause = false;
 				 isBuy = true;
 			     setExpenseStatus();
 			}
-			ordercheckListener =null;
 		}
 
 	};
