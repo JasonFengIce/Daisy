@@ -226,7 +226,10 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 	private void fillData(ArrayList<Carousel> carousellist,
 			ArrayList<Poster> postlist) {
 		// vaiety_post.setUrl(carousellist.get(0).getVideo_image());
-
+        if(scrollFromBorder){
+        	vaiety_post.requestFocus();       	
+        }
+		
 		Picasso.with(mContext).load(carousellist.get(0).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(vaiety_thumb1);
 		vaiety_thumb1.setTag(carousellist.get(0).getVideo_image());
 		vaiety_thumb1.setTag(R.id.vaiety_post, carousellist.get(0).getTitle());
@@ -353,7 +356,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 			if (result != RESULT_SUCCESS) {
 				return;
 			} else {
-				if(mContext == null)
+				if(mContext == null || entity == null)
 					return;
 				ArrayList<Carousel> carousellist = entity.getCarousels();
 				ArrayList<Poster> postlist = entity.getPosters();

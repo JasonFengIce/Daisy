@@ -120,7 +120,6 @@ public class FilmFragment extends ChannelBaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
     }
 
 
@@ -176,6 +175,9 @@ public class FilmFragment extends ChannelBaseFragment {
 
                 Log.d(TAG, "posters size: " + posters.size());
                 Log.d(TAG, "carousels size: " + carousels.size());
+                if(scrollFromBorder){
+                	film_lefttop_image.requestFocus();       	
+                }
                 initPosters(posters);
                 initCarousel(carousels);
 

@@ -104,7 +104,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     private LaunchHeaderLayout topView;
     private View toppage_divide_view;
-
+    private boolean scrollFromBorder;
     private Position mCurrentChannelPosition = new Position(new Position.PositioinChangeCallback() {
         @Override
         public void onChange(int position) {
@@ -136,7 +136,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             fragmentSwitch.sendMessageDelayed(msg, 800);
 //            selectChannelByPosition(position);
             scroll.setSelection(position);
+            if(!scrollFromBorder)
             scroll.requestFocus();
+            scrollFromBorder = false;
             //   setClickChannelView(scroll.getChildAt(position));
             //  lastview = scroll.getChildAt(position);
 
@@ -180,7 +182,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 animationSet1.addAnimation(scaleAnimation1);
                 animationSet1.setFillAfter(true);
                 textview.startAnimation(animationSet1);
-                scroll.requestFocus();
+//                scroll.requestFocus();
                 switch (v.getId()) {
                     case R.id.arrow_scroll_left:
 //                        channelChange = ChannelChange.LEFT_ARROW;
@@ -202,6 +204,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                     	scroll.arrowScroll(View.FOCUS_RIGHT);
                         break;
                 }
+                scrollFromBorder = true;
             }
         }
     };
@@ -314,6 +317,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 			public void onFocusChange(View v, boolean hasFocus) {
 			if(hasFocus){
 				scroll.requestFocus();
+				TextView tv = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
+			    tv.setBackgroundResource(R.drawable.channel_item_selectd_focus);
 			}
 			}
 		});
@@ -493,7 +498,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 			@Override
 			public void onFocusChange(View view, boolean flag) {
 				TextView v = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
-				if(flag){
+				if(flag&&scrollFromBorder){
 					v.setBackgroundResource(R.drawable.channel_item_selectd_focus);
 				}else{
 					//v.setTextColor(R.color._ffffff);
@@ -534,6 +539,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                     mlastview.startAnimation(animationSet1);
                 }
                 // if(view!=clickView){
+                if(!scrollFromBorder)
                 channelBtn.setBackgroundResource(R.drawable.channel_item_selectd_focus);
                 AnimationSet animationSet = new AnimationSet(true);
                 ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
@@ -897,8 +903,12 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             currentFragment = new GuideFragment();
             setbackground(R.drawable.main_bg);
         }
+        if(scrollFromBorder){
+        	currentFragment.setScrollFromBorder(scrollFromBorder);
+        }
         // currentFragment.view = scroll;
         //currentFragment.position = position;
+        scrollFromBorder = false;
         currentFragment.setChannelEntity(channelEntity);
         replaceFragment(currentFragment);
     }

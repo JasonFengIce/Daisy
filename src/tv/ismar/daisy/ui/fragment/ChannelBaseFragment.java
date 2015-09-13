@@ -17,13 +17,19 @@ import tv.ismar.daisy.ui.activity.TVGuideActivity;
 public class ChannelBaseFragment extends Fragment {
     protected ChannelEntity channelEntity;
     protected TVGuideActivity mContext;
+    protected boolean scrollFromBorder;
 //    protected PlaybackService mService;
 
+    
     public ChannelEntity getChannelEntity() {
         return channelEntity;
     }
 
-    public void setChannelEntity(ChannelEntity channelEntity) {
+    public void setScrollFromBorder(boolean scrollFromBorder) {
+		this.scrollFromBorder = scrollFromBorder;
+	}
+
+	public void setChannelEntity(ChannelEntity channelEntity) {
         this.channelEntity = channelEntity;
     }
 

@@ -36,8 +36,8 @@ public class ImageTextButton extends Button {
 		super.draw(canvas);
 		super.getDrawingRect(mRect);
 		 if (hasFocus()) {
-		mBound.set(-15 + mRect.left, -15 + mRect.top, 15 + mRect.right,
-				mRect.bottom + 15);
+		mBound.set(-17 + mRect.left, -17 + mRect.top, 17 + mRect.right,
+				mRect.bottom + 17);
 		mDrawable.setBounds(mBound);
 		canvas.save();
 		mDrawable.draw(canvas);

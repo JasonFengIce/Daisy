@@ -104,6 +104,7 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
         if(mContext==null){
             return;
         }
+
         int marginTP = (int) mContext.getResources().getDimension(R.dimen.child_fragment_item_margin_tp);
 
         int itemWidth = (int) mContext.getResources().getDimension(R.dimen.child_fragment_item_width);

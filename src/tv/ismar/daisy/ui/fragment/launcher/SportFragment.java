@@ -173,6 +173,9 @@ public class SportFragment extends ChannelBaseFragment {
 
 	private void fillData(ArrayList<Carousel> carousels,
 			ArrayList<Poster> postlist) {
+        if(scrollFromBorder){
+        	sportspost.requestFocus();       	
+        }
 		Picasso.with(mContext).load(carousels.get(0).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE)
 		.into(sport_card1);
 		// sport_card1.setFocustitle(carousels.get(0).getIntroduction());
@@ -269,7 +272,7 @@ public class SportFragment extends ChannelBaseFragment {
 			if (result != RESULT_SUCCESS) {
 				return;
 			} else {
-				if(mContext == null)
+				if(mContext == null || entity==null)
 					return;
 				ArrayList<Poster> postlist = entity.getPosters();
 				ArrayList<Carousel> carousels = entity.getCarousels();

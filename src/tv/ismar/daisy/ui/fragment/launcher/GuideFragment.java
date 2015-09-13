@@ -105,8 +105,6 @@ public class GuideFragment extends ChannelBaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
     }
 
     @Override
@@ -167,7 +165,9 @@ public class GuideFragment extends ChannelBaseFragment {
                 if (!posters.isEmpty()) {
                     initPosters(posters);
                 }
-                mSurfaceView.requestFocus();
+                if(scrollFromBorder){
+                	film_post_layout.requestFocus();       	
+                }
             }
 
             @Override
