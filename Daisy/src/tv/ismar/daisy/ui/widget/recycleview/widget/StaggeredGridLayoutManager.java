@@ -49,7 +49,7 @@ import static tv.ismar.daisy.ui.widget.recycleview.widget.RecyclerView.NO_POSITI
  */
 public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager {
 
-    public static final String TAG = "StaggeredGridLayoutManager";
+    public static final String TAG = "StaggeredGridLM";
 
     private static final boolean DEBUG = false;
 

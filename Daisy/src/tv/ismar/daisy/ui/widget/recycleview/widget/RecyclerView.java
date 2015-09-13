@@ -6703,7 +6703,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
                                               boolean canScroll) {
             int size = Math.max(0, parentSize - padding);
             int resultSize = 0;
-            int resultMode = 0;
+            int resultMode = MeasureSpec.UNSPECIFIED;
 
             if (canScroll) {
                 if (childDimension >= 0) {

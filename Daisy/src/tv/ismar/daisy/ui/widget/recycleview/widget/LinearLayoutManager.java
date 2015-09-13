@@ -2017,10 +2017,6 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
             return closest;
         }
 
-        void log() {
-            Log.d(TAG, "avail:" + mAvailable + ", ind:" + mCurrentPosition + ", dir:" +
-                    mItemDirection + ", offset:" + mOffset + ", layoutDir:" + mLayoutDirection);
-        }
     }
 
     static class SavedState implements Parcelable {
