@@ -675,7 +675,7 @@ public class PlayerActivity extends VodMenuAction {
 				} else if (i == 704) {
 					bufferText.setText(BUFFERING + " " + j + "%");
 				} else if (i == SmartPlayer.MEDIA_INFO_BUFFERING_END
-						|| i == 808) {
+						|| i == 3) {
 					bufferText.setText(BUFFERING + " " + 100 + "%");
 					isBuffer = false;
 					hideBuffer();
@@ -1077,10 +1077,10 @@ public class PlayerActivity extends VodMenuAction {
 		public void run() {
 			if (mVideoView != null) {
 				if (mVideoView.isPlaying()) {
-					if (bufferLayout.isShown()) {
-						isBuffer = false;
-						hideBuffer();
-					}
+//					if (bufferLayout.isShown()) {
+//						isBuffer = false;
+//						hideBuffer();
+//					}
 					// if (isadvideoplaying && bufferLayout.isShown()) {
 					// isBuffer = false;
 					// hideBuffer();

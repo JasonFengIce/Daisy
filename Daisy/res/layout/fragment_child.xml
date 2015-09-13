@@ -5,7 +5,10 @@
 
     <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+                    android:clipChildren="false"
+        android:clipToPadding="false"
+            >
 
         <LinearLayout
                 android:id="@+id/left_layout"
@@ -24,20 +27,28 @@
                 android:layout_toRightOf="@id/left_layout"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                        android:clipChildren="false"
+        android:clipToPadding="false"
+                >
 
             <RelativeLayout
                     android:id="@+id/indicator_layout"
                     android:layout_width="@dimen/child_fragment_center_layout_width"
                     android:layout_height="@dimen/child_fragment_center_layout_height"
+                            android:clipChildren="false"
+        android:clipToPadding="false"
                     >
 
-                <ImageView
+                <tv.ismar.daisy.views.LabelImageView
                         android:scaleType="fitXY"
                         android:id="@+id/image_switcher"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                </ImageView>
+                        android:layout_height="match_parent"
+                        android:focusable="true"
+                        android:clickable="true"
+                        >
+                </tv.ismar.daisy.views.LabelImageView>
 
                 <LinearLayout
                         android:gravity="bottom"
@@ -48,9 +59,9 @@
                         android:layout_height="85dp">
 
                     <tv.ismar.daisy.ui.widget.child.ChildThumbImageView
-                            android:focusable="true"
+                            android:focusable="false"
                             android:focusableInTouchMode="true"
-                            android:clickable="true"
+                            android:clickable="false"
                             android:adjustViewBounds="true"
                             android:scaleType="fitXY"
                             android:id="@+id/indicator_1"
@@ -60,9 +71,9 @@
                             />
 
                     <tv.ismar.daisy.ui.widget.child.ChildThumbImageView
-                            android:focusable="true"
+                            android:focusable="false"
                             android:focusableInTouchMode="true"
-                            android:clickable="true"
+                            android:clickable="false"
                             android:scaleType="fitXY"
                             android:id="@+id/indicator_2"
                             android:layout_width="0dp"
@@ -71,9 +82,9 @@
                             />
 
                     <tv.ismar.daisy.ui.widget.child.ChildThumbImageView
-                            android:focusable="true"
+                            android:focusable="false"
                             android:focusableInTouchMode="true"
-                            android:clickable="true"
+                            android:clickable="false"
                             android:scaleType="fitXY"
                             android:id="@+id/indicator_3"
                             android:layout_width="0dp"

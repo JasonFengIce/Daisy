@@ -32,7 +32,7 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
     private LinearLayout leftLayout;
     private LinearLayout bottomLayout;
     private LinearLayout rightLayout;
-    private ImageView imageSwitcher;
+    private tv.ismar.daisy.views.LabelImageView imageSwitcher;
     private ChildThumbImageView[] indicatorImgs;
     private TextView indicatorTitle;
 
@@ -52,7 +52,7 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
         leftLayout = (LinearLayout) mView.findViewById(R.id.left_layout);
         bottomLayout = (LinearLayout) mView.findViewById(R.id.bottom_layout);
         rightLayout = (LinearLayout) mView.findViewById(R.id.right_layout);
-        imageSwitcher = (ImageView) mView.findViewById(R.id.image_switcher);
+        imageSwitcher = (tv.ismar.daisy.views.LabelImageView) mView.findViewById(R.id.image_switcher);
         indicatorImgs = new ChildThumbImageView[]{
                 (ChildThumbImageView) mView.findViewById(R.id.indicator_1),
                 (ChildThumbImageView) mView.findViewById(R.id.indicator_2),
@@ -61,7 +61,7 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
         indicatorTitle = (TextView) mView.findViewById(R.id.indicator_title);
         childMore = (ImageButton) mView.findViewById(R.id.child_more);
         childMore.setOnClickListener(ItemClickListener);
-
+        imageSwitcher.setOnClickListener(ItemClickListener);
         flag = new Flag(this);
         messageHandler = new MessageHandler();
         return mView;
@@ -78,6 +78,9 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
             public void onSuccess(String result) {
             	if(mContext == null)
             		return;
+            	 if(scrollFromBorder){
+            		 imageSwitcher.requestFocus();
+                 }
                 HomePagerEntity homePagerEntity = new Gson().fromJson(result, HomePagerEntity.class);
                 ArrayList<HomePagerEntity.Poster> posters = homePagerEntity.getPosters();
                 ArrayList<HomePagerEntity.Carousel> carousels = homePagerEntity.getCarousels();
@@ -211,6 +214,7 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
 
     private void playCarousel() {
         messageHandler.removeMessages(0);
+        imageSwitcher.setTag(R.drawable.launcher_selector, carousels.get(flag.getPosition()));
         Picasso.with(mContext).load(carousels.get(flag.getPosition()).getVideo_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(imageSwitcher, new Callback() {
             int pauseTime = Integer.parseInt(carousels.get(flag.getPosition()).getPause_time());
 
