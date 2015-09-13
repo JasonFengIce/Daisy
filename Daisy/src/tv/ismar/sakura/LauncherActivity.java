@@ -81,7 +81,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 
             @Override
             public void failure(RetrofitError retrofitError) {
-                Log.e(TAG, retrofitError.getMessage());
+                Log.e(TAG, "fetchProblems error!!!");
             }
         });
     }
