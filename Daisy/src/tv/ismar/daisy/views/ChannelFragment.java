@@ -485,6 +485,9 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 					if(mHGridAdapter.getCount()>0){
 						mHGridView.setAdapter(mHGridAdapter);
 						mHGridView.setFocusable(true);
+                        mHGridView.requestFocus();
+                        mHGridView.setSelection(0);
+                        mScrollableSectionList.mGridView = mHGridView;
 //						mHGridView.setHorizontalFadingEdgeEnabled(true);
 //                        if(isPortrait){
 //                            mHGridView.setFadingEdgeLength(155);
@@ -584,12 +587,23 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 			mHGridView.jumpToSection(index);
 		}
 	};
-
+    private boolean isPause = false;
 	@Override
 	public void onResume() {
 		mIsBusy = false;
         ((ChannelListActivity)getActivity()).registerOnMenuToggleListener(this);
 		super.onResume();
+        if(isPause){
+            isPause = false;
+            if(mScrollableSectionList!=null){
+                if(mScrollableSectionList.mContainer!=null){
+                    View v = mScrollableSectionList.mContainer.getChildAt(1);
+                    if(v!=null){
+                        v.requestFocus();
+                    }
+                }
+            }
+        }
 	}
 
 	@Override
@@ -597,6 +611,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		// We don't want to load when this page has been invisible.
 		// This can prevent onScroll event to put new task to mCurrentLoadingTask.
 		mIsBusy = true;
+        isPause = true;
         if(mScrollableSectionList!=null&&mScrollableSectionList.mHandler!=null){
             mScrollableSectionList.mHandler.removeMessages(ScrollableSectionList.START_CLICK);
         }
@@ -705,6 +720,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		if(!mIsBusy) {
 			// We put the composed index which need to loading to this list. and check with
 			// mCurrentLoadingTask soon after
+
 			ArrayList<Integer> needToLoadComposedIndex = new ArrayList<Integer>();
 			// The index of child in HGridView
 			int index = 0;

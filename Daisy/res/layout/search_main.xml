@@ -59,10 +59,14 @@
                             android:textSize="@dimen/search_main_autocomplete_textsize"
                             android:nextFocusRight="@+id/ibtn_search"/>
 
-                    <ImageButton
+                    <Button
+                            android:textColor="@color/white"
+                            android:text="搜索"
+                            android:textSize="@dimen/h2_text_size"
                             android:id="@+id/ibtn_search"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_width="221dip"
+                            android:layout_height="81dip"
                             android:layout_marginLeft="@dimen/search_main_btn_search_marginL"
                             android:layout_marginTop="@dimen/search_main_btn_search_marginT"
                             android:background="@drawable/search_button_selector"/>
