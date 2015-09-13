@@ -121,6 +121,16 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
         tomorrowWeatherInfo = (TextView) fragmentView.findViewById(R.id.tomorrow_weather_info);
         tomorrowWeatherTemperature = (TextView) fragmentView.findViewById(R.id.tomorrow_weather_temperature);
 
+
+        fragmentView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    provinceListView.requestFocus();
+                }
+            }
+        });
+
         return fragmentView;
     }
 
