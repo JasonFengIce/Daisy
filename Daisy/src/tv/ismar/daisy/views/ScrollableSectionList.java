@@ -262,6 +262,8 @@ public class ScrollableSectionList extends HorizontalScrollView {
 			}
 		}
 	};
+
+    public boolean isRelated = false;
     public TextView sectionWhenGoto;
     public static int STATE_GOTO_GRIDVIEW = 2;
     public static int STATE_SECTION = 3;

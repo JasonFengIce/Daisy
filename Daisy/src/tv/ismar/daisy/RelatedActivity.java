@@ -63,6 +63,7 @@ public class RelatedActivity extends BaseActivity implements OnSectionSelectChan
 	private String mSection;
     private boolean isPortrait = false;
     private static final int LABEL_TEXT_COLOR_FOCUSED1 = 0xffffba00;
+    private static final int LABEL_TEXT_COLOR_NOFOCUSED = 0xffffffff;
 	private void initViews(){
 		mSectionTabs = (RelateScrollableSectionList) findViewById(R.id.related_section_tabs);
 		mSectionTabs.setOnSectionSelectChangeListener(this);
@@ -82,7 +83,8 @@ public class RelatedActivity extends BaseActivity implements OnSectionSelectChan
                     Log.i("testHGRIDVIEW", "focus");
                     if(mSectionTabs!=null){
                         mSectionTabs.currentState = ScrollableSectionList.STATE_GOTO_GRIDVIEW;
-                        mSectionTabs.sectionWhenGoto.setTextColor(LABEL_TEXT_COLOR_FOCUSED1);
+                        mSectionTabs.sectionWhenGoto.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
+                        mSectionTabs.sectionWhenGoto.setBackgroundResource(R.drawable.gotogridview);
                     }
                 }else{
                     Log.i("testHGRIDVIEW","lostfocus");

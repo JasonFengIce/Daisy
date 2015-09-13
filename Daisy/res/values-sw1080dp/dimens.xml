@@ -434,7 +434,7 @@
     <dimen name="search_arrow_btn_MLR">35dip</dimen>
     <dimen name="search_gridview_item_iv_type_MT">-15dip</dimen>
     <!-- channel_section_tabs -->
-    <dimen name="channel_section_tabs_W">300dip</dimen>
+    <dimen name="channel_section_tabs_W">233dip</dimen>
     <dimen name="channel_section_tabs_H">85dip</dimen>
     <dimen name="channel_section_tabs_label_marginL">10dip</dimen>
     <dimen name="channel_section_tabs_label_marginR">10dip</dimen>
