@@ -36,7 +36,7 @@
     <dimen name="item_detail_detailquality_margintop">2dip</dimen>
     <dimen name="item_detail_detailquality_marginright">2dip</dimen>
     <dimen name="item_detail_btn_left_width">250dp</dimen>
-    <dimen name="item_detail_btn_left_height">80dip</dimen>
+    <dimen name="item_detail_btn_left_height">72dip</dimen>
     <dimen name="item_detail_btn_left_textsize">35sp</dimen>
     <dimen name="item_detail_btn_right_width">240dip</dimen>
     <dimen name="item_detail_btn_right_height">80dp</dimen>
@@ -439,7 +439,7 @@
     <dimen name="channel_section_tabs_label_marginL">10dip</dimen>
     <dimen name="channel_section_tabs_label_marginR">10dip</dimen>
     <dimen name="channel_section_tabs_label_marginB">6dip</dimen>
-    <dimen name="channel_section_tabs_label_textsize">30sp</dimen>
+    <dimen name="channel_section_tabs_label_textsize">36sp</dimen>
     <dimen name="channel_section_tabs_percentage_H">3dip</dimen>
     <dimen name="channel_section_tabs_label_ctextsize">36sp</dimen>
     <dimen name="channel_section_tabs_label_paddingT">25dip</dimen>
@@ -1147,11 +1147,11 @@
     <dimen name="filmitem_portrait_detail_intro_lineSpacingExtra">22dip</dimen>
     <dimen name="filmitem_portrait_detail_intro_textsize">24sp</dimen>
     <dimen name="filmitem_portrait_linearLayout_h">92dip</dimen>
-    <dimen name="filmitem_portrait_linearLayout_ml">753dip</dimen>
+    <dimen name="filmitem_portrait_linearLayout_ml">580dip</dimen>
     <dimen name="filmitem_portrait_linearLayout_mt">30dip</dimen>
-    <dimen name="filmitem_portrait_linearLayout_mr">72dip</dimen>
+    <dimen name="filmitem_portrait_linearLayout_mr">62dip</dimen>
     <dimen name="filmitem_portrait_btn_left_w">274dip</dimen>
-    <dimen name="filmitem_portrait_btn_left_pl">60dip</dimen>
+    <dimen name="filmitem_portrait_btn_left_pl">50dip</dimen>
     <dimen name="filmitem_portrait_btn_left_textsize">48sp</dimen>
     <dimen name="filmitem_portrait_middle_btn_w">174dip</dimen>
     <dimen name="filmitem_portrait_middle_btn_ml">18dip</dimen>
@@ -1190,7 +1190,7 @@
     <dimen name="entertainment_detail_view_linearLayout3_ml">168dip</dimen>
     <dimen name="entertainment_detail_view_linearLayout3_mb">57dip</dimen>
     <dimen name="entertainment_detail_view_linearLayout3_mr">73dip</dimen>
-    <dimen name="entertainment_detail_btn_left_w">374dip</dimen>
+    <dimen name="entertainment_detail_btn_left_w">400dip</dimen>
     <dimen name="entertainment_detail_middle_btn_w">214dip</dimen>
     <dimen name="entertainment_detail_btn_right_ml">71dip</dimen>
     <dimen name="entertainment_detail_intro_lineSpacingExtra">28dip</dimen>

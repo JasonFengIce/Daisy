@@ -137,9 +137,8 @@
                  android:visibility="visible">
              <Button
                      android:id="@+id/btn_left"
-                     android:layout_width="@dimen/filmitem_portrait_btn_left_w"
+                     android:layout_width="wrap_content"
                      android:layout_height="match_parent"
-                     android:background="@drawable/pfilm_detail_play_btn_selector"
                      android:gravity="center"
                      android:paddingLeft="@dimen/filmitem_portrait_btn_left_pl"
                      android:visibility="visible"
@@ -148,23 +147,23 @@
 />
 
              <Button
+                     android:paddingLeft="@dimen/filmitem_portrait_btn_left_pl"
                      android:id="@+id/middle_btn"
-                     android:layout_width="@dimen/filmitem_portrait_middle_btn_w"
+                     android:layout_width="wrap_content"
                      android:layout_height="match_parent"
                      android:layout_marginLeft="@dimen/filmitem_portrait_middle_btn_ml"
-                     android:background="@drawable/pdetail_btn_bg_selector"
                      android:gravity="center"
                      android:visibility="visible"
                      android:textColor="#FFFFFFFF"
                      android:textSize="@dimen/filmitem_portrait_btn_left_textsize"/>
 
              <Button
+                     android:paddingLeft="@dimen/filmitem_portrait_btn_left_pl"
                      android:id="@+id/btn_right"
-                     android:layout_width="@dimen/filmitem_portrait_middle_btn_w"
+                     android:layout_width="wrap_content"
                      android:layout_height="match_parent"
                      android:layout_marginLeft="@dimen/filmitem_portrait_middle_btn_ml"
                      android:gravity="center"
-                     android:background="@drawable/pdetail_btn_bg_selector"
                      android:visibility="visible"
                      android:textColor="#FFFFFFFF"
                      android:textSize="@dimen/filmitem_portrait_btn_left_textsize" />

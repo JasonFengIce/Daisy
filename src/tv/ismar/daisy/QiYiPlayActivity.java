@@ -14,6 +14,7 @@ import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
+
 import com.ismartv.api.t.AccessProxy;
 import com.ismartv.bean.ClipInfo;
 import com.qiyi.video.player.IVideoStateListener;
@@ -24,6 +25,7 @@ import com.qiyi.video.player.error.ISdkError;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
+import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.models.Clip;
 import tv.ismar.daisy.models.Favorite;
@@ -119,7 +121,8 @@ public class QiYiPlayActivity extends VodMenuAction {
     private boolean isfinish = false;
 
     private boolean[] avalibleRate = {false, false, false};
-
+    private AccountSharedPrefs shardpref;
+    private ImageView gesture_tipview;
     static {
         DEFINITION_NAMES = new HashMap<Definition, String>();
         DEFINITION_NAMES.put(Definition.DEFINITON_HIGH, "高清");
@@ -144,6 +147,7 @@ public class QiYiPlayActivity extends VodMenuAction {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        shardpref = AccountSharedPrefs.getInstance(this);
         setContentView(R.layout.vod_player);
     }
 
@@ -166,6 +170,7 @@ public class QiYiPlayActivity extends VodMenuAction {
         bufferLayout = (LinearLayout) findViewById(R.id.BufferLayout);
         bufferText = (TextView) findViewById(R.id.BufferText);
         logoImage = (ImageView) findViewById(R.id.logo_image);
+        gesture_tipview = (ImageView)findViewById(R.id.gesture_tipview);
         panelLayout.setVisibility(View.GONE);
         bufferLayout.setVisibility(View.GONE);
         qualityText.setVisibility(View.GONE);
@@ -260,7 +265,11 @@ public class QiYiPlayActivity extends VodMenuAction {
         live_video = item.live_video;
         titleText.setText(item.title);
         simpleRestClient = new SimpleRestClient();
-        new initPlayTask().execute();
+		if("false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
+			 new initPlayTask().execute();
+		}else{
+			gesture_tipview.setVisibility(View.VISIBLE);
+		}
     }
 
     private class initPlayTask extends AsyncTask<String, Void, Void> {
@@ -1093,6 +1102,12 @@ public class QiYiPlayActivity extends VodMenuAction {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         boolean ret = false;
+    	if(keyCode == KeyEvent.KEYCODE_BACK && !"false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
+			gesture_tipview.setVisibility(View.GONE);
+			shardpref.setSharedPrefs(AccountSharedPrefs.FIRST_USE, "false");
+			new initPlayTask().execute();
+			return false;
+		}
         if (!isVodMenuVisible() && mPlayer != null) {
             switch (keyCode) {
                 case KeyEvent.KEYCODE_DPAD_LEFT:

@@ -160,6 +160,10 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         super.onResume();
     }
 
+
+
+
+
     private boolean isFavorite() {
         if (mItem != null) {
             String url = mItem.item_url;
@@ -307,8 +311,81 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
     };
 
+//    private void setExpenseStatus() {
+//        /*
+//		 * if this item is a drama , the button should split to two. otherwise.
+//		 * use one button.
+//		 */
+//        if (isFree()) {
+//            // 免费
+//            if (!isDrama()) {
+//                // 电影
+//                mRightBtn.setVisibility(View.GONE);
+//            } else {
+//                // 电视剧
+//                mRightBtn.setTag(DRAMA_VIDEO);
+//                mRightBtn.setText(getResources().getString(R.string.vod_itemepisode));
+//            }
+//            mLeftBtn.setText(getResources().getString(R.string.play));
+//            mMiddleBtn.setText(getResources().getString(R.string.favorite));
+//            mLeftBtn.setTag(PLAY_VIDEO);
+//            mMiddleBtn.setTag(COLLECT_VIDEO);
+//            mCollectBtn = mMiddleBtn;
+//        } else {
+//            // 收费
+//            if (!isBuy) {
+//                // 未购买
+//                mLeftBtn.setTag(PREVIEW_VIDEO);
+//                mLeftBtn.setText(getResources().getString(R.string.preview_video));
+//                mMiddleBtn.setTag(BUY_VIDEO);
+//                mMiddleBtn.setText(getResources().getString(R.string.buy_video));
+//                mRightBtn.setText(getResources().getString(R.string.favorite));
+//                mRightBtn.setTag(COLLECT_VIDEO);
+//
+//                detail_price_txt.setText("￥" + mItem.expense.price);
+//                detail_duration_txt.setText("有效期" + mItem.expense.duration
+//                        + "天");
+//                detail_price_txt.setVisibility(View.VISIBLE);
+//                detail_duration_txt.setVisibility(View.VISIBLE);
+//                remainDay = mItem.expense.duration;
+//                mCollectBtn = mRightBtn;
+//            } else {
+//                // 已经购买
+//                //isbuy_label.setVisibility(View.VISIBLE);
+//                //mDetailQualityLabel.setVisibility(View.GONE);
+//                if (!isDrama()) {
+//                    // 电影
+//                    mRightBtn.setVisibility(View.GONE);
+//                    // mRightBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+//                    // mRightBtn.setTag(COLLECT_VIDEO);
+//                } else {
+//                    // 电视剧
+//                    mRightBtn.setText(getResources().getString(R.string.vod_itemepisode));
+//                    mRightBtn.setTag(DRAMA_VIDEO);
+//                }
+//                mLeftBtn.setTag(PLAY_VIDEO);
+//                mLeftBtn.setText(getResources().getString(R.string.play));
+//                mMiddleBtn.setText(getResources().getString(R.string.favorite));
+//                mMiddleBtn.setTag(COLLECT_VIDEO);
+//
+//                detail_price_txt.setText("已付费");
+//                detail_duration_txt.setText("剩余" + remainDay + "天");
+//                detail_price_txt.setVisibility(View.VISIBLE);
+//                detail_duration_txt.setVisibility(View.VISIBLE);
+//                detail_duration_txt
+//                        .setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
+//                detail_price_txt
+//                        .setBackgroundResource(R.drawable.vod_detail_already_payment_price);
+//                mCollectBtn = mMiddleBtn;
+//            }
+//        }
+//
+//        mLeftBtn.setFocusable(true);
+//        mLeftBtn.requestFocus();
+//    }
+
     private void setExpenseStatus() {
-        /*
+		/*
 		 * if this item is a drama , the button should split to two. otherwise.
 		 * use one button.
 		 */
@@ -319,25 +396,57 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 mRightBtn.setVisibility(View.GONE);
             } else {
                 // 电视剧
+                //setLeftDrawable(drawableleftdrama, mRightBtn);
                 mRightBtn.setTag(DRAMA_VIDEO);
                 mRightBtn.setText(getResources().getString(R.string.vod_itemepisode));
+                initFocusBtn(mRightBtn,false);
             }
+            //setLeftDrawable(drawableleftplay, mLeftBtn);
             mLeftBtn.setText(getResources().getString(R.string.play));
+            //setLeftDrawable(drawableleftcollect, mMiddleBtn);
             mMiddleBtn.setText(getResources().getString(R.string.favorite));
             mLeftBtn.setTag(PLAY_VIDEO);
             mMiddleBtn.setTag(COLLECT_VIDEO);
+            initFocusBtn(mLeftBtn,false);
+            initFocusBtn(mMiddleBtn,false);
             mCollectBtn = mMiddleBtn;
         } else {
             // 收费
             if (!isBuy) {
                 // 未购买
+//				if (!isDrama()) {
+//					// 电影
+//					mLeftBtn.setBackgroundResource(R.drawable.preview_video_btn_bg_selector);
+//					mLeftBtn.setTag(PREVIEW_VIDEO);
+//					mMiddleBtn
+//							.setBackgroundResource(R.drawable.buy_video_btn_bg_selector);
+//					mMiddleBtn.setTag(BUY_VIDEO);
+//					mRightBtn
+//							.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+//					mRightBtn.setTag(COLLECT_VIDEO);
+//				} else {
+//					// 电视剧
+//					mLeftBtn.setBackgroundResource(R.drawable.preview_video_btn_bg_selector);
+//					mLeftBtn.setTag(PREVIEW_VIDEO);
+//					mMiddleBtn
+//							.setBackgroundResource(R.drawable.buy_video_btn_bg_selector);
+//					mMiddleBtn.setTag(BUY_VIDEO);
+//					mRightBtn
+//							.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+//					mRightBtn.setTag(COLLECT_VIDEO);
+//				}
+                //setLeftDrawable(drawableleftplay, mLeftBtn);
                 mLeftBtn.setTag(PREVIEW_VIDEO);
                 mLeftBtn.setText(getResources().getString(R.string.preview_video));
+                //setLeftDrawable(drawableleftbuy, mMiddleBtn);
                 mMiddleBtn.setTag(BUY_VIDEO);
                 mMiddleBtn.setText(getResources().getString(R.string.buy_video));
+                //setLeftDrawable(drawableleftcollect, mRightBtn);
                 mRightBtn.setText(getResources().getString(R.string.favorite));
                 mRightBtn.setTag(COLLECT_VIDEO);
-
+                initFocusBtn(mLeftBtn,false);
+                initFocusBtn(mRightBtn,false);
+                initFocusBtn(mMiddleBtn,false);
                 detail_price_txt.setText("￥" + mItem.expense.price);
                 detail_duration_txt.setText("有效期" + mItem.expense.duration
                         + "天");
@@ -356,14 +465,26 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                     // mRightBtn.setTag(COLLECT_VIDEO);
                 } else {
                     // 电视剧
+//					mLeftBtn.setBackgroundResource(R.drawable.play_btn_bg_selector);
+//					mLeftBtn.setTag(PLAY_VIDEO);
+//					mMiddleBtn
+//							.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+//					mMiddleBtn.setTag(COLLECT_VIDEO);
+
+                    //setLeftDrawable(drawableleftdrama, mRightBtn);
                     mRightBtn.setText(getResources().getString(R.string.vod_itemepisode));
                     mRightBtn.setTag(DRAMA_VIDEO);
+                    initFocusBtn(mRightBtn,false);
                 }
+
+                //setLeftDrawable(drawableleftplay, mLeftBtn);
                 mLeftBtn.setTag(PLAY_VIDEO);
                 mLeftBtn.setText(getResources().getString(R.string.play));
+                //setLeftDrawable(drawableleftcollect,mMiddleBtn);
                 mMiddleBtn.setText(getResources().getString(R.string.favorite));
                 mMiddleBtn.setTag(COLLECT_VIDEO);
-
+                initFocusBtn(mLeftBtn,false);
+                initFocusBtn(mMiddleBtn,false);
                 detail_price_txt.setText("已付费");
                 detail_duration_txt.setText("剩余" + remainDay + "天");
                 detail_price_txt.setVisibility(View.VISIBLE);
@@ -375,7 +496,6 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 mCollectBtn = mMiddleBtn;
             }
         }
-
         mLeftBtn.setFocusable(true);
         mLeftBtn.requestFocus();
     }
@@ -686,8 +806,58 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         mRightBtn.setOnClickListener(mIdOnClickListener);
         mMoreContent.setOnClickListener(mIdOnClickListener);
 
-    }
 
+        mLeftBtn.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                initFocusBtn(v,hasFocus);
+            }
+        });
+
+        mMiddleBtn.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                initFocusBtn(v,hasFocus);
+            }
+        });
+
+        mRightBtn.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                initFocusBtn(v,hasFocus);
+            }
+        });
+    }
+    private void initFocusBtn(View v,boolean hasFocus){
+        String identify = (String) v.getTag();
+
+        if(hasFocus){
+            if(COLLECT_VIDEO.equals(identify)){
+                v.setBackgroundResource(R.drawable.filmcollect_focus_btn_bg);
+            }else if(BUY_VIDEO.equals(identify)){
+                v.setBackgroundResource(R.drawable.filmbuybideo_focus_btn_bg);
+            }else if(PREVIEW_VIDEO.equals(identify)){
+                v.setBackgroundResource(R.drawable.filmplayvideo_focus_btn_bg);
+            }else if(PLAY_VIDEO.equals(identify)){
+                v.setBackgroundResource(R.drawable.filmplayvideo_focus_btn_bg);
+            }else if(DRAMA_VIDEO.equals(identify)){
+                v.setBackgroundResource(R.drawable.zydramalist_focus_btn_bg);
+            }
+        }else{
+            if(COLLECT_VIDEO.equals(identify)){
+                v.setBackgroundResource(R.drawable.filmcollect_normal_btn_bg);
+            }else if(BUY_VIDEO.equals(identify)){
+                v.setBackgroundResource(R.drawable.filmbuyvideo_normal_btn_bg);
+            }else if(PREVIEW_VIDEO.equals(identify)){
+                v.setBackgroundResource(R.drawable.filmplayvideo_normal_btn_bg);
+            }else if(PLAY_VIDEO.equals(identify)){
+                v.setBackgroundResource(R.drawable.filmplayvideo_normal_btn_bg);
+            }else if(DRAMA_VIDEO.equals(identify)){
+                v.setBackgroundResource(R.drawable.zydramalist_normal_btn_bg);
+            }
+        }
+
+    }
     private void isbuy() {
         SimpleRestClient simpleRestClient = new SimpleRestClient();
         simpleRestClient.doSendRequest("/api/order/check/", "post",

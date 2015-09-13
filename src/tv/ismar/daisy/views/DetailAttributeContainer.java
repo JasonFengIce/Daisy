@@ -188,7 +188,7 @@ public class DetailAttributeContainer extends LinearLayout {
                 itemNameParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,(int)(27/1));
             }
             else{
-                itemNameParams = new LinearLayout.LayoutParams((int)(441/1), (int)(27/1));
+                itemNameParams = new LinearLayout.LayoutParams((int)(341/1), (int)(27/1));
             }
         }
 
