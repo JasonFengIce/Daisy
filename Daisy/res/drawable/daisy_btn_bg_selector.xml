@@ -4,5 +4,5 @@
     <item android:state_focused="true" android:drawable="@drawable/daisy_btn_pressed_bg" />
     <item android:drawable="@drawable/daisy_btn_pressed_bg" android:state_hovered="true" />
     <item android:state_pressed="true" android:drawable="@drawable/daisy_btn_pressed_bg" />
-    <item android:drawable="@drawable/daisy_btn_normal_bg" />
+    <item android:drawable="@color/detail_more_bg" />
 </selector>
