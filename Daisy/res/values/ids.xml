@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="purchase_history_list_first_id"/>
+    <item type="id" name="userinfo_palyauth_list_first_id"/>
+    <item type="id" name="userinfo_palyauth_list_last_id"/>
+
+</resources>

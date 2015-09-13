@@ -153,9 +153,9 @@ public class QiYiPlayActivity extends VodMenuAction {
 
     public void initView() {
         panelShowAnimation = AnimationUtils.loadAnimation(this,
-                R.drawable.fly_up);
+                R.anim.fly_up);
         panelHideAnimation = AnimationUtils.loadAnimation(this,
-                R.drawable.fly_down);
+                R.anim.fly_down);
         // bufferHideAnimation =
         // AnimationUtils.loadAnimation(this,R.drawable.fade_out);
         panelLayout = (LinearLayout) findViewById(R.id.PanelLayout);

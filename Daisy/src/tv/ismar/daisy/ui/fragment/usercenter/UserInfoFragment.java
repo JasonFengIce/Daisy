@@ -318,7 +318,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
                 if (i == 0) {
-                    convertView.setId(643432);
+                    convertView.setId(R.id.userinfo_palyauth_list_first_id);
                     convertView.setNextFocusUpId(changeButton.getId());
                     changeButton.setNextFocusDownId(convertView.getId());
                 }
@@ -328,8 +328,8 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
 
                 }
                 if (i == playAuths.size() - 1) {
-                    convertView.setId(7845345);
-                    convertView.setNextFocusDownId(7845345);
+                    convertView.setId(R.id.userinfo_palyauth_list_last_id);
+                    convertView.setNextFocusDownId(convertView.getId());
                 }
                 convertView.setLayoutParams(layoutParams);
                 playAuthListView.addView(convertView);

@@ -313,9 +313,6 @@
                 />
         <!-- TODO SDK接入 QQ接入配置 END -->
 
-        <!-- service -->
-        <service android:name=".core.service.PosterUpdateService"/>
-        <service android:name=".core.vlc.PlaybackService"/>
 
 
         <!-- =============================================================================== -->

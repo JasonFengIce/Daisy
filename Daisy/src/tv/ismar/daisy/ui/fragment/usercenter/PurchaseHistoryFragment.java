@@ -168,7 +168,7 @@ public class PurchaseHistoryFragment extends Fragment {
 
             accountOrderListView.addView(convertView);
             if (i == 0) {
-                icon.setId(0x99474723);
+                icon.setId(R.id.purchase_history_list_first_id);
                 icon.setNextFocusUpId(icon.getId());
             }
 
