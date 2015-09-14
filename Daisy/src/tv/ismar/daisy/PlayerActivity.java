@@ -1421,6 +1421,9 @@ public class PlayerActivity extends VodMenuAction {
 			initClipInfo();
 			return false;
 		}
+		if(!"false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
+			return false;			
+		}
 		if(isadvideoplaying){
 			if (keyCode == KeyEvent.KEYCODE_BACK) {
 				mVideoView.stopPlayback();

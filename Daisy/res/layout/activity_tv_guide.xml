@@ -84,6 +84,7 @@
                 android:layout_width="@dimen/tv_guide_arrow_scroll_w"
                 android:layout_height="@dimen/tv_guide_arrow_scroll_h"
                 android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/tv_guide_arrow_scroll_margin"
                 android:src="@drawable/arrow_left_right"
                 android:visibility="visible"
