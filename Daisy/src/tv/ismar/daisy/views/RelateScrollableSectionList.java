@@ -14,6 +14,8 @@ import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.models.Section;
 import tv.ismar.daisy.models.SectionList;
 
+import java.text.DecimalFormat;
+
 public class RelateScrollableSectionList extends HorizontalScrollView {
 	
 	private static final String TAG = "ScrollableSectionList";
@@ -67,8 +69,9 @@ public class RelateScrollableSectionList extends HorizontalScrollView {
 		this.setFadingEdgeLength(100);
 		this.setHorizontalFadingEdgeEnabled(true);
 	}
-
+    float rate;
 	public void init(SectionList sectionLists, int totalWidth,boolean isChangeBarStyle) {
+        rate = DaisyUtils.getVodApplication(getContext()).getRate(getContext());
 		mContainer = new LinearLayout(getContext());
 		this.isChangeBarStyle = isChangeBarStyle;
 //		int H = DaisyUtils.getVodApplication(getContext()).getheightPixels(getContext());
@@ -105,19 +108,19 @@ public class RelateScrollableSectionList extends HorizontalScrollView {
 			View v = mContainer.getChildAt(0);
 			TextView label = (TextView) v.findViewById(R.id.section_label);
 			ProgressBar percentageBar = (ProgressBar) v.findViewById(R.id.section_percentage);
-			label.setPadding(label.getPaddingLeft(),  getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_text_PT), label.getPaddingRight(), label.getPaddingBottom());
+			//label.setPadding(label.getPaddingLeft(),  getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_text_PT), label.getPaddingRight(), label.getPaddingBottom());
 			
 			//percentageBar.setProgress(0);
 			int textsize = getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_ctextsize);
 			float rate = DaisyUtils.getVodApplication(getContext()).getRate(getContext());
 			 textsize = (int) (textsize/rate);
 			 label.setTextSize(textsize);
-			label.setTextColor(LABEL_TEXT_COLOR_CLICKED);
+			label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
+            label.setBackgroundResource(R.drawable.sectionfocus);
 			percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_hot_selected));
 		}
 
 	}
-	
 	private RelativeLayout getSectionLabelLayout(Section section, int width) {
 		RelativeLayout sectionHolder = (RelativeLayout) LayoutInflater.from(getContext()).inflate(R.layout.relatesection_list_item, null);
 
@@ -170,8 +173,9 @@ public class RelateScrollableSectionList extends HorizontalScrollView {
             textsize = (int) (textsize/rate);
             if(hasFocus){
                 if(index==mSelectPosition){
-                    label.setTextColor(LABEL_TEXT_COLOR_CLICKED);
+                    label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
                     label.setTextSize(textsize);
+                    label.setBackgroundResource(R.drawable.sectionfocus);
                     return;
                 }
 
@@ -181,7 +185,7 @@ public class RelateScrollableSectionList extends HorizontalScrollView {
                         currentState = STATE_SECTION;
                         mContainer.getChildAt(mSelectPosition).requestFocus();
                     }else if(currentState==STATE_SECTION){
-                        label.setTextColor(LABEL_TEXT_COLOR_CLICKED);
+                        label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
                         label.setTextSize(textsize);
                         v.performClick();
                     }
@@ -201,18 +205,19 @@ public class RelateScrollableSectionList extends HorizontalScrollView {
 		float rate = DaisyUtils.getVodApplication(getContext()).getRate(getContext());
 		TextView lastLabel = (TextView) lastSelectedView.findViewById(R.id.section_label);
 		lastLabel.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
-		lastLabel.setPadding(lastLabel.getPaddingLeft(), getResources().
-				getDimensionPixelSize(R.dimen.channel_section_tabs_label_paddingT), lastLabel.getPaddingRight(), lastLabel.getPaddingBottom());
-		
+//		lastLabel.setPadding(lastLabel.getPaddingLeft(), getResources().
+//				getDimensionPixelSize(R.dimen.channel_section_tabs_label_paddingT), lastLabel.getPaddingRight(), lastLabel.getPaddingBottom());
+        lastLabel.setBackgroundResource(android.R.color.transparent);
 		lastLabel.setTextSize(getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_textsize)/rate);	
 		TextView label = (TextView) currentView.findViewById(R.id.section_label);
-		label.setPadding(label.getPaddingLeft(), getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_text_PT), label.getPaddingRight(), label.getPaddingBottom());
+		//label.setPadding(label.getPaddingLeft(), getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_text_PT), label.getPaddingRight(), label.getPaddingBottom());
 		
 		//percentageBar.setProgress(0);
 		int textsize = getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_ctextsize);
 		textsize = (int) (textsize/rate);
 		label.setTextSize(textsize);
-		label.setTextColor(LABEL_TEXT_COLOR_CLICKED);
+		label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
+        label.setBackgroundResource(R.drawable.sectionfocus);
 	}
 //	private OnTouchListener mOnTouchListener = new OnTouchListener() {
 //		

@@ -66,7 +66,19 @@
     
 <!--     android:listSelector="@drawable/channel_item_selector"> -->
 <!--     </GridView> -->
-
+    <ProgressBar
+            android:layout_marginLeft="@dimen/filter_portraitresult_filter_percentage_margin"
+            android:layout_marginRight="@dimen/filter_portraitresult_filter_percentage_margin"
+            android:id="@+id/section_percentage"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/channel_section_tabs_percentage_H"
+            android:progressDrawable="@drawable/progressbg"
+            android:indeterminateOnly="false"
+            android:indeterminate="false"
+            android:minHeight="@dimen/gridview_main_panel_labelTextMarginBottom"
+            android:maxHeight="@dimen/gridview_main_panel_labelTextMarginBottom"
+            android:mirrorForRtl="true"
+            android:visibility="visible" />
     <org.sakuratya.horizontal.ui.ZGridView
         android:visibility="gone"
         xmlns:sakura="http://schemas.android.com/apk/res/tv.ismar.daisy"

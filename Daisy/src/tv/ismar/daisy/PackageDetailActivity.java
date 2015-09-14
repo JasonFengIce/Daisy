@@ -102,6 +102,8 @@ public class PackageDetailActivity extends BaseActivity implements OnItemClickLi
 		vod_payment_duration = (TextView)findViewById(R.id.vod_payment_duration);
 		vod_payment_buyButton = (Button)findViewById(R.id.vod_payment_buyButton);
 		vod_payment_item_more = (Button)findViewById(R.id.vod_payment_item_more);
+        vod_payment_buyButton.setFocusable(true);
+        vod_payment_buyButton.requestFocus();
 		vod_payment_buyButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
