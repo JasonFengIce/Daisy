@@ -364,7 +364,10 @@ public class PlayerActivity extends VodMenuAction {
 		if (!adElement.isEmpty()) {
 			int count = adElement.size();
 			if (count > 0) {
-				paths = new String[count + 1];
+                if(!(adElement.size()==1&&!"video".equals(adElement.get(0).getMedia_type()))){
+                    paths = new String[count + 1];
+                }
+
 				AdElement element;
 				int i = 0;
 
@@ -382,7 +385,7 @@ public class PlayerActivity extends VodMenuAction {
 						adimageDialog.getWindow().clearFlags(
 								WindowManager.LayoutParams.FLAG_DIM_BEHIND);;
 						adimageDialog.show();
-						paths = null;
+						//paths = null;
 						return;
 					}
 					// }
@@ -600,6 +603,9 @@ public class PlayerActivity extends VodMenuAction {
 				.setOnCompletionListenerUrl(new SmartPlayer.OnCompletionListenerUrl() {
 					@Override
 					public void onCompletion(SmartPlayer smartPlayer, String url) {
+                        Log.i("zhangjiqiangtest","playerActivity onCompletion url=="+url+"//");
+                        Log.i("zhangjiqiangtest","playerActivity onCompletion paths[paths.length - 1]=="+       paths[paths.length - 1]+"//");
+
 						if (paths != null && url != null
 								&& paths[paths.length - 1].equals(url)) {
 							if (item.isPreview) {
@@ -607,6 +613,7 @@ public class PlayerActivity extends VodMenuAction {
 									finish();
 									return;
 								}
+                                Log.i("zhangjiqiangtest","playerActivity onCompletion PaymentDialog");
 								mVideoView.stopPlayback();
 								PaymentDialog dialog = new PaymentDialog(
 										PlayerActivity.this,
@@ -615,16 +622,23 @@ public class PlayerActivity extends VodMenuAction {
 								item.model_name = "item";
 								dialog.setItem(item);
 								dialog.show();
-							} else
-								gotoFinishPage();
+							} else{
+                                Log.i("zhangjiqiangtest","playerActivity onCompletion gotoFinishPage");
+                                gotoFinishPage();
+                            }
+
 						} else if (paths != null
 								&& paths[paths.length - 2].equals(url)) {
+                            Log.i("zhangjiqiangtest","playerActivity onCompletion url=="+url);
 							if (mHandler.hasMessages(AD_COUNT_ACTION))
 								mHandler.removeMessages(AD_COUNT_ACTION);
 							ad_count_view.setVisibility(View.GONE);
 							initPlayerRelatedUI();
 							isadvideoplaying = false;
 						}
+                        else{
+                            Log.i("zhangjiqiangtest","playerActivity onCompletion else");
+                        }
 					}
 				});
 		mVideoView.setOnErrorListener(new SmartPlayer.OnErrorListener() {

@@ -597,9 +597,17 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
             isPause = false;
             if(mScrollableSectionList!=null){
                 if(mScrollableSectionList.mContainer!=null){
-                    View v = mScrollableSectionList.mContainer.getChildAt(1);
+
+                    View v = mScrollableSectionList.mContainer.getChildAt(mScrollableSectionList.mSelectPosition);
                     if(v!=null){
-                        v.requestFocus();
+                        if(mScrollableSectionList.mSelectPosition!=0)
+                             v.requestFocus();
+                        else{
+                            View vv = mScrollableSectionList.mContainer.getChildAt(1);
+                            if(vv!=null){
+                                vv.requestFocus();
+                            }
+                        }
                     }
                 }
             }
@@ -813,11 +821,11 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
                         if(!isPortrait){
                             if(item.content_model.equals("variety")||item.content_model.equals("entertainment")){
                                //综艺详情
-                            	if(item.expense!=null){
-                            		intent.setAction("tv.ismar.daisy.Item");
-                            	}else{
+                                if(item.expense!=null){
+                                    intent.setAction("tv.ismar.daisy.Item");
+                                }else{
                                     intent.setAction("tv.ismar.daisy.EntertainmentItem");
-                            	} 
+                                }
                             }
                             else
                                 intent.setAction("tv.ismar.daisy.Item");

@@ -31,7 +31,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 	/*
 	 * current selected section index. don't change this value directly.Always use ScrollableSectionList.changeSelection(int position) to change this value.
 	 */
-	private int mSelectPosition = 0;
+	public int mSelectPosition = 0;
 	private int lastSelectPosition = 0;
 	
 	private OnSectionSelectChangedListener mSectionSelectChangedListener;

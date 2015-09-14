@@ -598,6 +598,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                                 e.printStackTrace();
                             }
                         }
+                        isBuy = true;
                         initLayout();
                     }
 
@@ -915,11 +916,11 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 initFocusBtn(mLeftBtn,false);
                 initFocusBtn(mRightBtn,false);
                 initFocusBtn(mMiddleBtn,false);
-                detail_price_txt.setText("￥" + mItem.expense.price);
-                detail_duration_txt.setText("有效期" + mItem.expense.duration
-                        + "天");
-                detail_price_txt.setVisibility(View.VISIBLE);
-                detail_duration_txt.setVisibility(View.VISIBLE);
+               // detail_price_txt.setText("￥" + mItem.expense.price);
+               // detail_duration_txt.setText("有效期" + mItem.expense.duration
+               //         + "天");
+               // detail_price_txt.setVisibility(View.VISIBLE);
+               // detail_duration_txt.setVisibility(View.VISIBLE);
                 remainDay = mItem.expense.duration;
                 mCollectBtn = mRightBtn;
             } else {
@@ -958,14 +959,14 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 mMiddleBtn.setTag(COLLECT_VIDEO);
                 initFocusBtn(mLeftBtn,false);
                 initFocusBtn(mMiddleBtn,false);
-                detail_price_txt.setText("已付费");
-                detail_duration_txt.setText("剩余" + remainDay + "天");
-                detail_price_txt.setVisibility(View.VISIBLE);
-                detail_duration_txt.setVisibility(View.VISIBLE);
-                detail_duration_txt
-                        .setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
-                detail_price_txt
-                        .setBackgroundResource(R.drawable.vod_detail_already_payment_price);
+//                detail_price_txt.setText("已付费");
+//                detail_duration_txt.setText("剩余" + remainDay + "天");
+//                detail_price_txt.setVisibility(View.VISIBLE);
+//                detail_duration_txt.setVisibility(View.VISIBLE);
+//                detail_duration_txt
+//                        .setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
+//                detail_price_txt
+//                        .setBackgroundResource(R.drawable.vod_detail_already_payment_price);
                 mCollectBtn = mMiddleBtn;
             }
         }
@@ -1047,8 +1048,6 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 title.setSelected(false);
 
             }
-
-
         }
     };
     private View.OnClickListener mRelatedClickListener = new View.OnClickListener() {
