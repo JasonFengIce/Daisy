@@ -10,7 +10,7 @@
 
     <tv.ismar.daisy.ui.widget.LaunchHeaderLayout
             android:id="@+id/top_column_layout"
-            android:layout_width="match_parent"
+            android:layout_width="1860dp"
             android:layout_height="@dimen/weather_fragment_h"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/tv_guide_top_section_padding"

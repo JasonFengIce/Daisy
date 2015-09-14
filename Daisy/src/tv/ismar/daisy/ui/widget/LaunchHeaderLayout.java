@@ -119,7 +119,7 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
             textView.setText(res);
             view.setId(res);
             if (i == INDICATOR_RES_LIST.length - 1) {
-                view.setNextFocusRightId(res);
+                view.setRight(-20);
             }
             guideLayout.addView(view);
             indicatorTableList.add(view);
