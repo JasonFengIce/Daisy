@@ -82,7 +82,7 @@
         <ImageView
                 android:id="@+id/arrow_scroll_right"
                 android:layout_width="@dimen/tv_guide_arrow_scroll_w"
-                android:layout_height="@dimen/tv_guide_arrow_scroll_h"
+                android:layout_height="600dip"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/tv_guide_arrow_scroll_margin"
