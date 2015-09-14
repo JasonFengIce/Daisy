@@ -466,7 +466,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
             //top_column_layout.setSecondChannelVisable();
             percentage.setVisibility(View.VISIBLE);
 			if(result!=RESULT_SUCCESS) {
-				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, (mInitTask = new InitTask()), new String[]{url, channel});
+				//showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, (mInitTask = new InitTask()), new String[]{url, channel});
 				return;
 			}
 			try{
@@ -503,7 +503,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 					}
 
 				} else {
-					showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, (mInitTask = new InitTask()), new String[]{url, channel});
+					//showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, (mInitTask = new InitTask()), new String[]{url, channel});
 				}
 			}
 			catch(Exception e){
@@ -574,7 +574,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 				itemCollection.fillItems(page, itemList.objects);
 				mHGridAdapter.setList(mItemCollections);
 			} else {
-				showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new GetItemListTask(), new Object[]{index});
+				//showDialog(AlertDialogFragment.NETWORK_EXCEPTION_DIALOG, new GetItemListTask(), new Object[]{index});
 			}
 		}
 		
@@ -600,12 +600,20 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 
                     View v = mScrollableSectionList.mContainer.getChildAt(mScrollableSectionList.mSelectPosition);
                     if(v!=null){
-                        if(mScrollableSectionList.mSelectPosition!=0)
-                             v.requestFocus();
+                        if(mScrollableSectionList.mSelectPosition!=0){
+
+                        }
+                            // v.requestFocus();
                         else{
                             View vv = mScrollableSectionList.mContainer.getChildAt(1);
                             if(vv!=null){
-                                vv.requestFocus();
+
+
+                                mScrollableSectionList.sectionWhenGoto = (TextView) vv.findViewById(R.id.section_label);
+                                mHGridView.requestFocus();
+                                mHGridView.setSelection(0);
+                                mScrollableSectionList.setFilterBack(vv);
+//
                             }
                         }
                     }
@@ -667,32 +675,32 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		super.onDestroyView();
 	}
 
-	public void showDialog(int dialogType, final AsyncTask task, final Object[] params ) {
-		AlertDialogFragment newFragment = AlertDialogFragment.newInstance(dialogType);
-		newFragment.setPositiveListener(new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				if(!isInitTaskLoading) {
-					task.execute(params);
-				}
-				dialog.dismiss();
-			}
-		});
-		newFragment.setNegativeListener(new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				getActivity().finish();
-				dialog.dismiss();
-			}
-		});
-		FragmentManager manager = getFragmentManager();
-		if(manager!=null) {
-			newFragment.show(manager, "dialog");
-		}
-	}
+//	public void showDialog(int dialogType, final AsyncTask task, final Object[] params ) {
+//		AlertDialogFragment newFragment = AlertDialogFragment.newInstance(dialogType);
+//		newFragment.setPositiveListener(new DialogInterface.OnClickListener() {
+//
+//			@Override
+//			public void onClick(DialogInterface dialog, int which) {
+//				// TODO Auto-generated method stub
+//				if(!isInitTaskLoading) {
+//					task.execute(params);
+//				}
+//				dialog.dismiss();
+//			}
+//		});
+//		newFragment.setNegativeListener(new DialogInterface.OnClickListener() {
+//
+//			@Override
+//			public void onClick(DialogInterface dialog, int which) {
+//				getActivity().finish();
+//				dialog.dismiss();
+//			}
+//		});
+//		FragmentManager manager = getFragmentManager();
+//		if(manager!=null) {
+//			newFragment.show(manager, "dialog");
+//		}
+//	}
 	
 	private OnCancelListener mLoadingCancelListener = new OnCancelListener() {
 		
@@ -789,11 +797,12 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 
         }
 	}
-
+    int currentposition;
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		Item item = mHGridAdapter.getItem(position);
+        currentposition = position;
 		if(item!=null){
 			if(item.model_name.equals("package")){
 				Intent intent = new Intent();

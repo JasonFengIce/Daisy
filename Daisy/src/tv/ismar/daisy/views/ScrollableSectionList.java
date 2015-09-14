@@ -262,7 +262,25 @@ public class ScrollableSectionList extends HorizontalScrollView {
 			}
 		}
 	};
+    public void setFilterBack(View v){
+        TextView label = (TextView) v.findViewById(R.id.section_label);
+        View lastSelectedView = mContainer.getChildAt(mSelectPosition);
+        TextView lastLabel = (TextView) lastSelectedView.findViewById(R.id.section_label);
+        lastLabel.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
+        lastLabel.setBackgroundResource(android.R.color.transparent);
 
+
+
+        currentState=STATE_LEAVE_GRIDVIEW;
+        mSelectPosition = 1;
+        label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
+        label.setBackgroundResource(R.drawable.gotogridview);
+
+        Message msg = new Message();
+        msg.what = START_CLICK;
+        msg.obj = v;
+        mHandler.sendMessageDelayed(msg,0);
+    }
     public boolean isRelated = false;
     public TextView sectionWhenGoto;
     public static int STATE_GOTO_GRIDVIEW = 2;
