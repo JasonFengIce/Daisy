@@ -9,7 +9,7 @@
     <LinearLayout
         android:gravity="center"
         android:orientation="vertical"
-        android:background="@android:color/black"
+        android:background="@drawable/person_center_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -31,7 +31,7 @@
 
             <Button
                 android:layout_marginRight="30dp"
-                android:background="@drawable/selector_channel_item"
+                android:background="@drawable/person_btn_selector"
                 android:textSize="28sp"
                 android:text="@string/setting_network"
                 android:textColor="@android:color/white"
@@ -42,7 +42,7 @@
             <Button
                 android:layout_marginLeft="60dp"
                 android:layout_marginRight="30dp"
-                android:background="@drawable/selector_channel_item"
+                android:background="@drawable/person_btn_selector"
                 android:textSize="28sp"
                 android:text="@string/i_know"
                 android:textColor="@android:color/white"
