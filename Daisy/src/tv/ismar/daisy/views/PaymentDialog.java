@@ -592,6 +592,7 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
 						changeQrcodePayPanelState(false, false);
 						changeLoginPanelState(false);
 						changeshiyuncardPanelState(false);
+						yuepay_button.requestFocus();
 					} else {
 						changeQrcodePayPanelState(true, true);
 						changeLoginPanelState(false);
