@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.HomePagerEntity;
+import tv.ismar.daisy.ui.activity.TVGuideActivity;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
 import tv.ismar.daisy.ui.widget.child.ChildThumbImageView;
 
@@ -80,6 +81,7 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
             		return;
             	 if(scrollFromBorder){
             		 imageSwitcher.requestFocus();
+            		 ((TVGuideActivity)getActivity()).resetBorderFocus();
                  }
                 HomePagerEntity homePagerEntity = new Gson().fromJson(result, HomePagerEntity.class);
                 ArrayList<HomePagerEntity.Poster> posters = homePagerEntity.getPosters();

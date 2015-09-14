@@ -25,6 +25,7 @@ import tv.ismar.daisy.data.HomePagerEntity.Poster;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.SportGame;
 import tv.ismar.daisy.player.InitPlayerTool;
+import tv.ismar.daisy.ui.activity.TVGuideActivity;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
 import tv.ismar.daisy.views.LabelImageView;
 import tv.ismar.daisy.views.LoadingDialog;
@@ -174,7 +175,8 @@ public class SportFragment extends ChannelBaseFragment {
 	private void fillData(ArrayList<Carousel> carousels,
 			ArrayList<Poster> postlist) {
         if(scrollFromBorder){
-        	sportspost.requestFocus();       	
+        	sportspost.requestFocus();
+        	((TVGuideActivity)getActivity()).resetBorderFocus();
         }
 		Picasso.with(mContext).load(carousels.get(0).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE)
 		.into(sport_card1);

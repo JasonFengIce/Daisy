@@ -26,6 +26,7 @@ import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
+import tv.ismar.daisy.ui.activity.TVGuideActivity;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
 import tv.ismar.daisy.ui.widget.HomeItemContainer;
 import tv.ismar.daisy.utils.HardwareUtils;
@@ -176,7 +177,8 @@ public class FilmFragment extends ChannelBaseFragment {
                 Log.d(TAG, "posters size: " + posters.size());
                 Log.d(TAG, "carousels size: " + carousels.size());
                 if(scrollFromBorder){
-                	film_lefttop_image.requestFocus();       	
+                	film_lefttop_image.requestFocus();
+                	((TVGuideActivity)getActivity()).resetBorderFocus();
                 }
                 initPosters(posters);
                 initCarousel(carousels);

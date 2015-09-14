@@ -138,7 +138,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             scroll.setSelection(position);
             if(!scrollFromBorder)
             scroll.requestFocus();
-            scrollFromBorder = false;
+//            scrollFromBorder = false;
             //   setClickChannelView(scroll.getChildAt(position));
             //  lastview = scroll.getChildAt(position);
 
@@ -541,6 +541,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 // if(view!=clickView){
                 if(!scrollFromBorder)
                 channelBtn.setBackgroundResource(R.drawable.channel_item_selectd_focus);
+                else
+                	channelBtn.setBackgroundResource(R.drawable.channel_item_focus);
                 AnimationSet animationSet = new AnimationSet(true);
                 ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
                         Animation.RELATIVE_TO_SELF, 0.5f,
@@ -908,7 +910,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         }
         // currentFragment.view = scroll;
         //currentFragment.position = position;
-        scrollFromBorder = false;
+//        scrollFromBorder = false;
         currentFragment.setChannelEntity(channelEntity);
         replaceFragment(currentFragment);
     }
@@ -1039,4 +1041,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     };
 
+    public void resetBorderFocus(){
+    	scrollFromBorder = false;
+    }
 }

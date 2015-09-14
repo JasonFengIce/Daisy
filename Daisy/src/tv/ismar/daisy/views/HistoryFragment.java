@@ -888,6 +888,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 								Message message = new Message();
 								Bundle data = new Bundle();
 								data.putString("content", content);
+								if(getActivity() != null)
 								DaisyUtils.getVodApplication(getActivity()).getEditor().putString("recommend", content.toString());
 								message.setData(data);
 								mainHandler.sendMessage(message);

@@ -22,6 +22,7 @@ import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
+import tv.ismar.daisy.ui.activity.TVGuideActivity;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
 import tv.ismar.daisy.ui.widget.DaisyViewContainer;
 import tv.ismar.daisy.ui.widget.HomeItemContainer;
@@ -166,7 +167,8 @@ public class GuideFragment extends ChannelBaseFragment {
                     initPosters(posters);
                 }
                 if(scrollFromBorder){
-                	film_post_layout.requestFocus();       	
+                	film_post_layout.requestFocus();
+                	((TVGuideActivity)getActivity()).resetBorderFocus();
                 }
             }
 

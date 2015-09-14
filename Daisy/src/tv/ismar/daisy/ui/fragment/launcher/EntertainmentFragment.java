@@ -8,6 +8,7 @@ import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.data.HomePagerEntity.Poster;
 import tv.ismar.daisy.exception.NetworkException;
+import tv.ismar.daisy.ui.activity.TVGuideActivity;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
 import tv.ismar.daisy.ui.widget.LinerLayoutContainer;
 import tv.ismar.daisy.views.AsyncImageView;
@@ -227,7 +228,8 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 			ArrayList<Poster> postlist) {
 		// vaiety_post.setUrl(carousellist.get(0).getVideo_image());
         if(scrollFromBorder){
-        	vaiety_post.requestFocus();       	
+        	vaiety_post.requestFocus();
+        	((TVGuideActivity)getActivity()).resetBorderFocus();
         }
 		
 		Picasso.with(mContext).load(carousellist.get(0).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(vaiety_thumb1);

@@ -768,7 +768,8 @@ public class PlayerActivity extends VodMenuAction {
 						: item.vendor.getBytes(), Base64.URL_SAFE)
 				+ "&expense=" + (item.expense == null ? false : true)
 				+ "&length=" + item.clip.length;
-		new GetAdDataTask().execute(adpid, params);
+		adAsyncTask = new GetAdDataTask();
+		adAsyncTask.execute(adpid, params);
 	}
 
 	// 初始化logo图片
@@ -1707,7 +1708,7 @@ public class PlayerActivity extends VodMenuAction {
 	protected void showBuffer() {
 		if (adElement != null && !adElement.isEmpty())
 			return;
-		if (isBuffer && !bufferLayout.isShown()) {
+		if (isBuffer) {
 			bufferLayout.setVisibility(View.VISIBLE);
 			bufferDuration = System.currentTimeMillis();
 		}
@@ -2083,6 +2084,10 @@ public class PlayerActivity extends VodMenuAction {
 	@Override
 	protected void onPause() {
 		needOnresume = true;
+		if(adAsyncTask != null && !adAsyncTask.isCancelled()){
+			adAsyncTask.cancel(true);
+		}
+
 		try {
 			if (!isadvideoplaying) {
 				createHistory(seekPostion);
