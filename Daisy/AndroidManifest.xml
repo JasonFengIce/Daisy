@@ -11,8 +11,8 @@
             android:smallScreens="true"/>
 
     <uses-sdk
-            android:minSdkVersion="16"
-            android:targetSdkVersion="14"/>
+            android:minSdkVersion="19"
+            android:targetSdkVersion="22"/>
     <!-- TODO SDK接入必须权限模块 START -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
