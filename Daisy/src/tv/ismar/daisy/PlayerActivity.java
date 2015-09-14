@@ -1725,11 +1725,8 @@ public class PlayerActivity extends VodMenuAction {
 	protected void showBuffer() {
 		if (adElement != null && !adElement.isEmpty())
 			return;
-		if (isBuffer) {
 			bufferLayout.setVisibility(View.VISIBLE);
 			bufferDuration = System.currentTimeMillis();
-		}
-		// mHandler.sendEmptyMessageDelayed(BUFFER_COUNTDOWN_ACTION, 1000);
 	}
 
 	protected void hideBuffer() {
