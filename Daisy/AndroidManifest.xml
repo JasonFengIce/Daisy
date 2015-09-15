@@ -11,7 +11,7 @@
             android:smallScreens="true"/>
 
     <uses-sdk
-            android:minSdkVersion="19"
+            android:minSdkVersion="16"
             android:targetSdkVersion="22"/>
     <!-- TODO SDK接入必须权限模块 START -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -98,6 +98,15 @@
                 android:enabled="true"
                 android:process=":remote">
         </service>
+                <service android:name=".core.service.InitService"
+                    android:exported="true"
+                    >
+                                <intent-filter>
+                        <action android:name="tv.ismar.daisy.initservice"/>
+
+                        <category android:name="android.intent.category.DEFAULT"/>
+                    </intent-filter>
+                </service>
 
         <!--android:name=".ui.activity.AdvertisementActivity"-->
 
@@ -111,6 +120,11 @@
                 android:launchMode="singleTask"
                 android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
                 >
+                        <intent-filter>
+                            <action android:name="tv.ismar.daisy.advertisementactivity"/>
+                            <category android:name="android.intent.category.DEFAULT"/>
+                        </intent-filter>
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
