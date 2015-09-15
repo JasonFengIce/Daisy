@@ -209,6 +209,7 @@ public class IsmartvUrlClient extends Thread {
             client.setConnectTimeout(10, TimeUnit.SECONDS);
             Request request = new Request.Builder()
                     .url(api)
+                    .addHeader("User-Agent", Build.MODEL+"/"+SimpleRestClient.appVersion+" "+SimpleRestClient.sn_token)
                     .build();
 
             Response response;
@@ -249,7 +250,7 @@ public class IsmartvUrlClient extends Thread {
             Request request = new Request.Builder()
                     .url(url)
                     .post(body)
-                    .header("Content-Type", "application/x-www-form-urlencoded")
+                    .addHeader("User-Agent", Build.MODEL + "/" + SimpleRestClient.appVersion + " " + SimpleRestClient.sn_token)
                     .build();
             Response response;
             response = client.newCall(request).execute();

@@ -1,10 +1,12 @@
 package tv.ismar.daisy.core.client;
 
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+import tv.ismar.daisy.core.SimpleRestClient;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -73,6 +75,7 @@ public class JavaHttpClient {
             client.setConnectTimeout(10, TimeUnit.SECONDS);
             Request request = new Request.Builder()
                     .url(api)
+                    .addHeader("User-Agent", Build.MODEL+"/"+ SimpleRestClient.appVersion+" "+SimpleRestClient.sn_token)
                     .build();
 
             Response response;

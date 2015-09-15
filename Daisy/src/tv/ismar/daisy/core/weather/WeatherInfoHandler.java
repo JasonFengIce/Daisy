@@ -23,7 +23,6 @@ public class WeatherInfoHandler extends DefaultHandler {
     private final int IMAGE_URL = 4;
 
     private int flg = 0;
-//    private int item_flag = 0;
 
     private WeatherEntity weatherEntity;
     private WeatherEntity.WeatherDetail weatherDetail;
