@@ -4,98 +4,84 @@ package tv.ismar.daisy.data.weather;
  * Created by <huaijiefeng@gmail.com> on 9/15/14.
  */
 public class WeatherEntity {
+    private String updated;
+    private String region;
 
-    private String name_en;
-    private Detail tomorrow;
-    private String name;
-    private Detail today;
-    private String geoid;
+    private WeatherDetail today;
+    private WeatherDetail tomorrow;
 
-    public String getName_en() {
-        return name_en;
+
+    public String getUpdated() {
+        return updated;
     }
 
-    public void setName_en(String name_en) {
-        this.name_en = name_en;
+    public void setUpdated(String updated) {
+        this.updated = updated;
     }
 
-    public Detail getTomorrow() {
-        return tomorrow;
+    public String getRegion() {
+        return region;
     }
 
-    public void setTomorrow(Detail tomorrow) {
-        this.tomorrow = tomorrow;
+    public void setRegion(String region) {
+        this.region = region;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Detail getToday() {
+    public WeatherDetail getToday() {
         return today;
     }
 
-    public void setToday(Detail today) {
+    public void setToday(WeatherDetail today) {
         this.today = today;
     }
 
-    public String getGeoid() {
-        return geoid;
+    public WeatherDetail getTomorrow() {
+        return tomorrow;
     }
 
-    public void setGeoid(String geoid) {
-        this.geoid = geoid;
+    public void setTomorrow(WeatherDetail tomorrow) {
+        this.tomorrow = tomorrow;
     }
 
-    public static class Detail {
-        private String date;
-        private String wind_direction;
-        private String phenomenon;
-        private String wind_power;
-        private String temperature;
+    public static class WeatherDetail {
 
-        public String getDate() {
-            return date;
+        private String condition;
+        private String temphigh;
+        private String templow;
+        private String image_url;
+
+
+        public String getCondition() {
+            return condition;
         }
 
-        public void setDate(String date) {
-            this.date = date;
+        public void setCondition(String condition) {
+            this.condition = condition;
         }
 
-        public String getWind_direction() {
-            return wind_direction;
+        public String getTemphigh() {
+            return temphigh;
         }
 
-        public void setWind_direction(String wind_direction) {
-            this.wind_direction = wind_direction;
+        public void setTemphigh(String temphigh) {
+            this.temphigh = temphigh;
         }
 
-        public String getPhenomenon() {
-            return phenomenon;
+        public String getTemplow() {
+            return templow;
         }
 
-        public void setPhenomenon(String phenomenon) {
-            this.phenomenon = phenomenon;
+        public void setTemplow(String templow) {
+            this.templow = templow;
         }
 
-        public String getWind_power() {
-            return wind_power;
+        public String getImage_url() {
+            return image_url;
         }
 
-        public void setWind_power(String wind_power) {
-            this.wind_power = wind_power;
+        public void setImage_url(String image_url) {
+            this.image_url = image_url;
         }
 
-        public String getTemperature() {
-            return temperature;
-        }
-
-        public void setTemperature(String temperature) {
-            this.temperature = temperature;
-        }
     }
 }

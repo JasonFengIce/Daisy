@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +13,15 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.activeandroid.query.Select;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
+import tv.ismar.daisy.core.weather.WeatherInfoHandler;
 import tv.ismar.daisy.data.table.location.CityTable;
 import tv.ismar.daisy.data.table.location.ProvinceTable;
 import tv.ismar.daisy.data.weather.WeatherEntity;
@@ -23,6 +29,14 @@ import tv.ismar.daisy.ui.adapter.weather.CityAdapter;
 import tv.ismar.daisy.ui.adapter.weather.CityAdapter.OnItemListener;
 import tv.ismar.daisy.ui.adapter.weather.ProvinceAdapter;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.lang.annotation.Target;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,7 +44,7 @@ import java.util.List;
  * Created by huaijie on 7/13/15.
  */
 public class LocationFragment extends Fragment implements ProvinceAdapter.OnItemListener {
-
+    private static final String TAG = "LocationFragment";
 
     private Context mContext;
 
@@ -51,14 +65,10 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
 
 
     private ImageView todayWeatherIcon1;
-    private TextView todayWeatherDivider;
-    private ImageView todayWeatherIcon2;
     private TextView todayWeatherInfo;
     private TextView todayWeatherTemperature;
 
     private ImageView tomorrowWeatherIcon1;
-    private TextView tomorrowWeatherDivider;
-    private ImageView tomorrowtherIcon2;
     private TextView tomorrowWeatherInfo;
     private TextView tomorrowWeatherTemperature;
 
@@ -90,8 +100,9 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
         mContext = activity;
     }
 
-    public boolean isfirst =false;
+    public boolean isfirst = false;
     private View focusItem;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,22 +123,18 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
         transfocus.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                  if(focusItem!=null)
-                      focusItem.requestFocus();
+                if (hasFocus) {
+                    if (focusItem != null)
+                        focusItem.requestFocus();
                 }
             }
         });
 
         todayWeatherIcon1 = (ImageView) fragmentView.findViewById(R.id.today_weather_icon1);
-        todayWeatherDivider = (TextView) fragmentView.findViewById(R.id.today_weather_divider);
-        todayWeatherIcon2 = (ImageView) fragmentView.findViewById(R.id.today_weather_icon2);
         todayWeatherInfo = (TextView) fragmentView.findViewById(R.id.today_weather_info);
         todayWeatherTemperature = (TextView) fragmentView.findViewById(R.id.today_weather_temperature);
 
         tomorrowWeatherIcon1 = (ImageView) fragmentView.findViewById(R.id.tomorrow_weather_icon1);
-        tomorrowWeatherDivider = (TextView) fragmentView.findViewById(R.id.tomorrow_weather_divider);
-        tomorrowtherIcon2 = (ImageView) fragmentView.findViewById(R.id.tomorrow_weather_icon2);
         tomorrowWeatherInfo = (TextView) fragmentView.findViewById(R.id.tomorrow_weather_info);
         tomorrowWeatherTemperature = (TextView) fragmentView.findViewById(R.id.tomorrow_weather_temperature);
 
@@ -175,7 +182,8 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
         }
     }
 
-   public View focus;
+    public View focus;
+
     private void showAreaPopup(final ProvinceTable provinceTable) {
         String provinceId = provinceTable.province_id;
         View popupLayout = LayoutInflater.from(mContext).inflate(R.layout.popup_area, null);
@@ -296,9 +304,9 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         TextView textView = (TextView) v;
-        int position = (Integer)v.getTag();
+        int position = (Integer) v.getTag();
         if (hasFocus) {
-            if(isfirst&&position==0){
+            if (isfirst && position == 0) {
                 isfirst = false;
                 focus.requestFocus();
                 return;
@@ -314,24 +322,57 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
     }
 
     private void fetchWeatherInfo(String geoId) {
-        String api = "http://media.lily.tvxio.com/" + geoId + ".json";
+        String api = "http://media.lily.tvxio.com/" + geoId + ".xml";
         new IsmartvUrlClient().doRequest(api, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
-                WeatherEntity weatherEntity = new Gson().fromJson(result, WeatherEntity.class);
-                WeatherEntity.Detail todayDetail = weatherEntity.getToday();
-                WeatherEntity.Detail tomorrowDetail = weatherEntity.getTomorrow();
+                SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+                try {
+                    SAXParser saxParser = saxParserFactory.newSAXParser();
+                    XMLReader xmlReader = saxParser.getXMLReader();
+                    WeatherInfoHandler weatherInfoHandler = new WeatherInfoHandler();
+                    xmlReader.setContentHandler(weatherInfoHandler);
+                    InputSource inputSource = new InputSource(new StringReader(result));
+                    xmlReader.parse(inputSource);
 
-                todayWeatherTemperature.setText(todayDetail.getTemperature() + " ℃");
-                todayWeatherInfo.setText(todayDetail.getPhenomenon());
+                    WeatherEntity weatherEntity = weatherInfoHandler.getWeatherEntity();
 
-                tomorrowWeatherTemperature.setText(tomorrowDetail.getTemperature() + " ℃");
-                tomorrowWeatherInfo.setText(tomorrowDetail.getPhenomenon());
+                    Log.i(TAG, "update: " + weatherEntity.getUpdated() + " region: " + weatherEntity.getRegion());
+                    Log.i(TAG, "today condition: " + weatherEntity.getToday().getCondition());
+                    Log.i(TAG, "today temphigh: " + weatherEntity.getToday().getTemphigh());
+                    Log.i(TAG, "today templow: " + weatherEntity.getToday().getTemplow());
+                    Log.i(TAG, "today image_url: " + weatherEntity.getToday().getImage_url());
+
+                    Log.i(TAG, "tomorrow condition: " + weatherEntity.getTomorrow().getCondition());
+                    Log.i(TAG, "tomorrow temphigh: " + weatherEntity.getTomorrow().getTemphigh());
+                    Log.i(TAG, "tomorrow templow: " + weatherEntity.getTomorrow().getTemplow());
+                    Log.i(TAG, "tomorrow image_url: " + weatherEntity.getTomorrow().getImage_url());
+
+
+                    todayWeatherTemperature.setText(weatherEntity.getToday().getTemplow() + "℃ ~ " + weatherEntity.getToday().getTemphigh() + "℃");
+                    todayWeatherInfo.setText(weatherEntity.getToday().getCondition());
+                    Picasso.with(mContext).load(weatherEntity.getToday().getImage_url()).into(todayWeatherIcon1);
+
+
+                    tomorrowWeatherTemperature.setText(weatherEntity.getTomorrow().getTemplow() + "℃ ~ " + weatherEntity.getTomorrow().getTemphigh() + "℃");
+                    tomorrowWeatherInfo.setText(weatherEntity.getTomorrow().getCondition());
+                    Picasso.with(mContext).load(weatherEntity.getToday().getImage_url()).into(tomorrowWeatherIcon1);
+
+
+                } catch (ParserConfigurationException e) {
+                    e.printStackTrace();
+                } catch (SAXException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
 
             }
 
             @Override
             public void onFailed(Exception exception) {
+                Log.e(TAG, exception.getMessage());
             }
         });
     }

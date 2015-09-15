@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Image;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -13,13 +14,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.activeandroid.query.Select;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 import org.w3c.dom.Text;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
+import tv.ismar.daisy.core.weather.WeatherInfoHandler;
 import tv.ismar.daisy.data.table.location.CityTable;
 import tv.ismar.daisy.data.weather.WeatherEntity;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.IOException;
+import java.io.StringReader;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -142,28 +153,65 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
     }
 
     private void fetchWeatherInfo(String geoId) {
-        String api = "http://media.lily.tvxio.com/" + geoId + ".json";
+        String api = "http://media.lily.tvxio.com/" + geoId + ".xml";
         new IsmartvUrlClient().doRequest(api, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
-                WeatherEntity weatherEntity = new Gson().fromJson(result, WeatherEntity.class);
-                WeatherEntity.Detail todayDetail = weatherEntity.getToday();
+//                WeatherEntity weatherEntity = new Gson().fromJson(result, WeatherEntity.class);
+//                WeatherEntity.Detail todayDetail = weatherEntity.getToday();
+//
+//                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//                ParsePosition pos = new ParsePosition(0);
+//                Date date = formatter.parse(todayDetail.getDate(), pos);
+//
+//                Calendar calendar = Calendar.getInstance();
+//                calendar.setTime(date);
+//
+//                weatherInfoTextView.setText("");
+//                weatherInfoTextView.append("   " + calendar.get(Calendar.YEAR) + context.getText(R.string.year).toString() +
+//                        calendar.get(Calendar.MONTH) + context.getText(R.string.month).toString() +
+//                        calendar.get(Calendar.DATE) + context.getText(R.string.day).toString() + "   ");
+//
+//                weatherInfoTextView.append(todayDetail.getPhenomenon() + "   ");
+//                weatherInfoTextView.append(todayDetail.getTemperature() + context.getText(R.string.degree) + "   ");
+//                weatherInfoTextView.append(todayDetail.getWind_direction());
 
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                ParsePosition pos = new ParsePosition(0);
-                Date date = formatter.parse(todayDetail.getDate(), pos);
+                SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+                try {
+                    SAXParser saxParser = saxParserFactory.newSAXParser();
+                    XMLReader xmlReader = saxParser.getXMLReader();
+                    WeatherInfoHandler weatherInfoHandler = new WeatherInfoHandler();
+                    xmlReader.setContentHandler(weatherInfoHandler);
+                    InputSource inputSource = new InputSource(new StringReader(result));
+                    xmlReader.parse(inputSource);
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(date);
+                    WeatherEntity weatherEntity = weatherInfoHandler.getWeatherEntity();
 
-                weatherInfoTextView.setText("");
-                weatherInfoTextView.append("   " + calendar.get(Calendar.YEAR) + context.getText(R.string.year).toString() +
-                        calendar.get(Calendar.MONTH) + context.getText(R.string.month).toString() +
-                        calendar.get(Calendar.DATE) + context.getText(R.string.day).toString() + "   ");
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(new Date());
 
-                weatherInfoTextView.append(todayDetail.getPhenomenon() + "   ");
-                weatherInfoTextView.append(todayDetail.getTemperature() + context.getText(R.string.degree) + "   ");
-                weatherInfoTextView.append(todayDetail.getWind_direction());
+                    weatherInfoTextView.setText("");
+                    weatherInfoTextView.append("   " + calendar.get(Calendar.YEAR) + context.getText(R.string.year).toString() +
+                            calendar.get(Calendar.MONTH) + context.getText(R.string.month).toString() +
+                            calendar.get(Calendar.DATE) + context.getText(R.string.day).toString() + "   ");
+
+                    weatherInfoTextView.append(weatherEntity.getToday().getCondition() + "   ");
+                    weatherInfoTextView.append(weatherEntity.getToday().getTemplow() + " ~ " + weatherEntity.getToday().getTemphigh() + context.getText(R.string.degree));
+
+                } catch (ParserConfigurationException e) {
+                    e.printStackTrace();
+                } catch (SAXException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+//                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//                ParsePosition pos = new ParsePosition(0);
+//                Date date = formatter.parse(todayDetail.getDate(), pos);
+
+
             }
 
             @Override
@@ -203,8 +251,8 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        ImageView imageView = (ImageView)v.findViewById(R.id.indicator_image);
-        TextView textView = (TextView)v.findViewById(R.id.weather_indicator);
+        ImageView imageView = (ImageView) v.findViewById(R.id.indicator_image);
+        TextView textView = (TextView) v.findViewById(R.id.weather_indicator);
         if (hasFocus) {
             textView.setTextColor(getResources().getColor(R.color._ff9c3c));
 
