@@ -150,6 +150,7 @@ public class PlayerActivity extends VodMenuAction {
     private int speed;
     private AccountSharedPrefs shardpref;
     private ImageView gesture_tipview;
+    private boolean isPaymentdialogShow = false;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -622,6 +623,7 @@ public class PlayerActivity extends VodMenuAction {
 								item.model_name = "item";
 								dialog.setItem(item);
 								dialog.show();
+								isPaymentdialogShow = true;
 							} else{
                                 Log.i("zhangjiqiangtest","playerActivity onCompletion gotoFinishPage");
                                 gotoFinishPage();
@@ -1229,6 +1231,7 @@ public class PlayerActivity extends VodMenuAction {
 			}.start();
 		} else {
 			mVideoView.stopPlayback();
+			isPaymentdialogShow = true;
 			PaymentDialog dialog = new PaymentDialog(PlayerActivity.this,
 					R.style.PaymentDialog, ordercheckListener);
 			item.model_name = "subitem";
@@ -2097,6 +2100,7 @@ public class PlayerActivity extends VodMenuAction {
 
 	@Override
 	protected void onPause() {
+		if(!isPaymentdialogShow)
 		needOnresume = true;
 		if(adAsyncTask != null && !adAsyncTask.isCancelled()){
 			adAsyncTask.cancel(true);
@@ -2148,6 +2152,7 @@ public class PlayerActivity extends VodMenuAction {
 
 		@Override
 		public void payResult(boolean result) {
+			isPaymentdialogShow = false;
 			if (item.item_pk != item.pk) {// 剧集且未付费
 				if (result) {
 					isBuffer = true;
