@@ -63,6 +63,11 @@ public class AdvertisementActivity extends Activity {
         timerText = (ImageView) findViewById(R.id.adver_timer);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
 
     private void placeAdvertisementPic() {
         String path = AdvertisementManager.getInstance(this).getAppLaunchAdvertisement();
@@ -152,7 +157,8 @@ public class AdvertisementActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         flag = false;
+        super.onDestroy();
+
     }
 }
