@@ -187,13 +187,15 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
 
                     WeatherEntity weatherEntity = weatherInfoHandler.getWeatherEntity();
 
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(new Date());
+                    Date now = new Date();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日");//可以方便地修改日期格式
+                    String todayTime = dateFormat.format(now);
 
                     weatherInfoTextView.setText("");
-                    weatherInfoTextView.append("   " + calendar.get(Calendar.YEAR) + context.getText(R.string.year).toString() +
-                            calendar.get(Calendar.MONTH) + context.getText(R.string.month).toString() +
-                            calendar.get(Calendar.DATE) + context.getText(R.string.day).toString() + "   ");
+//                    weatherInfoTextView.append("   " + calendar.get(Calendar.YEAR) + context.getText(R.string.year).toString() +
+//                            calendar.get(Calendar.MONTH) + context.getText(R.string.month).toString() +
+//                            calendar.get(Calendar.DATE) + context.getText(R.string.day).toString() + "   ");
+                    weatherInfoTextView.append("   " + todayTime + "   ");
 
                     weatherInfoTextView.append(weatherEntity.getToday().getCondition() + "   ");
                     weatherInfoTextView.append(weatherEntity.getToday().getTemplow() + " ~ " + weatherEntity.getToday().getTemphigh() + context.getText(R.string.degree));
