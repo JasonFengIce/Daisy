@@ -40,7 +40,7 @@
 
         <Button
                 android:visibility="invisible"
-                android:background="@drawable/selector_location_btn"
+                android:background="@drawable/person_btn_selector"
                 android:textColor="@color/white"
                 android:id="@+id/confirm_btn"
                 android:layout_width="@dimen/locationFragment_areaPop_btn_width"
@@ -51,7 +51,7 @@
 
         <Button
                 android:visibility="invisible"
-                android:background="@drawable/selector_location_btn"
+                android:background="@drawable/person_btn_selector"
                 android:textColor="@color/white"
                 android:id="@+id/cancel_btn"
                 android:layout_marginLeft="@dimen/locatoinFragment_areaPop_cancelBtn_marginLeft"
