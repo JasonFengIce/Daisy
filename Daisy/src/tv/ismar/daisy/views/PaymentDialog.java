@@ -12,6 +12,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import android.graphics.drawable.BitmapDrawable;
+import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,6 +23,7 @@ import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
+import tv.ismar.daisy.data.usercenter.AuthTokenEntity;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
@@ -755,12 +757,13 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
 //			urlHandler.removeMessages(REFRESH_PAY_STATUS);
 		dismiss();
 	}
-
+private String authToken;
     @Override
     public void onLoginSuccess(String result) {
     	GetFavoriteByNet();
 		getHistoryByNet();
-
+        AuthTokenEntity authTokenEntity = new Gson().fromJson(result, AuthTokenEntity.class);
+        authToken = authTokenEntity.getAuth_token();
 		urlHandler.sendEmptyMessage(LOGIN_SUCESS);
 		getBalanceByToken();
     }
@@ -782,11 +785,12 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
 		.putString(
 				VodApplication.MOBILE_NUMBER,
 				nickName);
+        DaisyUtils.getVodApplication(getContext()).getEditor().putString(VodApplication.AUTH_TOKEN, authToken);
         DaisyUtils.getVodApplication(getContext())
 		.save();
         SimpleRestClient.mobile_number = nickName;
 
-
+        SimpleRestClient.access_token = authToken;
 
         AccountAboutDialog dialog = new AccountAboutDialog(
                 getContext(),
