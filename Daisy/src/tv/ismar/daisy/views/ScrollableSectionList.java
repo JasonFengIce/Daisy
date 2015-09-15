@@ -311,7 +311,12 @@ public class ScrollableSectionList extends HorizontalScrollView {
 		textsize = (int) (textsize/rate);
 		label.setTextSize(textsize);
 		label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
-        label.setBackgroundResource(R.drawable.sectionfocus);
+        if(currentState==STATE_GOTO_GRIDVIEW){
+            label.setBackgroundResource(R.drawable.gotogridview);
+        }else{
+            label.setBackgroundResource(R.drawable.sectionfocus);
+        }
+
 	}
 //	private OnTouchListener mOnTouchListener = new OnTouchListener() {
 //		

@@ -831,6 +831,7 @@ private String authToken;
 					Context.WINDOW_SERVICE);
 			width = wm.getDefaultDisplay().getWidth();
 			height = wm.getDefaultDisplay().getHeight();
+            setCanceledOnTouchOutside(false);
 		}
 
 		@Override
