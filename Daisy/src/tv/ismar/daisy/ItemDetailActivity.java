@@ -860,6 +860,9 @@ private boolean isPause = false;
 					properties.put(EventProperty.TO, "relate");
 					new NetworkUtils.DataCollectionTask().execute(
 							NetworkUtils.VIDEO_RELATE, properties);
+					 if(item.expense != null && (item.content_model.equals("variety")||item.content_model.equals("entertainment"))){
+	                    	item.content_model = "music";
+	                    }
 					break;
 				}
 			}
