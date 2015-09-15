@@ -318,7 +318,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
 
             @Override
             public void failure(RetrofitError retrofitError) {
-                Log.e(TAG, retrofitError.getMessage());
+                Log.e(TAG, "bindCdn error");
             }
         });
 
@@ -334,7 +334,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
 
             @Override
             public void failure(RetrofitError retrofitError) {
-                Log.e(TAG, retrofitError.getMessage());
+                Log.e(TAG, "unbindNode");
             }
         });
     }
@@ -568,7 +568,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
 
             @Override
             public void failure(RetrofitError retrofitError) {
-//                Log.e(TAG, "uploadCdnTestLog: " + retrofitError.getMessage());
+                Log.e(TAG, "uploadCdnTestLog");
             }
         });
     }
@@ -584,7 +584,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
 
             @Override
             public void failure(RetrofitError retrofitError) {
-//                Log.e(TAG, "uploadTestResult: " + retrofitError.getMessage());
+                Log.e(TAG, "uploadTestResult");
             }
         });
     }
