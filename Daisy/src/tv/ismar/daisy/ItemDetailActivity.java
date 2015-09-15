@@ -366,6 +366,8 @@ private boolean isPause = false;
 				url = params[0];
 				id = SimpleRestClient.getItemId(url, new boolean[1]);
 				mItem = mSimpleRestClient.getItem(url);
+				if(mItem == null)
+					return null;
 				mItem.slug = slug;
 				mItem.channel = channel;
 				mItem.fromPage = fromPage;
@@ -906,12 +908,12 @@ private boolean isPause = false;
 			}
 			else{
 				favorite.isnet = "no";
-			}
+			} 
 			DaisyUtils.getFavoriteManager(ItemDetailActivity.this).addFavorite(
 					favorite,favorite.isnet);
 			showToast(getResources().getString(
 					R.string.vod_bookmark_add_success));
-		}
+		} 
 	}
 
 	private void buyVideo() {

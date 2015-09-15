@@ -40,5 +40,6 @@
             android:layout_marginLeft="@dimen/usercenter_storefragment_packagelist_marginLeft"
             android:paddingTop="@dimen/usercenter_storefragment_packagelist_gridview_P"
             android:paddingLeft="@dimen/usercenter_storefragment_packagelist_gridview_P"
+            android:visibility="gone"
          />
 </LinearLayout>

@@ -72,6 +72,7 @@ public class StoreFragment extends Fragment {
                         mContext, youHuiDingGouEntity.getObjects());
                 youHuiDingGouGridView.setAdapter(youHuiDingGouAdapter);
                 youHuiDingGouGridView.setFocusable(true);
+                youHuiDingGouGridView.setVisibility(View.VISIBLE);
             }
 
             @Override
