@@ -52,6 +52,7 @@ public class NetworkUtils {
 			// conn.addRequestProperty("Content-Type",
 			// "application/x-www-form-urlencoded");
 			conn.addRequestProperty("Accept-Encoding", "gzip,deflate,sdch");
+			conn.addRequestProperty("User-Agent", Build.MODEL+"/"+SimpleRestClient.appVersion+" "+SimpleRestClient.sn_token);
 			conn.setIfModifiedSince(System.currentTimeMillis());
 			// conn.setUseCaches(false);
 			conn.connect();
@@ -141,6 +142,7 @@ public class NetworkUtils {
 			connection.setRequestProperty("Content-Type",
 					"application/x-www-form-urlencoded");
 			connection.setRequestProperty("Accept", "application/json");
+			connection.addRequestProperty("User-Agent", Build.MODEL+"/"+SimpleRestClient.appVersion+" "+SimpleRestClient.sn_token);
 			connection.connect();
 			DataOutputStream out = new DataOutputStream(
 					connection.getOutputStream());
@@ -229,6 +231,7 @@ public class NetworkUtils {
 			connection.setRequestProperty("Content-Type",
 					"application/x-www-form-urlencoded");
 			connection.setRequestProperty("Accept", "application/json");
+			connection.addRequestProperty("User-Agent", Build.MODEL+"/"+SimpleRestClient.appVersion+" "+SimpleRestClient.sn_token);
 			connection.connect();
 			DataOutputStream out = new DataOutputStream(
 					connection.getOutputStream());

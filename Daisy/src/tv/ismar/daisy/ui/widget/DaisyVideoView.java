@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -22,6 +23,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.MediaController;
 import android.widget.MediaController.MediaPlayerControl;
+import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.views.Metadata;
 
 /**
@@ -239,6 +241,7 @@ public class DaisyVideoView extends SurfaceView implements MediaPlayerControl {
 			//player.setOnInfoListener(mInfoChangedListener);
 			player.setOnBufferingUpdateListener(mBufferingUpdateListener);
 			mCurrentBufferPercentage = 0;
+			mHeaders.put("User-Agent", Build.MODEL+"/"+SimpleRestClient.appVersion+" "+SimpleRestClient.sn_token);
 			player.setDataSource(mContext, mUri, mHeaders);
 //	        player.setDataSource(m);
 			player.setDisplay(mSurfaceHolder);

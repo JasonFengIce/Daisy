@@ -1,0 +1,2197 @@
+--------- beginning of /dev/log/main
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 3
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:2  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.TVGuideActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 3
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:2  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.TVGuideActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 3
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:2  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.TVGuideActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 3
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:2  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.TVGuideActivity
+D/dalvikvm( 1314): GC_EXPLICIT freed 245K, 35% free 7789K/11900K, paused 3ms+5ms, total 48ms
+D/dalvikvm( 1492): GC_EXPLICIT freed 163K, 25% free 2718K/3592K, paused 2ms+3ms, total 20ms
+D/1105    ( 1314): AblHandler  modeValue:0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/tvos    (  983): [0;45m [WDT_CLR][./src/MSrv_Control_common.cpp] [HeartBeatMonitor] [4102][0m 
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 3
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:2  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.TVGuideActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+D/UpdateCheckService( 2006): alive
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 3
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:2  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.TVGuideActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 3
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:2  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.TVGuideActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/WindowManager( 1314): interceptKeyBeforeDispatching event = KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_BACK, scanCode=158, metaState=0, flags=0x8, repeatCount=0, eventTime=14120447, downTime=14120447, deviceId=3, source=0x101 }
+I/WindowManager( 1314): ,mKeyBootEnable = true,mKeyEnable = true,ENABLE_IR_KEY_FOR_INPUT = true,ENABLE_IR_KEY = true,ENABLE_KEYPAD_KEY = true
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching in queryHomeStore() = 0
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching not in condition
+V/PinyinIME( 1536): onKeyDown:4
+I/PinyinIME( 1536): onKeyDown:System handler the keyevent
+--------- beginning of /dev/log/system
+I/tanweiwei( 3178): ************************************************
+I/tanweiwei( 3178): mAttachInfo.mHasWindowFocus = true  q.mEvent.isFromSource(InputDevice.SOURCE_CLASS_POINTER) = false  isTerminalInputEvent(q.mEvent) = false
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+I/WindowManager( 1314): interceptKeyBeforeDispatching event = KeyEvent { action=ACTION_UP, keyCode=KEYCODE_BACK, scanCode=158, metaState=0, flags=0x8, repeatCount=0, eventTime=14120596, downTime=14120447, deviceId=3, source=0x101 }
+I/WindowManager( 1314): ,mKeyBootEnable = true,mKeyEnable = true,ENABLE_IR_KEY_FOR_INPUT = true,ENABLE_IR_KEY = true,ENABLE_KEYPAD_KEY = true
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching in queryHomeStore() = 0
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching not in condition
+I/PinyinIME( 1536): onKeyUp:4
+I/PinyinIME( 1536): onKeyUp:System handler the keyevent
+I/tanweiwei( 3178): ************************************************
+I/tanweiwei( 3178): mAttachInfo.mHasWindowFocus = true  q.mEvent.isFromSource(InputDevice.SOURCE_CLASS_POINTER) = false  isTerminalInputEvent(q.mEvent) = true
+W/InputEventReceiver( 3178): Attempted to finish an input event but the input event receiver has already been disposed.
+I/tanweiwei( 3178): windowFocusChanged has been called hasFocus = true
+I/tanweiwei( 3178): windowFocusChanged has been called hasFocus = false
+I/tanweiwei( 3178): MSG_WINDOW_FOCUS_CHANGED has been received
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 3
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:2  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.TVGuideActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 3
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:2  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.TVGuideActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+I/WindowManager( 1314): interceptKeyBeforeDispatching event = KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_BACK, scanCode=158, metaState=0, flags=0x8, repeatCount=0, eventTime=14121597, downTime=14121597, deviceId=3, source=0x101 }
+I/WindowManager( 1314): ,mKeyBootEnable = true,mKeyEnable = true,ENABLE_IR_KEY_FOR_INPUT = true,ENABLE_IR_KEY = true,ENABLE_KEYPAD_KEY = true
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching in queryHomeStore() = 0
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching not in condition
+V/PinyinIME( 1536): onKeyDown:4
+I/PinyinIME( 1536): onKeyDown:System handler the keyevent
+I/tanweiwei( 3178): ************************************************
+I/tanweiwei( 3178): mAttachInfo.mHasWindowFocus = true  q.mEvent.isFromSource(InputDevice.SOURCE_CLASS_POINTER) = false  isTerminalInputEvent(q.mEvent) = false
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+I/WindowManager( 1314): interceptKeyBeforeDispatching event = KeyEvent { action=ACTION_UP, keyCode=KEYCODE_BACK, scanCode=158, metaState=0, flags=0x8, repeatCount=0, eventTime=14121748, downTime=14121597, deviceId=3, source=0x101 }
+I/WindowManager( 1314): ,mKeyBootEnable = true,mKeyEnable = true,ENABLE_IR_KEY_FOR_INPUT = true,ENABLE_IR_KEY = true,ENABLE_KEYPAD_KEY = true
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching in queryHomeStore() = 0
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching not in condition
+I/PinyinIME( 1536): onKeyUp:4
+I/PinyinIME( 1536): onKeyUp:System handler the keyevent
+I/tanweiwei( 3178): ************************************************
+I/tanweiwei( 3178): mAttachInfo.mHasWindowFocus = true  q.mEvent.isFromSource(InputDevice.SOURCE_CLASS_POINTER) = false  isTerminalInputEvent(q.mEvent) = true
+I/tanweiwei( 3178): windowFocusChanged has been called hasFocus = true
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 3
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:2  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.TVGuideActivity
+I/tanweiwei( 3178): MSG_WINDOW_FOCUS_CHANGED has been received
+I/tanweiwei( 3178): windowFocusChanged has been called hasFocus = false
+I/tanweiwei( 3178): MSG_WINDOW_FOCUS_CHANGED has been received
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 3
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:2  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.TVGuideActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+D/UpdateCheckService( 2006): alive
+I/WindowManager( 1314): interceptKeyBeforeDispatching event = KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_ENTER, scanCode=28, metaState=0, flags=0x8, repeatCount=0, eventTime=14122783, downTime=14122783, deviceId=3, source=0x101 }
+I/WindowManager( 1314): ,mKeyBootEnable = true,mKeyEnable = true,ENABLE_IR_KEY_FOR_INPUT = true,ENABLE_IR_KEY = true,ENABLE_KEYPAD_KEY = true
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching in queryHomeStore() = 0
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching not in condition
+V/PinyinIME( 1536): onKeyDown:66
+I/PinyinIME( 1536): onKeyDown:System handler the keyevent
+I/tanweiwei( 3178): ************************************************
+I/tanweiwei( 3178): mAttachInfo.mHasWindowFocus = true  q.mEvent.isFromSource(InputDevice.SOURCE_CLASS_POINTER) = false  isTerminalInputEvent(q.mEvent) = false
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 3
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:2  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.TVGuideActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/WindowManager( 1314): interceptKeyBeforeDispatching event = KeyEvent { action=ACTION_UP, keyCode=KEYCODE_ENTER, scanCode=28, metaState=0, flags=0x8, repeatCount=0, eventTime=14122932, downTime=14122783, deviceId=3, source=0x101 }
+I/WindowManager( 1314): ,mKeyBootEnable = true,mKeyEnable = true,ENABLE_IR_KEY_FOR_INPUT = true,ENABLE_IR_KEY = true,ENABLE_KEYPAD_KEY = true
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching in queryHomeStore() = 0
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching not in condition
+I/PinyinIME( 1536): onKeyUp:66
+I/PinyinIME( 1536): onKeyUp:System handler the keyevent
+I/tanweiwei( 3178): ************************************************
+I/tanweiwei( 3178): mAttachInfo.mHasWindowFocus = true  q.mEvent.isFromSource(InputDevice.SOURCE_CLASS_POINTER) = false  isTerminalInputEvent(q.mEvent) = true
+I/tanweiwei( 3178): windowFocusChanged has been called hasFocus = true
+I/tanweiwei( 3178): windowFocusChanged has been called hasFocus = false
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/SurfaceFlinger(  976): mGlobalTransform change successfully has4k2kLayer= 1
+D/SurfaceFlinger(  976): mGlobalTransform change successfully has4k2kLayer= 0
+D/dalvikvm( 1314): GC_FOR_ALLOC freed 717K, 35% free 7773K/11900K, paused 37ms, total 37ms
+W/InputEventReceiver( 3178): Attempted to finish an input event but the input event receiver has already been disposed.
+I/tanweiwei( 3178): MSG_WINDOW_FOCUS_CHANGED has been received
+V/ActivityManager( 1314): r2) packageName=tv.ismar.daisy finishing=true
+V/ActivityManager( 1314): r1) packageName=com.sharp.launcher finishing=false
+V/ActivityManager( 1314): add to pkglist=com.antutu.ABenchMark
+V/ActivityManager( 1314): add to pkglist=com.android.browser
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/ActivityManager( 1314): /system/bin/sh /system/etc/specify_mem_location.sh falseset memory location done
+D/AppManager( 2032): onResume() ----send broadcast onResumeKeys
+I/tanweiwei( 3178): windowFocusChanged has been called hasFocus = false
+I/tanweiwei( 3178): MSG_WINDOW_FOCUS_CHANGED has been received
+I/AppManager( 2032): <<<<<<----------TvManager.getInstance() != null ---------->>>>>hammm
+I/PipManager_JNI( 2032): native_getPipMode
+I/AppManager( 2032): <<<<<<----------mstar.str.suspending == STR_STATUS_NONE---------->>>>>
+W/ContextImpl( 2032): Calling a method in the system process without a qualified user: android.app.ContextImpl.sendBroadcast:1042 android.content.ContextWrapper.sendBroadcast:344 com.sharp.launcher.external.SmallTvManager.resumeTV:252 com.sharp.launcher.manager.Utils.resumeTV:584 com.sharp.launcher.activity.MainActivity.resumeTVInLauncher:1151 
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+I/AppManager( 2032): <<<<<<---------- surfaceView != null---------->>>>>
+I/AppManager( 2032): Launcher (Home Key):  ========== Display Launcher ==========
+I/AppManager( 2032): <<<<<<----------end onResume---------->>>>>
+D/AppManager( 2032): Main-Activity-onResume
+I/tanweiwei( 2032): windowFocusChanged has been called hasFocus = true
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+V/AppManager( 2032): 
+V/AppManager( 2032):   change source=====E_INPUT_SOURCE_ATV
+D/AppManager( 2032): currentSource=====E_INPUT_SOURCE_STORAGE
+D/AppManager( 2032): minidatabase=====16
+V/AppManager( 2032): setInputSource=====E_INPUT_SOURCE_YPBPR
+D/TvCommonManager( 2032): setInputSource, paras source = E_INPUT_SOURCE_YPBPR
+D/TvCommonClient( 1314): setAtvChannel(), paras sourcesource = 16
+I/TvManager_JNI( 1314): setInputSource
+D/TVResHolder( 1314): setInputSource(16) LINE:398,time:150997054
+V/RMClient( 1314): #1:requestResourceAsync
+V/RMClient( 1314): #1:onMessageReceived creq
+V/RMClient( 1314): #1:kWhatCmdResourceRequest
+V/RMAllocator(  973): handleRequest
+V/RMClient( 1314): #1:Done
+V/RMAllocator(  973): handleRequest new ClientInfo, client=1107446576 id=1
+I/RMAllocator(  973): ClientInfo this=1107446800, mRMClient=1107446576. id=1
+V/RMAllocator(  973): handleRequest new ClientInfo=1107446800, client=1107446576 id=1
+V/RMAllocator(  973): allocateResources
+V/RMAllocator(  973): allocateOneResource
+V/RMAllocator(  973): allocateOneResource
+V/RMClient( 1314): #1:handleRequestDone
+V/RMClient( 1314): #1:onMessageReceived ldon
+V/RMClient( 1314): #1:kWhatRequestDone
+D/TVResHolder( 1314): handleRequestDone()
+D/TVResHolder( 1314): handleRequestDone() Got vRendResVec size=1
+D/TVResHolder( 1314): videoPlaneId = 0
+V/RMClient( 1314): #1:Done
+D/TVResHolder( 1314): setInputSource(16) LINE:436,time:151115408
+D/TVResHolder( 1314): setInputSource(16) Success
+D/TvManager( 1314): TvManager setInputSource1111
+I/tvos    (  983):  set TUN_GAIN_SW low 
+I/tvos    (  983): SetInputSource: Gamma Correction
+I/tvos    (  983): --------------------WBLinearGamma386To256--------------------
+I/tvos    (  983): [0;45m [GAMMA][./src/MSrv_Picture_Customer.cpp] [SetWBLinearGamma386To256] [500][0m 
+I/tvos    (  983): [*GAMMA*] >>> ./src/MSrv_System_Database_DVB_Customer.cpp[ LoadFactoryGammaSetting ]:( 402 ) m_stFactoryExt.ePanelIndex :2
+I/tvos    (  983): [*GAMMA*] >>> strCondition:PanelIndex=2 ColNum:11
+I/tvos    (  983): [0;45m--------------------WBADJ Interporatio--------------------[0m 
+I/tvos    (  983): [0;45m [GAMMA][./src/MSrv_Picture_Customer.cpp] [SetWBLinearGammaInterporation] [660][0m 
+I/tvos    (  983):   [GAMMA]u8LowGammaPosition(28)
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/tvos    (  983):   [GAMMA]u8HiGammaPosition(c8)
+I/tvos    (  983): [0;31m [Warning!!] return , Unknown IP Security=15.[0m 
+I/tvos    (  983): [0;31m [Warning!!] return , Unknown IP Security=15.[0m 
+I/tvos    (  983): BSND_AVC
+I/tvos    (  983):  GetFactoryExtSetting PANEL_SIZE
+I/tvos    (  983): SND_SetAbsoluteBass:2
+I/tvos    (  983):  GetFactoryExtSetting PANEL_SIZE
+I/tvos    (  983): SND_SetAbsoluteTreble:2
+I/tvos    (  983): No power-off timer be trigger!!!
+E/TvManager_JNI( 1314): Unknown event '0x2000100a'
+E/TvManager_JNI( 2032): Unknown event '0x2000100a'
+E/TvManager_JNI( 1478): Unknown event '0x2000100a'
+E/TvManager_JNI( 1608): Unknown event '0x2000100a'
+E/TvManager_JNI( 2793): Unknown event '0x2000100a'
+I/tvos    (  983): [AutoTest][SourceChange][SetInputSourceCmd START][14123242]
+I/tvos    (  983): [*Sharp_DB*] ./src/MSrv_System_Database_DVB_Customer.cpp[ LoadVideoSetting ]:( 720 ) u8Index:16
+I/tvos    (  983): [*Sharp_DB*] LoadVideoSetting 769 
+I/tvos    (  983): [*Sharp_DB*] [u8Index: 16] [enARCType : 1]
+I/tvos    (  983): [*Sharp_DB*] [u8Index: 16] [enARCType_SD : 1]
+I/tvos    (  983): [*Sharp_DB*] [u8Index: 16] [enARCType_HD_720 : 1]
+I/tvos    (  983): [*Sharp_DB*] [u8Index: 16] [enARCType_HD_1080 : 1]
+I/tvos    (  983): [*Sharp_DB*] [u8Index: 16] [enARCType_DVI : 1]
+I/tanweiwei( 2032): MSG_WINDOW_FOCUS_CHANGED has been received
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/tvos    (  983): [CEC] msAPI_CEC_SetMyPhyAddr
+I/tvos    (  983): [CEC] !H&!H msAPI_CEC_RoutingSourceChange->TxMsgActiveSource
+I/tvos    (  983): [AutoTest][SourceChange][player finalize START][14123309]
+I/tvos    (  983): MM_StopAll 0,0,0,0.
+I/tvos    (  983): MM_Finalize.
+I/tvos    (  983): Not initialized
+I/tvos    (  983): disconnect finalize ok!Send EVENT_NOTIFY_TEMPLATE
+I/tvos    (  983): IRQ 208 polling thread destroyed
+I/tvos    (  983): IRQ 208 polling fd closed!!
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/tvos    (  983): Mutex Name: TSP_Int_Mutex
+I/tvos    (  983): [AutoTest][SourceChange][player finalize END][14123345]
+I/tvos    (  983): [AutoTest][SourceChange][player init START][14123346]
+I/tvos    (  983): [AutoTest][SourceChange][player init END][14123424]
+I/tvos    (  983): enCurrSyncStatus = 0
+I/tvos    (  983): enCurrSyncStatus = 3
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/tvos    (  983):  GetFactoryExtSetting PANEL_SIZE
+I/tvos    (  983): [*Sharp_Audio*] >>> ./src/MSrv_SSSound_Customer.cpp[ SetAbsoluteVolume ]:( 258 ) u8SpeakerVolume : 11
+I/tvos    (  983): [*Sharp_Audio*] >>> ./src/MSrv_SSSound_Customer.cpp[ SetAbsoluteVolume ]:( 259 ) u8HPVolume : 11
+I/tvos    (  983): [*Sharp_Audio*] >>> ./src/MSrv_SSSound_Customer.cpp[ SetAbsoluteVolume ]:( 260 ) u8AudioOutVolume : 0
+I/tvos    (  983): update UHD Speaker volume 11
+I/tvos    (  983): update UHD HP volume 11
+I/tvos    (  983): update UHD HP volume 11
+I/tvos    (  983): delay should be great  than 20ms. 
+I/tvos    (  983): [CEC] Non-adjacent ARC device exist
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/tvos    (  983): [AutoTest][SourceChange][SetInputSourceCmd END][14123554]
+I/tvos    (  983): The notify flag is 0
+I/tvos    (  983): 3. setup video resolution and timing area
+I/tvos    (  983): 	 The Same panel output timming,Don't set panel timing,[6]
+I/tvos    (  983): 	 The Same ursa input type,Don't set Ursa mode,[0]
+I/RootActivity( 1478): runnable:   Input changed, need reset active contrast !!!!!!!
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 3
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:2  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.TVGuideActivity
+I/AblHandler( 1314): bSearchUI: false bFirstGuideUI: false bIsScaning:false
+D/1105    ( 1314): AblHandler  modeValue:17
+I/TvManager_JNI( 1314): getEnvironment
+D/MBX     (  988): sendMsg mID:9999 with mbxCmd:0x47 param:0x1
+I/1105    ( 1314): setSourceSignalControlMode() --> 17
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+D/AppManager( 2032): mFullScale = SCALE_SMALL;
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/AppManager( 2032): AppManagerInputSourceThread----setPipscale()
+D/AppManager( 2032): AppManager-setPipscale()
+I/PictureManager_JNI( 2032): getPanelWidthHeight
+I/PictureManager_JNI( 2032): native_getResolution
+I/tvos    (  983): need to be add if support compare 4K2K resolution
+I/tvos    (  983): [CompareResolution:2355]res_index 5, match 2160 case
+I/tvos    (  983): [CompareResolution:2355]res_index 5, match 1080 case
+I/PictureManager_JNI( 2032): selectWindow
+I/AppManager( 2032):  ??????????????? x : 64   y : 103       w : 591       h : 332
+I/PictureManager_JNI( 2032): SetDisplayWindow
+I/tvos    (  983): MSrv_Video::SetDisplayWindow:64,103,591,332
+I/tvos    (  983): MSrv_Video::SetDisplayWindow:64,103,591,332
+I/PictureManager_JNI( 2032): SetDisplayWindow
+I/tvos    (  983): MSrv_Video::SetDisplayWindow:64,103,591,332
+I/tvos    (  983): MSrv_Video::SetDisplayWindow:64,103,591,332
+I/PictureManager_JNI( 2032): scaleWindow
+I/AppManager( 2032): ..PipThread..
+I/tvos    (  983):  GetFactoryExtSetting PANEL_SIZE
+I/tvos    (  983): [*Sharp_PQ*] >>> mapi_pql_customer.cpp[ SetPQPageID:4927] Set_DisplayType:[PQ_DISPLAY_ONE][ePanelIndex:2]
+I/tvos    (  983): [*Sharp_PQ*] >>> drvPQ_cus.c[ MDrv_SetPQPageID ]:( 3424 )ePanelIndex :2
+I/tvos    (  983): MSrv_Picture::On, enAssignedInputSrc = 42
+I/tvos    (  983): BW Window:0, PQSource:0, Hsize:0, Vsize: 0, interlace:0, Vfreq=0
+I/tvos    (  983): Read Bandwidthtable.bin
+I/tvos    (  983): [PQBin]invalid panel type
+I/tvos    (  983): [PQBin]invalid panel type
+I/tvos    (  983): [PQBin]invalid panel type
+I/tvos    (  983): [PQBin]invalid panel type
+I/tvos    (  983): [PQBin]invalid panel type
+I/tvos    (  983): [PQBin]invalid panel type
+I/tvos    (  983): [PQBin]invalid panel type
+I/tvos    (  983): [PQBin]invalid panel type
+I/tvos    (  983): [PQBin]invalid panel type
+I/tvos    (  983): [PQBin]invalid panel type
+I/tvos    (  983): [PQBin]invalid panel type
+I/tvos    (  983): [PQBin]invalid panel type
+I/tvos    (  983): [PQBin]invalid panel type
+I/tvos    (  983): [PQBin]invalid panel type
+I/tvos    (  983): [PQBin]invalid panel type
+I/tvos    (  983): [PQBin]invalid panel type
+I/tvos    (  983): [PQBin]invalid panel type
+I/tvos    (  983): [PQBin]invalid panel type
+I/tvos    (  983): [PQBin]invalid panel type
+I/tvos    (  983): [PQBin]invalid panel type
+I/tvos    (  983): [PQBin]invalid panel type
+I/tvos    (  983): [PQBin]invalid panel type
+I/tvos    (  983): E_IOCTL_SET_UCFEATURE: Disable UC=1
+I/tvos    (  983): MDrv_PQ_SetUCFeature(65535, 65535, 1,3,0,0,0,0,65535,65535,65535)
+I/tvos    (  983): [0;45m--------------------SetCustomer--------------------[0m 
+I/tvos    (  983): [0;45m [GAMMA][./src/MSrv_Picture_Customer.cpp] [SetCustomer] [1178][0m 
+I/PlayerImpl_JNI( 1314): isSignalStable
+I/tvos    (  983): [*GAMMA*] >>> ./src/MSrv_System_Database_DVB_Customer.cpp[ LoadFactoryGammaSetting ]:( 402 ) m_stFactoryExt.ePanelIndex :2
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/tvos    (  983): [*GAMMA*] >>> strCondition:PanelIndex=2 ColNum:11
+I/tvos    (  983): [0;45m--------------------WBADJ Interporatio--------------------[0m 
+I/tvos    (  983): [0;45m [GAMMA][./src/MSrv_Picture_Customer.cpp] [SetWBLinearGammaInterporation] [660][0m 
+I/tvos    (  983):   [GAMMA]u8LowGammaPosition(28)
+I/tvos    (  983):   [GAMMA]u8HiGammaPosition(c8)enCurrSyncStatus = 0
+I/tvos    (  983):  GetFactoryExtSetting PANEL_SIZE
+I/tvos    (  983):  GetFactoryExtSetting PANEL_SIZE
+I/tvos    (  983):  GetFactoryExtSetting PANEL_SIZE
+I/tvos    (  983):  GetFactoryExtSetting PANEL_SIZE
+I/tvos    (  983):  GetFactoryExtSetting PANEL_SIZE
+I/tvos    (  983):  GetFactoryExtSetting PANEL_SIZE
+I/tvos    (  983): [*Sharp_NR*] >>> ./src/MSrv_Picture_Customer.cpp[ SetCustomer ]:( 1256 ) SetNR : eNR :4[0m
+I/tvos    (  983): enPQFLType is 1
+I/tvos    (  983): enPQMNRType is 1
+I/tvos    (  983):  GetFactoryExtSetting PANEL_SIZE
+I/tvos    (  983): 	[Plugins_PatchPQ]Customer Path PQ Add here
+I/AppManager( 2032): ***************>>>>>>>>>>>>>setPipscale
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+I/AblHandler( 1314): bSearchUI: false bFirstGuideUI: false bIsScaning:false
+D/1105    ( 1314): AblHandler  modeValue:16
+I/TvManager_JNI( 1314): getEnvironment
+D/MBX     (  988): sendMsg mID:9999 with mbxCmd:0x47 param:0x0
+I/1105    ( 1314): setSourceSignalControlMode() --> 16
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/tvos    (  983): Detect >>>>>>>>>>>>>>>> Signal unLocked!!!
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 3
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:2  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.TVGuideActivity
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+I/AblHandler( 1314): bSearchUI: false bFirstGuideUI: false bIsScaning:false
+D/1105    ( 1314): AblHandler  modeValue:16
+I/TvManager_JNI( 1314): getEnvironment
+D/MBX     (  988): sendMsg mID:9999 with mbxCmd:0x47 param:0x0
+I/1105    ( 1314): setSourceSignalControlMode() --> 16
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/tvos    (  983): [0;45m [WDT_CLR][./src/MSrv_Control_common.cpp] [HeartBeatMonitor] [4102][0m 
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 2
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:1  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.launcher
+I/pack    ( 1478): ***top activity class=com.sharp.launcher.activity.MainActivity
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+I/TEST    ( 1478): GetActiveContrast ... eActiveContrast = 1
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating content://mstar.tv.usersetting/picmode_setting/inputsrc/1/picmode/4
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating u8Brightness=29 eDynamicBacklight=0 eColorTemp=0 eDynamicContrast=0 u8Hue=30 eVibrantColour=0 u8Contrast=33 eNR=4 u8Saturation=45 u8Sharpness=14 ePerfectClear=0 u8Backlight=100 eActiveContrast=1
+I/tanweiwei( 1478): thread name = tv_db_handlerThread
+E/DataBaseDeskImpl( 1478): ===========>>>> now change Index = 34
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating content://mstar.tv.usersetting/picmode_setting/inputsrc/28/picmode/4
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating u8Brightness=29 eDynamicBacklight=0 eColorTemp=0 eDynamicContrast=0 u8Hue=30 eVibrantColour=0 u8Contrast=33 eNR=4 u8Saturation=45 u8Sharpness=14 ePerfectClear=0 u8Backlight=100 eActiveContrast=1
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/tanweiwei( 1478): thread name = tv_db_handlerThread
+E/DataBaseDeskImpl( 1478): ===========>>>> now change Index = 34
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating content://mstar.tv.usersetting/picmode_setting/inputsrc/23/picmode/4
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating u8Brightness=29 eDynamicBacklight=0 eColorTemp=0 eDynamicContrast=0 u8Hue=30 eVibrantColour=0 u8Contrast=33 eNR=4 u8Saturation=45 u8Sharpness=14 ePerfectClear=0 u8Backlight=100 eActiveContrast=1
+I/tanweiwei( 1478): thread name = tv_db_handlerThread
+E/DataBaseDeskImpl( 1478): ===========>>>> now change Index = 34
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating content://mstar.tv.usersetting/picmode_setting/inputsrc/24/picmode/4
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating u8Brightness=29 eDynamicBacklight=0 eColorTemp=0 eDynamicContrast=0 u8Hue=30 eVibrantColour=0 u8Contrast=33 eNR=4 u8Saturation=45 u8Sharpness=14 ePerfectClear=0 u8Backlight=100 eActiveContrast=1
+D/dalvikvm( 1478): GC_CONCURRENT freed 1633K, 21% free 7724K/9736K, paused 3ms+3ms, total 44ms
+I/tanweiwei( 1478): thread name = tv_db_handlerThread
+E/DataBaseDeskImpl( 1478): ===========>>>> now change Index = 34
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating content://mstar.tv.usersetting/picmode_setting/inputsrc/25/picmode/4
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating u8Brightness=29 eDynamicBacklight=0 eColorTemp=0 eDynamicContrast=0 u8Hue=30 eVibrantColour=0 u8Contrast=33 eNR=4 u8Saturation=45 u8Sharpness=14 ePerfectClear=0 u8Backlight=100 eActiveContrast=1
+I/tanweiwei( 1478): thread name = tv_db_handlerThread
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: true bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:27
+I/TvManager_JNI( 1314): getEnvironment
+E/DataBaseDeskImpl( 1478): ===========>>>> now change Index = 34
+D/MBX     (  988): sendMsg mID:9999 with mbxCmd:0x47 param:0xb
+I/1105    ( 1314): setSourceSignalControlMode() --> 27
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating content://mstar.tv.usersetting/picmode_setting/inputsrc/16/picmode/4
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating u8Brightness=29 eDynamicBacklight=0 eColorTemp=0 eDynamicContrast=0 u8Hue=30 eVibrantColour=0 u8Contrast=33 eNR=4 u8Saturation=45 u8Sharpness=14 ePerfectClear=0 u8Backlight=100 eActiveContrast=1
+I/tanweiwei( 1478): thread name = tv_db_handlerThread
+E/DataBaseDeskImpl( 1478): ===========>>>> now change Index = 34
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating content://mstar.tv.usersetting/picmode_setting/inputsrc/2/picmode/4
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating u8Brightness=29 eDynamicBacklight=0 eColorTemp=0 eDynamicContrast=0 u8Hue=30 eVibrantColour=0 u8Contrast=33 eNR=4 u8Saturation=45 u8Sharpness=14 ePerfectClear=0 u8Backlight=100 eActiveContrast=1
+I/TEST    ( 1478): ===========>>>>updateVideoAstPicture , NOT USER mode, Finished update------------------- 
+I/tanweiwei( 1478): thread name = tv_db_handlerThread
+E/DataBaseDeskImpl( 1478): ===========>>>> now change Index = 34
+I/DatabaseManager_JNI( 1478): setDatabaseDirtyByApplication
+I/PictureManager_JNI( 1478): enableDlc
+I/PictureManager_JNI( 1478): setBacklight
+I/tvos    (  983): @@@MSrv_System_Database::GetVideoSetting[*Sharp_DB*] ./src/MSrv_System_Database_DVB_Customer.cpp[ LoadVideoSetting ]:( 720 ) u8Index:16
+I/tvos    (  983): [*Sharp_DB*] LoadVideoSetting 769 
+I/tvos    (  983): [*Sharp_DB*] [u8Index: 16] [enARCType : 1]
+I/tvos    (  983): [*Sharp_DB*] [u8Index: 16] [enARCType_SD : 1]
+I/tvos    (  983): [*Sharp_DB*] [u8Index: 16] [enARCType_HD_720 : 1]
+I/tvos    (  983): [*Sharp_DB*] [u8Index: 16] [enARCType_HD_1080 : 1]
+I/tvos    (  983): [*Sharp_DB*] [u8Index: 16] [enARCType_DVI : 1]
+I/tvos    (  983): [44;4m
+I/tvos    (  983):  E_BL_CTRL_MODE_ActiveBL_ON() @@ SetBacklightCtrlMode @@ --- ./src/MSrv_Control_Customer.cpp::178!! [0m
+I/tvos    (  983): [BACKLIGHT] SetBacklightCtrlMode, eBLCtrlMode :2, Osd :100, Picture Mode :4, Scan : 0, Freeze :0, AC : 1
+I/TEST    ( 1478): setBacklight ... newPara = 356
+I/TEST    ( 1478): SetActiveContrast ... value = 1
+D/dalvikvm( 1492): GC_CONCURRENT freed 357K, 23% free 2774K/3592K, paused 1ms+5ms, total 44ms
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 2
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:1  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.launcher
+I/pack    ( 1478): ***top activity class=com.sharp.launcher.activity.MainActivity
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating content://mstar.tv.usersetting/picmode_setting/inputsrc/34/picmode/4
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating u8Brightness=29 eDynamicBacklight=0 eColorTemp=0 eDynamicContrast=0 u8Hue=30 eVibrantColour=0 u8Contrast=33 eNR=4 u8Saturation=45 u8Sharpness=14 ePerfectClear=0 u8Backlight=100 eActiveContrast=1
+I/tanweiwei( 1478): thread name = tv_db_handlerThread
+E/DataBaseDeskImpl( 1478): ===========>>>> now change Index = 34
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: true bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:27
+I/TvManager_JNI( 1314): getEnvironment
+D/MBX     (  988): sendMsg mID:9999 with mbxCmd:0x47 param:0xb
+I/1105    ( 1314): setSourceSignalControlMode() --> 27
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 2
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:1  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.launcher
+I/pack    ( 1478): ***top activity class=com.sharp.launcher.activity.MainActivity
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: true bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:27
+I/TvManager_JNI( 1314): getEnvironment
+D/MBX     (  988): sendMsg mID:9999 with mbxCmd:0x47 param:0xb
+I/1105    ( 1314): setSourceSignalControlMode() --> 27
+D/UpdateCheckService( 2006): alive
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 2
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:1  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.launcher
+I/pack    ( 1478): ***top activity class=com.sharp.launcher.activity.MainActivity
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: true bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:27
+I/TvManager_JNI( 1314): getEnvironment
+D/MBX     (  988): sendMsg mID:9999 with mbxCmd:0x47 param:0xb
+I/1105    ( 1314): setSourceSignalControlMode() --> 27
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 2
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:1  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.launcher
+I/pack    ( 1478): ***top activity class=com.sharp.launcher.activity.MainActivity
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: true bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:27
+I/TvManager_JNI( 1314): getEnvironment
+D/MBX     (  988): sendMsg mID:9999 with mbxCmd:0x47 param:0xb
+I/1105    ( 1314): setSourceSignalControlMode() --> 27
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 2
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:1  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.launcher
+I/pack    ( 1478): ***top activity class=com.sharp.launcher.activity.MainActivity
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: true bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:27
+I/TvManager_JNI( 1314): getEnvironment
+D/MBX     (  988): sendMsg mID:9999 with mbxCmd:0x47 param:0xb
+I/1105    ( 1314): setSourceSignalControlMode() --> 27
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 2
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:1  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.launcher
+I/pack    ( 1478): ***top activity class=com.sharp.launcher.activity.MainActivity
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: true bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:27
+I/TvManager_JNI( 1314): getEnvironment
+D/MBX     (  988): sendMsg mID:9999 with mbxCmd:0x47 param:0xb
+I/1105    ( 1314): setSourceSignalControlMode() --> 27
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 2
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:1  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.launcher
+I/pack    ( 1478): ***top activity class=com.sharp.launcher.activity.MainActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: true bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:27
+I/TvManager_JNI( 1314): getEnvironment
+D/MBX     (  988): sendMsg mID:9999 with mbxCmd:0x47 param:0xb
+I/1105    ( 1314): setSourceSignalControlMode() --> 27
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 2
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:1  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.launcher
+I/pack    ( 1478): ***top activity class=com.sharp.launcher.activity.MainActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: true bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:27
+I/TvManager_JNI( 1314): getEnvironment
+D/MBX     (  988): sendMsg mID:9999 with mbxCmd:0x47 param:0xb
+I/1105    ( 1314): setSourceSignalControlMode() --> 27
+D/UpdateCheckService( 2006): alive
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 2
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:1  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.launcher
+I/pack    ( 1478): ***top activity class=com.sharp.launcher.activity.MainActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: true bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:27
+I/TvManager_JNI( 1314): getEnvironment
+D/MBX     (  988): sendMsg mID:9999 with mbxCmd:0x47 param:0xb
+I/1105    ( 1314): setSourceSignalControlMode() --> 27
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 2
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:1  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.launcher
+I/pack    ( 1478): ***top activity class=com.sharp.launcher.activity.MainActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: true bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:27
+I/TvManager_JNI( 1314): getEnvironment
+D/MBX     (  988): sendMsg mID:9999 with mbxCmd:0x47 param:0xb
+I/1105    ( 1314): setSourceSignalControlMode() --> 27
+I/tvos    (  983): [0;45m [WDT_CLR][./src/MSrv_Control_common.cpp] [HeartBeatMonitor] [4102][0m 
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 2
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:1  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.launcher
+I/pack    ( 1478): ***top activity class=com.sharp.launcher.activity.MainActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: true bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:27
+I/TvManager_JNI( 1314): getEnvironment
+D/MBX     (  988): sendMsg mID:9999 with mbxCmd:0x47 param:0xb
+I/1105    ( 1314): setSourceSignalControlMode() --> 27
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 2
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:1  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.launcher
+I/pack    ( 1478): ***top activity class=com.sharp.launcher.activity.MainActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: true bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:27
+I/TvManager_JNI( 1314): getEnvironment
+D/MBX     (  988): sendMsg mID:9999 with mbxCmd:0x47 param:0xb
+I/1105    ( 1314): setSourceSignalControlMode() --> 27
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 2
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:1  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.launcher
+I/pack    ( 1478): ***top activity class=com.sharp.launcher.activity.MainActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: true bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:27
+I/TvManager_JNI( 1314): getEnvironment
+D/MBX     (  988): sendMsg mID:9999 with mbxCmd:0x47 param:0xb
+I/1105    ( 1314): setSourceSignalControlMode() --> 27
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 2
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:1  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.launcher
+I/pack    ( 1478): ***top activity class=com.sharp.launcher.activity.MainActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: true bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:27
+I/TvManager_JNI( 1314): getEnvironment
+D/MBX     (  988): sendMsg mID:9999 with mbxCmd:0x47 param:0xb
+I/1105    ( 1314): setSourceSignalControlMode() --> 27
+D/UpdateCheckService( 2006): alive
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 2
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:1  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.launcher
+I/pack    ( 1478): ***top activity class=com.sharp.launcher.activity.MainActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: true bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:27
+I/TvManager_JNI( 1314): getEnvironment
+D/MBX     (  988): sendMsg mID:9999 with mbxCmd:0x47 param:0xb
+I/1105    ( 1314): setSourceSignalControlMode() --> 27
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 2
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:1  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.launcher
+I/pack    ( 1478): ***top activity class=com.sharp.launcher.activity.MainActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: true bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:27
+I/TvManager_JNI( 1314): getEnvironment
+D/MBX     (  988): sendMsg mID:9999 with mbxCmd:0x47 param:0xb
+I/1105    ( 1314): setSourceSignalControlMode() --> 27
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 2
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:1  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.launcher
+I/pack    ( 1478): ***top activity class=com.sharp.launcher.activity.MainActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: true bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:27
+I/TvManager_JNI( 1314): getEnvironment
+D/MBX     (  988): sendMsg mID:9999 with mbxCmd:0x47 param:0xb
+I/1105    ( 1314): setSourceSignalControlMode() --> 27
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/WindowManager( 1314): interceptKeyBeforeDispatching event = KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_DPAD_LEFT, scanCode=105, metaState=0, flags=0x8, repeatCount=0, eventTime=14133464, downTime=14133464, deviceId=3, source=0x101 }
+I/WindowManager( 1314): ,mKeyBootEnable = true,mKeyEnable = true,ENABLE_IR_KEY_FOR_INPUT = true,ENABLE_IR_KEY = true,ENABLE_KEYPAD_KEY = true
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching in queryHomeStore() = 0
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching not in condition
+I/tanweiwei( 2032): ************************************************
+V/PinyinIME( 1536): onKeyDown:21
+I/PinyinIME( 1536): onKeyDown:System handler the keyevent
+I/tanweiwei( 2032): mAttachInfo.mHasWindowFocus = true  q.mEvent.isFromSource(InputDevice.SOURCE_CLASS_POINTER) = false  isTerminalInputEvent(q.mEvent) = false
+E/test    ( 2032): onFocusChange:false
+E/test    ( 2032): onFocusChange:true
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 2
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:1  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.launcher
+I/pack    ( 1478): ***top activity class=com.sharp.launcher.activity.MainActivity
+I/WindowManager( 1314): interceptKeyBeforeDispatching event = KeyEvent { action=ACTION_UP, keyCode=KEYCODE_DPAD_LEFT, scanCode=105, metaState=0, flags=0x8, repeatCount=0, eventTime=14133616, downTime=14133464, deviceId=3, source=0x101 }
+I/WindowManager( 1314): ,mKeyBootEnable = true,mKeyEnable = true,ENABLE_IR_KEY_FOR_INPUT = true,ENABLE_IR_KEY = true,ENABLE_KEYPAD_KEY = true
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching in queryHomeStore() = 0
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching not in condition
+I/tanweiwei( 2032): ************************************************
+I/tanweiwei( 2032): mAttachInfo.mHasWindowFocus = true  q.mEvent.isFromSource(InputDevice.SOURCE_CLASS_POINTER) = false  isTerminalInputEvent(q.mEvent) = true
+I/PinyinIME( 1536): onKeyUp:21
+I/PinyinIME( 1536): onKeyUp:System handler the keyevent
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: true bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:27
+I/TvManager_JNI( 1314): getEnvironment
+D/MBX     (  988): sendMsg mID:9999 with mbxCmd:0x47 param:0xb
+I/1105    ( 1314): setSourceSignalControlMode() --> 27
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/WindowManager( 1314): interceptKeyBeforeDispatching event = KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_DPAD_LEFT, scanCode=105, metaState=0, flags=0x8, repeatCount=0, eventTime=14133932, downTime=14133932, deviceId=3, source=0x101 }
+I/WindowManager( 1314): ,mKeyBootEnable = true,mKeyEnable = true,ENABLE_IR_KEY_FOR_INPUT = true,ENABLE_IR_KEY = true,ENABLE_KEYPAD_KEY = true
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching in queryHomeStore() = 0
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching not in condition
+V/PinyinIME( 1536): onKeyDown:21
+I/PinyinIME( 1536): onKeyDown:System handler the keyevent
+E/test    ( 2032): onFocusChange:false
+E/test    ( 2032): onFocusChange:true
+I/tanweiwei( 2032): ************************************************
+I/tanweiwei( 2032): mAttachInfo.mHasWindowFocus = true  q.mEvent.isFromSource(InputDevice.SOURCE_CLASS_POINTER) = false  isTerminalInputEvent(q.mEvent) = false
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/WindowManager( 1314): interceptKeyBeforeDispatching event = KeyEvent { action=ACTION_UP, keyCode=KEYCODE_DPAD_LEFT, scanCode=105, metaState=0, flags=0x8, repeatCount=0, eventTime=14134084, downTime=14133932, deviceId=3, source=0x101 }
+I/WindowManager( 1314): ,mKeyBootEnable = true,mKeyEnable = true,ENABLE_IR_KEY_FOR_INPUT = true,ENABLE_IR_KEY = true,ENABLE_KEYPAD_KEY = true
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching in queryHomeStore() = 0
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching not in condition
+I/PinyinIME( 1536): onKeyUp:21
+I/PinyinIME( 1536): onKeyUp:System handler the keyevent
+I/tanweiwei( 2032): ************************************************
+I/tanweiwei( 2032): mAttachInfo.mHasWindowFocus = true  q.mEvent.isFromSource(InputDevice.SOURCE_CLASS_POINTER) = false  isTerminalInputEvent(q.mEvent) = true
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 2
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:1  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.launcher
+I/pack    ( 1478): ***top activity class=com.sharp.launcher.activity.MainActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: true bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:27
+I/TvManager_JNI( 1314): getEnvironment
+D/MBX     (  988): sendMsg mID:9999 with mbxCmd:0x47 param:0xb
+I/1105    ( 1314): setSourceSignalControlMode() --> 27
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/WindowManager( 1314): interceptKeyBeforeDispatching event = KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_DPAD_UP, scanCode=103, metaState=0, flags=0x8, repeatCount=0, eventTime=14134609, downTime=14134609, deviceId=3, source=0x101 }
+I/WindowManager( 1314): ,mKeyBootEnable = true,mKeyEnable = true,ENABLE_IR_KEY_FOR_INPUT = true,ENABLE_IR_KEY = true,ENABLE_KEYPAD_KEY = true
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching in queryHomeStore() = 0
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching not in condition
+V/PinyinIME( 1536): onKeyDown:19
+I/PinyinIME( 1536): onKeyDown:System handler the keyevent
+I/tanweiwei( 2032): ************************************************
+I/tanweiwei( 2032): mAttachInfo.mHasWindowFocus = true  q.mEvent.isFromSource(InputDevice.SOURCE_CLASS_POINTER) = false  isTerminalInputEvent(q.mEvent) = false
+E/test    ( 2032): onFocusChange:false
+E/test    ( 2032): onFocusChange:true
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 2
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:1  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.launcher
+I/pack    ( 1478): ***top activity class=com.sharp.launcher.activity.MainActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: true bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:27
+I/TvManager_JNI( 1314): getEnvironment
+D/MBX     (  988): sendMsg mID:9999 with mbxCmd:0x47 param:0xb
+I/1105    ( 1314): setSourceSignalControlMode() --> 27
+I/WindowManager( 1314): interceptKeyBeforeDispatching event = KeyEvent { action=ACTION_UP, keyCode=KEYCODE_DPAD_UP, scanCode=103, metaState=0, flags=0x8, repeatCount=0, eventTime=14134760, downTime=14134609, deviceId=3, source=0x101 }
+I/WindowManager( 1314): ,mKeyBootEnable = true,mKeyEnable = true,ENABLE_IR_KEY_FOR_INPUT = true,ENABLE_IR_KEY = true,ENABLE_KEYPAD_KEY = true
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching in queryHomeStore() = 0
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching not in condition
+D/UpdateCheckService( 2006): alive
+I/tanweiwei( 2032): ************************************************
+I/PinyinIME( 1536): onKeyUp:19
+I/PinyinIME( 1536): onKeyUp:System handler the keyevent
+I/tanweiwei( 2032): mAttachInfo.mHasWindowFocus = true  q.mEvent.isFromSource(InputDevice.SOURCE_CLASS_POINTER) = false  isTerminalInputEvent(q.mEvent) = true
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 2
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:1  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.launcher
+I/pack    ( 1478): ***top activity class=com.sharp.launcher.activity.MainActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: true bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:27
+I/TvManager_JNI( 1314): getEnvironment
+D/MBX     (  988): sendMsg mID:9999 with mbxCmd:0x47 param:0xb
+I/1105    ( 1314): setSourceSignalControlMode() --> 27
+I/WindowManager( 1314): interceptKeyBeforeDispatching event = KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_ENTER, scanCode=28, metaState=0, flags=0x8, repeatCount=0, eventTime=14135272, downTime=14135272, deviceId=3, source=0x101 }
+I/WindowManager( 1314): ,mKeyBootEnable = true,mKeyEnable = true,ENABLE_IR_KEY_FOR_INPUT = true,ENABLE_IR_KEY = true,ENABLE_KEYPAD_KEY = true
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching in queryHomeStore() = 0
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching not in condition
+V/PinyinIME( 1536): onKeyDown:66
+I/PinyinIME( 1536): onKeyDown:System handler the keyevent
+I/tanweiwei( 2032): ************************************************
+I/tanweiwei( 2032): mAttachInfo.mHasWindowFocus = true  q.mEvent.isFromSource(InputDevice.SOURCE_CLASS_POINTER) = false  isTerminalInputEvent(q.mEvent) = false
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/WindowManager( 1314): interceptKeyBeforeDispatching event = KeyEvent { action=ACTION_UP, keyCode=KEYCODE_ENTER, scanCode=28, metaState=0, flags=0x8, repeatCount=0, eventTime=14135424, downTime=14135272, deviceId=3, source=0x101 }
+I/WindowManager( 1314): ,mKeyBootEnable = true,mKeyEnable = true,ENABLE_IR_KEY_FOR_INPUT = true,ENABLE_IR_KEY = true,ENABLE_KEYPAD_KEY = true
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching in queryHomeStore() = 0
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching not in condition
+I/PinyinIME( 1536): onKeyUp:66
+I/PinyinIME( 1536): onKeyUp:System handler the keyevent
+E/appmanager( 2032): onClick
+E/process ( 2032): step----->:prepareGoToApp:2131427332
+I/tanweiwei( 2032): ************************************************
+I/tanweiwei( 2032): mAttachInfo.mHasWindowFocus = true  q.mEvent.isFromSource(InputDevice.SOURCE_CLASS_POINTER) = false  isTerminalInputEvent(q.mEvent) = true
+D/AppManager( 2032): prepareGoToApp
+E/AppManager( 2032): launchAppWithTV:com.sharp.myapps
+D/AppManager( 2032): Change to E_INPUT_SOURCE_STORAGE
+D/AppManager( 2032): packageName:com.sharp.myapps;activityName:com.sharp.myapps.activity.MainActivity;parameter:null
+D/AppManager( 2032): startActivity
+I/ActivityManager( 1314): START u0 {act=android.intent.action.MAIN flg=0x10000000 cmp=com.sharp.myapps/.activity.MainActivity} from pid 2032
+D/SurfaceFlinger(  976): mGlobalTransform change successfully has4k2kLayer= 1
+V/AppManager( 2032): 
+V/AppManager( 2032):   change source=====E_INPUT_SOURCE_STORAGE
+I/Tools   ( 2032):         System property is : 
+D/TvCommonManager( 2032): setInputSource, paras source = E_INPUT_SOURCE_STORAGE
+D/SurfaceFlinger(  976): mGlobalTransform change successfully has4k2kLayer= 0
+D/TvCommonClient( 1314): setAtvChannel(), paras sourcesource = 34
+I/TvManager_JNI( 1314): setInputSource
+D/TVResHolder( 1314): setInputSource(34) LINE:398,time:446056392
+D/TvManager( 1314): TvManager setInputSource1111
+I/tvos    (  983):  set TUN_GAIN_SW low 
+I/tvos    (  983): SetInputSource: Gamma Correction
+I/tvos    (  983): --------------------WBLinearGamma386To256--------------------
+I/tvos    (  983): [0;45m [GAMMA][./src/MSrv_Picture_Customer.cpp] [SetWBLinearGamma386To256] [500][0m 
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/tvos    (  983): [*GAMMA*] >>> ./src/MSrv_System_Database_DVB_Customer.cpp[ LoadFactoryGammaSetting ]:( 402 ) m_stFactoryExt.ePanelIndex :2
+I/tvos    (  983): [*GAMMA*] >>> strCondition:PanelIndex=2 ColNum:11
+I/tvos    (  983): [0;45m--------------------WBADJ Interporatio--------------------[0m 
+I/tvos    (  983): [0;45m [GAMMA][./src/MSrv_Picture_Customer.cpp] [SetWBLinearGammaInterporation] [660][0m 
+I/tvos    (  983):   [GAMMA]u8LowGammaPosition(28)
+I/tvos    (  983):   [GAMMA]u8HiGammaPosition(c8)
+I/tvos    (  983): [0;31m [Warning!!] return , Unknown IP Security=15.[0m 
+I/tvos    (  983): [0;31m [Warning!!] return , Unknown IP Security=15.[0m 
+I/tvos    (  983): BSND_AVC
+I/tvos    (  983):  GetFactoryExtSetting PANEL_SIZE
+I/tvos    (  983): SND_SetAbsoluteBass:5
+I/tvos    (  983):  GetFactoryExtSetting PANEL_SIZE
+I/tvos    (  983): SND_SetAbsoluteTreble:5
+I/tvos    (  983): No power-off timer be trigger!!!
+I/tvos    (  983): [AutoTest][SourceChange][SetInputSourceCmd START][14135478]
+I/tvos    (  983): [*Sharp_DB*] ./src/MSrv_System_Database_DVB_Customer.cpp[ LoadVideoSetting ]:( 720 ) u8Index:34
+E/TvManager_JNI( 1314): Unknown event '0x2000100a'
+E/TvManager_JNI( 2032): Unknown event '0x2000100a'
+E/TvManager_JNI( 1478): Unknown event '0x2000100a'
+E/TvManager_JNI( 1608): Unknown event '0x2000100a'
+E/TvManager_JNI( 2793): Unknown event '0x2000100a'
+D/dalvikvm( 1314): GC_FOR_ALLOC freed 668K, 33% free 8069K/11900K, paused 50ms, total 52ms
+I/tvos    (  983): [*Sharp_DB*] LoadVideoSetting 769 
+I/tvos    (  983): [*Sharp_DB*] [u8Index: 34] [enARCType : 1]
+I/tvos    (  983): [*Sharp_DB*] [u8Index: 34] [enARCType_SD : 3]
+I/tvos    (  983): [*Sharp_DB*] [u8Index: 34] [enARCType_HD_720 : 1]
+I/tvos    (  983): [*Sharp_DB*] [u8Index: 34] [enARCType_HD_1080 : 1]
+I/tvos    (  983): [*Sharp_DB*] [u8Index: 34] [enARCType_DVI : 1]
+I/tvos    (  983): [CEC] msAPI_CEC_SetMyPhyAddr
+I/tvos    (  983): [CEC] !H&!H msAPI_CEC_RoutingSourceChange->TxMsgActiveSource
+I/tvos    (  983): [AutoTest][SourceChange][player finalize START][14135534]
+I/tvos    (  983): Send EVENT_NOTIFY_TEMPLATE
+I/tvos    (  983): [0;45m [WDT_CLR][./src/MSrv_Control_common.cpp] [HeartBeatMonitor] [4102][0m 
+D/dalvikvm( 1314): GC_FOR_ALLOC freed 590K, 35% free 7753K/11900K, paused 44ms, total 45ms
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/AppManager( 2032): overridePendingTransition--not PACKAGE_TV
+D/AppManager( 2032): onPause() ----send broadcast onResumeKeys
+I/WindowManager( 1314): mKeyEnableReceiver action = set_key_enable
+W/ContextImpl( 2032): Calling a method in the system process without a qualified user: android.app.ContextImpl.sendBroadcast:1042 android.content.ContextWrapper.sendBroadcast:344 com.sharp.launcher.activity.MainActivity.onPause:243 android.app.Activity.performPause:5235 android.app.Instrumentation.callActivityOnPause:1233 
+V/ActivityManager( 1314): r2) packageName=com.sharp.myapps finishing=false
+V/ActivityManager( 1314): r1) packageName=com.sharp.launcher finishing=false
+V/ActivityManager( 1314): add to pkglist=com.antutu.ABenchMark
+V/ActivityManager( 1314): add to pkglist=com.android.browser
+I/tvos    (  983): Unknow Input Type 
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/ActivityManager( 1314): /system/bin/sh /system/etc/specify_mem_location.sh falseset memory location done
+I/MyApps oncreat( 1552): ON CREAT START!
+V/ActivityManager( 1314): add to pkglist=com.antutu.ABenchMark
+V/ActivityManager( 1314): add to pkglist=com.android.browser
+I/tvos    (  983): [AutoTest][SourceChange][player finalize END][14135642]
+I/tvos    (  983): [AutoTest][SourceChange][player init START][14135642]
+I/tvos    (  983): [HAL_TSP_CPU_SetBase][3076] load firmware (address, size) = (0x10300000, 0x00005400)
+I/tvos    (  983): firmware 111 0x10300000 0x00000010 0x00003000
+I/tvos    (  983): MApi_DMX_GetCap...........................................64
+I/tvos    (  983): MM not support PIP now
+I/tvos    (  983): [CEC] Non-adjacent ARC device exist
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/tanweiwei( 2032): windowFocusChanged has been called hasFocus = false
+I/tvos    (  983): BW Window:0, PQSource:0, Hsize:0, Vsize: 0, interlace:0, Vfreq=0
+I/tvos    (  983): Read Bandwidthtable.bin
+I/tvos    (  983): [AutoTest][SourceChange][player init END][14135678]
+I/tvos    (  983): ===== Check Audio Decoder Protection from hash-key IP =====
+I/tvos    (  983): Hash-key Support DD.
+I/tvos    (  983): Hash-key Support DD+.
+I/tvos    (  983): Hash-key Support Generic HE-AAC.
+I/tvos    (  983): Hash-key Support DTS DMP.
+I/tvos    (  983): Hash-key Support WMA.
+I/tvos    (  983): Hash-key Support DRA.
+I/tvos    (  983): Hash Key Check SRS_TSHD Fail, no SRS_TSHD license!!
+I/tvos    (  983): Hash Key Check SRS_THEATERSOUND Fail, no SRS_THEATERSOUND license!!
+I/tvos    (  983): Hash Key Check DTS_StudioSound3D Fail, no DTS_StudioSound3D license!!
+I/tvos    (  983): Hash-key Support COOK.
+I/tvos    (  983): ===== Check Protection IP End                         =====
+I/tvos    (  983): Audio DSP1 code is same(0x3), no need to reload
+I/tvos    (  983):  GetFactoryExtSetting PANEL_SIZE
+I/tvos    (  983): [*Sharp_Audio*] >>> ./src/MSrv_SSSound_Customer.cpp[ SetAbsoluteVolume ]:( 258 ) u8SpeakerVolume : 11
+I/tvos    (  983): [*Sharp_Audio*] >>> ./src/MSrv_SSSound_Customer.cpp[ SetAbsoluteVolume ]:( 259 ) u8HPVolume : 11
+I/tvos    (  983): [*Sharp_Audio*] >>> ./src/MSrv_SSSound_Customer.cpp[ SetAbsoluteVolume ]:( 260 ) u8AudioOutVolume : 0
+I/tvos    (  983): update UHD Speaker volume 11
+I/tvos    (  983): update UHD HP volume 11
+I/tvos    (  983): update UHD HP volume 11
+D/dalvikvm( 1552): GC_CONCURRENT freed 24881K, 72% free 10684K/37904K, paused 6ms+4ms, total 44ms
+I/tvos    (  983): delay should be great  than 20ms. 
+I/ActivityManager( 1314): /system/bin/sh /system/etc/specify_mem_location.sh falseset memory location done
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/tanweiwei( 2032): MSG_WINDOW_FOCUS_CHANGED has been received
+I/tvos    (  983): [AutoTest][SourceChange][SetInputSourceCmd END][14135788]
+I/tvos    (  983): Detect >>>>>>>>>>>>>>>> Signal Locked!!!
+V/RMClient( 1314): #1:RMClient::returnAllResourcesAsync
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+V/RMClient( 1314): #1:onMessageReceived cret
+V/RMClient( 1314): #1:kWhatCmdReturnAllResources
+V/RMClient( 1314): #1:Done
+V/RMAllocator(  973): Deallocating resources for #1
+V/RMAllocator(  973): ~ClientInfo
+I/RMAllocator(  973): ~ClientInfo this=1107446800,mRMClient=1107446576. id=1
+W/RMAllocator(  973): returnAllResourcesFor: not registered, nothing to do
+V/RMClient( 1314): #1:handleEvent lret
+V/RMClient( 1314): #1:onMessageReceived lret
+V/RMClient( 1314): #1:kWhatAllResourcesReturned
+V/RMClient( 1314): #1:Done
+V/RootActivity( 1478): .....sendBroadcast......no_signal_disappear 
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+W/ContextImpl( 1478): Calling a method in the system process without a qualified user: android.app.ContextImpl.sendBroadcast:1042 android.content.ContextWrapper.sendBroadcast:344 mstar.tvsetting.ui.RootActivity$MyHandler.handleMessage:3625 android.os.Handler.dispatchMessage:99 android.os.Looper.loop:137 
+I/RootActivity( 1478): runnable:   Input changed, need reset active contrast !!!!!!!
+I/PlayerImpl_JNI( 1478): getVideoInfo
+D/1105    ( 1314): AblHandler  modeValue:0
+I/pack    ( 1478): taskList.size() = 3
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:2  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.myapps
+I/pack    ( 1478): ***top activity class=com.sharp.myapps.activity.MainActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+V/AppManager( 2032): Sky3DHomeActivity enable_homekey
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+D/dalvikvm( 1552): GC_CONCURRENT freed 1613K, 70% free 11706K/37904K, paused 2ms+7ms, total 26ms
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+I/tanweiwei( 1552): windowFocusChanged has been called hasFocus = true
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 3
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:2  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.myapps
+I/pack    ( 1478): ***top activity class=com.sharp.myapps.activity.MainActivity
+D/myapp1118( 1552): 000000000000000
+D/myapp1118( 1552): mFavoriteApkList:com.sharp.userguide
+D/myapp1118( 1552): mFavoriteApkList:com.autonavi.tvapp
+D/myapp1118( 1552): mFavoriteApkList:com.android.dazhihui
+D/myapp1118( 1552): mFavoriteApkList:com.sharp.camera
+D/myapp1118( 1552): mFavoriteApkList:cn.wps.moffice_i18n_TV
+D/myapp1118( 1552): 111111111111111
+D/myapp1118( 1552): mDefaultApkList:com.sharp.userguide
+D/myapp1118( 1552): mDefaultApkList:com.sharp.camera
+D/myapp1118( 1552): mDefaultApkList:com.android.dazhihui
+D/myapp1118( 1552): mDefaultApkList:com.autonavi.tvapp
+D/myapp1118( 1552): mDefaultApkList:cn.wps.moffice_i18n_TV
+D/myapp1118( 1552): 222222222222222
+I/MyApps sharedpreferences :( 1552): com.bestv.nba
+I/MyApps sharedpreferences :( 1552): bestv.ott.action.yingchao
+I/MyApps recommend App:( 1552): com.bestv.nba
+I/MyApps recommend App:( 1552): com.bestv.yingchao
+I/Hide BesTV App:( 1552): com.bestv.nba
+I/Hide BesTV App:( 1552): com.bestv.yingchao
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/MyApps:select =( 1552): select * from appLaunchCountList where pkgname = ?
+I/MyApps:select =( 1552): select * from appLaunchCountList where pkgname = ?
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/MyApps:select =( 1552): select * from appLaunchCountList where pkgname = ?
+I/tanweiwei( 1552): MSG_WINDOW_FOCUS_CHANGED has been received
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/dalvikvm( 1552): GC_FOR_ALLOC freed 294K, 67% free 12878K/37904K, paused 16ms, total 16ms
+I/dalvikvm-heap( 1552): Grow heap (frag case) to 18.011MB for 5364016-byte allocation
+D/dalvikvm( 1552): GC_FOR_ALLOC freed 2K, 53% free 18114K/37904K, paused 16ms, total 16ms
+D/dalvikvm( 1552): GC_CONCURRENT freed 5K, 52% free 18252K/37904K, paused 3ms+2ms, total 19ms
+I/MyApps:select =( 1552): select * from appLaunchCountList where pkgname = ?
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/MyApps:select =( 1552): select * from appLaunchCountList where pkgname = ?
+I/ActivityManager( 1314): Displayed com.sharp.myapps/.activity.MainActivity: +1s125ms
+I/MyApps:select =( 1552): select * from appLaunchCountList where pkgname = ?
+D/AppManager( 2032): Main-Activity-onStop
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 3
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:2  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.myapps
+I/pack    ( 1478): ***top activity class=com.sharp.myapps.activity.MainActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/TEST    ( 1478): GetActiveContrast ... eActiveContrast = 0
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating content://mstar.tv.usersetting/picmode_setting/inputsrc/1/picmode/2
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating u8Brightness=30 eDynamicBacklight=0 eColorTemp=1 eDynamicContrast=0 u8Hue=30 eVibrantColour=0 u8Contrast=30 eNR=4 u8Saturation=38 u8Sharpness=12 ePerfectClear=0 u8Backlight=100 eActiveContrast=0
+I/tanweiwei( 1478): thread name = tv_db_handlerThread
+E/DataBaseDeskImpl( 1478): ===========>>>> now change Index = 34
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating content://mstar.tv.usersetting/picmode_setting/inputsrc/28/picmode/2
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating u8Brightness=30 eDynamicBacklight=0 eColorTemp=1 eDynamicContrast=0 u8Hue=30 eVibrantColour=0 u8Contrast=30 eNR=4 u8Saturation=38 u8Sharpness=12 ePerfectClear=0 u8Backlight=100 eActiveContrast=0
+I/tanweiwei( 1478): thread name = tv_db_handlerThread
+E/DataBaseDeskImpl( 1478): ===========>>>> now change Index = 34
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating content://mstar.tv.usersetting/picmode_setting/inputsrc/23/picmode/2
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating u8Brightness=30 eDynamicBacklight=0 eColorTemp=1 eDynamicContrast=0 u8Hue=30 eVibrantColour=0 u8Contrast=30 eNR=4 u8Saturation=38 u8Sharpness=12 ePerfectClear=0 u8Backlight=100 eActiveContrast=0
+I/tanweiwei( 1478): thread name = tv_db_handlerThread
+E/DataBaseDeskImpl( 1478): ===========>>>> now change Index = 34
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating content://mstar.tv.usersetting/picmode_setting/inputsrc/24/picmode/2
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating u8Brightness=30 eDynamicBacklight=0 eColorTemp=1 eDynamicContrast=0 u8Hue=30 eVibrantColour=0 u8Contrast=30 eNR=4 u8Saturation=38 u8Sharpness=12 ePerfectClear=0 u8Backlight=100 eActiveContrast=0
+I/tanweiwei( 1478): thread name = tv_db_handlerThread
+E/DataBaseDeskImpl( 1478): ===========>>>> now change Index = 34
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating content://mstar.tv.usersetting/picmode_setting/inputsrc/25/picmode/2
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating u8Brightness=30 eDynamicBacklight=0 eColorTemp=1 eDynamicContrast=0 u8Hue=30 eVibrantColour=0 u8Contrast=30 eNR=4 u8Saturation=38 u8Sharpness=12 ePerfectClear=0 u8Backlight=100 eActiveContrast=0
+I/tanweiwei( 1478): thread name = tv_db_handlerThread
+E/DataBaseDeskImpl( 1478): ===========>>>> now change Index = 34
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating content://mstar.tv.usersetting/picmode_setting/inputsrc/16/picmode/2
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating u8Brightness=30 eDynamicBacklight=0 eColorTemp=1 eDynamicContrast=0 u8Hue=30 eVibrantColour=0 u8Contrast=30 eNR=4 u8Saturation=38 u8Sharpness=12 ePerfectClear=0 u8Backlight=100 eActiveContrast=0
+I/MyApps:select =( 1552): select * from appLaunchCountList where pkgname = ?
+I/tanweiwei( 1478): thread name = tv_db_handlerThread
+E/DataBaseDeskImpl( 1478): ===========>>>> now change Index = 34
+I/MyApps:select =( 1552): select * from appLaunchCountList where pkgname = ?
+I/MyApps:select =( 1552): select * from appLaunchCountList where pkgname = ?
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating content://mstar.tv.usersetting/picmode_setting/inputsrc/2/picmode/2
+D/dalvikvm( 1492): GC_CONCURRENT freed 413K, 22% free 2753K/3524K, paused 2ms+2ms, total 32ms
+I/MyApps:select =( 1552): select * from appLaunchCountList where pkgname = ?
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating u8Brightness=30 eDynamicBacklight=0 eColorTemp=1 eDynamicContrast=0 u8Hue=30 eVibrantColour=0 u8Contrast=30 eNR=4 u8Saturation=38 u8Sharpness=12 ePerfectClear=0 u8Backlight=100 eActiveContrast=0
+I/tanweiwei( 1478): thread name = tv_db_handlerThread
+E/DataBaseDeskImpl( 1478): ===========>>>> now change Index = 34
+I/TEST    ( 1478): ===========>>>>updateVideoAstPicture , NOT USER mode, Finished update------------------- 
+I/DatabaseManager_JNI( 1478): setDatabaseDirtyByApplication
+I/PictureManager_JNI( 1478): disableDlc
+I/MyApps:select =( 1552): select * from appLaunchCountList where pkgname = ?
+I/PictureManager_JNI( 1478): setBacklight
+I/tvos    (  983): @@@MSrv_System_Database::GetVideoSetting[*Sharp_DB*] ./src/MSrv_System_Database_DVB_Customer.cpp[ LoadVideoSetting ]:( 720 ) u8Index:34
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/MyApps:select =( 1552): select * from appLaunchCountList where pkgname = ?
+D/dalvikvm( 1552): GC_CONCURRENT freed 324K, 40% free 23087K/37904K, paused 2ms+4ms, total 31ms
+I/tvos    (  983): [*Sharp_DB*] LoadVideoSetting 769 
+I/tvos    (  983): [*Sharp_DB*] [u8Index: 34] [enARCType : 1]
+I/tvos    (  983): [*Sharp_DB*] [u8Index: 34] [enARCType_SD : 3]
+I/tvos    (  983): [*Sharp_DB*] [u8Index: 34] [enARCType_HD_720 : 1]
+I/tvos    (  983): [*Sharp_DB*] [u8Index: 34] [enARCType_HD_1080 : 1]
+I/tvos    (  983): [*Sharp_DB*] [u8Index: 34] [enARCType_DVI : 1]
+I/tvos    (  983): [BACKLIGHT] SetBacklightCtrlMode, eBLCtrlMode :0, Osd :100, Picture Mode :2, Scan : 0, Freeze :0, AC : 0
+I/MyApps:select =( 1552): select * from appLaunchCountList where pkgname = ?
+I/TEST    ( 1478): setBacklight ... newPara = 100
+I/TEST    ( 1478): SetActiveContrast ... value = 0
+I/MyApps:select =( 1552): select * from appLaunchCountList where pkgname = ?
+I/MyApps:select =( 1552): select * from appLaunchCountList where pkgname = ?
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/dalvikvm( 1552): GC_FOR_ALLOC freed 102K, 28% free 27293K/37904K, paused 19ms, total 19ms
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating content://mstar.tv.usersetting/picmode_setting/inputsrc/34/picmode/2
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating u8Brightness=30 eDynamicBacklight=0 eColorTemp=1 eDynamicContrast=0 u8Hue=30 eVibrantColour=0 u8Contrast=30 eNR=4 u8Saturation=38 u8Sharpness=12 ePerfectClear=0 u8Backlight=100 eActiveContrast=0
+I/tanweiwei( 1478): thread name = tv_db_handlerThread
+E/DataBaseDeskImpl( 1478): ===========>>>> now change Index = 34
+I/dalvikvm-heap( 1552): Grow heap (frag case) to 35.972MB for 9437200-byte allocation
+D/1105    ( 1314): AblHandler  modeValue:0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+I/PlayerImpl_JNI( 1478): isSignalStable
+D/dalvikvm( 1552): GC_FOR_ALLOC freed 2K, 23% free 36507K/47124K, paused 19ms, total 19ms
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 3
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:2  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.myapps
+I/pack    ( 1478): ***top activity class=com.sharp.myapps.activity.MainActivity
+D/dalvikvm( 1552): GC_CONCURRENT freed 0K, 23% free 36507K/47124K, paused 4ms+2ms, total 25ms
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/MyApps:select =( 1552): select * from appLaunchCountList where pkgname = ?
+I/tanweiwei( 1552): windowFocusChanged has been called hasFocus = true
+I/tanweiwei( 1552): windowFocusChanged has been called hasFocus = false
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/tanweiwei( 1552): MSG_WINDOW_FOCUS_CHANGED has been received
+W/InputMethodManagerService( 1314): Window already focused, ignoring focus gain of: com.android.internal.view.IInputMethodClient$Stub$Proxy@42584ae0 attribute=null, token = android.os.BinderProxy@426065b8
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/UpdateCheckService( 2006): alive
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 3
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:2  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.myapps
+I/pack    ( 1478): ***top activity class=com.sharp.myapps.activity.MainActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/TEST    ( 1478): GetActiveContrast ... eActiveContrast = 0
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating content://mstar.tv.usersetting/picmode_setting/inputsrc/1/picmode/2
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating u8Brightness=30 eDynamicBacklight=0 eColorTemp=1 eDynamicContrast=0 u8Hue=30 eVibrantColour=0 u8Contrast=30 eNR=4 u8Saturation=38 u8Sharpness=12 ePerfectClear=0 u8Backlight=100 eActiveContrast=0
+I/tanweiwei( 1478): thread name = tv_db_handlerThread
+E/DataBaseDeskImpl( 1478): ===========>>>> now change Index = 34
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating content://mstar.tv.usersetting/picmode_setting/inputsrc/28/picmode/2
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating u8Brightness=30 eDynamicBacklight=0 eColorTemp=1 eDynamicContrast=0 u8Hue=30 eVibrantColour=0 u8Contrast=30 eNR=4 u8Saturation=38 u8Sharpness=12 ePerfectClear=0 u8Backlight=100 eActiveContrast=0
+I/tanweiwei( 1478): thread name = tv_db_handlerThread
+E/DataBaseDeskImpl( 1478): ===========>>>> now change Index = 34
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating content://mstar.tv.usersetting/picmode_setting/inputsrc/23/picmode/2
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating u8Brightness=30 eDynamicBacklight=0 eColorTemp=1 eDynamicContrast=0 u8Hue=30 eVibrantColour=0 u8Contrast=30 eNR=4 u8Saturation=38 u8Sharpness=12 ePerfectClear=0 u8Backlight=100 eActiveContrast=0
+I/tanweiwei( 1478): thread name = tv_db_handlerThread
+E/DataBaseDeskImpl( 1478): ===========>>>> now change Index = 34
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating content://mstar.tv.usersetting/picmode_setting/inputsrc/24/picmode/2
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating u8Brightness=30 eDynamicBacklight=0 eColorTemp=1 eDynamicContrast=0 u8Hue=30 eVibrantColour=0 u8Contrast=30 eNR=4 u8Saturation=38 u8Sharpness=12 ePerfectClear=0 u8Backlight=100 eActiveContrast=0
+I/tanweiwei( 1478): thread name = tv_db_handlerThread
+E/DataBaseDeskImpl( 1478): ===========>>>> now change Index = 34
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating content://mstar.tv.usersetting/picmode_setting/inputsrc/25/picmode/2
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating u8Brightness=30 eDynamicBacklight=0 eColorTemp=1 eDynamicContrast=0 u8Hue=30 eVibrantColour=0 u8Contrast=30 eNR=4 u8Saturation=38 u8Sharpness=12 ePerfectClear=0 u8Backlight=100 eActiveContrast=0
+I/tanweiwei( 1478): thread name = tv_db_handlerThread
+E/DataBaseDeskImpl( 1478): ===========>>>> now change Index = 34
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating content://mstar.tv.usersetting/picmode_setting/inputsrc/16/picmode/2
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating u8Brightness=30 eDynamicBacklight=0 eColorTemp=1 eDynamicContrast=0 u8Hue=30 eVibrantColour=0 u8Contrast=30 eNR=4 u8Saturation=38 u8Sharpness=12 ePerfectClear=0 u8Backlight=100 eActiveContrast=0
+I/tanweiwei( 1478): thread name = tv_db_handlerThread
+E/DataBaseDeskImpl( 1478): ===========>>>> now change Index = 34
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating content://mstar.tv.usersetting/picmode_setting/inputsrc/2/picmode/2
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating u8Brightness=30 eDynamicBacklight=0 eColorTemp=1 eDynamicContrast=0 u8Hue=30 eVibrantColour=0 u8Contrast=30 eNR=4 u8Saturation=38 u8Sharpness=12 ePerfectClear=0 u8Backlight=100 eActiveContrast=0
+I/tanweiwei( 1478): thread name = tv_db_handlerThread
+I/TEST    ( 1478): ===========>>>>updateVideoAstPicture , NOT USER mode, Finished update------------------- 
+I/DatabaseManager_JNI( 1478): setDatabaseDirtyByApplication
+E/DataBaseDeskImpl( 1478): ===========>>>> now change Index = 34
+I/PictureManager_JNI( 1478): disableDlc
+I/PictureManager_JNI( 1478): setBacklight
+I/tvos    (  983): @@@MSrv_System_Database::GetVideoSetting[*Sharp_DB*] ./src/MSrv_System_Database_DVB_Customer.cpp[ LoadVideoSetting ]:( 720 ) u8Index:34
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/tvos    (  983): [*Sharp_DB*] LoadVideoSetting 769 
+I/tvos    (  983): [*Sharp_DB*] [u8Index: 34] [enARCType : 1]
+I/tvos    (  983): [*Sharp_DB*] [u8Index: 34] [enARCType_SD : 3]
+I/tvos    (  983): [*Sharp_DB*] [u8Index: 34] [enARCType_HD_720 : 1]
+I/tvos    (  983): [*Sharp_DB*] [u8Index: 34] [enARCType_HD_1080 : 1]
+I/tvos    (  983): [*Sharp_DB*] [u8Index: 34] [enARCType_DVI : 1]
+I/tvos    (  983): [BACKLIGHT] SetBacklightCtrlMode, eBLCtrlMode :0, Osd :100, Picture Mode :2, Scan : 0, Freeze :0, AC : 0
+I/TEST    ( 1478): setBacklight ... newPara = 100
+I/TEST    ( 1478): SetActiveContrast ... value = 0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating content://mstar.tv.usersetting/picmode_setting/inputsrc/34/picmode/2
+E/USP     ( 1492): ~~~~~~~~~@@@@ now updating u8Brightness=30 eDynamicBacklight=0 eColorTemp=1 eDynamicContrast=0 u8Hue=30 eVibrantColour=0 u8Contrast=30 eNR=4 u8Saturation=38 u8Sharpness=12 ePerfectClear=0 u8Backlight=100 eActiveContrast=0
+I/tanweiwei( 1478): thread name = tv_db_handlerThread
+E/DataBaseDeskImpl( 1478): ===========>>>> now change Index = 34
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+D/dalvikvm( 1492): GC_CONCURRENT freed 468K, 26% free 2683K/3596K, paused 1ms+1ms, total 14ms
+D/dalvikvm( 1492): WAIT_FOR_CONCURRENT_GC blocked 2ms
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 3
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:2  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.myapps
+I/pack    ( 1478): ***top activity class=com.sharp.myapps.activity.MainActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/WindowManager( 1314): interceptKeyBeforeDispatching event = KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_DPAD_DOWN, scanCode=108, metaState=0, flags=0x8, repeatCount=0, eventTime=14138520, downTime=14138520, deviceId=3, source=0x101 }
+I/WindowManager( 1314): ,mKeyBootEnable = true,mKeyEnable = true,ENABLE_IR_KEY_FOR_INPUT = true,ENABLE_IR_KEY = true,ENABLE_KEYPAD_KEY = true
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching in queryHomeStore() = 0
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching not in condition
+V/PinyinIME( 1536): onKeyDown:20
+I/PinyinIME( 1536): onKeyDown:System handler the keyevent
+I/tanweiwei( 1552): ************************************************
+I/tanweiwei( 1552): mAttachInfo.mHasWindowFocus = true  q.mEvent.isFromSource(InputDevice.SOURCE_CLASS_POINTER) = false  isTerminalInputEvent(q.mEvent) = false
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/WindowManager( 1314): interceptKeyBeforeDispatching event = KeyEvent { action=ACTION_UP, keyCode=KEYCODE_DPAD_DOWN, scanCode=108, metaState=0, flags=0x8, repeatCount=0, eventTime=14138672, downTime=14138520, deviceId=3, source=0x101 }
+I/WindowManager( 1314): ,mKeyBootEnable = true,mKeyEnable = true,ENABLE_IR_KEY_FOR_INPUT = true,ENABLE_IR_KEY = true,ENABLE_KEYPAD_KEY = true
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching in queryHomeStore() = 0
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching not in condition
+I/PinyinIME( 1536): onKeyUp:20
+I/PinyinIME( 1536): onKeyUp:System handler the keyevent
+I/tanweiwei( 1552): ************************************************
+I/tanweiwei( 1552): mAttachInfo.mHasWindowFocus = true  q.mEvent.isFromSource(InputDevice.SOURCE_CLASS_POINTER) = false  isTerminalInputEvent(q.mEvent) = true
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 3
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:2  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.myapps
+I/pack    ( 1478): ***top activity class=com.sharp.myapps.activity.MainActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+I/WindowManager( 1314): interceptKeyBeforeDispatching event = KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_ENTER, scanCode=28, metaState=0, flags=0x8, repeatCount=0, eventTime=14139332, downTime=14139332, deviceId=3, source=0x101 }
+I/WindowManager( 1314): ,mKeyBootEnable = true,mKeyEnable = true,ENABLE_IR_KEY_FOR_INPUT = true,ENABLE_IR_KEY = true,ENABLE_KEYPAD_KEY = true
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching in queryHomeStore() = 0
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching not in condition
+V/PinyinIME( 1536): onKeyDown:66
+I/PinyinIME( 1536): onKeyDown:System handler the keyevent
+I/tanweiwei( 1552): ************************************************
+I/tanweiwei( 1552): mAttachInfo.mHasWindowFocus = true  q.mEvent.isFromSource(InputDevice.SOURCE_CLASS_POINTER) = false  isTerminalInputEvent(q.mEvent) = false
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 3
+I/pack    ( 1478): y:0  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:2  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=com.sharp.myapps
+I/pack    ( 1478): ***top activity class=com.sharp.myapps.activity.MainActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/WindowManager( 1314): interceptKeyBeforeDispatching event = KeyEvent { action=ACTION_UP, keyCode=KEYCODE_ENTER, scanCode=28, metaState=0, flags=0x8, repeatCount=0, eventTime=14139484, downTime=14139332, deviceId=3, source=0x101 }
+I/WindowManager( 1314): ,mKeyBootEnable = true,mKeyEnable = true,ENABLE_IR_KEY_FOR_INPUT = true,ENABLE_IR_KEY = true,ENABLE_KEYPAD_KEY = true
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching in queryHomeStore() = 0
+I/PhoneWindowManager( 1314): interceptKeyBeforeDispatching not in condition
+I/PinyinIME( 1536): onKeyUp:66
+I/PinyinIME( 1536): onKeyUp:System handler the keyevent
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/tanweiwei( 1552): ************************************************
+I/tanweiwei( 1552): mAttachInfo.mHasWindowFocus = true  q.mEvent.isFromSource(InputDevice.SOURCE_CLASS_POINTER) = false  isTerminalInputEvent(q.mEvent) = true
+I/ActivityManager( 1314): START u0 {flg=0x10000000 cmp=tv.ismar.daisy/.ui.activity.AdvertisementActivity} from pid 1552
+D/SurfaceFlinger(  976): mGlobalTransform change successfully has4k2kLayer= 1
+D/SurfaceFlinger(  976): mGlobalTransform change successfully has4k2kLayer= 0
+D/dalvikvm( 1314): GC_FOR_ALLOC freed 856K, 35% free 7815K/11900K, paused 38ms, total 38ms
+V/ActivityManager( 1314): r3) packageName=tv.ismar.daisy finishing=false
+V/ActivityManager( 1314): r2) packageName=com.sharp.myapps finishing=false
+V/ActivityManager( 1314): add to pkglist=com.antutu.ABenchMark
+V/ActivityManager( 1314): add to pkglist=com.android.browser
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/ActivityManager( 1314): /system/bin/sh /system/etc/specify_mem_location.sh falseset memory location done
+V/ActivityManager( 1314): add to pkglist=com.antutu.ABenchMark
+V/ActivityManager( 1314): add to pkglist=com.android.browser
+V/ActiveAndroid( 3178): SELECT * FROM advertisement WHERE start_date < ? AND end_date > ? AND everyday_time_from < ? AND everyday_time_to > ? 1442294798088,1442294798088,19598000,19598000
+D/AdvertisementActivity( 3178): fetch advertisement path: file:///android_asset/poster.png
+V/ActiveAndroid( 3178): SELECT * FROM app_district LIMIT 1 
+V/ActiveAndroid( 3178): SELECT * FROM app_province LIMIT 1 
+V/ActiveAndroid( 3178): SELECT * FROM app_city LIMIT 1 
+I/ActivityManager( 1314): /system/bin/sh /system/etc/specify_mem_location.sh falseset memory location done
+I/tanweiwei( 1552): windowFocusChanged has been called hasFocus = false
+I/tanweiwei( 1552): MSG_WINDOW_FOCUS_CHANGED has been received
+D/dalvikvm( 3178): GC_FOR_ALLOC freed 1399K, 9% free 18267K/19996K, paused 40ms, total 40ms
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/dalvikvm-heap( 3178): Grow heap (frag case) to 26.066MB for 8294416-byte allocation
+D/dalvikvm( 3178): GC_FOR_ALLOC freed 18K, 7% free 26348K/28100K, paused 32ms, total 32ms
+V/ActiveAndroid( 3178): SELECT * FROM app_isp LIMIT 1 
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+I/tanweiwei( 3178): windowFocusChanged has been called hasFocus = true
+D/1105    ( 1314): AblHandler  modeValue:0
+I/PlayerImpl_JNI( 1478): isSignalStable
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 4
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:2  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:3  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.AdvertisementActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/tanweiwei( 3178): MSG_WINDOW_FOCUS_CHANGED has been received
+W/InputMethodManagerService( 1314): Window already focused, ignoring focus gain of: com.android.internal.view.IInputMethodClient$Stub$Proxy@424ccb10 attribute=null, token = android.os.BinderProxy@4259dc38
+I/ActivityManager( 1314): Displayed tv.ismar.daisy/.ui.activity.AdvertisementActivity: +390ms
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+I/pack    ( 1478): taskList.size() = 4
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:2  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:3  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.AdvertisementActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/JavaHttpClient( 3178): ---> BEGIN
+I/JavaHttpClient( 3178): 	<--- Request URL: 	http://wx.api.tvxio.com/shipinkefu/getCdninfo?actiontype=getcdnlist
+I/JavaHttpClient( 3178): 	<--- Request Method: 	GET
+I/JavaHttpClient( 3178): 	<--- Response Code: 	200
+I/JavaHttpClient( 3178): 	<--- Response Result: 	{"cdn_list":[{"cdnID":15,"flag":4,"name":"帝联CDN|第三方15","route_trace":17,"url":"jq.dnion.tvxio.com|live.dn.tvxio.com|"},{"cdnID":17,"flag":0,"name":"北京长宽|华北长宽17","route_trace":48,"url":"124.193.205.206|124.193.205.206|"},{"cdnID":21,"flag":0,"name":"广州长城|华南长宽21","route_trace":48,"url":"211.162.59.69|211.162.59.69|"},{"cdnID":22,"flag":0,"name":"福州电信|华南电信22","route_trace":48,"url":"117.27.153.146|117.27.153.153|117.27.153.147|117.27.153.146|"},{"cdnID":24,"flag":0,"name":"宜昌电信|华中电信24","route_trace":48,"url":"61.183.52.26|61.183.52.60|61.183.52.112|61.183.52.26|"},{"cdnID":28,"flag":0,"name":"太仓电信|华东电信28","route_trace":48,"url":"180.97.81.107|180.97.81.168|180.97.81.59|180.97.80.2|180.97.81.37|180.97.81.107|180.97.81.168|180.97.81.59|"},{"cdnID":31,"flag":0,"name":"上海长宽|华东长宽31","route_trace":48,"url":"124.14.8.177|124.14.8.178|124.14.8.177|"},{"cdnID":34,"flag":0,"name":"济宁联通|华北联通34","route_trace":48,"url":"218.59.145.20|218.59.145.21|218.59.145.22|218.59.145.24|218.59.145.27|218.59.145.22|218.59.145.24|"},{"cdnID":35,"flag":0,"name":"德阳电信|西南电信35","route_trace":48,"url":"220.167.104.130|220.167.101.30|220.167.104.130|"},{"cdnID":36,"flag":0,"name":"西安电信|华北电信36","route_trace":48,"url":"117.34.39.194|117.34.39.197|117.34.39.194|"},{"cdnID":37,"flag":0,"name":"中山电信|华南电信37","route_trace":48,"url":"14.17.126.54|14.17.126.55|14.17.126.57|14.17.126.56|14.17.126.54|14.17.126.55|"},{"cdnID":38,"flag":0,"name":"鲁谷多线|华北多线38","route_trace":48,"url":"124.202.157.13|124.202.157.13|"},{"cdnID":46,"flag":0,"name":"武汉长宽|华中长宽46","route_trace":48,"url":"211.161.152.126|211.161.152.126|"},{"cdnID":52,"flag":0,"name":"嘉兴电信|华东电信52","route_trace":48,"url":"122.225.36.19|122.225.36.20|122.225.36.19|122.225.36.20|"},{"cdnID":56,"flag":0,"name":"天津电信|华北电信56","route_trace":48,"url":"123.150.198.187|123.150.198.189|123.150.198.187|"},{"cdnID":58,"flag":0,"name":"长沙电信|华中电信58","route_trace":48,"url":"175.6.4.173|175.6.4.186|175.6.4.179|175.6.4.173|"},{"cdnID":59,"flag":0,"name":"南昌电信|华中电信59","route_trace":48,"url":"117.41.176.68|117.41.176.69|117.41.176.68|"},{"cdnID":72,"flag":0,"name":"郑州联通|华中联通72","route_trace":48,"url":"182.118.62.245|182.118.62.246|182.118.62.247|182.118.62.245|"},{"cdnID":74,"flag":0,"name":"沈阳电信|东北电信74","route_trace":48,"url":"59.46.13.33|59.46.13.38|59.46.13.33|"},{"cdnID":75,"flag":0,"name":"杭州移动|华东移动75","route_trace":48,"url":"211.138.121.20|211.138.121.19|211.138.121.20|"},{"cdnID":76,"flag":0,"name":"北京长宽2|华北长宽76","route_trace":48,"url":"124.207.119.45|124.207.119.45|"},{"cdnID":77,"flag":0,"name":"长春联通|东北联通77","route_trace":48,"url":"222.161.212.183|222.161.212.188|222.161.212.183|"},{"cdnID":78,"flag":0,"name":"福建移动|华南移动78","route_trace":48,"url":"112.5.254.45|112.5.254.45|"},{"cdnID":79,"flag":0,"name":"南宁电信|华南电信79","route_trace":48,"url":"171.107.82.2|171.107.82.2|"},{"cdnID":80,"flag":0,"name":"绍兴电信|华东电信80","route_trace":48,"url":"115.239.229.131|115.239.229.132|115.239.229.133|115.239.229.134|115.239.229.131|"},{"cdnID":85,"flag":0,"name":"宜宾电信|西南电信85","route_trace":48,"url":"125.64.133.114|125.64.133.117|125.64.133.114|"},{"cdnID":86,"flag":0,"name":"佛山电信|华南电信","route_trace":48,"url":"14.17.101.130|14.17.101.131|14.17.101.133|"},{"cdnID":87,"flag":0,"name":"南京移动|华东移动87","route_trace":48,"url":"112.25.11.29|112.25.11.29|"},{"cdnID":91,"flag":0,"name":"合肥电信二|华中电信91","route_trace":48,"url":"61.191.52.10|61.191.52.12|61.191.52.10|"},{"cdnID":95,"flag":0,"name":"
+V/ActiveAndroid( 3178): DELETE FROM app_cdn 
+D/UpdateCheckService( 2006): alive
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+I/tvos    (  983): [0;45m [WDT_CLR][./src/MSrv_Control_common.cpp] [HeartBeatMonitor] [4102][0m 
+D/1105    ( 1314): AblHandler  modeValue:0
+I/PlayerImpl_JNI( 1478): isSignalStable
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 4
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:2  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:3  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.AdvertisementActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 4
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:2  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:3  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.AdvertisementActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 4
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:2  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:3  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.AdvertisementActivity
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 4
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:2  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:3  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.AdvertisementActivity
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 4
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:2  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:3  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.AdvertisementActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 4
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:2  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:3  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.AdvertisementActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/UpdateCheckService( 2006): alive
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 4
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:2  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:3  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.AdvertisementActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 4
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:2  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:3  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.AdvertisementActivity
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+I/ActivityManager( 1314): START u0 {flg=0x4000000 cmp=tv.ismar.daisy/.ui.activity.TVGuideActivity} from pid 3178
+D/SurfaceFlinger(  976): mGlobalTransform change successfully has4k2kLayer= 1
+D/SurfaceFlinger(  976): mGlobalTransform change successfully has4k2kLayer= 0
+I/PlayerImpl_JNI( 1478): isSignalStable
+D/dalvikvm( 1314): GC_FOR_ALLOC freed 1225K, 37% free 7529K/11900K, paused 39ms, total 39ms
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 4
+I/tanweiwei( 3178): windowFocusChanged has been called hasFocus = false
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:2  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:3  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.AdvertisementActivity
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+V/ActivityManager( 1314): r4) packageName=tv.ismar.daisy finishing=false
+V/ActivityManager( 1314): r3) packageName=tv.ismar.daisy finishing=true
+V/ActivityManager( 1314): add to pkglist=com.antutu.ABenchMark
+V/ActivityManager( 1314): add to pkglist=com.android.browser
+I/ActivityManager( 1314): /system/bin/sh /system/etc/specify_mem_location.sh falseset memory location done
+V/ActivityManager( 1314): add to pkglist=com.antutu.ABenchMark
+V/ActivityManager( 1314): add to pkglist=com.android.browser
+I/ActivityManager( 1314): /system/bin/sh /system/etc/specify_mem_location.sh falseset memory location done
+I/tanweiwei( 3178): MSG_WINDOW_FOCUS_CHANGED has been received
+I/openSDK_LOG.Tencent( 3178): createInstance()  -- start
+I/openSDK_LOG.Tencent( 3178): createInstance()  -- end
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+V/ActiveAndroid( 3178): SELECT * FROM app_city WHERE city = ? LIMIT 1 上海
+I/IsmartvClient:( 3178): ---> BEGIN
+I/IsmartvClient:( 3178): 	<--- Request URL: 	http://media.lily.tvxio.com/101020100.json?device_token=4H_7SommuBxjC48mlo0wQE1YB67BxHPL1G5VC2qhAWc=&access_token=
+I/IsmartvClient:( 3178): 	<--- Request Method: 	GET
+I/IsmartvClient:( 3178): 	<--- Response Code: 	200
+I/IsmartvClient:( 3178): 	<--- Response Result: 	{"name_en": "Shanghai", "tomorrow": {"date": "2015-09-10", "wind_direction": "微风", "phenomenon": "多云", "wind_power": "小于3", "temperature": 29}, "name": "上海", "today": {"date": "2015-09-09", "wind_direction": "东北风", "phenomenon": "晴转多云", "wind_power": "小于3", "temperature": "22~29"}, "geoid": "101020100"}
+I/IsmartvClient:( 3178): 	---> END
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+W/ActivityManager( 1314): Unable to start service Intent { cmp=tv.ismar.daisy/.core.service.PosterUpdateService } U=0: not found
+V/fingerprintutil( 3178): macaddress = 00:30:1b:ba:02:db
+I/zjqtestismartv( 3178): sn==12c3dc85bf7b872d92646c22ffbb70f6sonic
+D/MD5Utils( 3178): not md5 ---> 12c3dc85bf7b872d92646c22ffbb70f6sonic
+D/MD5Utils( 3178): md5 ---> c20fd6cf8ac3b9b54189f89c490e9bb9
+D/MD5Utils( 3178): not md5 ---> 12c3dc85bf7b872d92646c22ffbb70f6
+D/MD5Utils( 3178): md5 ---> 9da7bf6a03be68366b1b67a675e845da
+I/qazwsx  ( 3178): sn==12c3dc85bf7b872d92646c22ffbb70f6//fingerprint==9da7bf6a03be68366b1b67a675e845da
+D/Activator( 3178): key is :12c3dc85bf7b872d92646c22ffbb70f6
+D/Nativt_Activator( 3178): 111key is ---> 12c3dc85bf7b872d92646c22ffbb70f6
+D/Nativt_Activator( 3178): paht is --->/data/data/tv.ismar.daisy/files/sign1
+D/Nativt_Activator( 3178): open file success
+D/Nativt_Activator( 3178): file length is 256, count is 16
+D/Nativt_Activator( 3178): 12c3dc85bf7b872d92646c22ffbb70f6$$$
+D/Nativt_Activator( 3178): MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCPyK8QIAZj/JNGVLYKGxFbUuBO
+D/Nativt_Activator( 3178): 0Lvfgi+dsQ5dcbbQqNwFb1VwcWjvddCvILY+RM5Lq4mAWJxf0QSsLsFMhy3znhsI
+D/Nativt_Activator( 3178): TQsQUQ1EMYVDV5zhSKIHQDgbczGqi9aGSPnpO9vfNRAB2CGoU1S8jCD/cbn+nrXF
+D/Nativt_Activator( 3178): oFC8IwUk3NJp/SR9nwIDAQAB
+D/Nativt_Activator( 3178): 
+D/Activator( 3178): native result is ---> 12c3dc85bf7b872d92646c22ffbb70f6$$$
+D/Activator( 3178): MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCPyK8QIAZj/JNGVLYKGxFbUuBO
+D/Activator( 3178): 0Lvfgi+dsQ5dcbbQqNwFb1VwcWjvddCvILY+RM5Lq4mAWJxf0QSsLsFMhy3znhsI
+D/Activator( 3178): TQsQUQ1EMYVDV5zhSKIHQDgbczGqi9aGSPnpO9vfNRAB2CGoU1S8jCD/cbn+nrXF
+D/Activator( 3178): oFC8IwUk3NJp/SR9nwIDAQAB
+D/Activator( 3178): public key is ---> 
+D/Activator( 3178): MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCPyK8QIAZj/JNGVLYKGxFbUuBO
+D/Activator( 3178): 0Lvfgi+dsQ5dcbbQqNwFb1VwcWjvddCvILY+RM5Lq4mAWJxf0QSsLsFMhy3znhsI
+D/Activator( 3178): TQsQUQ1EMYVDV5zhSKIHQDgbczGqi9aGSPnpO9vfNRAB2CGoU1S8jCD/cbn+nrXF
+D/Activator( 3178): oFC8IwUk3NJp/SR9nwIDAQAB
+D/Activator( 3178): RSA 签名ismartv=201415&kind=sky&sn=12c3dc85bf7b872d92646c22ffbb70f6
+V/rsa_edcrypt( 3178): online md5content==1fb7084823085d89856d910d62376925
+D/Activator( 3178): RSA 加密hldkFdCeFkASLrNF4aX+FMVG9Z30feimLFiQFTYAn96fdPbJVjiVee8FZC5KOSZ8
+D/Activator( 3178): lFmq8xaVnfzKrvOmynRBADsw9/lmtnDaTdM1Yj5H1/tEwUirOrHAZwC5u0tpCTz+
+D/Activator( 3178): 2GwyGpsboZ2w5ISMB/yoZOEvh4rU2kwhU4bvkhjB810=
+I/zjqtestismartv( 3178): hh
+D/MD5Utils( 3178): not md5 ---> unknownJLS36G
+D/MD5Utils( 3178): md5 ---> aa9a897ef0881555d6203c2032cf3c2f
+D/MD5Utils( 3178): not md5 ---> unknownJLS36G
+D/MD5Utils( 3178): md5 ---> aa9a897ef0881555d6203c2032cf3c2f
+I/zjqtestismartv( 3178): hh
+D/MD5Utils( 3178): not md5 ---> unknownJLS36G
+D/MD5Utils( 3178): md5 ---> aa9a897ef0881555d6203c2032cf3c2f
+D/MD5Utils( 3178): not md5 ---> unknownJLS36G
+D/MD5Utils( 3178): md5 ---> aa9a897ef0881555d6203c2032cf3c2f
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/Retrofit( 3178): ---> HTTP POST http://sky.tvxio.com/trust/security/active/
+D/Retrofit( 3178): Pragma: no-cache
+D/Retrofit( 3178): Cache-Control: no-cache
+D/Retrofit( 3178): Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+D/Retrofit( 3178): Content-Length: 531
+D/Retrofit( 3178): sn=12c3dc85bf7b872d92646c22ffbb70f6&manufacture=sky&kind=sky&version=110&sign=hldkFdCeFkASLrNF4aX%2BFMVG9Z30feimLFiQFTYAn96fdPbJVjiVee8FZC5KOSZ8%0AlFmq8xaVnfzKrvOmynRBADsw9%2FlmtnDaTdM1Yj5H1%2FtEwUirOrHAZwC5u0tpCTz%2B%0A2GwyGpsboZ2w5ISMB%2FyoZOEvh4rU2kwhU4bvkhjB810%3D%0A&fingerprint=9da7bf6a03be68366b1b67a675e845da&api_version=v2_0&info=%7B%22serial%22%3A%22unknown%22%2C%22fingerprintE%22%3A%22aa9a897ef0881555d6203c2032cf3c2f%22%2C%22versionName%22%3A%22110%22%2C%22fingerprintD%22%3A%22JLS36G%5C%2F%5C%2Funknown%22%7D%2F%2F%2F
+D/Retrofit( 3178): ---> END HTTP (531-byte body)
+I/tanweiwei( 3178): windowFocusChanged has been called hasFocus = true
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/Retrofit( 3178): <--- HTTP 400 http://sky.tvxio.com/trust/security/active/ (94ms)
+D/Retrofit( 3178): Server: nginx
+D/Retrofit( 3178): Date: Tue, 15 Sep 2015 05:26:39 GMT
+D/Retrofit( 3178): Content-Type: application/json; charset=utf-8
+D/Retrofit( 3178): Transfer-Encoding: chunked
+D/Retrofit( 3178): Connection: keep-alive
+D/Retrofit( 3178): Expires: Tue, 15 Sep 2015 05:26:39 GMT
+D/Retrofit( 3178): Vary: Accept, Cookie
+D/Retrofit( 3178): Last-Modified: Tue, 15 Sep 2015 05:26:39 GMT
+D/Retrofit( 3178): Allow: POST, OPTIONS
+D/Retrofit( 3178): Cache-Control: max-age=0
+D/Retrofit( 3178): X-Frame-Options: SAMEORIGIN
+D/Retrofit( 3178): OkHttp-Selected-Protocol: http/1.1
+D/Retrofit( 3178): OkHttp-Sent-Millis: 1442294803746
+D/Retrofit( 3178): OkHttp-Received-Millis: 1442294803790
+D/Retrofit( 3178): {"msg": "\u5b58\u5728\u65e0\u6548\u7684\u5b57\u7b26"}
+I/tanweiwei( 3178): MSG_WINDOW_FOCUS_CHANGED has been received
+D/1105    ( 1314): AblHandler  modeValue:0
+W/InputMethodManagerService( 1314): Window already focused, ignoring focus gain of: com.android.internal.view.IInputMethodClient$Stub$Proxy@4250d348 attribute=null, token = android.os.BinderProxy@4255c940
+D/Retrofit( 3178): <--- END HTTP (53-byte body)
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 4
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:2  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:3  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.TVGuideActivity
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+E/TVGuideActivity( 3178): active error: 激活失败
+I/ActivityManager( 1314): Displayed tv.ismar.daisy/.ui.activity.TVGuideActivity: +517ms
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/tanweiwei( 3178): windowFocusChanged has been called hasFocus = true
+I/tanweiwei( 3178): MSG_WINDOW_FOCUS_CHANGED has been received
+W/InputMethodManagerService( 1314): Window already focused, ignoring focus gain of: com.android.internal.view.IInputMethodClient$Stub$Proxy@4255f308 attribute=null, token = android.os.BinderProxy@424bcf78
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/tanweiwei( 3178): windowFocusChanged has been called hasFocus = false
+I/tanweiwei( 3178): MSG_WINDOW_FOCUS_CHANGED has been received
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 4
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:2  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:3  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.TVGuideActivity
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/tvos    (  983): [0;45m [WDT_CLR][./src/MSrv_Control_common.cpp] [HeartBeatMonitor] [4102][0m 
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 4
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:2  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:3  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.TVGuideActivity
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/UpdateCheckService( 2006): alive
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/dalvikvm( 1492): GC_EXPLICIT freed 151K, 25% free 2712K/3592K, paused 2ms+2ms, total 19ms
+D/1105    ( 1314): AblHandler  modeValue:0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 4
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:2  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:3  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.TVGuideActivity
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 4
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:2  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:3  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.TVGuideActivity
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 4
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:2  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:3  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.TVGuideActivity
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 4
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:2  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:3  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.TVGuideActivity
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 4
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:2  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:3  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.TVGuideActivity
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 4
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:2  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:3  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.TVGuideActivity
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/UpdateCheckService( 2006): alive
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/dalvikvm( 1314): GC_CONCURRENT freed 885K, 35% free 7787K/11900K, paused 3ms+4ms, total 46ms
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 4
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:2  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:3  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.TVGuideActivity
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): ++timerdiff >= mTimerDiffTh/POLLING_INTERVAL_MS; 11111
+I/EcoThread( 1314): EcoModeFlag == false
+D/1105    ( 1314): EcoThread,checkOflMode(); 11111
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1314): isSignalStable
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/AblHandler( 1314): bLunch: false bUnderTvApp: false bLunchTVUI:false bFactoryMode:false bKMode:false
+D/1105    ( 1314): AblHandler  modeValue:0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+I/PlayerImpl_JNI( 1478): isSignalStable
+I/PlayerImpl_JNI( 1478): getVideoInfo
+I/pack    ( 1478): taskList.size() = 4
+I/pack    ( 1478): y:0  , packageName_2 = tv.ismar.daisy
+I/pack    ( 1478): y:1  , packageName_2 = com.sharp.myapps
+I/pack    ( 1478): y:2  , packageName_2 = com.sharp.launcher
+I/pack    ( 1478): y:3  , packageName_2 = com.android.settings
+I/pack    ( 1478): ***top activity package=tv.ismar.daisy
+I/pack    ( 1478): ***top activity class=tv.ismar.daisy.ui.activity.TVGuideActivity
+D/EcoThread( 1314): not standard of AV mode
+D/1105    ( 1314): EcoThread,while....
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
+D/1105    ( 1314): LimitterHandle ecooflrate===1.0
