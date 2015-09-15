@@ -241,7 +241,7 @@ public class DaisyVideoView extends SurfaceView implements MediaPlayerControl {
 			//player.setOnInfoListener(mInfoChangedListener);
 			player.setOnBufferingUpdateListener(mBufferingUpdateListener);
 			mCurrentBufferPercentage = 0;
-			mHeaders.put("User-Agent", Build.MODEL+"/"+SimpleRestClient.appVersion+" "+SimpleRestClient.sn_token);
+			//mHeaders.put("User-Agent", Build.MODEL+"/"+SimpleRestClient.appVersion+" "+SimpleRestClient.sn_token);
 			player.setDataSource(mContext, mUri, mHeaders);
 //	        player.setDataSource(m);
 			player.setDisplay(mSurfaceHolder);

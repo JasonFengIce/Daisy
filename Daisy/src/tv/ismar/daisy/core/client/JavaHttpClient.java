@@ -75,7 +75,6 @@ public class JavaHttpClient {
             client.setConnectTimeout(10, TimeUnit.SECONDS);
             Request request = new Request.Builder()
                     .url(api)
-                    .addHeader("User-Agent", Build.MODEL+"/"+ SimpleRestClient.appVersion+" "+SimpleRestClient.sn_token)
                     .build();
 
             Response response;
