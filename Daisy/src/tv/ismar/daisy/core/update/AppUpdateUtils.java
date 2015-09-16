@@ -146,7 +146,7 @@ public class AppUpdateUtils {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                checkUpdate(appUpdateHost);
+//                checkUpdate(appUpdateHost);
             }
         }.start();
     }

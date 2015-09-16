@@ -355,7 +355,6 @@
 
         <provider
                 android:authorities="cn.ismartv.daisy.provider.location"
-                android:permission="tv.ismar.daisy.location"
                 android:name=".core.provider.LocationProvider"
                 android:exported="true"
                 />
