@@ -91,7 +91,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     private boolean mIndicatorLostFocus = false;
 
-    private IndicatorType mIndicatorType;
+    private IndicatorType mIndicatorType = IndicatorType.STORE;
 
     private SharedPreferences.OnSharedPreferenceChangeListener changeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
@@ -145,9 +145,12 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
         String flag = getIntent().getStringExtra("flag");
         if (!TextUtils.isEmpty(flag) && flag.equals(LOCATION_FRAGMENT)) {
+            mIndicatorType = IndicatorType.LOCATION;
             getSupportFragmentManager().beginTransaction().add(R.id.user_center_container, locationFragment).commit();
             indicatorView.get(5).setBackgroundResource(R.drawable.usercenter_table_focus);
+
         } else {
+            mIndicatorType = IndicatorType.STORE;
             getSupportFragmentManager().beginTransaction().add(R.id.user_center_container, storeFragment).commit();
             indicatorView.get(0).setBackgroundResource(R.drawable.usercenter_table_focus);
             indicatorView.get(0).setFocusable(true);
@@ -163,8 +166,8 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onPause() {
         super.onPause();
-        if(messageHandler.hasMessages(MSG_INDICATOR_CHANGE))
-        messageHandler.removeMessages(MSG_INDICATOR_CHANGE);
+        if (messageHandler.hasMessages(MSG_INDICATOR_CHANGE))
+            messageHandler.removeMessages(MSG_INDICATOR_CHANGE);
     }
 
     @Override
@@ -661,12 +664,12 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         int currentViewId = v.getId();
         switch (v.getId()) {
             case R.string.usercenter_store:
-                 if(!isDestroyed())
-                     getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, storeFragment).commitAllowingStateLoss();
+                if (!isDestroyed())
+                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, storeFragment).commitAllowingStateLoss();
                 break;
             case R.string.usercenter_userinfo:
-                if(!isDestroyed())
-                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, userInfoFragment).commitAllowingStateLoss();
+                if (!isDestroyed())
+                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, userInfoFragment).commitAllowingStateLoss();
                 break;
             case R.string.usercenter_login:
                 // getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, loginFragment).commit();
@@ -674,15 +677,15 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 loginQQorWX();
                 break;
             case R.string.usercenter_purchase_history:
-                if(!isDestroyed())
-                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, historyFragment).commitAllowingStateLoss();
+                if (!isDestroyed())
+                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, historyFragment).commitAllowingStateLoss();
                 break;
             case R.string.usercenter_help:
-                if(!isDestroyed())
-                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, helpFragment).commitAllowingStateLoss();
+                if (!isDestroyed())
+                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, helpFragment).commitAllowingStateLoss();
                 break;
             case R.string.usercenter_location:
-                if(!isDestroyed()){
+                if (!isDestroyed()) {
                     locationFragment.focus = indicatorView.get(5);
                     getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, locationFragment).commitAllowingStateLoss();
                 }
