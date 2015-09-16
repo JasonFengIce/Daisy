@@ -90,6 +90,7 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 		holder.title.setText(mItemList.get(position).title);
 		holder.qualityLabel = (ImageView) convertView.findViewById(R.id.list_item_quality_label);
 		holder.ItemBeanScore = (TextView)convertView.findViewById(R.id.ItemBeanScore);
+        holder.price = (TextView)convertView.findViewById(R.id.expense_txt);
 		if(mItemList.get(position).bean_score>0){
 			holder.ItemBeanScore.setText(""+mItemList.get(position).bean_score);
 			holder.ItemBeanScore.setVisibility(View.VISIBLE);
@@ -97,7 +98,13 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 		else{
 			holder.ItemBeanScore.setVisibility(View.INVISIBLE);
 		}
-
+        if(mItemList.get(position).expense!=null){
+            holder.price.setText("￥"+mItemList.get(position).expense.price);
+            holder.price.setVisibility(View.VISIBLE);
+        }
+        else{
+            holder.price.setVisibility(View.GONE);
+        }
 		return convertView;
 	}
 
@@ -106,6 +113,7 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 		TextView title;
 		ImageView qualityLabel;
 		TextView ItemBeanScore;
+        TextView price;
 	}
 	
 	public void cancel() {
