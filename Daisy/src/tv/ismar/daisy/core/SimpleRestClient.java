@@ -204,6 +204,7 @@ public class SimpleRestClient {
 
 	public HomePagerEntity getVaietyHome(String url) throws NetworkException {
 		HomePagerEntity entity = null;
+		
 		try {
 			String jsonStr = NetworkUtils.getJsonStr(url, "");
 			entity = gson.fromJson(jsonStr, HomePagerEntity.class);
@@ -280,6 +281,9 @@ public class SimpleRestClient {
 
 	public SectionList getSections(String url) throws NetworkException,
 			ItemOfflineException {
+		if (!(url.contains("https") || url.contains("http"))) {
+			url = root_url + url;
+		}
 		try {
 			String jsonStr = NetworkUtils.getJsonStr(url, "");
 			SectionList list = gson.fromJson(jsonStr, SectionList.class);
@@ -298,6 +302,9 @@ public class SimpleRestClient {
 	public ItemList getItemList(String url) throws NetworkException,
 			ItemOfflineException {
 		try {
+			if (!(url.contains("https") || url.contains("http"))) {
+				url = root_url + url;
+			}
 			String jsonStr = NetworkUtils.getJsonStr(url, "");
 			ItemList list = gson.fromJson(jsonStr, ItemList.class);
 			return list;
@@ -310,7 +317,9 @@ public class SimpleRestClient {
 
 	public Item getItem(String url) throws ItemOfflineException,
 			NetworkException, JsonSyntaxException {
-
+		if (!(url.contains("https") || url.contains("http"))) {
+			url = root_url + url;
+		}
 		String jsonStr = NetworkUtils.getJsonStr(url, "");
 		// Log.d("Item is", jsonStr);
 
