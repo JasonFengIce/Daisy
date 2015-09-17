@@ -177,9 +177,9 @@ public class FilmFragment extends ChannelBaseFragment {
 
                 Log.d(TAG, "posters size: " + posters.size());
                 Log.d(TAG, "carousels size: " + carousels.size());
-                if(scrollFromBorder){
-                	film_lefttop_image.requestFocus();
-                	((TVGuideActivity)getActivity()).resetBorderFocus();
+                if (scrollFromBorder) {
+                    film_lefttop_image.requestFocus();
+                    ((TVGuideActivity) getActivity()).resetBorderFocus();
                 }
                 initPosters(posters);
                 initCarousel(carousels);
@@ -202,6 +202,8 @@ public class FilmFragment extends ChannelBaseFragment {
         film_lefttop_image.setFocustitle(posters.get(0).getIntroduction());
         film_lefttop_image.setOnClickListener(ItemClickListener);
         film_lefttop_image.setTag(posters.get(0));
+
+        mLeftTopView = film_lefttop_image;
         for (int i = 1; i <= posters.size(); i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(199, 278);
 //            params.weight = 1;
@@ -260,7 +262,9 @@ public class FilmFragment extends ChannelBaseFragment {
                     frameLayout.setId(R.id.filmfragment_thirdpost);          	
                   }
                 guideRecommmendList.addView(frameLayout);
-
+                if (i == 1) {
+                    mLeftBottomView = frameLayout;
+                }
 
             } else {
                 params.width = 206;
@@ -272,6 +276,8 @@ public class FilmFragment extends ChannelBaseFragment {
                 morelayout.setLayoutParams(params);
                 View view = morelayout.findViewById(R.id.listmore);
                 view.setOnClickListener(ItemClickListener);
+
+                mRightBottomView = morelayout;
                 guideRecommmendList.addView(morelayout);
             }
         }
@@ -284,13 +290,14 @@ public class FilmFragment extends ChannelBaseFragment {
         mCarousels = carousels;
 
         for (int i = 0; i < carousels.size(); i++) {
+
+
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(206, 86);
             LabelImageView itemView = new LabelImageView(mContext);
-            if (i == 0){
+            if (i == 0) {
                 params.topMargin = 0;
                 itemView.setId(0x24157);
-            }
-            else
+            } else
                 params.topMargin = 17;
             if (mContext == null)
                 return;
@@ -307,6 +314,10 @@ public class FilmFragment extends ChannelBaseFragment {
             itemView.setFrontcolor(shadowcolor);
             allItem.add(itemView);
             carouselLayout.addView(itemView);
+
+            if (i == 0) {
+                mRightTopView = itemView;
+            }
         }
         playCarousel();
     }

@@ -100,6 +100,11 @@ public class GuideFragment extends ChannelBaseFragment {
             }
         });
         film_post_layout.setOnClickListener(ItemClickListener);
+
+        mLeftTopView = mSurfaceView;
+        mRightTopView = toppage_carous_imageView1;
+
+
         return mView;
     }
 
@@ -166,9 +171,9 @@ public class GuideFragment extends ChannelBaseFragment {
                 if (!posters.isEmpty()) {
                     initPosters(posters);
                 }
-                if(scrollFromBorder){
-                	film_post_layout.requestFocus();
-                	((TVGuideActivity)getActivity()).resetBorderFocus();
+                if (scrollFromBorder) {
+                    film_post_layout.requestFocus();
+                    ((TVGuideActivity) getActivity()).resetBorderFocus();
                 }
             }
 
@@ -223,7 +228,17 @@ public class GuideFragment extends ChannelBaseFragment {
             	frameLayout.setId(R.id.guidefragment_firstpost);          	
             }
             imageViews.add(frameLayout);
+            switch (i) {
+                case 0:
+                    mLeftBottomView = frameLayout;
+                    break;
+                case 7:
+                    mRightBottomView = frameLayout;
+                    break;
+            }
         }
+
+
         guideRecommmendList.addAllViews(imageViews);
 
     }

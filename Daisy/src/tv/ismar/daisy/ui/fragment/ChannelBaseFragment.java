@@ -20,6 +20,14 @@ public class ChannelBaseFragment extends Fragment {
     protected boolean scrollFromBorder;
 //    protected PlaybackService mService;
 
+    protected View mLeftTopView;
+    protected View mLeftBottomView;
+    protected View mRightTopView;
+    protected View mRightBottomView;
+
+
+
+
     
     public ChannelEntity getChannelEntity() {
         return channelEntity;

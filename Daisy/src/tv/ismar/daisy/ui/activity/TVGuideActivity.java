@@ -107,6 +107,23 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private boolean scrollFromBorder;
     private ScrollType scrollType = ScrollType.right;
 
+    private LeavePosition leavePosition = LeavePosition.RightBottom;
+
+    private enum LeavePosition {
+        LeftTop,
+        LeftBottom,
+        RightTop,
+        RightBottom
+    }
+
+    public LeavePosition getLeavePosition() {
+        return leavePosition;
+    }
+
+    public void setLeavePosition(LeavePosition leavePosition) {
+        this.leavePosition = leavePosition;
+    }
+
     private Position mCurrentChannelPosition = new Position(new Position.PositioinChangeCallback() {
         @Override
         public void onChange(int position) {
