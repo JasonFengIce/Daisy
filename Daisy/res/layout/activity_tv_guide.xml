@@ -43,7 +43,7 @@
                 />
         <TextView  android:id="@+id/toppage_divide_view"
                    android:layout_width="match_parent"
-                   android:layout_height="1dip"
+                   android:layout_height="3dip"
                    android:layout_below="@id/container"
                    android:focusable="true"
                    />
@@ -120,7 +120,7 @@
             sakura:rowHeight="@dimen/tv_guide_h_grid_view_rowHeight"
             android:fadingEdge="horizontal"
             sakura:selectorDrawable="@null"
-         
+            android:nextFocusUp="@+id/guidefragment_firstpost"
       >
     </org.sakuratya.horizontal.ui.HGridView>
     <LinearLayout

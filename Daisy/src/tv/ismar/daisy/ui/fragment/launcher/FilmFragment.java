@@ -208,6 +208,7 @@ public class FilmFragment extends ChannelBaseFragment {
 //            if (i != 7) {
 //            params.setMargins(0, 0, 28, 0);
 //            }
+
             if (i == 6) {
                 params.setMargins(0, 0, 27, 0);
             } else if (i == 7) {
@@ -252,6 +253,12 @@ public class FilmFragment extends ChannelBaseFragment {
 //                textView.setTag(posters.get(i));
                 frameLayout.setTag(posters.get(i));
                 frameLayout.setLayoutParams(params);
+                if(i ==2){
+                    frameLayout.setId(R.id.filmfragment_secondpost);          	
+                  }
+                if(i ==3){
+                    frameLayout.setId(R.id.filmfragment_thirdpost);          	
+                  }
                 guideRecommmendList.addView(frameLayout);
 
 

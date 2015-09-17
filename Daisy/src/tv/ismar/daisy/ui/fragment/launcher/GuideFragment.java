@@ -219,6 +219,9 @@ public class GuideFragment extends ChannelBaseFragment {
                     .into(itemView);
             textView.setTag(posters.get(i));
             frameLayout.setTag(posters.get(i));
+            if(i==0){
+            	frameLayout.setId(R.id.guidefragment_firstpost);          	
+            }
             imageViews.add(frameLayout);
         }
         guideRecommmendList.addAllViews(imageViews);

@@ -919,6 +919,40 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 //        scrollFromBorder = false;
         currentFragment.setChannelEntity(channelEntity);
         replaceFragment(currentFragment);
+        switch (mCurrentChannelPosition.getPosition()) {
+		case 0:
+			scroll.setNextFocusUpId(R.id.guidefragment_firstpost);
+			break;
+		case 1:
+			scroll.setNextFocusUpId(R.id.listmore);
+			break;
+		case 2:
+			scroll.setNextFocusUpId(R.id.filmfragment_thirdpost);
+			break;
+		case 3:
+			scroll.setNextFocusUpId(R.id.vaiety_channel2_image);
+			break;
+		case 4:
+			scroll.setNextFocusUpId(R.id.vaiety_channel3_image);
+			break;
+		case 5:
+			scroll.setNextFocusUpId(R.id.sport_channel4_image);
+			break;
+		case 6:
+			scroll.setNextFocusUpId(R.id.vaiety_channel4_image);
+			break;
+		case 7:
+			scroll.setNextFocusUpId(R.id.filmfragment_secondpost);
+			break;
+		case 8:
+			scroll.setNextFocusUpId(R.id.listmore);
+			break;
+		case 9:
+			scroll.setNextFocusUpId(R.id.listmore);
+			break;
+		default:
+			break;
+		}
     }
 
     private void setbackground(int id) {
