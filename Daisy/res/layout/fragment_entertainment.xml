@@ -32,6 +32,7 @@
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
                 android:focusable="true"
+                android:nextFocusRight="@+id/vaiety_card1"
                 android:src="@drawable/list_item_preview_bg" />
 
             <LinearLayout
@@ -109,7 +110,7 @@
                     android:id="@+id/vaiety_card1_image"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/entertainment_vaiety_card_image_h"
-                    android:focusable="true"
+                    android:focusable="false"
                     android:scaleType="fitXY"
                     android:layout_margin="@dimen/entertainment_vaiety_card_image_margin"
                     labelimage:focusbackground="@color/shawdow"
@@ -144,7 +145,7 @@
                     android:id="@+id/vaiety_card2_image"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/entertainment_vaiety_card_image_h"
-                    android:focusable="true"
+                    android:focusable="false"
                     android:scaleType="fitXY"
                     android:layout_margin="@dimen/entertainment_vaiety_card_image_margin"
                     labelimage:focusbackground="@color/shawdow"
@@ -179,7 +180,7 @@
                     android:id="@+id/vaiety_card3_image"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/entertainment_vaiety_card_image_h"
-                    android:focusable="true"
+                    android:focusable="false"
                     android:scaleType="fitXY"
                     android:layout_margin="@dimen/entertainment_vaiety_card_image_margin"
                     labelimage:focusbackground="@color/shawdow"
@@ -217,7 +218,7 @@
                     android:id="@+id/vaiety_card4_image"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/entertainment_vaiety_card_image_h"
-                    android:focusable="true"
+                    android:focusable="false"
                     android:scaleType="fitXY"
                     android:layout_margin="@dimen/entertainment_vaiety_card_image_margin"
                     labelimage:focusbackground="@color/shawdow"

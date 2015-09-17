@@ -23,7 +23,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/guide_padding"
                 android:clickable="true"
-                android:focusable="true" >
+                android:focusable="true"
+                android:nextFocusRight="@+id/toppage_carous_imageView1"
+                 >
             <tv.ismar.daisy.ui.widget.DaisyVideoView
                     android:id="@+id/linked_video"
                     android:layout_width="@dimen/guide_video_width"

@@ -98,6 +98,7 @@ public class FilmFragment extends ChannelBaseFragment {
         film_post_layout = (HomeItemContainer) mView.findViewById(R.id.film_post_layout);
         linkedVideoImage = (ImageView) mView.findViewById(R.id.film_linked_image);
         film_linked_title = (TextView) mView.findViewById(R.id.film_linked_title);
+        film_post_layout.setNextFocusRightId(0x24157);
         film_post_layout.setOnClickListener(ItemClickListener);
         //film_post_layout.requestFocus();
         mSurfaceView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -277,13 +278,15 @@ public class FilmFragment extends ChannelBaseFragment {
 
         for (int i = 0; i < carousels.size(); i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(206, 86);
-            if (i == 0)
+            LabelImageView itemView = new LabelImageView(mContext);
+            if (i == 0){
                 params.topMargin = 0;
+                itemView.setId(0x24157);
+            }
             else
                 params.topMargin = 17;
             if (mContext == null)
                 return;
-            LabelImageView itemView = new LabelImageView(mContext);
             itemView.setFocusable(true);
             Picasso.with(mContext).load(carousels.get(i).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE)
                     .into(itemView);
