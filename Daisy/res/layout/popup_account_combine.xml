@@ -1,49 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:background="@drawable/person_center_bg"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
 
-    <TextView
-        android:lineSpacingExtra="@dimen/usercenter_fragment_help_ismartv_introduction_lineSpacingExtra"
-        android:text="@string/account_combine_msg"
-        android:textSize="@dimen/h2_text_size"
-        android:textColor="#FFFFFF"
-        android:layout_marginTop="@dimen/account_combine_text_margin_top"
-        android:layout_marginLeft="@dimen/account_combine_text_margin_lr"
-        android:layout_marginRight="@dimen/account_combine_text_margin_lr"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="@drawable/popup_bg_yellow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_marginTop="@dimen/account_combine_text_margin_top"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
+            android:orientation="vertical"
+            android:background="@drawable/person_center_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <Button
+        <TextView
+                android:lineSpacingExtra="@dimen/usercenter_fragment_help_ismartv_introduction_lineSpacingExtra"
+                android:text="@string/account_combine_msg"
+                android:textSize="@dimen/h2_text_size"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="@dimen/account_combine_text_margin_top"
+                android:layout_marginLeft="@dimen/account_combine_text_margin_lr"
+                android:layout_marginRight="@dimen/account_combine_text_margin_lr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
-            android:text="@string/confirm"
-            android:id="@+id/confirm_account_combine"
-            android:textColor="#FFFFFF"
-            android:textSize="@dimen/h3_text_size"
-            android:background="@drawable/selector_channel_item"
-            android:layout_width="@dimen/account_combine_button_width"
-            android:layout_height="@dimen/account_combine_button_height"/>
+        <LinearLayout
+                android:layout_marginTop="@dimen/account_combine_text_margin_top"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
 
-        <Button
-            android:text="@string/cancel"
-            android:id="@+id/cancel_account_combine"
-            android:layout_marginLeft="@dimen/account_combine_button_spacing"
-            android:textColor="#FFFFFF"
-            android:textSize="@dimen/h3_text_size"
-            android:background="@drawable/selector_channel_item"
-            android:layout_width="@dimen/account_combine_button_width"
-            android:layout_height="@dimen/account_combine_button_height"/>
+            <Button
+
+                    android:text="@string/confirm"
+                    android:id="@+id/confirm_account_combine"
+                    android:textColor="#FFFFFF"
+                    android:textSize="@dimen/h3_text_size"
+                    android:background="@drawable/selector_channel_item"
+                    android:layout_width="@dimen/account_combine_button_width"
+                    android:layout_height="@dimen/account_combine_button_height"/>
+
+            <Button
+                    android:text="@string/cancel"
+                    android:id="@+id/cancel_account_combine"
+                    android:layout_marginLeft="@dimen/account_combine_button_spacing"
+                    android:textColor="#FFFFFF"
+                    android:textSize="@dimen/h3_text_size"
+                    android:background="@drawable/selector_channel_item"
+                    android:layout_width="@dimen/account_combine_button_width"
+                    android:layout_height="@dimen/account_combine_button_height"/>
+
+        </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>
+</FrameLayout>
