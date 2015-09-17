@@ -1262,4 +1262,14 @@
 
     <!-- history and collect -->
     <dimen name="history_collect_shadow_mt">352dip</dimen>
+
+
+    <dimen name="sakura_nodefragment_test_complete_pop_width">500dp</dimen>
+    <dimen name="sakura_nodefragment_test_complete_pop_height">150dp</dimen>
+
+    <dimen name="sakura_nodefragment_selectnode_pop_width">600dp</dimen>
+    <dimen name="sakura_nodefragment_selectnode_pop_height">180dp</dimen>
+
+
+
 </resources>

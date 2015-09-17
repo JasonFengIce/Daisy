@@ -24,6 +24,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.data.table.location.CdnTable;
@@ -97,6 +98,8 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
     private HttpDownloadTask httpDownloadTask;
 
 
+    private float rate;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -106,7 +109,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        rate = DaisyUtils.getVodApplication(getActivity()).getRate(getActivity());
         TIE_TONG = StringUtils.getMd5Code("铁通");
 
     }
@@ -401,7 +404,12 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         View contentView = LayoutInflater.from(mContext)
                 .inflate(R.layout.sakura_popup_select_node, null);
         contentView.setBackgroundResource(R.drawable.sakura_bg_popup);
-        selectNodePup = new PopupWindow(contentView, 600, 180);
+
+        int popWidth = (int)(mContext.getResources().getDimension(R.dimen.sakura_nodefragment_selectnode_pop_width)/rate);
+        int popHeight = (int)(mContext.getResources().getDimension(R.dimen.sakura_nodefragment_selectnode_pop_height)/rate);
+
+
+        selectNodePup = new PopupWindow(contentView, popWidth, popHeight);
         selectNodePup.setFocusable(true);
         selectNodePup.showAtLocation(nodeListView, Gravity.CENTER, 0, 0);
 
@@ -497,7 +505,11 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         TextView title = (TextView) contentView.findViewById(R.id.complete_title);
         title.setText(titleRes);
         contentView.setBackgroundResource(R.drawable.sakura_bg_popup);
-        cdnTestCompletedPop = new PopupWindow(null, 500, 150);
+
+        int popWidht = (int)(mContext.getResources().getDimension(R.dimen.sakura_nodefragment_test_complete_pop_width)/rate);
+        int popHeight = (int)(mContext.getResources().getDimension(R.dimen.sakura_nodefragment_test_complete_pop_height)/rate);
+
+        cdnTestCompletedPop = new PopupWindow(null, popWidht, popHeight);
         cdnTestCompletedPop.setContentView(contentView);
         cdnTestCompletedPop.setFocusable(true);
 
