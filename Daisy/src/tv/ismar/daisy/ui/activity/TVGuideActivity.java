@@ -69,7 +69,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
 
     private static final String TAG = "TVGuideActivity";
-    private static final int SWITCH_PAGE =0X01;
+    private static final int SWITCH_PAGE = 0X01;
     private AppUpdateReceiver appUpdateReceiver;
     private ChannelBaseFragment currentFragment;
 
@@ -105,6 +105,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private LaunchHeaderLayout topView;
     private View toppage_divide_view;
     private boolean scrollFromBorder;
+    private ScrollType scrollType = ScrollType.right;
+
     private Position mCurrentChannelPosition = new Position(new Position.PositioinChangeCallback() {
         @Override
         public void onChange(int position) {
@@ -131,13 +133,13 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             Message msg = new Message();
             msg.arg1 = position;
             msg.what = SWITCH_PAGE;
-            if(fragmentSwitch.hasMessages(SWITCH_PAGE))
-            	fragmentSwitch.removeMessages(SWITCH_PAGE);
+            if (fragmentSwitch.hasMessages(SWITCH_PAGE))
+                fragmentSwitch.removeMessages(SWITCH_PAGE);
             fragmentSwitch.sendMessageDelayed(msg, 800);
 //            selectChannelByPosition(position);
             scroll.setSelection(position);
-            if(!scrollFromBorder)
-            scroll.requestFocus();
+            if (!scrollFromBorder)
+                scroll.requestFocus();
 //            scrollFromBorder = false;
             //   setClickChannelView(scroll.getChildAt(position));
             //  lastview = scroll.getChildAt(position);
@@ -185,15 +187,19 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 //                scroll.requestFocus();
                 switch (v.getId()) {
                     case R.id.arrow_scroll_left:
+                        scrollType = ScrollType.left;
 //                        channelChange = ChannelChange.LEFT_ARROW;
 //                        if (mCurrentChannelPosition.getPosition() - 1 >= 0) {
 //                            mCurrentChannelPosition.setPosition(mCurrentChannelPosition.getPosition() - 1);
 //                        } else {
 //                            mCurrentChannelPosition.setPosition(0);
 //                        }
-                    	scroll.arrowScroll(View.FOCUS_LEFT);
+                        scroll.arrowScroll(View.FOCUS_LEFT);
+
+
                         break;
                     case R.id.arrow_scroll_right:
+                        scrollType = ScrollType.right;
 //                        channelChange = ChannelChange.RIGHT_ARROW;
 //                        Log.i("TestFragment", "mCurrentChannelPosition.getPosition()" + mCurrentChannelPosition.getPosition());
 //                        if (mCurrentChannelPosition.getPosition() + 1 <= mChannelEntitys.length - 1) {
@@ -201,7 +207,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 //                        } else {
 //                            mCurrentChannelPosition.setPosition(mChannelEntitys.length - 1);
 //                        }
-                    	scroll.arrowScroll(View.FOCUS_RIGHT);
+                        scroll.arrowScroll(View.FOCUS_RIGHT);
                         break;
                 }
                 scrollFromBorder = true;
@@ -312,16 +318,16 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         toppanel = (FrameLayout) findViewById(R.id.top_column_layout);
         toppage_divide_view = findViewById(R.id.toppage_divide_view);
         toppage_divide_view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-			if(hasFocus){
-				scroll.requestFocus();
-				TextView tv = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
-			    tv.setBackgroundResource(R.drawable.channel_item_selectd_focus);
-			}
-			}
-		});
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    scroll.requestFocus();
+                    TextView tv = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
+                    tv.setBackgroundResource(R.drawable.channel_item_selectd_focus);
+                }
+            }
+        });
 //        weatherFragment = new WeatherFragment();
 //        getSupportFragmentManager().beginTransaction().add(R.id.top_column_layout, weatherFragment).commit();
         //  channelListView = (LinearLayout) findViewById(R.id.channel_h_list);
@@ -339,7 +345,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     @Override
     public void onBackPressed() {
-      showExitPopup(contentView);
+        showExitPopup(contentView);
     }
 
 
@@ -494,19 +500,19 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         scroll.requestFocus();
         //scroll.mFocusListener = mFocusListener;
         scroll.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			
-			@Override
-			public void onFocusChange(View view, boolean flag) {
-				TextView v = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
-				if(flag&&scrollFromBorder){
-					v.setBackgroundResource(R.drawable.channel_item_selectd_focus);
-				}else{
-					//v.setTextColor(R.color._ffffff);
-					v.setBackgroundResource(R.drawable.channel_item_focus);
-				}
-				v.invalidate();
-			}
-		});
+
+            @Override
+            public void onFocusChange(View view, boolean flag) {
+                TextView v = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
+                if (flag && scrollFromBorder) {
+                    v.setBackgroundResource(R.drawable.channel_item_selectd_focus);
+                } else {
+                    //v.setTextColor(R.color._ffffff);
+                    v.setBackgroundResource(R.drawable.channel_item_focus);
+                }
+                v.invalidate();
+            }
+        });
         scroll.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -539,10 +545,10 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                     mlastview.startAnimation(animationSet1);
                 }
                 // if(view!=clickView){
-                if(!scrollFromBorder)
-                channelBtn.setBackgroundResource(R.drawable.channel_item_selectd_focus);
+                if (!scrollFromBorder)
+                    channelBtn.setBackgroundResource(R.drawable.channel_item_selectd_focus);
                 else
-                	channelBtn.setBackgroundResource(R.drawable.channel_item_focus);
+                    channelBtn.setBackgroundResource(R.drawable.channel_item_focus);
                 AnimationSet animationSet = new AnimationSet(true);
                 ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
                         Animation.RELATIVE_TO_SELF, 0.5f,
@@ -862,7 +868,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
 
     private void selectChannelByPosition(int position) {
-    	if (position == 0) {
+        if (position == 0) {
             arrow_left.setVisibility(View.GONE);
             arrow_left_visible.setVisibility(View.GONE);
             if (channelChange != null && channelChange != ChannelChange.CLICK_CHANNEL)
@@ -905,8 +911,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             currentFragment = new GuideFragment();
             setbackground(R.drawable.main_bg);
         }
-        if(scrollFromBorder){
-        	currentFragment.setScrollFromBorder(scrollFromBorder);
+        if (scrollFromBorder) {
+            currentFragment.setScrollFromBorder(scrollFromBorder);
         }
         // currentFragment.view = scroll;
         //currentFragment.position = position;
@@ -948,11 +954,20 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction();
-        transaction.setCustomAnimations(
-                R.anim.push_left_in,
-                R.anim.push_left_out,
-                R.anim.push_left_in,
-                R.anim.push_left_out);
+
+        switch (scrollType) {
+            case left:
+                transaction.setCustomAnimations(
+                        R.anim.push_right_in,
+                        R.anim.push_right_out);
+                break;
+            case right:
+                transaction.setCustomAnimations(
+                        R.anim.push_left_in,
+                        R.anim.push_left_out);
+                break;
+        }
+
         transaction.replace(R.id.container, fragment).commit();
     }
 
@@ -1011,8 +1026,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     @Override
     protected void onPause() {
         super.onPause();
-        if(fragmentSwitch.hasMessages(SWITCH_PAGE))
-        	fragmentSwitch.removeMessages(SWITCH_PAGE);
+        if (fragmentSwitch.hasMessages(SWITCH_PAGE))
+            fragmentSwitch.removeMessages(SWITCH_PAGE);
     }
 
     @Override
@@ -1027,21 +1042,26 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         super.onDestroy();
     }
 
-    private Handler fragmentSwitch = new Handler(){
+    private Handler fragmentSwitch = new Handler() {
 
-		@Override
-		public void handleMessage(Message msg) {
-			super.handleMessage(msg);
-			switch (msg.what) {
-			case SWITCH_PAGE:
-				selectChannelByPosition(msg.arg1);
-				break;
-			}
-		}
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case SWITCH_PAGE:
+                    selectChannelByPosition(msg.arg1);
+                    break;
+            }
+        }
 
     };
 
-    public void resetBorderFocus(){
-    	scrollFromBorder = false;
+    public void resetBorderFocus() {
+        scrollFromBorder = false;
+    }
+
+    private enum ScrollType {
+        left,
+        right;
     }
 }
