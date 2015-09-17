@@ -2272,7 +2272,7 @@ public class PlayerActivity extends VodMenuAction {
      */
     private void showExitPopup(View view) {
         final Context context = this;
-        View contentView = LayoutInflater.from(context).inflate(R.layout.popup_exit, null);
+        View contentView = LayoutInflater.from(context).inflate(R.layout.popup_exit_palyer, null);
         exitPopupWindow = new PopupWindow(null, 740, 341);
         exitPopupWindow.setContentView(contentView);
         exitPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent));
