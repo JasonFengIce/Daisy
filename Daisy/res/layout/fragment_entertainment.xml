@@ -33,6 +33,7 @@
                 android:scaleType="fitXY"
                 android:focusable="true"
                 android:nextFocusRight="@+id/vaiety_card1"
+                android:nextFocusUp="@id/vaiety_post"
                 android:src="@drawable/list_item_preview_bg" />
 
             <LinearLayout
