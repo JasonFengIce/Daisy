@@ -225,6 +225,7 @@ public class GuideFragment extends ChannelBaseFragment {
             textView.setTag(posters.get(i));
             frameLayout.setTag(posters.get(i));
             if(i==0){
+            	frameLayout.setFocusable(true);
             	frameLayout.setId(R.id.guidefragment_firstpost);          	
             }
             imageViews.add(frameLayout);

@@ -1272,12 +1272,10 @@ public class QiYiPlayActivity extends VodMenuAction {
 
             popupDlg.addContentView(view, new ViewGroup.LayoutParams(width,
                     height));
-            TextView tv = (TextView) view.findViewById(R.id.PopupText);
-            tv.setText(msg);
             Button btn1 = null, btn2 = null;
-            btn1 = (Button) view.findViewById(R.id.LeftButton);
+            btn1 = (Button) view.findViewById(R.id.confirm_exit);
             btn1.setText(R.string.vod_ok);
-            btn2 = (Button) view.findViewById(R.id.RightButton);
+            btn2 = (Button) view.findViewById(R.id.cancel_exit);
             btn2.setText(R.string.vod_cancel);
             if (btn1 != null) {
                 btn1.setOnClickListener(new View.OnClickListener() {

@@ -941,7 +941,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 			scroll.setNextFocusUpId(R.id.guidefragment_firstpost);
 			break;
 		case 1:
-			scroll.setNextFocusUpId(R.id.listmore);
+			scroll.setNextFocusUpId(R.id.filmfragment_secondpost);
 			break;
 		case 2:
 			scroll.setNextFocusUpId(R.id.filmfragment_thirdpost);
