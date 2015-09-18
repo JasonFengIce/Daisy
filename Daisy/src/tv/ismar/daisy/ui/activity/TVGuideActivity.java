@@ -586,8 +586,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 lastview = view;
                 // }
                 mCurrentChannelPosition.setPosition(channelPosition);
-                View view2 = scroll.getChildAt(0);
-                Log.v("aaaa","x="+view2.getLeft()+"y="+view2.getTop());
             }
 
             @Override
@@ -658,7 +656,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     public void onUserCenterClick() {
         FragmentTransaction transaction = getSupportFragmentManager()
-                .beginTransaction();
+                .beginTransaction();                View view2 = scroll.getChildAt(0);
+                Log.v("aaaa","x="+view2.getLeft()+"y="+view2.getTop());
         transaction.setCustomAnimations(
                 R.anim.fade_in,
                 R.anim.fade_out,
@@ -948,7 +947,10 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 //        scrollFromBorder = false;
         currentFragment.setChannelEntity(channelEntity);
         replaceFragment(currentFragment);
+        View view2 = scroll.getChildAt(0);
+        Log.v("aaaa","x="+view2.getLeft()+"y="+view2.getTop());
         lastchannelindex = position;
+        if(view2.getLeft() >0){
         switch (mCurrentChannelPosition.getPosition()) {
 		case 0:
 			scroll.setNextFocusUpId(R.id.guidefragment_firstpost);
@@ -983,6 +985,42 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 		default:
 			break;
 		}
+        }else{
+        	switch (mCurrentChannelPosition.getPosition()) {
+    		case 0:
+    			scroll.setNextFocusUpId(R.id.guidefragment_firstpost);
+    			break;
+    		case 1:
+    			scroll.setNextFocusUpId(R.id.filmfragment_firstpost);
+    			break;
+    		case 2:
+    			scroll.setNextFocusUpId(R.id.filmfragment_secondpost);
+    			break;
+    		case 3:
+    			scroll.setNextFocusUpId(R.id.vaiety_channel2_image);
+    			break;
+    		case 4:
+    			scroll.setNextFocusUpId(R.id.vaiety_channel3_image);
+    			break;
+    		case 5:
+    			scroll.setNextFocusUpId(R.id.sport_channel3_image);
+    			break;
+    		case 6:
+    			scroll.setNextFocusUpId(R.id.vaiety_channel4_image);
+    			break;
+    		case 7:
+    			scroll.setNextFocusUpId(R.id.child_more);
+    			break;
+    		case 8:
+    			scroll.setNextFocusUpId(R.id.listmore);
+    			break;
+    		case 9:
+    			scroll.setNextFocusUpId(R.id.listmore);
+    			break;
+    		default:
+    			break;
+    		}        	
+        }
     }
 
     private void setbackground(int id) {

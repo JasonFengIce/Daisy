@@ -2,8 +2,8 @@
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:state_focused="true" android:drawable="@drawable/hover_btn_bg"/>
-    <item android:state_hovered="true" android:drawable="@drawable/hover_btn_bg" />
+    <item android:state_focused="true" android:drawable="@drawable/paychannel_noral"/>
+    <item android:state_hovered="true" android:drawable="@drawable/paychannel_noral" />
     <item android:state_pressed="true" android:drawable="@drawable/btn_pressed" />
     <item android:state_enabled="false" android:drawable="@drawable/btn_disabled_bg" />
    <item android:drawable="@drawable/channel_item_normal" />

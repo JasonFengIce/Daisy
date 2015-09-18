@@ -283,6 +283,7 @@
                 android:layout_width="@dimen/sport_channel_image_w"
                 android:layout_height="@dimen/sport_channel_image_h"
                 android:focusable="true"
+                android:nextFocusUp="@+id/sportspost"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
                 labelimage:focustextsize="@dimen/sport_channel_image_focustextsize" />
@@ -301,6 +302,7 @@
             android:layout_width="@dimen/sport_channel_w"
             android:layout_height="@dimen/sport_channel_image_h"
             android:layout_marginLeft="@dimen/sport_channel_ml_1"
+            android:nextFocusUp="@+id/sports_live3"
             layout="@layout/toppagelistmorebutton" />
     </LinearLayout>
 

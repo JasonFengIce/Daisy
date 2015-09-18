@@ -31,18 +31,18 @@
 
         <Button
             android:id="@+id/account_bind_ok_bt"
-            android:layout_width="@dimen/login_pop_button_width"
-            android:layout_height="@dimen/login_pop_button_height"
-            android:background="@drawable/selector_channel_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/person_btn_selector"
             android:text="确   定"
             android:textColor="#FFFFFFFF"
             android:textSize="@dimen/person_login_phone_edit_text_size" />
 
         <Button
             android:id="@+id/account_bind_cancel_bt"
-            android:layout_width="@dimen/login_pop_button_width"
-            android:layout_height="@dimen/login_pop_button_height"
-            android:background="@drawable/selector_channel_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/person_btn_selector"
             android:layout_marginLeft="30dp"
             android:text="取   消"
             android:textColor="#FFFFFFFF"
@@ -51,8 +51,8 @@
 
     <Button
         android:id="@+id/account_bind_ok1_bt"
-            android:layout_width="@dimen/login_pop_button_width"
-            android:layout_height="@dimen/login_pop_button_height"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
         android:layout_marginTop="85dp"
         android:background="@drawable/person_btn_selector"
         android:text="确   定"

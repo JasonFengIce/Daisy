@@ -163,7 +163,8 @@ public class ItemDetailActivity extends BaseActivity implements
 		mRightBtn.setOnClickListener(mIdOnClickListener);
 		mMoreContent.setOnClickListener(mIdOnClickListener);
 		top_column_layout = (tv.ismar.daisy.ui.widget.LaunchHeaderLayout) findViewById(R.id.top_column_layout);
-        mLeftBtn.setOnFocusChangeListener(new OnFocusChangeListener() {
+		top_column_layout.hideIndicatorTable();
+		mLeftBtn.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 initFocusBtn(v,hasFocus);

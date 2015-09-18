@@ -250,7 +250,7 @@ public class GuideFragment extends ChannelBaseFragment {
             frameLayout.setTag(posters.get(i));
             if(i==0){
             	frameLayout.setFocusable(true);
-            	frameLayout.setId(R.id.guidefragment_firstpost);          	
+            	frameLayout.setId(R.id.guidefragment_firstpost);     	
             }
             if(i==7){
             	frameLayout.setId(R.id.guidefragment_lastpost);

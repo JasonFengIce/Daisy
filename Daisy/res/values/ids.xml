@@ -5,6 +5,7 @@
     <item type="id" name="userinfo_palyauth_list_last_id"/>
     <item type="id" name="guidefragment_firstpost"/>
     <item type="id" name="guidefragment_lastpost"/>
+    <item type="id" name="filmfragment_firstpost"/>
     <item type="id" name="filmfragment_secondpost"/>
     <item type="id" name="filmfragment_thirdpost"/>
     <item type="id" name="filmfragment_firstcarousel"/>

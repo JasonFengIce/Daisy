@@ -88,4 +88,5 @@
 
     <color name="detail_more_bg">#33ffffff</color>
     <color name="search_bg_focus">#ffffba00</color>
+    <color name="personinfo_login_button_disable">#5c626e</color>
 </resources>

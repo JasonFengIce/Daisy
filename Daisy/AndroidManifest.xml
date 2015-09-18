@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="tv.ismar.daisy"
-          android:versionCode="110"
-          android:versionName="110">
+          android:versionCode="121"
+          android:versionName="121">
 
     <supports-screens
             android:anyDensity="true"
