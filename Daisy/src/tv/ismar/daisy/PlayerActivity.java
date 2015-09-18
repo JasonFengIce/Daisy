@@ -43,6 +43,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -293,12 +295,12 @@ public class PlayerActivity extends VodMenuAction {
 
 		mVideoView.setOnHoverListener(onhoverlistener);
 		setVideoActionListener();
-//		if("false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
+		if("false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
 			initClipInfo();
-//		}else{
-//			gesture_tipview.setVisibility(View.VISIBLE);
-//			setbackground(gesture_tipview, R.drawable.play_gesture);
-//		}
+		}else{
+			gesture_tipview.setVisibility(View.VISIBLE);
+			setGesturebackground(gesture_tipview, R.drawable.play_gesture);
+		}
 	}
 
 	protected void initClipInfo() {
@@ -1433,15 +1435,15 @@ public class PlayerActivity extends VodMenuAction {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean ret = false;
-//		if(keyCode == KeyEvent.KEYCODE_BACK && !"false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
-//			gesture_tipview.setVisibility(View.GONE);
-//			shardpref.setSharedPrefs(AccountSharedPrefs.FIRST_USE, "false");
-//			initClipInfo();
-//			return false;
-//		}
-//		if(!"false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
-//			return false;			
-//		}
+		if(keyCode == KeyEvent.KEYCODE_BACK && !"false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
+			gesture_tipview.setVisibility(View.GONE);
+			shardpref.setSharedPrefs(AccountSharedPrefs.FIRST_USE, "false");
+			initClipInfo();
+			return false;
+		}
+		if(!"false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
+			return false;			
+		}
 		if(isadvideoplaying){
 			if (keyCode == KeyEvent.KEYCODE_BACK) {
 				mVideoView.stopPlayback();
@@ -2264,4 +2266,5 @@ public class PlayerActivity extends VodMenuAction {
 
 		}
 	};
+	
 }
