@@ -179,15 +179,9 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         }
 
         if (!TextUtils.isEmpty(SimpleRestClient.access_token) && !TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
-
-//            indicatorView.get(2).setBackgroundResource(R.drawable.button_disable);
-//            indicatorView.get(2).setFocusable(false);
-//            indicatorView.get(2).setEnabled(false);
-
+            changeViewState(indicatorView.get(2), ViewState.Disable);
         } else {
-//            indicatorView.get(2).setBackgroundResource(R.drawable.usercenter_table_normal);
-//            indicatorView.get(2).setEnabled(true);
-//            indicatorView.get(2).setFocusable(true);
+            changeViewState(indicatorView.get(2), ViewState.Enable);
         }
     }
 
@@ -366,7 +360,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, helpFragment).commitAllowingStateLoss();
                 break;
             case R.string.usercenter_location:
-                locationFragment.focus = indicatorView.get(5);
+//                locationFragment.focus = indicatorView.get(5);
                 getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, locationFragment).commitAllowingStateLoss();
                 break;
         }
