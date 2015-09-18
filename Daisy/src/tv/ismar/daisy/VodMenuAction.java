@@ -3,6 +3,9 @@ package tv.ismar.daisy;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.*;
@@ -17,6 +20,7 @@ import tv.ismar.daisy.player.ISTVVodMenu;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.CustomDialog;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public abstract class VodMenuAction extends BaseActivity {
@@ -176,4 +180,25 @@ public abstract class VodMenuAction extends BaseActivity {
 		}
 
 	};
+
+	 protected void setGesturebackground(View view,int id) {
+
+	        BitmapFactory.Options opt = new BitmapFactory.Options();
+
+	        opt.inPreferredConfig = Bitmap.Config.ALPHA_8;
+
+	        opt.inPurgeable = true;
+
+	        opt.inInputShareable = true;
+	        opt.inTargetDensity = getResources().getDisplayMetrics().densityDpi;
+	        opt.inDensity = getResources().getDisplayMetrics().densityDpi;
+
+	        InputStream is = getResources().openRawResource(
+	                id);
+
+	        Bitmap bm = BitmapFactory.decodeStream(is, null, opt);
+
+	        BitmapDrawable bd = new BitmapDrawable(getResources(), bm);
+	        view.setBackgroundDrawable(bd);
+	    }
 }

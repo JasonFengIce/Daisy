@@ -269,6 +269,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 			 new initPlayTask().execute();
 		}else{
 			gesture_tipview.setVisibility(View.VISIBLE);
+			setGesturebackground(gesture_tipview, R.drawable.play_gesture);
 		}
     }
 
