@@ -743,7 +743,7 @@
     <dimen name="guide_fragment_poser_margin_lf">25dp</dimen>
 
     <!-- user center fragment -->
-    <dimen name="usercenter_fragment_indicator_layout_width">425dp</dimen>
+    <dimen name="usercenter_fragment_indicator_layout_width">415dp</dimen>
     <dimen name="usercenter_fragment_indicator_item_width">325dp</dimen>
     <dimen name="usercenter_fragment_indicator_item_height">74dp</dimen>
     <dimen name="usercenter_fragment_indicator_item_margin_top">20dp</dimen>

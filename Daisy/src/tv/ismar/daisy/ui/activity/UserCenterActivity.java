@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.*;
 import cn.ismartv.activator.Activator;
+import com.activeandroid.query.Select;
 import com.google.gson.Gson;
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
@@ -32,6 +33,7 @@ import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
 import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by huaijie on 7/3/15.
@@ -39,13 +41,10 @@ import java.util.HashMap;
 public class UserCenterActivity extends BaseActivity implements View.OnClickListener, BaseActivity.OnLoginCallback, OnFocusChangeListener {
 
     private static final String TAG = "UserCenterActivity";
-
     private static final int MSG_INDICATOR_CHANGE = 0x0001;
-
     public static final String ACCOUNT_SHARED_PREFS = "account";
     public static final String ACCOUNT_COMBINE = "combine";
-
-
+    public static final String LOCATION_FRAGMENT = "location";
     private static final int[] INDICATOR_TEXT_RES_ARRAY = {
             R.string.usercenter_store,
             R.string.usercenter_userinfo,
@@ -55,41 +54,25 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             R.string.usercenter_location
     };
 
-
     private ArrayList<View> indicatorView;
-
     private LinearLayout userCenterIndicatorLayout;
-
     private StoreFragment storeFragment;
     private UserInfoFragment userInfoFragment;
     private LoginFragment loginFragment;
     private PurchaseHistoryFragment historyFragment;
     private HelpFragment helpFragment;
     private LocationFragment locationFragment;
-
     private LaunchHeaderLayout topView;
-
     private SharedPreferences accountPreference;
-
-    public static final String LOCATION_FRAGMENT = "location";
-
-
     private PopupWindow loginPopup;
     private PopupWindow combineAccountPop;
-
-    private Context mContext;
     private SharedPreferences accountSharedPrefs;
-
     private View mContentView;
     private SimpleRestClient mSimpleRestClient;
     private Item[] mHistoriesByNet;
-
     private String mAccessToken;
     private String mNickName;
-
     private static ImageView verticalDividerView;
-
-    private boolean mIndicatorLostFocus = false;
 
     private IndicatorType mIndicatorType = IndicatorType.STORE;
 
@@ -99,15 +82,10 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             String accessToken = accountPreference.getString("auth_token", "");
             String phoneNumber = accountPreference.getString("mobile_number", "");
             if (!TextUtils.isEmpty(accessToken) && !TextUtils.isEmpty(phoneNumber)) {
-
-                indicatorView.get(2).setBackgroundResource(R.drawable.button_disable);
-                indicatorView.get(2).setFocusable(false);
-                indicatorView.get(2).setEnabled(false);
+                changeViewState(indicatorView.get(2), ViewState.Disable);
 
             } else {
-                indicatorView.get(2).setBackgroundResource(R.drawable.usercenter_table_normal);
-                indicatorView.get(2).setFocusable(true);
-                indicatorView.get(2).setEnabled(true);
+                changeViewState(indicatorView.get(2), ViewState.Enable);
 
             }
         }
@@ -115,19 +93,15 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        mContext = this;
         super.onCreate(savedInstanceState);
         accountSharedPrefs = getSharedPreferences(ACCOUNT_SHARED_PREFS, Context.MODE_PRIVATE);
         mContentView = LayoutInflater.from(this).inflate(R.layout.activity_usercenter, null);
         setContentView(mContentView);
-
         mSimpleRestClient = new SimpleRestClient();
-
         View background = findViewById(R.id.large_layout);
         DaisyUtils.setbackground(R.drawable.main_bg, background);
         accountPreference = getSharedPreferences("Daisy", Context.MODE_PRIVATE);
         accountPreference.registerOnSharedPreferenceChangeListener(changeListener);
-
         userCenterIndicatorLayout = (LinearLayout) findViewById(R.id.user_center_indicator_layout);
         storeFragment = new StoreFragment();
         userInfoFragment = new UserInfoFragment();
@@ -135,26 +109,19 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         historyFragment = new PurchaseHistoryFragment();
         helpFragment = new HelpFragment();
         locationFragment = new LocationFragment();
-
-
         setLoginCallback(this);
-
-
         initViews();
         createIndicatorView();
-
         String flag = getIntent().getStringExtra("flag");
+
         if (!TextUtils.isEmpty(flag) && flag.equals(LOCATION_FRAGMENT)) {
+            changeViewState(indicatorView.get(5), ViewState.Overlay);
             mIndicatorType = IndicatorType.LOCATION;
             getSupportFragmentManager().beginTransaction().add(R.id.user_center_container, locationFragment).commit();
-            indicatorView.get(5).setBackgroundResource(R.drawable.usercenter_table_focus);
-
         } else {
+            changeViewState(indicatorView.get(0), ViewState.Overlay);
             mIndicatorType = IndicatorType.STORE;
             getSupportFragmentManager().beginTransaction().add(R.id.user_center_container, storeFragment).commit();
-            indicatorView.get(0).setBackgroundResource(R.drawable.usercenter_table_focus);
-            indicatorView.get(0).setFocusable(true);
-            indicatorView.get(0).requestFocus();
         }
     }
 
@@ -180,6 +147,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         topView.hideIndicatorTable();
 
         verticalDividerView = (ImageView) findViewById(R.id.vertical_divider_line);
+        verticalDividerView.setTag(R.id.vertical_divider_line);
         verticalDividerView.setOnFocusChangeListener(this);
     }
 
@@ -199,36 +167,30 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         indicatorView = new ArrayList<View>();
         userCenterIndicatorLayout.removeAllViews();
         for (int res : INDICATOR_TEXT_RES_ARRAY) {
-            RelativeLayout frameLayout = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_usercenter_indicator, null);
-            tv.ismar.daisy.ui.widget.ImageTextButton textView = (tv.ismar.daisy.ui.widget.ImageTextButton) frameLayout.findViewById(R.id.usercenter_indicator_text);
-//            textView.setOnFocusChangeListener(indicatorBtnFocusChangeListener);
+            View frameLayout = LayoutInflater.from(this).inflate(R.layout.item_usercenter_indicator, null);
+            TextView textView = (TextView) frameLayout.findViewById(R.id.indicator_text);
             textView.setText(res);
-            textView.setId(res);
-            textView.setOnClickListener(this);
-            textView.setOnFocusChangeListener(this);
-            textView.setNextFocusRightId(R.id.vertical_divider_line);
-            indicatorView.add(textView);
+            frameLayout.setTag(res);
+            frameLayout.setOnClickListener(this);
+            frameLayout.setOnFocusChangeListener(this);
+            frameLayout.setNextFocusRightId(R.id.vertical_divider_line);
+            indicatorView.add(frameLayout);
             userCenterIndicatorLayout.addView(frameLayout);
         }
 
         if (!TextUtils.isEmpty(SimpleRestClient.access_token) && !TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
 
-            indicatorView.get(2).setBackgroundResource(R.drawable.button_disable);
-            indicatorView.get(2).setFocusable(false);
-            indicatorView.get(2).setEnabled(false);
+//            indicatorView.get(2).setBackgroundResource(R.drawable.button_disable);
+//            indicatorView.get(2).setFocusable(false);
+//            indicatorView.get(2).setEnabled(false);
 
         } else {
-            indicatorView.get(2).setBackgroundResource(R.drawable.usercenter_table_normal);
-            indicatorView.get(2).setEnabled(true);
-            indicatorView.get(2).setFocusable(true);
+//            indicatorView.get(2).setBackgroundResource(R.drawable.usercenter_table_normal);
+//            indicatorView.get(2).setEnabled(true);
+//            indicatorView.get(2).setFocusable(true);
         }
     }
 
-
-    @Override
-    public void onClick(View v) {
-        handlerClick(v);
-    }
 
     public void switchToUserInfoFragment() {
         userCenterIndicatorLayout.getChildAt(1).requestFocus();
@@ -250,11 +212,6 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         AuthTokenEntity authTokenEntity = new Gson().fromJson(result, AuthTokenEntity.class);
         Log.i("pangziinfo", "authTokenEntity.getAuth_token()==" + authTokenEntity.getAuth_token());
         mAccessToken = authTokenEntity.getAuth_token();
-//        indicatorView.get(2).setBackgroundResource(R.drawable.button_disable);
-//        indicatorView.get(2).setFocusable(false);
-//        indicatorView.get(2).setEnabled(false);
-//        indicatorView.get(1).setBackgroundResource(R.drawable.usercenter_table_focus);
-        // callWGQueryQQUserInfo();
     }
 
     @Override
@@ -266,16 +223,10 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     public void oncallWGQueryQQUserInfo(String nickName) {
         mNickName = nickName;
         saveToLocal(mAccessToken, mNickName);
-//        indicatorView.get(2).setBackgroundResource(R.drawable.button_disable);
-//        indicatorView.get(2).setFocusable(false);
-//        indicatorView.get(2).setEnabled(false);
-
-
         if (listener != null) {
             userInfoFragment = new UserInfoFragment();
             listener = null;
         }
-
         showLoginSuccessPopup();
     }
 
@@ -283,7 +234,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     public void accountsCombine() {
         String api = SimpleRestClient.root_url + "/accounts/combine/";
         long timestamp = System.currentTimeMillis();
-        Activator activator = Activator.getInstance(mContext);
+        Activator activator = Activator.getInstance(this);
         String rsaResult = activator.PayRsaEncode("sn=" + SimpleRestClient.sn_token + "&timestamp=" + timestamp);
 
         HashMap<String, String> params = new HashMap<String, String>();
@@ -316,9 +267,9 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
 
     private void showLoginSuccessPopup() {
-        View popupLayout = LayoutInflater.from(mContext).inflate(R.layout.popup_login_success, null);
+        View popupLayout = LayoutInflater.from(this).inflate(R.layout.popup_login_success, null);
         TextView textView = (TextView) popupLayout.findViewById(R.id.login_success_msg);
-        String msg = mContext.getText(R.string.login_success).toString();
+        String msg = getText(R.string.login_success).toString();
         String phoneNumber = mNickName;
         textView.setText(String.format(msg, phoneNumber));
 
@@ -332,27 +283,27 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         });
 
 
-        int width = (int) mContext.getResources().getDimension(R.dimen.login_pop_width);
-        int height = (int) mContext.getResources().getDimension(R.dimen.login_pop_height);
+        int width = (int) getResources().getDimension(R.dimen.login_pop_width);
+        int height = (int) getResources().getDimension(R.dimen.login_pop_height);
         loginPopup = new PopupWindow(popupLayout, width, height);
         loginPopup.setFocusable(true);
-        loginPopup.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.transparent));
-        int xOffset = (int) mContext.getResources().getDimension(R.dimen.loginfragment_successPop_xOffset);
-        int yOffset = (int) mContext.getResources().getDimension(R.dimen.loginfragment_successPop_yOffset);
+        loginPopup.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent));
+        int xOffset = (int) getResources().getDimension(R.dimen.loginfragment_successPop_xOffset);
+        int yOffset = (int) getResources().getDimension(R.dimen.loginfragment_successPop_yOffset);
 
         loginPopup.showAtLocation(mContentView, Gravity.CENTER, xOffset, yOffset);
     }
 
 
     public void showAccountsCombinePopup() {
-        View popupLayout = LayoutInflater.from(mContext).inflate(R.layout.popup_account_combine, null);
-        int width = (int) mContext.getResources().getDimension(R.dimen.login_pop_width);
-        int height = (int) mContext.getResources().getDimension(R.dimen.login_pop_height);
+        View popupLayout = LayoutInflater.from(this).inflate(R.layout.popup_account_combine, null);
+        int width = (int) getResources().getDimension(R.dimen.login_pop_width);
+        int height = (int) getResources().getDimension(R.dimen.login_pop_height);
         combineAccountPop = new PopupWindow(popupLayout, width, height);
         combineAccountPop.setFocusable(true);
-        combineAccountPop.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.transparent));
-        int xOffset = (int) mContext.getResources().getDimension(R.dimen.loginfragment_successPop_xOffset);
-        int yOffset = (int) mContext.getResources().getDimension(R.dimen.loginfragment_successPop_yOffset);
+        combineAccountPop.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent));
+        int xOffset = (int) getResources().getDimension(R.dimen.loginfragment_successPop_xOffset);
+        int yOffset = (int) getResources().getDimension(R.dimen.loginfragment_successPop_yOffset);
         combineAccountPop.showAtLocation(mContentView, Gravity.CENTER, xOffset, yOffset);
 
         Button confirm = (Button) popupLayout.findViewById(R.id.confirm_account_combine);
@@ -363,7 +314,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             public void onClick(View v) {
                 accountsCombine();
                 combineAccountPop.dismiss();
-                ((UserCenterActivity) mContext).switchToUserInfoFragment();
+                switchToUserInfoFragment();
 
             }
         });
@@ -376,25 +327,239 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 editor.apply();
 
                 combineAccountPop.dismiss();
-                ((UserCenterActivity) mContext).switchToUserInfoFragment();
+                switchToUserInfoFragment();
             }
         });
 
 
     }
 
-
-    private void saveToLocal(String authToken, String phoneNumber) {
-        SimpleRestClient.access_token = authToken;
-        SimpleRestClient.mobile_number = phoneNumber;
-
-
-        DaisyUtils.getVodApplication(mContext).getEditor().putString(VodApplication.AUTH_TOKEN, authToken);
-        DaisyUtils.getVodApplication(mContext).getEditor().putString(VodApplication.MOBILE_NUMBER, phoneNumber);
-        DaisyUtils.getVodApplication(mContext).save();
-        fetchFavorite();
-        getHistoryByNet();
+    @Override
+    public void onClick(View v) {
+        handlerClick(v);
     }
+
+    private void clearFocus(View exceptView, List<View> viewList) {
+        for (View view : viewList) {
+            if (exceptView != view) {
+                changeViewState(view, ViewState.None);
+            }
+        }
+    }
+
+
+    private void handlerClick(View v) {
+        switch ((Integer) v.getTag()) {
+            case R.string.usercenter_store:
+                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, storeFragment).commitAllowingStateLoss();
+                break;
+            case R.string.usercenter_userinfo:
+                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, userInfoFragment).commitAllowingStateLoss();
+                break;
+            case R.string.usercenter_login:
+                loginQQorWX();
+                break;
+            case R.string.usercenter_purchase_history:
+                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, historyFragment).commitAllowingStateLoss();
+                break;
+            case R.string.usercenter_help:
+                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, helpFragment).commitAllowingStateLoss();
+                break;
+            case R.string.usercenter_location:
+                locationFragment.focus = indicatorView.get(5);
+                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, locationFragment).commitAllowingStateLoss();
+                break;
+        }
+
+        if (v == indicatorView.get(2)) {
+            if (TextUtils.isEmpty(SimpleRestClient.access_token)) {
+                changeViewState(v, ViewState.Overlay);
+            } else {
+                changeViewState(v, ViewState.Disable);
+            }
+        }
+
+
+//        for (View view : indicatorView) {
+//            if (view.getId() == currentViewId) {
+//                view.setBackgroundResource(R.drawable.usercenter_table_focus);
+//            } else {
+//
+//                if (view == indicatorView.get(2)) {
+//                    if (TextUtils.isEmpty(SimpleRestClient.access_token)) {
+//                        view.setBackgroundResource(R.drawable.usercenter_table_normal);
+//                    } else {
+//                        view.setBackgroundResource(R.drawable.button_disable);
+//                    }
+//                } else {
+//                    view.setBackgroundResource(R.drawable.usercenter_table_normal);
+//                }
+//            }
+//        }
+    }
+
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (hasFocus) {
+            switch ((Integer) v.getTag()) {
+                case R.id.vertical_divider_line:
+                    Log.d(TAG, "onFocusChange: " + "vertical_divider_line ---> " + mIndicatorType.name());
+                    deliverFocusEvent();
+                    break;
+                case R.string.usercenter_store:
+                    verticalDividerView.setFocusable(false);
+                    mIndicatorType = IndicatorType.STORE;
+                    break;
+                case R.string.usercenter_userinfo:
+                    verticalDividerView.setFocusable(false);
+                    mIndicatorType = IndicatorType.USERINFO;
+                    break;
+                case R.string.usercenter_login:
+                    verticalDividerView.setFocusable(false);
+                    mIndicatorType = IndicatorType.LOGIN;
+                    break;
+                case R.string.usercenter_purchase_history:
+                    verticalDividerView.setFocusable(false);
+                    mIndicatorType = IndicatorType.HISTORY;
+                    break;
+                case R.string.usercenter_help:
+                    verticalDividerView.setFocusable(false);
+                    mIndicatorType = IndicatorType.HELP;
+                    break;
+                case R.string.usercenter_location:
+                    verticalDividerView.setFocusable(false);
+                    mIndicatorType = IndicatorType.LOCATION;
+                    break;
+            }
+            if ((Integer) v.getTag() != R.id.vertical_divider_line) {
+                clearFocus(v, indicatorView);
+                changeViewState(v, ViewState.Overlay);
+
+                messageHandler.removeMessages(MSG_INDICATOR_CHANGE);
+                Message message = messageHandler.obtainMessage(MSG_INDICATOR_CHANGE, v);
+                messageHandler.sendMessageDelayed(message, 500);
+            }
+
+
+        } else {
+            switch ((Integer) v.getTag()) {
+                case R.id.vertical_divider_line:
+                    break;
+                case R.string.usercenter_store:
+                case R.string.usercenter_userinfo:
+                case R.string.usercenter_purchase_history:
+                case R.string.usercenter_help:
+                case R.string.usercenter_location:
+                    changeViewState(v, ViewState.Select);
+                    verticalDividerView.setFocusable(true);
+                    break;
+            }
+        }
+    }
+
+    private Handler messageHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_INDICATOR_CHANGE:
+                    View view = (View) msg.obj;
+                    handlerClick(view);
+                    break;
+            }
+        }
+    };
+
+
+    private void deliverFocusEvent() {
+        switch (mIndicatorType) {
+            case STORE:
+                indicatorView.get(0).requestFocus();
+                break;
+            case USERINFO:
+                indicatorView.get(1).requestFocus();
+                break;
+            case LOGIN:
+                indicatorView.get(2).requestFocus();
+                break;
+            case HISTORY:
+                indicatorView.get(3).requestFocus();
+                break;
+            case HELP:
+                indicatorView.get(4).requestFocus();
+                break;
+            case LOCATION:
+                indicatorView.get(5).requestFocus();
+                break;
+        }
+
+    }
+
+
+    private enum IndicatorType {
+        STORE,
+        USERINFO,
+        LOGIN,
+        HISTORY,
+        HELP,
+        LOCATION,
+    }
+
+
+    private void changeViewState(View parentView, ViewState viewState) {
+        TextView textView = (TextView) parentView.findViewById(R.id.indicator_text);
+        ImageView textSelectImage = (ImageView) parentView.findViewById(R.id.text_select_bg);
+        ImageView textFocusImage = (ImageView) parentView.findViewById(R.id.text_focus_bg);
+        switch (viewState) {
+            case Select:
+                textView.setTextColor(getResources().getColor(R.color._ff9c3c));
+                textSelectImage.setVisibility(View.VISIBLE);
+                textFocusImage.setVisibility(View.INVISIBLE);
+                break;
+            case Focus:
+                textView.setTextColor(getResources().getColor(R.color._ffffff));
+                textSelectImage.setVisibility(View.INVISIBLE);
+                textFocusImage.setImageResource(R.drawable.usercenter_indicator_focused);
+                textFocusImage.setVisibility(View.VISIBLE);
+                break;
+            case Overlay:
+                textView.setTextColor(getResources().getColor(R.color._ffffff));
+                textSelectImage.setVisibility(View.INVISIBLE);
+                textFocusImage.setImageResource(R.drawable.usercenter_indicator_overlay);
+                textFocusImage.setVisibility(View.VISIBLE);
+                break;
+            case None:
+                textView.setTextColor(getResources().getColor(R.color._ffffff));
+                textSelectImage.setVisibility(View.INVISIBLE);
+                textFocusImage.setVisibility(View.INVISIBLE);
+                break;
+            case Disable:
+                textView.setTextColor(getResources().getColor(R.color._ffffff));
+                textSelectImage.setVisibility(View.INVISIBLE);
+                textFocusImage.setVisibility(View.INVISIBLE);
+                parentView.setBackgroundResource(R.drawable.button_disable);
+                parentView.setEnabled(false);
+                break;
+            case Enable:
+                parentView.setEnabled(true);
+                textView.setTextColor(getResources().getColor(R.color._ffffff));
+                textSelectImage.setVisibility(View.INVISIBLE);
+                textFocusImage.setVisibility(View.INVISIBLE);
+                parentView.setBackgroundResource(R.drawable._000000000);
+                break;
+        }
+
+    }
+
+    private enum ViewState {
+        Enable,
+        Disable,
+        Select,
+        Focus,
+        Overlay,
+        None
+    }
+
 
     private void addHistory(Item item) {
         History history = new History();
@@ -415,10 +580,10 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
         history.is_continue = true;
         if (SimpleRestClient.isLogin())
-            DaisyUtils.getHistoryManager(mContext).addHistory(history,
+            DaisyUtils.getHistoryManager(this).addHistory(history,
                     "yes");
         else
-            DaisyUtils.getHistoryManager(mContext)
+            DaisyUtils.getHistoryManager(this)
                     .addHistory(history, "no");
 
     }
@@ -481,8 +646,6 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private void addFavorite(Item mItem) {
         if (isFavorite(mItem)) {
             String url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk + "/";
-            // DaisyUtils.getFavoriteManager(getContext())
-            // .deleteFavoriteByUrl(url,"yes");
         } else {
             String url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk + "/";
             Favorite favorite = new Favorite();
@@ -493,7 +656,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             favorite.quality = mItem.quality;
             favorite.is_complex = mItem.is_complex;
             favorite.isnet = "yes";
-            DaisyUtils.getFavoriteManager(mContext).addFavorite(favorite, favorite.isnet);
+            DaisyUtils.getFavoriteManager(this).addFavorite(favorite, favorite.isnet);
         }
     }
 
@@ -503,7 +666,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             if (url == null && mItem.pk != 0) {
                 url = SimpleRestClient.sRoot_url + "/api/item/" + mItem.pk + "/";
             }
-            Favorite favorite = DaisyUtils.getFavoriteManager(mContext).getFavoriteByUrl(url, "yes");
+            Favorite favorite = DaisyUtils.getFavoriteManager(this).getFavoriteByUrl(url, "yes");
             if (favorite != null) {
                 return true;
             }
@@ -512,126 +675,17 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         return false;
     }
 
-//
-//    if (hasFocus) {
-//        btn.setTextColor(mContext.getResources().getColor(R.color._ffba00));
-//        messageHandler.removeMessages(MSG_INDICATOR_CHANGE);
-//        Message message = messageHandler.obtainMessage(MSG_INDICATOR_CHANGE, v);
-//        messageHandler.sendMessageDelayed(message, 500);
-//    } else {
-//        btn.setTextColor(mContext.getResources().getColor(R.color._ffffff));
-//    }
 
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        if (hasFocus) {
-            switch (v.getId()) {
-                case R.id.vertical_divider_line:
-                    Log.d(TAG, "onFocusChange: " + "vertical_divider_line");
-//                    mIndicatorLostFocus = false;
-                    deliverFocusEvent();
-                    break;
-                case R.string.usercenter_store:
-                    verticalDividerView.setFocusable(false);
-                    mIndicatorType = IndicatorType.STORE;
-                    break;
-                case R.string.usercenter_userinfo:
-                    verticalDividerView.setFocusable(false);
-                    mIndicatorType = IndicatorType.USERINFO;
-                    break;
-                case R.string.usercenter_login:
-                    verticalDividerView.setFocusable(false);
-                    mIndicatorType = IndicatorType.LOGIN;
-                    break;
-                case R.string.usercenter_purchase_history:
-                    verticalDividerView.setFocusable(false);
-                    mIndicatorType = IndicatorType.HISTORY;
-                    break;
-                case R.string.usercenter_help:
-                    verticalDividerView.setFocusable(false);
-                    mIndicatorType = IndicatorType.HELP;
-                    break;
-                case R.string.usercenter_location:
-                    verticalDividerView.setFocusable(false);
-                    mIndicatorType = IndicatorType.LOCATION;
-                    break;
-            }
-
-            if (v.getId() != R.id.vertical_divider_line) {
-                Button btn = (Button) v;
-//                btn.setTextColor(mContext.getResources().getColor(R.color._ffba00));
-                messageHandler.removeMessages(MSG_INDICATOR_CHANGE);
-                Message message = messageHandler.obtainMessage(MSG_INDICATOR_CHANGE, v);
-                messageHandler.sendMessageDelayed(message, 500);
-            }
-
-
-        } else {
-            switch (v.getId()) {
-                case R.id.vertical_divider_line:
-                    break;
-                case R.string.usercenter_store:
-                case R.string.usercenter_userinfo:
-                case R.string.usercenter_purchase_history:
-                case R.string.usercenter_help:
-                case R.string.usercenter_location:
-                    verticalDividerView.setFocusable(true);
-                    break;
-            }
-
-
-            if (v.getId() != R.id.vertical_divider_line) {
-                Button btn = (Button) v;
-                btn.setTextColor(mContext.getResources().getColor(R.color._ffffff));
-            }
-        }
+    private void saveToLocal(String authToken, String phoneNumber) {
+        SimpleRestClient.access_token = authToken;
+        SimpleRestClient.mobile_number = phoneNumber;
+        DaisyUtils.getVodApplication(this).getEditor().putString(VodApplication.AUTH_TOKEN, authToken);
+        DaisyUtils.getVodApplication(this).getEditor().putString(VodApplication.MOBILE_NUMBER, phoneNumber);
+        DaisyUtils.getVodApplication(this).save();
+        fetchFavorite();
+        getHistoryByNet();
     }
 
-
-    //    case R.string.usercenter_store:
-//    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, storeFragment).commit();
-//    break;
-//    case R.string.usercenter_userinfo:
-//    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, userInfoFragment).commit();
-//    break;
-//    case R.string.usercenter_login:
-//    // getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, loginFragment).commit();
-//
-//    loginQQorWX();
-//    break;
-//    case R.string.usercenter_purchase_history:
-//    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, historyFragment).commit();
-//    break;
-//    case R.string.usercenter_help:
-//    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, helpFragment).commit();
-//    break;
-//    case R.string.usercenter_location:
-//    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, locationFragment).commit();
-//    break;
-
-    private void deliverFocusEvent() {
-        switch (mIndicatorType) {
-            case STORE:
-                indicatorView.get(0).requestFocus();
-                break;
-            case USERINFO:
-                indicatorView.get(1).requestFocus();
-                break;
-            case LOGIN:
-                indicatorView.get(2).requestFocus();
-                break;
-            case HISTORY:
-                indicatorView.get(3).requestFocus();
-                break;
-            case HELP:
-                indicatorView.get(4).requestFocus();
-                break;
-            case LOCATION:
-                indicatorView.get(5).requestFocus();
-                break;
-        }
-
-    }
 
     public interface OnLoginByChangeCallback {
         void onLoginSuccess();
@@ -643,95 +697,5 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
         listener = l;
     }
-
-//    private OnFocusChangeListener indicatorBtnFocusChangeListener = new OnFocusChangeListener() {
-//        @Override
-//        public void onFocusChange(View v, boolean hasFocus) {
-//            Button btn = (Button) v;
-//            if (hasFocus) {
-//                btn.setTextColor(mContext.getResources().getColor(R.color._ffba00));
-//                messageHandler.removeMessages(MSG_INDICATOR_CHANGE);
-//                Message message = messageHandler.obtainMessage(MSG_INDICATOR_CHANGE, v);
-//                messageHandler.sendMessageDelayed(message, 500);
-//            } else {
-//                btn.setTextColor(mContext.getResources().getColor(R.color._ffffff));
-//            }
-//        }
-//    };
-
-
-    private void handlerClick(View v) {
-        int currentViewId = v.getId();
-        switch (v.getId()) {
-            case R.string.usercenter_store:
-                if (!isDestroyed())
-                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, storeFragment).commitAllowingStateLoss();
-                break;
-            case R.string.usercenter_userinfo:
-                if (!isDestroyed())
-                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, userInfoFragment).commitAllowingStateLoss();
-                break;
-            case R.string.usercenter_login:
-                // getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, loginFragment).commit();
-
-                loginQQorWX();
-                break;
-            case R.string.usercenter_purchase_history:
-                if (!isDestroyed())
-                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, historyFragment).commitAllowingStateLoss();
-                break;
-            case R.string.usercenter_help:
-                if (!isDestroyed())
-                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, helpFragment).commitAllowingStateLoss();
-                break;
-            case R.string.usercenter_location:
-                if (!isDestroyed()) {
-                    locationFragment.focus = indicatorView.get(5);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, locationFragment).commitAllowingStateLoss();
-                }
-
-                break;
-        }
-        for (View view : indicatorView) {
-            if (view.getId() == currentViewId) {
-                view.setBackgroundResource(R.drawable.usercenter_table_focus);
-            } else {
-
-                if (view == indicatorView.get(2)) {
-                    if (TextUtils.isEmpty(SimpleRestClient.access_token)) {
-                        view.setBackgroundResource(R.drawable.usercenter_table_normal);
-                    } else {
-                        view.setBackgroundResource(R.drawable.button_disable);
-                    }
-                } else {
-                    view.setBackgroundResource(R.drawable.usercenter_table_normal);
-                }
-            }
-        }
-    }
-
-
-    private Handler messageHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MSG_INDICATOR_CHANGE:
-                    View view = (View) msg.obj;
-                    handlerClick(view);
-                    break;
-            }
-
-        }
-    };
-
-    private enum IndicatorType {
-        STORE,
-        USERINFO,
-        LOGIN,
-        HISTORY,
-        HELP,
-        LOCATION,
-    }
-
 
 }
