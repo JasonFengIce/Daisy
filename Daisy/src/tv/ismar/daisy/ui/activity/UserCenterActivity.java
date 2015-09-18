@@ -91,6 +91,9 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         }
     };
 
+    private boolean fargmentIsActive = false;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,11 +131,13 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onResume() {
         super.onResume();
+        fargmentIsActive = true;
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        fargmentIsActive = false;
         if (messageHandler.hasMessages(MSG_INDICATOR_CHANGE))
             messageHandler.removeMessages(MSG_INDICATOR_CHANGE);
     }
@@ -343,53 +348,40 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
 
     private void handlerClick(View v) {
-        switch ((Integer) v.getTag()) {
-            case R.string.usercenter_store:
-                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, storeFragment).commitAllowingStateLoss();
-                break;
-            case R.string.usercenter_userinfo:
-                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, userInfoFragment).commitAllowingStateLoss();
-                break;
-            case R.string.usercenter_login:
-                loginQQorWX();
-                break;
-            case R.string.usercenter_purchase_history:
-                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, historyFragment).commitAllowingStateLoss();
-                break;
-            case R.string.usercenter_help:
-                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, helpFragment).commitAllowingStateLoss();
-                break;
-            case R.string.usercenter_location:
-//                locationFragment.focus = indicatorView.get(5);
-                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, locationFragment).commitAllowingStateLoss();
-                break;
-        }
+        if (fargmentIsActive) {
 
-        if (v == indicatorView.get(2)) {
-            if (TextUtils.isEmpty(SimpleRestClient.access_token)) {
-                changeViewState(v, ViewState.Overlay);
-            } else {
-                changeViewState(v, ViewState.Disable);
+
+            switch ((Integer) v.getTag()) {
+                case R.string.usercenter_store:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, storeFragment).commitAllowingStateLoss();
+                    break;
+                case R.string.usercenter_userinfo:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, userInfoFragment).commitAllowingStateLoss();
+                    break;
+                case R.string.usercenter_login:
+                    loginQQorWX();
+                    break;
+                case R.string.usercenter_purchase_history:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, historyFragment).commitAllowingStateLoss();
+                    break;
+                case R.string.usercenter_help:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, helpFragment).commitAllowingStateLoss();
+                    break;
+                case R.string.usercenter_location:
+//                locationFragment.focus = indicatorView.get(5);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, locationFragment).commitAllowingStateLoss();
+                    break;
+            }
+
+            if (v == indicatorView.get(2)) {
+                if (TextUtils.isEmpty(SimpleRestClient.access_token)) {
+                    changeViewState(v, ViewState.Overlay);
+                } else {
+                    changeViewState(v, ViewState.Disable);
+                }
             }
         }
 
-
-//        for (View view : indicatorView) {
-//            if (view.getId() == currentViewId) {
-//                view.setBackgroundResource(R.drawable.usercenter_table_focus);
-//            } else {
-//
-//                if (view == indicatorView.get(2)) {
-//                    if (TextUtils.isEmpty(SimpleRestClient.access_token)) {
-//                        view.setBackgroundResource(R.drawable.usercenter_table_normal);
-//                    } else {
-//                        view.setBackgroundResource(R.drawable.button_disable);
-//                    }
-//                } else {
-//                    view.setBackgroundResource(R.drawable.usercenter_table_normal);
-//                }
-//            }
-//        }
     }
 
 
@@ -532,10 +524,12 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 textSelectImage.setVisibility(View.INVISIBLE);
                 textFocusImage.setVisibility(View.INVISIBLE);
                 parentView.setBackgroundResource(R.drawable.button_disable);
-                parentView.setEnabled(false);
+                parentView.setFocusable(false);
+                parentView.setFocusableInTouchMode(false);
                 break;
             case Enable:
-                parentView.setEnabled(true);
+                parentView.setFocusable(true);
+                parentView.setFocusableInTouchMode(true);
                 textView.setTextColor(getResources().getColor(R.color._ffffff));
                 textSelectImage.setVisibility(View.INVISIBLE);
                 textFocusImage.setVisibility(View.INVISIBLE);
