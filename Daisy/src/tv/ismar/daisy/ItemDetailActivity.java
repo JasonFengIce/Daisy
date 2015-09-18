@@ -640,6 +640,20 @@ private boolean isPause = false;
 			top_column_layout.setTitle("电影");		
 		}else if("teleplay".equals(mItem.content_model)){
 			top_column_layout.setTitle("电视剧");
+		}else if("trailer".equals(mItem.content_model)){
+			top_column_layout.setTitle("片花");
+		}else if("comic".equals(mItem.content_model)){
+			top_column_layout.setTitle("动漫");
+		}else if("music".equals(mItem.content_model)){
+			top_column_layout.setTitle("音乐");
+		}else if("documentary".equals(mItem.content_model)){
+			top_column_layout.setTitle("纪录片");
+		}else if("education".equals(mItem.content_model)){
+			top_column_layout.setTitle("教育");
+		}else if("sport".equals(mItem.content_model)){
+			top_column_layout.setTitle("体育");
+		}else if("other".equals(mItem.content_model)){
+			top_column_layout.setTitle("其它");
 		}
 		top_column_layout.setSubTitle("");
 		top_column_layout.hideWeather();

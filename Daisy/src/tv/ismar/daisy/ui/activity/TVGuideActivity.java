@@ -586,6 +586,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 lastview = view;
                 // }
                 mCurrentChannelPosition.setPosition(channelPosition);
+                View view2 = scroll.getChildAt(0);
+                Log.v("aaaa","x="+view2.getLeft()+"y="+view2.getTop());
             }
 
             @Override
