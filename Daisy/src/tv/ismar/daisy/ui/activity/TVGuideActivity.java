@@ -107,6 +107,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private boolean scrollFromBorder;
     private ScrollType scrollType = ScrollType.right;
     private String lastviewTag;
+    private int lastchannelindex;
     private boolean rightscroll;
     private LeavePosition leavePosition = LeavePosition.RightBottom;
 
@@ -887,6 +888,11 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
 
     private void selectChannelByPosition(int position) {
+    	if(lastchannelindex <position){
+    		scrollType=ScrollType.left;
+    	}else{
+    		scrollType=ScrollType.right;    		
+    	}
         if (position == 0) {
             arrow_left.setVisibility(View.GONE);
             arrow_left_visible.setVisibility(View.GONE);
@@ -940,6 +946,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 //        scrollFromBorder = false;
         currentFragment.setChannelEntity(channelEntity);
         replaceFragment(currentFragment);
+        lastchannelindex = position;
         switch (mCurrentChannelPosition.getPosition()) {
 		case 0:
 			scroll.setNextFocusUpId(R.id.guidefragment_firstpost);
@@ -1113,7 +1120,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     public void setLastViewTag(String flag){
     	lastviewTag = flag;
-    	Log.v("aaaa", "flag = "+flag);
     }
 
     public void resetBorderFocus() {

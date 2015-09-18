@@ -128,6 +128,7 @@ public class ItemDetailActivity extends BaseActivity implements
     private String channel;
     private String fromPage;
     private boolean isFirstLogin = false;
+    private tv.ismar.daisy.ui.widget.LaunchHeaderLayout top_column_layout;
 	private void initViews() {
 		isbuy_label = (ImageView)findViewById(R.id.isbuy_label);
 		mDetailLeftContainer = (RelativeLayout) findViewById(R.id.detail_left_container);
@@ -161,8 +162,8 @@ public class ItemDetailActivity extends BaseActivity implements
 		mMiddleBtn.setOnClickListener(mIdOnClickListener);
 		mRightBtn.setOnClickListener(mIdOnClickListener);
 		mMoreContent.setOnClickListener(mIdOnClickListener);
-
-
+		top_column_layout = (tv.ismar.daisy.ui.widget.LaunchHeaderLayout) findViewById(R.id.top_column_layout);
+		top_column_layout.setSubTitle("详情");
         mLeftBtn.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {

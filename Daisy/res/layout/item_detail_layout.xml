@@ -2,8 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"             
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
+    android:orientation="vertical"
         android:id="@+id/large_layout">
+            <tv.ismar.daisy.ui.widget.LaunchHeaderLayout
+            android:id="@+id/top_column_layout"
+            android:layout_width="1860dip"
+            android:layout_height="@dimen/weather_fragment_h"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/tv_guide_top_section_padding"
+            android:paddingRight="@dimen/tv_guide_top_section_padding"
+            >
+    </tv.ismar.daisy.ui.widget.LaunchHeaderLayout>
+<LinearLayout         
+    android:layout_width="match_parent"
+    android:layout_height="900dp"
+    android:orientation="horizontal"
+      >
     <RelativeLayout
         android:id="@+id/detail_left_container"
         android:layout_width="@dimen/item_detail_detail_left_container_width"
@@ -18,9 +32,8 @@
     android:textColor="@color/white"
     android:textSize="@dimen/item_detail_text_size"
     android:layout_alignParentTop="true"
-    android:layout_marginTop="@dimen/item_detail_title_txt_MT"
     android:layout_marginLeft="@dimen/item_detail_detail_title_marginleft"
-    android:visibility="visible"/>
+    android:visibility="gone"/>
  
         <TextView
             android:id="@+id/detail_title"
@@ -29,7 +42,6 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="@dimen/item_detail_detail_title_marginleft"
-            android:layout_marginTop="@dimen/item_detail_detail_title_margintop"
             android:textColor="@color/white"
             android:textSize="@dimen/item_detail_detail_title_textSize"
 
@@ -42,7 +54,6 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="@dimen/item_detail_attribute_left"
             android:textSize="@dimen/item_detail_introlabel_textsize"
-            android:layout_marginTop="@dimen/item_detail_attribute_top"
             android:orientation="vertical"
             android:id="@+id/detail_attribute_container"
             >           
@@ -227,5 +238,5 @@
             android:textSize="@dimen/item_detail_more_content_textsize" 
             android:layout_marginTop="@dimen/item_detail_btn_layout_marginB"/>
     </LinearLayout>
-
+</LinearLayout>
 </LinearLayout>

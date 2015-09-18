@@ -218,7 +218,15 @@ public class FilmFragment extends ChannelBaseFragment {
         film_lefttop_image.setFocustitle(posters.get(0).getIntroduction());
         film_lefttop_image.setOnClickListener(ItemClickListener);
         film_lefttop_image.setTag(posters.get(0));
-
+        film_lefttop_image.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View arg0, boolean arg1) {
+				if(arg1){
+            		((TVGuideActivity) (getActivity())).setLastViewTag("");
+            	}			
+			}
+		});
         mLeftTopView = film_lefttop_image;
         for (int i = 1; i <= posters.size(); i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(199, 278);
