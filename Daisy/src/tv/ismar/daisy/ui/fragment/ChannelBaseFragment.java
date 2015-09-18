@@ -24,12 +24,21 @@ public class ChannelBaseFragment extends Fragment {
     protected View mLeftBottomView;
     protected View mRightTopView;
     protected View mRightBottomView;
-
+    protected boolean isRight;
+    protected String bottomFlag;
 
 
 
     
-    public ChannelEntity getChannelEntity() {
+    public void setRight(boolean isRight) {
+		this.isRight = isRight;
+	}
+
+	public void setBottomFlag(String bottomFlag) {
+		this.bottomFlag = bottomFlag;
+	}
+
+	public ChannelEntity getChannelEntity() {
         return channelEntity;
     }
 

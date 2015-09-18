@@ -25,7 +25,7 @@
     <dimen name="item_detail_previewpanel_width">493dip</dimen>
     <dimen name="item_detail_previewpanel_height">390dip</dimen>
     <dimen name="item_detail_previewpanel_marginright">116dip</dimen>
-    <dimen name="item_detail_previewpanel_margintop">159dip</dimen>
+    <dimen name="item_detail_previewpanel_margintop">59dip</dimen>
     <dimen name="item_detail_previewimgview_width">480dip</dimen>
     <dimen name="item_detail_previewimgview_height">271dip</dimen>
     <dimen name="item_detail_previewimgview_marginright">5dip</dimen>
@@ -53,7 +53,7 @@
     <dimen name="item_detail_btn_favorite_paddingtop">4dip</dimen>
     <dimen name="item_detail_right_container_width">639dip</dimen>
     <dimen name="item_detail_related_video_label_left">40dip</dimen>
-    <dimen name="item_detail_related_video_label_top">113dip</dimen>
+    <dimen name="item_detail_related_video_label_top">13dip</dimen>
     <dimen name="item_detail_related_video_label_textsize">40sp</dimen>
     <dimen name="item_detail_related_divider_width">558dip</dimen>
     <dimen name="item_detail_related_divider_height">5dip</dimen>

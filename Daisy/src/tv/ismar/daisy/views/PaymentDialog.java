@@ -849,7 +849,7 @@ private String authToken;
 				public void onClick(View v) {
 					if (StringUtils.isNotEmpty(SimpleRestClient.access_token)) {
 						warnmsg_view
-								.setText(R.string.account_bind_dialog_bindmsg);
+								.setText(R.string.account_combine_msg);
 						account_bind_panel.setVisibility(View.VISIBLE);
 						account_bind_ok1_bt.setVisibility(View.GONE);
 					}

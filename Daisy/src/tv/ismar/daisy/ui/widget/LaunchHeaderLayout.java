@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.activeandroid.query.Select;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -148,6 +150,8 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
 
     public void setSubTitle(String subTitle) {
         subTitleTextView.setText(subTitle);
+        if(StringUtils.isEmpty(subTitle))
+        	hideSubTiltle();
     }
 
     public void hideSubTiltle() {
@@ -274,6 +278,10 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
         for (View textView : indicatorTableList) {
             textView.setVisibility(View.GONE);
         }
+    }
+    
+    public void hideWeather(){
+    	weatherInfoTextView.setVisibility(View.INVISIBLE);
     }
 
 }

@@ -106,7 +106,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private View toppage_divide_view;
     private boolean scrollFromBorder;
     private ScrollType scrollType = ScrollType.right;
-
+    private String lastviewTag;
+    private int lastchannelindex;
+    private boolean rightscroll;
     private LeavePosition leavePosition = LeavePosition.RightBottom;
 
     private enum LeavePosition {
@@ -152,7 +154,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             msg.what = SWITCH_PAGE;
             if (fragmentSwitch.hasMessages(SWITCH_PAGE))
                 fragmentSwitch.removeMessages(SWITCH_PAGE);
-            fragmentSwitch.sendMessageDelayed(msg, 800);
+            fragmentSwitch.sendMessageDelayed(msg, 300);
 //            selectChannelByPosition(position);
             scroll.setSelection(position);
             if (!scrollFromBorder)
@@ -212,7 +214,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 //                            mCurrentChannelPosition.setPosition(0);
 //                        }
                         scroll.arrowScroll(View.FOCUS_LEFT);
-
+                        rightscroll = true;
 
                         break;
                     case R.id.arrow_scroll_right:
@@ -225,6 +227,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 //                            mCurrentChannelPosition.setPosition(mChannelEntitys.length - 1);
 //                        }
                         scroll.arrowScroll(View.FOCUS_RIGHT);
+                        rightscroll = false;
                         break;
                 }
                 scrollFromBorder = true;
@@ -885,6 +888,11 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
 
     private void selectChannelByPosition(int position) {
+    	if(lastchannelindex <position){
+    		scrollType=ScrollType.left;
+    	}else{
+    		scrollType=ScrollType.right;    		
+    	}
         if (position == 0) {
             arrow_left.setVisibility(View.GONE);
             arrow_left_visible.setVisibility(View.GONE);
@@ -930,12 +938,15 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         }
         if (scrollFromBorder) {
             currentFragment.setScrollFromBorder(scrollFromBorder);
+            currentFragment.setRight(rightscroll);
+            currentFragment.setBottomFlag(lastviewTag);
         }
         // currentFragment.view = scroll;
         //currentFragment.position = position;
 //        scrollFromBorder = false;
         currentFragment.setChannelEntity(channelEntity);
         replaceFragment(currentFragment);
+        lastchannelindex = position;
         switch (mCurrentChannelPosition.getPosition()) {
 		case 0:
 			scroll.setNextFocusUpId(R.id.guidefragment_firstpost);
@@ -959,7 +970,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 			scroll.setNextFocusUpId(R.id.vaiety_channel4_image);
 			break;
 		case 7:
-			scroll.setNextFocusUpId(R.id.filmfragment_secondpost);
+			scroll.setNextFocusUpId(R.id.child_more);
 			break;
 		case 8:
 			scroll.setNextFocusUpId(R.id.listmore);
@@ -1106,6 +1117,10 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         }
 
     };
+
+    public void setLastViewTag(String flag){
+    	lastviewTag = flag;
+    }
 
     public void resetBorderFocus() {
         scrollFromBorder = false;

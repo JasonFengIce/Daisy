@@ -50,7 +50,7 @@ public class GuideFragment extends ChannelBaseFragment {
     private LabelImageView toppage_carous_imageView1;
     private LabelImageView toppage_carous_imageView2;
     private LabelImageView toppage_carous_imageView3;
-
+    private HomeItemContainer lastpostview; 
     private IsmartvUrlClient datafetch;
 
     private tv.ismar.daisy.ui.widget.DaisyVideoView mSurfaceView;
@@ -171,9 +171,25 @@ public class GuideFragment extends ChannelBaseFragment {
                 if (!posters.isEmpty()) {
                     initPosters(posters);
                 }
-                if (scrollFromBorder) {
-                    film_post_layout.requestFocus();
-                    ((TVGuideActivity) getActivity()).resetBorderFocus();
+                if(scrollFromBorder){
+                	if(isRight){//右侧移入
+//                		if(StringUtils.isNotEmpty(bottomFlag)){
+                			if("bottom".equals(bottomFlag)){//下边界移入
+                				lastpostview.findViewById(R.id.poster_title).requestFocus();
+                			}else{//上边界边界移入
+                				toppage_carous_imageView1.requestFocus();               				
+                			}
+//                		}
+                	}else{//左侧移入
+                		if(StringUtils.isNotEmpty(bottomFlag)){
+                			if("bottom".equals(bottomFlag)){
+                				
+                			}else{
+                				
+                			}
+                	}
+                }
+                ((TVGuideActivity)getActivity()).resetBorderFocus();
                 }
             }
 
@@ -206,13 +222,21 @@ public class GuideFragment extends ChannelBaseFragment {
             }
             textView.setOnClickListener(ItemClickListener);
             frameLayout.setOnClickListener(ItemClickListener);
+            textView.setTag(R.id.poster_title, i);
             textView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
+                	Object tagObject = v.getTag(R.id.poster_title);
                     if (hasFocus) {
                         ((HomeItemContainer) v.getParent())
                                 .setDrawBorder(true);
                         ((HomeItemContainer) v.getParent()).invalidate();
+                        if(tagObject != null){
+                        	int tagindex = Integer.parseInt(tagObject.toString());
+                        	if(tagindex ==0 || tagindex ==7){
+                        		((TVGuideActivity) (getActivity())).setLastViewTag("bottom");
+                        	}
+                        }
                     } else {
                         ((HomeItemContainer) v.getParent())
                                 .setDrawBorder(false);
@@ -227,6 +251,10 @@ public class GuideFragment extends ChannelBaseFragment {
             if(i==0){
             	frameLayout.setFocusable(true);
             	frameLayout.setId(R.id.guidefragment_firstpost);          	
+            }
+            if(i==7){
+            	frameLayout.setId(R.id.guidefragment_lastpost);
+            	lastpostview = frameLayout;
             }
             imageViews.add(frameLayout);
             switch (i) {
@@ -369,7 +397,9 @@ public class GuideFragment extends ChannelBaseFragment {
             for (ImageView imageView : allItem) {
                 focusFlag = focusFlag && (!imageView.isFocused());
             }
-
+            if(hasFocus){
+            	((TVGuideActivity) (getActivity())).setLastViewTag("");
+            }
             // all view not focus
             if (focusFlag) {
                 mCarouselRepeatType = CarouselRepeatType.All;
