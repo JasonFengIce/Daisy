@@ -163,7 +163,6 @@ public class ItemDetailActivity extends BaseActivity implements
 		mRightBtn.setOnClickListener(mIdOnClickListener);
 		mMoreContent.setOnClickListener(mIdOnClickListener);
 		top_column_layout = (tv.ismar.daisy.ui.widget.LaunchHeaderLayout) findViewById(R.id.top_column_layout);
-		top_column_layout.setSubTitle("详情");
         mLeftBtn.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -635,6 +634,15 @@ private boolean isPause = false;
 		default:
 			mDetailQualityLabel.setVisibility(View.GONE);
 		}
+		if("variety".equals(mItem.content_model)||"entertainment".equals(mItem.content_model)){
+			top_column_layout.setTitle("娱乐综艺");
+		}else if("movie".equals(mItem.content_model)){
+			top_column_layout.setTitle("电影");		
+		}else if("teleplay".equals(mItem.content_model)){
+			top_column_layout.setTitle("电视剧");
+		}
+		top_column_layout.setSubTitle("");
+		top_column_layout.hideWeather();
 		isInitialized = true;
 	}
 

@@ -86,7 +86,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
         weatherFragment.setTitle(title);
         weatherFragment.hideSubTiltle();
         weatherFragment.hideIndicatorTable();
-
+        weatherFragment.hideWeather();
         mDetailTitle = (TextView) findViewById(R.id.detail_title);
         mDetailIntro = (TextView) findViewById(R.id.detail_intro);
         mDetailPreviewImg = (AsyncImageView) findViewById(R.id.detail_preview_img);

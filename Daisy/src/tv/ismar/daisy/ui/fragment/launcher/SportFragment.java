@@ -160,6 +160,24 @@ public class SportFragment extends ChannelBaseFragment {
 				}
 			}
 		});
+		sport_channel1_image.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View arg0, boolean arg1) {
+				if (arg1) {
+					((TVGuideActivity) (getActivity())).setLastViewTag("bottom");			
+				}
+			}
+		});
+		sport_channel5.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View arg0, boolean arg1) {
+				if (arg1) {
+					((TVGuideActivity) (getActivity())).setLastViewTag("bottom");			
+				}
+			}
+		});
 		sport_card1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
 			@Override

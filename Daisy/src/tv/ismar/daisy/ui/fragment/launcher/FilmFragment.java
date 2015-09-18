@@ -269,7 +269,7 @@ public class FilmFragment extends ChannelBaseFragment {
                             focusView = ((HomeItemContainer) v.getParent());
                             if(tagObject != null){
                             	int tagindex = Integer.parseInt(tagObject.toString());
-                            	if(tagindex ==0){
+                            	if(tagindex ==1){
                             		((TVGuideActivity) (getActivity())).setLastViewTag("bottom");
                             	}
                             }
