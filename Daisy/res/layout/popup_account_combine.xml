@@ -37,7 +37,7 @@
                     android:id="@+id/confirm_account_combine"
                     android:textColor="#FFFFFF"
                     android:textSize="@dimen/h3_text_size"
-                    android:background="@drawable/selector_channel_item"
+                    android:background="@drawable/selector_daisy_exit_button"
                     android:layout_width="@dimen/account_combine_button_width"
                     android:layout_height="@dimen/account_combine_button_height"/>
 
@@ -47,7 +47,7 @@
                     android:layout_marginLeft="@dimen/account_combine_button_spacing"
                     android:textColor="#FFFFFF"
                     android:textSize="@dimen/h3_text_size"
-                    android:background="@drawable/selector_channel_item"
+                    android:background="@drawable/selector_daisy_exit_button"
                     android:layout_width="@dimen/account_combine_button_width"
                     android:layout_height="@dimen/account_combine_button_height"/>
 
