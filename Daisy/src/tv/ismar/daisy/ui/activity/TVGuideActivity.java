@@ -889,9 +889,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     private void selectChannelByPosition(int position) {
     	if(lastchannelindex <position){
-    		scrollType=ScrollType.left;
+    		scrollType=ScrollType.right;
     	}else{
-    		scrollType=ScrollType.right;    		
+    		scrollType=ScrollType.left;
     	}
         if (position == 0) {
             arrow_left.setVisibility(View.GONE);
