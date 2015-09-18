@@ -498,15 +498,16 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         ImageView textFocusImage = (ImageView) parentView.findViewById(R.id.text_focus_bg);
         switch (viewState) {
             case Select:
-                textView.setTextColor(getResources().getColor(R.color._ff9c3c));
-                textSelectImage.setVisibility(View.VISIBLE);
-                textFocusImage.setVisibility(View.INVISIBLE);
-                break;
-            case Focus:
                 textView.setTextColor(getResources().getColor(R.color._ffffff));
                 textSelectImage.setVisibility(View.INVISIBLE);
                 textFocusImage.setImageResource(R.drawable.usercenter_indicator_focused);
                 textFocusImage.setVisibility(View.VISIBLE);
+                break;
+            case Focus:
+                textView.setTextColor(getResources().getColor(R.color._ff9c3c));
+                textSelectImage.setVisibility(View.VISIBLE);
+                textFocusImage.setVisibility(View.INVISIBLE);
+
                 break;
             case Overlay:
                 textView.setTextColor(getResources().getColor(R.color._ffffff));
