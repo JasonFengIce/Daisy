@@ -414,6 +414,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                     mIndicatorType = IndicatorType.HELP;
                     break;
                 case R.string.usercenter_location:
+                    locationFragment.focus = v;
                     verticalDividerView.setFocusable(false);
                     mIndicatorType = IndicatorType.LOCATION;
                     break;

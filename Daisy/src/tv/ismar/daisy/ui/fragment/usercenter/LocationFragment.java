@@ -307,9 +307,10 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
         int position = (Integer) v.getTag();
         if (hasFocus) {
             if (isfirst && position == 0) {
-//                isfirst = false;
-//                focus.requestFocus();
-//                return;
+                isfirst = false;
+                if (focus != null)
+                    focus.requestFocus();
+                return;
             }
             focusItem = v;
             textView.setTextColor(mContext.getResources().getColor(R.color.location_text_focus));
