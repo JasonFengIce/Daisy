@@ -46,7 +46,9 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
     private ArrayList<HomePagerEntity.Carousel> carousels;
 
     private MessageHandler messageHandler;
-
+    private View lefttop;
+    private View leftBottom;
+    private View righttop;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_child, null);
@@ -65,6 +67,15 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
         imageSwitcher.setOnClickListener(ItemClickListener);
         flag = new Flag(this);
         messageHandler = new MessageHandler();
+        childMore.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View arg0, boolean arg1) {
+				if (arg1) {
+					((TVGuideActivity) (getActivity())).setLastViewTag("bottom");			
+				}
+			}
+		});
         return mView;
     }
 
@@ -79,16 +90,31 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
             public void onSuccess(String result) {
             	if(mContext == null)
             		return;
-            	 if(scrollFromBorder){
-            		 imageSwitcher.requestFocus();
-            		 ((TVGuideActivity)getActivity()).resetBorderFocus();
-                 }
                 HomePagerEntity homePagerEntity = new Gson().fromJson(result, HomePagerEntity.class);
                 ArrayList<HomePagerEntity.Poster> posters = homePagerEntity.getPosters();
                 ArrayList<HomePagerEntity.Carousel> carousels = homePagerEntity.getCarousels();
-
                 initPosters(posters);
                 initCarousel(carousels);
+            	 if(scrollFromBorder){
+                  	if(isRight){//右侧移入
+//                  		if(StringUtils.isNotEmpty(bottomFlag)){
+                  			if("bottom".equals(bottomFlag)){//下边界移入
+                  				childMore.requestFocus();        				
+                  			}else{//上边界边界移入
+                  				righttop.requestFocus();        				
+                  			}
+//                  		}
+                  	}else{//左侧移入
+//                  		if(StringUtils.isNotEmpty(bottomFlag)){
+                  			if("bottom".equals(bottomFlag)){
+                  				leftBottom.requestFocus();        				
+                  			}else{
+                  				lefttop.requestFocus();
+                  			}
+//                  	}
+                  }
+                  	((TVGuideActivity)getActivity()).resetBorderFocus();
+                  }
             }
 
             @Override
@@ -137,6 +163,31 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
                 if (i == 1) {
                     verticalParams.setMargins(0, marginTP, 0, marginTP);
                 }
+                if(i ==0){
+                	lefttop = itemContainer;
+                }
+                if(i <2){
+                	itemContainer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            			@Override
+            			public void onFocusChange(View arg0, boolean arg1) {
+            				if (arg1) {
+            					((TVGuideActivity) (getActivity())).setLastViewTag("");			
+            				}
+            			}
+            		});
+                }else{
+                	leftBottom = itemContainer;
+                	itemContainer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            			@Override
+            			public void onFocusChange(View arg0, boolean arg1) {
+            				if (arg1) {
+            					((TVGuideActivity) (getActivity())).setLastViewTag("bottom");			
+            				}
+            			}
+            		});              	
+                }
                 itemContainer.setLayoutParams(verticalParams);
                 leftLayout.addView(itemContainer);
             }
@@ -168,12 +219,23 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
                 LinearLayout.LayoutParams verticalParams = new LinearLayout.LayoutParams(itemWidth, itemHeight);
                 verticalParams.width = itemWidth;
                 verticalParams.height = itemHeight;
-
+                if(i == 5){
+                	righttop =itemContainer;
+                }
                 if (i == 6) {
                     verticalParams.setMargins(0, marginTP, 0, 0);
                 }
                 itemContainer.setLayoutParams(verticalParams);
                 rightLayout.addView(itemContainer);
+                itemContainer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+        			@Override
+        			public void onFocusChange(View arg0, boolean arg1) {
+        				if (arg1) {
+        					((TVGuideActivity) (getActivity())).setLastViewTag("");			
+        				}
+        			}
+        		});
             }
         }
         rightLayout.requestLayout();

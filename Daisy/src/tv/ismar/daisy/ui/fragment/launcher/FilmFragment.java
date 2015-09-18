@@ -65,8 +65,9 @@ public class FilmFragment extends ChannelBaseFragment {
     private CarouselRepeatType mCarouselRepeatType = CarouselRepeatType.All;
 
     private String mChannelName;
-
-
+    private HomeItemContainer morelayout;
+    private HomeItemContainer firstpost;
+    private LabelImageView firstcarousel;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,7 +99,7 @@ public class FilmFragment extends ChannelBaseFragment {
         film_post_layout = (HomeItemContainer) mView.findViewById(R.id.film_post_layout);
         linkedVideoImage = (ImageView) mView.findViewById(R.id.film_linked_image);
         film_linked_title = (TextView) mView.findViewById(R.id.film_linked_title);
-        film_post_layout.setNextFocusRightId(0x24157);
+        film_post_layout.setNextFocusRightId(R.id.filmfragment_firstcarousel);
         film_post_layout.setOnClickListener(ItemClickListener);
         //film_post_layout.requestFocus();
         mSurfaceView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -177,13 +178,28 @@ public class FilmFragment extends ChannelBaseFragment {
 
                 Log.d(TAG, "posters size: " + posters.size());
                 Log.d(TAG, "carousels size: " + carousels.size());
-                if (scrollFromBorder) {
-                    film_lefttop_image.requestFocus();
-                    ((TVGuideActivity) getActivity()).resetBorderFocus();
-                }
                 initPosters(posters);
                 initCarousel(carousels);
-
+                if(scrollFromBorder){
+                	if(isRight){//右侧移入
+//                		if(StringUtils.isNotEmpty(bottomFlag)){
+                			if("bottom".equals(bottomFlag)){//下边界移入
+                				morelayout.requestFocus();
+                			}else{//上边界边界移入
+                				firstcarousel.requestFocus();
+                			}
+//                		}
+                	}else{//左侧移入
+//                		if(StringUtils.isNotEmpty(bottomFlag)){
+                			if("bottom".equals(bottomFlag)){
+                				firstpost.requestFocus();
+                			}else{
+                				film_lefttop_image.requestFocus();
+                			}        		
+//                	}
+                }
+                	((TVGuideActivity)getActivity()).resetBorderFocus();
+                }
             }
 
             @Override
@@ -233,14 +249,22 @@ public class FilmFragment extends ChannelBaseFragment {
                     textView.setText(posters.get(i).getIntroduction());
                     textView.setVisibility(View.VISIBLE);
                 }
+                textView.setTag(R.id.poster_title, i);
                 textView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
+                    	Object tagObject = v.getTag(R.id.poster_title);
                         if (hasFocus) {
                             ((HomeItemContainer) v.getParent())
                                     .setDrawBorder(true);
                             ((HomeItemContainer) v.getParent()).invalidate();
                             focusView = ((HomeItemContainer) v.getParent());
+                            if(tagObject != null){
+                            	int tagindex = Integer.parseInt(tagObject.toString());
+                            	if(tagindex ==0){
+                            		((TVGuideActivity) (getActivity())).setLastViewTag("bottom");
+                            	}
+                            }
                         } else {
                             ((HomeItemContainer) v.getParent())
                                     .setDrawBorder(false);
@@ -265,14 +289,15 @@ public class FilmFragment extends ChannelBaseFragment {
                   }
                 guideRecommmendList.addView(frameLayout);
                 if (i == 1) {
-                    mLeftBottomView = frameLayout;
+//                    mLeftBottomView = frameLayout;
+                	firstpost = frameLayout;
                 }
 
             } else {
                 params.width = 206;
                 params.height = 277;
                 params.setMargins(0, 0, 0, 0);
-                tv.ismar.daisy.ui.widget.HomeItemContainer morelayout = (tv.ismar.daisy.ui.widget.HomeItemContainer) LayoutInflater.from(
+                morelayout = (HomeItemContainer) LayoutInflater.from(
                         mContext).inflate(R.layout.toppagelistmorebutton,
                         null);
                 morelayout.setLayoutParams(params);
@@ -281,6 +306,14 @@ public class FilmFragment extends ChannelBaseFragment {
 
                 mRightBottomView = morelayout;
                 guideRecommmendList.addView(morelayout);
+                morelayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+					@Override
+					public void onFocusChange(View arg0, boolean arg1) {
+						if(arg1){
+							((TVGuideActivity) (getActivity())).setLastViewTag("bottom");	
+						}
+					}
+				});
             }
         }
     }
@@ -298,7 +331,8 @@ public class FilmFragment extends ChannelBaseFragment {
             LabelImageView itemView = new LabelImageView(mContext);
             if (i == 0) {
                 params.topMargin = 0;
-                itemView.setId(0x24157);
+                itemView.setId(R.id.filmfragment_firstcarousel);
+                firstcarousel = itemView;
             } else
                 params.topMargin = 17;
             if (mContext == null)
@@ -483,7 +517,9 @@ public class FilmFragment extends ChannelBaseFragment {
             for (ImageView imageView : allItem) {
                 focusFlag = focusFlag && (!imageView.isFocused());
             }
-
+            if(hasFocus){
+            	((TVGuideActivity) (getActivity())).setLastViewTag("");
+            }
             // all view not focus
             if (focusFlag) {
                 mCarouselRepeatType = CarouselRepeatType.All;

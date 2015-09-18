@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,7 +74,7 @@ public class SportFragment extends ChannelBaseFragment {
 //		mLoadingDialog = new LoadingDialog(getActivity(), getResources()
 //				.getString(R.string.loading));
 		sport_card1 = (LabelImageView) view.findViewById(R.id.sport_card1);
-		sport_card1.setFocusable(false);
+//		sport_card1.setFocusable(false);
 		sport_card2 = (LabelImageView) view.findViewById(R.id.sport_card2);
 		sport_card3 = (LabelImageView) view.findViewById(R.id.sport_card3);
 		sportspost = (LabelImageView) view.findViewById(R.id.sportspost);
@@ -123,8 +124,22 @@ public class SportFragment extends ChannelBaseFragment {
 					msg.what = 0;
 					test.sendMessage(msg);
 				}
+				if (arg1) {
+					((TVGuideActivity) (getActivity())).setLastViewTag("");			
+				}
 			}
 		});
+		
+		sports_live2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View arg0, boolean arg1) {
+				if (arg1) {
+					((TVGuideActivity) (getActivity())).setLastViewTag("");			
+				}
+			}
+		});
+
 		sports_live3.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
 			@Override
@@ -140,9 +155,38 @@ public class SportFragment extends ChannelBaseFragment {
 					msg.what = 0;
 					test.sendMessage(msg);
 				}
+				if (arg1) {
+					((TVGuideActivity) (getActivity())).setLastViewTag("");			
+				}
 			}
 		});
+		sport_card1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
+			@Override
+			public void onFocusChange(View arg0, boolean arg1) {
+				if (arg1) {
+					((TVGuideActivity) (getActivity())).setLastViewTag("");			
+				}
+			}
+		});
+		sport_card2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View arg0, boolean arg1) {
+				if (arg1) {
+					((TVGuideActivity) (getActivity())).setLastViewTag("");			
+				}
+			}
+		});
+		sport_card3.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View arg0, boolean arg1) {
+				if (arg1) {
+					((TVGuideActivity) (getActivity())).setLastViewTag("");			
+				}
+			}
+		});
 		return view;
 	}
 
@@ -174,10 +218,6 @@ public class SportFragment extends ChannelBaseFragment {
 
 	private void fillData(ArrayList<Carousel> carousels,
 			ArrayList<Poster> postlist) {
-        if(scrollFromBorder){
-        	sportspost.requestFocus();
-        	((TVGuideActivity)getActivity()).resetBorderFocus();
-        }
 		Picasso.with(mContext).load(carousels.get(0).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE)
 		.into(sport_card1);
 		// sport_card1.setFocustitle(carousels.get(0).getIntroduction());
@@ -230,6 +270,26 @@ public class SportFragment extends ChannelBaseFragment {
 		sport_card2.setFocusable(true);
 		sport_card3.setFocusable(true);
 		fillLiveData();
+		 if(scrollFromBorder){
+	        	if(isRight){//右侧移入
+//	        		if(StringUtils.isNotEmpty(bottomFlag)){
+	        			if("bottom".equals(bottomFlag)){//下边界移入
+	        				sport_channel5.requestFocus();
+	        			}else{//上边界边界移入
+	        				sports_live1.requestFocus();	        				
+	        			}
+//	        		}
+	        	}else{//左侧移入
+//	        		if(StringUtils.isNotEmpty(bottomFlag)){
+	        			if("bottom".equals(bottomFlag)){
+	        				sport_channel1_image.requestFocus();	        				
+	        			}else{
+	        				sport_card1.requestFocus();	        				
+	        			}        		
+//	        	}
+	        }
+	        ((TVGuideActivity)getActivity()).resetBorderFocus();
+	        }
 	}
 
 	class FetchDataTask extends AsyncTask<String, Void, Integer> {

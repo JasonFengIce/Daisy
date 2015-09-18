@@ -2,6 +2,8 @@ package tv.ismar.daisy.ui.fragment.launcher;
 
 import java.util.ArrayList;
 
+import org.apache.commons.lang3.StringUtils;
+
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.data.HomePagerEntity;
@@ -20,6 +22,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
@@ -131,6 +134,51 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 //		vaiety_thumb2.setOnClickListener(ItemClickListener);
 //		vaiety_thumb3.setOnClickListener(ItemClickListener);
 		vaiety_post.setOnClickListener(ItemClickListener);
+		vaiety_channel5.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View arg0, boolean arg1) {
+				if (arg1) {
+					((TVGuideActivity) (getActivity())).setLastViewTag("bottom");			
+				}
+			}
+		});
+		vaiety_channel1_image.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View arg0, boolean arg1) {
+				if (arg1) {
+					((TVGuideActivity) (getActivity())).setLastViewTag("bottom");			
+				}
+			}
+		});
+		vaiety_card2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View arg0, boolean arg1) {
+				if (arg1) {
+					((TVGuideActivity) (getActivity())).setLastViewTag("");			
+				}
+			}
+		});
+		vaiety_card4.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View arg0, boolean arg1) {
+				if (arg1) {
+					((TVGuideActivity) (getActivity())).setLastViewTag("");			
+				}
+			}
+		});
+		vaiety_post.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View arg0, boolean arg1) {
+				if (arg1) {
+					((TVGuideActivity) (getActivity())).setLastViewTag("");			
+				}
+			}
+		});
 		return view;
 	}
 
@@ -227,8 +275,26 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 	private void fillData(ArrayList<Carousel> carousellist,
 			ArrayList<Poster> postlist) {
 		// vaiety_post.setUrl(carousellist.get(0).getVideo_image());
+		Log.v("aaaa", "flag = "+bottomFlag);
+		Log.v("aaaa", "isRight = "+isRight);
         if(scrollFromBorder){
-        	vaiety_post.requestFocus();
+        	if(isRight){//右侧移入
+//        		if(StringUtils.isNotEmpty(bottomFlag)){
+        			if("bottom".equals(bottomFlag)){//下边界移入
+        				vaiety_channel5.requestFocus();        				
+        			}else{//上边界边界移入
+        				vaiety_card2.requestFocus();        				
+        			}
+//        		}
+        	}else{//左侧移入
+//        		if(StringUtils.isNotEmpty(bottomFlag)){
+        			if("bottom".equals(bottomFlag)){
+        				vaiety_channel1_image.requestFocus();        				
+        			}else{
+        				vaiety_post.requestFocus();
+        			}
+//        	}
+        }
         	((TVGuideActivity)getActivity()).resetBorderFocus();
         }
 		

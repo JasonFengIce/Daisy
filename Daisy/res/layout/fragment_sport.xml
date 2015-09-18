@@ -91,6 +91,7 @@
             android:focusable="true"
             android:scaleType="fitXY"
             android:nextFocusRight="@+id/sports_live1"
+            android:nextFocusLeft="@+id/sport_card1"
             android:src="@drawable/list_item_preview_bg"
             labelimage:focusbackground="@color/shawdow"
             labelimage:focuspaddingtop="0.89"
