@@ -4,7 +4,7 @@
                 android:layout_height="match_parent">
 
     <RelativeLayout
-            android:background="@android:color/black"
+            android:background="@drawable/person_center_bg"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -55,7 +55,7 @@
                     android:layout_marginRight="30dp"
                     android:id="@+id/update_now_bt"
                     android:text="@string/update_now"
-                    android:background="@drawable/selector_button"
+                    android:background="@drawable/selector_daisy_exit_button"
                     android:layout_width="@dimen/update_confirm_button_width"
                     android:layout_height="@dimen/update_confirm_button_height"/>
         </LinearLayout>
