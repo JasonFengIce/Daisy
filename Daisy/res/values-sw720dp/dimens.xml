@@ -54,6 +54,7 @@
     <dimen name="item_detail_right_container_width">426.00dip</dimen>
     <dimen name="item_detail_related_video_label_left">26.67dip</dimen>
     <dimen name="item_detail_related_video_label_top">75.33dip</dimen>
+    <dimen name="item_detail_related_video_label_topnew">75.33dip</dimen>
     <dimen name="item_detail_related_video_label_textsize">26.67sp</dimen>
     <dimen name="item_detail_related_divider_width">372.00dip</dimen>
     <dimen name="item_detail_related_divider_height">3.33dip</dimen>
