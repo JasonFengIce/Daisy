@@ -49,7 +49,7 @@ public class DetailAttributeContainer extends LinearLayout {
 	public void addAttribute(LinkedHashMap<String, String> attrMap, ContentModel m) {
 		mAttributeMap = attrMap;
 		mContentModel = m;
-		buildAttributeList(mAttributeMap);
+        buildAttributeListforfilm(mAttributeMap);
 	}
 	
 	private void buildAttributeList(LinkedHashMap<String, String> attrMap) {
@@ -86,7 +86,44 @@ public class DetailAttributeContainer extends LinearLayout {
 			addView(infoLine);
 		}
 	}
+    private void buildAttributeListforfilm(LinkedHashMap<String, String> attrMap) {
+        int i=0;
+        for(Map.Entry<String, String> entry: attrMap.entrySet()){
+            if(entry.getValue()==null || mContentModel.attributes.get(entry.getKey())==null){
+                continue;
+            }
+            if(i>=4){
+                return;
+            }
+            LinearLayout infoLine = new LinearLayout(getContext());
+            LinearLayout.LayoutParams layoutParams;
+            int width = getResources().getDimensionPixelSize(R.dimen.item_detail_attribute_width);
+            layoutParams = new LinearLayout.LayoutParams(width,LinearLayout.LayoutParams.WRAP_CONTENT);
 
+            layoutParams.topMargin =((int)(11/1));
+            infoLine.setLayoutParams(layoutParams);
+            infoLine.setOrientation(LinearLayout.HORIZONTAL);
+            TextView itemName = new TextView(getContext());
+            itemName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            itemName.setTextColor(0xffffffff);
+            itemName.setTextSize(24/rate);
+            itemName.setText(mContentModel.attributes.get(entry.getKey())+":");
+            infoLine.addView(itemName);
+            TextView itemValue = new TextView(getContext());
+            itemValue.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            itemValue.setTextColor(0xffffffff);
+            itemValue.setTextSize(24/rate);
+            itemValue.setText(entry.getValue());
+            itemValue.setMaxLines(1);
+            itemValue.setEllipsize(TruncateAt.END);
+            itemValue.setSingleLine(true);
+            infoLine.addView(itemValue);
+            itemValue.setLineSpacing(3.4f, 1f);
+            //lineSpacingExtra
+            addView(infoLine);
+            i++;
+        }
+    }
     public void buildAttributeListOnZY(LinkedHashMap<String, String> attrMap,ContentModel m){
         mAttributeMap = attrMap;
         mContentModel = m;

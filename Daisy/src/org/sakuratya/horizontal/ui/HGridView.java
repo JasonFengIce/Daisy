@@ -512,11 +512,11 @@ public class HGridView extends AdapterView<HGridAdapter> {
                 +mSelectedPosition+"//mNextSelectedPosition=="+sectionFirstPosition);
 	}
 
-	private void setSelectedPositionInt(int position) {
+	public void setSelectedPositionInt(int position) {
 		mSelectedPosition = position;
 	}
 
-	private void setNextSelectedPositionInt(int position) {
+	public void setNextSelectedPositionInt(int position) {
 		mNextSelectedPosition = position;
 	}
 
