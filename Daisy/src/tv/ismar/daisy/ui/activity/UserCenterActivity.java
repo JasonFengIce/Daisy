@@ -56,11 +56,11 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     private ArrayList<View> indicatorView;
     private LinearLayout userCenterIndicatorLayout;
-    private StoreFragment storeFragment;
-    private UserInfoFragment userInfoFragment;
-    private LoginFragment loginFragment;
-    private PurchaseHistoryFragment historyFragment;
-    private HelpFragment helpFragment;
+//    private StoreFragment storeFragment;
+//    private UserInfoFragment userInfoFragment;
+//    private LoginFragment loginFragment;
+//    private PurchaseHistoryFragment historyFragment;
+//    private HelpFragment helpFragment;
     private LocationFragment locationFragment;
     private LaunchHeaderLayout topView;
     private SharedPreferences accountPreference;
@@ -106,12 +106,12 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         accountPreference = getSharedPreferences("Daisy", Context.MODE_PRIVATE);
         accountPreference.registerOnSharedPreferenceChangeListener(changeListener);
         userCenterIndicatorLayout = (LinearLayout) findViewById(R.id.user_center_indicator_layout);
-        storeFragment = new StoreFragment();
-        userInfoFragment = new UserInfoFragment();
-        loginFragment = new LoginFragment();
-        historyFragment = new PurchaseHistoryFragment();
-        helpFragment = new HelpFragment();
-        locationFragment = new LocationFragment();
+//        storeFragment = new StoreFragment();
+//        userInfoFragment = new UserInfoFragment();
+//        loginFragment = new LoginFragment();
+//        historyFragment = new PurchaseHistoryFragment();
+//        helpFragment = new HelpFragment();
+//        locationFragment = new LocationFragment();
         setLoginCallback(this);
         initViews();
         createIndicatorView();
@@ -120,11 +120,11 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         if (!TextUtils.isEmpty(flag) && flag.equals(LOCATION_FRAGMENT)) {
             changeViewState(indicatorView.get(5), ViewState.Overlay);
             mIndicatorType = IndicatorType.LOCATION;
-            getSupportFragmentManager().beginTransaction().add(R.id.user_center_container, locationFragment).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.user_center_container, new LocationFragment()).commit();
         } else {
             changeViewState(indicatorView.get(0), ViewState.Overlay);
             mIndicatorType = IndicatorType.STORE;
-            getSupportFragmentManager().beginTransaction().add(R.id.user_center_container, storeFragment).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.user_center_container, new StoreFragment()).commit();
         }
     }
 
@@ -193,17 +193,17 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     public void switchToUserInfoFragment() {
         userCenterIndicatorLayout.getChildAt(1).requestFocus();
-        getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, userInfoFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, new UserInfoFragment()).commit();
     }
 
-    @Override
-    public void onBackPressed() {
-        if (userInfoFragment.isLoginFragmentShowing()) {
-            userInfoFragment.hideLoginFragment();
-        } else {
-            super.onBackPressed();
-        }
-    }
+//    @Override
+//    public void onBackPressed() {
+//        if (userInfoFragment.isLoginFragmentShowing()) {
+//            userInfoFragment.hideLoginFragment();
+//        } else {
+//            super.onBackPressed();
+//        }
+//    }
 
 
     @Override
@@ -223,7 +223,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         mNickName = nickName;
         saveToLocal(mAccessToken, mNickName);
         if (listener != null) {
-            userInfoFragment = new UserInfoFragment();
+//            userInfoFragment = new UserInfoFragment();
             listener = null;
         }
         showLoginSuccessPopup();
@@ -353,23 +353,24 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
             switch ((Integer) v.getTag()) {
                 case R.string.usercenter_store:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, storeFragment).commitAllowingStateLoss();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, new StoreFragment()).commitAllowingStateLoss();
                     break;
                 case R.string.usercenter_userinfo:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, userInfoFragment).commitAllowingStateLoss();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, new UserInfoFragment()).commitAllowingStateLoss();
                     break;
                 case R.string.usercenter_login:
                     loginQQorWX();
                     break;
                 case R.string.usercenter_purchase_history:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, historyFragment).commitAllowingStateLoss();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, new PurchaseHistoryFragment()).commitAllowingStateLoss();
                     break;
                 case R.string.usercenter_help:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, helpFragment).commitAllowingStateLoss();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, new HelpFragment()).commitAllowingStateLoss();
                     break;
                 case R.string.usercenter_location:
-//                locationFragment.focus = indicatorView.get(5);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, locationFragment).commitAllowingStateLoss();
+                	locationFragment =new LocationFragment();
+                    locationFragment.focus = indicatorView.get(5);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, new LocationFragment()).commitAllowingStateLoss();
                     break;
             }
 
@@ -522,10 +523,9 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 textFocusImage.setVisibility(View.INVISIBLE);
                 break;
             case Disable:
-                textView.setTextColor(getResources().getColor(R.color.personinfo_login_button_disable));
                 textSelectImage.setVisibility(View.INVISIBLE);
                 textFocusImage.setVisibility(View.INVISIBLE);
-//                parentView.setBackgroundResource(R.drawable.button_disable);
+                parentView.setBackgroundColor(R.color.personinfo_login_button_disable);
                 parentView.setFocusable(false);
                 parentView.setFocusableInTouchMode(false);
                 break;

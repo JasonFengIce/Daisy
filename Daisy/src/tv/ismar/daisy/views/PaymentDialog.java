@@ -529,7 +529,7 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
 		}
 		card_secret = "card_secret=" + pwd_prefix + card_secret;
 		app_name = "&app_name=" + app_name;
-		user = "&user=" + user;
+		user = "&user=" + SimpleRestClient.sn_token;
 		user_id = "&user_id=" + user_id;
 		timestamp = "&timestamp=" + timestamp;
 		sid = "&sid=" + sid;

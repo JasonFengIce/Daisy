@@ -288,15 +288,12 @@ public class FilmFragment extends ChannelBaseFragment {
                 frameLayout.setTag(posters.get(i));
                 frameLayout.setLayoutParams(params);
                 if(i == 1){
-                	frameLayout.setFocusable(true);
                     frameLayout.setId(R.id.filmfragment_firstpost);
                 }
                 if(i ==2){
-                	frameLayout.setFocusable(true);
                     frameLayout.setId(R.id.filmfragment_secondpost);          	
                   }
                 if(i ==3){
-                	frameLayout.setFocusable(true);
                     frameLayout.setId(R.id.filmfragment_thirdpost);          	
                   }
                 guideRecommmendList.addView(frameLayout);

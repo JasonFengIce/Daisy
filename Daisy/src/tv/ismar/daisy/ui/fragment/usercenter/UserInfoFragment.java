@@ -61,7 +61,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
     private View phoneNumberLayout;
     private View snNumberLayout;
     private TextView associationPrompt;
-
+    private AccountBalanceEntity accountBalanceEntity;
 
     private boolean isCombined;
 
@@ -194,7 +194,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-
+        if(accountBalanceEntity == null){
         if (!TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
             Log.i("qihuanzhanghu", "phoneNumberLayout VISIBLE");
             phoneNumberLayout.setVisibility(View.VISIBLE);
@@ -208,6 +208,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
         fetchAccountsBalance();
         fetchAccountsPlayauths();
         initViewByLoginStatus();
+        }
     }
 
     private void fetchAccountsBalance() {
@@ -216,7 +217,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onSuccess(String result) {
                 Log.d(TAG, "fetchAccountBalance: " + result);
-                AccountBalanceEntity accountBalanceEntity = new Gson().fromJson(result, AccountBalanceEntity.class);
+                accountBalanceEntity = new Gson().fromJson(result, AccountBalanceEntity.class);
                 balanceTextView.setText(String.valueOf(accountBalanceEntity.getBalance() + accountBalanceEntity.getSn_balance()));
             }
 

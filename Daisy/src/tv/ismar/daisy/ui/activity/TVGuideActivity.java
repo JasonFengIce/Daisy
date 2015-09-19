@@ -1000,7 +1000,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     			scroll.setNextFocusUpId(R.id.vaiety_channel2_image);
     			break;
     		case 4:
-    			scroll.setNextFocusUpId(R.id.vaiety_channel3_image);
+    			scroll.setNextFocusUpId(R.id.vaiety_channel2_image);
     			break;
     		case 5:
     			scroll.setNextFocusUpId(R.id.sport_channel3_image);
