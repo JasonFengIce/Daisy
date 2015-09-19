@@ -178,33 +178,7 @@ public class SportFragment extends ChannelBaseFragment {
 				}
 			}
 		});
-		sport_card1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-			@Override
-			public void onFocusChange(View arg0, boolean arg1) {
-				if (arg1) {
-					((TVGuideActivity) (getActivity())).setLastViewTag("");			
-				}
-			}
-		});
-		sport_card2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-			@Override
-			public void onFocusChange(View arg0, boolean arg1) {
-				if (arg1) {
-					((TVGuideActivity) (getActivity())).setLastViewTag("");			
-				}
-			}
-		});
-		sport_card3.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-			@Override
-			public void onFocusChange(View arg0, boolean arg1) {
-				if (arg1) {
-					((TVGuideActivity) (getActivity())).setLastViewTag("");			
-				}
-			}
-		});
+		
 		return view;
 	}
 
@@ -284,9 +258,6 @@ public class SportFragment extends ChannelBaseFragment {
 		sport_card2.setOnClickListener(ItemClickListener);
 		sport_card3.setOnClickListener(ItemClickListener);
 		sportspost.setOnClickListener(ItemClickListener);
-		sport_card1.setFocusable(true);
-		sport_card2.setFocusable(true);
-		sport_card3.setFocusable(true);
 		fillLiveData();
 		 if(scrollFromBorder){
 	        	if(isRight){//右侧移入
@@ -366,6 +337,7 @@ public class SportFragment extends ChannelBaseFragment {
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
 			if (hasFocus) {
+			   ((TVGuideActivity) (getActivity())).setLastViewTag("");			
 				Carousel carousel = (Carousel) v
 						.getTag(R.drawable.launcher_selector);
 				Picasso.with(mContext).load(carousel.getVideo_image()).memoryPolicy(MemoryPolicy.NO_STORE)
