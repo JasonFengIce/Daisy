@@ -720,7 +720,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                     }
                 }
             }
-            mDetailAttributeContainer.addAttribute(attributeMap, mContentModel);
+            mDetailAttributeContainer.addAttributeForfilm(attributeMap, mContentModel);
            // mDetailAttributeContainer.
         }
         // Set the content to Introduction View

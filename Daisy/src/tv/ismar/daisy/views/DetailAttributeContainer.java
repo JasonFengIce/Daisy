@@ -49,9 +49,13 @@ public class DetailAttributeContainer extends LinearLayout {
 	public void addAttribute(LinkedHashMap<String, String> attrMap, ContentModel m) {
 		mAttributeMap = attrMap;
 		mContentModel = m;
-        buildAttributeListforfilm(mAttributeMap);
+        buildAttributeList(mAttributeMap);
 	}
-	
+    public void addAttributeForfilm(LinkedHashMap<String, String> attrMap, ContentModel m) {
+        mAttributeMap = attrMap;
+        mContentModel = m;
+        buildAttributeListforfilm(mAttributeMap);
+    }
 	private void buildAttributeList(LinkedHashMap<String, String> attrMap) {
 
 		for(Map.Entry<String, String> entry: attrMap.entrySet()){
