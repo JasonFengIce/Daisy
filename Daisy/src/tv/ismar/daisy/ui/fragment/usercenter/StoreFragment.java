@@ -26,7 +26,7 @@ public class StoreFragment extends Fragment {
 
     private ZGridView youHuiDingGouGridView;
     private Context mContext;
-    YouHuiDingGouEntity youHuiDingGouEntity;
+    private YouHuiDingGouEntity youHuiDingGouEntity;
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -56,6 +56,7 @@ public class StoreFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        if(youHuiDingGouEntity == null)
         fetchStoreInfo();
     }
 
@@ -80,5 +81,11 @@ public class StoreFragment extends Fragment {
 
             }
         });
+    }
+ 
+    @Override
+    public void onDetach() {
+        mContext = null;
+        super.onDetach();
     }
 }

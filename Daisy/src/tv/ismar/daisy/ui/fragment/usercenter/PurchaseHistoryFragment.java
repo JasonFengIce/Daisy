@@ -44,7 +44,7 @@ public class PurchaseHistoryFragment extends Fragment {
 
 
     private LinearLayout accountOrderListView;
-
+    private AccountsOrdersEntity accountsOrdersEntity;
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -62,6 +62,7 @@ public class PurchaseHistoryFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        if(accountsOrdersEntity == null)
         fetchAccountsOrders();
     }
 
@@ -82,7 +83,7 @@ public class PurchaseHistoryFragment extends Fragment {
             @Override
             public void onSuccess(String result) {
                 Log.d(TAG, "fetchAccountsOrders: " + result);
-                AccountsOrdersEntity accountsOrdersEntity = new Gson().fromJson(result, AccountsOrdersEntity.class);
+                accountsOrdersEntity = new Gson().fromJson(result, AccountsOrdersEntity.class);
                 ArrayList<AccountsOrdersEntity.OrderEntity> arrayList = new ArrayList<AccountsOrdersEntity.OrderEntity>();
                 HomeAdapter accountOrderAdapter;
                 if (!TextUtils.isEmpty(SimpleRestClient.access_token) && !TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
