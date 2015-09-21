@@ -156,6 +156,7 @@ public class SportFragment extends ChannelBaseFragment {
 					test.sendMessage(msg);
 				}
 				if (arg1) {
+					arrowDown.setFocusable(true);
 					((TVGuideActivity) (getActivity())).setLastViewTag("");			
 				}
 			}
@@ -174,7 +175,8 @@ public class SportFragment extends ChannelBaseFragment {
 			@Override
 			public void onFocusChange(View arg0, boolean arg1) {
 				if (arg1) {
-					((TVGuideActivity) (getActivity())).setLastViewTag("bottom");			
+					((TVGuideActivity) (getActivity())).setLastViewTag("bottom");
+					arrowDown.setFocusable(false);
 				}
 			}
 		});

@@ -644,7 +644,7 @@ private boolean isPause = false;
 		}else if("trailer".equals(mItem.content_model)){
 			top_column_layout.setTitle("片花");
 		}else if("comic".equals(mItem.content_model)){
-			top_column_layout.setTitle("动漫");
+			top_column_layout.setTitle("少儿");
 		}else if("music".equals(mItem.content_model)){
 			top_column_layout.setTitle("音乐");
 		}else if("documentary".equals(mItem.content_model)){
