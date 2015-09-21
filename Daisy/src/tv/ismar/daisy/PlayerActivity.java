@@ -320,6 +320,8 @@ public class PlayerActivity extends VodMenuAction {
 				clip = item.clip;
 				live_video = item.live_video;
 				isPreview = item.isPreview;
+				if(isPreview && live_video)
+					live_video = false;
 			}
 			// use to get mUrl, and registerActivity
 			DaisyUtils.getVodApplication(this).addActivityToPool(

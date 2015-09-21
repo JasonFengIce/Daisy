@@ -419,6 +419,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                     for (int i = 0; i < mChannelEntitys.length; i++) {
                         if (homepage_template.equals(mChannelEntitys[i].getHomepage_template()) && mChannelEntitys[i].getHomepage_url().contains(homepage_url)) {
                             selectChannelByPosition(i);
+                            topView.setSubTitle(mChannelEntitys[i].getName());
                         }
                     }
                 }
