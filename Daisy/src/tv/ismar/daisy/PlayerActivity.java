@@ -716,45 +716,49 @@ public class PlayerActivity extends VodMenuAction {
 		StringBuffer directorsBuffer = new StringBuffer();
 		StringBuffer actorsBuffer = new StringBuffer();
 		StringBuffer genresBuffer = new StringBuffer();
-		Attribute.Info[] directorarray = (Attribute.Info[]) item.attributes.map
-				.get("director");
-		Attribute.Info[] actorarray = (Attribute.Info[]) item.attributes.map
-				.get("actor");
-		Attribute.Info[] genrearray = (Attribute.Info[]) item.attributes.map
-				.get("genre");
-		if (directorarray != null) {
-			for (int i = 0; i < directorarray.length; i++) {
-				if (i == 0)
-					directorsBuffer.append("[");
-				directorsBuffer.append(directorarray[i].id);
-				if (i >= 0 && i != directorarray.length - 1)
-					directorsBuffer.append(",");
-				if (i == directorarray.length - 1)
-					directorsBuffer.append("]");
+		try {
+			Attribute.Info[] directorarray = (Attribute.Info[]) item.attributes.map
+					.get("director");
+			Attribute.Info[] actorarray = (Attribute.Info[]) item.attributes.map
+					.get("actor");
+			Attribute.Info[] genrearray = (Attribute.Info[]) item.attributes.map
+					.get("genre");
+			if (directorarray != null) {
+				for (int i = 0; i < directorarray.length; i++) {
+					if (i == 0)
+						directorsBuffer.append("[");
+					directorsBuffer.append(directorarray[i].id);
+					if (i >= 0 && i != directorarray.length - 1)
+						directorsBuffer.append(",");
+					if (i == directorarray.length - 1)
+						directorsBuffer.append("]");
+				}
 			}
-		}
-		if (actorarray != null) {
-			for (int i = 0; i < actorarray.length; i++) {
-				if (i == 0)
-					actorsBuffer.append("[");
-				actorsBuffer.append(actorarray[i].id);
-				if (i >= 0 && i != actorarray.length - 1)
-					actorsBuffer.append(",");
-				if (i == actorarray.length - 1)
-					actorsBuffer.append("]");
+			if (actorarray != null) {
+				for (int i = 0; i < actorarray.length; i++) {
+					if (i == 0)
+						actorsBuffer.append("[");
+					actorsBuffer.append(actorarray[i].id);
+					if (i >= 0 && i != actorarray.length - 1)
+						actorsBuffer.append(",");
+					if (i == actorarray.length - 1)
+						actorsBuffer.append("]");
+				}
 			}
+			if (genrearray != null) {
+				for (int i = 0; i < genrearray.length; i++) {
+					if (i == 0)
+						genresBuffer.append("[");
+					genresBuffer.append(genrearray[i].id);
+					if (i >= 0 && i != genrearray.length - 1)
+						genresBuffer.append(",");
+					if (i == genrearray.length - 1)
+						genresBuffer.append("]");
+				}
+			}			
+		} catch (NullPointerException e) {
 		}
-		if (genrearray != null) {
-			for (int i = 0; i < genrearray.length; i++) {
-				if (i == 0)
-					genresBuffer.append("[");
-				genresBuffer.append(genrearray[i].id);
-				if (i >= 0 && i != genrearray.length - 1)
-					genresBuffer.append(",");
-				if (i == genrearray.length - 1)
-					genresBuffer.append("]");
-			}
-		}
+		
 
 		String channelSection = "channel=" + "" + "&section=" + "";
 		if (StringUtils.isNotEmpty(item.channel)
