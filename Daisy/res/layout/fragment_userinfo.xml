@@ -42,7 +42,7 @@
 
 
             <Button
-                    android:background="@drawable/selector_channel_item"
+                    android:background="@drawable/selector_daisy_button_style"
                     android:gravity="center"
                     android:layout_gravity="center"
                     android:textSize="@dimen/h4_text_size"
@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"/>
 
             <Button
-                    android:background="@drawable/selector_channel_item"
+                    android:background="@drawable/selector_daisy_button_style"
                     android:textSize="@dimen/h4_text_size"
                     android:text="@string/association"
                     android:layout_marginLeft="@dimen/userinfo_association_marginLeft"

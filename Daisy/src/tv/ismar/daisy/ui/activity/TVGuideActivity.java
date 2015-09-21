@@ -712,7 +712,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         updatePopupWindow.setFocusable(true);
         updatePopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
-        DaisyButton updateNow = (DaisyButton) contentView.findViewById(R.id.update_now_bt);
+        Button updateNow = (Button) contentView.findViewById(R.id.update_now_bt);
         TextView updateTitle = (TextView) contentView.findViewById(R.id.update_title);
         LinearLayout updateMsgLayout = (LinearLayout) contentView.findViewById(R.id.update_msg_layout);
 

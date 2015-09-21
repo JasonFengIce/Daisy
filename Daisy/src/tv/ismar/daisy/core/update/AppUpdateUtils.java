@@ -82,6 +82,10 @@ public class AppUpdateUtils {
 
                         int apkVersionCode = getApkVersionCode(mContext, apkFile.getAbsolutePath());
                         int serverVersionCode = Integer.parseInt(versionInfoEntity.getVersion());
+
+                        Log.i(TAG,"download apk version code: "  + apkVersionCode);
+                        Log.i(TAG,"server apk version code: "  + serverVersionCode);
+
                         if (serverMd5Code.equalsIgnoreCase(localMd5Code) && !currentActivityName.equals(PLAYER_ACTIVITY_NAME)
                                 && apkVersionCode == serverVersionCode) {
                             Log.i(TAG, "send install broadcast ...");
@@ -132,7 +136,7 @@ public class AppUpdateUtils {
                         fileName.createNewFile();
                     URLConnection conn = url.openConnection();
                     InputStream inStream = conn.getInputStream();
-                    FileOutputStream fs = mContext.openFileOutput(SELF_APP_NAME, Context.MODE_WORLD_READABLE);
+                    FileOutputStream fs = mContext.openFileOutput(SELF_APP_NAME, Context.MODE_WORLD_READABLE | Context.MODE_WORLD_WRITEABLE);
                     byte[] buffer = new byte[1024];
                     while ((byteread = inStream.read(buffer)) != -1) {
                         fs.write(buffer, 0, byteread);
