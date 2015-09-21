@@ -48,7 +48,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private static final int[] INDICATOR_TEXT_RES_ARRAY = {
             R.string.usercenter_store,
             R.string.usercenter_userinfo,
-            R.string.usercenter_login,
+            R.string.usercenter_login_register,
             R.string.usercenter_purchase_history,
             R.string.usercenter_help,
             R.string.usercenter_location
@@ -56,10 +56,10 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     private ArrayList<View> indicatorView;
     private LinearLayout userCenterIndicatorLayout;
-//    private StoreFragment storeFragment;
+    //    private StoreFragment storeFragment;
 //    private UserInfoFragment userInfoFragment;
     private LoginFragment loginFragment;
-//    private PurchaseHistoryFragment historyFragment;
+    //    private PurchaseHistoryFragment historyFragment;
 //    private HelpFragment helpFragment;
     private LocationFragment locationFragment;
     private LaunchHeaderLayout topView;
@@ -120,7 +120,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         if (!TextUtils.isEmpty(flag) && flag.equals(LOCATION_FRAGMENT)) {
             changeViewState(indicatorView.get(5), ViewState.Overlay);
             mIndicatorType = IndicatorType.LOCATION;
-            getSupportFragmentManager().beginTransaction().add(R.id.user_center_container,locationFragment).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.user_center_container, locationFragment).commit();
             currentFragmentIndictor = R.string.usercenter_location;
         } else {
             changeViewState(indicatorView.get(0), ViewState.Overlay);
@@ -347,6 +347,10 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 changeViewState(view, ViewState.None);
             }
         }
+
+        if (!TextUtils.isEmpty(SimpleRestClient.access_token) && !TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
+            changeViewState(indicatorView.get(2), ViewState.Disable);
+        }
     }
 
 
@@ -356,32 +360,32 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
             switch ((Integer) v.getTag()) {
                 case R.string.usercenter_store:
-                	if(currentFragmentIndictor == R.string.usercenter_store)
-                		return;
+                    if (currentFragmentIndictor == R.string.usercenter_store)
+                        return;
                     getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, new StoreFragment()).commitAllowingStateLoss();
                     currentFragmentIndictor = R.string.usercenter_store;
                     break;
                 case R.string.usercenter_userinfo:
-                	if(currentFragmentIndictor == R.string.usercenter_userinfo)
-                		return;
-                	getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, new UserInfoFragment()).commitAllowingStateLoss();
+                    if (currentFragmentIndictor == R.string.usercenter_userinfo)
+                        return;
+                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, new UserInfoFragment()).commitAllowingStateLoss();
                     currentFragmentIndictor = R.string.usercenter_userinfo;
                     break;
-                case R.string.usercenter_login:
-                	if(currentFragmentIndictor == R.string.usercenter_login)
-                		return;
+                case R.string.usercenter_login_register:
+                    if (currentFragmentIndictor == R.string.usercenter_login_register)
+                        return;
                     loginQQorWX();
-                    currentFragmentIndictor = R.string.usercenter_login;
+                    currentFragmentIndictor = R.string.usercenter_login_register;
                     break;
                 case R.string.usercenter_purchase_history:
-                	if(currentFragmentIndictor == R.string.usercenter_purchase_history)
-                		return;
+                    if (currentFragmentIndictor == R.string.usercenter_purchase_history)
+                        return;
                     getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, new PurchaseHistoryFragment()).commitAllowingStateLoss();
                     currentFragmentIndictor = R.string.usercenter_purchase_history;
                     break;
                 case R.string.usercenter_help:
-                	if(currentFragmentIndictor == R.string.usercenter_help)
-                		return;
+                    if (currentFragmentIndictor == R.string.usercenter_help)
+                        return;
                     getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, new HelpFragment()).commitAllowingStateLoss();
                     currentFragmentIndictor = R.string.usercenter_help;
                     break;
@@ -420,7 +424,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                     verticalDividerView.setFocusable(false);
                     mIndicatorType = IndicatorType.USERINFO;
                     break;
-                case R.string.usercenter_login:
+                case R.string.usercenter_login_register:
                     verticalDividerView.setFocusable(false);
                     mIndicatorType = IndicatorType.LOGIN;
                     break;
@@ -444,7 +448,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
                 messageHandler.removeMessages(MSG_INDICATOR_CHANGE);
                 Message message = messageHandler.obtainMessage(MSG_INDICATOR_CHANGE, v);
-                messageHandler.sendMessageDelayed(message, 500);
+                messageHandler.sendMessageDelayed(message, 300);
             }
 
 
@@ -543,13 +547,15 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             case Disable:
                 textSelectImage.setVisibility(View.INVISIBLE);
                 textFocusImage.setVisibility(View.INVISIBLE);
-                parentView.setBackgroundColor(getResources().getColor(R.color.personinfo_login_button_disable));
+                textView.setText(R.string.usercenter_login);
+                textView.setTextColor(getResources().getColor(R.color.personinfo_login_button_disable));
                 parentView.setFocusable(false);
                 parentView.setFocusableInTouchMode(false);
                 break;
             case Enable:
                 parentView.setFocusable(true);
                 parentView.setFocusableInTouchMode(true);
+                textView.setText(R.string.usercenter_login_register);
                 textView.setTextColor(getResources().getColor(R.color._ffffff));
                 textSelectImage.setVisibility(View.INVISIBLE);
                 textFocusImage.setVisibility(View.INVISIBLE);
