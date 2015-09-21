@@ -165,6 +165,8 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         setSpinnerItemSelectedListener();
         getLoaderManager().initLoader(NORMAL_ISP_FLAG, null, this);
 
+        speedTestButton.requestFocus();
+
 
     }
 
@@ -405,8 +407,8 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
                 .inflate(R.layout.sakura_popup_select_node, null);
         contentView.setBackgroundResource(R.drawable.sakura_bg_popup);
 
-        int popWidth = (int)(mContext.getResources().getDimension(R.dimen.sakura_nodefragment_selectnode_pop_width)/rate);
-        int popHeight = (int)(mContext.getResources().getDimension(R.dimen.sakura_nodefragment_selectnode_pop_height)/rate);
+        int popWidth = (int) (mContext.getResources().getDimension(R.dimen.sakura_nodefragment_selectnode_pop_width) / rate);
+        int popHeight = (int) (mContext.getResources().getDimension(R.dimen.sakura_nodefragment_selectnode_pop_height) / rate);
 
 
         selectNodePup = new PopupWindow(contentView, popWidth, popHeight);
@@ -506,8 +508,8 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         title.setText(titleRes);
         contentView.setBackgroundResource(R.drawable.sakura_bg_popup);
 
-        int popWidht = (int)(mContext.getResources().getDimension(R.dimen.sakura_nodefragment_test_complete_pop_width)/rate);
-        int popHeight = (int)(mContext.getResources().getDimension(R.dimen.sakura_nodefragment_test_complete_pop_height)/rate);
+        int popWidht = (int) (mContext.getResources().getDimension(R.dimen.sakura_nodefragment_test_complete_pop_width) / rate);
+        int popHeight = (int) (mContext.getResources().getDimension(R.dimen.sakura_nodefragment_test_complete_pop_height) / rate);
 
         cdnTestCompletedPop = new PopupWindow(null, popWidht, popHeight);
         cdnTestCompletedPop.setContentView(contentView);
