@@ -657,8 +657,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     public void onUserCenterClick() {
         FragmentTransaction transaction = getSupportFragmentManager()
-                .beginTransaction();                View view2 = scroll.getChildAt(0);
-                Log.v("aaaa","x="+view2.getLeft()+"y="+view2.getTop());
+                .beginTransaction();
         transaction.setCustomAnimations(
                 R.anim.fade_in,
                 R.anim.fade_out,
@@ -949,7 +948,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         currentFragment.setChannelEntity(channelEntity);
         replaceFragment(currentFragment);
         View view2 = scroll.getChildAt(0);
-        Log.v("aaaa","x="+view2.getLeft()+"y="+view2.getTop());
         lastchannelindex = position;
         if(view2.getLeft() >0){
         switch (mCurrentChannelPosition.getPosition()) {
