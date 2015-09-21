@@ -543,7 +543,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             case Disable:
                 textSelectImage.setVisibility(View.INVISIBLE);
                 textFocusImage.setVisibility(View.INVISIBLE);
-                parentView.setBackgroundColor(R.color.personinfo_login_button_disable);
+                parentView.setBackgroundColor(getResources().getColor(R.color.personinfo_login_button_disable));
                 parentView.setFocusable(false);
                 parentView.setFocusableInTouchMode(false);
                 break;
