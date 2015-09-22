@@ -182,7 +182,6 @@ public class BaseActivity extends FragmentActivity {
         IntentFilter nFilter=new IntentFilter("com.tencent.gamestation.qrlogin");
         registerReceiver(mUserInfoReceiver, nFilter);
         mTencent.login(BaseActivity.this, "all", loginListener);
-
     }
 
     public void callWGQueryQQUserInfo() {

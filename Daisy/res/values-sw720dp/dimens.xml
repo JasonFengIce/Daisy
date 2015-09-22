@@ -1182,6 +1182,7 @@
     <dimen name="entertainment_detail_view_linearLayout_h">217.33dip</dimen>
     <dimen name="entertainment_detail_view_linearLayout_mt">17.33dip</dimen>
     <dimen name="entertainment_detail_preview_img_ml">48.67dip</dimen>
+    <dimen name="entertainment_detail_price_ml">44.67dip</dimen>
     <dimen name="entertainment_detail_preview_img_w">320.00dip</dimen>
     <dimen name="entertainment_detail_preview_img_h">180.00dip</dimen>
     <dimen name="entertainment_detail_attribute_container_ml">53.33dip</dimen>
