@@ -1067,7 +1067,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                     new NetworkUtils.DataCollectionTask().execute(
                             NetworkUtils.VIDEO_RELATE, properties);
                     if(item.expense != null && (item.content_model.equals("variety")||item.content_model.equals("entertainment"))){
-                    	item.content_model = "music";
+                    	item.content_model = item.content_model;
                     }
                     break;
                 }
