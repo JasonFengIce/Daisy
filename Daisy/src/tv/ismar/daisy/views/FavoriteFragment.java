@@ -20,6 +20,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+
+import org.apache.commons.lang3.StringUtils;
 import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
 import org.sakuratya.horizontal.ui.HGridView;
 import org.sakuratya.horizontal.ui.ZGridView;
@@ -669,6 +671,8 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 						
 						try {
 							content = NetworkUtils.getJsonStr(SimpleRestClient.root_url+"/api/tv/section/tvhome/","");
+							if(StringUtils.isEmpty(content))
+								return;
 							Message message = new Message();
 							Bundle data = new Bundle();
 							data.putString("content", content);
