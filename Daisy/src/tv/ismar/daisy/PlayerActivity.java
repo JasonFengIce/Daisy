@@ -621,6 +621,9 @@ public class PlayerActivity extends VodMenuAction {
 								}
                                 Log.i("zhangjiqiangtest","playerActivity onCompletion PaymentDialog");
 								mVideoView.stopPlayback();
+                                if(item.isPreview && "sport".equals(item.content_model)){
+                                	finish();
+                                }else{
 								PaymentDialog dialog = new PaymentDialog(
 										PlayerActivity.this,
 										R.style.PaymentDialog,
@@ -629,9 +632,10 @@ public class PlayerActivity extends VodMenuAction {
 								dialog.setItem(item);
 								dialog.show();
 								isPaymentdialogShow = true;
+                                }
 							} else{
                                 Log.i("zhangjiqiangtest","playerActivity onCompletion gotoFinishPage");
-                                gotoFinishPage();
+                                	gotoFinishPage();                                	
                             }
 
 						} else if (paths != null
