@@ -16,10 +16,12 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
+
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.content.ContentProvider;
 import com.activeandroid.query.Select;
 import com.google.gson.Gson;
+
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -417,6 +419,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
 
         SakuraButton confirmButton = (SakuraButton) contentView.findViewById(R.id.confirm_btn);
         SakuraButton cancleButton = (SakuraButton) contentView.findViewById(R.id.cancle_btn);
+        confirmButton.requestFocus();
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -486,8 +489,11 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
 
     private void showCdnTestCompletedPop(final Status status) {
         int titleRes;
+
+        speedTestButton.clearFocus();
         switch (status) {
             case COMPLETE:
+
                 titleRes = R.string.test_complete_text;
                 break;
             case CANCEL:
@@ -526,6 +532,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
             @Override
             public void onClick(View view) {
                 cdnTestCompletedPop.dismiss();
+                nodeListView.setSelectionOne();
                 switch (status) {
                     case CANCEL:
                         break;
