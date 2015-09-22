@@ -14,8 +14,6 @@
             android:textSize="24sp"
             android:textColor="#ff6b6b6b"
             android:gravity="center"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             />
 
     <tv.ismar.sakura.ui.widget.SakuraButton
@@ -25,7 +23,7 @@
             android:gravity="center"
             android:textColor="#ffffffff"
             android:layout_marginTop="20dp"
-            android:background="@drawable/selector_button"
+            android:background="@drawable/sakura_selector_button"
             android:layout_width="120dp"
             android:layout_height="60dp"/>
 

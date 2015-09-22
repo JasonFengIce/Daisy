@@ -28,12 +28,16 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.*;
+
 import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
+
 import com.baidu.location.*;
 import com.google.gson.Gson;
+
 import org.apache.commons.lang3.StringUtils;
 import org.sakuratya.horizontal.ui.HGridView;
+
 import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
@@ -692,8 +696,14 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     class AppUpdateReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Bundle bundle = intent.getBundleExtra("data");
-            showUpdatePopup(contentView, bundle);
+            final Bundle bundle = intent.getBundleExtra("data");
+            contentView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showUpdatePopup(contentView, bundle);
+                }
+            }, 2000);
+
         }
     }
 
@@ -889,11 +899,11 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
 
     private void selectChannelByPosition(int position) {
-    	if(lastchannelindex <position){
-    		scrollType=ScrollType.right;
-    	}else{
-    		scrollType=ScrollType.left;
-    	}
+        if (lastchannelindex < position) {
+            scrollType = ScrollType.right;
+        } else {
+            scrollType = ScrollType.left;
+        }
         if (position == 0) {
             arrow_left.setVisibility(View.GONE);
             arrow_left_visible.setVisibility(View.GONE);
@@ -949,76 +959,76 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         replaceFragment(currentFragment);
         View view2 = scroll.getChildAt(0);
         lastchannelindex = position;
-        if(view2.getLeft() >0){
-        switch (mCurrentChannelPosition.getPosition()) {
-		case 0:
-			scroll.setNextFocusUpId(R.id.guidefragment_firstpost);
-			break;
-		case 1:
-			scroll.setNextFocusUpId(R.id.filmfragment_secondpost);
-			break;
-		case 2:
-			scroll.setNextFocusUpId(R.id.filmfragment_thirdpost);
-			break;
-		case 3:
-			scroll.setNextFocusUpId(R.id.vaiety_channel2_image);
-			break;
-		case 4:
-			scroll.setNextFocusUpId(R.id.vaiety_channel3_image);
-			break;
-		case 5:
-			scroll.setNextFocusUpId(R.id.sport_channel4_image);
-			break;
-		case 6:
-			scroll.setNextFocusUpId(R.id.vaiety_channel4_image);
-			break;
-		case 7:
-			scroll.setNextFocusUpId(R.id.child_more);
-			break;
-		case 8:
-			scroll.setNextFocusUpId(R.id.listmore);
-			break;
-		case 9:
-			scroll.setNextFocusUpId(R.id.listmore);
-			break;
-		default:
-			break;
-		}
-        }else{
-        	switch (mCurrentChannelPosition.getPosition()) {
-    		case 0:
-    			scroll.setNextFocusUpId(R.id.guidefragment_firstpost);
-    			break;
-    		case 1:
-    			scroll.setNextFocusUpId(R.id.filmfragment_firstpost);
-    			break;
-    		case 2:
-    			scroll.setNextFocusUpId(R.id.filmfragment_secondpost);
-    			break;
-    		case 3:
-    			scroll.setNextFocusUpId(R.id.vaiety_channel2_image);
-    			break;
-    		case 4:
-    			scroll.setNextFocusUpId(R.id.vaiety_channel2_image);
-    			break;
-    		case 5:
-    			scroll.setNextFocusUpId(R.id.sport_channel3_image);
-    			break;
-    		case 6:
-    			scroll.setNextFocusUpId(R.id.vaiety_channel4_image);
-    			break;
-    		case 7:
-    			scroll.setNextFocusUpId(R.id.child_more);
-    			break;
-    		case 8:
-    			scroll.setNextFocusUpId(R.id.listmore);
-    			break;
-    		case 9:
-    			scroll.setNextFocusUpId(R.id.listmore);
-    			break;
-    		default:
-    			break;
-    		}        	
+        if (view2.getLeft() > 0) {
+            switch (mCurrentChannelPosition.getPosition()) {
+                case 0:
+                    scroll.setNextFocusUpId(R.id.guidefragment_firstpost);
+                    break;
+                case 1:
+                    scroll.setNextFocusUpId(R.id.filmfragment_secondpost);
+                    break;
+                case 2:
+                    scroll.setNextFocusUpId(R.id.filmfragment_thirdpost);
+                    break;
+                case 3:
+                    scroll.setNextFocusUpId(R.id.vaiety_channel2_image);
+                    break;
+                case 4:
+                    scroll.setNextFocusUpId(R.id.vaiety_channel3_image);
+                    break;
+                case 5:
+                    scroll.setNextFocusUpId(R.id.sport_channel4_image);
+                    break;
+                case 6:
+                    scroll.setNextFocusUpId(R.id.vaiety_channel4_image);
+                    break;
+                case 7:
+                    scroll.setNextFocusUpId(R.id.child_more);
+                    break;
+                case 8:
+                    scroll.setNextFocusUpId(R.id.listmore);
+                    break;
+                case 9:
+                    scroll.setNextFocusUpId(R.id.listmore);
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            switch (mCurrentChannelPosition.getPosition()) {
+                case 0:
+                    scroll.setNextFocusUpId(R.id.guidefragment_firstpost);
+                    break;
+                case 1:
+                    scroll.setNextFocusUpId(R.id.filmfragment_firstpost);
+                    break;
+                case 2:
+                    scroll.setNextFocusUpId(R.id.filmfragment_secondpost);
+                    break;
+                case 3:
+                    scroll.setNextFocusUpId(R.id.vaiety_channel2_image);
+                    break;
+                case 4:
+                    scroll.setNextFocusUpId(R.id.vaiety_channel2_image);
+                    break;
+                case 5:
+                    scroll.setNextFocusUpId(R.id.sport_channel3_image);
+                    break;
+                case 6:
+                    scroll.setNextFocusUpId(R.id.vaiety_channel4_image);
+                    break;
+                case 7:
+                    scroll.setNextFocusUpId(R.id.child_more);
+                    break;
+                case 8:
+                    scroll.setNextFocusUpId(R.id.listmore);
+                    break;
+                case 9:
+                    scroll.setNextFocusUpId(R.id.listmore);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -1157,8 +1167,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     };
 
-    public void setLastViewTag(String flag){
-    	lastviewTag = flag;
+    public void setLastViewTag(String flag) {
+        lastviewTag = flag;
     }
 
     public void resetBorderFocus() {

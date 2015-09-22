@@ -20,3 +20,5 @@ out/
 */build
 .gradle/
 build/
+
+captures/
