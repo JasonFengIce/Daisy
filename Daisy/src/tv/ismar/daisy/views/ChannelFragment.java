@@ -830,13 +830,13 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
                         if(!isPortrait){
                             if(item.content_model.equals("variety")||item.content_model.equals("entertainment")){
                                //综艺详情
-//                                if(item.expense!=null){
-//                                    intent.setAction("tv.ismar.daisy.Item");
-//                                }else{
-//
-//                                }
+                                if(item.expense!=null){
+                                    intent.setAction("tv.ismar.daisy.Item");
+                                }else{
+                                    intent.setAction("tv.ismar.daisy.EntertainmentItem");
+                                }
 
-                                intent.setAction("tv.ismar.daisy.EntertainmentItem");
+
                             }
                             else
                                 intent.setAction("tv.ismar.daisy.Item");
