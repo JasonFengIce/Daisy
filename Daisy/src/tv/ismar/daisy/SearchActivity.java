@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
@@ -178,6 +179,21 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 		tvSearchFront = (TextView) findViewById(R.id.tv_search_front);
 		tvSearchAfter = (TextView) findViewById(R.id.tv_search_after);
 		autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.act_autocomplete_country);// 找到相应的控件
+
+
+
+        autoCompleteTextView.setOnEditorActionListener(new OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((actionId == EditorInfo.IME_ACTION_SEARCH)){
+                    if(!TextUtils.isEmpty( autoCompleteTextView.getEditableText().toString())){
+                        exeClick(v);
+                    }
+                }
+                return false;
+            }
+        });
+
 		autoCompleteTextView.setOnClickListener(this);
 		loadDialog = new LoadingDialog(this);
 		customDialog = new SearchPromptDialog(SearchActivity.this, R.style.MyDialog);
@@ -235,7 +251,39 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 		gridView.leftbtn = arrow_left;
 		gridView.rightbtn = arrow_right;
 	}
-
+   private void exeClick(View v){
+       try {
+           InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+           imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+           if (!ConnectionHelper.isNetWorkAvailable(this)) {
+               if (!customDialog.isShowing()) {
+                   customDialog.show();
+               }
+               // 初始化一个自定义的Dialog
+               return;
+           }
+           if (TextUtils.isEmpty(autoCompleteTextView.getText().toString().trim())) {
+               return;
+           } else if (checkInput(autoCompleteTextView.getText().toString())) {
+               Toast.makeText(SearchActivity.this, getString(R.string.search_error_text), Toast.LENGTH_LONG).show();
+               return;
+           }
+           loadDialogShow();
+           new Thread(new Runnable() {
+               @Override
+               public void run() {
+                   hashLog.put(EventProperty.Q,autoCompleteTextView.getText().toString());
+                   NetworkUtils.SaveLogToLocal(NetworkUtils.VIDEO_SEARCH, hashLog);
+                   hashLog.clear();
+                   movieList = searchService.getSearchResult(autoCompleteTextView.getText().toString());
+                   mHandler.sendEmptyMessage(UPDATE_ADAPTER);
+               }
+           }) {
+           }.start();
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+   }
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
