@@ -214,6 +214,12 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         AuthTokenEntity authTokenEntity = new Gson().fromJson(result, AuthTokenEntity.class);
         Log.i("pangziinfo", "authTokenEntity.getAuth_token()==" + authTokenEntity.getAuth_token());
         mAccessToken = authTokenEntity.getAuth_token();
+        saveToLocal(mAccessToken, mNickName);
+        if (listener != null) {
+//            userInfoFragment = new UserInfoFragment();
+            listener = null;
+        }
+        showLoginSuccessPopup();
     }
 
     @Override
@@ -224,12 +230,15 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     @Override
     public void oncallWGQueryQQUserInfo(String nickName) {
         mNickName = nickName;
-        saveToLocal(mAccessToken, mNickName);
-        if (listener != null) {
-//            userInfoFragment = new UserInfoFragment();
-            listener = null;
-        }
-        showLoginSuccessPopup();
+        //saveToLocal(mAccessToken, mNickName);
+
+    }
+
+    @Override
+    public void onSameAccountListener() {
+        //Toast.makeText(this,"輸入相同賬號!",Toast.LENGTH_SHORT).show();
+
+        showSameAccountPopup();
     }
 
 
@@ -295,8 +304,34 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
         loginPopup.showAtLocation(mContentView, Gravity.CENTER, xOffset, yOffset);
     }
+    PopupWindow exitPopupWindow;
+    public void showSameAccountPopup(){
+        Context context = UserCenterActivity.this;
+        View contentView = LayoutInflater.from(context).inflate(R.layout.popup_exit, null);
+        exitPopupWindow = new PopupWindow(null, 740, 341);
+        exitPopupWindow.setContentView(contentView);
+        exitPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent));
+        exitPopupWindow.setFocusable(true);
+        exitPopupWindow.showAtLocation(mContentView, Gravity.CENTER, 0, 0);
+        TextView txt_info = (TextView)contentView.findViewById(R.id.txt_info);
+        txt_info.setText("您已经登录!");
+        Button confirmExit = (Button) contentView.findViewById(R.id.confirm_exit);
+        Button cancelExit = (Button) contentView.findViewById(R.id.cancel_exit);
+        cancelExit.setVisibility(View.GONE);
+        confirmExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                exitPopupWindow.dismiss();
+            }
+        });
 
-
+        cancelExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                exitPopupWindow.dismiss();
+            }
+        });
+    }
     public void showAccountsCombinePopup() {
         View popupLayout = LayoutInflater.from(this).inflate(R.layout.popup_account_combine, null);
         int width = (int) getResources().getDimension(R.dimen.login_pop_width);

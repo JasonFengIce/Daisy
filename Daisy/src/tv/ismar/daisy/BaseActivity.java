@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.common.Constants;
 import com.tencent.tauth.IUiListener;
@@ -115,7 +116,7 @@ public class BaseActivity extends FragmentActivity {
         void onLoginSuccess(String result);
         void onLoginFailed();
         void oncallWGQueryQQUserInfo(String info);
-
+        void onSameAccountListener();
     }
     OnLoginCallback loginCallback;
     public void setLoginCallback(OnLoginCallback loginCallback) {
@@ -177,6 +178,9 @@ public class BaseActivity extends FragmentActivity {
     }
     public void changaccount(){
 
+
+
+
         mTencent.logout(BaseActivity.this);
 
         IntentFilter nFilter=new IntentFilter("com.tencent.gamestation.qrlogin");
@@ -190,10 +194,11 @@ public class BaseActivity extends FragmentActivity {
     }
 
     public void getWGQueryQQUserInfo(String nickname){
-
-         if(loginCallback!=null){
-             loginCallback.oncallWGQueryQQUserInfo(nickname);
-         }
+          //if(!isSameAccount()){
+              if(loginCallback!=null){
+                  loginCallback.oncallWGQueryQQUserInfo(nickname);
+              }
+         // }
     }
 
 
@@ -213,7 +218,27 @@ public class BaseActivity extends FragmentActivity {
                     && !TextUtils.isEmpty(openId)) {
                 mTencent.setAccessToken(token, expires);
                 mTencent.setOpenId(openId);
+               // DaisyUtils.getVodApplication(this).
+//               String saveid = DaisyUtils.getVodApplication(BaseActivity.this).getPreferences().getString(VodApplication.OPENID,"");
+//                if("".equals(saveid)||!saveid.equals(openId)){
+//                    letUserLogin(token, paytoken, openId);
+//                    DaisyUtils.getVodApplication(this).getEditor().putString(VodApplication.OPENID, openId);
+//                    DaisyUtils.getVodApplication(this).save();
+//                }else{
+//                    if(loginCallback!=null){
+//                        loginCallback.onSameAccountListener();
+//                    }
+//                }
+
+            if(!isSameAccount()){
+                DaisyUtils.getVodApplication(this).getEditor().putString(VodApplication.OPENID, openId);
+                DaisyUtils.getVodApplication(this).save();
                 letUserLogin(token, paytoken, openId);
+            }else{
+                    if(loginCallback!=null){
+                        loginCallback.onSameAccountListener();
+                    }
+            }
             }
         } catch(Exception e) {
         }
@@ -295,6 +320,17 @@ public class BaseActivity extends FragmentActivity {
             }
         }
     };
+    private boolean isSameAccount(){
+        boolean isSameAccount = false;
+        String saveid = DaisyUtils.getVodApplication(BaseActivity.this).getPreferences().getString(VodApplication.OPENID,"");
+        if("".equals(saveid)||!saveid.equals(openId)){
+            isSameAccount = false;
+
+        }else{
+            isSameAccount = true;
+        }
+        return isSameAccount;
+    }
     private class BaseUiListener implements IUiListener {
 
         @Override

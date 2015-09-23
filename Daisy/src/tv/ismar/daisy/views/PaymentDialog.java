@@ -12,6 +12,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import android.graphics.drawable.BitmapDrawable;
+import android.widget.*;
 import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
@@ -42,12 +43,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallback{
 
@@ -760,38 +755,31 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
 private String authToken;
     @Override
     public void onLoginSuccess(String result) {
-    	GetFavoriteByNet();
-		getHistoryByNet();
+
         AuthTokenEntity authTokenEntity = new Gson().fromJson(result, AuthTokenEntity.class);
         authToken = authTokenEntity.getAuth_token();
-		urlHandler.sendEmptyMessage(LOGIN_SUCESS);
+
 		getBalanceByToken();
-    }
 
-    @Override
-    public void onLoginFailed() {
-
-    }
-
-    @Override
-    public void oncallWGQueryQQUserInfo(String nickName) {
         String welocome = mycontext.getResources().getString(
                 R.string.welocome_tip);
         welocome_tip.setText(String.format(welocome,
-                nickName));
+                nickname));
         DaisyUtils
-		.getVodApplication(getContext())
-		.getEditor()
-		.putString(
-				VodApplication.MOBILE_NUMBER,
-				nickName);
+                .getVodApplication(getContext())
+                .getEditor()
+                .putString(
+                        VodApplication.MOBILE_NUMBER,
+                        nickname);
         DaisyUtils.getVodApplication(getContext()).getEditor().putString(VodApplication.AUTH_TOKEN, authToken);
         DaisyUtils.getVodApplication(getContext())
-		.save();
-        SimpleRestClient.mobile_number = nickName;
+                .save();
+        SimpleRestClient.mobile_number = nickname;
 
         SimpleRestClient.access_token = authToken;
-
+        GetFavoriteByNet();
+        getHistoryByNet();
+        urlHandler.sendEmptyMessage(LOGIN_SUCESS);
         AccountAboutDialog dialog = new AccountAboutDialog(
                 getContext(),
                 R.style.UserinfoDialog);
@@ -800,6 +788,23 @@ private String authToken;
                 + SimpleRestClient.mobile_number
                 + "，您已成功注册/登陆视云账户!");
         dialog.show();
+
+    }
+
+    @Override
+    public void onLoginFailed() {
+
+    }
+    private String nickname;
+    @Override
+    public void oncallWGQueryQQUserInfo(String nickName) {
+        nickname = nickName;
+
+    }
+
+    @Override
+    public void onSameAccountListener() {
+        Toast.makeText(getContext(), "輸入相同賬號!", Toast.LENGTH_SHORT).show();
     }
 
     public interface OrderResultListener {
