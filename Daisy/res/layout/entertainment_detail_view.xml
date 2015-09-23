@@ -117,7 +117,7 @@
                     android:visibility="visible">
 
                 <Button
-                        android:paddingLeft="50dip"
+                        android:paddingLeft="70dip"
                         android:singleLine="true"
                         android:id="@+id/btn_left"
                         android:layout_width="@dimen/entertainment_detail_btn_left_w"
@@ -135,7 +135,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/entertainment_detail_btn_right_ml"
-                        android:paddingTop="@dimen/item_detail_btn_favorite_paddingtop"
                         android:visibility="visible"
                         android:textColor="#FFFFFFFF"
                         android:textSize="@dimen/item_detail_text_size"/>
