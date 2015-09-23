@@ -2185,6 +2185,8 @@ public class PlayerActivity extends VodMenuAction {
 					}
 					paystatus = true;
 					item.ispayed = true;
+					item.isPreview = false;
+					isPreview = false;
 					new FetchClipTask().execute();
 				} else {
 					PlayerActivity.this.finish();
