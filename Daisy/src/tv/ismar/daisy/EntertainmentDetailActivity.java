@@ -128,8 +128,9 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             }else if(BUY_VIDEO.equals(identify)){
                 v.setBackgroundResource(R.drawable.buybideo_focus_btn_bg);
             }else if(PREVIEW_VIDEO.equals(identify)){
-                if(isDrama())
-                   v.setBackgroundResource(R.drawable.zyplayvideo_focus_btn_bg);
+                if(isDrama()){
+                    v.setBackgroundResource(R.drawable.zyplayvideo_focus_btn_bg);
+                }
                 else{
                    v.setBackgroundResource(R.drawable.playvideo_focus_btn_bg);
                 }
@@ -363,9 +364,19 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             }
             Item item = getItemByClipPk(1);
             if(item!=null){
-                mLeftBtn.setText("播放 "+item.subtitle);
+                if(item.expense!=null&&isBuy)
+                    mLeftBtn.setText("播放 "+item.subtitle);
+                else if(item.expense==null){
+                    mLeftBtn.setText("播放 "+item.subtitle);
+                }
+//
+//
+//
+//             else{
+//                    mLeftBtn.setText("播放");
+//                }
             }
-            else
+
                isPause = false;
         }
         super.onResume();
@@ -970,12 +981,14 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 if(item!=null){
                     mLeftBtn.setText("播放 "+item.subtitle);
                 }
-                else
+                else{
                     mLeftBtn.setText(getResources().getString(R.string.play));
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mLeftBtn.getLayoutParams();
-                params.width = 214;
-                mLeftBtn.setPadding(45,mLeftBtn.getPaddingTop(),mLeftBtn.getPaddingRight(),mLeftBtn.getPaddingBottom());
-                mLeftBtn.setLayoutParams(params);
+                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mLeftBtn.getLayoutParams();
+                    params.width = 214;
+                    mLeftBtn.setPadding(45,mLeftBtn.getPaddingTop(),mLeftBtn.getPaddingRight(),mLeftBtn.getPaddingBottom());
+                    mLeftBtn.setLayoutParams(params);
+                }
+
                 //setLeftDrawable(drawableleftcollect,mMiddleBtn);
                 mMiddleBtn.setText(getResources().getString(R.string.favorite));
                 mMiddleBtn.setTag(COLLECT_VIDEO);
@@ -1088,7 +1101,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                     new NetworkUtils.DataCollectionTask().execute(
                             NetworkUtils.VIDEO_RELATE, properties);
                     if(item.expense != null && (item.content_model.equals("variety")||item.content_model.equals("entertainment"))){
-                    	item.content_model = item.content_model;
+                    	item.content_model = "music";
                     }
                     break;
                 }
@@ -1283,5 +1296,17 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
         mGetRelatedTask.execute();
 
         isInitialized = true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        if(resultCode==20){
+            if(data.getBooleanExtra("result", false)){
+                isBuy = true;
+                setExpenseStatus();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
