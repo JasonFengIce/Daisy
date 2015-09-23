@@ -777,8 +777,8 @@
     <dimen name="login_pop_msg_margin_top">100dp</dimen>
     <dimen name="login_pop_button_width">300dp</dimen>
     <dimen name="login_pop_button_height">70dp</dimen>
-    <dimen name="login_pop_width">1200dp</dimen>
-    <dimen name="login_pop_height">500dp</dimen>
+    <dimen name="login_pop_width">740dp</dimen>
+    <dimen name="login_pop_height">341dp</dimen>
     <dimen name="user_center_logout_width">80dp</dimen>
     <dimen name="user_center_logout_height">40dp</dimen>
     <dimen name="account_combine_text_margin_top">60dp</dimen>
@@ -1216,7 +1216,7 @@
     <dimen name="realte_entertainment_item_related_preview_img_textsize">24sp</dimen>
     <dimen name="realte_entertainment_item_related_title_mt">15dip</dimen>
     <dimen name="realte_entertainment_item_related_title_textsize">30sp</dimen>
-    
+
     <!-- realte_entertainment_item end-->
 
     <dimen name="variety_dramalist_layout_mt">441dip</dimen>
@@ -1271,7 +1271,6 @@
 
     <dimen name="sakura_nodefragment_selectnode_pop_width">600dp</dimen>
     <dimen name="sakura_nodefragment_selectnode_pop_height">180dp</dimen>
-
 
 
 </resources>

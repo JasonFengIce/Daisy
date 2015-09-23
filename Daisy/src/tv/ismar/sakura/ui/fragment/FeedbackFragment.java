@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -146,6 +147,13 @@ public class FeedbackFragment extends Fragment implements RadioGroup.OnCheckedCh
         client.excute(sn, top, new Callback<ChatMsgEntity>() {
             @Override
             public void success(ChatMsgEntity chatMsgEntities, Response response) {
+                if (chatMsgEntities.getData() == null || chatMsgEntities.getData().isEmpty()) {
+                    arrowDown.setVisibility(View.INVISIBLE);
+                    arrowUp.setVisibility(View.INVISIBLE);
+                } else {
+                    arrowDown.setVisibility(View.VISIBLE);
+                    arrowUp.setVisibility(View.VISIBLE);
+                }
                 feedBackListView.setAdapter(new FeedbackListAdapter(getActivity(), chatMsgEntities.getData()));
             }
 
