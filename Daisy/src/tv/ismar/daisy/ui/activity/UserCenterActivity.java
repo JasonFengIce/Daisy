@@ -307,25 +307,18 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     PopupWindow exitPopupWindow;
     public void showSameAccountPopup(){
         Context context = UserCenterActivity.this;
-        View contentView = LayoutInflater.from(context).inflate(R.layout.popup_exit, null);
-        exitPopupWindow = new PopupWindow(null, 740, 341);
+        View contentView = LayoutInflater.from(context).inflate(R.layout.popup_sameaccount, null);
+        exitPopupWindow = new PopupWindow(null, 1211, 416);
         exitPopupWindow.setContentView(contentView);
         exitPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent));
         exitPopupWindow.setFocusable(true);
-        exitPopupWindow.showAtLocation(mContentView, Gravity.CENTER, 0, 0);
+        int xOffset = (int) getResources().getDimension(R.dimen.loginfragment_successPop_xOffset);
+        int yOffset = (int) getResources().getDimension(R.dimen.loginfragment_successPop_yOffset);
+        exitPopupWindow.showAtLocation(mContentView, Gravity.CENTER, xOffset, yOffset);
         TextView txt_info = (TextView)contentView.findViewById(R.id.txt_info);
-        txt_info.setText("您已经登录!");
+        txt_info.setText("您的账号已经登录!");
         Button confirmExit = (Button) contentView.findViewById(R.id.confirm_exit);
-        Button cancelExit = (Button) contentView.findViewById(R.id.cancel_exit);
-        cancelExit.setVisibility(View.GONE);
         confirmExit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                exitPopupWindow.dismiss();
-            }
-        });
-
-        cancelExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 exitPopupWindow.dismiss();

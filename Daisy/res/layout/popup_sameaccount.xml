@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@drawable/popwindow_bg"
+              android:layout_width="match_parent"
+              android:gravity="center"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_marginTop="93dip"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:gravity="center"
+            android:id="@+id/txt_info"
+            android:text="@string/exit_prompt"
+            android:textSize="36sp"
+            android:layout_width="wrap_content"
+            android:layout_height="40dip"/>
+
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_marginTop="76dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="66dp"
+             >
+
+            <Button
+                android:background="@drawable/popwindow_selector"
+                android:textSize="36sp"
+                android:text="@string/confirm"
+                android:textColor="@android:color/white"
+                android:id="@+id/confirm_exit"
+                android:layout_width="298dip"
+                android:layout_height="match_parent"/>
+
+            <Button
+                android:visibility="gone"
+                android:layout_marginLeft="30dp"
+                android:background="@drawable/selector_daisy_exit_button"
+                android:textSize="28sp"
+                android:text="@string/cancel"
+                android:textColor="@android:color/white"
+                android:id="@+id/cancel_exit"
+                android:layout_width="@dimen/launcher_exit_button_width"
+                android:layout_height="60dp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
