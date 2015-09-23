@@ -9,10 +9,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import com.google.gson.JsonSyntaxException;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -131,9 +128,16 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             }else if(BUY_VIDEO.equals(identify)){
                 v.setBackgroundResource(R.drawable.buybideo_focus_btn_bg);
             }else if(PREVIEW_VIDEO.equals(identify)){
-                v.setBackgroundResource(R.drawable.zyplayvideo_focus_btn_bg);
+                if(isDrama())
+                   v.setBackgroundResource(R.drawable.zyplayvideo_focus_btn_bg);
+                else{
+                   v.setBackgroundResource(R.drawable.playvideo_focus_btn_bg);
+                }
             }else if(PLAY_VIDEO.equals(identify)){
-                v.setBackgroundResource(R.drawable.zyplayvideo_focus_btn_bg);
+                if(isDrama())
+                  v.setBackgroundResource(R.drawable.zyplayvideo_focus_btn_bg);
+                else
+                  v.setBackgroundResource(R.drawable.playvideo_focus_btn_bg);
             }else if(DRAMA_VIDEO.equals(identify)){
                 v.setBackgroundResource(R.drawable.zydramalist_focus_btn_bg);
             }
@@ -143,9 +147,15 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             }else if(BUY_VIDEO.equals(identify)){
                 v.setBackgroundResource(R.drawable.buyvideo_normal_btn_bg);
             }else if(PREVIEW_VIDEO.equals(identify)){
-                v.setBackgroundResource(R.drawable.zyplayvideo_normal_btn_bg);
+                if(isDrama())
+                  v.setBackgroundResource(R.drawable.zyplayvideo_normal_btn_bg);
+                else
+                  v.setBackgroundResource(R.drawable.playvideo_normal_btn_bg);
             }else if(PLAY_VIDEO.equals(identify)){
-                v.setBackgroundResource(R.drawable.zyplayvideo_normal_btn_bg);
+                if(isDrama())
+                  v.setBackgroundResource(R.drawable.zyplayvideo_normal_btn_bg);
+                else
+                    v.setBackgroundResource(R.drawable.playvideo_normal_btn_bg);
             }else if(DRAMA_VIDEO.equals(identify)){
                 v.setBackgroundResource(R.drawable.zydramalist_normal_btn_bg);
             }
@@ -872,6 +882,9 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             }
             else{
                 mLeftBtn.setText("播放");
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mLeftBtn.getLayoutParams();
+                params.width = 214;
+                mLeftBtn.setLayoutParams(params);
             }
             //setLeftDrawable(drawableleftcollect, mMiddleBtn);
             mMiddleBtn.setText(getResources().getString(R.string.favorite));
@@ -908,6 +921,10 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 //setLeftDrawable(drawableleftplay, mLeftBtn);
                 mLeftBtn.setTag(PREVIEW_VIDEO);
                 mLeftBtn.setText(getResources().getString(R.string.preview_video));
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mLeftBtn.getLayoutParams();
+                params.width = 214;
+                mLeftBtn.setPadding(45,mLeftBtn.getPaddingTop(),mLeftBtn.getPaddingRight(),mLeftBtn.getPaddingBottom());
+                mLeftBtn.setLayoutParams(params);
                 //setLeftDrawable(drawableleftbuy, mMiddleBtn);
                 mMiddleBtn.setTag(BUY_VIDEO);
                 mMiddleBtn.setText(getResources().getString(R.string.buy_video));
@@ -955,6 +972,10 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 }
                 else
                     mLeftBtn.setText(getResources().getString(R.string.play));
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mLeftBtn.getLayoutParams();
+                params.width = 214;
+                mLeftBtn.setPadding(45,mLeftBtn.getPaddingTop(),mLeftBtn.getPaddingRight(),mLeftBtn.getPaddingBottom());
+                mLeftBtn.setLayoutParams(params);
                 //setLeftDrawable(drawableleftcollect,mMiddleBtn);
                 mMiddleBtn.setText(getResources().getString(R.string.favorite));
                 mMiddleBtn.setTag(COLLECT_VIDEO);
