@@ -509,8 +509,7 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
 		String sur_prefix = cardNumber.substring(10, 16);
 		String timestamp = System.currentTimeMillis() + "";
 		String sid = "sid";
-		String user = SimpleRestClient.access_token.length() > 0 ? SimpleRestClient.mobile_number
-				: SimpleRestClient.sn_token;
+		String user = SimpleRestClient.sn_token;
 		String user_id = "0";
 		String app_name = "sky";
 		String sn = SimpleRestClient.sn_token;
