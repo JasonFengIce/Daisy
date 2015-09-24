@@ -16,9 +16,13 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+
 import cn.ismartv.activator.Activator;
+
 import com.google.gson.Gson;
+
 import org.w3c.dom.Text;
+
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
@@ -52,7 +56,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
     private TextView deviceNameTextView;
 
     private LinearLayout playAuthListView;
-    private Button associationText;
+    //    private Button associationText;
     private Button changeButton;
     private TextView phoneNumber;
     private View fragmentView;
@@ -60,10 +64,8 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
     private LinearLayout userInfoLayout;
     private View phoneNumberLayout;
     private View snNumberLayout;
-    private TextView associationPrompt;
     private AccountBalanceEntity accountBalanceEntity;
 
-    private boolean isCombined;
 
     SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
@@ -84,22 +86,6 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
     };
 
 
-    private SharedPreferences.OnSharedPreferenceChangeListener accountSharedPrefsListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            isCombined = sharedPreferences.getBoolean(LoginFragment.ACCOUNT_COMBINE, false);
-            if (isCombined) {
-                associationText.setVisibility(View.GONE);
-                associationPrompt.setVisibility(View.GONE);
-
-            } else {
-                associationText.setVisibility(View.VISIBLE);
-                associationPrompt.setVisibility(View.VISIBLE);
-
-            }
-        }
-    };
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -115,19 +101,16 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
         balanceTextView = (TextView) fragmentView.findViewById(R.id.remain_money_value);
         deviceNameTextView = (TextView) fragmentView.findViewById(R.id.device_name);
         playAuthListView = (LinearLayout) fragmentView.findViewById(R.id.privilegelist);
-        associationText = (Button) fragmentView.findViewById(R.id.association_button);
         userInfoLayout = (LinearLayout) fragmentView.findViewById(R.id.userinfo_layout);
         changeButton = (Button) fragmentView.findViewById(R.id.change);
         changeButton.setNextFocusUpId(changeButton.getId());
 
-        associationPrompt = (TextView) fragmentView.findViewById(R.id.association_prompt);
 
         phoneNumberLayout = fragmentView.findViewById(R.id.phone_number_layout);
         snNumberLayout = fragmentView.findViewById(R.id.sn_number_layout);
 
         deviceNameTextView.setText(Build.MODEL);
 
-        associationText.setOnClickListener(this);
         changeButton.setOnClickListener(this);
 
         loginFragment = new LoginFragment();
@@ -137,10 +120,6 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
         sharedPreferences = mContext.getSharedPreferences("Daisy", Context.MODE_PRIVATE);
         sharedPreferences.registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
 
-        SharedPreferences accountPrefs = mContext.getSharedPreferences(LoginFragment.ACCOUNT_SHARED_PREFS, Context.MODE_PRIVATE);
-        isCombined = accountPrefs.getBoolean(LoginFragment.ACCOUNT_COMBINE, false);
-        accountPrefs.registerOnSharedPreferenceChangeListener(accountSharedPrefsListener);
-
 
         if (TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
             phoneNumberLayout.setVisibility(View.GONE);
@@ -148,11 +127,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
         } else {
             phoneNumberLayout.setVisibility(View.VISIBLE);
             changeButton.setFocusable(true);
-            changeButton.setNextFocusRightId(associationText.getId());
-            associationText.setNextFocusLeftId(changeButton.getId());
         }
-
-        mSimpleRestClient = new SimpleRestClient();
 
 
         fragmentView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -162,7 +137,6 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
                     if (!TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
                         changeButton.requestFocus();
                     } else {
-                        associationText.requestFocus();
                     }
 
                 }
@@ -171,43 +145,39 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
         return fragmentView;
     }
 
-    public void changge() {
-
-
-        playAuthListView.setFocusable(false);
-        associationText.setFocusable(false);
-        if (!TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
-            Log.i("qihuanzhanghu", "phoneNumberLayout VISIBLE");
-            phoneNumberLayout.setVisibility(View.VISIBLE);
-        }
-
-        if (isCombined) {
-            associationText.setVisibility(View.GONE);
-            associationPrompt.setVisibility(View.GONE);
-        }
-
-        fetchAccountsBalance();
-        fetchAccountsPlayauths();
-        initViewByLoginStatus();
-    }
+//    public void changge() {
+//
+//
+//        playAuthListView.setFocusable(false);
+//        associationText.setFocusable(false);
+//        if (!TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
+//            Log.i("qihuanzhanghu", "phoneNumberLayout VISIBLE");
+//            phoneNumberLayout.setVisibility(View.VISIBLE);
+//        }
+//
+//        if (isCombined) {
+//            associationText.setVisibility(View.GONE);
+//            associationPrompt.setVisibility(View.GONE);
+//        }
+//
+//        fetchAccountsBalance();
+//        fetchAccountsPlayauths();
+//        initViewByLoginStatus();
+//    }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(accountBalanceEntity == null){
-        if (!TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
-            Log.i("qihuanzhanghu", "phoneNumberLayout VISIBLE");
-            phoneNumberLayout.setVisibility(View.VISIBLE);
-        }
+        if (accountBalanceEntity == null) {
+            if (!TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
+                Log.i("qihuanzhanghu", "phoneNumberLayout VISIBLE");
+                phoneNumberLayout.setVisibility(View.VISIBLE);
+            }
 
-        if (isCombined) {
-            associationText.setVisibility(View.GONE);
-            associationPrompt.setVisibility(View.GONE);
-        }
 
-        fetchAccountsBalance();
-        fetchAccountsPlayauths();
-        initViewByLoginStatus();
+            fetchAccountsBalance();
+            fetchAccountsPlayauths();
+            initViewByLoginStatus();
         }
     }
 
@@ -361,16 +331,13 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
 
                 break;
             case R.id.change:
-                // showAssociationPopupWindow();
                 playAuthListView.setFocusable(false);
-                associationText.setFocusable(false);
                 ((UserCenterActivity) getActivity()).setAccountListener(new UserCenterActivity.OnLoginByChangeCallback() {
 
                     @Override
                     public void onLoginSuccess() {
                         Log.i("qihuanzhanghu", "onLoginSuccess");
                         playAuthListView.setFocusable(true);
-                        associationText.setFocusable(true);
                         onResume();
                     }
                 });
@@ -388,44 +355,5 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-
-    private void showAssociationPopupWindow() {
-        loginFragment.setBackground(true);
-        getChildFragmentManager().beginTransaction().show(loginFragment).commit();
-        playAuthListView.setFocusable(false);
-        associationText.setFocusable(false);
-
-        loginFragment.getView().requestFocus();
-        loginFragment.setLoginCallback(new LoginFragment.OnLoginCallback() {
-            @Override
-            public void onLoginSuccess() {
-                getChildFragmentManager().beginTransaction().hide(loginFragment).commit();
-                playAuthListView.setFocusable(true);
-                associationText.setFocusable(true);
-                onResume();
-            }
-        });
-    }
-
-
-    public boolean isLoginFragmentShowing() {
-        if (loginFragment != null && loginFragment.isVisible()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public void hideLoginFragment() {
-        associationText.setFocusable(true);
-        playAuthListView.setFocusable(true);
-        getChildFragmentManager().beginTransaction().hide(loginFragment).commit();
-    }
-
-
-    private PopupWindow loginPopup;
-    private PopupWindow combineAccountPop;
-    private SimpleRestClient mSimpleRestClient;
-    private Item[] mHistoriesByNet;
 
 }
