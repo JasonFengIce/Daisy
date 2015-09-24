@@ -199,10 +199,10 @@ public class DetailAttributeContainer extends LinearLayout {
         LinearLayout.LayoutParams itemNameParams = null;
         TextView itemValue = new TextView(getContext());
         if((position+1)%3==0){
-            itemNameParams = new LinearLayout.LayoutParams((int)(390/1), (int)(32/1));
+            itemNameParams = new LinearLayout.LayoutParams((int)(390/1), (int)(34/1));
         }
         else{
-            itemNameParams = new LinearLayout.LayoutParams((int)(390/1), (int)(32/1));
+            itemNameParams = new LinearLayout.LayoutParams((int)(390/1), (int)(34/1));
         }
         itemNameParams.leftMargin = distanceLeft;
         // LinearLayout.LayoutParams itemValueParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);

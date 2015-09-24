@@ -454,7 +454,7 @@
     <dimen name="ZGridView_related_selectorRightPadding">23.8dip</dimen>
     <dimen name="ZGridView_related_selectorBottomPadding">-60dip</dimen>
     <dimen name="ZGridView_played_selectorLeftPadding">23dip</dimen>
-    <dimen name="ZGridView_played_selectorTopPadding">19dip</dimen>
+    <dimen name="ZGridView_played_selectorTopPadding">20dip</dimen>
     <dimen name="ZGridView_played_selectorRightPadding">22dip</dimen>
     <dimen name="ZGridView_played_selectorBottomPadding">-23dip</dimen>
     <dimen name="ZGridView_search_selectorLeftPadding">7dip</dimen>
