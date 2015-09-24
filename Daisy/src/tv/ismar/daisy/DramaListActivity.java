@@ -201,9 +201,13 @@ public class DramaListActivity extends BaseActivity implements
 			switch(msg.what){
 			case DISABLE_ORDER_ALL_DRANA :{
 				orderAll_drama.setEnabled(false);
+				orderAll_drama.setFocusable(false);
+				orderAll_drama.setText("已购买");
 			}
 			case ORDER_ALL_DRANA_SUCCESS :{
 				orderAll_drama.setEnabled(false);
+				orderAll_drama.setFocusable(false);
+				orderAll_drama.setText("已购买");
 				for (Item item : mList) {
 					item.remainDay = mItem.expense.duration+1;
 					mDramaAdapter.notifyDataSetChanged();
