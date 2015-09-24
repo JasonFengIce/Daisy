@@ -53,8 +53,8 @@ public class HelpFragment extends Fragment implements View.OnClickListener {
 
 
     private void startSakura() {
-//        Intent intent = new Intent();
-//        intent.setClass(mContext, LauncherActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent();
+        intent.setClass(mContext, LauncherActivity.class);
+        startActivity(intent);
     }
 }
