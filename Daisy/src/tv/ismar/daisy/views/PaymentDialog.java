@@ -29,6 +29,7 @@ import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.views.LoginPanelView.AccountAboutDialog;
+import tv.ismar.sakura.ui.widget.MessagePopWindow;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -76,7 +77,7 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
 	private LinearLayout shiyuncard_panel;
 	private RelativeLayout top_login_panel;
 	private ImageView qrcodeview;
-
+	private MessagePopWindow loginPopup;
 	private TextView payinfo_price;
 	private TextView payinfo_exprice;
 	private TextView package_price;
@@ -778,16 +779,16 @@ private String authToken;
         SimpleRestClient.access_token = authToken;
         GetFavoriteByNet();
         getHistoryByNet();
-        urlHandler.sendEmptyMessage(LOGIN_SUCESS);
-        AccountAboutDialog dialog = new AccountAboutDialog(
-                getContext(),
-                R.style.UserinfoDialog);
-        dialog.setIscancelshow(false);
-        dialog.setWarningmessage("恭喜"
-                + SimpleRestClient.mobile_number
-                + "，您已成功注册/登陆视云账户!");
-        dialog.show();
-
+//        urlHandler.sendEmptyMessage(LOGIN_SUCESS);
+//        AccountAboutDialog dialog = new AccountAboutDialog(
+//                getContext(),
+//                R.style.UserinfoDialog);
+//        dialog.setIscancelshow(false);
+//        dialog.setWarningmessage("恭喜"
+//                + SimpleRestClient.mobile_number
+//                );
+//        dialog.show();
+        showLoginSuccessPopup();
     }
 
     @Override
@@ -919,7 +920,7 @@ private String authToken;
 			Window dialogWindow = getWindow();
 			WindowManager.LayoutParams lp = dialogWindow.getAttributes();
 			lp.width = ((int) (width * 0.46));
-			lp.height = ((int) (height * 0.29));
+			lp.height = ((int) (height * 0.33));
 			lp.x = ((int) (width * 0.335));
 			lp.y = ((int) (height * 0.28));
 			lp.gravity = Gravity.LEFT | Gravity.TOP;
@@ -1060,4 +1061,22 @@ private String authToken;
 					favorite.isnet);
 		}
 	}
+	
+    private void showLoginSuccessPopup() {
+        int xOffset = (int) mycontext.getResources().getDimension(R.dimen.loginfragment_successPop_xOffset);
+        int yOffset = (int) mycontext.getResources().getDimension(R.dimen.loginfragment_successPop_yOffset);
+        String msg = mycontext.getText(R.string.login_success_name).toString();
+
+        loginPopup = new MessagePopWindow(mycontext);
+        loginPopup.setFirstMessage(String.format(msg, SimpleRestClient.mobile_number));
+        loginPopup.setSecondMessage(R.string.login_success);
+        loginPopup.showAtLocation(login_panel, Gravity.CENTER, xOffset, yOffset, new MessagePopWindow.ConfirmListener() {
+                    @Override
+                    public void confirmClick(View view) {
+                        loginPopup.dismiss();
+                    }
+                },
+                null
+        );
+    }
 }

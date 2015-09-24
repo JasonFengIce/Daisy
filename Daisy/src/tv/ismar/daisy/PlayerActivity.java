@@ -907,7 +907,7 @@ public class PlayerActivity extends VodMenuAction {
 						}
 					} else {
 						if (!isPreview) {
-							tempOffset = 0;
+//							tempOffset = 0;
 							isContinue = true;
 						}
 					}
