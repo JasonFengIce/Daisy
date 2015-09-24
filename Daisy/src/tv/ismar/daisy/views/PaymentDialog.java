@@ -920,7 +920,7 @@ private String authToken;
 			Window dialogWindow = getWindow();
 			WindowManager.LayoutParams lp = dialogWindow.getAttributes();
 			lp.width = ((int) (width * 0.46));
-			lp.height = ((int) (height * 0.39));
+			lp.height = ((int) (height * 0.29));
 			lp.x = ((int) (width * 0.335));
 			lp.y = ((int) (height * 0.28));
 			lp.gravity = Gravity.LEFT | Gravity.TOP;
