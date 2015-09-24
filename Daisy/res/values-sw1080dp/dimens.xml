@@ -1274,20 +1274,20 @@
     <dimen name="sakura_nodefragment_selectnode_pop_height">180dp</dimen>
 
     <!-- pop-->
-    <dimen name="pop_btn_width">298dp</dimen>
-    <dimen name="pop_btn_height">66dp</dimen>
+    <dimen name="pop_btn_width">180dp</dimen>
+    <dimen name="pop_btn_height">54dp</dimen>
 
-    <dimen name="pop_width">1211dp</dimen>
-    <dimen name="pop_height">416dp</dimen>
+    <dimen name="pop_width">877dp</dimen>
+    <dimen name="pop_height">305dp</dimen>
 
-    <dimen name="pop_text_width">753dp</dimen>
-    <dimen name="pop_text_height">40dp</dimen>
+    <dimen name="pop_text_width">691dp</dimen>
+    <dimen name="pop_text_height">37dp</dimen>
 
-    <dimen name="pop_first_text_margin_top">93dp</dimen>
-    <dimen name="pop_second_text_margin_top">21dp</dimen>
+    <dimen name="pop_first_text_margin_top">49dp</dimen>
+    <dimen name="pop_second_text_margin_top">83dp</dimen>
 
-    <dimen name="pop_btn_margin_bottom">93dp</dimen>
-    <dimen name="pop_btn_margin_lr">127dp</dimen>
+    <dimen name="pop_btn_margin_bottom">54dp</dimen>
+    <dimen name="pop_btn_margin_lr">123dp</dimen>
 
     <dimen name="location_selected_city_text_width">200dp</dimen>
 
