@@ -852,12 +852,13 @@ private String authToken;
 
 				@Override
 				public void onClick(View v) {
-					if (StringUtils.isNotEmpty(SimpleRestClient.access_token)) {
-						warnmsg_view
-								.setText(R.string.account_combine_msg);
-						account_bind_panel.setVisibility(View.VISIBLE);
-						account_bind_ok1_bt.setVisibility(View.GONE);
-					}
+//					if (StringUtils.isNotEmpty(SimpleRestClient.access_token)) {
+//						warnmsg_view
+//								.setText(R.string.account_combine_msg);
+//						account_bind_panel.setVisibility(View.VISIBLE);
+//						account_bind_ok1_bt.setVisibility(View.GONE);
+//					}
+					dismiss();
 				}
 			});
 
@@ -918,10 +919,10 @@ private String authToken;
 		private void resizeWindow() {
 			Window dialogWindow = getWindow();
 			WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-			lp.width = ((int) (width * 0.55));
+			lp.width = ((int) (width * 0.46));
 			lp.height = ((int) (height * 0.39));
 			lp.x = ((int) (width * 0.335));
-			lp.y = ((int) (height * 0.39));
+			lp.y = ((int) (height * 0.28));
 			lp.gravity = Gravity.LEFT | Gravity.TOP;
 		}
 

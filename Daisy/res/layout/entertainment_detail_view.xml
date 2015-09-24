@@ -47,8 +47,8 @@
             android:orientation="horizontal"
             android:layout_marginTop="@dimen/entertainment_detail_view_linearLayout2_mt">
     <RelativeLayout
-            android:layout_width="@dimen/entertainment_detail_preview_img_w"
-            android:layout_height="@dimen/entertainment_detail_preview_img_h">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
         <tv.ismar.daisy.views.AsyncImageView
                 android:layout_marginLeft="@dimen/entertainment_detail_preview_img_ml"
                 android:id="@+id/detail_preview_img"

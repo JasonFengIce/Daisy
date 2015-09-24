@@ -151,8 +151,8 @@
     <dimen name="gridview_item_expense_txt_H">40dip</dimen>
     <dimen name="gridview_item_expense_txt_size">20sp</dimen>
     <!-- popup_2btn -->
-    <dimen name="popup_dialog_width">1211dip</dimen>
-    <dimen name="popup_dialog_height">416dip</dimen>
+    <dimen name="popup_dialog_width">877dip</dimen>
+    <dimen name="popup_dialog_height">305dip</dimen>
     <dimen name="popup_dialog_layout_PT">20dip</dimen>
     <dimen name="popup_dialog_layout_PB">20dip</dimen>
     <dimen name="popup_dialog_layout_PL">23dip</dimen>
@@ -246,7 +246,7 @@
     <dimen name="vod_player_qualitytext_margintop">12dip</dimen>
 
     <!-- play_finished -->
-    <dimen name="play_finished_gridview_Padding">8dip</dimen>
+    <dimen name="play_finished_gridview_Padding">6.3dip</dimen>
     <dimen name="play_finished_leftlayout_PL">60dip</dimen>
     <dimen name="play_finished_leftlayout_W">753dip</dimen>
     <dimen name="play_finished_leftlayout_PR">100dip</dimen>
@@ -454,7 +454,7 @@
     <dimen name="ZGridView_related_selectorRightPadding">23.8dip</dimen>
     <dimen name="ZGridView_related_selectorBottomPadding">-60dip</dimen>
     <dimen name="ZGridView_played_selectorLeftPadding">23dip</dimen>
-    <dimen name="ZGridView_played_selectorTopPadding">19dip</dimen>
+    <dimen name="ZGridView_played_selectorTopPadding">22dip</dimen>
     <dimen name="ZGridView_played_selectorRightPadding">22dip</dimen>
     <dimen name="ZGridView_played_selectorBottomPadding">-23dip</dimen>
     <dimen name="ZGridView_search_selectorLeftPadding">7dip</dimen>
