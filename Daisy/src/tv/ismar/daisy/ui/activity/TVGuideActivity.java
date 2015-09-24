@@ -194,8 +194,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
 
-            if(lastview == null)
-            	return;
+            if (lastview == null)
+                return;
             if (hasFocus) {
                 TextView textview = (TextView) lastview.findViewById(R.id.channel_item);
                 textview.setBackgroundResource(R.drawable.channel_item_normal);
@@ -346,8 +346,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-            	if(scroll == null)
-            		return;
+                if (scroll == null)
+                    return;
                 if (hasFocus) {
                     scroll.requestFocus();
                     TextView tv = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
@@ -405,7 +405,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         new IsmartvUrlClient().doRequest(api, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
-            	topView.setVisibility(View.VISIBLE);
+                topView.setVisibility(View.VISIBLE);
                 mChannelEntitys = new Gson().fromJson(result, ChannelEntity[].class);
 
                 ChannelEntity[] tmp = mChannelEntitys;
@@ -783,8 +783,12 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
      */
     private void showExitPopup(View view) {
         final Context context = this;
+        float rate = DaisyUtils.getVodApplication(this).getRate(this);
         View contentView = LayoutInflater.from(context).inflate(R.layout.popup_exit, null);
-        exitPopupWindow = new PopupWindow(null, 740, 341);
+        int width = (int) getResources().getDimension(R.dimen.pop_width);
+        int height = (int) getResources().getDimension(R.dimen.pop_height);
+
+        exitPopupWindow = new PopupWindow(null, width, height);
         exitPopupWindow.setContentView(contentView);
         exitPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent));
         exitPopupWindow.setFocusable(true);

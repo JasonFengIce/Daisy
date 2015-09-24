@@ -661,6 +661,7 @@
     <dimen name="launcher_channel_title_height">80dp</dimen>
     <dimen name="launcher_exit_button_width">298dp</dimen>
 
+
     <!-- recommend -->
     <dimen name="recommend_item__W">230dip</dimen>
     <dimen name="recommend_item_image__H">150dip</dimen>
@@ -1108,15 +1109,15 @@
     <dimen name="locationFragment_provinceGrid_marginLR">30dp</dimen>
     <dimen name="locationFragment_areaGridItem_minHeght">65dp</dimen>
     <dimen name="locationFragment_currentPositionTitle_marginLeft">31dp</dimen>
-    <dimen name="locationFragment_selectedPositionTitle_marginLeft">170dp</dimen>
-    <dimen name="locationFragment_todayLayout_marginLeft">120dp</dimen>
+    <dimen name="locationFragment_selectedPositionTitle_marginLeft">100dp</dimen>
+    <dimen name="locationFragment_todayLayout_marginLeft">80dp</dimen>
     <dimen name="locationFragment_tomorrowLayout_marginLeft">70dp</dimen>
     <dimen name="locatiionFragment_areaPop_height">415dp</dimen>
     <dimen name="locationFragment_areaPop_btn_width">235dp</dimen>
     <dimen name="locationFragment_areaPop_btn_height">85dp</dimen>
     <dimen name="locatoinFragment_areaPop_cancelBtn_marginLeft">85dp</dimen>
     <dimen name="locationFragment_areaPop_Btn_marginTop">40dp</dimen>
-    <dimen name="locationFragment_weatherLayout_width">220dp</dimen>
+    <dimen name="locationFragment_weatherLayout_width">180dp</dimen>
 
 
     <dimen name="locationFragment_h1_textSize">48sp</dimen>
@@ -1272,5 +1273,22 @@
     <dimen name="sakura_nodefragment_selectnode_pop_width">600dp</dimen>
     <dimen name="sakura_nodefragment_selectnode_pop_height">180dp</dimen>
 
+    <!-- pop-->
+    <dimen name="pop_btn_width">298dp</dimen>
+    <dimen name="pop_btn_height">66dp</dimen>
+
+    <dimen name="pop_width">1211dp</dimen>
+    <dimen name="pop_height">416dp</dimen>
+
+    <dimen name="pop_text_width">753dp</dimen>
+    <dimen name="pop_text_height">40dp</dimen>
+
+    <dimen name="pop_first_text_margin_top">93dp</dimen>
+    <dimen name="pop_second_text_margin_top">21dp</dimen>
+
+    <dimen name="pop_btn_margin_bottom">93dp</dimen>
+    <dimen name="pop_btn_margin_lr">127dp</dimen>
+
+    <dimen name="location_selected_city_text_width">200dp</dimen>
 
 </resources>

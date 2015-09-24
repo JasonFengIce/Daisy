@@ -1,194 +1,191 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:focusable="true"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true">
 
     <LinearLayout
-            android:id="@+id/userinfo_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        android:id="@+id/userinfo_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
 
         <LinearLayout
-                android:id="@+id/phone_number_layout"
-                android:layout_marginTop="@dimen/user_info_item_vertical_spacing"
-                android:layout_marginLeft="@dimen/usercenter_info_layout_margin_left"
-                android:layout_marginRight="@dimen/usercenter_info_layout_margin_left"
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            android:id="@+id/phone_number_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/usercenter_info_layout_margin_left"
+            android:layout_marginRight="@dimen/usercenter_info_layout_margin_left"
+            android:layout_marginTop="@dimen/user_info_item_vertical_spacing"
+            android:orientation="horizontal">
 
             <TextView
-                    android:text="账号："
-                    android:singleLine="true"
-                    android:textColor="#FFFFFF"
-                    android:gravity="center_vertical"
-                    android:textSize="@dimen/h4_text_size"
-                    android:layout_width="@dimen/userinfo_phoneNumber_title_width"
-                    android:layout_height="wrap_content"/>
+                android:layout_width="@dimen/userinfo_phoneNumber_title_width"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:text="账号："
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/h4_text_size" />
 
             <TextView
-                    android:singleLine="true"
-                    android:id="@+id/phone_number"
-                    android:textColor="#FFFFFF"
-                    android:gravity="center_vertical"
-                    android:textSize="@dimen/h4_text_size"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-
-            <Button
-                    android:background="@drawable/selector_daisy_button_style"
-                    android:gravity="center"
-                    android:layout_gravity="center"
-                    android:textSize="@dimen/h4_text_size"
-                    android:text="@string/change_account"
-                    android:layout_marginLeft="@dimen/userinfo_changeButton_marginLeft"
-                    android:textColor="#FFFFFF"
-                    android:id="@+id/change"
-                    android:layout_width="@dimen/user_center_logout_width"
-                    android:layout_height="@dimen/user_center_logout_height"/>
-
-        </LinearLayout>
-
-
-        <LinearLayout
-                android:id="@+id/sn_number_layout"
-                android:layout_marginTop="@dimen/user_info_item_vertical_spacing"
-                android:layout_marginLeft="@dimen/usercenter_info_layout_margin_left"
-                android:layout_marginRight="@dimen/usercenter_info_layout_margin_left"
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            <TextView
-                    android:text="SN："
-                    android:textColor="#FFFFFF"
-                    android:gravity="center_vertical"
-                    android:textSize="@dimen/h4_text_size"
-                    android:layout_width="@dimen/userinfo_snNumber_title_width"
-                    android:layout_height="wrap_content"/>
-
-            <TextView
-                    android:singleLine="true"
-                    android:id="@+id/device_number"
-                    android:textColor="#FFFFFF"
-                    android:gravity="center_vertical"
-                    android:textSize="@dimen/h4_text_size"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-
-            <TextView
-                    android:id="@+id/association_prompt"
-                    android:layout_marginLeft="@dimen/userinfo_association_prompt_marigin_lr"
-                    android:layout_marginRight="@dimen/userinfo_association_prompt_marigin_lr"
-                    android:textColor="#FFFFFF"
-                    android:gravity="center_vertical"
-                    android:textSize="@dimen/h4_text_size"
-                    android:text="@string/association_prompt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-            <Button
-                    android:background="@drawable/selector_daisy_button_style"
-                    android:textSize="@dimen/h4_text_size"
-                    android:text="@string/association"
-                    android:layout_marginLeft="@dimen/userinfo_association_marginLeft"
-                    android:textColor="#FFFFFF"
-                    android:id="@+id/association_button"
-                    android:layout_width="@dimen/userinfo_association_width"
-                    android:layout_height="@dimen/user_center_logout_height"/>
-        </LinearLayout>
-
-        <LinearLayout
-                android:layout_marginTop="@dimen/user_info_item_vertical_spacing"
-                android:layout_marginLeft="@dimen/usercenter_info_layout_margin_left"
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            <TextView
-                    android:singleLine="true"
-                    android:text="设备："
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/h4_text_size"
-                    android:layout_width="@dimen/userinfo_deviceName_title_width"
-                    android:layout_height="wrap_content"/>
-
-            <TextView
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/h4_text_size"
-                    android:id="@+id/device_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-
-        </LinearLayout>
-
-
-        <LinearLayout
-                android:layout_marginTop="@dimen/user_info_item_vertical_spacing"
-                android:layout_marginLeft="@dimen/usercenter_info_layout_margin_left"
+                android:id="@+id/phone_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/h4_text_size" />
+
+
+            <Button
+                android:id="@+id/change"
+                android:layout_width="@dimen/user_center_logout_width"
+                android:layout_height="@dimen/user_center_logout_height"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/userinfo_changeButton_marginLeft"
+                android:background="@drawable/selector_daisy_button_style"
+                android:gravity="center"
+                android:text="@string/change_account"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/h4_text_size" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/sn_number_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/usercenter_info_layout_margin_left"
+            android:layout_marginRight="@dimen/usercenter_info_layout_margin_left"
+            android:layout_marginTop="@dimen/user_info_item_vertical_spacing"
+            android:orientation="horizontal">
 
             <TextView
-                    android:singleLine="true"
-                    android:layout_width="@dimen/userinfo_balance_title_width"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="余额："
-                    android:textColor="#FFF8F8FF"
-                    android:textSize="@dimen/h4_text_size"/>
+                android:layout_width="@dimen/userinfo_snNumber_title_width"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="SN："
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/h4_text_size" />
 
             <TextView
-                    android:id="@+id/remain_money_value"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:textColor="#FFF8F8FF"
-                    android:textSize="@dimen/h4_text_size"/>
+                android:id="@+id/device_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/h4_text_size" />
+
+
+            <TextView
+                android:id="@+id/association_prompt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/userinfo_association_prompt_marigin_lr"
+                android:layout_marginRight="@dimen/userinfo_association_prompt_marigin_lr"
+                android:gravity="center_vertical"
+                android:text="@string/association_prompt"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/h4_text_size"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/association_button"
+                android:layout_width="@dimen/userinfo_association_width"
+                android:layout_height="@dimen/user_center_logout_height"
+                android:layout_marginLeft="@dimen/userinfo_association_marginLeft"
+                android:background="@drawable/selector_daisy_button_style"
+                android:text="@string/association"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/h4_text_size" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/usercenter_info_layout_margin_left"
+            android:layout_marginTop="@dimen/user_info_item_vertical_spacing"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="@dimen/userinfo_deviceName_title_width"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="设备："
+                android:textColor="@color/white"
+                android:textSize="@dimen/h4_text_size" />
+
+            <TextView
+                android:id="@+id/device_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="@dimen/h4_text_size" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/usercenter_info_layout_margin_left"
+            android:layout_marginTop="@dimen/user_info_item_vertical_spacing"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="@dimen/userinfo_balance_title_width"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:text="余额："
+                android:textColor="#FFF8F8FF"
+                android:textSize="@dimen/h4_text_size" />
+
+            <TextView
+                android:id="@+id/remain_money_value"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textColor="#FFF8F8FF"
+                android:textSize="@dimen/h4_text_size" />
         </LinearLayout>
 
 
         <RelativeLayout
-                android:layout_marginTop="@dimen/userinfo_privilege_layout_marginTop"
-                android:layout_marginLeft="@dimen/usercenter_info_layout_margin_left"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                >
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/usercenter_info_layout_margin_left"
+            android:layout_marginTop="@dimen/userinfo_privilege_layout_marginTop">
 
             <TextView
-                    android:singleLine="true"
-                    android:id="@+id/privilege_txt"
-                    android:layout_width="@dimen/userinfo_privilege_title_width"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:text="特权："
-                    android:textColor="#FFF8F8FF"
-                    android:textSize="@dimen/h4_text_size">
+                android:id="@+id/privilege_txt"
+                android:layout_width="@dimen/userinfo_privilege_title_width"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:text="特权："
+                android:textColor="#FFF8F8FF"
+                android:textSize="@dimen/h4_text_size">
 
             </TextView>
 
             <ScrollView
-                    android:layout_marginLeft="50dp"
-                    android:layout_toRightOf="@id/privilege_txt"
-                    android:layout_marginRight="@dimen/person_login_phone_view_ML"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    >
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="@dimen/person_login_phone_view_ML"
+                android:layout_toRightOf="@id/privilege_txt">
 
                 <LinearLayout
-                        android:orientation="vertical"
-                        android:id="@+id/privilegelist"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
+                    android:id="@+id/privilegelist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
                 </LinearLayout>
             </ScrollView>
@@ -199,10 +196,8 @@
     </LinearLayout>
 
     <FrameLayout
-            android:id="@+id/association_phone_layout"
-            android:layout_width="@dimen/usercenter_info_association_pop_widht"
-            android:layout_height="@dimen/usercenter_info_association_pop_height"
-            android:layout_centerInParent="true"
-            >
-    </FrameLayout>
+        android:id="@+id/association_phone_layout"
+        android:layout_width="@dimen/usercenter_info_association_pop_widht"
+        android:layout_height="@dimen/usercenter_info_association_pop_height"
+        android:layout_centerInParent="true"></FrameLayout>
 </RelativeLayout>
