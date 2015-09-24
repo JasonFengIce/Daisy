@@ -1,39 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:background="@drawable/popup_bg_yellow"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
-            android:background="@drawable/person_center_bg"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-
-            android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/popwindow_bg"
+        android:orientation="vertical">
 
 
         <TextView
-                android:id="@+id/login_success_msg"
-                android:layout_marginTop="@dimen/login_pop_msg_margin_top"
-                android:layout_gravity="center_horizontal"
-                android:textSize="@dimen/h1_text_size"
-                android:textColor="#FFFFFF"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            android:id="@+id/login_success_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/login_pop_msg_margin_top"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/h1_text_size" />
 
         <Button
-                android:gravity="center"
-                android:text="@string/confirm"
-                android:id="@+id/login_success_btn"
-                android:layout_marginTop="@dimen/login_pop_msg_margin_top"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/selector_daisy_exit_button"
-                android:textSize="@dimen/h2_text_size"
-                android:textColor="#FFFFFF"
-                android:layout_width="@dimen/login_pop_button_width"
-                android:layout_height="@dimen/login_pop_button_height"/>
+            android:id="@+id/login_success_btn"
+            android:layout_width="@dimen/login_pop_button_width"
+            android:layout_height="@dimen/login_pop_button_height"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/login_pop_msg_margin_top"
+            android:background="@drawable/selector_daisy_exit_button"
+            android:gravity="center"
+            android:text="@string/confirm"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/h2_text_size" />
 
 
     </LinearLayout>

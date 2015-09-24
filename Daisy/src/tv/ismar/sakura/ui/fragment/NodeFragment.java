@@ -42,6 +42,7 @@ import tv.ismar.sakura.data.http.SpeedLogEntity;
 import tv.ismar.sakura.ui.adapter.IspSpinnerAdapter;
 import tv.ismar.sakura.ui.adapter.NodeListAdapter;
 import tv.ismar.sakura.ui.adapter.ProvinceSpinnerAdapter;
+import tv.ismar.sakura.ui.widget.MessagePopWindow;
 import tv.ismar.sakura.ui.widget.SakuraButton;
 import tv.ismar.sakura.ui.widget.SakuraListView;
 
@@ -76,9 +77,9 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
     private Spinner ispSpinner;
     private SakuraButton speedTestButton;
 
-    private PopupWindow selectNodePup;
+    private MessagePopWindow selectNodePup;
     private Dialog cdnTestDialog;
-    private PopupWindow cdnTestCompletedPop;
+    private MessagePopWindow cdnTestCompletedPop;
 
 
     private String[] selectionArgs = {"0", "0"};
@@ -405,37 +406,22 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
      * @param cndId
      */
     private void showSelectNodePop(final int cndId) {
-        View contentView = LayoutInflater.from(mContext)
-                .inflate(R.layout.sakura_popup_select_node, null);
-        contentView.setBackgroundResource(R.drawable.sakura_bg_popup);
-
-        int popWidth = (int) (mContext.getResources().getDimension(R.dimen.sakura_nodefragment_selectnode_pop_width) / rate);
-        int popHeight = (int) (mContext.getResources().getDimension(R.dimen.sakura_nodefragment_selectnode_pop_height) / rate);
-
-
-        selectNodePup = new PopupWindow(contentView, popWidth, popHeight);
-        selectNodePup.setFocusable(true);
-        selectNodePup.showAtLocation(nodeListView, Gravity.CENTER, 0, 0);
-
-        SakuraButton confirmButton = (SakuraButton) contentView.findViewById(R.id.confirm_btn);
-        SakuraButton cancleButton = (SakuraButton) contentView.findViewById(R.id.cancle_btn);
-        confirmButton.requestFocus();
-
-        confirmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bindCdn(SimpleRestClient.sn_token, cndId);
-                selectNodePup.dismiss();
-            }
-        });
-
-        cancleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectNodePup.dismiss();
-            }
-        });
-
+        selectNodePup = new MessagePopWindow(mContext);
+        selectNodePup.setFirstMessage(R.string.are_you_sure_selecte);
+        selectNodePup.showAtLocation(nodeListView, Gravity.CENTER, 0, 0, new MessagePopWindow.ConfirmListener() {
+                    @Override
+                    public void confirmClick(View view) {
+                        bindCdn(SimpleRestClient.sn_token, cndId);
+                        selectNodePup.dismiss();
+                    }
+                },
+                new MessagePopWindow.CancelListener() {
+                    @Override
+                    public void cancelClick(View view) {
+                        selectNodePup.dismiss();
+                    }
+                }
+        );
     }
 
 
@@ -489,7 +475,6 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
 
     private void showCdnTestCompletedPop(final Status status) {
         int titleRes;
-
         speedTestButton.clearFocus();
         switch (status) {
             case COMPLETE:
@@ -504,44 +489,17 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
                 break;
         }
 
-
-        View contentView = LayoutInflater.from(mContext)
-                .inflate(R.layout.sakura_popup_cdn_test_complete, null);
-        /**
-         * 标题
-         */
-        TextView title = (TextView) contentView.findViewById(R.id.complete_title);
-        title.setText(titleRes);
-        contentView.setBackgroundResource(R.drawable.sakura_bg_popup);
-
-        int popWidht = (int) (mContext.getResources().getDimension(R.dimen.sakura_nodefragment_test_complete_pop_width) / rate);
-        int popHeight = (int) (mContext.getResources().getDimension(R.dimen.sakura_nodefragment_test_complete_pop_height) / rate);
-
-        cdnTestCompletedPop = new PopupWindow(null, popWidht, popHeight);
-        cdnTestCompletedPop.setContentView(contentView);
-        cdnTestCompletedPop.setFocusable(true);
-
-        cdnTestCompletedPop.showAtLocation(nodeListView, Gravity.CENTER, 0, 0);
-
-        SakuraButton cancleButton = (SakuraButton) contentView.findViewById(R.id.test_c_confirm_btn);
-        cancleButton.requestFocus();
-        cancleButton.requestFocusFromTouch();
-
-
-        cancleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cdnTestCompletedPop.dismiss();
-                nodeListView.setSelectionOne();
-                switch (status) {
-                    case CANCEL:
-                        break;
-                    case COMPLETE:
-                        break;
-                }
-
-            }
-        });
+        cdnTestCompletedPop = new MessagePopWindow(mContext);
+        cdnTestCompletedPop.setFirstMessage(titleRes);
+        cdnTestCompletedPop.showAtLocation(nodeListView, Gravity.CENTER, 0, 0, new MessagePopWindow.ConfirmListener() {
+                    @Override
+                    public void confirmClick(View view) {
+                        cdnTestCompletedPop.dismiss();
+                        nodeListView.setSelectionOne();
+                    }
+                },
+                null
+        );
     }
 
     @Override

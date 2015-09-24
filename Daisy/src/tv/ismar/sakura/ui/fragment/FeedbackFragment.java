@@ -27,6 +27,7 @@ import tv.ismar.sakura.data.http.FeedBackEntity;
 import tv.ismar.sakura.data.http.ProblemEntity;
 import tv.ismar.sakura.ui.adapter.FeedbackListAdapter;
 import tv.ismar.sakura.ui.widget.FeedBackListView;
+import tv.ismar.sakura.ui.widget.MessagePopWindow;
 import tv.ismar.sakura.ui.widget.MessageSubmitButton;
 import tv.ismar.sakura.ui.widget.SakuraEditText;
 
@@ -248,44 +249,22 @@ public class FeedbackFragment extends Fragment implements RadioGroup.OnCheckedCh
     private void initPopWindow() {
         submitButton.clearFocus();
 
-        View contentView = LayoutInflater.from(mContext)
-                .inflate(R.layout.popup_confirm_submit_feedback, null);
-        contentView.setBackgroundResource(R.drawable.bg_popup);
-        final PopupWindow popupWindow = new PopupWindow(null, 600, 180);
-        popupWindow.setContentView(contentView);
-        popupWindow.setFocusable(true);
-        popupWindow.showAtLocation(getView(), Gravity.CENTER, 0, 0);
-
-
-        Button confirmButton = (Button) contentView.findViewById(R.id.confirm_btn);
-        Button cancleButton = (Button) contentView.findViewById(R.id.cancle_btn);
-
-        confirmButton.requestFocusFromTouch();
-        confirmButton.requestFocus();
-
-
-        confirmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                popupWindow.dismiss();
-
-                if (AppConstant.DEBUG)
-                    Log.d(TAG, "submit problem feedback");
-                submitButton.setEnabled(false);
-//                CacheManager.updatFeedBack(mActivity, phone.getText().toString());
-
-
-                uploadFeedback();
-            }
-        });
-        cancleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                popupWindow.dismiss();
-
-            }
-        });
-
-
+        final MessagePopWindow popupWindow = new MessagePopWindow(mContext);
+        popupWindow.setFirstMessage("是否提交反馈信息?");
+        popupWindow.showAtLocation(getView(), Gravity.CENTER, 0, 0, new MessagePopWindow.ConfirmListener() {
+                    @Override
+                    public void confirmClick(View view) {
+                        popupWindow.dismiss();
+                        submitButton.setEnabled(false);
+                        uploadFeedback();
+                    }
+                },
+                new MessagePopWindow.CancelListener() {
+                    @Override
+                    public void cancelClick(View view) {
+                        popupWindow.dismiss();
+                    }
+                }
+        );
     }
 }

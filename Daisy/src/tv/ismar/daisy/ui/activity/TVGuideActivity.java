@@ -56,6 +56,7 @@ import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
 import tv.ismar.daisy.ui.fragment.launcher.*;
 import tv.ismar.daisy.ui.widget.DaisyButton;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
+import tv.ismar.sakura.ui.widget.MessagePopWindow;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -81,7 +82,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
      * PopupWindow
      */
     PopupWindow updatePopupWindow;
-    PopupWindow exitPopupWindow;
+    MessagePopWindow exitPopupWindow;
     PopupWindow netErrorPopupWindow;
 
     private LinearLayout channelListView;
@@ -721,7 +722,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private void showUpdatePopup(View view, Bundle bundle) {
         final Context context = this;
         View contentView = LayoutInflater.from(context).inflate(R.layout.popup_update, null);
-        contentView.setBackgroundResource(R.drawable.popup_bg_yellow);
+        contentView.setBackgroundResource(R.drawable._000000000);
         updatePopupWindow = new PopupWindow(null, 1400, 500);
         updatePopupWindow.setContentView(contentView);
         updatePopupWindow.setFocusable(true);
@@ -781,36 +782,54 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
      *
      * @param view
      */
+//    private void showExitPopup(View view) {
+//        final Context context = this;
+//        float rate = DaisyUtils.getVodApplication(this).getRate(this);
+//        View contentView = LayoutInflater.from(context).inflate(R.layout.popup_exit, null);
+//        int width = (int) (getResources().getDimension(R.dimen.pop_width) / rate);
+//        int height = (int) (getResources().getDimension(R.dimen.pop_height) / rate);
+//
+//        exitPopupWindow = new PopupWindow(null, width, height);
+//        exitPopupWindow.setContentView(contentView);
+//        exitPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent));
+//        exitPopupWindow.setFocusable(true);
+//        exitPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+//
+//        Button confirmExit = (Button) contentView.findViewById(R.id.confirm_exit);
+//        Button cancelExit = (Button) contentView.findViewById(R.id.cancel_exit);
+//
+//        confirmExit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                exitPopupWindow.dismiss();
+//                TVGuideActivity.this.finish();
+//            }
+//        });
+//
+//        cancelExit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                exitPopupWindow.dismiss();
+//            }
+//        });
+//    }
     private void showExitPopup(View view) {
-        final Context context = this;
-        float rate = DaisyUtils.getVodApplication(this).getRate(this);
-        View contentView = LayoutInflater.from(context).inflate(R.layout.popup_exit, null);
-        int width = (int) getResources().getDimension(R.dimen.pop_width);
-        int height = (int) getResources().getDimension(R.dimen.pop_height);
-
-        exitPopupWindow = new PopupWindow(null, width, height);
-        exitPopupWindow.setContentView(contentView);
-        exitPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent));
-        exitPopupWindow.setFocusable(true);
-        exitPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-
-        Button confirmExit = (Button) contentView.findViewById(R.id.confirm_exit);
-        Button cancelExit = (Button) contentView.findViewById(R.id.cancel_exit);
-
-        confirmExit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                exitPopupWindow.dismiss();
-                TVGuideActivity.this.finish();
-            }
-        });
-
-        cancelExit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                exitPopupWindow.dismiss();
-            }
-        });
+        exitPopupWindow = new MessagePopWindow(this);
+        exitPopupWindow.setFirstMessage(R.string.exit_prompt);
+        exitPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0, new MessagePopWindow.ConfirmListener() {
+                    @Override
+                    public void confirmClick(View view) {
+                        exitPopupWindow.dismiss();
+                        TVGuideActivity.this.finish();
+                    }
+                },
+                new MessagePopWindow.CancelListener() {
+                    @Override
+                    public void cancelClick(View view) {
+                        exitPopupWindow.dismiss();
+                    }
+                }
+        );
     }
 
     @Override

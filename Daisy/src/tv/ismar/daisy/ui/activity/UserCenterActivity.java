@@ -32,6 +32,7 @@ import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.ui.fragment.usercenter.*;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
+import tv.ismar.sakura.ui.widget.MessagePopWindow;
 
 import java.lang.annotation.Target;
 import java.util.ArrayList;
@@ -67,7 +68,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private LocationFragment locationFragment;
     private LaunchHeaderLayout topView;
     private SharedPreferences accountPreference;
-    private PopupWindow loginPopup;
+    private MessagePopWindow loginPopup;
     private PopupWindow combineAccountPop;
     private SharedPreferences accountSharedPrefs;
     private View mContentView;
@@ -281,32 +282,23 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
 
     private void showLoginSuccessPopup() {
-        View popupLayout = LayoutInflater.from(this).inflate(R.layout.popup_login_success, null);
-        TextView textView = (TextView) popupLayout.findViewById(R.id.login_success_msg);
-        String msg = getText(R.string.login_success).toString();
-        String phoneNumber = mNickName;
-        textView.setText(String.format(msg, phoneNumber));
-
-        Button button = (Button) popupLayout.findViewById(R.id.login_success_btn);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loginPopup.dismiss();
-                switchToUserInfoFragment();
-            }
-        });
-
-
-        int width = (int) getResources().getDimension(R.dimen.login_pop_width);
-        int height = (int) getResources().getDimension(R.dimen.login_pop_height);
-        loginPopup = new PopupWindow(popupLayout, width, height);
-        loginPopup.setFocusable(true);
-        loginPopup.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent));
         int xOffset = (int) getResources().getDimension(R.dimen.loginfragment_successPop_xOffset);
         int yOffset = (int) getResources().getDimension(R.dimen.loginfragment_successPop_yOffset);
-
-        loginPopup.showAtLocation(mContentView, Gravity.CENTER, xOffset, yOffset);
+        String msg = getText(R.string.login_success).toString();
+        String phoneNumber = mNickName;
+        loginPopup = new MessagePopWindow(this);
+        loginPopup.setFirstMessage(String.format(msg, phoneNumber));
+        loginPopup.showAtLocation(mContentView, Gravity.CENTER, xOffset, yOffset, new MessagePopWindow.ConfirmListener() {
+                    @Override
+                    public void confirmClick(View view) {
+                        loginPopup.dismiss();
+                        switchToUserInfoFragment();
+                    }
+                },
+                null
+        );
     }
+
 
     PopupWindow exitPopupWindow;
 
