@@ -30,7 +30,7 @@
             <Button
                 android:layout_marginRight="30dp"
                 android:background="@drawable/selector_daisy_exit_button"
-                android:textSize="28sp"
+                android:textSize="30sp"
                 android:text="@string/confirm"
                 android:textColor="@android:color/white"
                 android:id="@+id/confirm_exit"
@@ -40,7 +40,7 @@
             <Button
                 android:layout_marginLeft="30dp"
                 android:background="@drawable/selector_daisy_exit_button"
-                android:textSize="28sp"
+                android:textSize="30sp"
                 android:text="@string/cancel"
                 android:textColor="@android:color/white"
                 android:id="@+id/cancel_exit"

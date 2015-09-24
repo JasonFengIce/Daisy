@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:background="@drawable/popup_bg_yellow"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/person_center_bg"
+    android:background="@drawable/popwindow_bg"
     android:gravity="center"
     android:orientation="vertical" >
 
     <TextView
         android:id="@+id/account_bind_warn_msg"
-        android:layout_width="890dp"
+        android:layout_width="691dp"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
@@ -53,8 +52,8 @@
         android:id="@+id/account_bind_ok1_bt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-        android:layout_marginTop="85dp"
-        android:background="@drawable/person_btn_selector"
+        android:layout_marginTop="75dp"
+        android:background="@drawable/selector_daisy_exit_button"
         android:text="确   定"
         android:textColor="#FFFFFFFF"
         android:textSize="@dimen/person_login_phone_edit_text_size" />
