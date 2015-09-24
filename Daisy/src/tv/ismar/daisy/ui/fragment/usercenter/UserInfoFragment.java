@@ -137,6 +137,8 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
                     if (!TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
                         changeButton.requestFocus();
                     } else {
+                        if (playAuthListView.getChildAt(0) != null)
+                            playAuthListView.getChildAt(0).requestFocus();
                     }
 
                 }
