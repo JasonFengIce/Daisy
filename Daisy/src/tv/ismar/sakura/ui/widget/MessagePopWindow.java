@@ -17,8 +17,12 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
     private Button confirmBtn;
     private Button cancelBtn;
     private TextView firstMessage;
+    private TextView secondMessage;
     private ConfirmListener confirmListener;
     private CancelListener cancleListener;
+
+    private float rate;
+    private Context mContext;
 
     public interface CancelListener {
         void cancelClick(View view);
@@ -30,7 +34,8 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
 
 
     public MessagePopWindow(Context context) {
-        float rate = DaisyUtils.getVodApplication(context).getRate(context);
+        mContext = context;
+        rate = DaisyUtils.getVodApplication(context).getRate(context);
         int width = (int) (context.getResources().getDimension(R.dimen.pop_width) / rate);
         int height = (int) (context.getResources().getDimension(R.dimen.pop_height) / rate);
 
@@ -43,6 +48,7 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
         confirmBtn.setOnClickListener(this);
         cancelBtn.setOnClickListener(this);
         firstMessage = (TextView) contentView.findViewById(R.id.first_text_info);
+        secondMessage = (TextView) contentView.findViewById(R.id.pop_second_text);
         setContentView(contentView);
 
         setBackgroundDrawable(context.getResources().getDrawable(R.drawable.popwindow_bg));
@@ -53,8 +59,21 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
     public void setFirstMessage(int messageId) {
         firstMessage.setText(messageId);
     }
+
     public void setFirstMessage(String message) {
         firstMessage.setText(message);
+    }
+
+    public void setSecondMessage(int messageId) {
+        setHeight((int) (mContext.getResources().getDimension(R.dimen.pop_double_line_height) / rate));
+        secondMessage.setVisibility(View.VISIBLE);
+        secondMessage.setText(messageId);
+    }
+
+    public void setSecondMessage(String message) {
+        setHeight((int) (mContext.getResources().getDimension(R.dimen.pop_double_line_height) / rate));
+        secondMessage.setVisibility(View.VISIBLE);
+        secondMessage.setText(message);
     }
 
 

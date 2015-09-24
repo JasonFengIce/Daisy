@@ -148,7 +148,7 @@ public class FeedbackFragment extends Fragment implements RadioGroup.OnCheckedCh
         client.excute(sn, top, new Callback<ChatMsgEntity>() {
             @Override
             public void success(ChatMsgEntity chatMsgEntities, Response response) {
-                if (chatMsgEntities.getData() == null || chatMsgEntities.getData().isEmpty()) {
+                if (chatMsgEntities.getCount() == 0) {
                     arrowDown.setVisibility(View.INVISIBLE);
                     arrowUp.setVisibility(View.INVISIBLE);
                 } else {

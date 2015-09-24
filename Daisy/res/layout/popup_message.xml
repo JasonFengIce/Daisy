@@ -5,23 +5,33 @@
     android:layout_height="match_parent">
 
 
-    <!--<TextView-->
-        <!--android:id="@+id/pop_second_text"-->
-        <!--android:layout_width="@dimen/pop_text_width"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginTop="@dimen/pop_first_text_margin_top"-->
-        <!--android:gravity="center"-->
-        <!--android:textSize="@dimen/h3_text_size" />-->
-
-    <TextView
-        android:id="@+id/first_text_info"
-        android:layout_width="@dimen/pop_text_width"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/pop_second_text_margin_top"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/pop_text_layout_height"
+        android:layout_marginTop="@dimen/pop_first_text_margin_top"
         android:gravity="center"
-        android:textSize="@dimen/h3_text_size" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/first_text_info"
+            android:layout_width="@dimen/pop_text_width"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:textSize="@dimen/h3_text_size" />
+
+        <TextView
+            android:id="@+id/pop_second_text"
+            android:layout_width="@dimen/pop_text_width"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/pop_second_text_margin_top"
+            android:gravity="center"
+            android:textSize="@dimen/h3_text_size"
+            android:visibility="gone" />
+
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

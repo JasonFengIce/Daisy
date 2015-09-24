@@ -284,10 +284,12 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private void showLoginSuccessPopup() {
         int xOffset = (int) getResources().getDimension(R.dimen.loginfragment_successPop_xOffset);
         int yOffset = (int) getResources().getDimension(R.dimen.loginfragment_successPop_yOffset);
-        String msg = getText(R.string.login_success).toString();
+        String msg = getText(R.string.login_success_name).toString();
+
         String phoneNumber = mNickName;
         loginPopup = new MessagePopWindow(this);
         loginPopup.setFirstMessage(String.format(msg, phoneNumber));
+        loginPopup.setSecondMessage(R.string.login_success);
         loginPopup.showAtLocation(mContentView, Gravity.CENTER, xOffset, yOffset, new MessagePopWindow.ConfirmListener() {
                     @Override
                     public void confirmClick(View view) {
