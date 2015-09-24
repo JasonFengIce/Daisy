@@ -146,8 +146,6 @@
             android:id="@+id/gridview_related"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fadingEdge="horizontal"
-            android:fadingEdgeLength="@dimen/gridview_main_panel_fadingEdgeLength"
             sakura:columnWidth="@dimen/playfinish_gridview_item_linearimage_W"
             sakura:horizontalSpace="@dimen/play_finished_gridview_related_horizontalSpace"
             sakura:listSelector="@drawable/vod_gv_selector"

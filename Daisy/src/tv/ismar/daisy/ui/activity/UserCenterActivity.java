@@ -313,7 +313,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     public void showSameAccountPopup() {
         Context context = UserCenterActivity.this;
         View contentView = LayoutInflater.from(context).inflate(R.layout.popup_sameaccount, null);
-        exitPopupWindow = new PopupWindow(null, 1211, 416);
+        exitPopupWindow = new PopupWindow(null, 877, 305);
         exitPopupWindow.setContentView(contentView);
         exitPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent));
         exitPopupWindow.setFocusable(true);
