@@ -661,6 +661,7 @@
     <dimen name="launcher_channel_title_height">80dp</dimen>
     <dimen name="launcher_exit_button_width">250dp</dimen>
 
+
     <!-- recommend -->
     <dimen name="recommend_item__W">230dip</dimen>
     <dimen name="recommend_item_image__H">150dip</dimen>
@@ -1272,5 +1273,20 @@
     <dimen name="sakura_nodefragment_selectnode_pop_width">600dp</dimen>
     <dimen name="sakura_nodefragment_selectnode_pop_height">180dp</dimen>
 
+    <!-- pop-->
+    <dimen name="pop_btn_width">298dp</dimen>
+    <dimen name="pop_btn_height">66dp</dimen>
+
+    <dimen name="pop_width">1211dp</dimen>
+    <dimen name="pop_height">416dp</dimen>
+
+    <dimen name="pop_text_width">753dp</dimen>
+    <dimen name="pop_text_height">40dp</dimen>
+
+    <dimen name="pop_first_text_margin_top">93dp</dimen>
+    <dimen name="pop_second_text_margin_top">21dp</dimen>
+
+    <dimen name="pop_btn_margin_bottom">93dp</dimen>
+    <dimen name="pop_btn_margin_lr">127dp</dimen>
 
 </resources>
