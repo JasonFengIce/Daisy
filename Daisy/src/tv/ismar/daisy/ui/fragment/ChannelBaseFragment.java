@@ -83,6 +83,7 @@ public class ChannelBaseFragment extends Fragment {
             String channel = "";
             String type;
             int pk;
+            float price =0;
             int position = -1;
             if (view.getTag() instanceof Poster) {
                 Poster new_name = (Poster) view.getTag();
@@ -90,6 +91,7 @@ public class ChannelBaseFragment extends Fragment {
                 url = new_name.getUrl();
                 title = new_name.getTitle();
                 mode_name = new_name.getModel_name();
+                price = new_name.getPrice();
             } else if (view.getTag(R.drawable.launcher_selector) instanceof Carousel) {
                 Carousel new_name = (Carousel) view
                         .getTag(R.drawable.launcher_selector);
@@ -97,6 +99,7 @@ public class ChannelBaseFragment extends Fragment {
                 url = new_name.getUrl();
                 title = new_name.getTitle();
                 mode_name = new_name.getModel_name();
+                price = new_name.getPrice();
             }
             type = mode_name;
             Intent intent = new Intent();
@@ -120,7 +123,7 @@ public class ChannelBaseFragment extends Fragment {
                     //DaisyUtils.gotoSpecialPage(mContext,contentMode,url);
 
 
-                    if ("variety".equals(contentMode) || "entertainment".equals(contentMode)) {
+                    if (("variety".equals(contentMode) || "entertainment".equals(contentMode)) && price <=0) {
                         channel = "娱乐综艺";
                         intent.setAction("tv.ismar.daisy.EntertainmentItem");
                         intent.putExtra("title", "娱乐综艺");

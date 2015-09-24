@@ -36,8 +36,16 @@ public class HomePagerEntity {
         private String model_name;
         private String content_model;
         private int corner;
+        private float price;
+        public float getPrice() {
+			return price;
+		}
 
-        public int getCorner() {
+		public void setPrice(float price) {
+			this.price = price;
+		}
+
+		public int getCorner() {
 			return corner;
 		}
 
@@ -129,7 +137,16 @@ public class HomePagerEntity {
         private String custom_image;
         private String content_model;
         private int corner;
-        public int getCorner() {
+        private float price;
+        public float getPrice() {
+			return price;
+		}
+
+		public void setPrice(float price) {
+			this.price = price;
+		}
+
+		public int getCorner() {
 			return corner;
 		}
 
