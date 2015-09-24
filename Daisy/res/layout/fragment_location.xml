@@ -1,137 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:focusable="true"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:orientation="vertical">
 
 
     <LinearLayout
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/location_fragment_current_position_height">
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/location_fragment_current_position_height"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <TextView
-                android:textColor="@color/white"
-                android:id="@+id/currentPosition_title"
-                android:text="@string/location_currentPosition_title"
-                android:textSize="@dimen/locationFragment_h2_textSize"
-                android:layout_marginLeft="@dimen/locationFragment_currentPositionTitle_marginLeft"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            android:id="@+id/currentPosition_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/locationFragment_currentPositionTitle_marginLeft"
+            android:text="@string/location_currentPosition_title"
+            android:textColor="@color/white"
+            android:textSize="@dimen/locationFragment_h2_textSize" />
 
         <TextView
-                android:textColor="@color/white"
-                android:id="@+id/currentPosition"
-                android:textSize="@dimen/locationFragment_h1_textSize"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            android:id="@+id/currentPosition"
+            android:layout_width="@dimen/location_selected_city_text_width"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="@dimen/locationFragment_h1_textSize" />
 
         <TextView
-                android:visibility="invisible"
-                android:textColor="@color/white"
-                android:id="@+id/selectedPosition_title"
-                android:textSize="@dimen/locationFragment_h2_textSize"
-                android:text="@string/location_selectedPosition_title"
-                android:layout_marginLeft="@dimen/locationFragment_selectedPositionTitle_marginLeft"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            android:id="@+id/selectedPosition_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/locationFragment_selectedPositionTitle_marginLeft"
+            android:text="@string/location_selectedPosition_title"
+            android:textColor="@color/white"
+            android:textSize="@dimen/locationFragment_h2_textSize"
+            android:visibility="invisible" />
 
         <TextView
-                android:visibility="invisible"
-                android:textColor="@color/white"
-                android:id="@+id/selectedPosition"
-                android:textSize="@dimen/locationFragment_h1_textSize"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            android:id="@+id/selectedPosition"
+            android:layout_width="@dimen/location_selected_city_text_width"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="@dimen/locationFragment_h1_textSize"
+            android:visibility="invisible" />
 
         <LinearLayout
-                android:gravity="center"
-                android:orientation="vertical"
-                android:layout_marginLeft="@dimen/locationFragment_todayLayout_marginLeft"
-                android:layout_width="@dimen/locationFragment_weatherLayout_width"
-                android:layout_height="match_parent">
+            android:layout_width="@dimen/locationFragment_weatherLayout_width"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/locationFragment_todayLayout_marginLeft"
+            android:gravity="center"
+            android:orientation="vertical">
 
 
             <ImageView
-                    android:gravity="center"
-                    android:id="@+id/today_weather_icon1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                android:id="@+id/today_weather_icon1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center" />
 
 
             <TextView
-                    android:textSize="@dimen/locationFragment_h4_textSize"
-                    android:textColor="@color/white"
-                    android:gravity="center"
-                    android:id="@+id/today_weather_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
+                android:id="@+id/today_weather_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/locationFragment_h4_textSize" />
 
             <TextView
-                    android:textSize="@dimen/locationFragment_h4_textSize"
-                    android:textColor="@color/white"
-                    android:gravity="center"
-                    android:id="@+id/today_weather_temperature"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
+                android:id="@+id/today_weather_temperature"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/locationFragment_h4_textSize" />
 
             <TextView
-                    android:text="@string/today_text"
-                    android:textSize="@dimen/locationFragment_h4_textSize"
-                    android:textColor="@color/white"
-                    android:gravity="center"
-                    android:id="@+id/today_weather_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
+                android:id="@+id/today_weather_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/today_text"
+                android:textColor="@color/white"
+                android:textSize="@dimen/locationFragment_h4_textSize" />
         </LinearLayout>
 
 
         <LinearLayout
-                android:gravity="center"
-                android:orientation="vertical"
-                android:layout_marginLeft="@dimen/locationFragment_tomorrowLayout_marginLeft"
-                android:layout_width="@dimen/locationFragment_weatherLayout_width"
-                android:layout_height="match_parent">
+            android:layout_width="@dimen/locationFragment_weatherLayout_width"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/locationFragment_tomorrowLayout_marginLeft"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
-                    android:gravity="center"
-                    android:id="@+id/tomorrow_weather_icon1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                android:id="@+id/tomorrow_weather_icon1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center" />
 
 
             <TextView
-                    android:textSize="@dimen/locationFragment_h4_textSize"
-                    android:textColor="@color/white"
-                    android:gravity="center"
-                    android:id="@+id/tomorrow_weather_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
+                android:id="@+id/tomorrow_weather_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/locationFragment_h4_textSize" />
 
             <TextView
-                    android:textSize="@dimen/locationFragment_h4_textSize"
-                    android:textColor="@color/white"
-                    android:gravity="center"
-                    android:id="@+id/tomorrow_weather_temperature"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
+                android:id="@+id/tomorrow_weather_temperature"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/locationFragment_h4_textSize" />
 
             <TextView
-                    android:text="@string/tomorrow_text"
-                    android:textSize="@dimen/locationFragment_h4_textSize"
-                    android:textColor="@color/white"
-                    android:gravity="center"
-                    android:id="@+id/tomorrow_weather_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
+                android:id="@+id/tomorrow_weather_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/tomorrow_text"
+                android:textColor="@color/white"
+                android:textSize="@dimen/locationFragment_h4_textSize" />
 
         </LinearLayout>
 
@@ -139,24 +133,23 @@
     </LinearLayout>
 
     <ImageView
-            android:id="@+id/transfocus"
-            android:src="@drawable/horizontal_divider_line"
-            android:layout_width="@dimen/location_divider_width"
-            android:layout_marginLeft="@dimen/location_divider_margin_left"
-            android:layout_height="1dp"
-            android:focusable="true"/>
+        android:id="@+id/transfocus"
+        android:layout_width="@dimen/location_divider_width"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/location_divider_margin_left"
+        android:focusable="true"
+        android:src="@drawable/horizontal_divider_line" />
 
     <GridView
-            android:descendantFocusability="afterDescendants"
-            android:layout_marginRight="40dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="@dimen/location_grid_margin_top"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:id="@+id/province_list"
-            android:numColumns="10"
-            android:verticalSpacing="60dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-    </GridView>
+        android:id="@+id/province_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="@dimen/location_grid_margin_top"
+        android:descendantFocusability="afterDescendants"
+        android:gravity="center"
+        android:numColumns="10"
+        android:verticalSpacing="60dp"></GridView>
 </LinearLayout>
