@@ -13,9 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.*;
+
 import cn.ismartv.activator.Activator;
+
 import com.activeandroid.query.Select;
 import com.google.gson.Gson;
+
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
@@ -43,7 +46,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private static final String TAG = "UserCenterActivity";
     private static final int MSG_INDICATOR_CHANGE = 0x0001;
     public static final String ACCOUNT_SHARED_PREFS = "account";
-    public static final String ACCOUNT_COMBINE = "combine";
+    //    public static final String ACCOUNT_COMBINE = "combine";
     public static final String LOCATION_FRAGMENT = "location";
     private static final int[] INDICATOR_TEXT_RES_ARRAY = {
             R.string.usercenter_store,
@@ -242,39 +245,39 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     }
 
 
-    public void accountsCombine() {
-        String api = SimpleRestClient.root_url + "/accounts/combine/";
-        long timestamp = System.currentTimeMillis();
-        Activator activator = Activator.getInstance(this);
-        String rsaResult = activator.PayRsaEncode("sn=" + SimpleRestClient.sn_token + "&timestamp=" + timestamp);
-
-        HashMap<String, String> params = new HashMap<String, String>();
-        params.put("device_token", SimpleRestClient.device_token);
-        params.put("access_token", SimpleRestClient.access_token);
-        params.put("timestamp", String.valueOf(timestamp));
-        params.put("sign", rsaResult);
-
-        new IsmartvUrlClient().doRequest(IsmartvUrlClient.Method.POST, api, params, new IsmartvUrlClient.CallBack() {
-            @Override
-            public void onSuccess(String result) {
-                SharedPreferences.Editor editor = accountSharedPrefs.edit();
-                editor.putBoolean(ACCOUNT_COMBINE, true);
-                editor.apply();
-
-                Log.d(TAG, "accountsCombine: " + result);
-            }
-
-            @Override
-            public void onFailed(Exception exception) {
-                SharedPreferences.Editor editor = accountSharedPrefs.edit();
-                editor.putBoolean(ACCOUNT_COMBINE, false);
-                editor.apply();
-                Log.e(TAG, "accountsCombine: " + exception.getMessage());
-            }
-        });
-
-
-    }
+//    public void accountsCombine() {
+//        String api = SimpleRestClient.root_url + "/accounts/combine/";
+//        long timestamp = System.currentTimeMillis();
+//        Activator activator = Activator.getInstance(this);
+//        String rsaResult = activator.PayRsaEncode("sn=" + SimpleRestClient.sn_token + "&timestamp=" + timestamp);
+//
+//        HashMap<String, String> params = new HashMap<String, String>();
+//        params.put("device_token", SimpleRestClient.device_token);
+//        params.put("access_token", SimpleRestClient.access_token);
+//        params.put("timestamp", String.valueOf(timestamp));
+//        params.put("sign", rsaResult);
+//
+//        new IsmartvUrlClient().doRequest(IsmartvUrlClient.Method.POST, api, params, new IsmartvUrlClient.CallBack() {
+//            @Override
+//            public void onSuccess(String result) {
+//                SharedPreferences.Editor editor = accountSharedPrefs.edit();
+//                editor.putBoolean(ACCOUNT_COMBINE, true);
+//                editor.apply();
+//
+//                Log.d(TAG, "accountsCombine: " + result);
+//            }
+//
+//            @Override
+//            public void onFailed(Exception exception) {
+//                SharedPreferences.Editor editor = accountSharedPrefs.edit();
+//                editor.putBoolean(ACCOUNT_COMBINE, false);
+//                editor.apply();
+//                Log.e(TAG, "accountsCombine: " + exception.getMessage());
+//            }
+//        });
+//
+//
+//    }
 
 
     private void showLoginSuccessPopup() {
@@ -289,7 +292,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onClick(View v) {
                 loginPopup.dismiss();
-                showAccountsCombinePopup();
+                switchToUserInfoFragment();
             }
         });
 
@@ -304,8 +307,10 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
         loginPopup.showAtLocation(mContentView, Gravity.CENTER, xOffset, yOffset);
     }
+
     PopupWindow exitPopupWindow;
-    public void showSameAccountPopup(){
+
+    public void showSameAccountPopup() {
         Context context = UserCenterActivity.this;
         View contentView = LayoutInflater.from(context).inflate(R.layout.popup_sameaccount, null);
         exitPopupWindow = new PopupWindow(null, 1211, 416);
@@ -315,7 +320,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         int xOffset = (int) getResources().getDimension(R.dimen.loginfragment_successPop_xOffset);
         int yOffset = (int) getResources().getDimension(R.dimen.loginfragment_successPop_yOffset);
         exitPopupWindow.showAtLocation(mContentView, Gravity.CENTER, xOffset, yOffset);
-        TextView txt_info = (TextView)contentView.findViewById(R.id.txt_info);
+        TextView txt_info = (TextView) contentView.findViewById(R.id.txt_info);
         txt_info.setText("您的账号已经登录!");
         Button confirmExit = (Button) contentView.findViewById(R.id.confirm_exit);
         confirmExit.setOnClickListener(new View.OnClickListener() {
@@ -325,44 +330,44 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             }
         });
     }
-    public void showAccountsCombinePopup() {
-        View popupLayout = LayoutInflater.from(this).inflate(R.layout.popup_account_combine, null);
-        int width = (int) getResources().getDimension(R.dimen.login_pop_width);
-        int height = (int) getResources().getDimension(R.dimen.login_pop_height);
-        combineAccountPop = new PopupWindow(popupLayout, width, height);
-        combineAccountPop.setFocusable(true);
-        combineAccountPop.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent));
-        int xOffset = (int) getResources().getDimension(R.dimen.loginfragment_successPop_xOffset);
-        int yOffset = (int) getResources().getDimension(R.dimen.loginfragment_successPop_yOffset);
-        combineAccountPop.showAtLocation(mContentView, Gravity.CENTER, xOffset, yOffset);
-
-        Button confirm = (Button) popupLayout.findViewById(R.id.confirm_account_combine);
-        Button cancel = (Button) popupLayout.findViewById(R.id.cancel_account_combine);
-
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                accountsCombine();
-                combineAccountPop.dismiss();
-                switchToUserInfoFragment();
-
-            }
-        });
-
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences.Editor editor = accountSharedPrefs.edit();
-                editor.putBoolean(ACCOUNT_COMBINE, false);
-                editor.apply();
-
-                combineAccountPop.dismiss();
-                switchToUserInfoFragment();
-            }
-        });
-
-
-    }
+//    public void showAccountsCombinePopup() {
+//        View popupLayout = LayoutInflater.from(this).inflate(R.layout.popup_account_combine, null);
+//        int width = (int) getResources().getDimension(R.dimen.login_pop_width);
+//        int height = (int) getResources().getDimension(R.dimen.login_pop_height);
+//        combineAccountPop = new PopupWindow(popupLayout, width, height);
+//        combineAccountPop.setFocusable(true);
+//        combineAccountPop.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent));
+//        int xOffset = (int) getResources().getDimension(R.dimen.loginfragment_successPop_xOffset);
+//        int yOffset = (int) getResources().getDimension(R.dimen.loginfragment_successPop_yOffset);
+//        combineAccountPop.showAtLocation(mContentView, Gravity.CENTER, xOffset, yOffset);
+//
+//        Button confirm = (Button) popupLayout.findViewById(R.id.confirm_account_combine);
+//        Button cancel = (Button) popupLayout.findViewById(R.id.cancel_account_combine);
+//
+//        confirm.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                accountsCombine();
+//                combineAccountPop.dismiss();
+//                switchToUserInfoFragment();
+//
+//            }
+//        });
+//
+//        cancel.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                SharedPreferences.Editor editor = accountSharedPrefs.edit();
+//                editor.putBoolean(ACCOUNT_COMBINE, false);
+//                editor.apply();
+//
+//                combineAccountPop.dismiss();
+//                switchToUserInfoFragment();
+//            }
+//        });
+//
+//
+//    }
 
     @Override
     public void onClick(View v) {
