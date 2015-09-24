@@ -389,8 +389,11 @@ public class PlayerActivity extends VodMenuAction {
 								R.style.UserinfoDialog, element.getMedia_url(),element.getTitle(),element.getMedia_id());
 
 						adimageDialog.getWindow().clearFlags(
-								WindowManager.LayoutParams.FLAG_DIM_BEHIND);;
+								WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+						try{
 						adimageDialog.show();
+						}catch (android.view.WindowManager.BadTokenException e) {
+						}
 						//paths = null;
 						return;
 					}
