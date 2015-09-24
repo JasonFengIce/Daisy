@@ -39,7 +39,6 @@
         android:id="@+id/drama_zgridview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        sakura:listSelector="@android:color/transparent"
         sakura:numColumns="10"
         sakura:verticalSpace="@dimen/drama_gridview_verticalspacing"
         android:scrollbars="vertical"
