@@ -779,7 +779,7 @@ private String authToken;
         SimpleRestClient.access_token = authToken;
         GetFavoriteByNet();
         getHistoryByNet();
-//        urlHandler.sendEmptyMessage(LOGIN_SUCESS);
+        urlHandler.sendEmptyMessage(LOGIN_SUCESS);
 //        AccountAboutDialog dialog = new AccountAboutDialog(
 //                getContext(),
 //                R.style.UserinfoDialog);
@@ -804,7 +804,7 @@ private String authToken;
 
     @Override
     public void onSameAccountListener() {
-        Toast.makeText(getContext(), "輸入相同賬號!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "输入相同账号!", Toast.LENGTH_SHORT).show();
     }
 
     public interface OrderResultListener {
