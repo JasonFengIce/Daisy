@@ -151,8 +151,8 @@
     <dimen name="gridview_item_expense_txt_H">40dip</dimen>
     <dimen name="gridview_item_expense_txt_size">20sp</dimen>
     <!-- popup_2btn -->
-    <dimen name="popup_dialog_width">740dip</dimen>
-    <dimen name="popup_dialog_height">341dip</dimen>
+    <dimen name="popup_dialog_width">1211dip</dimen>
+    <dimen name="popup_dialog_height">416dip</dimen>
     <dimen name="popup_dialog_layout_PT">20dip</dimen>
     <dimen name="popup_dialog_layout_PB">20dip</dimen>
     <dimen name="popup_dialog_layout_PL">23dip</dimen>
@@ -659,7 +659,7 @@
     <dimen name="launcher_channel_img_height">80dp</dimen>
     <dimen name="launcher_channel_img_width">80dp</dimen>
     <dimen name="launcher_channel_title_height">80dp</dimen>
-    <dimen name="launcher_exit_button_width">250dp</dimen>
+    <dimen name="launcher_exit_button_width">298dp</dimen>
 
 
     <!-- recommend -->
