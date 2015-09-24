@@ -722,7 +722,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private void showUpdatePopup(View view, Bundle bundle) {
         final Context context = this;
         View contentView = LayoutInflater.from(context).inflate(R.layout.popup_update, null);
-        contentView.setBackgroundResource(R.drawable._000000000);
+        contentView.setBackgroundResource(R.drawable.popwindow_bg);
         updatePopupWindow = new PopupWindow(null, 1400, 500);
         updatePopupWindow.setContentView(contentView);
         updatePopupWindow.setFocusable(true);
