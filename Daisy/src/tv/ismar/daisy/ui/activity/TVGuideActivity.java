@@ -512,7 +512,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         }
         scroll = (HGridView) contentView.findViewById(R.id.h_grid_view);
         scroll.setOnScrollListener(this);
-        scroll.setVisibility(View.VISIBLE);
         channelHashMap = new HashMap<String, TextView>();
         final ChannelAdapter imageAdapter = new ChannelAdapter(this, channelList, R.layout.item_channel);
 //        imageAdapter.setOnClickCallback(new ChannelAdapter.OnClickCallback() {
@@ -526,6 +525,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         imageAdapter.setMap(channelHashMap);
         imageAdapter.setList((ArrayList<ChannelEntity>) channelList);
         imageAdapter.setOnClickListener(channelClickListener);
+        scroll.setVisibility(View.VISIBLE);
         scroll.setFocusable(true);
         scroll.requestFocus();
         //scroll.mFocusListener = mFocusListener;
