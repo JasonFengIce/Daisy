@@ -811,7 +811,7 @@ private String authToken;
 
     @Override
     public void onCancelLogin() {
-        
+
     }
 
     public interface OrderResultListener {

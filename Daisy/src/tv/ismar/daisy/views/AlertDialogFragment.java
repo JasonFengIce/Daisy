@@ -25,7 +25,7 @@ public class AlertDialogFragment extends DialogFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setStyle(R.style.MyDialog, android.R.style.Theme_Dialog);
+		//setStyle(R.style.MyDialog, android.R.style.Theme_Dialog);
 	}
 	
 	@Override
