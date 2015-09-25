@@ -9,12 +9,11 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+
+import com.google.gson.Gson;
+
 import tv.ismar.daisy.AppConstant;
-import tv.ismar.daisy.core.client.ClientApi;
+import tv.ismar.daisy.core.client.IsmartvHttpClient;
 import tv.ismar.daisy.utils.HardwareUtils;
 
 import java.io.*;
@@ -54,15 +53,12 @@ public class AppUpdateUtils {
     public void checkUpdate(String host) {
         this.appUpdateHost = host;
         path = mContext.getFilesDir().getAbsolutePath();
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setLogLevel(AppConstant.LOG_LEVEL)
-                .setEndpoint(host)
-                .build();
 
-        ClientApi.AppVersionInfo client = restAdapter.create(ClientApi.AppVersionInfo.class);
-        client.excute(new Callback<VersionInfoEntity>() {
+        String api = appUpdateHost + "/api/upgrade/application/ismartvod/";
+        new IsmartvHttpClient().doRequest(IsmartvHttpClient.Method.GET, api, new IsmartvHttpClient.CallBack() {
             @Override
-            public void success(VersionInfoEntity versionInfoEntity, Response response) {
+            public void onSuccess(String result) {
+                VersionInfoEntity versionInfoEntity = new Gson().fromJson(result, VersionInfoEntity.class);
                 Log.i(TAG, "server version code ---> " + versionInfoEntity.getVersion());
                 File apkFile = new File(path, SELF_APP_NAME);
                 PackageInfo packageInfo = null;
@@ -83,8 +79,8 @@ public class AppUpdateUtils {
                         int apkVersionCode = getApkVersionCode(mContext, apkFile.getAbsolutePath());
                         int serverVersionCode = Integer.parseInt(versionInfoEntity.getVersion());
 
-                        Log.i(TAG,"download apk version code: "  + apkVersionCode);
-                        Log.i(TAG,"server apk version code: "  + serverVersionCode);
+                        Log.i(TAG, "download apk version code: " + apkVersionCode);
+                        Log.i(TAG, "server apk version code: " + serverVersionCode);
 
                         if (serverMd5Code.equalsIgnoreCase(localMd5Code) && !currentActivityName.equals(PLAYER_ACTIVITY_NAME)
                                 && apkVersionCode == serverVersionCode) {
@@ -116,10 +112,11 @@ public class AppUpdateUtils {
             }
 
             @Override
-            public void failure(RetrofitError retrofitError) {
-                Log.e(TAG, "checkUpdate failed !!!");
+            public void onFailed(Exception exception) {
+
             }
         });
+
     }
 
     private void downloadAPK(final Context mContext, final String downloadUrl) {

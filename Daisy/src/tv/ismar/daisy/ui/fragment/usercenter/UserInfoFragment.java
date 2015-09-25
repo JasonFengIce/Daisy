@@ -66,6 +66,8 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
     private View snNumberLayout;
     private AccountBalanceEntity accountBalanceEntity;
 
+    private View currentFocusView;
+
 
     SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override

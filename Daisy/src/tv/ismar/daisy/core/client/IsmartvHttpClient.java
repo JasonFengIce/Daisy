@@ -74,6 +74,14 @@ public class IsmartvHttpClient extends Thread {
         start();
     }
 
+    public void doRequest(Method method, String api, CallBack callback) {
+        mParams = "";
+        mUrl = api;
+        mCallback = callback;
+        this.method = method;
+        start();
+    }
+
 
     private Handler messageHandler = new Handler() {
         @Override
