@@ -7,16 +7,16 @@
    <Button 
     android:id="@+id/down_btn"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/search_main_autocomplete_H"
     android:background="@drawable/vod_arrow_down_selector"
     android:layout_alignParentBottom="true"
-    android:layout_centerInParent="true"/>
+    android:layout_centerHorizontal="true"/>
     <Button 
     android:id="@+id/up_btn"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/search_main_autocomplete_H"
     android:background="@drawable/vod_arrow_up_selector"
-    android:layout_centerInParent="true"
+    android:layout_centerHorizontal="true"
     android:layout_alignParentTop="true"
     android:visibility="invisible"/>
 <!-- <GridView  -->
