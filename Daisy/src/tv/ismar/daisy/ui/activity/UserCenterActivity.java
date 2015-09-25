@@ -160,7 +160,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         verticalDividerView = (ImageView) findViewById(R.id.vertical_divider_line);
         verticalDividerView.setTag(R.id.vertical_divider_line);
         verticalDividerView.setOnFocusChangeListener(this);
-        user_center_shadow_view= (ImageView)findViewById(R.id.user_center_shadow_view);
+        user_center_shadow_view = (ImageView) findViewById(R.id.user_center_shadow_view);
     }
 
 
@@ -251,10 +251,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         verticalDividerView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                changeViewState(indicatorView.get(1), ViewState.Overlay);
-                mIndicatorType = IndicatorType.USERINFO;
-                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, new UserInfoFragment()).commit();
-                currentFragmentIndictor = R.string.usercenter_userinfo;
+                indicatorView.get(1).requestFocus();
             }
         }, 1000);
 
@@ -306,12 +303,12 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         user_center_shadow_view.setVisibility(View.VISIBLE);
         loginPopup = new MessagePopWindow(this);
         loginPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
-			
-			@Override
-			public void onDismiss() {
-				user_center_shadow_view.setVisibility(View.GONE);
-			}
-		});
+
+            @Override
+            public void onDismiss() {
+                user_center_shadow_view.setVisibility(View.GONE);
+            }
+        });
         loginPopup.setFirstMessage(String.format(msg, phoneNumber));
         loginPopup.setSecondMessage(R.string.login_success);
         loginPopup.showAtLocation(mContentView, Gravity.CENTER, xOffset, yOffset, new MessagePopWindow.ConfirmListener() {

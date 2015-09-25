@@ -51,6 +51,7 @@
             android:textSize="@dimen/pay_top_panel_top_login_textsieze" />
 
         <TextView
+            android:layout_alignLeft="@id/top_login"
             android:id="@+id/warntitle"
             android:layout_centerHorizontal="true"
             android:layout_width="470dp"
