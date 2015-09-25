@@ -247,7 +247,17 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onCancelLogin() {
+        verticalDividerView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                changeViewState(indicatorView.get(1), ViewState.Overlay);
+                mIndicatorType = IndicatorType.USERINFO;
+                getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, new UserInfoFragment()).commit();
+                currentFragmentIndictor = R.string.usercenter_userinfo;
+            }
+        }, 1000);
 
+        clearFocus(indicatorView.get(1), indicatorView);
     }
 
 
