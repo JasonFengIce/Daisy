@@ -809,6 +809,11 @@ private String authToken;
         Toast.makeText(getContext(), "输入相同账号!", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onCancelLogin() {
+        
+    }
+
     public interface OrderResultListener {
 		public void payResult(boolean result);
 	}
