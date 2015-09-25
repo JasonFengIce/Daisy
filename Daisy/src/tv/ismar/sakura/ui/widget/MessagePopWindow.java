@@ -56,6 +56,10 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
     }
 
 
+    public void setBackgroundRes(int resId){
+        setBackgroundDrawable(mContext.getResources().getDrawable(resId));
+    }
+
     public void setFirstMessage(int messageId) {
         firstMessage.setText(messageId);
     }

@@ -250,6 +250,7 @@ public class FeedbackFragment extends Fragment implements RadioGroup.OnCheckedCh
         submitButton.clearFocus();
 
         final MessagePopWindow popupWindow = new MessagePopWindow(mContext);
+        popupWindow.setBackgroundRes(R.drawable.sakura_pop_bg);
         popupWindow.setFirstMessage("是否提交反馈信息?");
         popupWindow.showAtLocation(getView(), Gravity.CENTER, 0, 0, new MessagePopWindow.ConfirmListener() {
                     @Override

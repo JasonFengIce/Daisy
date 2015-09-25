@@ -407,6 +407,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
      */
     private void showSelectNodePop(final int cndId) {
         selectNodePup = new MessagePopWindow(mContext);
+        selectNodePup.setBackgroundRes(R.drawable.sakura_pop_bg);
         selectNodePup.setFirstMessage(R.string.are_you_sure_selecte);
         selectNodePup.showAtLocation(nodeListView, Gravity.CENTER, 0, 0, new MessagePopWindow.ConfirmListener() {
                     @Override
@@ -490,6 +491,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         }
 
         cdnTestCompletedPop = new MessagePopWindow(mContext);
+        cdnTestCompletedPop.setBackgroundRes(R.drawable.sakura_pop_bg);
         cdnTestCompletedPop.setFirstMessage(titleRes);
         cdnTestCompletedPop.showAtLocation(nodeListView, Gravity.CENTER, 0, 0, new MessagePopWindow.ConfirmListener() {
                     @Override
