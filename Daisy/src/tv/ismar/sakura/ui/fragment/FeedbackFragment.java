@@ -152,8 +152,6 @@ public class FeedbackFragment extends Fragment implements RadioGroup.OnCheckedCh
 
 
     private void fetchFeedback(String sn, String top) {
-        sn = sn + "dasf";
-
         String api = "http://iris.tvxio.com/customer/getfeedback/";
 
         HashMap<String, String> params = new HashMap<String, String>();
