@@ -183,6 +183,8 @@
                 android:layout_toRightOf="@id/privilege_txt">
 
                 <LinearLayout
+                    android:focusable="true"
+                    android:descendantFocusability="afterDescendants"
                     android:id="@+id/privilegelist"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"

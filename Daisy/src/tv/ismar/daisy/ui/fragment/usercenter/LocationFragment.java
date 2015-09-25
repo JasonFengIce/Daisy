@@ -313,6 +313,7 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
                 return;
             }
             focusItem = v;
+
             textView.setTextColor(mContext.getResources().getColor(R.color.location_text_focus));
             textView.setTextSize(mContext.getResources().getDimension(R.dimen.h1_text_size) / rate);
 

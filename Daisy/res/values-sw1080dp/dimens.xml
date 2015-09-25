@@ -1108,7 +1108,7 @@
     <dimen name="locationFragment_provinceGrid_verticalSpacing">65dp</dimen>
     <dimen name="locationFragment_provinceGrid_marginLR">30dp</dimen>
     <dimen name="locationFragment_areaGridItem_minHeght">65dp</dimen>
-    <dimen name="locationFragment_currentPositionTitle_marginLeft">31dp</dimen>
+    <dimen name="locationFragment_currentPositionTitle_marginLeft">51dp</dimen>
     <dimen name="locationFragment_selectedPositionTitle_marginLeft">100dp</dimen>
     <dimen name="locationFragment_todayLayout_marginLeft">80dp</dimen>
     <dimen name="locationFragment_tomorrowLayout_marginLeft">70dp</dimen>
