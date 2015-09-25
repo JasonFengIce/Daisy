@@ -121,6 +121,13 @@ public class DramaListActivity extends BaseActivity implements
 			public void onScroll(ZGridView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
 				// TODO Auto-generated method stub
+                if(firstVisibleItem==0){
+                    View convertView = view.getChildAt(0);
+                    if(convertView!=null){
+                        Button btn = (Button) convertView.findViewById(R.id.btn_count);
+                        btn.requestFocus();
+                    }
+                }
 				 if(visibleItemCount>=totalItemCount){
 					 down_btn.setVisibility(View.INVISIBLE);
 				 }
