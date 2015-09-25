@@ -13,7 +13,7 @@
     <dimen name="item_detail_attribute_top">18dip</dimen>
     <dimen name="item_detail_intro_width">1172dip</dimen>
     <dimen name="item_detail_intro_height">273dip</dimen>
-    <dimen name="item_detail_intro_bottom">70dp</dimen>
+    <dimen name="item_detail_intro_bottom">1dp</dimen>
     <dimen name="item_detail_intro_marginleft">68dip</dimen>
     <dimen name="item_detail_intro_paddingleft">13dip</dimen>
     <dimen name="item_detail_intro_paddingright">15dip</dimen>
