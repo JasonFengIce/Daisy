@@ -117,6 +117,7 @@ public class BaseActivity extends FragmentActivity {
         void onLoginFailed();
         void oncallWGQueryQQUserInfo(String info);
         void onSameAccountListener();
+        void onCancelLogin();
     }
     OnLoginCallback loginCallback;
     public void setLoginCallback(OnLoginCallback loginCallback) {
@@ -351,6 +352,9 @@ public class BaseActivity extends FragmentActivity {
         @Override
         public void onCancel() {
             Log.i("zhangjiqiangfuck","onCancel");
+            if (loginCallback != null) {
+                loginCallback.onCancelLogin();
+            }
         }
     }
 

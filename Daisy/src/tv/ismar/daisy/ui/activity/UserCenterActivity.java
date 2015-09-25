@@ -245,6 +245,11 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         showSameAccountPopup();
     }
 
+    @Override
+    public void onCancelLogin() {
+
+    }
+
 
 //    public void accountsCombine() {
 //        String api = SimpleRestClient.root_url + "/accounts/combine/";

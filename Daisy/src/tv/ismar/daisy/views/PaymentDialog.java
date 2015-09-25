@@ -95,6 +95,7 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
 	private boolean flag = true;
 	private SimpleRestClient mSimpleRestClient;
 	private Item[] mHistoriesByNet;
+	private ImageView payment_shadow_view;
 	public PaymentDialog(Context context) {
 		super(context);
 	}
@@ -215,7 +216,7 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
 		recharge_error_msg = (TextView) findViewById(R.id.recharge_error_msg);
 		welocome_tip = (TextView) findViewById(R.id.welocome_tip);
 		card_balance_title_label = (TextView) findViewById(R.id.card_balance_title_label);
-
+		payment_shadow_view = (ImageView)findViewById(R.id.payment_shadow_view);
 		shiyuncard_input = (EditText) findViewById(R.id.shiyuncard_input);
 		if (SimpleRestClient.mobile_number != null
 				&& SimpleRestClient.mobile_number.length() > 0) {
@@ -808,6 +809,11 @@ private String authToken;
         Toast.makeText(getContext(), "输入相同账号!", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onCancelLogin() {
+        
+    }
+
     public interface OrderResultListener {
 		public void payResult(boolean result);
 	}
@@ -869,9 +875,6 @@ private String authToken;
 					long timestamp = System.currentTimeMillis();
 					Activator activator = Activator.getInstance(getContext());
 					String rsaResult = activator.PayRsaEncode("sn="
-							+ SimpleRestClient.sn_token + "&timestamp="
-							+ timestamp);
-					Log.v("aaaa", "sn="
 							+ SimpleRestClient.sn_token + "&timestamp="
 							+ timestamp);
 					String params = "device_token="
@@ -1067,7 +1070,7 @@ private String authToken;
         int xOffset = (int) mycontext.getResources().getDimension(R.dimen.loginfragment_successPop_xOffset);
         int yOffset = (int) mycontext.getResources().getDimension(R.dimen.loginfragment_successPop_yOffset);
         String msg = mycontext.getText(R.string.login_success_name).toString();
-
+        payment_shadow_view.setVisibility(View.VISIBLE);
         loginPopup = new MessagePopWindow(mycontext);
         loginPopup.setFirstMessage(String.format(msg, SimpleRestClient.mobile_number));
         loginPopup.setSecondMessage(R.string.login_success);
@@ -1075,6 +1078,7 @@ private String authToken;
                     @Override
                     public void confirmClick(View view) {
                         loginPopup.dismiss();
+                        payment_shadow_view.setVisibility(View.GONE);
                     }
                 },
                 null
