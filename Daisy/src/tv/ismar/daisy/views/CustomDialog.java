@@ -19,7 +19,7 @@ public class CustomDialog extends Dialog {
 	}
 
 	public CustomDialog(Context context, int theme) {
-		super(context);
+		super(context,theme);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -74,6 +74,7 @@ public class CustomDialog extends Dialog {
 
 			View layout = inflater.inflate(R.layout.popup_neterror_message, null);
 			dialog.addContentView(layout, new RelativeLayout.LayoutParams(877,305));
+
 			if(mPositiveButtonText!=null){
 				((Button)layout.findViewById(R.id.positive_button)).setText(mPositiveButtonText);
 			}
