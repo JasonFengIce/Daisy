@@ -125,6 +125,23 @@ public class IsmartvUrlClient extends Thread {
     }
 
 
+    public void doNormalRequest(Method method, String api, HashMap<String, String> hashMap, CallBack callback) {
+        Iterator<Map.Entry<String, String>> iterator = hashMap.entrySet().iterator();
+        StringBuffer stringBuffer = new StringBuffer();
+        while (iterator.hasNext()) {
+            Map.Entry<String, String> entry = iterator.next();
+            String key = entry.getKey();
+            String value = entry.getValue();
+            stringBuffer.append(key).append("=").append(value).append("&");
+        }
+        stringBuffer.deleteCharAt(stringBuffer.length() - 1);
+        this.params = stringBuffer.toString();
+        this.url = api;
+        this.callback = callback;
+        this.method = method;
+        start();
+    }
+
     public void doRequest(String api, CallBack callback) {
         HashMap<String, String> hashMap = new HashMap<String, String>();
         hashMap.put("device_token", SimpleRestClient.device_token);
@@ -144,6 +161,9 @@ public class IsmartvUrlClient extends Thread {
         this.method = Method.GET;
         start();
     }
+
+
+
 
     public void doAdvertisementRequest(Method method, String api, HashMap<String, String> hashMap, CallBack callback) {
 

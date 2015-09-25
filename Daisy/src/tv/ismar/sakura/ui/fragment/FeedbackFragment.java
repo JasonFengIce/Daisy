@@ -12,12 +12,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.http.GET;
+import retrofit.http.Query;
 import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.sakura.core.FeedbackProblem;
 import tv.ismar.sakura.core.SakuraClientAPI;
@@ -31,7 +37,9 @@ import tv.ismar.sakura.ui.widget.MessagePopWindow;
 import tv.ismar.sakura.ui.widget.MessageSubmitButton;
 import tv.ismar.sakura.ui.widget.SakuraEditText;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Handler;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -144,26 +152,41 @@ public class FeedbackFragment extends Fragment implements RadioGroup.OnCheckedCh
 
 
     private void fetchFeedback(String sn, String top) {
-        SakuraClientAPI.Feedback client = restAdapter_IRIS_TVXIO.create(SakuraClientAPI.Feedback.class);
-        client.excute(sn, top, new Callback<ChatMsgEntity>() {
+        sn = sn + "dasf";
+
+        String api = "http://iris.tvxio.com/customer/getfeedback/";
+
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("sn", sn);
+        params.put("topn", top);
+        new IsmartvUrlClient().doNormalRequest(IsmartvUrlClient.Method.GET, api, params, new IsmartvUrlClient.CallBack() {
             @Override
-            public void success(ChatMsgEntity chatMsgEntities, Response response) {
-                if (chatMsgEntities.getCount() == 0) {
+            public void onSuccess(String result) {
+
+                try {
+                    ChatMsgEntity chatMsgEntity = new Gson().fromJson(result, ChatMsgEntity.class);
+
+                    if (chatMsgEntity.getCount() == 0) {
+                        arrowDown.setVisibility(View.INVISIBLE);
+                        arrowUp.setVisibility(View.INVISIBLE);
+                    } else {
+                        arrowDown.setVisibility(View.VISIBLE);
+                        arrowUp.setVisibility(View.VISIBLE);
+                    }
+                    feedBackListView.setAdapter(new FeedbackListAdapter(getActivity(), chatMsgEntity.getData()));
+                } catch (JsonSyntaxException e) {
                     arrowDown.setVisibility(View.INVISIBLE);
                     arrowUp.setVisibility(View.INVISIBLE);
-                } else {
-                    arrowDown.setVisibility(View.VISIBLE);
-                    arrowUp.setVisibility(View.VISIBLE);
                 }
-                feedBackListView.setAdapter(new FeedbackListAdapter(getActivity(), chatMsgEntities.getData()));
             }
 
             @Override
-            public void failure(RetrofitError retrofitError) {
-//                Log.e(TAG, "fetchFeedback: " + retrofitError.getMessage());
+            public void onFailed(Exception exception) {
+
             }
         });
     }
+
 
     private void uploadFeedback() {
 
