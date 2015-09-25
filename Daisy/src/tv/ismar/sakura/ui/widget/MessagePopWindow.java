@@ -36,8 +36,8 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
     public MessagePopWindow(Context context) {
         mContext = context;
         rate = DaisyUtils.getVodApplication(context).getRate(context);
-        int width = (int) (context.getResources().getDimension(R.dimen.pop_width) / rate);
-        int height = (int) (context.getResources().getDimension(R.dimen.pop_height) / rate);
+        int width = (int) (context.getResources().getDimension(R.dimen.pop_width));
+        int height = (int) (context.getResources().getDimension(R.dimen.pop_height));
 
         setWidth(width);
         setHeight(height);

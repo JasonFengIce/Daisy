@@ -25,7 +25,7 @@
     <dimen name="item_detail_previewpanel_width">328.67dip</dimen>
     <dimen name="item_detail_previewpanel_height">260.00dip</dimen>
     <dimen name="item_detail_previewpanel_marginright">77.33dip</dimen>
-    <dimen name="item_detail_previewpanel_margintop">106.00dip</dimen>
+    <dimen name="item_detail_previewpanel_margintop">39.33dip</dimen>
     <dimen name="item_detail_previewimgview_width">320.00dip</dimen>
     <dimen name="item_detail_previewimgview_height">180.67dip</dimen>
     <dimen name="item_detail_previewimgview_marginright">3.33dip</dimen>
@@ -53,7 +53,7 @@
     <dimen name="item_detail_btn_favorite_paddingtop">2.67dip</dimen>
     <dimen name="item_detail_right_container_width">426.00dip</dimen>
     <dimen name="item_detail_related_video_label_left">26.67dip</dimen>
-    <dimen name="item_detail_related_video_label_top">75.33dip</dimen>
+    <dimen name="item_detail_related_video_label_top">8.67dip</dimen>
     <dimen name="item_detail_related_video_label_topnew">75.33dip</dimen>
     <dimen name="item_detail_related_video_label_textsize">26.67sp</dimen>
     <dimen name="item_detail_related_divider_width">372.00dip</dimen>
@@ -151,8 +151,8 @@
     <dimen name="gridview_item_expense_txt_H">26.67dip</dimen>
     <dimen name="gridview_item_expense_txt_size">13.33sp</dimen>
     <!-- popup_2btn -->
-    <dimen name="popup_dialog_width">537.33dip</dimen>
-    <dimen name="popup_dialog_height">296.00dip</dimen>
+    <dimen name="popup_dialog_width">584.67dip</dimen>
+    <dimen name="popup_dialog_height">203.33dip</dimen>
     <dimen name="popup_dialog_layout_PT">13.33dip</dimen>
     <dimen name="popup_dialog_layout_PB">13.33dip</dimen>
     <dimen name="popup_dialog_layout_PL">15.33dip</dimen>
@@ -246,7 +246,7 @@
     <dimen name="vod_player_qualitytext_margintop">8.00dip</dimen>
 
     <!-- play_finished -->
-    <dimen name="play_finished_gridview_Padding">5.33dip</dimen>
+    <dimen name="play_finished_gridview_Padding">4.20dip</dimen>
     <dimen name="play_finished_leftlayout_PL">40.00dip</dimen>
     <dimen name="play_finished_leftlayout_W">502.00dip</dimen>
     <dimen name="play_finished_leftlayout_PR">66.67dip</dimen>
@@ -454,7 +454,7 @@
     <dimen name="ZGridView_related_selectorRightPadding">15.87dip</dimen>
     <dimen name="ZGridView_related_selectorBottomPadding">-40.00dip</dimen>
     <dimen name="ZGridView_played_selectorLeftPadding">15.33dip</dimen>
-    <dimen name="ZGridView_played_selectorTopPadding">12.67dip</dimen>
+    <dimen name="ZGridView_played_selectorTopPadding">14.67dip</dimen>
     <dimen name="ZGridView_played_selectorRightPadding">14.67dip</dimen>
     <dimen name="ZGridView_played_selectorBottomPadding">-15.33dip</dimen>
     <dimen name="ZGridView_search_selectorLeftPadding">4.67dip</dimen>
@@ -659,7 +659,7 @@
     <dimen name="launcher_channel_img_height">53.33dp</dimen>
     <dimen name="launcher_channel_img_width">53.33dp</dimen>
     <dimen name="launcher_channel_title_height">53.33dp</dimen>
-    <dimen name="launcher_exit_button_width">166.67dp</dimen>
+    <dimen name="launcher_exit_button_width">198.67dp</dimen>
 
     <!-- recommend -->
     <dimen name="recommend_item__W">153.33dip</dimen>
@@ -744,7 +744,7 @@
     <dimen name="guide_fragment_poser_margin_lf">16.67dp</dimen>
 
     <!-- user center fragment -->
-    <dimen name="usercenter_fragment_indicator_layout_width">283.33dp</dimen>
+    <dimen name="usercenter_fragment_indicator_layout_width">276.67dp</dimen>
     <dimen name="usercenter_fragment_indicator_item_width">216.67dp</dimen>
     <dimen name="usercenter_fragment_indicator_item_height">49.33dp</dimen>
     <dimen name="usercenter_fragment_indicator_item_margin_top">13.33dp</dimen>
@@ -777,8 +777,8 @@
     <dimen name="login_pop_msg_margin_top">66.67dp</dimen>
     <dimen name="login_pop_button_width">200.00dp</dimen>
     <dimen name="login_pop_button_height">46.67dp</dimen>
-    <dimen name="login_pop_width">800.00dp</dimen>
-    <dimen name="login_pop_height">333.33dp</dimen>
+    <dimen name="login_pop_width">493.33dp</dimen>
+    <dimen name="login_pop_height">227.33dp</dimen>
     <dimen name="user_center_logout_width">53.33dp</dimen>
     <dimen name="user_center_logout_height">26.67dp</dimen>
     <dimen name="account_combine_text_margin_top">40.00dp</dimen>
@@ -1016,7 +1016,6 @@
     <dimen name="usercenter_storefragment_packagelist_selectorBottomPadding">-28.00dip</dimen>
     <dimen name="usercenter_storefragment_packagelist_gridview_P">3.33dip</dimen>
 
-
     <!-- fragment sport -->
     <dimen name="sport_linearLayout_margin_t">20.67dp</dimen>
     <dimen name="sport_linearLayout_margin_l">46.67dp</dimen>
@@ -1108,17 +1107,15 @@
     <dimen name="locationFragment_provinceGrid_marginLR">20.00dp</dimen>
     <dimen name="locationFragment_areaGridItem_minHeght">43.33dp</dimen>
     <dimen name="locationFragment_currentPositionTitle_marginLeft">20.67dp</dimen>
-    <dimen name="locationFragment_selectedPositionTitle_marginLeft">113.33dp</dimen>
-    <dimen name="locationFragment_todayLayout_marginLeft">80.00dp</dimen>
+    <dimen name="locationFragment_selectedPositionTitle_marginLeft">66.67dp</dimen>
+    <dimen name="locationFragment_todayLayout_marginLeft">53.33dp</dimen>
     <dimen name="locationFragment_tomorrowLayout_marginLeft">46.67dp</dimen>
     <dimen name="locatiionFragment_areaPop_height">276.67dp</dimen>
     <dimen name="locationFragment_areaPop_btn_width">156.67dp</dimen>
     <dimen name="locationFragment_areaPop_btn_height">56.67dp</dimen>
     <dimen name="locatoinFragment_areaPop_cancelBtn_marginLeft">56.67dp</dimen>
     <dimen name="locationFragment_areaPop_Btn_marginTop">26.67dp</dimen>
-    <dimen name="locationFragment_weatherLayout_width">146.67dp</dimen>
-
-
+    <dimen name="locationFragment_weatherLayout_width">120.00dp</dimen>
     <dimen name="locationFragment_h1_textSize">32.00sp</dimen>
     <dimen name="locationFragment_h2_textSize">24.00sp</dimen>
     <dimen name="locationFragment_h3_textSize">20.00sp</dimen>
@@ -1217,7 +1214,7 @@
     <dimen name="realte_entertainment_item_related_title_mt">10.00dip</dimen>
     <dimen name="realte_entertainment_item_related_title_textsize">20.00sp</dimen>
 
-    <!-- realte_entertainment_item end-->
+    <!-- realte_entertainment_item end -->
 
     <dimen name="variety_dramalist_layout_mt">294.00dip</dimen>
     <dimen name="variety_dramalist_gridview_hs">82.67dip</dimen>
@@ -1260,15 +1257,29 @@
     <dimen name="pay_person_login_pay_btn_submit_h">50.00dip</dimen>
     <dimen name="pay_person_login_pay_btn_submit_mt">66.67dip</dimen>
     <dimen name="pay_person_login_pay_btn_submit_ml">223.33dip</dimen>
-    <!-- pay_person_login end-->
+    <!-- pay_person_login end -->
+
 
     <!-- history and collect -->
     <dimen name="history_collect_shadow_mt">234.67dip</dimen>
+    <dimen name="sakura_nodefragment_test_complete_pop_width">333.33dp</dimen>
+    <dimen name="sakura_nodefragment_test_complete_pop_height">100.00dp</dimen>
+    <dimen name="sakura_nodefragment_selectnode_pop_width">400.00dp</dimen>
+    <dimen name="sakura_nodefragment_selectnode_pop_height">120.00dp</dimen>
 
-    <dimen name="sakura_nodefragment_test_complete_pop_width">750dp</dimen>
-    <dimen name="sakura_nodefragment_test_complete_pop_height">225dp</dimen>
-
-    <dimen name="sakura_nodefragment_selectnode_pop_width">900dp</dimen>
-    <dimen name="sakura_nodefragment_selectnode_pop_height">270dp</dimen>
+    <!-- pop -->
+    <dimen name="pop_btn_width">120.00dp</dimen>
+    <dimen name="pop_btn_height">36.00dp</dimen>
+    <dimen name="pop_width">584.67dp</dimen>
+    <dimen name="pop_height">203.33dp</dimen>
+    <dimen name="pop_double_line_height">234.00dp</dimen>
+    <dimen name="pop_text_width">460.67dp</dimen>
+    <dimen name="pop_text_height">24.67dp</dimen>
+    <dimen name="pop_first_text_margin_top">32.67dp</dimen>
+    <dimen name="pop_second_text_margin_top">23.33dp</dimen>
+    <dimen name="pop_btn_margin_bottom">36.00dp</dimen>
+    <dimen name="pop_btn_margin_lr">82.00dp</dimen>
+    <dimen name="pop_text_layout_height">73.33dp</dimen>
+    <dimen name="location_selected_city_text_width">133.33dp</dimen>
 
 </resources>

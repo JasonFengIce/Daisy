@@ -1,5 +1,41 @@
 package tv.ismar.daisy.ui.activity;
 
+import static tv.ismar.daisy.AppConstant.KIND;
+import static tv.ismar.daisy.AppConstant.MANUFACTURE;
+import static tv.ismar.daisy.VodApplication.LOCATION_CITY;
+import static tv.ismar.daisy.VodApplication.LOCATION_DISTRICT;
+import static tv.ismar.daisy.VodApplication.LOCATION_PROVINCE;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.sakuratya.horizontal.ui.HGridView;
+
+import tv.ismar.daisy.AppConstant;
+import tv.ismar.daisy.BaseActivity;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.VodApplication;
+import tv.ismar.daisy.adapter.ChannelAdapter;
+import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
+import tv.ismar.daisy.core.service.PosterUpdateService;
+import tv.ismar.daisy.core.update.AppUpdateUtils;
+import tv.ismar.daisy.data.ChannelEntity;
+import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
+import tv.ismar.daisy.ui.Position;
+import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
+import tv.ismar.daisy.ui.fragment.launcher.ChildFragment;
+import tv.ismar.daisy.ui.fragment.launcher.EntertainmentFragment;
+import tv.ismar.daisy.ui.fragment.launcher.FilmFragment;
+import tv.ismar.daisy.ui.fragment.launcher.GuideFragment;
+import tv.ismar.daisy.ui.fragment.launcher.SportFragment;
+import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
+import tv.ismar.sakura.ui.widget.MessagePopWindow;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,48 +60,26 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
-import android.widget.*;
-
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
 
-import com.baidu.location.*;
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.GeofenceClient;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.google.gson.Gson;
-
-import org.apache.commons.lang3.StringUtils;
-import org.sakuratya.horizontal.ui.HGridView;
-
-import tv.ismar.daisy.AppConstant;
-import tv.ismar.daisy.BaseActivity;
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.VodApplication;
-import tv.ismar.daisy.adapter.ChannelAdapter;
-import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.client.IsmartvUrlClient;
-import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
-import tv.ismar.daisy.core.service.PosterUpdateService;
-import tv.ismar.daisy.core.update.AppUpdateUtils;
-import tv.ismar.daisy.data.ChannelEntity;
-import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
-import tv.ismar.daisy.ui.Position;
-import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
-import tv.ismar.daisy.ui.fragment.launcher.*;
-import tv.ismar.daisy.ui.widget.DaisyButton;
-import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
-import tv.ismar.sakura.ui.widget.MessagePopWindow;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import static tv.ismar.daisy.AppConstant.KIND;
-import static tv.ismar.daisy.AppConstant.MANUFACTURE;
-import static tv.ismar.daisy.VodApplication.*;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -115,7 +129,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private int lastchannelindex;
     private boolean rightscroll;
     private LeavePosition leavePosition = LeavePosition.RightBottom;
-
+    private ImageView guide_shadow_view;
     private enum LeavePosition {
         LeftTop,
         LeftBottom,
@@ -368,7 +382,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         // arrow_right.setOnClickListener(arrowViewListener);
         arrow_left.setOnFocusChangeListener(scrollViewListener);
         arrow_right.setOnFocusChangeListener(scrollViewListener);
-
+        guide_shadow_view = (ImageView)findViewById(R.id.guide_shadow_view);
     }
 
     @Override
@@ -817,6 +831,10 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         exitPopupWindow = new MessagePopWindow(this);
 
         exitPopupWindow.setFirstMessage(R.string.exit_prompt);
+//        WindowManager.LayoutParams lp = getWindow().getAttributes();
+//		lp.alpha = 0.5f;
+//		getWindow().setAttributes(lp);
+        guide_shadow_view.setVisibility(View.VISIBLE);
         exitPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0, new MessagePopWindow.ConfirmListener() {
                     @Override
                     public void confirmClick(View view) {
@@ -828,6 +846,10 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                     @Override
                     public void cancelClick(View view) {
                         exitPopupWindow.dismiss();
+//                        WindowManager.LayoutParams lp = getWindow().getAttributes();
+//        				lp.alpha = 1f;
+//        				getWindow().setAttributes(lp);
+                        guide_shadow_view.setVisibility(View.GONE);
                     }
                 }
         );
