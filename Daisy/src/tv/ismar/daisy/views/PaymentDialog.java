@@ -121,6 +121,7 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
 		resizeWindow();
         purchaseCheck();
 
+
 	}
 
 	@Override
