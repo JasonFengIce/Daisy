@@ -585,7 +585,6 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 
 		@Override
 		protected void onPostExecute(Integer result) {
-			
 			if(result== ITEM_OFFLINE) {
 				mCurrentGetItemTask.remove(item.url);
 				showDialog(AlertDialogFragment.ITEM_OFFLINE_DIALOG, null, new Object[]{item.url});

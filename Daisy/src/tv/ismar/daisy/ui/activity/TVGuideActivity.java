@@ -835,6 +835,13 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 //		lp.alpha = 0.5f;
 //		getWindow().setAttributes(lp);
         guide_shadow_view.setVisibility(View.VISIBLE);
+        exitPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+			
+			@Override
+			public void onDismiss() {
+				guide_shadow_view.setVisibility(View.GONE);
+			}
+		});
         exitPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0, new MessagePopWindow.ConfirmListener() {
                     @Override
                     public void confirmClick(View view) {

@@ -77,7 +77,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private String mAccessToken;
     private String mNickName;
     private static ImageView verticalDividerView;
-
+    private ImageView user_center_shadow_view;
     private IndicatorType mIndicatorType = IndicatorType.STORE;
     private int currentFragmentIndictor;
     private SharedPreferences.OnSharedPreferenceChangeListener changeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -160,6 +160,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         verticalDividerView = (ImageView) findViewById(R.id.vertical_divider_line);
         verticalDividerView.setTag(R.id.vertical_divider_line);
         verticalDividerView.setOnFocusChangeListener(this);
+        user_center_shadow_view= (ImageView)findViewById(R.id.user_center_shadow_view);
     }
 
 
@@ -302,13 +303,22 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         String msg = getText(R.string.login_success_name).toString();
 
         String phoneNumber = mNickName;
+        user_center_shadow_view.setVisibility(View.VISIBLE);
         loginPopup = new MessagePopWindow(this);
+        loginPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
+			
+			@Override
+			public void onDismiss() {
+				user_center_shadow_view.setVisibility(View.GONE);
+			}
+		});
         loginPopup.setFirstMessage(String.format(msg, phoneNumber));
         loginPopup.setSecondMessage(R.string.login_success);
         loginPopup.showAtLocation(mContentView, Gravity.CENTER, xOffset, yOffset, new MessagePopWindow.ConfirmListener() {
                     @Override
                     public void confirmClick(View view) {
                         loginPopup.dismiss();
+                        user_center_shadow_view.setVisibility(View.GONE);
                         switchToUserInfoFragment();
                     }
                 },

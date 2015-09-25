@@ -13,6 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import android.graphics.drawable.BitmapDrawable;
 import android.widget.*;
+
 import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
@@ -811,7 +812,7 @@ private String authToken;
 
     @Override
     public void onCancelLogin() {
-        
+
     }
 
     public interface OrderResultListener {
@@ -1072,6 +1073,13 @@ private String authToken;
         String msg = mycontext.getText(R.string.login_success_name).toString();
         payment_shadow_view.setVisibility(View.VISIBLE);
         loginPopup = new MessagePopWindow(mycontext);
+        loginPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
+			
+			@Override
+			public void onDismiss() {
+				payment_shadow_view.setVisibility(View.GONE);
+			}
+		});
         loginPopup.setFirstMessage(String.format(msg, SimpleRestClient.mobile_number));
         loginPopup.setSecondMessage(R.string.login_success);
         loginPopup.showAtLocation(login_panel, Gravity.CENTER, xOffset, yOffset, new MessagePopWindow.ConfirmListener() {
