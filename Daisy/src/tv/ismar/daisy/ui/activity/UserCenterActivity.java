@@ -318,7 +318,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                     @Override
                     public void confirmClick(View view) {
                         loginPopup.dismiss();
-                        user_center_shadow_view.setVisibility(View.VISIBLE);
+                        user_center_shadow_view.setVisibility(View.GONE);
                         switchToUserInfoFragment();
                     }
                 },
