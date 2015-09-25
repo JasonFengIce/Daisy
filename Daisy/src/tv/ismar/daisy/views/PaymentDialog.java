@@ -1072,6 +1072,7 @@ private String authToken;
         int yOffset = (int) mycontext.getResources().getDimension(R.dimen.loginfragment_successPop_yOffset);
         String msg = mycontext.getText(R.string.login_success_name).toString();
         payment_shadow_view.setVisibility(View.VISIBLE);
+        loginPopup = new MessagePopWindow(mycontext);
         loginPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
 			
 			@Override
@@ -1079,7 +1080,6 @@ private String authToken;
 				payment_shadow_view.setVisibility(View.GONE);
 			}
 		});
-        loginPopup = new MessagePopWindow(mycontext);
         loginPopup.setFirstMessage(String.format(msg, SimpleRestClient.mobile_number));
         loginPopup.setSecondMessage(R.string.login_success);
         loginPopup.showAtLocation(login_panel, Gravity.CENTER, xOffset, yOffset, new MessagePopWindow.ConfirmListener() {
