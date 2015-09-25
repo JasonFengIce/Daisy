@@ -1109,6 +1109,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private void destroybackground() {
         BitmapDrawable bd = (BitmapDrawable) contentView.getBackground();
         contentView.setBackgroundResource(0);//别忘了把背景设为null，避免onDraw刷新背景时候出现used a recycled bitmap错误
+        if(bd == null)
+        	return;
         bd.setCallback(null);
         bd.getBitmap().recycle();
     }
