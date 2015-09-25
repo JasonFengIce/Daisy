@@ -815,6 +815,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 //    }
     private void showExitPopup(View view) {
         exitPopupWindow = new MessagePopWindow(this);
+
         exitPopupWindow.setFirstMessage(R.string.exit_prompt);
         exitPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0, new MessagePopWindow.ConfirmListener() {
                     @Override
