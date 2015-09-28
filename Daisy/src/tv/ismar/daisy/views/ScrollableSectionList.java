@@ -233,6 +233,11 @@ public class ScrollableSectionList extends HorizontalScrollView {
                         currentState = STATE_SECTION;
                         mContainer.getChildAt(mSelectPosition).requestFocus();
                     }else if(currentState==STATE_SECTION){
+                        if(mHandler!=null){
+                            if(mHandler.hasMessages(START_CLICK)){
+                                mHandler.removeMessages(START_CLICK);
+                            }
+                        }
                         label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
                         label.setTextSize(textsize);
                         View lastSelectedView = mContainer.getChildAt(mSelectPosition);

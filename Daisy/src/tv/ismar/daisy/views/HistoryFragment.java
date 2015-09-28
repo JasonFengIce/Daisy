@@ -600,6 +600,9 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
                 else{
                     history = DaisyUtils.getHistoryManager(getActivity()).getHistoryByUrl(url,"no");
                 }
+                if(history==null){
+                    return;
+                }
 				// Use to data collection.
 				mDataCollectionProperties = new HashMap<String, Object>();
 				int id = SimpleRestClient.getItemId(url, new boolean[1]);
