@@ -151,7 +151,7 @@ public class SportFragment extends ChannelBaseFragment {
 						currentLiveIndex += 1;
 					}
 					Message msg = new Message();
-					msg.arg1 = 2;
+					msg.arg1 = 1;
 					msg.what = 0;
 					test.sendMessage(msg);
 				}

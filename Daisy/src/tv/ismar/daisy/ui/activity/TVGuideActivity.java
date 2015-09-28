@@ -984,6 +984,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         ChannelEntity channelEntity = mChannelEntitys[position];
         topView.setSubTitle(channelEntity.getName());
         currentFragment = null;
+        Log.i("template==",channelEntity.getHomepage_template());
         destroybackground();
         if ("template1".equals(channelEntity.getHomepage_template())) {
             currentFragment = new FilmFragment();
