@@ -11,12 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+
 import com.activeandroid.query.Select;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
+
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
@@ -32,6 +35,7 @@ import tv.ismar.daisy.ui.adapter.weather.ProvinceAdapter;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -222,6 +226,7 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
                     selectPrompt.setVisibility(View.VISIBLE);
                     confirmBtn.setVisibility(View.VISIBLE);
                     cancelBtn.setVisibility(View.VISIBLE);
+                    confirmBtn.requestFocus();
 
                 }
                 selectedPosition.setText(city);
@@ -240,6 +245,9 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
                     if (selectedAreaTextView != v) {
                         textView.setTextColor(mContext.getResources().getColor(R.color.white));
                         textView.setTextSize(mContext.getResources().getDimension(R.dimen.h2_text_size) / rate);
+                    } else {
+                        textView.setTextColor(mContext.getResources().getColor(R.color.blue));
+                        textView.setTextSize(mContext.getResources().getDimension(R.dimen.h1_text_size) / rate);
                     }
 
                 }
