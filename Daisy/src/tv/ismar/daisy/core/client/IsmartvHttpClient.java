@@ -11,6 +11,7 @@ import java.util.Map;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.jni.HttpClient;
+import tv.ismar.daisy.jni.HttpResponseEntity;
 
 /**
  * Created by huaijie on 9/25/15.
@@ -37,7 +38,7 @@ public class IsmartvHttpClient extends Thread {
 
     @Override
     public void run() {
-        String result = "";
+        HttpResponseEntity result = null;
         Uri uri = Uri.parse(mUrl);
 
         switch (method) {
@@ -48,7 +49,12 @@ public class IsmartvHttpClient extends Thread {
                 result = new HttpClient().doPost(uri.getHost(), uri.getPath(), mParams);
                 break;
         }
-        Message message = messageHandler.obtainMessage(SUCCESS, result);
+        Message message;
+        if (result.getCode() == 200) {
+            message = messageHandler.obtainMessage(SUCCESS, result.getBody());
+        } else {
+            message = messageHandler.obtainMessage(FAILURE, result.getBody());
+        }
         messageHandler.sendMessage(message);
     }
 
