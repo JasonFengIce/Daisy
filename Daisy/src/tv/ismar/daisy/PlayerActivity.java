@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import android.content.*;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,9 +39,6 @@ import tv.ismar.daisy.views.MarqueeView;
 import tv.ismar.daisy.views.PaymentDialog;
 import tv.ismar.player.SmartPlayer;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -153,9 +151,27 @@ public class PlayerActivity extends VodMenuAction {
     private AccountSharedPrefs shardpref;
     private ImageView gesture_tipview;
     private boolean isPaymentdialogShow = false;
-	@Override
+    private static final String ACTION = "com.android.hoperun.screensave";
+    private ScreenSaveBrocast saveScreenbroad;
+    private class ScreenSaveBrocast extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals(ACTION)){
+                System.out.println("receiver message --->>>>");
+                abortBroadcast();
+            }
+        }
+
+    }
+
+    @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        IntentFilter intentFilter = new IntentFilter(ACTION);
+        saveScreenbroad = new ScreenSaveBrocast();
+        intentFilter.setPriority(119110);
+        registerReceiver( saveScreenbroad , intentFilter);
 		shardpref = AccountSharedPrefs.getInstance(this);
 		setView();
 
@@ -163,6 +179,7 @@ public class PlayerActivity extends VodMenuAction {
 		getWindowManager().getDefaultDisplay().getMetrics(metric);
 		
 	}
+
 
 	@Override
 	public void onResume() {
@@ -2145,6 +2162,7 @@ public class PlayerActivity extends VodMenuAction {
 		DaisyUtils.getVodApplication(this).removeActivtyFromPool(
 				this.toString());
 		sendPlayComplete();
+        unregisterReceiver(saveScreenbroad);
 		super.onDestroy();
 	}
 

@@ -59,7 +59,6 @@ public class BaseActivity extends FragmentActivity {
         intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_CONNECT_ERROR);
         connectionErrorReceiver = new ConnectionErrorReceiver();
-
         createNetErrorPopup();
         mTencent = Tencent.createInstance(APP_ID, getApplicationContext());
     }
@@ -79,6 +78,7 @@ public class BaseActivity extends FragmentActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             showNetErrorPopup();
+
         }
     }
 
