@@ -1475,7 +1475,6 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	 *         arrow scroll.
 	 */
 	public boolean arrowScroll(int direction) {
-        Log.v("aaaa", "direction ="+direction);
 		int nextSelectedPosition = lookForSelectablePositionOnScreen(direction);
 		// Log.d(TAG,
 		// "mSelectedPosition="+mSelectedPosition+" nextSelectedPosition=" +
