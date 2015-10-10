@@ -89,6 +89,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     private static final String TAG = "TVGuideActivity";
     private static final int SWITCH_PAGE = 0X01;
+    private static final int SWITCH_PAGE_FROMLAUNCH = 0X02;
     private AppUpdateReceiver appUpdateReceiver;
     private ChannelBaseFragment currentFragment;
 
@@ -130,6 +131,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private boolean rightscroll;
     private LeavePosition leavePosition = LeavePosition.RightBottom;
     private ImageView guide_shadow_view;
+    private int channelscrollIndex = 0;
     private enum LeavePosition {
         LeftTop,
         LeftBottom,
@@ -437,12 +439,16 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                     mChannelEntitys[k + 1] = e;
                     k++;
                 }
-
+                createChannelView(mChannelEntitys);
                 if (StringUtils.isNotEmpty(homepage_template)) {
                     for (int i = 0; i < mChannelEntitys.length; i++) {
                         if (homepage_template.equals(mChannelEntitys[i].getHomepage_template()) && mChannelEntitys[i].getHomepage_url().contains(homepage_url)) {
-                            selectChannelByPosition(i);
+                            channelscrollIndex = i;
+                            if(channelscrollIndex > 0){
+                            	fragmentSwitch.sendEmptyMessage(SWITCH_PAGE_FROMLAUNCH);
+                            }
                             topView.setSubTitle(mChannelEntitys[i].getName());
+                            break;
                         }
                     }
                 }
@@ -454,7 +460,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
 
                 }
-                createChannelView(mChannelEntitys);
             }
 
             @Override
@@ -548,6 +553,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
             @Override
             public void onFocusChange(View view, boolean flag) {
+            	if(channelscrollIndex >0)
+            		return;
                 TextView v = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
                 if (flag && scrollFromBorder) {
                     v.setBackgroundResource(R.drawable.channel_item_selectd_focus);
@@ -1017,6 +1024,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         currentFragment.setChannelEntity(channelEntity);
         replaceFragment(currentFragment);
         View view2 = scroll.getChildAt(0);
+        if(view2 == null)
+        	return;
         lastchannelindex = position;
         if (view2.getLeft() > 0) {
             switch (mCurrentChannelPosition.getPosition()) {
@@ -1223,6 +1232,13 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 case SWITCH_PAGE:
                     selectChannelByPosition(msg.arg1);
                     break;
+                case SWITCH_PAGE_FROMLAUNCH:
+                	scroll.arrowScroll(View.FOCUS_RIGHT);
+                	channelscrollIndex--;
+                	if(channelscrollIndex >0){
+                		sendEmptyMessage(SWITCH_PAGE_FROMLAUNCH);
+                	}
+                	break;
             }
         }
 

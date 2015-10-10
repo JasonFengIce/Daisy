@@ -1284,5 +1284,12 @@
     <dimen name="pop_btn_margin_lr">82.00dp</dimen>
     <dimen name="pop_text_layout_height">73.33dp</dimen>
     <dimen name="location_selected_city_text_width">133.33dp</dimen>
+    <dimen name="usercenter_activity_top_layout_height">66.00dp</dimen>
+    <dimen name="usercenter_horizontal_divider_line_height">1dp</dimen>
+    <dimen name="usercenter_vertical_divider_line_width">27.33dp</dimen>
+    <dimen name="usercenter_vertical_divider_line2_width">0.67dp</dimen>
+    <dimen name="user_center_container_width">953.33dp</dimen>
+    <dimen name="user_center_container_height">640.00dp</dimen>
+    <dimen name="user_center_container_marginLeft">13.33dp</dimen>
 
 </resources>

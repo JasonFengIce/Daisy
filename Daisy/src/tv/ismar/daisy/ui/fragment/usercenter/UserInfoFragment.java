@@ -68,7 +68,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
 
     private View currentFocusView;
 
-
+    private float rate;
     SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -97,6 +97,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    	rate = DaisyUtils.getVodApplication(getActivity()).getRate(getActivity());
         fragmentView = inflater.inflate(R.layout.fragment_userinfo, null);
         phoneNumber = (TextView) fragmentView.findViewById(R.id.phone_number);
         deviceNumber = (TextView) fragmentView.findViewById(R.id.device_number);
@@ -240,14 +241,14 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
             TextView remaindDay = (TextView) v.findViewById(R.id.buydate_txt);
             if (hasFocus) {
                 titleTextView.setTextColor(mContext.getResources().getColor(R.color.location_text_focus));
-                titleTextView.setTextSize(mContext.getResources().getDimension(R.dimen.userinfo_playauth_item_focus_textsize));
+                titleTextView.setTextSize(mContext.getResources().getDimension(R.dimen.userinfo_playauth_item_focus_textsize)/rate);
                 remaindDay.setTextColor(mContext.getResources().getColor(R.color.location_text_focus));
-                remaindDay.setTextSize(mContext.getResources().getDimension(R.dimen.userinfo_playauth_item_focus_textsize));
+                remaindDay.setTextSize(mContext.getResources().getDimension(R.dimen.userinfo_playauth_item_focus_textsize)/rate);
             } else {
                 titleTextView.setTextColor(mContext.getResources().getColor(R.color.white));
-                titleTextView.setTextSize(mContext.getResources().getDimension(R.dimen.userinfo_playauth_item_normal_textsize));
+                titleTextView.setTextSize(mContext.getResources().getDimension(R.dimen.userinfo_playauth_item_normal_textsize)/rate);
                 remaindDay.setTextColor(mContext.getResources().getColor(R.color.white));
-                remaindDay.setTextSize(mContext.getResources().getDimension(R.dimen.userinfo_playauth_item_normal_textsize));
+                remaindDay.setTextSize(mContext.getResources().getDimension(R.dimen.userinfo_playauth_item_normal_textsize)/rate);
             }
 
         }

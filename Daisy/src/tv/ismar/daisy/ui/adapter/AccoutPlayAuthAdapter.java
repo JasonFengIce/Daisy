@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.data.usercenter.AccountPlayAuthEntity;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.utils.Util;
@@ -22,11 +24,12 @@ public class AccoutPlayAuthAdapter extends BaseAdapter implements View.OnFocusCh
     ArrayList<AccountPlayAuthEntity.PlayAuth> mList;
     Context mContext;
     ViewHolder holder;
-
+    float rate;
     public AccoutPlayAuthAdapter(Context context,
                                  ArrayList<AccountPlayAuthEntity.PlayAuth> list) {
         this.mList = list;
         this.mContext = context;
+        rate = DaisyUtils.getVodApplication(context).getRate(context);
     }
 
     @Override
@@ -74,14 +77,14 @@ public class AccoutPlayAuthAdapter extends BaseAdapter implements View.OnFocusCh
         TextView remaindDay = (TextView) v.findViewById(R.id.buydate_txt);
         if (hasFocus) {
             titleTextView.setTextColor(mContext.getResources().getColor(R.color.location_text_focus));
-            titleTextView.setTextSize(mContext.getResources().getDimension(R.dimen.userinfo_playauth_item_focus_textsize));
+            titleTextView.setTextSize(mContext.getResources().getDimension(R.dimen.userinfo_playauth_item_focus_textsize)/rate);
             remaindDay.setTextColor(mContext.getResources().getColor(R.color.location_text_focus));
-            remaindDay.setTextSize(mContext.getResources().getDimension(R.dimen.userinfo_playauth_item_focus_textsize));
+            remaindDay.setTextSize(mContext.getResources().getDimension(R.dimen.userinfo_playauth_item_focus_textsize)/rate);
         } else {
             titleTextView.setTextColor(mContext.getResources().getColor(R.color.white));
-            titleTextView.setTextSize(mContext.getResources().getDimension(R.dimen.userinfo_playauth_item_normal_textsize));
+            titleTextView.setTextSize(mContext.getResources().getDimension(R.dimen.userinfo_playauth_item_normal_textsize)/rate);
             remaindDay.setTextColor(mContext.getResources().getColor(R.color.white));
-            remaindDay.setTextSize(mContext.getResources().getDimension(R.dimen.userinfo_playauth_item_normal_textsize));
+            remaindDay.setTextSize(mContext.getResources().getDimension(R.dimen.userinfo_playauth_item_normal_textsize)/rate);
         }
 
 
