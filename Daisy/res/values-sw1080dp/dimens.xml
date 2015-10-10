@@ -1296,4 +1296,12 @@
 
     <dimen name="location_selected_city_text_width">200dp</dimen>
 
+    <dimen name="usercenter_activity_top_layout_height">99dp</dimen>
+    <dimen name="usercenter_horizontal_divider_line_height">1dp</dimen>
+    <dimen name="usercenter_vertical_divider_line_width">41dp</dimen>
+    <dimen name="usercenter_vertical_divider_line2_width">1dp</dimen>
+    <dimen name="user_center_container_width">1430dp</dimen>
+    <dimen name="user_center_container_height">960dp</dimen>
+    <dimen name="user_center_container_marginLeft">20dp</dimen>
+
 </resources>
