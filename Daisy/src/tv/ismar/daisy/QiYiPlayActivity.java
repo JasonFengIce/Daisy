@@ -265,12 +265,12 @@ public class QiYiPlayActivity extends VodMenuAction {
         live_video = item.live_video;
         titleText.setText(item.title);
         simpleRestClient = new SimpleRestClient();
-		if("false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
+//		if("false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
 			 new initPlayTask().execute();
-		}else{
-			gesture_tipview.setVisibility(View.VISIBLE);
-			setGesturebackground(gesture_tipview, R.drawable.play_gesture);
-		}
+//		}else{
+//			gesture_tipview.setVisibility(View.VISIBLE);
+//			setGesturebackground(gesture_tipview, R.drawable.play_gesture);
+//		}
     }
 
     private class initPlayTask extends AsyncTask<String, Void, Void> {
@@ -1103,12 +1103,12 @@ public class QiYiPlayActivity extends VodMenuAction {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         boolean ret = false;
-    	if(keyCode == KeyEvent.KEYCODE_BACK && !"false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
-			gesture_tipview.setVisibility(View.GONE);
-			shardpref.setSharedPrefs(AccountSharedPrefs.FIRST_USE, "false");
-			new initPlayTask().execute();
-			return false;
-		}
+//    	if(keyCode == KeyEvent.KEYCODE_BACK && !"false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
+//			gesture_tipview.setVisibility(View.GONE);
+//			shardpref.setSharedPrefs(AccountSharedPrefs.FIRST_USE, "false");
+//			new initPlayTask().execute();
+//			return false;
+//		}
         if (!isVodMenuVisible() && mPlayer != null) {
             switch (keyCode) {
                 case KeyEvent.KEYCODE_DPAD_LEFT:

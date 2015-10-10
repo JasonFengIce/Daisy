@@ -285,7 +285,12 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
                 if(urlHandler.hasMessages(PURCHASE_CHECK_RESULT))
                     urlHandler.removeMessages(PURCHASE_CHECK_RESULT);
 				flag = true;
-                ((BaseActivity)mycontext).loginQQorWX();
+//                ((BaseActivity)mycontext).loginQQorWX();
+                changeQrcodePayPanelState(false, false);
+                changeLoginPanelState(true);
+                changeYuePayPanelState(false,false);
+                changeshiyuncardPanelState(false);
+                purchaseCheck();
 			}
 				break;
 
@@ -733,8 +738,29 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
 
 		@Override
 		public void onSuccess(String info) {
-			urlHandler.sendEmptyMessage(LOGIN_SUCESS);
-			getBalanceByToken();
+			 AuthTokenEntity authTokenEntity = new Gson().fromJson(info, AuthTokenEntity.class);
+		        authToken = authTokenEntity.getAuth_token();
+				getBalanceByToken();
+		        String welocome = mycontext.getResources().getString(
+		                R.string.welocome_tip);
+		        welocome_tip.setText(String.format(welocome,
+		                nickname));
+		        DaisyUtils
+		                .getVodApplication(getContext())
+		                .getEditor()
+		                .putString(
+		                        VodApplication.MOBILE_NUMBER,
+		                        nickname);
+		        DaisyUtils.getVodApplication(getContext()).getEditor().putString(VodApplication.AUTH_TOKEN, authToken);
+		        DaisyUtils.getVodApplication(getContext())
+		                .save();
+		        SimpleRestClient.mobile_number = nickname;
+
+		        SimpleRestClient.access_token = authToken;
+		        GetFavoriteByNet();
+		        getHistoryByNet();
+		        urlHandler.sendEmptyMessage(LOGIN_SUCESS);
+		        showLoginSuccessPopup();
 		}
 
 		@Override

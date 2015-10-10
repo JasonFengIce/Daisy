@@ -112,7 +112,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         userCenterIndicatorLayout = (LinearLayout) findViewById(R.id.user_center_indicator_layout);
 //        storeFragment = new StoreFragment();
 //        userInfoFragment = new UserInfoFragment();
-//        loginFragment = new LoginFragment();
+        loginFragment = new LoginFragment();
 //        historyFragment = new PurchaseHistoryFragment();
 //        helpFragment = new HelpFragment();
         locationFragment = new LocationFragment();
@@ -423,7 +423,8 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 case R.string.usercenter_login_register:
                     if (currentFragmentIndictor == R.string.usercenter_login_register)
                         return;
-                    loginQQorWX();
+//                    loginQQorWX();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, loginFragment).commit();
                     currentFragmentIndictor = R.string.usercenter_login_register;
                     break;
                 case R.string.usercenter_purchase_history:

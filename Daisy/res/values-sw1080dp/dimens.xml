@@ -1,6 +1,7 @@
 <resources>
 
     <!-- item detail page -->
+    <dimen name="item_detail_detail_linerlayout_width">900dip</dimen>
     <dimen name="item_detail_detail_left_container_width">1291dip</dimen>
     <dimen name="item_detail_vod_watermark_width">669dip</dimen>
     <dimen name="item_detail_vod_watermark_height">155dip</dimen>
@@ -37,6 +38,7 @@
     <dimen name="item_detail_detailquality_marginright">2dip</dimen>
     <dimen name="item_detail_btn_left_width">250dp</dimen>
     <dimen name="item_detail_btn_left_height">72dip</dimen>
+    <dimen name="item_detail_btn_pl">45dip</dimen>
     <dimen name="item_detail_btn_left_textsize">35sp</dimen>
     <dimen name="item_detail_btn_right_width">240dip</dimen>
     <dimen name="item_detail_btn_right_height">80dp</dimen>
@@ -709,6 +711,7 @@
 
     <!-- top page template -->
     <dimen name="tv_guide_top_section_padding">14dp</dimen>
+    <dimen name="weather_fragment_w">1860dp</dimen>
     <dimen name="weather_fragment_h">100dp</dimen>
     <dimen name="toppage_divide_margin">26dp</dimen>
     <dimen name="toppage_divide_h">1dp</dimen>

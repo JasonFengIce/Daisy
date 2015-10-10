@@ -28,7 +28,6 @@
         android:text="@string/zhifubao_pay_button_title"
         android:textColor="#FFFFFF"
         android:textSize="@dimen/pay_channel_weixin_textsize" 
-        android:visibility="gone"
         />
     <Button
         android:id="@+id/videocard"
