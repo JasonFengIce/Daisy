@@ -1,5 +1,17 @@
 package tv.ismar.daisy;
 
+import java.util.HashMap;
+import java.util.UUID;
+
+import org.apache.commons.lang3.StringUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.ui.activity.TVGuideActivity;
+import tv.ismar.sakura.ui.widget.MessagePopWindow;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,24 +24,15 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupWindow;
-import android.widget.Toast;
+
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.common.Constants;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
-import org.json.JSONException;
-import org.json.JSONObject;
-import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.client.IsmartvUrlClient;
-
-import java.util.HashMap;
-import java.util.UUID;
-
-import org.json.JSONException;
 
 public class BaseActivity extends FragmentActivity {
 
@@ -37,10 +40,12 @@ public class BaseActivity extends FragmentActivity {
 
     private ConnectionErrorReceiver connectionErrorReceiver;
     private IntentFilter intentFilter;
-
+    MessagePopWindow exitPopupWindow;
     private PopupWindow netErrorPopupWindow;
     Tencent mTencent;
     String APP_ID = "1104828726";
+    protected String fromPage;
+    protected String activityTag = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,8 +59,8 @@ public class BaseActivity extends FragmentActivity {
             SimpleRestClient.mobile_number = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.MOBILE_NUMBER, "");
             SimpleRestClient.access_token = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.AUTH_TOKEN, "");
         }
-
-
+        fromPage= getIntent().getStringExtra("fromPage");
+        Log.v("aaaa", "fromPage = "+fromPage);
         intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_CONNECT_ERROR);
         connectionErrorReceiver = new ConnectionErrorReceiver();
@@ -395,5 +400,42 @@ public class BaseActivity extends FragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
       //  unregisterReceiver(mUserInfoReceiver);
+    }
+
+    @Override
+    public void onBackPressed() {
+		if ("launcher".equals(fromPage)
+				&& StringUtils.isEmpty(activityTag)){
+			showExitPopup(((ViewGroup) findViewById(android.R.id.content))
+					.getChildAt(0));
+		}else{
+			super.onBackPressed();
+		}
+		
+    }
+
+    private void showExitPopup(View view) {
+        exitPopupWindow = new MessagePopWindow(this);
+        exitPopupWindow.setFirstMessage(R.string.exit_prompt);
+        exitPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+			
+			@Override
+			public void onDismiss() {
+			}
+		});
+        exitPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0, new MessagePopWindow.ConfirmListener() {
+                    @Override
+                    public void confirmClick(View view) {
+                        exitPopupWindow.dismiss();
+                        BaseActivity.this.finish();
+                    }
+                },
+                new MessagePopWindow.CancelListener() {
+                    @Override
+                    public void cancelClick(View view) {
+                        exitPopupWindow.dismiss();
+                    }
+                }
+        );
     }
 }

@@ -312,7 +312,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        activityTag = "BaseActivity";
         registerUpdateReceiver();
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_tv_guide, null);
         setContentView(contentView);

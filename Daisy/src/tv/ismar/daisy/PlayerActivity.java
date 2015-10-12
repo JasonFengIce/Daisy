@@ -168,6 +168,7 @@ public class PlayerActivity extends VodMenuAction {
     @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		activityTag = "BaseActivity";
         IntentFilter intentFilter = new IntentFilter(ACTION);
         saveScreenbroad = new ScreenSaveBrocast();
         intentFilter.setPriority(119110);
