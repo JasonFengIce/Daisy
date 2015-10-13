@@ -21,7 +21,6 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
     private ConfirmListener confirmListener;
     private CancelListener cancleListener;
 
-    private float rate;
     private Context mContext;
 
     public interface CancelListener {
@@ -35,7 +34,6 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
 
     public MessagePopWindow(Context context) {
         mContext = context;
-        rate = DaisyUtils.getVodApplication(context).getRate(context);
         int width = (int) (context.getResources().getDimension(R.dimen.pop_width));
         int height = (int) (context.getResources().getDimension(R.dimen.pop_height));
 
@@ -69,13 +67,13 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
     }
 
     public void setSecondMessage(int messageId) {
-        setHeight((int) (mContext.getResources().getDimension(R.dimen.pop_double_line_height) / rate));
+        setHeight((int) (mContext.getResources().getDimension(R.dimen.pop_double_line_height)));
         secondMessage.setVisibility(View.VISIBLE);
         secondMessage.setText(messageId);
     }
 
     public void setSecondMessage(String message) {
-        setHeight((int) (mContext.getResources().getDimension(R.dimen.pop_double_line_height) / rate));
+        setHeight((int) (mContext.getResources().getDimension(R.dimen.pop_double_line_height)));
         secondMessage.setVisibility(View.VISIBLE);
         secondMessage.setText(message);
     }

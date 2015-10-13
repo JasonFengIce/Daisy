@@ -29,7 +29,6 @@ import tv.ismar.daisy.data.usercenter.AuthTokenEntity;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
-import tv.ismar.daisy.views.LoginPanelView.AccountAboutDialog;
 import tv.ismar.sakura.ui.widget.MessagePopWindow;
 import android.app.Dialog;
 import android.content.Context;
@@ -86,7 +85,7 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
 	private TextView recharge_error_msg;
 	private TextView welocome_tip;
 	private TextView card_balance_title_label;
-
+    private TextView panel_label;
 	private EditText shiyuncard_input;
 
 	private Bitmap qrcodeBitmap;
@@ -109,7 +108,10 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
 		width = wm.getDefaultDisplay().getWidth();
 		height = wm.getDefaultDisplay().getHeight();
 		mycontext = context;
+		if (StringUtils.isNotEmpty(SimpleRestClient.access_token)
+				&& StringUtils.isNotEmpty(SimpleRestClient.mobile_number)) {
 		getBalanceByToken();
+		}
 		this.paylistener = paylistener;
 		mSimpleRestClient = new SimpleRestClient();
 	}
@@ -121,9 +123,14 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
         ((BaseActivity)mycontext).setLoginCallback(this);
 		initView();
 		resizeWindow();
-        purchaseCheck();
-
-
+		if (StringUtils.isNotEmpty(SimpleRestClient.access_token)
+				&& StringUtils.isNotEmpty(SimpleRestClient.mobile_number)) {
+			 String welocome = mycontext.getResources().getString(
+		                R.string.welocome_tip);
+		        welocome_tip.setText(String.format(welocome,
+		                SimpleRestClient.mobile_number));
+			purchaseCheck();
+		}
 	}
 
 	@Override
@@ -191,7 +198,7 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
 		submit_yuepay = (Button) findViewById(R.id.card_balance_submit);
 		yueepay_canel = (Button) findViewById(R.id.card_balance_cancel);
 		top_login = (Button) findViewById(R.id.top_login);
-
+		
 		weixinpay_button.setOnClickListener(buttonClick);
 		guanyingcard_button.setOnClickListener(buttonClick);
 		zhifubao_button.setOnClickListener(buttonClick);
@@ -219,19 +226,56 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
 		card_balance_title_label = (TextView) findViewById(R.id.card_balance_title_label);
 		payment_shadow_view = (ImageView)findViewById(R.id.payment_shadow_view);
 		shiyuncard_input = (EditText) findViewById(R.id.shiyuncard_input);
-		if (SimpleRestClient.mobile_number != null
-				&& SimpleRestClient.mobile_number.length() > 0) {
-			welocome_tip.setVisibility(View.VISIBLE);
-			top_login_panel.setVisibility(View.GONE);
-			String welocome = mycontext.getResources().getString(
-					R.string.welocome_tip);
-			welocome_tip.setText(String.format(welocome,
-					SimpleRestClient.mobile_number));
-		}
+		panel_label = (TextView)findViewById(R.id.panel_label);
+
 		setPackageInfo();
+		if (StringUtils.isNotEmpty(SimpleRestClient.access_token)
+				&& StringUtils.isNotEmpty(SimpleRestClient.mobile_number)) {
 		changeQrcodePayPanelState(true, true);
+		panel_label.setVisibility(View.GONE);
+		}else{
+			disableButton();			
+		}
 		login_panel.setLoginListener(loginInterFace);
 	}
+
+    private void disableButton(){
+		if (StringUtils.isEmpty(SimpleRestClient.access_token)
+				&& StringUtils.isEmpty(SimpleRestClient.mobile_number)) {
+			weixinpay_button.setEnabled(false);
+			weixinpay_button.setFocusable(false);
+			weixinpay_button.setTextColor(getContext().getResources().getColor(R.color.paychannel_button_disable));
+			guanyingcard_button.setEnabled(false);
+			guanyingcard_button.setFocusable(false);
+			guanyingcard_button.setTextColor(getContext().getResources().getColor(R.color.paychannel_button_disable));
+			zhifubao_button.setEnabled(false);
+			zhifubao_button.setFocusable(false);
+			zhifubao_button.setTextColor(getContext().getResources().getColor(R.color.paychannel_button_disable));
+			yuepay_button.setEnabled(false);
+			yuepay_button.setFocusable(false);
+			yuepay_button.setTextColor(getContext().getResources().getColor(R.color.paychannel_button_disable));
+            changeQrcodePayPanelState(false, false);
+            changeLoginPanelState(true);
+            changeYuePayPanelState(false,false);
+            changeshiyuncardPanelState(false);
+		}
+
+    }
+
+    private void enableButton(){
+  			weixinpay_button.setEnabled(true);
+  			weixinpay_button.setFocusable(true);
+  			weixinpay_button.setTextColor(getContext().getResources().getColor(R.color.white));
+  			guanyingcard_button.setEnabled(true);
+  			guanyingcard_button.setFocusable(true);
+  			guanyingcard_button.setTextColor(getContext().getResources().getColor(R.color.white));
+  			zhifubao_button.setEnabled(true);
+  			zhifubao_button.setFocusable(true);
+  			zhifubao_button.setTextColor(getContext().getResources().getColor(R.color.white));
+  			yuepay_button.setEnabled(true);
+  			yuepay_button.setFocusable(true);
+  			yuepay_button.setTextColor(getContext().getResources().getColor(R.color.white));
+      }
 
 	private View.OnClickListener buttonClick = new View.OnClickListener() {
 		private Activator activator;
@@ -379,7 +423,7 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
 			}
 			case LOGIN_SUCESS: {
 				welocome_tip.setVisibility(View.VISIBLE);
-				top_login_panel.setVisibility(View.GONE);
+//				top_login_panel.setVisibility(View.GONE);
                 //((BaseActivity)mycontext).callWGQueryQQUserInfo();
 
 			}
@@ -738,29 +782,14 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
 
 		@Override
 		public void onSuccess(String info) {
-			 AuthTokenEntity authTokenEntity = new Gson().fromJson(info, AuthTokenEntity.class);
-		        authToken = authTokenEntity.getAuth_token();
+		        urlHandler.sendEmptyMessage(LOGIN_SUCESS);
+		        enableButton();
+		        panel_label.setVisibility(View.GONE);
 				getBalanceByToken();
 		        String welocome = mycontext.getResources().getString(
 		                R.string.welocome_tip);
 		        welocome_tip.setText(String.format(welocome,
-		                nickname));
-		        DaisyUtils
-		                .getVodApplication(getContext())
-		                .getEditor()
-		                .putString(
-		                        VodApplication.MOBILE_NUMBER,
-		                        nickname);
-		        DaisyUtils.getVodApplication(getContext()).getEditor().putString(VodApplication.AUTH_TOKEN, authToken);
-		        DaisyUtils.getVodApplication(getContext())
-		                .save();
-		        SimpleRestClient.mobile_number = nickname;
-
-		        SimpleRestClient.access_token = authToken;
-		        GetFavoriteByNet();
-		        getHistoryByNet();
-		        urlHandler.sendEmptyMessage(LOGIN_SUCESS);
-		        showLoginSuccessPopup();
+		                SimpleRestClient.mobile_number));
 		}
 
 		@Override
@@ -771,17 +800,10 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
 
 	private void doCancel() {
 		paylistener.payResult(false);
-//		if (urlHandler.hasMessages(ORDER_CHECK_INTERVAL))
-//			urlHandler.removeMessages(ORDER_CHECK_INTERVAL);
-//		if (urlHandler.hasMessages(PURCHASE_CHECK_RESULT))
-//			urlHandler.removeMessages(PURCHASE_CHECK_RESULT);
-//		if (urlHandler.hasMessages(SETQRCODE_VIEW))
-//			urlHandler.removeMessages(SETQRCODE_VIEW);
-//		if (urlHandler.hasMessages(REFRESH_PAY_STATUS))
-//			urlHandler.removeMessages(REFRESH_PAY_STATUS);
 		dismiss();
 	}
-private String authToken;
+    private String authToken;
+    //qq 登陆接口回调
     @Override
     public void onLoginSuccess(String result) {
 
@@ -809,14 +831,7 @@ private String authToken;
         GetFavoriteByNet();
         getHistoryByNet();
         urlHandler.sendEmptyMessage(LOGIN_SUCESS);
-//        AccountAboutDialog dialog = new AccountAboutDialog(
-//                getContext(),
-//                R.style.UserinfoDialog);
-//        dialog.setIscancelshow(false);
-//        dialog.setWarningmessage("恭喜"
-//                + SimpleRestClient.mobile_number
-//                );
-//        dialog.show();
+        enableButton();
         showLoginSuccessPopup();
     }
 

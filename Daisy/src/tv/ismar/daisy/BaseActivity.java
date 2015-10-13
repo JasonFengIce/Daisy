@@ -10,12 +10,15 @@ import org.json.JSONObject;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.ui.activity.TVGuideActivity;
 import tv.ismar.sakura.ui.widget.MessagePopWindow;
+import tv.ismar.sakura.utils.DeviceUtils;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
@@ -46,6 +49,7 @@ public class BaseActivity extends FragmentActivity {
     String APP_ID = "1104828726";
     protected String fromPage;
     protected String activityTag = "";
+    private FetchBestTvAuth authTask;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,16 +64,12 @@ public class BaseActivity extends FragmentActivity {
             SimpleRestClient.access_token = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.AUTH_TOKEN, "");
         }
         fromPage= getIntent().getStringExtra("fromPage");
-        Log.v("aaaa", "fromPage = "+fromPage);
         intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_CONNECT_ERROR);
         connectionErrorReceiver = new ConnectionErrorReceiver();
         createNetErrorPopup();
         mTencent = Tencent.createInstance(APP_ID, getApplicationContext());
     }
-
-
-
 
     private void registerBroadcastReceiver() {
         registerReceiver(connectionErrorReceiver, intentFilter);
@@ -393,7 +393,12 @@ public class BaseActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        String bindflag = DaisyUtils.getVodApplication(this)
+				.getPreferences().getString(VodApplication.BESTTV_AUTH_BIND_FLAG, "");
+        if (StringUtils.isEmpty(bindflag) || (StringUtils.isNotEmpty(bindflag) && "privilege".equals(bindflag))) {
+			authTask = new FetchBestTvAuth();
+			authTask.execute();
+		}
     }
 
     @Override
@@ -407,16 +412,17 @@ public class BaseActivity extends FragmentActivity {
 		if ("launcher".equals(fromPage)
 				&& StringUtils.isEmpty(activityTag)){
 			showExitPopup(((ViewGroup) findViewById(android.R.id.content))
-					.getChildAt(0));
+					.getChildAt(0),R.string.exit_prompt);
 		}else{
 			super.onBackPressed();
 		}
 		
     }
 
-    private void showExitPopup(View view) {
+    private void showExitPopup(View view,int message) {
         exitPopupWindow = new MessagePopWindow(this);
-        exitPopupWindow.setFirstMessage(R.string.exit_prompt);
+        exitPopupWindow.setFirstMessage(message);
+        exitPopupWindow.setSecondMessage(message);
         exitPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
 			
 			@Override
@@ -438,4 +444,70 @@ public class BaseActivity extends FragmentActivity {
                 }
         );
     }
+
+    private void showBindPopup(View view,int message) {
+        exitPopupWindow = new MessagePopWindow(this);
+        exitPopupWindow.setFirstMessage(message);
+        exitPopupWindow.setSecondMessage(message);
+        exitPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+			
+			@Override
+			public void onDismiss() {
+			}
+		});
+        exitPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0, new MessagePopWindow.ConfirmListener() {
+                    @Override
+                    public void confirmClick(View view) {
+                        exitPopupWindow.dismiss();
+                        BaseActivity.this.finish();
+                    }
+                },
+                null
+        );
+    }
+
+	class FetchBestTvAuth extends AsyncTask<String, Void, Integer> {
+		private final static int RESUTL_CANCELED = -2;
+		private final static int RESULT_SUCCESS = 0;
+        private String httpresult;
+		@Override
+		protected Integer doInBackground(String... params) {
+			SimpleRestClient mRestClient = new SimpleRestClient();
+			try {
+				String mac = DeviceUtils.getLocalMacAddress(BaseActivity.this);
+				mac = mac.replace("-", "").replace(":", "");
+				httpresult = mRestClient.getBestTVAuthor(mac);
+				httpresult = httpresult.replace("\"", "");
+				DaisyUtils.getVodApplication(BaseActivity.this).getEditor().putString(VodApplication.BESTTV_AUTH_BIND_FLAG, httpresult);
+			} catch (NetworkException e) {
+				e.printStackTrace();
+				return RESUTL_CANCELED;
+			}
+			if (isCancelled()) {
+				return RESUTL_CANCELED;
+			} else {
+				return RESULT_SUCCESS;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Integer result) {
+			if (result == RESULT_SUCCESS) {
+				if (StringUtils.isNotEmpty(SimpleRestClient.mobile_number)
+						&& StringUtils
+								.isNotEmpty(SimpleRestClient.access_token)) {
+					if("privilege".equals(httpresult)){
+						//继续绑定
+					}
+				}else{
+					showBindPopup(
+							((ViewGroup) findViewById(android.R.id.content))
+									.getChildAt(0),
+							R.string.besttvauthbind_message);
+				}
+			}
+		}
+	}
+
 }
+

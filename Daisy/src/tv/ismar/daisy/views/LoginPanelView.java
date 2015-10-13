@@ -23,6 +23,7 @@ import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
 
+import java.net.ContentHandler;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,7 +41,7 @@ public class LoginPanelView extends LinearLayout {
 	private IsmartCountTimer timeCount;
 	private boolean suspension_window = false;
 	private Item[] mHistoriesByNet;
-
+    private Context mcontext;
 	public LoginPanelView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
@@ -55,6 +56,7 @@ public class LoginPanelView extends LinearLayout {
 		} else {
 			myView = mInflater.inflate(R.layout.person_center_login, null);
 		}
+		mcontext = context;
 		setOrientation(LinearLayout.VERTICAL);
 		mSimpleRestClient = new SimpleRestClient();
 		addView(myView);
@@ -137,7 +139,7 @@ public class LoginPanelView extends LinearLayout {
 									dialog.setIscancelshow(false);
 									dialog.setWarningmessage("恭喜"
 											+ SimpleRestClient.mobile_number
-											+ "，您已成功注册/登陆视云账户!");
+											+ "登陆视云账户!");
 									dialog.show();
 									if (callback != null) {
 										callback.onSuccess(auth_token);
@@ -457,12 +459,7 @@ public class LoginPanelView extends LinearLayout {
 
 				@Override
 				public void onClick(View v) {
-					if (StringUtils.isNotEmpty(SimpleRestClient.access_token)) {
-						warnmsg_view
-								.setText(R.string.account_bind_dialog_bindmsg);
-						account_bind_panel.setVisibility(View.VISIBLE);
-						account_bind_ok1_bt.setVisibility(View.GONE);
-					}
+					dismiss();
 				}
 			});
 

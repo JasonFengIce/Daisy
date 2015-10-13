@@ -26,9 +26,11 @@
             android:id="@+id/panel_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:text="@string/pay_panel_label"
-            android:textSize="@dimen/pay_top_panel_panel_label_textsieze" />
+            android:layout_below="@id/videotitle"
+            android:layout_marginTop="@dimen/filter_list_item_title_pb"
+            android:text="@string/pay_warntitle"
+            android:textColor="#fe8109"
+            android:textSize="@dimen/pay_top_panel_warntitle_textsieze" />
     </RelativeLayout>
 
     <!-- top login panel -->
@@ -37,7 +39,9 @@
         android:id="@+id/top_login_panel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="4" >
+        android:layout_weight="4"
+        android:visibility="invisible"
+         >
 
         <Button
             android:id="@+id/top_login"
@@ -61,7 +65,8 @@
             android:text="@string/pay_warntitle"
             android:lineSpacingExtra="5dp"
             android:textColor="#fe8109"
-            android:textSize="@dimen/pay_top_panel_warntitle_textsieze" />
+            android:textSize="@dimen/pay_top_panel_warntitle_textsieze"
+             />
     </RelativeLayout>
 
     <TextView
@@ -73,6 +78,6 @@
         android:gravity="right"
         android:text="@string/welocome_tip"
         android:textSize="@dimen/pay_top_panel_welocome_tip_textsieze"
-        android:visibility="gone" />
+        />
 
 </LinearLayout>

@@ -574,8 +574,8 @@
     <!-- pay panel -->
     <dimen name="pay_top_panel_merginleft">47.33dp</dimen>
     <dimen name="pay_top_panel_panel_label_textsieze">15.33sp</dimen>
-    <dimen name="pay_top_panel_videotitle_textsieze">23.33sp</dimen>
-    <dimen name="pay_top_panel_warntitle_textsieze">15.33sp</dimen>
+    <dimen name="pay_top_panel_videotitle_textsieze">32.00sp</dimen>
+    <dimen name="pay_top_panel_warntitle_textsieze">20.00sp</dimen>
     <dimen name="pay_top_panel_top_login_textsieze">23.33sp</dimen>
     <dimen name="pay_top_panel_welocome_tip_textsieze">15.33sp</dimen>
     <dimen name="pay_channel_weixin_height">53.33dp</dimen>
@@ -1285,7 +1285,7 @@
     <dimen name="pop_text_layout_height">73.33dp</dimen>
     <dimen name="location_selected_city_text_width">133.33dp</dimen>
     <dimen name="usercenter_activity_top_layout_height">66.00dp</dimen>
-    <dimen name="usercenter_horizontal_divider_line_height">1dp</dimen>
+    <dimen name="usercenter_horizontal_divider_line_height">0.67dp</dimen>
     <dimen name="usercenter_vertical_divider_line_width">27.33dp</dimen>
     <dimen name="usercenter_vertical_divider_line2_width">0.67dp</dimen>
     <dimen name="user_center_container_width">953.33dp</dimen>

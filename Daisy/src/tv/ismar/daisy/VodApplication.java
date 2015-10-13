@@ -59,6 +59,7 @@ public class VodApplication extends Application {
     public static String LOCATION_PROVINCE = "location_province";
     public static String LOCATION_CITY = "location_city";
     public static String LOCATION_DISTRICT = "location_district";
+    public static String BESTTV_AUTH_BIND_FLAG = "besttv_auth_bind_flag";
     private static final int CORE_POOL_SIZE = 5;
     public static String NEWEST_ENTERTAINMENT = "newestentertainment";
     public static String OPENID = "openid";

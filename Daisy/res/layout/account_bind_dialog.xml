@@ -20,15 +20,7 @@
         android:lineSpacingExtra="32dp"
         android:layout_marginTop="49dip"
         android:textSize="@dimen/person_login_phone_text_size" />
-        <TextView
-        android:layout_width="691dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_gravity="center_horizontal"
-        android:textColor="#FFFFFFFF"
-        android:lineSpacingExtra="32dp"
-        android:text="您已成功登录视云影院！"
-        android:textSize="@dimen/person_login_phone_text_size" />
+    
     <LinearLayout
         android:id="@+id/account_bind_panel"
         android:layout_width="wrap_content"

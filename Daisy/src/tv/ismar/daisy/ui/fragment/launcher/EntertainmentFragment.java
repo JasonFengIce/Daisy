@@ -275,8 +275,6 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 	private void fillData(ArrayList<Carousel> carousellist,
 			ArrayList<Poster> postlist) {
 		// vaiety_post.setUrl(carousellist.get(0).getVideo_image());
-		Log.v("aaaa", "flag = "+bottomFlag);
-		Log.v("aaaa", "isRight = "+isRight);
         if(scrollFromBorder){
         	if(isRight){//右侧移入
 //        		if(StringUtils.isNotEmpty(bottomFlag)){

@@ -148,7 +148,7 @@
     <string name="zhifubao_pay_button_title">支付宝支付</string>
     <string name="yu_e_pay_button_title">余额支付</string>
     <string name="pay_panel_label">微信支付无需登陆，扫描二维码，即可畅享在线大片(仅限当前设备)</string>
-    <string name="pay_warntitle">登陆后，支付更方便！</string>
+    <string name="pay_warntitle">您尚未登陆，请使用手机号登陆后购买！</string>
     <string name="pay_top_login_label">登陆/注册</string>
     <string name="pay_top_welocome_tip">您好 : %1$s</string>
     <string name="pay_card_balance_title_label">您的观影卡余额: ￥%1$.2f</string>
@@ -239,8 +239,7 @@
     <string name="personcenter_orderlist_item_remainday">剩余 %1$s天</string>
     <string name="personcenter_orderlist_item_cost">消费 : %1$s元</string>
     <string name="personcenter_orderlist_item_paysource">支付渠道 : %1$s</string>
-    <string name="account_bind_dialog_bindmsg">恭喜您成功注册/登陆视云账户,建议您将当前设备特权和余额上传到视云账户，
-    使备份更安全!</string>
+    <string name="account_bind_dialog_bindmsg">恭喜: %1$s登陆视云账户</string>
     <string name="usercenter_store">购卡充值</string>
     <string name="usercenter_userinfo">个人信息</string>
     <string name="usercenter_login">登录</string>
@@ -315,4 +314,5 @@
 
     <string name="today_text">今天</string>
     <string name="tomorrow_text">明天</string>
+    <string name="besttvauthbind_message">因系统升级,为保证您的套餐正常使用,请您使用手机号登陆</string>
 </resources>

@@ -202,6 +202,19 @@ public class SimpleRestClient {
 		return null;
 	}
 
+	public String getBestTVAuthor(String macaddress)
+			throws NetworkException {
+		try {
+			String url = root_url + "/accounts/auth/";
+			String resurt = NetworkUtils.getJsonStr(url, "&sharp_bestv="+macaddress);
+			return resurt;
+		} catch (ItemOfflineException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public HomePagerEntity getVaietyHome(String url) throws NetworkException {
 		HomePagerEntity entity = null;
 		
