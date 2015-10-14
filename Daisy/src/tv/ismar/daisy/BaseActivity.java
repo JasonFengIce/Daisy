@@ -460,6 +460,10 @@ public class BaseActivity extends FragmentActivity {
                     public void confirmClick(View view) {
                         exitPopupWindow.dismiss();
                         BaseActivity.this.finish();
+                        Intent intent = new Intent();
+        				intent.setAction("tv.ismar.daisy.usercenter");
+        				intent.putExtra("flag", "login");
+        				startActivity(intent);
                     }
                 },
                 null

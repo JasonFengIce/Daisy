@@ -329,16 +329,18 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.change:
                 playAuthListView.setFocusable(false);
-                ((UserCenterActivity) getActivity()).setAccountListener(new UserCenterActivity.OnLoginByChangeCallback() {
-
-                    @Override
-                    public void onLoginSuccess() {
-                        Log.i("qihuanzhanghu", "onLoginSuccess");
-                        playAuthListView.setFocusable(true);
-                        onResume();
-                    }
-                });
-                ((BaseActivity) getActivity()).changaccount();
+//                ((UserCenterActivity) getActivity()).setAccountListener(new UserCenterActivity.OnLoginByChangeCallback() {
+//
+//                    @Override
+//                    public void onLoginSuccess() {
+//                        Log.i("qihuanzhanghu", "onLoginSuccess");
+//                        playAuthListView.setFocusable(true);
+//                        onResume();
+//                    }
+//                });
+//                ((BaseActivity) getActivity()).changaccount();
+                loginFragment.setBackground(true);
+                getChildFragmentManager().beginTransaction().show(loginFragment).commit();
                 break;
         }
     }

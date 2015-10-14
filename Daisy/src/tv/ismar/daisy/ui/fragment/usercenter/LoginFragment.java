@@ -20,6 +20,7 @@ import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.receiver.TimeCountdownBroadcastSender;
 import tv.ismar.daisy.data.usercenter.AuthTokenEntity;
@@ -27,10 +28,13 @@ import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.ui.activity.UserCenterActivity;
+import tv.ismar.sakura.utils.DeviceUtils;
 
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by huaijie on 7/3/15.
@@ -205,6 +209,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         new IsmartvUrlClient().doRequest(IsmartvUrlClient.Method.POST, api, params, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
+            	String bindflag = DaisyUtils.getVodApplication(mContext)
+						.getPreferences().getString(VodApplication.BESTTV_AUTH_BIND_FLAG, "");
+		        if (StringUtils.isNotEmpty(bindflag) && "privilege".equals(bindflag)) {
+		        	bindBestTvauth();
+				}
                 AuthTokenEntity authTokenEntity = new Gson().fromJson(result, AuthTokenEntity.class);
                 saveToLocal(authTokenEntity.getAuth_token(), phoneNumber);
                 submitBtn.clearFocus();
@@ -271,7 +280,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 loginPopup.dismiss();
-                showAccountsCombinePopup();
+//                showAccountsCombinePopup();
             }
         });
 
@@ -481,5 +490,34 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         }
     };
 
+    private void bindBestTvauth() {
+		long timestamp = System.currentTimeMillis();
+		Activator activator = Activator.getInstance(mContext);
+		String mac = DeviceUtils.getLocalMacAddress(mContext);
+		mac = mac.replace("-", "").replace(":", "");
+		String rsaResult = activator.PayRsaEncode("sn="
+				+ SimpleRestClient.sn_token + "&timestamp=" + timestamp);
+		String params = "device_token=" + SimpleRestClient.device_token
+				+ "&access_token=" + SimpleRestClient.access_token
+				+"&sharp_bestv="+mac
+				+"&timestamp=" + timestamp + "&sign=" + rsaResult;
+		mSimpleRestClient.doSendRequest(SimpleRestClient.root_url
+				+ "/accounts/combine/", "post", params,
+				new HttpPostRequestInterface() {
 
+					@Override
+					public void onPrepare() {
+					}
+
+					@Override
+					public void onSuccess(String info) {
+						DaisyUtils.getVodApplication(mContext).getEditor().putString(VodApplication.BESTTV_AUTH_BIND_FLAG, "combined");
+					}
+
+					@Override
+					public void onFailed(String error) {
+					}
+
+				});
+	}
 }

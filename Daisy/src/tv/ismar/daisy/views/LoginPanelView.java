@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.*;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 import cn.ismartv.activator.Activator;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
+
+import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
@@ -22,6 +25,7 @@ import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
+import tv.ismar.sakura.utils.DeviceUtils;
 
 import java.net.ContentHandler;
 import java.util.regex.Matcher;
@@ -144,6 +148,12 @@ public class LoginPanelView extends LinearLayout {
 									if (callback != null) {
 										callback.onSuccess(auth_token);
 									}
+									String bindflag = DaisyUtils.getVodApplication(mcontext)
+											.getPreferences().getString(VodApplication.BESTTV_AUTH_BIND_FLAG, "");
+							        if (StringUtils.isNotEmpty(bindflag) && "privilege".equals(bindflag)) {
+							        	bindBestTvauth();
+									}
+									
 								} catch (JSONException e) {
 									// TODO Auto-generated catch block
 									callback.onFailed(e.toString());
@@ -533,7 +543,37 @@ public class LoginPanelView extends LinearLayout {
 			}
 			return super.onKeyDown(keyCode, event);
 		}
+	};
+
+	private void bindBestTvauth() {
+		long timestamp = System.currentTimeMillis();
+		Activator activator = Activator.getInstance(getContext());
+		String mac = DeviceUtils.getLocalMacAddress(mcontext);
+		mac = mac.replace("-", "").replace(":", "");
+		String rsaResult = activator.PayRsaEncode("sn="
+				+ SimpleRestClient.sn_token + "&timestamp=" + timestamp);
+		String params = "device_token=" + SimpleRestClient.device_token
+				+ "&access_token=" + SimpleRestClient.access_token
+				+"&sharp_bestv="+mac
+				+"&timestamp=" + timestamp + "&sign=" + rsaResult;
+		mSimpleRestClient.doSendRequest(SimpleRestClient.root_url
+				+ "/accounts/combine/", "post", params,
+				new HttpPostRequestInterface() {
+
+					@Override
+					public void onPrepare() {
+					}
+
+					@Override
+					public void onSuccess(String info) {
+						DaisyUtils.getVodApplication(mcontext).getEditor().putString(VodApplication.BESTTV_AUTH_BIND_FLAG, "combined");
+					}
+
+					@Override
+					public void onFailed(String error) {
+					}
+
+				});
 	}
 
-	;
 }

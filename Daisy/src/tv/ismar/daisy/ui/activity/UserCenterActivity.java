@@ -39,6 +39,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * Created by huaijie on 7/3/15.
  */
@@ -49,6 +51,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     public static final String ACCOUNT_SHARED_PREFS = "account";
     //    public static final String ACCOUNT_COMBINE = "combine";
     public static final String LOCATION_FRAGMENT = "location";
+    public static final String LOGIN_FRAGMENT = "login";
     private static final int[] INDICATOR_TEXT_RES_ARRAY = {
             R.string.usercenter_store,
             R.string.usercenter_userinfo,
@@ -96,7 +99,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     };
 
     private boolean fargmentIsActive = false;
-
+    private String fromLaunchflag;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -121,17 +124,34 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         createIndicatorView();
         String flag = getIntent().getStringExtra("flag");
 
-        if (!TextUtils.isEmpty(flag) && flag.equals(LOCATION_FRAGMENT)) {
-            changeViewState(indicatorView.get(5), ViewState.Overlay);
-            mIndicatorType = IndicatorType.LOCATION;
-            getSupportFragmentManager().beginTransaction().add(R.id.user_center_container, locationFragment).commit();
-            currentFragmentIndictor = R.string.usercenter_location;
-        } else {
-            changeViewState(indicatorView.get(0), ViewState.Overlay);
-            mIndicatorType = IndicatorType.STORE;
-            getSupportFragmentManager().beginTransaction().add(R.id.user_center_container, new StoreFragment()).commit();
-            currentFragmentIndictor = R.string.usercenter_store;
-        }
+		if (!TextUtils.isEmpty(flag)) {
+			if (flag.equals(LOCATION_FRAGMENT)) {
+				changeViewState(indicatorView.get(5), ViewState.Overlay);
+				mIndicatorType = IndicatorType.LOCATION;
+				getSupportFragmentManager().beginTransaction()
+						.add(R.id.user_center_container, locationFragment)
+						.commit();
+				currentFragmentIndictor = R.string.usercenter_location;
+				fromLaunchflag = LOCATION_FRAGMENT;
+				indicatorView.get(5).requestFocus();
+			} else if (flag.equals(LOGIN_FRAGMENT)) {
+				changeViewState(indicatorView.get(2), ViewState.Overlay);
+				mIndicatorType = IndicatorType.LOCATION;
+				getSupportFragmentManager().beginTransaction()
+						.add(R.id.user_center_container, loginFragment)
+						.commit();
+				currentFragmentIndictor = R.string.usercenter_login_register;
+				fromLaunchflag = LOGIN_FRAGMENT;
+				indicatorView.get(2).requestFocus();
+			}
+		} else {
+			changeViewState(indicatorView.get(0), ViewState.Overlay);
+			mIndicatorType = IndicatorType.STORE;
+			getSupportFragmentManager().beginTransaction()
+					.add(R.id.user_center_container, new StoreFragment())
+					.commit();
+			currentFragmentIndictor = R.string.usercenter_store;
+		}
     }
 
     @Override
@@ -508,6 +528,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                     break;
                 case R.string.usercenter_store:
                 case R.string.usercenter_userinfo:
+                case R.string.usercenter_login_register:
                 case R.string.usercenter_purchase_history:
                 case R.string.usercenter_help:
                 case R.string.usercenter_location:
@@ -521,6 +542,10 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private Handler messageHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+			if (StringUtils.isNotEmpty(fromLaunchflag)) {
+				fromLaunchflag = "";
+				return;
+			}
             switch (msg.what) {
                 case MSG_INDICATOR_CHANGE:
                     View view = (View) msg.obj;
