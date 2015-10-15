@@ -240,7 +240,7 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
             case R.string.guide_play_history:
                 intent.setClassName("tv.ismar.daisy",
                         "tv.ismar.daisy.ChannelListActivity");
-                intent.putExtra("channel", "$histories");
+                intent.putExtra("channel", "histories");
                 break;
             case R.string.guide_my_favorite:
                 intent.setClassName("tv.ismar.daisy",

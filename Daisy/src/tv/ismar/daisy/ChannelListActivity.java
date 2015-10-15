@@ -61,7 +61,7 @@ public class ChannelListActivity extends BaseActivity {
 			if(channel.equals("$bookmarks")) {
 				Fragment favoriteFragment = new FavoriteFragment();
 				fragmentTransaction.add(R.id.fragment_container, favoriteFragment);
-			} else if(channel.equals("$histories")) {
+			} else if(channel.equals("histories")) {
 				Fragment historyFragment = new HistoryFragment();
 				fragmentTransaction.add(R.id.fragment_container, historyFragment);
 			} 
