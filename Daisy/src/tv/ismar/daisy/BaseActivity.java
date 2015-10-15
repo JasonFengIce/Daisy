@@ -481,6 +481,8 @@ public class BaseActivity extends FragmentActivity {
 				String mac = DeviceUtils.getLocalMacAddress(BaseActivity.this);
 				mac = mac.replace("-", "").replace(":", "");
 				httpresult = mRestClient.getBestTVAuthor(mac);
+				if(StringUtils.isEmpty(httpresult))
+					return -1;
 				httpresult = httpresult.replace("\"", "");
 				DaisyUtils.getVodApplication(BaseActivity.this).getEditor().putString(VodApplication.BESTTV_AUTH_BIND_FLAG, httpresult);
 			} catch (NetworkException e) {
@@ -501,13 +503,16 @@ public class BaseActivity extends FragmentActivity {
 						&& StringUtils
 								.isNotEmpty(SimpleRestClient.access_token)) {
 					if("privilege".equals(httpresult)){
-						//继续绑定
+						//继续绑定不提示
 					}
 				}else{
-					showBindPopup(
-							((ViewGroup) findViewById(android.R.id.content))
-									.getChildAt(0),
-							R.string.besttvauthbind_message);
+					if("privilege".equals(httpresult)){//未登陆提示登陆绑定
+						showBindPopup(
+								((ViewGroup) findViewById(android.R.id.content))
+										.getChildAt(0),
+								R.string.besttvauthbind_message);
+					}
+
 				}
 			}
 		}
