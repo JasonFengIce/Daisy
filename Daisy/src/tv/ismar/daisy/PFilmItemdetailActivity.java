@@ -1203,6 +1203,8 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             if(data.getBooleanExtra("result", false)){
                 isBuy = true;
                 setExpenseStatus();
+				if (mLeftBtn != null)
+					mLeftBtn.setBackgroundResource(R.drawable.filmplayvideo_focus_btn_bg);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
