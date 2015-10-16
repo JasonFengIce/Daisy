@@ -2,7 +2,6 @@ package tv.ismar.daisy.ui.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,39 +11,44 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
-import cn.ismartv.activator.Activator;
-
-import com.activeandroid.query.Select;
 import com.google.gson.Gson;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.account.AccountChangeListener;
+import tv.ismar.daisy.core.account.AccountManager;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
-import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.data.usercenter.AuthTokenEntity;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
-import tv.ismar.daisy.ui.fragment.usercenter.*;
+import tv.ismar.daisy.ui.fragment.usercenter.HelpFragment;
+import tv.ismar.daisy.ui.fragment.usercenter.LocationFragment;
+import tv.ismar.daisy.ui.fragment.usercenter.LoginFragment;
+import tv.ismar.daisy.ui.fragment.usercenter.PurchaseHistoryFragment;
+import tv.ismar.daisy.ui.fragment.usercenter.StoreFragment;
+import tv.ismar.daisy.ui.fragment.usercenter.UserInfoFragment;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
 import tv.ismar.sakura.ui.widget.MessagePopWindow;
-
-import java.lang.annotation.Target;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by huaijie on 7/3/15.
  */
-public class UserCenterActivity extends BaseActivity implements View.OnClickListener, BaseActivity.OnLoginCallback, OnFocusChangeListener {
+public class UserCenterActivity extends BaseActivity implements View.OnClickListener, BaseActivity.OnLoginCallback, OnFocusChangeListener, AccountChangeListener {
 
     private static final String TAG = "UserCenterActivity";
     private static final int MSG_INDICATOR_CHANGE = 0x0001;
@@ -83,20 +87,9 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private ImageView user_center_shadow_view;
     private IndicatorType mIndicatorType = IndicatorType.STORE;
     private int currentFragmentIndictor;
-    private SharedPreferences.OnSharedPreferenceChangeListener changeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            String accessToken = accountPreference.getString("auth_token", "");
-            String phoneNumber = accountPreference.getString("mobile_number", "");
-            if (!TextUtils.isEmpty(accessToken) && !TextUtils.isEmpty(phoneNumber)) {
-                changeViewState(indicatorView.get(2), ViewState.Disable);
 
-            } else {
-                changeViewState(indicatorView.get(2), ViewState.Enable);
+    private AccountManager mAccountManager;
 
-            }
-        }
-    };
 
     private boolean fargmentIsActive = false;
     private String fromLaunchflag;
@@ -104,14 +97,15 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAccountManager = AccountManager.getInstance(this);
+        mAccountManager.addAccounChangeListener(this);
+
         accountSharedPrefs = getSharedPreferences(ACCOUNT_SHARED_PREFS, Context.MODE_PRIVATE);
         mContentView = LayoutInflater.from(this).inflate(R.layout.activity_usercenter, null);
         setContentView(mContentView);
         mSimpleRestClient = new SimpleRestClient();
         View background = findViewById(R.id.large_layout);
         DaisyUtils.setbackground(R.drawable.main_bg, background);
-        accountPreference = getSharedPreferences("Daisy", Context.MODE_PRIVATE);
-        accountPreference.registerOnSharedPreferenceChangeListener(changeListener);
         userCenterIndicatorLayout = (LinearLayout) findViewById(R.id.user_center_indicator_layout);
 //        storeFragment = new StoreFragment();
 //        userInfoFragment = new UserInfoFragment();
@@ -124,34 +118,34 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         createIndicatorView();
         String flag = getIntent().getStringExtra("flag");
 
-		if (!TextUtils.isEmpty(flag)) {
-			if (flag.equals(LOCATION_FRAGMENT)) {
-				changeViewState(indicatorView.get(5), ViewState.Overlay);
-				mIndicatorType = IndicatorType.LOCATION;
-				getSupportFragmentManager().beginTransaction()
-						.add(R.id.user_center_container, locationFragment)
-						.commit();
-				currentFragmentIndictor = R.string.usercenter_location;
-				fromLaunchflag = LOCATION_FRAGMENT;
-				indicatorView.get(5).requestFocus();
-			} else if (flag.equals(LOGIN_FRAGMENT)) {
-				changeViewState(indicatorView.get(2), ViewState.Overlay);
-				mIndicatorType = IndicatorType.LOCATION;
-				getSupportFragmentManager().beginTransaction()
-						.add(R.id.user_center_container, loginFragment)
-						.commit();
-				currentFragmentIndictor = R.string.usercenter_login_register;
-				fromLaunchflag = LOGIN_FRAGMENT;
-				indicatorView.get(2).requestFocus();
-			}
-		} else {
-			changeViewState(indicatorView.get(0), ViewState.Overlay);
-			mIndicatorType = IndicatorType.STORE;
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.user_center_container, new StoreFragment())
-					.commit();
-			currentFragmentIndictor = R.string.usercenter_store;
-		}
+        if (!TextUtils.isEmpty(flag)) {
+            if (flag.equals(LOCATION_FRAGMENT)) {
+                changeViewState(indicatorView.get(5), ViewState.Overlay);
+                mIndicatorType = IndicatorType.LOCATION;
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.user_center_container, locationFragment)
+                        .commit();
+                currentFragmentIndictor = R.string.usercenter_location;
+                fromLaunchflag = LOCATION_FRAGMENT;
+                indicatorView.get(5).requestFocus();
+            } else if (flag.equals(LOGIN_FRAGMENT)) {
+                changeViewState(indicatorView.get(2), ViewState.Overlay);
+                mIndicatorType = IndicatorType.LOCATION;
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.user_center_container, loginFragment)
+                        .commit();
+                currentFragmentIndictor = R.string.usercenter_login_register;
+                fromLaunchflag = LOGIN_FRAGMENT;
+                indicatorView.get(2).requestFocus();
+            }
+        } else {
+            changeViewState(indicatorView.get(0), ViewState.Overlay);
+            mIndicatorType = IndicatorType.STORE;
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.user_center_container, new StoreFragment())
+                    .commit();
+            currentFragmentIndictor = R.string.usercenter_store;
+        }
     }
 
     @Override
@@ -210,7 +204,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             userCenterIndicatorLayout.addView(frameLayout);
         }
 
-        if (!TextUtils.isEmpty(SimpleRestClient.access_token) && !TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
+        if (mAccountManager.isLogin()) {
             changeViewState(indicatorView.get(2), ViewState.Disable);
         } else {
             changeViewState(indicatorView.get(2), ViewState.Enable);
@@ -416,17 +410,16 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 changeViewState(view, ViewState.None);
             }
         }
-
-        if (!TextUtils.isEmpty(SimpleRestClient.access_token) && !TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
+        if (mAccountManager.isLogin()) {
             changeViewState(indicatorView.get(2), ViewState.Disable);
+        } else {
+            changeViewState(indicatorView.get(2), ViewState.Enable);
         }
     }
 
 
     private void handlerClick(View v) {
         if (fargmentIsActive) {
-
-
             switch ((Integer) v.getTag()) {
                 case R.string.usercenter_store:
                     if (currentFragmentIndictor == R.string.usercenter_store)
@@ -467,10 +460,11 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             }
 
             if (v == indicatorView.get(2)) {
-                if (TextUtils.isEmpty(SimpleRestClient.access_token)) {
-                    changeViewState(v, ViewState.Overlay);
-                } else {
+                if (mAccountManager.isLogin()) {
                     changeViewState(v, ViewState.Disable);
+                } else {
+                    changeViewState(v, ViewState.Overlay);
+
                 }
             }
         }
@@ -542,10 +536,10 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private Handler messageHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-			if (StringUtils.isNotEmpty(fromLaunchflag)) {
-				fromLaunchflag = "";
-				return;
-			}
+            if (StringUtils.isNotEmpty(fromLaunchflag)) {
+                fromLaunchflag = "";
+                return;
+            }
             switch (msg.what) {
                 case MSG_INDICATOR_CHANGE:
                     View view = (View) msg.obj;
@@ -787,4 +781,23 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         listener = l;
     }
 
+
+    @Override
+    public void onLogin() {
+
+    }
+
+    @Override
+    public void onLogout() {
+        changeViewState(indicatorView.get(2), ViewState.Enable);
+    }
+
+    public void selectUserInfoIndicator() {
+        changeViewState(indicatorView.get(1), ViewState.Overlay);
+        currentFragmentIndictor = R.string.usercenter_userinfo;
+        indicatorView.get(1).requestFocus();
+        mIndicatorType = IndicatorType.USERINFO;
+        getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, new UserInfoFragment()).commitAllowingStateLoss();
+
+    }
 }

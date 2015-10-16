@@ -147,7 +147,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
     private void fetchVerificationCode() {
-//        phoneNumberEdit.setText("15370770697");
+        phoneNumberEdit.setText("15370770697");
         String phoneNumber = phoneNumberEdit.getText().toString();
         if (TextUtils.isEmpty(phoneNumber)) {
             phoneNumberPrompt.setText(mContext.getText(R.string.phone_number_not_be_null));
@@ -217,6 +217,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 AuthTokenEntity authTokenEntity = new Gson().fromJson(result, AuthTokenEntity.class);
                 saveToLocal(authTokenEntity.getAuth_token(), phoneNumber);
                 submitBtn.clearFocus();
+                ((UserCenterActivity) getActivity()).selectUserInfoIndicator();
                 showLoginSuccessPopup();
                 if (loginCallback != null) {
                     loginCallback.onLoginSuccess();
@@ -367,7 +368,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         history.is_continue = true;
         if (SimpleRestClient.isLogin())
-            DaisyUtils.getHistoryManager(getActivity()).addHistory(history,
+            DaisyUtils.getHistoryManager(mContext).addHistory(history,
                     "yes");
         else
             DaisyUtils.getHistoryManager(getActivity())

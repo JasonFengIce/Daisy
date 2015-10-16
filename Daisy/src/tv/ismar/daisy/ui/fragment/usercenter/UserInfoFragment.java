@@ -2,7 +2,6 @@ package tv.ismar.daisy.ui.fragment.usercenter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,37 +13,36 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import cn.ismartv.activator.Activator;
-
 import com.google.gson.Gson;
-
-import org.w3c.dom.Text;
-
-import tv.ismar.daisy.BaseActivity;
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.VodApplication;
-import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.client.IsmartvUrlClient;
-import tv.ismar.daisy.data.usercenter.AccountBalanceEntity;
-import tv.ismar.daisy.data.usercenter.AccountPlayAuthEntity;
-import tv.ismar.daisy.models.Item;
-import tv.ismar.daisy.player.InitPlayerTool;
-import tv.ismar.daisy.ui.activity.UserCenterActivity;
-import tv.ismar.daisy.ui.adapter.AccoutPlayAuthAdapter;
-import tv.ismar.daisy.utils.Util;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import cn.ismartv.activator.Activator;
+import tv.ismar.daisy.BaseActivity;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.VodApplication;
+import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.account.AccountChangeListener;
+import tv.ismar.daisy.core.account.AccountManager;
+import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.data.usercenter.AccountBalanceEntity;
+import tv.ismar.daisy.data.usercenter.AccountPlayAuthEntity;
+import tv.ismar.daisy.player.InitPlayerTool;
+import tv.ismar.daisy.ui.activity.TVGuideActivity;
+import tv.ismar.daisy.ui.activity.UserCenterActivity;
+import tv.ismar.daisy.ui.adapter.AccoutPlayAuthAdapter;
+import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
+import tv.ismar.daisy.utils.Util;
+
 /**
  * Created by huaijie on 7/3/15.
  */
-public class UserInfoFragment extends Fragment implements View.OnClickListener {
+public class UserInfoFragment extends Fragment implements View.OnClickListener, AccountChangeListener {
     private static final String TAG = "UserInfoFragment";
 
     private Context mContext;
@@ -57,7 +55,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
 
     private LinearLayout playAuthListView;
     //    private Button associationText;
-    private Button changeButton;
+//    private Button changeButton;
     private TextView phoneNumber;
     private View fragmentView;
     private LoginFragment loginFragment;
@@ -66,25 +64,12 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
     private View snNumberLayout;
     private AccountBalanceEntity accountBalanceEntity;
 
+    private Button exitAccountBtn;
+
+    private AccountManager mAccountManager;
+
 
     private float rate;
-    private SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            String phone = sharedPreferences.getString("mobile_number", "");
-            if (TextUtils.isEmpty(phone)) {
-                phoneNumberLayout.setVisibility(View.VISIBLE);
-                changeButton.setEnabled(true);
-                phoneNumber.setText(phone);
-
-
-            } else {
-                changeButton.setEnabled(false);
-                phoneNumberLayout.setVisibility(View.GONE);
-                changeButton.setFocusable(false);
-            }
-        }
-    };
 
 
     @Override
@@ -104,8 +89,13 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
         deviceNameTextView = (TextView) fragmentView.findViewById(R.id.device_name);
         playAuthListView = (LinearLayout) fragmentView.findViewById(R.id.privilegelist);
         userInfoLayout = (LinearLayout) fragmentView.findViewById(R.id.userinfo_layout);
-        changeButton = (Button) fragmentView.findViewById(R.id.change);
-        changeButton.setNextFocusUpId(changeButton.getId());
+
+        //退出按钮
+        exitAccountBtn = (Button) fragmentView.findViewById(R.id.exit_account);
+        exitAccountBtn.setOnClickListener(this);
+//
+//        changeButton = (Button) fragmentView.findViewById(R.id.change);
+        exitAccountBtn.setNextFocusUpId(exitAccountBtn.getId());
 
 
         phoneNumberLayout = fragmentView.findViewById(R.id.phone_number_layout);
@@ -113,23 +103,11 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
 
         deviceNameTextView.setText(Build.MODEL);
 
-        changeButton.setOnClickListener(this);
+//        changeButton.setOnClickListener(this);
 
         loginFragment = new LoginFragment();
         getChildFragmentManager().beginTransaction().add(R.id.association_phone_layout, loginFragment).commit();
         getChildFragmentManager().beginTransaction().hide(loginFragment).commit();
-
-        sharedPreferences = mContext.getSharedPreferences("Daisy", Context.MODE_PRIVATE);
-        sharedPreferences.registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
-
-
-        if (TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
-            phoneNumberLayout.setVisibility(View.GONE);
-            changeButton.setFocusable(false);
-        } else {
-            phoneNumberLayout.setVisibility(View.VISIBLE);
-            changeButton.setFocusable(true);
-        }
 
 
         fragmentView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -137,7 +115,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     if (!TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
-                        changeButton.requestFocus();
+                        exitAccountBtn.requestFocus();
                     } else {
                         if (playAuthListView.getChildAt(0) != null)
                             playAuthListView.getChildAt(0).requestFocus();
@@ -149,7 +127,18 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
         return fragmentView;
     }
 
-//    public void changge() {
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        mAccountManager = AccountManager.getInstance(mContext);
+        mAccountManager.addAccounChangeListener(this);
+        if (mAccountManager.isLogin()) {
+            phoneNumberLayout.setVisibility(View.VISIBLE);
+        } else {
+            phoneNumberLayout.setVisibility(View.GONE);
+        }
+    }
+
+    //    public void changge() {
 //
 //
 //        playAuthListView.setFocusable(false);
@@ -173,11 +162,11 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         if (accountBalanceEntity == null) {
-            if (!TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
-                Log.i("qihuanzhanghu", "phoneNumberLayout VISIBLE");
+            if (mAccountManager.isLogin()) {
                 phoneNumberLayout.setVisibility(View.VISIBLE);
+            } else {
+                phoneNumberLayout.setVisibility(View.GONE);
             }
-
 
             fetchAccountsBalance();
             fetchAccountsPlayauths();
@@ -284,8 +273,8 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
 
                 if (i == 0) {
                     convertView.setId(R.id.userinfo_palyauth_list_first_id);
-                    convertView.setNextFocusUpId(changeButton.getId());
-                    changeButton.setNextFocusDownId(convertView.getId());
+                    convertView.setNextFocusUpId(exitAccountBtn.getId());
+                    exitAccountBtn.setNextFocusDownId(convertView.getId());
                 }
 
                 if (i != 0) {
@@ -341,6 +330,9 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
                 loginFragment.setBackground(true);
                 getChildFragmentManager().beginTransaction().show(loginFragment).commit();
                 break;
+            case R.id.exit_account:
+                showExitAccountConfirmPop();
+                break;
         }
     }
 
@@ -354,4 +346,49 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
     }
 
 
+    private void showExitAccountConfirmPop() {
+        final MessageDialogFragment dialog = new MessageDialogFragment();
+        dialog.setFirstMessage(R.string.confirm_exit_account_text);
+        dialog.show(getFragmentManager(), "showExitAccountConfirmPop", new MessageDialogFragment.ConfirmListener() {
+                    @Override
+                    public void confirmClick(View view) {
+                        dialog.dismiss();
+                        showExitAccountMessagePop();
+                        mAccountManager.commonLogout();
+                    }
+                },
+                new MessageDialogFragment.CancelListener() {
+                    @Override
+                    public void cancelClick(View view) {
+                        dialog.dismiss();
+                    }
+                }
+
+        );
+    }
+
+    private void showExitAccountMessagePop() {
+        final MessageDialogFragment dialog = new MessageDialogFragment();
+        dialog.setFirstMessage(R.string.exit_account_message_text);
+        dialog.show(getFragmentManager(), "showExitAccountMessagePop", new MessageDialogFragment.ConfirmListener() {
+                    @Override
+                    public void confirmClick(View view) {
+                        dialog.dismiss();
+
+                    }
+                },
+                null
+        );
+    }
+
+
+    @Override
+    public void onLogin() {
+
+    }
+
+    @Override
+    public void onLogout() {
+        phoneNumberLayout.setVisibility(View.GONE);
+    }
 }

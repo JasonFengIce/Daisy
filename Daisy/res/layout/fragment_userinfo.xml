@@ -52,7 +52,8 @@
                 android:gravity="center"
                 android:text="@string/change_account"
                 android:textColor="#FFFFFF"
-                android:textSize="@dimen/h4_text_size"/>
+                android:textSize="@dimen/h4_text_size"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/exit_account"
