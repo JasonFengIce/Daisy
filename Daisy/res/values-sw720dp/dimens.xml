@@ -396,6 +396,8 @@
     <dimen name="search_main_autocomplete_PL">53.33dip</dimen>
     <dimen name="search_main_autocomplete_PR">13.33dip</dimen>
     <dimen name="search_main_autocomplete_textsize">22.67dip</dimen>
+    <dimen name="search_main_btn_search_w">147.33dip</dimen>
+    <dimen name="search_main_btn_search_h">54.00dip</dimen>
     <dimen name="search_main_btn_search_marginL">6.67dip</dimen>
     <dimen name="search_main_btn_search_marginT">2.00dip</dimen>
     <dimen name="search_main_hot_words_H">33.33dip</dimen>
