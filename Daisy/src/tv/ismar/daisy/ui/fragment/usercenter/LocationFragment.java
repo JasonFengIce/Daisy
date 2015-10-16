@@ -215,7 +215,7 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
             public void onClick(View view, int position) {
                 if (null != selectedAreaTextView) {
                     selectedAreaTextView.setTextColor(mContext.getResources().getColor(R.color.white));
-                    selectedAreaTextView.setTextSize(mContext.getResources().getDimension(R.dimen.h2_text_size));
+                    selectedAreaTextView.setTextSize(mContext.getResources().getDimension(R.dimen.h2_text_size) / rate);
                 }
                 selectedAreaPositon = position;
                 selectedAreaTextView = (TextView) view;
@@ -231,7 +231,7 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
                 }
                 selectedPosition.setText(city);
                 selectedAreaTextView.setTextColor(mContext.getResources().getColor(R.color.blue));
-                selectedAreaTextView.setTextSize(mContext.getResources().getDimension(R.dimen.h1_text_size));
+                selectedAreaTextView.setTextSize(mContext.getResources().getDimension(R.dimen.h1_text_size)/rate);
             }
 
 
@@ -285,7 +285,7 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
                 }
                 selectedAreaPositon = 0;
                 selectedAreaTextView.setTextColor(mContext.getResources().getColor(R.color.white));
-                selectedAreaTextView.setTextSize(mContext.getResources().getDimension(R.dimen.h2_text_size));
+                selectedAreaTextView.setTextSize(mContext.getResources().getDimension(R.dimen.h2_text_size)/rate);
 
             }
         });
