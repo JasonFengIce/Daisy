@@ -231,7 +231,7 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
                 }
                 selectedPosition.setText(city);
                 selectedAreaTextView.setTextColor(mContext.getResources().getColor(R.color.blue));
-                selectedAreaTextView.setTextSize(mContext.getResources().getDimension(R.dimen.h1_text_size)/rate);
+                selectedAreaTextView.setTextSize(mContext.getResources().getDimension(R.dimen.h1_text_size) / rate);
             }
 
 
@@ -285,7 +285,7 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
                 }
                 selectedAreaPositon = 0;
                 selectedAreaTextView.setTextColor(mContext.getResources().getColor(R.color.white));
-                selectedAreaTextView.setTextSize(mContext.getResources().getDimension(R.dimen.h2_text_size)/rate);
+                selectedAreaTextView.setTextSize(mContext.getResources().getDimension(R.dimen.h2_text_size) / rate);
 
             }
         });
@@ -358,13 +358,20 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
                     Log.i(TAG, "tomorrow templow: " + weatherEntity.getTomorrow().getTemplow());
                     Log.i(TAG, "tomorrow image_url: " + weatherEntity.getTomorrow().getImage_url());
 
-
-                    todayWeatherTemperature.setText(weatherEntity.getToday().getTemplow() + "℃ ~ " + weatherEntity.getToday().getTemphigh() + "℃");
+                    if (weatherEntity.getToday().getTemplow().equals(weatherEntity.getToday().getTemphigh())) {
+                        todayWeatherTemperature.setText(weatherEntity.getToday().getTemplow() + "℃ ");
+                    } else {
+                        todayWeatherTemperature.setText(weatherEntity.getToday().getTemplow() + "℃ ~ " + weatherEntity.getToday().getTemphigh() + "℃");
+                    }
                     todayWeatherInfo.setText(weatherEntity.getToday().getCondition());
                     Picasso.with(mContext).load(weatherEntity.getToday().getImage_url()).into(todayWeatherIcon1);
 
 
-                    tomorrowWeatherTemperature.setText(weatherEntity.getTomorrow().getTemplow() + "℃ ~ " + weatherEntity.getTomorrow().getTemphigh() + "℃");
+                    if (weatherEntity.getTomorrow().getTemplow().equals(weatherEntity.getTomorrow().getTemphigh())) {
+                        tomorrowWeatherTemperature.setText(weatherEntity.getTomorrow().getTemplow() + "℃ ");
+                    } else {
+                        tomorrowWeatherTemperature.setText(weatherEntity.getTomorrow().getTemplow() + "℃ ~ " + weatherEntity.getTomorrow().getTemphigh() + "℃");
+                    }
                     tomorrowWeatherInfo.setText(weatherEntity.getTomorrow().getCondition());
                     Picasso.with(mContext).load(weatherEntity.getTomorrow().getImage_url()).into(tomorrowWeatherIcon1);
 

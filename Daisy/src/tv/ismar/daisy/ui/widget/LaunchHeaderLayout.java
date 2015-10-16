@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.activeandroid.query.Select;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -21,6 +22,7 @@ import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
+
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
@@ -31,6 +33,7 @@ import tv.ismar.daisy.data.weather.WeatherEntity;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.text.ParsePosition;
@@ -131,7 +134,7 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
             view.setOnFocusChangeListener(this);
             textView.setText(res);
             view.setId(res);
-            if(i==0){
+            if (i == 0) {
                 view.setNextFocusLeftId(view.getId());
             }
             if (i == INDICATOR_RES_LIST.length - 1) {
@@ -150,8 +153,8 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
 
     public void setSubTitle(String subTitle) {
         subTitleTextView.setText(subTitle);
-        if(StringUtils.isEmpty(subTitle))
-        	hideSubTiltle();
+        if (StringUtils.isEmpty(subTitle))
+            hideSubTiltle();
     }
 
     public void hideSubTiltle() {
@@ -206,7 +209,12 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
                     weatherInfoTextView.append("   " + todayTime + "   ");
 
                     weatherInfoTextView.append(weatherEntity.getToday().getCondition() + "   ");
-                    weatherInfoTextView.append(weatherEntity.getToday().getTemplow() + " ~ " + weatherEntity.getToday().getTemphigh() + context.getText(R.string.degree));
+                    if (weatherEntity.getToday().getTemplow().equals(weatherEntity.getToday().getTemphigh())) {
+                        weatherInfoTextView.append(weatherEntity.getToday().getTemplow() + context.getText(R.string.degree));
+                    } else {
+                        weatherInfoTextView.append(weatherEntity.getToday().getTemplow() + " ~ " + weatherEntity.getToday().getTemphigh() + context.getText(R.string.degree));
+                    }
+
 
                 } catch (ParserConfigurationException e) {
                     e.printStackTrace();
@@ -279,9 +287,9 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
             textView.setVisibility(View.GONE);
         }
     }
-    
-    public void hideWeather(){
-    	weatherInfoTextView.setVisibility(View.INVISIBLE);
+
+    public void hideWeather() {
+        weatherInfoTextView.setVisibility(View.INVISIBLE);
     }
 
 }
