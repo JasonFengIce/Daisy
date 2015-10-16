@@ -20,5 +20,5 @@ out/
 */build
 .gradle/
 build/
-
+*/*.apk
 captures/

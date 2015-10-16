@@ -366,7 +366,7 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
 
                     tomorrowWeatherTemperature.setText(weatherEntity.getTomorrow().getTemplow() + "℃ ~ " + weatherEntity.getTomorrow().getTemphigh() + "℃");
                     tomorrowWeatherInfo.setText(weatherEntity.getTomorrow().getCondition());
-                    Picasso.with(mContext).load(weatherEntity.getToday().getImage_url()).into(tomorrowWeatherIcon1);
+                    Picasso.with(mContext).load(weatherEntity.getTomorrow().getImage_url()).into(tomorrowWeatherIcon1);
 
 
                 } catch (ParserConfigurationException e) {
