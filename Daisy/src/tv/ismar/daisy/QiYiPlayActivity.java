@@ -328,6 +328,7 @@ public class QiYiPlayActivity extends VodMenuAction {
         protected void onPostExecute(ClipInfo result) {
             if (result != null) {
                 setQiyiVideo();
+                getIntent().putExtra("item", subItem);
             } else {
                 // ExToClosePlayer("url"," m3u8 quality is null ,or get m3u8 err");
             }

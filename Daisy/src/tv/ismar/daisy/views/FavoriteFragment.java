@@ -116,7 +116,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 //		mScrollableSectionList.setOnSectionSelectChangeListener(this);
 		
 		mChannelLabel = (TextView) fragmentView.findViewById(R.id.channel_label);
-		mChannelLabel.setText(getResources().getString(R.string.favorite));
+		mChannelLabel.setText(getResources().getString(R.string.guide_my_favorite));
 		
 		mNoVideoContainer = (RelativeLayout) fragmentView.findViewById(R.id.no_video_container);
 		recommend_gridview = (ZGridView)fragmentView.findViewById(R.id.recommend_gridview);
