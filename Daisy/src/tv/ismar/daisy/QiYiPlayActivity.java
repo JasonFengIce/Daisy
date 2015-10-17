@@ -361,7 +361,9 @@ public class QiYiPlayActivity extends VodMenuAction {
                             QiYiPlayActivity.this.finish();
                             return null;
                         } else {
-                            bundle.putString("iqiyi", urlInfo.getIqiyi_4_0());
+//                            bundle.putString("iqiyi", urlInfo.getIqiyi_4_0());
+                            getIntent().putExtra("iqiyi", urlInfo.getIqiyi_4_0());
+                            
                         }
                     }
                 }
