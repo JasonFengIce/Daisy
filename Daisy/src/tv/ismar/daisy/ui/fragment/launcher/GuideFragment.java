@@ -2,6 +2,7 @@ package tv.ismar.daisy.ui.fragment.launcher;
 
 import android.app.Activity;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,10 +14,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
+
 import com.google.gson.Gson;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
+
 import org.apache.commons.lang3.StringUtils;
+
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
@@ -50,7 +54,7 @@ public class GuideFragment extends ChannelBaseFragment {
     private LabelImageView toppage_carous_imageView1;
     private LabelImageView toppage_carous_imageView2;
     private LabelImageView toppage_carous_imageView3;
-    private HomeItemContainer lastpostview; 
+    private HomeItemContainer lastpostview;
     private IsmartvUrlClient datafetch;
 
     private tv.ismar.daisy.ui.widget.DaisyVideoView mSurfaceView;
@@ -58,6 +62,8 @@ public class GuideFragment extends ChannelBaseFragment {
 
     private int mCurrentCarouselIndex = -1;
     private CarouselRepeatType mCarouselRepeatType = CarouselRepeatType.All;
+
+    private ImageView linkedVideoLoadingImage;
 
 
     @Override
@@ -74,6 +80,7 @@ public class GuideFragment extends ChannelBaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View mView = LayoutInflater.from(mContext).inflate(R.layout.fragment_guide, null);
         guideRecommmendList = (DaisyViewContainer) mView.findViewById(R.id.recommend_list);
         carouselLayout = (DaisyViewContainer) mView.findViewById(R.id.carousel_layout);
@@ -81,9 +88,12 @@ public class GuideFragment extends ChannelBaseFragment {
         toppage_carous_imageView2 = (LabelImageView) mView.findViewById(R.id.toppage_carous_imageView2);
         toppage_carous_imageView3 = (LabelImageView) mView.findViewById(R.id.toppage_carous_imageView3);
         film_post_layout = (HomeItemContainer) mView.findViewById(R.id.guide_center_layoutview);
+        linkedVideoLoadingImage = (ImageView) mView.findViewById(R.id.linked_video_loading_image);
+
         mSurfaceView = (tv.ismar.daisy.ui.widget.DaisyVideoView) mView.findViewById(R.id.linked_video);
         mSurfaceView.setOnCompletionListener(videoPlayEndListener);
         mSurfaceView.setOnErrorListener(mVideoOnErrorListener);
+        mSurfaceView.setOnPreparedListener(mOnPreparedListener );
         mSurfaceView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
             @Override
@@ -171,25 +181,25 @@ public class GuideFragment extends ChannelBaseFragment {
                 if (!posters.isEmpty()) {
                     initPosters(posters);
                 }
-                if(scrollFromBorder){
-                	if(isRight){//右侧移入
+                if (scrollFromBorder) {
+                    if (isRight) {//右侧移入
 //                		if(StringUtils.isNotEmpty(bottomFlag)){
-                			if("bottom".equals(bottomFlag)){//下边界移入
-                				lastpostview.findViewById(R.id.poster_title).requestFocus();
-                			}else{//上边界边界移入
-                				toppage_carous_imageView1.requestFocus();               				
-                			}
+                        if ("bottom".equals(bottomFlag)) {//下边界移入
+                            lastpostview.findViewById(R.id.poster_title).requestFocus();
+                        } else {//上边界边界移入
+                            toppage_carous_imageView1.requestFocus();
+                        }
 //                		}
-                	}else{//左侧移入
-                		if(StringUtils.isNotEmpty(bottomFlag)){
-                			if("bottom".equals(bottomFlag)){
-                				
-                			}else{
-                				
-                			}
-                	}
-                }
-                ((TVGuideActivity)getActivity()).resetBorderFocus();
+                    } else {//左侧移入
+                        if (StringUtils.isNotEmpty(bottomFlag)) {
+                            if ("bottom".equals(bottomFlag)) {
+
+                            } else {
+
+                            }
+                        }
+                    }
+                    ((TVGuideActivity) getActivity()).resetBorderFocus();
                 }
             }
 
@@ -226,16 +236,16 @@ public class GuideFragment extends ChannelBaseFragment {
             textView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
-                	Object tagObject = v.getTag(R.id.poster_title);
+                    Object tagObject = v.getTag(R.id.poster_title);
                     if (hasFocus) {
                         ((HomeItemContainer) v.getParent())
                                 .setDrawBorder(true);
                         ((HomeItemContainer) v.getParent()).invalidate();
-                        if(tagObject != null){
-                        	int tagindex = Integer.parseInt(tagObject.toString());
-                        	if(tagindex ==0 || tagindex ==7){
-                        		((TVGuideActivity) (getActivity())).setLastViewTag("bottom");
-                        	}
+                        if (tagObject != null) {
+                            int tagindex = Integer.parseInt(tagObject.toString());
+                            if (tagindex == 0 || tagindex == 7) {
+                                ((TVGuideActivity) (getActivity())).setLastViewTag("bottom");
+                            }
                         }
                     } else {
                         ((HomeItemContainer) v.getParent())
@@ -248,12 +258,12 @@ public class GuideFragment extends ChannelBaseFragment {
                     .into(itemView);
             textView.setTag(posters.get(i));
             frameLayout.setTag(posters.get(i));
-            if(i==0){
-            	frameLayout.setId(R.id.guidefragment_firstpost);     	
+            if (i == 0) {
+                frameLayout.setId(R.id.guidefragment_firstpost);
             }
-            if(i==7){
-            	frameLayout.setId(R.id.guidefragment_lastpost);
-            	lastpostview = frameLayout;
+            if (i == 7) {
+                frameLayout.setId(R.id.guidefragment_lastpost);
+                lastpostview = frameLayout;
             }
             imageViews.add(frameLayout);
             switch (i) {
@@ -338,7 +348,7 @@ public class GuideFragment extends ChannelBaseFragment {
 
 //        mHelper.onStart();
         mHandler.removeMessages(START_PLAYBACK);
-        mHandler.sendEmptyMessageDelayed(START_PLAYBACK, 500);
+        mHandler.sendEmptyMessage(START_PLAYBACK);
 
 
     }
@@ -373,6 +383,7 @@ public class GuideFragment extends ChannelBaseFragment {
 
     private void startPlayback() {
         Log.d(TAG, "startPlayback is invoke...");
+        linkedVideoLoadingImage.setVisibility(View.VISIBLE);
         mSurfaceView.setFocusable(false);
         mSurfaceView.setFocusableInTouchMode(false);
         mSurfaceView.setVideoPath(allVideoUrl.get(mCurrentCarouselIndex));
@@ -396,8 +407,8 @@ public class GuideFragment extends ChannelBaseFragment {
             for (ImageView imageView : allItem) {
                 focusFlag = focusFlag && (!imageView.isFocused());
             }
-            if(hasFocus){
-            	((TVGuideActivity) (getActivity())).setLastViewTag("");
+            if (hasFocus) {
+                ((TVGuideActivity) (getActivity())).setLastViewTag("");
             }
             // all view not focus
             if (focusFlag) {
@@ -441,6 +452,15 @@ public class GuideFragment extends ChannelBaseFragment {
             return true;
         }
     };
+
+    private android.media.MediaPlayer.OnPreparedListener mOnPreparedListener = new MediaPlayer.OnPreparedListener() {
+        @Override
+        public void onPrepared(MediaPlayer mp) {
+            linkedVideoLoadingImage.setVisibility(View.GONE);
+        }
+    };
+
+
 }
 
 class Flag {

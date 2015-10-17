@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,11 +18,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.google.gson.Gson;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
+
 import org.apache.commons.lang3.StringUtils;
+
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.HomePagerEntity;
@@ -68,6 +72,7 @@ public class FilmFragment extends ChannelBaseFragment {
     private HomeItemContainer morelayout;
     private HomeItemContainer firstpost;
     private LabelImageView firstcarousel;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +99,7 @@ public class FilmFragment extends ChannelBaseFragment {
         mSurfaceView = (tv.ismar.daisy.ui.widget.DaisyVideoView) mView.findViewById(R.id.film_linked_video);
         mSurfaceView.setOnCompletionListener(mOnCompletionListener);
         mSurfaceView.setOnErrorListener(mVideoOnErrorListener);
+        mSurfaceView.setOnPreparedListener(mOnPreparedListener);
 
         film_lefttop_image = (LabelImageView) mView.findViewById(R.id.film_lefttop_image);
         film_post_layout = (HomeItemContainer) mView.findViewById(R.id.film_post_layout);
@@ -180,25 +186,25 @@ public class FilmFragment extends ChannelBaseFragment {
                 Log.d(TAG, "carousels size: " + carousels.size());
                 initPosters(posters);
                 initCarousel(carousels);
-                if(scrollFromBorder){
-                	if(isRight){//右侧移入
+                if (scrollFromBorder) {
+                    if (isRight) {//右侧移入
 //                		if(StringUtils.isNotEmpty(bottomFlag)){
-                			if("bottom".equals(bottomFlag)){//下边界移入
-                				morelayout.requestFocus();
-                			}else{//上边界边界移入
-                				firstcarousel.requestFocus();
-                			}
+                        if ("bottom".equals(bottomFlag)) {//下边界移入
+                            morelayout.requestFocus();
+                        } else {//上边界边界移入
+                            firstcarousel.requestFocus();
+                        }
 //                		}
-                	}else{//左侧移入
+                    } else {//左侧移入
 //                		if(StringUtils.isNotEmpty(bottomFlag)){
-                			if("bottom".equals(bottomFlag)){
-                				firstpost.requestFocus();
-                			}else{
-                				film_lefttop_image.requestFocus();
-                			}        		
+                        if ("bottom".equals(bottomFlag)) {
+                            firstpost.requestFocus();
+                        } else {
+                            film_lefttop_image.requestFocus();
+                        }
 //                	}
-                }
-                	((TVGuideActivity)getActivity()).resetBorderFocus();
+                    }
+                    ((TVGuideActivity) getActivity()).resetBorderFocus();
                 }
             }
 
@@ -219,14 +225,14 @@ public class FilmFragment extends ChannelBaseFragment {
         film_lefttop_image.setOnClickListener(ItemClickListener);
         film_lefttop_image.setTag(posters.get(0));
         film_lefttop_image.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			
-			@Override
-			public void onFocusChange(View arg0, boolean arg1) {
-				if(arg1){
-            		((TVGuideActivity) (getActivity())).setLastViewTag("");
-            	}			
-			}
-		});
+
+            @Override
+            public void onFocusChange(View arg0, boolean arg1) {
+                if (arg1) {
+                    ((TVGuideActivity) (getActivity())).setLastViewTag("");
+                }
+            }
+        });
         mLeftTopView = film_lefttop_image;
         for (int i = 1; i <= posters.size(); i++) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(199, 278);
@@ -261,17 +267,17 @@ public class FilmFragment extends ChannelBaseFragment {
                 textView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
-                    	Object tagObject = v.getTag(R.id.poster_title);
+                        Object tagObject = v.getTag(R.id.poster_title);
                         if (hasFocus) {
                             ((HomeItemContainer) v.getParent())
                                     .setDrawBorder(true);
                             ((HomeItemContainer) v.getParent()).invalidate();
                             focusView = ((HomeItemContainer) v.getParent());
-                            if(tagObject != null){
-                            	int tagindex = Integer.parseInt(tagObject.toString());
-                            	if(tagindex ==1){
-                            		((TVGuideActivity) (getActivity())).setLastViewTag("bottom");
-                            	}
+                            if (tagObject != null) {
+                                int tagindex = Integer.parseInt(tagObject.toString());
+                                if (tagindex == 1) {
+                                    ((TVGuideActivity) (getActivity())).setLastViewTag("bottom");
+                                }
                             }
                         } else {
                             ((HomeItemContainer) v.getParent())
@@ -287,19 +293,19 @@ public class FilmFragment extends ChannelBaseFragment {
 //                textView.setTag(posters.get(i));
                 frameLayout.setTag(posters.get(i));
                 frameLayout.setLayoutParams(params);
-                if(i == 1){
+                if (i == 1) {
                     frameLayout.setId(R.id.filmfragment_firstpost);
                 }
-                if(i ==2){
-                    frameLayout.setId(R.id.filmfragment_secondpost);          	
-                  }
-                if(i ==3){
-                    frameLayout.setId(R.id.filmfragment_thirdpost);          	
-                  }
+                if (i == 2) {
+                    frameLayout.setId(R.id.filmfragment_secondpost);
+                }
+                if (i == 3) {
+                    frameLayout.setId(R.id.filmfragment_thirdpost);
+                }
                 guideRecommmendList.addView(frameLayout);
                 if (i == 1) {
 //                    mLeftBottomView = frameLayout;
-                	firstpost = frameLayout;
+                    firstpost = frameLayout;
                 }
 
             } else {
@@ -316,13 +322,13 @@ public class FilmFragment extends ChannelBaseFragment {
                 mRightBottomView = morelayout;
                 guideRecommmendList.addView(morelayout);
                 morelayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-					@Override
-					public void onFocusChange(View arg0, boolean arg1) {
-						if(arg1){
-							((TVGuideActivity) (getActivity())).setLastViewTag("bottom");	
-						}
-					}
-				});
+                    @Override
+                    public void onFocusChange(View arg0, boolean arg1) {
+                        if (arg1) {
+                            ((TVGuideActivity) (getActivity())).setLastViewTag("bottom");
+                        }
+                    }
+                });
             }
         }
     }
@@ -370,6 +376,8 @@ public class FilmFragment extends ChannelBaseFragment {
 
     private void startPlayback() {
         Log.d(TAG, "startPlayback is invoke...");
+        linkedVideoImage.setImageResource(R.drawable.guide_video_loading);
+        linkedVideoImage.setVisibility(View.VISIBLE);
         mSurfaceView.setFocusable(false);
         mSurfaceView.setFocusableInTouchMode(false);
         mSurfaceView.setVideoURI(Uri.parse(mCarousels.get(mCurrentCarouselIndex).getVideo_url()));
@@ -480,6 +488,7 @@ public class FilmFragment extends ChannelBaseFragment {
             linkedVideoImage.setVisibility(View.GONE);
         }
 
+
         String intro = mCarousels.get(mCurrentCarouselIndex).getIntroduction();
         if (StringUtils.isNotEmpty(intro)) {
             film_linked_title.setVisibility(View.VISIBLE);
@@ -488,7 +497,7 @@ public class FilmFragment extends ChannelBaseFragment {
             film_linked_title.setVisibility(View.GONE);
         }
         mHandler.removeMessages(START_PLAYBACK);
-        mHandler.sendEmptyMessageDelayed(START_PLAYBACK, 500);
+        mHandler.sendEmptyMessage(START_PLAYBACK);
     }
 
 
@@ -526,8 +535,8 @@ public class FilmFragment extends ChannelBaseFragment {
             for (ImageView imageView : allItem) {
                 focusFlag = focusFlag && (!imageView.isFocused());
             }
-            if(hasFocus){
-            	((TVGuideActivity) (getActivity())).setLastViewTag("");
+            if (hasFocus) {
+                ((TVGuideActivity) (getActivity())).setLastViewTag("");
             }
             // all view not focus
             if (focusFlag) {
@@ -559,6 +568,13 @@ public class FilmFragment extends ChannelBaseFragment {
             Log.e(TAG, "play video error!!!");
 
             return true;
+        }
+    };
+
+    private android.media.MediaPlayer.OnPreparedListener mOnPreparedListener = new MediaPlayer.OnPreparedListener() {
+        @Override
+        public void onPrepared(MediaPlayer mp) {
+            linkedVideoImage.setVisibility(View.GONE);
         }
     };
 

@@ -6,66 +6,76 @@
               android:clipToPadding="false"
               android:orientation="vertical"
               android:paddingLeft="@dimen/fragment_padding_lr"
-              android:paddingRight="@dimen/fragment_padding_lr" >
+              android:paddingRight="@dimen/fragment_padding_lr">
 
     <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/toppage_fragment_linerlayout_h"
-            android:layout_marginTop="@dimen/toppage_fragment_linerlayout_margintop"
-            android:layout_marginBottom="@dimen/toppage_fragment_linerlayout_marginbottom"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:orientation="horizontal" >
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toppage_fragment_linerlayout_h"
+        android:layout_marginBottom="@dimen/toppage_fragment_linerlayout_marginbottom"
+        android:layout_marginTop="@dimen/toppage_fragment_linerlayout_margintop"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="horizontal">
 
         <tv.ismar.daisy.ui.widget.HomeItemContainer
-                android:id="@+id/guide_center_layoutview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/guide_padding"
-                android:clickable="true"
-                android:focusable="true"
-                android:nextFocusRight="@+id/toppage_carous_imageView1"
-                 >
+            android:id="@+id/guide_center_layoutview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/guide_padding"
+            android:clickable="true"
+            android:focusable="true"
+            android:nextFocusRight="@+id/toppage_carous_imageView1"
+            >
+
+
             <tv.ismar.daisy.ui.widget.DaisyVideoView
-                    android:id="@+id/linked_video"
-                    android:layout_width="@dimen/guide_video_width"
-                    android:layout_height="@dimen/guide_video_height"
-                    android:focusableInTouchMode="false"
-                    android:focusable="false"/>
+                android:id="@+id/linked_video"
+                android:layout_width="@dimen/guide_video_width"
+                android:layout_height="@dimen/guide_video_height"
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
+
+            <ImageView
+                android:id="@+id/linked_video_loading_image"
+                android:layout_width="@dimen/guide_video_width"
+                android:layout_height="@dimen/guide_video_height"
+                android:src="@drawable/guide_video_loading"
+                />
+
         </tv.ismar.daisy.ui.widget.HomeItemContainer>
 
         <tv.ismar.daisy.ui.widget.DaisyViewContainer
-                xmlns:app="http://schemas.android.com/apk/res/tv.ismar.daisy"
-                android:id="@+id/carousel_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone"
-                app:vertical_spacing="0dp" >
+            android:id="@+id/carousel_layout"
+            xmlns:app="http://schemas.android.com/apk/res/tv.ismar.daisy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:vertical_spacing="0dp">
         </tv.ismar.daisy.ui.widget.DaisyViewContainer>
 
         <include
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/guide_center_layoutview"
-                layout="@layout/toppagecarouse"
-                android:clipChildren="false"
-                android:clipToPadding="false" />
+            layout="@layout/toppagecarouse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/guide_center_layoutview"
+            android:clipChildren="false"
+            android:clipToPadding="false"/>
     </RelativeLayout>
 
     <tv.ismar.daisy.ui.widget.DaisyViewContainer
-            xmlns:app="http://schemas.android.com/apk/res/tv.ismar.daisy"
-            android:id="@+id/recommend_list"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/toppage_fragment_recommend_list_h"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/toppage_fragment_recommend_list_padding"
-            app:horizontal_spacing="@dimen/guide_recommend_item_spacing"
-            app:item_height="@dimen/guide_recommend_item_height"
-            app:item_width="@dimen/guide_recommend_item_width"
-            >
+        android:id="@+id/recommend_list"
+        xmlns:app="http://schemas.android.com/apk/res/tv.ismar.daisy"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toppage_fragment_recommend_list_h"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/toppage_fragment_recommend_list_padding"
+        app:horizontal_spacing="@dimen/guide_recommend_item_spacing"
+        app:item_height="@dimen/guide_recommend_item_height"
+        app:item_width="@dimen/guide_recommend_item_width"
+        >
     </tv.ismar.daisy.ui.widget.DaisyViewContainer>
 
 </LinearLayout>
