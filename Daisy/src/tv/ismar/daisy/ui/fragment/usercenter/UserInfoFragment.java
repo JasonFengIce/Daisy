@@ -354,7 +354,9 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
                     public void confirmClick(View view) {
                         dialog.dismiss();
                         showExitAccountMessagePop();
+                        ((UserCenterActivity) getActivity()).selectUserInfoIndicator();
                         mAccountManager.commonLogout();
+
                     }
                 },
                 new MessageDialogFragment.CancelListener() {
