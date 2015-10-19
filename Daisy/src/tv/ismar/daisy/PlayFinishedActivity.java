@@ -230,10 +230,11 @@ public class PlayFinishedActivity extends BaseActivity implements OnFocusChangeL
 	@Override
 	public void onItemClick(AdapterView<?> adapterView, View view, int position, long postions) {
 		Intent intent = new Intent();
-		//intent.putExtra("url", items[position].item_url);
+
 		//intent.setAction("tv.ismar.daisy.Item");
 		if (item.expense != null) {
 			intent.setAction("tv.ismar.daisy.Item");
+			intent.putExtra("url", items[position].item_url);
 			try {
 				startActivity(intent);
 			} catch (Exception e) {
