@@ -180,6 +180,7 @@ public class PackageListDetailActivity extends BaseActivity implements OnItemSel
 					if(mHGridAdapter.getCount()>0){
 						mHGridView.setAdapter(mHGridAdapter);
 						mHGridView.setFocusable(true);
+						mHGridView.requestFocus();
 					//	mHGridView.setHorizontalFadingEdgeEnabled(true);
 						//mHGridView.setFadingEdgeLength(144);
 						mItemCollections.get(0).fillItems(0, items.objects);

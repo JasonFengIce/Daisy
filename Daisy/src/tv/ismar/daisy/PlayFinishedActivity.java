@@ -234,6 +234,11 @@ public class PlayFinishedActivity extends BaseActivity implements OnFocusChangeL
 		//intent.setAction("tv.ismar.daisy.Item");
 		if (item.expense != null) {
 			intent.setAction("tv.ismar.daisy.Item");
+			try {
+				startActivity(intent);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		} else {
 			DaisyUtils.gotoSpecialPage(PlayFinishedActivity.this,
 					items[position].content_model, items[position].item_url,
