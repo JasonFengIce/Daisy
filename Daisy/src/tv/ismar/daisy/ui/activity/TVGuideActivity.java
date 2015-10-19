@@ -36,6 +36,7 @@ import tv.ismar.daisy.ui.fragment.launcher.GuideFragment;
 import tv.ismar.daisy.ui.fragment.launcher.SportFragment;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
 import tv.ismar.sakura.ui.widget.MessagePopWindow;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -45,6 +46,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -60,6 +62,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -71,6 +74,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+
 import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
 
@@ -132,6 +136,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private LeavePosition leavePosition = LeavePosition.RightBottom;
     private ImageView guide_shadow_view;
     private int channelscrollIndex = 0;
+
     private enum LeavePosition {
         LeftTop,
         LeftBottom,
@@ -384,7 +389,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         // arrow_right.setOnClickListener(arrowViewListener);
         arrow_left.setOnFocusChangeListener(scrollViewListener);
         arrow_right.setOnFocusChangeListener(scrollViewListener);
-        guide_shadow_view = (ImageView)findViewById(R.id.guide_shadow_view);
+        guide_shadow_view = (ImageView) findViewById(R.id.guide_shadow_view);
     }
 
     @Override
@@ -743,40 +748,44 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private void showUpdatePopup(View view, Bundle bundle) {
         final Context context = this;
         View contentView = LayoutInflater.from(context).inflate(R.layout.popup_update, null);
-        contentView.setBackgroundResource(R.drawable.popwindow_bg);
-        updatePopupWindow = new PopupWindow(null, 1400, 500);
+        contentView.setBackgroundResource(R.drawable.app_update_bg);
+        guide_shadow_view.setVisibility(View.VISIBLE);
+        float density = getResources().getDisplayMetrics().density;
+
+        int appUpdateHeight = (int) (getResources().getDimension(R.dimen.app_update_bg_height) / density);
+        int appUpdateWidht = (int) (getResources().getDimension(R.dimen.app_update_bg_width) / density);
+
+
+        updatePopupWindow = new PopupWindow(null, appUpdateHeight, appUpdateWidht);
         updatePopupWindow.setContentView(contentView);
         updatePopupWindow.setFocusable(true);
         updatePopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
         Button updateNow = (Button) contentView.findViewById(R.id.update_now_bt);
-        TextView updateTitle = (TextView) contentView.findViewById(R.id.update_title);
         LinearLayout updateMsgLayout = (LinearLayout) contentView.findViewById(R.id.update_msg_layout);
 
         final String path = bundle.getString("path");
-        String title = bundle.getString("title");
-        updateTitle.setText(title);
 
         ArrayList<String> msgs = bundle.getStringArrayList("msgs");
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.leftMargin = 200;
-        layoutParams.topMargin = 20;
+        layoutParams.leftMargin = (int) (getResources().getDimension(R.dimen.app_update_content_margin_left) / density);
+        layoutParams.topMargin = (int) (getResources().getDimension(R.dimen.app_update_line_margin_) / density);
 
         for (String msg : msgs) {
-            TextView textView = new TextView(this);
-            textView.setTextSize(getResources().getDimensionPixelSize(R.dimen.update_msg_textsize));
-            textView.setLayoutParams(layoutParams);
+            View textLayout = LayoutInflater.from(this).inflate(R.layout.update_msg_text_item, null);
+            TextView textView = (TextView) textLayout.findViewById(R.id.update_msg_text);
             textView.setText(msg);
-            updateMsgLayout.addView(textView);
+            updateMsgLayout.addView(textLayout);
         }
 
         updateNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updatePopupWindow.dismiss();
+                guide_shadow_view.setVisibility(View.GONE);
                 installApk(context, path);
             }
         });
@@ -843,12 +852,12 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 //		getWindow().setAttributes(lp);
         guide_shadow_view.setVisibility(View.VISIBLE);
         exitPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-			
-			@Override
-			public void onDismiss() {
-				guide_shadow_view.setVisibility(View.GONE);
-			}
-		});
+
+            @Override
+            public void onDismiss() {
+                guide_shadow_view.setVisibility(View.GONE);
+            }
+        });
         exitPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0, new MessagePopWindow.ConfirmListener() {
                     @Override
                     public void confirmClick(View view) {
@@ -919,7 +928,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         settingNetwork.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                Intent intent = new Intent(Settings.ACTION_SETTINGS);                
                 TVGuideActivity.this.startActivity(intent);
             }
         });
@@ -1126,8 +1135,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private void destroybackground() {
         BitmapDrawable bd = (BitmapDrawable) contentView.getBackground();
         contentView.setBackgroundResource(0);//别忘了把背景设为null，避免onDraw刷新背景时候出现used a recycled bitmap错误
-        if(bd == null)
-        	return;
+        if (bd == null)
+            return;
         bd.setCallback(null);
         bd.getBitmap().recycle();
     }

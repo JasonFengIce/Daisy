@@ -147,6 +147,7 @@ public class AppUpdateUtils {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                Log.d(TAG, "downloadAPK is end...");
 //                checkUpdate(appUpdateHost);
             }
         }.start();

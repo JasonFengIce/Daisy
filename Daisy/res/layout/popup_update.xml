@@ -1,47 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
     >
 
 
     <TextView
-
         android:id="@+id/update_notice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/update_notice_margin_top"
         android:text="@string/update_notice"
-        android:textSize="@dimen/update_notice_textsize" />
+        android:textColor="#ffffff"
+        android:textSize="@dimen/update_notice_textsize"/>
 
-    <TextView
-        android:id="@+id/update_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/update_notice"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/update_notice_margin_top"
-        android:textSize="@dimen/update_title_textsize" />
 
     <LinearLayout
         android:id="@+id/update_msg_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/update_title"
+        android:layout_below="@id/update_notice"
         android:orientation="vertical"></LinearLayout>
 
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/update_button_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/update_confirm_button_margin_bottom"
-        android:gravity="center"
-        android:orientation="horizontal">
+        >
 
         <Button
             android:id="@+id/update_now_bt"
@@ -51,9 +41,10 @@
             android:background="@drawable/selector_daisy_exit_button"
             android:clickable="true"
             android:text="@string/update_now"
+            android:layout_centerHorizontal="true"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/update_msg_textsize" />
-    </LinearLayout>
+            android:textSize="@dimen/update_msg_textsize"/>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/update_method"
@@ -64,5 +55,5 @@
         android:layout_gravity="center"
         android:layout_marginBottom="20dp"
         android:text="@string/update_method"
-        android:textSize="@dimen/update_title_textsize" />
+        android:textSize="@dimen/update_title_textsize"/>
 </RelativeLayout>
