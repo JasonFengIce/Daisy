@@ -1309,7 +1309,7 @@
     <dimen name="app_update_bg_height">877dp</dimen>
     <dimen name="app_update_bg_width">509dp</dimen>
     <dimen name="app_update_content_margin_left">120dp</dimen>
-    <dimen name="app_update_line_margin_">28dp</dimen>
+    <dimen name="app_update_line_margin_">25dp</dimen>
 
 
 </resources>
