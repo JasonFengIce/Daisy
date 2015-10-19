@@ -868,8 +868,8 @@
     <dimen name="filter_condition_item_line_group_ml">3.33dip</dimen>
     <!-- update -->
     <dimen name="update_notice_textsize">26.67sp</dimen>
-    <dimen name="update_title_textsize">21.33sp</dimen>
-    <dimen name="update_msg_textsize">18.67sp</dimen>
+    <dimen name="update_title_textsize">24.00sp</dimen>
+    <dimen name="update_msg_textsize">20.00sp</dimen>
     <dimen name="update_notice_margin_top">40.00dp</dimen>
     <dimen name="update_confirm_button_width">166.67dp</dimen>
     <dimen name="update_confirm_button_height">40.00dp</dimen>
@@ -1293,5 +1293,9 @@
     <dimen name="user_center_container_width">953.33dp</dimen>
     <dimen name="user_center_container_height">640.00dp</dimen>
     <dimen name="user_center_container_marginLeft">13.33dp</dimen>
+    <dimen name="app_update_bg_height">584.67dp</dimen>
+    <dimen name="app_update_bg_width">339.33dp</dimen>
+    <dimen name="app_update_content_margin_left">80.00dp</dimen>
+    <dimen name="app_update_line_margin_">20.00dp</dimen>
 
 </resources>
