@@ -25,7 +25,8 @@ android {
     }
 
     lintOptions {
-        disable 'InvalidPackage'
+        abortOnError false
+//        disable 'InvalidPackage'
     }
 
     compileOptions.encoding = "UTF-8"
