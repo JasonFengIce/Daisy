@@ -19,7 +19,7 @@ public class AccountManager {
     private static final String AUTH_TOKEN = "auth_token";
     private static AccountManager instance;
 
-    private ArrayList<AccountChangeListener> mAccountChangeListeners = new ArrayList<>();
+    private ArrayList<AccountChangeListener> mAccountChangeListeners = new ArrayList<AccountChangeListener>();
     private Context mContext;
     private SharedPreferences mAccountSharedPreferences;
 

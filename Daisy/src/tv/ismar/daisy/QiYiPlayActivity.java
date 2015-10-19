@@ -345,7 +345,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                 if (obj != null) {
                     subItem = simpleRestClient.getItem((String) obj);
                     currNum = subItem.position;
-                    if (item != null) {
+                    if (subItem != null) {
                         clip = subItem.clip;
                         urlInfo = AccessProxy.parse(SimpleRestClient.root_url
                                         + "/api/clip/" + clip.pk + "/",
@@ -361,9 +361,8 @@ public class QiYiPlayActivity extends VodMenuAction {
                             QiYiPlayActivity.this.finish();
                             return null;
                         } else {
-//                            bundle.putString("iqiyi", urlInfo.getIqiyi_4_0());
+                            bundle.putString("iqiyi", urlInfo.getIqiyi_4_0());
                             getIntent().putExtra("iqiyi", urlInfo.getIqiyi_4_0());
-                            
                         }
                     }
                 }
