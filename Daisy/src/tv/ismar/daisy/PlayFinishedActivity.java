@@ -158,6 +158,8 @@ public class PlayFinishedActivity extends BaseActivity implements OnFocusChangeL
 			switch (msg.what) {
 			case UPDATE:
 				playAdapter = new PlayFinishedAdapter(PlayFinishedActivity.this, items, R.layout.playfinish_gridview_item);
+
+
 				gridview.setAdapter(playAdapter);
 				gridview.setFocusable(true);
 				//gridview.setHorizontalFadingEdgeEnabled(true);
@@ -232,7 +234,7 @@ public class PlayFinishedActivity extends BaseActivity implements OnFocusChangeL
 		Intent intent = new Intent();
 
 		//intent.setAction("tv.ismar.daisy.Item");
-		if (item.expense != null) {
+		if (items[position].expense != null) {
 			intent.setAction("tv.ismar.daisy.Item");
 			intent.putExtra("url", items[position].item_url);
 			try {
