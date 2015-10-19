@@ -131,7 +131,7 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
         if (StringUtils.isNotEmpty(SimpleRestClient.access_token) && StringUtils.isNotEmpty(SimpleRestClient.mobile_number)) {
             welocome_tip.setVisibility(View.VISIBLE);
             String welocome = mycontext.getResources().getString(R.string.welocome_tip);
-            welocome_tip.setText(String.format(welocome, SimpleRestClient.mobile_num ber));
+            welocome_tip.setText(String.format(welocome, SimpleRestClient.mobile_number));
             purchaseCheck();
         } else {
             welocome_tip.setVisibility(View.GONE);
