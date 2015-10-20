@@ -24,7 +24,6 @@ public class MessageDialogFragment extends DialogFragment implements View.OnClic
     private TextView secondMessage;
     private ConfirmListener mConfirmListener;
     private CancelListener mCancleListener;
-    private float density;
     private FrameLayout frameLayout;
 
 
@@ -46,7 +45,6 @@ public class MessageDialogFragment extends DialogFragment implements View.OnClic
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        density = getResources().getDisplayMetrics().density;
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.popup_message, null);
 
@@ -64,12 +62,12 @@ public class MessageDialogFragment extends DialogFragment implements View.OnClic
         if (mCancleListener == null) {
             cancelBtn.setVisibility(View.GONE);
         }
-        mWidth = (int) (getResources().getDimension(R.dimen.pop_width) / density);
-        mHeight = (int) (getResources().getDimension(R.dimen.pop_height) / density);
+        mWidth = (int) (getResources().getDimension(R.dimen.pop_width));
+        mHeight = (int) (getResources().getDimension(R.dimen.pop_height));
         firstMessage.setText(getString(mFristMessage));
 
         if (mSecondMessage != 0) {
-            mHeight = (int) (getResources().getDimension(R.dimen.pop_double_line_height) / density);
+            mHeight = (int) (getResources().getDimension(R.dimen.pop_double_line_height));
             secondMessage.setVisibility(View.VISIBLE);
             secondMessage.setText(getString(mSecondMessage));
         }
