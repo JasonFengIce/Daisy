@@ -316,6 +316,6 @@
     <string name="tomorrow_text">明天</string>
     <string name="besttvauthbind_message">因系统升级,为保证您的套餐正常使用,请您使用手机号登录</string>
     <string name="exit_account">退出登录</string>
-    <string name="confirm_exit_account_text">您是否退出登录!</string>
+    <string name="confirm_exit_account_text">您是否退出登录?</string>
     <string name="exit_account_message_text">您已退出登录!</string>
 </resources>

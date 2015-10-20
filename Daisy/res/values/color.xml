@@ -90,4 +90,6 @@
     <color name="search_bg_focus">#ffffba00</color>
     <color name="personinfo_login_button_disable">#5c626e</color>
     <color name="paychannel_button_disable">#3f3f3f</color>
+
+    <drawable name="pop_bg_drawable">#CC000000</drawable>
 </resources>

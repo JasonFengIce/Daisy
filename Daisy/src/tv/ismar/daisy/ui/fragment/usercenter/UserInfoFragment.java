@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -347,9 +348,8 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
 
 
     private void showExitAccountConfirmPop() {
-        final MessageDialogFragment dialog = new MessageDialogFragment();
-        dialog.setFirstMessage(R.string.confirm_exit_account_text);
-        dialog.show(getFragmentManager(), "showExitAccountConfirmPop", new MessageDialogFragment.ConfirmListener() {
+        final MessageDialogFragment dialog = new MessageDialogFragment(mContext, getString(R.string.confirm_exit_account_text), null);
+        dialog.showAtLocation(getView(), Gravity.CENTER, new MessageDialogFragment.ConfirmListener() {
                     @Override
                     public void confirmClick(View view) {
                         dialog.dismiss();
@@ -367,12 +367,13 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
                 }
 
         );
+
+
     }
 
     private void showExitAccountMessagePop() {
-        final MessageDialogFragment dialog = new MessageDialogFragment();
-        dialog.setFirstMessage(R.string.exit_account_message_text);
-        dialog.show(getFragmentManager(), "showExitAccountMessagePop", new MessageDialogFragment.ConfirmListener() {
+        final MessageDialogFragment dialog = new MessageDialogFragment(mContext, getString(R.string.exit_account_message_text), null);
+        dialog.showAtLocation(getView(), Gravity.CENTER, new MessageDialogFragment.ConfirmListener() {
                     @Override
                     public void confirmClick(View view) {
                         dialog.dismiss();

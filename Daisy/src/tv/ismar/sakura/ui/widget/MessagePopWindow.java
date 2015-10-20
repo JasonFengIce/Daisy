@@ -51,6 +51,7 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
 
         setBackgroundDrawable(context.getResources().getDrawable(R.drawable.popwindow_bg));
         setFocusable(true);
+
     }
 
 
