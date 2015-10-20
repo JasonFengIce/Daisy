@@ -240,7 +240,6 @@
         <activity
             android:name=".PlayerActivity"
             android:screenOrientation="landscape"
-            android:launchMode="singleInstance"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="tv.ismar.daisy.Play" />
@@ -251,7 +250,6 @@
         <activity
             android:name=".QiYiPlayActivity"
             android:screenOrientation="landscape"
-            android:launchMode="singleInstance"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="tv.ismar.daisy.qiyiPlay" />

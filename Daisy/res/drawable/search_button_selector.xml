@@ -5,4 +5,5 @@
     <item android:drawable="@drawable/popwindow_focus_bg" android:state_pressed="true"/>
     <item android:drawable="@color/detail_more_bg" android:state_window_focused="false"/>
     <item android:drawable="@drawable/popwindow_focus_bg" android:state_hovered="true"></item>
+
 </selector>

@@ -95,7 +95,6 @@ public class MessageDialogFragment extends PopupWindow implements View.OnClickLi
     }
 
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
