@@ -125,6 +125,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         phoneNumberPrompt = (TextView) fragmentView.findViewById(R.id.phone_number_prompt);
         verificationPrompt = (TextView) fragmentView.findViewById(R.id.verification_prompt);
         phoneNumberMsg = (TextView) fragmentView.findViewById(R.id.phone_number_msg);
+        fetchVerificationBtn.setNextFocusDownId(verificationEdit.getId());
         mSimpleRestClient = new SimpleRestClient();
         phoneNumberEdit.setOnEditorActionListener(new OnEditorActionListener() {
 
@@ -223,11 +224,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         new IsmartvUrlClient().doRequest(IsmartvUrlClient.Method.POST, api, params, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
-            	String bindflag = DaisyUtils.getVodApplication(mContext)
-						.getPreferences().getString(VodApplication.BESTTV_AUTH_BIND_FLAG, "");
-		        if (StringUtils.isNotEmpty(bindflag) && "privilege".equals(bindflag)) {
-		        	bindBestTvauth();
-				}
+                String bindflag = DaisyUtils.getVodApplication(mContext)
+                        .getPreferences().getString(VodApplication.BESTTV_AUTH_BIND_FLAG, "");
+                if (StringUtils.isNotEmpty(bindflag) && "privilege".equals(bindflag)) {
+                    bindBestTvauth();
+                }
                 AuthTokenEntity authTokenEntity = new Gson().fromJson(result, AuthTokenEntity.class);
                 saveToLocal(authTokenEntity.getAuth_token(), phoneNumber);
                 submitBtn.clearFocus();
