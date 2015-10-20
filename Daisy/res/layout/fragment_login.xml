@@ -1,131 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
 
     <TextView
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/login_fragmet_view_margin_top"
-            android:textSize="@dimen/h3_text_size"
-            android:gravity="center"
-            android:textColor="@android:color/holo_red_dark"
-            android:id="@+id/phone_number_prompt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        android:id="@+id/phone_number_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/login_fragmet_view_margin_top"
+        android:gravity="center"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="@dimen/h3_text_size"/>
 
     <RelativeLayout
-            android:layout_marginTop="@dimen/loginfragment_phoneNumberLayout_marginTop"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/loginfragment_phoneNumberLayout_height">
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/loginfragment_phoneNumberLayout_height"
+        android:layout_marginTop="@dimen/loginfragment_phoneNumberLayout_marginTop">
 
         <EditText
-                android:gravity="center"
-                android:textSize="@dimen/h3_text_size"
-                android:id="@+id/login_phone_edit"
-                android:inputType="phone"
-                android:layout_centerHorizontal="true"
-                android:layout_width="@dimen/association_phone_edit_width"
-                android:layout_height="@dimen/loginfragment_phoneNumber_edit_height"
-                />
+            android:id="@+id/login_phone_edit"
+            android:layout_width="@dimen/association_phone_edit_width"
+            android:layout_height="@dimen/loginfragment_phoneNumber_edit_height"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:inputType="phone"
+            android:maxLength="11"
+            android:singleLine="true"
+            android:textSize="@dimen/h3_text_size"
+            />
 
         <TextView
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/login_phone_edit"
-                android:layout_marginRight="@dimen/loginfragment_phoneNumber_edit_marginRright"
-                android:textSize="@dimen/h2_text_size"
-                android:gravity="center"
-                android:textColor="#FFFFFF"
-                android:text="@string/association_phone_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/loginfragment_phoneNumber_edit_marginRright"
+            android:layout_toLeftOf="@id/login_phone_edit"
+            android:gravity="center"
+            android:text="@string/association_phone_number"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/h2_text_size"/>
 
         <Button
-                android:id="@+id/fetch_verification_btn"
-                android:gravity="center"
-                android:textColor="#FFFFFF"
-                android:textSize="@dimen/h2_text_size"
-                android:background="@drawable/selector_daisy_exit_button"
-                android:layout_toRightOf="@id/login_phone_edit"
-                android:layout_marginLeft="@dimen/loginfragment_phoneNumber_fetchCode_marginLeft"
-                android:text="@string/association_fetch_verification"
-                android:layout_width="@dimen/association_fetch_verification_button_width"
-                android:layout_height="@dimen/association_phone_edit_height"/>
+            android:id="@+id/fetch_verification_btn"
+            android:layout_width="@dimen/association_fetch_verification_button_width"
+            android:layout_height="@dimen/association_phone_edit_height"
+            android:layout_marginLeft="@dimen/loginfragment_phoneNumber_fetchCode_marginLeft"
+            android:layout_toRightOf="@id/login_phone_edit"
+            android:background="@drawable/selector_daisy_exit_button"
+            android:gravity="center"
+            android:text="@string/association_fetch_verification"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/h2_text_size"/>
 
 
     </RelativeLayout>
 
     <TextView
-            android:id="@+id/phone_number_msg"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:textColor="#ffffff"
-            android:textSize="@dimen/loginfragment_textSize"
-            android:text="@string/login_phone_msg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        android:id="@+id/phone_number_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="@string/login_phone_msg"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/loginfragment_textSize"/>
 
 
     <TextView
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/association_phone_margin_top"
-            android:textSize="@dimen/h3_text_size"
-            android:gravity="center"
-            android:textColor="@android:color/holo_red_dark"
-            android:id="@+id/verification_prompt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        android:id="@+id/verification_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/association_phone_margin_top"
+        android:gravity="center"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="@dimen/h3_text_size"/>
 
     <RelativeLayout
 
-            android:layout_marginTop="@dimen/loginfragment_phoneNumberLayout_marginTop"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/loginfragment_phoneNumberLayout_marginTop">
 
         <EditText
-                android:inputType="number"
-                android:gravity="center"
-                android:textSize="@dimen/h3_text_size"
-                android:layout_centerVertical="true"
-                android:id="@+id/login_verification_edit"
-                android:layout_centerHorizontal="true"
-                android:layout_width="@dimen/association_phone_edit_width"
-                android:layout_height="@dimen/association_phone_edit_height"/>
+            android:id="@+id/login_verification_edit"
+            android:layout_width="@dimen/association_phone_edit_width"
+            android:layout_height="@dimen/association_phone_edit_height"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="6"
+            android:singleLine="true"
+            android:textSize="@dimen/h3_text_size"/>
 
         <TextView
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/login_verification_edit"
-                android:layout_marginRight="@dimen/loginfragment_phoneNumber_edit_marginRright"
-                android:textSize="@dimen/h2_text_size"
-                android:gravity="center"
-                android:textColor="#FFFFFF"
 
-                android:text="@string/association_verification_code"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/loginfragment_phoneNumber_edit_marginRright"
+            android:layout_toLeftOf="@id/login_verification_edit"
+            android:gravity="center"
+
+            android:text="@string/association_verification_code"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/h2_text_size"/>
 
 
     </RelativeLayout>
 
     <TextView
-            android:textColor="#FFFFFF"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/loginfragment_phoneNumberLayout_marginTop"
-            android:textSize="@dimen/loginfragment_textSize"
-            android:text="@string/login_verification_msg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/loginfragment_phoneNumberLayout_marginTop"
+        android:text="@string/login_verification_msg"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/loginfragment_textSize"/>
 
     <Button
-            android:id="@+id/submit_btn"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:layout_marginTop="@dimen/association_phone_margin_top"
-            android:background="@drawable/selector_daisy_exit_button"
-            android:textColor="#FFFFFF"
-            android:textSize="@dimen/h2_text_size"
-            android:text="@string/association_submit"
-            android:layout_width="@dimen/association_submit_width"
-            android:layout_height="@dimen/association_phone_edit_height"/>
+        android:id="@+id/submit_btn"
+        android:layout_width="@dimen/association_submit_width"
+        android:layout_height="@dimen/association_phone_edit_height"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/association_phone_margin_top"
+        android:background="@drawable/selector_daisy_exit_button"
+        android:gravity="center"
+        android:text="@string/association_submit"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/h2_text_size"/>
 </LinearLayout>
