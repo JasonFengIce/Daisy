@@ -162,7 +162,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
     private void fetchVerificationCode() {
-        phoneNumberEdit.setText("15370770697");
+//        phoneNumberEdit.setText("15370770697");
         String phoneNumber = phoneNumberEdit.getText().toString();
         if (TextUtils.isEmpty(phoneNumber)) {
             phoneNumberPrompt.setText(mContext.getText(R.string.phone_number_not_be_null));
