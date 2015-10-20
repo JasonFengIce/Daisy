@@ -448,7 +448,6 @@ public class BaseActivity extends FragmentActivity {
     private void showBindPopup(View view,int message) {
         exitPopupWindow = new MessagePopWindow(this);
         exitPopupWindow.setFirstMessage(message);
-        exitPopupWindow.setSecondMessage(message);
         exitPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
 			
 			@Override
