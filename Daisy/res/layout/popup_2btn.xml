@@ -15,22 +15,22 @@
 
         <TextView
             android:text="@string/exit_player_prompt"
-            android:textSize="28sp"
+            android:textSize="@dimen/feedback_item_time_textSize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
 
         <LinearLayout
             android:gravity="center"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="@dimen/launcher_channel_img_height"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="60dp">
+            android:layout_height="@dimen/association_phone_edit_height">
 
             <Button
-                android:layout_marginRight="30dp"
+                android:layout_marginRight="@dimen/list_item_margin"
                 android:background="@drawable/selector_daisy_exit_button"
-                android:textSize="30sp"
+                android:textSize="@dimen/sakura_h5_text_size"
                 android:text="@string/confirm"
                 android:textColor="@android:color/white"
                 android:id="@+id/confirm_exit"
@@ -38,9 +38,9 @@
                 android:layout_height="wrap_content"/>
 
             <Button
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="@dimen/film_linked_title_padding"
                 android:background="@drawable/selector_daisy_exit_button"
-                android:textSize="30sp"
+                android:textSize="@dimen/locationFragment_h3_textSize"
                 android:text="@string/cancel"
                 android:textColor="@android:color/white"
                 android:id="@+id/cancel_exit"
