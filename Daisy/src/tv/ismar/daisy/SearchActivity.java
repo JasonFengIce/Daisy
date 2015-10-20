@@ -180,20 +180,6 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 		tvSearchAfter = (TextView) findViewById(R.id.tv_search_after);
 		autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.act_autocomplete_country);// 找到相应的控件
 
-
-
-        autoCompleteTextView.setOnEditorActionListener(new OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ((actionId == EditorInfo.IME_ACTION_SEARCH)){
-                    if(!TextUtils.isEmpty( autoCompleteTextView.getEditableText().toString())){
-                        exeClick(v);
-                    }
-                }
-                return false;
-            }
-        });
-
 		autoCompleteTextView.setOnClickListener(this);
 		loadDialog = new LoadingDialog(this);
 		customDialog = new SearchPromptDialog(SearchActivity.this, R.style.MyDialog);
@@ -235,15 +221,22 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 			public void afterTextChanged(Editable s) {
 			}
 		});
-		autoCompleteTextView.setOnEditorActionListener(new OnEditorActionListener() {
-			
-			@Override
-			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				// TODO Auto-generated method stub
-			return false;
-		}
-			
-		});
+		autoCompleteTextView
+				.setOnEditorActionListener(new OnEditorActionListener() {
+					@Override
+					public boolean onEditorAction(TextView v, int actionId,
+							KeyEvent event) {
+						Log.v("aaaa", "actionId =" + actionId);
+						if ((actionId == EditorInfo.IME_ACTION_SEARCH)) {
+							if (!TextUtils.isEmpty(autoCompleteTextView
+									.getEditableText().toString())) {
+								ibtnSearch.requestFocus();
+								exeClick(v);
+							}
+						}
+						return false;
+					}
+				});
 		arrow_right = (Button)findViewById(R.id.arrow_right);
 		arrow_left = (Button)findViewById(R.id.arrow_left);
 		arrow_left.setOnClickListener(this);

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@color/search_bg_focus" android:state_focused="true"/>
-    <item android:drawable="@color/search_bg_focus" android:state_pressed="true"/>
+    <item android:drawable="@color/hotwords_test_selected" android:state_focused="true"/>
+    <item android:drawable="@color/hotwords_test_selected" android:state_pressed="true"/>
     <item android:drawable="@color/detail_more_bg" android:state_window_focused="false"/>
-    <item android:drawable="@color/search_bg_focus" android:state_hovered="true"></item>
+    <item android:drawable="@color/hotwords_test_selected" android:state_hovered="true"></item>
 </selector>
