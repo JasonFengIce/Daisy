@@ -88,7 +88,7 @@
         android:layout_height="@dimen/pay_person_login_pay_btn_submit_h"
         android:layout_marginTop="@dimen/pay_person_login_pay_btn_submit_mt"
         android:background="@drawable/person_btn_selector"
-        android:text="确定提交"
+        android:text="提交"
         android:textColor="#FFF8F8FF"
         android:textSize="@dimen/pay_person_login_pay_edit_mobile_textsize"
         android:layout_marginLeft="@dimen/pay_person_login_pay_btn_submit_ml"
