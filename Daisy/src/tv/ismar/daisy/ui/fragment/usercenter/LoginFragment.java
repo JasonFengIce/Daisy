@@ -1,21 +1,11 @@
 package tv.ismar.daisy.ui.fragment.usercenter;
 
-import android.app.Activity;
-import android.content.*;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.PopupWindow;
-import android.widget.TextView;
-import cn.ismartv.activator.Activator;
-import com.google.gson.Gson;
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.StringUtils;
+
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
@@ -29,12 +19,29 @@ import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.ui.activity.UserCenterActivity;
 import tv.ismar.sakura.utils.DeviceUtils;
+import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.PopupWindow;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
+import cn.ismartv.activator.Activator;
 
-import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.StringUtils;
+import com.google.gson.Gson;
 
 /**
  * Created by huaijie on 7/3/15.
@@ -119,7 +126,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         verificationPrompt = (TextView) fragmentView.findViewById(R.id.verification_prompt);
         phoneNumberMsg = (TextView) fragmentView.findViewById(R.id.phone_number_msg);
         mSimpleRestClient = new SimpleRestClient();
+        phoneNumberEdit.setOnEditorActionListener(new OnEditorActionListener() {
 
+			@Override
+			public boolean onEditorAction(TextView arg0, int arg1, KeyEvent arg2) {
+//				Log.v("aaaa", arg0.getText()+"<>actioncode="+arg1+"<>arg2="+arg2);
+				return false;
+			}
+		});
         return fragmentView;
     }
 
