@@ -52,7 +52,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 	TextView tvSearchFront;
 	TextView tvSearchAfter;
 	// 自动提示
-	AutoCompleteTextView autoCompleteTextView;
+	EditText autoCompleteTextView;
 	// 搜索提示Adapter
 	ArrayAdapter<String> autoAdapter;
 	// 动态生成热门搜索Button所在的linearLayout
@@ -95,8 +95,8 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
         DaisyUtils.setbackground(R.drawable.main_bg,background);
 		movieList = new ArrayList<MovieBean>();
 		initViews();
-		InputMethodManager m = (InputMethodManager) autoCompleteTextView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-		m.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);	
+//		InputMethodManager m = (InputMethodManager) autoCompleteTextView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+//		m.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);	
 		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
 	}
 
@@ -178,55 +178,54 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 		linearAdd = (LinearLayout) findViewById(R.id.linear_hot_words);
 		tvSearchFront = (TextView) findViewById(R.id.tv_search_front);
 		tvSearchAfter = (TextView) findViewById(R.id.tv_search_after);
-		autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.act_autocomplete_country);// 找到相应的控件
+		autoCompleteTextView = (EditText) findViewById(R.id.act_autocomplete_country);// 找到相应的控件
 
 		autoCompleteTextView.setOnClickListener(this);
 		loadDialog = new LoadingDialog(this);
 		customDialog = new SearchPromptDialog(SearchActivity.this, R.style.MyDialog);
 		startTime = System.currentTimeMillis();
-		autoCompleteTextView.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				Log.i("onTextChanged", "start" + start + "  before  " + before + "  count  " + count);
-				long endTime = System.currentTimeMillis();
-				if ((count == 1 && before == 0) || count == 0 && before == 1) {
-					if (endTime - startTime < 1000) {
-						return;
-					} else {
-						startTime = endTime;
-					}
-				} else {
-					return;
-				}
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						listHelp = searchService.getSearchHelper(autoCompleteTextView.getText().toString());
-						// 添加自动提示词组
-						if (null != listHelp) {
-							if (!isActivityExit) {
-								mHandler.sendEmptyMessage(UPDATE_SUGGEST);
-							}
-						}
-					}
-				}) {
-				}.start();
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-			}
-		});
+//		autoCompleteTextView.addTextChangedListener(new TextWatcher() {
+//			@Override
+//			public void onTextChanged(CharSequence s, int start, int before, int count) {
+//				Log.i("onTextChanged", "start" + start + "  before  " + before + "  count  " + count);
+//				long endTime = System.currentTimeMillis();
+//				if ((count == 1 && before == 0) || count == 0 && before == 1) {
+//					if (endTime - startTime < 1000) {
+//						return;
+//					} else {
+//						startTime = endTime;
+//					}
+//				} else {
+//					return;
+//				}
+//				new Thread(new Runnable() {
+//					@Override
+//					public void run() {
+//						listHelp = searchService.getSearchHelper(autoCompleteTextView.getText().toString());
+//						// 添加自动提示词组
+//						if (null != listHelp) {
+//							if (!isActivityExit) {
+//								mHandler.sendEmptyMessage(UPDATE_SUGGEST);
+//							}
+//						}
+//					}
+//				}) {
+//				}.start();
+//			}
+//
+//			@Override
+//			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//			}
+//
+//			@Override
+//			public void afterTextChanged(Editable s) {
+//			}
+//		});
 		autoCompleteTextView
 				.setOnEditorActionListener(new OnEditorActionListener() {
 					@Override
 					public boolean onEditorAction(TextView v, int actionId,
 							KeyEvent event) {
-						Log.v("aaaa", "actionId =" + actionId);
 						if ((actionId == EditorInfo.IME_ACTION_SEARCH)) {
 							if (!TextUtils.isEmpty(autoCompleteTextView
 									.getEditableText().toString())) {
@@ -319,7 +318,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 			InputMethodManager m = (InputMethodManager) autoCompleteTextView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 			//m.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
 			m.showSoftInput(autoCompleteTextView,InputMethodManager.SHOW_FORCED);
-			autoCompleteTextView.showDropDown();
+//			autoCompleteTextView.showDropDown();
 			// autoCompleteTextView.onKeyDown(KeyEvent.KEYCODE_BACK, null);
 			break;
 		case R.id.arrow_left:
@@ -355,8 +354,8 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 				break;
 			case UPDATE_SUGGEST:
 				autoAdapter = new ArrayAdapter<String>(SearchActivity.this, R.layout.autocomplete_list_item, listHelp);// 配置Adaptor
-				autoCompleteTextView.setAdapter(autoAdapter);
-				autoCompleteTextView.showDropDown();
+//				autoCompleteTextView.setAdapter(autoAdapter);
+//				autoCompleteTextView.showDropDown();
 				// autoAdapter.notifyDataSetChanged();
 				break;
 			case ADD_VIEW:
