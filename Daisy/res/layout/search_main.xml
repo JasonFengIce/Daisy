@@ -44,7 +44,7 @@
                         android:orientation="horizontal"
                         >
 
-                    <AutoCompleteTextView
+                    <EditText
                             android:id="@+id/act_autocomplete_country"
                             android:layout_width="@dimen/search_main_autocomplete_W"
                             android:layout_height="@dimen/search_main_autocomplete_H"
@@ -53,7 +53,6 @@
                             android:hint="@string/searching_hint"
                             android:gravity="center"
                             android:maxLength="30"
-                            android:inputType="textNoSuggestions"
                             android:paddingLeft="@dimen/search_main_autocomplete_PL"
                             android:paddingRight="@dimen/search_main_autocomplete_PR"
                             android:singleLine="true"
