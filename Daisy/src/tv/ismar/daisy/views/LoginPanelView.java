@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import cn.ismartv.activator.Activator;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
@@ -74,6 +75,13 @@ public class LoginPanelView extends LinearLayout {
 		edit_identifycode = (EditText) findViewById(R.id.pay_edit_identifycode);
 		identifyCodeBtn = (Button) findViewById(R.id.pay_identifyCodeBtn);
 		btn_submit = (Button) findViewById(R.id.pay_btn_submit);
+		edit_mobile.setOnEditorActionListener(new OnEditorActionListener() {
+				@Override
+				public boolean onEditorAction(TextView arg0, int arg1, KeyEvent arg2) {
+//					Log.v("aaaa", arg0.getText()+"<>actioncode="+arg1+"<>arg2="+arg2);
+					return false;
+				}
+			});
 		btn_submit.setOnClickListener(new OnClickListener() {
 
 			@Override
