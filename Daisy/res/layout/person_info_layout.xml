@@ -77,7 +77,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:text="登陆后，支付更方便！"
+            android:text="登录后，支付更方便！"
             android:textColor="#fe8109"
             android:textSize="@dimen/person_login_phone_edit_text_size"
             android:visibility="gone"

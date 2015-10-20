@@ -151,7 +151,7 @@ public class LoginPanelView extends LinearLayout {
 									dialog.setIscancelshow(false);
 									dialog.setWarningmessage("恭喜"
 											+ SimpleRestClient.mobile_number
-											+ "登陆视云账户!");
+											+ "登录视云账户!");
 									dialog.show();
 									if (callback != null) {
 										callback.onSuccess(auth_token);

@@ -810,7 +810,6 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
 
     private String authToken;
 
-    //qq 登陆接口回调
     @Override
     public void onLoginSuccess(String result) {
 
