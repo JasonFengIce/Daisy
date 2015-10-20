@@ -45,10 +45,11 @@
     </LinearLayout>
 
     <TextView
+        android:layout_marginTop="10dp"
         android:id="@+id/pay_count_tip"
         android:layout_width="match_parent"
         android:layout_height="@dimen/pay_person_login_pay_count_tip_h"
-        android:gravity="bottom|center_horizontal"
+        android:gravity="center_horizontal"
         android:text="60秒后可再次点击获取验证码"
         android:textSize="@dimen/pay_person_login_pay_count_tip_textsize"
         android:visibility="invisible" />
