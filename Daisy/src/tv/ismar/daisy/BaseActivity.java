@@ -11,7 +11,7 @@ import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.exception.NetworkException;
-import tv.ismar.daisy.ui.activity.TVGuideActivity;
+import tv.ismar.daisy.views.ExitDialog;
 import tv.ismar.sakura.ui.widget.MessagePopWindow;
 import tv.ismar.sakura.utils.DeviceUtils;
 import android.content.BroadcastReceiver;
@@ -420,29 +420,33 @@ public class BaseActivity extends FragmentActivity {
     }
 
     private void showExitPopup(View view,int message) {
-        exitPopupWindow = new MessagePopWindow(this);
-        exitPopupWindow.setFirstMessage(message);
-        exitPopupWindow.setSecondMessage(message);
-        exitPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-			
-			@Override
-			public void onDismiss() {
-			}
-		});
-        exitPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0, new MessagePopWindow.ConfirmListener() {
-                    @Override
-                    public void confirmClick(View view) {
-                        exitPopupWindow.dismiss();
-                        BaseActivity.this.finish();
-                    }
-                },
-                new MessagePopWindow.CancelListener() {
-                    @Override
-                    public void cancelClick(View view) {
-                        exitPopupWindow.dismiss();
-                    }
-                }
-        );
+//        exitPopupWindow = new MessagePopWindow(this);
+//        exitPopupWindow.setFirstMessage(message);
+//        exitPopupWindow.setSecondMessage(message);
+//        exitPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+//			
+//			@Override
+//			public void onDismiss() {
+//			}
+//		});
+//        exitPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0, new MessagePopWindow.ConfirmListener() {
+//                    @Override
+//                    public void confirmClick(View view) {
+//                        exitPopupWindow.dismiss();
+//                        BaseActivity.this.finish();
+//                    }
+//                },
+//                new MessagePopWindow.CancelListener() {
+//                    @Override
+//                    public void cancelClick(View view) {
+//                        exitPopupWindow.dismiss();
+//                    }
+//                }
+//        );
+    	
+    	ExitDialog dialog = new ExitDialog(BaseActivity.this,
+				R.style.exit_PopupDialog);
+		dialog.show();
     }
 
     private void showBindPopup(View view,int message) {
