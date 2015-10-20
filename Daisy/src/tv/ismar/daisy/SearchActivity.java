@@ -184,49 +184,48 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 		loadDialog = new LoadingDialog(this);
 		customDialog = new SearchPromptDialog(SearchActivity.this, R.style.MyDialog);
 		startTime = System.currentTimeMillis();
-		autoCompleteTextView.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				Log.i("onTextChanged", "start" + start + "  before  " + before + "  count  " + count);
-				long endTime = System.currentTimeMillis();
-				if ((count == 1 && before == 0) || count == 0 && before == 1) {
-					if (endTime - startTime < 1000) {
-						return;
-					} else {
-						startTime = endTime;
-					}
-				} else {
-					return;
-				}
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						listHelp = searchService.getSearchHelper(autoCompleteTextView.getText().toString());
-						// 添加自动提示词组
-						if (null != listHelp) {
-							if (!isActivityExit) {
-								mHandler.sendEmptyMessage(UPDATE_SUGGEST);
-							}
-						}
-					}
-				}) {
-				}.start();
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-			}
-		});
+//		autoCompleteTextView.addTextChangedListener(new TextWatcher() {
+//			@Override
+//			public void onTextChanged(CharSequence s, int start, int before, int count) {
+//				Log.i("onTextChanged", "start" + start + "  before  " + before + "  count  " + count);
+//				long endTime = System.currentTimeMillis();
+//				if ((count == 1 && before == 0) || count == 0 && before == 1) {
+//					if (endTime - startTime < 1000) {
+//						return;
+//					} else {
+//						startTime = endTime;
+//					}
+//				} else {
+//					return;
+//				}
+//				new Thread(new Runnable() {
+//					@Override
+//					public void run() {
+//						listHelp = searchService.getSearchHelper(autoCompleteTextView.getText().toString());
+//						// 添加自动提示词组
+//						if (null != listHelp) {
+//							if (!isActivityExit) {
+//								mHandler.sendEmptyMessage(UPDATE_SUGGEST);
+//							}
+//						}
+//					}
+//				}) {
+//				}.start();
+//			}
+//
+//			@Override
+//			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//			}
+//
+//			@Override
+//			public void afterTextChanged(Editable s) {
+//			}
+//		});
 		autoCompleteTextView
 				.setOnEditorActionListener(new OnEditorActionListener() {
 					@Override
 					public boolean onEditorAction(TextView v, int actionId,
 							KeyEvent event) {
-						Log.v("aaaa", "actionId =" + actionId);
 						if ((actionId == EditorInfo.IME_ACTION_SEARCH)) {
 							if (!TextUtils.isEmpty(autoCompleteTextView
 									.getEditableText().toString())) {
