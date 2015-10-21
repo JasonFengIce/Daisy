@@ -11,6 +11,7 @@ import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.exception.NetworkException;
+import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
 import tv.ismar.daisy.views.ExitDialog;
 import tv.ismar.sakura.ui.widget.MessagePopWindow;
 import tv.ismar.sakura.utils.DeviceUtils;
@@ -50,6 +51,7 @@ public class BaseActivity extends FragmentActivity {
     protected String fromPage;
     protected String activityTag = "";
     private FetchBestTvAuth authTask;
+    protected static int activityCount = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -386,8 +388,8 @@ public class BaseActivity extends FragmentActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
-
+//        if(activityCount >0)
+//        	      activityCount--;
     }
 
     @Override
@@ -395,9 +397,10 @@ public class BaseActivity extends FragmentActivity {
         super.onResume();
         String bindflag = DaisyUtils.getVodApplication(this)
 				.getPreferences().getString(VodApplication.BESTTV_AUTH_BIND_FLAG, "");
-        if (StringUtils.isEmpty(bindflag) || (StringUtils.isNotEmpty(bindflag) && "privilege".equals(bindflag))) {
-			authTask = new FetchBestTvAuth();
+        if ((activityCount == 0) && (StringUtils.isEmpty(bindflag) || (StringUtils.isNotEmpty(bindflag) && "privilege".equals(bindflag)))) {
+        	authTask = new FetchBestTvAuth();
 			authTask.execute();
+			activityCount++;
 		}
     }
 
@@ -419,59 +422,41 @@ public class BaseActivity extends FragmentActivity {
 		
     }
 
-    private void showExitPopup(View view,int message) {
-//        exitPopupWindow = new MessagePopWindow(this);
-//        exitPopupWindow.setFirstMessage(message);
-//        exitPopupWindow.setSecondMessage(message);
-//        exitPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-//			
-//			@Override
-//			public void onDismiss() {
-//			}
-//		});
-//        exitPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0, new MessagePopWindow.ConfirmListener() {
-//                    @Override
-//                    public void confirmClick(View view) {
-//                        exitPopupWindow.dismiss();
-//                        BaseActivity.this.finish();
-//                    }
-//                },
-//                new MessagePopWindow.CancelListener() {
-//                    @Override
-//                    public void cancelClick(View view) {
-//                        exitPopupWindow.dismiss();
-//                    }
-//                }
-//        );
-    	
-    	ExitDialog dialog = new ExitDialog(BaseActivity.this,
-				R.style.exit_PopupDialog);
-		dialog.show();
-    }
+	private void showExitPopup(View view, int message) {
+		final MessageDialogFragment dialog = new MessageDialogFragment(
+				BaseActivity.this, getString(message), null);
+		dialog.showAtLocation(view, Gravity.CENTER,
+				new MessageDialogFragment.ConfirmListener() {
+					@Override
+					public void confirmClick(View view) {
+						dialog.dismiss();
+						BaseActivity.this.finish();
+					}
+				}, new MessageDialogFragment.CancelListener() {
 
-    private void showBindPopup(View view,int message) {
-        exitPopupWindow = new MessagePopWindow(this);
-        exitPopupWindow.setFirstMessage(message);
-        exitPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-			
-			@Override
-			public void onDismiss() {
-			}
-		});
-        exitPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0, new MessagePopWindow.ConfirmListener() {
-                    @Override
-                    public void confirmClick(View view) {
-                        exitPopupWindow.dismiss();
-                        BaseActivity.this.finish();
-                        Intent intent = new Intent();
-        				intent.setAction("tv.ismar.daisy.usercenter");
-        				intent.putExtra("flag", "login");
-        				startActivity(intent);
-                    }
-                },
-                null
-        );
-    }
+					@Override
+					public void cancelClick(View view) {
+						dialog.dismiss();
+					}
+				});
+	}
+
+	private void showBindPopup(View view, int message) {
+		final MessageDialogFragment dialog = new MessageDialogFragment(
+				BaseActivity.this, "建议您将历史观影权限和余额合并到已登陆账户,", "随时查询更方便!");
+		dialog.showAtLocation(view, Gravity.CENTER,
+				new MessageDialogFragment.ConfirmListener() {
+					@Override
+					public void confirmClick(View view) {
+						dialog.dismiss();
+						BaseActivity.this.finish();
+						Intent intent = new Intent();
+						intent.setAction("tv.ismar.daisy.usercenter");
+						intent.putExtra("flag", "login");
+						startActivity(intent);
+					}
+				}, null);
+	}
 
 	class FetchBestTvAuth extends AsyncTask<String, Void, Integer> {
 		private final static int RESUTL_CANCELED = -2;
