@@ -449,8 +449,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                     for (int i = 0; i < mChannelEntitys.length; i++) {
                         if (homepage_template.equals(mChannelEntitys[i].getHomepage_template()) && mChannelEntitys[i].getHomepage_url().contains(homepage_url)) {
                             channelscrollIndex = i;
-                            if(channelscrollIndex > 0){
-                            	fragmentSwitch.sendEmptyMessage(SWITCH_PAGE_FROMLAUNCH);
+                            if (channelscrollIndex > 0) {
+                                fragmentSwitch.sendEmptyMessage(SWITCH_PAGE_FROMLAUNCH);
                             }
                             topView.setSubTitle(mChannelEntitys[i].getName());
                             break;
@@ -558,8 +558,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
             @Override
             public void onFocusChange(View view, boolean flag) {
-            	if(channelscrollIndex >0)
-            		return;
+                if (channelscrollIndex > 0)
+                    return;
                 TextView v = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
                 if (flag && scrollFromBorder) {
                     v.setBackgroundResource(R.drawable.channel_item_selectd_focus);
@@ -752,8 +752,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         guide_shadow_view.setVisibility(View.VISIBLE);
         float density = getResources().getDisplayMetrics().density;
 
-        int appUpdateHeight = (int) (getResources().getDimension(R.dimen.app_update_bg_height) / density);
-        int appUpdateWidht = (int) (getResources().getDimension(R.dimen.app_update_bg_width) / density);
+        int appUpdateHeight = (int) (getResources().getDimension(R.dimen.app_update_bg_height));
+        int appUpdateWidht = (int) (getResources().getDimension(R.dimen.app_update_bg_width));
 
 
         updatePopupWindow = new PopupWindow(null, appUpdateHeight, appUpdateWidht);
@@ -771,8 +771,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.leftMargin = (int) (getResources().getDimension(R.dimen.app_update_content_margin_left) / density);
-        layoutParams.topMargin = (int) (getResources().getDimension(R.dimen.app_update_line_margin_) / density);
+        layoutParams.leftMargin = (int) (getResources().getDimension(R.dimen.app_update_content_margin_left));
+        layoutParams.topMargin = (int) (getResources().getDimension(R.dimen.app_update_line_margin_));
 
         for (String msg : msgs) {
             View textLayout = LayoutInflater.from(this).inflate(R.layout.update_msg_text_item, null);
@@ -928,7 +928,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         settingNetwork.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Settings.ACTION_SETTINGS);                
+                Intent intent = new Intent(Settings.ACTION_SETTINGS);
                 TVGuideActivity.this.startActivity(intent);
             }
         });
@@ -1000,7 +1000,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         ChannelEntity channelEntity = mChannelEntitys[position];
         topView.setSubTitle(channelEntity.getName());
         currentFragment = null;
-        Log.i("template==",channelEntity.getHomepage_template());
+        Log.i("template==", channelEntity.getHomepage_template());
         destroybackground();
         if ("template1".equals(channelEntity.getHomepage_template())) {
             currentFragment = new FilmFragment();
@@ -1033,8 +1033,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         currentFragment.setChannelEntity(channelEntity);
         replaceFragment(currentFragment);
         View view2 = scroll.getChildAt(0);
-        if(view2 == null)
-        	return;
+        if (view2 == null)
+            return;
         lastchannelindex = position;
         if (view2.getLeft() > 0) {
             switch (mCurrentChannelPosition.getPosition()) {
@@ -1242,12 +1242,12 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                     selectChannelByPosition(msg.arg1);
                     break;
                 case SWITCH_PAGE_FROMLAUNCH:
-                	scroll.arrowScroll(View.FOCUS_RIGHT);
-                	channelscrollIndex--;
-                	if(channelscrollIndex >0){
-                		sendEmptyMessage(SWITCH_PAGE_FROMLAUNCH);
-                	}
-                	break;
+                    scroll.arrowScroll(View.FOCUS_RIGHT);
+                    channelscrollIndex--;
+                    if (channelscrollIndex > 0) {
+                        sendEmptyMessage(SWITCH_PAGE_FROMLAUNCH);
+                    }
+                    break;
             }
         }
 
