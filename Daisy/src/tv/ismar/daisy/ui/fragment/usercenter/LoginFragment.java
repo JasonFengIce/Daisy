@@ -18,7 +18,9 @@ import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.ui.activity.UserCenterActivity;
+import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
 import tv.ismar.sakura.utils.DeviceUtils;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -39,6 +41,7 @@ import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+
 import cn.ismartv.activator.Activator;
 
 import com.google.gson.Gson;
@@ -129,12 +132,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         mSimpleRestClient = new SimpleRestClient();
         phoneNumberEdit.setOnEditorActionListener(new OnEditorActionListener() {
 
-			@Override
-			public boolean onEditorAction(TextView arg0, int arg1, KeyEvent arg2) {
+            @Override
+            public boolean onEditorAction(TextView arg0, int arg1, KeyEvent arg2) {
 //				Log.v("aaaa", arg0.getText()+"<>actioncode="+arg1+"<>arg2="+arg2);
-				return false;
-			}
-		});
+                return false;
+            }
+        });
         return fragmentView;
     }
 
@@ -285,31 +288,18 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
 
     private void showLoginSuccessPopup() {
-        View popupLayout = LayoutInflater.from(mContext).inflate(R.layout.popup_login_success, null);
-        TextView textView = (TextView) popupLayout.findViewById(R.id.login_success_msg);
-        String msg = mContext.getText(R.string.login_success).toString();
+        String msg = getString(R.string.login_success_name);
         String phoneNumber = phoneNumberEdit.getText().toString();
-        textView.setText(String.format(msg, phoneNumber));
+        final MessageDialogFragment dialog = new MessageDialogFragment(mContext, String.format(msg, phoneNumber), getString(R.string.login_success));
+        dialog.showAtLocation(getView(), Gravity.CENTER, new MessageDialogFragment.ConfirmListener() {
+                    @Override
+                    public void confirmClick(View view) {
+                        dialog.dismiss();
 
-        Button button = (Button) popupLayout.findViewById(R.id.login_success_btn);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loginPopup.dismiss();
-//                showAccountsCombinePopup();
-            }
-        });
-
-
-        int width = (int) mContext.getResources().getDimension(R.dimen.login_pop_width);
-        int height = (int) mContext.getResources().getDimension(R.dimen.login_pop_height);
-        loginPopup = new PopupWindow(popupLayout, width, height);
-        loginPopup.setFocusable(true);
-        loginPopup.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.transparent));
-        int xOffset = (int) mContext.getResources().getDimension(R.dimen.loginfragment_successPop_xOffset);
-        int yOffset = (int) mContext.getResources().getDimension(R.dimen.loginfragment_successPop_yOffset);
-
-        loginPopup.showAtLocation(fragmentView, Gravity.CENTER, xOffset, yOffset);
+                    }
+                },
+                null
+        );
     }
 
 
@@ -507,33 +497,33 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     };
 
     private void bindBestTvauth() {
-		long timestamp = System.currentTimeMillis();
-		Activator activator = Activator.getInstance(mContext);
-		String mac = DeviceUtils.getLocalMacAddress(mContext);
-		mac = mac.replace("-", "").replace(":", "");
-		String rsaResult = activator.PayRsaEncode("sn="
-				+ SimpleRestClient.sn_token + "&timestamp=" + timestamp);
-		String params = "device_token=" + SimpleRestClient.device_token
-				+ "&access_token=" + SimpleRestClient.access_token
-				+"&sharp_bestv="+mac
-				+"&timestamp=" + timestamp + "&sign=" + rsaResult;
-		mSimpleRestClient.doSendRequest(SimpleRestClient.root_url
-				+ "/accounts/combine/", "post", params,
-				new HttpPostRequestInterface() {
+        long timestamp = System.currentTimeMillis();
+        Activator activator = Activator.getInstance(mContext);
+        String mac = DeviceUtils.getLocalMacAddress(mContext);
+        mac = mac.replace("-", "").replace(":", "");
+        String rsaResult = activator.PayRsaEncode("sn="
+                + SimpleRestClient.sn_token + "&timestamp=" + timestamp);
+        String params = "device_token=" + SimpleRestClient.device_token
+                + "&access_token=" + SimpleRestClient.access_token
+                + "&sharp_bestv=" + mac
+                + "&timestamp=" + timestamp + "&sign=" + rsaResult;
+        mSimpleRestClient.doSendRequest(SimpleRestClient.root_url
+                        + "/accounts/combine/", "post", params,
+                new HttpPostRequestInterface() {
 
-					@Override
-					public void onPrepare() {
-					}
+                    @Override
+                    public void onPrepare() {
+                    }
 
-					@Override
-					public void onSuccess(String info) {
-						DaisyUtils.getVodApplication(mContext).getEditor().putString(VodApplication.BESTTV_AUTH_BIND_FLAG, "combined");
-					}
+                    @Override
+                    public void onSuccess(String info) {
+                        DaisyUtils.getVodApplication(mContext).getEditor().putString(VodApplication.BESTTV_AUTH_BIND_FLAG, "combined");
+                    }
 
-					@Override
-					public void onFailed(String error) {
-					}
+                    @Override
+                    public void onFailed(String error) {
+                    }
 
-				});
-	}
+                });
+    }
 }
