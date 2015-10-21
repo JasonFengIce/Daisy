@@ -1,5 +1,6 @@
 package tv.ismar.daisy.core.client;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
@@ -27,12 +28,29 @@ public class IsmartvHttpClient extends Thread {
     private String mParams;
     private CallBack mCallback;
     private Method method;
-
+    private Handler messageHandler;
 
     public interface CallBack {
         void onSuccess(String result);
 
         void onFailed(Exception exception);
+    }
+
+    public IsmartvHttpClient(Context context) {
+        messageHandler = new Handler(context.getMainLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case SUCCESS:
+                        mCallback.onSuccess((String) msg.obj);
+                        break;
+                    case FAILURE:
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
     }
 
 
@@ -87,22 +105,6 @@ public class IsmartvHttpClient extends Thread {
         this.method = method;
         start();
     }
-
-
-    private Handler messageHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case SUCCESS:
-                    mCallback.onSuccess((String) msg.obj);
-                    break;
-                case FAILURE:
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
 
 
     public enum Method {

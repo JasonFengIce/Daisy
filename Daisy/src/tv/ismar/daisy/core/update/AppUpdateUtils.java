@@ -38,6 +38,8 @@ public class AppUpdateUtils {
 
     private String appUpdateHost;
 
+    private boolean checkDowload = false;
+
     private AppUpdateUtils(Context context) {
         this.mContext = context;
 
@@ -51,11 +53,12 @@ public class AppUpdateUtils {
     }
 
     public void checkUpdate(String host) {
+        checkDowload = true;
         this.appUpdateHost = host;
         path = mContext.getFilesDir().getAbsolutePath();
 
         String api = appUpdateHost + "/api/upgrade/application/ismartvod/";
-        new IsmartvHttpClient().doRequest(IsmartvHttpClient.Method.GET, api, new IsmartvHttpClient.CallBack() {
+        new IsmartvHttpClient(mContext).doRequest(IsmartvHttpClient.Method.GET, api, new IsmartvHttpClient.CallBack() {
             @Override
             public void onSuccess(String result) {
                 VersionInfoEntity versionInfoEntity = new Gson().fromJson(result, VersionInfoEntity.class);
@@ -120,6 +123,7 @@ public class AppUpdateUtils {
     }
 
     private void downloadAPK(final Context mContext, final String downloadUrl) {
+        checkDowload = false;
         new Thread() {
             @Override
             public void run() {
@@ -147,8 +151,12 @@ public class AppUpdateUtils {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
                 Log.d(TAG, "downloadAPK is end...");
-//                checkUpdate(appUpdateHost);
+                if (!checkDowload) {
+                    checkUpdate(appUpdateHost);
+                }
+
             }
         }.start();
     }
