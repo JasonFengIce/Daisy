@@ -443,6 +443,8 @@ public class DaisyVideoView extends SurfaceView implements MediaPlayerControl {
 		public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
 			mVideoWidth = mp.getVideoWidth();
 			mVideoHeight = mp.getVideoHeight();
+			Log.v("aaaa", "mVideoWidth = "+mVideoWidth);
+			Log.v("aaaa", "mVideoHeight = "+mVideoHeight);
 			if (mVideoWidth != 0 && mVideoHeight != 0) {
 				getHolder().setFixedSize(mVideoWidth, mVideoHeight);
 				requestLayout();

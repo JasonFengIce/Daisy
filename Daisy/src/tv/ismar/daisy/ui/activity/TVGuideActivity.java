@@ -573,6 +573,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         scroll.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            	if(view == null)return;
                 TextView channelBtn = (TextView) view.findViewById(R.id.channel_item);
                 channelChange = ChannelChange.CLICK_CHANNEL;
 
@@ -1214,6 +1215,11 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     }
 
     @Override
+    protected void onResume() {
+    	super.onResume();
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         if (fragmentSwitch.hasMessages(SWITCH_PAGE))
@@ -1230,6 +1236,21 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             exitPopupWindow.dismiss();
         }
         super.onDestroy();
+    }
+
+    @Override  
+    protected void onNewIntent(Intent intent) {  
+        super.onNewIntent(intent);
+		homepage_template = intent.getStringExtra("homepage_template");
+		homepage_url = intent.getStringExtra("homepage_url");
+		if (StringUtils.isEmpty(homepage_template)
+				|| StringUtils.isEmpty(homepage_url)) {
+//			fetchChannels();
+		} else {
+			if (StringUtils.isNotEmpty(SimpleRestClient.root_url)) {
+				fetchChannels();
+			}
+		}
     }
 
     private Handler fragmentSwitch = new Handler() {

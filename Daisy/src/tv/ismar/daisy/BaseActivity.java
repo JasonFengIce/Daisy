@@ -469,8 +469,9 @@ public class BaseActivity extends FragmentActivity {
 				String mac = DeviceUtils.getLocalMacAddress(BaseActivity.this);
 				mac = mac.replace("-", "").replace(":", "");
 				httpresult = mRestClient.getBestTVAuthor(mac);
-				if(StringUtils.isEmpty(httpresult))
+				if(StringUtils.isEmpty(httpresult)){
 					return -1;
+				}
 				httpresult = httpresult.replace("\"", "");
 				DaisyUtils.getVodApplication(BaseActivity.this).getEditor().putString(VodApplication.BESTTV_AUTH_BIND_FLAG, httpresult);
 			} catch (NetworkException e) {
