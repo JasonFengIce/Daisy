@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -257,8 +258,9 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
     private void createPlayAuthListView(ArrayList<AccountPlayAuthEntity.PlayAuth> playAuths) {
         if (playAuths.size() == 0) {
             playAuthListView.setFocusable(false);
+            ((ScrollView) (playAuthListView.getParent())).setFocusable(false);
+            fragmentView.setFocusable(false);
         } else {
-
             playAuthListView.removeAllViews();
             String remainday = mContext.getResources().getString(R.string.personcenter_orderlist_item_remainday);
             for (int i = 0; i < playAuths.size(); i++) {
