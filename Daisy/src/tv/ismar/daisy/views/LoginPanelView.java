@@ -28,6 +28,7 @@ import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
 import tv.ismar.sakura.utils.DeviceUtils;
 
 import java.net.ContentHandler;
@@ -148,14 +149,7 @@ public class LoginPanelView extends LinearLayout {
                                             .getText().toString();
                                     GetFavoriteByNet();
                                     getHistoryByNet();
-                                    AccountAboutDialog dialog = new AccountAboutDialog(
-                                            getContext(),
-                                            R.style.UserinfoDialog);
-                                    dialog.setIscancelshow(false);
-                                    dialog.setWarningmessage("恭喜"
-                                            + SimpleRestClient.mobile_number
-                                            + "登录视云账户!");
-                                    dialog.show();
+                                    showLoginSuccessPopup();
                                     if (callback != null) {
                                         callback.onSuccess(auth_token);
                                     }
@@ -588,4 +582,17 @@ public class LoginPanelView extends LinearLayout {
                 });
     }
 
+    private void showLoginSuccessPopup() {
+        String msg = mcontext.getString(R.string.login_success_name);
+        String phoneNumber = edit_mobile.getText().toString();
+        final MessageDialogFragment dialog = new MessageDialogFragment(mcontext, String.format(msg, phoneNumber), mcontext.getString(R.string.login_success));
+        dialog.showAtLocation(this, Gravity.CENTER, new MessageDialogFragment.ConfirmListener() {
+                    @Override
+                    public void confirmClick(View view) {
+                        dialog.dismiss();
+                    }
+                },
+                null
+        );
+    }
 }
