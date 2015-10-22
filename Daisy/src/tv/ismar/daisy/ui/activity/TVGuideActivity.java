@@ -25,6 +25,7 @@ import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.core.service.PosterUpdateService;
 import tv.ismar.daisy.core.update.AppUpdateUtils;
+import tv.ismar.daisy.core.update.AppUpdateUtilsV2;
 import tv.ismar.daisy.data.ChannelEntity;
 import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
 import tv.ismar.daisy.ui.Position;
@@ -49,6 +50,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -573,7 +575,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         scroll.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            	if(view == null)return;
+                if (view == null) return;
                 TextView channelBtn = (TextView) view.findViewById(R.id.channel_item);
                 channelChange = ChannelChange.CLICK_CHANNEL;
 
@@ -890,6 +892,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         sendLoncationRequest();
         String appUpdateHost = "http://" + result.getUpgrade_domain();
         AppUpdateUtils.getInstance(this).checkUpdate(appUpdateHost);
+//        AppUpdateUtilsV2.getInstance(this).checkAppUpdate("http://oak.t.tvxio.com", SimpleRestClient.sn_token, "sharp", "SH");
     }
 
     private void saveActivedInfo(Result result) {
@@ -1216,7 +1219,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     @Override
     protected void onResume() {
-    	super.onResume();
+        super.onResume();
     }
 
     @Override
@@ -1238,19 +1241,19 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         super.onDestroy();
     }
 
-    @Override  
-    protected void onNewIntent(Intent intent) {  
+    @Override
+    protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-		homepage_template = intent.getStringExtra("homepage_template");
-		homepage_url = intent.getStringExtra("homepage_url");
-		if (StringUtils.isEmpty(homepage_template)
-				|| StringUtils.isEmpty(homepage_url)) {
+        homepage_template = intent.getStringExtra("homepage_template");
+        homepage_url = intent.getStringExtra("homepage_url");
+        if (StringUtils.isEmpty(homepage_template)
+                || StringUtils.isEmpty(homepage_url)) {
 //			fetchChannels();
-		} else {
-			if (StringUtils.isNotEmpty(SimpleRestClient.root_url)) {
-				fetchChannels();
-			}
-		}
+        } else {
+            if (StringUtils.isNotEmpty(SimpleRestClient.root_url)) {
+                fetchChannels();
+            }
+        }
     }
 
     private Handler fragmentSwitch = new Handler() {
