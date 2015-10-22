@@ -70,7 +70,7 @@ public class AppUpdateUtilsV2 {
         String location = AccountSharedPrefs.getInstance(mContext).getSharedPrefs(AccountSharedPrefs.PROVINCE_PY);
 
         //请求参数
-        HashMap<String, String> paramters = new HashMap<>();
+        HashMap<String, String> paramters = new HashMap<String,String>();
         paramters.put("sn", SimpleRestClient.sn_token);
         paramters.put("manu", "sharp");
         paramters.put("app", "sky");

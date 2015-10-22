@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
@@ -491,17 +492,20 @@ public class BaseActivity extends FragmentActivity {
 				if (StringUtils.isNotEmpty(SimpleRestClient.mobile_number)
 						&& StringUtils
 								.isNotEmpty(SimpleRestClient.access_token)) {
-					if("privilege".equals(httpresult)){
-						//继续绑定不提示
+					if ("privilege".equals(httpresult)) {
+						// 继续绑定不提示
 					}
-				}else{
-					if("privilege".equals(httpresult)){//未登陆提示登陆绑定
-						showBindPopup(
-								((ViewGroup) findViewById(android.R.id.content))
-										.getChildAt(0),
-								R.string.besttvauthbind_message);
+				} else {
+					if ("privilege".equals(httpresult)) {// 未登陆提示登陆绑定
+						new Handler().postDelayed(new Runnable() {
+							public void run() {
+								showBindPopup(
+										((ViewGroup) findViewById(android.R.id.content))
+												.getChildAt(0),
+										R.string.besttvauthbind_message);
+							}
+						}, 2000);
 					}
-
 				}
 			}
 		}
