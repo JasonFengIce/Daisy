@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -25,7 +24,6 @@ import java.util.HashMap;
 
 import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.client.IsmartvHttpClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.utils.HardwareUtils;
