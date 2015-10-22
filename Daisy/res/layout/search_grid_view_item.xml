@@ -53,10 +53,8 @@
             android:textSize="@dimen/search_gridview_item_text_size"
             android:textStyle="bold"
             android:marqueeRepeatLimit="marquee_forever"
-            android:focusableInTouchMode="true"
-            android:scrollHorizontally="true"
             android:textColor="#ffffffff"
-            android:focusable="true">
+            >
 
         </tv.ismar.daisy.views.MarqueeText>
 
