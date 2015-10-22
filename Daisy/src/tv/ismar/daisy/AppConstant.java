@@ -6,7 +6,6 @@ import retrofit.RestAdapter;
  * Created by huaijie on 3/9/15.
  */
 public class AppConstant {
-    public static final String APP_NAME = "Daisy";
 
 
     public static final String KIND = "sky";

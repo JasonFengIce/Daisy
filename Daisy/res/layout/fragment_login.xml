@@ -86,6 +86,7 @@
         android:layout_marginTop="@dimen/loginfragment_phoneNumberLayout_marginTop">
 
         <EditText
+            android:imeOptions="actionDone"
             android:id="@+id/login_verification_edit"
             android:layout_width="@dimen/association_phone_edit_width"
             android:layout_height="@dimen/association_phone_edit_height"

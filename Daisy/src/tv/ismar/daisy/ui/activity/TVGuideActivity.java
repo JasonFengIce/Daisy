@@ -891,8 +891,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
         sendLoncationRequest();
         String appUpdateHost = "http://" + result.getUpgrade_domain();
-        AppUpdateUtils.getInstance(this).checkUpdate(appUpdateHost);
-//        AppUpdateUtilsV2.getInstance(this).checkAppUpdate("http://oak.t.tvxio.com", SimpleRestClient.sn_token, "sharp", "SH");
+//        AppUpdateUtils.getInstance(this).checkUpdate(appUpdateHost);
+        AppUpdateUtilsV2.getInstance(this).checkAppUpdate(appUpdateHost);
     }
 
     private void saveActivedInfo(Result result) {
