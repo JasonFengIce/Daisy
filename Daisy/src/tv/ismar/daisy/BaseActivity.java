@@ -121,7 +121,7 @@ public class BaseActivity extends FragmentActivity {
     private void showNetErrorPopup() {
     	final MessageDialogFragment dialog = new MessageDialogFragment(
 				BaseActivity.this, getString(R.string.fetch_net_data_error), null);
-    	dialog.setButtonText(getString(R.id.setting_network), getString(R.id.i_know));
+    	dialog.setButtonText(getString(R.string.setting_network), getString(R.string.i_know));
 		dialog.showAtLocation(((ViewGroup) findViewById(android.R.id.content))
 		.getChildAt(0), Gravity.CENTER,
 				new MessageDialogFragment.ConfirmListener() {

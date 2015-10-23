@@ -921,7 +921,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private void showNetErrorPopup() {
     	final MessageDialogFragment dialog = new MessageDialogFragment(
 				TVGuideActivity.this, getString(R.string.fetch_net_data_error), null);
-    	dialog.setButtonText(getString(R.id.setting_network), getString(R.id.i_know));
+    	dialog.setButtonText(getString(R.string.setting_network), getString(R.string.i_know));
 		dialog.showAtLocation(contentView, Gravity.CENTER,
 				new MessageDialogFragment.ConfirmListener() {
 					@Override
