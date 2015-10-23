@@ -453,7 +453,6 @@ public class BaseActivity extends FragmentActivity {
 					@Override
 					public void confirmClick(View view) {
 						dialog.dismiss();
-						BaseActivity.this.finish();
 						Intent intent = new Intent();
 						intent.setAction("tv.ismar.daisy.usercenter");
 						intent.putExtra("flag", "login");
