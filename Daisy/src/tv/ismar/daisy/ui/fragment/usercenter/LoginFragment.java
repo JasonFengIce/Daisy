@@ -184,6 +184,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         phoneNumberPrompt.setText("");
 
+        verificationEdit.requestFocus();
         String api = SimpleRestClient.root_url + "/accounts/auth/";
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("device_token", SimpleRestClient.device_token);

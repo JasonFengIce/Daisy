@@ -170,7 +170,6 @@ public class LoginPanelView extends LinearLayout {
                             public void onFailed(String error) {
                                 // TODO Auto-generated method stub
                                 callback.onFailed(error);
-                                // count_tip.setText(error);
                                 setcount_tipText("登录失败");
                             }
 
@@ -198,6 +197,9 @@ public class LoginPanelView extends LinearLayout {
                         R.drawable.btn_normal_bg, R.drawable.btn_disabled_bg);
                 timeCount.start();
                 count_tip.setVisibility(View.VISIBLE);
+
+                edit_identifycode.requestFocus();
+
                 mSimpleRestClient.doSendRequest("/accounts/auth/", "post",
                         "device_token=" + SimpleRestClient.device_token
                                 + "&username="
@@ -206,19 +208,11 @@ public class LoginPanelView extends LinearLayout {
 
                             @Override
                             public void onSuccess(String info) {
-                                // TODO Auto-generated method stub
-                                // timeCount.cancel();
-                                // identifyCodeBtn.setEnabled(true);
-                                // identifyCodeBtn.setBackgroundResource(R.drawable.btn_normal_bg);
-                                // identifyCodeBtn.setText("获取验证码");
-                                // count_tip.setText("获取验证码成功，请提交!");
                                 setcount_tipText("获取验证码成功，请提交!");
                             }
 
                             @Override
                             public void onPrepare() {
-                                // TODO Auto-generated method stub
-                                // count_tip.setText("60秒后可再次点击获取验证码");
                                 setcount_tipText("60秒后可再次点击获取验证码");
                             }
 
@@ -227,12 +221,9 @@ public class LoginPanelView extends LinearLayout {
                                 // TODO Auto-generated method stub
                                 timeCount.cancel();
                                 identifyCodeBtn.setEnabled(true);
-                                identifyCodeBtn
-                                        .setBackgroundResource(R.drawable.btn_normal_bg);
+                                identifyCodeBtn.setBackgroundResource(R.drawable.btn_normal_bg);
                                 identifyCodeBtn.setText("获取验证码");
-                                // count_tip.setText("获取验证码:\n"+error);
                                 setcount_tipText("获取验证码失败\n");
-                                // showDialog(error);
                             }
                         });
             }
