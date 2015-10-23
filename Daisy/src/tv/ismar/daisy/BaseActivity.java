@@ -11,6 +11,7 @@ import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.exception.NetworkException;
+import tv.ismar.daisy.ui.activity.TVGuideActivity;
 import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
 import tv.ismar.daisy.views.ExitDialog;
 import tv.ismar.sakura.ui.widget.MessagePopWindow;
@@ -118,7 +119,24 @@ public class BaseActivity extends FragmentActivity {
     }
 
     private void showNetErrorPopup() {
-        netErrorPopupWindow.showAtLocation(netErrorPopupWindow.getContentView(), Gravity.CENTER, 0, 0);
+    	final MessageDialogFragment dialog = new MessageDialogFragment(
+				BaseActivity.this, getString(R.string.fetch_net_data_error), null);
+    	dialog.setButtonText(getString(R.id.setting_network), getString(R.id.i_know));
+		dialog.showAtLocation(((ViewGroup) findViewById(android.R.id.content))
+		.getChildAt(0), Gravity.CENTER,
+				new MessageDialogFragment.ConfirmListener() {
+					@Override
+					public void confirmClick(View view) {
+		                Intent intent = new Intent(Settings.ACTION_SETTINGS);
+		                BaseActivity.this.startActivity(intent);
+					}
+				}, new MessageDialogFragment.CancelListener() {
+
+					@Override
+					public void cancelClick(View view) {
+						dialog.dismiss();
+					}
+				});
 
     }
 

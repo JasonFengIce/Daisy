@@ -94,6 +94,10 @@ public class MessageDialogFragment extends PopupWindow implements View.OnClickLi
 
     }
 
+    public void setButtonText(String btn1,String btn2){
+    	confirmBtn.setText(btn1);
+    	cancelBtn.setText(btn2);
+    }
 
     @Override
     public void onClick(View v) {

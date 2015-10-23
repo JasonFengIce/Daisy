@@ -36,6 +36,7 @@ import tv.ismar.daisy.ui.fragment.launcher.FilmFragment;
 import tv.ismar.daisy.ui.fragment.launcher.GuideFragment;
 import tv.ismar.daisy.ui.fragment.launcher.SportFragment;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
+import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
 import tv.ismar.sakura.ui.widget.MessagePopWindow;
 
 import android.content.BroadcastReceiver;
@@ -917,32 +918,24 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         showNetErrorPopup();
     }
 
-
     private void showNetErrorPopup() {
-        View contentView = LayoutInflater.from(this).inflate(R.layout.popup_net_error, null);
-        netErrorPopupWindow = new PopupWindow(null, 740, 341);
-        netErrorPopupWindow.setContentView(contentView);
-        netErrorPopupWindow.setFocusable(true);
-        netErrorPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent));
-        netErrorPopupWindow.showAtLocation(contentView, Gravity.CENTER, 0, 0);
+    	final MessageDialogFragment dialog = new MessageDialogFragment(
+				TVGuideActivity.this, getString(R.string.fetch_net_data_error), null);
+    	dialog.setButtonText(getString(R.id.setting_network), getString(R.id.i_know));
+		dialog.showAtLocation(contentView, Gravity.CENTER,
+				new MessageDialogFragment.ConfirmListener() {
+					@Override
+					public void confirmClick(View view) {
+		                Intent intent = new Intent(Settings.ACTION_SETTINGS);
+		                TVGuideActivity.this.startActivity(intent);
+					}
+				}, new MessageDialogFragment.CancelListener() {
 
-        Button settingNetwork = (Button) contentView.findViewById(R.id.setting_network);
-        Button iKnow = (Button) contentView.findViewById(R.id.i_know);
-
-        settingNetwork.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Settings.ACTION_SETTINGS);
-                TVGuideActivity.this.startActivity(intent);
-            }
-        });
-
-        iKnow.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                netErrorPopupWindow.dismiss();
-            }
-        });
+					@Override
+					public void cancelClick(View view) {
+						dialog.dismiss();
+					}
+				});
     }
 
 
