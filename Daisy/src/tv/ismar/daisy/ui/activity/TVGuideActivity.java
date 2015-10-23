@@ -560,7 +560,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
             @Override
             public void onFocusChange(View view, boolean flag) {
-                if (channelscrollIndex > 0)
+                if (channelscrollIndex > 0 || scroll.getSelectedView() ==null)
                     return;
                 TextView v = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
                 if (flag && scrollFromBorder) {

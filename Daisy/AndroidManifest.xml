@@ -129,7 +129,7 @@
 
         <activity
             android:name=".ui.activity.TVGuideActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleInstance"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
@@ -164,6 +164,7 @@
         <activity
             android:name=".ItemDetailActivity"
             android:screenOrientation="landscape"
+            android:launchMode="singleInstance"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:windowSoftInputMode="adjustUnspecified|stateHidden">
             <intent-filter>
@@ -175,6 +176,7 @@
         <activity
             android:name=".PFilmItemdetailActivity"
             android:screenOrientation="landscape"
+            android:launchMode="singleInstance"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:windowSoftInputMode="adjustUnspecified|stateHidden">
             <intent-filter>

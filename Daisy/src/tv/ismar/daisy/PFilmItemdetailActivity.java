@@ -123,6 +123,53 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+
+        setContentView(R.layout.filmitem_portrait_detail_view);
+        mSimpleRestClient = new SimpleRestClient();
+        View vv = findViewById(R.id.large_layout);
+        DaisyUtils.setbackground(R.drawable.main_bg,vv);
+        mLoadingDialog = new LoadingDialog(this, getResources().getString(
+                R.string.vod_loading));
+        mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
+        mLoadingDialog.show();
+
+        initViews();
+        if (intent != null) {
+            channel = intent.getStringExtra("channel");
+            slug = intent.getStringExtra(EventProperty.SECTION);
+            fromPage = intent.getStringExtra("fromPage");
+            if (intent.getSerializableExtra("item") != null) {
+                mItem = (Item) intent.getSerializableExtra("item");
+                if (mItem != null) {
+                    try {
+                        // initLayout();
+                        if (!isFree())
+                            isbuy();
+                        else
+                            initLayout();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else {
+                String url = intent.getStringExtra("url");
+                // mSection = intent.getStringExtra(EventProperty.SECTION);
+                if (url == null) {
+                    url = SimpleRestClient.sRoot_url + "/api/item/96538/";
+                }
+                mGetItemTask = new GetItemTask();
+                mGetItemTask.execute(url);
+            }
+        }
+
+        DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(),
+                this);
+    }
+
+    @Override
     protected void onResume() {
         if (isInitialized) {
             if (isDrama()) {
