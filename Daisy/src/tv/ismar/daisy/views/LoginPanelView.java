@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -208,12 +209,16 @@ public class LoginPanelView extends LinearLayout {
 
                             @Override
                             public void onSuccess(String info) {
-                                setcount_tipText("获取验证码成功，请提交!");
+                                count_tip.setText("获取验证码成功，请提交!       ");
+                                count_tip.setTextColor(Color.WHITE);
+                                count_tip.setVisibility(View.VISIBLE);
                             }
 
                             @Override
                             public void onPrepare() {
-                                setcount_tipText("60秒后可再次点击获取验证码");
+                                count_tip.setText("60秒后可再次点击获取验证码       ");
+                                count_tip.setTextColor(Color.WHITE);
+                                count_tip.setVisibility(View.VISIBLE);
                             }
 
                             @Override
@@ -292,6 +297,7 @@ public class LoginPanelView extends LinearLayout {
 
     private void setcount_tipText(String str) {
         count_tip.setText(str + "       ");
+        count_tip.setTextColor(Color.RED);
         count_tip.setVisibility(View.VISIBLE);
     }
 

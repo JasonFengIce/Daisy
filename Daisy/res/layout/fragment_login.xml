@@ -77,7 +77,8 @@
         android:layout_marginTop="@dimen/association_phone_margin_top"
         android:gravity="center"
         android:textColor="@android:color/holo_red_dark"
-        android:textSize="@dimen/h3_text_size"/>
+        android:textSize="@dimen/h3_text_size"
+        />
 
     <RelativeLayout
 
