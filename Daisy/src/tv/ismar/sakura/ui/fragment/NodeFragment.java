@@ -32,6 +32,7 @@ import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.data.table.location.CdnTable;
 import tv.ismar.daisy.data.table.location.IspTable;
 import tv.ismar.daisy.data.table.location.ProvinceTable;
+import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
 import tv.ismar.daisy.utils.StringUtils;
 import tv.ismar.sakura.core.CdnCacheLoader;
 import tv.ismar.sakura.core.HttpDownloadTask;
@@ -77,9 +78,9 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
     private Spinner ispSpinner;
     private SakuraButton speedTestButton;
 
-    private MessagePopWindow selectNodePup;
+    private MessageDialogFragment selectNodePup;
     private Dialog cdnTestDialog;
-    private MessagePopWindow cdnTestCompletedPop;
+    private MessageDialogFragment cdnTestCompletedPop;
 
 
     private String[] selectionArgs = {"0", "0"};
@@ -406,17 +407,15 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
      * @param cndId
      */
     private void showSelectNodePop(final int cndId) {
-        selectNodePup = new MessagePopWindow(mContext);
-        selectNodePup.setBackgroundRes(R.drawable.sakura_pop_bg);
-        selectNodePup.setFirstMessage(R.string.are_you_sure_selecte);
-        selectNodePup.showAtLocation(nodeListView, Gravity.CENTER, 0, 0, new MessagePopWindow.ConfirmListener() {
+        selectNodePup = new MessageDialogFragment(mContext, getString(R.string.are_you_sure_selecte), null);
+        selectNodePup.showAtLocation(getView(), Gravity.CENTER, new MessageDialogFragment.ConfirmListener() {
                     @Override
                     public void confirmClick(View view) {
                         bindCdn(SimpleRestClient.sn_token, cndId);
                         selectNodePup.dismiss();
                     }
                 },
-                new MessagePopWindow.CancelListener() {
+                new MessageDialogFragment.CancelListener() {
                     @Override
                     public void cancelClick(View view) {
                         selectNodePup.dismiss();
@@ -490,10 +489,9 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
                 break;
         }
 
-        cdnTestCompletedPop = new MessagePopWindow(mContext);
-        cdnTestCompletedPop.setBackgroundRes(R.drawable.sakura_pop_bg);
-        cdnTestCompletedPop.setFirstMessage(titleRes);
-        cdnTestCompletedPop.showAtLocation(nodeListView, Gravity.CENTER, 0, 0, new MessagePopWindow.ConfirmListener() {
+
+        cdnTestCompletedPop = new MessageDialogFragment(mContext, getString(titleRes), null);
+        cdnTestCompletedPop.showAtLocation(getView(), Gravity.CENTER, new MessageDialogFragment.ConfirmListener() {
                     @Override
                     public void confirmClick(View view) {
                         cdnTestCompletedPop.dismiss();
@@ -502,6 +500,8 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
                 },
                 null
         );
+
+
     }
 
     @Override

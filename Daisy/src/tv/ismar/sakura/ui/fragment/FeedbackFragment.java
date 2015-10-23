@@ -25,6 +25,7 @@ import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
+import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
 import tv.ismar.sakura.core.FeedbackProblem;
 import tv.ismar.sakura.core.SakuraClientAPI;
 import tv.ismar.sakura.core.UploadFeedback;
@@ -270,23 +271,21 @@ public class FeedbackFragment extends Fragment implements RadioGroup.OnCheckedCh
     private void initPopWindow() {
         submitButton.clearFocus();
 
-        final MessagePopWindow popupWindow = new MessagePopWindow(mContext);
-        popupWindow.setBackgroundRes(R.drawable.sakura_pop_bg);
-        popupWindow.setFirstMessage("是否提交反馈信息?");
-        popupWindow.showAtLocation(getView(), Gravity.CENTER, 0, 0, new MessagePopWindow.ConfirmListener() {
-                    @Override
-                    public void confirmClick(View view) {
-                        popupWindow.dismiss();
-                        submitButton.setEnabled(false);
-                        uploadFeedback();
-                    }
-                },
-                new MessagePopWindow.CancelListener() {
-                    @Override
-                    public void cancelClick(View view) {
-                        popupWindow.dismiss();
-                    }
-                }
-        );
+
+        final MessageDialogFragment messageDialogFragment = new MessageDialogFragment(mContext, "是否提交反馈信息?", null);
+        messageDialogFragment.showAtLocation(getView(), Gravity.CENTER, new MessageDialogFragment.ConfirmListener() {
+            @Override
+            public void confirmClick(View view) {
+                messageDialogFragment.dismiss();
+                submitButton.setEnabled(false);
+                uploadFeedback();
+            }
+        }, new MessageDialogFragment.CancelListener() {
+            @Override
+            public void cancelClick(View view) {
+                messageDialogFragment.dismiss();
+            }
+        });
+
     }
 }
