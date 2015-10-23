@@ -105,11 +105,9 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
         super(context);
     }
 
-    public PaymentDialog(Context context, int theme,
-                         OrderResultListener paylistener) {
+    public PaymentDialog(Context context, int theme, OrderResultListener paylistener) {
         super(context, theme);
-        WindowManager wm = (WindowManager) getContext().getSystemService(
-                Context.WINDOW_SERVICE);
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
         width = wm.getDefaultDisplay().getWidth();
         height = wm.getDefaultDisplay().getHeight();
         mycontext = context;
