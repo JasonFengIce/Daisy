@@ -53,6 +53,7 @@ public class BaseActivity extends FragmentActivity {
     protected String activityTag = "";
     private FetchBestTvAuth authTask;
     protected static int activityCount = 0;
+    protected static int activityCount2 = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +73,7 @@ public class BaseActivity extends FragmentActivity {
         connectionErrorReceiver = new ConnectionErrorReceiver();
         createNetErrorPopup();
         mTencent = Tencent.createInstance(APP_ID, getApplicationContext());
+        activityCount2++;
     }
 
     private void registerBroadcastReceiver() {
@@ -408,13 +410,14 @@ public class BaseActivity extends FragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        activityCount2--;
       //  unregisterReceiver(mUserInfoReceiver);
     }
 
     @Override
     public void onBackPressed() {
 		if ("launcher".equals(fromPage)
-				&& StringUtils.isEmpty(activityTag)){
+				&& StringUtils.isEmpty(activityTag) && activityCount2<=1){
 			showExitPopup(((ViewGroup) findViewById(android.R.id.content))
 					.getChildAt(0),R.string.exit_prompt);
 		}else{
