@@ -459,12 +459,14 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                         }
                     }
                 }
-                if (currentFragment == null) {
+                if (currentFragment == null && !isFinishing()) {
+                	try{
                     currentFragment = new GuideFragment();
                     FragmentTransaction transaction = getSupportFragmentManager()
                             .beginTransaction();
-                    transaction.add(R.id.container, currentFragment).commit();
-
+                    transaction.add(R.id.container, currentFragment).commitAllowingStateLoss();
+                	}catch (IllegalStateException e) {
+					}
 
                 }
             }
