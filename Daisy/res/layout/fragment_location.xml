@@ -150,6 +150,6 @@
         android:layout_marginTop="@dimen/location_grid_margin_top"
         android:descendantFocusability="afterDescendants"
         android:gravity="center"
-        android:numColumns="10"
+        android:numColumns="9"
         android:verticalSpacing="60dp"></GridView>
 </LinearLayout>
