@@ -350,7 +350,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             }
         });
 
-        topView = (LaunchHeaderLayout) findViewById(R.id.top_column_layout);
         initViews();
         initTabView();
         activator = Activator.getInstance(this);
@@ -1213,6 +1212,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     @Override
     protected void onResume() {
         super.onResume();
+        topView = (LaunchHeaderLayout) findViewById(R.id.top_column_layout);
     }
 
     @Override
