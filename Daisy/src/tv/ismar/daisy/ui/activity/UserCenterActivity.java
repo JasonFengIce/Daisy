@@ -43,6 +43,7 @@ import tv.ismar.daisy.ui.fragment.usercenter.PurchaseHistoryFragment;
 import tv.ismar.daisy.ui.fragment.usercenter.StoreFragment;
 import tv.ismar.daisy.ui.fragment.usercenter.UserInfoFragment;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
+import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
 import tv.ismar.sakura.ui.widget.MessagePopWindow;
 
 /**
@@ -338,27 +339,16 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     }
 
 
-    PopupWindow exitPopupWindow;
-
     public void showSameAccountPopup() {
-        Context context = UserCenterActivity.this;
-        View contentView = LayoutInflater.from(context).inflate(R.layout.popup_sameaccount, null);
-        exitPopupWindow = new PopupWindow(null, 877, 305);
-        exitPopupWindow.setContentView(contentView);
-        exitPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent));
-        exitPopupWindow.setFocusable(true);
-        int xOffset = (int) getResources().getDimension(R.dimen.loginfragment_successPop_xOffset);
-        int yOffset = (int) getResources().getDimension(R.dimen.loginfragment_successPop_yOffset);
-        exitPopupWindow.showAtLocation(mContentView, Gravity.CENTER, xOffset, yOffset);
-        TextView txt_info = (TextView) contentView.findViewById(R.id.txt_info);
-        txt_info.setText("您的账号已经登录!");
-        Button confirmExit = (Button) contentView.findViewById(R.id.confirm_exit);
-        confirmExit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                exitPopupWindow.dismiss();
-            }
-        });
+        final MessageDialogFragment messageDialogFragment = new MessageDialogFragment(this, "您的账号已经登录!", null);
+        messageDialogFragment.showAtLocation(mContentView, Gravity.CENTER, new MessageDialogFragment.ConfirmListener() {
+                    @Override
+                    public void confirmClick(View view) {
+                        messageDialogFragment.dismiss();
+                    }
+                },
+                null
+        );
     }
 //    public void showAccountsCombinePopup() {
 //        View popupLayout = LayoutInflater.from(this).inflate(R.layout.popup_account_combine, null);
