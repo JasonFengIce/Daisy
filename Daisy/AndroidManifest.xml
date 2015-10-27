@@ -262,6 +262,7 @@
         <activity
             android:name=".ChannelListActivity"
             android:hardwareAccelerated="true"
+            android:launchMode="singleInstance"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
