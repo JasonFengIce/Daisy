@@ -74,6 +74,7 @@ public class BaseActivity extends FragmentActivity {
         connectionErrorReceiver = new ConnectionErrorReceiver();
         createNetErrorPopup();
         mTencent = Tencent.createInstance(APP_ID, getApplicationContext());
+        if(!"launcher".equals(fromPage))
         activityCount2++;
     }
 
