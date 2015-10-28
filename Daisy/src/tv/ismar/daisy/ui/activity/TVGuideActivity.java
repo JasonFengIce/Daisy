@@ -357,9 +357,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         String localInfo = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.LOCATION_INFO, "");
         getHardInfo();
         updatePoster();
-
-        activator.active(MANUFACTURE, KIND, String.valueOf(SimpleRestClient.appVersion), localInfo);
-
+        String product = Build.BRAND.replace(" ", "_").toLowerCase();
+        String mode = Build.PRODUCT.replace(" ", "_").toLowerCase();
+        activator.active(product, "sky", String.valueOf(SimpleRestClient.appVersion), localInfo);
     }
 
 

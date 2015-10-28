@@ -103,7 +103,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
         phoneNumberLayout = fragmentView.findViewById(R.id.phone_number_layout);
         snNumberLayout = fragmentView.findViewById(R.id.sn_number_layout);
 
-        deviceNameTextView.setText(Build.MODEL);
+        deviceNameTextView.setText(Build.PRODUCT.replace(" ", "_"));
 
 //        changeButton.setOnClickListener(this);
 

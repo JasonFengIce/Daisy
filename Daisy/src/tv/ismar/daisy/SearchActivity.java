@@ -470,6 +470,9 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == 4) {
 			finish();
+		}else if(keyCode == 774 && autoCompleteTextView != null){
+	           InputMethodManager imm = (InputMethodManager) autoCompleteTextView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+	           imm.hideSoftInputFromWindow(autoCompleteTextView.getWindowToken(), 0);			
 		}
 		return false;
 	}
