@@ -10,6 +10,7 @@ import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 import cn.ismartv.activator.Activator;
@@ -29,8 +30,11 @@ public class InitService extends Service implements Activator.OnComplete {
 		activator.setOnCompleteListener(this);
 		String localInfo = DaisyUtils.getVodApplication(this).getPreferences()
 				.getString(VodApplication.LOCATION_INFO, "");
-		activator.active(MANUFACTURE, KIND,
-				String.valueOf(SimpleRestClient.appVersion), localInfo);
+		 String product = Build.BRAND.replace(" ", "_");
+	        String mode = Build.PRODUCT.replace(" ", "_");
+	        Log.v("aaaa", "product ="+product);
+	        Log.v("aaaa", "mode ="+mode);
+	        activator.active(product, "sky", String.valueOf(SimpleRestClient.appVersion), localInfo);
 		Log.v("InitService", "InitService started");
 		new Thread(new InitializeProcess(this)).start();
 	}
