@@ -34,7 +34,7 @@ public class InitService extends Service implements Activator.OnComplete {
 	        String mode = Build.PRODUCT.replace(" ", "_");
 	        Log.v("aaaa", "product ="+product);
 	        Log.v("aaaa", "mode ="+mode);
-	        activator.active(product, "sky", String.valueOf(SimpleRestClient.appVersion), localInfo);
+	        activator.active(product, mode, String.valueOf(SimpleRestClient.appVersion), localInfo);
 		Log.v("InitService", "InitService started");
 		new Thread(new InitializeProcess(this)).start();
 	}

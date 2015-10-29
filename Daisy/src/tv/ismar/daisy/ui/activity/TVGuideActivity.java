@@ -361,7 +361,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         String mode = Build.PRODUCT.replace(" ", "_");
         Log.v("aaaa", "product ="+product);
         Log.v("aaaa", "mode ="+mode);
-        activator.active(product, "sky", String.valueOf(SimpleRestClient.appVersion), localInfo);
+        activator.active(product, mode, String.valueOf(SimpleRestClient.appVersion), localInfo);
     }
 
 
