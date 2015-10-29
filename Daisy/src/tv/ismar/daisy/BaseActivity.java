@@ -76,6 +76,12 @@ public class BaseActivity extends FragmentActivity {
         mTencent = Tencent.createInstance(APP_ID, getApplicationContext());
         if(!"launcher".equals(fromPage))
         activityCount2++;
+//        if("launcher".equals(fromPage)){
+//        	Intent xxxIntent = new Intent();
+//        	xxxIntent.setAction("tv.ismar.daisy.reactive");
+//        	startActivity(xxxIntent);
+//        	finish();
+//        }
     }
 
     private void registerBroadcastReceiver() {
