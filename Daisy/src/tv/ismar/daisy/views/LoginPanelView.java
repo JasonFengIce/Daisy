@@ -189,7 +189,7 @@ public class LoginPanelView extends LinearLayout {
                     setcount_tipText("不是手机号码");
                     return;
                 }
-                timeCount = new IsmartCountTimer(identifyCodeBtn, R.drawable.channel_item_normal, R.drawable.btn_disabled_bg);
+                timeCount = new IsmartCountTimer(identifyCodeBtn, R.drawable.person_btn_selector, R.drawable.btn_disabled_bg);
                 timeCount.start();
                 count_tip.setVisibility(View.VISIBLE);
 
