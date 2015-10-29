@@ -40,9 +40,6 @@ public class LoginPanelView extends LinearLayout {
 
     private Button identifyCodeBtn;
     private SimpleRestClient mSimpleRestClient;
-    private DialogInterface.OnClickListener mPositiveListener;
-    private DialogInterface.OnClickListener mNegativeListener;
-    private Dialog dialog = null;
     private EditText edit_identifycode;
     private Button btn_submit;
     private EditText edit_mobile;
@@ -54,13 +51,11 @@ public class LoginPanelView extends LinearLayout {
 
     public LoginPanelView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        // TODO Auto-generated constructor stub
         TypedArray a = context.obtainStyledAttributes(attrs,
                 R.styleable.LoginPanelView);
         LayoutInflater mInflater = LayoutInflater.from(context);
         View myView;
-        suspension_window = a.getBoolean(
-                R.styleable.LoginPanelView_suspension_window, false);
+        suspension_window = a.getBoolean(R.styleable.LoginPanelView_suspension_window, false);
         if (suspension_window) {
             myView = mInflater.inflate(R.layout.pay_person_login, null);
         } else {
@@ -194,8 +189,7 @@ public class LoginPanelView extends LinearLayout {
                     setcount_tipText("不是手机号码");
                     return;
                 }
-                timeCount = new IsmartCountTimer(identifyCodeBtn,
-                        R.drawable.btn_normal_bg, R.drawable.btn_disabled_bg);
+                timeCount = new IsmartCountTimer(identifyCodeBtn, R.drawable.channel_item_normal, R.drawable.btn_disabled_bg);
                 timeCount.start();
                 count_tip.setVisibility(View.VISIBLE);
 
@@ -212,6 +206,7 @@ public class LoginPanelView extends LinearLayout {
                                 count_tip.setText("获取验证码成功，请提交!       ");
                                 count_tip.setTextColor(Color.WHITE);
                                 count_tip.setVisibility(View.VISIBLE);
+
                             }
 
                             @Override
@@ -226,7 +221,7 @@ public class LoginPanelView extends LinearLayout {
                                 // TODO Auto-generated method stub
                                 timeCount.cancel();
                                 identifyCodeBtn.setEnabled(true);
-                                identifyCodeBtn.setBackgroundResource(R.drawable.btn_normal_bg);
+                                identifyCodeBtn.setBackgroundResource(R.drawable.channel_item_normal);
                                 identifyCodeBtn.setText("获取验证码");
                                 setcount_tipText("获取验证码失败\n");
                             }
@@ -254,46 +249,6 @@ public class LoginPanelView extends LinearLayout {
         public void onFailed(String error);
     }
 
-    private void showDialog(String info) {
-        mPositiveListener = new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface arg0, int arg1) {
-                // TODO Auto-generated method stub
-                dialog.dismiss();
-            }
-        };
-        mNegativeListener = new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface arg0, int arg1) {
-                // TODO Auto-generated method stub
-                dialog.dismiss();
-            }
-        };
-
-        dialog = new CustomDialog.Builder(getContext()).setMessage(info)
-                .setPositiveButton(R.string.vod_retry, mPositiveListener)
-                .setNegativeButton(R.string.vod_ok, mNegativeListener).create();
-
-        dialog.show();
-    }
-
-    public String getMobileNumber() {
-        return edit_mobile.getText().toString();
-    }
-
-    public void clearLayout() {
-        count_tip.setVisibility(View.INVISIBLE);
-        edit_identifycode.setText("");
-        edit_mobile.setText("");
-        identifyCodeBtn.setEnabled(true);
-        identifyCodeBtn.setBackgroundResource(R.drawable.btn_normal_bg);
-        identifyCodeBtn.setText("获取验证码");
-        if (timeCount != null) {
-            timeCount.cancel();
-        }
-    }
 
     private void setcount_tipText(String str) {
         count_tip.setText(str + "       ");
@@ -351,14 +306,10 @@ public class LoginPanelView extends LinearLayout {
 
                     @Override
                     public void onPrepare() {
-                        // TODO Auto-generated method stub
-
                     }
 
                     @Override
                     public void onFailed(String error) {
-                        // TODO Auto-generated method stub
-
                     }
                 });
     }
