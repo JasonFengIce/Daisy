@@ -1,15 +1,17 @@
 package tv.ismar.daisy.core.service;
 
-import static tv.ismar.daisy.AppConstant.KIND;
-import static tv.ismar.daisy.AppConstant.MANUFACTURE;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.initialization.InitializeProcess;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
@@ -17,6 +19,12 @@ import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
 
 public class InitService extends Service implements Activator.OnComplete {
+
+	private ConnectionChangeReceiver mConnectivityReceiver;
+	private String product;
+	private String mode;
+	private Activator activator;
+	private String localInfo;
 
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -26,17 +34,23 @@ public class InitService extends Service implements Activator.OnComplete {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		Activator activator = Activator.getInstance(this);
+		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+		NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+		activator = Activator.getInstance(this);
 		activator.setOnCompleteListener(this);
-		String localInfo = DaisyUtils.getVodApplication(this).getPreferences()
+		localInfo = DaisyUtils.getVodApplication(this).getPreferences()
 				.getString(VodApplication.LOCATION_INFO, "");
-		 String product = Build.BRAND.replace(" ", "_");
-	        String mode = Build.PRODUCT.replace(" ", "_");
-	        Log.v("aaaa", "product ="+product);
-	        Log.v("aaaa", "mode ="+mode);
-	        activator.active(product, mode, String.valueOf(SimpleRestClient.appVersion), localInfo);
-		Log.v("InitService", "InitService started");
-		new Thread(new InitializeProcess(this)).start();
+		product = Build.BRAND.replace(" ", "_");
+		mode = Build.PRODUCT.replace(" ", "_");
+		if (networkInfo.isConnected()) {
+			activator.active(product, mode,
+					String.valueOf(SimpleRestClient.appVersion), localInfo);
+			Log.v("InitService", "InitService started");
+			new Thread(new InitializeProcess(this)).start();
+		} else {
+			registerNetStateReceiver();
+		}
 	}
 
 	@Override
@@ -92,5 +106,49 @@ public class InitService extends Service implements Activator.OnComplete {
 				.getPreferences().getString(VodApplication.MOBILE_NUMBER, "");
 		SimpleRestClient.access_token = DaisyUtils.getVodApplication(this)
 				.getPreferences().getString(VodApplication.AUTH_TOKEN, "");
+	}
+
+	/*
+	 * 手动注册网络状态变化
+	 */
+	private void registerNetStateReceiver() {
+		mConnectivityReceiver = new ConnectionChangeReceiver();
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(android.net.ConnectivityManager.CONNECTIVITY_ACTION);
+		registerReceiver(mConnectivityReceiver, filter);
+	}
+
+	/*
+	 * 注销网络监听
+	 */
+	private void unregisterNetStateReceiver() {
+		mConnectivityReceiver = new ConnectionChangeReceiver();
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(android.net.ConnectivityManager.CONNECTIVITY_ACTION);
+		unregisterReceiver(mConnectivityReceiver);
+	}
+
+	public class ConnectionChangeReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			ConnectivityManager connectivityManager = (ConnectivityManager) context
+					.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+			NetworkInfo networkInfo = connectivityManager
+					.getActiveNetworkInfo();
+
+			if (networkInfo != null) {
+				unregisterNetStateReceiver();
+				if (networkInfo.isConnected()) {
+					activator.active(product, mode,
+							String.valueOf(SimpleRestClient.appVersion),
+							localInfo);
+					Log.v("InitService", "InitService started");
+					new Thread(new InitializeProcess(InitService.this)).start();
+				}
+			} else {
+			}
+		}
 	}
 }
