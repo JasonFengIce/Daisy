@@ -212,17 +212,17 @@ public class SportFragment extends ChannelBaseFragment {
 
 	private void fillData(ArrayList<Carousel> carousels,
 			ArrayList<Poster> postlist) {
-		Picasso.with(mContext).load(carousels.get(0).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE)
+		Picasso.with(mContext).load(carousels.get(0).getThumb_image()).error(R.drawable.list_item_preview_bg).memoryPolicy(MemoryPolicy.NO_STORE)
 		.into(sport_card1);
 		// sport_card1.setFocustitle(carousels.get(0).getIntroduction());
 		sport_card1.setTag(R.drawable.launcher_selector, carousels.get(0));
 		sport_card1.setOnFocusChangeListener(ItemOnFocusListener);
-		Picasso.with(mContext).load(carousels.get(1).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE)
+		Picasso.with(mContext).load(carousels.get(1).getThumb_image()).error(R.drawable.list_item_preview_bg).memoryPolicy(MemoryPolicy.NO_STORE)
 		.into(sport_card2);
 		// sport_card2.setFocustitle(carousels.get(1).getIntroduction());
 		sport_card2.setTag(R.drawable.launcher_selector, carousels.get(1));
 		sport_card2.setOnFocusChangeListener(ItemOnFocusListener);
-		Picasso.with(mContext).load(carousels.get(2).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE)
+		Picasso.with(mContext).load(carousels.get(2).getThumb_image()).error(R.drawable.list_item_preview_bg).memoryPolicy(MemoryPolicy.NO_STORE)
 		.into(sport_card3);
 		// sport_card3.setFocustitle(carousels.get(2).getIntroduction());
 		sport_card3.setTag(R.drawable.launcher_selector, carousels.get(2));
@@ -231,19 +231,19 @@ public class SportFragment extends ChannelBaseFragment {
 		looppost.add(carousels.get(1));
 		looppost.add(carousels.get(2));
 		imageswitch.sendEmptyMessage(IMAGE_SWITCH_KEY);
-		Picasso.with(mContext).load(postlist.get(0).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE)
+		Picasso.with(mContext).load(postlist.get(0).getCustom_image()).error(R.drawable.list_item_preview_bg).memoryPolicy(MemoryPolicy.NO_STORE)
 		.into(sport_channel1_image);
 		sport_channel1_image.setFocustitle(postlist.get(0).getIntroduction());
 		sport_channel1_subtitle.setText(postlist.get(0).getTitle());
-		Picasso.with(mContext).load(postlist.get(1).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE)
+		Picasso.with(mContext).load(postlist.get(1).getCustom_image()).error(R.drawable.list_item_preview_bg).memoryPolicy(MemoryPolicy.NO_STORE)
 		.into(sport_channel2_image);
 		sport_channel2_image.setFocustitle(postlist.get(1).getIntroduction());
 		sport_channel2_subtitle.setText(postlist.get(1).getTitle());
-		Picasso.with(mContext).load(postlist.get(2).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE)
+		Picasso.with(mContext).load(postlist.get(2).getCustom_image()).error(R.drawable.list_item_preview_bg).memoryPolicy(MemoryPolicy.NO_STORE)
 		.into(sport_channel3_image);
 		sport_channel3_image.setFocustitle(postlist.get(2).getIntroduction());
 		sport_channel3_subtitle.setText(postlist.get(2).getTitle());
-		Picasso.with(mContext).load(postlist.get(3).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE)
+		Picasso.with(mContext).load(postlist.get(3).getCustom_image()).error(R.drawable.list_item_preview_bg).memoryPolicy(MemoryPolicy.NO_STORE)
 		.into(sport_channel4_image);
 		sport_channel4_image.setFocustitle(postlist.get(3).getIntroduction());
 		sport_channel4_subtitle.setText(postlist.get(3).getTitle());
@@ -342,7 +342,7 @@ public class SportFragment extends ChannelBaseFragment {
 			   ((TVGuideActivity) (getActivity())).setLastViewTag("");			
 				Carousel carousel = (Carousel) v
 						.getTag(R.drawable.launcher_selector);
-				Picasso.with(mContext).load(carousel.getVideo_image()).memoryPolicy(MemoryPolicy.NO_STORE)
+				Picasso.with(mContext).load(carousel.getVideo_image()).error(R.drawable.list_item_preview_bg).memoryPolicy(MemoryPolicy.NO_STORE)
 						.into(sportspost);
 				// sportspost.setUrl(carousel.getVideo_image());
 				sportspost.setTag(R.drawable.launcher_selector, carousel);
@@ -384,7 +384,7 @@ public class SportFragment extends ChannelBaseFragment {
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			Picasso.with(mContext)
-					.load(looppost.get(++loopindex).getVideo_image()).memoryPolicy(MemoryPolicy.NO_STORE)
+					.load(looppost.get(++loopindex).getVideo_image()).error(R.drawable.list_item_preview_bg).memoryPolicy(MemoryPolicy.NO_STORE)
 					.into(sportspost);
 			sportspost.setTag(R.drawable.launcher_selector,
 					looppost.get(loopindex));
@@ -447,7 +447,7 @@ public class SportFragment extends ChannelBaseFragment {
 			switch (index++) {
 			case 0:
 //				sports_live1.setUrl(games.get(position).getImageurl());
-				Picasso.with(mContext).load(games.get(position).getImageurl()).memoryPolicy(MemoryPolicy.NO_STORE)
+				Picasso.with(mContext).load(games.get(position).getImageurl()).error(R.drawable.list_item_preview_bg).memoryPolicy(MemoryPolicy.NO_STORE)
 						.into(sports_live1);
 				sports_live1.setTag(games.get(position));
 				if (games.get(position).isLiving()) {
@@ -459,7 +459,7 @@ public class SportFragment extends ChannelBaseFragment {
 				break;
 			case 1:
 //				sports_live2.setUrl(games.get(position).getImageurl());
-				Picasso.with(mContext).load(games.get(position).getImageurl()).memoryPolicy(MemoryPolicy.NO_STORE)
+				Picasso.with(mContext).load(games.get(position).getImageurl()).error(R.drawable.list_item_preview_bg).memoryPolicy(MemoryPolicy.NO_STORE)
 						.into(sports_live2);
 				sports_live2.setTag(games.get(position));
 				if (games.get(position).isLiving()) {
@@ -471,7 +471,7 @@ public class SportFragment extends ChannelBaseFragment {
 				break;
 			case 2:
 //				sports_live3.setUrl(games.get(position).getImageurl());
-				Picasso.with(mContext).load(games.get(position).getImageurl()).memoryPolicy(MemoryPolicy.NO_STORE)
+				Picasso.with(mContext).load(games.get(position).getImageurl()).error(R.drawable.list_item_preview_bg).memoryPolicy(MemoryPolicy.NO_STORE)
 						.into(sports_live3);
 				sports_live3.setTag(games.get(position));
 				if (games.get(position).isLiving()) {
