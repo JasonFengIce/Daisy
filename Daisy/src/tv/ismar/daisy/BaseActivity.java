@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.ui.activity.TVGuideActivity;
 import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
@@ -59,12 +60,14 @@ public class BaseActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (SimpleRestClient.root_url.equals("")) {
-            SimpleRestClient.root_url = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.DOMAIN, "");
-            SimpleRestClient.sRoot_url = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.DOMAIN, "");
-            SimpleRestClient.ad_domain = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.ad_domain, "");
-            SimpleRestClient.log_domain = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.LOG_DOMAIN, "");
-            SimpleRestClient.device_token = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.DEVICE_TOKEN, "");
-            SimpleRestClient.sn_token = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.SN_TOKEN, "");
+        	AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs
+    				.getInstance(this);
+            SimpleRestClient.root_url = "http://" +accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.API_DOMAIN);
+            SimpleRestClient.sRoot_url = "http://" +accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.API_DOMAIN);
+            SimpleRestClient.ad_domain = "http://" +accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.ADVERTISEMENT_DOMAIN);
+            SimpleRestClient.log_domain = "http://" +accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.LOG_DOMAIN);
+            SimpleRestClient.device_token = accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.DEVICE_TOKEN);
+            SimpleRestClient.sn_token = accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.SN_TOKEN);
             SimpleRestClient.mobile_number = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.MOBILE_NUMBER, "");
             SimpleRestClient.access_token = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.AUTH_TOKEN, "");
         }
