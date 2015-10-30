@@ -3,6 +3,10 @@ package tv.ismar.daisy.core.preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.activeandroid.query.Select;
+
+import tv.ismar.daisy.data.table.location.ProvinceTable;
+
 /**
  * Created by huaijie on 8/3/15.
  */
@@ -28,7 +32,7 @@ public class AccountSharedPrefs {
     public static final String ISP = "isp";
     public static final String IP = "ip";
     public static final String GEO_ID = "geo_id";
-    public static final String FIRST_USE="first_use";
+    public static final String FIRST_USE = "first_use";
 
     private static AccountSharedPrefs instance;
 
@@ -40,6 +44,7 @@ public class AccountSharedPrefs {
     private AccountSharedPrefs(Context context) {
         this.mContext = context;
         mSharedPreferences = context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
+        mSharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
     }
 
     public static AccountSharedPrefs getInstance(Context context) {
@@ -61,5 +66,23 @@ public class AccountSharedPrefs {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(key, value);
         editor.apply();
+    }
+
+
+    private SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if (key.equals(PROVINCE)) {
+                changeProvincePY(sharedPreferences.getString(PROVINCE, ""));
+            }
+        }
+    };
+
+    private void changeProvincePY(String provinceName) {
+        ProvinceTable provinceTable = new Select().from(ProvinceTable.class)
+                .where(ProvinceTable.PROVINCE_NAME + " = ?", provinceName).executeSingle();
+        if (provinceTable != null) {
+            setSharedPrefs(AccountSharedPrefs.PROVINCE_PY, provinceTable.pinyin);
+        }
     }
 }
