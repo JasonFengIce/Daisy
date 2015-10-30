@@ -337,8 +337,18 @@
 
         <activity
             android:name="tv.ismar.sakura.ui.activity.HomeActivity"
-            android:launchMode="singleTask"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".ReactiveActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/reactiveactivitydialog" >
+            <intent-filter>
+                <action android:name="tv.ismar.daisy.reactive" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <!--content provider-->
         <provider
             android:name="com.activeandroid.content.ContentProvider"
