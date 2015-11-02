@@ -78,16 +78,16 @@
 
         <Button
             android:id="@+id/card_balance_submit"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/tv_guide_channel_item_width"
             android:layout_height="@dimen/pay_channel_weixin_height"
             android:text="@string/card_balance_submit"
-            android:background="@drawable/person_btn_selector"
+            android:background="@drawable/paychannel_btn_selector"
             android:textColor="#FFF8F8FF"
             android:textSize="@dimen/pay_guanyingcard_card_balance_submit_textsize" />
 
         <Button
             android:id="@+id/card_balance_cancel"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/tv_guide_channel_item_width"
             android:layout_height="@dimen/pay_channel_weixin_height"
             android:layout_toRightOf="@id/card_balance_submit"
             android:layout_marginLeft="@dimen/pay_guanyingcard_card_balance_cancel_marginleft"

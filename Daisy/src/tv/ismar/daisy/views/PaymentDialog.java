@@ -638,6 +638,15 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
                         R.string.pay_card_balance_title_label);
                 card_balance_title_label.setText(String.format(balancevalue,
                         balancefloat));
+                if(balancefloat < mItem.expense.price){
+                	submit_yuepay.setEnabled(false);
+                	submit_yuepay.setFocusable(false);
+                	submit_yuepay.setTextColor(getContext().getResources().getColor(R.color.paychannel_button_disable));
+                }else{
+                	submit_yuepay.setEnabled(true);
+                	submit_yuepay.setFocusable(true);   
+                	submit_yuepay.setTextColor(getContext().getResources().getColor(R.color.white));
+                }
                 if (flag) {
                     if (balancefloat > mItem.expense.price) {
                         guanyingcard_pay_panel.setVisibility(View.VISIBLE);
