@@ -103,7 +103,7 @@ public class ChannelBaseFragment extends Fragment {
             }
             type = mode_name;
             Intent intent = new Intent();
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             if (url == null) {
                 intent.setAction("tv.ismar.daisy.Channel");
                 title = channelEntity.getName();
