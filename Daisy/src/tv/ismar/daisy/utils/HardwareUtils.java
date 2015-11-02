@@ -156,6 +156,6 @@ public class HardwareUtils {
 
 
     public static String getModelName() {
-        return Build.MODEL.replace(" ", "_");
+        return Build.PRODUCT.replace(" ", "_");
     }
 }

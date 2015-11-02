@@ -240,11 +240,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             public void onSuccess(String result) {
                 String bindflag = DaisyUtils.getVodApplication(mContext)
                         .getPreferences().getString(VodApplication.BESTTV_AUTH_BIND_FLAG, "");
+                AuthTokenEntity authTokenEntity = new Gson().fromJson(result, AuthTokenEntity.class);
+                saveToLocal(authTokenEntity.getAuth_token(), phoneNumber);
                 if (StringUtils.isNotEmpty(bindflag) && "privilege".equals(bindflag)) {
                     bindBestTvauth();
                 }
-                AuthTokenEntity authTokenEntity = new Gson().fromJson(result, AuthTokenEntity.class);
-                saveToLocal(authTokenEntity.getAuth_token(), phoneNumber);
                 submitBtn.clearFocus();
                 ((UserCenterActivity) getActivity()).selectUserInfoIndicator();
                 showLoginSuccessPopup();
