@@ -943,6 +943,8 @@ private boolean isPause = false;
 //			intent.setAction(action);
 //			intent.putExtra("url", url);
 //			startActivity(intent);
+            if("launcher".equals(fromPage))
+            	fromPage = "";
             DaisyUtils.gotoSpecialPage(ItemDetailActivity.this,itemSection.content_model,itemSection.item_url,fromPage);
 		}
 	};

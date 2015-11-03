@@ -1206,6 +1206,8 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 //            intent.setAction("tv.ismar.daisy.PFileItem");
 //            intent.putExtra("url", url);
 //            startActivity(intent);
+            if("launcher".equals(fromPage))
+            	fromPage = "";
             DaisyUtils.gotoSpecialPage(PFilmItemdetailActivity.this, itemSection.content_model, itemSection.item_url,fromPage);
         }
     };

@@ -1154,7 +1154,8 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
 //            intent.setAction("tv.ismar.daisy.PFileItem");
 //            intent.putExtra("url", url);
 //            startActivity(intent);
-
+            if("launcher".equals(fromPage))
+            	fromPage = "";
             DaisyUtils.gotoSpecialPage(EntertainmentDetailActivity.this, itemSection.content_model, itemSection.item_url,fromPage);
 
         }

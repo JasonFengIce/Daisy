@@ -359,8 +359,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         updatePoster();
         String product = Build.BRAND.replace(" ", "_");
         String mode = Build.PRODUCT.replace(" ", "_");
-        Log.v("aaaa", "product ="+product);
-        Log.v("aaaa", "mode ="+mode);
         activator.active(product, mode, String.valueOf(SimpleRestClient.appVersion), localInfo);
     }
 
