@@ -391,7 +391,7 @@ public class NetworkUtils {
 			httpConn.setRequestProperty("Accept", "*/*");
 			httpConn.setRequestProperty("Content-Type",
 					"application/x-www-form-urlencoded");
-			httpConn.setRequestProperty("Host", "ismartv.calla.tvxio.com");
+			httpConn.setRequestProperty("Host", SimpleRestClient.log_domain);
 			httpConn.setRequestProperty("Connection", "Keep-Alive");
 			// httpConn.setRequestProperty("User-Agent",
 			// "ideatv_A21/S0054.38 TD04007053");
