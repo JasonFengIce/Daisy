@@ -153,6 +153,7 @@ public class PlayerActivity extends VodMenuAction {
     private boolean isPaymentdialogShow = false;
     private static final String ACTION = "com.android.hoperun.screensave";
     private ScreenSaveBrocast saveScreenbroad;
+    private boolean isneedpause = true;
     private class ScreenSaveBrocast extends BroadcastReceiver {
 
         @Override
@@ -185,12 +186,13 @@ public class PlayerActivity extends VodMenuAction {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (needOnresume) {
+		if (needOnresume && isneedpause) {
 			isBuffer = true;
 			showBuffer();
 			initPlayer();
-			needOnresume = false;
+			isneedpause = false;
 		}
+		needOnresume = true;
 	}
 
 	private void setView() {
@@ -1475,6 +1477,9 @@ public class PlayerActivity extends VodMenuAction {
 //		if(!"false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
 //			return false;			
 //		}
+		if(keyCode == 223){
+			isneedpause = false;
+		}
 		if(isadvideoplaying){
 			if (keyCode == KeyEvent.KEYCODE_BACK) {
 				mVideoView.stopPlayback();
@@ -2137,7 +2142,7 @@ public class PlayerActivity extends VodMenuAction {
 		if(adAsyncTask != null && !adAsyncTask.isCancelled()){
 			adAsyncTask.cancel(true);
 		}
-
+        if(isneedpause){
 		try {
 			if (!isadvideoplaying) {
 				createHistory(seekPostion);
@@ -2150,6 +2155,7 @@ public class PlayerActivity extends VodMenuAction {
 		} catch (Exception e) {
 			Log.d(TAG, "Player close to Home");
 		}
+        }
 		super.onPause();
 	}
 
