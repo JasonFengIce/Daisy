@@ -698,7 +698,7 @@ public class PlayerActivity extends VodMenuAction {
 						}
 						isBuffer = false;
 						isSeek = false;
-						hideBuffer();
+//						hideBuffer();
 						checkTaskStart(500);
 						timeTaskStart(500);
 					}
@@ -722,7 +722,7 @@ public class PlayerActivity extends VodMenuAction {
 					showBuffer();
 				} else if (i == 704) {
 					bufferText.setText(BUFFERING + " " + j + "%");
-				} else if (i == SmartPlayer.MEDIA_INFO_BUFFERING_END
+				} else if (i == SmartPlayer.MEDIA_INFO_BUFFERING_END || i == 1002 || i == 705
 						|| i == 3) {
 					bufferText.setText(BUFFERING + " " + 100 + "%");
 					isBuffer = false;
