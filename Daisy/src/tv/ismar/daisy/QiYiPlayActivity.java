@@ -123,6 +123,7 @@ public class QiYiPlayActivity extends VodMenuAction {
     private boolean[] avalibleRate = {false, false, false};
     private AccountSharedPrefs shardpref;
     private ImageView gesture_tipview;
+    private boolean isneedpause = true;
     static {
         DEFINITION_NAMES = new HashMap<Definition, String>();
         DEFINITION_NAMES.put(Definition.DEFINITON_HIGH, "高清");
@@ -858,7 +859,10 @@ public class QiYiPlayActivity extends VodMenuAction {
     @Override
     public void onResume() {
         super.onResume();
+        if(isneedpause){
         initView();
+        }
+        isneedpause = true;
     }
 
     @Override
@@ -886,6 +890,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 
     @Override
     public void onPause() {
+    	if(isneedpause){
         try {
             createHistory(currPosition);
             addHistory(currPosition);
@@ -898,6 +903,7 @@ public class QiYiPlayActivity extends VodMenuAction {
         } catch (Exception e) {
             Log.d(TAG, "Player close to Home");
         }
+    	}
         super.onPause();
     }
 
@@ -1112,6 +1118,9 @@ public class QiYiPlayActivity extends VodMenuAction {
 //			new initPlayTask().execute();
 //			return false;
 //		}
+		if(keyCode == 223){
+			isneedpause = false;
+		}
         if (!isVodMenuVisible() && mPlayer != null) {
             switch (keyCode) {
                 case KeyEvent.KEYCODE_DPAD_LEFT:

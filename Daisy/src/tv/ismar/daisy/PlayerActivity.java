@@ -190,8 +190,8 @@ public class PlayerActivity extends VodMenuAction {
 			isBuffer = true;
 			showBuffer();
 			initPlayer();
-			isneedpause = false;
 		}
+		isneedpause = true;
 		needOnresume = true;
 	}
 
