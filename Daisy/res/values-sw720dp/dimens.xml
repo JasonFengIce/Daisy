@@ -188,6 +188,7 @@
 <dimen name="related_item_image_quality_H">32.00dip</dimen>
 <dimen name="related_item_image_quality_margintop">-2.00dip</dimen>
 <dimen name="related_item_image_quality_marginright">-2.00dip</dimen>
+<dimen name="related_item_related_price_txt_marginleft">4dip</dimen>
 <dimen name="related_item_title_margintop">22.67dip</dimen>
 <dimen name="related_item_title_marginbottom">22.67dip</dimen>
 <dimen name="related_item_title_textsize">20.00sp</dimen>

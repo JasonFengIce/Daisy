@@ -54,6 +54,7 @@
         android:visibility="gone"
         android:ellipsize="end"
         android:singleLine="true"
+        android:layout_marginLeft="@dimen/related_item_related_price_txt_marginleft"
         android:textSize="@dimen/related_item_related_price_txt_size"
         android:background="@drawable/vodcategory_gv_item_price"/>
     <TextView
