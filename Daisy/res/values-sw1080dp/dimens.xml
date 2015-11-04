@@ -197,6 +197,8 @@
     <dimen name="related_item_text_marginLeft">11dip</dimen>
     <dimen name="related_item_related_preview_img_ML">6dip</dimen>
     <dimen name="related_item_ItemBeanScore_PT">5dip</dimen>
+    <dimen name="related_item_ItemBeanScore_w">59dp</dimen>
+    <dimen name="related_item_ItemBeanScore_h">48dp</dimen>
     <dimen name="related_item_ItemBeanScore_textsize">36sp</dimen>
     <dimen name="related_item_related_price_txt_size">25sp</dimen>
     <!-- vod_player -->

@@ -25,8 +25,8 @@
         />
        <TextView
         android:id="@id/ItemBeanScore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/related_item_ItemBeanScore_w"
+        android:layout_height="@dimen/related_item_ItemBeanScore_h"
         android:layout_alignRight="@id/related_preview_img"
         android:layout_alignTop="@id/related_preview_img"
         android:background="@drawable/bean_score"
