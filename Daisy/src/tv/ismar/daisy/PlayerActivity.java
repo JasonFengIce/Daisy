@@ -1482,7 +1482,7 @@ public class PlayerActivity extends VodMenuAction {
 //		if(!"false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
 //			return false;			
 //		}
-		if(keyCode == 223){
+		if(keyCode == 223 || keyCode == 499 || keyCode ==480){
 			isneedpause = false;
 		}
 		if(isadvideoplaying){

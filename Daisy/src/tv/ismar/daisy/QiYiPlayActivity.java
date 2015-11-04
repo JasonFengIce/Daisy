@@ -1118,7 +1118,7 @@ public class QiYiPlayActivity extends VodMenuAction {
 //			new initPlayTask().execute();
 //			return false;
 //		}
-		if(keyCode == 223){
+        if(keyCode == 223 || keyCode == 499 || keyCode ==480){
 			isneedpause = false;
 		}
         if (!isVodMenuVisible() && mPlayer != null) {
