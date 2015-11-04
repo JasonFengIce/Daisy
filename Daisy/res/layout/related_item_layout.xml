@@ -30,8 +30,7 @@
         android:layout_alignRight="@id/related_preview_img"
         android:layout_alignTop="@id/related_preview_img"
         android:background="@drawable/bean_score"
-        android:gravity="top|center"
-        android:paddingTop="@dimen/related_item_ItemBeanScore_PT"
+        android:gravity="center"
         android:textColor="#ffffffff"
         android:textSize="@dimen/related_item_ItemBeanScore_textsize"
         android:visibility="gone" />
