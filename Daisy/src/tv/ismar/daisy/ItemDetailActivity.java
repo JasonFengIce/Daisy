@@ -1378,6 +1378,8 @@ private boolean isPause = false;
 			if(data.getBooleanExtra("result", false)){
 				isBuy = true;
 				setExpenseStatus();
+				if (mLeftBtn != null)
+					mLeftBtn.setBackgroundResource(R.drawable.playvideo_focus_btn_bg);
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
