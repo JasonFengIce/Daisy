@@ -63,7 +63,7 @@ public class InitPlayerTool {
 				if(!mIsPreviewVideo)
 				   mContext.startActivity(intent);
 				else
-			       ((Activity)mContext).startActivityForResult(intent, 100);
+			       ((Activity)mContext).startActivityForResult(intent, 20);
 			if(mListener!=null)
 				mListener.onPostExecute();	
 		}

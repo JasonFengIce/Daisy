@@ -1192,6 +1192,11 @@ public class PlayerActivity extends VodMenuAction {
 				}
 				checkContinueOrPay(item.pk);
 			} else {
+				if (paystatus) {
+					Intent data = new Intent();
+					data.putExtra("result", paystatus);
+					setResult(20, data);
+				}
 				Intent intent = new Intent("tv.ismar.daisy.PlayFinished");
 				intent.putExtra("item", item);
 				startActivity(intent);
