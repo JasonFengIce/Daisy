@@ -475,7 +475,7 @@ public class BaseActivity extends FragmentActivity {
 
 	private void showBindPopup(View view, int message) {
 		final MessageDialogFragment dialog = new MessageDialogFragment(
-				BaseActivity.this, "建议您将历史观影权限和余额合并到已登陆账户,", "随时查询更方便!");
+				BaseActivity.this, "为保证系统升级后已购产品包可以正常使用,", "请您使用手机号登陆");
 		dialog.showAtLocation(view, Gravity.CENTER,
 				new MessageDialogFragment.ConfirmListener() {
 					@Override
