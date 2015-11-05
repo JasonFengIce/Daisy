@@ -129,6 +129,7 @@ public class LabelImageView extends AsyncImageView {
 		if (height <= 0)
 			height = getHeight();
 		Paint paint = new Paint();
+		paint.setAntiAlias(true);
 		// 绘制角标
 		if (modetype > 0) {
 			int resId = R.drawable.entertainment_bg;
