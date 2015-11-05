@@ -216,6 +216,7 @@ public class SportFragment extends ChannelBaseFragment {
             PicassoUtils.load(mContext, carousels.get(i).getThumb_image(), sportCards[i]);
             sportCards[i].setTag(R.drawable.launcher_selector, carousels.get(i));
             sportCards[i].setOnFocusChangeListener(ItemOnFocusListener);
+            sportCards[i].setOnClickListener(ItemClickListener);
             looppost.add(carousels.get(i));
         }
         imageswitch.sendEmptyMessage(IMAGE_SWITCH_KEY);
