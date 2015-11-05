@@ -830,6 +830,7 @@
     <dimen name="h2_text_size">36sp</dimen>
     <dimen name="h3_text_size">30sp</dimen>
     <dimen name="h4_text_size">30sp</dimen>
+    <dimen name="h5_text_size">24sp</dimen>
     <dimen name="filter_list_item_preview_img_h">189dp</dimen>
     <dimen name="filter_list_item_title_mt">15dp</dimen>
     <dimen name="filter_list_item_title_pb">34dp</dimen>
@@ -1314,5 +1315,6 @@
     <dimen name="app_update_content_margin_left">120dp</dimen>
     <dimen name="app_update_line_margin_">25dp</dimen>
 
+    <dimen name="child_loop_indicator_text_height">55dp</dimen>
 
 </resources>

@@ -188,6 +188,7 @@
 <dimen name="related_item_image_quality_H">16.00dip</dimen>
 <dimen name="related_item_image_quality_margintop">-1.00dip</dimen>
 <dimen name="related_item_image_quality_marginright">-1.00dip</dimen>
+<dimen name="related_item_related_price_txt_marginleft">2.00dip</dimen>
 <dimen name="related_item_title_margintop">11.33dip</dimen>
 <dimen name="related_item_title_marginbottom">11.33dip</dimen>
 <dimen name="related_item_title_textsize">10.00sp</dimen>
@@ -196,6 +197,8 @@
 <dimen name="related_item_text_marginLeft">3.67dip</dimen>
 <dimen name="related_item_related_preview_img_ML">2.00dip</dimen>
 <dimen name="related_item_ItemBeanScore_PT">1.67dip</dimen>
+<dimen name="related_item_ItemBeanScore_w">19.67dp</dimen>
+<dimen name="related_item_ItemBeanScore_h">16.00dp</dimen>
 <dimen name="related_item_ItemBeanScore_textsize">12.00sp</dimen>
 <dimen name="related_item_related_price_txt_size">8.33sp</dimen>
 <!-- vod_player -->
@@ -827,6 +830,7 @@
 <dimen name="h2_text_size">12.00sp</dimen>
 <dimen name="h3_text_size">10.00sp</dimen>
 <dimen name="h4_text_size">10.00sp</dimen>
+<dimen name="h5_text_size">8.00sp</dimen>
 <dimen name="filter_list_item_preview_img_h">63.00dp</dimen>
 <dimen name="filter_list_item_title_mt">5.00dp</dimen>
 <dimen name="filter_list_item_title_pb">11.33dp</dimen>
@@ -1311,5 +1315,6 @@
 <dimen name="app_update_content_margin_left">40.00dp</dimen>
 <dimen name="app_update_line_margin_">8.33dp</dimen>
 
+<dimen name="child_loop_indicator_text_height">18.33dp</dimen>
 
 </resources>
