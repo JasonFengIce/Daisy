@@ -198,7 +198,7 @@
                 android:focusable="true"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
-                labelimage:focustextsize="18sp" />
+                labelimage:focustextsize="@dimen/sport_channel_image_focustextsize" />
 
             <TextView
                 android:id="@+id/sport_channel1_subtitle"
@@ -227,7 +227,7 @@
                 android:focusable="true"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="#b3303030"
-                labelimage:focustextsize="18sp" />
+                labelimage:focustextsize="@dimen/sport_channel_image_focustextsize" />
 
             <TextView
                 android:id="@+id/sport_channel2_subtitle"
