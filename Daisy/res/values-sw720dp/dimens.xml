@@ -1019,10 +1019,10 @@
 <dimen name="usercenter_storefragment_packagelist_item_text_width">224.00dp</dimen>
 <dimen name="usercenter_storefragment_packagelist_item_text_height">41.33dp</dimen>
 <dimen name="usercenter_storefragment_packagelist_marginBottom">33.33dp</dimen>
-<dimen name="usercenter_storefragment_packagelist_selectorLeftPadding">13.93dip</dimen>
-<dimen name="usercenter_storefragment_packagelist_selectorTopPadding">13.93dip</dimen>
-<dimen name="usercenter_storefragment_packagelist_selectorRightPadding">13.73dip</dimen>
-<dimen name="usercenter_storefragment_packagelist_selectorBottomPadding">-28.00dip</dimen>
+<dimen name="usercenter_storefragment_packagelist_selectorLeftPadding">14.93dip</dimen>
+<dimen name="usercenter_storefragment_packagelist_selectorTopPadding">11.93dip</dimen>
+<dimen name="usercenter_storefragment_packagelist_selectorRightPadding">14.73dip</dimen>
+<dimen name="usercenter_storefragment_packagelist_selectorBottomPadding">-30.00dip</dimen>
 <dimen name="usercenter_storefragment_packagelist_gridview_P">3.33dip</dimen>
 
 
@@ -1302,7 +1302,7 @@
 <dimen name="location_selected_city_text_width">133.33dp</dimen>
 
 <dimen name="usercenter_activity_top_layout_height">66.00dp</dimen>
-<dimen name="usercenter_horizontal_divider_line_height">0.67dp</dimen>
+<dimen name="usercenter_horizontal_divider_line_height">2dp</dimen>
 <dimen name="usercenter_vertical_divider_line_width">27.33dp</dimen>
 <dimen name="usercenter_vertical_divider_line2_width">0.67dp</dimen>
 <dimen name="user_center_container_width">953.33dp</dimen>
