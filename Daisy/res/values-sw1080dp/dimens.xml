@@ -1316,5 +1316,7 @@
     <dimen name="app_update_line_margin_">25dp</dimen>
 
     <dimen name="child_loop_indicator_text_height">55dp</dimen>
+    <dimen name="child_loop_indicator_layout_height">85dp</dimen>
+
 
 </resources>

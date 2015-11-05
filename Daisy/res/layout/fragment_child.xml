@@ -53,7 +53,7 @@
                 <LinearLayout
                     android:id="@+id/indicator"
                     android:layout_width="match_parent"
-                    android:layout_height="85dp"
+                    android:layout_height="@dimen/child_loop_indicator_layout_height"
                     android:layout_alignParentBottom="true"
                     android:gravity="bottom"
                     android:orientation="horizontal">
