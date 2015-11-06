@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tv.ismar.daisy"
-    android:versionCode="124"
-    android:versionName="124">
+    android:versionCode="194"
+    android:versionName="194">
 
     <supports-screens
         android:anyDensity="true"
@@ -80,7 +80,8 @@
     <application
         android:name=".VodApplication"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name">
+        android:label="@string/app_name"
+        >
 
         <meta-data
             android:name="AA_DB_NAME"

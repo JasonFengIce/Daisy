@@ -1,9 +1,15 @@
 package tv.ismar.daisy.ui.fragment;
 
+import java.io.InputStream;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -61,6 +67,10 @@ public class ChannelBaseFragment extends Fragment {
     @Override
     public void onDetach() {
         mContext = null;
+        mLeftTopView = null;
+        mLeftBottomView = null;
+        mRightTopView = null;
+        mRightBottomView = null;
         ItemClickListener = null;
         super.onDetach();
     }
@@ -172,5 +182,28 @@ public class ChannelBaseFragment extends Fragment {
             play.homepage_vod_click(pk, title, channel, position, type);
         }
     };
+    
+    protected void setbackground(final View rootView,int id) {
+
+
+        BitmapFactory.Options opt = new BitmapFactory.Options();
+
+        opt.inPreferredConfig = Bitmap.Config.ALPHA_8;
+
+        opt.inPurgeable = true;
+
+        opt.inInputShareable = true;
+        opt.inTargetDensity = getResources().getDisplayMetrics().densityDpi;
+        opt.inDensity = getResources().getDisplayMetrics().densityDpi;
+
+        InputStream is = getResources().openRawResource(
+
+                id);
+
+        Bitmap bm = BitmapFactory.decodeStream(is, null, opt);
+
+        BitmapDrawable bd = new BitmapDrawable(getResources(), bm);
+        rootView.setBackgroundDrawable(bd);
+    }
 
 }

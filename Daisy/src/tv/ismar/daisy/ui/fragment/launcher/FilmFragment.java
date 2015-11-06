@@ -122,6 +122,7 @@ public class FilmFragment extends ChannelBaseFragment {
                 film_post_layout.performClick();
             }
         });
+        setbackground(linkedVideoImage, R.drawable.guide_video_loading);
         return mView;
     }
 
@@ -134,6 +135,14 @@ public class FilmFragment extends ChannelBaseFragment {
 
     @Override
     public void onDestroyView() {
+    	mHandler.removeMessages(START_PLAYBACK);
+    	mHandler.removeMessages(CAROUSEL_NEXT);
+    	guideRecommmendList = null;
+    	carouselLayout = null;
+    	if(film_lefttop_image != null &&film_lefttop_image.getDrawingCache()!=null && !film_lefttop_image.getDrawingCache().isRecycled()){
+    		film_lefttop_image.getDrawingCache().recycle();
+    		film_lefttop_image = null;
+    	}
         super.onDestroyView();
 
     }
@@ -176,7 +185,7 @@ public class FilmFragment extends ChannelBaseFragment {
         datafetch.doRequest(url, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
-                if (mContext == null)
+                if (mContext == null || guideRecommmendList == null)
                     return;
                 HomePagerEntity homePagerEntity = new Gson().fromJson(result, HomePagerEntity.class);
                 ArrayList<HomePagerEntity.Poster> posters = homePagerEntity.getPosters();
@@ -219,6 +228,8 @@ public class FilmFragment extends ChannelBaseFragment {
     private HomeItemContainer focusView;
 
     private void initPosters(ArrayList<HomePagerEntity.Poster> posters) {
+    	if(guideRecommmendList == null)
+    		return;
         guideRecommmendList.removeAllViews();
         film_lefttop_image.setUrl(posters.get(0).getCustom_image());
         film_lefttop_image.setFocustitle(posters.get(0).getIntroduction());

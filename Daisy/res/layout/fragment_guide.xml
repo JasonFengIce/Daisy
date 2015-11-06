@@ -39,7 +39,6 @@
                 android:id="@+id/linked_video_loading_image"
                 android:layout_width="@dimen/guide_video_width"
                 android:layout_height="@dimen/guide_video_height"
-                android:src="@drawable/guide_video_loading"
                 />
 
         </tv.ismar.daisy.ui.widget.HomeItemContainer>

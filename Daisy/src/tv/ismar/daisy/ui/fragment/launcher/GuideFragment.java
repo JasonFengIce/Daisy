@@ -1,6 +1,9 @@
 package tv.ismar.daisy.ui.fragment.launcher;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -32,6 +35,7 @@ import tv.ismar.daisy.ui.widget.DaisyViewContainer;
 import tv.ismar.daisy.ui.widget.HomeItemContainer;
 import tv.ismar.daisy.views.LabelImageView;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -114,7 +118,7 @@ public class GuideFragment extends ChannelBaseFragment {
         mLeftTopView = mSurfaceView;
         mRightTopView = toppage_carous_imageView1;
 
-
+        setbackground(linkedVideoLoadingImage,R.drawable.guide_video_loading);
         return mView;
     }
 
@@ -125,6 +129,15 @@ public class GuideFragment extends ChannelBaseFragment {
 
     @Override
     public void onDestroyView() {
+    	guideRecommmendList.removeAllViews();
+    	guideRecommmendList = null;
+    	mSurfaceView = null;
+    	toppage_carous_imageView1 = null;
+    	toppage_carous_imageView2 = null;
+    	toppage_carous_imageView3 = null;
+    	if(linkedVideoLoadingImage != null && linkedVideoLoadingImage.getDrawingCache() != null&&!linkedVideoLoadingImage.getDrawingCache().isRecycled()){
+    		linkedVideoLoadingImage.getDrawingCache().recycle();
+    	}
         super.onDestroyView();
 
     }
@@ -166,7 +179,7 @@ public class GuideFragment extends ChannelBaseFragment {
         datafetch.doRequest(api, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
-                if (mContext == null)
+                if (mContext == null || guideRecommmendList == null)
                     return;
                 HomePagerEntity homePagerEntity = new Gson().fromJson(result,
                         HomePagerEntity.class);
@@ -382,6 +395,8 @@ public class GuideFragment extends ChannelBaseFragment {
 
 
     private void startPlayback() {
+    	if(mSurfaceView == null)
+    		return;
         Log.d(TAG, "startPlayback is invoke...");
         linkedVideoLoadingImage.setVisibility(View.VISIBLE);
         mSurfaceView.setFocusable(false);
@@ -459,7 +474,6 @@ public class GuideFragment extends ChannelBaseFragment {
             linkedVideoLoadingImage.setVisibility(View.GONE);
         }
     };
-
 
 }
 

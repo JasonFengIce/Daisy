@@ -54,7 +54,6 @@
                     android:layout_height="match_parent"
                     android:focusable="false"
                     android:scaleType="fitXY"
-                    android:src="@drawable/list_item_preview_bg"
                     android:visibility="gone"/>
 
             <TextView

@@ -84,11 +84,23 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
         fetchChild(channelEntity.getHomepage_url());
     }
 
+    @Override
+    public void onDestroyView() {
+    	leftLayout.removeAllViews();
+    	bottomLayout.removeAllViews();
+    	rightLayout.removeAllViews();
+    	leftLayout = null;
+    	bottomLayout = null;
+    	rightLayout = null;
+        super.onDestroyView();
+
+    }
+
     private void fetchChild(String url) {
         new IsmartvUrlClient().doRequest(url, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
-            	if(mContext == null)
+            	if(mContext == null || leftLayout == null || rightLayout == null && bottomLayout ==null)
             		return;
                 HomePagerEntity homePagerEntity = new Gson().fromJson(result, HomePagerEntity.class);
                 ArrayList<HomePagerEntity.Poster> posters = homePagerEntity.getPosters();

@@ -484,4 +484,10 @@ public class AsyncImageView extends ImageView implements ImageRequestCallback {
             mOnImageViewLoadListener.onLoadingFailed(this, null);
         }
     }
+
+    @Override    
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        setImageDrawable(null);   
+    }
 }
