@@ -43,7 +43,7 @@ public class InitService extends Service implements Activator.OnComplete {
 				.getString(VodApplication.LOCATION_INFO, "");
 		product = Build.BRAND.replace(" ", "_");
 		mode = Build.PRODUCT.replace(" ", "_");
-		if (networkInfo.isConnected()) {
+		if (networkInfo != null && networkInfo.isConnected()) {
 			activator.active(product, mode,
 					String.valueOf(SimpleRestClient.appVersion), localInfo);
 			Log.v("InitService", "InitService started");
