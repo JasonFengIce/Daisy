@@ -10,17 +10,22 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.widget.ImageView;
+
+import com.squareup.otto.Bus;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.advertisement.AdvertisementManager;
 import tv.ismar.daisy.core.initialization.InitializeProcess;
 import tv.ismar.daisy.core.service.PosterUpdateService;
+import tv.ismar.daisy.utils.CountDownTimer;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Timer;
 
 /**
  * Created by huaijie on 3/10/15.
@@ -44,6 +49,12 @@ public class AdvertisementActivity extends Activity {
 
     private File posterFile;
 
+    private Bus mBus;
+
+    private CountDownTimer mCountDownTimer;
+
+    private AdvertisementManager mAdvertisementManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +67,35 @@ public class AdvertisementActivity extends Activity {
         messageHandler = new MessageHandler();
         new Thread(new InitializeProcess(this)).start();
 
+        mBus = new Bus();
+    }
+
+    private void advertiseCountDown() {
+        mCountDownTimer = new CountDownTimer();
+        mCountDownTimer.countDown(5, new CountDownTimer.OnTimeChangedCallback() {
+            @Override
+            public void onTimeChange() {
+
+            }
+
+            @Override
+            public void onTimeEnd(Timer timer) {
+
+            }
+        });
+
     }
 
     private void initViews() {
         adverPic = (ImageView) findViewById(R.id.advertisement_pic);
         timerText = (ImageView) findViewById(R.id.adver_timer);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
     }
 
     @Override
@@ -70,7 +105,11 @@ public class AdvertisementActivity extends Activity {
     }
 
     private void placeAdvertisementPic() {
-        String path = AdvertisementManager.getInstance(this).getAppLaunchAdvertisement();
+
+
+        mAdvertisementManager = new AdvertisementManager();
+        String path = mAdvertisementManager.getAppLaunchAdvertisement();
+
         Log.d(TAG, "fetch advertisement path: " + path);
         Picasso.with(AdvertisementActivity.this)
                 .load(path)
@@ -155,9 +194,12 @@ public class AdvertisementActivity extends Activity {
         }
     }
 
+
     @Override
     protected void onDestroy() {
         flag = false;
+        adverPic = null;
+        mAdvertisementManager = null;
         super.onDestroy();
 
     }

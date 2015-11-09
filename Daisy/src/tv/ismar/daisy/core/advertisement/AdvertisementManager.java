@@ -2,8 +2,10 @@ package tv.ismar.daisy.core.advertisement;
 
 import android.content.Context;
 import android.util.Log;
+
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
+
 import tv.ismar.daisy.data.LaunchAdvertisementEntity;
 import tv.ismar.daisy.data.table.AdvertisementTable;
 import tv.ismar.daisy.utils.FileUtils;
@@ -26,28 +28,21 @@ public class AdvertisementManager {
 
     public static final String LAUNCH_APP_ADVERTISEMENT = "launch_app";
 
-    private static AdvertisementManager instance;
-    private static Context mContext;
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 
-    private AdvertisementManager() {
 
-    }
+    private static Context mContext;
 
-    public static AdvertisementManager getInstance(Context context) {
-        if (instance == null) {
-            instance = new AdvertisementManager();
-            mContext = context;
-        }
-        return instance;
+
+    public static void initialize(Context context) {
+        mContext = context;
     }
 
 
     public void updateAppLaunchAdvertisement(LaunchAdvertisementEntity launchAdvertisementEntity) {
         String type = LAUNCH_APP_ADVERTISEMENT;
         LaunchAdvertisementEntity.AdvertisementData[] advertisementDatas = launchAdvertisementEntity.getAds().getKaishi();
-
 
         new Delete().from(AdvertisementTable.class).execute();
         for (LaunchAdvertisementEntity.AdvertisementData advertisementData : advertisementDatas) {

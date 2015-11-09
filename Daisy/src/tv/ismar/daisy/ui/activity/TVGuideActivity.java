@@ -898,7 +898,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     }
 
     private void saveActivedInfo(Result result) {
-        AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance(this);
+        AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance();
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.APP_UPDATE_DOMAIN, result.getUpgrade_domain());
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.LOG_DOMAIN, result.getLog_Domain());
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.API_DOMAIN, result.getDomain());

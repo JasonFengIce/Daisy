@@ -67,7 +67,7 @@ public class AppUpdateUtilsV2 {
         String api = host + APP_UPDATE_API_V2;
 
         //地理位置信息
-        String location = AccountSharedPrefs.getInstance(mContext).getSharedPrefs(AccountSharedPrefs.PROVINCE_PY);
+        String location = AccountSharedPrefs.getInstance().getSharedPrefs(AccountSharedPrefs.PROVINCE_PY);
 
         //请求参数
         HashMap<String, String> paramters = new HashMap<String,String>();

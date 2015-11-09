@@ -7,17 +7,22 @@ import android.content.res.Resources;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
+
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.app.Application;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import tv.ismar.daisy.core.ImageCache;
 import tv.ismar.daisy.core.MessageQueue;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.advertisement.AdvertisementManager;
 import tv.ismar.daisy.core.cache.CacheManager;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.models.ContentModel;
 import tv.ismar.daisy.models.ContentModelList;
@@ -141,6 +146,8 @@ public class VodApplication extends Application {
         ActiveAndroid.initialize(this, true);
         IsmartvUrlClient.initializeWithContext(this);
         CacheManager.initialize(this);
+        AccountSharedPrefs.initialize(this);
+        AdvertisementManager.initialize(this);
         getContentModelFromAssets();
         load(this);
         registerReceiver(mCloseReceiver, new IntentFilter("com.amlogic.dvbplayer.homekey"));

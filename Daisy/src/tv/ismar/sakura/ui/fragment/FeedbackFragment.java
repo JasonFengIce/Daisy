@@ -200,7 +200,7 @@ public class FeedbackFragment extends Fragment implements RadioGroup.OnCheckedCh
             Toast.makeText(getActivity(), R.string.you_should_give_an_phone_number, Toast.LENGTH_LONG).show();
 
         } else {
-            AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance(mContext);
+            AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance();
 
             FeedBackEntity feedBack = new FeedBackEntity();
             feedBack.setDescription(descriptioinText.getText().toString());

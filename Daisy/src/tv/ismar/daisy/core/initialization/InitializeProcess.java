@@ -60,7 +60,7 @@ public class InitializeProcess implements Runnable {
         initalizeCity();
         initializeIsp();
         fetchCdnList();
-        if (TextUtils.isEmpty(AccountSharedPrefs.getInstance(mContext).getSharedPrefs(AccountSharedPrefs.CITY))) {
+        if (TextUtils.isEmpty(AccountSharedPrefs.getInstance().getSharedPrefs(AccountSharedPrefs.CITY))) {
             fetchLocationByIP();
         }
 
@@ -242,7 +242,7 @@ public class InitializeProcess implements Runnable {
     private void initializeLocation(IpLookUpEntity ipLookUpEntity) {
         CityTable cityTable = new Select().from(CityTable.class).where(CityTable.CITY + " = ?", ipLookUpEntity.getCity()).executeSingle();
 
-        AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance(mContext);
+        AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance();
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.PROVINCE, ipLookUpEntity.getProv());
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.CITY, ipLookUpEntity.getCity());
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.ISP, ipLookUpEntity.getIsp());

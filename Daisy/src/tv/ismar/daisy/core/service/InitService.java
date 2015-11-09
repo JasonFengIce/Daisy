@@ -67,7 +67,7 @@ public class InitService extends Service implements Activator.OnComplete {
 
 	private void saveActivedInfo(Result result) {
 		AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs
-				.getInstance(this);
+				.getInstance();
 		accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.APP_UPDATE_DOMAIN,
 				result.getUpgrade_domain());
 		accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.LOG_DOMAIN,

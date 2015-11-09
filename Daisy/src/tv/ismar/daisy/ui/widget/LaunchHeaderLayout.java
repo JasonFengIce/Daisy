@@ -85,9 +85,9 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
         subTitleTextView.setText(R.string.front_page);
 
 //        locationSharedPreferences = context.getSharedPreferences(LocationFragment.LOCATION_PREFERENCE_NAME, Context.MODE_PRIVATE);
-        AccountSharedPrefs.getInstance(context).getSharedPreferences().registerOnSharedPreferenceChangeListener(changeListener);
+        AccountSharedPrefs.getInstance().getSharedPreferences().registerOnSharedPreferenceChangeListener(changeListener);
         createGuideIndicator();
-        String cityName = AccountSharedPrefs.getInstance(context).getSharedPrefs(AccountSharedPrefs.CITY);
+        String cityName = AccountSharedPrefs.getInstance().getSharedPrefs(AccountSharedPrefs.CITY);
 
 //        String geoId = locationSharedPreferences.getString(LocationFragment.LOCATION_PREFERENCE_GEOID, "101020100");
 
@@ -112,7 +112,7 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 //            String geoId = locationSharedPreferences.getString(LocationFragment.LOCATION_PREFERENCE_GEOID, "101020100");
 
-            String cityName = AccountSharedPrefs.getInstance(context).getSharedPrefs(AccountSharedPrefs.CITY);
+            String cityName = AccountSharedPrefs.getInstance().getSharedPrefs(AccountSharedPrefs.CITY);
             CityTable cityTable = new Select().from(CityTable.class).where(CityTable.CITY + " = ?", cityName).executeSingle();
 
             if (cityTable != null) {

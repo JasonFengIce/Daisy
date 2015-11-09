@@ -92,9 +92,9 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
     private SharedPreferences.OnSharedPreferenceChangeListener changeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            String cityName = AccountSharedPrefs.getInstance(mContext).getSharedPrefs(AccountSharedPrefs.CITY);
+            String cityName = AccountSharedPrefs.getInstance().getSharedPrefs(AccountSharedPrefs.CITY);
             currentPostion.setText(cityName);
-            fetchWeatherInfo(AccountSharedPrefs.getInstance(mContext).getSharedPrefs(AccountSharedPrefs.GEO_ID));
+            fetchWeatherInfo(AccountSharedPrefs.getInstance().getSharedPrefs(AccountSharedPrefs.GEO_ID));
         }
     };
 
@@ -112,7 +112,7 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
         super.onCreate(savedInstanceState);
         rate = DaisyUtils.getVodApplication(getActivity()).getRate(getActivity());
 
-        AccountSharedPrefs.getInstance(mContext).getSharedPreferences().registerOnSharedPreferenceChangeListener(changeListener);
+        AccountSharedPrefs.getInstance().getSharedPreferences().registerOnSharedPreferenceChangeListener(changeListener);
     }
 
     @Override
@@ -158,9 +158,9 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        String cityName = AccountSharedPrefs.getInstance(mContext).getSharedPrefs(AccountSharedPrefs.CITY);
+        String cityName = AccountSharedPrefs.getInstance().getSharedPrefs(AccountSharedPrefs.CITY);
         currentPostion.setText(cityName);
-        fetchWeatherInfo(AccountSharedPrefs.getInstance(mContext).getSharedPrefs(AccountSharedPrefs.GEO_ID));
+        fetchWeatherInfo(AccountSharedPrefs.getInstance().getSharedPrefs(AccountSharedPrefs.GEO_ID));
     }
 
     @Override
@@ -258,7 +258,7 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
             @Override
             public void onClick(View v) {
                 String city = locationTableList.get(selectedAreaPositon).city;
-                AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance(mContext);
+                AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance();
                 accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.CITY, city);
                 accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.PROVINCE, provinceTable.province_name);
 

@@ -174,7 +174,7 @@ public class PlayerActivity extends VodMenuAction {
         saveScreenbroad = new ScreenSaveBrocast();
         intentFilter.setPriority(119110);
         registerReceiver( saveScreenbroad , intentFilter);
-		shardpref = AccountSharedPrefs.getInstance(this);
+		shardpref = AccountSharedPrefs.getInstance();
 		setView();
 
 		DisplayMetrics metric = new DisplayMetrics();

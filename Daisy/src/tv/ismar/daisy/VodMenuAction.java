@@ -98,7 +98,7 @@ public abstract class VodMenuAction extends BaseActivity {
 		protected ArrayList<AdElement> doInBackground(String... params) {
 		    adpid = params[0];
 			String p = params[1];
-			String province = AccountSharedPrefs.getInstance(VodMenuAction.this).getSharedPrefs(AccountSharedPrefs.PROVINCE_PY);
+			String province = AccountSharedPrefs.getInstance().getSharedPrefs(AccountSharedPrefs.PROVINCE_PY);
 			ArrayList<AdElement> ads = NetworkUtils.getAdByPost(adpid, p,province);
 			return ads;
 		}

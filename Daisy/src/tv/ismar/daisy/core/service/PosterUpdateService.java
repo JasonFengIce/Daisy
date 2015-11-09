@@ -8,8 +8,10 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
+
 import com.activeandroid.query.Delete;
 import com.google.gson.Gson;
+
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.advertisement.AdvertisementManager;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
@@ -109,7 +111,7 @@ public class PosterUpdateService extends Service {
                 if (null != launchAdvertisementEntity.getAds().getKaishi()) {
                     LaunchAdvertisementEntity.AdvertisementData advertisementData = launchAdvertisementEntity.getAds().getKaishi()[0];
 //                    downloadPic(advertisementData);
-                    AdvertisementManager.getInstance(mContext).updateAppLaunchAdvertisement(launchAdvertisementEntity);
+                    new AdvertisementManager().updateAppLaunchAdvertisement(launchAdvertisementEntity);
 
                 } else {
                     new Delete().from(AdvertisementTable.class).execute();

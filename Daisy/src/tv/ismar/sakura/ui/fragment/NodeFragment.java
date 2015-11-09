@@ -148,7 +148,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         List<ProvinceTable> provinceTables = new Select().from(ProvinceTable.class).execute();
         ProvinceSpinnerAdapter provinceSpinnerAdapter = new ProvinceSpinnerAdapter(mContext, provinceTables);
         provinceSpinner.setAdapter(provinceSpinnerAdapter);
-        String accountProvince = AccountSharedPrefs.getInstance(mContext).getSharedPrefs(AccountSharedPrefs.PROVINCE);
+        String accountProvince = AccountSharedPrefs.getInstance().getSharedPrefs(AccountSharedPrefs.PROVINCE);
 
         ProvinceTable provinceTable = new Select().from(ProvinceTable.class).
                 where(ProvinceTable.PROVINCE_NAME + " = ?", accountProvince).executeSingle();
@@ -161,7 +161,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         IspSpinnerAdapter ispSpinnerAdapter = new IspSpinnerAdapter(mContext, ispTables);
         ispSpinner.setAdapter(ispSpinnerAdapter);
 
-        String accountIsp = AccountSharedPrefs.getInstance(mContext).getSharedPrefs(AccountSharedPrefs.ISP);
+        String accountIsp = AccountSharedPrefs.getInstance().getSharedPrefs(AccountSharedPrefs.ISP);
         IspTable ispTable = new Select().from(IspTable.class).where(IspTable.ISP_NAME + " = ?", accountIsp).executeSingle();
         if (ispTable != null) {
             ispSpinner.setSelection(ispTable.getId().intValue() - 1);
@@ -511,8 +511,8 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         speedLog.setCdn_name(nodeName);
         speedLog.setSpeed(speed);
 
-        speedLog.setLocation(AccountSharedPrefs.getInstance(mContext).getSharedPrefs(AccountSharedPrefs.CITY));
-        speedLog.setLocation(AccountSharedPrefs.getInstance(mContext).getSharedPrefs(AccountSharedPrefs.ISP));
+        speedLog.setLocation(AccountSharedPrefs.getInstance().getSharedPrefs(AccountSharedPrefs.CITY));
+        speedLog.setLocation(AccountSharedPrefs.getInstance().getSharedPrefs(AccountSharedPrefs.ISP));
 
 
         Gson gson = new Gson();

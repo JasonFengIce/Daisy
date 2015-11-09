@@ -186,7 +186,7 @@ public class IsmartvUrlClient extends Thread {
         hashMap.put("access_token", SimpleRestClient.access_token);
         hashMap.put("device_token", SimpleRestClient.device_token);
         hashMap.put("version", String.valueOf(SimpleRestClient.appVersion));
-        hashMap.put("province", AccountSharedPrefs.getInstance(mContext).getSharedPrefs(AccountSharedPrefs.PROVINCE_PY));
+        hashMap.put("province", AccountSharedPrefs.getInstance().getSharedPrefs(AccountSharedPrefs.PROVINCE_PY));
         hashMap.put("city", "");
         hashMap.put("app", "sky");
         hashMap.put("resolution", SimpleRestClient.screenWidth + "," + SimpleRestClient.screenHeight);

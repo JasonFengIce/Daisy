@@ -25,7 +25,7 @@ public class LocationProvider extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        return AccountSharedPrefs.getInstance(getContext()).getSharedPrefs(AccountSharedPrefs.GEO_ID);
+        return AccountSharedPrefs.getInstance().getSharedPrefs(AccountSharedPrefs.GEO_ID);
     }
 
     @Override

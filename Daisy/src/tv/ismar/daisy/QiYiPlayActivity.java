@@ -149,7 +149,7 @@ public class QiYiPlayActivity extends VodMenuAction {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        shardpref = AccountSharedPrefs.getInstance(this);
+        shardpref = AccountSharedPrefs.getInstance();
         setContentView(R.layout.vod_player);
     }
 

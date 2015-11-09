@@ -36,26 +36,29 @@ public class AccountSharedPrefs {
 
     private static AccountSharedPrefs instance;
 
-    private Context mContext;
+    private static Context mContext;
 
     private SharedPreferences mSharedPreferences;
 
 
-    private AccountSharedPrefs(Context context) {
-        this.mContext = context;
-        mSharedPreferences = context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
+    private AccountSharedPrefs() {
+        mSharedPreferences = mContext.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
         mSharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
     }
 
-    public static AccountSharedPrefs getInstance(Context context) {
+    public static AccountSharedPrefs getInstance() {
         if (instance == null) {
-            instance = new AccountSharedPrefs(context);
+            instance = new AccountSharedPrefs();
         }
         return instance;
     }
 
     public SharedPreferences getSharedPreferences() {
         return mSharedPreferences;
+    }
+
+    public static void initialize(Context context) {
+        mContext = context;
     }
 
     public String getSharedPrefs(String key) {

@@ -60,8 +60,7 @@ public class BaseActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (SimpleRestClient.root_url.equals("")) {
-        	AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs
-    				.getInstance(this);
+        	AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance();
             SimpleRestClient.root_url = "http://" +accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.API_DOMAIN);
             SimpleRestClient.sRoot_url = "http://" +accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.API_DOMAIN);
             SimpleRestClient.ad_domain = "http://" +accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.ADVERTISEMENT_DOMAIN);
