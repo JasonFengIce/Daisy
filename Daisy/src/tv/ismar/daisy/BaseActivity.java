@@ -17,6 +17,7 @@ import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
 import tv.ismar.daisy.views.ExitDialog;
 import tv.ismar.sakura.ui.widget.MessagePopWindow;
 import tv.ismar.sakura.utils.DeviceUtils;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -56,28 +57,29 @@ public class BaseActivity extends FragmentActivity {
     private FetchBestTvAuth authTask;
     protected static int activityCount = 0;
     protected static int activityCount2 = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (SimpleRestClient.root_url.equals("")) {
-        	AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance();
-            SimpleRestClient.root_url = "http://" +accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.API_DOMAIN);
-            SimpleRestClient.sRoot_url = "http://" +accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.API_DOMAIN);
-            SimpleRestClient.ad_domain = "http://" +accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.ADVERTISEMENT_DOMAIN);
-            SimpleRestClient.log_domain = "http://" +accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.LOG_DOMAIN);
+            AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance();
+            SimpleRestClient.root_url = "http://" + accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.API_DOMAIN);
+            SimpleRestClient.sRoot_url = "http://" + accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.API_DOMAIN);
+            SimpleRestClient.ad_domain = "http://" + accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.ADVERTISEMENT_DOMAIN);
+            SimpleRestClient.log_domain = "http://" + accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.LOG_DOMAIN);
             SimpleRestClient.device_token = accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.DEVICE_TOKEN);
             SimpleRestClient.sn_token = accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.SN_TOKEN);
             SimpleRestClient.mobile_number = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.MOBILE_NUMBER, "");
             SimpleRestClient.access_token = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.AUTH_TOKEN, "");
         }
-        fromPage= getIntent().getStringExtra("fromPage");
+        fromPage = getIntent().getStringExtra("fromPage");
         intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_CONNECT_ERROR);
         connectionErrorReceiver = new ConnectionErrorReceiver();
         createNetErrorPopup();
         mTencent = Tencent.createInstance(APP_ID, getApplicationContext());
-        if(!"launcher".equals(fromPage))
-        activityCount2++;
+        if (!"launcher".equals(fromPage))
+            activityCount2++;
 //        if (SimpleRestClient.root_url.equals("http://")){
 //        	Intent xxxIntent = new Intent();
 //        	xxxIntent.setAction("tv.ismar.daisy.reactive");
@@ -128,70 +130,76 @@ public class BaseActivity extends FragmentActivity {
     }
 
     private void showNetErrorPopup() {
-    	final MessageDialogFragment dialog = new MessageDialogFragment(
-				BaseActivity.this, getString(R.string.fetch_net_data_error), null);
-    	dialog.setButtonText(getString(R.string.setting_network), getString(R.string.i_know));
-		dialog.showAtLocation(((ViewGroup) findViewById(android.R.id.content))
-		.getChildAt(0), Gravity.CENTER,
-				new MessageDialogFragment.ConfirmListener() {
-					@Override
-					public void confirmClick(View view) {
-		                Intent intent = new Intent(Settings.ACTION_SETTINGS);
-		                BaseActivity.this.startActivity(intent);
-					}
-				}, new MessageDialogFragment.CancelListener() {
+        final MessageDialogFragment dialog = new MessageDialogFragment(
+                BaseActivity.this, getString(R.string.fetch_net_data_error), null);
+        dialog.setButtonText(getString(R.string.setting_network), getString(R.string.i_know));
+        dialog.showAtLocation(((ViewGroup) findViewById(android.R.id.content))
+                        .getChildAt(0), Gravity.CENTER,
+                new MessageDialogFragment.ConfirmListener() {
+                    @Override
+                    public void confirmClick(View view) {
+                        Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                        BaseActivity.this.startActivity(intent);
+                    }
+                }, new MessageDialogFragment.CancelListener() {
 
-					@Override
-					public void cancelClick(View view) {
-						dialog.dismiss();
-					}
-				});
+                    @Override
+                    public void cancelClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
 
     }
 
     public interface OnLoginCallback {
         void onLoginSuccess(String result);
+
         void onLoginFailed();
+
         void oncallWGQueryQQUserInfo(String info);
+
         void onSameAccountListener();
+
         void onCancelLogin();
     }
+
     OnLoginCallback loginCallback;
+
     public void setLoginCallback(OnLoginCallback loginCallback) {
         this.loginCallback = loginCallback;
     }
 
-    public void letUserLogin(String token,String refresh_token,String openid){
+    public void letUserLogin(String token, String refresh_token, String openid) {
 
         String api = SimpleRestClient.root_url + "/accounts/oauth_login/";
         HashMap params = new HashMap();
         params.put("device_token", SimpleRestClient.device_token);
-        params.put("app_id","1104828726");
-        params.put("open_id",openid);
-        params.put("refresh_token",refresh_token);
-        params.put("kind","qq");
-        params.put("token",token);
+        params.put("app_id", "1104828726");
+        params.put("open_id", openid);
+        params.put("refresh_token", refresh_token);
+        params.put("kind", "qq");
+        params.put("token", token);
         new IsmartvUrlClient().doRequest(IsmartvUrlClient.Method.POST, api, params, new IsmartvUrlClient.CallBack() {
             @Override
             public void onSuccess(String result) {
-            	org.json.JSONObject json;
-				try {
-					json = new org.json.JSONObject(
-							result);
-				String auth_token = json
-						.getString(VodApplication.AUTH_TOKEN);
-				DaisyUtils
-						.getVodApplication(getApplicationContext())
-						.getEditor()
-						.putString(
-								VodApplication.AUTH_TOKEN,
-								auth_token);
-				DaisyUtils.getVodApplication(getApplicationContext())
-						.save();
-				SimpleRestClient.access_token = auth_token;
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
+                org.json.JSONObject json;
+                try {
+                    json = new org.json.JSONObject(
+                            result);
+                    String auth_token = json
+                            .getString(VodApplication.AUTH_TOKEN);
+                    DaisyUtils
+                            .getVodApplication(getApplicationContext())
+                            .getEditor()
+                            .putString(
+                                    VodApplication.AUTH_TOKEN,
+                                    auth_token);
+                    DaisyUtils.getVodApplication(getApplicationContext())
+                            .save();
+                    SimpleRestClient.access_token = auth_token;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 if (loginCallback != null) {
                     loginCallback.onLoginSuccess(result);
                 }
@@ -200,8 +208,8 @@ public class BaseActivity extends FragmentActivity {
             @Override
             public void onFailed(Exception exception) {
                 //  verificationPrompt.setText(R.string.login_failure);
-                Log.i("pangziinfo","shibai");
-                if(loginCallback!=null){
+                Log.i("pangziinfo", "shibai");
+                if (loginCallback != null) {
                     loginCallback.onLoginFailed();
                 }
             }
@@ -209,19 +217,18 @@ public class BaseActivity extends FragmentActivity {
 
     }
 
-    public void loginQQorWX(){
-        IntentFilter nFilter=new IntentFilter("com.tencent.gamestation.qrlogin");
+    public void loginQQorWX() {
+        IntentFilter nFilter = new IntentFilter("com.tencent.gamestation.qrlogin");
         registerReceiver(mUserInfoReceiver, nFilter);
         mTencent.login(BaseActivity.this, "all", loginListener);
     }
-    public void changaccount(){
 
-
+    public void changaccount() {
 
 
         mTencent.logout(BaseActivity.this);
 
-        IntentFilter nFilter=new IntentFilter("com.tencent.gamestation.qrlogin");
+        IntentFilter nFilter = new IntentFilter("com.tencent.gamestation.qrlogin");
         registerReceiver(mUserInfoReceiver, nFilter);
         mTencent.login(BaseActivity.this, "all", loginListener);
     }
@@ -231,32 +238,33 @@ public class BaseActivity extends FragmentActivity {
         mInfo.getUserInfo(getUserInfoListener);
     }
 
-    public void getWGQueryQQUserInfo(String nickname){
-          //if(!isSameAccount()){
-              if(loginCallback!=null){
-                  loginCallback.oncallWGQueryQQUserInfo(nickname);
-              }
-         // }
+    public void getWGQueryQQUserInfo(String nickname) {
+        //if(!isSameAccount()){
+        if (loginCallback != null) {
+            loginCallback.oncallWGQueryQQUserInfo(nickname);
+        }
+        // }
     }
 
 
-    private String token="";
-    private String openId="";
-    private String paytoken="";
-    public  void initOpenidAndToken(JSONObject jsonObject) {
-        try {
-             token = jsonObject.getString(Constants.PARAM_ACCESS_TOKEN);
-            String expires = jsonObject.getString(Constants.PARAM_EXPIRES_IN);
-             openId = jsonObject.getString(Constants.PARAM_OPEN_ID);
+    private String token = "";
+    private String openId = "";
+    private String paytoken = "";
 
-            if(jsonObject.has("pay_token")){
+    public void initOpenidAndToken(JSONObject jsonObject) {
+        try {
+            token = jsonObject.getString(Constants.PARAM_ACCESS_TOKEN);
+            String expires = jsonObject.getString(Constants.PARAM_EXPIRES_IN);
+            openId = jsonObject.getString(Constants.PARAM_OPEN_ID);
+
+            if (jsonObject.has("pay_token")) {
                 paytoken = jsonObject.getString("pay_token");
             }
             if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(expires)
                     && !TextUtils.isEmpty(openId)) {
                 mTencent.setAccessToken(token, expires);
                 mTencent.setOpenId(openId);
-               // DaisyUtils.getVodApplication(this).
+                // DaisyUtils.getVodApplication(this).
 //               String saveid = DaisyUtils.getVodApplication(BaseActivity.this).getPreferences().getString(VodApplication.OPENID,"");
 //                if("".equals(saveid)||!saveid.equals(openId)){
 //                    letUserLogin(token, paytoken, openId);
@@ -268,28 +276,29 @@ public class BaseActivity extends FragmentActivity {
 //                    }
 //                }
 
-            if(!isSameAccount()){
-                DaisyUtils.getVodApplication(this).getEditor().putString(VodApplication.OPENID, openId);
-                DaisyUtils.getVodApplication(this).save();
-                letUserLogin(token, paytoken, openId);
-            }else{
-                    if(loginCallback!=null){
+                if (!isSameAccount()) {
+                    DaisyUtils.getVodApplication(this).getEditor().putString(VodApplication.OPENID, openId);
+                    DaisyUtils.getVodApplication(this).save();
+                    letUserLogin(token, paytoken, openId);
+                } else {
+                    if (loginCallback != null) {
                         loginCallback.onSameAccountListener();
                     }
+                }
             }
-            }
-        } catch(Exception e) {
+        } catch (Exception e) {
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // mTencent.onActivityResult(requestCode, resultCode, data);
 
         // Log.d(TAG, "-->onActivityResult " + requestCode  + " resultCode=" + resultCode);
-        if(loginListener!=null){
-            mTencent.onActivityResultData(requestCode,resultCode,data,loginListener);
-            if(requestCode == Constants.REQUEST_API) {
-                if(resultCode == Constants.RESULT_LOGIN) {
+        if (loginListener != null) {
+            mTencent.onActivityResultData(requestCode, resultCode, data, loginListener);
+            if (requestCode == Constants.REQUEST_API) {
+                if (resultCode == Constants.RESULT_LOGIN) {
                     Tencent.handleResultData(data, loginListener);
                     //  Log.d(TAG, "-->onActivityResult handle logindata");
                 }
@@ -303,53 +312,54 @@ public class BaseActivity extends FragmentActivity {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
     IUiListener loginListener = new BaseUiListener() {
         @Override
         protected void doComplete(Object values) {
-            Log.i("zhangjiqiangfuck","getUserInfoListener");
+            Log.i("zhangjiqiangfuck", "getUserInfoListener");
 
-            if(null == values){
+            if (null == values) {
                 //获取失败
                 return;
             }
             JSONObject jsonResponse = (JSONObject) values;
-            if(null != jsonResponse && jsonResponse.length() == 0){
+            if (null != jsonResponse && jsonResponse.length() == 0) {
                 //失败
                 return;
             }
-            if(jsonResponse.has(Constants.PARAM_OPEN_ID)){
+            if (jsonResponse.has(Constants.PARAM_OPEN_ID)) {
                 initOpenidAndToken(jsonResponse);
-                Log.i("zhangjiqiangfuck", "AuthorSwitch_SDK:" + "doComplete"+"values=="+values.toString());
+                Log.i("zhangjiqiangfuck", "AuthorSwitch_SDK:" + "doComplete" + "values==" + values.toString());
             }
         }
     };
-    IUiListener getUserInfoListener = new BaseUiListener(){
+    IUiListener getUserInfoListener = new BaseUiListener() {
         @Override
         protected void doComplete(Object values) {
-            Log.i("zhangjiqiangfuck","getUserInfoListener");
-            if(null == values){
+            Log.i("zhangjiqiangfuck", "getUserInfoListener");
+            if (null == values) {
                 //获取失败
                 return;
             }
             JSONObject jsonResponse = (JSONObject) values;
-            if(null != jsonResponse && jsonResponse.length() == 0){
+            if (null != jsonResponse && jsonResponse.length() == 0) {
                 //失败
                 return;
             }
-            Log.i("zhangjiqiangfuck","info=="+jsonResponse.toString());
+            Log.i("zhangjiqiangfuck", "info==" + jsonResponse.toString());
 
             try {
                 int ret = jsonResponse.getInt("ret");
                 if (ret == 100030) {
                     UUID uuid = UUID.randomUUID();
-                    String tmp = uuid.toString().substring(0,7);
-                    getWGQueryQQUserInfo("qq用户"+tmp.replaceAll("-", ""));
+                    String tmp = uuid.toString().substring(0, 7);
+                    getWGQueryQQUserInfo("qq用户" + tmp.replaceAll("-", ""));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            if(jsonResponse.has("nickname")){
+            if (jsonResponse.has("nickname")) {
                 try {
                     getWGQueryQQUserInfo(jsonResponse.getString("nickname"));
                 } catch (JSONException e) {
@@ -358,22 +368,24 @@ public class BaseActivity extends FragmentActivity {
             }
         }
     };
-    private boolean isSameAccount(){
+
+    private boolean isSameAccount() {
         boolean isSameAccount = false;
-        String saveid = DaisyUtils.getVodApplication(BaseActivity.this).getPreferences().getString(VodApplication.OPENID,"");
-        if("".equals(saveid)||!saveid.equals(openId)){
+        String saveid = DaisyUtils.getVodApplication(BaseActivity.this).getPreferences().getString(VodApplication.OPENID, "");
+        if ("".equals(saveid) || !saveid.equals(openId)) {
             isSameAccount = false;
 
-        }else{
+        } else {
             isSameAccount = true;
         }
         return isSameAccount;
     }
+
     private class BaseUiListener implements IUiListener {
 
         @Override
         public void onComplete(Object response) {
-            Log.i("zhangjiqiangfuck","onComplete");
+            Log.i("zhangjiqiangfuck", "onComplete");
             doComplete(response);
         }
 
@@ -383,12 +395,12 @@ public class BaseActivity extends FragmentActivity {
 
         @Override
         public void onError(UiError e) {
-            Log.i("zhangjiqiangfuck","onError");
+            Log.i("zhangjiqiangfuck", "onError");
         }
 
         @Override
         public void onCancel() {
-            Log.i("zhangjiqiangfuck","onCancel");
+            Log.i("zhangjiqiangfuck", "onCancel");
             if (loginCallback != null) {
                 loginCallback.onCancelLogin();
             }
@@ -396,18 +408,16 @@ public class BaseActivity extends FragmentActivity {
     }
 
 
-    public BroadcastReceiver mUserInfoReceiver=new BroadcastReceiver()
-    {
+    public BroadcastReceiver mUserInfoReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
             // TODO Auto-generated method stub
             Log.e("XXXXXXXXX", intent.getAction());
-            if("com.tencent.gamestation.qrlogin".equalsIgnoreCase(intent.getAction()))
-            {
-                String nNick=intent.getStringExtra("nick");
-                String nIconUrl=intent.getStringExtra("imgurl");
-                Log.e("XXXXXXXXXXXXXXXXXXXXXX", "user info nick="+nNick+" nIconUrl="+nIconUrl);
+            if ("com.tencent.gamestation.qrlogin".equalsIgnoreCase(intent.getAction())) {
+                String nNick = intent.getStringExtra("nick");
+                String nIconUrl = intent.getStringExtra("imgurl");
+                Log.e("XXXXXXXXXXXXXXXXXXXXXX", "user info nick=" + nNick + " nIconUrl=" + nIconUrl);
                 getWGQueryQQUserInfo(nNick);
                 unregisterReceiver(mUserInfoReceiver);
             }
@@ -426,119 +436,124 @@ public class BaseActivity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
         String bindflag = DaisyUtils.getVodApplication(this)
-				.getPreferences().getString(VodApplication.BESTTV_AUTH_BIND_FLAG, "");
+                .getPreferences().getString(VodApplication.BESTTV_AUTH_BIND_FLAG, "");
         if ((activityCount == 0) && (StringUtils.isEmpty(bindflag) || (StringUtils.isNotEmpty(bindflag) && "privilege".equals(bindflag)))) {
-        	authTask = new FetchBestTvAuth();
-			authTask.execute();
-			activityCount++;
-		}
+            authTask = new FetchBestTvAuth();
+            authTask.execute();
+            activityCount++;
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         activityCount2--;
-      //  unregisterReceiver(mUserInfoReceiver);
+        //  unregisterReceiver(mUserInfoReceiver);
     }
 
     @Override
     public void onBackPressed() {
-		if ("launcher".equals(fromPage)
-				&& StringUtils.isEmpty(activityTag) && activityCount2<=1){
-			showExitPopup(((ViewGroup) findViewById(android.R.id.content))
-					.getChildAt(0),R.string.exit_prompt);
-		}else{
-			super.onBackPressed();
-		}
-		
+        if ("launcher".equals(fromPage)
+                && StringUtils.isEmpty(activityTag) && activityCount2 <= 1) {
+            showExitPopup(((ViewGroup) findViewById(android.R.id.content))
+                    .getChildAt(0), R.string.exit_prompt);
+        } else {
+            super.onBackPressed();
+        }
+
     }
 
-	private void showExitPopup(View view, int message) {
-		final MessageDialogFragment dialog = new MessageDialogFragment(
-				BaseActivity.this, getString(message), null);
-		dialog.showAtLocation(view, Gravity.CENTER,
-				new MessageDialogFragment.ConfirmListener() {
-					@Override
-					public void confirmClick(View view) {
-						dialog.dismiss();
-						BaseActivity.this.finish();
-					}
-				}, new MessageDialogFragment.CancelListener() {
+    private void showExitPopup(View view, int message) {
+        final MessageDialogFragment dialog = new MessageDialogFragment(
+                BaseActivity.this, getString(message), null);
+        dialog.showAtLocation(view, Gravity.CENTER,
+                new MessageDialogFragment.ConfirmListener() {
+                    @Override
+                    public void confirmClick(View view) {
+                        dialog.dismiss();
+                        BaseActivity.this.finish();
+                    }
+                }, new MessageDialogFragment.CancelListener() {
 
-					@Override
-					public void cancelClick(View view) {
-						dialog.dismiss();
-					}
-				});
-	}
+                    @Override
+                    public void cancelClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+    }
 
-	private void showBindPopup(View view, int message) {
-		final MessageDialogFragment dialog = new MessageDialogFragment(
-				BaseActivity.this, "为保证系统升级后已购产品包可以正常使用,", "请您使用手机号登录");
-		dialog.showAtLocation(view, Gravity.CENTER,
-				new MessageDialogFragment.ConfirmListener() {
-					@Override
-					public void confirmClick(View view) {
-						dialog.dismiss();
-						Intent intent = new Intent();
-						intent.setAction("tv.ismar.daisy.usercenter");
-						intent.putExtra("flag", "login");
-						startActivity(intent);
-					}
-				}, null);
-	}
+    private void showBindPopup(View view, int message) {
+        final MessageDialogFragment dialog = new MessageDialogFragment(
+                BaseActivity.this, "为保证系统升级后已购产品包可以正常使用,", "请您使用手机号登录");
+        dialog.showAtLocation(view, Gravity.CENTER,
+                new MessageDialogFragment.ConfirmListener() {
+                    @Override
+                    public void confirmClick(View view) {
+                        dialog.dismiss();
+                        Intent intent = new Intent();
+                        intent.setAction("tv.ismar.daisy.usercenter");
+                        intent.putExtra("flag", "login");
+                        startActivity(intent);
+                    }
+                }, null);
+    }
 
-	class FetchBestTvAuth extends AsyncTask<String, Void, Integer> {
-		private final static int RESUTL_CANCELED = -2;
-		private final static int RESULT_SUCCESS = 0;
+    class FetchBestTvAuth extends AsyncTask<String, Void, Integer> {
+        private final static int RESUTL_CANCELED = -2;
+        private final static int RESULT_SUCCESS = 0;
         private String httpresult;
-		@Override
-		protected Integer doInBackground(String... params) {
-			SimpleRestClient mRestClient = new SimpleRestClient();
-			try {
-				String mac = DeviceUtils.getLocalMacAddress(BaseActivity.this);
-				mac = mac.replace("-", "").replace(":", "");
-				httpresult = mRestClient.getBestTVAuthor(mac);
-				if(StringUtils.isEmpty(httpresult)){
-					return -1;
-				}
-				httpresult = httpresult.replace("\"", "");
-				DaisyUtils.getVodApplication(BaseActivity.this).getEditor().putString(VodApplication.BESTTV_AUTH_BIND_FLAG, httpresult);
-			} catch (NetworkException e) {
-				e.printStackTrace();
-				return RESUTL_CANCELED;
-			}
-			if (isCancelled()) {
-				return RESUTL_CANCELED;
-			} else {
-				return RESULT_SUCCESS;
-			}
-		}
 
-		@Override
-		protected void onPostExecute(Integer result) {
-			if (result == RESULT_SUCCESS) {
-				if (StringUtils.isNotEmpty(SimpleRestClient.mobile_number)
-						&& StringUtils
-								.isNotEmpty(SimpleRestClient.access_token)) {
-					if ("privilege".equals(httpresult)) {
-						// 继续绑定不提示
-					}
-				} else {
-					if ("privilege".equals(httpresult)) {// 未登陆提示登陆绑定
-						new Handler().postDelayed(new Runnable() {
-							public void run() {
-								showBindPopup(
-										((ViewGroup) findViewById(android.R.id.content))
-												.getChildAt(0),
-										R.string.besttvauthbind_message);
-							}
-						}, 2000);
-					}
-				}
-			}
-		}
-	}
+        @Override
+        protected Integer doInBackground(String... params) {
+            SimpleRestClient mRestClient = new SimpleRestClient();
+            try {
+                String mac = DeviceUtils.getLocalMacAddress(BaseActivity.this);
+                mac = mac.replace("-", "").replace(":", "");
+
+                httpresult = mRestClient.getBestTVAuthor(mac);
+                if (StringUtils.isEmpty(httpresult)) {
+                    return -1;
+                }
+                httpresult = httpresult.replace("\"", "");
+                DaisyUtils.getVodApplication(BaseActivity.this).getEditor().putString(VodApplication.BESTTV_AUTH_BIND_FLAG, httpresult);
+            } catch (NetworkException e) {
+                e.printStackTrace();
+                return RESUTL_CANCELED;
+            } catch (NullPointerException e) {
+                showNetErrorPopup();
+                return RESUTL_CANCELED;
+            }
+            if (isCancelled()) {
+                return RESUTL_CANCELED;
+            } else {
+                return RESULT_SUCCESS;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            if (result == RESULT_SUCCESS) {
+                if (StringUtils.isNotEmpty(SimpleRestClient.mobile_number)
+                        && StringUtils
+                        .isNotEmpty(SimpleRestClient.access_token)) {
+                    if ("privilege".equals(httpresult)) {
+                        // 继续绑定不提示
+                    }
+                } else {
+                    if ("privilege".equals(httpresult)) {// 未登陆提示登陆绑定
+                        new Handler().postDelayed(new Runnable() {
+                            public void run() {
+                                showBindPopup(
+                                        ((ViewGroup) findViewById(android.R.id.content))
+                                                .getChildAt(0),
+                                        R.string.besttvauthbind_message);
+                            }
+                        }, 2000);
+                    }
+                }
+            }
+        }
+    }
 
 }
 
