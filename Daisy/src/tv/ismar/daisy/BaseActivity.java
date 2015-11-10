@@ -499,8 +499,8 @@ public class BaseActivity extends FragmentActivity {
     }
 
     class FetchBestTvAuth extends AsyncTask<String, Void, Integer> {
-        private final static int RESUTL_CANCELED = -2;
         private final static int RESULT_SUCCESS = 0;
+        private final static int RESUTL_CANCELED = -2;
         private String httpresult;
 
         @Override
@@ -520,7 +520,6 @@ public class BaseActivity extends FragmentActivity {
                 e.printStackTrace();
                 return RESUTL_CANCELED;
             } catch (NullPointerException e) {
-                showNetErrorPopup();
                 return RESUTL_CANCELED;
             }
             if (isCancelled()) {
