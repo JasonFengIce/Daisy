@@ -50,7 +50,7 @@ public class VodUserAgent {
 	}
 
 	public static String getModelName(){
-        return Build.PRODUCT.replaceAll(" ", "_");
+        return Build.PRODUCT.replaceAll(" ", "_").toLowerCase();
 	}
 	  public static String getSerialNumber(Context context){
 		    TelephonyManager tm = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
