@@ -137,8 +137,12 @@ public class FilmFragment extends ChannelBaseFragment {
     public void onDestroyView() {
     	mHandler.removeMessages(START_PLAYBACK);
     	mHandler.removeMessages(CAROUSEL_NEXT);
+    	film_post_layout.removeAllViews();
+    	guideRecommmendList.removeAllViews();
+    	carouselLayout.removeAllViews();
     	guideRecommmendList = null;
     	carouselLayout = null;
+    	film_post_layout = null;
     	if(film_lefttop_image != null &&film_lefttop_image.getDrawingCache()!=null && !film_lefttop_image.getDrawingCache().isRecycled()){
     		film_lefttop_image.getDrawingCache().recycle();
     		film_lefttop_image = null;
@@ -423,6 +427,8 @@ public class FilmFragment extends ChannelBaseFragment {
 
     private void playCarousel() {
         mHandler.removeMessages(CAROUSEL_NEXT);
+        if(film_post_layout == null)
+        	return;
         switch (mCarouselRepeatType) {
             case Once:
 

@@ -129,6 +129,8 @@ public class GuideFragment extends ChannelBaseFragment {
 
     @Override
     public void onDestroyView() {
+    	mHandler.removeMessages(CAROUSEL_NEXT);
+    	mHandler.removeMessages(START_PLAYBACK);
     	guideRecommmendList.removeAllViews();
     	guideRecommmendList = null;
     	mSurfaceView = null;
