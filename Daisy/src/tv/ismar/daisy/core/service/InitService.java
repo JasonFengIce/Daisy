@@ -11,10 +11,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
@@ -44,6 +48,7 @@ public class InitService extends Service implements Activator.OnComplete {
 				.getString(VodApplication.LOCATION_INFO, "");
 		product = Build.BRAND.replace(" ", "_");
 		mode = VodUserAgent.getModelName();
+		getHardInfo();
 		if (networkInfo != null && networkInfo.isConnected()) {
 			activator.active(product, mode,
 					String.valueOf(SimpleRestClient.appVersion), localInfo);
@@ -152,4 +157,14 @@ public class InitService extends Service implements Activator.OnComplete {
 			}
 		}
 	}
+
+	 private void getHardInfo() {
+	        PackageManager manager = getPackageManager();
+	        try {
+	            PackageInfo info = manager.getPackageInfo(getPackageName(), 0);
+	            SimpleRestClient.appVersion = info.versionCode;
+	        } catch (NameNotFoundException e) {
+	            e.printStackTrace();
+	        }
+	    }
 }
