@@ -6,7 +6,9 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+
 import com.squareup.okhttp.*;
+
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -161,8 +163,6 @@ public class IsmartvUrlClient extends Thread {
         this.method = Method.GET;
         start();
     }
-
-
 
 
     public void doAdvertisementRequest(Method method, String api, HashMap<String, String> hashMap, CallBack callback) {

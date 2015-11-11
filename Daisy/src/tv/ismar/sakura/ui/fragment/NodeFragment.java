@@ -14,17 +14,29 @@ import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
-import android.view.*;
-import android.widget.*;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.content.ContentProvider;
 import com.activeandroid.query.Select;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit.Response;
+import retrofit.Retrofit;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -43,12 +55,8 @@ import tv.ismar.sakura.data.http.SpeedLogEntity;
 import tv.ismar.sakura.ui.adapter.IspSpinnerAdapter;
 import tv.ismar.sakura.ui.adapter.NodeListAdapter;
 import tv.ismar.sakura.ui.adapter.ProvinceSpinnerAdapter;
-import tv.ismar.sakura.ui.widget.MessagePopWindow;
 import tv.ismar.sakura.ui.widget.SakuraButton;
 import tv.ismar.sakura.ui.widget.SakuraListView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static tv.ismar.sakura.core.SakuraClientAPI.restAdapter_SPEED_CALLA_TVXIO;
 import static tv.ismar.sakura.core.SakuraClientAPI.restAdapter_WX_API_TVXIO;
@@ -299,9 +307,11 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
 //     */
     private void fetchBindedCdn(final String snCode) {
         SakuraClientAPI.GetBindCdn client = restAdapter_WX_API_TVXIO.create(SakuraClientAPI.GetBindCdn.class);
-        client.excute(snCode, new Callback<BindedCdnEntity>() {
+
+        client.excute(snCode).enqueue(new Callback<BindedCdnEntity>() {
             @Override
-            public void success(BindedCdnEntity bindedCdnEntity, Response response) {
+            public void onResponse(Response<BindedCdnEntity> response, Retrofit retrofit) {
+                BindedCdnEntity bindedCdnEntity = response.body();
                 if (BindedCdnEntity.NO_RECORD.equals(bindedCdnEntity.getRetcode())) {
                     clearCheck();
                 } else {
@@ -310,39 +320,41 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
             }
 
             @Override
-            public void failure(RetrofitError retrofitError) {
-
+            public void onFailure(Throwable throwable) {
+                Log.e(TAG, "fetchBindedCdn error!!!");
             }
         });
+
     }
 
     private void bindCdn(final String snCode, final int cdnId) {
         SakuraClientAPI.BindCdn client = restAdapter_WX_API_TVXIO.create(SakuraClientAPI.BindCdn.class);
-        client.excute(snCode, cdnId, new Callback<Empty>() {
+        client.excute(snCode, cdnId).enqueue(new Callback<Empty>() {
             @Override
-            public void success(Empty empty, Response response) {
+            public void onResponse(Response<Empty> response, Retrofit retrofit) {
                 Toast.makeText(mContext, R.string.node_bind_success, Toast.LENGTH_LONG).show();
                 fetchBindedCdn(snCode);
             }
 
             @Override
-            public void failure(RetrofitError retrofitError) {
+            public void onFailure(Throwable throwable) {
                 Log.e(TAG, "bindCdn error");
             }
         });
+
 
     }
 
     private void unbindNode(final String snCode) {
         SakuraClientAPI.UnbindNode client = restAdapter_WX_API_TVXIO.create(SakuraClientAPI.UnbindNode.class);
-        client.excute(snCode, new Callback<Empty>() {
+        client.excute(snCode).enqueue(new Callback<Empty>() {
             @Override
-            public void success(Empty empty, Response response) {
+            public void onResponse(Response<Empty> response, Retrofit retrofit) {
                 fetchBindedCdn(snCode);
             }
 
             @Override
-            public void failure(RetrofitError retrofitError) {
+            public void onFailure(Throwable throwable) {
                 Log.e(TAG, "unbindNode");
             }
         });
@@ -541,30 +553,32 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
 
     private void uploadCdnTestLog(String data, String snCode, String model) {
         SakuraClientAPI.DeviceLog client = restAdapter_SPEED_CALLA_TVXIO.create(SakuraClientAPI.DeviceLog.class);
-        client.execute(data, snCode, model, new Callback<Empty>() {
+        client.execute(data, snCode, model).enqueue(new Callback<Empty>() {
             @Override
-            public void success(Empty empty, Response response) {
+            public void onResponse(Response<Empty> response, Retrofit retrofit) {
                 Log.d(TAG, "uploadCdnTestLog success");
             }
 
             @Override
-            public void failure(RetrofitError retrofitError) {
+            public void onFailure(Throwable throwable) {
                 Log.e(TAG, "uploadCdnTestLog");
             }
         });
+
+
     }
 
 
     public void uploadTestResult(String cdnId, String speed) {
         SakuraClientAPI.UploadResult client = restAdapter_WX_API_TVXIO.create(SakuraClientAPI.UploadResult.class);
-        client.excute(SakuraClientAPI.UploadResult.ACTION_TYPE, snCode, cdnId, speed, new Callback<Empty>() {
+        client.excute(SakuraClientAPI.UploadResult.ACTION_TYPE, snCode, cdnId, speed).enqueue(new Callback<Empty>() {
             @Override
-            public void success(Empty empty, Response response) {
+            public void onResponse(Response<Empty> response, Retrofit retrofit) {
                 Log.i(TAG, "uploadTestResult success");
             }
 
             @Override
-            public void failure(RetrofitError retrofitError) {
+            public void onFailure(Throwable throwable) {
                 Log.e(TAG, "uploadTestResult");
             }
         });

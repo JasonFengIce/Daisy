@@ -1,7 +1,5 @@
 package tv.ismar.daisy;
 
-import retrofit.RestAdapter;
-
 /**
  * Created by huaijie on 3/9/15.
  */
@@ -16,6 +14,5 @@ public class AppConstant {
 
     public static final boolean DEBUG = true;
 
-    public static final RestAdapter.LogLevel LOG_LEVEL = DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE;
 
 }

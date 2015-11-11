@@ -1,21 +1,32 @@
 package tv.ismar.sakura.core;
 
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.http.*;
-import tv.ismar.daisy.AppConstant;
-import tv.ismar.sakura.data.http.*;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
 import java.util.List;
+
+import retrofit.Call;
+import retrofit.GsonConverterFactory;
+import retrofit.Retrofit;
+import retrofit.http.Field;
+import retrofit.http.FormUrlEncoded;
+import retrofit.http.GET;
+import retrofit.http.POST;
+import retrofit.http.Query;
+import tv.ismar.sakura.data.http.BindedCdnEntity;
+import tv.ismar.sakura.data.http.ChatMsgEntity;
+import tv.ismar.sakura.data.http.Empty;
+import tv.ismar.sakura.data.http.ProblemEntity;
+import tv.ismar.sakura.data.http.TeleEntity;
 
 /**
  * Created by huaijie on 2015/4/7.
  */
 public class SakuraClientAPI {
-    public static final RestAdapter restAdapter_WX_API_TVXIO;
-    public static final RestAdapter restAdapter_IRIS_TVXIO;
-    public static final RestAdapter restAdapter_SPEED_CALLA_TVXIO;
-    public static final RestAdapter restAdapter_LILY_TVXIO_HOST;
+    public static final Retrofit restAdapter_WX_API_TVXIO;
+    public static final Retrofit restAdapter_IRIS_TVXIO;
+    public static final Retrofit restAdapter_SPEED_CALLA_TVXIO;
+    public static final Retrofit restAdapter_LILY_TVXIO_HOST;
 
     public static final String API_HOST = "http://wx.api.tvxio.com/";
     private static final String IRIS_TVXIO_HOST = "http://iris.tvxio.com";
@@ -24,56 +35,62 @@ public class SakuraClientAPI {
 
 
     static {
-        restAdapter_WX_API_TVXIO = new RestAdapter.Builder()
-                .setLogLevel(AppConstant.LOG_LEVEL)
-                .setEndpoint(SakuraClientAPI.API_HOST)
+        OkHttpClient client = new OkHttpClient();
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        client.interceptors().add(interceptor);
+        restAdapter_WX_API_TVXIO = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(SakuraClientAPI.API_HOST)
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        restAdapter_IRIS_TVXIO = new RestAdapter.Builder()
-                .setLogLevel(AppConstant.LOG_LEVEL)
-                .setEndpoint(SakuraClientAPI.IRIS_TVXIO_HOST)
+        restAdapter_IRIS_TVXIO = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(SakuraClientAPI.IRIS_TVXIO_HOST)
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        restAdapter_SPEED_CALLA_TVXIO = new RestAdapter.Builder()
-                .setLogLevel(AppConstant.LOG_LEVEL)
-                .setEndpoint(SPEED_CALLA_TVXIO_HOST)
+        restAdapter_SPEED_CALLA_TVXIO = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(SakuraClientAPI.SPEED_CALLA_TVXIO_HOST)
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        restAdapter_LILY_TVXIO_HOST = new RestAdapter.Builder()
-                .setLogLevel(AppConstant.LOG_LEVEL)
-                .setEndpoint(LILY_TVXIO_HOST)
+        restAdapter_LILY_TVXIO_HOST = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(SakuraClientAPI.LILY_TVXIO_HOST)
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
     }
 
     public interface Problems {
         @GET("/customer/points/")
-        void excute(
-                Callback<List<ProblemEntity>> callback
+        Call<List<ProblemEntity>> excute(
+
         );
     }
 
     public interface Feedback {
         @GET("/customer/getfeedback/")
-        void excute(
+        Call<ChatMsgEntity> excute(
                 @Query("sn") String sn,
-                @Query("topn") String topn,
-                Callback<ChatMsgEntity> callback
+                @Query("topn") String topn
+
         );
     }
 
 
     public interface GetBindCdn {
         @GET("/shipinkefu/getCdninfo?actiontype=getBindcdn")
-        void excute(
-                @Query("sn") String snCode,
-                Callback<BindedCdnEntity> callback
+        Call<BindedCdnEntity> excute(
+                @Query("sn") String snCode
         );
     }
 
     public interface BindCdn {
         @GET("/shipinkefu/getCdninfo?actiontype=bindecdn")
-        void excute(
+        Call<Empty> excute(
                 @Query("sn") String snCode,
-                @Query("cdn") int cdnId,
-                Callback<Empty> callback
+                @Query("cdn") int cdnId
         );
     }
 
@@ -82,9 +99,9 @@ public class SakuraClientAPI {
      */
     public interface UnbindNode {
         @GET("/shipinkefu/getCdninfo?actiontype=unbindCdn")
-        void excute(
-                @Query("sn") String sn,
-                Callback<Empty> callback
+        Call<Empty> excute(
+                @Query("sn") String sn
+
         );
     }
 
@@ -93,36 +110,35 @@ public class SakuraClientAPI {
         public String ACTION = "getContact";
 
         @GET("/shipinkefu/getCdninfo")
-        void excute(
+        Call<List<TeleEntity>> excute(
                 @Query("actiontype") String actiontype,
                 @Query("ModeName") String modeName,
-                @Query("sn") String sn,
-                Callback<List<TeleEntity>> callback
+                @Query("sn") String sn
+
         );
     }
 
 
     public interface DeviceLog {
         @GET("/log")
-        void execute(
+        Call<Empty> execute(
                 @Query("data") String data,
                 @Query("sn") String sn,
-                @Query("modelname") String modelName,
-                Callback<Empty> callback
+                @Query("modelname") String modelName
+
         );
     }
 
     public interface UploadResult {
-        public static final String ACTION_TYPE = "submitTestData";
+        String ACTION_TYPE = "submitTestData";
 
         @FormUrlEncoded
         @POST("/shipinkefu/getCdninfo")
-        void excute(
+        Call<Empty> excute(
                 @Field("actiontype") String actionType,
                 @Field("snCode") String snCode,
                 @Field("nodeId") String nodeId,
-                @Field("nodeSpeed") String nodeSpeed,
-                Callback<Empty> callback
+                @Field("nodeSpeed") String nodeSpeed
         );
     }
 

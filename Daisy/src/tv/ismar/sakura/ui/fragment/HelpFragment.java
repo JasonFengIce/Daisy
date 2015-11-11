@@ -9,16 +9,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import java.util.List;
+
 import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit.Response;
+import retrofit.Retrofit;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.sakura.core.SakuraClientAPI;
 import tv.ismar.sakura.data.http.TeleEntity;
 import tv.ismar.sakura.utils.DeviceUtils;
-
-import java.util.List;
 
 import static tv.ismar.sakura.core.SakuraClientAPI.restAdapter_WX_API_TVXIO;
 
@@ -58,22 +59,21 @@ public class HelpFragment extends Fragment {
 
     private void fetchTel(String model, String snCode) {
         SakuraClientAPI.FetchTel client = restAdapter_WX_API_TVXIO.create(SakuraClientAPI.FetchTel.class);
-        client.excute(SakuraClientAPI.FetchTel.ACTION, model, snCode,
-                new Callback<List<TeleEntity>>() {
-                    @Override
-                    public void success(List<TeleEntity> teleEntities, Response response) {
-                        ismartvTitle.setText(teleEntities.get(0).getTitle() + " : ");
-                        ismartvTel.setText(teleEntities.get(0).getPhoneNo());
-                        tvTitle.setText(teleEntities.get(1).getTitle() + " : ");
-                        tvTel.setText(teleEntities.get(1).getPhoneNo());
-                    }
+        client.excute(SakuraClientAPI.FetchTel.ACTION, model, snCode).enqueue(new Callback<List<TeleEntity>>() {
+            @Override
+            public void onResponse(Response<List<TeleEntity>> response, Retrofit retrofit) {
+                List<TeleEntity> teleEntities = response.body();
+                ismartvTitle.setText(teleEntities.get(0).getTitle() + " : ");
+                ismartvTel.setText(teleEntities.get(0).getPhoneNo());
+                tvTitle.setText(teleEntities.get(1).getTitle() + " : ");
+                tvTel.setText(teleEntities.get(1).getPhoneNo());
+            }
 
-                    @Override
-                    public void failure(RetrofitError retrofitError) {
-                        Log.e(TAG, "fetchTel: error");
-                    }
-                }
-        );
+            @Override
+            public void onFailure(Throwable throwable) {
+                Log.e(TAG, "fetchTel: error");
+            }
+        });
     }
 
 }

@@ -10,41 +10,34 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import retrofit.http.GET;
-import retrofit.http.Query;
-import tv.ismar.daisy.AppConstant;
+import java.util.HashMap;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
 import tv.ismar.sakura.core.FeedbackProblem;
-import tv.ismar.sakura.core.SakuraClientAPI;
 import tv.ismar.sakura.core.UploadFeedback;
 import tv.ismar.sakura.data.http.ChatMsgEntity;
 import tv.ismar.sakura.data.http.FeedBackEntity;
 import tv.ismar.sakura.data.http.ProblemEntity;
 import tv.ismar.sakura.ui.adapter.FeedbackListAdapter;
 import tv.ismar.sakura.ui.widget.FeedBackListView;
-import tv.ismar.sakura.ui.widget.MessagePopWindow;
 import tv.ismar.sakura.ui.widget.MessageSubmitButton;
 import tv.ismar.sakura.ui.widget.SakuraEditText;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.logging.Handler;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static tv.ismar.sakura.core.SakuraClientAPI.restAdapter_IRIS_TVXIO;
 
 /**
  * Created by huaijie on 2015/4/8.
