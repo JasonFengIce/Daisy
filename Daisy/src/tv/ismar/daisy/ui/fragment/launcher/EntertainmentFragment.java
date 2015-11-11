@@ -435,6 +435,8 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
+			if(looppost.size() <3)
+				return;
 			Picasso.with(mContext).load(looppost.get(++loopindex)).memoryPolicy(MemoryPolicy.NO_STORE)
 					.into(vaiety_post);
 			if (loopindex == 0) {
