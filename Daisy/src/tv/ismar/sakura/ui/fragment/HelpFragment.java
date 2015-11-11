@@ -17,6 +17,7 @@ import retrofit.Response;
 import retrofit.Retrofit;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.sakura.core.SakuraClientAPI;
 import tv.ismar.sakura.data.http.TeleEntity;
 import tv.ismar.sakura.utils.DeviceUtils;
@@ -53,7 +54,7 @@ public class HelpFragment extends Fragment {
         deviceCode = (TextView) view.findViewById(R.id.device_code);
         deviceCode.setText(" " + DeviceUtils.ipToHex());
 
-        fetchTel(Build.MODEL, snCode);
+        fetchTel(VodUserAgent.getModelName(), snCode);
 
     }
 

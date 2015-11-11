@@ -12,6 +12,7 @@ import com.squareup.okhttp.*;
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 
 import java.io.IOException;
@@ -181,7 +182,7 @@ public class IsmartvUrlClient extends Thread {
         hashMap.put("vendor", " ");
         hashMap.put("expense", " ");
         hashMap.put("length", " ");
-        hashMap.put("modelName", Build.MODEL.replace(" ", "_"));
+        hashMap.put("modelName", VodUserAgent.getModelName());
         hashMap.put("sn", SimpleRestClient.sn_token);
         hashMap.put("access_token", SimpleRestClient.access_token);
         hashMap.put("device_token", SimpleRestClient.device_token);

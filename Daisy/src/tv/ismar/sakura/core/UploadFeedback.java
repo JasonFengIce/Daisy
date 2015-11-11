@@ -4,6 +4,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import com.google.gson.Gson;
+
+import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.sakura.data.http.FeedBackEntity;
 
 import java.io.*;
@@ -57,7 +59,7 @@ public class UploadFeedback implements Runnable {
             connection.setRequestProperty("content-type", "text/json");
             connection.setConnectTimeout(DEFAULT_TIMEOUT);
             connection.setReadTimeout(DEFAULT_TIMEOUT);
-            connection.setRequestProperty("User-Agent", android.os.Build.MODEL.replaceAll(" ", "_") + "/" + android.os.Build.ID + " " + snCode);
+            connection.setRequestProperty("User-Agent", VodUserAgent.getModelName() + "/" + android.os.Build.ID + " " + snCode);
             connection.setRequestProperty("Accept-Language", localeName);
             OutputStream outputStream = connection.getOutputStream();
 

@@ -21,6 +21,7 @@ import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.adapter.ChannelAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.core.service.PosterUpdateService;
@@ -358,7 +359,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         getHardInfo();
         updatePoster();
         String product = Build.BRAND.replace(" ", "_");
-        String mode = Build.PRODUCT.replace(" ", "_");
+        String mode = VodUserAgent.getModelName();
         activator.active(product, mode, String.valueOf(SimpleRestClient.appVersion), localInfo);
     }
 

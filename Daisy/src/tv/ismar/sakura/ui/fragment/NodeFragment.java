@@ -40,6 +40,7 @@ import retrofit.Retrofit;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.data.table.location.CdnTable;
 import tv.ismar.daisy.data.table.location.IspTable;
@@ -533,7 +534,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
 
 
         uploadTestResult(cndId, speed);
-        uploadCdnTestLog(base64Data, snCode, Build.MODEL);
+        uploadCdnTestLog(base64Data, snCode, VodUserAgent.getModelName());
     }
 
     @Override

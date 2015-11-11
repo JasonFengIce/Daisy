@@ -40,17 +40,17 @@ public class VodUserAgent {
 	 * @return UserAgent
 	 */
 	public static String getUserAgent(String sn) {
-		String userAgent = Build.MODEL + "/"+ Build.VERSION.RELEASE + " " + getMACAddress().toUpperCase();
+		String userAgent = VodUserAgent.getModelName() + "/"+ Build.VERSION.RELEASE + " " + getMACAddress().toUpperCase();
 		return userAgent;
 	}
 	public static String getHttpUserAgent(){
 		String userAgent = "";
-		userAgent = Build.MODEL + "/" + deviceVersion + " " + sn;
+		userAgent = VodUserAgent.getModelName() + "/" + deviceVersion + " " + sn;
 		return userAgent;
 	}
 
 	public static String getModelName(){
-        return Build.MODEL.replaceAll(" ", "_");
+        return Build.PRODUCT.replaceAll(" ", "_").toLowerCase();
 	}
 	  public static String getSerialNumber(Context context){
 		    TelephonyManager tm = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);

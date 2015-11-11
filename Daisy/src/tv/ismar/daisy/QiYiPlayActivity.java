@@ -1118,8 +1118,14 @@ public class QiYiPlayActivity extends VodMenuAction {
 //			new initPlayTask().execute();
 //			return false;
 //		}
-        if(keyCode == 223 || keyCode == 499 || keyCode ==480){
-			isneedpause = false;
+        if("lcd_s3a01".equals(VodUserAgent.getModelName())){
+			if(keyCode == 707 || keyCode == 774 || keyCode ==253){
+				isneedpause = false;
+			}
+		}else{
+			if(keyCode == 223 || keyCode == 499 || keyCode ==480){
+				isneedpause = false;
+			}
 		}
         if (!isVodMenuVisible() && mPlayer != null) {
             switch (keyCode) {

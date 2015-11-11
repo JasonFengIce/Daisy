@@ -213,7 +213,7 @@ public class NetworkUtils {
         StringBuffer response = new StringBuffer();
         ArrayList<AdElement> result = new ArrayList<AdElement>();
         String baseparams = "sn=" + SimpleRestClient.sn_token + "&modelName="
-                + Build.MODEL.replace(" ", "_") + "&version="
+                + VodUserAgent.getModelName() + "&version="
                 + SimpleRestClient.appVersion + "&accessToken="
                 + SimpleRestClient.access_token + "&deviceToken="
                 + SimpleRestClient.device_token + "&province=" + province
