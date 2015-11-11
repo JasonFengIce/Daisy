@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.sakura.data.http.ChatMsgEntity;
 
 import java.util.List;
@@ -56,7 +57,7 @@ public class FeedbackListAdapter extends BaseAdapter {
         }
 
         holder.feedbackTime.setText(list.get(position).getSubmit_time());
-        holder.feedbackCustomer.setText(Build.MODEL + " : " + list.get(position).getCommont());
+        holder.feedbackCustomer.setText(VodUserAgent.getModelName() + " : " + list.get(position).getCommont());
         holder.feedbackIsmartv.setText(context.getText(R.string.ismartv) + list.get(position).getReply());
         return view;
     }

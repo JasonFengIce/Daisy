@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Build;
 import org.apache.http.conn.util.InetAddressUtils;
 
+import tv.ismar.daisy.core.VodUserAgent;
+
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -87,7 +89,7 @@ public class DeviceUtils {
 
 
     public static String getModel() {
-        return Build.MODEL;
+        return VodUserAgent.getModelName();
     }
 
     public static String getAppCacheDirectory(Context context) {

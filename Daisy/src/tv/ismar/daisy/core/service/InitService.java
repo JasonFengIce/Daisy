@@ -3,6 +3,7 @@ package tv.ismar.daisy.core.service;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.core.initialization.InitializeProcess;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import android.app.Service;
@@ -42,7 +43,7 @@ public class InitService extends Service implements Activator.OnComplete {
 		localInfo = DaisyUtils.getVodApplication(this).getPreferences()
 				.getString(VodApplication.LOCATION_INFO, "");
 		product = Build.BRAND.replace(" ", "_");
-		mode = Build.PRODUCT.replace(" ", "_");
+		mode = VodUserAgent.getModelName();
 		if (networkInfo != null && networkInfo.isConnected()) {
 			activator.active(product, mode,
 					String.valueOf(SimpleRestClient.appVersion), localInfo);
