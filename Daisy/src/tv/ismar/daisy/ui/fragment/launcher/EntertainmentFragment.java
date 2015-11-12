@@ -295,15 +295,17 @@ public class EntertainmentFragment extends ChannelBaseFragment {
         }
         	((TVGuideActivity)getActivity()).resetBorderFocus();
         }
-		
+        carousellist.get(0).setPosition(0);
 		Picasso.with(mContext).load(carousellist.get(0).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(vaiety_thumb1);
 		vaiety_thumb1.setTag(carousellist.get(0).getVideo_image());
 		vaiety_thumb1.setTag(R.id.vaiety_post, carousellist.get(0).getTitle());
 		vaiety_thumb1.setTag(R.drawable.launcher_selector, carousellist.get(0));
+		carousellist.get(1).setPosition(1);
 		Picasso.with(mContext).load(carousellist.get(1).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(vaiety_thumb2);
 		vaiety_thumb2.setTag(carousellist.get(1).getVideo_image());
 		vaiety_thumb2.setTag(R.id.vaiety_post, carousellist.get(1).getTitle());
 		vaiety_thumb2.setTag(R.drawable.launcher_selector, carousellist.get(1));
+		carousellist.get(2).setPosition(2);
 		Picasso.with(mContext).load(carousellist.get(2).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(vaiety_thumb3);
 		vaiety_thumb3.setTag(carousellist.get(2).getVideo_image());
 		vaiety_thumb3.setTag(R.id.vaiety_post, carousellist.get(2).getTitle());
@@ -313,6 +315,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		looppost.add(carousellist.get(2).getVideo_image());
 		imageswitch.sendEmptyMessage(IMAGE_SWITCH_KEY);
 		vaiety_fouce_label.setText(carousellist.get(0).getTitle());
+		postlist.get(0).setPosition(0);
 		Picasso.with(mContext).load(postlist.get(0).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(vaiety_card1_image);
 		vaiety_card1_image.setFocustitle(postlist.get(0).getIntroduction());
 		vaiety_card1.setTag(postlist.get(0));
@@ -322,6 +325,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		} else if (postlist.get(0).getCorner() == 3) {
 			vaiety_card1_image.setModetype(2);
 		}
+		postlist.get(1).setPosition(1);
 		Picasso.with(mContext).load(postlist.get(1).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(vaiety_card2_image);
 		vaiety_card2_image.setFocustitle(postlist.get(1).getIntroduction());
 		vaiety_card2.setTag(postlist.get(1));
@@ -331,6 +335,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		} else if (postlist.get(1).getCorner() == 3) {
 			vaiety_card2_image.setModetype(2);
 		}
+		postlist.get(2).setPosition(2);
 		Picasso.with(mContext).load(postlist.get(2).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(vaiety_card3_image);
 		vaiety_card3_image.setFocustitle(postlist.get(2).getIntroduction());
 		vaiety_card3_subtitle.setText(postlist.get(2).getTitle());
@@ -340,6 +345,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		} else if (postlist.get(2).getCorner() == 3) {
 			vaiety_card3_image.setModetype(2);
 		}
+		postlist.get(3).setPosition(3);
 		Picasso.with(mContext).load(postlist.get(3).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(vaiety_card4_image);
 		vaiety_card4_image.setFocustitle(postlist.get(3).getIntroduction());
 		vaiety_card4_subtitle.setText(postlist.get(3).getTitle());
@@ -349,6 +355,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		} else if (postlist.get(3).getCorner() == 3) {
 			vaiety_card4_image.setModetype(2);
 		}
+		postlist.get(4).setPosition(4);
 		Picasso.with(mContext).load(postlist.get(4).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(vaiety_channel1_image);
 		vaiety_channel1_image.setFocustitle(postlist.get(4).getIntroduction());
 		vaiety_channel1_subtitle.setText(postlist.get(4).getTitle());
@@ -358,6 +365,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		} else if (postlist.get(4).getCorner() == 3) {
 			vaiety_channel1_image.setModetype(2);
 		}
+		postlist.get(5).setPosition(5);
 		Picasso.with(mContext).load(postlist.get(5).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(vaiety_channel2_image);
 		vaiety_channel2_image.setFocustitle(postlist.get(5).getIntroduction());
 		vaiety_channel2_subtitle.setText(postlist.get(5).getTitle());
@@ -367,6 +375,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		} else if (postlist.get(5).getCorner() == 3) {
 			vaiety_channel2_image.setModetype(2);
 		}
+		postlist.get(6).setPosition(6);
 		Picasso.with(mContext).load(postlist.get(6).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(vaiety_channel3_image);
 		vaiety_channel3_image.setFocustitle(postlist.get(6).getIntroduction());
 		vaiety_channel3_subtitle.setText(postlist.get(6).getTitle());
@@ -376,6 +385,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		} else if (postlist.get(6).getCorner() == 3) {
 			vaiety_channel3_image.setModetype(2);
 		}
+		postlist.get(7).setPosition(7);
 		Picasso.with(mContext).load(postlist.get(7).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(vaiety_channel4_image);
 		vaiety_channel4_image.setFocustitle(postlist.get(7).getIntroduction());
 		vaiety_channel4_subtitle.setText(postlist.get(7).getTitle());

@@ -237,6 +237,7 @@ public class FilmFragment extends ChannelBaseFragment {
         if (guideRecommmendList == null)
             return;
         guideRecommmendList.removeAllViews();
+        posters.get(0).setPosition(0);
         film_lefttop_image.setUrl(posters.get(0).getCustom_image());
         film_lefttop_image.setFocustitle(posters.get(0).getIntroduction());
         film_lefttop_image.setOnClickListener(ItemClickListener);
@@ -273,6 +274,7 @@ public class FilmFragment extends ChannelBaseFragment {
             itemView.setLayoutParams(params);
             itemView.setOnClickListener(ItemClickListener);
             if (i <= 7) {
+            	posters.get(i).setPosition(i);
                 tv.ismar.daisy.ui.widget.HomeItemContainer frameLayout = (tv.ismar.daisy.ui.widget.HomeItemContainer) LayoutInflater.from(mContext).inflate(R.layout.item_poster, null);
                 ImageView postitemView = (ImageView) frameLayout.findViewById(R.id.poster_image);
                 TextView textView = (TextView) frameLayout.findViewById(R.id.poster_title);
@@ -375,6 +377,7 @@ public class FilmFragment extends ChannelBaseFragment {
             itemView.setScaleType(ImageView.ScaleType.FIT_XY);
             itemView.setLayoutParams(params);
             itemView.setTag(i);
+            carousels.get(i).setPosition(i);
             itemView.setTag(R.drawable.launcher_selector, carousels.get(i));
             itemView.setOnClickListener(ItemClickListener);
             itemView.setOnFocusChangeListener(itemFocusChangeListener);

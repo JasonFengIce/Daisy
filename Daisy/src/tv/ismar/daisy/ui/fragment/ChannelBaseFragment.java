@@ -102,6 +102,7 @@ public class ChannelBaseFragment extends Fragment {
                 title = new_name.getTitle();
                 mode_name = new_name.getModel_name();
                 expense = new_name.isExpense();
+                position = new_name.getPosition();
             } else if (view.getTag(R.drawable.launcher_selector) instanceof Carousel) {
                 Carousel new_name = (Carousel) view
                         .getTag(R.drawable.launcher_selector);
@@ -110,6 +111,7 @@ public class ChannelBaseFragment extends Fragment {
                 title = new_name.getTitle();
                 mode_name = new_name.getModel_name();
                 expense = new_name.isExpense();
+                position = new_name.getPosition();
             }
             type = mode_name;
             Intent intent = new Intent();

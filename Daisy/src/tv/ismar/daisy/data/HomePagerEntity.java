@@ -37,6 +37,14 @@ public class HomePagerEntity {
         private String content_model;
         private int corner;
         private boolean expense;
+        private int position;
+		public int getPosition() {
+			return position;
+		}
+
+		public void setPosition(int position) {
+			this.position = position;
+		}
 
 		public boolean isExpense() {
 			return expense;
@@ -139,6 +147,15 @@ public class HomePagerEntity {
         private String content_model;
         private int corner;
         private boolean expense;
+        private int position;
+
+		public int getPosition() {
+			return position;
+		}
+
+		public void setPosition(int position) {
+			this.position = position;
+		}
 
 		public boolean isExpense() {
 			return expense;

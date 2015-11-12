@@ -214,6 +214,7 @@ public class SportFragment extends ChannelBaseFragment {
         LabelImageView[] sportCards = {sport_card1, sport_card2, sport_card3};
         for (int i = 0; i < 3; i++) {
             PicassoUtils.load(mContext, carousels.get(i).getThumb_image(), sportCards[i]);
+            carousels.get(i).setPosition(i);
             sportCards[i].setTag(R.drawable.launcher_selector, carousels.get(i));
             sportCards[i].setOnFocusChangeListener(ItemOnFocusListener);
             sportCards[i].setOnClickListener(ItemClickListener);
@@ -224,6 +225,7 @@ public class SportFragment extends ChannelBaseFragment {
         LabelImageView[] sportChannelImages = {sport_channel1_image, sport_channel2_image, sport_channel3_image, sport_channel4_image};
         TextView[] sportChannleSubtitles = {sport_channel1_subtitle, sport_channel2_subtitle, sport_channel3_subtitle, sport_channel4_subtitle};
         for (int i = 0; i < 4; i++) {
+        	postlist.get(i).setPosition(i);
             PicassoUtils.load(mContext, postlist.get(i).getCustom_image(), sportChannelImages[i]);
             sportChannelImages[i].setFocustitle(postlist.get(i).getIntroduction());
             sportChannleSubtitles[i].setText(postlist.get(i).getTitle());
