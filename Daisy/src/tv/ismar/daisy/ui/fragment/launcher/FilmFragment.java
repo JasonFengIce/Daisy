@@ -27,6 +27,8 @@ import com.squareup.picasso.Picasso;
 import org.apache.commons.lang3.StringUtils;
 
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.cache.CacheManager;
+import tv.ismar.daisy.core.client.DownloadClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
@@ -135,18 +137,18 @@ public class FilmFragment extends ChannelBaseFragment {
 
     @Override
     public void onDestroyView() {
-    	mHandler.removeMessages(START_PLAYBACK);
-    	mHandler.removeMessages(CAROUSEL_NEXT);
-    	film_post_layout.removeAllViews();
-    	guideRecommmendList.removeAllViews();
-    	carouselLayout.removeAllViews();
-    	guideRecommmendList = null;
-    	carouselLayout = null;
-    	film_post_layout = null;
-    	if(film_lefttop_image != null &&film_lefttop_image.getDrawingCache()!=null && !film_lefttop_image.getDrawingCache().isRecycled()){
-    		film_lefttop_image.getDrawingCache().recycle();
-    		film_lefttop_image = null;
-    	}
+        mHandler.removeMessages(START_PLAYBACK);
+        mHandler.removeMessages(CAROUSEL_NEXT);
+        film_post_layout.removeAllViews();
+        guideRecommmendList.removeAllViews();
+        carouselLayout.removeAllViews();
+        guideRecommmendList = null;
+        carouselLayout = null;
+        film_post_layout = null;
+        if (film_lefttop_image != null && film_lefttop_image.getDrawingCache() != null && !film_lefttop_image.getDrawingCache().isRecycled()) {
+            film_lefttop_image.getDrawingCache().recycle();
+            film_lefttop_image = null;
+        }
         super.onDestroyView();
 
     }
@@ -232,8 +234,8 @@ public class FilmFragment extends ChannelBaseFragment {
     private HomeItemContainer focusView;
 
     private void initPosters(ArrayList<HomePagerEntity.Poster> posters) {
-    	if(guideRecommmendList == null)
-    		return;
+        if (guideRecommmendList == null)
+            return;
         guideRecommmendList.removeAllViews();
         film_lefttop_image.setUrl(posters.get(0).getCustom_image());
         film_lefttop_image.setFocustitle(posters.get(0).getIntroduction());
@@ -395,7 +397,10 @@ public class FilmFragment extends ChannelBaseFragment {
         linkedVideoImage.setVisibility(View.VISIBLE);
         mSurfaceView.setFocusable(false);
         mSurfaceView.setFocusableInTouchMode(false);
-        mSurfaceView.setVideoURI(Uri.parse(mCarousels.get(mCurrentCarouselIndex).getVideo_url()));
+        String videoName = mChannelName + "_" + mCurrentCarouselIndex + ".mp4";
+        String videoPath = CacheManager.getInstance().doRequest(mCarousels.get(mCurrentCarouselIndex).getVideo_url(), videoName, DownloadClient.StoreType.External);
+        Log.d(TAG, "current video path ====> " + videoPath);
+        mSurfaceView.setVideoPath(videoPath);
         mSurfaceView.start();
         mSurfaceView.setFocusable(true);
         mSurfaceView.setFocusableInTouchMode(true);
@@ -427,8 +432,8 @@ public class FilmFragment extends ChannelBaseFragment {
 
     private void playCarousel() {
         mHandler.removeMessages(CAROUSEL_NEXT);
-        if(film_post_layout == null)
-        	return;
+        if (film_post_layout == null)
+            return;
         switch (mCarouselRepeatType) {
             case Once:
 
@@ -594,6 +599,5 @@ public class FilmFragment extends ChannelBaseFragment {
             linkedVideoImage.setVisibility(View.GONE);
         }
     };
-
 }
 

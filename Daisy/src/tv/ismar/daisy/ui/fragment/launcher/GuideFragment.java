@@ -26,6 +26,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.cache.CacheManager;
+import tv.ismar.daisy.core.client.DownloadClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
@@ -97,7 +99,7 @@ public class GuideFragment extends ChannelBaseFragment {
         mSurfaceView = (tv.ismar.daisy.ui.widget.DaisyVideoView) mView.findViewById(R.id.linked_video);
         mSurfaceView.setOnCompletionListener(videoPlayEndListener);
         mSurfaceView.setOnErrorListener(mVideoOnErrorListener);
-        mSurfaceView.setOnPreparedListener(mOnPreparedListener );
+        mSurfaceView.setOnPreparedListener(mOnPreparedListener);
         mSurfaceView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
             @Override
@@ -118,7 +120,7 @@ public class GuideFragment extends ChannelBaseFragment {
         mLeftTopView = mSurfaceView;
         mRightTopView = toppage_carous_imageView1;
 
-        setbackground(linkedVideoLoadingImage,R.drawable.guide_video_loading);
+        setbackground(linkedVideoLoadingImage, R.drawable.guide_video_loading);
         return mView;
     }
 
@@ -129,17 +131,17 @@ public class GuideFragment extends ChannelBaseFragment {
 
     @Override
     public void onDestroyView() {
-    	mHandler.removeMessages(CAROUSEL_NEXT);
-    	mHandler.removeMessages(START_PLAYBACK);
-    	guideRecommmendList.removeAllViews();
-    	guideRecommmendList = null;
-    	mSurfaceView = null;
-    	toppage_carous_imageView1 = null;
-    	toppage_carous_imageView2 = null;
-    	toppage_carous_imageView3 = null;
-    	if(linkedVideoLoadingImage != null && linkedVideoLoadingImage.getDrawingCache() != null&&!linkedVideoLoadingImage.getDrawingCache().isRecycled()){
-    		linkedVideoLoadingImage.getDrawingCache().recycle();
-    	}
+        mHandler.removeMessages(CAROUSEL_NEXT);
+        mHandler.removeMessages(START_PLAYBACK);
+        guideRecommmendList.removeAllViews();
+        guideRecommmendList = null;
+        mSurfaceView = null;
+        toppage_carous_imageView1 = null;
+        toppage_carous_imageView2 = null;
+        toppage_carous_imageView3 = null;
+        if (linkedVideoLoadingImage != null && linkedVideoLoadingImage.getDrawingCache() != null && !linkedVideoLoadingImage.getDrawingCache().isRecycled()) {
+            linkedVideoLoadingImage.getDrawingCache().recycle();
+        }
         super.onDestroyView();
 
     }
@@ -397,13 +399,16 @@ public class GuideFragment extends ChannelBaseFragment {
 
 
     private void startPlayback() {
-    	if(mSurfaceView == null)
-    		return;
+        if (mSurfaceView == null)
+            return;
         Log.d(TAG, "startPlayback is invoke...");
         linkedVideoLoadingImage.setVisibility(View.VISIBLE);
         mSurfaceView.setFocusable(false);
         mSurfaceView.setFocusableInTouchMode(false);
-        mSurfaceView.setVideoPath(allVideoUrl.get(mCurrentCarouselIndex));
+        String videoName = "guide_" + mCurrentCarouselIndex + ".mp4";
+        String videoPath = CacheManager.getInstance().doRequest(mCarousels.get(mCurrentCarouselIndex).getVideo_url(), videoName, DownloadClient.StoreType.Internal);
+        Log.d(TAG, "current video path ====> " + videoPath);
+        mSurfaceView.setVideoPath(videoPath);
         mSurfaceView.start();
         mSurfaceView.setFocusable(true);
         mSurfaceView.setFocusableInTouchMode(true);
