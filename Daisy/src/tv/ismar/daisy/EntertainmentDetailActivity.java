@@ -1155,7 +1155,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
 //            intent.putExtra("url", url);
 //            startActivity(intent);
             if("launcher".equals(fromPage))
-            	fromPage = "";
+            	fromPage = "tvhome";
             DaisyUtils.gotoSpecialPage(EntertainmentDetailActivity.this, itemSection.content_model, itemSection.item_url,fromPage);
 
         }

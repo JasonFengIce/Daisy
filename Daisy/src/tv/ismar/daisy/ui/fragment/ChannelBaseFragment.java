@@ -95,6 +95,7 @@ public class ChannelBaseFragment extends Fragment {
             int pk;
             boolean expense = false;
             int position = -1;
+            Intent intent = new Intent();
             if (view.getTag() instanceof Poster) {
                 Poster new_name = (Poster) view.getTag();
                 contentMode = new_name.getContent_model();
@@ -103,6 +104,7 @@ public class ChannelBaseFragment extends Fragment {
                 mode_name = new_name.getModel_name();
                 expense = new_name.isExpense();
                 position = new_name.getPosition();
+                intent.putExtra("fromPage", "tvhome");
             } else if (view.getTag(R.drawable.launcher_selector) instanceof Carousel) {
                 Carousel new_name = (Carousel) view
                         .getTag(R.drawable.launcher_selector);
@@ -112,9 +114,10 @@ public class ChannelBaseFragment extends Fragment {
                 mode_name = new_name.getModel_name();
                 expense = new_name.isExpense();
                 position = new_name.getPosition();
+                intent.putExtra("fromPage", "live");
             }
             type = mode_name;
-            Intent intent = new Intent();
+            
 //            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             if (url == null) {
                 intent.setAction("tv.ismar.daisy.Channel");
@@ -153,7 +156,6 @@ public class ChannelBaseFragment extends Fragment {
                                 "tv.ismar.daisy.ItemDetailActivity");
                     }
                     intent.putExtra("url", url);
-                    intent.putExtra("fromPage", "list");
                     mContext.startActivity(intent);
 
 

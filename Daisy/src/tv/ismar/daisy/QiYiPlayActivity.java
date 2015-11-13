@@ -663,7 +663,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                                 .videoPlaySeekBlockend(
                                         item.pk,
                                         subItem.pk,
-                                        item.title,
+                                        subItem.title,
                                         clip.pk,
                                         currQuality,
                                         0,
@@ -676,7 +676,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                                 .videoPlayBlockend(
                                         item.pk,
                                         subItem.pk,
-                                        item.title,
+                                        subItem.title,
                                         clip.pk,
                                         currQuality,
                                         0,
@@ -762,7 +762,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                     isBuffer = true;
                     showBuffer();
                     if (subItem != null)
-                        callaPlay.videoPlaySeek(item.pk, subItem.pk, item.title,
+                        callaPlay.videoPlaySeek(item.pk, subItem.pk, subItem.title,
                                 clip.pk, currQuality, 0, currPosition, sid);
                     else
                         callaPlay.videoPlayContinue(item.pk, null, item.title,
@@ -957,7 +957,7 @@ public class QiYiPlayActivity extends VodMenuAction {
             mPlayer.pause();
         paused = true;
         if (subItem != null)
-            callaPlay.videoPlayPause(item.pk, subItem.pk, item.title, clip.pk,
+            callaPlay.videoPlayPause(item.pk, subItem.pk, subItem.title, clip.pk,
                     currQuality, 0, currPosition, sid);
         else
             callaPlay.videoPlayPause(item.pk, null, item.title, clip.pk,
@@ -986,7 +986,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                 try {
                     if (subItem != null)
                         callaPlay.videoExcept("noplayaddress", content,
-                                item.pk, subItem.pk, item.title, clip.pk,
+                                item.pk, subItem.pk, subItem.title, clip.pk,
                                 currQuality, 0);
                     else
                         callaPlay.videoExcept("noplayaddress", content,
@@ -1002,7 +1002,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                 try {
                     if (subItem != null)
                         callaPlay.videoExcept("mediaexception", content,
-                                item.pk, subItem.pk, item.title, clip.pk,
+                                item.pk, subItem.pk, subItem.title, clip.pk,
                                 currQuality, currPosition);
                     else
                         callaPlay.videoExcept("mediaexception", content,
@@ -1042,7 +1042,7 @@ public class QiYiPlayActivity extends VodMenuAction {
         Log.d(TAG, "resume");
         mPlayer.start();
         if (subItem != null)
-            callaPlay.videoPlayContinue(item.pk, subItem.pk, item.title,
+            callaPlay.videoPlayContinue(item.pk, subItem.pk, subItem.title,
                     clip.pk, currQuality, 0, currPosition, sid);
         else
             callaPlay.videoPlayContinue(item.pk, null, item.title, clip.pk,
@@ -1505,7 +1505,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                     mediaip = "127.0.0.1";
                     if (subItem != null)
                         callaPlay.videoSwitchStream(item.pk, subItem.pk,
-                                item.title, clip.pk, currQuality, "manual",
+                        		subItem.title, clip.pk, currQuality, "manual",
                                 null, null, mediaip, sid);
                     else
                         callaPlay.videoSwitchStream(item.pk, null, item.title,
@@ -1812,7 +1812,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                                 .videoExit(
                                         item.pk,
                                         subItem.pk,
-                                        item.title,
+                                        subItem.title,
                                         clip.pk,
                                         currQuality,
                                         0,

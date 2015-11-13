@@ -1207,7 +1207,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 //            intent.putExtra("url", url);
 //            startActivity(intent);
             if("launcher".equals(fromPage))
-            	fromPage = "";
+            	fromPage = "tvhome";
             DaisyUtils.gotoSpecialPage(PFilmItemdetailActivity.this, itemSection.content_model, itemSection.item_url,fromPage);
         }
     };

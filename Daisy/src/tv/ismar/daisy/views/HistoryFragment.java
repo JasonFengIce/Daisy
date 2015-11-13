@@ -627,6 +627,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 				Intent intent = new Intent();
 
                 InitPlayerTool tool = new InitPlayerTool(getActivity());
+                tool.fromPage = "history";
                 tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
 
                     @Override

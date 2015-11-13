@@ -593,7 +593,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			}
 			else{
 				InitPlayerTool tool = new InitPlayerTool(getActivity());
-                tool.fromPage = "tvhome";
+                tool.fromPage = "favorite";
 				tool.initClipInfo(tvHome.getObjects().get(position).getItem_url(), InitPlayerTool.FLAG_URL);
 			}
 			break;
