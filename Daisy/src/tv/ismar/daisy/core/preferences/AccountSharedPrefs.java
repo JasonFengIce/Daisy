@@ -22,6 +22,7 @@ public class AccountSharedPrefs {
 
     public static final String DEVICE_TOKEN = "device_token";
     public static final String SN_TOKEN = "sn_token";
+    public static final String ACESS_TOKEN = "acess_token";
 
     public static final String PACKAGE_INFO = "package_info";
     public static final String EXPIRY_DATE = "expiry_date";
@@ -33,6 +34,7 @@ public class AccountSharedPrefs {
     public static final String IP = "ip";
     public static final String GEO_ID = "geo_id";
     public static final String FIRST_USE = "first_use";
+
 
     private static AccountSharedPrefs instance;
 

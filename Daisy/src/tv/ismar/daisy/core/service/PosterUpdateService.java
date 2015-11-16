@@ -15,6 +15,9 @@ import com.google.gson.Gson;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.advertisement.AdvertisementManager;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.core.logger.AdvertisementLogger;
+import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
+import tv.ismar.daisy.core.preferences.LogSharedPrefs;
 import tv.ismar.daisy.data.LaunchAdvertisementEntity;
 import tv.ismar.daisy.data.table.AdvertisementTable;
 import tv.ismar.daisy.utils.AppUtils;
@@ -113,11 +116,13 @@ public class PosterUpdateService extends Service {
 //                    downloadPic(advertisementData);
                     new AdvertisementManager().updateAppLaunchAdvertisement(launchAdvertisementEntity);
 
+
                 } else {
                     new Delete().from(AdvertisementTable.class).execute();
                     Log.e(TAG, "fetch launch app advertisement error:\n"
                             + "retcode: " + launchAdvertisementEntity.getRetcode() + "\n"
                             + "retmsg: " + launchAdvertisementEntity.getRetmsg());
+                    AdvertisementLogger.bootAdvExcept(launchAdvertisementEntity.getRetcode(), launchAdvertisementEntity.getRetmsg());
                 }
             }
 

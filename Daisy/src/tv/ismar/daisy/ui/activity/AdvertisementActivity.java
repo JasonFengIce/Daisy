@@ -11,6 +11,7 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.google.gson.Gson;
 import com.squareup.otto.Bus;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
@@ -19,7 +20,10 @@ import com.squareup.picasso.Picasso;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.advertisement.AdvertisementManager;
 import tv.ismar.daisy.core.initialization.InitializeProcess;
+import tv.ismar.daisy.core.logger.AdvertisementLogger;
+import tv.ismar.daisy.core.preferences.LogSharedPrefs;
 import tv.ismar.daisy.core.service.PosterUpdateService;
+import tv.ismar.daisy.data.LaunchAdvertisementEntity;
 import tv.ismar.daisy.utils.CountDownTimer;
 
 import java.io.File;
@@ -119,6 +123,12 @@ public class AdvertisementActivity extends Activity {
                     @Override
                     public void onSuccess() {
                         timerCountDown();
+                        String launchAppAdvEntityStr = LogSharedPrefs.getInstance().getSharedPrefs(LogSharedPrefs.LAUNCH_APP_ADV_ENTITY);
+                        LaunchAdvertisementEntity.AdvertisementData[] advertisementDatas = new Gson().fromJson(launchAppAdvEntityStr, LaunchAdvertisementEntity.AdvertisementData[].class);
+                        if (null != advertisementDatas){
+                            LaunchAdvertisementEntity.AdvertisementData data = advertisementDatas[0];
+                            AdvertisementLogger.bootAdvPlay(data.getTitle(), data.getMedia_id(), data.getMedia_url(), data.getDuration());
+                        }
                     }
 
                     @Override
@@ -130,6 +140,7 @@ public class AdvertisementActivity extends Activity {
     }
 
     private void timerCountDown() {
+
         new Thread() {
             @Override
             public void run() {

@@ -5,7 +5,9 @@ import android.util.Log;
 
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
+import com.google.gson.Gson;
 
+import tv.ismar.daisy.core.preferences.LogSharedPrefs;
 import tv.ismar.daisy.data.LaunchAdvertisementEntity;
 import tv.ismar.daisy.data.table.AdvertisementTable;
 import tv.ismar.daisy.utils.FileUtils;
@@ -74,11 +76,13 @@ public class AdvertisementManager {
                 //download advertisement
                 AdvertisementDownload downloadTask = new AdvertisementDownload(mContext, downlaodUrl, location);
                 new Thread(downloadTask).start();
+                LogSharedPrefs.getInstance().setSharedPrefs(LogSharedPrefs.LAUNCH_APP_ADV_ENTITY, new Gson().toJson(advertisementDatas));
             } else {
                 //compare md5 code
                 if (!md5Code.equalsIgnoreCase(HardwareUtils.getMd5ByFile(localFile))) {
                     AdvertisementDownload downloadTask = new AdvertisementDownload(mContext, downlaodUrl, location);
                     new Thread(downloadTask).start();
+                    LogSharedPrefs.getInstance().setSharedPrefs(LogSharedPrefs.LAUNCH_APP_ADV_ENTITY, new Gson().toJson(advertisementDatas));
                 }
             }
         }
