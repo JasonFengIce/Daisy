@@ -128,9 +128,6 @@ public class InitService extends Service implements Activator.OnComplete {
 	 * 注销网络监听
 	 */
 	private void unregisterNetStateReceiver() {
-		mConnectivityReceiver = new ConnectionChangeReceiver();
-		IntentFilter filter = new IntentFilter();
-		filter.addAction(android.net.ConnectivityManager.CONNECTIVITY_ACTION);
 		unregisterReceiver(mConnectivityReceiver);
 	}
 

@@ -645,14 +645,14 @@ public class QiYiPlayActivity extends VodMenuAction {
             bufferLayout.setVisibility(View.VISIBLE);
             bufferDuration = System.currentTimeMillis();
         }
-        mHandler.sendEmptyMessageDelayed(BUFFER_COUNTDOWN_ACTION, 1000);
+//        mHandler.sendEmptyMessageDelayed(BUFFER_COUNTDOWN_ACTION, 1000);
     }
 
     protected void hideBuffer() {
-        if (mHandler.hasMessages(BUFFER_COUNTDOWN_ACTION)) {
-            mHandler.removeMessages(BUFFER_COUNTDOWN_ACTION);
-            buffercountDown = 0;
-        }
+//        if (mHandler.hasMessages(BUFFER_COUNTDOWN_ACTION)) {
+//            mHandler.removeMessages(BUFFER_COUNTDOWN_ACTION);
+//            buffercountDown = 0;
+//        }
         if (!isBuffer && bufferLayout.isShown()) {
             bufferText.setText(BUFFERING);
             bufferLayout.setVisibility(View.GONE);

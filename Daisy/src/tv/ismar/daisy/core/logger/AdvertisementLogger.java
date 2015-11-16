@@ -33,7 +33,7 @@ public class AdvertisementLogger extends AppLogger {
      * @param duration 播放时长, 单位s, 例如: 5
      */
     public static void bootAdvPlay(String title, String mediaId, String mediaUrl, String duration) {
-        HashMap<String, String> hashMap = new HashMap<>();
+        HashMap<String, String> hashMap = new HashMap<String, String>();
         hashMap.put("title", title);
         hashMap.put("media_id", mediaId);
         hashMap.put("media_url", mediaUrl);
@@ -49,7 +49,7 @@ public class AdvertisementLogger extends AppLogger {
      * @param mediaUrl 广告物料地址, 例如: http://www.ismartv.cn/test.jpg
      */
     public static void bootAdvDownload(String title, String mediaId, String mediaUrl) {
-        HashMap<String, String> hashMap = new HashMap<>();
+        HashMap<String, String> hashMap = new HashMap<String, String>();
         hashMap.put("title", title);
         hashMap.put("media_id", mediaId);
         hashMap.put("media_url", mediaUrl);
@@ -63,7 +63,7 @@ public class AdvertisementLogger extends AppLogger {
      * @param content 异常内容, 例如: 264
      */
     public static void bootAdvExcept(String code, String content) {
-        HashMap<String, String> hashMap = new HashMap<>();
+        HashMap<String, String> hashMap = new HashMap<String, String>();
         hashMap.put("code", code);
         hashMap.put("content", content);
         advLog(hashMap);

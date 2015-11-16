@@ -520,6 +520,75 @@ public class CallaPlay {
         new NetworkUtils.DataCollectionTask().execute(eventName, properties);
     }
 
+    public void ad_play_load(String source,String channel,String section,long duration,String mediaip,int itemid,int ad_id,String mediaflag) {
+        HashMap<String, Object> tempMap = new HashMap<String, Object>();
+        tempMap.put(EventProperty.SOURCE, source);
+        tempMap.put(EventProperty.CHANNEL, channel);
+        tempMap.put(EventProperty.SECTION, section);
+        tempMap.put(EventProperty.DURATION, duration);
+        tempMap.put(EventProperty.MEDIAIP, mediaip);
+        tempMap.put(EventProperty.ITEM, itemid);
+        tempMap.put(EventProperty.AD_ID, ad_id);
+        tempMap.put(EventProperty.PLAYER_FLAG, mediaflag);
+        eventName = NetworkUtils.AD_PLAY_LOAD;
+        properties = tempMap;
+        new NetworkUtils.DataCollectionTask().execute(eventName, properties);
+    }
+
+    public void ad_play_blockend(String source,String channel,String section,long duration,String mediaip,int itemid,int ad_id,String mediaflag) {
+        HashMap<String, Object> tempMap = new HashMap<String, Object>();
+        tempMap.put(EventProperty.SOURCE, source);
+        tempMap.put(EventProperty.CHANNEL, channel);
+        tempMap.put(EventProperty.SECTION, section);
+        tempMap.put(EventProperty.DURATION, duration);
+        tempMap.put(EventProperty.MEDIAIP, mediaip);
+        tempMap.put(EventProperty.ITEM, itemid);
+        tempMap.put(EventProperty.AD_ID, ad_id);
+        tempMap.put(EventProperty.PLAYER_FLAG, mediaflag);
+        eventName = NetworkUtils.AD_PLAY_BLOCKEND;
+        properties = tempMap;
+        new NetworkUtils.DataCollectionTask().execute(eventName, properties);
+    }
+
+    public void ad_play_exit(String source,String channel,String section,long duration,String mediaip,int itemid,int ad_id,String mediaflag) {
+        HashMap<String, Object> tempMap = new HashMap<String, Object>();
+        tempMap.put(EventProperty.SOURCE, source);
+        tempMap.put(EventProperty.CHANNEL, channel);
+        tempMap.put(EventProperty.SECTION, section);
+        tempMap.put(EventProperty.DURATION, duration);
+        tempMap.put(EventProperty.MEDIAIP, mediaip);
+        tempMap.put(EventProperty.ITEM, itemid);
+        tempMap.put(EventProperty.AD_ID, ad_id);
+        tempMap.put(EventProperty.PLAYER_FLAG, mediaflag);
+        eventName = NetworkUtils.AD_PLAY_EXIT;
+        properties = tempMap;
+        new NetworkUtils.DataCollectionTask().execute(eventName, properties);
+    }
+
+    public void pause_ad_play(String title,int media_id,String media_url,long duration,String mediaflag) {
+        HashMap<String, Object> tempMap = new HashMap<String, Object>();
+        tempMap.put(EventProperty.TITLE, title);
+        tempMap.put(EventProperty.MEDIA_ID, media_id);
+        tempMap.put(EventProperty.MEDIA_URL, media_url);
+        tempMap.put(EventProperty.DURATION, duration);
+        tempMap.put(EventProperty.PLAYER_FLAG, mediaflag);
+        eventName = NetworkUtils.PAUSE_AD_PLAY;
+        properties = tempMap;
+        new NetworkUtils.DataCollectionTask().execute(eventName, properties);
+    }
+
+    public void pause_ad_download(String title,int media_id,String media_url,long duration,String mediaflag) {
+        HashMap<String, Object> tempMap = new HashMap<String, Object>();
+        tempMap.put(EventProperty.TITLE, title);
+        tempMap.put(EventProperty.MEDIA_ID, media_id);
+        tempMap.put(EventProperty.MEDIA_URL, media_url);
+        tempMap.put(EventProperty.DURATION, duration);
+        tempMap.put(EventProperty.PLAYER_FLAG, mediaflag);
+        eventName = NetworkUtils.PAUSE_AD_DOWNLOAD;
+        properties = tempMap;
+        new NetworkUtils.DataCollectionTask().execute(eventName, properties);
+    }
+
     private String switchQuality(Integer currQuality) {
         String quality = "";
         switch (currQuality) {

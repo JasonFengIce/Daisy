@@ -33,4 +33,5 @@ public class EventProperty {
     public final static String MEDIA_ID = "media_id";
     public final static String MEDIA_URL = "media_url";
     public final static String PLAYER_FLAG = "player";
+    public final static String AD_ID = "ad_id";
 }

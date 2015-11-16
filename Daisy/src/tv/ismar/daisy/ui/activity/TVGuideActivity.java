@@ -474,7 +474,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
             @Override
             public void onFailed(Exception exception) {
-                Log.e(TAG, exception.getMessage());
             }
         });
     }

@@ -4,6 +4,7 @@ import static tv.ismar.daisy.DramaListActivity.ORDER_CHECK_BASE_URL;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -154,6 +155,8 @@ public class PlayerActivity extends VodMenuAction {
     private static final String ACTION = "com.android.hoperun.screensave";
     private ScreenSaveBrocast saveScreenbroad;
     private boolean isneedpause = true;
+    private HashMap<String,Integer> adlog = new HashMap<String,Integer>();
+    private String adurl;
     private class ScreenSaveBrocast extends BroadcastReceiver {
 
         @Override
@@ -403,6 +406,7 @@ public class PlayerActivity extends VodMenuAction {
 					element = adElement.pop();
 					if ("video".equals(element.getMedia_type())) {
 						paths[i] = element.getMedia_url();
+						adlog.put(paths[i], element.getMedia_id());
 						i++;
 					} else {
 						adimageDialog = new AdImageDialog(this,
@@ -624,6 +628,15 @@ public class PlayerActivity extends VodMenuAction {
 									1000);
 							mp.start();
 							checkTaskStart(0);
+							adurl = url;
+							callaPlay.ad_play_load(
+									item.fromPage,
+									item.channel,
+									item.slug,
+									(System.currentTimeMillis() - startDuration) / 1000,
+									VodUserAgent.getMediaIp(url),
+									item.pk,
+									adlog.get(url),"bestv");
 						}
 
 					}
@@ -661,14 +674,22 @@ public class PlayerActivity extends VodMenuAction {
                                 	gotoFinishPage();                                	
                             }
 
-						} else if (paths != null
-								&& paths[paths.length - 2].equals(url)) {
-                            Log.i("zhangjiqiangtest","playerActivity onCompletion url=="+url);
-							if (mHandler.hasMessages(AD_COUNT_ACTION))
-								mHandler.removeMessages(AD_COUNT_ACTION);
-							ad_count_view.setVisibility(View.GONE);
-							initPlayerRelatedUI();
-							isadvideoplaying = false;
+						} else if (paths != null) {
+							callaPlay.ad_play_exit(
+									item.fromPage,
+									item.channel,
+									item.slug,
+									(System.currentTimeMillis() - startDuration) / 1000,
+									VodUserAgent.getMediaIp(url), item.pk,
+									adlog.get(url), "bestv");
+							startDuration = System.currentTimeMillis();
+							if (paths[paths.length - 2].equals(url)) {
+								if (mHandler.hasMessages(AD_COUNT_ACTION))
+									mHandler.removeMessages(AD_COUNT_ACTION);
+								ad_count_view.setVisibility(View.GONE);
+								initPlayerRelatedUI();
+								isadvideoplaying = false;
+							}
 						}
                         else{
                             Log.i("zhangjiqiangtest","playerActivity onCompletion else");
@@ -965,6 +986,7 @@ public class PlayerActivity extends VodMenuAction {
 						initPlayerRelatedUI();
 					} else {
 						if (paths != null) {
+							startDuration = System.currentTimeMillis();
 							paths[paths.length - 1] = urls[currQuality];
 							mVideoView.setVideoPaths(paths);
 						}
@@ -1804,17 +1826,29 @@ public class PlayerActivity extends VodMenuAction {
 										mediaip, sid,"bestv");
 
 					} else {
-						callaPlay
-								.videoPlayBlockend(
-										item.item_pk,
-										item.pk,
-										item.title,
-										clip.pk,
-										currQuality,
-                                        speed,
-										currPosition,
-										(System.currentTimeMillis() - bufferDuration) / 1000,
-										mediaip, sid,"bestv");
+						if(isadvideoplaying){
+							callaPlay.ad_play_blockend(
+									item.fromPage,
+									item.channel,
+									item.slug,
+									(System.currentTimeMillis() - startDuration) / 1000,
+									VodUserAgent.getMediaIp(adurl),
+									item.pk,
+									adlog.get(adlog.get(adurl)),"bestv");							
+						}else{
+							callaPlay
+							.videoPlayBlockend(
+									item.item_pk,
+									item.pk,
+									item.title,
+									clip.pk,
+									currQuality,
+                                    speed,
+									currPosition,
+									(System.currentTimeMillis() - bufferDuration) / 1000,
+									mediaip, sid,"bestv");
+						}
+						
 					}
 				else if (isSeekBuffer) {
 					callaPlay
@@ -1830,17 +1864,28 @@ public class PlayerActivity extends VodMenuAction {
 									mediaip, sid,"bestv");
 
 				} else {
-					callaPlay
-							.videoPlayBlockend(
-									item.pk,
-									null,
-									item.title,
-									clip.pk,
-									currQuality,
-                                    speed,
-									currPosition,
-									(System.currentTimeMillis() - bufferDuration) / 1000,
-									mediaip, sid,"bestv");
+					if(isadvideoplaying){
+						callaPlay.ad_play_blockend(
+								item.fromPage,
+								item.channel,
+								item.slug,
+								(System.currentTimeMillis() - startDuration) / 1000,
+								VodUserAgent.getMediaIp(adurl),
+								item.pk,
+								adlog.get(adlog.get(adurl)),"bestv");							
+					}else{
+						callaPlay
+						.videoPlayBlockend(
+								item.item_pk,
+								item.pk,
+								item.title,
+								clip.pk,
+								currQuality,
+                                speed,
+								currPosition,
+								(System.currentTimeMillis() - bufferDuration) / 1000,
+								mediaip, sid,"bestv");
+					}
 				}
 				isSeekBuffer = false;
 			} catch (Exception e) {
