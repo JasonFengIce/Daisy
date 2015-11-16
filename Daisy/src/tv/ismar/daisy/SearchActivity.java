@@ -119,6 +119,10 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 	protected void onPause() {
 		super.onPause();
 		isActivityExit = true;
+		if(autoCompleteTextView != null){
+	           InputMethodManager imm = (InputMethodManager) autoCompleteTextView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+	           imm.hideSoftInputFromWindow(autoCompleteTextView.getWindowToken(), 0);			
+		}
 		// imageAdapter.setAsyncisPauseed(true);
 	}
 
