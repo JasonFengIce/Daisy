@@ -486,7 +486,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 						mHGridView.setAdapter(mHGridAdapter);
 						mHGridView.setFocusable(true);
                         mHGridView.requestFocus();
-                        mHGridView.setSelection(6);
+//                        mHGridView.setSelection(6);
                         mScrollableSectionList.mGridView = mHGridView;
 //						mHGridView.setHorizontalFadingEdgeEnabled(true);
 //                        if(isPortrait){

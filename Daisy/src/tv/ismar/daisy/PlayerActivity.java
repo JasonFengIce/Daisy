@@ -1861,7 +1861,7 @@ public class PlayerActivity extends VodMenuAction {
 					callaPlay.videoPlaySeek(item.item_pk, item.pk, item.title,
 							clip.pk, currQuality, speed, currPosition, sid,"bestv");
 				else
-					callaPlay.videoPlayContinue(item.pk, null, item.title,
+					callaPlay.videoPlaySeek(item.pk, null, item.title,
 							clip.pk, currQuality, speed, currPosition, sid,"bestv");
 				isSeekBuffer = true;
 				Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
