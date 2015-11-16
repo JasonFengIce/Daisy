@@ -152,7 +152,7 @@ public abstract class VodMenuAction extends BaseActivity {
 				public void onClick(View v) {
                     duration = System.currentTimeMillis()-duration;
                     CallaPlay play = new CallaPlay();
-                    play.pause_ad_play(title,media_id,url,duration);
+                    play.pause_ad_play(title,media_id,url,duration,"bestv");
 					dismiss();
 				}
 			});

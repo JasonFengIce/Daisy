@@ -540,10 +540,10 @@ public class QiYiPlayActivity extends VodMenuAction {
                         clip.pk,
                         currQuality,
                         (System.currentTimeMillis() - startDuration) / 1000,
-                        0, mediaip, sid);
+                        0, mediaip, sid,"qiyi");
                 callaPlay.videoPlayStart(item.item_pk,
                         item.pk, item.title, clip.pk,
-                        currQuality, 0);
+                        currQuality, 0,"qiyi");
             } else {
                 callaPlay.videoPlayLoad(
                         item.pk,
@@ -552,11 +552,11 @@ public class QiYiPlayActivity extends VodMenuAction {
                         clip.pk,
                         currQuality,
                         (System.currentTimeMillis() - startDuration) / 1000,
-                        0, mediaip, sid);
+                        0, mediaip, sid,"qiyi");
                 callaPlay
                         .videoPlayStart(item.pk, null,
                                 item.title, clip.pk,
-                                currQuality, 0);
+                                currQuality, 0,"qiyi");
             }
             showPanel();
             timeTaskStart(500);
@@ -669,7 +669,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                                         0,
                                         currPosition,
                                         (System.currentTimeMillis() - bufferDuration) / 1000,
-                                        mediaip, sid);
+                                        mediaip, sid,"qiyi");
 
                     } else {
                         callaPlay
@@ -682,7 +682,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                                         0,
                                         currPosition,
                                         (System.currentTimeMillis() - bufferDuration) / 1000,
-                                        mediaip, sid);
+                                        mediaip, sid,"qiyi");
                     }
                 else if (isSeekBuffer) {
                     callaPlay
@@ -695,7 +695,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                                     0,
                                     currPosition,
                                     (System.currentTimeMillis() - bufferDuration) / 1000,
-                                    mediaip, sid);
+                                    mediaip, sid,"qiyi");
 
                 } else {
                     callaPlay
@@ -708,7 +708,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                                     0,
                                     currPosition,
                                     (System.currentTimeMillis() - bufferDuration) / 1000,
-                                    mediaip, sid);
+                                    mediaip, sid,"qiyi");
                 }
                 isSeekBuffer = false;
             } catch (Exception e) {
@@ -724,10 +724,10 @@ public class QiYiPlayActivity extends VodMenuAction {
                 startDuration = System.currentTimeMillis();
                 if (item != null)
                     callaPlay.videoStart(item, item.pk, item.title,
-                            currQuality, null, 0, mSection, sid);
+                            currQuality, null, 0, mSection, sid,"qiyi");
                 else
                     callaPlay.videoStart(item, null, item.title, currQuality,
-                            null, 0, mSection, sid);
+                            null, 0, mSection, sid,"qiyi");
                 timeTaskStop();
             } catch (Exception e) {
                 Log.e(TAG, " Sender log videoPlayStart " + e.toString());
@@ -763,10 +763,10 @@ public class QiYiPlayActivity extends VodMenuAction {
                     showBuffer();
                     if (subItem != null)
                         callaPlay.videoPlaySeek(item.pk, subItem.pk, subItem.title,
-                                clip.pk, currQuality, 0, currPosition, sid);
+                                clip.pk, currQuality, 0, currPosition, sid,"qiyi");
                     else
                         callaPlay.videoPlayContinue(item.pk, null, item.title,
-                                clip.pk, currQuality, 0, currPosition, sid);
+                                clip.pk, currQuality, 0, currPosition, sid,"qiyi");
                     isSeekBuffer = true;
                     Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
                     isSeek = false;
@@ -958,10 +958,10 @@ public class QiYiPlayActivity extends VodMenuAction {
         paused = true;
         if (subItem != null)
             callaPlay.videoPlayPause(item.pk, subItem.pk, subItem.title, clip.pk,
-                    currQuality, 0, currPosition, sid);
+                    currQuality, 0, currPosition, sid,"qiyi");
         else
             callaPlay.videoPlayPause(item.pk, null, item.title, clip.pk,
-                    currQuality, 0, currPosition, sid);
+                    currQuality, 0, currPosition, sid,"qiyi");
 
     }
 
@@ -987,11 +987,11 @@ public class QiYiPlayActivity extends VodMenuAction {
                     if (subItem != null)
                         callaPlay.videoExcept("noplayaddress", content,
                                 item.pk, subItem.pk, subItem.title, clip.pk,
-                                currQuality, 0);
+                                currQuality, 0,"qiyi");
                     else
                         callaPlay.videoExcept("noplayaddress", content,
                                 item.pk, null, item.title, clip.pk,
-                                currQuality, 0);
+                                currQuality, 0,"qiyi");
                 } catch (Exception e) {
                     Log.e(TAG,
                             " Sender log videoExcept noplayaddress "
@@ -1003,11 +1003,11 @@ public class QiYiPlayActivity extends VodMenuAction {
                     if (subItem != null)
                         callaPlay.videoExcept("mediaexception", content,
                                 item.pk, subItem.pk, subItem.title, clip.pk,
-                                currQuality, currPosition);
+                                currQuality, currPosition,"qiyi");
                     else
                         callaPlay.videoExcept("mediaexception", content,
                                 item.pk, null, item.title, clip.pk,
-                                currQuality, currPosition);
+                                currQuality, currPosition,"qiyi");
                 } catch (Exception e) {
                     Log.e(TAG,
                             " Sender log videoExcept noplayaddress "
@@ -1043,10 +1043,10 @@ public class QiYiPlayActivity extends VodMenuAction {
         mPlayer.start();
         if (subItem != null)
             callaPlay.videoPlayContinue(item.pk, subItem.pk, subItem.title,
-                    clip.pk, currQuality, 0, currPosition, sid);
+                    clip.pk, currQuality, 0, currPosition, sid,"qiyi");
         else
             callaPlay.videoPlayContinue(item.pk, null, item.title, clip.pk,
-                    currQuality, 0, currPosition, sid);
+                    currQuality, 0, currPosition, sid,"qiyi");
         // if (!isBuffer) {
         // timeTaskStart(0);
         // }
@@ -1317,7 +1317,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                                             currPosition,
                                             (System.currentTimeMillis() - startDuration) / 1000,
                                             item.slug, sid, item.fromPage,
-                                            item.content_model);
+                                            item.content_model,"qiyi");
                                 else
                                     callaPlay.videoExit(
                                             item.pk,
@@ -1330,7 +1330,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                                             currPosition,
                                             (System.currentTimeMillis() - startDuration) / 1000,
                                             item.slug, sid, item.fromPage,
-                                            item.content_model);
+                                            item.content_model,"qiyi");
                             } catch (Exception e) {
                                 Log.e(TAG,
                                         " Sender log videoPlayStart "
@@ -1505,12 +1505,12 @@ public class QiYiPlayActivity extends VodMenuAction {
                     mediaip = "127.0.0.1";
                     if (subItem != null)
                         callaPlay.videoSwitchStream(item.pk, subItem.pk,
-                        		subItem.title, clip.pk, currQuality, "manual",
-                                null, null, mediaip, sid);
+                        		subItem.title,clip.pk, currQuality, "manual",
+                                null, null, mediaip, sid,"qiyi");
                     else
                         callaPlay.videoSwitchStream(item.pk, null, item.title,
                                 clip.pk, currQuality, "manual", null, null,
-                                mediaip, sid);
+                                mediaip, sid,"qiyi");
                     initQualtiyText();
                     return true;
                 } catch (Exception e) {
@@ -1820,7 +1820,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                                         currPosition,
                                         (System.currentTimeMillis() - startDuration) / 1000,
                                         item.slug, sid, item.fromPage,
-                                        item.content_model);// String
+                                        item.content_model,"qiyi");// String
                     else
                         callaPlay
                                 .videoExit(
@@ -1834,7 +1834,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                                         currPosition,
                                         (System.currentTimeMillis() - startDuration) / 1000,
                                         item.slug, sid, item.fromPage,
-                                        item.content_model);
+                                        item.content_model,"qiyi");
                 } catch (Exception e) {
                     Log.e(TAG, " log Sender videoExit end " + e.toString());
                 }
