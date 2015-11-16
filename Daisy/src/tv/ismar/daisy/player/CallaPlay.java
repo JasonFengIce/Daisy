@@ -24,7 +24,7 @@ public class CallaPlay {
      * @param speed             (网速, 单位Kbits/s) INTEGER
      * @return HashMap<String,Object>
      */
-    public HashMap<String, Object> videoStart(Item item, Integer subitem, String title, Integer quality, Integer userid, Integer speed, String section, String sid) {
+    public HashMap<String, Object> videoStart(Item item, Integer subitem, String title, Integer quality, Integer userid, Integer speed, String section, String sid,String playerflag) {
 
         HashMap<String, Object> tempMap = new HashMap<String, Object>();
         tempMap.put(EventProperty.ITEM, item.pk);
@@ -40,6 +40,7 @@ public class CallaPlay {
         tempMap.put(EventProperty.SID, sid);
         tempMap.put("source", item.fromPage);
         tempMap.put("section", item.slug);
+        tempMap.put(EventProperty.PLAYER_FLAG, playerflag);
         eventName = NetworkUtils.VIDEO_START;
         properties = tempMap;
         //new LogTask().execute();
@@ -61,7 +62,7 @@ public class CallaPlay {
      * @return HashMap<String,Object>
      */
     public HashMap<String, Object> videoPlayLoad(Integer item, Integer subitem, String title, Integer clip, Integer quality,
-                                                 long duration, Integer speed, String mediaip, String sid) {
+                                                 long duration, Integer speed, String mediaip, String sid,String playerflag) {
 
         HashMap<String, Object> tempMap = new HashMap<String, Object>();
         tempMap.put(EventProperty.ITEM, item);
@@ -74,6 +75,7 @@ public class CallaPlay {
         tempMap.put("speed", speed + "KByte/s");
         tempMap.put(EventProperty.MEDIAIP, mediaip);
         tempMap.put(EventProperty.SID, sid);
+        tempMap.put(EventProperty.PLAYER_FLAG, playerflag);
         eventName = NetworkUtils.VIDEO_PLAY_LOAD;
         properties = tempMap;
         //new LogTask().execute();
@@ -95,7 +97,7 @@ public class CallaPlay {
      * @return HashMap<String,Object>
      */
 
-    public HashMap<String, Object> videoPlayStart(Integer item, Integer subitem, String title, Integer clip, Integer quality, Integer speed) {
+    public HashMap<String, Object> videoPlayStart(Integer item, Integer subitem, String title, Integer clip, Integer quality, Integer speed,String playerflag) {
 
         HashMap<String, Object> tempMap = new HashMap<String, Object>();
         tempMap.put(EventProperty.ITEM, item);
@@ -106,6 +108,7 @@ public class CallaPlay {
         tempMap.put(EventProperty.QUALITY, switchQuality(quality));
         //tempMap.put("speed", speed);
         tempMap.put("speed", speed + "KByte/s");
+        tempMap.put(EventProperty.PLAYER_FLAG, playerflag);
         eventName = NetworkUtils.VIDEO_PLAY_START;
         properties = tempMap;
         //new LogTask().execute();
@@ -126,7 +129,7 @@ public class CallaPlay {
      * @param speed             (网速, 单位Kbits/s) INTEGER
      * @return HashMap<String,Object>
      */
-    public HashMap<String, Object> videoPlayPause(Integer item, Integer subitem, String title, Integer clip, Integer currQuality, Integer speed, Integer position, String sid) {
+    public HashMap<String, Object> videoPlayPause(Integer item, Integer subitem, String title, Integer clip, Integer currQuality, Integer speed, Integer position, String sid,String playerflag) {
 
         HashMap<String, Object> tempMap = new HashMap<String, Object>();
         tempMap.put(EventProperty.ITEM, item);
@@ -138,6 +141,7 @@ public class CallaPlay {
         tempMap.put(EventProperty.POSITION, position / 1000);
         tempMap.put(EventProperty.SID, sid);
         tempMap.put("speed", speed + "KByte/s");
+        tempMap.put(EventProperty.PLAYER_FLAG, playerflag);
         //tempMap.put("speed", speed);
         eventName = NetworkUtils.VIDEO_PLAY_PAUSE;
         properties = tempMap;
@@ -160,7 +164,7 @@ public class CallaPlay {
      * @return HashMap<String,Object>
      */
 
-    public HashMap<String, Object> videoPlayContinue(Integer item, Integer subitem, String title, Integer clip, Integer quality, Integer speed, Integer position, String sid) {
+    public HashMap<String, Object> videoPlayContinue(Integer item, Integer subitem, String title, Integer clip, Integer quality, Integer speed, Integer position, String sid,String playerflag) {
 
         HashMap<String, Object> tempMap = new HashMap<String, Object>();
         tempMap.put(EventProperty.ITEM, item);
@@ -173,6 +177,7 @@ public class CallaPlay {
         //tempMap.put("speed", speed);
         tempMap.put(EventProperty.POSITION, position / 1000);
         tempMap.put(EventProperty.SID, sid);
+        tempMap.put(EventProperty.PLAYER_FLAG, playerflag);
         eventName = NetworkUtils.VIDEO_PLAY_CONTINUE;
         properties = tempMap;
         //new LogTask().execute();
@@ -194,7 +199,7 @@ public class CallaPlay {
      * @return HashMap<String,Object>
      */
 
-    public HashMap<String, Object> videoPlaySeek(Integer item, Integer subitem, String title, Integer clip, Integer quality, Integer speed, Integer position, String sid) {
+    public HashMap<String, Object> videoPlaySeek(Integer item, Integer subitem, String title, Integer clip, Integer quality, Integer speed, Integer position, String sid,String playerflag) {
 
         HashMap<String, Object> tempMap = new HashMap<String, Object>();
         tempMap.put(EventProperty.ITEM, item);
@@ -207,6 +212,7 @@ public class CallaPlay {
         //tempMap.put("speed", speed);
         tempMap.put(EventProperty.POSITION, position / 1000);
         tempMap.put(EventProperty.SID, sid);
+        tempMap.put(EventProperty.PLAYER_FLAG, playerflag);
         eventName = NetworkUtils.VIDEO_PLAY_SEEK;
         properties = tempMap;
         //new LogTask().execute();
@@ -230,7 +236,7 @@ public class CallaPlay {
      * @return HashMap<String,Object>
      */
 
-    public HashMap<String, Object> videoPlaySeekBlockend(Integer item, Integer subitem, String title, Integer clip, Integer quality, Integer speed, Integer position, long duration, String mediaip, String sid) {
+    public HashMap<String, Object> videoPlaySeekBlockend(Integer item, Integer subitem, String title, Integer clip, Integer quality, Integer speed, Integer position, long duration, String mediaip, String sid,String playerflag) {
 
         HashMap<String, Object> tempMap = new HashMap<String, Object>();
         tempMap.put(EventProperty.ITEM, item);
@@ -245,6 +251,7 @@ public class CallaPlay {
         tempMap.put(EventProperty.POSITION, position / 1000);
         tempMap.put(EventProperty.MEDIAIP, mediaip);
         tempMap.put(EventProperty.SID, sid);
+        tempMap.put(EventProperty.PLAYER_FLAG, playerflag);
         eventName = NetworkUtils.VIDEO_PLAY_SEEK_BLOCKEND;
         properties = tempMap;
         //new LogTask().execute();
@@ -269,7 +276,7 @@ public class CallaPlay {
      * @return HashMap<String,Object>
      */
     public HashMap<String, Object> videoPlayBlockend(Integer item, Integer subitem, String title, Integer clip, Integer quality,
-                                                     Integer speed, Integer position, long duration, String mediaip, String sid) {
+                                                     Integer speed, Integer position, long duration, String mediaip, String sid,String playerflag) {
 
         HashMap<String, Object> tempMap = new HashMap<String, Object>();
         tempMap.put(EventProperty.ITEM, item);
@@ -284,6 +291,7 @@ public class CallaPlay {
         tempMap.put(EventProperty.DURATION, duration);
         tempMap.put(EventProperty.MEDIAIP, mediaip);
         tempMap.put(EventProperty.SID, sid);
+        tempMap.put(EventProperty.PLAYER_FLAG, playerflag);
         eventName = NetworkUtils.VIDEO_PLAY_BLOCKEND;
         properties = tempMap;
         //new LogTask().execute();
@@ -306,7 +314,7 @@ public class CallaPlay {
      */
 
 
-    public HashMap<String, Object> videoPlaySpeed(Integer item, Integer subitem, String title, Integer clip, Integer quality, Integer speed, String mediaip, String sid) {
+    public HashMap<String, Object> videoPlaySpeed(Integer item, Integer subitem, String title, Integer clip, Integer quality, Integer speed, String mediaip, String sid,String playerflag) {
 
         HashMap<String, Object> tempMap = new HashMap<String, Object>();
         tempMap.put(EventProperty.ITEM, item);
@@ -318,6 +326,7 @@ public class CallaPlay {
         tempMap.put(EventProperty.SPEED, speed + "KByte/s");
         tempMap.put(EventProperty.MEDIAIP, mediaip);
         tempMap.put(EventProperty.SID, sid);
+        tempMap.put(EventProperty.PLAYER_FLAG, playerflag);
         eventName = NetworkUtils.VIDEO_PLAY_SPEED;
         properties = tempMap;
         //new LogTask().execute();
@@ -339,7 +348,7 @@ public class CallaPlay {
      * @return HashMap<String,Object>
      */
 
-    public HashMap<String, Object> videoLowSpeed(Integer item, Integer subitem, String title, Integer clip, Integer quality, Integer speed, String mediaip, String sid) {
+    public HashMap<String, Object> videoLowSpeed(Integer item, Integer subitem, String title, Integer clip, Integer quality, Integer speed, String mediaip, String sid,String playerflag) {
 
         HashMap<String, Object> tempMap = new HashMap<String, Object>();
         tempMap.put(EventProperty.ITEM, item);
@@ -352,6 +361,7 @@ public class CallaPlay {
         tempMap.put("speed", speed + "KByte/s");
         tempMap.put(EventProperty.MEDIAIP, mediaip);
         tempMap.put(EventProperty.SID, sid);
+        tempMap.put(EventProperty.PLAYER_FLAG, playerflag);
         eventName = NetworkUtils.VIDEO_LOW_SPEED;
         properties = tempMap;
         //new LogTask().execute();
@@ -373,7 +383,7 @@ public class CallaPlay {
      * @return HashMap<String,Object>
      */
 
-    public HashMap<String, Object> videoExit(Integer item, Integer subitem, String title, Integer clip, Integer quality, Integer speed, String to, Integer position, long duration, String section, String sid, String source, String channel) {
+    public HashMap<String, Object> videoExit(Integer item, Integer subitem, String title, Integer clip, Integer quality, Integer speed, String to, Integer position, long duration, String section, String sid, String source, String channel,String playerflag) {
 
         HashMap<String, Object> tempMap = new HashMap<String, Object>();
         tempMap.put(EventProperty.ITEM, item);
@@ -391,6 +401,7 @@ public class CallaPlay {
         tempMap.put(EventProperty.SID, sid);
         tempMap.put(EventProperty.SOURCE, source);
         tempMap.put(EventProperty.CHANNEL, channel);
+        tempMap.put(EventProperty.PLAYER_FLAG, playerflag);
         eventName = NetworkUtils.VIDEO_EXIT;
         properties = tempMap;
         //new LogTask().execute();
@@ -415,7 +426,7 @@ public class CallaPlay {
      * @return HashMap<String,Object>
      */
 
-    public HashMap<String, Object> videoExcept(String code, String content, Integer item, Integer subitem, String title, Integer clip, Integer quality, Integer position) {
+    public HashMap<String, Object> videoExcept(String code, String content, Integer item, Integer subitem, String title, Integer clip, Integer quality, Integer position,String playerflag) {
         HashMap<String, Object> tempMap = new HashMap<String, Object>();
         tempMap.put(EventProperty.CODE, code);
         tempMap.put(EventProperty.CONTENT, content);
@@ -426,6 +437,7 @@ public class CallaPlay {
         tempMap.put(EventProperty.CLIP, clip);
         tempMap.put(EventProperty.POSITION, position / 1000);
         tempMap.put(EventProperty.QUALITY, switchQuality(quality));
+        tempMap.put(EventProperty.PLAYER_FLAG, playerflag);
         eventName = NetworkUtils.VIDEO_EXCEPT;
         properties = tempMap;
         //new LogTask().execute();
@@ -449,7 +461,7 @@ public class CallaPlay {
      * @return HashMap<String,Object>
      */
 
-    public HashMap<String, Object> videoSwitchStream(Integer item, Integer subitem, String title, Integer clip, Integer quality, String mode, Integer speed, String userid, String mediaip, String sid) {
+    public HashMap<String, Object> videoSwitchStream(Integer item, Integer subitem, String title, Integer clip, Integer quality, String mode, Integer speed, String userid, String mediaip, String sid,String playerflag) {
 
         HashMap<String, Object> tempMap = new HashMap<String, Object>();
         tempMap.put(EventProperty.ITEM, item);
@@ -465,6 +477,7 @@ public class CallaPlay {
         tempMap.put(EventProperty.MEDIAIP, mediaip);
         tempMap.put(EventProperty.SID, sid);
         tempMap.put(EventProperty.LOCATION, "detail");
+        tempMap.put(EventProperty.PLAYER_FLAG, playerflag);
         eventName = NetworkUtils.VIDEO_SWITCH_STREAM;
         properties = tempMap;
         new NetworkUtils.DataCollectionTask().execute(eventName, properties);
@@ -472,12 +485,13 @@ public class CallaPlay {
 
     }
 
-    public void pause_ad_play(String title, int media_id, String media_url, Long duration) {
+    public void pause_ad_play(String title, int media_id, String media_url, Long duration,String playerflag) {
         HashMap<String, Object> tempMap = new HashMap<String, Object>();
         tempMap.put(EventProperty.TITLE, title);
         tempMap.put(EventProperty.MEDIA_ID, media_id);
         tempMap.put(EventProperty.MEDIA_URL, media_url);
         tempMap.put(EventProperty.DURATION, duration / 1000);
+        tempMap.put(EventProperty.PLAYER_FLAG, playerflag);
         eventName = NetworkUtils.PAUSE_AD_PLAY;
         properties = tempMap;
         new NetworkUtils.DataCollectionTask().execute(eventName, properties);

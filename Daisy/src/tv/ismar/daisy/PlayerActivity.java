@@ -596,10 +596,10 @@ public class PlayerActivity extends VodMenuAction {
 											clip.pk,
 											currQuality,
 											(System.currentTimeMillis() - startDuration) / 1000,
-                                            speed, mediaip, sid);
+                                            speed, mediaip, sid,"bestv");
 									callaPlay.videoPlayStart(item.item_pk,
 											item.pk, item.title, clip.pk,
-											currQuality, speed);
+											currQuality, speed,"bestv");
 								} else {
 									callaPlay.videoPlayLoad(
 											item.pk,
@@ -608,11 +608,11 @@ public class PlayerActivity extends VodMenuAction {
 											clip.pk,
 											currQuality,
 											(System.currentTimeMillis() - startDuration) / 1000,
-                                            speed, mediaip, sid);
+                                            speed, mediaip, sid,"bestv");
 									callaPlay
 											.videoPlayStart(item.pk, null,
 													item.title, clip.pk,
-													currQuality, speed);
+													currQuality, speed,"bestv");
 								}
 							}
 
@@ -1026,10 +1026,10 @@ public class PlayerActivity extends VodMenuAction {
 				startDuration = System.currentTimeMillis();
 				if (item != null)
 					callaPlay.videoStart(item, item.pk, item.title,
-							currQuality, null, speed, mSection, sid);
+							currQuality, null, speed, mSection, sid,"bestv");
 				else
 					callaPlay.videoStart(item, null, item.title, currQuality,
-							null, speed, mSection, sid);
+							null, speed, mSection, sid,"bestv");
 				timeTaskStop();
 			} catch (Exception e) {
 				Log.e(TAG, " Sender log videoPlayStart " + e.toString());
@@ -1073,11 +1073,11 @@ public class PlayerActivity extends VodMenuAction {
 					if (item != null)
 						callaPlay.videoExcept("noplayaddress", content,
 								item.item_pk, item.pk, item.title, clip.pk,
-								currQuality, speed);
+								currQuality, speed,"bestv");
 					else
 						callaPlay.videoExcept("noplayaddress", content,
 								item.pk, null, item.title, clip.pk,
-								currQuality, speed);
+								currQuality, speed,"bestv");
 				} catch (Exception e) {
 					Log.e(TAG,
 							" Sender log videoExcept noplayaddress "
@@ -1089,11 +1089,11 @@ public class PlayerActivity extends VodMenuAction {
 					if (item != null)
 						callaPlay.videoExcept("mediaexception", content,
 								item.item_pk, item.pk, item.title, clip.pk,
-								currQuality, currPosition);
+								currQuality, currPosition,"bestv");
 					else
 						callaPlay.videoExcept("mediaexception", content,
 								item.pk, null, item.title, clip.pk,
-								currQuality, currPosition);
+								currQuality, currPosition,"bestv");
 				} catch (Exception e) {
 					Log.e(TAG,
 							" Sender log videoExcept noplayaddress "
@@ -1218,7 +1218,7 @@ public class PlayerActivity extends VodMenuAction {
 										currPosition,
 										(System.currentTimeMillis() - startDuration) / 1000,
 										item.slug, sid, "list",
-										item.content_model);// String
+										item.content_model,"bestv");// String
 					// section,String
 					// sid,String
 					// source,String
@@ -1236,7 +1236,7 @@ public class PlayerActivity extends VodMenuAction {
 										currPosition,
 										(System.currentTimeMillis() - startDuration) / 1000,
 										item.slug, sid, "list",
-										item.content_model);
+										item.content_model,"bestv");
 				} catch (Exception e) {
 					Log.e(TAG, " log Sender videoExit end " + e.toString());
 				}
@@ -1387,10 +1387,10 @@ public class PlayerActivity extends VodMenuAction {
 			getAdInfo("zanting");
 		if (item.pk != item.item_pk)
 			callaPlay.videoPlayPause(item.item_pk, item.pk, item.title,
-					clip.pk, currQuality, speed, currPosition, sid);
+					clip.pk, currQuality, speed, currPosition, sid,"bestv");
 		else
 			callaPlay.videoPlayPause(item.pk, null, item.title, clip.pk,
-					currQuality, speed, currPosition, sid);
+					currQuality, speed, currPosition, sid,"bestv");
 
 	}
 
@@ -1403,10 +1403,10 @@ public class PlayerActivity extends VodMenuAction {
 
 		if (item.pk != item.item_pk)
 			callaPlay.videoPlayContinue(item.item_pk, item.pk, item.title,
-					clip.pk, currQuality, speed, currPosition, sid);
+					clip.pk, currQuality, speed, currPosition, sid,"bestv");
 		else
 			callaPlay.videoPlayContinue(item.pk, null, item.title, clip.pk,
-					currQuality, speed, currPosition, sid);
+					currQuality, speed, currPosition, sid,"bestv");
 		if (!isBuffer) {
 			timeTaskStart(0);
 		}
@@ -1690,7 +1690,7 @@ public class PlayerActivity extends VodMenuAction {
 											currPosition,
 											(System.currentTimeMillis() - startDuration) / 1000,
 											item.slug, sid, "list",
-											item.content_model);
+											item.content_model,"bestv");
 								else
 									callaPlay.videoExit(
 											item.pk,
@@ -1703,7 +1703,7 @@ public class PlayerActivity extends VodMenuAction {
 											currPosition,
 											(System.currentTimeMillis() - startDuration) / 1000,
 											item.slug, sid, "list",
-											item.content_model);
+											item.content_model,"bestv");
 							} catch (Exception e) {
 								Log.e(TAG,
 										" Sender log videoPlayStart "
@@ -1801,7 +1801,7 @@ public class PlayerActivity extends VodMenuAction {
                                         speed,
 										currPosition,
 										(System.currentTimeMillis() - bufferDuration) / 1000,
-										mediaip, sid);
+										mediaip, sid,"bestv");
 
 					} else {
 						callaPlay
@@ -1814,7 +1814,7 @@ public class PlayerActivity extends VodMenuAction {
                                         speed,
 										currPosition,
 										(System.currentTimeMillis() - bufferDuration) / 1000,
-										mediaip, sid);
+										mediaip, sid,"bestv");
 					}
 				else if (isSeekBuffer) {
 					callaPlay
@@ -1827,7 +1827,7 @@ public class PlayerActivity extends VodMenuAction {
 									speed,
 									currPosition,
 									(System.currentTimeMillis() - bufferDuration) / 1000,
-									mediaip, sid);
+									mediaip, sid,"bestv");
 
 				} else {
 					callaPlay
@@ -1840,7 +1840,7 @@ public class PlayerActivity extends VodMenuAction {
                                     speed,
 									currPosition,
 									(System.currentTimeMillis() - bufferDuration) / 1000,
-									mediaip, sid);
+									mediaip, sid,"bestv");
 				}
 				isSeekBuffer = false;
 			} catch (Exception e) {
@@ -1859,10 +1859,10 @@ public class PlayerActivity extends VodMenuAction {
 				mVideoView.seekTo(currPosition);
 				if (item.pk != item.item_pk)
 					callaPlay.videoPlaySeek(item.item_pk, item.pk, item.title,
-							clip.pk, currQuality, speed, currPosition, sid);
+							clip.pk, currQuality, speed, currPosition, sid,"bestv");
 				else
 					callaPlay.videoPlayContinue(item.pk, null, item.title,
-							clip.pk, currQuality, speed, currPosition, sid);
+							clip.pk, currQuality, speed, currPosition, sid,"bestv");
 				isSeekBuffer = true;
 				Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
 				isSeek = false;
@@ -2060,11 +2060,11 @@ public class PlayerActivity extends VodMenuAction {
 					if (item.pk != item.item_pk)
 						callaPlay.videoSwitchStream(item.item_pk, item.pk,
 								item.title, clip.pk, currQuality, "manual",
-								null, null, mediaip, sid);
+								null, null, mediaip, sid,"bestv");
 					else
 						callaPlay.videoSwitchStream(item.pk, null, item.title,
 								clip.pk, currQuality, "manual", null, null,
-								mediaip, sid);
+								mediaip, sid,"bestv");
 					initQualtiyText();
 					return true;
 				} catch (Exception e) {
