@@ -405,10 +405,14 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
             currentNodeTextView.setText(getText(R.string.current_node) + cdnCacheTable.cdn_nick);
             unbindButton.setText(R.string.switch_to_auto);
             unbindButton.setEnabled(true);
+            unbindButton.setFocusable(true);
+            unbindButton.setFocusableInTouchMode(true);
         } else {
             currentNodeTextView.setText(getText(R.string.current_node) + getString(R.string.auto_fetch));
             unbindButton.setText(R.string.already_to_auto);
             unbindButton.setEnabled(false);
+            unbindButton.setFocusable(false);
+            unbindButton.setFocusableInTouchMode(false);
         }
 
     }
