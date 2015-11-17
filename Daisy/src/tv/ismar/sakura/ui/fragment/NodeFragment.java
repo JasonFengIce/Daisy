@@ -184,6 +184,12 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        speedTestButton.requestFocus();
+    }
+
+    @Override
     public Loader onCreateLoader(int flag, Bundle args) {
         CursorLoader cacheLoader = new CdnCacheLoader(mContext, ContentProvider.createUri(CdnTable.class, null),
                 null, null, null, null);
