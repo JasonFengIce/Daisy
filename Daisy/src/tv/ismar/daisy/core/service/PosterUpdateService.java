@@ -128,7 +128,7 @@ public class PosterUpdateService extends Service {
 
             @Override
             public void onFailed(Exception exception) {
-                Log.e(TAG, exception.getMessage());
+                Log.e(TAG, "fetchAdvertisementInfo failed");
             }
         });
     }
