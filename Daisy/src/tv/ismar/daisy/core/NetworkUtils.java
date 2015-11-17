@@ -923,6 +923,18 @@ public class NetworkUtils {
      */
     public static final String HOMEPAGE_VOD_CLICK = "homepage_vod_click";
     /**
+     * 广告播放缓冲结束
+     */
+    public static final String AD_PLAY_LOAD = "ad_play_load";
+    /**
+     * 广告播放卡顿
+     */
+    public static final String AD_PLAY_BLOCKEND = "ad_play_blockend";
+    /**
+     * 广告播放结束
+     */
+    public static final String AD_PLAY_EXIT = "ad_play_exit";
+    /**
      * 暂停广告播放
      */
     public static final String PAUSE_AD_PLAY = "pause_ad_play";
