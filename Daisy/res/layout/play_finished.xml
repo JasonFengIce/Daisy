@@ -74,6 +74,7 @@
                 android:layout_width="@dimen/play_finished_image_vodie_backgroud_W"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/linear_vodie_backgroud"
+                android:nextFocusUp="@id/btn_replay"
                 android:background="@drawable/vod_detail_relatemore_button_selector"
                 android:text="@string/daram_restart"
                 android:textSize="@dimen/play_finished_btn_replay_textsize"
@@ -158,7 +159,9 @@
             sakura:selectorRightPadding="@dimen/ZGridView_played_selectorRightPadding"
             sakura:selectorBottomPadding="@dimen/ZGridView_played_selectorBottomPadding"
             android:paddingLeft="@dimen/play_finished_gridview_Padding"
-            android:paddingTop="@dimen/play_finished_gridview_Padding">
+            android:paddingTop="@dimen/play_finished_gridview_Padding"
+            android:nextFocusUp="@id/gridview_related"
+            >
         </org.sakuratya.horizontal.ui.ZGridView>
         <TextView
                 android:id="@+id/tv_releted_empty"

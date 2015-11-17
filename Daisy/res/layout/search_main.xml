@@ -65,6 +65,7 @@
                             android:text="搜索"
                             android:textSize="@dimen/h2_text_size"
                             android:id="@+id/ibtn_search"
+                            android:nextFocusRight="@id/ibtn_search"
                             android:gravity="center"
                             android:layout_width="@dimen/search_main_btn_search_w"
                             android:layout_height="@dimen/search_main_btn_search_h"
