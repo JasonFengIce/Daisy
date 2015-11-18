@@ -141,6 +141,10 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private ImageView guide_shadow_view;
     private int channelscrollIndex = 0;
 
+    public boolean isneedpause;
+
+
+
     private enum LeavePosition {
         LeftTop,
         LeftBottom,
@@ -461,13 +465,13 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                     }
                 }
                 if (currentFragment == null && !isFinishing()) {
-                	try{
-                    currentFragment = new GuideFragment();
-                    FragmentTransaction transaction = getSupportFragmentManager()
-                            .beginTransaction();
-                    transaction.add(R.id.container, currentFragment).commitAllowingStateLoss();
-                	}catch (IllegalStateException e) {
-					}
+                    try {
+                        currentFragment = new GuideFragment();
+                        FragmentTransaction transaction = getSupportFragmentManager()
+                                .beginTransaction();
+                        transaction.add(R.id.container, currentFragment).commitAllowingStateLoss();
+                    } catch (IllegalStateException e) {
+                    }
 
                 }
             }
@@ -563,7 +567,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
             @Override
             public void onFocusChange(View view, boolean flag) {
-                if (channelscrollIndex > 0 || scroll.getSelectedView() ==null)
+                if (channelscrollIndex > 0 || scroll.getSelectedView() == null)
                     return;
                 TextView v = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
                 if (flag && scrollFromBorder) {
@@ -921,23 +925,23 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     }
 
     private void showNetErrorPopup() {
-    	final MessageDialogFragment dialog = new MessageDialogFragment(
-				TVGuideActivity.this, getString(R.string.fetch_net_data_error), null);
-    	dialog.setButtonText(getString(R.string.setting_network), getString(R.string.i_know));
-		dialog.showAtLocation(contentView, Gravity.CENTER,
-				new MessageDialogFragment.ConfirmListener() {
-					@Override
-					public void confirmClick(View view) {
-		                Intent intent = new Intent(Settings.ACTION_SETTINGS);
-		                TVGuideActivity.this.startActivity(intent);
-					}
-				}, new MessageDialogFragment.CancelListener() {
+        final MessageDialogFragment dialog = new MessageDialogFragment(
+                TVGuideActivity.this, getString(R.string.fetch_net_data_error), null);
+        dialog.setButtonText(getString(R.string.setting_network), getString(R.string.i_know));
+        dialog.showAtLocation(contentView, Gravity.CENTER,
+                new MessageDialogFragment.ConfirmListener() {
+                    @Override
+                    public void confirmClick(View view) {
+                        Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                        TVGuideActivity.this.startActivity(intent);
+                    }
+                }, new MessageDialogFragment.CancelListener() {
 
-					@Override
-					public void cancelClick(View view) {
-						dialog.dismiss();
-					}
-				});
+                    @Override
+                    public void cancelClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
     }
 
 
@@ -1284,5 +1288,19 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private enum ScrollType {
         left,
         right;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ("lcd_s3a01".equals(VodUserAgent.getModelName())) {
+            if (keyCode == 707 || keyCode == 774 || keyCode == 253) {
+                isneedpause = false;
+            }
+        } else {
+            if (keyCode == 223 || keyCode == 499 || keyCode == 480) {
+                isneedpause = false;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

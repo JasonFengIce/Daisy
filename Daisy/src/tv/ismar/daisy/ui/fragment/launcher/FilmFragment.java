@@ -83,6 +83,8 @@ public class FilmFragment extends ChannelBaseFragment {
     @Override
     public void onStart() {
         super.onStart();
+
+
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_MEDIA_UNMOUNTED);
         intentFilter.addAction(Intent.ACTION_MEDIA_EJECT);
@@ -90,6 +92,13 @@ public class FilmFragment extends ChannelBaseFragment {
         intentFilter.addAction(Intent.ACTION_MEDIA_BAD_REMOVAL);
         intentFilter.addDataScheme("file");
         mContext.registerReceiver(externalStorageReceiver, intentFilter);
+
+        if (mCarousels == null) {
+            fetchHomePage(channelEntity.getHomepage_url());
+        } else {
+            playCarousel();
+        }
+
     }
 
 
@@ -153,28 +162,27 @@ public class FilmFragment extends ChannelBaseFragment {
 
     }
 
+
+
     @Override
     public void onResume() {
         super.onResume();
 
-        if (mCarousels == null) {
-            fetchHomePage(channelEntity.getHomepage_url());
-        } else {
-            playCarousel();
-        }
+
     }
 
 
     @Override
     public void onPause() {
         super.onPause();
-        stopPlayback();
+
 
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        stopPlayback();
         mContext.unregisterReceiver(externalStorageReceiver);
     }
 

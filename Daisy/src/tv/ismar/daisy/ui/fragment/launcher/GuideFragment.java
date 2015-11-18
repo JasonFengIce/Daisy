@@ -147,21 +147,30 @@ public class GuideFragment extends ChannelBaseFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         if (mCarousels == null) {
             fetchHomePage();
         } else {
             playCarousel();
         }
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
 
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onStop() {
         stopPlayback();
+        super.onStop();
     }
 
 
@@ -172,10 +181,6 @@ public class GuideFragment extends ChannelBaseFragment {
             datafetch.interrupt();
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
 
     public void fetchHomePage() {
         String api = SimpleRestClient.root_url + "/api/tv/homepage/top/";
