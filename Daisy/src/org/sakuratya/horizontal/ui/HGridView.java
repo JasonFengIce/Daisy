@@ -158,7 +158,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	private SelectionNotifier mSelectionNotifier;
 
 	public int mScrollState = OnScrollListener.SCROLL_STATE_IDLE;
-	private int position = 0;
+
 	/**
 	 * Controls how the next layout will happen
 	 */
@@ -1067,7 +1067,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		layoutChildren();
 		isInLayout = false;
 	}
-    private View xxxsele;
+
 	protected void layoutChildren() {
 
 		try {
@@ -1083,7 +1083,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 			final int firstPosition = mFirstPosition;
 			int childCount = getChildCount();
 
-			int index=0;
+			int index;
 			View sel = null;
 			View oldSel = null;
 			View oldFirst = null;
@@ -1200,14 +1200,8 @@ public class HGridView extends AdapterView<HGridAdapter> {
 			}
 
 			recycleBin.scrapActiveViews();
-            if(xxxsele != null){
-            	xxxsele.setScaleX(1.0f);
-            	xxxsele.setScaleY(1.0f);    	
-            }
+
 			if (sel != null) {
-				sel.setScaleX(1.2f);
-				sel.setScaleY(1.1f);
-				xxxsele = sel;
 				positionSelector(sel);
 			} else {
 				mSelectorRect.setEmpty();
@@ -1217,7 +1211,6 @@ public class HGridView extends AdapterView<HGridAdapter> {
 			if (mAdapter.getCount() > 0) {
 				checkSelectionChanged();
 			}
-			position = index;
 			invokeOnScrollListener();
 		} finally {
 
@@ -2811,16 +2804,6 @@ public class HGridView extends AdapterView<HGridAdapter> {
 public View leftbtn;
 public View rightbtn;
 
-@Override  
-protected int getChildDrawingOrder(int childCount, int i) {  
-    if (i == childCount - 1) {// 这是最后一个需要刷新的item  
-        return position;  
-    }  
-    if (i == position) {// 这是原本要在最后一个刷新的item  
-        return childCount - 1;  
-    }  
-    return i;// 正常次序的item  
-}  
 
 
 }

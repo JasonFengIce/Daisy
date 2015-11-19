@@ -71,7 +71,7 @@ public class DaisyViewContainer extends LinearLayout {
 //                }
 //                break;
         }
-//        requestLayout();
-//        invalidate();
+        requestLayout();
+        invalidate();
     }
 }

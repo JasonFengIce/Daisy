@@ -745,7 +745,6 @@ public class PlayerActivity extends VodMenuAction {
 					bufferText.setText(BUFFERING + " " + j + "%");
 				} else if (i == SmartPlayer.MEDIA_INFO_BUFFERING_END || i == 1002 || i == 705
 						|| i == 3) {
-					Log.v("aaaa", "oninfo");
 					bufferText.setText(BUFFERING + " " + 100 + "%");
 					isBuffer = false;
 					hideBuffer();
@@ -1403,7 +1402,7 @@ public class PlayerActivity extends VodMenuAction {
 			return;
 		// showBuffer();
 		Log.d(TAG, "pause");
-//		hideBuffer();
+		hideBuffer();
 		mVideoView.pause();
 		paused = true;
 		if (!(popupDlg != null && popupDlg.isShowing()))

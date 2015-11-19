@@ -239,7 +239,7 @@ public class GuideFragment extends ChannelBaseFragment {
             if (mContext == null) {
                 return;
             }
-            final tv.ismar.daisy.ui.widget.HomeItemContainer frameLayout = (tv.ismar.daisy.ui.widget.HomeItemContainer) LayoutInflater
+            tv.ismar.daisy.ui.widget.HomeItemContainer frameLayout = (tv.ismar.daisy.ui.widget.HomeItemContainer) LayoutInflater
                     .from(mContext).inflate(R.layout.item_poster, null);
             ImageView itemView = (ImageView) frameLayout
                     .findViewById(R.id.poster_image);
@@ -259,24 +259,20 @@ public class GuideFragment extends ChannelBaseFragment {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     Object tagObject = v.getTag(R.id.poster_title);
-                    Log.v("aaaa", "hasFocus="+hasFocus);
                     if (hasFocus) {
                         ((HomeItemContainer) v.getParent())
                                 .setDrawBorder(true);
-//                        ((HomeItemContainer) v.getParent()).invalidate();
+                        ((HomeItemContainer) v.getParent()).invalidate();
                         if (tagObject != null) {
                             int tagindex = Integer.parseInt(tagObject.toString());
                             if (tagindex == 0 || tagindex == 7) {
                                 ((TVGuideActivity) (getActivity())).setLastViewTag("bottom");
                             }
                         }
-                        ((HomeItemContainer) v.getParent()).startAnimation(scaleBigAnimation);
                     } else {
                         ((HomeItemContainer) v.getParent())
                                 .setDrawBorder(false);
-                        ((HomeItemContainer) v.getParent()).startAnimation(scaleSmallAnimation);
-                        ((HomeItemContainer) v.getParent()).clearAnimation();
-//                        ((HomeItemContainer) v.getParent()).invalidate();
+                        ((HomeItemContainer) v.getParent()).invalidate();
                     }
                 }
             });

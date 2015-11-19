@@ -300,7 +300,7 @@ public class FilmFragment extends ChannelBaseFragment {
                         if (hasFocus) {
                             ((HomeItemContainer) v.getParent())
                                     .setDrawBorder(true);
-//                            ((HomeItemContainer) v.getParent()).invalidate();
+                            ((HomeItemContainer) v.getParent()).invalidate();
                             focusView = ((HomeItemContainer) v.getParent());
                             if (tagObject != null) {
                                 int tagindex = Integer.parseInt(tagObject.toString());
@@ -308,13 +308,10 @@ public class FilmFragment extends ChannelBaseFragment {
                                     ((TVGuideActivity) (getActivity())).setLastViewTag("bottom");
                                 }
                             }
-                            ((HomeItemContainer) v.getParent()).startAnimation(scaleBigAnimation);
                         } else {
                             ((HomeItemContainer) v.getParent())
                                     .setDrawBorder(false);
-                            ((HomeItemContainer) v.getParent()).startAnimation(scaleSmallAnimation);
-                            ((HomeItemContainer) v.getParent()).clearAnimation();
-//                            ((HomeItemContainer) v.getParent()).invalidate();
+                            ((HomeItemContainer) v.getParent()).invalidate();
                         }
                     }
                 });
@@ -358,10 +355,6 @@ public class FilmFragment extends ChannelBaseFragment {
                     public void onFocusChange(View arg0, boolean arg1) {
                         if (arg1) {
                             ((TVGuideActivity) (getActivity())).setLastViewTag("bottom");
-                            arg0.startAnimation(scaleBigAnimation);
-                        }else{
-                        	arg0.startAnimation(scaleSmallAnimation);
-                        	arg0.clearAnimation();                        	
                         }
                     }
                 });
@@ -400,7 +393,6 @@ public class FilmFragment extends ChannelBaseFragment {
             itemView.setOnFocusChangeListener(itemFocusChangeListener);
             int shadowcolor = mContext.getResources().getColor(R.color.carousel_focus);
             itemView.setFrontcolor(shadowcolor);
-            itemView.setNeedzoom(true);
             allItem.add(itemView);
             carouselLayout.addView(itemView);
 
