@@ -339,9 +339,8 @@ public class QiYiPlayActivity extends VodMenuAction {
         protected ClipInfo doInBackground(String... params) {
             Object obj = bundle.get("url");
             Log.d(TAG, "init player bundle url === " + obj);
-            String sn = VodUserAgent.getMACAddress();
-            AccessProxy.init(VodUserAgent.deviceType,
-                    VodUserAgent.deviceVersion, sn);
+            AccessProxy.init(VodUserAgent.getModelName(),
+                    ""+SimpleRestClient.appVersion, SimpleRestClient.sn_token);
             try {
                 if (obj != null) {
                     subItem = simpleRestClient.getItem((String) obj);
@@ -350,7 +349,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                         clip = subItem.clip;
                         urlInfo = AccessProxy.parse(SimpleRestClient.root_url
                                         + "/api/clip/" + clip.pk + "/",
-                                VodUserAgent.getAccessToken(sn),
+                                VodUserAgent.getAccessToken(SimpleRestClient.sn_token),
                                 QiYiPlayActivity.this);
                         if (urlInfo.getIqiyi_4_0().length() == 0) {
                             Intent intent = new Intent();

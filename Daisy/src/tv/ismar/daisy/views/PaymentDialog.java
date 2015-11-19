@@ -565,7 +565,7 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
         String sur_prefix = cardNumber.substring(10, 16);
         String timestamp = System.currentTimeMillis() + "";
         String sid = "sid";
-        String user = SimpleRestClient.sn_token;
+        String user = SimpleRestClient.mobile_number;
         String user_id = "0";
         String app_name = "sky";
         String sn = SimpleRestClient.sn_token;
@@ -579,7 +579,7 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
         }
         card_secret = "card_secret=" + pwd_prefix + card_secret;
         app_name = "&app_name=" + app_name;
-        user = "&user=" + SimpleRestClient.sn_token;
+        user = "&user=" + SimpleRestClient.mobile_number;
         user_id = "&user_id=" + user_id;
         timestamp = "&timestamp=" + timestamp;
         sid = "&sid=" + sid;

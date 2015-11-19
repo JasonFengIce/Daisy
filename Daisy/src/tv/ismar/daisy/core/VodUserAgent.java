@@ -10,8 +10,8 @@ import java.util.UUID;
 public class VodUserAgent {
 	
 	
-	public static final String deviceType = "A11";
-	public static final String deviceVersion = "2.0";
+//	public static final String deviceType = "A11";
+//	public static final String deviceVersion = "2.0";
 	private static String sn = "";
 	/**
 	 * getMACAddress == getSn
@@ -45,7 +45,7 @@ public class VodUserAgent {
 	}
 	public static String getHttpUserAgent(){
 		String userAgent = "";
-		userAgent = VodUserAgent.getModelName() + "/" + deviceVersion + " " + sn;
+		userAgent = VodUserAgent.getModelName() + "/" + SimpleRestClient.appVersion + " " + sn;
 		return userAgent;
 	}
 

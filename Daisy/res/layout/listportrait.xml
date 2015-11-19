@@ -4,7 +4,9 @@
               android:id="@+id/large_layout"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:background="@color/search_color_count"
               android:orientation="vertical">
 
     <tv.ismar.daisy.ui.widget.LaunchHeaderLayout
@@ -69,7 +71,10 @@
     </LinearLayout>
 <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+                android:clipChildren="false"
+        android:clipToPadding="false"
+        >
     <Button
             android:layout_marginLeft="@dimen/listportait_shadow_ml"
             android:layout_marginTop="@dimen/listportait_shadow_mt"
@@ -96,6 +101,8 @@
     <org.sakuratya.horizontal.ui.HGridView
         android:layout_toLeftOf="@id/right_shadow"
         android:layout_toRightOf="@id/left_shadow"
+                android:clipChildren="false"
+        android:clipToPadding="false"
         android:id="@+id/h_grid_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -103,7 +110,7 @@
         sakura:numRows="2"
         sakura:rowHeight="@dimen/listportait_h_grid_view_rowHeight"
         sakura:selectorDrawable="@drawable/vod_gv_selector"
-        sakura:verticalSpacing="0dip"
+        sakura:verticalSpacing="8dip"
         sakura:selectionLeftPadding="@dimen/HGridView_related_pselectionLeftPadding"
         sakura:selectionTopPadding="@dimen/HGridView_related_pselectionTopPadding"
         sakura:selectionRightPadding="@dimen/HGridView_related_pselectionRightPadding"
