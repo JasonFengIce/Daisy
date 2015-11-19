@@ -71,8 +71,8 @@ public class InitPlayerTool {
 		protected String doInBackground(Object... params) {
 
 			String sn = VodUserAgent.getMACAddress();
-			AccessProxy.init(VodUserAgent.deviceType,
-					VodUserAgent.deviceVersion, sn);
+            AccessProxy.init(VodUserAgent.getModelName(),
+                    ""+SimpleRestClient.appVersion, SimpleRestClient.sn_token);
             String flag = (String) params[1];
             Item item = null;
             if(flag.equals("url")){
