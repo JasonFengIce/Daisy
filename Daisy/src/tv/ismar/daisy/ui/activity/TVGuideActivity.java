@@ -22,6 +22,7 @@ import tv.ismar.daisy.adapter.ChannelAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.VodUserAgent;
+import tv.ismar.daisy.core.client.CacheHttpClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.core.service.PosterUpdateService;
@@ -142,7 +143,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private int channelscrollIndex = 0;
 
     public boolean isneedpause;
-
 
 
     private enum LeavePosition {
@@ -431,7 +431,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
      */
     private void fetchChannels() {
         String api = SimpleRestClient.root_url + "/api/tv/channels/";
-        new IsmartvUrlClient().doRequest(api, new IsmartvUrlClient.CallBack() {
+
+        new CacheHttpClient().doRequest(api, new CacheHttpClient.Callback() {
             @Override
             public void onSuccess(String result) {
                 topView.setVisibility(View.VISIBLE);
@@ -477,10 +478,60 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             }
 
             @Override
-            public void onFailed(Exception exception) {
+            public void onFailed(String error) {
                 Log.e(TAG, "fetchChannels failed");
             }
         });
+//        new IsmartvUrlClient().doRequest(api, new IsmartvUrlClient.CallBack() {
+//            @Override
+//            public void onSuccess(String result) {
+//                topView.setVisibility(View.VISIBLE);
+//                mChannelEntitys = new Gson().fromJson(result, ChannelEntity[].class);
+//
+//                ChannelEntity[] tmp = mChannelEntitys;
+//                // tmp = mChannelEntitys;
+//                mChannelEntitys = new ChannelEntity[tmp.length + 1];
+//                int k = 0;
+//
+//                ChannelEntity launcher = new ChannelEntity();
+//                launcher.setChannel("launcher");
+//                launcher.setName("首页");
+//                launcher.setHomepage_template("launcher");
+//                mChannelEntitys[0] = launcher;
+//                for (ChannelEntity e : tmp) {
+//                    mChannelEntitys[k + 1] = e;
+//                    k++;
+//                }
+//                createChannelView(mChannelEntitys);
+//                if (StringUtils.isNotEmpty(homepage_template)) {
+//                    for (int i = 0; i < mChannelEntitys.length; i++) {
+//                        if (homepage_template.equals(mChannelEntitys[i].getHomepage_template()) && mChannelEntitys[i].getHomepage_url().contains(homepage_url)) {
+//                            channelscrollIndex = i;
+//                            if (channelscrollIndex > 0) {
+//                                fragmentSwitch.sendEmptyMessage(SWITCH_PAGE_FROMLAUNCH);
+//                            }
+//                            topView.setSubTitle(mChannelEntitys[i].getName());
+//                            break;
+//                        }
+//                    }
+//                }
+//                if (currentFragment == null && !isFinishing()) {
+//                    try {
+//                        currentFragment = new GuideFragment();
+//                        FragmentTransaction transaction = getSupportFragmentManager()
+//                                .beginTransaction();
+//                        transaction.add(R.id.container, currentFragment).commitAllowingStateLoss();
+//                    } catch (IllegalStateException e) {
+//                    }
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onFailed(Exception exception) {
+//                Log.e(TAG, "fetchChannels failed");
+//            }
+//        });
     }
 
     private HGridView scroll;
@@ -921,6 +972,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     @Override
     public void onFailed(String erro) {
         Log.e(TAG, "active error: " + erro);
+        fetchChannels();
         showNetErrorPopup();
     }
 

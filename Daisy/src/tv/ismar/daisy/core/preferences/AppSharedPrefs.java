@@ -33,6 +33,7 @@ public class AppSharedPrefs {
 
     public static void initialize(Context context) {
         mContext = context;
+        HttpCacheSharedPrefs.initialize(context);
     }
 
     public String getSharedPrefs(String key) {

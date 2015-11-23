@@ -27,6 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.cache.CacheManager;
+import tv.ismar.daisy.core.client.CacheHttpClient;
 import tv.ismar.daisy.core.client.DownloadClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.HomePagerEntity;
@@ -184,10 +185,11 @@ public class GuideFragment extends ChannelBaseFragment {
 
     public void fetchHomePage() {
         String api = SimpleRestClient.root_url + "/api/tv/homepage/top/";
-        datafetch = new IsmartvUrlClient();
-        datafetch.doRequest(api, new IsmartvUrlClient.CallBack() {
+
+        new CacheHttpClient().doRequest(api, new CacheHttpClient.Callback() {
             @Override
             public void onSuccess(String result) {
+                String s  = result;
                 if (mContext == null || guideRecommmendList == null)
                     return;
                 HomePagerEntity homePagerEntity = new Gson().fromJson(result,
@@ -226,10 +228,57 @@ public class GuideFragment extends ChannelBaseFragment {
             }
 
             @Override
-            public void onFailed(Exception exception) {
-                Log.e(TAG, exception.getMessage());
+            public void onFailed(String error) {
+                Log.e(TAG, error);
             }
         });
+
+//        datafetch = new IsmartvUrlClient();
+//        datafetch.doRequest(api, new IsmartvUrlClient.CallBack() {
+//            @Override
+//            public void onSuccess(String result) {
+//                if (mContext == null || guideRecommmendList == null)
+//                    return;
+//                HomePagerEntity homePagerEntity = new Gson().fromJson(result,
+//                        HomePagerEntity.class);
+//                ArrayList<HomePagerEntity.Carousel> carousels = homePagerEntity
+//                        .getCarousels();
+//                ArrayList<HomePagerEntity.Poster> posters = homePagerEntity
+//                        .getPosters();
+//                if (!carousels.isEmpty()) {
+//                    initCarousel(carousels);
+//                }
+//
+//                if (!posters.isEmpty()) {
+//                    initPosters(posters);
+//                }
+//                if (scrollFromBorder) {
+//                    if (isRight) {//右侧移入
+////                		if(StringUtils.isNotEmpty(bottomFlag)){
+//                        if ("bottom".equals(bottomFlag)) {//下边界移入
+//                            lastpostview.findViewById(R.id.poster_title).requestFocus();
+//                        } else {//上边界边界移入
+//                            toppage_carous_imageView1.requestFocus();
+//                        }
+////                		}
+//                    } else {//左侧移入
+//                        if (StringUtils.isNotEmpty(bottomFlag)) {
+//                            if ("bottom".equals(bottomFlag)) {
+//
+//                            } else {
+//
+//                            }
+//                        }
+//                    }
+//                    ((TVGuideActivity) getActivity()).resetBorderFocus();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailed(Exception exception) {
+//                Log.e(TAG, exception.getMessage());
+//            }
+//        });
     }
 
     private void initPosters(ArrayList<HomePagerEntity.Poster> posters) {
