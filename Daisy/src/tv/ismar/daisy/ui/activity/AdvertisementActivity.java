@@ -98,8 +98,6 @@ public class AdvertisementActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-
-
     }
 
     @Override
@@ -109,12 +107,11 @@ public class AdvertisementActivity extends Activity {
     }
 
     private void placeAdvertisementPic() {
-
-
         mAdvertisementManager = new AdvertisementManager();
         String path = mAdvertisementManager.getAppLaunchAdvertisement();
 
         Log.d(TAG, "fetch advertisement path: " + path);
+
         Picasso.with(AdvertisementActivity.this)
                 .load(path)
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
@@ -123,9 +120,9 @@ public class AdvertisementActivity extends Activity {
                     @Override
                     public void onSuccess() {
                         timerCountDown();
-                        String launchAppAdvEntityStr = LogSharedPrefs.getInstance().getSharedPrefs(LogSharedPrefs.LAUNCH_APP_ADV_ENTITY);
+                        String launchAppAdvEntityStr = LogSharedPrefs.getSharedPrefs(LogSharedPrefs.SHARED_PREFS_NAME);
                         LaunchAdvertisementEntity.AdvertisementData[] advertisementDatas = new Gson().fromJson(launchAppAdvEntityStr, LaunchAdvertisementEntity.AdvertisementData[].class);
-                        if (null != advertisementDatas){
+                        if (null != advertisementDatas) {
                             LaunchAdvertisementEntity.AdvertisementData data = advertisementDatas[0];
                             AdvertisementLogger.bootAdvPlay(data.getTitle(), data.getMedia_id(), data.getMedia_url(), data.getDuration());
                         }

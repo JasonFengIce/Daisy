@@ -45,4 +45,7 @@ public class AdvertisementTable extends Model {
 
     @Column
     public String type;
+
+    @Column
+    public String media_id;
 }

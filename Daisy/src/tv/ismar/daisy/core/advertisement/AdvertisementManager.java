@@ -7,6 +7,7 @@ import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.google.gson.Gson;
 
+import tv.ismar.daisy.core.logger.AdvertisementLogger;
 import tv.ismar.daisy.core.preferences.LogSharedPrefs;
 import tv.ismar.daisy.data.LaunchAdvertisementEntity;
 import tv.ismar.daisy.data.table.AdvertisementTable;
@@ -33,19 +34,16 @@ public class AdvertisementManager {
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 
-
     private static Context mContext;
-
 
     public static void initialize(Context context) {
         mContext = context;
     }
 
-
     public void updateAppLaunchAdvertisement(LaunchAdvertisementEntity launchAdvertisementEntity) {
         String type = LAUNCH_APP_ADVERTISEMENT;
         LaunchAdvertisementEntity.AdvertisementData[] advertisementDatas = launchAdvertisementEntity.getAds().getKaishi();
-
+        LogSharedPrefs.setSharedPrefs(LogSharedPrefs.SHARED_PREFS_NAME, new Gson().toJson(advertisementDatas));
         new Delete().from(AdvertisementTable.class).execute();
         for (LaunchAdvertisementEntity.AdvertisementData advertisementData : advertisementDatas) {
             AdvertisementTable advertisementTable = new AdvertisementTable();
@@ -63,26 +61,28 @@ public class AdvertisementManager {
             advertisementTable.location = FileUtils.getFileByUrl(advertisementData.getMedia_url());
             advertisementTable.md5 = advertisementData.getMd5();
             advertisementTable.type = type;
+            advertisementTable.media_id = advertisementData.getMedia_id();
             advertisementTable.save();
         }
 
         List<AdvertisementTable> advertisementTables = new Select().from(AdvertisementTable.class).execute();
-        for (AdvertisementTable advertisementTable : advertisementTables) {
-            String downlaodUrl = advertisementTable.url;
-            File localFile = new File(mContext.getFilesDir() + "/" + advertisementTable.location);
-            String location = advertisementTable.location;
-            String md5Code = advertisementTable.md5;
+        for (int i = 0; i < advertisementTables.size(); i++) {
+            String downlaodUrl = advertisementTables.get(i).url;
+            File localFile = new File(mContext.getFilesDir() + "/" + advertisementTables.get(i).location);
+            String location = advertisementTables.get(i).location;
+            String md5Code = advertisementTables.get(i).md5;
             if (!localFile.exists()) {
                 //download advertisement
                 AdvertisementDownload downloadTask = new AdvertisementDownload(mContext, downlaodUrl, location);
                 new Thread(downloadTask).start();
-                LogSharedPrefs.getInstance().setSharedPrefs(LogSharedPrefs.LAUNCH_APP_ADV_ENTITY, new Gson().toJson(advertisementDatas));
+
+                AdvertisementLogger.bootAdvDownload(advertisementTables.get(i).title, String.valueOf(advertisementTables.get(i).media_id), advertisementTables.get(i).url);
             } else {
                 //compare md5 code
                 if (!md5Code.equalsIgnoreCase(HardwareUtils.getMd5ByFile(localFile))) {
                     AdvertisementDownload downloadTask = new AdvertisementDownload(mContext, downlaodUrl, location);
                     new Thread(downloadTask).start();
-                    LogSharedPrefs.getInstance().setSharedPrefs(LogSharedPrefs.LAUNCH_APP_ADV_ENTITY, new Gson().toJson(advertisementDatas));
+                    AdvertisementLogger.bootAdvDownload(advertisementTables.get(i).title, String.valueOf(advertisementTables.get(i).media_id), advertisementTables.get(i).url);
                 }
             }
         }

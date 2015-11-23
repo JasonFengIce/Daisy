@@ -122,7 +122,6 @@ public class PosterUpdateService extends Service {
                     Log.e(TAG, "fetch launch app advertisement error:\n"
                             + "retcode: " + launchAdvertisementEntity.getRetcode() + "\n"
                             + "retmsg: " + launchAdvertisementEntity.getRetmsg());
-                    AdvertisementLogger.bootAdvExcept(launchAdvertisementEntity.getRetcode(), launchAdvertisementEntity.getRetmsg());
                 }
             }
 

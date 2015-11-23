@@ -23,6 +23,7 @@ import tv.ismar.daisy.core.advertisement.AdvertisementManager;
 import tv.ismar.daisy.core.cache.CacheManager;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
+import tv.ismar.daisy.core.preferences.AppSharedPrefs;
 import tv.ismar.daisy.core.preferences.LogSharedPrefs;
 import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.models.ContentModel;
@@ -148,7 +149,7 @@ public class VodApplication extends Application {
         IsmartvUrlClient.initializeWithContext(this);
         CacheManager.initialize(this);
         AccountSharedPrefs.initialize(this);
-        LogSharedPrefs.initialize(this);
+        AppSharedPrefs.initialize(this);
 
         AdvertisementManager.initialize(this);
         getContentModelFromAssets();
