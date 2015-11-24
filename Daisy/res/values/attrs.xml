@@ -110,12 +110,7 @@
         <attr name="selectorBottomPadding" format="dimension"/>
     </declare-styleable>
 
-    <declare-styleable name="DaisyButton"></declare-styleable>
 
-    <declare-styleable name="DaisyImageView">
-        <attr name="normal_bg" format="color|reference"></attr>
-        <attr name="focus_bg" format="color|reference"></attr>
-    </declare-styleable>
 
 
     <declare-styleable name="VerticalGuideListView">

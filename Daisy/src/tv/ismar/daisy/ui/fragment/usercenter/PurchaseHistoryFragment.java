@@ -8,6 +8,8 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,8 +25,6 @@ import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.usercenter.AccountsOrdersEntity;
-import tv.ismar.daisy.ui.widget.recycleview.widget.LinearLayoutManager;
-import tv.ismar.daisy.ui.widget.recycleview.widget.RecyclerView;
 import tv.ismar.daisy.utils.Util;
 
 import java.sql.Timestamp;
@@ -45,6 +45,7 @@ public class PurchaseHistoryFragment extends Fragment {
 
     private LinearLayout accountOrderListView;
     private AccountsOrdersEntity accountsOrdersEntity;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -62,8 +63,8 @@ public class PurchaseHistoryFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(accountsOrdersEntity == null)
-        fetchAccountsOrders();
+        if (accountsOrdersEntity == null)
+            fetchAccountsOrders();
     }
 
 

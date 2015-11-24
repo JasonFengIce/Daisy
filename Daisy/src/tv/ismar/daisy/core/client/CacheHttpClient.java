@@ -37,7 +37,7 @@ public class CacheHttpClient extends Thread {
         private final WeakReference<CacheHttpClient> cacheHttpClientWeakReference;
 
         public MessageHandler(CacheHttpClient cacheHttpClient) {
-            cacheHttpClientWeakReference = new WeakReference<CacheHttpClient>(cacheHttpClient);
+            cacheHttpClientWeakReference = new WeakReference<>(cacheHttpClient);
         }
 
         @Override
@@ -111,11 +111,11 @@ public class CacheHttpClient extends Thread {
             response = client.newCall(request).execute();
             String result = response.body().string();
             Log.i(TAG, "---> BEGIN\n" +
-                            "\t<--- Request URL: " + "\t" + mUrlPath + "\n" +
-                            "\t<--- Request Method: " + "\t" + "GET" + "\n" +
-                            "\t<--- Response Code: " + "\t" + response.code() + "\n" +
-                            "\t<--- Response Result: " + "\t" + result + "\n" +
-                            "\t---> END"
+                    "\t<--- Request URL: " + "\t" + mUrlPath + "\n" +
+                    "\t<--- Request Method: " + "\t" + "GET" + "\n" +
+                    "\t<--- Response Code: " + "\t" + response.code() + "\n" +
+                    "\t<--- Response Result: " + "\t" + result + "\n" +
+                    "\t---> END"
             );
 
             if (!TextUtils.isEmpty(result)) {
