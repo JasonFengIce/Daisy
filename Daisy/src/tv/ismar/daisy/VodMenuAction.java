@@ -12,6 +12,7 @@ import android.view.*;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.models.AdElement;
@@ -133,8 +134,29 @@ public abstract class VodMenuAction extends BaseActivity {
 			this.setContentView(R.layout.zantingguanggao);
 			zanting_image = (AsyncImageView) this.findViewById(R.id.zantingguanggao);
 			close_btn = (ImageView) this.findViewById(R.id.zanting_close);
-			close_btn.setVisibility(View.VISIBLE);
+			zanting_image.setOnImageViewLoadListener(new AsyncImageView.OnImageViewLoadListener() {
+				
+				@Override
+				public void onLoadingStarted(AsyncImageView imageView) {
+					callaPlay.pause_ad_download(title, media_id, url, "bestv");
+				}
+				
+				@Override
+				public void onLoadingFailed(AsyncImageView imageView, Throwable throwable) {
+//					callaPlay.pause_ad_except(throwable., errorContent);					
+				}
+				
+				@Override
+				public void onLoadingEnded(AsyncImageView imageView, Bitmap image) {
+					close_btn.setVisibility(View.VISIBLE);
+					close_btn.requestFocus();
+				}
+			});
 			zanting_image.setUrl(url);
+			if(DaisyUtils.getImageCache(getContext()).get(url) != null){
+				close_btn.setVisibility(View.VISIBLE);
+				close_btn.requestFocus();
+			}
             duration = System.currentTimeMillis();
 			resizeWindow();
 		}
@@ -150,9 +172,6 @@ public abstract class VodMenuAction extends BaseActivity {
 
 				@Override
 				public void onClick(View v) {
-                    duration = System.currentTimeMillis()-duration;
-                    CallaPlay play = new CallaPlay();
-                    play.pause_ad_play(title,media_id,url,duration,"bestv");
 					dismiss();
 				}
 			});
@@ -171,6 +190,8 @@ public abstract class VodMenuAction extends BaseActivity {
 		@Override
 		public void dismiss() {
 			super.dismiss();
+            duration = System.currentTimeMillis()-duration;
+            callaPlay.pause_ad_play(title,media_id,url,duration,"bestv");
 //			resumeItem();
 		}
 

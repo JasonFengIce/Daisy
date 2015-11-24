@@ -151,6 +151,7 @@ public class QiYiPlayActivity extends VodMenuAction {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         shardpref = AccountSharedPrefs.getInstance();
         setContentView(R.layout.vod_player);
+        TaskStart();
     }
 
     public void initView() {
@@ -593,7 +594,6 @@ public class QiYiPlayActivity extends VodMenuAction {
 
         @Override
         public void onPrepared() {
-            TaskStart();
             timeBar.setMax(mPlayer.getDuration());
             if (seekPostion > 0)
                 mPlayer.seekTo(seekPostion);

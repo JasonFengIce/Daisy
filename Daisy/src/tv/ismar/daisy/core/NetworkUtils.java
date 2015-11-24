@@ -284,8 +284,6 @@ public class NetworkUtils {
                         ad.setDuration(element.getInt("duration"));
                         ad.setReport_url(element.getString("report_url"));
                         result.add(ad);
-                        CallaPlay play = new CallaPlay();
-                        play.pause_ad_download(ad.getTitle(), ad.getMedia_url(), ad.getMedia_id());
                     }
                     Collections.sort(result, new Comparator<AdElement>() {
                         @Override
@@ -373,8 +371,8 @@ public class NetworkUtils {
     public static Boolean LogSender(String Content) {
         try {
             String jsonContent = base64Code(Content);
-            //String url = "http://ismartv.calla.tvxio.com/log";
-            //String url = "http://192.168.1.108:8080/log";
+//            String url = "http://ismartv.calla.tvxio.com/log";
+//            String url = "http://192.168.1.185/m3u8parse/parseM3u8";
             String host =  AccountSharedPrefs.getInstance().getSharedPrefs(AccountSharedPrefs.LOG_DOMAIN);
             String url = "http://" + host+ "/log";
             java.net.URL connURL = new java.net.URL(url);
@@ -591,10 +589,10 @@ public class NetworkUtils {
             return null;
     }
 
-    private static String getContentJson(String eventName,
+    public static String getContentJson(String eventName,
                                          HashMap<String, Object> propertiesMap) throws JSONException {
         JSONObject propertiesJson = new JSONObject();
-        propertiesJson.put("time", System.currentTimeMillis() / 1000);
+//        propertiesJson.put("time", System.currentTimeMillis() / 1000);
         if (propertiesMap != null) {
             Set<String> set = propertiesMap.keySet();
             for (String key : set) {
@@ -604,7 +602,7 @@ public class NetworkUtils {
         JSONObject logJson = new JSONObject();
         logJson.put("event", eventName);
         logJson.put("properties", propertiesJson);
-        Log.d(TAG, " Log data For Test === " + logJson.toString());
+//        Log.d(TAG, " Log data For Test === " + logJson.toString());
         return logJson.toString();
     }
 
@@ -946,4 +944,12 @@ public class NetworkUtils {
      * 暂停广告异常
      */
     public static final String PAUSE_AD_EXCEPT = "pause_ad_except";
+    /**
+     * 应用启动
+     */
+    public static final String APP_START = "app_start";
+    /**
+     * 应用退出
+     */
+    public static final String APP_EXIT = "app_exit";
 }

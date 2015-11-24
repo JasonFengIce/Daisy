@@ -29,6 +29,7 @@ import tv.ismar.daisy.core.service.PosterUpdateService;
 import tv.ismar.daisy.core.update.AppUpdateUtils;
 import tv.ismar.daisy.core.update.AppUpdateUtilsV2;
 import tv.ismar.daisy.data.ChannelEntity;
+import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
 import tv.ismar.daisy.ui.Position;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
@@ -923,6 +924,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                     @Override
                     public void confirmClick(View view) {
                         exitPopupWindow.dismiss();
+                        CallaPlay callaPlay = new CallaPlay();
+                        callaPlay.app_exit(System.currentTimeMillis() - app_start_time, SimpleRestClient.appVersion);
                         TVGuideActivity.this.finish();
                     }
                 },

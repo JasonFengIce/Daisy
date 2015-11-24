@@ -1,5 +1,6 @@
 package tv.ismar.daisy.player;
 
+import android.R.string;
 import android.os.AsyncTask;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.NetworkUtils;
@@ -395,8 +396,8 @@ public class CallaPlay {
         //tempMap.put("speed", speed);
         tempMap.put("speed", speed + "KByte/s");
         tempMap.put(EventProperty.TO, to);
-        tempMap.put(EventProperty.POSITION, position);
-        tempMap.put(EventProperty.DURATION, duration);
+        tempMap.put(EventProperty.POSITION, position / 1000);
+        tempMap.put(EventProperty.DURATION, duration / 1000);
         tempMap.put(EventProperty.SECTION, section);
         tempMap.put(EventProperty.SID, sid);
         tempMap.put(EventProperty.SOURCE, source);
@@ -485,29 +486,6 @@ public class CallaPlay {
 
     }
 
-    public void pause_ad_play(String title, int media_id, String media_url, Long duration,String playerflag) {
-        HashMap<String, Object> tempMap = new HashMap<String, Object>();
-        tempMap.put(EventProperty.TITLE, title);
-        tempMap.put(EventProperty.MEDIA_ID, media_id);
-        tempMap.put(EventProperty.MEDIA_URL, media_url);
-        tempMap.put(EventProperty.DURATION, duration / 1000);
-        tempMap.put(EventProperty.PLAYER_FLAG, playerflag);
-        eventName = NetworkUtils.PAUSE_AD_PLAY;
-        properties = tempMap;
-        new NetworkUtils.DataCollectionTask().execute(eventName, properties);
-    }
-
-    public void pause_ad_download(String title, String media_url, int media_id) {
-
-    }
-
-    public void pause_ad_except(Integer errcode, String errorContent) {
-        HashMap<String, Object> tempMap = new HashMap<String, Object>();
-        tempMap.put(EventProperty.CODE, errcode);
-        tempMap.put(EventProperty.CONTENT, errorContent);
-
-    }
-
     public void homepage_vod_click(int pk, String title, String channel, Integer position, String type) {
         HashMap<String, Object> tempMap = new HashMap<String, Object>();
         tempMap.put(EventProperty.PK, pk);
@@ -577,14 +555,47 @@ public class CallaPlay {
         new NetworkUtils.DataCollectionTask().execute(eventName, properties);
     }
 
-    public void pause_ad_download(String title,int media_id,String media_url,long duration,String mediaflag) {
+    public void pause_ad_download(String title,int media_id,String media_url,String mediaflag) {
         HashMap<String, Object> tempMap = new HashMap<String, Object>();
         tempMap.put(EventProperty.TITLE, title);
         tempMap.put(EventProperty.MEDIA_ID, media_id);
         tempMap.put(EventProperty.MEDIA_URL, media_url);
-        tempMap.put(EventProperty.DURATION, duration);
         tempMap.put(EventProperty.PLAYER_FLAG, mediaflag);
         eventName = NetworkUtils.PAUSE_AD_DOWNLOAD;
+        properties = tempMap;
+        new NetworkUtils.DataCollectionTask().execute(eventName, properties);
+    }
+
+    public void pause_ad_except(Integer errcode, String errorContent) {
+        HashMap<String, Object> tempMap = new HashMap<String, Object>();
+        tempMap.put(EventProperty.CODE, errcode);
+        tempMap.put(EventProperty.CONTENT, errorContent);
+    }
+
+    public void app_start(String sn,String device,String size,String os_version,long sd_size,long sd_free_size,String userid,String province,String city,String isp,String source,String Mac) {
+        HashMap<String, Object> tempMap = new HashMap<String, Object>();
+        tempMap.put(EventProperty.SN, sn);
+        tempMap.put(EventProperty.DEVICE, device);
+        tempMap.put(EventProperty.SIZE, size);
+        tempMap.put(EventProperty.OS_VERSION, os_version);
+        tempMap.put(EventProperty.SD_SIZE, sd_size);
+        tempMap.put(EventProperty.SD_FREE_SIZE, sd_free_size);
+        tempMap.put(EventProperty.USER_ID, userid);
+        tempMap.put(EventProperty.PROVINCE, province);
+        tempMap.put(EventProperty.CITY, city);
+        tempMap.put(EventProperty.ISP, isp);
+        tempMap.put(EventProperty.SOURCE, source);
+        tempMap.put(EventProperty.MAC, Mac);
+        eventName = NetworkUtils.APP_START;
+        properties = tempMap;
+        new NetworkUtils.DataCollectionTask().execute(eventName, properties);
+    }
+
+    public void app_exit(long duration, int version) {
+        HashMap<String, Object> tempMap = new HashMap<String, Object>();
+        tempMap.put(EventProperty.DURATION, duration / 1000);
+        tempMap.put(EventProperty.VERSION, version);
+        eventName = NetworkUtils.APP_EXIT;
         properties = tempMap;
         new NetworkUtils.DataCollectionTask().execute(eventName, properties);
     }

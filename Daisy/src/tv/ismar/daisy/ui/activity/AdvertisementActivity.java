@@ -146,7 +146,7 @@ public class AdvertisementActivity extends Activity implements RequestListener {
         WeakReference<AdvertisementActivity> mWeakReference;
 
         public MessageHandler(AdvertisementActivity activity) {
-            mWeakReference = new WeakReference<>(activity);
+            mWeakReference = new WeakReference<AdvertisementActivity>(activity);
         }
 
         @Override

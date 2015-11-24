@@ -350,6 +350,8 @@ public class SportFragment extends ChannelBaseFragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            if(looppost.size() < 3)
+            	return;
             PicassoUtils.load(mContext, looppost.get(++loopindex).getVideo_image(), sportspost);
             sportspost.setTag(R.drawable.launcher_selector,
                     looppost.get(loopindex));
