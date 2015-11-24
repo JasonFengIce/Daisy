@@ -22,3 +22,4 @@ out/
 build/
 */*.apk
 captures/
+local.properties
