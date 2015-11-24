@@ -1,47 +1,5 @@
 package tv.ismar.daisy.ui.activity;
 
-import static tv.ismar.daisy.AppConstant.KIND;
-import static tv.ismar.daisy.AppConstant.MANUFACTURE;
-import static tv.ismar.daisy.VodApplication.LOCATION_CITY;
-import static tv.ismar.daisy.VodApplication.LOCATION_DISTRICT;
-import static tv.ismar.daisy.VodApplication.LOCATION_PROVINCE;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.sakuratya.horizontal.ui.HGridView;
-
-import tv.ismar.daisy.AppConstant;
-import tv.ismar.daisy.BaseActivity;
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.VodApplication;
-import tv.ismar.daisy.adapter.ChannelAdapter;
-import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.VodUserAgent;
-import tv.ismar.daisy.core.client.CacheHttpClient;
-import tv.ismar.daisy.core.client.IsmartvUrlClient;
-import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
-import tv.ismar.daisy.core.service.PosterUpdateService;
-import tv.ismar.daisy.core.update.AppUpdateUtils;
-import tv.ismar.daisy.core.update.AppUpdateUtilsV2;
-import tv.ismar.daisy.data.ChannelEntity;
-import tv.ismar.daisy.player.CallaPlay;
-import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
-import tv.ismar.daisy.ui.Position;
-import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
-import tv.ismar.daisy.ui.fragment.launcher.ChildFragment;
-import tv.ismar.daisy.ui.fragment.launcher.EntertainmentFragment;
-import tv.ismar.daisy.ui.fragment.launcher.FilmFragment;
-import tv.ismar.daisy.ui.fragment.launcher.GuideFragment;
-import tv.ismar.daisy.ui.fragment.launcher.SportFragment;
-import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
-import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
-import tv.ismar.sakura.ui.widget.MessagePopWindow;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -51,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -68,35 +25,50 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.TextView;
-
+import android.widget.*;
 import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
-
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.GeofenceClient;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
+import com.baidu.location.*;
 import com.google.gson.Gson;
+import org.apache.commons.lang3.StringUtils;
+import org.sakuratya.horizontal.ui.HGridView;
+import tv.ismar.daisy.AppConstant;
+import tv.ismar.daisy.BaseActivity;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.VodApplication;
+import tv.ismar.daisy.adapter.ChannelAdapter;
+import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.VodUserAgent;
+import tv.ismar.daisy.core.client.CacheHttpClient;
+import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
+import tv.ismar.daisy.core.service.PosterUpdateService;
+import tv.ismar.daisy.core.update.AppUpdateUtilsV2;
+import tv.ismar.daisy.data.ChannelEntity;
+import tv.ismar.daisy.player.CallaPlay;
+import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
+import tv.ismar.daisy.ui.Position;
+import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
+import tv.ismar.daisy.ui.fragment.launcher.*;
+import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
+import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
+import tv.ismar.sakura.ui.widget.MessagePopWindow;
+
+import java.io.InputStream;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import static tv.ismar.daisy.VodApplication.*;
 
 /**
  * Created by huaijie on 5/18/15.
  */
 public class TVGuideActivity extends BaseActivity implements Activator.OnComplete, HGridView.OnScrollListener {
-
-
     private static final String TAG = "TVGuideActivity";
     private static final int SWITCH_PAGE = 0X01;
     private static final int SWITCH_PAGE_FROMLAUNCH = 0X02;
@@ -145,6 +117,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     public boolean isneedpause;
 
+    private FragmentSwitchHandler fragmentSwitch;
+
 
     private enum LeavePosition {
         LeftTop,
@@ -190,34 +164,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             if (fragmentSwitch.hasMessages(SWITCH_PAGE))
                 fragmentSwitch.removeMessages(SWITCH_PAGE);
             fragmentSwitch.sendMessageDelayed(msg, 300);
-//            selectChannelByPosition(position);
             scroll.setSelection(position);
             if (!scrollFromBorder)
                 scroll.requestFocus();
-//            scrollFromBorder = false;
-            //   setClickChannelView(scroll.getChildAt(position));
-            //  lastview = scroll.getChildAt(position);
-
-
-            //  scroll.performItemClick(scroll.getChildAt(position),position,scroll.getChildAt(position).getId());
-//            View newclickView = scroll.getChildAt(position);
-//            if(clickView!=null&&newclickView!=null){
-//                if(newclickView!=clickView){
-//                    TextView channelBtn = (TextView)newclickView.findViewById(R.id.channel_item);
-//                    channelBtn.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
-//                    channelBtn.setBackgroundResource(R.drawable.channel_item_focus);
-//                    AnimationSet animationSet = new AnimationSet(true);
-//                    ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
-//                            Animation.RELATIVE_TO_SELF, 0.5f,
-//                            Animation.RELATIVE_TO_SELF, 0.5f);
-//                    scaleAnimation.setDuration(200);
-//                    animationSet.addAnimation(scaleAnimation);
-//                    animationSet.setFillAfter(true);
-//                    channelBtn.startAnimation(animationSet);
-//                    clickView = newclickView;
-//                }
-//
-//            }
         }
     });
 
@@ -311,21 +260,13 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         @Override
         public void onClick(View v) {
             channelChange = ChannelChange.CLICK_CHANNEL;
-
-//            if (arrow_left.getVisibility() == View.GONE) {
-//                arrow_left.setVisibility(View.VISIBLE);
-//            }
-//            if (arrow_right.getVisibility() == View.GONE) {
-//                arrow_right.setVisibility(View.VISIBLE);
-//            }
         }
-
     };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        fragmentSwitch = new FragmentSwitchHandler(this);
         activityTag = "BaseActivity";
         registerUpdateReceiver();
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_tv_guide, null);
@@ -432,7 +373,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
      */
     private void fetchChannels() {
         String api = SimpleRestClient.root_url + "/api/tv/channels/";
-
         new CacheHttpClient().doRequest(api, new CacheHttpClient.Callback() {
             @Override
             public void onSuccess(String result) {
@@ -483,56 +423,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 Log.e(TAG, "fetchChannels failed");
             }
         });
-//        new IsmartvUrlClient().doRequest(api, new IsmartvUrlClient.CallBack() {
-//            @Override
-//            public void onSuccess(String result) {
-//                topView.setVisibility(View.VISIBLE);
-//                mChannelEntitys = new Gson().fromJson(result, ChannelEntity[].class);
-//
-//                ChannelEntity[] tmp = mChannelEntitys;
-//                // tmp = mChannelEntitys;
-//                mChannelEntitys = new ChannelEntity[tmp.length + 1];
-//                int k = 0;
-//
-//                ChannelEntity launcher = new ChannelEntity();
-//                launcher.setChannel("launcher");
-//                launcher.setName("首页");
-//                launcher.setHomepage_template("launcher");
-//                mChannelEntitys[0] = launcher;
-//                for (ChannelEntity e : tmp) {
-//                    mChannelEntitys[k + 1] = e;
-//                    k++;
-//                }
-//                createChannelView(mChannelEntitys);
-//                if (StringUtils.isNotEmpty(homepage_template)) {
-//                    for (int i = 0; i < mChannelEntitys.length; i++) {
-//                        if (homepage_template.equals(mChannelEntitys[i].getHomepage_template()) && mChannelEntitys[i].getHomepage_url().contains(homepage_url)) {
-//                            channelscrollIndex = i;
-//                            if (channelscrollIndex > 0) {
-//                                fragmentSwitch.sendEmptyMessage(SWITCH_PAGE_FROMLAUNCH);
-//                            }
-//                            topView.setSubTitle(mChannelEntitys[i].getName());
-//                            break;
-//                        }
-//                    }
-//                }
-//                if (currentFragment == null && !isFinishing()) {
-//                    try {
-//                        currentFragment = new GuideFragment();
-//                        FragmentTransaction transaction = getSupportFragmentManager()
-//                                .beginTransaction();
-//                        transaction.add(R.id.container, currentFragment).commitAllowingStateLoss();
-//                    } catch (IllegalStateException e) {
-//                    }
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailed(Exception exception) {
-//                Log.e(TAG, "fetchChannels failed");
-//            }
-//        });
     }
 
     private HGridView scroll;
@@ -692,55 +582,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
             }
         });
-//        scroll.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-//                channelChange = ChannelChange.CLICK_CHANNEL;
-//
-//                if (arrow_left.getVisibility() == View.GONE) {
-//                    arrow_left.setVisibility(View.VISIBLE);
-//                }
-//                if (arrow_right.getVisibility() == View.GONE) {
-//                    arrow_right.setVisibility(View.VISIBLE);
-//                }
-//                int channelPosition = position;
-//
-//                if(clickView!=null){
-//                    if(clickView==view){
-//                        return;
-//                    }
-//                   else{
-//                        TextView textview = (TextView)clickView.findViewById(R.id.channel_item);
-//                        textview.setBackgroundResource(R.drawable.channel_item_normal);
-//                        textview.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
-//                        AnimationSet animationSet1 = new AnimationSet(true);
-//                        ScaleAnimation scaleAnimation1 = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
-//                                Animation.RELATIVE_TO_SELF, 0.5f,
-//                                Animation.RELATIVE_TO_SELF, 0.5f);
-//                        scaleAnimation1.setDuration(200);
-//                        animationSet1.addAnimation(scaleAnimation1);
-//                        animationSet1.setFillAfter(true);
-//                        textview.startAnimation(animationSet1);
-//                    }
-//                }
-//
-//                clickView = view;
-//
-//                TextView channelBtn = (TextView)view.findViewById(R.id.channel_item);
-//                channelBtn.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
-//                channelBtn.setBackgroundResource(R.drawable.channel_item_focus);
-//                AnimationSet animationSet = new AnimationSet(true);
-//                ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
-//                        Animation.RELATIVE_TO_SELF, 0.5f,
-//                        Animation.RELATIVE_TO_SELF, 0.5f);
-//                scaleAnimation.setDuration(200);
-//                animationSet.addAnimation(scaleAnimation);
-//                animationSet.setFillAfter(true);
-//                channelBtn.startAnimation(animationSet);
-//
-//                mCurrentChannelPosition.setPosition(channelPosition);
-//            }
-//        });
         scroll.setHorizontalFadingEdgeEnabled(true);
         scroll.setFadingEdgeLength(72);
         scroll.requestFocus();
@@ -751,19 +592,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(AppConstant.APP_UPDATE_ACTION);
         registerReceiver(appUpdateReceiver, intentFilter);
-    }
-
-    public void onUserCenterClick() {
-        FragmentTransaction transaction = getSupportFragmentManager()
-                .beginTransaction();
-        transaction.setCustomAnimations(
-                R.anim.fade_in,
-                R.anim.fade_out,
-                R.anim.fade_in,
-                R.anim.fade_out);
-//        transaction.replace(R.id.container, new UserCenterFragment()).commit();
-
-
     }
 
     @Override
@@ -855,8 +683,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     public void installApk(Context mContext, String path) {
         Uri uri = Uri.parse("file://" + path);
-        if (AppConstant.DEBUG)
-            Log.d(TAG, uri.toString());
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(uri, "application/vnd.android.package-archive");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -869,45 +695,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         startService(intent);
     }
 
-    /**
-     * showExitPopup
-     *
-     * @param view
-     */
-//    private void showExitPopup(View view) {
-//        final Context context = this;
-//        float rate = DaisyUtils.getVodApplication(this).getRate(this);
-//        View contentView = LayoutInflater.from(context).inflate(R.layout.popup_exit, null);
-//        int width = (int) (getResources().getDimension(R.dimen.pop_width) / rate);
-//        int height = (int) (getResources().getDimension(R.dimen.pop_height) / rate);
-//
-//        exitPopupWindow = new PopupWindow(null, width, height);
-//        exitPopupWindow.setContentView(contentView);
-//        exitPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent));
-//        exitPopupWindow.setFocusable(true);
-//        exitPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-//
-//        Button confirmExit = (Button) contentView.findViewById(R.id.confirm_exit);
-//        Button cancelExit = (Button) contentView.findViewById(R.id.cancel_exit);
-//
-//        confirmExit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                exitPopupWindow.dismiss();
-//                TVGuideActivity.this.finish();
-//            }
-//        });
-//
-//        cancelExit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                exitPopupWindow.dismiss();
-//            }
-//        });
-//    }
     private void showExitPopup(View view) {
         exitPopupWindow = new MessagePopWindow(this);
-
         exitPopupWindow.setFirstMessage(R.string.exit_prompt);
 //        WindowManager.LayoutParams lp = getWindow().getAttributes();
 //		lp.alpha = 0.5f;
@@ -1311,26 +1100,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         }
     }
 
-    private Handler fragmentSwitch = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case SWITCH_PAGE:
-                    selectChannelByPosition(msg.arg1);
-                    break;
-                case SWITCH_PAGE_FROMLAUNCH:
-                    scroll.arrowScroll(View.FOCUS_RIGHT);
-                    channelscrollIndex--;
-                    if (channelscrollIndex > 0) {
-                        sendEmptyMessage(SWITCH_PAGE_FROMLAUNCH);
-                    }
-                    break;
-            }
-        }
-
-    };
 
     public void setLastViewTag(String flag) {
         lastviewTag = flag;
@@ -1357,5 +1126,32 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    static class FragmentSwitchHandler extends Handler {
+        private WeakReference<TVGuideActivity> weakReference;
+
+        public FragmentSwitchHandler(TVGuideActivity activity) {
+            weakReference = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            TVGuideActivity activity = weakReference.get();
+            if (activity != null) {
+                switch (msg.what) {
+                    case SWITCH_PAGE:
+                        activity.selectChannelByPosition(msg.arg1);
+                        break;
+                    case SWITCH_PAGE_FROMLAUNCH:
+                        activity.scroll.arrowScroll(View.FOCUS_RIGHT);
+                        activity.channelscrollIndex--;
+                        if (activity.channelscrollIndex > 0) {
+                            sendEmptyMessage(SWITCH_PAGE_FROMLAUNCH);
+                        }
+                        break;
+                }
+            }
+        }
     }
 }
