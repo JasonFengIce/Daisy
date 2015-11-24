@@ -7,9 +7,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.widget.ImageView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.gson.Gson;
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.advertisement.AdvertisementManager;
@@ -23,24 +25,18 @@ import java.lang.ref.WeakReference;
 /**
  * Created by huaijie on 3/10/15.
  */
-public class AdvertisementActivity extends Activity {
+public class AdvertisementActivity extends Activity implements RequestListener {
     private static final String TAG = "AdvertisementActivity";
+    private static final String DEFAULT_ADV_PICTURE = "file:///android_asset/poster.png";
     private static final int TIME_COUNTDOWN = 0x0001;
 
     private static final int[] secondsResId = {R.drawable.second_1, R.drawable.second_2,
             R.drawable.second_3, R.drawable.second_4, R.drawable.second_5};
-
-    /**
-     * View
-     */
     private ImageView adverPic;
     private ImageView timerText;
-
     private Handler messageHandler;
-
     private volatile boolean flag = true;
     private AdvertisementManager mAdvertisementManager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +47,6 @@ public class AdvertisementActivity extends Activity {
         placeAdvertisementPic();
         messageHandler = new MessageHandler(this);
         new Thread(new InitializeProcess(this)).start();
-    }
-
-
-    private void initViews() {
-        adverPic = (ImageView) findViewById(R.id.advertisement_pic);
-        timerText = (ImageView) findViewById(R.id.adver_timer);
     }
 
     @Override
@@ -70,42 +60,53 @@ public class AdvertisementActivity extends Activity {
         finish();
     }
 
-
     @Override
     protected void onDestroy() {
         flag = false;
-        adverPic = null;
-        mAdvertisementManager = null;
         super.onDestroy();
+    }
 
+    //Glide 加载图片
+    @Override
+    public boolean onException(Exception e, Object o, Target target, boolean b) {
+        Picasso.with(AdvertisementActivity.this).load("file:///android_asset/poster.png").into(adverPic);
+        Glide.with(this)
+                .load(DEFAULT_ADV_PICTURE)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .into(adverPic);
+        timerCountDown();
+        return false;
+    }
+
+    //Glide 加载图片
+    @Override
+    public boolean onResourceReady(Object o, Object o2, Target target, boolean b, boolean b1) {
+        timerCountDown();
+        String launchAppAdvEntityStr = LogSharedPrefs.getSharedPrefs(LogSharedPrefs.SHARED_PREFS_NAME);
+        LaunchAdvertisementEntity.AdvertisementData[] advertisementDatas = new Gson().fromJson(launchAppAdvEntityStr, LaunchAdvertisementEntity.AdvertisementData[].class);
+        if (null != advertisementDatas) {
+            LaunchAdvertisementEntity.AdvertisementData data = advertisementDatas[0];
+            AdvertisementLogger.bootAdvPlay(data.getTitle(), data.getMedia_id(), data.getMedia_url(), data.getDuration());
+        }
+        return false;
+    }
+
+    private void initViews() {
+        adverPic = (ImageView) findViewById(R.id.advertisement_pic);
+        timerText = (ImageView) findViewById(R.id.adver_timer);
     }
 
     private void placeAdvertisementPic() {
         mAdvertisementManager = new AdvertisementManager();
         String path = mAdvertisementManager.getAppLaunchAdvertisement();
         Log.d(TAG, "fetch advertisement path: " + path);
-        Picasso.with(AdvertisementActivity.this)
+        Glide.with(this)
                 .load(path)
-                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
-                .into(adverPic, new com.squareup.picasso.Callback() {
-                    @Override
-                    public void onSuccess() {
-                        timerCountDown();
-                        String launchAppAdvEntityStr = LogSharedPrefs.getSharedPrefs(LogSharedPrefs.SHARED_PREFS_NAME);
-                        LaunchAdvertisementEntity.AdvertisementData[] advertisementDatas = new Gson().fromJson(launchAppAdvEntityStr, LaunchAdvertisementEntity.AdvertisementData[].class);
-                        if (null != advertisementDatas) {
-                            LaunchAdvertisementEntity.AdvertisementData data = advertisementDatas[0];
-                            AdvertisementLogger.bootAdvPlay(data.getTitle(), data.getMedia_id(), data.getMedia_url(), data.getDuration());
-                        }
-                    }
-
-                    @Override
-                    public void onError() {
-                        Picasso.with(AdvertisementActivity.this).load("file:///android_asset/poster.png").into(adverPic);
-                        timerCountDown();
-                    }
-                });
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .listener(this)
+                .into(adverPic);
     }
 
     private void timerCountDown() {
@@ -133,7 +134,6 @@ public class AdvertisementActivity extends Activity {
         startActivity(intent);
     }
 
-
     public void showCountTime(int second) {
         timerText.setImageResource(secondsResId[second]);
         if (second == 0 && flag) {
@@ -141,7 +141,6 @@ public class AdvertisementActivity extends Activity {
             finish();
         }
     }
-
 
     static class MessageHandler extends Handler {
         WeakReference<AdvertisementActivity> mWeakReference;
