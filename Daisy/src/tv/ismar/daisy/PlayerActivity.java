@@ -178,6 +178,7 @@ public class PlayerActivity extends VodMenuAction {
         intentFilter.setPriority(119110);
         registerReceiver( saveScreenbroad , intentFilter);
 		shardpref = AccountSharedPrefs.getInstance();
+		TaskStart();
 		setView();
 
 		DisplayMetrics metric = new DisplayMetrics();
@@ -570,7 +571,6 @@ public class PlayerActivity extends VodMenuAction {
 								&& paths[paths.length - 1].equals(url)) {
 
 							if (mVideoView != null) {
-                                TaskStart();
 								if (live_video) {
 									timeBar.setEnabled(false);
 									mp.start();

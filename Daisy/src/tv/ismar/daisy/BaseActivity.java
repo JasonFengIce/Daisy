@@ -9,9 +9,12 @@ import org.json.JSONObject;
 
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.SystemFileUtil;
+import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.exception.NetworkException;
+import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.ui.activity.TVGuideActivity;
 import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
 import tv.ismar.daisy.views.ExitDialog;
@@ -23,6 +26,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -52,12 +56,12 @@ public class BaseActivity extends FragmentActivity {
     private PopupWindow netErrorPopupWindow;
     Tencent mTencent;
     String APP_ID = "1104828726";
-    protected String fromPage;
+    protected String fromPage="";
     protected String activityTag = "";
     private FetchBestTvAuth authTask;
     protected static int activityCount = 0;
     protected static int activityCount2 = 0;
-
+    protected  long app_start_time;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +81,22 @@ public class BaseActivity extends FragmentActivity {
         intentFilter.addAction(ACTION_CONNECT_ERROR);
         connectionErrorReceiver = new ConnectionErrorReceiver();
         createNetErrorPopup();
+        AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance();
+        String province = accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.PROVINCE);
+        String city = accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.CITY);
+        String isp = accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.ISP);
+        if(activityCount2 == 0){
+        	CallaPlay callaPlay = new CallaPlay();
+        	app_start_time = System.currentTimeMillis();
+			callaPlay
+					.app_start(SimpleRestClient.sn_token,
+							VodUserAgent.getModelName(), "0",
+							android.os.Build.VERSION.RELEASE,
+							SystemFileUtil.getSdCardTotal(this),
+							SystemFileUtil.getSdCardAvalible(this),
+							SimpleRestClient.mobile_number, province, city, isp, fromPage, DeviceUtils.getLocalMacAddress(BaseActivity.this));
+        }
+
         mTencent = Tencent.createInstance(APP_ID, getApplicationContext());
         if (!"launcher".equals(fromPage))
             activityCount2++;
@@ -208,7 +228,6 @@ public class BaseActivity extends FragmentActivity {
             @Override
             public void onFailed(Exception exception) {
                 //  verificationPrompt.setText(R.string.login_failure);
-                Log.i("pangziinfo", "shibai");
                 if (loginCallback != null) {
                     loginCallback.onLoginFailed();
                 }
@@ -471,6 +490,8 @@ public class BaseActivity extends FragmentActivity {
                     @Override
                     public void confirmClick(View view) {
                         dialog.dismiss();
+                        CallaPlay callaPlay = new CallaPlay();
+                        callaPlay.app_exit(System.currentTimeMillis() - app_start_time, SimpleRestClient.appVersion);
                         BaseActivity.this.finish();
                     }
                 }, new MessageDialogFragment.CancelListener() {

@@ -521,7 +521,7 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
             }
             InputStream is = connection.getInputStream();
             BitmapFactory.Options opt = new BitmapFactory.Options();
-            opt.inPreferredConfig = Bitmap.Config.ARGB_4444;
+            opt.inPreferredConfig = Bitmap.Config.ARGB_8888;
             opt.inPurgeable = true;
             opt.inInputShareable = true;
 //			opt.inTempStorage = new byte[1024];

@@ -645,14 +645,6 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 			currentLoadingTask.get(index).cancel(true);
 		}
         ((ChannelListActivity)getActivity()).unregisterOnMenuToggleListener();
-		final HashMap<String, Object> properties = new HashMap<String, Object>();
-		properties.putAll(mSectionProperties);
-		new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_CATEGORY_OUT, properties);
-		mSectionProperties.remove(EventProperty.TO_ITEM);
-		mSectionProperties.remove(EventProperty.TO_TITLE);
-		mSectionProperties.remove(EventProperty.POSITION);
-		mSectionProperties.remove(EventProperty.TITLE);
-		mSectionProperties.remove(EventProperty.SECTION);
 		super.onPause();
 	}
 
@@ -825,6 +817,14 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 					final Section s = mSectionList.get(sectionIndex);
 					mSectionProperties.put(EventProperty.TITLE, s.title);
 					mSectionProperties.put(EventProperty.SECTION, s.slug);
+					final HashMap<String, Object> properties = new HashMap<String, Object>();
+					properties.putAll(mSectionProperties);
+					new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_CATEGORY_OUT, properties);
+					mSectionProperties.remove(EventProperty.TO_ITEM);
+					mSectionProperties.remove(EventProperty.TO_TITLE);
+					mSectionProperties.remove(EventProperty.POSITION);
+					mSectionProperties.remove(EventProperty.TITLE);
+					mSectionProperties.remove(EventProperty.SECTION);
 					Intent intent = new Intent();
 					if(item.is_complex) {
                         if(!isPortrait){
@@ -935,7 +935,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 				sectionProperties.put(EventProperty.SECTION, oldSection.slug);
 				sectionProperties.put(EventProperty.TITLE, oldSection.title);
 				//sectionProperties.put("sid", mCurrentSectionIndex);
-				new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_CATEGORY_OUT, sectionProperties);
+				//new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_CATEGORY_OUT, sectionProperties);
 			}
 			mCurrentSectionIndex = newSectionIndex;
 		}

@@ -1,9 +1,17 @@
 package tv.ismar.daisy.core;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import android.content.Context;
 import android.os.Environment;
-
-import java.io.*;
+import android.os.StatFs;
+import android.text.format.Formatter;
 
 public class SystemFileUtil {
 
@@ -88,6 +96,35 @@ public static boolean isCanWriteSD(){
 		return false;
 	}
 }
+
+	public static long getSdCardTotal(final Context context) {
+		if (Environment.getExternalStorageState().equals(
+				Environment.MEDIA_MOUNTED)) {
+			File path = Environment.getExternalStorageDirectory();
+			StatFs stat = new StatFs(path.getPath());
+			long blockSize = stat.getBlockSizeLong();
+			long totalBlocks = stat.getBlockCountLong();
+			long totalSize = totalBlocks * blockSize;
+			return totalSize/1048576;
+		}else{
+			return 0;
+		}
+	}
+
+	public static long getSdCardAvalible(final Context context) {
+		if (Environment.getExternalStorageState().equals(
+				Environment.MEDIA_MOUNTED)) {
+			File path = Environment.getExternalStorageDirectory();
+			StatFs stat = new StatFs(path.getPath());
+			long blockSize = stat.getBlockSizeLong();
+			long availableBlocks = stat.getAvailableBlocksLong();
+			long availSize = availableBlocks * blockSize;
+			return availSize/1048576;
+		}else{
+			return 0;
+		}
+	}
+
 	public static synchronized void writeLogToLocal(String content) {
 			String LOGLOCALPATH = "vodlog.txt";
 		    LogPath = appPath+"/"+LOGLOCALPATH;
