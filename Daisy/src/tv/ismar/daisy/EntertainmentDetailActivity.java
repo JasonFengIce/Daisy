@@ -1108,6 +1108,8 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus) {
+            	v.startAnimation(scaleBigAnimation);
+            	v.bringToFront();
                 TextView title = (TextView) v
                         .findViewById(R.id.related_title);
                 LabelImageView img = (LabelImageView)v.findViewById(R.id.related_preview_img);
@@ -1118,6 +1120,8 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 title.setSelected(true);
 
             } else {
+            	v.setAnimation(scaleSmallAnimation);
+            	v.clearAnimation();
                 TextView title = (TextView) v
                         .findViewById(R.id.related_title);
                 LabelImageView img = (LabelImageView)v.findViewById(R.id.related_preview_img);

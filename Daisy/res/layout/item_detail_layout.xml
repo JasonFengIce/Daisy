@@ -22,6 +22,8 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_detail_detail_linerlayout_width"
     android:orientation="horizontal"
+        android:clipChildren="false"
+    android:clipToPadding="false"
       >
     <RelativeLayout
         android:id="@+id/detail_left_container"
@@ -203,6 +205,8 @@
         android:layout_width="@dimen/item_detail_right_container_width"
         android:layout_height="match_parent"
         android:orientation="vertical"
+            android:clipChildren="false"
+    android:clipToPadding="false"
         android:gravity="left">
 
         <TextView
@@ -228,7 +232,10 @@
             android:id="@+id/related_video_container"
             android:layout_width="match_parent"
             android:layout_height="@dimen/item_detail_related_video_container_height"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+                android:clipChildren="false"
+    android:clipToPadding="false"
+             >
         </LinearLayout>
 
         <Button

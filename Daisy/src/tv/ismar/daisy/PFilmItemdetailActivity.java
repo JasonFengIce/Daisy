@@ -1036,6 +1036,8 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         public void onFocusChange(View v, boolean hasFocus) {
         	 
                 if (hasFocus) {
+                	v.startAnimation(scaleBigAnimation);
+                	v.bringToFront();
                     TextView title = (TextView) v
                             .findViewById(R.id.related_title);
                     LabelImageView img = (LabelImageView)v.findViewById(R.id.related_preview_img);
@@ -1047,6 +1049,8 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                     title.setSelected(true);
 
                 } else {
+                	v.startAnimation(scaleSmallAnimation);
+                	v.clearAnimation();
                     TextView title = (TextView) v
                             .findViewById(R.id.related_title);
                     LabelImageView img = (LabelImageView)v.findViewById(R.id.related_preview_img);
