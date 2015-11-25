@@ -102,8 +102,6 @@ public class LabelImageView extends AsyncImageView {
 		if (needzoom) {
 			if (gainFocus) {
 				bringToFront();
-				getRootView().requestLayout();
-				getRootView().invalidate();
 				zoomOut();
 			} else {
 				zoomIn();

@@ -97,7 +97,7 @@
             labelimage:focuspaddingtop="0.89"
             labelimage:focustextpaddingtop="0.97"
             labelimage:focustextsize="@dimen/toppage_fragment_poster_title_textsize"
-            labelimage:needzoom="true" />
+            />
 
         <RelativeLayout
             android:id="@+id/sec_one_list_2"
@@ -173,7 +173,7 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/sport_linearLayout2_h"
         android:layout_marginBottom="@dimen/sport_linearLayout2_mb"
@@ -215,6 +215,7 @@
             android:layout_width="@dimen/sport_channel_w"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/sport_channel_ml"
+            android:layout_toRightOf="@id/sport_channel1"
             android:clipChildren="false"
             android:clipToPadding="false"
             android:orientation="vertical" >
@@ -243,6 +244,7 @@
             android:id="@+id/sport_channel3"
             android:layout_width="@dimen/sport_channel_w"
             android:layout_height="match_parent"
+            android:layout_toRightOf="@id/sport_channel2"
             android:layout_marginLeft="@dimen/sport_channel_ml"
             android:clipChildren="false"
             android:clipToPadding="false"
@@ -272,6 +274,7 @@
             android:id="@+id/sport_channel4"
             android:layout_width="@dimen/sport_channel_w"
             android:layout_height="match_parent"
+            android:layout_toRightOf="@id/sport_channel3"
             android:layout_marginLeft="@dimen/sport_channel_ml"
             android:clipChildren="false"
             android:clipToPadding="false"
@@ -302,8 +305,9 @@
             android:layout_width="@dimen/sport_channel_w"
             android:layout_height="@dimen/sport_channel_image_h"
             android:layout_marginLeft="@dimen/sport_channel_ml_1"
+            android:layout_toRightOf="@id/sport_channel4"
             android:nextFocusUp="@+id/sports_live3"
             layout="@layout/toppagelistmorebutton" />
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

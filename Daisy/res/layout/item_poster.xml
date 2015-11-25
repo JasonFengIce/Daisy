@@ -3,6 +3,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:clickable="true"
+                android:clipChildren="false"
+            android:clipToPadding="false"
     android:descendantFocusability="afterDescendants"
     android:focusable="true">
 

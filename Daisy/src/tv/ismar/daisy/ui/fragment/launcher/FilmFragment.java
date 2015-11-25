@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -258,6 +259,11 @@ public class FilmFragment extends ChannelBaseFragment {
             public void onFocusChange(View arg0, boolean arg1) {
                 if (arg1) {
                     ((TVGuideActivity) (getActivity())).setLastViewTag("");
+//                    arg0.bringToFront();
+//                    arg0.startAnimation(scaleBigAnimation);
+                }else{
+//                	arg0.startAnimation(scaleSmallAnimation);
+//                	arg0.clearAnimation();
                 }
             }
         });
@@ -300,7 +306,7 @@ public class FilmFragment extends ChannelBaseFragment {
                         if (hasFocus) {
                             ((HomeItemContainer) v.getParent())
                                     .setDrawBorder(true);
-                            ((HomeItemContainer) v.getParent()).invalidate();
+                            ((HomeItemContainer) v.getParent()).startAnimation(scaleBigAnimation);
                             focusView = ((HomeItemContainer) v.getParent());
                             if (tagObject != null) {
                                 int tagindex = Integer.parseInt(tagObject.toString());
@@ -311,7 +317,8 @@ public class FilmFragment extends ChannelBaseFragment {
                         } else {
                             ((HomeItemContainer) v.getParent())
                                     .setDrawBorder(false);
-                            ((HomeItemContainer) v.getParent()).invalidate();
+                            ((HomeItemContainer) v.getParent()).startAnimation(scaleSmallAnimation);
+                            ((HomeItemContainer) v.getParent()).clearAnimation();
                         }
                     }
                 });
@@ -355,6 +362,10 @@ public class FilmFragment extends ChannelBaseFragment {
                     public void onFocusChange(View arg0, boolean arg1) {
                         if (arg1) {
                             ((TVGuideActivity) (getActivity())).setLastViewTag("bottom");
+                            arg0.startAnimation(scaleBigAnimation);
+                        }else{
+                        	arg0.startAnimation(scaleSmallAnimation);
+                        	arg0.clearAnimation();
                         }
                     }
                 });
@@ -572,6 +583,10 @@ public class FilmFragment extends ChannelBaseFragment {
             }
             if (hasFocus) {
                 ((TVGuideActivity) (getActivity())).setLastViewTag("");
+                v.startAnimation(scaleBigAnimation);
+            }else{
+            	v.startAnimation(scaleSmallAnimation);
+            	v.clearAnimation();
             }
             // all view not focus
             if (focusFlag) {

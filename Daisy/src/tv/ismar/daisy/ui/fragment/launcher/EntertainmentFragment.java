@@ -27,6 +27,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.MemoryPolicy;
@@ -139,7 +141,12 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 			@Override
 			public void onFocusChange(View arg0, boolean arg1) {
 				if (arg1) {
+					arg0.bringToFront();
+					arg0.startAnimation(scaleBigAnimation);
 					((TVGuideActivity) (getActivity())).setLastViewTag("bottom");			
+				}else{
+					arg0.startAnimation(scaleSmallAnimation);
+					arg0.clearAnimation();
 				}
 			}
 		});
@@ -148,7 +155,51 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 			@Override
 			public void onFocusChange(View arg0, boolean arg1) {
 				if (arg1) {
+                	((RelativeLayout) arg0.getParent()).bringToFront();
+                	((RelativeLayout) arg0.getParent()).startAnimation(scaleBigAnimation);
 					((TVGuideActivity) (getActivity())).setLastViewTag("bottom");			
+				}else{
+                	((RelativeLayout) arg0.getParent()).startAnimation(scaleSmallAnimation);
+                	((RelativeLayout) arg0.getParent()).clearAnimation();
+				}
+			}
+		});
+		vaiety_channel2_image.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View arg0, boolean arg1) {
+				if (arg1) {
+                	((RelativeLayout) arg0.getParent()).bringToFront();
+                	((RelativeLayout) arg0.getParent()).startAnimation(scaleBigAnimation);
+				}else{
+                	((RelativeLayout) arg0.getParent()).startAnimation(scaleSmallAnimation);
+                	((RelativeLayout) arg0.getParent()).clearAnimation();
+				}
+			}
+		});
+		vaiety_channel3_image.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View arg0, boolean arg1) {
+				if (arg1) {
+                	((RelativeLayout) arg0.getParent()).bringToFront();
+                	((RelativeLayout) arg0.getParent()).startAnimation(scaleBigAnimation);
+				}else{
+                	((RelativeLayout) arg0.getParent()).startAnimation(scaleSmallAnimation);
+                	((RelativeLayout) arg0.getParent()).clearAnimation();
+				}
+			}
+		});
+		vaiety_channel4_image.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View arg0, boolean arg1) {
+				if (arg1) {
+                	((RelativeLayout) arg0.getParent()).bringToFront();
+                	((RelativeLayout) arg0.getParent()).startAnimation(scaleBigAnimation);
+				}else{
+                	((RelativeLayout) arg0.getParent()).startAnimation(scaleSmallAnimation);
+                	((RelativeLayout) arg0.getParent()).clearAnimation();
 				}
 			}
 		});

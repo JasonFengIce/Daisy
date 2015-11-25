@@ -311,7 +311,7 @@ public class GuideFragment extends ChannelBaseFragment {
                     if (hasFocus) {
                         ((HomeItemContainer) v.getParent())
                                 .setDrawBorder(true);
-                        ((HomeItemContainer) v.getParent()).invalidate();
+                        ((HomeItemContainer) v.getParent()).startAnimation(scaleBigAnimation);
                         if (tagObject != null) {
                             int tagindex = Integer.parseInt(tagObject.toString());
                             if (tagindex == 0 || tagindex == 7) {
@@ -321,7 +321,8 @@ public class GuideFragment extends ChannelBaseFragment {
                     } else {
                         ((HomeItemContainer) v.getParent())
                                 .setDrawBorder(false);
-                        ((HomeItemContainer) v.getParent()).invalidate();
+                        ((HomeItemContainer) v.getParent()).startAnimation(scaleSmallAnimation);
+                        ((HomeItemContainer) v.getParent()).clearAnimation();
                     }
                 }
             });
