@@ -85,6 +85,7 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+    	if(channelEntity != null)
         fetchChild(channelEntity.getHomepage_url());
     }
 
