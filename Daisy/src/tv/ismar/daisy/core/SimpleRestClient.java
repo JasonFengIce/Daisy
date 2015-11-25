@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -236,6 +238,8 @@ public class SimpleRestClient {
 		HomePagerEntity entity = null;
 		try {
 			String jsonStr = NetworkUtils.getJsonStr(url, "");
+			if(StringUtils.isEmpty(jsonStr))
+				throw new NetworkException("空数据");
 			entity = gson.fromJson(jsonStr, HomePagerEntity.class);
 			return entity;
 		} catch (JsonSyntaxException e) {
@@ -254,6 +258,8 @@ public class SimpleRestClient {
 		try {
 			String url = root_url + path;
 			String jsonStr = NetworkUtils.getJsonStr(url, "");
+			if(StringUtils.isEmpty(jsonStr))
+				throw new NetworkException("空数据");
 			JSONObject rootObject = new JSONObject(jsonStr);
 			JSONArray livingArray = rootObject.getJSONArray("living");
 
