@@ -2,13 +2,10 @@ package tv.ismar.daisy.core.client;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-
 import com.squareup.okhttp.*;
-
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -270,7 +267,7 @@ public class IsmartvUrlClient extends Thread {
             }
         } catch (Exception e) {
             message.what = FAILURE;
-            message.obj = e;
+            message.obj = new IOException("网络请求错误!!!");
         }
         messageHandler.sendMessage(message);
     }
@@ -310,8 +307,9 @@ public class IsmartvUrlClient extends Thread {
                 message.obj = result;
             }
         } catch (Exception e) {
+
             message.what = FAILURE;
-            message.obj = e;
+            message.obj = new IOException("网络请求错误!!!");
         }
         messageHandler.sendMessage(message);
     }

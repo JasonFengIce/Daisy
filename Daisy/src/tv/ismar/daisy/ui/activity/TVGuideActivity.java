@@ -278,7 +278,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         View vv = findViewById(R.id.large_layout);
         DaisyUtils.setbackground(R.drawable.main_bg, vv);
 
-
         vv.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {

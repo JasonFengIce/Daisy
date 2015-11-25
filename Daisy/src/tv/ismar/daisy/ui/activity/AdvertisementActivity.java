@@ -5,14 +5,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.advertisement.AdvertisementManager;
 import tv.ismar.daisy.core.initialization.InitializeProcess;
@@ -22,9 +25,6 @@ import tv.ismar.daisy.data.LaunchAdvertisementEntity;
 
 import java.lang.ref.WeakReference;
 
-/**
- * Created by huaijie on 3/10/15.
- */
 public class AdvertisementActivity extends Activity implements RequestListener {
     private static final String TAG = "AdvertisementActivity";
     private static final String DEFAULT_ADV_PICTURE = "file:///android_asset/poster.png";
@@ -63,17 +63,17 @@ public class AdvertisementActivity extends Activity implements RequestListener {
     @Override
     protected void onDestroy() {
         flag = false;
+        Glide.get(this).clearMemory();
         super.onDestroy();
     }
 
     //Glide 加载图片
     @Override
-    public boolean onException(Exception e, Object o, Target target, boolean b) {
-        Picasso.with(AdvertisementActivity.this).load("file:///android_asset/poster.png").into(adverPic);
+    public boolean onLoadFailed(@Nullable GlideException e, Object o, Target target, boolean b) {
         Glide.with(this)
                 .load(DEFAULT_ADV_PICTURE)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
+                .apply(RequestOptions.skipMemoryCacheOf(true))
+                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
                 .into(adverPic);
         timerCountDown();
         return false;
@@ -81,7 +81,7 @@ public class AdvertisementActivity extends Activity implements RequestListener {
 
     //Glide 加载图片
     @Override
-    public boolean onResourceReady(Object o, Object o2, Target target, boolean b, boolean b1) {
+    public boolean onResourceReady(Object o, Object o2, Target target, DataSource dataSource, boolean b) {
         timerCountDown();
         String launchAppAdvEntityStr = LogSharedPrefs.getSharedPrefs(LogSharedPrefs.SHARED_PREFS_NAME);
         LaunchAdvertisementEntity.AdvertisementData[] advertisementDatas = new Gson().fromJson(launchAppAdvEntityStr, LaunchAdvertisementEntity.AdvertisementData[].class);
@@ -103,9 +103,9 @@ public class AdvertisementActivity extends Activity implements RequestListener {
         Log.d(TAG, "fetch advertisement path: " + path);
         Glide.with(this)
                 .load(path)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
                 .listener(this)
+                .apply(RequestOptions.skipMemoryCacheOf(true))
+                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
                 .into(adverPic);
     }
 
@@ -142,11 +142,12 @@ public class AdvertisementActivity extends Activity implements RequestListener {
         }
     }
 
+
     static class MessageHandler extends Handler {
         WeakReference<AdvertisementActivity> mWeakReference;
 
         public MessageHandler(AdvertisementActivity activity) {
-            mWeakReference = new WeakReference<AdvertisementActivity>(activity);
+            mWeakReference = new WeakReference<>(activity);
         }
 
         @Override
