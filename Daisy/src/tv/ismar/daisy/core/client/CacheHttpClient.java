@@ -49,6 +49,8 @@ public class CacheHttpClient extends Thread {
                         cacheHttpClient.mCallback.onSuccess(msg.obj.toString());
                         break;
                     case FAILED:
+					if (msg.obj == null)
+						msg.obj = "unknow";
                         cacheHttpClient.mCallback.onFailed(msg.obj.toString());
                         break;
                 }

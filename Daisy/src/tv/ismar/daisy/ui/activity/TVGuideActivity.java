@@ -772,6 +772,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         final MessageDialogFragment dialog = new MessageDialogFragment(
                 TVGuideActivity.this, getString(R.string.fetch_net_data_error), null);
         dialog.setButtonText(getString(R.string.setting_network), getString(R.string.i_know));
+        try{
         dialog.showAtLocation(contentView, Gravity.CENTER,
                 new MessageDialogFragment.ConfirmListener() {
                     @Override
@@ -786,6 +787,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                         dialog.dismiss();
                     }
                 });
+        }catch (android.view.WindowManager.BadTokenException e) {
+		}
     }
 
 

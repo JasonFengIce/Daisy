@@ -92,7 +92,6 @@ public class AppUpdateUtilsV2 {
 
             @Override
             public void onFailed(Exception exception) {
-                Log.e(TAG, exception.getMessage());
             }
         });
     }
