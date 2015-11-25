@@ -236,7 +236,6 @@ public class FilmFragment extends ChannelBaseFragment {
 
             @Override
             public void onFailed(Exception exception) {
-                Log.e(TAG, exception.getMessage());
             }
         });
 

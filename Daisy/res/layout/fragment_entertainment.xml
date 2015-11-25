@@ -240,7 +240,7 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -285,6 +285,7 @@
             android:layout_marginLeft="@dimen/entertainment_vaiety_channel_ml_1"
             android:clipChildren="false"
             android:clipToPadding="false"
+            android:layout_toRightOf="@id/vaiety_channel1"
             android:orientation="vertical" >
 
             <tv.ismar.daisy.views.LabelImageView
@@ -316,6 +317,7 @@
             android:layout_marginLeft="@dimen/entertainment_vaiety_channel_ml"
             android:clipChildren="false"
             android:clipToPadding="false"
+            android:layout_toRightOf="@id/vaiety_channel2"
             android:orientation="vertical" >
 
             <tv.ismar.daisy.views.LabelImageView
@@ -347,6 +349,7 @@
             android:layout_marginLeft="@dimen/entertainment_vaiety_channel_ml"
             android:clipChildren="false"
             android:clipToPadding="false"
+            android:layout_toRightOf="@id/vaiety_channel3"
             android:orientation="vertical" >
 
             <tv.ismar.daisy.views.LabelImageView
@@ -377,7 +380,8 @@
             android:layout_width="@dimen/entertainment_vaiety_channel_w"
             android:layout_height="@dimen/entertainment_vaiety_channel_image_h"
             android:layout_marginLeft="@dimen/entertainment_vaiety_channel_ml"
+            android:layout_toRightOf="@id/vaiety_channel4"
             layout="@layout/toppagelistmorebutton" />
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

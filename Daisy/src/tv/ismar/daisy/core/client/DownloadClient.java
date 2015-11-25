@@ -83,7 +83,6 @@ public class DownloadClient implements Runnable {
             fileOutputStream.close();
             inputStream.close();
         } catch (IOException e) {
-            Log.d(TAG, e.getMessage());
         }
 
         downloadTable.download_path = downloadFile.getAbsolutePath();
