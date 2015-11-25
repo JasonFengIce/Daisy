@@ -102,8 +102,8 @@ public static boolean isCanWriteSD(){
 				Environment.MEDIA_MOUNTED)) {
 			File path = Environment.getExternalStorageDirectory();
 			StatFs stat = new StatFs(path.getPath());
-			long blockSize = stat.getBlockSizeLong();
-			long totalBlocks = stat.getBlockCountLong();
+			long blockSize = stat.getBlockSize();
+			long totalBlocks = stat.getBlockCount();
 			long totalSize = totalBlocks * blockSize;
 			return totalSize/1048576;
 		}else{
@@ -116,8 +116,8 @@ public static boolean isCanWriteSD(){
 				Environment.MEDIA_MOUNTED)) {
 			File path = Environment.getExternalStorageDirectory();
 			StatFs stat = new StatFs(path.getPath());
-			long blockSize = stat.getBlockSizeLong();
-			long availableBlocks = stat.getAvailableBlocksLong();
+			long blockSize = stat.getBlockSize();
+			long availableBlocks = stat.getAvailableBlocks();
 			long availSize = availableBlocks * blockSize;
 			return availSize/1048576;
 		}else{

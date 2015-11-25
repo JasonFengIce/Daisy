@@ -78,7 +78,7 @@ public class IsmartvUrlClient extends Thread {
         WeakReference<IsmartvUrlClient> weakReference;
 
         public MessageHandler(IsmartvUrlClient client) {
-            weakReference = new WeakReference<>(client);
+            weakReference = new WeakReference<IsmartvUrlClient>(client);
         }
 
         @Override
