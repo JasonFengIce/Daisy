@@ -16,6 +16,7 @@ import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -38,7 +39,7 @@ public class IsmartvUrlClient extends Thread {
     private String params;
     private CallBack callback;
     private Method method;
-    private MessageHandler messageHandler = new MessageHandler();
+    private MessageHandler messageHandler;
 
     private static Context mContext;
 
@@ -48,8 +49,13 @@ public class IsmartvUrlClient extends Thread {
         mContext = context;
     }
 
+    public IsmartvUrlClient() {
+        messageHandler = new MessageHandler(this);
+    }
+
     @Override
     public void run() {
+
         switch (method) {
             case GET:
                 doGet();
@@ -68,38 +74,47 @@ public class IsmartvUrlClient extends Thread {
     }
 
 
-    class MessageHandler extends Handler {
+    static class MessageHandler extends Handler {
+        WeakReference<IsmartvUrlClient> weakReference;
+
+        public MessageHandler(IsmartvUrlClient client) {
+            weakReference = new WeakReference<>(client);
+        }
+
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case SUCCESS:
-                    callback.onSuccess((String) msg.obj);
-                    break;
-                case FAILURE:
-                    callback.onFailed((Exception) msg.obj);
-                    switch (errorHandler) {
-                        case LOG_MESSAGE:
-                            break;
-                        case SEND_BROADCAST:
-                            sendConnectErrorBroadcast(((Exception) msg.obj).getMessage());
-                            break;
-                    }
-                    break;
-                case FAILURE_4XX:
-                    callback.onFailed((Exception) msg.obj);
-                    break;
-                case FAILURE_5XX:
-                    callback.onFailed((Exception) msg.obj);
-                    switch (errorHandler) {
-                        case LOG_MESSAGE:
-                            break;
-                        case SEND_BROADCAST:
-                            sendConnectErrorBroadcast(((Exception) msg.obj).getMessage());
-                            break;
-                    }
-                    break;
-                default:
-                    break;
+            IsmartvUrlClient client = weakReference.get();
+            if (client != null) {
+                switch (msg.what) {
+                    case SUCCESS:
+                        client.callback.onSuccess((String) msg.obj);
+                        break;
+                    case FAILURE:
+                        client.callback.onFailed((Exception) msg.obj);
+                        switch (client.errorHandler) {
+                            case LOG_MESSAGE:
+                                break;
+                            case SEND_BROADCAST:
+                                client.sendConnectErrorBroadcast(((Exception) msg.obj).getMessage());
+                                break;
+                        }
+                        break;
+                    case FAILURE_4XX:
+                        client.callback.onFailed((Exception) msg.obj);
+                        break;
+                    case FAILURE_5XX:
+                        client.callback.onFailed((Exception) msg.obj);
+                        switch (client.errorHandler) {
+                            case LOG_MESSAGE:
+                                break;
+                            case SEND_BROADCAST:
+                                client.sendConnectErrorBroadcast(((Exception) msg.obj).getMessage());
+                                break;
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
@@ -236,18 +251,18 @@ public class IsmartvUrlClient extends Thread {
             response = client.newCall(request).execute();
             String result = response.body().string();
             Log.i(TAG, "---> BEGIN\n" +
-                            "\t<--- Request URL: " + "\t" + api + "\n" +
-                            "\t<--- Request Method: " + "\t" + "GET" + "\n" +
-                            "\t<--- Response Code: " + "\t" + response.code() + "\n" +
-                            "\t<--- Response Result: " + "\t" + result + "\n" +
-                            "\t---> END"
+                    "\t<--- Request URL: " + "\t" + api + "\n" +
+                    "\t<--- Request Method: " + "\t" + "GET" + "\n" +
+                    "\t<--- Response Code: " + "\t" + response.code() + "\n" +
+                    "\t<--- Response Result: " + "\t" + result + "\n" +
+                    "\t---> END"
             );
             if (response.code() >= 400 && response.code() < 500) {
                 message.what = FAILURE_4XX;
-                message.obj = new IOException(response.message());
+                message.obj = new IOException("网络请求客户端错误!!!");
             } else if (response.code() >= 500) {
                 message.what = FAILURE_5XX;
-                message.obj = new IOException(response.message());
+                message.obj = new IOException("网络请求服务端错误!!!");
 
             } else {
                 message.what = SUCCESS;
@@ -275,20 +290,20 @@ public class IsmartvUrlClient extends Thread {
             response = client.newCall(request).execute();
             String result = response.body().string();
             Log.i(TAG, "---> BEGIN\n" +
-                            "\t<--- Request URL: " + "\t" + url + "\n" +
-                            "\t<--- Request Method: " + "\t" + "POST" + "\n" +
-                            "\t<--- Request Params: " + "\t" + params + "\n" +
-                            "\t<--- Response Code: " + "\t" + response.code() + "\n" +
-                            "\t<--- Response Result: " + "\t" + result + "\n" +
-                            "\t---> END"
+                    "\t<--- Request URL: " + "\t" + url + "\n" +
+                    "\t<--- Request Method: " + "\t" + "POST" + "\n" +
+                    "\t<--- Request Params: " + "\t" + params + "\n" +
+                    "\t<--- Response Code: " + "\t" + response.code() + "\n" +
+                    "\t<--- Response Result: " + "\t" + result + "\n" +
+                    "\t---> END"
             );
 
             if (response.code() >= 400 && response.code() < 500) {
                 message.what = FAILURE_4XX;
-                message.obj = new IOException(response.message());
+                message.obj = new IOException("网络请求客户端错误!!!");
             } else if (response.code() >= 500) {
                 message.what = FAILURE_5XX;
-                message.obj = new IOException(response.message());
+                message.obj = new IOException("网络请求服务端错误!!!");
 
             } else {
                 message.what = SUCCESS;
