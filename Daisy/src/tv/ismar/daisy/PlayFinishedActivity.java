@@ -294,6 +294,7 @@ public class PlayFinishedActivity extends BaseActivity implements OnFocusChangeL
 						@Override
 						public void onPostExecute() {
 							// TODO Auto-generated method stub
+							if(loadDialog != null)
 							loadDialog.dismiss();
 							finish();
 						}

@@ -463,6 +463,8 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		@Override
 		protected Integer doInBackground(String... params) {
 			try {
+				if(channelEntity == null)
+					return RESUTL_CANCELED;
 				entity = mRestClient.getVaietyHome(channelEntity
 						.getHomepage_url());
 			} catch (NetworkException e) {
