@@ -72,11 +72,7 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
 			@Override
 			public void onFocusChange(View arg0, boolean arg1) {
 				if (arg1) {
-					arg0.startAnimation(scaleBigAnimation);
 					((TVGuideActivity) (getActivity())).setLastViewTag("bottom");			
-				}else{
-					arg0.startAnimation(scaleSmallAnimation);
-					arg0.clearAnimation();
 				}
 			}
 		});
@@ -190,11 +186,7 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
             			@Override
             			public void onFocusChange(View arg0, boolean arg1) {
             				if (arg1) {
-            					arg0.startAnimation(scaleBigAnimation);
             					((TVGuideActivity) (getActivity())).setLastViewTag("");			
-            				}else{
-            					arg0.startAnimation(scaleSmallAnimation);
-            					arg0.clearAnimation();
             				}
             			}
             		});
@@ -206,11 +198,7 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
             			@Override
             			public void onFocusChange(View arg0, boolean arg1) {
             				if (arg1) {
-            					arg0.startAnimation(scaleBigAnimation);
             					((TVGuideActivity) (getActivity())).setLastViewTag("bottom");			
-            				}else{
-            					arg0.startAnimation(scaleSmallAnimation);
-            					arg0.clearAnimation();            					
             				}
             			}
             		});
@@ -234,18 +222,7 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
                     itemContainer.setId(12435688);
                     childMore.setNextFocusLeftId(12435688);
                 }
-                itemContainer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-					
-					@Override
-					public void onFocusChange(View arg0, boolean arg1) {
-        				if (arg1) {
-        					arg0.startAnimation(scaleBigAnimation);
-        				}else{
-        					arg0.startAnimation(scaleSmallAnimation);
-        					arg0.clearAnimation();            					
-        				}						
-					}
-				});
+
                 itemContainer.setLayoutParams(horizontalParams);
                 bottomLayout.addView(itemContainer);
             }
@@ -270,11 +247,7 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
         			@Override
         			public void onFocusChange(View arg0, boolean arg1) {
         				if (arg1) {
-        					arg0.startAnimation(scaleBigAnimation);
         					((TVGuideActivity) (getActivity())).setLastViewTag("");			
-        				}else{
-        					arg0.startAnimation(scaleSmallAnimation);
-        					arg0.clearAnimation();         					
         				}
         			}
         		});

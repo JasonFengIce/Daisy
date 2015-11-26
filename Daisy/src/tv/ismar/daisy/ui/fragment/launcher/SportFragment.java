@@ -13,8 +13,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
@@ -31,7 +29,6 @@ import tv.ismar.daisy.models.SportGame;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.ui.activity.TVGuideActivity;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
-import tv.ismar.daisy.ui.widget.HomeItemContainer;
 import tv.ismar.daisy.utils.PicassoUtils;
 import tv.ismar.daisy.views.LabelImageView;
 
@@ -169,51 +166,7 @@ public class SportFragment extends ChannelBaseFragment {
             @Override
             public void onFocusChange(View arg0, boolean arg1) {
                 if (arg1) {
-                	((LinearLayout) arg0.getParent()).bringToFront();
-                	((LinearLayout) arg0.getParent()).startAnimation(scaleBigAnimation);
                     ((TVGuideActivity) (getActivity())).setLastViewTag("bottom");
-                }else{
-                	((LinearLayout) arg0.getParent()).startAnimation(scaleSmallAnimation);
-                	((LinearLayout) arg0.getParent()).clearAnimation();
-                }
-            }
-        });
-        sport_channel2_image.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View arg0, boolean arg1) {
-                if (arg1) {
-                	((LinearLayout) arg0.getParent()).bringToFront();
-                	((LinearLayout) arg0.getParent()).startAnimation(scaleBigAnimation);
-                }else{
-                	((LinearLayout) arg0.getParent()).startAnimation(scaleSmallAnimation);
-                	((LinearLayout) arg0.getParent()).clearAnimation();
-                }
-            }
-        });
-        sport_channel3_image.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View arg0, boolean arg1) {
-                if (arg1) {
-                	((LinearLayout) arg0.getParent()).bringToFront();
-                	((LinearLayout) arg0.getParent()).startAnimation(scaleBigAnimation);
-                }else{
-                	((LinearLayout) arg0.getParent()).startAnimation(scaleSmallAnimation);
-                	((LinearLayout) arg0.getParent()).clearAnimation();
-                }
-            }
-        });
-        sport_channel4_image.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View arg0, boolean arg1) {
-                if (arg1) {
-                	((LinearLayout) arg0.getParent()).bringToFront();
-                	((LinearLayout) arg0.getParent()).startAnimation(scaleBigAnimation);
-                }else{
-                	((LinearLayout) arg0.getParent()).startAnimation(scaleSmallAnimation);
-                	((LinearLayout) arg0.getParent()).clearAnimation();
                 }
             }
         });
@@ -222,13 +175,8 @@ public class SportFragment extends ChannelBaseFragment {
             @Override
             public void onFocusChange(View arg0, boolean arg1) {
                 if (arg1) {
-                	arg0.startAnimation(scaleBigAnimation);
-                	arg0.bringToFront();
                     ((TVGuideActivity) (getActivity())).setLastViewTag("bottom");
                     arrowDown.setFocusable(false);
-                }else{
-                	arg0.startAnimation(scaleSmallAnimation);
-                	arg0.clearAnimation();
                 }
             }
         });
@@ -359,8 +307,7 @@ public class SportFragment extends ChannelBaseFragment {
 
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
-            if (hasFocus) {v.bringToFront();
-            ((RelativeLayout) v.getParent()).bringToFront();
+            if (hasFocus) {
                 ((TVGuideActivity) (getActivity())).setLastViewTag("");
                 Carousel carousel = (Carousel) v.getTag(R.drawable.launcher_selector);
                 PicassoUtils.load(mContext, carousel.getVideo_image(), sportspost);

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:orientation="vertical"
               android:paddingLeft="@dimen/fragment_padding_lr"
               android:paddingRight="@dimen/fragment_padding_lr"
               android:clipChildren="false"
               android:clipToPadding="false">
 
-    <RelativeLayout
-            android:id="@+id/film_top_panel"
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/film_linearLayout_h"
             android:layout_marginTop="@dimen/film_linearLayout_margin"
@@ -37,7 +37,6 @@
                 android:layout_height="@dimen/film_post_layout_h"
                 android:layout_marginLeft="@dimen/film_post_layout_ml"
                 android:layout_marginRight="@dimen/film_post_layout_ml"
-                android:layout_toRightOf="@id/film_lefttop_image"
                 android:focusable="true"
                 android:clickable="true"
                 >
@@ -75,12 +74,11 @@
                 android:layout_width="@dimen/film_carousel_layout_w"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:layout_toRightOf="@id/film_post_layout"
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 >
         </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
             android:id="@+id/film_recommend_list"
@@ -88,11 +86,10 @@
             android:layout_height="@dimen/film_recommend_list_h"
             android:layout_marginTop="@dimen/film_recommend_list_mt"
             android:paddingBottom="@dimen/film_recommend_list_padding"
-            android:layout_below="@id/film_top_panel"
             android:orientation="horizontal"
             android:clipChildren="false"
             android:clipToPadding="false"
             >
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

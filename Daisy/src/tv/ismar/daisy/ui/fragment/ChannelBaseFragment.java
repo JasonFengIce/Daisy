@@ -11,8 +11,6 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.data.ChannelEntity;
@@ -34,8 +32,8 @@ public class ChannelBaseFragment extends Fragment {
     protected View mRightBottomView;
     protected boolean isRight;
     protected String bottomFlag;
-    protected Animation scaleSmallAnimation;
-    protected Animation scaleBigAnimation;
+
+
 
     
     public void setRight(boolean isRight) {
@@ -62,12 +60,6 @@ public class ChannelBaseFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mContext = (TVGuideActivity) activity;
-        if (scaleSmallAnimation == null) {
-			scaleSmallAnimation = AnimationUtils.loadAnimation(mContext, R.anim.anim_scale_small);
-		}
-		if (scaleBigAnimation == null) {
-			scaleBigAnimation = AnimationUtils.loadAnimation(mContext, R.anim.anim_scale_big);
-		}
 //        mService = mContext.getService();
 
     }
