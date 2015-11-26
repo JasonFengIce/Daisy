@@ -867,8 +867,6 @@ private boolean isPause = false;
 		public void onFocusChange(View v, boolean hasFocus) {
 			if (v.getParent() == mRelatedVideoContainer) {
 				if (hasFocus) {
-                	v.startAnimation(scaleBigAnimation);
-                	v.bringToFront();
 					TextView title = (TextView) v
 							.findViewById(R.id.related_title);
 					title.setTextColor(0xFFF8F8FF);
@@ -878,8 +876,6 @@ private boolean isPause = false;
 					title.setSelected(true);
 					focus.setSelected(true);
 				} else {
-                	v.startAnimation(scaleSmallAnimation);
-                	v.clearAnimation();
 					TextView title = (TextView) v
 							.findViewById(R.id.related_title);
 					title.setTextColor(0xFFF8F8FF);

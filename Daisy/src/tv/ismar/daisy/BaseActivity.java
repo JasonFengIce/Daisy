@@ -37,8 +37,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.PopupWindow;
 
@@ -64,8 +62,6 @@ public class BaseActivity extends FragmentActivity {
     protected static int activityCount = 0;
     protected static int activityCount2 = 0;
     protected  long app_start_time;
-    protected Animation scaleSmallAnimation;
-    protected Animation scaleBigAnimation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,12 +106,6 @@ public class BaseActivity extends FragmentActivity {
 //        	startActivity(xxxIntent);
 //        	finish();
 //        }
-        if (scaleSmallAnimation == null) {
-			scaleSmallAnimation = AnimationUtils.loadAnimation(this, R.anim.anim_scale_small);
-		}
-		if (scaleBigAnimation == null) {
-			scaleBigAnimation = AnimationUtils.loadAnimation(this, R.anim.anim_scale_big);
-		}
     }
 
     private void registerBroadcastReceiver() {
