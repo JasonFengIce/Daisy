@@ -16,8 +16,10 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.advertisement.AdvertisementManager;
+import tv.ismar.daisy.core.cache.image_loader.ImageLoader;
 import tv.ismar.daisy.core.initialization.InitializeProcess;
 import tv.ismar.daisy.core.logger.AdvertisementLogger;
 import tv.ismar.daisy.core.preferences.LogSharedPrefs;
@@ -25,7 +27,7 @@ import tv.ismar.daisy.data.LaunchAdvertisementEntity;
 
 import java.lang.ref.WeakReference;
 
-public class AdvertisementActivity extends Activity implements RequestListener {
+public class AdvertisementActivity extends Activity {
     private static final String TAG = "AdvertisementActivity";
     private static final String DEFAULT_ADV_PICTURE = "file:///android_asset/poster.png";
     private static final int TIME_COUNTDOWN = 0x0001;
@@ -67,31 +69,6 @@ public class AdvertisementActivity extends Activity implements RequestListener {
         super.onDestroy();
     }
 
-    //Glide 加载图片
-    @Override
-    public boolean onLoadFailed(@Nullable GlideException e, Object o, Target target, boolean b) {
-        Glide.with(this)
-                .load(DEFAULT_ADV_PICTURE)
-                .apply(RequestOptions.skipMemoryCacheOf(true))
-                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
-                .into(adverPic);
-        timerCountDown();
-        return false;
-    }
-
-    //Glide 加载图片
-    @Override
-    public boolean onResourceReady(Object o, Object o2, Target target, DataSource dataSource, boolean b) {
-        timerCountDown();
-        String launchAppAdvEntityStr = LogSharedPrefs.getSharedPrefs(LogSharedPrefs.SHARED_PREFS_NAME);
-        LaunchAdvertisementEntity.AdvertisementData[] advertisementDatas = new Gson().fromJson(launchAppAdvEntityStr, LaunchAdvertisementEntity.AdvertisementData[].class);
-        if (null != advertisementDatas) {
-            LaunchAdvertisementEntity.AdvertisementData data = advertisementDatas[0];
-            AdvertisementLogger.bootAdvPlay(data.getTitle(), data.getMedia_id(), data.getMedia_url(), data.getDuration());
-        }
-        return false;
-    }
-
     private void initViews() {
         adverPic = (ImageView) findViewById(R.id.advertisement_pic);
         timerText = (ImageView) findViewById(R.id.adver_timer);
@@ -101,11 +78,32 @@ public class AdvertisementActivity extends Activity implements RequestListener {
         mAdvertisementManager = new AdvertisementManager();
         String path = mAdvertisementManager.getAppLaunchAdvertisement();
         Log.d(TAG, "fetch advertisement path: " + path);
-        Glide.with(this)
+        ImageLoader.with(this)
                 .load(path)
-                .listener(this)
-                .apply(RequestOptions.skipMemoryCacheOf(true))
-                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                .diskCacheStrategy(ImageLoader.CacheStrategy.DISK_NONE)
+                .memoryCacheStrategy(ImageLoader.CacheStrategy.MEMORY_NODE)
+                .addCallback(new ImageLoader.LoadCallback() {
+                    @Override
+                    public void onSuccess() {
+                        timerCountDown();
+                        String launchAppAdvEntityStr = LogSharedPrefs.getSharedPrefs(LogSharedPrefs.SHARED_PREFS_NAME);
+                        LaunchAdvertisementEntity.AdvertisementData[] advertisementDatas = new Gson().fromJson(launchAppAdvEntityStr, LaunchAdvertisementEntity.AdvertisementData[].class);
+                        if (null != advertisementDatas) {
+                            LaunchAdvertisementEntity.AdvertisementData data = advertisementDatas[0];
+                            AdvertisementLogger.bootAdvPlay(data.getTitle(), data.getMedia_id(), data.getMedia_url(), data.getDuration());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        ImageLoader.with(AdvertisementActivity.this)
+                                .load(DEFAULT_ADV_PICTURE)
+                                .diskCacheStrategy(ImageLoader.CacheStrategy.DISK_NONE)
+                                .memoryCacheStrategy(ImageLoader.CacheStrategy.MEMORY_NODE)
+                                .into(adverPic);
+                        timerCountDown();
+                    }
+                })
                 .into(adverPic);
     }
 

@@ -8,6 +8,27 @@ import android.content.Context;
  */
 public class ImageLoader {
 
+    public static RequestManager with(Activity activity) {
+        RequestManager requestManager = new RequestManager(activity);
+        return requestManager;
+    }
 
 
+    public interface LoadCallback {
+        void onSuccess();
+
+        void onFailure();
+    }
+
+    public enum CacheStrategy {
+        DISK_NONE,
+        MEMORY_NODE,
+        DISK_CACHE,
+        MEMORY_CACHE
+    }
+
+    enum CacheType {
+        PICASSO,
+        GLIDE
+    }
 }
