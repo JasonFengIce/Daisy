@@ -87,6 +87,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 	private Boolean isActivityExit = false;
     private Button arrow_right;
     private Button arrow_left;
+    private Thread fetchhotlines;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -148,7 +149,12 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 	}
 
 	private void showHotWords() {
-		new Thread(new Runnable() {
+		try{
+		if(fetchhotlines != null && fetchhotlines.isAlive()){
+			fetchhotlines.interrupt();
+		}
+		}catch(Exception e){}
+		fetchhotlines = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				synchronized (SearchActivity.this) {
@@ -165,7 +171,8 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 				}
 			}
 		}) {
-		}.start();
+		};
+		fetchhotlines.start();
 	}
 //-partition-size 2048 -
 	public void initViews() {
@@ -473,6 +480,11 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == 4) {
+			try{
+				if(fetchhotlines != null && fetchhotlines.isAlive()){
+					fetchhotlines.interrupt();
+				}
+				}catch(Exception e){}
 			finish();
 		}else if((keyCode == 774 || keyCode == 480) && autoCompleteTextView != null){
 	           InputMethodManager imm = (InputMethodManager) autoCompleteTextView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -482,11 +494,13 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 	}
 
 	private void loadDialogShow() {
+		try{
 		if (loadDialog.isShowing()) {
 			loadDialog.dismiss();
 		} else {
 			loadDialog.show();
 		}
+		}catch (android.view.WindowManager.BadTokenException e){}
 	}
 
 	/**
