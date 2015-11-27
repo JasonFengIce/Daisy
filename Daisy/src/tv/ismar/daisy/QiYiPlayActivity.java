@@ -211,7 +211,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                 // TODO Auto-generated method stub
                 switch (keycode.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        if (mPlayer.getDuration() > 0 && !live_video) {
+                        if (clipLength > 0 && !live_video) {
                             isSeek = true;
                             showPanel();
                             isBuffer = true;
@@ -239,7 +239,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                 // TODO Auto-generated method stub
                 switch (keycode.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        if (mPlayer.getDuration() > 0 && !live_video) {
+                        if (clipLength > 0 && !live_video) {
                             isSeek = true;
                             showPanel();
                             isBuffer = true;
@@ -594,7 +594,8 @@ public class QiYiPlayActivity extends VodMenuAction {
 
         @Override
         public void onPrepared() {
-            timeBar.setMax(mPlayer.getDuration());
+        	clipLength = mPlayer.getDuration();
+            timeBar.setMax(clipLength);
             if (seekPostion > 0)
                 mPlayer.seekTo(seekPostion);
             else
@@ -819,7 +820,7 @@ public class QiYiPlayActivity extends VodMenuAction {
         public void onProgressChanged(SeekBar seekBar, int progress,
                                       boolean fromUser) {
             if (!live_video) {
-                if (mPlayer.getDuration() > 0) {
+                if (clipLength > 0) {
                     timeBar.setProgress(progress);
                     Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
                 }
@@ -1156,7 +1157,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                     break;
                 case KeyEvent.KEYCODE_DPAD_CENTER:
                 case KeyEvent.KEYCODE_ENTER:
-                    if (mPlayer.getDuration() > 0) {
+                    if (clipLength > 0) {
                         showPanel();
                         if (!paused) {
                             pauseItem();

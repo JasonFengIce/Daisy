@@ -265,7 +265,7 @@ public class PlayerActivity extends VodMenuAction {
 				// TODO Auto-generated method stub
 				switch (keycode.getAction()) {
 				case MotionEvent.ACTION_DOWN:
-					if (mVideoView.getDuration() > 0 && !live_video) {
+					if (clipLength > 0 && !live_video) {
 						isSeek = true;
 						showPanel();
 						isBuffer = true;
@@ -294,7 +294,7 @@ public class PlayerActivity extends VodMenuAction {
 				// TODO Auto-generated method stub
 				switch (keycode.getAction()) {
 				case MotionEvent.ACTION_DOWN:
-					if (mVideoView.getDuration() > 0 && !live_video) {
+					if (clipLength > 0 && !live_video) {
 						isSeek = true;
 						showPanel();
 						isBuffer = true;
@@ -1525,8 +1525,8 @@ public class PlayerActivity extends VodMenuAction {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
 				mHandler.removeCallbacks(mUpdateTimeTask);
 				mHandler.removeCallbacks(checkStatus);
-				if (mVideoView.getDuration() > 0 && !live_video) {
-					mVideoView.pause();
+				if (clipLength > 0 && !live_video) {
+//					mVideoView.pause();
 					isSeek = true;
 					showPanel();
 					fastBackward(SHORT_STEP);
@@ -1539,8 +1539,8 @@ public class PlayerActivity extends VodMenuAction {
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
 				mHandler.removeCallbacks(mUpdateTimeTask);
 				mHandler.removeCallbacks(checkStatus);
-				if (mVideoView.getDuration() > 0 && !live_video) {
-					mVideoView.pause();
+				if (clipLength > 0 && !live_video) {
+//					mVideoView.pause();
 					isSeek = true;
 					showPanel();
 					fastForward(SHORT_STEP);
@@ -1552,7 +1552,7 @@ public class PlayerActivity extends VodMenuAction {
 				break;
 			case KeyEvent.KEYCODE_DPAD_CENTER:
 			case KeyEvent.KEYCODE_ENTER:
-				if (mVideoView.getDuration() > 0) {
+				if (clipLength > 0) {
 					showPanel();
 					if (!paused) {
 						pauseItem();

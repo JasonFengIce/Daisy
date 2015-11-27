@@ -37,7 +37,7 @@ public class CacheHttpClient extends Thread {
         private final WeakReference<CacheHttpClient> cacheHttpClientWeakReference;
 
         public MessageHandler(CacheHttpClient cacheHttpClient) {
-            cacheHttpClientWeakReference = new WeakReference<>(cacheHttpClient);
+            cacheHttpClientWeakReference = new WeakReference<CacheHttpClient>(cacheHttpClient);
         }
 
         @Override

@@ -1,36 +1,50 @@
 package tv.ismar.daisy;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.sakuratya.horizontal.ui.HGridView;
+
+import tv.ismar.daisy.adapter.SearchAdapter;
+import tv.ismar.daisy.core.ConnectionHelper;
+import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.EventProperty;
+import tv.ismar.daisy.core.NetworkUtils;
+import tv.ismar.daisy.core.SearchMovieService;
+import tv.ismar.daisy.core.SearchPromptDialog;
+import tv.ismar.daisy.core.SortMovieUtils;
+import tv.ismar.daisy.models.MovieBean;
+import tv.ismar.daisy.player.InitPlayerTool;
+import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
+import tv.ismar.daisy.views.LoadingDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-import org.sakuratya.horizontal.ui.HGridView;
-import tv.ismar.daisy.adapter.SearchAdapter;
-import tv.ismar.daisy.core.*;
-import tv.ismar.daisy.models.MovieBean;
-import tv.ismar.daisy.player.InitPlayerTool;
-import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
-import tv.ismar.daisy.views.LoadingDialog;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import android.widget.Toast;
 
 public class SearchActivity extends BaseActivity implements OnClickListener, OnItemClickListener {
 
@@ -87,7 +101,9 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 	private Boolean isActivityExit = false;
     private Button arrow_right;
     private Button arrow_left;
+    private ExecutorService threadservice;
     private Thread fetchhotlines;
+    private Future hotlinefuture;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -95,6 +111,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
         View background = findViewById(R.id.large_layout);
         DaisyUtils.setbackground(R.drawable.main_bg,background);
 		movieList = new ArrayList<MovieBean>();
+		threadservice = Executors.newSingleThreadExecutor();
 		initViews();
 //		InputMethodManager m = (InputMethodManager) autoCompleteTextView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 //		m.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);	
@@ -149,30 +166,27 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 	}
 
 	private void showHotWords() {
-		try{
-		if(fetchhotlines != null && fetchhotlines.isAlive()){
-			fetchhotlines.interrupt();
-		}
-		}catch(Exception e){}
 		fetchhotlines = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				synchronized (SearchActivity.this) {
+//				synchronized (SearchActivity.this) {
 					try {
 						Log.i("listHotWords", listHotWords+"" );
 						if (null == listHotWords || 0==listHotWords.size()) {
 							Log.i("listHotWords", listHotWords+"Ture" );
 							listHotWords = searchService.getHotWords();
+							Log.v("aaaa", "fetchhotlines");
 							mHandler.sendEmptyMessage(ADD_VIEW);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-				}
+//				}
 			}
 		}) {
 		};
-		fetchhotlines.start();
+		hotlinefuture = threadservice.submit(fetchhotlines);
+//		fetchhotlines.start();
 	}
 //-partition-size 2048 -
 	public void initViews() {
@@ -480,11 +494,8 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == 4) {
-			try{
-				if(fetchhotlines != null && fetchhotlines.isAlive()){
-					fetchhotlines.interrupt();
-				}
-				}catch(Exception e){}
+			boolean result = hotlinefuture.cancel(true);
+			Log.v("aaaa", ""+result);
 			finish();
 		}else if((keyCode == 774 || keyCode == 480) && autoCompleteTextView != null){
 	           InputMethodManager imm = (InputMethodManager) autoCompleteTextView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -500,7 +511,9 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 		} else {
 			loadDialog.show();
 		}
-		}catch (android.view.WindowManager.BadTokenException e){}
+		}catch (android.view.WindowManager.BadTokenException e){
+			Log.v("aaaa", e.getMessage());
+		}
 	}
 
 	/**

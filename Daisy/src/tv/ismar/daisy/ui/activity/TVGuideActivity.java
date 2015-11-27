@@ -1134,7 +1134,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         private WeakReference<TVGuideActivity> weakReference;
 
         public FragmentSwitchHandler(TVGuideActivity activity) {
-            weakReference = new WeakReference<>(activity);
+            weakReference = new WeakReference<TVGuideActivity>(activity);
         }
 
         @Override
