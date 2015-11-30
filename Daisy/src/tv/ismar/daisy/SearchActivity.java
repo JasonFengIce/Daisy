@@ -175,7 +175,6 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 						if (null == listHotWords || 0==listHotWords.size()) {
 							Log.i("listHotWords", listHotWords+"Ture" );
 							listHotWords = searchService.getHotWords();
-							Log.v("aaaa", "fetchhotlines");
 							mHandler.sendEmptyMessage(ADD_VIEW);
 						}
 					} catch (Exception e) {
@@ -494,8 +493,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == 4) {
-			boolean result = hotlinefuture.cancel(true);
-			Log.v("aaaa", ""+result);
+			hotlinefuture.cancel(true);
 			finish();
 		}else if((keyCode == 774 || keyCode == 480) && autoCompleteTextView != null){
 	           InputMethodManager imm = (InputMethodManager) autoCompleteTextView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -512,7 +510,6 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 			loadDialog.show();
 		}
 		}catch (android.view.WindowManager.BadTokenException e){
-			Log.v("aaaa", e.getMessage());
 		}
 	}
 

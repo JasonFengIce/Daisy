@@ -1526,7 +1526,7 @@ public class PlayerActivity extends VodMenuAction {
 				mHandler.removeCallbacks(mUpdateTimeTask);
 				mHandler.removeCallbacks(checkStatus);
 				if (clipLength > 0 && !live_video) {
-//					mVideoView.pause();
+					mVideoView.pause();
 					isSeek = true;
 					showPanel();
 					fastBackward(SHORT_STEP);
@@ -1540,7 +1540,7 @@ public class PlayerActivity extends VodMenuAction {
 				mHandler.removeCallbacks(mUpdateTimeTask);
 				mHandler.removeCallbacks(checkStatus);
 				if (clipLength > 0 && !live_video) {
-//					mVideoView.pause();
+					mVideoView.pause();
 					isSeek = true;
 					showPanel();
 					fastForward(SHORT_STEP);
