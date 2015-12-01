@@ -11,10 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.os.*;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -764,30 +761,36 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     public void onFailed(String erro) {
         Log.e(TAG, "active error: " + erro);
         fetchChannels();
-        showNetErrorPopup();
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showNetErrorPopup();
+            }
+        }, 2000);
+
     }
 
     private void showNetErrorPopup() {
         final MessageDialogFragment dialog = new MessageDialogFragment(
                 TVGuideActivity.this, getString(R.string.fetch_net_data_error), null);
         dialog.setButtonText(getString(R.string.setting_network), getString(R.string.i_know));
-        try{
-        dialog.showAtLocation(contentView, Gravity.CENTER,
-                new MessageDialogFragment.ConfirmListener() {
-                    @Override
-                    public void confirmClick(View view) {
-                        Intent intent = new Intent(Settings.ACTION_SETTINGS);
-                        TVGuideActivity.this.startActivity(intent);
-                    }
-                }, new MessageDialogFragment.CancelListener() {
+        try {
+            dialog.showAtLocation(contentView, Gravity.CENTER,
+                    new MessageDialogFragment.ConfirmListener() {
+                        @Override
+                        public void confirmClick(View view) {
+                            Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                            TVGuideActivity.this.startActivity(intent);
+                        }
+                    }, new MessageDialogFragment.CancelListener() {
 
-                    @Override
-                    public void cancelClick(View view) {
-                        dialog.dismiss();
-                    }
-                });
-        }catch (android.view.WindowManager.BadTokenException e) {
-		}
+                        @Override
+                        public void cancelClick(View view) {
+                            dialog.dismiss();
+                        }
+                    });
+        } catch (android.view.WindowManager.BadTokenException e) {
+        }
     }
 
 
