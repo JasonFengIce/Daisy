@@ -2219,6 +2219,8 @@ public class PlayerActivity extends VodMenuAction {
 	protected void onDestroy() {
 		menu = null;
 		urlInfo = null;
+		if(mCheckHandler != null)
+		mCheckHandler.removeCallbacksAndMessages(null);
 		mCheckHandler = null;
 		historyManager = null;
 		simpleRestClient = null;
