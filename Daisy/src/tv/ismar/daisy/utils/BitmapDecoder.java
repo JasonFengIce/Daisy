@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 
 import java.io.InputStream;
@@ -45,6 +46,7 @@ public class BitmapDecoder extends Thread {
         WeakReference<BitmapDecoder> weakReference;
 
         private MessageHandler(BitmapDecoder bitmapDecoder) {
+            super(Looper.getMainLooper());
             weakReference = new WeakReference<>(bitmapDecoder);
         }
 
