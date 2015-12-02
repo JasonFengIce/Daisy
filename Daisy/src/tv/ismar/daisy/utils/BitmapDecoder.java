@@ -39,6 +39,7 @@ public class BitmapDecoder extends Thread {
         MessageHandler messageHandler = new MessageHandler(this);
         Message message = new Message();
         message.obj = bd;
+        message.what = DECODE_SUCCESS;
         messageHandler.sendMessage(message);
     }
 
