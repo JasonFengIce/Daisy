@@ -412,7 +412,8 @@ public class SportFragment extends ChannelBaseFragment {
         int index = 0;
 
         LabelImageView[] sportLives = {sports_live1, sports_live2, sports_live3};
-
+		if (currentLiveIndex < 0)
+			currentLiveIndex = 0;
         for (int position = currentLiveIndex; position < games.size(); position++) {
 //            PicassoUtils.load(mContext, games.get(position).getImageurl(), sportLives[position]);
             switch (index++) {

@@ -694,6 +694,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 						} catch (NetworkException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
+						} catch (java.lang.NullPointerException e){
 						}
 
 					
