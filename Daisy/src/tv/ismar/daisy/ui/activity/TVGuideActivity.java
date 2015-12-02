@@ -719,6 +719,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                         CallaPlay callaPlay = new CallaPlay();
                         callaPlay.app_exit(System.currentTimeMillis() - app_start_time, SimpleRestClient.appVersion);
                         TVGuideActivity.this.finish();
+                        System.exit(0);
                     }
                 },
                 new MessagePopWindow.CancelListener() {
