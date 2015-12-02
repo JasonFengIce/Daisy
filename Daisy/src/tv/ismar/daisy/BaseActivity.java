@@ -493,6 +493,7 @@ public class BaseActivity extends FragmentActivity {
                         CallaPlay callaPlay = new CallaPlay();
                         callaPlay.app_exit(System.currentTimeMillis() - app_start_time, SimpleRestClient.appVersion);
                         BaseActivity.this.finish();
+                        System.exit(0);
                     }
                 }, new MessageDialogFragment.CancelListener() {
 
