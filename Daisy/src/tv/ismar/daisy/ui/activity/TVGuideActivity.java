@@ -52,6 +52,7 @@ import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
 import tv.ismar.daisy.ui.fragment.launcher.*;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
 import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
+import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.sakura.ui.widget.MessagePopWindow;
 
 import java.io.InputStream;
@@ -272,8 +273,14 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
         homepage_template = getIntent().getStringExtra("homepage_template");
         homepage_url = getIntent().getStringExtra("homepage_url");
-        View vv = findViewById(R.id.large_layout);
-        DaisyUtils.setbackground(R.drawable.main_bg, vv);
+        final View vv = findViewById(R.id.large_layout);
+        new BitmapDecoder().decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
+            @Override
+            public void onSuccess(BitmapDrawable bitmapDrawable) {
+                vv.setBackgroundDrawable(bitmapDrawable);
+            }
+        });
+
 
         vv.setOnKeyListener(new View.OnKeyListener() {
             @Override

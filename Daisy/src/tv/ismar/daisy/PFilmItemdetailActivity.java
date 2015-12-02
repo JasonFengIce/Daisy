@@ -3,6 +3,7 @@ package tv.ismar.daisy;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.*;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
+import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.*;
 
@@ -75,14 +77,22 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
     private String slug;
     private String fromPage;
     private LaunchHeaderLayout weatherFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.filmitem_portrait_detail_view);
         mSimpleRestClient = new SimpleRestClient();
-        View vv = findViewById(R.id.large_layout);
-        DaisyUtils.setbackground(R.drawable.main_bg,vv);
+        final View vv = findViewById(R.id.large_layout);
+        new BitmapDecoder().decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
+            @Override
+            public void onSuccess(BitmapDrawable bitmapDrawable) {
+                vv.setBackgroundDrawable(bitmapDrawable);
+            }
+        });
+
+
         mLoadingDialog = new LoadingDialog(this, getResources().getString(
                 R.string.vod_loading));
         mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
@@ -130,7 +140,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         setContentView(R.layout.filmitem_portrait_detail_view);
         mSimpleRestClient = new SimpleRestClient();
         View vv = findViewById(R.id.large_layout);
-        DaisyUtils.setbackground(R.drawable.main_bg,vv);
+        DaisyUtils.setbackground(R.drawable.main_bg, vv);
         mLoadingDialog = new LoadingDialog(this, getResources().getString(
                 R.string.vod_loading));
         mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
@@ -206,9 +216,6 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
         super.onResume();
     }
-
-
-
 
 
     private boolean isFavorite() {
@@ -432,7 +439,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 //    }
 
     private void setExpenseStatus() {
-		/*
+        /*
 		 * if this item is a drama , the button should split to two. otherwise.
 		 * use one button.
 		 */
@@ -446,7 +453,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 //setLeftDrawable(drawableleftdrama, mRightBtn);
                 mRightBtn.setTag(DRAMA_VIDEO);
                 mRightBtn.setText(getResources().getString(R.string.vod_itemepisode));
-                initFocusBtn(mRightBtn,false);
+                initFocusBtn(mRightBtn, false);
             }
             //setLeftDrawable(drawableleftplay, mLeftBtn);
             mLeftBtn.setText(getResources().getString(R.string.play));
@@ -454,8 +461,8 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             mMiddleBtn.setText(getResources().getString(R.string.favorite));
             mLeftBtn.setTag(PLAY_VIDEO);
             mMiddleBtn.setTag(COLLECT_VIDEO);
-            initFocusBtn(mLeftBtn,false);
-            initFocusBtn(mMiddleBtn,false);
+            initFocusBtn(mLeftBtn, false);
+            initFocusBtn(mMiddleBtn, false);
             mCollectBtn = mMiddleBtn;
         } else {
             // 收费
@@ -491,9 +498,9 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 //setLeftDrawable(drawableleftcollect, mRightBtn);
                 mRightBtn.setText(getResources().getString(R.string.favorite));
                 mRightBtn.setTag(COLLECT_VIDEO);
-                initFocusBtn(mLeftBtn,false);
-                initFocusBtn(mRightBtn,false);
-                initFocusBtn(mMiddleBtn,false);
+                initFocusBtn(mLeftBtn, false);
+                initFocusBtn(mRightBtn, false);
+                initFocusBtn(mMiddleBtn, false);
                 detail_price_txt.setText("￥" + mItem.expense.price);
                 detail_duration_txt.setText("有效期" + mItem.expense.duration
                         + "天");
@@ -521,7 +528,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                     //setLeftDrawable(drawableleftdrama, mRightBtn);
                     mRightBtn.setText(getResources().getString(R.string.vod_itemepisode));
                     mRightBtn.setTag(DRAMA_VIDEO);
-                    initFocusBtn(mRightBtn,false);
+                    initFocusBtn(mRightBtn, false);
                 }
 
                 //setLeftDrawable(drawableleftplay, mLeftBtn);
@@ -530,8 +537,8 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 //setLeftDrawable(drawableleftcollect,mMiddleBtn);
                 mMiddleBtn.setText(getResources().getString(R.string.favorite));
                 mMiddleBtn.setTag(COLLECT_VIDEO);
-                initFocusBtn(mLeftBtn,false);
-                initFocusBtn(mMiddleBtn,false);
+                initFocusBtn(mLeftBtn, false);
+                initFocusBtn(mMiddleBtn, false);
                 detail_price_txt.setText("已付费");
                 detail_duration_txt.setText("剩余" + remainDay + "天");
                 detail_price_txt.setVisibility(View.VISIBLE);
@@ -602,7 +609,8 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         mRelatedItem = null;
         DaisyUtils.getVodApplication(this).removeActivtyFromPool(
                 this.toString());
-        super.onDestroy();;
+        super.onDestroy();
+        ;
     }
 
     @Override
@@ -768,10 +776,10 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 }
             }
             mDetailAttributeContainer.addAttributeForfilm(attributeMap, mContentModel);
-           // mDetailAttributeContainer.
+            // mDetailAttributeContainer.
         }
         // Set the content to Introduction View
-        mDetailIntro.setText("简介 : "+mItem.description);
+        mDetailIntro.setText("简介 : " + mItem.description);
         if (mItem.bean_score > 0) {
             bean_score.setVisibility(View.VISIBLE);
             bean_score.setText(mItem.bean_score + "");
@@ -833,7 +841,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         top_view_layout = findViewById(R.id.top_view_layout);
         title = getIntent().getStringExtra("title");
 
-        weatherFragment =(LaunchHeaderLayout)findViewById(R.id.top_column_layout);
+        weatherFragment = (LaunchHeaderLayout) findViewById(R.id.top_column_layout);
         weatherFragment.setTitle(title);
         weatherFragment.hideSubTiltle();
         weatherFragment.hideIndicatorTable();
@@ -859,54 +867,56 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         mLeftBtn.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                initFocusBtn(v,hasFocus);
+                initFocusBtn(v, hasFocus);
             }
         });
 
         mMiddleBtn.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                initFocusBtn(v,hasFocus);
+                initFocusBtn(v, hasFocus);
             }
         });
 
         mRightBtn.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                initFocusBtn(v,hasFocus);
+                initFocusBtn(v, hasFocus);
             }
         });
     }
-    private void initFocusBtn(View v,boolean hasFocus){
+
+    private void initFocusBtn(View v, boolean hasFocus) {
         String identify = (String) v.getTag();
 
-        if(hasFocus){
-            if(COLLECT_VIDEO.equals(identify)){
+        if (hasFocus) {
+            if (COLLECT_VIDEO.equals(identify)) {
                 v.setBackgroundResource(R.drawable.filmcollect_focus_btn_bg);
-            }else if(BUY_VIDEO.equals(identify)){
+            } else if (BUY_VIDEO.equals(identify)) {
                 v.setBackgroundResource(R.drawable.filmbuybideo_focus_btn_bg);
-            }else if(PREVIEW_VIDEO.equals(identify)){
+            } else if (PREVIEW_VIDEO.equals(identify)) {
                 v.setBackgroundResource(R.drawable.filmplayvideo_focus_btn_bg);
-            }else if(PLAY_VIDEO.equals(identify)){
+            } else if (PLAY_VIDEO.equals(identify)) {
                 v.setBackgroundResource(R.drawable.filmplayvideo_focus_btn_bg);
-            }else if(DRAMA_VIDEO.equals(identify)){
+            } else if (DRAMA_VIDEO.equals(identify)) {
                 v.setBackgroundResource(R.drawable.zydramalist_focus_btn_bg);
             }
-        }else{
-            if(COLLECT_VIDEO.equals(identify)){
+        } else {
+            if (COLLECT_VIDEO.equals(identify)) {
                 v.setBackgroundResource(R.drawable.filmcollect_normal_btn_bg);
-            }else if(BUY_VIDEO.equals(identify)){
+            } else if (BUY_VIDEO.equals(identify)) {
                 v.setBackgroundResource(R.drawable.filmbuyvideo_normal_btn_bg);
-            }else if(PREVIEW_VIDEO.equals(identify)){
+            } else if (PREVIEW_VIDEO.equals(identify)) {
                 v.setBackgroundResource(R.drawable.filmplayvideo_normal_btn_bg);
-            }else if(PLAY_VIDEO.equals(identify)){
+            } else if (PLAY_VIDEO.equals(identify)) {
                 v.setBackgroundResource(R.drawable.filmplayvideo_normal_btn_bg);
-            }else if(DRAMA_VIDEO.equals(identify)){
+            } else if (DRAMA_VIDEO.equals(identify)) {
                 v.setBackgroundResource(R.drawable.zydramalist_normal_btn_bg);
             }
         }
 
     }
+
     private void isbuy() {
         SimpleRestClient simpleRestClient = new SimpleRestClient();
         simpleRestClient.doSendRequest("/api/order/check/", "post",
@@ -995,8 +1005,8 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             LinearLayout.LayoutParams layoutParams;
 
             layoutParams = new LinearLayout.LayoutParams(254, 401);
-            if(i!=0)
-            layoutParams.leftMargin = 8;
+            if (i != 0)
+                layoutParams.leftMargin = 8;
             relatedHolder.setLayoutParams(layoutParams);
             TextView titleView = (TextView) relatedHolder
                     .findViewById(R.id.related_title);
@@ -1030,32 +1040,33 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             relatedHolder.setOnClickListener(mRelatedClickListener);
         }
     }
+
     private View.OnFocusChangeListener mRelatedOnFocusChangeListener = new View.OnFocusChangeListener() {
 
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
-        	 
-                if (hasFocus) {
-                    TextView title = (TextView) v
-                            .findViewById(R.id.related_title);
-                    LabelImageView img = (LabelImageView)v.findViewById(R.id.related_preview_img);
-                    img.setDrawBorder(true);
-                    img.invalidate();
-                    title.setTextColor(0xFFF8F8FF);
-                    // img.setBackgroundResource(R.drawable.popup_bg_yellow);
 
-                    title.setSelected(true);
+            if (hasFocus) {
+                TextView title = (TextView) v
+                        .findViewById(R.id.related_title);
+                LabelImageView img = (LabelImageView) v.findViewById(R.id.related_preview_img);
+                img.setDrawBorder(true);
+                img.invalidate();
+                title.setTextColor(0xFFF8F8FF);
+                // img.setBackgroundResource(R.drawable.popup_bg_yellow);
 
-                } else {
-                    TextView title = (TextView) v
-                            .findViewById(R.id.related_title);
-                    LabelImageView img = (LabelImageView)v.findViewById(R.id.related_preview_img);
-                    title.setTextColor(0xFFF8F8FF);
-                    img.setDrawBorder(false);
-                    img.invalidate();
-                    title.setSelected(false);
+                title.setSelected(true);
 
-                }
+            } else {
+                TextView title = (TextView) v
+                        .findViewById(R.id.related_title);
+                LabelImageView img = (LabelImageView) v.findViewById(R.id.related_preview_img);
+                title.setTextColor(0xFFF8F8FF);
+                img.setDrawBorder(false);
+                img.invalidate();
+                title.setSelected(false);
+
+            }
 
 
         }
@@ -1206,9 +1217,9 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 //            intent.setAction("tv.ismar.daisy.PFileItem");
 //            intent.putExtra("url", url);
 //            startActivity(intent);
-            if("launcher".equals(fromPage))
-            	fromPage = "tvhome";
-            DaisyUtils.gotoSpecialPage(PFilmItemdetailActivity.this, itemSection.content_model, itemSection.item_url,fromPage);
+            if ("launcher".equals(fromPage))
+                fromPage = "tvhome";
+            DaisyUtils.gotoSpecialPage(PFilmItemdetailActivity.this, itemSection.content_model, itemSection.item_url, fromPage);
         }
     };
     private DialogInterface.OnCancelListener mLoadingCancelListener = new DialogInterface.OnCancelListener() {
@@ -1248,12 +1259,12 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
-        if(resultCode==20){
-            if(data.getBooleanExtra("result", false)){
+        if (resultCode == 20) {
+            if (data.getBooleanExtra("result", false)) {
                 isBuy = true;
                 setExpenseStatus();
-				if (mLeftBtn != null)
-					mLeftBtn.setBackgroundResource(R.drawable.filmplayvideo_focus_btn_bg);
+                if (mLeftBtn != null)
+                    mLeftBtn.setBackgroundResource(R.drawable.filmplayvideo_focus_btn_bg);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

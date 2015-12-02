@@ -3,6 +3,7 @@ package tv.ismar.daisy.views;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,6 +42,7 @@ import tv.ismar.daisy.models.*;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
 import tv.ismar.daisy.ui.activity.UserCenterActivity;
+import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.daisy.views.MenuFragment.MenuItem;
 import tv.ismar.daisy.views.MenuFragment.OnMenuItemClickedListener;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
@@ -99,8 +101,15 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
     private Button right_shadow;
     private View gideview_layuot;
 	private void initViews(View fragmentView) {
-        View background = fragmentView.findViewById(R.id.large_layout);
-        DaisyUtils.setbackground(R.drawable.main_bg,background);
+       final View background = fragmentView.findViewById(R.id.large_layout);
+
+		new BitmapDecoder().decode(getActivity(), R.drawable.main_bg, new BitmapDecoder.Callback() {
+			@Override
+			public void onSuccess(BitmapDrawable bitmapDrawable) {
+				background.setBackgroundDrawable(bitmapDrawable);
+			}
+		});
+
         View vv = fragmentView.findViewById(R.id.tabs_layout);
         vv.setVisibility(View.GONE);
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
