@@ -76,7 +76,7 @@ public class FilmFragment extends ChannelBaseFragment {
     private HomeItemContainer morelayout;
     private HomeItemContainer firstpost;
     private LabelImageView firstcarousel;
-
+    private BitmapDecoder bitmapDecoder;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,7 +138,13 @@ public class FilmFragment extends ChannelBaseFragment {
                 film_post_layout.performClick();
             }
         });
-        setbackground(linkedVideoImage, R.drawable.guide_video_loading);
+        bitmapDecoder = new BitmapDecoder();
+        bitmapDecoder.decode(mContext, R.drawable.guide_video_loading, new BitmapDecoder.Callback() {
+            @Override
+            public void onSuccess(BitmapDrawable bitmapDrawable) {
+            	linkedVideoImage.setBackgroundDrawable(bitmapDrawable);
+            }
+        });
         return mView;
     }
 
@@ -194,6 +200,9 @@ public class FilmFragment extends ChannelBaseFragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        if(bitmapDecoder != null && bitmapDecoder.isAlive()){
+        	bitmapDecoder.interrupt();
+        }
         if (datafetch != null && datafetch.isAlive())
             datafetch.interrupt();
     }
@@ -618,6 +627,9 @@ public class FilmFragment extends ChannelBaseFragment {
     private android.media.MediaPlayer.OnPreparedListener mOnPreparedListener = new MediaPlayer.OnPreparedListener() {
         @Override
         public void onPrepared(MediaPlayer mp) {
+            if(bitmapDecoder != null && bitmapDecoder.isAlive()){
+            	bitmapDecoder.interrupt();
+            }
             linkedVideoImage.setVisibility(View.GONE);
         }
     };
