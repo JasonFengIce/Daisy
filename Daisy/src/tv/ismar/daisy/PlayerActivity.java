@@ -757,7 +757,7 @@ public class PlayerActivity extends VodMenuAction {
             public void onTsInfo(SmartPlayer smartPlayer, Map<String, String> stringStringMap) {
                 String spd = stringStringMap.get("TsDownLoadSpeed");
                 speed = Integer.parseInt(spd);
-                speed = speed/1024*8;
+                speed = speed/(1024*8);
             }
         });
 	}
