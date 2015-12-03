@@ -191,11 +191,15 @@ public class Activator {
         activator.excute(sn, manufacture, kind, version, rsa, fingerprint, "v2_0", getAndroidDevicesInfo()).enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Response<Result> response, Retrofit retrofit) {
-                Map<String, String> map = AppSharedPreferences.getInstance(mContext).getPackageInfo();
-                Result result = response.body();
-                result.setPackageInfo(map.get("package"));
-                result.setExpiry_date(map.get("exrpiry_date"));
-                mOnComplete.onSuccess(result);
+                if (response.code() ==200){
+                    Map<String, String> map = AppSharedPreferences.getInstance(mContext).getPackageInfo();
+                    Result result = response.body();
+                    result.setPackageInfo(map.get("package"));
+                    result.setExpiry_date(map.get("exrpiry_date"));
+                    mOnComplete.onSuccess(result);
+                }else {
+                  mOnComplete.onFailed("激活失败");
+                }
             }
 
             @Override
