@@ -111,6 +111,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_main);
+        activityTag = "SearchActivity";
         final View background = findViewById(R.id.large_layout);
         bitmapDecoder = new BitmapDecoder();
         bitmapDecoder.decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {

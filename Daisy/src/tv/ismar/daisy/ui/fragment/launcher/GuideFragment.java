@@ -36,6 +36,7 @@ import tv.ismar.daisy.ui.activity.TVGuideActivity;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
 import tv.ismar.daisy.ui.widget.DaisyViewContainer;
 import tv.ismar.daisy.ui.widget.HomeItemContainer;
+import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.daisy.views.LabelImageView;
 
 import java.io.InputStream;
@@ -63,7 +64,7 @@ public class GuideFragment extends ChannelBaseFragment {
     private LabelImageView toppage_carous_imageView3;
     private HomeItemContainer lastpostview;
     private IsmartvUrlClient datafetch;
-
+    private BitmapDecoder bitmapDecoder;
     private tv.ismar.daisy.ui.widget.DaisyVideoView mSurfaceView;
 
 
@@ -121,7 +122,13 @@ public class GuideFragment extends ChannelBaseFragment {
         mLeftTopView = mSurfaceView;
         mRightTopView = toppage_carous_imageView1;
 
-        setbackground(linkedVideoLoadingImage, R.drawable.guide_video_loading);
+        bitmapDecoder = new BitmapDecoder();
+        bitmapDecoder.decode(mContext, R.drawable.guide_video_loading, new BitmapDecoder.Callback() {
+            @Override
+            public void onSuccess(BitmapDrawable bitmapDrawable) {
+            	linkedVideoLoadingImage.setBackgroundDrawable(bitmapDrawable);
+            }
+        });
         return mView;
     }
 
@@ -178,6 +185,9 @@ public class GuideFragment extends ChannelBaseFragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        if(bitmapDecoder != null && bitmapDecoder.isAlive()){
+        	bitmapDecoder.interrupt();
+        }
         if (datafetch != null && datafetch.isAlive())
             datafetch.interrupt();
     }
@@ -533,6 +543,9 @@ public class GuideFragment extends ChannelBaseFragment {
     private android.media.MediaPlayer.OnPreparedListener mOnPreparedListener = new MediaPlayer.OnPreparedListener() {
         @Override
         public void onPrepared(MediaPlayer mp) {
+            if(bitmapDecoder != null && bitmapDecoder.isAlive()){
+            	bitmapDecoder.interrupt();
+            }
             linkedVideoLoadingImage.setVisibility(View.GONE);
         }
     };

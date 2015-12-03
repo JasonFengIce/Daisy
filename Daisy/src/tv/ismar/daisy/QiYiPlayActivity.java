@@ -481,6 +481,8 @@ public class QiYiPlayActivity extends VodMenuAction {
 
         @Override
         public void onBitStreamListReady(final List<Definition> definitionList) {
+        	if(mPlayer == null)
+        		return;
             mBitStreamList = definitionList;
             for (Definition d : definitionList) {
                 if (d.equals(Definition.DEFINITON_HIGH)) {
@@ -509,6 +511,8 @@ public class QiYiPlayActivity extends VodMenuAction {
 
         @Override
         public void onBufferStart() {
+        	if(mPlayer == null)
+        		return;
             isBuffer = true;
             showBuffer();
         }
@@ -519,12 +523,15 @@ public class QiYiPlayActivity extends VodMenuAction {
 
         @Override
         public void onMovieComplete() {
+        	if(mPlayer == null)
+        		return;
             gotoFinishPage();
         }
 
         @Override
         public void onMoviePause() {
-            Log.v("aaaa", "onMoviePause");
+        	if(mPlayer == null)
+        		return;
         }
 
         @Override
@@ -571,11 +578,14 @@ public class QiYiPlayActivity extends VodMenuAction {
 
         @Override
         public void onMovieStop() {
-            Log.v("aaaa", "onMovieStop");
+        	if(mPlayer == null)
+        		return;
         }
 
         @Override
         public void onPlaybackBitStreamSelected(final Definition definition) {
+        	if(mPlayer == null)
+        		return;
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -597,6 +607,8 @@ public class QiYiPlayActivity extends VodMenuAction {
 
         @Override
         public void onPrepared() {
+        	if(mPlayer == null)
+        		return;
         	clipLength = mPlayer.getDuration();
             timeBar.setMax(clipLength);
             if (seekPostion > 0)
@@ -607,6 +619,8 @@ public class QiYiPlayActivity extends VodMenuAction {
 
         @Override
         public void onSeekComplete() {
+        	if(mPlayer == null)
+        		return;
             if (!mPlayer.isPlaying())
                 mPlayer.start();
             isBuffer = false;

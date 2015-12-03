@@ -477,6 +477,7 @@ public class BaseActivity extends FragmentActivity {
             showExitPopup(((ViewGroup) findViewById(android.R.id.content))
                     .getChildAt(0), R.string.exit_prompt);
         } else {
+        	if(!"SearchActivity".equals(activityTag))
             super.onBackPressed();
         }
 
