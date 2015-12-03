@@ -132,7 +132,7 @@ public class ItemDetailActivity extends BaseActivity implements
     private String fromPage;
     private boolean isFirstLogin = false;
     private tv.ismar.daisy.ui.widget.LaunchHeaderLayout top_column_layout;
-
+    private BitmapDecoder bitmapDecoder;
     private void initViews() {
         isbuy_label = (ImageView) findViewById(R.id.isbuy_label);
         mDetailLeftContainer = (RelativeLayout) findViewById(R.id.detail_left_container);
@@ -233,8 +233,8 @@ public class ItemDetailActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_detail_layout);
         final View vv = findViewById(R.id.large_layout);
-
-        new BitmapDecoder().decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
+        bitmapDecoder = new BitmapDecoder();
+        bitmapDecoder.decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
             @Override
             public void onSuccess(BitmapDrawable bitmapDrawable) {
                 vv.setBackgroundDrawable(bitmapDrawable);
@@ -401,6 +401,9 @@ public class ItemDetailActivity extends BaseActivity implements
 
     @Override
     protected void onDestroy() {
+        if(bitmapDecoder != null && bitmapDecoder.isAlive()){
+        	bitmapDecoder.interrupt();
+        }
         if (mGetItemTask != null
                 && mGetItemTask.getStatus() != AsyncTask.Status.FINISHED) {
             mGetItemTask.cancel(true);

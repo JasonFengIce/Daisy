@@ -77,7 +77,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
     private String slug;
     private String fromPage;
     private LaunchHeaderLayout weatherFragment;
-
+    private BitmapDecoder bitmapDecoder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,13 +85,13 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         setContentView(R.layout.filmitem_portrait_detail_view);
         mSimpleRestClient = new SimpleRestClient();
         final View vv = findViewById(R.id.large_layout);
-        new BitmapDecoder().decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
+        bitmapDecoder = new BitmapDecoder();
+        bitmapDecoder.decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
             @Override
             public void onSuccess(BitmapDrawable bitmapDrawable) {
                 vv.setBackgroundDrawable(bitmapDrawable);
             }
         });
-
 
         mLoadingDialog = new LoadingDialog(this, getResources().getString(
                 R.string.vod_loading));
@@ -594,6 +594,9 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
     @Override
     protected void onDestroy() {
+    	 if(bitmapDecoder != null && bitmapDecoder.isAlive()){
+         	bitmapDecoder.interrupt();
+         }
         if (mGetItemTask != null
                 && mGetItemTask.getStatus() != AsyncTask.Status.FINISHED) {
             mGetItemTask.cancel(true);
@@ -616,7 +619,6 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         DaisyUtils.getVodApplication(this).removeActivtyFromPool(
                 this.toString());
         super.onDestroy();
-        ;
     }
 
     @Override

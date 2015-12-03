@@ -1,5 +1,10 @@
 package tv.ismar.daisy.utils;
 
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.ref.WeakReference;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,12 +12,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-
-import com.squareup.picasso.Picasso;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.ref.WeakReference;
 
 /**
  * Created by huaijie on 12/2/15.
@@ -32,18 +31,23 @@ public class BitmapDecoder extends Thread {
 
     @Override
     public void run() {
-        BitmapFactory.Options opt = new BitmapFactory.Options();
-        opt.inPreferredConfig = Bitmap.Config.ALPHA_8;
-        opt.inPurgeable = true;
-        opt.inInputShareable = true;
-        InputStream is = mContext.getResources().openRawResource(mResId);
-        Bitmap bm = BitmapFactory.decodeStream(is, null, opt);
-        BitmapDrawable bd = new BitmapDrawable(mContext.getResources(), bm);
-        MessageHandler messageHandler = new MessageHandler(this);
-        Message message = new Message();
-        message.obj = bd;
-        message.what = DECODE_SUCCESS;
-        messageHandler.sendMessage(message);
+		try {
+			BitmapFactory.Options opt = new BitmapFactory.Options();
+			opt.inPreferredConfig = Bitmap.Config.ALPHA_8;
+			opt.inPurgeable = true;
+			opt.inInputShareable = true;
+			InputStream is = mContext.getResources().openRawResource(mResId);
+			byte[] ddd = doRead(is);
+			Bitmap bm = BitmapFactory.decodeByteArray(ddd, 0,ddd.length, opt);
+			BitmapDrawable bd = new BitmapDrawable(mContext.getResources(), bm);
+			MessageHandler messageHandler = new MessageHandler(this);
+			Message message = new Message();
+			message.obj = bd;
+			message.what = DECODE_SUCCESS;
+			messageHandler.sendMessage(message);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 
     private static class MessageHandler extends Handler {
@@ -66,6 +70,15 @@ public class BitmapDecoder extends Thread {
                 }
             }
         }
+    }
+
+    private byte[] doRead(InputStream is) throws IOException{
+        DataInputStream dis = new DataInputStream(is);
+        byte[]buffer = new byte[is.available()];
+        dis.readFully(buffer); 
+        dis.close();
+        is.close();
+        return buffer;
     }
 
     public interface Callback {

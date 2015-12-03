@@ -100,15 +100,18 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
     private Button left_shadow;
     private Button right_shadow;
     private View gideview_layuot;
+    private BitmapDecoder bitmapDecoder;
 	private void initViews(View fragmentView) {
        final View background = fragmentView.findViewById(R.id.large_layout);
 
-		new BitmapDecoder().decode(getActivity(), R.drawable.main_bg, new BitmapDecoder.Callback() {
-			@Override
-			public void onSuccess(BitmapDrawable bitmapDrawable) {
-				background.setBackgroundDrawable(bitmapDrawable);
-			}
-		});
+       bitmapDecoder = new BitmapDecoder();
+       if(getActivity() != null)
+       bitmapDecoder.decode(getActivity(), R.drawable.main_bg, new BitmapDecoder.Callback() {
+           @Override
+           public void onSuccess(BitmapDrawable bitmapDrawable) {
+           	background.setBackgroundDrawable(bitmapDrawable);
+           }
+       });
 
         View vv = fragmentView.findViewById(R.id.tabs_layout);
         vv.setVisibility(View.GONE);
@@ -148,8 +151,10 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			Bundle savedInstanceState) {
 		View fragmentView = inflater.inflate(R.layout.historycollectlist_view, container, false);
 		initViews(fragmentView);
-		if("".equals(SimpleRestClient.access_token))
-		   new GetFavoriteTask().execute();
+		if("".equals(SimpleRestClient.access_token)){
+			getFavoriteTask = new GetFavoriteTask();
+		    getFavoriteTask.execute();
+		}
 		else
 			GetFavoriteByNet();
 		return fragmentView;
@@ -214,6 +219,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		});
 	}
     ArrayList<Item> FavoriteLists;
+    GetFavoriteTask getFavoriteTask;
     class GetFavoriteTask extends AsyncTask<Void, Void, Void> {
 
 		@Override
@@ -226,6 +232,8 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 
 		@Override
 		protected Void doInBackground(Void... params) {
+			if(getActivity() == null)
+				return null;
 			ArrayList<Favorite> favorites = DaisyUtils.getFavoriteManager(getActivity()).getAllFavorites("no");			
 			mSectionList = new SectionList();
             FavoriteLists = new ArrayList<Item>();
@@ -283,7 +291,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			if(mLoadingDialog!=null && mLoadingDialog.isShowing()) {
 				mLoadingDialog.dismiss();
 			}
-			
+
 			isInGetFavoriteTask = false;
 
 //			mScrollableSectionList.init(mSectionList, 1365,false);
@@ -499,7 +507,8 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	
 	private void reset() {
 //		mScrollableSectionList.reset();
-		new GetFavoriteTask().execute();
+		getFavoriteTask = new GetFavoriteTask();
+		getFavoriteTask.execute();
 	}
 	
 	private void createMenu() {
@@ -575,6 +584,11 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	}
 	@Override
 	public void onDetach() {
+        if(bitmapDecoder != null && bitmapDecoder.isAlive()){
+        	bitmapDecoder.interrupt();
+        }
+        if(getFavoriteTask != null && !getFavoriteTask.isCancelled())
+        	getFavoriteTask.cancel(true);
 		if(mLoadingDialog.isShowing()){
 			mLoadingDialog.dismiss();
 		}

@@ -77,7 +77,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
     private String channel;
     private String slug;
     private String fromPage;
-
+    private BitmapDecoder bitmapDecoder;
     private void initViews() {
         large_layout = findViewById(R.id.large_layout);
         mChannel = getIntent().getStringExtra("channel");
@@ -296,10 +296,11 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
         mSimpleRestClient = new SimpleRestClient();
         setContentView(R.layout.entertainment_detail_view);
         final View background = findViewById(R.id.large_layout);
-        new BitmapDecoder().decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
+        bitmapDecoder = new BitmapDecoder();
+        bitmapDecoder.decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
             @Override
             public void onSuccess(BitmapDrawable bitmapDrawable) {
-                background.setBackgroundDrawable(bitmapDrawable);
+            	background.setBackgroundDrawable(bitmapDrawable);
             }
         });
 
@@ -462,6 +463,9 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
 
     @Override
     protected void onDestroy() {
+        if(bitmapDecoder != null && bitmapDecoder.isAlive()){
+        	bitmapDecoder.interrupt();
+        }
         if (mGetItemTask != null
                 && mGetItemTask.getStatus() != AsyncTask.Status.FINISHED) {
             mGetItemTask.cancel(true);

@@ -117,7 +117,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     public boolean isneedpause;
 
     private FragmentSwitchHandler fragmentSwitch;
-
+    private BitmapDecoder bitmapDecoder;
 
     private enum LeavePosition {
         LeftTop,
@@ -275,7 +275,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         homepage_template = getIntent().getStringExtra("homepage_template");
         homepage_url = getIntent().getStringExtra("homepage_url");
         final View vv = findViewById(R.id.large_layout);
-        new BitmapDecoder().decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
+        bitmapDecoder = new BitmapDecoder();
+        bitmapDecoder.decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
             @Override
             public void onSuccess(BitmapDrawable bitmapDrawable) {
                 vv.setBackgroundDrawable(bitmapDrawable);
@@ -1123,6 +1124,12 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     @Override
     protected void onDestroy() {
         unregisterReceiver(appUpdateReceiver);
+        if(bitmapDecoder != null && bitmapDecoder.isAlive()){
+        	bitmapDecoder.interrupt();
+        }
+        if(ddddBitmapDecoder != null && ddddBitmapDecoder.isAlive()){
+        	ddddBitmapDecoder.interrupt();
+        }
         if (!(updatePopupWindow == null)) {
             updatePopupWindow.dismiss();
         }

@@ -106,16 +106,17 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
     private ExecutorService threadservice;
     private Thread fetchhotlines;
     private Future hotlinefuture;
-
+    private BitmapDecoder bitmapDecoder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_main);
         final View background = findViewById(R.id.large_layout);
-        new BitmapDecoder().decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
+        bitmapDecoder = new BitmapDecoder();
+        bitmapDecoder.decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
             @Override
             public void onSuccess(BitmapDrawable bitmapDrawable) {
-                background.setBackgroundDrawable(bitmapDrawable);
+            	background.setBackgroundDrawable(bitmapDrawable);
             }
         });
 
@@ -160,6 +161,9 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 
     @Override
     protected void onDestroy() {
+        if(bitmapDecoder != null && bitmapDecoder.isAlive()){
+        	bitmapDecoder.interrupt();
+        }
         mHandler.removeMessages(UPDATE_ADAPTER);
         mHandler.removeMessages(UPDATE_SUGGEST);
         mHandler.removeMessages(ADD_VIEW);
