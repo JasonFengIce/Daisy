@@ -50,7 +50,13 @@ public class CacheManager {
             String serverMD5 = FileUtils.getFileByUrl(url).split("\\.")[0];
             String localMD5 = downloadTable.local_md5;
             if (serverMD5.equalsIgnoreCase(localMD5)) {
-                return "file://" + downloadTable.download_path;
+                File file = new File(downloadTable.download_path);
+                if (file.exists()){
+                    return "file://" + downloadTable.download_path;
+                }else {
+                    return url;
+                }
+                
             } else {
                 if (downloadTable.download_state.equals(DownloadClient.DownloadState.run.name())) {
                     //--------

@@ -21,9 +21,6 @@ public class FileUtils {
             URL url = new URL(httpUrl);
             String file = url.getFile();
             File localFile = new File(file);
-            if (!localFile.exists()){
-                return "";
-            }
             return localFile.getName();
         } catch (MalformedURLException e) {
             e.printStackTrace();
