@@ -66,7 +66,7 @@ public class RelatedActivity extends BaseActivity implements OnSectionSelectChan
     private boolean isPortrait = false;
     private static final int LABEL_TEXT_COLOR_FOCUSED1 = 0xffffba00;
     private static final int LABEL_TEXT_COLOR_NOFOCUSED = 0xffffffff;
-
+    private BitmapDecoder bitmapDecoder;
     private void initViews() {
         mSectionTabs = (RelateScrollableSectionList) findViewById(R.id.related_section_tabs);
         mSectionTabs.setOnSectionSelectChangeListener(this);
@@ -124,10 +124,11 @@ public class RelatedActivity extends BaseActivity implements OnSectionSelectChan
         super.onCreate(savedInstanceState);
         setContentView(R.layout.related_view);
         final View background = findViewById(R.id.large_layout);
-        new BitmapDecoder().decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
+        bitmapDecoder = new BitmapDecoder();
+        bitmapDecoder.decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
             @Override
             public void onSuccess(BitmapDrawable bitmapDrawable) {
-                background.setBackgroundDrawable(bitmapDrawable);
+            	background.setBackgroundDrawable(bitmapDrawable);
             }
         });
 
@@ -297,6 +298,9 @@ public class RelatedActivity extends BaseActivity implements OnSectionSelectChan
 
     @Override
     protected void onDestroy() {
+        if(bitmapDecoder != null && bitmapDecoder.isAlive()){
+        	bitmapDecoder.interrupt();
+        }
         if (mGetRelatedTask != null && mGetRelatedTask.getStatus() != AsyncTask.Status.FINISHED) {
             mGetRelatedTask.cancel(true);
         }
