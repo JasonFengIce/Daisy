@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
