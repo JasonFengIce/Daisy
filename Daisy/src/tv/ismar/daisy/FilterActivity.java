@@ -2,6 +2,7 @@ package tv.ismar.daisy;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +12,7 @@ import org.json.JSONObject;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
+import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.daisy.views.BackHandledFragment;
 import tv.ismar.daisy.views.BackHandledInterface;
 import tv.ismar.daisy.views.FilterFragment;
@@ -31,8 +33,14 @@ public class FilterActivity extends BaseActivity implements BackHandledInterface
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.filter_layout);
-        View vv = findViewById(R.id.large_layout);
-        DaisyUtils.setbackground(R.drawable.main_bg,vv);
+       final View vv = findViewById(R.id.large_layout);
+
+        new BitmapDecoder().decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
+            @Override
+            public void onSuccess(BitmapDrawable bitmapDrawable) {
+                vv.setBackgroundDrawable(bitmapDrawable);
+            }
+        });
         DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
         mRestClient = new SimpleRestClient();
         initView();

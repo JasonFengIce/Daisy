@@ -1,6 +1,7 @@
 package tv.ismar.daisy;
 
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.FloatMath;
 import android.view.View;
@@ -13,6 +14,7 @@ import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemCollection;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
+import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.daisy.views.LoadingDialog;
 
 import java.util.ArrayList;
@@ -39,8 +41,14 @@ public class DramaVarietyNoMonthList extends BaseActivity implements AdapterView
         super.onCreate(savedInstanceState);
         rate = DaisyUtils.getVodApplication(this).getRate(this);
         setContentView(R.layout.list_view_nosection);
-        View background = findViewById(R.id.large_layout);
-        DaisyUtils.setbackground(R.drawable.main_bg,background);
+        final View background = findViewById(R.id.large_layout);
+        new BitmapDecoder().decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
+            @Override
+            public void onSuccess(BitmapDrawable bitmapDrawable) {
+                background.setBackgroundDrawable(bitmapDrawable);
+            }
+        });
+
         DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
         initView();
         getData();

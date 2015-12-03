@@ -2,6 +2,7 @@ package tv.ismar.daisy.ui.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -44,6 +45,7 @@ import tv.ismar.daisy.ui.fragment.usercenter.StoreFragment;
 import tv.ismar.daisy.ui.fragment.usercenter.UserInfoFragment;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
 import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
+import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.sakura.ui.widget.MessagePopWindow;
 
 /**
@@ -105,8 +107,14 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         mContentView = LayoutInflater.from(this).inflate(R.layout.activity_usercenter, null);
         setContentView(mContentView);
         mSimpleRestClient = new SimpleRestClient();
-        View background = findViewById(R.id.large_layout);
-        DaisyUtils.setbackground(R.drawable.main_bg, background);
+        final View background = findViewById(R.id.large_layout);
+        new BitmapDecoder().decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
+            @Override
+            public void onSuccess(BitmapDrawable bitmapDrawable) {
+                background.setBackgroundDrawable(bitmapDrawable);
+            }
+        });
+
         userCenterIndicatorLayout = (LinearLayout) findViewById(R.id.user_center_indicator_layout);
 //        storeFragment = new StoreFragment();
 //        userInfoFragment = new UserInfoFragment();

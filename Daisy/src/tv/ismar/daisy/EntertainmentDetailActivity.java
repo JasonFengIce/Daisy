@@ -349,8 +349,13 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
         setIntent(intent);
         mSimpleRestClient = new SimpleRestClient();
         setContentView(R.layout.entertainment_detail_view);
-        View background = findViewById(R.id.large_layout);
-        DaisyUtils.setbackground(R.drawable.main_bg, background);
+        final  View background = findViewById(R.id.large_layout);
+        new BitmapDecoder().decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
+            @Override
+            public void onSuccess(BitmapDrawable bitmapDrawable) {
+                background.setBackgroundDrawable(bitmapDrawable);
+            }
+        });
         mLoadingDialog = new LoadingDialog(this, getResources().getString(
                 R.string.vod_loading));
         mLoadingDialog.setOnCancelListener(mLoadingCancelListener);

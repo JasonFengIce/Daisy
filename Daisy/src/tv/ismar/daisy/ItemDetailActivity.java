@@ -287,8 +287,14 @@ public class ItemDetailActivity extends BaseActivity implements
         super.onNewIntent(intent);
         setIntent(intent);
         setContentView(R.layout.item_detail_layout);
-        View vv = findViewById(R.id.large_layout);
-        DaisyUtils.setbackground(R.drawable.main_bg, vv);
+        final View vv = findViewById(R.id.large_layout);
+        new BitmapDecoder().decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
+            @Override
+            public void onSuccess(BitmapDrawable bitmapDrawable) {
+                vv.setBackgroundDrawable(bitmapDrawable);
+            }
+        });
+
         mSimpleRestClient = new SimpleRestClient();
         // Log.e("START", System.currentTimeMillis()+"");
         mLoadingDialog = new LoadingDialog(this, getResources().getString(
@@ -580,7 +586,7 @@ public class ItemDetailActivity extends BaseActivity implements
         new NetworkUtils.DataCollectionTask().execute(
                 NetworkUtils.VIDEO_DETAIL_IN, mDataCollectionProperties);
         /*
-		 * if this item is a drama , the button should split to two. otherwise.
+         * if this item is a drama , the button should split to two. otherwise.
 		 * use one button.
 		 */
         setExpenseStatus();

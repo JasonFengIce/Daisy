@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,6 +29,7 @@ import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.CustomDialog;
@@ -66,8 +68,14 @@ public class PackageDetailActivity extends BaseActivity implements OnItemClickLi
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.payment_package_detail_layout);
-        View background = findViewById(R.id.large_layout);
-        DaisyUtils.setbackground(R.drawable.main_bg,background);
+       final View background = findViewById(R.id.large_layout);
+
+		new BitmapDecoder().decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
+			@Override
+			public void onSuccess(BitmapDrawable bitmapDrawable) {
+				background.setBackgroundDrawable(bitmapDrawable);
+			}
+		});
 		mSimpleRestClient = new SimpleRestClient();
 		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
 		initView();

@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import android.graphics.drawable.BitmapDrawable;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +21,7 @@ import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
+import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.LoadingDialog;
@@ -73,8 +76,14 @@ public class DramaListActivity extends BaseActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.drama_list_main);
-        View vv = findViewById(R.id.large_layout);
-        DaisyUtils.setbackground(R.drawable.main_bg,vv);
+        final  View vv = findViewById(R.id.large_layout);
+		new BitmapDecoder().decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
+			@Override
+			public void onSuccess(BitmapDrawable bitmapDrawable) {
+				vv.setBackgroundDrawable(bitmapDrawable);
+			}
+		});
+
 		initViews();
 		if (loadDialog != null && !loadDialog.isShowing()) {
 			loadDialog.show();

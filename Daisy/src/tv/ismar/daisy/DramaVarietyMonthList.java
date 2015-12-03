@@ -1,6 +1,7 @@
 package tv.ismar.daisy;
 
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.FloatMath;
 import android.view.View;
@@ -16,6 +17,7 @@ import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemCollection;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
+import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.daisy.views.LoadingDialog;
 import tv.ismar.daisy.views.MonthSectionButton;
 
@@ -46,8 +48,15 @@ public class DramaVarietyMonthList extends BaseActivity implements AdapterView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_view_nosection_month);
-        View background = findViewById(R.id.large_layout);
-        DaisyUtils.setbackground(R.drawable.main_bg,background);
+        final View background = findViewById(R.id.large_layout);
+        new BitmapDecoder().decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
+            @Override
+            public void onSuccess(BitmapDrawable bitmapDrawable) {
+                background.setBackgroundDrawable(bitmapDrawable);
+            }
+        });
+
+
         rate = DaisyUtils.getVodApplication(this).getRate(this);
         maps = new HashMap<String, ArrayList<Item>>();
         DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);

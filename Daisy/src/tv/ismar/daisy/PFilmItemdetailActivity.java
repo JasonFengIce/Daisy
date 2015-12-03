@@ -139,8 +139,14 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
         setContentView(R.layout.filmitem_portrait_detail_view);
         mSimpleRestClient = new SimpleRestClient();
-        View vv = findViewById(R.id.large_layout);
-        DaisyUtils.setbackground(R.drawable.main_bg, vv);
+      final   View vv = findViewById(R.id.large_layout);
+        new BitmapDecoder().decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
+            @Override
+            public void onSuccess(BitmapDrawable bitmapDrawable) {
+                vv.setBackgroundDrawable(bitmapDrawable);
+            }
+        });
+
         mLoadingDialog = new LoadingDialog(this, getResources().getString(
                 R.string.vod_loading));
         mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
