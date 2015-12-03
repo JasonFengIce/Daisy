@@ -350,6 +350,7 @@ public class DramaListActivity extends BaseActivity implements
 				@Override
 				public void onPreExecute(Intent intent) {
 					// TODO Auto-generated method stub
+					if (loadDialog != null)
 					loadDialog.show();
 				}
 

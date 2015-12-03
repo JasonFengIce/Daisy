@@ -1045,12 +1045,14 @@ public class ItemDetailActivity extends BaseActivity implements
                     @Override
                     public void onPreExecute(Intent intent) {
                         // TODO Auto-generated method stub
+                    	if(mLoadingDialog != null)
                         mLoadingDialog.show();
                     }
 
                     @Override
                     public void onPostExecute() {
                         // TODO Auto-generated method stub
+                    	if(mLoadingDialog != null)
                         mLoadingDialog.dismiss();
                     }
                 });

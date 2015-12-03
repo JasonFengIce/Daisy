@@ -140,6 +140,7 @@ public class DramaVarietyNoMonthList extends BaseActivity implements AdapterView
                 @Override
                 public void onPreExecute(Intent intent) {
                     // TODO Auto-generated method stub
+                	if (loadDialog != null)
                     loadDialog.show();
                 }
 

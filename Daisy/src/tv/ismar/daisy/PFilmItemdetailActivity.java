@@ -1097,12 +1097,14 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                     @Override
                     public void onPreExecute(Intent intent) {
                         // TODO Auto-generated method stub
+                    	if(mLoadingDialog != null)
                         mLoadingDialog.show();
                     }
 
                     @Override
                     public void onPostExecute() {
                         // TODO Auto-generated method stub
+                    	if(mLoadingDialog != null)
                         mLoadingDialog.dismiss();
                     }
                 });
