@@ -151,8 +151,10 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			Bundle savedInstanceState) {
 		View fragmentView = inflater.inflate(R.layout.historycollectlist_view, container, false);
 		initViews(fragmentView);
-		if("".equals(SimpleRestClient.access_token))
-		   new GetFavoriteTask().execute();
+		if("".equals(SimpleRestClient.access_token)){
+			getFavoriteTask = new GetFavoriteTask();
+		    getFavoriteTask.execute();
+		}
 		else
 			GetFavoriteByNet();
 		return fragmentView;
@@ -217,6 +219,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		});
 	}
     ArrayList<Item> FavoriteLists;
+    GetFavoriteTask getFavoriteTask;
     class GetFavoriteTask extends AsyncTask<Void, Void, Void> {
 
 		@Override
@@ -504,7 +507,8 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	
 	private void reset() {
 //		mScrollableSectionList.reset();
-		new GetFavoriteTask().execute();
+		getFavoriteTask = new GetFavoriteTask();
+		getFavoriteTask.execute();
 	}
 	
 	private void createMenu() {
@@ -583,6 +587,8 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
         if(bitmapDecoder != null && bitmapDecoder.isAlive()){
         	bitmapDecoder.interrupt();
         }
+        if(getFavoriteTask != null && !getFavoriteTask.isCancelled())
+        	getFavoriteTask.cancel(true);
 		if(mLoadingDialog.isShowing()){
 			mLoadingDialog.dismiss();
 		}
