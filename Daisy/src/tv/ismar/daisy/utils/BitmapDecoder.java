@@ -7,7 +7,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 
@@ -29,13 +31,19 @@ public class BitmapDecoder extends Thread {
 
     @Override
     public void run() {
-        BitmapFactory.Options opt = new BitmapFactory.Options();
-        opt.inPreferredConfig = Bitmap.Config.ALPHA_8;
-        opt.inPurgeable = true;
-        opt.inInputShareable = true;
-        InputStream is = mContext.getResources().openRawResource(mResId);
-        Bitmap bm = BitmapFactory.decodeStream(is, null, opt);
-        BitmapDrawable bd = new BitmapDrawable(mContext.getResources(), bm);
+//        BitmapFactory.Options opt = new BitmapFactory.Options();
+//        opt.inPreferredConfig = Bitmap.Config.ALPHA_8;
+//        opt.inPurgeable = true;
+//        opt.inInputShareable = true;
+//        InputStream is = mContext.getResources().openRawResource(mResId);
+//        Bitmap bm = BitmapFactory.decodeStream(is, null, opt);
+        Bitmap bitmap = null;
+        try {
+            bitmap = Picasso.with(mContext).load(mResId).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        BitmapDrawable bd = new BitmapDrawable(mContext.getResources(), bitmap);
         MessageHandler messageHandler = new MessageHandler(this);
         Message message = new Message();
         message.obj = bd;

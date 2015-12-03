@@ -30,6 +30,7 @@ import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
 import com.baidu.location.*;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 import org.apache.commons.lang3.StringUtils;
 import org.sakuratya.horizontal.ui.HGridView;
 import tv.ismar.daisy.AppConstant;
@@ -612,6 +613,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             v.setBackgroundResource(R.drawable.channel_item_selectd_focus);
             scroll.setOnScrollListener(null);
         }
+
     }
 
 
