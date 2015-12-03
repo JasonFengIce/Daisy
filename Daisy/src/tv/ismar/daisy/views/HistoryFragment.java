@@ -233,6 +233,8 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 			public void onSuccess(String info) {
 				// TODO Auto-generated method stub
 				//Log.i(tag, msg);
+				if(mRestClient == null)
+					return;
 				mLoadingDialog.dismiss();
 				//解析json
 				mHistoriesByNet = mRestClient.getItems(info);
@@ -288,6 +290,8 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 				@Override
 				public void onSuccess(String info) {
 					// TODO Auto-generated method stub
+					if(mRestClient == null)
+						return;
 					Log.i("", info);
 					no_video();
 				}

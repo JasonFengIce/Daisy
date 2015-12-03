@@ -177,6 +177,8 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			public void onSuccess(String info) {
 				// TODO Auto-generated method stub
 				//解析json
+				if(mRestClient == null)
+					return;
 				FavoriteList = mRestClient.getItems(info);
 				if(FavoriteList!=null&&FavoriteList.length>0){
 					mItemCollections = new ArrayList<ItemCollection>();
@@ -555,6 +557,8 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 			@Override
 			public void onSuccess(String info) {
 				// TODO Auto-generated method stub
+				if(mRestClient == null)
+					return;
 				no_video();
 			}
 			
