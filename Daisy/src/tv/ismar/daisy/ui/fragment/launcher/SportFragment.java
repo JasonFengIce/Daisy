@@ -272,6 +272,7 @@ public class SportFragment extends ChannelBaseFragment {
 
         @Override
         protected Integer doInBackground(String... params) {
+            if (mRestClient!= null){
             try {
                 entity = mRestClient.getSportHome(channelEntity.getHomepage_url());
                 if ("sport".equals(channelEntity.getChannel())) {
@@ -286,7 +287,9 @@ public class SportFragment extends ChannelBaseFragment {
                 return RESUTL_CANCELED;
             } else {
                 return RESULT_SUCCESS;
-            }
+            }}
+
+            return RESUTL_CANCELED;
         }
 
         @Override
