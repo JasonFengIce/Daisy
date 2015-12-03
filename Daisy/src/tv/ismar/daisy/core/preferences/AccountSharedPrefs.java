@@ -40,13 +40,7 @@ public class AccountSharedPrefs {
 
     private static Context mContext;
 
-    private SharedPreferences mSharedPreferences;
-
-
-    private AccountSharedPrefs() {
-        mSharedPreferences = mContext.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
-        mSharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
-    }
+    private  static SharedPreferences mSharedPreferences;
 
     public static AccountSharedPrefs getInstance() {
         if (instance == null) {
@@ -61,20 +55,22 @@ public class AccountSharedPrefs {
 
     public static void initialize(Context context) {
         mContext = context;
+        mSharedPreferences = mContext.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
+        mSharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
     }
 
-    public String getSharedPrefs(String key) {
+    public static String getSharedPrefs(String key) {
         return mSharedPreferences.getString(key, "");
     }
 
-    public void setSharedPrefs(String key, String value) {
+    public static void  setSharedPrefs(String key, String value) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(key, value);
         editor.apply();
     }
 
 
-    private SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+    private static SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             if (key.equals(PROVINCE)) {
@@ -83,7 +79,7 @@ public class AccountSharedPrefs {
         }
     };
 
-    private void changeProvincePY(String provinceName) {
+    private static void changeProvincePY(String provinceName) {
         ProvinceTable provinceTable = new Select().from(ProvinceTable.class)
                 .where(ProvinceTable.PROVINCE_NAME + " = ?", provinceName).executeSingle();
         if (provinceTable != null) {
