@@ -529,6 +529,9 @@ public class QiYiPlayActivity extends VodMenuAction {
 
         @Override
         public void onMovieStart() {
+            if(mPlayer==null){
+                return;
+            }
             clipLength = mPlayer.getDuration();
             // if(currPosition >0)
             // mPlayer.seekTo(currPosition);

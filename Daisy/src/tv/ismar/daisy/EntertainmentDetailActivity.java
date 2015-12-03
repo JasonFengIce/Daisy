@@ -190,8 +190,10 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
 
                     @Override
                     public void onPostExecute() {
-                        // TODO Auto-generated method stub
-                        mLoadingDialog.dismiss();
+                        if (mLoadingDialog!= null){
+                            mLoadingDialog.dismiss();
+                        }
+
                     }
                 });
                 switch (id) {
