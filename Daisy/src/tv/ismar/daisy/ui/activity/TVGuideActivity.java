@@ -833,7 +833,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         }
     }
 
-
+    BitmapDecoder ddddBitmapDecoder;
     private void selectChannelByPosition(int position) {
         if (lastchannelindex < position) {
             scrollType = ScrollType.right;
@@ -879,7 +879,11 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 				if (currentFragment instanceof ChildFragment) {
 				} else {
 					destroybackground();
-					new BitmapDecoder().decode(this, R.drawable.main_bg,
+					if(ddddBitmapDecoder != null && ddddBitmapDecoder.isAlive()){
+						ddddBitmapDecoder.interrupt();
+					}
+					ddddBitmapDecoder = new BitmapDecoder();
+					ddddBitmapDecoder.decode(this, R.drawable.main_bg,
 							new BitmapDecoder.Callback() {
 								@Override
 								public void onSuccess(
@@ -892,12 +896,17 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 			} else {
 				if (currentFragment instanceof ChildFragment) {
 					destroybackground();
-					new BitmapDecoder().decode(this,
+					if(ddddBitmapDecoder != null && ddddBitmapDecoder.isAlive()){
+						ddddBitmapDecoder.interrupt();
+					}
+					ddddBitmapDecoder = new BitmapDecoder();
+					ddddBitmapDecoder.decode(this,
 							R.drawable.channel_child_bg,
 							new BitmapDecoder.Callback() {
 								@Override
 								public void onSuccess(
 										BitmapDrawable bitmapDrawable) {
+									Log.v("aaaa", "setbackground");
 									contentView
 											.setBackgroundDrawable(bitmapDrawable);
 								}

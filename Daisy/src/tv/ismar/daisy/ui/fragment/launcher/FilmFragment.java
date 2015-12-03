@@ -94,6 +94,7 @@ public class FilmFragment extends ChannelBaseFragment {
         mContext.registerReceiver(externalStorageReceiver, intentFilter);
 
         if (mCarousels == null) {
+        	if(channelEntity != null)
             fetchHomePage(channelEntity.getHomepage_url());
         } else {
             playCarousel();
