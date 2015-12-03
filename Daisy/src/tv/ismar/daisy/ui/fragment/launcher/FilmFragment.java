@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.ui.activity.TVGuideActivity;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
 import tv.ismar.daisy.ui.widget.HomeItemContainer;
+import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.daisy.utils.HardwareUtils;
 import tv.ismar.daisy.views.LabelImageView;
 
@@ -407,6 +409,13 @@ public class FilmFragment extends ChannelBaseFragment {
     private void startPlayback() {
         Log.d(TAG, "startPlayback is invoke...");
         linkedVideoImage.setImageResource(R.drawable.guide_video_loading);
+        if(mContext != null)
+        new BitmapDecoder().decode(mContext, R.drawable.guide_video_loading, new BitmapDecoder.Callback() {
+            @Override
+            public void onSuccess(BitmapDrawable bitmapDrawable) {
+            	linkedVideoImage.setBackgroundDrawable(bitmapDrawable);
+            }
+        });
         linkedVideoImage.setVisibility(View.VISIBLE);
         mSurfaceView.setFocusable(false);
         mSurfaceView.setFocusableInTouchMode(false);
