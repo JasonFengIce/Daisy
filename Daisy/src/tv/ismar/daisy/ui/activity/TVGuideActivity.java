@@ -73,7 +73,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private static final int SWITCH_PAGE_FROMLAUNCH = 0X02;
     private AppUpdateReceiver appUpdateReceiver;
     private ChannelBaseFragment currentFragment;
-
+    private ChannelBaseFragment lastFragment;
     /**
      * PopupWindow
      */
@@ -863,27 +863,50 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         topView.setSubTitle(channelEntity.getName());
         currentFragment = null;
         Log.i("template==", channelEntity.getHomepage_template());
-        destroybackground();
         if ("template1".equals(channelEntity.getHomepage_template())) {
             currentFragment = new FilmFragment();
-            //contentView.setBackgroundResource(R.drawable.main_bg);
-            setbackground(R.drawable.main_bg);
         } else if ("template2".equals(channelEntity.getHomepage_template())) {
             currentFragment = new EntertainmentFragment();
-            //contentView.setBackgroundResource(R.drawable.main_bg);
-            setbackground(R.drawable.main_bg);
         } else if ("template3".equals(channelEntity.getHomepage_template())) {
             currentFragment = new SportFragment();
-            // contentView.setBackgroundResource(R.drawable.main_bg);
-            setbackground(R.drawable.main_bg);
         } else if ("template4".equals(channelEntity.getHomepage_template())) {
             currentFragment = new ChildFragment();
-            // contentView.setBackgroundResource(R.drawable.channel_child_bg);
-            setbackground(R.drawable.channel_child_bg);
         } else {
             currentFragment = new GuideFragment();
-            setbackground(R.drawable.main_bg);
         }
+		if (lastFragment != null) {
+			if (lastFragment instanceof ChildFragment) {
+				if (currentFragment instanceof ChildFragment) {
+				} else {
+					destroybackground();
+					new BitmapDecoder().decode(this, R.drawable.main_bg,
+							new BitmapDecoder.Callback() {
+								@Override
+								public void onSuccess(
+										BitmapDrawable bitmapDrawable) {
+									contentView
+											.setBackgroundDrawable(bitmapDrawable);
+								}
+							});
+				}
+			} else {
+				if (currentFragment instanceof ChildFragment) {
+					destroybackground();
+					new BitmapDecoder().decode(this,
+							R.drawable.channel_child_bg,
+							new BitmapDecoder.Callback() {
+								@Override
+								public void onSuccess(
+										BitmapDrawable bitmapDrawable) {
+									contentView
+											.setBackgroundDrawable(bitmapDrawable);
+								}
+							});
+				} else {
+				}
+			}
+		}
+        lastFragment = currentFragment;
         if (scrollFromBorder) {
             currentFragment.setScrollFromBorder(scrollFromBorder);
             currentFragment.setRight(rightscroll);

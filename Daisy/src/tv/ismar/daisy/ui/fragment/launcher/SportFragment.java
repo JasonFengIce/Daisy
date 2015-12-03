@@ -387,6 +387,8 @@ public class SportFragment extends ChannelBaseFragment {
         @Override
         public void onClick(View arg0) {
             SportGame data = (SportGame) arg0.getTag();
+            if(data == null)
+            	return;
             if (data.isIs_complex()) {
                 Intent intent = new Intent();
                 intent.setAction("tv.ismar.daisy.Item");

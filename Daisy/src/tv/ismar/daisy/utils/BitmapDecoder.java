@@ -56,7 +56,7 @@ public class BitmapDecoder extends Thread {
 
         private MessageHandler(BitmapDecoder bitmapDecoder) {
             super(Looper.getMainLooper());
-            weakReference = new WeakReference<>(bitmapDecoder);
+            weakReference = new WeakReference<BitmapDecoder>(bitmapDecoder);
         }
 
         @Override
