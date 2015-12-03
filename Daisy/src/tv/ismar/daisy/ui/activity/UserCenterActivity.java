@@ -96,7 +96,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     private boolean fargmentIsActive = false;
     private String fromLaunchflag;
-
+    private BitmapDecoder bitmapDecoder;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,10 +108,11 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         setContentView(mContentView);
         mSimpleRestClient = new SimpleRestClient();
         final View background = findViewById(R.id.large_layout);
-        new BitmapDecoder().decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
+        bitmapDecoder = new BitmapDecoder();
+        bitmapDecoder.decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
             @Override
             public void onSuccess(BitmapDrawable bitmapDrawable) {
-                background.setBackgroundDrawable(bitmapDrawable);
+            	background.setBackgroundDrawable(bitmapDrawable);
             }
         });
 
@@ -174,6 +175,9 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if(bitmapDecoder != null && bitmapDecoder.isAlive()){
+        	bitmapDecoder.interrupt();
+        }
     }
 
     private void initViews() {
