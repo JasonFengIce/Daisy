@@ -178,6 +178,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         if(bitmapDecoder != null && bitmapDecoder.isAlive()){
         	bitmapDecoder.interrupt();
         }
+
     }
 
     private void initViews() {

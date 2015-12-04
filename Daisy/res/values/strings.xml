@@ -280,7 +280,8 @@
     <string name="login_success">您已成功登录视云影院！</string>
     <string name="login_success_name">恭喜&#160;%1$s&#160;</string>
 
-
+    <string name="phone_number">手机号码</string>
+    <string name="verification">验证码</string>
 
     <string name="login_failure">登录失败</string>
     <string name="logout">注销</string>

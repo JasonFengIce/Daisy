@@ -82,7 +82,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private SharedPreferences accountSharedPrefs;
     private Item[] mHistoriesByNet;
-
+    private String phoneNumber;
+    private String verification;
     public interface OnLoginCallback {
         void onLoginSuccess();
     }
@@ -107,9 +108,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         intentFilter.addAction(TimeCountdownBroadcastSender.ACTION_TIME_COUNTDOWN);
         mContext.registerReceiver(countdownReceiver, intentFilter);
 
-        phoneNumberEdit.setText("");
-        verificationEdit.setText("");
-
+//        phoneNumberEdit.setText("");
+//        verificationEdit.setText("");
+        phoneNumber = phoneNumberEdit.getText().toString();
+        verification=verificationEdit.getText().toString();
 
     }
 
@@ -117,7 +119,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public void onPause() {
         super.onPause();
         mContext.unregisterReceiver(countdownReceiver);
+
     }
+
 
     SimpleRestClient mSimpleRestClient;
 
@@ -143,12 +147,26 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 return false;
             }
         });
+
         return fragmentView;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if(savedInstanceState!=null){
+            phoneNumber=savedInstanceState.getString(getResources().getString(R.string.phone_number),"");
+            verification=savedInstanceState.getString(getResources().getString(R.string.verification),"");
+        }
+
+        if(phoneNumber!=null){
+            phoneNumberEdit.setText(phoneNumber);
+        }
+        if(verification!=null){
+            verificationEdit.setText(verification);
+        }
+        Log.e("login_onViewCreated","onViewCreated");
+
     }
 
     public static boolean isMobileNumber(String mobiles) {
@@ -160,6 +178,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         } else {
             return false;
         }
+
+
     }
 
     @Override
@@ -176,7 +196,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private void fetchVerificationCode() {
 //        phoneNumberEdit.setText("15370770697");
-        String phoneNumber = phoneNumberEdit.getText().toString();
+//          phoneNumber = phoneNumberEdit.getText().toString();
+
         if (TextUtils.isEmpty(phoneNumber)) {
             phoneNumberPrompt.setText(mContext.getText(R.string.phone_number_not_be_null));
             return;
@@ -186,6 +207,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             phoneNumberPrompt.setText(mContext.getText(R.string.not_phone_number));
             return;
         }
+
+
 
         phoneNumberPrompt.setText("");
 
@@ -225,7 +248,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         if (TextUtils.isEmpty(phoneNumber) || TextUtils.isEmpty(verificationCode)) {
             return;
         }
-
 
         phoneNumberPrompt.setText("");
         verificationPrompt.setText("");
@@ -536,5 +558,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     }
 
                 });
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+        super.onSaveInstanceState(outState);
+        outState.putString(getResources().getString(R.string.phone_number),phoneNumber);
+        outState.putString(getResources().getString(R.string.verification),verification);
+
     }
 }
