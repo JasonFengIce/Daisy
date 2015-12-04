@@ -24,6 +24,7 @@ public class InitPlayerTool {
     public String channel;
     public boolean isSubitemPreview = false;
     public String fromPage="";
+    private ItemByUrlTask urltask;
 	public InitPlayerTool(Context context){
 		this.mContext = context;
 		intent = new Intent();
@@ -32,17 +33,20 @@ public class InitPlayerTool {
 	
 	public void initClipInfo(Object item,String flag) {
 		simpleRestClient = new SimpleRestClient();
-		new ItemByUrlTask().execute(item,flag);
+		urltask = new ItemByUrlTask();
+		urltask.execute(item,flag);
 	}
 	public void initClipInfo(Object item,String flag,boolean isPreviewVideo) {
 		simpleRestClient = new SimpleRestClient();
 		this.mIsPreviewVideo = isPreviewVideo;
-		new ItemByUrlTask().execute(item,flag);
+		urltask = new ItemByUrlTask();
+		urltask.execute(item,flag);
 	}
     public void initClipInfo(Object item,String flag,int price ) {
         simpleRestClient = new SimpleRestClient();
         this.price = price;
-        new ItemByUrlTask().execute(item,flag);
+		urltask = new ItemByUrlTask();
+		urltask.execute(item,flag);
     }
 	// 初始化播放地址url
 	private class ItemByUrlTask extends AsyncTask<Object, Void, String> {
@@ -135,6 +139,12 @@ public class InitPlayerTool {
 	}
 	private onAsyncTaskHandler mListener;
 	
+	public void removeAsycCallback(){
+		if(urltask != null && urltask.getStatus()!=AsyncTask.Status.FINISHED && !urltask.isCancelled())
+		urltask.cancel(true);
+		urltask = null;
+	}
+
 	public void setonAsyncTaskListener(onAsyncTaskHandler l){
 		this.mListener = l;
 	}

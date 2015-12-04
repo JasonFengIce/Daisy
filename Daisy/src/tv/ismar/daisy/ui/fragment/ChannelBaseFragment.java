@@ -32,7 +32,7 @@ public class ChannelBaseFragment extends Fragment {
     protected View mRightBottomView;
     protected boolean isRight;
     protected String bottomFlag;
-
+    private InitPlayerTool tool;
 
 
     
@@ -66,6 +66,8 @@ public class ChannelBaseFragment extends Fragment {
 
     @Override
     public void onDetach() {
+    	if(tool != null)
+    		tool.removeAsycCallback();
         mContext = null;
         mLeftTopView = null;
         mLeftBottomView = null;
@@ -178,7 +180,7 @@ public class ChannelBaseFragment extends Fragment {
                     mContext.startActivity(intent);
                 } else if ("clip".equals(mode_name)) {
                     channel = "播放";
-                    InitPlayerTool tool = new InitPlayerTool(mContext);
+                    tool = new InitPlayerTool(mContext);
                     tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
                 }
             }

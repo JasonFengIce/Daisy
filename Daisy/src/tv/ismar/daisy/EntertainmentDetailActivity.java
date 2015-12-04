@@ -78,6 +78,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
     private String slug;
     private String fromPage;
     private BitmapDecoder bitmapDecoder;
+    private InitPlayerTool tool;
     private void initViews() {
         large_layout = findViewById(R.id.large_layout);
         mChannel = getIntent().getStringExtra("channel");
@@ -175,7 +176,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 int id = v.getId();
                 Intent intent = new Intent();
                 intent.putExtra(EventProperty.SECTION, "");
-                InitPlayerTool tool = new InitPlayerTool(
+                tool = new InitPlayerTool(
                         EntertainmentDetailActivity.this);
                 tool.slug = slug;
                 tool.channel = channel;
@@ -465,6 +466,8 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
 
     @Override
     protected void onDestroy() {
+    	if(tool != null)
+    		tool.removeAsycCallback();
         if(bitmapDecoder != null && bitmapDecoder.isAlive()){
         	bitmapDecoder.interrupt();
         }

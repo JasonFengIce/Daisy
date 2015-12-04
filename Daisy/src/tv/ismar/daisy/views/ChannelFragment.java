@@ -100,6 +100,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
     private Button right_shadow;
     private LaunchHeaderLayout weatherFragment;
     private BitmapDecoder bitmapDecoder;
+    private InitPlayerTool tool;
     public void setIsPOrtrait(boolean isPortrait) {
         this.isPortrait = isPortrait;
     }
@@ -669,6 +670,8 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 
     @Override
     public void onDestroyView() {
+    	if(tool != null)
+    		tool.removeAsycCallback();
     	 if(bitmapDecoder != null && bitmapDecoder.isAlive()){
          	bitmapDecoder.interrupt();
          }
@@ -868,7 +871,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
                         intent.putExtra(EventProperty.SECTION, s.slug);
                         startActivity(intent);
                     } else {
-                        InitPlayerTool tool = new InitPlayerTool(getActivity());
+                        tool = new InitPlayerTool(getActivity());
                         tool.fromPage = "list";
                         tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
 

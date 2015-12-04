@@ -107,6 +107,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
     private Thread fetchhotlines;
     private Future hotlinefuture;
     private BitmapDecoder bitmapDecoder;
+    private InitPlayerTool tool;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,6 +163,8 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 
     @Override
     protected void onDestroy() {
+    	if(tool != null)
+    		tool.removeAsycCallback();
         if(bitmapDecoder != null && bitmapDecoder.isAlive()){
         	bitmapDecoder.interrupt();
         }
@@ -557,7 +560,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
             if (movieList.get(position).is_complex) {
                 DaisyUtils.gotoSpecialPage(SearchActivity.this, movieList.get(position).content_model, movieList.get(position).url, "search");
             } else {
-                InitPlayerTool tool = new InitPlayerTool(SearchActivity.this);
+                tool = new InitPlayerTool(SearchActivity.this);
                 tool.fromPage = "search";
                 tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
 

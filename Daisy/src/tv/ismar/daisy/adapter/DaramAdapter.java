@@ -26,7 +26,7 @@ public class DaramAdapter extends BaseAdapter implements OnHoverListener,
 	private LayoutInflater mLayoutInflater;
 	private Item dramaItem;
 	public TextView mTvDramaType;
-
+    private InitPlayerTool tool;
 	public DaramAdapter(Context context, List<Item> subitemlist,
 			Item dramaitem, int sourceid) {
 		this.mContext = context;
@@ -91,7 +91,11 @@ public class DaramAdapter extends BaseAdapter implements OnHoverListener,
 					dialog.show();
 				} else {
 					try {
-						InitPlayerTool tool = new InitPlayerTool(v.getContext());
+						if(tool != null)
+							tool.removeAsycCallback();
+						else {
+							tool = new InitPlayerTool(v.getContext());	
+						}
 						tool.fromPage = dramaItem.fromPage;
 						tool.initClipInfo(subitem.url, InitPlayerTool.FLAG_URL);
 					} catch (Exception e) {
@@ -180,4 +184,9 @@ public class DaramAdapter extends BaseAdapter implements OnHoverListener,
 			}
 		}
 	};
+	
+	public void removeAsycCallback(){
+		if(tool != null)
+			tool.removeAsycCallback();
+	}
 }

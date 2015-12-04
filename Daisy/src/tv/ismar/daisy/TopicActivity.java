@@ -43,6 +43,7 @@ public class TopicActivity extends BaseActivity implements View.OnFocusChangeLis
     private SimpleRestClient mSimpleRestClient;
     private AsyncImageView[] mImgs;
     private ArrayList<Quadrangle> mQuadlist;
+    private InitPlayerTool tool;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -239,7 +240,7 @@ public class TopicActivity extends BaseActivity implements View.OnFocusChangeLis
             startActivity(intent);
         }
         else{
-            InitPlayerTool tool = new InitPlayerTool(TopicActivity.this);
+            tool = new InitPlayerTool(TopicActivity.this);
             tool.fromPage = "topic";
             tool.setonAsyncTaskListener(new InitPlayerTool.onAsyncTaskHandler() {
 
@@ -315,6 +316,8 @@ public class TopicActivity extends BaseActivity implements View.OnFocusChangeLis
 
     @Override
     protected void onDestroy() {
+    	if(tool != null)
+    		tool.removeAsycCallback();
         DaisyUtils.getVodApplication(this).removeActivtyFromPool(this.toString());
         super.onDestroy();
     }

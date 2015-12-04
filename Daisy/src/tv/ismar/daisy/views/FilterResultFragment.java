@@ -55,6 +55,7 @@ public class FilterResultFragment extends BackHandledFragment implements Adapter
     private Button left_shadow;
     private Button right_shadow;
     private float rate;
+    private InitPlayerTool tool;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rate = DaisyUtils.getVodApplication(getActivity()).getRate(getActivity());
@@ -334,6 +335,8 @@ public class FilterResultFragment extends BackHandledFragment implements Adapter
     }
     @Override
     public void onDestroyView() {
+    	if(tool != null)
+    		tool.removeAsycCallback();
         if(mInitTask!=null && mInitTask.getStatus()!=AsyncTask.Status.FINISHED) {
             mInitTask.cancel(true);
         }
@@ -353,7 +356,7 @@ public class FilterResultFragment extends BackHandledFragment implements Adapter
             if(item.is_complex) {
                 DaisyUtils.gotoSpecialPage(getActivity(),item.content_model,item.url,"retrieval");
             } else {
-                InitPlayerTool tool = new InitPlayerTool(getActivity());
+                tool = new InitPlayerTool(getActivity());
                 tool.fromPage = "retrieval";
                 tool.setonAsyncTaskListener(new InitPlayerTool.onAsyncTaskHandler() {
 

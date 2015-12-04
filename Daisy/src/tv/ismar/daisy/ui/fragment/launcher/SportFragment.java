@@ -66,7 +66,7 @@ public class SportFragment extends ChannelBaseFragment {
     private int loopindex = -1;
     private int currentLiveIndex = 0;
     private FetchDataTask datafetch;
-
+    private InitPlayerTool tool;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -187,6 +187,8 @@ public class SportFragment extends ChannelBaseFragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        if(tool != null)
+        	tool.removeAsycCallback();
         imageswitch.removeMessages(IMAGE_SWITCH_KEY);
         test.removeMessages(0);
         if (datafetch != null && !datafetch.isCancelled())
@@ -398,7 +400,7 @@ public class SportFragment extends ChannelBaseFragment {
                 intent.putExtra("url", data.getUrl());
                 mContext.startActivity(intent);
             } else {
-                InitPlayerTool tool = new InitPlayerTool(mContext);
+                tool = new InitPlayerTool(mContext);
                 tool.initClipInfo(data.getUrl(),
                         InitPlayerTool.FLAG_URL);
             }

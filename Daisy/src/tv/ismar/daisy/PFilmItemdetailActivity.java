@@ -78,6 +78,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
     private String fromPage;
     private LaunchHeaderLayout weatherFragment;
     private BitmapDecoder bitmapDecoder;
+    private InitPlayerTool tool;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -594,6 +595,8 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
     @Override
     protected void onDestroy() {
+    	if(tool != null)
+    		tool.removeAsycCallback();
     	 if(bitmapDecoder != null && bitmapDecoder.isAlive()){
          	bitmapDecoder.interrupt();
          }
@@ -1087,7 +1090,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 int id = v.getId();
                 Intent intent = new Intent();
                 intent.putExtra(EventProperty.SECTION, "");
-                InitPlayerTool tool = new InitPlayerTool(
+                tool = new InitPlayerTool(
                         PFilmItemdetailActivity.this);
                 tool.channel = channel;
                 tool.slug = slug;

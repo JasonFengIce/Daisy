@@ -67,6 +67,7 @@ public class RelatedActivity extends BaseActivity implements OnSectionSelectChan
     private static final int LABEL_TEXT_COLOR_FOCUSED1 = 0xffffba00;
     private static final int LABEL_TEXT_COLOR_NOFOCUSED = 0xffffffff;
     private BitmapDecoder bitmapDecoder;
+    private InitPlayerTool tool;
     private void initViews() {
         mSectionTabs = (RelateScrollableSectionList) findViewById(R.id.related_section_tabs);
         mSectionTabs.setOnSectionSelectChangeListener(this);
@@ -298,6 +299,8 @@ public class RelatedActivity extends BaseActivity implements OnSectionSelectChan
 
     @Override
     protected void onDestroy() {
+    	if(tool != null)
+    		tool.removeAsycCallback();
         if(bitmapDecoder != null && bitmapDecoder.isAlive()){
         	bitmapDecoder.interrupt();
         }
@@ -385,7 +388,7 @@ public class RelatedActivity extends BaseActivity implements OnSectionSelectChan
             }
             DaisyUtils.gotoSpecialPage(this, item.content_model, item.item_url, "related");
         } else {
-            InitPlayerTool tool = new InitPlayerTool(RelatedActivity.this);
+            tool = new InitPlayerTool(RelatedActivity.this);
             tool.fromPage = "related";
             tool.initClipInfo(item.item_url, InitPlayerTool.FLAG_URL);
         }

@@ -461,75 +461,71 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		mHGridView.jumpToSection(index);
 	}
     private Item item;
-    private void ExeCuteItemclick(Item i){
-        item = i;
-        String url;
-
-        if(item.model_name.equals("subitem"))
-            url = SimpleRestClient.root_url + "/api/item/" + item.item_pk + "/";
-        else
-            url = SimpleRestClient.root_url + "/api/item/" + item.pk + "/";
-
-        Log.i("qazwsxcde","item model=="+item.model_name + "item url=="+url);
-
-        mCurrentGetItemTask.remove(url);
-        History history = null;
-        if(SimpleRestClient.isLogin())
-            history = DaisyUtils.getHistoryManager(getActivity()).getHistoryByUrl(url,"yes");
-        else{
-            history = DaisyUtils.getHistoryManager(getActivity()).getHistoryByUrl(url,"no");
-        }
-        // Use to data collection.
-        mDataCollectionProperties = new HashMap<String, Object>();
-        int id = SimpleRestClient.getItemId(url, new boolean[1]);
-        mDataCollectionProperties.put("to_item", id);
-        if(history.sub_url!=null && item.subitems!=null) {
-            int sub_id = SimpleRestClient.getItemId(history.sub_url, new boolean[1]);
-            mDataCollectionProperties.put("to_subitem", sub_id);
-            for(Item subitem: item.subitems) {
-                if(sub_id==subitem.pk) {
-                    mDataCollectionProperties.put("to_clip", subitem.clip.pk);
-                    break;
-                }
-            }
-        } else {
-            mDataCollectionProperties.put("to_subitem", item.clip.pk);
-        }
-        mDataCollectionProperties.put("to_title", item.title);
-        mDataCollectionProperties.put("position", history.last_position);
-        String[] qualitys = new String[]{"normal", "high", "ultra", "adaptive"};
-        mDataCollectionProperties.put("quality", qualitys[(history.quality >=0 && history.quality < qualitys.length)?history.quality:0]);
-        // start a new activity.
-        Intent intent = new Intent();
-
-        InitPlayerTool tool = new InitPlayerTool(getActivity());
-        tool.fromPage = "history";
-        tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
-
-            @Override
-            public void onPreExecute(Intent intent) {
-                // TODO Auto-generated method stub
-                mLoadingDialog.show();
-            }
-
-            @Override
-            public void onPostExecute() {
-                // TODO Auto-generated method stub
-                mLoadingDialog.dismiss();
-            }
-        });
-        if(history!=null){
-
-
-            int  c = history.url.lastIndexOf("api");
-            String url1 =  history.url.substring(c,history.url.length());
-            url1 = SimpleRestClient.sRoot_url + "/" + url1;
-            tool.initClipInfo(url1, InitPlayerTool.FLAG_URL,history.price);
-        }
-        else{
-            tool.initClipInfo(url, InitPlayerTool.FLAG_URL,history.price);
-        }
-    }
+//    private void ExeCuteItemclick(Item i){
+//        item = i;
+//        String url;
+//
+//        if(item.model_name.equals("subitem"))
+//            url = SimpleRestClient.root_url + "/api/item/" + item.item_pk + "/";
+//        else
+//            url = SimpleRestClient.root_url + "/api/item/" + item.pk + "/";
+//
+//        Log.i("qazwsxcde","item model=="+item.model_name + "item url=="+url);
+//
+//        mCurrentGetItemTask.remove(url);
+//        History history = null;
+//        if(SimpleRestClient.isLogin())
+//            history = DaisyUtils.getHistoryManager(getActivity()).getHistoryByUrl(url,"yes");
+//        else{
+//            history = DaisyUtils.getHistoryManager(getActivity()).getHistoryByUrl(url,"no");
+//        }
+//        mDataCollectionProperties = new HashMap<String, Object>();
+//        int id = SimpleRestClient.getItemId(url, new boolean[1]);
+//        mDataCollectionProperties.put("to_item", id);
+//        if(history.sub_url!=null && item.subitems!=null) {
+//            int sub_id = SimpleRestClient.getItemId(history.sub_url, new boolean[1]);
+//            mDataCollectionProperties.put("to_subitem", sub_id);
+//            for(Item subitem: item.subitems) {
+//                if(sub_id==subitem.pk) {
+//                    mDataCollectionProperties.put("to_clip", subitem.clip.pk);
+//                    break;
+//                }
+//            }
+//        } else {
+//            mDataCollectionProperties.put("to_subitem", item.clip.pk);
+//        }
+//        mDataCollectionProperties.put("to_title", item.title);
+//        mDataCollectionProperties.put("position", history.last_position);
+//        String[] qualitys = new String[]{"normal", "high", "ultra", "adaptive"};
+//        mDataCollectionProperties.put("quality", qualitys[(history.quality >=0 && history.quality < qualitys.length)?history.quality:0]);
+//        Intent intent = new Intent();
+//
+//        InitPlayerTool tool = new InitPlayerTool(getActivity());
+//        tool.fromPage = "history";
+//        tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
+//
+//            @Override
+//            public void onPreExecute(Intent intent) {
+//                mLoadingDialog.show();
+//            }
+//
+//            @Override
+//            public void onPostExecute() {
+//                mLoadingDialog.dismiss();
+//            }
+//        });
+//        if(history!=null){
+//
+//
+//            int  c = history.url.lastIndexOf("api");
+//            String url1 =  history.url.substring(c,history.url.length());
+//            url1 = SimpleRestClient.sRoot_url + "/" + url1;
+//            tool.initClipInfo(url1, InitPlayerTool.FLAG_URL,history.price);
+//        }
+//        else{
+//            tool.initClipInfo(url, InitPlayerTool.FLAG_URL,history.price);
+//        }
+//    }
     private Item netItem;
 	class GetItemTask extends AsyncTask<Item, Void, Integer> {
 		
@@ -639,7 +635,6 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 				String[] qualitys = new String[]{"normal", "high", "ultra", "adaptive"};
 				mDataCollectionProperties.put("quality", qualitys[(history.quality >=0 && history.quality < qualitys.length)?history.quality:0]);
 				// start a new activity.
-				Intent intent = new Intent();
 
                 InitPlayerTool tool = new InitPlayerTool(getActivity());
                 tool.fromPage = "history";
@@ -648,12 +643,14 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
                     @Override
                     public void onPreExecute(Intent intent) {
                         // TODO Auto-generated method stub
+                    	if(mLoadingDialog != null)
                         mLoadingDialog.show();
                     }
 
                     @Override
                     public void onPostExecute() {
                         // TODO Auto-generated method stub
+                    	if(mLoadingDialog != null)
                         mLoadingDialog.dismiss();
                     }
                 });

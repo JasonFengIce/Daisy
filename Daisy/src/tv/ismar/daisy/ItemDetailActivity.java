@@ -133,6 +133,7 @@ public class ItemDetailActivity extends BaseActivity implements
     private boolean isFirstLogin = false;
     private tv.ismar.daisy.ui.widget.LaunchHeaderLayout top_column_layout;
     private BitmapDecoder bitmapDecoder;
+    private InitPlayerTool tool;
     private void initViews() {
         isbuy_label = (ImageView) findViewById(R.id.isbuy_label);
         mDetailLeftContainer = (RelativeLayout) findViewById(R.id.detail_left_container);
@@ -401,6 +402,9 @@ public class ItemDetailActivity extends BaseActivity implements
 
     @Override
     protected void onDestroy() {
+    	if(tool != null){
+    		tool.removeAsycCallback();
+    	}
         if(bitmapDecoder != null && bitmapDecoder.isAlive()){
         	bitmapDecoder.interrupt();
         }
@@ -1035,7 +1039,7 @@ public class ItemDetailActivity extends BaseActivity implements
                 int id = v.getId();
                 Intent intent = new Intent();
                 intent.putExtra(EventProperty.SECTION, mSection);
-                InitPlayerTool tool = new InitPlayerTool(
+                tool = new InitPlayerTool(
                         ItemDetailActivity.this);
                 tool.channel = channel;
                 tool.slug = slug;

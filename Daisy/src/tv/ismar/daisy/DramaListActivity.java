@@ -68,6 +68,7 @@ public class DramaListActivity extends BaseActivity implements
 	// private Bitmap bitmap;
 	private LoadingDialog loadDialog;
 	private boolean paystatus = false;
+	private InitPlayerTool tool;
 //    private boolean orderAlldrama = false;
 
 	private HashMap<String, Object> mDataCollectionProperties = new HashMap<String, Object>();
@@ -344,7 +345,7 @@ public class DramaListActivity extends BaseActivity implements
 		mDataCollectionProperties.put("title", title);
 		mDataCollectionProperties.put("to", "play");
 		try {
-			InitPlayerTool tool = new InitPlayerTool(DramaListActivity.this);
+			tool = new InitPlayerTool(DramaListActivity.this);
 			tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
 
 				@Override
@@ -381,6 +382,10 @@ public class DramaListActivity extends BaseActivity implements
 
 	@Override
 	protected void onDestroy() {
+		if(tool != null){
+			tool.removeAsycCallback();
+		}
+		mDramaAdapter.removeAsycCallback();
 		mItem = null;
 		mList = null;
 		mDramaAdapter = null;

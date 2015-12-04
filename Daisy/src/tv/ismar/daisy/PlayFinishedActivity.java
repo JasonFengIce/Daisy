@@ -55,7 +55,7 @@ public class PlayFinishedActivity extends BaseActivity implements OnFocusChangeL
     final SimpleRestClient simpleRest = new SimpleRestClient();
     private FavoriteManager mFavoriteManager;
     private HistoryManager mHistorymanager;
-
+    private InitPlayerTool tool;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -291,7 +291,7 @@ public class PlayFinishedActivity extends BaseActivity implements OnFocusChangeL
                         }
                     }
                     try {
-                        InitPlayerTool tool = new InitPlayerTool(PlayFinishedActivity.this);
+                        tool = new InitPlayerTool(PlayFinishedActivity.this);
                         tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
 
                             @Override
@@ -491,6 +491,8 @@ public class PlayFinishedActivity extends BaseActivity implements OnFocusChangeL
 
     @Override
     protected void onDestroy() {
+    	if(tool != null)
+    		tool.removeAsycCallback();
         loadDialog = null;
         playAdapter = null;
         mFavoriteManager = null;
