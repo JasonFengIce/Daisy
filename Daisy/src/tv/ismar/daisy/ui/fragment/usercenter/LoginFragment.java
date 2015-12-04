@@ -165,7 +165,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         if(verification!=null){
             verificationEdit.setText(verification);
         }
-        Log.e("login_onViewCreated","onViewCreated");
 
     }
 
@@ -196,7 +195,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private void fetchVerificationCode() {
 //        phoneNumberEdit.setText("15370770697");
-//          phoneNumber = phoneNumberEdit.getText().toString();
 
         if (TextUtils.isEmpty(phoneNumber)) {
             phoneNumberPrompt.setText(mContext.getText(R.string.phone_number_not_be_null));
@@ -562,10 +560,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-
-        super.onSaveInstanceState(outState);
         outState.putString(getResources().getString(R.string.phone_number),phoneNumber);
         outState.putString(getResources().getString(R.string.verification),verification);
-
+        super.onSaveInstanceState(outState);
     }
 }
