@@ -108,8 +108,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         intentFilter.addAction(TimeCountdownBroadcastSender.ACTION_TIME_COUNTDOWN);
         mContext.registerReceiver(countdownReceiver, intentFilter);
 
-//        phoneNumberEdit.setText("");
-//        verificationEdit.setText("");
         phoneNumber = phoneNumberEdit.getText().toString();
         verification=verificationEdit.getText().toString();
 
