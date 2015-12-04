@@ -28,14 +28,14 @@ public class FilterActivity extends BaseActivity implements BackHandledInterface
     private BackHandledFragment mBackHandedFragment;
 
     private LaunchHeaderLayout weatherFragment;
-
+    private BitmapDecoder bitmapDecoder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.filter_layout);
        final View vv = findViewById(R.id.large_layout);
-
-        new BitmapDecoder().decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
+        bitmapDecoder = new BitmapDecoder();
+        bitmapDecoder.decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
             @Override
             public void onSuccess(BitmapDrawable bitmapDrawable) {
                 vv.setBackgroundDrawable(bitmapDrawable);
@@ -107,6 +107,9 @@ public class FilterActivity extends BaseActivity implements BackHandledInterface
     @Override
     protected void onDestroy() {
         DaisyUtils.getVodApplication(this).removeActivtyFromPool(this.toString());
+        if(bitmapDecoder != null && bitmapDecoder.isAlive()){
+        	bitmapDecoder.interrupt();
+        }
         super.onDestroy();
     }
 

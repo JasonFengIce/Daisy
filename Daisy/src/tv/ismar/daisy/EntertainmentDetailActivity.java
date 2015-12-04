@@ -354,10 +354,11 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
         mSimpleRestClient = new SimpleRestClient();
         setContentView(R.layout.entertainment_detail_view);
         final  View background = findViewById(R.id.large_layout);
-        new BitmapDecoder().decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
+        bitmapDecoder = new BitmapDecoder();
+        bitmapDecoder.decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
             @Override
             public void onSuccess(BitmapDrawable bitmapDrawable) {
-                background.setBackgroundDrawable(bitmapDrawable);
+            	background.setBackgroundDrawable(bitmapDrawable);
             }
         });
         mLoadingDialog = new LoadingDialog(this, getResources().getString(

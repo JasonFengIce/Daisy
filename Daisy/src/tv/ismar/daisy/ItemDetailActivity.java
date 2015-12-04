@@ -289,13 +289,13 @@ public class ItemDetailActivity extends BaseActivity implements
         setIntent(intent);
         setContentView(R.layout.item_detail_layout);
         final View vv = findViewById(R.id.large_layout);
-        new BitmapDecoder().decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
+        bitmapDecoder = new BitmapDecoder();
+        bitmapDecoder.decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
             @Override
             public void onSuccess(BitmapDrawable bitmapDrawable) {
                 vv.setBackgroundDrawable(bitmapDrawable);
             }
         });
-
         mSimpleRestClient = new SimpleRestClient();
         // Log.e("START", System.currentTimeMillis()+"");
         mLoadingDialog = new LoadingDialog(this, getResources().getString(
