@@ -99,7 +99,6 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
     private Button left_shadow;
     private Button right_shadow;
     private View gideview_layuot;
-    private BitmapDecoder bitmapDecoder;
 	private long getTodayStartPoint() {
 		long currentTime = System.currentTimeMillis();
 		GregorianCalendar currentCalendar = new GregorianCalendar();
@@ -116,15 +115,6 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 	}
 	private void initViews(View fragmentView) {
         final View background = fragmentView.findViewById(R.id.large_layout);
-        bitmapDecoder = new BitmapDecoder();
-        if(getActivity() != null)
-        bitmapDecoder.decode(getActivity(), R.drawable.main_bg, new BitmapDecoder.Callback() {
-            @Override
-            public void onSuccess(BitmapDrawable bitmapDrawable) {
-            	background.setBackgroundDrawable(bitmapDrawable);
-            }
-        });
-
         View vv = fragmentView.findViewById(R.id.tabs_layout);
         vv.setVisibility(View.GONE);
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
@@ -788,9 +778,6 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 	}
 	@Override
 	public void onDetach() {
-        if(bitmapDecoder != null && bitmapDecoder.isAlive()){
-        	bitmapDecoder.interrupt();
-        }
 		if(mLoadingDialog.isShowing()){
 			mLoadingDialog.dismiss();
 		}

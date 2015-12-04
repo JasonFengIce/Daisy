@@ -99,22 +99,12 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
     private Button left_shadow;
     private Button right_shadow;
     private LaunchHeaderLayout weatherFragment;
-    private BitmapDecoder bitmapDecoder;
     private InitPlayerTool tool;
     public void setIsPOrtrait(boolean isPortrait) {
         this.isPortrait = isPortrait;
     }
 
     private void initViews(View fragmentView) {
-        final View vv = fragmentView.findViewById(R.id.large_layout);
-
-        bitmapDecoder = new BitmapDecoder();
-        bitmapDecoder.decode(getActivity(), R.drawable.main_bg, new BitmapDecoder.Callback() {
-            @Override
-            public void onSuccess(BitmapDrawable bitmapDrawable) {
-                vv.setBackground(bitmapDrawable);
-            }
-        });
 
         percentage = (ProgressBar) fragmentView.findViewById(R.id.section_percentage);
 
@@ -672,9 +662,6 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
     public void onDestroyView() {
     	if(tool != null)
     		tool.removeAsycCallback();
-    	 if(bitmapDecoder != null && bitmapDecoder.isAlive()){
-         	bitmapDecoder.interrupt();
-         }
         if (mInitTask != null && mInitTask.getStatus() != AsyncTask.Status.FINISHED) {
             mInitTask.cancel(true);
         }

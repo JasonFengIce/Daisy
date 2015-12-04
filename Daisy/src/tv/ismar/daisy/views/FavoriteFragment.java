@@ -100,19 +100,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
     private Button left_shadow;
     private Button right_shadow;
     private View gideview_layuot;
-    private BitmapDecoder bitmapDecoder;
 	private void initViews(View fragmentView) {
-       final View background = fragmentView.findViewById(R.id.large_layout);
-
-       bitmapDecoder = new BitmapDecoder();
-       if(getActivity() != null)
-       bitmapDecoder.decode(getActivity(), R.drawable.main_bg, new BitmapDecoder.Callback() {
-           @Override
-           public void onSuccess(BitmapDrawable bitmapDrawable) {
-           	background.setBackgroundDrawable(bitmapDrawable);
-           }
-       });
-
         View vv = fragmentView.findViewById(R.id.tabs_layout);
         vv.setVisibility(View.GONE);
 		mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
@@ -590,9 +578,6 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	}
 	@Override
 	public void onDetach() {
-        if(bitmapDecoder != null && bitmapDecoder.isAlive()){
-        	bitmapDecoder.interrupt();
-        }
         if(getFavoriteTask != null && !getFavoriteTask.isCancelled())
         	getFavoriteTask.cancel(true);
 		if(mLoadingDialog.isShowing()){
