@@ -260,6 +260,7 @@ public class NetworkUtils {
                     response.append(line);
                 }
                 buff.close();
+                Log.v("aaaa", "result = "+response.toString());
                 JSONObject rootJsonObject = new JSONObject(response.toString());
                 int retcode = rootJsonObject.getInt("retcode");
                 String retmsg = rootJsonObject.getString("retmsg");
@@ -288,7 +289,7 @@ public class NetworkUtils {
                     Collections.sort(result, new Comparator<AdElement>() {
                         @Override
                         public int compare(AdElement lhs, AdElement rhs) {
-                            return rhs.getSerial() > lhs.getSerial() ? 1 : 0;
+                            return rhs.getSerial() < lhs.getSerial() ? 1 : 0;
                         }
                     });
                 } else {
