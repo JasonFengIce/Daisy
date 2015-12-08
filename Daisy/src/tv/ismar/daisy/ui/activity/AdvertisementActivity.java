@@ -96,6 +96,7 @@ public class AdvertisementActivity extends Activity {
 
                     @Override
                     public void onFailure() {
+                        AdvertisementLogger.bootAdvExcept(AdvertisementLogger.BOOT_ADV_PLAY_EXCEPTION_CODE, AdvertisementLogger.BOOT_ADV_PLAY_EXCEPTION_STRING);
                         ImageLoader.with(AdvertisementActivity.this)
                                 .load(DEFAULT_ADV_PICTURE)
                                 .diskCacheStrategy(ImageLoader.CacheStrategy.DISK_NONE)

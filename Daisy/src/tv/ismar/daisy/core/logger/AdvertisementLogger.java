@@ -10,6 +10,11 @@ import java.util.Map;
  * Created by huaijie on 11/16/15.
  */
 public class AdvertisementLogger extends AppLogger {
+    public static final String BOOT_ADV_DOWNLOAD_EXCEPTION_CODE = "801";
+    public static final String BOOT_ADV_DOWNLOAD_EXCEPTION_STRING = "获取广告物料失败";
+    public static final String BOOT_ADV_PLAY_EXCEPTION_CODE = "802";
+    public static final String BOOT_ADV_PLAY_EXCEPTION_STRING = "展示广告失败";
+
     private static void advLog(HashMap<String, String> params) {
         Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
         StringBuffer stringBuffer = new StringBuffer();
@@ -70,4 +75,6 @@ public class AdvertisementLogger extends AppLogger {
         hashMap.put("content", content);
         advLog(hashMap);
     }
+
+
 }
