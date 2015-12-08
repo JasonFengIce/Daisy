@@ -1815,7 +1815,7 @@ public class PlayerActivity extends VodMenuAction {
 					(System.currentTimeMillis() - startDuration),
 					VodUserAgent.getMediaIp(adurl),
 					item.pk,
-					adlog.get(adlog.get(adurl)),"bestv");							
+					adlog.get(adurl),"bestv");							
 		}
 		if (!isBuffer && bufferLayout.isShown()) {
 			bufferText.setText(BUFFERING);
