@@ -16,6 +16,7 @@ public class AdvertisementLogger extends AppLogger {
     public static final String BOOT_ADV_PLAY_EXCEPTION_STRING = "展示广告失败";
 
     private static void advLog(HashMap<String, String> params) {
+        params.put("time", String.valueOf(System.currentTimeMillis()));
         Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
         StringBuffer stringBuffer = new StringBuffer();
         while (iterator.hasNext()) {
