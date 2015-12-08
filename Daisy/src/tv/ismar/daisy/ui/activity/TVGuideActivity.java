@@ -1208,4 +1208,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             }
         }
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        
+    }
 }
