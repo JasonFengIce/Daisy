@@ -1,5 +1,7 @@
 package tv.ismar.daisy.core.logger;
 
+import android.util.Base64;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -21,7 +23,7 @@ public class AdvertisementLogger extends AppLogger {
         if (stringBuffer.length() > 0) {
             stringBuffer.deleteCharAt(stringBuffer.length() - 1);
         }
-        log(stringBuffer.toString());
+        log(Base64.encodeToString(stringBuffer.toString().getBytes(), Base64.URL_SAFE));
     }
 
     /**

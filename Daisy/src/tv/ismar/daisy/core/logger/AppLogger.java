@@ -25,6 +25,7 @@ public class AppLogger {
 
     static Retrofit buildRetrofit() {
         String advHost = "http://" + AccountSharedPrefs.getInstance().getSharedPrefs(AccountSharedPrefs.LOG_DOMAIN);
+//        String advHost = "http://10.254.0.100:8080";
         OkHttpClient client = new OkHttpClient();
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -48,7 +49,7 @@ public class AppLogger {
 
         Retrofit retrofit = buildRetrofit();
         LogRequest logRequest = retrofit.create(LogRequest.class);
-        Call<Empty> call = logRequest.doRequest(userAgent, contentEncoding, sn, deviceToken, accessToken, modelName, data);
+        Call<Empty> call = logRequest.doRequest(userAgent, contentEncoding,sn, deviceToken, accessToken, modelName, data);
         call.enqueue(new Callback<Empty>() {
             @Override
             public void onResponse(Response<Empty> response, Retrofit retrofit) {
