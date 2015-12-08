@@ -260,7 +260,6 @@ public class NetworkUtils {
                     response.append(line);
                 }
                 buff.close();
-                Log.v("aaaa", "result = "+response.toString());
                 JSONObject rootJsonObject = new JSONObject(response.toString());
                 int retcode = rootJsonObject.getInt("retcode");
                 String retmsg = rootJsonObject.getString("retmsg");
@@ -373,9 +372,9 @@ public class NetworkUtils {
         try {
             String jsonContent = base64Code(Content);
 //            String url = "http://ismartv.calla.tvxio.com/log";
-//            String url = "http://192.168.1.185/m3u8parse/parseM3u8";
+            String url = "http://192.168.1.120:8099/m3u8parse/parseM3u8";
             String host =  AccountSharedPrefs.getInstance().getSharedPrefs(AccountSharedPrefs.LOG_DOMAIN);
-            String url = "http://" + host+ "/log";
+//            String url = "http://" + host+ "/log";
             java.net.URL connURL = new java.net.URL(url);
             java.net.HttpURLConnection httpConn = (java.net.HttpURLConnection) connURL
                     .openConnection();
@@ -388,7 +387,7 @@ public class NetworkUtils {
             httpConn.setRequestProperty("Accept", "*/*");
             httpConn.setRequestProperty("Content-Type",
                     "application/x-www-form-urlencoded");
-            httpConn.setRequestProperty("Host", host);
+            httpConn.setRequestProperty("Host", "192.168.1.120");
             httpConn.setRequestProperty("Connection", "Keep-Alive");
             // httpConn.setRequestProperty("User-Agent",
             // "ideatv_A21/S0054.38 TD04007053");

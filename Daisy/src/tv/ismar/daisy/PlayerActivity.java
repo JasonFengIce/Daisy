@@ -599,7 +599,7 @@ public class PlayerActivity extends VodMenuAction {
 											item.title,
 											clip.pk,
 											currQuality,
-											(System.currentTimeMillis() - startDuration) / 1000,
+											(System.currentTimeMillis() - startDuration),
                                             speed, mediaip, sid,"bestv");
 									callaPlay.videoPlayStart(item.item_pk,
 											item.pk, item.title, clip.pk,
@@ -611,7 +611,7 @@ public class PlayerActivity extends VodMenuAction {
 											item.title,
 											clip.pk,
 											currQuality,
-											(System.currentTimeMillis() - startDuration) / 1000,
+											(System.currentTimeMillis() - startDuration),
                                             speed, mediaip, sid,"bestv");
 									callaPlay
 											.videoPlayStart(item.pk, null,
@@ -633,7 +633,7 @@ public class PlayerActivity extends VodMenuAction {
 									item.fromPage,
 									item.channel,
 									item.slug,
-									(System.currentTimeMillis() - startDuration) / 1000,
+									(System.currentTimeMillis() - startDuration),
 									VodUserAgent.getMediaIp(url),
 									item.pk,
 									adlog.get(url),"bestv");
@@ -679,7 +679,7 @@ public class PlayerActivity extends VodMenuAction {
 									item.fromPage,
 									item.channel,
 									item.slug,
-									(System.currentTimeMillis() - startDuration) / 1000,
+									(System.currentTimeMillis() - startDuration),
 									VodUserAgent.getMediaIp(url), item.pk,
 									adlog.get(url), "bestv");
 							startDuration = System.currentTimeMillis();
@@ -736,7 +736,7 @@ public class PlayerActivity extends VodMenuAction {
 
 			@Override
 			public boolean onInfo(SmartPlayer smartplayer, int i, int j) {
-				Log.v("aaaa", "i =" + i + ",.,.j=" + j);
+				Log.v("@@@@", "i =" + i + ",.,.j=" + j);
 				if (i == SmartPlayer.MEDIA_INFO_BUFFERING_START || i == 809) {
 					isBuffer = true;
 					bufferText.setText(BUFFERING + " " + 0 + "%");
@@ -1238,7 +1238,7 @@ public class PlayerActivity extends VodMenuAction {
 										0,
 										"end",
 										currPosition,
-										(System.currentTimeMillis() - startDuration) / 1000,
+										(System.currentTimeMillis() - startDuration),
 										item.slug, sid, "list",
 										item.content_model,"bestv");// String
 					// section,String
@@ -1256,7 +1256,7 @@ public class PlayerActivity extends VodMenuAction {
 										0,
 										"end",
 										currPosition,
-										(System.currentTimeMillis() - startDuration) / 1000,
+										(System.currentTimeMillis() - startDuration),
 										item.slug, sid, "list",
 										item.content_model,"bestv");
 				} catch (Exception e) {
@@ -1710,7 +1710,7 @@ public class PlayerActivity extends VodMenuAction {
 											speed,
 											"detail",
 											currPosition,
-											(System.currentTimeMillis() - startDuration) / 1000,
+											(System.currentTimeMillis() - startDuration),
 											item.slug, sid, "list",
 											item.content_model,"bestv");
 								else
@@ -1723,7 +1723,7 @@ public class PlayerActivity extends VodMenuAction {
 											speed,
 											"detail",
 											currPosition,
-											(System.currentTimeMillis() - startDuration) / 1000,
+											(System.currentTimeMillis() - startDuration),
 											item.slug, sid, "list",
 											item.content_model,"bestv");
 							} catch (Exception e) {
@@ -1807,6 +1807,16 @@ public class PlayerActivity extends VodMenuAction {
 			mHandler.removeMessages(BUFFER_COUNTDOWN_ACTION);
 			buffercountDown = 0;
 		}
+		if(isadvideoplaying){
+			callaPlay.ad_play_blockend(
+					item.fromPage,
+					item.channel,
+					item.slug,
+					(System.currentTimeMillis() - startDuration),
+					VodUserAgent.getMediaIp(adurl),
+					item.pk,
+					adlog.get(adlog.get(adurl)),"bestv");							
+		}
 		if (!isBuffer && bufferLayout.isShown()) {
 			bufferText.setText(BUFFERING);
 			bufferLayout.setVisibility(View.GONE);
@@ -1822,20 +1832,9 @@ public class PlayerActivity extends VodMenuAction {
 										currQuality,
                                         speed,
 										currPosition,
-										(System.currentTimeMillis() - bufferDuration) / 1000,
+										(System.currentTimeMillis() - bufferDuration),
 										mediaip, sid,"bestv");
-
 					} else {
-						if(isadvideoplaying){
-							callaPlay.ad_play_blockend(
-									item.fromPage,
-									item.channel,
-									item.slug,
-									(System.currentTimeMillis() - startDuration) / 1000,
-									VodUserAgent.getMediaIp(adurl),
-									item.pk,
-									adlog.get(adlog.get(adurl)),"bestv");							
-						}else{
 							callaPlay
 							.videoPlayBlockend(
 									item.item_pk,
@@ -1845,10 +1844,8 @@ public class PlayerActivity extends VodMenuAction {
 									currQuality,
                                     speed,
 									currPosition,
-									(System.currentTimeMillis() - bufferDuration) / 1000,
+									(System.currentTimeMillis() - bufferDuration),
 									mediaip, sid,"bestv");
-						}
-						
 					}
 				else if (isSeekBuffer) {
 					callaPlay
@@ -1860,20 +1857,10 @@ public class PlayerActivity extends VodMenuAction {
 									currQuality,
 									speed,
 									currPosition,
-									(System.currentTimeMillis() - bufferDuration) / 1000,
+									(System.currentTimeMillis() - bufferDuration),
 									mediaip, sid,"bestv");
 
 				} else {
-					if(isadvideoplaying){
-						callaPlay.ad_play_blockend(
-								item.fromPage,
-								item.channel,
-								item.slug,
-								(System.currentTimeMillis() - startDuration) / 1000,
-								VodUserAgent.getMediaIp(adurl),
-								item.pk,
-								adlog.get(adlog.get(adurl)),"bestv");							
-					}else{
 						callaPlay
 						.videoPlayBlockend(
 								item.item_pk,
@@ -1883,9 +1870,8 @@ public class PlayerActivity extends VodMenuAction {
 								currQuality,
                                 speed,
 								currPosition,
-								(System.currentTimeMillis() - bufferDuration) / 1000,
+								(System.currentTimeMillis() - bufferDuration),
 								mediaip, sid,"bestv");
-					}
 				}
 				isSeekBuffer = false;
 			} catch (Exception e) {
