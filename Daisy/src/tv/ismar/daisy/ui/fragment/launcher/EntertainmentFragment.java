@@ -488,4 +488,9 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		imageswitch.removeMessages(IMAGE_SWITCH_KEY);
 		super.onDetach();
 	}
+	
+	  public void refreshData(){
+	        task = new FetchDataTask();
+	        task.execute();
+	    }
 }

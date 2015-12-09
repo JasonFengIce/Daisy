@@ -212,4 +212,7 @@ public class ChannelBaseFragment extends Fragment {
         rootView.setBackgroundDrawable(bd);
     }
 
+    public void refreshData(){
+    	
+    }
 }

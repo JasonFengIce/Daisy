@@ -633,5 +633,9 @@ public class FilmFragment extends ChannelBaseFragment {
             linkedVideoImage.setVisibility(View.GONE);
         }
     };
+    
+   public void refreshData(){
+	   fetchHomePage(channelEntity.getHomepage_url());
+    }
 }
 

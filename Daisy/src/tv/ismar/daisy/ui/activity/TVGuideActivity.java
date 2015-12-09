@@ -62,6 +62,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.security.auth.PrivateCredentialPermission;
+
 import static tv.ismar.daisy.VodApplication.*;
 
 /**
@@ -418,7 +420,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                         currentFragment = new GuideFragment();
                         FragmentTransaction transaction = getSupportFragmentManager()
                                 .beginTransaction();
-                        transaction.add(R.id.container, currentFragment).commitAllowingStateLoss();
+                        transaction.replace(R.id.container, currentFragment,"template").commitAllowingStateLoss();
                     } catch (IllegalStateException e) {
                     }
 
@@ -838,6 +840,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     BitmapDecoder ddddBitmapDecoder;
     private void selectChannelByPosition(int position) {
+        String tag;
         if (lastchannelindex < position) {
             scrollType = ScrollType.right;
         } else {
@@ -868,14 +871,19 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         Log.i("template==", channelEntity.getHomepage_template());
         if ("template1".equals(channelEntity.getHomepage_template())) {
             currentFragment = new FilmFragment();
+            tag = "template1";
         } else if ("template2".equals(channelEntity.getHomepage_template())) {
             currentFragment = new EntertainmentFragment();
+            tag = "template2";
         } else if ("template3".equals(channelEntity.getHomepage_template())) {
             currentFragment = new SportFragment();
+            tag = "template3";
         } else if ("template4".equals(channelEntity.getHomepage_template())) {
             currentFragment = new ChildFragment();
+            tag = "template4";
         } else {
             currentFragment = new GuideFragment();
+            tag = "template";
         }
 		if (lastFragment != null) {
 			if (lastFragment instanceof ChildFragment) {
@@ -927,7 +935,101 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         //currentFragment.position = position;
 //        scrollFromBorder = false;
         currentFragment.setChannelEntity(channelEntity);
-        replaceFragment(currentFragment);
+        ChannelBaseFragment t= (ChannelBaseFragment)getSupportFragmentManager().findFragmentByTag("template");
+        ChannelBaseFragment t1=(ChannelBaseFragment)getSupportFragmentManager().findFragmentByTag("template1");
+        ChannelBaseFragment t2=(ChannelBaseFragment)getSupportFragmentManager().findFragmentByTag("template2");
+        ChannelBaseFragment t3=(ChannelBaseFragment)getSupportFragmentManager().findFragmentByTag("template3");
+        ChannelBaseFragment t4=(ChannelBaseFragment)getSupportFragmentManager().findFragmentByTag("template4");
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if("template".equals(tag)){
+        	if(t1!= null)
+        		transaction.hide(t1);
+        	if(t2!= null)
+        		transaction.hide(t2);
+        	if(t3!= null)
+        		transaction.hide(t3);
+        	if(t4!= null)
+        		transaction.hide(t4);
+        	if(t!= null){
+        		transaction.show(t);
+        		transaction.commitAllowingStateLoss();
+        	}else{
+        		replaceFragment(currentFragment,tag,transaction);
+        	}
+        }
+        if("template1".equals(tag)){
+        	if(t!= null)
+        		transaction.hide(t);
+        	if(t2!= null)
+        		transaction.hide(t2);
+        	if(t3!= null)
+        		transaction.hide(t3);
+        	if(t4!= null)
+        		transaction.hide(t4);
+        	if(t1!= null){
+        		t1.setChannelEntity(channelEntity);
+        		t1.refreshData();
+        		transaction.show(t1);
+        		transaction.commitAllowingStateLoss();
+        	}else{
+        		replaceFragment(currentFragment,tag,transaction);
+        	}
+        }
+        if("template2".equals(tag)){
+        	if(t!= null)
+        		transaction.hide(t);
+        	if(t1!= null)
+        		transaction.hide(t1);
+        	if(t3!= null)
+        		transaction.hide(t3);
+        	if(t4!= null)
+        		transaction.hide(t4);
+        	if(t2!= null){
+        		t2.setChannelEntity(channelEntity);
+        		t2.refreshData();
+        		transaction.show(t2);
+        		transaction.commitAllowingStateLoss();
+        	}else{
+        		replaceFragment(currentFragment,tag,transaction);
+        	}
+        }
+        if("template3".equals(tag)){
+        	if(t!= null)
+        		transaction.hide(t);
+        	if(t1!= null)
+        		transaction.hide(t1);
+        	if(t2!= null)
+        		transaction.hide(t2);
+        	if(t4!= null)
+        		transaction.hide(t4);
+        	if(t3!= null){
+        		t3.setChannelEntity(channelEntity);
+        		t3.refreshData();
+        		transaction.show(t3);
+        		transaction.commitAllowingStateLoss();
+        	}else{
+        		replaceFragment(currentFragment,tag,transaction);
+        	}
+        }
+        if("template4".equals(tag)){
+        	if(t!= null)
+        		transaction.hide(t);
+        	if(t1!= null)
+        		transaction.hide(t1);
+        	if(t2!= null)
+        		transaction.hide(t2);
+        	if(t3!= null)
+        		transaction.hide(t3);
+        	if(t4!= null){
+        		t4.setChannelEntity(channelEntity);
+        		t4.refreshData();
+        		transaction.show(t4);
+        		transaction.commitAllowingStateLoss();
+        	}else{
+        		replaceFragment(currentFragment,tag,transaction);
+        	}
+        }
+//        replaceFragment(currentFragment,tag);
         View view2 = scroll.getChildAt(0);
         if (view2 == null)
             return;
@@ -1037,10 +1139,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         bd.getBitmap().recycle();
     }
 
-    private void replaceFragment(Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager()
-                .beginTransaction();
-
+    private void replaceFragment(Fragment fragment,String tag,FragmentTransaction transaction) {
         switch (scrollType) {
             case left:
                 transaction.setCustomAnimations(
@@ -1054,7 +1153,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 break;
         }
 
-        transaction.replace(R.id.container, fragment).commit();
+        transaction.replace(R.id.container, fragment,tag).commit();
     }
 
     private void saveSimpleRestClientPreferences(Context context, Result result) {
