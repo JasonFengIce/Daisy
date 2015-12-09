@@ -6,6 +6,7 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import tv.ismar.daisy.core.logger.AdvertisementLogger;
+import tv.ismar.daisy.player.CallaPlay;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -48,7 +49,7 @@ public class AdvertisementDownload implements Runnable {
             fileOutputStream.close();
             inputStream.close();
         } catch (IOException e) {
-            AdvertisementLogger.bootAdvExcept(AdvertisementLogger.BOOT_ADV_DOWNLOAD_EXCEPTION_CODE, AdvertisementLogger.BOOT_ADV_DOWNLOAD_EXCEPTION_STRING);
+            new CallaPlay().bootAdvExcept(AdvertisementLogger.BOOT_ADV_DOWNLOAD_EXCEPTION_CODE, AdvertisementLogger.BOOT_ADV_DOWNLOAD_EXCEPTION_STRING);
             Log.e(TAG, e.getMessage());
         }
     }

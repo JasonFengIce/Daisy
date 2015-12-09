@@ -10,6 +10,6 @@ public class BootAdvLogTest extends AndroidTestCase {
 
 
     public void testBootAdvPlay() {
-        AdvertisementLogger.bootAdvPlay("testTitle", "testId", "testUrl", "testDuration");
+//        AdvertisementLogger.bootAdvPlay("testTitle", "testId", "testUrl", "testDuration");
     }
 }

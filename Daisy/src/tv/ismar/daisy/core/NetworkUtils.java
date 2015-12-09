@@ -952,4 +952,10 @@ public class NetworkUtils {
      * 应用退出
      */
     public static final String APP_EXIT = "app_exit";
+
+    public static final String BOOT_AD_PLAY = "boot_ad_play";
+
+    public static final String BOOT_AD_DOWNLOAD = "boot_ad_download";
+
+    public static final String BOOT_AD_EXCEPT = "boot_ad_except";
 }
