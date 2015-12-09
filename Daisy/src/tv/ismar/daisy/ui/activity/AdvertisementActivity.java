@@ -24,6 +24,7 @@ import tv.ismar.daisy.core.initialization.InitializeProcess;
 import tv.ismar.daisy.core.logger.AdvertisementLogger;
 import tv.ismar.daisy.core.preferences.LogSharedPrefs;
 import tv.ismar.daisy.data.LaunchAdvertisementEntity;
+import tv.ismar.daisy.player.CallaPlay;
 
 import java.lang.ref.WeakReference;
 
@@ -90,13 +91,13 @@ public class AdvertisementActivity extends Activity {
                         LaunchAdvertisementEntity.AdvertisementData[] advertisementDatas = new Gson().fromJson(launchAppAdvEntityStr, LaunchAdvertisementEntity.AdvertisementData[].class);
                         if (null != advertisementDatas) {
                             LaunchAdvertisementEntity.AdvertisementData data = advertisementDatas[0];
-                            AdvertisementLogger.bootAdvPlay(data.getTitle(), data.getMedia_id(), data.getMedia_url(), data.getDuration());
+                            new CallaPlay().boot_ad_play(data.getTitle(), data.getMedia_id(), data.getMedia_url(), data.getDuration());
                         }
                     }
 
                     @Override
                     public void onFailure() {
-                        AdvertisementLogger.bootAdvExcept(AdvertisementLogger.BOOT_ADV_PLAY_EXCEPTION_CODE, AdvertisementLogger.BOOT_ADV_PLAY_EXCEPTION_STRING);
+                       new CallaPlay().bootAdvExcept(AdvertisementLogger.BOOT_ADV_PLAY_EXCEPTION_CODE, AdvertisementLogger.BOOT_ADV_PLAY_EXCEPTION_STRING);
                         ImageLoader.with(AdvertisementActivity.this)
                                 .load(DEFAULT_ADV_PICTURE)
                                 .diskCacheStrategy(ImageLoader.CacheStrategy.DISK_NONE)

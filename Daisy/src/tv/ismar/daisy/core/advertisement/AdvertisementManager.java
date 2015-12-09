@@ -11,6 +11,7 @@ import tv.ismar.daisy.core.logger.AdvertisementLogger;
 import tv.ismar.daisy.core.preferences.LogSharedPrefs;
 import tv.ismar.daisy.data.LaunchAdvertisementEntity;
 import tv.ismar.daisy.data.table.AdvertisementTable;
+import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.utils.FileUtils;
 import tv.ismar.daisy.utils.HardwareUtils;
 
@@ -76,13 +77,13 @@ public class AdvertisementManager {
                 AdvertisementDownload downloadTask = new AdvertisementDownload(mContext, downlaodUrl, location);
                 new Thread(downloadTask).start();
 
-                AdvertisementLogger.bootAdvDownload(advertisementTables.get(i).title, String.valueOf(advertisementTables.get(i).media_id), advertisementTables.get(i).url);
+                new CallaPlay().bootAdvDownload(advertisementTables.get(i).title, String.valueOf(advertisementTables.get(i).media_id), advertisementTables.get(i).url);
             } else {
                 //compare md5 code
                 if (!md5Code.equalsIgnoreCase(HardwareUtils.getMd5ByFile(localFile))) {
                     AdvertisementDownload downloadTask = new AdvertisementDownload(mContext, downlaodUrl, location);
                     new Thread(downloadTask).start();
-                    AdvertisementLogger.bootAdvDownload(advertisementTables.get(i).title, String.valueOf(advertisementTables.get(i).media_id), advertisementTables.get(i).url);
+                   new CallaPlay().bootAdvDownload(advertisementTables.get(i).title, String.valueOf(advertisementTables.get(i).media_id), advertisementTables.get(i).url);
                 }
             }
         }

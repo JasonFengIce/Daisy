@@ -601,6 +601,52 @@ public class CallaPlay {
         new NetworkUtils.DataCollectionTask().execute(eventName, properties);
     }
 
+    public void boot_ad_play(String title, String mediaId, String mediaUrl, String duration){
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("title", title);
+        hashMap.put("media_id", mediaId);
+        hashMap.put("media_url", mediaUrl);
+        hashMap.put("duration", duration);
+        eventName = NetworkUtils.BOOT_AD_PLAY;
+        properties = hashMap;
+        new NetworkUtils.DataCollectionTask().execute(eventName, properties);
+
+    }
+
+    /**
+     * 开屏广告下载
+     *
+     * @param title    广告物料id, 例如: 391004135
+     * @param mediaId  广告物料id, 例如: 391004135
+     * @param mediaUrl 广告物料地址, 例如: http://www.ismartv.cn/test.jpg
+     */
+    public void bootAdvDownload(String title, String mediaId, String mediaUrl) {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("title", title);
+        hashMap.put("media_id", mediaId);
+        hashMap.put("media_url", mediaUrl);
+        eventName = NetworkUtils.BOOT_AD_DOWNLOAD;
+        properties = hashMap;
+        new NetworkUtils.DataCollectionTask().execute(eventName, properties);
+    }
+
+    /**
+     * 开屏广告异常
+     *
+     * @param code    异常码, 例如: 264
+     * @param content 异常内容, 例如: 264
+     */
+    public  void bootAdvExcept(String code, String content) {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("code", code);
+        hashMap.put("content", content);
+        eventName = NetworkUtils.BOOT_AD_EXCEPT;
+        properties = hashMap;
+        new NetworkUtils.DataCollectionTask().execute(eventName, properties);
+    }
+
+
+
     private String switchQuality(Integer currQuality) {
         String quality = "";
         switch (currQuality) {
