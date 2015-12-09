@@ -1209,6 +1209,13 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     }
 
     @Override
+    protected void onStop() {
+        currentFragment = null;
+        lastFragment = null;
+        super.onStop();
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         
     }
