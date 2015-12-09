@@ -941,94 +941,94 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         ChannelBaseFragment t3=(ChannelBaseFragment)getSupportFragmentManager().findFragmentByTag("template3");
         ChannelBaseFragment t4=(ChannelBaseFragment)getSupportFragmentManager().findFragmentByTag("template4");
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if("template".equals(tag)){
-        	if(t1!= null)
-        		transaction.hide(t1);
-        	if(t2!= null)
-        		transaction.hide(t2);
-        	if(t3!= null)
-        		transaction.hide(t3);
-        	if(t4!= null)
-        		transaction.hide(t4);
-        	if(t!= null){
-        		transaction.show(t);
-        		transaction.commitAllowingStateLoss();
-        	}else{
-        		replaceFragment(currentFragment,tag,transaction);
-        	}
-        }
-        if("template1".equals(tag)){
-        	if(t!= null)
-        		transaction.hide(t);
-        	if(t2!= null)
-        		transaction.hide(t2);
-        	if(t3!= null)
-        		transaction.hide(t3);
-        	if(t4!= null)
-        		transaction.hide(t4);
-        	if(t1!= null){
-        		t1.setChannelEntity(channelEntity);
-        		t1.refreshData();
-        		transaction.show(t1);
-        		transaction.commitAllowingStateLoss();
-        	}else{
-        		replaceFragment(currentFragment,tag,transaction);
-        	}
-        }
-        if("template2".equals(tag)){
-        	if(t!= null)
-        		transaction.hide(t);
-        	if(t1!= null)
-        		transaction.hide(t1);
-        	if(t3!= null)
-        		transaction.hide(t3);
-        	if(t4!= null)
-        		transaction.hide(t4);
-        	if(t2!= null){
-        		t2.setChannelEntity(channelEntity);
-        		t2.refreshData();
-        		transaction.show(t2);
-        		transaction.commitAllowingStateLoss();
-        	}else{
-        		replaceFragment(currentFragment,tag,transaction);
-        	}
-        }
-        if("template3".equals(tag)){
-        	if(t!= null)
-        		transaction.hide(t);
-        	if(t1!= null)
-        		transaction.hide(t1);
-        	if(t2!= null)
-        		transaction.hide(t2);
-        	if(t4!= null)
-        		transaction.hide(t4);
-        	if(t3!= null){
-        		t3.setChannelEntity(channelEntity);
-        		t3.refreshData();
-        		transaction.show(t3);
-        		transaction.commitAllowingStateLoss();
-        	}else{
-        		replaceFragment(currentFragment,tag,transaction);
-        	}
-        }
-        if("template4".equals(tag)){
-        	if(t!= null)
-        		transaction.hide(t);
-        	if(t1!= null)
-        		transaction.hide(t1);
-        	if(t2!= null)
-        		transaction.hide(t2);
-        	if(t3!= null)
-        		transaction.hide(t3);
-        	if(t4!= null){
-        		t4.setChannelEntity(channelEntity);
-        		t4.refreshData();
-        		transaction.show(t4);
-        		transaction.commitAllowingStateLoss();
-        	}else{
-        		replaceFragment(currentFragment,tag,transaction);
-        	}
-        }
+		if ("template".equals(tag)) {
+			if (t1 != null)
+				transaction.hide(t1);
+			if (t2 != null)
+				transaction.hide(t2);
+			if (t3 != null)
+				transaction.hide(t3);
+			if (t4 != null)
+				transaction.hide(t4);
+			if (t != null) {
+				transaction.show(t);
+				transaction.commitAllowingStateLoss();
+			} else {
+				replaceFragment(currentFragment, tag, transaction);
+			}
+		}
+		if ("template1".equals(tag)) {
+			if (t != null)
+				transaction.hide(t);
+			if (t2 != null)
+				transaction.hide(t2);
+			if (t3 != null)
+				transaction.hide(t3);
+			if (t4 != null)
+				transaction.hide(t4);
+			if (t1 != null) {
+				t1.setChannelEntity(channelEntity);
+				t1.refreshData();
+				transaction.show(t1);
+				transaction.commitAllowingStateLoss();
+			} else {
+				replaceFragment(currentFragment, tag, transaction);
+			}
+		}
+		if ("template2".equals(tag)) {
+			if (t != null)
+				transaction.hide(t);
+			if (t1 != null)
+				transaction.hide(t1);
+			if (t3 != null)
+				transaction.hide(t3);
+			if (t4 != null)
+				transaction.hide(t4);
+			if (t2 != null) {
+				t2.setChannelEntity(channelEntity);
+				t2.refreshData();
+				transaction.show(t2);
+				transaction.commitAllowingStateLoss();
+			} else {
+				replaceFragment(currentFragment, tag, transaction);
+			}
+		}
+		if ("template3".equals(tag)) {
+			if (t != null)
+				transaction.hide(t);
+			if (t1 != null)
+				transaction.hide(t1);
+			if (t2 != null)
+				transaction.hide(t2);
+			if (t4 != null)
+				transaction.hide(t4);
+			if (t3 != null) {
+				t3.setChannelEntity(channelEntity);
+				t3.refreshData();
+				transaction.show(t3);
+				transaction.commitAllowingStateLoss();
+			} else {
+				replaceFragment(currentFragment, tag, transaction);
+			}
+		}
+		if ("template4".equals(tag)) {
+			if (t != null)
+				transaction.hide(t);
+			if (t1 != null)
+				transaction.hide(t1);
+			if (t2 != null)
+				transaction.hide(t2);
+			if (t3 != null)
+				transaction.hide(t3);
+			if (t4 != null) {
+				t4.setChannelEntity(channelEntity);
+				t4.refreshData();
+				transaction.show(t4);
+				transaction.commitAllowingStateLoss();
+			} else {
+				replaceFragment(currentFragment, tag, transaction);
+			}
+		}
 //        replaceFragment(currentFragment,tag);
         View view2 = scroll.getChildAt(0);
         if (view2 == null)
