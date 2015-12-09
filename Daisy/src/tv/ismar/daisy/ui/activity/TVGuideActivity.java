@@ -907,7 +907,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 								@Override
 								public void onSuccess(
 										BitmapDrawable bitmapDrawable) {
-									Log.v("aaaa", "setbackground");
 									contentView
 											.setBackgroundDrawable(bitmapDrawable);
 								}

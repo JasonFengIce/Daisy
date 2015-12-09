@@ -288,7 +288,7 @@ public class NetworkUtils {
                     Collections.sort(result, new Comparator<AdElement>() {
                         @Override
                         public int compare(AdElement lhs, AdElement rhs) {
-                            return rhs.getSerial() > lhs.getSerial() ? 1 : 0;
+                            return rhs.getSerial() < lhs.getSerial() ? 1 : 0;
                         }
                     });
                 } else {
@@ -372,7 +372,7 @@ public class NetworkUtils {
         try {
             String jsonContent = base64Code(Content);
 //            String url = "http://ismartv.calla.tvxio.com/log";
-//            String url = "http://192.168.1.185/m3u8parse/parseM3u8";
+//            String url = "http://192.168.1.120:8099/m3u8parse/parseM3u8";
             String host =  AccountSharedPrefs.getInstance().getSharedPrefs(AccountSharedPrefs.LOG_DOMAIN);
             String url = "http://" + host+ "/log";
             java.net.URL connURL = new java.net.URL(url);
@@ -592,7 +592,7 @@ public class NetworkUtils {
     public static String getContentJson(String eventName,
                                          HashMap<String, Object> propertiesMap) throws JSONException {
         JSONObject propertiesJson = new JSONObject();
-//        propertiesJson.put("time", System.currentTimeMillis() / 1000);
+        propertiesJson.put("time", System.currentTimeMillis() / 1000);
         if (propertiesMap != null) {
             Set<String> set = propertiesMap.keySet();
             for (String key : set) {

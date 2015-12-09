@@ -549,7 +549,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                         item.title,
                         clip.pk,
                         currQuality,
-                        (System.currentTimeMillis() - startDuration) / 1000,
+                        (System.currentTimeMillis() - startDuration),
                         0, mediaip, sid,"qiyi");
                 callaPlay.videoPlayStart(item.item_pk,
                         item.pk, item.title, clip.pk,
@@ -561,7 +561,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                         item.title,
                         clip.pk,
                         currQuality,
-                        (System.currentTimeMillis() - startDuration) / 1000,
+                        (System.currentTimeMillis() - startDuration),
                         0, mediaip, sid,"qiyi");
                 callaPlay
                         .videoPlayStart(item.pk, null,
@@ -685,7 +685,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                                         currQuality,
                                         0,
                                         currPosition,
-                                        (System.currentTimeMillis() - bufferDuration) / 1000,
+                                        (System.currentTimeMillis() - bufferDuration),
                                         mediaip, sid,"qiyi");
 
                     } else {
@@ -698,7 +698,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                                         currQuality,
                                         0,
                                         currPosition,
-                                        (System.currentTimeMillis() - bufferDuration) / 1000,
+                                        (System.currentTimeMillis() - bufferDuration),
                                         mediaip, sid,"qiyi");
                     }
                 else if (isSeekBuffer) {
@@ -711,7 +711,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                                     currQuality,
                                     0,
                                     currPosition,
-                                    (System.currentTimeMillis() - bufferDuration) / 1000,
+                                    (System.currentTimeMillis() - bufferDuration),
                                     mediaip, sid,"qiyi");
 
                 } else {
@@ -724,7 +724,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                                     currQuality,
                                     0,
                                     currPosition,
-                                    (System.currentTimeMillis() - bufferDuration) / 1000,
+                                    (System.currentTimeMillis() - bufferDuration),
                                     mediaip, sid,"qiyi");
                 }
                 isSeekBuffer = false;
@@ -1332,7 +1332,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                                             0,
                                             "detail",
                                             currPosition,
-                                            (System.currentTimeMillis() - startDuration) / 1000,
+                                            (System.currentTimeMillis() - startDuration),
                                             item.slug, sid, item.fromPage,
                                             item.content_model,"qiyi");
                                 else
@@ -1345,7 +1345,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                                             0,
                                             "detail",
                                             currPosition,
-                                            (System.currentTimeMillis() - startDuration) / 1000,
+                                            (System.currentTimeMillis() - startDuration),
                                             item.slug, sid, item.fromPage,
                                             item.content_model,"qiyi");
                             } catch (Exception e) {
@@ -1835,7 +1835,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                                         0,
                                         "end",
                                         currPosition,
-                                        (System.currentTimeMillis() - startDuration) / 1000,
+                                        (System.currentTimeMillis() - startDuration),
                                         item.slug, sid, item.fromPage,
                                         item.content_model,"qiyi");// String
                     else
@@ -1849,7 +1849,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                                         0,
                                         "end",
                                         currPosition,
-                                        (System.currentTimeMillis() - startDuration) / 1000,
+                                        (System.currentTimeMillis() - startDuration),
                                         item.slug, sid, item.fromPage,
                                         item.content_model,"qiyi");
                 } catch (Exception e) {

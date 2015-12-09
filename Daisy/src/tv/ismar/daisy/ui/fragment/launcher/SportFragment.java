@@ -59,7 +59,6 @@ public class SportFragment extends ChannelBaseFragment {
     private LabelImageView sport_channel4_image;
     private TextView sport_channel4_subtitle;
     private tv.ismar.daisy.ui.widget.HomeItemContainer sport_channel5;
-    private Animation scaleBigAnimation;
     private ImageView arrowUp;
     private ImageView arrowDown;
     private ArrayList<Carousel> looppost = new ArrayList<Carousel>();
@@ -201,7 +200,6 @@ public class SportFragment extends ChannelBaseFragment {
         datafetch.execute();
         games = new ArrayList<SportGame>();
 //		mLoadingDialog.setOnCancelListener(mLoadingCancelListener);
-        initzoom();
     }
 
     private OnCancelListener mLoadingCancelListener = new OnCancelListener() {
@@ -490,13 +488,4 @@ public class SportFragment extends ChannelBaseFragment {
         }
 
     };
-
-
-    private void initzoom() {
-        if (scaleBigAnimation == null) {
-            scaleBigAnimation = AnimationUtils.loadAnimation(getActivity(),
-                    R.anim.sport_arrow_anim);
-        }
-    }
-
 }

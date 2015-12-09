@@ -512,7 +512,6 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
             if (code == 302) {
                 String redirectlocation = connection.getHeaderField("Location");
                 myFileUrl = new URL(redirectlocation);
-                Log.v("aaaa", "myFileUrl = " + redirectlocation);
                 connection = (HttpURLConnection) myFileUrl.openConnection();
                 connection.setConnectTimeout(2000);
                 connection.setRequestMethod("GET");

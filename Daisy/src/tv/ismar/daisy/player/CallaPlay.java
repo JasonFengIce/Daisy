@@ -2,6 +2,7 @@ package tv.ismar.daisy.player;
 
 import android.R.string;
 import android.os.AsyncTask;
+import android.util.Log;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.models.Item;
@@ -72,7 +73,7 @@ public class CallaPlay {
         tempMap.put(EventProperty.TITLE, title);
         tempMap.put(EventProperty.CLIP, clip);
         tempMap.put(EventProperty.QUALITY, switchQuality(quality));
-        tempMap.put(EventProperty.DURATION, duration);
+        tempMap.put(EventProperty.DURATION, duration / 1000);
         tempMap.put("speed", speed + "KByte/s");
         tempMap.put(EventProperty.MEDIAIP, mediaip);
         tempMap.put(EventProperty.SID, sid);
@@ -289,7 +290,7 @@ public class CallaPlay {
         //tempMap.put("speed", speed);
         //tempMap.put("position", position/1000);
         tempMap.put("speed", speed + "KByte/s");
-        tempMap.put(EventProperty.DURATION, duration);
+        tempMap.put(EventProperty.DURATION, duration / 1000);
         tempMap.put(EventProperty.MEDIAIP, mediaip);
         tempMap.put(EventProperty.SID, sid);
         tempMap.put(EventProperty.PLAYER_FLAG, playerflag);
@@ -503,7 +504,7 @@ public class CallaPlay {
         tempMap.put(EventProperty.SOURCE, source);
         tempMap.put(EventProperty.CHANNEL, channel);
         tempMap.put(EventProperty.SECTION, section);
-        tempMap.put(EventProperty.DURATION, duration);
+        tempMap.put(EventProperty.DURATION, duration / 1000);
         tempMap.put(EventProperty.MEDIAIP, mediaip);
         tempMap.put(EventProperty.ITEM, itemid);
         tempMap.put(EventProperty.AD_ID, ad_id);
@@ -518,7 +519,7 @@ public class CallaPlay {
         tempMap.put(EventProperty.SOURCE, source);
         tempMap.put(EventProperty.CHANNEL, channel);
         tempMap.put(EventProperty.SECTION, section);
-        tempMap.put(EventProperty.DURATION, duration);
+        tempMap.put(EventProperty.DURATION, duration / 1000);
         tempMap.put(EventProperty.MEDIAIP, mediaip);
         tempMap.put(EventProperty.ITEM, itemid);
         tempMap.put(EventProperty.AD_ID, ad_id);
@@ -533,7 +534,7 @@ public class CallaPlay {
         tempMap.put(EventProperty.SOURCE, source);
         tempMap.put(EventProperty.CHANNEL, channel);
         tempMap.put(EventProperty.SECTION, section);
-        tempMap.put(EventProperty.DURATION, duration);
+        tempMap.put(EventProperty.DURATION, duration / 1000);
         tempMap.put(EventProperty.MEDIAIP, mediaip);
         tempMap.put(EventProperty.ITEM, itemid);
         tempMap.put(EventProperty.AD_ID, ad_id);
@@ -548,7 +549,7 @@ public class CallaPlay {
         tempMap.put(EventProperty.TITLE, title);
         tempMap.put(EventProperty.MEDIA_ID, media_id);
         tempMap.put(EventProperty.MEDIA_URL, media_url);
-        tempMap.put(EventProperty.DURATION, duration);
+        tempMap.put(EventProperty.DURATION, duration / 1000);
         tempMap.put(EventProperty.PLAYER_FLAG, mediaflag);
         eventName = NetworkUtils.PAUSE_AD_PLAY;
         properties = tempMap;
