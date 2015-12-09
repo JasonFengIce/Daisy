@@ -602,7 +602,7 @@ public class CallaPlay {
     }
 
     public void boot_ad_play(String title, String mediaId, String mediaUrl, String duration){
-        HashMap<String, Object> hashMap = new HashMap<>();
+        HashMap<String, Object> hashMap = new HashMap<String, Object>();
         hashMap.put("title", title);
         hashMap.put("media_id", mediaId);
         hashMap.put("media_url", mediaUrl);
@@ -621,7 +621,7 @@ public class CallaPlay {
      * @param mediaUrl 广告物料地址, 例如: http://www.ismartv.cn/test.jpg
      */
     public void bootAdvDownload(String title, String mediaId, String mediaUrl) {
-        HashMap<String, Object> hashMap = new HashMap<>();
+        HashMap<String, Object> hashMap = new HashMap<String, Object>();
         hashMap.put("title", title);
         hashMap.put("media_id", mediaId);
         hashMap.put("media_url", mediaUrl);
@@ -637,7 +637,7 @@ public class CallaPlay {
      * @param content 异常内容, 例如: 264
      */
     public  void bootAdvExcept(String code, String content) {
-        HashMap<String, Object> hashMap = new HashMap<>();
+        HashMap<String, Object> hashMap = new HashMap<String, Object>();
         hashMap.put("code", code);
         hashMap.put("content", content);
         eventName = NetworkUtils.BOOT_AD_EXCEPT;

@@ -264,6 +264,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+    	if(savedInstanceState != null)
+    		savedInstanceState =null;
         super.onCreate(savedInstanceState);
         fragmentSwitch = new FragmentSwitchHandler(this);
         activityTag = "BaseActivity";
@@ -1208,15 +1210,4 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         }
     }
 
-    @Override
-    protected void onStop() {
-        currentFragment = null;
-        lastFragment = null;
-        super.onStop();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        
-    }
 }
