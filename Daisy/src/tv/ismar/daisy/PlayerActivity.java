@@ -1807,7 +1807,7 @@ public class PlayerActivity extends VodMenuAction {
 			mHandler.removeMessages(BUFFER_COUNTDOWN_ACTION);
 			buffercountDown = 0;
 		}
-		if(isadvideoplaying){
+		if(isadvideoplaying && StringUtils.isNotEmpty(adurl)){
 			callaPlay.ad_play_blockend(
 					item.fromPage,
 					item.channel,
