@@ -84,6 +84,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private Item[] mHistoriesByNet;
     private String phoneNumber;
     private String verification;
+
     public interface OnLoginCallback {
         void onLoginSuccess();
     }
@@ -109,7 +110,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         mContext.registerReceiver(countdownReceiver, intentFilter);
 
         phoneNumber = phoneNumberEdit.getText().toString();
-        verification=verificationEdit.getText().toString();
+        verification = verificationEdit.getText().toString();
 
     }
 
@@ -152,15 +153,15 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if(savedInstanceState!=null){
-            phoneNumber=savedInstanceState.getString(getResources().getString(R.string.phone_number),"");
-            verification=savedInstanceState.getString(getResources().getString(R.string.verification),"");
+        if (savedInstanceState != null) {
+            phoneNumber = savedInstanceState.getString(getResources().getString(R.string.phone_number), "");
+            verification = savedInstanceState.getString(getResources().getString(R.string.verification), "");
         }
 
-        if(phoneNumber!=null){
+        if (phoneNumber != null) {
             phoneNumberEdit.setText(phoneNumber);
         }
-        if(verification!=null){
+        if (verification != null) {
             verificationEdit.setText(verification);
         }
 
@@ -193,7 +194,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private void fetchVerificationCode() {
 //        phoneNumberEdit.setText("15370770697");
-
+        phoneNumber = phoneNumberEdit.getText().toString();
         if (TextUtils.isEmpty(phoneNumber)) {
             phoneNumberPrompt.setText(mContext.getText(R.string.phone_number_not_be_null));
             return;
@@ -203,7 +204,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             phoneNumberPrompt.setText(mContext.getText(R.string.not_phone_number));
             return;
         }
-
 
 
         phoneNumberPrompt.setText("");
@@ -558,8 +558,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString(getResources().getString(R.string.phone_number),phoneNumber);
-        outState.putString(getResources().getString(R.string.verification),verification);
+        outState.putString(getResources().getString(R.string.phone_number), phoneNumber);
+        outState.putString(getResources().getString(R.string.verification), verification);
         super.onSaveInstanceState(outState);
     }
 }
