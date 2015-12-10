@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
@@ -19,6 +20,7 @@ import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.*;
@@ -79,6 +81,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
     private String fromPage;
     private BitmapDecoder bitmapDecoder;
     private InitPlayerTool tool;
+    private boolean isneedpause = true;
     private void initViews() {
         large_layout = findViewById(R.id.large_layout);
         mChannel = getIntent().getStringExtra("channel");
@@ -446,11 +449,13 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
 
             isPause = false;
         }
+        isneedpause = true;
         super.onResume();
     }
 
     @Override
     protected void onPause() {
+    	if(isneedpause)
         isPause = true;
         if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
             mLoadingDialog.dismiss();
@@ -1381,4 +1386,19 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		boolean ret = super.onKeyDown(keyCode, event);
+		if("lcd_s3a01".equals(VodUserAgent.getModelName())){
+			if(keyCode == 707 || keyCode == 774 || keyCode ==253){
+				isneedpause = false;
+			}
+		}else{
+			if(keyCode == 223 || keyCode == 499 || keyCode ==480){
+				isneedpause = false;
+			}
+		}
+		return ret;
+	}
 }

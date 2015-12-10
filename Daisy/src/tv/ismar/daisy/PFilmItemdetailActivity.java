@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,7 @@ import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.*;
@@ -79,6 +81,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
     private LaunchHeaderLayout weatherFragment;
     private BitmapDecoder bitmapDecoder;
     private InitPlayerTool tool;
+    private boolean isneedpause = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -221,7 +224,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         // WGLogin是一个异步接口, 传入ePlatform_None则调用本地票据验证票据是否有效
         // 如果从未登录过，则会立即在onLoginNotify中返回flag为eFlag_Local_Invalid，此时应该拉起授权界面
         // 建议在此时机调用WGLogin,它应该在handlecallback之后进行调用。
-
+        isneedpause = true;
         super.onResume();
     }
 
@@ -580,6 +583,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
     @Override
     protected void onPause() {
+    	if(isneedpause)
         isPause = true;
         if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
             mLoadingDialog.dismiss();
@@ -1283,4 +1287,19 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		boolean ret = super.onKeyDown(keyCode, event);
+		if("lcd_s3a01".equals(VodUserAgent.getModelName())){
+			if(keyCode == 707 || keyCode == 774 || keyCode ==253){
+				isneedpause = false;
+			}
+		}else{
+			if(keyCode == 223 || keyCode == 499 || keyCode ==480){
+				isneedpause = false;
+			}
+		}
+		return ret;
+	}
 }
