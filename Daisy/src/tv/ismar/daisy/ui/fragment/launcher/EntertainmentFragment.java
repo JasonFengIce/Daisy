@@ -310,6 +310,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 		vaiety_thumb3.setTag(carousellist.get(2).getVideo_image());
 		vaiety_thumb3.setTag(R.id.vaiety_post, carousellist.get(2).getTitle());
 		vaiety_thumb3.setTag(R.drawable.launcher_selector, carousellist.get(2));
+		looppost.clear();
 		looppost.add(carousellist.get(0).getVideo_image());
 		looppost.add(carousellist.get(1).getVideo_image());
 		looppost.add(carousellist.get(2).getVideo_image());
@@ -498,6 +499,7 @@ public class EntertainmentFragment extends ChannelBaseFragment {
 	}
 	
 	  public void refreshData(){
+		    imageswitch.removeCallbacksAndMessages(null);
 	        task = new FetchDataTask();
 	        task.execute();
 	    }
