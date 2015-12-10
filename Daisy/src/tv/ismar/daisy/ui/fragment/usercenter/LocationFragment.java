@@ -3,6 +3,7 @@ package tv.ismar.daisy.ui.fragment.usercenter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -31,6 +32,7 @@ import tv.ismar.daisy.data.weather.WeatherEntity;
 import tv.ismar.daisy.ui.adapter.weather.CityAdapter;
 import tv.ismar.daisy.ui.adapter.weather.CityAdapter.OnItemListener;
 import tv.ismar.daisy.ui.adapter.weather.ProvinceAdapter;
+import tv.ismar.daisy.utils.BitmapDecoder;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -190,7 +192,15 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
 
     private void showAreaPopup(final ProvinceTable provinceTable) {
         String provinceId = provinceTable.province_id;
-        View popupLayout = LayoutInflater.from(mContext).inflate(R.layout.popup_area, null);
+        final View popupLayout = LayoutInflater.from(mContext).inflate(R.layout.popup_area, null);
+
+        new BitmapDecoder().decode(mContext, R.drawable.pop_bg, new BitmapDecoder.Callback() {
+            @Override
+            public void onSuccess(BitmapDrawable bitmapDrawable) {
+                popupLayout.setBackgroundDrawable(bitmapDrawable);
+            }
+        });
+
         GridView gridView = (GridView) popupLayout.findViewById(R.id.area_grid);
         final Button confirmBtn = (Button) popupLayout.findViewById(R.id.confirm_btn);
         final Button cancelBtn = (Button) popupLayout.findViewById(R.id.cancel_btn);
