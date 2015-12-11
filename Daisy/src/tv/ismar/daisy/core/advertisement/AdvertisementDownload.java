@@ -50,7 +50,7 @@ public class AdvertisementDownload implements Runnable {
             inputStream.close();
         } catch (IOException e) {
             new CallaPlay().bootAdvExcept(AdvertisementLogger.BOOT_ADV_DOWNLOAD_EXCEPTION_CODE, AdvertisementLogger.BOOT_ADV_DOWNLOAD_EXCEPTION_STRING);
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, "advertisement download exception!!!");
         }
     }
 }
