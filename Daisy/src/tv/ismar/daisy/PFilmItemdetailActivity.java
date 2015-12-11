@@ -208,7 +208,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 entry.setValue(true);
             }
         }
-        if (isPause) {
+        if (isPause && mCollectBtn != null) {
             if (isFavorite()) {
                 //mCollectBtn.setBackgroundResource(R.drawable.collected_btn_bg_selector);
                 mCollectBtn.setText(getResources().getString(R.string.favorited));
