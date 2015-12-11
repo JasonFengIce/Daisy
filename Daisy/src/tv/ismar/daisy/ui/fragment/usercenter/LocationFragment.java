@@ -116,7 +116,6 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        bitmapDecoder = new BitmapDecoder();
         rate = DaisyUtils.getVodApplication(getActivity()).getRate(getActivity());
 
         AccountSharedPrefs.getInstance().getSharedPreferences().registerOnSharedPreferenceChangeListener(changeListener);
@@ -198,6 +197,7 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
     private void showAreaPopup(final ProvinceTable provinceTable) {
         String provinceId = provinceTable.province_id;
         final View popupLayout = LayoutInflater.from(mContext).inflate(R.layout.popup_area, null);
+        bitmapDecoder = new BitmapDecoder();
         bitmapDecoder.decode(mContext, R.drawable.pop_bg, new BitmapDecoder.Callback() {
             @Override
             public void onSuccess(BitmapDrawable bitmapDrawable) {
