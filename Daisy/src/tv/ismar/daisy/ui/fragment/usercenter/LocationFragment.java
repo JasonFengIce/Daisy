@@ -82,6 +82,10 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
 
     private static HashMap<String, Integer> weatherIconMap;
 
+    private BitmapDecoder bitmapDecoder;
+
+
+
     static {
         weatherIconMap = new HashMap<String, Integer>();
         weatherIconMap.put("风", R.drawable.wind);
@@ -112,6 +116,7 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        bitmapDecoder = new BitmapDecoder();
         rate = DaisyUtils.getVodApplication(getActivity()).getRate(getActivity());
 
         AccountSharedPrefs.getInstance().getSharedPreferences().registerOnSharedPreferenceChangeListener(changeListener);
@@ -193,8 +198,7 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
     private void showAreaPopup(final ProvinceTable provinceTable) {
         String provinceId = provinceTable.province_id;
         final View popupLayout = LayoutInflater.from(mContext).inflate(R.layout.popup_area, null);
-
-        new BitmapDecoder().decode(mContext, R.drawable.pop_bg, new BitmapDecoder.Callback() {
+        bitmapDecoder.decode(mContext, R.drawable.pop_bg, new BitmapDecoder.Callback() {
             @Override
             public void onSuccess(BitmapDrawable bitmapDrawable) {
                 popupLayout.setBackgroundDrawable(bitmapDrawable);
