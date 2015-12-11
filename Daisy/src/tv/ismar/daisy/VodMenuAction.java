@@ -40,6 +40,10 @@ public abstract class VodMenuAction extends BaseActivity {
 	protected TextView bufferText;
 	protected CallaPlay callaPlay = new CallaPlay();
     protected GetAdDataTask adAsyncTask;
+    protected String section;
+    protected String channel;
+    protected String slug;
+    protected String fromPage;
 	public abstract boolean onVodMenuClicked(ISTVVodMenu menu, int id);
 
 	public abstract void onVodMenuClosed(ISTVVodMenu menu);
