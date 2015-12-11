@@ -346,6 +346,10 @@ public class PlayerActivity extends VodMenuAction {
 				isPreview = item.isPreview;
 				if(isPreview && live_video)
 					live_video = false;
+				section = item.section;
+				channel = item.channel;
+				slug =  item.slug;
+				fromPage = item.fromPage;
 			}
 			// use to get mUrl, and registerActivity
 			DaisyUtils.getVodApplication(this).addActivityToPool(
@@ -811,10 +815,10 @@ public class PlayerActivity extends VodMenuAction {
 		
 
 		String channelSection = "channel=" + "" + "&section=" + "";
-		if (StringUtils.isNotEmpty(item.channel)
-				&& StringUtils.isNotEmpty(item.slug)) {
-			channelSection = "channel=" + item.channel + "&section="
-					+ item.slug;
+		if (StringUtils.isNotEmpty(channel)
+				&& StringUtils.isNotEmpty(slug)) {
+			channelSection = "channel=" + channel + "&section="
+					+ slug;
 		}
 
 		String params = channelSection
@@ -823,7 +827,7 @@ public class PlayerActivity extends VodMenuAction {
 				+ "&topic="
 				+ ""
 				+ "&source="
-				+ item.fromPage
+				+ fromPage
 				+ "&genre="
 				+ genresBuffer.toString()
 				+ "&content_model="
