@@ -87,21 +87,6 @@ public class FilmFragment extends ChannelBaseFragment {
         super.onStart();
 
 
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Intent.ACTION_MEDIA_UNMOUNTED);
-        intentFilter.addAction(Intent.ACTION_MEDIA_EJECT);
-        intentFilter.addAction(Intent.ACTION_MEDIA_REMOVED);
-        intentFilter.addAction(Intent.ACTION_MEDIA_BAD_REMOVAL);
-        intentFilter.addDataScheme("file");
-        mContext.registerReceiver(externalStorageReceiver, intentFilter);
-
-        if (mCarousels == null) {
-        	if(channelEntity != null)
-            fetchHomePage(channelEntity.getHomepage_url());
-        } else {
-            playCarousel();
-        }
-
 
 
     }
@@ -180,11 +165,28 @@ public class FilmFragment extends ChannelBaseFragment {
         super.onResume();
 
 
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_MEDIA_UNMOUNTED);
+        intentFilter.addAction(Intent.ACTION_MEDIA_EJECT);
+        intentFilter.addAction(Intent.ACTION_MEDIA_REMOVED);
+        intentFilter.addAction(Intent.ACTION_MEDIA_BAD_REMOVAL);
+        intentFilter.addDataScheme("file");
+        mContext.registerReceiver(externalStorageReceiver, intentFilter);
+
+        if (mCarousels == null) {
+            if(channelEntity != null)
+                fetchHomePage(channelEntity.getHomepage_url());
+        } else {
+            playCarousel();
+        }
+
     }
 
 
     @Override
     public void onPause() {
+        stopPlayback();
+        mContext.unregisterReceiver(externalStorageReceiver);
         super.onPause();
 
 
@@ -193,8 +195,6 @@ public class FilmFragment extends ChannelBaseFragment {
     @Override
     public void onStop() {
         super.onStop();
-        stopPlayback();
-        mContext.unregisterReceiver(externalStorageReceiver);
     }
 
     @Override
