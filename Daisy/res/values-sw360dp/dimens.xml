@@ -1112,8 +1112,8 @@
 <dimen name="purchaseFragment_item_order_extra_marginLeft">13.33dp</dimen>
 <dimen name="purchaseFragment_item_marginLeft">29.67dp</dimen>
 <dimen name="purchaseFragment_item_icon_marginTop">2.00dp</dimen>
-<dimen name="locationFragment_areaPop_xOffset">68.33dp</dimen>
-<dimen name="locationFragment_areaPop_yOffset">35.00dp</dimen>
+<dimen name="locationFragment_areaPop_xOffset">71.67dp</dimen>
+<dimen name="locationFragment_areaPop_yOffset">38.33dp</dimen>
 <dimen name="locationFragment_provinceGrid_verticalSpacing">21.67dp</dimen>
 <dimen name="locationFragment_provinceGrid_marginLR">10.00dp</dimen>
 <dimen name="locationFragment_areaGridItem_minHeght">21.67dp</dimen>

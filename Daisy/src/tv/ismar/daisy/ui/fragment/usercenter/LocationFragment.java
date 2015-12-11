@@ -197,8 +197,6 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
         final Button confirmBtn = (Button) popupLayout.findViewById(R.id.confirm_btn);
         final Button cancelBtn = (Button) popupLayout.findViewById(R.id.cancel_btn);
         final TextView selectPrompt = (TextView) popupLayout.findViewById(R.id.area_select_prompt);
-
-
         int width = (int) mContext.getResources().getDimension(R.dimen.location_area_pop_width);
         int height = (int) mContext.getResources().getDimension(R.dimen.location_area_pop_height);
         areaPopup = new PopupWindow(popupLayout, width, height);
@@ -207,7 +205,6 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
         int xOffset = (int) mContext.getResources().getDimension(R.dimen.locationFragment_areaPop_xOffset);
         int yOffset = (int) mContext.getResources().getDimension(R.dimen.locationFragment_areaPop_yOffset);
         areaPopup.showAtLocation(fragmentView, Gravity.CENTER, xOffset, yOffset);
-
         final List<CityTable> locationTableList = new Select().from(CityTable.class).where(CityTable.PROVINCE_ID + " = ?", provinceId).execute();
         CityAdapter cityAdapter = new CityAdapter(mContext, locationTableList);
 
