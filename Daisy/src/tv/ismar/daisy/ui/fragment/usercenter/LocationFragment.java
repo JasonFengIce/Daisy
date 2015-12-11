@@ -82,9 +82,6 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
 
     private static HashMap<String, Integer> weatherIconMap;
 
-    private BitmapDecoder bitmapDecoder;
-
-
 
     static {
         weatherIconMap = new HashMap<String, Integer>();
@@ -123,7 +120,6 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         fragmentView = inflater.inflate(R.layout.fragment_location, null);
         currentPostion = (TextView) fragmentView.findViewById(R.id.currentPosition);
         selectedPosition = (TextView) fragmentView.findViewById(R.id.selectedPosition);
@@ -197,14 +193,6 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
     private void showAreaPopup(final ProvinceTable provinceTable) {
         String provinceId = provinceTable.province_id;
         final View popupLayout = LayoutInflater.from(mContext).inflate(R.layout.popup_area, null);
-        bitmapDecoder = new BitmapDecoder();
-        bitmapDecoder.decode(mContext, R.drawable.pop_bg, new BitmapDecoder.Callback() {
-            @Override
-            public void onSuccess(BitmapDrawable bitmapDrawable) {
-                popupLayout.setBackgroundDrawable(bitmapDrawable);
-            }
-        });
-
         GridView gridView = (GridView) popupLayout.findViewById(R.id.area_grid);
         final Button confirmBtn = (Button) popupLayout.findViewById(R.id.confirm_btn);
         final Button cancelBtn = (Button) popupLayout.findViewById(R.id.cancel_btn);
