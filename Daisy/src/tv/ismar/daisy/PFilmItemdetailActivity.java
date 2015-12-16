@@ -54,6 +54,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
     private LinearLayout related_video_container;
     private Item[] mRelatedItem;
     private GetRelatedTask mGetRelatedTask;
+    private HashMap<String, Object> mDataCollectionProperties = new HashMap<String, Object>();
     private HashMap<AsyncImageView, Boolean> mLoadingImageQueue = new HashMap<AsyncImageView, Boolean>();
     private Button mLeftBtn;
     private Button mMiddleBtn;
@@ -595,6 +596,18 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 entry.setValue(false);
             }
         }
+
+        if (mItem != null) {
+            final HashMap<String, Object> properties = new HashMap<String, Object>();
+            properties.putAll(mDataCollectionProperties);
+            new NetworkUtils.DataCollectionTask().execute(
+                    NetworkUtils.VIDEO_DETAIL_OUT, properties);
+            mDataCollectionProperties.put(EventProperty.TITLE, mItem.title);
+            mDataCollectionProperties.put(EventProperty.ITEM, mItem.pk);
+            mDataCollectionProperties.put(EventProperty.TO, "return");
+            mDataCollectionProperties.remove(EventProperty.SUBITEM);
+        }
+
         super.onPause();
     }
 
@@ -717,6 +730,13 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
     private void initLayout() {
         mDetailTitle.setText(mItem.title);
+        mDataCollectionProperties.put(EventProperty.ITEM, mItem.pk);
+        mDataCollectionProperties.put(EventProperty.TITLE, mItem.title);
+        mDataCollectionProperties.put(EventProperty.SOURCE, fromPage);
+
+
+        new NetworkUtils.DataCollectionTask().execute(
+                NetworkUtils.VIDEO_DETAIL_IN, mDataCollectionProperties);
 		/*
 		 * Build detail attributes list using a given order according to
 		 * ContentModel's define. we also need to add some common attributes

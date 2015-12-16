@@ -467,6 +467,18 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 entry.setValue(false);
             }
         }
+
+		if (mItem != null) {
+			final HashMap<String, Object> properties = new HashMap<String, Object>();
+			properties.putAll(mDataCollectionProperties);
+			new NetworkUtils.DataCollectionTask().execute(
+					NetworkUtils.VIDEO_DETAIL_OUT, properties);
+			mDataCollectionProperties.put(EventProperty.TITLE, mItem.title);
+			mDataCollectionProperties.put(EventProperty.ITEM, mItem.pk);
+			mDataCollectionProperties.put(EventProperty.TO, "return");
+			mDataCollectionProperties.remove(EventProperty.SUBITEM);
+		}
+
         super.onPause();
     }
 
@@ -1276,6 +1288,13 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
 
     private void initLayout() {
         mDetailTitle.setText(mItem.title);
+        mDataCollectionProperties.put(EventProperty.ITEM, mItem.pk);
+        mDataCollectionProperties.put(EventProperty.TITLE, mItem.title);
+        mDataCollectionProperties.put(EventProperty.SOURCE, fromPage);
+
+
+        new NetworkUtils.DataCollectionTask().execute(
+                NetworkUtils.VIDEO_DETAIL_IN, mDataCollectionProperties);
 		/*
 		 * Build detail attributes list using a given order according to
 		 * ContentModel's define. we also need to add some common attributes
