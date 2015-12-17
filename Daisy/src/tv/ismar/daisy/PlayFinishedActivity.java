@@ -251,6 +251,7 @@ public class PlayFinishedActivity extends BaseActivity implements OnFocusChangeL
             } else {
                 intent.setAction("tv.ismar.daisy.Item");
                 intent.putExtra("url", items[position].item_url);
+                intent.putExtra("fromPage","related");
             }
             try {
                 startActivity(intent);
@@ -260,7 +261,7 @@ public class PlayFinishedActivity extends BaseActivity implements OnFocusChangeL
         } else {
             DaisyUtils.gotoSpecialPage(PlayFinishedActivity.this,
                     items[position].content_model, items[position].item_url,
-                    "unknown");
+                    "related");
         }
 //		try {
 //			startActivity(intent);
@@ -292,6 +293,7 @@ public class PlayFinishedActivity extends BaseActivity implements OnFocusChangeL
                     }
                     try {
                         tool = new InitPlayerTool(PlayFinishedActivity.this);
+                        tool.fromPage=item.fromPage;
                         tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
 
                             @Override
