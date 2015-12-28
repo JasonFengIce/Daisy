@@ -82,6 +82,7 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
 
     private static HashMap<String, Integer> weatherIconMap;
 
+
     static {
         weatherIconMap = new HashMap<String, Integer>();
         weatherIconMap.put("风", R.drawable.wind);
@@ -119,7 +120,6 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         fragmentView = inflater.inflate(R.layout.fragment_location, null);
         currentPostion = (TextView) fragmentView.findViewById(R.id.currentPosition);
         selectedPosition = (TextView) fragmentView.findViewById(R.id.selectedPosition);
@@ -193,20 +193,10 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
     private void showAreaPopup(final ProvinceTable provinceTable) {
         String provinceId = provinceTable.province_id;
         final View popupLayout = LayoutInflater.from(mContext).inflate(R.layout.popup_area, null);
-
-        new BitmapDecoder().decode(mContext, R.drawable.pop_bg, new BitmapDecoder.Callback() {
-            @Override
-            public void onSuccess(BitmapDrawable bitmapDrawable) {
-                popupLayout.setBackgroundDrawable(bitmapDrawable);
-            }
-        });
-
         GridView gridView = (GridView) popupLayout.findViewById(R.id.area_grid);
         final Button confirmBtn = (Button) popupLayout.findViewById(R.id.confirm_btn);
         final Button cancelBtn = (Button) popupLayout.findViewById(R.id.cancel_btn);
         final TextView selectPrompt = (TextView) popupLayout.findViewById(R.id.area_select_prompt);
-
-
         int width = (int) mContext.getResources().getDimension(R.dimen.location_area_pop_width);
         int height = (int) mContext.getResources().getDimension(R.dimen.location_area_pop_height);
         areaPopup = new PopupWindow(popupLayout, width, height);
@@ -215,7 +205,6 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
         int xOffset = (int) mContext.getResources().getDimension(R.dimen.locationFragment_areaPop_xOffset);
         int yOffset = (int) mContext.getResources().getDimension(R.dimen.locationFragment_areaPop_yOffset);
         areaPopup.showAtLocation(fragmentView, Gravity.CENTER, xOffset, yOffset);
-
         final List<CityTable> locationTableList = new Select().from(CityTable.class).where(CityTable.PROVINCE_ID + " = ?", provinceId).execute();
         CityAdapter cityAdapter = new CityAdapter(mContext, locationTableList);
 

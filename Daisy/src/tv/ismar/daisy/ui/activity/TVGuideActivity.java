@@ -890,8 +890,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 				if (currentFragment instanceof ChildFragment) {
 				} else {
 					destroybackground();
-					if(ddddBitmapDecoder != null && ddddBitmapDecoder.isAlive()){
-						ddddBitmapDecoder.interrupt();
+					if(ddddBitmapDecoder != null){
+						ddddBitmapDecoder.removeAllCallback();
+//						ddddBitmapDecoder.interrupt();
 					}
 					ddddBitmapDecoder = new BitmapDecoder();
 					ddddBitmapDecoder.decode(this, R.drawable.main_bg,
@@ -907,8 +908,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 			} else {
 				if (currentFragment instanceof ChildFragment) {
 					destroybackground();
-					if(ddddBitmapDecoder != null && ddddBitmapDecoder.isAlive()){
-						ddddBitmapDecoder.interrupt();
+					if(ddddBitmapDecoder != null){
+						ddddBitmapDecoder.removeAllCallback();
+//						ddddBitmapDecoder.interrupt();
 					}
 					ddddBitmapDecoder = new BitmapDecoder();
 					ddddBitmapDecoder.decode(this,

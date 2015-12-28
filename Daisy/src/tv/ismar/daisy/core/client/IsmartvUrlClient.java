@@ -26,11 +26,14 @@ public class IsmartvUrlClient extends Thread {
     private static final String TAG = "IsmartvClient:";
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
+    private static final int DEFAULT_TIMEOUT = 2;
+
     private static final int SUCCESS = 0x0001;
     private static final int FAILURE = 0x0002;
 
     private static final int FAILURE_4XX = 0x0004;
     private static final int FAILURE_5XX = 0x0005;
+
 
     private String url;
     private String params;
@@ -239,7 +242,7 @@ public class IsmartvUrlClient extends Thread {
         try {
             String api = url + "?" + params;
             OkHttpClient client = new OkHttpClient();
-            client.setConnectTimeout(10, TimeUnit.SECONDS);
+            client.setConnectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
             Request request = new Request.Builder()
                     .url(api)
                     .build();
@@ -248,11 +251,11 @@ public class IsmartvUrlClient extends Thread {
             response = client.newCall(request).execute();
             String result = response.body().string();
             Log.i(TAG, "---> BEGIN\n" +
-                    "\t<--- Request URL: " + "\t" + api + "\n" +
-                    "\t<--- Request Method: " + "\t" + "GET" + "\n" +
-                    "\t<--- Response Code: " + "\t" + response.code() + "\n" +
-                    "\t<--- Response Result: " + "\t" + result + "\n" +
-                    "\t---> END"
+                            "\t<--- Request URL: " + "\t" + api + "\n" +
+                            "\t<--- Request Method: " + "\t" + "GET" + "\n" +
+                            "\t<--- Response Code: " + "\t" + response.code() + "\n" +
+                            "\t<--- Response Result: " + "\t" + result + "\n" +
+                            "\t---> END"
             );
             if (response.code() >= 400 && response.code() < 500) {
                 message.what = FAILURE_4XX;
@@ -287,12 +290,12 @@ public class IsmartvUrlClient extends Thread {
             response = client.newCall(request).execute();
             String result = response.body().string();
             Log.i(TAG, "---> BEGIN\n" +
-                    "\t<--- Request URL: " + "\t" + url + "\n" +
-                    "\t<--- Request Method: " + "\t" + "POST" + "\n" +
-                    "\t<--- Request Params: " + "\t" + params + "\n" +
-                    "\t<--- Response Code: " + "\t" + response.code() + "\n" +
-                    "\t<--- Response Result: " + "\t" + result + "\n" +
-                    "\t---> END"
+                            "\t<--- Request URL: " + "\t" + url + "\n" +
+                            "\t<--- Request Method: " + "\t" + "POST" + "\n" +
+                            "\t<--- Request Params: " + "\t" + params + "\n" +
+                            "\t<--- Response Code: " + "\t" + response.code() + "\n" +
+                            "\t<--- Response Result: " + "\t" + result + "\n" +
+                            "\t---> END"
             );
 
             if (response.code() >= 400 && response.code() < 500) {

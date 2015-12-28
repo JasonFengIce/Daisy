@@ -288,7 +288,7 @@ public class NetworkUtils {
                     Collections.sort(result, new Comparator<AdElement>() {
                         @Override
                         public int compare(AdElement lhs, AdElement rhs) {
-                            return rhs.getSerial() < lhs.getSerial() ? 1 : 0;
+                            return rhs.getSerial() > lhs.getSerial() ? 1 : -1;
                         }
                     });
                 } else {

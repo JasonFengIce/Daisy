@@ -21,7 +21,7 @@ public class BitmapDecoder extends Thread {
     private Callback mCallback;
     private Context mContext;
     private int mResId;
-
+    private MessageHandler messageHandler;
     public void decode(Context context, int resId, Callback callback) {
         mCallback = callback;
         mContext = context;
@@ -40,7 +40,7 @@ public class BitmapDecoder extends Thread {
 			byte[] ddd = doRead(is);
 			Bitmap bm = BitmapFactory.decodeByteArray(ddd, 0,ddd.length, opt);
 			BitmapDrawable bd = new BitmapDrawable(mContext.getResources(), bm);
-			MessageHandler messageHandler = new MessageHandler(this);
+			messageHandler = new MessageHandler(this);
 			Message message = new Message();
 			message.obj = bd;
 			message.what = DECODE_SUCCESS;
@@ -84,4 +84,10 @@ public class BitmapDecoder extends Thread {
     public interface Callback {
         void onSuccess(BitmapDrawable bitmapDrawable);
     }
+
+	public void removeAllCallback() {
+		if (messageHandler != null) {
+			messageHandler.removeMessages(DECODE_SUCCESS);
+		}
+	}
 }

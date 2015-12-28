@@ -157,6 +157,12 @@ public class GuideFragment extends ChannelBaseFragment {
     @Override
     public void onStart() {
         super.onStart();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         if (mCarousels == null) {
             fetchHomePage();
         } else {
@@ -164,20 +170,15 @@ public class GuideFragment extends ChannelBaseFragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
 
     @Override
     public void onPause() {
+        stopPlayback();
         super.onPause();
     }
 
     @Override
     public void onStop() {
-        stopPlayback();
         super.onStop();
     }
 
