@@ -113,7 +113,7 @@ public class AccessProxy {
         }
 		buffer.append("?access_token=").append(SimpleRestClient.access_token)
 				.append("&device_token=").append(SimpleRestClient.device_token)
-				.append("&sign=").append(getAES(access_token)).toString();
+				.append("&sign=").append(getAES(access_token)).append("&code=1").toString();
 		return buffer.toString();
 	}
 
@@ -241,8 +241,7 @@ public class AccessProxy {
 	}
 
 	private static String AES_decrypt(String url) {
-		return AESOperator.getInstance().AES_decrypt(
-				SimpleRestClient.device_token, url);
+		return AESOperator.getInstance().AES_decrypt(SimpleRestClient.device_token, url);
 	}
 
 	private static String getURLStr(String url) {
