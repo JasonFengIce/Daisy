@@ -60,7 +60,7 @@ public class Activator {
     private String sn, manufacture, kind, version, fingerprint, locationInfo;
 
     public MessageHandler messageHandler;
-
+    private int getLicenceTryCount = 0;
     public static interface OnComplete {
         void onSuccess(Result result);
 
@@ -141,13 +141,19 @@ public class Activator {
         new Thread() {
             @Override
             public void run() {
+            	getLicenceTryCount++;
+				if (getLicenceTryCount > 0)
+					try {
+						Thread.sleep(200);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
                 Map map = new HashMap();
                 map.put("fingerprint", fingerprint);
                 map.put("sn", sn);
                 map.put("manufacture", manufacture);
+                map.put("code", "1");
                 HttpClient.postDatas(messageHandler, mContext, HOST + "/trust/get_licence/", map);
-                if (Activator.DEBUG)
-                    Log.d(TAG, "fingerprint : " + map.get("fingerprint") + "sn : " + sn);
             }
         }.start();
     }
@@ -191,14 +197,17 @@ public class Activator {
         activator.excute(sn, manufacture, kind, version, rsa, fingerprint, "v2_0", getAndroidDevicesInfo()).enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Response<Result> response, Retrofit retrofit) {
-                if (response.code() ==200){
-                    Map<String, String> map = AppSharedPreferences.getInstance(mContext).getPackageInfo();
-                    Result result = response.body();
+                Map<String, String> map = AppSharedPreferences.getInstance(mContext).getPackageInfo();
+                Result result = response.body();
+                if (result != null) {
                     result.setPackageInfo(map.get("package"));
                     result.setExpiry_date(map.get("exrpiry_date"));
                     mOnComplete.onSuccess(result);
-                }else {
-                  mOnComplete.onFailed("激活失败");
+                } else {
+                    if (response.errorBody() != null) {
+                        mOnComplete.onFailed("激活失败");
+                        Log.e(TAG, response.errorBody().toString());
+                    }
                 }
             }
 
@@ -282,6 +291,10 @@ public class Activator {
                     NativeManager nativeManager = new NativeManager();
                     Log.d(TAG, "key is :" + key);
                     String result = nativeManager.decrypt(key, mContext.getFileStreamPath("sign1").getAbsolutePath());
+                    if("error".equals(result) && getLicenceTryCount <= 2){
+                    	getLicence(messageHandler);
+                    	return;
+                    }
                     String publicKey;
                     try {
                         publicKey = result.split("\\$\\$\\$")[1];
@@ -390,5 +403,10 @@ public class Activator {
             }
         }
         return String.valueOf(H);
+    }
+
+    public void removeCallback() {
+        if (messageHandler != null)
+            messageHandler.removeCallbacksAndMessages(null);
     }
 }
