@@ -665,12 +665,24 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
         if (mInitTask != null && mInitTask.getStatus() != AsyncTask.Status.FINISHED) {
             mInitTask.cancel(true);
         }
-
+		if (mSectionList == null)
+			return;
         // Add data collection.
         HashMap<String, Object> properties = new HashMap<String, Object>();
         properties.put(EventProperty.CATEGORY, mChannel);
         properties.put(EventProperty.TITLE, mTitle);
         new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_CHANNEL_OUT, properties);
+		mSectionProperties.remove(EventProperty.TO_ITEM);
+		mSectionProperties.remove(EventProperty.TO_TITLE);
+		mSectionProperties
+				.put(EventProperty.POSITION, mCurrentSectionIndex - 1);
+		mSectionProperties.put(EventProperty.TITLE,
+				mSectionList.get(mCurrentSectionIndex - 1).title);
+		mSectionProperties.put(EventProperty.SECTION,
+				mSectionList.get(mCurrentSectionIndex - 1).slug);
+		new NetworkUtils.DataCollectionTask().execute(
+				NetworkUtils.VIDEO_CATEGORY_OUT, mSectionProperties);
+
         mInitTask = null;
         mSectionList = null;
         mScrollableSectionList = null;
@@ -941,8 +953,9 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
                 HashMap<String, Object> sectionProperties = new HashMap<String, Object>();
                 sectionProperties.put(EventProperty.SECTION, oldSection.slug);
                 sectionProperties.put(EventProperty.TITLE, oldSection.title);
+                sectionProperties.put(EventProperty.POSITION, mSectionList.indexOf(oldSection));
                 //sectionProperties.put("sid", mCurrentSectionIndex);
-                //new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_CATEGORY_OUT, sectionProperties);
+                new NetworkUtils.DataCollectionTask().execute(NetworkUtils.VIDEO_CATEGORY_OUT, sectionProperties);
             }
             mCurrentSectionIndex = newSectionIndex;
         }

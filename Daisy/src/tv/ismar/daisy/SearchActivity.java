@@ -272,7 +272,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
                             if (!TextUtils.isEmpty(autoCompleteTextView
                                     .getEditableText().toString())) {
                                 ibtnSearch.requestFocus();
-                                exeClick(v);
+//                                exeClick(v);
                             }
                         }
                         return false;
