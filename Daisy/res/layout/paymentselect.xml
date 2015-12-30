@@ -24,7 +24,7 @@
         android:src="@drawable/divider_person" />
     <!-- qrcode panel -->
 
-    <LinearLayout
+   <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/pay_paymentselect_main_margintop"
@@ -67,6 +67,7 @@
         <include
             layout="@layout/guanyingcard_pay"
             android:visibility="gone" />
+
     </LinearLayout>
 
 </LinearLayout>
