@@ -66,6 +66,7 @@ public class PaymentDialog extends Dialog implements
 	private static final int ORDER_CHECK_INTERVAL = 10000;
 	private static final int LOGIN_SUCESS = 0x14;
 	private static final int SETDAIKOUPANELVISIBLE = 0x15;
+	private static final int DAIKOU_ERROR = 0x16;
 	private Context mycontext;
 	private int width;
 	private int height;
@@ -85,7 +86,7 @@ public class PaymentDialog extends Dialog implements
 	private LinearLayout shiyuncard_panel;
 	private RelativeLayout top_login_panel;
 	private LinearLayout qrcode_panel;
-	private LinearLayout daikou_panel;
+	private RelativeLayout daikou_panel;
 	private ImageView qrcodeview;
 	private MessagePopWindow loginPopup;
 	private TextView payinfo_price;
@@ -249,7 +250,7 @@ public class PaymentDialog extends Dialog implements
 		shiyuncard_input = (EditText) findViewById(R.id.shiyuncard_input);
 		panel_label = (TextView) findViewById(R.id.panel_label);
 		qrcode_panel = (LinearLayout) findViewById(R.id.qrcode_panel);
-		daikou_panel = (LinearLayout) findViewById(R.id.daikou_panel);
+		daikou_panel = (RelativeLayout) findViewById(R.id.daikou_panel);
 		ali_price = (TextView) findViewById(R.id.ali_price);
 		ali_exprie = (TextView) findViewById(R.id.ali_exprie);
 		alipay_submit = (Button) findViewById(R.id.alipay_submit);
@@ -457,11 +458,16 @@ public class PaymentDialog extends Dialog implements
 							} else {
 								String display_message = jsonObject
 										.getString("display_message");
-								Toast.makeText(mycontext, display_message,
-										Toast.LENGTH_LONG);
+								Message m = new Message();
+								m.what = DAIKOU_ERROR;
+								m.obj = display_message;
+								urlHandler.sendMessage(m);
 							}
 						} catch (Exception e) {
-							Toast.makeText(mycontext, "代扣失败", Toast.LENGTH_LONG);
+							Message m = new Message();
+							m.what = DAIKOU_ERROR;
+							m.obj = "代扣失败";
+							urlHandler.sendMessage(m);
 							e.printStackTrace();
 						}
 					}
@@ -520,8 +526,16 @@ public class PaymentDialog extends Dialog implements
 				welocome_tip.setVisibility(View.VISIBLE);
 				// top_login_panel.setVisibility(View.GONE);
 				// ((BaseActivity)mycontext).callWGQueryQQUserInfo();
-
+				break;
 			}
+			case DAIKOU_ERROR: {
+				if (msg.obj != null) {
+					String display_message = msg.obj.toString();
+					Toast.makeText(mycontext, display_message,
+							Toast.LENGTH_LONG).show();
+				}
+			}
+				break;
 			}
 		}
 	};
@@ -702,7 +716,7 @@ public class PaymentDialog extends Dialog implements
 				String qrcodeUrl = agreeOject.getString("url");
 				alipay_submit.setTag(qrcodeUrl);
 				double itemprice = commodity.getDouble("total_fee");
-				ali_price.setText(" 价     格 :  " + itemprice + "元");
+				ali_price.setText("价　格 : " + itemprice + "元");
 				ali_exprie.setText("有效期 :  " + commodity.getString("duration")
 						+ "天");
 				urlHandler.sendEmptyMessage(SETDAIKOUPANELVISIBLE);
