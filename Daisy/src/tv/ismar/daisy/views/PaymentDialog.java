@@ -545,14 +545,13 @@ public class PaymentDialog extends Dialog implements
 		if (visible) {
 			qrcodeview.setImageDrawable((new ColorDrawable(Color.WHITE)));
 			qrcode_pay.setVisibility(View.VISIBLE);
-
+			daikou_panel.setVisibility(View.GONE);
 			new Thread() {
 
 				@Override
 				public void run() {
 					super.run();
 					if (isweixin) {
-						daikou_panel.setVisibility(View.GONE);
 						qrcodeBitmap = returnBitMap(SimpleRestClient.root_url
 								+ QRCODE_BASE_URL, "POST", "wares_id="
 								+ mItem.pk + "&wares_type=" + mItem.model_name
