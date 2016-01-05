@@ -569,13 +569,29 @@ public class PaymentDialog extends Dialog implements
 											ORDER_CHECK_INTERVAL);
 						}
 					} else {
-						aliPayChannel(SimpleRestClient.root_url + ALI_PAY,
-								"wares_id=" + mItem.pk + "&wares_type="
-										+ mItem.model_name + "&device_token="
-										+ SimpleRestClient.device_token
-										+ "&access_token="
-										+ SimpleRestClient.access_token
-										+ "&source=alipay");
+//						aliPayChannel(SimpleRestClient.root_url + ALI_PAY,
+//								"wares_id=" + mItem.pk + "&wares_type="
+//										+ mItem.model_name + "&device_token="
+//										+ SimpleRestClient.device_token
+//										+ "&access_token="
+//										+ SimpleRestClient.access_token
+//										+ "&source=alipay");
+						qrcodeBitmap = returnBitMap(SimpleRestClient.root_url
+								+ QRCODE_BASE_URL, "POST", "wares_id="
+								+ mItem.pk + "&wares_type=" + mItem.model_name
+								+ "&device_token="
+								+ SimpleRestClient.device_token
+								+ "&access_token="
+								+ SimpleRestClient.access_token
+								+ "&source=alipay");
+						urlHandler.sendEmptyMessage(SETQRCODE_VIEW);
+						if (urlHandler.hasMessages(PURCHASE_CHECK_RESULT)) {
+							urlHandler.removeMessages(PURCHASE_CHECK_RESULT);
+							urlHandler
+									.sendEmptyMessageDelayed(
+											PURCHASE_CHECK_RESULT,
+											ORDER_CHECK_INTERVAL);
+						}
 					}
 				}
 
