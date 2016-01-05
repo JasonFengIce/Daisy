@@ -59,6 +59,8 @@ public class NetworkUtils {
             conn.addRequestProperty("Accept-Encoding", "gzip,deflate,sdch");
             //conn.addRequestProperty("User-Agent", Build.MODEL+"/"+SimpleRestClient.appVersion+" "+SimpleRestClient.sn_token);
             conn.setIfModifiedSince(System.currentTimeMillis());
+            conn.setConnectTimeout(1000);
+            conn.setReadTimeout(3000);
             // conn.setUseCaches(false);
             conn.connect();
             int resCode = conn.getResponseCode();
@@ -144,6 +146,8 @@ public class NetworkUtils {
             connection.addRequestProperty("Accept-Encoding",
                     "gzip,deflate,sdch");
             connection.setInstanceFollowRedirects(true);
+            connection.setConnectTimeout(1000);
+            connection.setReadTimeout(3000);
             connection.setRequestProperty("Content-Type",
                     "application/x-www-form-urlencoded");
             connection.setRequestProperty("Accept", "application/json");
@@ -233,6 +237,8 @@ public class NetworkUtils {
             connection.addRequestProperty("Accept-Encoding",
                     "gzip,deflate,sdch");
             connection.setInstanceFollowRedirects(true);
+            connection.setConnectTimeout(1000);
+            connection.setReadTimeout(3000);
             connection.setRequestProperty("Content-Type",
                     "application/x-www-form-urlencoded");
             connection.setRequestProperty("Accept", "application/json");
@@ -379,8 +385,8 @@ public class NetworkUtils {
             java.net.HttpURLConnection httpConn = (java.net.HttpURLConnection) connURL
                     .openConnection();
             httpConn.setRequestMethod("POST");
-            httpConn.setConnectTimeout(10000);
-            httpConn.setReadTimeout(10000);
+            httpConn.setConnectTimeout(1000);
+            httpConn.setReadTimeout(3000);
             httpConn.setDoOutput(true);
 
             httpConn.setDoInput(true);

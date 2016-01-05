@@ -152,6 +152,7 @@ public class AccessProxy {
 				httpConn.setRequestProperty("Accept", "application/json");
 				httpConn.setRequestProperty("User-Agent", userAgent);
 				httpConn.setConnectTimeout(10000);
+				httpConn.setReadTimeout(10000);
 				httpConn.connect();
 				inputStreamReader = new InputStreamReader(
 						httpConn.getInputStream(), "UTF-8");

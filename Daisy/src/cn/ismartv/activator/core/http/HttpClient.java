@@ -42,6 +42,7 @@ public class HttpClient {
             connection.setDoOutput(true);
             connection.setUseCaches(false);
             connection.setConnectTimeout(3000);
+            connection.setReadTimeout(3000);
             connection.setInstanceFollowRedirects(true);
             connection.setRequestProperty("Content-Type",
                     "application/x-www-form-urlencoded");
