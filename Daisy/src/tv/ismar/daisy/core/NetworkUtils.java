@@ -598,7 +598,7 @@ public class NetworkUtils {
     public static String getContentJson(String eventName,
                                          HashMap<String, Object> propertiesMap) throws JSONException {
         JSONObject propertiesJson = new JSONObject();
-        propertiesJson.put("time", System.currentTimeMillis() / 1000);
+        propertiesJson.put("time", System.currentTimeMillis());
         if (propertiesMap != null) {
             Set<String> set = propertiesMap.keySet();
             for (String key : set) {

@@ -271,6 +271,8 @@ public class FilmFragment extends ChannelBaseFragment {
         });
         mLeftTopView = film_lefttop_image;
         for (int i = 1; i <= posters.size(); i++) {
+			if (i > 8)
+				break;
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(199, 278);
 //            params.weight = 1;
 //            if (i != 7) {
