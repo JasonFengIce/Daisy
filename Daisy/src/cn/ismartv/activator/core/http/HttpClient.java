@@ -15,6 +15,8 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Map;
 
+import tv.ismar.daisy.core.NetworkUtils;
+
 public class HttpClient {
     private static final String TAG = "HttpClient";
     public static final int SUCCESS = 0x0000;
@@ -41,8 +43,8 @@ public class HttpClient {
             connection.setDoInput(true);
             connection.setDoOutput(true);
             connection.setUseCaches(false);
-            connection.setConnectTimeout(3000);
-            connection.setReadTimeout(3000);
+            connection.setConnectTimeout(NetworkUtils.CONNET_TIME_OUT);
+            connection.setReadTimeout(NetworkUtils.READ_TIME_OUT);
             connection.setInstanceFollowRedirects(true);
             connection.setRequestProperty("Content-Type",
                     "application/x-www-form-urlencoded");

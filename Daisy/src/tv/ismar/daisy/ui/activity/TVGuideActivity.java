@@ -776,13 +776,14 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     public void onFailed(String erro) {
         Log.e(TAG, "active error: " + erro);
         fetchChannels();
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showNetErrorPopup();
-            }
-        }, 2000);
-
+		if (StringUtils.isEmpty(SimpleRestClient.sn_token)) {
+			new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					showNetErrorPopup();
+				}
+			}, 2000);
+		}
     }
 
     private void showNetErrorPopup() {
