@@ -77,6 +77,7 @@ public class FilmFragment extends ChannelBaseFragment {
     private HomeItemContainer firstpost;
     private LabelImageView firstcarousel;
     private BitmapDecoder bitmapDecoder;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,8 +86,6 @@ public class FilmFragment extends ChannelBaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-
-
 
 
     }
@@ -127,7 +126,7 @@ public class FilmFragment extends ChannelBaseFragment {
         bitmapDecoder.decode(mContext, R.drawable.guide_video_loading, new BitmapDecoder.Callback() {
             @Override
             public void onSuccess(BitmapDrawable bitmapDrawable) {
-            	linkedVideoImage.setBackgroundDrawable(bitmapDrawable);
+                linkedVideoImage.setBackgroundDrawable(bitmapDrawable);
             }
         });
         return mView;
@@ -159,12 +158,9 @@ public class FilmFragment extends ChannelBaseFragment {
     }
 
 
-
     @Override
     public void onResume() {
         super.onResume();
-
-
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_MEDIA_UNMOUNTED);
         intentFilter.addAction(Intent.ACTION_MEDIA_EJECT);
@@ -174,7 +170,7 @@ public class FilmFragment extends ChannelBaseFragment {
         mContext.registerReceiver(externalStorageReceiver, intentFilter);
 
         if (mCarousels == null) {
-            if(channelEntity != null)
+            if (channelEntity != null)
                 fetchHomePage(channelEntity.getHomepage_url());
         } else {
             playCarousel();
@@ -185,8 +181,7 @@ public class FilmFragment extends ChannelBaseFragment {
 
     @Override
     public void onPause() {
-        stopPlayback();
-        mContext.unregisterReceiver(externalStorageReceiver);
+
         super.onPause();
 
 
@@ -194,14 +189,16 @@ public class FilmFragment extends ChannelBaseFragment {
 
     @Override
     public void onStop() {
+        stopPlayback();
+        mContext.unregisterReceiver(externalStorageReceiver);
         super.onStop();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        if(bitmapDecoder != null && bitmapDecoder.isAlive()){
-        	bitmapDecoder.interrupt();
+        if (bitmapDecoder != null && bitmapDecoder.isAlive()) {
+            bitmapDecoder.interrupt();
         }
         if (datafetch != null && datafetch.isAlive())
             datafetch.interrupt();
@@ -295,7 +292,7 @@ public class FilmFragment extends ChannelBaseFragment {
             itemView.setLayoutParams(params);
             itemView.setOnClickListener(ItemClickListener);
             if (i <= 7) {
-            	posters.get(i).setPosition(i);
+                posters.get(i).setPosition(i);
                 tv.ismar.daisy.ui.widget.HomeItemContainer frameLayout = (tv.ismar.daisy.ui.widget.HomeItemContainer) LayoutInflater.from(mContext).inflate(R.layout.item_poster, null);
                 ImageView postitemView = (ImageView) frameLayout.findViewById(R.id.poster_image);
                 TextView textView = (TextView) frameLayout.findViewById(R.id.poster_title);
@@ -418,13 +415,13 @@ public class FilmFragment extends ChannelBaseFragment {
     private void startPlayback() {
         Log.d(TAG, "startPlayback is invoke...");
         linkedVideoImage.setImageResource(R.drawable.guide_video_loading);
-        if(mContext != null)
-        new BitmapDecoder().decode(mContext, R.drawable.guide_video_loading, new BitmapDecoder.Callback() {
-            @Override
-            public void onSuccess(BitmapDrawable bitmapDrawable) {
-            	linkedVideoImage.setBackgroundDrawable(bitmapDrawable);
-            }
-        });
+        if (mContext != null)
+            new BitmapDecoder().decode(mContext, R.drawable.guide_video_loading, new BitmapDecoder.Callback() {
+                @Override
+                public void onSuccess(BitmapDrawable bitmapDrawable) {
+                    linkedVideoImage.setBackgroundDrawable(bitmapDrawable);
+                }
+            });
         linkedVideoImage.setVisibility(View.VISIBLE);
         mSurfaceView.setFocusable(false);
         mSurfaceView.setFocusableInTouchMode(false);
@@ -627,15 +624,15 @@ public class FilmFragment extends ChannelBaseFragment {
     private android.media.MediaPlayer.OnPreparedListener mOnPreparedListener = new MediaPlayer.OnPreparedListener() {
         @Override
         public void onPrepared(MediaPlayer mp) {
-            if(bitmapDecoder != null && bitmapDecoder.isAlive()){
-            	bitmapDecoder.interrupt();
+            if (bitmapDecoder != null && bitmapDecoder.isAlive()) {
+                bitmapDecoder.interrupt();
             }
             linkedVideoImage.setVisibility(View.GONE);
         }
     };
-    
-   public void refreshData(){
-	   fetchHomePage(channelEntity.getHomepage_url());
+
+    public void refreshData() {
+        fetchHomePage(channelEntity.getHomepage_url());
     }
 }
 

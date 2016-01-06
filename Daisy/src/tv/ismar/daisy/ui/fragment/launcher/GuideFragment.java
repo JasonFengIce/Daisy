@@ -126,7 +126,7 @@ public class GuideFragment extends ChannelBaseFragment {
         bitmapDecoder.decode(mContext, R.drawable.guide_video_loading, new BitmapDecoder.Callback() {
             @Override
             public void onSuccess(BitmapDrawable bitmapDrawable) {
-            	linkedVideoLoadingImage.setBackgroundDrawable(bitmapDrawable);
+                linkedVideoLoadingImage.setBackgroundDrawable(bitmapDrawable);
             }
         });
         return mView;
@@ -173,12 +173,12 @@ public class GuideFragment extends ChannelBaseFragment {
 
     @Override
     public void onPause() {
-        stopPlayback();
         super.onPause();
     }
 
     @Override
     public void onStop() {
+        stopPlayback();
         super.onStop();
     }
 
@@ -186,8 +186,8 @@ public class GuideFragment extends ChannelBaseFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        if(bitmapDecoder != null && bitmapDecoder.isAlive()){
-        	bitmapDecoder.interrupt();
+        if (bitmapDecoder != null && bitmapDecoder.isAlive()) {
+            bitmapDecoder.interrupt();
         }
         if (datafetch != null && datafetch.isAlive())
             datafetch.interrupt();
@@ -200,7 +200,7 @@ public class GuideFragment extends ChannelBaseFragment {
         new CacheHttpClient().doRequest(api, new CacheHttpClient.Callback() {
             @Override
             public void onSuccess(String result) {
-                String s  = result;
+                String s = result;
                 if (mContext == null || guideRecommmendList == null)
                     return;
                 HomePagerEntity homePagerEntity = new Gson().fromJson(result,
@@ -544,8 +544,8 @@ public class GuideFragment extends ChannelBaseFragment {
     private android.media.MediaPlayer.OnPreparedListener mOnPreparedListener = new MediaPlayer.OnPreparedListener() {
         @Override
         public void onPrepared(MediaPlayer mp) {
-            if(bitmapDecoder != null && bitmapDecoder.isAlive()){
-            	bitmapDecoder.interrupt();
+            if (bitmapDecoder != null && bitmapDecoder.isAlive()) {
+                bitmapDecoder.interrupt();
             }
             linkedVideoLoadingImage.setVisibility(View.GONE);
         }
