@@ -665,7 +665,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
         if (mInitTask != null && mInitTask.getStatus() != AsyncTask.Status.FINISHED) {
             mInitTask.cancel(true);
         }
-		if (mSectionList == null)
+		if (mSectionList == null || mCurrentSectionIndex < 0)
 			return;
         // Add data collection.
         HashMap<String, Object> properties = new HashMap<String, Object>();

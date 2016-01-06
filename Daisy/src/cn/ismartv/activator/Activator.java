@@ -315,6 +315,7 @@ public class Activator {
                     activator(sn, manufacture, kind, version, fingerprint, sign, publicKey, rsaEnResult);
                     break;
                 case HttpClient.FAILED:
+				if (getLicenceTryCount > 2)
                     mOnComplete.onFailed((String) msg.obj);
                     break;
                 default:
