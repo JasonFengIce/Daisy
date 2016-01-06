@@ -357,9 +357,9 @@ public class NetworkUtils {
                                          HashMap<String, Object> propertiesMap) {
         try {
             String jsonContent = getContentJson(eventName, propertiesMap);
-            synchronized (MessageQueue.async) {
+//            synchronized (MessageQueue.async) {
                 MessageQueue.addQueue(jsonContent);
-            }
+//            }
             return true;
         } catch (JSONException e) {
             // TODO Auto-generated catch block
@@ -380,15 +380,15 @@ public class NetworkUtils {
         try {
             String jsonContent = base64Code(Content);
 //            String url = "http://ismartv.calla.tvxio.com/log";
-//            String url = "http://192.168.1.120:8099/m3u8parse/parseM3u8";
+//            String url = "http://192.168.1.119:8099/m3u8parse/parseM3u8";
             String host =  AccountSharedPrefs.getInstance().getSharedPrefs(AccountSharedPrefs.LOG_DOMAIN);
             String url = "http://" + host+ "/log";
             java.net.URL connURL = new java.net.URL(url);
             java.net.HttpURLConnection httpConn = (java.net.HttpURLConnection) connURL
                     .openConnection();
             httpConn.setRequestMethod("POST");
-            httpConn.setConnectTimeout(1000);
-            httpConn.setReadTimeout(3000);
+            httpConn.setConnectTimeout(CONNET_TIME_OUT);
+            httpConn.setReadTimeout(READ_TIME_OUT);
             httpConn.setDoOutput(true);
 
             httpConn.setDoInput(true);
@@ -653,9 +653,9 @@ public class NetworkUtils {
                 String jsonContent;
                 try {
                     jsonContent = getContentJson(eventName, properties);
-                    synchronized (MessageQueue.async) {
+//                    synchronized (MessageQueue.async) {
                         MessageQueue.addQueue(jsonContent);
-                    }
+//                    }
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();

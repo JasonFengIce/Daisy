@@ -216,7 +216,7 @@ public class VodApplication extends Application {
             while (isFinish) {
                 try {
                     Thread.sleep(10000);
-                    synchronized (MessageQueue.async) {
+//                    synchronized (MessageQueue.async) {
                         // Thread.sleep(900000);
 
 
@@ -245,7 +245,7 @@ public class VodApplication extends Application {
                         } else {
                             Log.i("qazwsx", "queue is no elements");
                         }
-                    }
+//                    }
 
                     //NetworkUtils.LogUpLoad(getApplicationContext());
                 } catch (InterruptedException e) {
