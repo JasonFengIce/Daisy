@@ -1261,6 +1261,10 @@ public class PlayerActivity extends VodMenuAction {
 							+ pk + "/";
 					try {
 						item = simpleRestClient.getItem(subItemUrl);
+                        item.channel = channel;
+                        item.section = section;
+                        item.slug = slug;
+                        item.fromPage = fromPage;
 						getAdInfo("qiantiepian");
 					} catch (JsonSyntaxException e) {
 						e.printStackTrace();
