@@ -173,9 +173,10 @@ public class FilmFragment extends ChannelBaseFragment {
             if (channelEntity != null)
                 fetchHomePage(channelEntity.getHomepage_url());
         } else {
-            playCarousel();
+            if (!mSurfaceView.isPlaying()) {
+                playCarousel();
+            }
         }
-
     }
 
 

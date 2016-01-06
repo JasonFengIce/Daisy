@@ -166,7 +166,9 @@ public class GuideFragment extends ChannelBaseFragment {
         if (mCarousels == null) {
             fetchHomePage();
         } else {
-            playCarousel();
+            if (!mSurfaceView.isPlaying()) {
+                playCarousel();
+            }
         }
     }
 
