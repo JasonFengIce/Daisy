@@ -1,15 +1,9 @@
 package tv.ismar.daisy.ui.fragment;
 
-import java.io.InputStream;
-
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -69,10 +63,6 @@ public class ChannelBaseFragment extends Fragment {
     	if(tool != null)
     		tool.removeAsycCallback();
         mContext = null;
-        mLeftTopView = null;
-        mLeftBottomView = null;
-        mRightTopView = null;
-        mRightBottomView = null;
         ItemClickListener = null;
         super.onDetach();
     }
@@ -92,12 +82,13 @@ public class ChannelBaseFragment extends Fragment {
             String contentMode = null;
             String title = null;
             String mode_name = null;
-            String channel = "";
+            String channel = "top";
             String type;
             int pk;
             boolean expense = false;
             int position = -1;
-            Intent intent = new Intent();
+            if(channelEntity != null)
+            	channel = channelEntity.getChannel();
             if (view.getTag() instanceof Poster) {
                 Poster new_name = (Poster) view.getTag();
                 contentMode = new_name.getContent_model();
@@ -106,7 +97,6 @@ public class ChannelBaseFragment extends Fragment {
                 mode_name = new_name.getModel_name();
                 expense = new_name.isExpense();
                 position = new_name.getPosition();
-                intent.putExtra("fromPage", "tvhome");
             } else if (view.getTag(R.drawable.launcher_selector) instanceof Carousel) {
                 Carousel new_name = (Carousel) view
                         .getTag(R.drawable.launcher_selector);
@@ -116,20 +106,18 @@ public class ChannelBaseFragment extends Fragment {
                 mode_name = new_name.getModel_name();
                 expense = new_name.isExpense();
                 position = new_name.getPosition();
-                intent.putExtra("fromPage", "live");
             }
             type = mode_name;
-            
+            Intent intent = new Intent();
 //            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("channel", channel);
             if (url == null) {
                 intent.setAction("tv.ismar.daisy.Channel");
                 title = channelEntity.getName();
-                channel = "列表";
                 pk = SimpleRestClient.getItemId(channelEntity.getUrl(), new boolean[1]);
 
                 intent.putExtra("title", channelEntity.getName());
                 intent.putExtra("url", channelEntity.getUrl());
-                intent.putExtra("channel", channelEntity.getChannel());
                 intent.putExtra("portraitflag", channelEntity.getStyle());
 
                 mContext.startActivity(intent);
@@ -141,46 +129,42 @@ public class ChannelBaseFragment extends Fragment {
 
 
                     if (("variety".equals(contentMode) || "entertainment".equals(contentMode)) && !expense) {
-                        channel = "娱乐综艺";
                         intent.setAction("tv.ismar.daisy.EntertainmentItem");
                         intent.putExtra("title", "娱乐综艺");
                     } else if ("movie".equals(contentMode)) {
-                        channel = "电影";
                         intent.setAction("tv.ismar.daisy.PFileItem");
                         intent.putExtra("title", "电影");
                     } else if ("package".equals(contentMode)) {
-                        channel = "礼包详情";
                         intent.setAction("tv.ismar.daisy.packageitem");
                         intent.putExtra("title", "礼包详情");
                     } else {
-                        channel = "详情";
                         intent.setClassName("tv.ismar.daisy",
                                 "tv.ismar.daisy.ItemDetailActivity");
                     }
                     intent.putExtra("url", url);
+                    intent.putExtra("fromPage", "homepage");
                     mContext.startActivity(intent);
 
 
                 } else if ("topic".equals(mode_name)) {
-                    channel = "专题";
                     intent.putExtra("url", url);
                     intent.setAction("tv.ismar.daisy.Topic");
                     mContext.startActivity(intent);
                 } else if ("section".equals(mode_name)) {
-                    channel = "礼包列表";
                     intent.putExtra("title", title);
                     intent.putExtra("itemlistUrl", url);
                     intent.putExtra("lableString", title);
                     intent.setAction("tv.ismar.daisy.packagelist");
                     mContext.startActivity(intent);
                 } else if ("package".equals(mode_name)) {
-                    channel = "礼包详情";
                     intent.setAction("tv.ismar.daisy.packageitem");
                     intent.putExtra("url", url);
                     mContext.startActivity(intent);
                 } else if ("clip".equals(mode_name)) {
-                    channel = "播放";
+                	if(tool == null)
                     tool = new InitPlayerTool(mContext);
+                    tool.channel=channelEntity.getChannel();
+                    tool.fromPage="homepage";
                     tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
                 }
             }
@@ -188,31 +172,6 @@ public class ChannelBaseFragment extends Fragment {
             play.homepage_vod_click(pk, title, channel, position, type);
         }
     };
-    
-    protected void setbackground(final View rootView,int id) {
+    public void refreshData(){}
 
-
-        BitmapFactory.Options opt = new BitmapFactory.Options();
-
-        opt.inPreferredConfig = Bitmap.Config.ALPHA_8;
-
-        opt.inPurgeable = true;
-
-        opt.inInputShareable = true;
-        opt.inTargetDensity = getResources().getDisplayMetrics().densityDpi;
-        opt.inDensity = getResources().getDisplayMetrics().densityDpi;
-
-        InputStream is = getResources().openRawResource(
-
-                id);
-
-        Bitmap bm = BitmapFactory.decodeStream(is, null, opt);
-
-        BitmapDrawable bd = new BitmapDrawable(getResources(), bm);
-        rootView.setBackgroundDrawable(bd);
-    }
-
-    public void refreshData(){
-    	
-    }
 }
