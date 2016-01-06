@@ -37,7 +37,9 @@ public class NetworkUtils {
 
     private static final int BUFFERSIZE = 1024;
     DataCollectionTask mDataCollectionTask;
-
+    public static final int CONNET_TIME_OUT = 10000;
+    public static final int READ_TIME_OUT = 3000;
+    
     public static String getJsonStr(String target, String values)
             throws ItemOfflineException, NetworkException {
         String urlStr = target;
@@ -59,8 +61,8 @@ public class NetworkUtils {
             conn.addRequestProperty("Accept-Encoding", "gzip,deflate,sdch");
             //conn.addRequestProperty("User-Agent", Build.MODEL+"/"+SimpleRestClient.appVersion+" "+SimpleRestClient.sn_token);
             conn.setIfModifiedSince(System.currentTimeMillis());
-            conn.setConnectTimeout(1000);
-            conn.setReadTimeout(3000);
+            conn.setConnectTimeout(CONNET_TIME_OUT);
+            conn.setReadTimeout(READ_TIME_OUT);
             // conn.setUseCaches(false);
             conn.connect();
             int resCode = conn.getResponseCode();
@@ -146,8 +148,8 @@ public class NetworkUtils {
             connection.addRequestProperty("Accept-Encoding",
                     "gzip,deflate,sdch");
             connection.setInstanceFollowRedirects(true);
-            connection.setConnectTimeout(1000);
-            connection.setReadTimeout(3000);
+            connection.setConnectTimeout(CONNET_TIME_OUT);
+            connection.setReadTimeout(READ_TIME_OUT);
             connection.setRequestProperty("Content-Type",
                     "application/x-www-form-urlencoded");
             connection.setRequestProperty("Accept", "application/json");
@@ -237,8 +239,8 @@ public class NetworkUtils {
             connection.addRequestProperty("Accept-Encoding",
                     "gzip,deflate,sdch");
             connection.setInstanceFollowRedirects(true);
-            connection.setConnectTimeout(1000);
-            connection.setReadTimeout(3000);
+            connection.setConnectTimeout(CONNET_TIME_OUT);
+            connection.setReadTimeout(READ_TIME_OUT);
             connection.setRequestProperty("Content-Type",
                     "application/x-www-form-urlencoded");
             connection.setRequestProperty("Accept", "application/json");
@@ -490,8 +492,8 @@ public class NetworkUtils {
             java.net.URL connURL = new java.net.URL(url);
             httpConn = (java.net.HttpURLConnection) connURL.openConnection();
             httpConn.setRequestMethod("POST");
-            httpConn.setConnectTimeout(10000);
-            httpConn.setReadTimeout(10000);
+            httpConn.setConnectTimeout(CONNET_TIME_OUT);
+            httpConn.setReadTimeout(READ_TIME_OUT);
             httpConn.setDoOutput(true);
 
             httpConn.setDoInput(true);
