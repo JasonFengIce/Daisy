@@ -15,6 +15,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
 
+import cn.ismartv.activator.utils.MD5Utils;
+
 import com.ismartv.api.t.AccessProxy;
 import com.ismartv.bean.ClipInfo;
 import com.qiyi.video.player.IVideoStateListener;
@@ -463,6 +465,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                     definition);
             mPlayer.setVideo(qiyiInfo);
         }
+        sid = MD5Utils.encryptByMD5(SimpleRestClient.sn_token+System.currentTimeMillis());
         isfinish = false;
         initQualtiyText();
     }
@@ -1604,6 +1607,38 @@ public class QiYiPlayActivity extends VodMenuAction {
         }
 
         if (id > 100) {
+        	try {
+                if (subItem != null)
+                    callaPlay
+                            .videoExit(
+                                    item.pk,
+                                    subItem.pk,
+                                    subItem.title,
+                                    clip.pk,
+                                    currQuality,
+                                    0,
+                                    "end",
+                                    currPosition,
+                                    (System.currentTimeMillis() - startDuration),
+                                    item.slug, sid, item.fromPage,
+                                    item.content_model,"qiyi");// String
+                else
+                    callaPlay
+                            .videoExit(
+                                    item.pk,
+                                    null,
+                                    item.title,
+                                    clip.pk,
+                                    currQuality,
+                                    0,
+                                    "end",
+                                    currPosition,
+                                    (System.currentTimeMillis() - startDuration),
+                                    item.slug, sid, item.fromPage,
+                                    item.content_model,"qiyi");
+            } catch (Exception e) {
+                Log.e(TAG, " log Sender videoExit end " + e.toString());
+            }
             subItemUrl = simpleRestClient.root_url + "/api/subitem/" + id + "/";
             bundle.remove("url");
             bundle.putString("url", subItemUrl);
@@ -1796,6 +1831,38 @@ public class QiYiPlayActivity extends VodMenuAction {
     private void gotoFinishPage() {
         timeTaskPause();
         checkTaskPause();
+        try {
+            if (subItem != null)
+                callaPlay
+                        .videoExit(
+                                item.pk,
+                                subItem.pk,
+                                subItem.title,
+                                clip.pk,
+                                currQuality,
+                                0,
+                                "end",
+                                currPosition,
+                                (System.currentTimeMillis() - startDuration),
+                                item.slug, sid, item.fromPage,
+                                item.content_model,"qiyi");// String
+            else
+                callaPlay
+                        .videoExit(
+                                item.pk,
+                                null,
+                                item.title,
+                                clip.pk,
+                                currQuality,
+                                0,
+                                "end",
+                                currPosition,
+                                (System.currentTimeMillis() - startDuration),
+                                item.slug, sid, item.fromPage,
+                                item.content_model,"qiyi");
+        } catch (Exception e) {
+            Log.e(TAG, " log Sender videoExit end " + e.toString());
+        }
         if (mPlayer != null) {
             if (listItems != null && listItems.size() > 0
                     && currNum < (listItems.size() - 1)) {
@@ -1823,38 +1890,6 @@ public class QiYiPlayActivity extends VodMenuAction {
                 mPlayer.releasePlayer();
                 mPlayer = null;
                 addHistory(0);
-                try {
-                    if (subItem != null)
-                        callaPlay
-                                .videoExit(
-                                        item.pk,
-                                        subItem.pk,
-                                        subItem.title,
-                                        clip.pk,
-                                        currQuality,
-                                        0,
-                                        "end",
-                                        currPosition,
-                                        (System.currentTimeMillis() - startDuration),
-                                        item.slug, sid, item.fromPage,
-                                        item.content_model,"qiyi");// String
-                    else
-                        callaPlay
-                                .videoExit(
-                                        item.pk,
-                                        null,
-                                        item.title,
-                                        clip.pk,
-                                        currQuality,
-                                        0,
-                                        "end",
-                                        currPosition,
-                                        (System.currentTimeMillis() - startDuration),
-                                        item.slug, sid, item.fromPage,
-                                        item.content_model,"qiyi");
-                } catch (Exception e) {
-                    Log.e(TAG, " log Sender videoExit end " + e.toString());
-                }
                 QiYiPlayActivity.this.finish();
             }
         }

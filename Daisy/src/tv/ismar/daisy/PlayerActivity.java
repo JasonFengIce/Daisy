@@ -70,6 +70,8 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import cn.ismartv.activator.utils.MD5Utils;
+
 import com.google.gson.JsonSyntaxException;
 import com.ismartv.api.t.AccessProxy;
 import com.ismartv.bean.ClipInfo;
@@ -178,7 +180,6 @@ public class PlayerActivity extends VodMenuAction {
         intentFilter.setPriority(119110);
         registerReceiver( saveScreenbroad , intentFilter);
 		shardpref = AccountSharedPrefs.getInstance();
-		TaskStart();
 		setView();
 
 		DisplayMetrics metric = new DisplayMetrics();
@@ -596,32 +597,6 @@ public class PlayerActivity extends VodMenuAction {
 								}
 								checkTaskStart(0);
 								timeTaskStart(0);
-								if (item.pk != item.pk) {
-									callaPlay.videoPlayLoad(
-											item.item_pk,
-											item.pk,
-											item.title,
-											clip.pk,
-											currQuality,
-											(System.currentTimeMillis() - startDuration),
-                                            speed, mediaip, sid,"bestv");
-									callaPlay.videoPlayStart(item.item_pk,
-											item.pk, item.title, clip.pk,
-											currQuality, speed,"bestv");
-								} else {
-									callaPlay.videoPlayLoad(
-											item.pk,
-											null,
-											item.title,
-											clip.pk,
-											currQuality,
-											(System.currentTimeMillis() - startDuration),
-                                            speed, mediaip, sid,"bestv");
-									callaPlay
-											.videoPlayStart(item.pk, null,
-													item.title, clip.pk,
-													currQuality, speed,"bestv");
-								}
 							}
 
 						} else {
@@ -749,6 +724,32 @@ public class PlayerActivity extends VodMenuAction {
 					bufferText.setText(BUFFERING + " " + j + "%");
 				} else if (i == SmartPlayer.MEDIA_INFO_BUFFERING_END || i == 1002 || i == 705
 						|| i == 3) {
+					if (i == 3 && !isadvideoplaying) {
+						if (item.pk != item.pk) {
+							callaPlay.videoPlayLoad(
+									item.item_pk,
+									item.pk,
+									item.title,
+									clip.pk,
+									currQuality,
+									(System.currentTimeMillis() - startDuration),
+									speed, mediaip, sid, "bestv");
+							callaPlay.videoPlayStart(item.item_pk, item.pk,
+									item.title, clip.pk, currQuality, speed,
+									"bestv");
+						} else {
+							callaPlay.videoPlayLoad(
+									item.pk,
+									null,
+									item.title,
+									clip.pk,
+									currQuality,
+									(System.currentTimeMillis() - startDuration),
+									speed, mediaip, sid, "bestv");
+							callaPlay.videoPlayStart(item.pk, null, item.title,
+									clip.pk, currQuality, speed, "bestv");
+						}
+					}
 					bufferText.setText(BUFFERING + " " + 100 + "%");
 					isBuffer = false;
 					hideBuffer();
@@ -979,7 +980,7 @@ public class PlayerActivity extends VodMenuAction {
 				// }
 				if (urls != null && mVideoView != null) {
 					// TaskStart();// cmstest.tvxio.com
-					 sid = VodUserAgent.getSid(urls[currQuality]);
+					sid = MD5Utils.encryptByMD5(SimpleRestClient.sn_token+System.currentTimeMillis());
 					 mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
 					isBuffer = true;
 					showBuffer();
@@ -997,7 +998,12 @@ public class PlayerActivity extends VodMenuAction {
 					}
 					ismedialplayerinit = false;
 				}
-
+                if (item != null)
+                    callaPlay.videoStart(item, item.pk, item.title,
+                            currQuality, null, speed, mSection, sid, "bestv");
+                else
+                    callaPlay.videoStart(item, null, item.title, currQuality,
+                            null, speed, mSection, sid, "bestv");
 			} else {
 				ExToClosePlayer("url", "m3u8 content error ,");
 			}
@@ -1030,38 +1036,8 @@ public class PlayerActivity extends VodMenuAction {
 			seekPostion = 0;
 		}
 		showPanel();
-		sid = VodUserAgent.getSid(urls[currQuality]);
 		mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
 	}
-
-	private Handler logHandler = new Handler();
-
-	private void TaskStart() {
-		logHandler.removeCallbacks(logTaskRunnable);
-		logHandler.post(logTaskRunnable);
-	}
-
-	private void timeTaskStop() {
-		logHandler.removeCallbacks(logTaskRunnable);
-	}
-
-	private Runnable logTaskRunnable = new Runnable() {
-		@Override
-		public void run() {
-			try {
-				startDuration = System.currentTimeMillis();
-				if (item != null)
-					callaPlay.videoStart(item, item.pk, item.title,
-							currQuality, null, speed, mSection, sid,"bestv");
-				else
-					callaPlay.videoStart(item, null, item.title, currQuality,
-							null, speed, mSection, sid,"bestv");
-				timeTaskStop();
-			} catch (Exception e) {
-				Log.e(TAG, " Sender log videoPlayStart " + e.toString());
-			}
-		}
-	};
 
 	private void timeTaskStart(int delay) {
 		mHandler.removeCallbacks(mUpdateTimeTask);
@@ -1190,6 +1166,42 @@ public class PlayerActivity extends VodMenuAction {
 	private void gotoFinishPage() {
 		timeTaskPause();
 		checkTaskPause();
+		 try {
+	            if (item != null)
+	                callaPlay
+	                        .videoExit(
+	                                item.item_pk,
+	                                item.pk,
+	                                item.title,
+	                                clip.pk,
+	                                currQuality,
+	                                0,
+	                                "end",
+	                                currPosition,
+	                                (System.currentTimeMillis() - startDuration) / 1000,
+	                                item.slug, sid, "list",
+	                                item.content_model, "bestv");// String
+	                // section,String
+	                // sid,String
+	                // source,String
+	                // channel
+	            else
+	                callaPlay
+	                        .videoExit(
+	                                item.pk,
+	                                null,
+	                                item.title,
+	                                clip.pk,
+	                                currQuality,
+	                                0,
+	                                "end",
+	                                currPosition,
+	                                (System.currentTimeMillis() - startDuration) / 1000,
+	                                item.slug, sid, "list",
+	                                item.content_model, "bestv");
+	        } catch (Exception e) {
+	            Log.e(TAG, " log Sender videoExit end " + e.toString());
+	        }
 		if (mVideoView != null) {
 			if (listItems != null && listItems.size() > 0
 					&& currNum < (listItems.size() - 1)) {
@@ -1230,42 +1242,6 @@ public class PlayerActivity extends VodMenuAction {
 				currPosition = 0;
 				mVideoView = null;
 				addHistory(0);
-				try {
-					if (item != null)
-						callaPlay
-								.videoExit(
-										item.item_pk,
-										item.pk,
-										item.title,
-										clip.pk,
-										currQuality,
-										0,
-										"end",
-										currPosition,
-										(System.currentTimeMillis() - startDuration),
-										item.slug, sid, "list",
-										item.content_model,"bestv");// String
-					// section,String
-					// sid,String
-					// source,String
-					// channel
-					else
-						callaPlay
-								.videoExit(
-										item.pk,
-										null,
-										item.title,
-										clip.pk,
-										currQuality,
-										0,
-										"end",
-										currPosition,
-										(System.currentTimeMillis() - startDuration),
-										item.slug, sid, "list",
-										item.content_model,"bestv");
-				} catch (Exception e) {
-					Log.e(TAG, " log Sender videoExit end " + e.toString());
-				}
 				PlayerActivity.this.finish();
 
 			}
@@ -2124,6 +2100,42 @@ public class PlayerActivity extends VodMenuAction {
 		}
 
 		if (id > 100) {
+	       	try {
+                if (item != null)
+                    callaPlay
+                            .videoExit(
+                                    item.item_pk,
+                                    item.pk,
+                                    item.title,
+                                    clip.pk,
+                                    currQuality,
+                                    0,
+                                    "end",
+                                    currPosition,
+                                    (System.currentTimeMillis() - startDuration) / 1000,
+                                    item.slug, sid, "list",
+                                    item.content_model, "bestv");// String
+                    // section,String
+                    // sid,String
+                    // source,String
+                    // channel
+                else
+                    callaPlay
+                            .videoExit(
+                                    item.pk,
+                                    null,
+                                    item.title,
+                                    clip.pk,
+                                    currQuality,
+                                    0,
+                                    "end",
+                                    currPosition,
+                                    (System.currentTimeMillis() - startDuration) / 1000,
+                                    item.slug, sid, "list",
+                                    item.content_model, "bestv");
+            } catch (Exception e) {
+                Log.e(TAG, " log Sender videoExit end " + e.toString());
+            }
 			subItemUrl = SimpleRestClient.root_url + "/api/subitem/" + id + "/";
 			bundle.remove("url");
 			bundle.putString("url", subItemUrl);
