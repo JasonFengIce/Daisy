@@ -29,6 +29,7 @@ import android.widget.*;
 import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
 import com.baidu.location.*;
+import com.baidu.mobstat.i;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import org.apache.commons.lang3.StringUtils;
@@ -60,6 +61,7 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.security.auth.PrivateCredentialPermission;
@@ -726,7 +728,19 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                         CallaPlay callaPlay = new CallaPlay();
                         callaPlay.app_exit(System.currentTimeMillis() - app_start_time, SimpleRestClient.appVersion);
                         TVGuideActivity.this.finish();
-                        System.exit(0);
+                        ArrayList<String> cache_log = tv.ismar.daisy.core.MessageQueue.getQueueList();
+                        HashSet<String> hasset_log = new HashSet<String>(); 
+						for (int i = 0; i < cache_log.size(); i++) {
+							hasset_log.add(cache_log.get(i));
+						}
+						DaisyUtils
+								.getVodApplication(TVGuideActivity.this)
+								.getEditor()
+								.putStringSet(VodApplication.CACHED_LOG,
+										hasset_log);
+						DaisyUtils.getVodApplication(getApplicationContext())
+								.save();
+						System.exit(0);
                     }
                 },
                 new MessagePopWindow.CancelListener() {

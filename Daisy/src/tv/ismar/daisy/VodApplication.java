@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.ImageCache;
 import tv.ismar.daisy.core.MessageQueue;
 import tv.ismar.daisy.core.NetworkUtils;
@@ -32,11 +33,15 @@ import tv.ismar.daisy.persistence.FavoriteManager;
 import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.persistence.LocalFavoriteManager;
 import tv.ismar.daisy.persistence.LocalHistoryManager;
+import tv.ismar.daisy.ui.activity.TVGuideActivity;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -70,6 +75,7 @@ public class VodApplication extends Application {
     private static final int CORE_POOL_SIZE = 5;
     public static String NEWEST_ENTERTAINMENT = "newestentertainment";
     public static String OPENID = "openid";
+    public static final String CACHED_LOG = "cached_log";
     private ExecutorService mExecutorService;
     // public static float rate = 1;
     /**
@@ -96,6 +102,18 @@ public class VodApplication extends Application {
         try {
             mPreferences = a.getSharedPreferences(PREFERENCE_FILE_NAME, 0);
             mEditor = mPreferences.edit();
+            Set<String> cached_log = mPreferences.getStringSet(CACHED_LOG, null);
+            mEditor.remove(CACHED_LOG).commit();
+            if (!isFinish) {
+                new Thread(mUpLoadLogRunnable).start();
+                isFinish = true;
+            }
+			if (cached_log != null) {
+				Iterator<String> it = cached_log.iterator();
+				while (it.hasNext()) {
+					MessageQueue.addQueue(it.next());
+				}
+			}
         } catch (Exception e) {
             System.out.println("load(Activity a)=" + e);
         }
