@@ -400,7 +400,7 @@ public class NetworkUtils {
             // httpConn.setRequestProperty("User-Agent",
             // "ideatv_A21/S0054.38 TD04007053");
             httpConn.setRequestProperty("User-Agent",
-                    VodUserAgent.getUserAgent(VodUserAgent.getMACAddress()));
+                    VodUserAgent.getUserAgent(SimpleRestClient.sn_token));
             httpConn.setRequestProperty("Pragma:", "no-cache");
             httpConn.setRequestProperty("Cache-Control", "no-cache");
             httpConn.setRequestProperty("Content-Encoding", "gzip");
