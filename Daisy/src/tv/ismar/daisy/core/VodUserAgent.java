@@ -40,7 +40,7 @@ public class VodUserAgent {
 	 * @return UserAgent
 	 */
 	public static String getUserAgent(String sn) {
-		String userAgent = VodUserAgent.getModelName() + "/"+ Build.VERSION.RELEASE + " " + getMACAddress().toUpperCase();
+		String userAgent = VodUserAgent.getModelName() + "/"+ Build.VERSION.RELEASE + " " + sn;
 		return userAgent;
 	}
 	public static String getHttpUserAgent(){
