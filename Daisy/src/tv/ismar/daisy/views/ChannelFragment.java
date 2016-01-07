@@ -660,6 +660,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 
     @Override
     public void onDestroyView() {
+    	super.onDestroyView();
     	if(tool != null)
     		tool.removeAsycCallback();
         if (mInitTask != null && mInitTask.getStatus() != AsyncTask.Status.FINISHED) {
@@ -686,7 +687,6 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
         mInitTask = null;
         mSectionList = null;
         mScrollableSectionList = null;
-        super.onDestroyView();
     }
 
 //	public void showDialog(int dialogType, final AsyncTask task, final Object[] params ) {
