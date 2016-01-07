@@ -37,8 +37,8 @@ public class NetworkUtils {
 
     private static final int BUFFERSIZE = 1024;
     DataCollectionTask mDataCollectionTask;
-    public static final int CONNET_TIME_OUT = 10000;
-    public static final int READ_TIME_OUT = 3000;
+    public static final int CONNET_TIME_OUT = 3000;
+    public static final int READ_TIME_OUT = 10000;
     
     public static String getJsonStr(String target, String values)
             throws ItemOfflineException, NetworkException {
