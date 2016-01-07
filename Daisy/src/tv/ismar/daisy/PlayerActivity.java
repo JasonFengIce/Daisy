@@ -661,7 +661,6 @@ public class PlayerActivity extends VodMenuAction {
 									(System.currentTimeMillis() - startDuration),
 									VodUserAgent.getMediaIp(url), item.pk,
 									adlog.get(url), "bestv");
-							startDuration = System.currentTimeMillis();
 							if (paths[paths.length - 2].equals(url)) {
 								if (mHandler.hasMessages(AD_COUNT_ACTION))
 									mHandler.removeMessages(AD_COUNT_ACTION);
@@ -981,7 +980,8 @@ public class PlayerActivity extends VodMenuAction {
 				if (urls != null && mVideoView != null) {
 					// TaskStart();// cmstest.tvxio.com
 					sid = MD5Utils.encryptByMD5(SimpleRestClient.sn_token+System.currentTimeMillis());
-					 mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
+					mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
+					startDuration = System.currentTimeMillis();
 					isBuffer = true;
 					showBuffer();
 					if (!isadvideoplaying) {
@@ -1796,7 +1796,7 @@ public class PlayerActivity extends VodMenuAction {
 					item.fromPage,
 					item.channel,
 					item.slug,
-					(System.currentTimeMillis() - startDuration),
+					(System.currentTimeMillis() - bufferDuration),
 					VodUserAgent.getMediaIp(adurl),
 					item.pk,
 					adlog.get(adurl),"bestv");							
