@@ -732,7 +732,7 @@ public class PlayerActivity extends VodMenuAction {
 									clip.pk,
 									currQuality,
 									(System.currentTimeMillis() - startDuration),
-									speed, mediaip, sid, "bestv");
+									speed, mediaip, sid,urls[currQuality], "bestv");
 							callaPlay.videoPlayStart(item.item_pk, item.pk,
 									item.title, clip.pk, currQuality, speed,sid,
 									"bestv");
@@ -744,7 +744,7 @@ public class PlayerActivity extends VodMenuAction {
 									clip.pk,
 									currQuality,
 									(System.currentTimeMillis() - startDuration),
-									speed, mediaip, sid, "bestv");
+									speed, mediaip, sid, urls[currQuality],"bestv");
 							callaPlay.videoPlayStart(item.pk, null, item.title,
 									clip.pk, currQuality, speed,sid, "bestv");
 						}
@@ -762,6 +762,16 @@ public class PlayerActivity extends VodMenuAction {
                 String spd = stringStringMap.get("TsDownLoadSpeed");
                 speed = Integer.parseInt(spd);
                 speed = speed/(1024*8);
+            }
+        });
+
+        mVideoView.setOnM3u8IpListener(new SmartPlayer.OnM3u8IpListener() {
+            
+            @Override
+            public void onM3u8TsInfo(SmartPlayer mp, String ip) {
+                // TODO Auto-generated method stub
+                Log.e("MediaCodec", "m3u8ip test ip = " + ip);
+                mediaip = ip;
             }
         });
 	}
@@ -980,7 +990,6 @@ public class PlayerActivity extends VodMenuAction {
 				if (urls != null && mVideoView != null) {
 					// TaskStart();// cmstest.tvxio.com
 					sid = MD5Utils.encryptByMD5(SimpleRestClient.sn_token+System.currentTimeMillis());
-					mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
 					startDuration = System.currentTimeMillis();
 					isBuffer = true;
 					showBuffer();
@@ -1036,7 +1045,6 @@ public class PlayerActivity extends VodMenuAction {
 			seekPostion = 0;
 		}
 		showPanel();
-		mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
 	}
 
 	private void timeTaskStart(int delay) {

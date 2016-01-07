@@ -620,7 +620,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                         clip.pk,
                         currQuality,
                         (System.currentTimeMillis() - startDuration) / 1000,
-                        0, mediaip, sid,"qiyi");
+                        0, mediaip, sid,"","qiyi");
             } else {
                 callaPlay.videoPlayLoad(
                         item.pk,
@@ -629,7 +629,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                         clip.pk,
                         currQuality,
                         (System.currentTimeMillis() - startDuration) / 1000,
-                        0, mediaip, sid,"qiyi");
+                        0, mediaip, sid,"","qiyi");
             }
             if (seekPostion > 0)
                 mPlayer.seekTo(seekPostion);

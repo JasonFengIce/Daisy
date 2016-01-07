@@ -52,7 +52,7 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 
 	// All the stuff we need for playing and showing a video
 	private SurfaceHolder mSurfaceHolder = null;
-//	private MediaPlayer mMediaPlayer = null;
+	// private MediaPlayer mMediaPlayer = null;
 	private SmartPlayer player = null;
 	private int mVideoWidth;
 	private int mVideoHeight;
@@ -63,8 +63,10 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 	private SmartPlayer.OnPreparedListener mOnPreparedListener;
 	private SmartPlayer.OnSeekCompleteListener mOnSeekCompleteListener;
 	private SmartPlayer.OnBufferingUpdateListener mOnBufferingUpdateListener;
-    private SmartPlayer.OnPreparedListenerUrl mOnPreparedListenerUrl;
-    private SmartPlayer.OnCompletionListenerUrl mOnCompletionListenerUrl;
+	private SmartPlayer.OnPreparedListenerUrl mOnPreparedListenerUrl;
+	private SmartPlayer.OnCompletionListenerUrl mOnCompletionListenerUrl;
+	private SmartPlayer.OnM3u8IpListener mOnm3u8ipListener;
+
 	private int mCurrentBufferPercentage;
 	private SmartPlayer.OnErrorListener mOnErrorListener;
 	private SmartPlayer.OnInfoListener mOnInfoListener;
@@ -170,15 +172,17 @@ public class IsmatvVideoView extends SurfaceView implements MediaPlayerControl {
 		mCurrentState = STATE_IDLE;
 		mTargetState = STATE_IDLE;
 	}
-public void setVideoPaths(String[] paths){
-	this.paths = paths;
-    mUri = Uri.parse(paths[paths.length-1]);
-    mHeaders = null;
-    mSeekWhenPrepared = 0;
-	openVideo();
-	requestLayout();
-	invalidate();
-}
+
+	public void setVideoPaths(String[] paths) {
+		this.paths = paths;
+		mUri = Uri.parse(paths[paths.length - 1]);
+		mHeaders = null;
+		mSeekWhenPrepared = 0;
+		openVideo();
+		requestLayout();
+		invalidate();
+	}
+
 	public void setVideoPath(String path) {
 		dataSource = path;
 		setVideoURI(Uri.parse(path));
@@ -216,7 +220,7 @@ public void setVideoPaths(String[] paths){
 			}
 		}
 	}
-	
+
 	public void stopPlayback() {
 		if (player != null) {
 			player.stop();
@@ -226,6 +230,7 @@ public void setVideoPaths(String[] paths){
 			mTargetState = STATE_IDLE;
 		}
 	}
+
 	private void openVideo() {
 		if (mUri == null || mSurfaceHolder == null) {
 			// not ready for playback just yet, will try again later
@@ -239,115 +244,123 @@ public void setVideoPaths(String[] paths){
 			player = new SmartPlayer();
 			player.setSn(SimpleRestClient.sn_token);
 			player.setScreenOnWhilePlaying(true);
-		//	player.setOnPreparedListener(mPreparedListener);
-            if (SystemFileUtil.isCanWriteSD())
-			   player.setSDCardisAvailable(true);
-            else
-                player.setSDCardisAvailable(false);
+			// player.setOnPreparedListener(mPreparedListener);
+			if (SystemFileUtil.isCanWriteSD())
+				player.setSDCardisAvailable(true);
+			else
+				player.setSDCardisAvailable(false);
 			player.setOnVideoSizeChangedListener(mSizeChangedListener);
 			mDuration = -1;
 			player.setOnSeekCompleteListener(mOnSeekCompleteListener);
-			//player.setOnCompletionListener(mOnCompletionListener);
+			// player.setOnCompletionListener(mOnCompletionListener);
 			player.setOnErrorListener(mOnErrorListener);
 			player.setOnInfoListener(mOnInfoListener);
 			player.setOnBufferingUpdateListener(mOnBufferingUpdateListener);
 			player.setOnTsInfoListener(mOnTsInfoListener);
+			player.setOnM3u8IpListener(mOnm3u8ipListener);
 			mCurrentBufferPercentage = 0;
-	        player.setDataSource(paths);
+			player.setDataSource(paths);
 			player.setDisplay(mSurfaceHolder);
 			player.setOnPreparedListenerUrl(new OnPreparedListenerUrl() {
 
 				@Override
 				public void onPrepared(SmartPlayer mp, String url) {
 					// TODO Auto-generated method stub
-                    mCurrentState = STATE_PREPARED;
-                    player = mp;
-                    Log.i("zhangjiqiangtest", "onPrepared state url ==" + url);
-                    // Get the capabilities of the player for this stream
-                    // Metadata data = mp.getMetadata(false,
-                    // true);
-                    Metadata data = new Metadata();
+					mCurrentState = STATE_PREPARED;
+					player = mp;
+					Log.i("zhangjiqiangtest", "onPrepared state url ==" + url);
+					// Get the capabilities of the player for this stream
+					// Metadata data = mp.getMetadata(false,
+					// true);
+					Metadata data = new Metadata();
 
-                    if (data != null) {
-                        mCanPause = !data.has(Metadata.PAUSE_AVAILABLE)
-                                || data.getBoolean(Metadata.PAUSE_AVAILABLE);
-                        mCanSeekBack = !data.has(Metadata.SEEK_BACKWARD_AVAILABLE)
-                                || data.getBoolean(Metadata.SEEK_BACKWARD_AVAILABLE);
-                        mCanSeekForward = !data.has(Metadata.SEEK_FORWARD_AVAILABLE)
-                                || data.getBoolean(Metadata.SEEK_FORWARD_AVAILABLE);
-                    } else {
-                        mCanPause = mCanSeekBack = mCanSeekForward = true;
-                    }
+					if (data != null) {
+						mCanPause = !data.has(Metadata.PAUSE_AVAILABLE)
+								|| data.getBoolean(Metadata.PAUSE_AVAILABLE);
+						mCanSeekBack = !data
+								.has(Metadata.SEEK_BACKWARD_AVAILABLE)
+								|| data.getBoolean(Metadata.SEEK_BACKWARD_AVAILABLE);
+						mCanSeekForward = !data
+								.has(Metadata.SEEK_FORWARD_AVAILABLE)
+								|| data.getBoolean(Metadata.SEEK_FORWARD_AVAILABLE);
+					} else {
+						mCanPause = mCanSeekBack = mCanSeekForward = true;
+					}
 
-                    if (mOnPreparedListenerUrl != null) {
-                        mOnPreparedListenerUrl.onPrepared(player,url);
-                    }
-//                    if (mMediaController != null) {
-//                        mMediaController.setEnabled(true);
-//                    }
-//                    mVideoWidth = mp.getVideoWidth();
-//                    mVideoHeight = mp.getVideoHeight();
-//
-//                    int seekToPosition = mSeekWhenPrepared; // mSeekWhenPrepared may be
-//                    // changed after seekTo()
-//                    // call
-//                    if (seekToPosition != 0) {
-//                        seekTo(seekToPosition);
-//                    }
-//                    if (mVideoWidth != 0 && mVideoHeight != 0) {
-//                        // Log.i("@@@@", "video size: " + mVideoWidth +"/"+
-//                        // mVideoHeight);
-//                        getHolder().setFixedSize(mVideoWidth, mVideoHeight);
-//                        if (mSurfaceWidth == mVideoWidth
-//                                && mSurfaceHeight == mVideoHeight) {
-//                            // We didn't actually change the size (it was already at the
-//                            // size
-//                            // we need), so we won't get a "surface changed" callback,
-//                            // so
-//                            // start the video here instead of in the callback.
-//                            if (mTargetState == STATE_PLAYING) {
-//                                start();
-//                                if (mMediaController != null) {
-//                                    mMediaController.show();
-//                                }
-//                            } else if (!isPlaying()
-//                                    && (seekToPosition != 0 || getCurrentPosition() > 0)) {
-//                                if (mMediaController != null) {
-//                                    // Show the media controls when we're paused into a
-//                                    // video and make 'em stick.
-//                                    mMediaController.show(0);
-//                                }
-//                            }
-//                        }
-//                    } else {
-//                        // We don't know the video size yet, but should start anyway.
-//                        // The video size might be reported to us later.
-//                        if (mTargetState == STATE_PLAYING) {
-//                            start();
-//                        }
-//                    }
+					if (mOnPreparedListenerUrl != null) {
+						mOnPreparedListenerUrl.onPrepared(player, url);
+					}
+					// if (mMediaController != null) {
+					// mMediaController.setEnabled(true);
+					// }
+					// mVideoWidth = mp.getVideoWidth();
+					// mVideoHeight = mp.getVideoHeight();
+					//
+					// int seekToPosition = mSeekWhenPrepared; //
+					// mSeekWhenPrepared may be
+					// // changed after seekTo()
+					// // call
+					// if (seekToPosition != 0) {
+					// seekTo(seekToPosition);
+					// }
+					// if (mVideoWidth != 0 && mVideoHeight != 0) {
+					// // Log.i("@@@@", "video size: " + mVideoWidth +"/"+
+					// // mVideoHeight);
+					// getHolder().setFixedSize(mVideoWidth, mVideoHeight);
+					// if (mSurfaceWidth == mVideoWidth
+					// && mSurfaceHeight == mVideoHeight) {
+					// // We didn't actually change the size (it was already at
+					// the
+					// // size
+					// // we need), so we won't get a "surface changed"
+					// callback,
+					// // so
+					// // start the video here instead of in the callback.
+					// if (mTargetState == STATE_PLAYING) {
+					// start();
+					// if (mMediaController != null) {
+					// mMediaController.show();
+					// }
+					// } else if (!isPlaying()
+					// && (seekToPosition != 0 || getCurrentPosition() > 0)) {
+					// if (mMediaController != null) {
+					// // Show the media controls when we're paused into a
+					// // video and make 'em stick.
+					// mMediaController.show(0);
+					// }
+					// }
+					// }
+					// } else {
+					// // We don't know the video size yet, but should start
+					// anyway.
+					// // The video size might be reported to us later.
+					// if (mTargetState == STATE_PLAYING) {
+					// start();
+					// }
+					// }
 				}
 			});
 
 			player.setOnCompletionListenerUrl(new OnCompletionListenerUrl() {
-				
+
 				@Override
 				public void onCompletion(SmartPlayer sp, String url) {
 					// TODO Auto-generated method stub
-                    player = sp;
-                    int currentIndex = sp.getCurrentPlayUrl();
-                    Log.i("zhangjiqiangtest","onCompletion state url index=="+currentIndex);
-					//int index = findVideoUrlIndex(url);
-                    if(mOnCompletionListenerUrl!=null){
-                        mOnCompletionListenerUrl.onCompletion(sp,url);
-                    }
-//                    if(paths.length == 1)
-//                    	return;
+					player = sp;
+					int currentIndex = sp.getCurrentPlayUrl();
+					Log.i("zhangjiqiangtest", "onCompletion state url index=="
+							+ currentIndex);
+					// int index = findVideoUrlIndex(url);
+					if (mOnCompletionListenerUrl != null) {
+						mOnCompletionListenerUrl.onCompletion(sp, url);
+					}
+					// if(paths.length == 1)
+					// return;
 
-					if (currentIndex >= 0 && currentIndex<paths.length-1) {        //如果当前播放的为第一个影片的话，则准备播放第二个影片。
+					if (currentIndex >= 0 && currentIndex < paths.length - 1) { // 如果当前播放的为第一个影片的话，则准备播放第二个影片。
 						try {
 							currentIndex++;
-							sp.playUrl(currentIndex);                               //准备播放第二个影片，传入参数为1，第二个影片在数组中的下标。
+							sp.playUrl(currentIndex); // 准备播放第二个影片，传入参数为1，第二个影片在数组中的下标。
 						} catch (IllegalArgumentException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -357,13 +370,13 @@ public void setVideoPaths(String[] paths){
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
-                            try {
-                                sp.playUrl(currentIndex);
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
+							try {
+								sp.playUrl(currentIndex);
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
 
-                        }
+						}
 					}
 				}
 			});
@@ -372,33 +385,33 @@ public void setVideoPaths(String[] paths){
 			player.prepareAsync();
 			mCurrentState = STATE_PREPARING;
 			attachMediaController();
-		}catch (IllegalArgumentException ex) {
+		} catch (IllegalArgumentException ex) {
 			Log.w(TAG, "Unable to open content: " + mUri, ex);
 			mCurrentState = STATE_ERROR;
 			mTargetState = STATE_ERROR;
-			mErrorListener.onError(player,
-					MediaPlayer.MEDIA_ERROR_UNKNOWN, 0);
+			mErrorListener.onError(player, MediaPlayer.MEDIA_ERROR_UNKNOWN, 0);
 			return;
 		} catch (Exception ex) {
 			Log.w(TAG, "Unable to open content: " + mUri, ex);
 			mCurrentState = STATE_ERROR;
 			mTargetState = STATE_ERROR;
-			mErrorListener.onError(player,
-					MediaPlayer.MEDIA_ERROR_UNKNOWN, 0);
+			mErrorListener.onError(player, MediaPlayer.MEDIA_ERROR_UNKNOWN, 0);
 			return;
-		} 
-	}
-private int findVideoUrlIndex(String url){
-	int index = -1;
-	int size = paths.length;
-	for(int i=0;i<size;i++){
-		if(url.equals(paths[i])){
-			index = i;
-			break;
 		}
 	}
-	return index;
-}
+
+	private int findVideoUrlIndex(String url) {
+		int index = -1;
+		int size = paths.length;
+		for (int i = 0; i < size; i++) {
+			if (url.equals(paths[i])) {
+				index = i;
+				break;
+			}
+		}
+		return index;
+	}
+
 	public void setMediaController(MediaController controller) {
 		if (mMediaController != null) {
 			mMediaController.hide();
@@ -416,6 +429,7 @@ private int findVideoUrlIndex(String url){
 			mMediaController.setEnabled(isInPlaybackState());
 		}
 	}
+
 	SmartPlayer.OnPreparedListener mPreparedListener = new SmartPlayer.OnPreparedListener() {
 		public void onPrepared(SmartPlayer mp) {
 			mCurrentState = STATE_PREPARED;
@@ -497,8 +511,7 @@ private int findVideoUrlIndex(String url){
 
 			/* If an error handler has been supplied, use it and finish. */
 			if (mOnErrorListener != null) {
-				if (mOnErrorListener.onError(player, framework_err,
-						impl_err)) {
+				if (mOnErrorListener.onError(player, framework_err, impl_err)) {
 					return true;
 				}
 			}
@@ -539,7 +552,7 @@ private int findVideoUrlIndex(String url){
 			return true;
 		}
 	};
-	
+
 	SmartPlayer.OnVideoSizeChangedListener mSizeChangedListener = new SmartPlayer.OnVideoSizeChangedListener() {
 		public void onVideoSizeChanged(SmartPlayer mp, int width, int height) {
 			mVideoWidth = mp.getVideoWidth();
@@ -592,16 +605,17 @@ private int findVideoUrlIndex(String url){
 	 * @param l
 	 *            The callback that will be run
 	 */
-	
+
 	public void setOnSeekCompleteListener(SmartPlayer.OnSeekCompleteListener l) {
 		mOnSeekCompleteListener = l;
 	}
 
-	public void setOnBufferingUpdateListener(SmartPlayer.OnBufferingUpdateListener l){
-		mOnBufferingUpdateListener =l;
+	public void setOnBufferingUpdateListener(
+			SmartPlayer.OnBufferingUpdateListener l) {
+		mOnBufferingUpdateListener = l;
 	}
 
-	public void setOnTsInfoListener(SmartPlayer.OnTsInfoListener l){
+	public void setOnTsInfoListener(SmartPlayer.OnTsInfoListener l) {
 		mOnTsInfoListener = l;
 	}
 
@@ -609,12 +623,18 @@ private int findVideoUrlIndex(String url){
 		mOnInfoListener = l;
 	}
 
-    public void setOnPreparedListenerUrl(OnPreparedListenerUrl l){
-        this.mOnPreparedListenerUrl = l;
-    }
-    public void setOnCompletionListenerUrl(OnCompletionListenerUrl l){
-        this.mOnCompletionListenerUrl = l;
-    }
+	public void setOnPreparedListenerUrl(OnPreparedListenerUrl l) {
+		this.mOnPreparedListenerUrl = l;
+	}
+
+	public void setOnCompletionListenerUrl(OnCompletionListenerUrl l) {
+		this.mOnCompletionListenerUrl = l;
+	}
+
+	public void setOnM3u8IpListener(SmartPlayer.OnM3u8IpListener l) {
+		mOnm3u8ipListener = l;
+	}
+
 	SurfaceHolder.Callback mSHCallback = new SurfaceHolder.Callback() {
 		public void surfaceChanged(SurfaceHolder holder, int format, int w,
 				int h) {
@@ -773,7 +793,7 @@ private int findVideoUrlIndex(String url){
 
 	public void seekTo(final int msec) {
 		if (isInPlaybackState()) {
-			new Thread(){
+			new Thread() {
 				@Override
 				public void run() {
 					super.run();

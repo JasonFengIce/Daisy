@@ -64,7 +64,7 @@ public class CallaPlay {
      * @return HashMap<String,Object>
      */
     public HashMap<String, Object> videoPlayLoad(Integer item, Integer subitem, String title, Integer clip, Integer quality,
-                                                 long duration, Integer speed, String mediaip, String sid,String playerflag) {
+                                                 long duration, Integer speed, String mediaip, String sid,String playerurl,String playerflag) {
 
         HashMap<String, Object> tempMap = new HashMap<String, Object>();
         tempMap.put(EventProperty.ITEM, item);
@@ -77,6 +77,7 @@ public class CallaPlay {
         tempMap.put("speed", speed + "KByte/s");
         tempMap.put(EventProperty.MEDIAIP, mediaip);
         tempMap.put(EventProperty.SID, sid);
+        tempMap.put("play_url", playerurl);
         tempMap.put(EventProperty.PLAYER_FLAG, playerflag);
         eventName = NetworkUtils.VIDEO_PLAY_LOAD;
         properties = tempMap;
