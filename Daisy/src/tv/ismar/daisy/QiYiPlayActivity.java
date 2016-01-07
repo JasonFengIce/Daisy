@@ -265,6 +265,10 @@ public class QiYiPlayActivity extends VodMenuAction {
                 this);
         bundle = getIntent().getExtras();
         item = (Item) bundle.get("item");
+		section = item.section;
+		channel = item.channel;
+		slug =  item.slug;
+		fromPage = item.fromPage;
         clip = item.clip;
         live_video = item.live_video;
         titleText.setText(item.title);
