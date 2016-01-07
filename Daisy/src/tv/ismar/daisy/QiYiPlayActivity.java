@@ -304,6 +304,10 @@ public class QiYiPlayActivity extends VodMenuAction {
                         itemUrl = SimpleRestClient.root_url + "/api/item/"
                                 + item.item_pk + "/";
                         item = simpleRestClient.getItem(itemUrl);
+                        item.channel = channel;
+                        item.section = section;
+                        item.slug = slug;
+                        item.fromPage = fromPage;
                         if (item != null && item.subitems != null) {
                             listItems = new ArrayList<Item>();
                             for (int i = 0; i < item.subitems.length; i++) {
@@ -1628,38 +1632,6 @@ public class QiYiPlayActivity extends VodMenuAction {
             tempOffset = 0;
             addHistory(currPosition);
             mPlayer.stop();
-            try {
-                if (subItem != null)
-                    callaPlay
-                            .videoExit(
-                                    item.pk,
-                                    subItem.pk,
-                                    item.title,
-                                    clip.pk,
-                                    currQuality,
-                                    0,
-                                    "end",
-                                    currPosition,
-                                    (System.currentTimeMillis() - startDuration) / 1000,
-                                    item.slug, sid, item.fromPage,
-                                    item.content_model,"qiyi");// String
-                else
-                    callaPlay
-                            .videoExit(
-                                    item.pk,
-                                    null,
-                                    item.title,
-                                    clip.pk,
-                                    currQuality,
-                                    0,
-                                    "end",
-                                    currPosition,
-                                    (System.currentTimeMillis() - startDuration) / 1000,
-                                    item.slug, sid, item.fromPage,
-                                    item.content_model,"qiyi");
-            } catch (Exception e) {
-                Log.e(TAG, " log Sender videoExit end " + e.toString());
-            }
             isBuffer = true;
             showBuffer();
             new ItemByUrlTask().execute();
