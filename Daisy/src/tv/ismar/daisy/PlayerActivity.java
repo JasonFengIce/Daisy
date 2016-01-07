@@ -735,7 +735,7 @@ public class PlayerActivity extends VodMenuAction {
 									(System.currentTimeMillis() - startDuration),
 									speed, mediaip, sid, "bestv");
 							callaPlay.videoPlayStart(item.item_pk, item.pk,
-									item.title, clip.pk, currQuality, speed,
+									item.title, clip.pk, currQuality, speed,sid,
 									"bestv");
 						} else {
 							callaPlay.videoPlayLoad(
@@ -747,7 +747,7 @@ public class PlayerActivity extends VodMenuAction {
 									(System.currentTimeMillis() - startDuration),
 									speed, mediaip, sid, "bestv");
 							callaPlay.videoPlayStart(item.pk, null, item.title,
-									clip.pk, currQuality, speed, "bestv");
+									clip.pk, currQuality, speed,sid, "bestv");
 						}
 					}
 					bufferText.setText(BUFFERING + " " + 100 + "%");

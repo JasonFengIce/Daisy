@@ -153,7 +153,6 @@ public class QiYiPlayActivity extends VodMenuAction {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         shardpref = AccountSharedPrefs.getInstance();
         setContentView(R.layout.vod_player);
-        TaskStart();
     }
 
     public void initView() {
@@ -349,6 +348,10 @@ public class QiYiPlayActivity extends VodMenuAction {
                     subItem = simpleRestClient.getItem((String) obj);
                     currNum = subItem.position;
                     if (subItem != null) {
+						subItem.channel = channel;
+						subItem.section = section;
+						subItem.slug = slug;
+						subItem.fromPage = fromPage;
                         clip = subItem.clip;
                         urlInfo = AccessProxy.parse(SimpleRestClient.root_url
                                         + "/api/clip/" + clip.pk + "/",
@@ -466,6 +469,13 @@ public class QiYiPlayActivity extends VodMenuAction {
             mPlayer.setVideo(qiyiInfo);
         }
         sid = MD5Utils.encryptByMD5(SimpleRestClient.sn_token+System.currentTimeMillis());
+        startDuration = System.currentTimeMillis();
+        if (subItem != null)
+            callaPlay.videoStart(item, subItem.pk, subItem.title,
+                    currQuality, null, 0, mSection, sid,"qiyi");
+        else
+            callaPlay.videoStart(item, null, item.title, currQuality,
+                    null, 0, mSection, sid,"qiyi");
         isfinish = false;
         initQualtiyText();
     }
@@ -484,8 +494,8 @@ public class QiYiPlayActivity extends VodMenuAction {
 
         @Override
         public void onBitStreamListReady(final List<Definition> definitionList) {
-        	if(mPlayer == null)
-        		return;
+			if (mPlayer == null)
+				return;
             mBitStreamList = definitionList;
             for (Definition d : definitionList) {
                 if (d.equals(Definition.DEFINITON_HIGH)) {
@@ -503,8 +513,8 @@ public class QiYiPlayActivity extends VodMenuAction {
 
         @Override
         public void onBufferEnd() {
-            if (mPlayer == null)
-                return;
+			if (mPlayer == null)
+				return;
             if (!mPlayer.isPlaying())
                 mPlayer.start();
             isBuffer = false;
@@ -514,8 +524,8 @@ public class QiYiPlayActivity extends VodMenuAction {
 
         @Override
         public void onBufferStart() {
-        	if(mPlayer == null)
-        		return;
+			if (mPlayer == null)
+				return;
             isBuffer = true;
             showBuffer();
         }
@@ -526,50 +536,32 @@ public class QiYiPlayActivity extends VodMenuAction {
 
         @Override
         public void onMovieComplete() {
-        	if(mPlayer == null)
-        		return;
+			if (mPlayer == null)
+				return;
             gotoFinishPage();
         }
 
         @Override
         public void onMoviePause() {
-        	if(mPlayer == null)
-        		return;
         }
 
         @Override
         public void onMovieStart() {
-            if(mPlayer==null){
-                return;
-            }
+			if (mPlayer == null)
+				return;
             clipLength = mPlayer.getDuration();
             // if(currPosition >0)
             // mPlayer.seekTo(currPosition);
-            if (item.pk != item.pk) {
-                callaPlay.videoPlayLoad(
-                        item.item_pk,
-                        item.pk,
-                        item.title,
-                        clip.pk,
-                        currQuality,
-                        (System.currentTimeMillis() - startDuration),
-                        0, mediaip, sid,"qiyi");
-                callaPlay.videoPlayStart(item.item_pk,
-                        item.pk, item.title, clip.pk,
-                        currQuality, 0,"qiyi");
+            if (subItem != null) {
+                callaPlay
+                .videoPlayStart(item.pk, subItem.pk,
+                		subItem.title, clip.pk,
+                        currQuality, 0,sid,"qiyi");
             } else {
-                callaPlay.videoPlayLoad(
-                        item.pk,
-                        null,
-                        item.title,
-                        clip.pk,
-                        currQuality,
-                        (System.currentTimeMillis() - startDuration),
-                        0, mediaip, sid,"qiyi");
                 callaPlay
                         .videoPlayStart(item.pk, null,
                                 item.title, clip.pk,
-                                currQuality, 0,"qiyi");
+                                currQuality, 0,sid,"qiyi");
             }
             showPanel();
             timeTaskStart(500);
@@ -581,14 +573,12 @@ public class QiYiPlayActivity extends VodMenuAction {
 
         @Override
         public void onMovieStop() {
-        	if(mPlayer == null)
-        		return;
         }
 
         @Override
         public void onPlaybackBitStreamSelected(final Definition definition) {
-        	if(mPlayer == null)
-        		return;
+			if (mPlayer == null)
+				return;
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -610,10 +600,29 @@ public class QiYiPlayActivity extends VodMenuAction {
 
         @Override
         public void onPrepared() {
-        	if(mPlayer == null)
-        		return;
-        	clipLength = mPlayer.getDuration();
+			if (mPlayer == null)
+				return;
+			clipLength = mPlayer.getDuration();
             timeBar.setMax(clipLength);
+            if (subItem != null) {
+                callaPlay.videoPlayLoad(
+                        item.pk,
+                        subItem.pk,
+                        subItem.title,
+                        clip.pk,
+                        currQuality,
+                        (System.currentTimeMillis() - startDuration) / 1000,
+                        0, mediaip, sid,"qiyi");
+            } else {
+                callaPlay.videoPlayLoad(
+                        item.pk,
+                        null,
+                        item.title,
+                        clip.pk,
+                        currQuality,
+                        (System.currentTimeMillis() - startDuration) / 1000,
+                        0, mediaip, sid,"qiyi");
+            }
             if (seekPostion > 0)
                 mPlayer.seekTo(seekPostion);
             else
@@ -622,8 +631,8 @@ public class QiYiPlayActivity extends VodMenuAction {
 
         @Override
         public void onSeekComplete() {
-        	if(mPlayer == null)
-        		return;
+			if (mPlayer == null)
+				return;
             if (!mPlayer.isPlaying())
                 mPlayer.start();
             isBuffer = false;
@@ -637,6 +646,8 @@ public class QiYiPlayActivity extends VodMenuAction {
 
         @Override
         public boolean onError(IPlaybackInfo arg0, ISdkError arg1) {
+			if (mPlayer == null)
+				return false;
             addHistory(currPosition);
             ExToClosePlayer("error",
                     arg0.getDefinition() + " " + arg1.getMsgFromError());
@@ -652,7 +663,6 @@ public class QiYiPlayActivity extends VodMenuAction {
         }
 
     };
-
     private boolean isVodMenuVisible() {
         if (menu == null) {
             return false;
@@ -735,34 +745,6 @@ public class QiYiPlayActivity extends VodMenuAction {
                 Log.e(TAG, " Sender log videoPlayBlockend " + e.toString());
             }
         }
-    }
-
-    private Runnable logTaskRunnable = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                startDuration = System.currentTimeMillis();
-                if (item != null)
-                    callaPlay.videoStart(item, item.pk, item.title,
-                            currQuality, null, 0, mSection, sid,"qiyi");
-                else
-                    callaPlay.videoStart(item, null, item.title, currQuality,
-                            null, 0, mSection, sid,"qiyi");
-                timeTaskStop();
-            } catch (Exception e) {
-                Log.e(TAG, " Sender log videoPlayStart " + e.toString());
-            }
-        }
-    };
-    private Handler logHandler = new Handler();
-
-    private void TaskStart() {
-        logHandler.removeCallbacks(logTaskRunnable);
-        logHandler.post(logTaskRunnable);
-    }
-
-    private void timeTaskStop() {
-        logHandler.removeCallbacks(logTaskRunnable);
     }
 
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
@@ -1646,6 +1628,38 @@ public class QiYiPlayActivity extends VodMenuAction {
             tempOffset = 0;
             addHistory(currPosition);
             mPlayer.stop();
+            try {
+                if (subItem != null)
+                    callaPlay
+                            .videoExit(
+                                    item.pk,
+                                    subItem.pk,
+                                    item.title,
+                                    clip.pk,
+                                    currQuality,
+                                    0,
+                                    "end",
+                                    currPosition,
+                                    (System.currentTimeMillis() - startDuration) / 1000,
+                                    item.slug, sid, item.fromPage,
+                                    item.content_model,"qiyi");// String
+                else
+                    callaPlay
+                            .videoExit(
+                                    item.pk,
+                                    null,
+                                    item.title,
+                                    clip.pk,
+                                    currQuality,
+                                    0,
+                                    "end",
+                                    currPosition,
+                                    (System.currentTimeMillis() - startDuration) / 1000,
+                                    item.slug, sid, item.fromPage,
+                                    item.content_model,"qiyi");
+            } catch (Exception e) {
+                Log.e(TAG, " log Sender videoExit end " + e.toString());
+            }
             isBuffer = true;
             showBuffer();
             new ItemByUrlTask().execute();

@@ -99,7 +99,7 @@ public class CallaPlay {
      * @return HashMap<String,Object>
      */
 
-    public HashMap<String, Object> videoPlayStart(Integer item, Integer subitem, String title, Integer clip, Integer quality, Integer speed,String playerflag) {
+    public HashMap<String, Object> videoPlayStart(Integer item, Integer subitem, String title, Integer clip, Integer quality, Integer speed,String sid,String playerflag) {
 
         HashMap<String, Object> tempMap = new HashMap<String, Object>();
         tempMap.put(EventProperty.ITEM, item);
@@ -110,6 +110,7 @@ public class CallaPlay {
         tempMap.put(EventProperty.QUALITY, switchQuality(quality));
         //tempMap.put("speed", speed);
         tempMap.put("speed", speed + "KByte/s");
+        tempMap.put(EventProperty.SID, sid);
         tempMap.put(EventProperty.PLAYER_FLAG, playerflag);
         eventName = NetworkUtils.VIDEO_PLAY_START;
         properties = tempMap;
