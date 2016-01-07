@@ -612,12 +612,12 @@ public class PlayerActivity extends VodMenuAction {
 									item.fromPage,
 									item.channel,
 									item.slug,
-									(System.currentTimeMillis() - startDuration),
+									(System.currentTimeMillis() - bufferDuration),
 									VodUserAgent.getMediaIp(url),
 									item.pk,
 									adlog.get(url),"bestv");
 						}
-
+						bufferDuration = System.currentTimeMillis();
 					}
 				});
 		mVideoView
@@ -658,7 +658,7 @@ public class PlayerActivity extends VodMenuAction {
 									item.fromPage,
 									item.channel,
 									item.slug,
-									(System.currentTimeMillis() - startDuration),
+									(System.currentTimeMillis() - bufferDuration),
 									VodUserAgent.getMediaIp(url), item.pk,
 									adlog.get(url), "bestv");
 							if (paths[paths.length - 2].equals(url)) {

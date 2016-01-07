@@ -250,7 +250,7 @@ public class CallaPlay {
         tempMap.put(EventProperty.QUALITY, switchQuality(quality));
         //tempMap.put("speed", speed);
         tempMap.put("speed", speed + "KByte/s");
-        tempMap.put(EventProperty.DURATION, duration);
+        tempMap.put(EventProperty.DURATION, duration / 1000);
         tempMap.put(EventProperty.POSITION, position / 1000);
         tempMap.put(EventProperty.MEDIAIP, mediaip);
         tempMap.put(EventProperty.SID, sid);
