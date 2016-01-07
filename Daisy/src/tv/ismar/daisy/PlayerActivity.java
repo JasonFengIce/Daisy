@@ -1178,7 +1178,7 @@ public class PlayerActivity extends VodMenuAction {
 	                                0,
 	                                "end",
 	                                currPosition,
-	                                (System.currentTimeMillis() - startDuration) / 1000,
+	                                (System.currentTimeMillis() - startDuration),
 	                                item.slug, sid, "list",
 	                                item.content_model, "bestv");// String
 	                // section,String
@@ -1196,7 +1196,7 @@ public class PlayerActivity extends VodMenuAction {
 	                                0,
 	                                "end",
 	                                currPosition,
-	                                (System.currentTimeMillis() - startDuration) / 1000,
+	                                (System.currentTimeMillis() - startDuration),
 	                                item.slug, sid, "list",
 	                                item.content_model, "bestv");
 	        } catch (Exception e) {
@@ -1780,10 +1780,10 @@ public class PlayerActivity extends VodMenuAction {
 	}
 
 	protected void showBuffer() {
+		bufferDuration = System.currentTimeMillis();
 		if (adElement != null && !adElement.isEmpty())
 			return;
 			bufferLayout.setVisibility(View.VISIBLE);
-			bufferDuration = System.currentTimeMillis();
 	}
 
 	protected void hideBuffer() {
@@ -2116,7 +2116,7 @@ public class PlayerActivity extends VodMenuAction {
                                     0,
                                     "end",
                                     currPosition,
-                                    (System.currentTimeMillis() - startDuration) / 1000,
+                                    (System.currentTimeMillis() - startDuration),
                                     item.slug, sid, "list",
                                     item.content_model, "bestv");// String
                     // section,String
@@ -2134,7 +2134,7 @@ public class PlayerActivity extends VodMenuAction {
                                     0,
                                     "end",
                                     currPosition,
-                                    (System.currentTimeMillis() - startDuration) / 1000,
+                                    (System.currentTimeMillis() - startDuration),
                                     item.slug, sid, "list",
                                     item.content_model, "bestv");
             } catch (Exception e) {

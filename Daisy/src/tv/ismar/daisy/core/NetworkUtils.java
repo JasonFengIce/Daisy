@@ -619,7 +619,7 @@ public class NetworkUtils {
             // return
             // Base64.encodeToString(date.getBytes("UTF-8"),Base64.NO_PADDING|Base64.NO_WRAP);
             return Base64
-                    .encodeToString(date.getBytes("UTF-8"), Base64.DEFAULT);
+                    .encodeToString(date.getBytes("UTF-8"), Base64.URL_SAFE);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return null;
