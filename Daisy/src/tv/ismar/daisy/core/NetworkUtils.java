@@ -505,7 +505,7 @@ public class NetworkUtils {
             // httpConn.setRequestProperty("User-Agent",
             // "ideatv_A21/S0054.38 TD04007053");
             httpConn.setRequestProperty("User-Agent",
-                    VodUserAgent.getUserAgent(VodUserAgent.getMACAddress()));
+                    VodUserAgent.getHttpUserAgent());
             httpConn.setRequestProperty("Pragma:", "no-cache");
             httpConn.setRequestProperty("Cache-Control", "no-cache");
             // boolean isSupport = isSupportGzip();

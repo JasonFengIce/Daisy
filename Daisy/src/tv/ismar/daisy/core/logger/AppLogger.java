@@ -44,7 +44,7 @@ public class AppLogger {
         String deviceToken = accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.DEVICE_TOKEN);
         String accessToken = accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.ACESS_TOKEN);
         String modelName = HardwareUtils.getModelName();
-        String userAgent = VodUserAgent.getUserAgent(VodUserAgent.getMACAddress());
+        String userAgent = VodUserAgent.getHttpUserAgent();
         String contentEncoding = "gzip";
 
         Retrofit retrofit = buildRetrofit();

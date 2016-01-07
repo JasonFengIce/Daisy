@@ -34,18 +34,14 @@ public class VodUserAgent {
 		return mac;
 	}
 	/**
-	 * getUserAgent
+	 * getHttpUserAgent
 	 * 
-	 * @param sn
 	 * @return UserAgent
 	 */
-	public static String getUserAgent(String sn) {
-		String userAgent = VodUserAgent.getModelName() + "/"+ Build.VERSION.RELEASE + " " + sn;
-		return userAgent;
-	}
+
 	public static String getHttpUserAgent(){
 		String userAgent = "";
-		userAgent = VodUserAgent.getModelName() + "/" + SimpleRestClient.appVersion + " " + sn;
+		userAgent = VodUserAgent.getModelName() + "/" + SimpleRestClient.appVersion + " " + SimpleRestClient.sn_token;
 		return userAgent;
 	}
 
