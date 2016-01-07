@@ -762,6 +762,7 @@ public class PlayerActivity extends VodMenuAction {
                 String spd = stringStringMap.get("TsDownLoadSpeed");
                 speed = Integer.parseInt(spd);
                 speed = speed/(1024*8);
+                mediaip = stringStringMap.get(SmartPlayer.DownLoadTsInfo.TsIpAddr);
             }
         });
 
@@ -2079,7 +2080,6 @@ public class PlayerActivity extends VodMenuAction {
 					// mVideoView.setVideoPath(urls[currQuality]);
 					historyManager.addOrUpdateQuality(new Quality(0,
 							urls[currQuality], currQuality));
-					mediaip = VodUserAgent.getMediaIp(urls[currQuality]);
 					if (item.pk != item.item_pk)
 						callaPlay.videoSwitchStream(item.item_pk, item.pk,
 								item.title, clip.pk, currQuality, "manual",
