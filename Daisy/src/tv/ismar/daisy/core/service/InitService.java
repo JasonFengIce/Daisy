@@ -121,9 +121,12 @@ public class InitService extends Service implements Activator.OnComplete {
     /*
      * 注销网络监听
      */
-    private void unregisterNetStateReceiver() {
-        unregisterReceiver(mConnectivityReceiver);
-    }
+	private void unregisterNetStateReceiver() {
+		try {
+			unregisterReceiver(mConnectivityReceiver);
+		} catch (java.lang.IllegalArgumentException e) {
+		}
+	}
 
     public class ConnectionChangeReceiver extends BroadcastReceiver {
         @Override
