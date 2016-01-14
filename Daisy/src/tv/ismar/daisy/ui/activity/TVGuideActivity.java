@@ -141,6 +141,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     private FragmentSwitchHandler fragmentSwitch;
     private BitmapDecoder bitmapDecoder;
+    private Handler netErrorPopupHandler;
+    private Runnable netErrorPopupRunnable;
 
     private enum LeavePosition {
         LeftTop,
@@ -808,18 +810,19 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         Log.e(TAG, "active error: " + erro);
         fetchChannels();
         if (StringUtils.isEmpty(SimpleRestClient.sn_token)) {
-            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            netErrorPopupHandler = new Handler(Looper.getMainLooper());
+            netErrorPopupRunnable = new Runnable() {
                 @Override
                 public void run() {
                     showNetErrorPopup();
                 }
-            }, 2000);
+            };
+            netErrorPopupHandler.postDelayed(netErrorPopupRunnable, 2000);
         }
     }
 
     private void showNetErrorPopup() {
-        final MessageDialogFragment dialog = new MessageDialogFragment(
-                TVGuideActivity.this, getString(R.string.fetch_net_data_error), null);
+        final MessageDialogFragment dialog = new MessageDialogFragment(TVGuideActivity.this, getString(R.string.fetch_net_data_error), null);
         dialog.setButtonText(getString(R.string.setting_network), getString(R.string.i_know));
         try {
             dialog.showAtLocation(contentView, Gravity.CENTER,
@@ -1252,6 +1255,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     @Override
     protected void onPause() {
         super.onPause();
+        if (netErrorPopupHandler != null && netErrorPopupRunnable != null) {
+            netErrorPopupHandler.removeCallbacks(netErrorPopupRunnable);
+        }
         if (fragmentSwitch.hasMessages(SWITCH_PAGE))
             fragmentSwitch.removeMessages(SWITCH_PAGE);
     }
