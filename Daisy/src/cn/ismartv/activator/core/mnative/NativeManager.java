@@ -2,10 +2,11 @@ package cn.ismartv.activator.core.mnative;
 
 import android.util.Base64;
 import android.util.Log;
-import cn.ismartv.activator.core.rsa.SkyAESTool2;
 
 import java.io.File;
 import java.io.FileInputStream;
+
+import cn.ismartv.activator.core.rsa.SkyAESTool2;
 
 /**
  * Created by huaijie on 14-10-17.
@@ -17,11 +18,15 @@ public class NativeManager {
         System.loadLibrary("activator");
     }
 
+    public interface DecryptCallback {
+        void onFailure();
+    }
+
     public native String AESdecrypt(String key, byte[] content);
 
     public native String encrypt(String key, String content);
 
-    public String decrypt(String key, String ContentPath) {
+    public String decrypt(String key, String ContentPath, DecryptCallback callback) {
         File file = new File(ContentPath);
         if (file.exists()) {
             try {
@@ -34,7 +39,8 @@ public class NativeManager {
             } catch (Exception e) {
                 file.delete();
                 Log.e(TAG, "NativeManager decrypt Exception");
-                return "error"; 
+                callback.onFailure();
+                return "error";
             }
         }
         return "";

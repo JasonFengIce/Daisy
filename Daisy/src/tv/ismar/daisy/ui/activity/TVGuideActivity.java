@@ -11,7 +11,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.*;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -25,15 +29,33 @@ import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
-import android.widget.*;
-import cn.ismartv.activator.Activator;
-import cn.ismartv.activator.data.Result;
-import com.baidu.location.*;
-import com.baidu.mobstat.i;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
+
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.GeofenceClient;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
+
 import org.apache.commons.lang3.StringUtils;
 import org.sakuratya.horizontal.ui.HGridView;
+
+import java.io.InputStream;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+
+import cn.ismartv.activator.Activator;
+import cn.ismartv.activator.data.Result;
 import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
@@ -51,22 +73,19 @@ import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
 import tv.ismar.daisy.ui.Position;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
-import tv.ismar.daisy.ui.fragment.launcher.*;
+import tv.ismar.daisy.ui.fragment.launcher.ChildFragment;
+import tv.ismar.daisy.ui.fragment.launcher.EntertainmentFragment;
+import tv.ismar.daisy.ui.fragment.launcher.FilmFragment;
+import tv.ismar.daisy.ui.fragment.launcher.GuideFragment;
+import tv.ismar.daisy.ui.fragment.launcher.SportFragment;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
 import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
 import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.sakura.ui.widget.MessagePopWindow;
 
-import java.io.InputStream;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-
-import javax.security.auth.PrivateCredentialPermission;
-
-import static tv.ismar.daisy.VodApplication.*;
+import static tv.ismar.daisy.VodApplication.LOCATION_CITY;
+import static tv.ismar.daisy.VodApplication.LOCATION_DISTRICT;
+import static tv.ismar.daisy.VodApplication.LOCATION_PROVINCE;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -268,8 +287,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-    	if(savedInstanceState != null)
-    		savedInstanceState =null;
+        if (savedInstanceState != null)
+            savedInstanceState = null;
         super.onCreate(savedInstanceState);
         fragmentSwitch = new FragmentSwitchHandler(this);
         activityTag = "BaseActivity";
@@ -422,7 +441,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                         currentFragment = new GuideFragment();
                         FragmentTransaction transaction = getSupportFragmentManager()
                                 .beginTransaction();
-                        transaction.replace(R.id.container, currentFragment,"template").commitAllowingStateLoss();
+                        transaction.replace(R.id.container, currentFragment, "template").commitAllowingStateLoss();
                     } catch (IllegalStateException e) {
                     }
 
@@ -729,18 +748,18 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                         callaPlay.app_exit(System.currentTimeMillis() - app_start_time, SimpleRestClient.appVersion);
                         TVGuideActivity.this.finish();
                         ArrayList<String> cache_log = tv.ismar.daisy.core.MessageQueue.getQueueList();
-                        HashSet<String> hasset_log = new HashSet<String>(); 
-						for (int i = 0; i < cache_log.size(); i++) {
-							hasset_log.add(cache_log.get(i));
-						}
-						DaisyUtils
-								.getVodApplication(TVGuideActivity.this)
-								.getEditor()
-								.putStringSet(VodApplication.CACHED_LOG,
-										hasset_log);
-						DaisyUtils.getVodApplication(getApplicationContext())
-								.save();
-						System.exit(0);
+                        HashSet<String> hasset_log = new HashSet<String>();
+                        for (int i = 0; i < cache_log.size(); i++) {
+                            hasset_log.add(cache_log.get(i));
+                        }
+                        DaisyUtils
+                                .getVodApplication(TVGuideActivity.this)
+                                .getEditor()
+                                .putStringSet(VodApplication.CACHED_LOG,
+                                        hasset_log);
+                        DaisyUtils.getVodApplication(getApplicationContext())
+                                .save();
+                        System.exit(0);
                     }
                 },
                 new MessagePopWindow.CancelListener() {
@@ -780,8 +799,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.DEVICE_TOKEN, result.getDevice_token());
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.SN_TOKEN, result.getSn_Token());
 
-        accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.PACKAGE_INFO, result.getPackageInfo());
-        accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.EXPIRY_DATE, result.getExpiry_date());
 
     }
 
@@ -790,14 +807,14 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     public void onFailed(String erro) {
         Log.e(TAG, "active error: " + erro);
         fetchChannels();
-		if (StringUtils.isEmpty(SimpleRestClient.sn_token)) {
-			new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					showNetErrorPopup();
-				}
-			}, 2000);
-		}
+        if (StringUtils.isEmpty(SimpleRestClient.sn_token)) {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showNetErrorPopup();
+                }
+            }, 2000);
+        }
     }
 
     private void showNetErrorPopup() {
@@ -854,6 +871,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     }
 
     BitmapDecoder ddddBitmapDecoder;
+
     private void selectChannelByPosition(int position) {
         String tag;
         if (lastchannelindex < position) {
@@ -900,48 +918,48 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             currentFragment = new GuideFragment();
             tag = "template";
         }
-		if (lastFragment != null) {
-			if (lastFragment instanceof ChildFragment) {
-				if (currentFragment instanceof ChildFragment) {
-				} else {
-					destroybackground();
-					if(ddddBitmapDecoder != null){
-						ddddBitmapDecoder.removeAllCallback();
+        if (lastFragment != null) {
+            if (lastFragment instanceof ChildFragment) {
+                if (currentFragment instanceof ChildFragment) {
+                } else {
+                    destroybackground();
+                    if (ddddBitmapDecoder != null) {
+                        ddddBitmapDecoder.removeAllCallback();
 //						ddddBitmapDecoder.interrupt();
-					}
-					ddddBitmapDecoder = new BitmapDecoder();
-					ddddBitmapDecoder.decode(this, R.drawable.main_bg,
-							new BitmapDecoder.Callback() {
-								@Override
-								public void onSuccess(
-										BitmapDrawable bitmapDrawable) {
-									contentView
-											.setBackgroundDrawable(bitmapDrawable);
-								}
-							});
-				}
-			} else {
-				if (currentFragment instanceof ChildFragment) {
-					destroybackground();
-					if(ddddBitmapDecoder != null){
-						ddddBitmapDecoder.removeAllCallback();
+                    }
+                    ddddBitmapDecoder = new BitmapDecoder();
+                    ddddBitmapDecoder.decode(this, R.drawable.main_bg,
+                            new BitmapDecoder.Callback() {
+                                @Override
+                                public void onSuccess(
+                                        BitmapDrawable bitmapDrawable) {
+                                    contentView
+                                            .setBackgroundDrawable(bitmapDrawable);
+                                }
+                            });
+                }
+            } else {
+                if (currentFragment instanceof ChildFragment) {
+                    destroybackground();
+                    if (ddddBitmapDecoder != null) {
+                        ddddBitmapDecoder.removeAllCallback();
 //						ddddBitmapDecoder.interrupt();
-					}
-					ddddBitmapDecoder = new BitmapDecoder();
-					ddddBitmapDecoder.decode(this,
-							R.drawable.channel_child_bg,
-							new BitmapDecoder.Callback() {
-								@Override
-								public void onSuccess(
-										BitmapDrawable bitmapDrawable) {
-									contentView
-											.setBackgroundDrawable(bitmapDrawable);
-								}
-							});
-				} else {
-				}
-			}
-		}
+                    }
+                    ddddBitmapDecoder = new BitmapDecoder();
+                    ddddBitmapDecoder.decode(this,
+                            R.drawable.channel_child_bg,
+                            new BitmapDecoder.Callback() {
+                                @Override
+                                public void onSuccess(
+                                        BitmapDrawable bitmapDrawable) {
+                                    contentView
+                                            .setBackgroundDrawable(bitmapDrawable);
+                                }
+                            });
+                } else {
+                }
+            }
+        }
         lastFragment = currentFragment;
         if (scrollFromBorder) {
             currentFragment.setScrollFromBorder(scrollFromBorder);
@@ -952,100 +970,100 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         //currentFragment.position = position;
 //        scrollFromBorder = false;
         currentFragment.setChannelEntity(channelEntity);
-        ChannelBaseFragment t= (ChannelBaseFragment)getSupportFragmentManager().findFragmentByTag("template");
-        ChannelBaseFragment t1=(ChannelBaseFragment)getSupportFragmentManager().findFragmentByTag("template1");
-        ChannelBaseFragment t2=(ChannelBaseFragment)getSupportFragmentManager().findFragmentByTag("template2");
-        ChannelBaseFragment t3=(ChannelBaseFragment)getSupportFragmentManager().findFragmentByTag("template3");
-        ChannelBaseFragment t4=(ChannelBaseFragment)getSupportFragmentManager().findFragmentByTag("template4");
+        ChannelBaseFragment t = (ChannelBaseFragment) getSupportFragmentManager().findFragmentByTag("template");
+        ChannelBaseFragment t1 = (ChannelBaseFragment) getSupportFragmentManager().findFragmentByTag("template1");
+        ChannelBaseFragment t2 = (ChannelBaseFragment) getSupportFragmentManager().findFragmentByTag("template2");
+        ChannelBaseFragment t3 = (ChannelBaseFragment) getSupportFragmentManager().findFragmentByTag("template3");
+        ChannelBaseFragment t4 = (ChannelBaseFragment) getSupportFragmentManager().findFragmentByTag("template4");
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		if ("template".equals(tag)) {
-			if (t1 != null)
-				transaction.hide(t1);
-			if (t2 != null)
-				transaction.hide(t2);
-			if (t3 != null)
-				transaction.hide(t3);
-			if (t4 != null)
-				transaction.hide(t4);
-			if (t != null) {
-				transaction.show(t);
-				transaction.commitAllowingStateLoss();
-			} else {
-				replaceFragment(currentFragment, tag, transaction);
-			}
-		}
-		if ("template1".equals(tag)) {
-			if (t != null)
-				transaction.hide(t);
-			if (t2 != null)
-				transaction.hide(t2);
-			if (t3 != null)
-				transaction.hide(t3);
-			if (t4 != null)
-				transaction.hide(t4);
-			if (t1 != null) {
-				t1.setChannelEntity(channelEntity);
-				t1.refreshData();
-				transaction.show(t1);
-				transaction.commitAllowingStateLoss();
-			} else {
-				replaceFragment(currentFragment, tag, transaction);
-			}
-		}
-		if ("template2".equals(tag)) {
-			if (t != null)
-				transaction.hide(t);
-			if (t1 != null)
-				transaction.hide(t1);
-			if (t3 != null)
-				transaction.hide(t3);
-			if (t4 != null)
-				transaction.hide(t4);
-			if (t2 != null) {
-				t2.setChannelEntity(channelEntity);
-				t2.refreshData();
-				transaction.show(t2);
-				transaction.commitAllowingStateLoss();
-			} else {
-				replaceFragment(currentFragment, tag, transaction);
-			}
-		}
-		if ("template3".equals(tag)) {
-			if (t != null)
-				transaction.hide(t);
-			if (t1 != null)
-				transaction.hide(t1);
-			if (t2 != null)
-				transaction.hide(t2);
-			if (t4 != null)
-				transaction.hide(t4);
-			if (t3 != null) {
-				t3.setChannelEntity(channelEntity);
-				t3.refreshData();
-				transaction.show(t3);
-				transaction.commitAllowingStateLoss();
-			} else {
-				replaceFragment(currentFragment, tag, transaction);
-			}
-		}
-		if ("template4".equals(tag)) {
-			if (t != null)
-				transaction.hide(t);
-			if (t1 != null)
-				transaction.hide(t1);
-			if (t2 != null)
-				transaction.hide(t2);
-			if (t3 != null)
-				transaction.hide(t3);
-			if (t4 != null) {
-				t4.setChannelEntity(channelEntity);
-				t4.refreshData();
-				transaction.show(t4);
-				transaction.commitAllowingStateLoss();
-			} else {
-				replaceFragment(currentFragment, tag, transaction);
-			}
-		}
+        if ("template".equals(tag)) {
+            if (t1 != null)
+                transaction.hide(t1);
+            if (t2 != null)
+                transaction.hide(t2);
+            if (t3 != null)
+                transaction.hide(t3);
+            if (t4 != null)
+                transaction.hide(t4);
+            if (t != null) {
+                transaction.show(t);
+                transaction.commitAllowingStateLoss();
+            } else {
+                replaceFragment(currentFragment, tag, transaction);
+            }
+        }
+        if ("template1".equals(tag)) {
+            if (t != null)
+                transaction.hide(t);
+            if (t2 != null)
+                transaction.hide(t2);
+            if (t3 != null)
+                transaction.hide(t3);
+            if (t4 != null)
+                transaction.hide(t4);
+            if (t1 != null) {
+                t1.setChannelEntity(channelEntity);
+                t1.refreshData();
+                transaction.show(t1);
+                transaction.commitAllowingStateLoss();
+            } else {
+                replaceFragment(currentFragment, tag, transaction);
+            }
+        }
+        if ("template2".equals(tag)) {
+            if (t != null)
+                transaction.hide(t);
+            if (t1 != null)
+                transaction.hide(t1);
+            if (t3 != null)
+                transaction.hide(t3);
+            if (t4 != null)
+                transaction.hide(t4);
+            if (t2 != null) {
+                t2.setChannelEntity(channelEntity);
+                t2.refreshData();
+                transaction.show(t2);
+                transaction.commitAllowingStateLoss();
+            } else {
+                replaceFragment(currentFragment, tag, transaction);
+            }
+        }
+        if ("template3".equals(tag)) {
+            if (t != null)
+                transaction.hide(t);
+            if (t1 != null)
+                transaction.hide(t1);
+            if (t2 != null)
+                transaction.hide(t2);
+            if (t4 != null)
+                transaction.hide(t4);
+            if (t3 != null) {
+                t3.setChannelEntity(channelEntity);
+                t3.refreshData();
+                transaction.show(t3);
+                transaction.commitAllowingStateLoss();
+            } else {
+                replaceFragment(currentFragment, tag, transaction);
+            }
+        }
+        if ("template4".equals(tag)) {
+            if (t != null)
+                transaction.hide(t);
+            if (t1 != null)
+                transaction.hide(t1);
+            if (t2 != null)
+                transaction.hide(t2);
+            if (t3 != null)
+                transaction.hide(t3);
+            if (t4 != null) {
+                t4.setChannelEntity(channelEntity);
+                t4.refreshData();
+                transaction.show(t4);
+                transaction.commitAllowingStateLoss();
+            } else {
+                replaceFragment(currentFragment, tag, transaction);
+            }
+        }
 //        replaceFragment(currentFragment,tag);
         View view2 = scroll.getChildAt(0);
         if (view2 == null)
@@ -1156,7 +1174,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         bd.getBitmap().recycle();
     }
 
-    private void replaceFragment(Fragment fragment,String tag,FragmentTransaction transaction) {
+    private void replaceFragment(Fragment fragment, String tag, FragmentTransaction transaction) {
         switch (scrollType) {
             case left:
                 transaction.setCustomAnimations(
@@ -1170,7 +1188,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 break;
         }
 
-        transaction.replace(R.id.container, fragment,tag).commit();
+        transaction.replace(R.id.container, fragment, tag).commit();
     }
 
     private void saveSimpleRestClientPreferences(Context context, Result result) {
@@ -1241,11 +1259,11 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     @Override
     protected void onDestroy() {
         unregisterReceiver(appUpdateReceiver);
-        if(bitmapDecoder != null && bitmapDecoder.isAlive()){
-        	bitmapDecoder.interrupt();
+        if (bitmapDecoder != null && bitmapDecoder.isAlive()) {
+            bitmapDecoder.interrupt();
         }
-        if(ddddBitmapDecoder != null && ddddBitmapDecoder.isAlive()){
-        	ddddBitmapDecoder.interrupt();
+        if (ddddBitmapDecoder != null && ddddBitmapDecoder.isAlive()) {
+            ddddBitmapDecoder.interrupt();
         }
         if (!(updatePopupWindow == null)) {
             updatePopupWindow.dismiss();

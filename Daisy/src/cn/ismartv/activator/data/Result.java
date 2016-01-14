@@ -5,44 +5,32 @@ public class Result {
     private String device_token;
     private String domain;
     private String ad_domain;
-    private String packageInfo;
-    private String expiry_date;
     private String sn_token;
     private String log_domain;
-    private String upgrade_domain; 
-    
+    private String upgrade_domain;
+
     public String getUpgrade_domain() {
-		return upgrade_domain;
-	}
-	public void setUpgrade_domain(String upgrade_domain) {
-		this.upgrade_domain = upgrade_domain;
-	}
-	public String getSn_Token(){
-    	return sn_token;
-    }
-    public void setSn_Token(String sn){
-    	this.sn_token = sn;
-    }
-    public String getLog_Domain(){
-    	return log_domain;
-    }
-    public void setLog_Domain(String log){
-    	this.log_domain = log;
-    }
-    public String getPackageInfo() {
-        return packageInfo;
+        return upgrade_domain;
     }
 
-    public void setPackageInfo(String packageInfo) {
-        this.packageInfo = packageInfo;
+    public void setUpgrade_domain(String upgrade_domain) {
+        this.upgrade_domain = upgrade_domain;
     }
 
-    public String getExpiry_date() {
-        return expiry_date;
+    public String getSn_Token() {
+        return sn_token;
     }
 
-    public void setExpiry_date(String expiry_date) {
-        this.expiry_date = expiry_date;
+    public void setSn_Token(String sn) {
+        this.sn_token = sn;
+    }
+
+    public String getLog_Domain() {
+        return log_domain;
+    }
+
+    public void setLog_Domain(String log) {
+        this.log_domain = log;
     }
 
     public String getDevice_token() {
@@ -67,13 +55,5 @@ public class Result {
 
     public void setAd_domain(String ad_domain) {
         this.ad_domain = ad_domain;
-    }
-
-    @Override
-    public String toString() {
-        StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append("device_token ---> ").append(device_token).append(" \n")
-                .append("packageInfo ---> ").append(packageInfo+" \n").append("domain ------>").append(domain);
-        return stringBuffer.toString();
     }
 }
