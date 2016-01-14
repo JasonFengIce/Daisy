@@ -61,17 +61,22 @@ public class RelativeLayoutContainer extends RelativeLayout {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
+		super.onDraw(canvas);
 		if (isDrawBorder) {
 			System.out.println("HomeItemContainer focus : true ");
 			super.getDrawingRect(mRect);
-			mBound.set(-21 + mRect.left, -21 + mRect.top, 21 + mRect.right,
-					mRect.bottom + 21);
+			mBound.set(-21+mRect.left, -21+mRect.top, 21+mRect.right, mRect.bottom+21);
 			mDrawable.setBounds(mBound);
 			canvas.save();
 			mDrawable.draw(canvas);
 			canvas.restore();
+		}else{
+			mBound.setEmpty();
+			mDrawable.setBounds(mBound);
+			mDrawable.draw(canvas);
 		}
-		super.onDraw(canvas);
+		getRootView().requestLayout();
+		getRootView().invalidate();
 	}
 
 	@Override

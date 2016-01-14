@@ -194,6 +194,8 @@ public class LabelImageView extends AsyncImageView {
 			canvas.restore();
 		}
 		// }
+		getRootView().requestLayout();
+		getRootView().invalidate();
 	}
 
 	public void setCustomfocus(boolean customfocus) {
