@@ -5,12 +5,13 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import com.squareup.okhttp.*;
-import tv.ismar.daisy.BaseActivity;
-import tv.ismar.daisy.VodApplication;
-import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.VodUserAgent;
-import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
+
+import com.google.gson.JsonParser;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -18,6 +19,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import tv.ismar.daisy.BaseActivity;
+import tv.ismar.daisy.VodApplication;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.VodUserAgent;
+import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 
 /**
  * Created by huaijie on 5/28/15.
@@ -257,6 +264,7 @@ public class IsmartvUrlClient extends Thread {
                             "\t<--- Response Result: " + "\t" + result + "\n" +
                             "\t---> END"
             );
+            new JsonParser().parse(result);
             if (response.code() >= 400 && response.code() < 500) {
                 message.what = FAILURE_4XX;
                 message.obj = new IOException("网络请求客户端错误!!!");

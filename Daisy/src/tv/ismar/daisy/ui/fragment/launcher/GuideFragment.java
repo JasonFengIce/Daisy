@@ -205,12 +205,10 @@ public class GuideFragment extends ChannelBaseFragment {
                 String s = result;
                 if (mContext == null || guideRecommmendList == null)
                     return;
-                HomePagerEntity homePagerEntity = new Gson().fromJson(result,
-                        HomePagerEntity.class);
-                ArrayList<HomePagerEntity.Carousel> carousels = homePagerEntity
-                        .getCarousels();
-                ArrayList<HomePagerEntity.Poster> posters = homePagerEntity
-                        .getPosters();
+                HomePagerEntity homePagerEntity = new Gson().fromJson(result, HomePagerEntity.class);
+                ArrayList<HomePagerEntity.Carousel> carousels = homePagerEntity.getCarousels();
+                ArrayList<HomePagerEntity.Poster> posters = homePagerEntity.getPosters();
+
                 if (!carousels.isEmpty()) {
                     initCarousel(carousels);
                 }
