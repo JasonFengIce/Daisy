@@ -58,6 +58,7 @@ public class HomeItemContainer extends FrameLayout {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
+		super.onDraw(canvas);
 		if (isDrawBorder) {
 			System.out.println("HomeItemContainer focus : true ");
 			super.getDrawingRect(mRect);
@@ -66,8 +67,13 @@ public class HomeItemContainer extends FrameLayout {
 			canvas.save();
 			mDrawable.draw(canvas);
 			canvas.restore();
+		}else{
+			mBound.setEmpty();
+			mDrawable.setBounds(mBound);
+			mDrawable.draw(canvas);
 		}
-		super.onDraw(canvas);
+		getRootView().requestLayout();
+		getRootView().invalidate();
 	}
 	
 	@Override
