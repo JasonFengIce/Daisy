@@ -297,6 +297,7 @@ public class IsmartvUrlClient extends Thread {
             Response response;
             response = client.newCall(request).execute();
             String result = response.body().string();
+            new JsonParser().parse(result);
             Log.i(TAG, "---> BEGIN\n" +
                             "\t<--- Request URL: " + "\t" + url + "\n" +
                             "\t<--- Request Method: " + "\t" + "POST" + "\n" +
