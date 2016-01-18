@@ -418,7 +418,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
                 ChannelEntity launcher = new ChannelEntity();
                 launcher.setChannel("launcher");
-                launcher.setName("      首页      ");
+                launcher.setName("首页");
                 launcher.setHomepage_template("launcher");
                 mChannelEntitys[0] = launcher;
                 for (ChannelEntity e : tmp) {
