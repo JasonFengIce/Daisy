@@ -9,8 +9,8 @@ android {
         applicationId "tv.ismar.daisy"
         minSdkVersion 14
         targetSdkVersion 22
-        versionCode 20250
-        versionName "20250"
+        versionCode 20251
+        versionName "20251"
     }
 
     lintOptions {
