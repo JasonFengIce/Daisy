@@ -998,6 +998,11 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             if (t4 != null)
                 transaction.hide(t4);
             if (t != null) {
+                if (scrollFromBorder) {
+                    t.setScrollFromBorder(scrollFromBorder);
+                    t.setRight(rightscroll);
+                    t.setBottomFlag(lastviewTag);
+                }
                 transaction.show(t);
                 transaction.commitAllowingStateLoss();
             } else {
@@ -1014,6 +1019,11 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             if (t4 != null)
                 transaction.hide(t4);
             if (t1 != null) {
+            	if (scrollFromBorder) {
+                    t1.setScrollFromBorder(scrollFromBorder);
+                    t1.setRight(rightscroll);
+                    t1.setBottomFlag(lastviewTag);
+                }
                 t1.setChannelEntity(channelEntity);
                 t1.refreshData();
                 transaction.show(t1);
@@ -1034,6 +1044,11 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             if (t2 != null) {
                 t2.setChannelEntity(channelEntity);
                 t2.refreshData();
+                if (scrollFromBorder) {
+                    t2.setScrollFromBorder(scrollFromBorder);
+                    t2.setRight(rightscroll);
+                    t2.setBottomFlag(lastviewTag);
+                }
                 transaction.show(t2);
                 transaction.commitAllowingStateLoss();
             } else {
@@ -1052,6 +1067,11 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             if (t3 != null) {
                 t3.setChannelEntity(channelEntity);
                 t3.refreshData();
+                if (scrollFromBorder) {
+                    t3.setScrollFromBorder(scrollFromBorder);
+                    t3.setRight(rightscroll);
+                    t3.setBottomFlag(lastviewTag);
+                }
                 transaction.show(t3);
                 transaction.commitAllowingStateLoss();
             } else {
@@ -1070,6 +1090,11 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             if (t4 != null) {
                 t4.setChannelEntity(channelEntity);
                 t4.refreshData();
+                if (scrollFromBorder) {
+                    t4.setScrollFromBorder(scrollFromBorder);
+                    t4.setRight(rightscroll);
+                    t4.setBottomFlag(lastviewTag);
+                }
                 transaction.show(t4);
                 transaction.commitAllowingStateLoss();
             } else {
