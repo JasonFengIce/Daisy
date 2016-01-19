@@ -5,6 +5,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.gson.JsonParser;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -46,11 +47,18 @@ public class CacheHttpClient extends Thread {
             if (cacheHttpClient != null) {
                 switch (msg.what) {
                     case SUCCESS:
-                        cacheHttpClient.mCallback.onSuccess(msg.obj.toString());
+                        JsonParser parser = new JsonParser();
+                        try {
+                            parser.parse(msg.obj.toString());
+                            cacheHttpClient.mCallback.onSuccess(msg.obj.toString());
+                        } catch (Exception e) {
+                            cacheHttpClient.mCallback.onFailed("数据格式不符合json!!!");
+                        }
+
                         break;
                     case FAILED:
-					if (msg.obj == null)
-						msg.obj = "unknow";
+                        if (msg.obj == null)
+                            msg.obj = "unknow";
                         cacheHttpClient.mCallback.onFailed(msg.obj.toString());
                         break;
                 }
@@ -113,11 +121,11 @@ public class CacheHttpClient extends Thread {
             response = client.newCall(request).execute();
             String result = response.body().string();
             Log.i(TAG, "---> BEGIN\n" +
-                    "\t<--- Request URL: " + "\t" + mUrlPath + "\n" +
-                    "\t<--- Request Method: " + "\t" + "GET" + "\n" +
-                    "\t<--- Response Code: " + "\t" + response.code() + "\n" +
-                    "\t<--- Response Result: " + "\t" + result + "\n" +
-                    "\t---> END"
+                            "\t<--- Request URL: " + "\t" + mUrlPath + "\n" +
+                            "\t<--- Request Method: " + "\t" + "GET" + "\n" +
+                            "\t<--- Response Code: " + "\t" + response.code() + "\n" +
+                            "\t<--- Response Result: " + "\t" + result + "\n" +
+                            "\t---> END"
             );
 
             if (!TextUtils.isEmpty(result)) {

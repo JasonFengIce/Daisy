@@ -12,16 +12,6 @@ import android.util.Log;
 import com.activeandroid.query.Delete;
 import com.google.gson.Gson;
 
-import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.advertisement.AdvertisementManager;
-import tv.ismar.daisy.core.client.IsmartvUrlClient;
-import tv.ismar.daisy.core.logger.AdvertisementLogger;
-import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
-import tv.ismar.daisy.core.preferences.LogSharedPrefs;
-import tv.ismar.daisy.data.LaunchAdvertisementEntity;
-import tv.ismar.daisy.data.table.AdvertisementTable;
-import tv.ismar.daisy.utils.AppUtils;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -34,6 +24,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.advertisement.AdvertisementManager;
+import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.data.LaunchAdvertisementEntity;
+import tv.ismar.daisy.data.table.AdvertisementTable;
+import tv.ismar.daisy.utils.AppUtils;
 
 /**
  * Created by huaijie on 3/19/15.
@@ -111,7 +108,7 @@ public class PosterUpdateService extends Service {
             @Override
             public void onSuccess(String result) {
                 LaunchAdvertisementEntity launchAdvertisementEntity = new Gson().fromJson(result, LaunchAdvertisementEntity.class);
-                if (null != launchAdvertisementEntity.getAds().getKaishi()) {
+                if (null != launchAdvertisementEntity.getAds().getKaishi() && launchAdvertisementEntity.getAds().getKaishi().length != 0) {
                     LaunchAdvertisementEntity.AdvertisementData advertisementData = launchAdvertisementEntity.getAds().getKaishi()[0];
 //                    downloadPic(advertisementData);
                     new AdvertisementManager().updateAppLaunchAdvertisement(launchAdvertisementEntity);

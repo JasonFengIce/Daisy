@@ -3,7 +3,6 @@ package tv.ismar.daisy.ui.fragment.usercenter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -11,19 +10,34 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.activeandroid.query.Select;
-import com.google.gson.Gson;
+import com.squareup.okhttp.ResponseBody;
 import com.squareup.picasso.Picasso;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import retrofit.Retrofit;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.core.client.HttpAPI;
+import tv.ismar.daisy.core.client.HttpManager;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.core.weather.WeatherInfoHandler;
 import tv.ismar.daisy.data.table.location.CityTable;
@@ -32,19 +46,6 @@ import tv.ismar.daisy.data.weather.WeatherEntity;
 import tv.ismar.daisy.ui.adapter.weather.CityAdapter;
 import tv.ismar.daisy.ui.adapter.weather.CityAdapter.OnItemListener;
 import tv.ismar.daisy.ui.adapter.weather.ProvinceAdapter;
-import tv.ismar.daisy.utils.BitmapDecoder;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.lang.annotation.Target;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by huaijie on 7/13/15.
@@ -331,65 +332,73 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
     }
 
     private void fetchWeatherInfo(String geoId) {
-        String api = "http://media.lily.tvxio.com/" + geoId + ".xml";
-        new IsmartvUrlClient().doRequest(api, new IsmartvUrlClient.CallBack() {
+        Retrofit retrofit = HttpManager.getInstance().media_lily_Retrofit;
+        retrofit.create(HttpAPI.WeatherAPI.class).doRequest(geoId).enqueue(new retrofit.Callback<ResponseBody>() {
             @Override
-            public void onSuccess(String result) {
-                SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+            public void onResponse(retrofit.Response<ResponseBody> response, Retrofit retrofit) {
                 try {
-                    SAXParser saxParser = saxParserFactory.newSAXParser();
-                    XMLReader xmlReader = saxParser.getXMLReader();
-                    WeatherInfoHandler weatherInfoHandler = new WeatherInfoHandler();
-                    xmlReader.setContentHandler(weatherInfoHandler);
-                    InputSource inputSource = new InputSource(new StringReader(result));
-                    xmlReader.parse(inputSource);
-
-                    WeatherEntity weatherEntity = weatherInfoHandler.getWeatherEntity();
-
-                    Log.i(TAG, "update: " + weatherEntity.getUpdated() + " region: " + weatherEntity.getRegion());
-                    Log.i(TAG, "today condition: " + weatherEntity.getToday().getCondition());
-                    Log.i(TAG, "today temphigh: " + weatherEntity.getToday().getTemphigh());
-                    Log.i(TAG, "today templow: " + weatherEntity.getToday().getTemplow());
-                    Log.i(TAG, "today image_url: " + weatherEntity.getToday().getImage_url());
-
-                    Log.i(TAG, "tomorrow condition: " + weatherEntity.getTomorrow().getCondition());
-                    Log.i(TAG, "tomorrow temphigh: " + weatherEntity.getTomorrow().getTemphigh());
-                    Log.i(TAG, "tomorrow templow: " + weatherEntity.getTomorrow().getTemplow());
-                    Log.i(TAG, "tomorrow image_url: " + weatherEntity.getTomorrow().getImage_url());
-
-                    if (weatherEntity.getToday().getTemplow().equals(weatherEntity.getToday().getTemphigh())) {
-                        todayWeatherTemperature.setText(weatherEntity.getToday().getTemplow() + "℃ ");
-                    } else {
-                        todayWeatherTemperature.setText(weatherEntity.getToday().getTemplow() + "℃ ~ " + weatherEntity.getToday().getTemphigh() + "℃");
-                    }
-                    todayWeatherInfo.setText(weatherEntity.getToday().getCondition());
-                    Picasso.with(mContext).load(weatherEntity.getToday().getImage_url()).into(todayWeatherIcon1);
-
-
-                    if (weatherEntity.getTomorrow().getTemplow().equals(weatherEntity.getTomorrow().getTemphigh())) {
-                        tomorrowWeatherTemperature.setText(weatherEntity.getTomorrow().getTemplow() + "℃ ");
-                    } else {
-                        tomorrowWeatherTemperature.setText(weatherEntity.getTomorrow().getTemplow() + "℃ ~ " + weatherEntity.getTomorrow().getTemphigh() + "℃");
-                    }
-                    tomorrowWeatherInfo.setText(weatherEntity.getTomorrow().getCondition());
-                    Picasso.with(mContext).load(weatherEntity.getTomorrow().getImage_url()).into(tomorrowWeatherIcon1);
-
-
-                } catch (ParserConfigurationException e) {
-                    e.printStackTrace();
-                } catch (SAXException e) {
-                    e.printStackTrace();
+                    String result = response.body().string();
+                    parseXml(result);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, "解析天气数据失败");
                 }
-
-
             }
 
             @Override
-            public void onFailed(Exception exception) {
-                Log.e(TAG, exception.getMessage());
+            public void onFailure(Throwable throwable) {
+                Log.e(TAG, "获取天气失败");
             }
         });
+    }
+
+
+    private void parseXml(String xml) {
+        SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+        try {
+            SAXParser saxParser = saxParserFactory.newSAXParser();
+            XMLReader xmlReader = saxParser.getXMLReader();
+            WeatherInfoHandler weatherInfoHandler = new WeatherInfoHandler();
+            xmlReader.setContentHandler(weatherInfoHandler);
+            InputSource inputSource = new InputSource(new StringReader(xml));
+            xmlReader.parse(inputSource);
+
+            WeatherEntity weatherEntity = weatherInfoHandler.getWeatherEntity();
+
+            Log.i(TAG, "update: " + weatherEntity.getUpdated() + " region: " + weatherEntity.getRegion());
+            Log.i(TAG, "today condition: " + weatherEntity.getToday().getCondition());
+            Log.i(TAG, "today temphigh: " + weatherEntity.getToday().getTemphigh());
+            Log.i(TAG, "today templow: " + weatherEntity.getToday().getTemplow());
+            Log.i(TAG, "today image_url: " + weatherEntity.getToday().getImage_url());
+
+            Log.i(TAG, "tomorrow condition: " + weatherEntity.getTomorrow().getCondition());
+            Log.i(TAG, "tomorrow temphigh: " + weatherEntity.getTomorrow().getTemphigh());
+            Log.i(TAG, "tomorrow templow: " + weatherEntity.getTomorrow().getTemplow());
+            Log.i(TAG, "tomorrow image_url: " + weatherEntity.getTomorrow().getImage_url());
+
+            if (weatherEntity.getToday().getTemplow().equals(weatherEntity.getToday().getTemphigh())) {
+                todayWeatherTemperature.setText(weatherEntity.getToday().getTemplow() + "℃ ");
+            } else {
+                todayWeatherTemperature.setText(weatherEntity.getToday().getTemplow() + "℃ ~ " + weatherEntity.getToday().getTemphigh() + "℃");
+            }
+            todayWeatherInfo.setText(weatherEntity.getToday().getCondition());
+            Picasso.with(mContext).load(weatherEntity.getToday().getImage_url()).into(todayWeatherIcon1);
+
+
+            if (weatherEntity.getTomorrow().getTemplow().equals(weatherEntity.getTomorrow().getTemphigh())) {
+                tomorrowWeatherTemperature.setText(weatherEntity.getTomorrow().getTemplow() + "℃ ");
+            } else {
+                tomorrowWeatherTemperature.setText(weatherEntity.getTomorrow().getTemplow() + "℃ ~ " + weatherEntity.getTomorrow().getTemphigh() + "℃");
+            }
+            tomorrowWeatherInfo.setText(weatherEntity.getTomorrow().getCondition());
+            Picasso.with(mContext).load(weatherEntity.getTomorrow().getImage_url()).into(tomorrowWeatherIcon1);
+
+
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
