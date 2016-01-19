@@ -37,7 +37,7 @@ public class Activator {
     private static Activator ourInstance = new Activator();
     private String sn, manufacture, kind, version, fingerprint, locationInfo;
     private OnComplete mOnComplete;
-
+    public boolean iswaiting;
     private int actvieTryTime = 0;
 
     public interface OnComplete {
@@ -63,9 +63,11 @@ public class Activator {
 
     public void active(String manufacture, String kind, String version, String locationInfo) {
         actvieTryTime = actvieTryTime + 1;
-        if (actvieTryTime > 2) {
-            mOnComplete.onFailed("激活失败!!!");
-        }
+		iswaiting = true;
+		if (actvieTryTime > 2) {
+			iswaiting = false;
+			mOnComplete.onFailed("激活失败!!!");
+		}
 
         NativeManager nativeManager = new NativeManager();
         this.locationInfo = locationInfo;
@@ -121,6 +123,7 @@ public class Activator {
 
             @Override
             public void onFailure(Throwable throwable) {
+						iswaiting = false;
                 mOnComplete.onFailed("get licence failure!!!");
             }
         });
@@ -135,11 +138,11 @@ public class Activator {
                 active(manufacture, kind, version, locationInfo);
             }
         });
-
         String publicKey;
         try {
             publicKey = result.split("\\$\\$\\$")[1];
         } catch (Exception e) {
+			iswaiting = false;
             mOnComplete.onFailed(e.getMessage());
             return;
         }
@@ -154,15 +157,18 @@ public class Activator {
             public void onResponse(Response<Result> response, Retrofit retrofit) {
                 Result result = response.body();
                 if (response.errorBody() != null) {
+							iswaiting = false;
                     mOnComplete.onFailed("激活失败");
                     Log.e(TAG, response.errorBody().toString());
                 } else {
+							iswaiting = false;
                     mOnComplete.onSuccess(result);
                 }
             }
 
             @Override
             public void onFailure(Throwable throwable) {
+            	iswaiting = false;
                 mOnComplete.onFailed("激活失败");
             }
         });

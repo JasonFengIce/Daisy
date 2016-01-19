@@ -135,7 +135,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private boolean rightscroll;
     private LeavePosition leavePosition = LeavePosition.RightBottom;
     private ImageView guide_shadow_view;
-    private int channelscrollIndex = 0;
+    private static int channelscrollIndex = 0;
 
     public boolean isneedpause;
 
@@ -143,7 +143,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private BitmapDecoder bitmapDecoder;
     private Handler netErrorPopupHandler;
     private Runnable netErrorPopupRunnable;
-
+    private CacheHttpClient cacheHttpClient;
     private enum LeavePosition {
         LeftTop,
         LeftBottom,
@@ -338,7 +338,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         updatePoster();
         String product = Build.BRAND.replace(" ", "_");
         String mode = VodUserAgent.getModelName();
-        activator.active(product, mode, String.valueOf(SimpleRestClient.appVersion), localInfo);
+		if (!activator.iswaiting)
+			activator.active(product, mode,
+					String.valueOf(SimpleRestClient.appVersion), localInfo);
     }
 
 
@@ -405,7 +407,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
      */
     private void fetchChannels() {
         String api = SimpleRestClient.root_url + "/api/tv/channels/";
-        new CacheHttpClient().doRequest(api, new CacheHttpClient.Callback() {
+        cacheHttpClient = new CacheHttpClient(); 
+        cacheHttpClient.doRequest(api, new CacheHttpClient.Callback() {
             @Override
             public void onSuccess(String result) {
                 topView.setVisibility(View.VISIBLE);
@@ -418,7 +421,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
                 ChannelEntity launcher = new ChannelEntity();
                 launcher.setChannel("launcher");
-                launcher.setName("首页");
+                launcher.setName("      首页      ");
                 launcher.setHomepage_template("launcher");
                 mChannelEntitys[0] = launcher;
                 for (ChannelEntity e : tmp) {
@@ -438,7 +441,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                         }
                     }
                 }
-                if (currentFragment == null && !isFinishing()) {
+                if (currentFragment == null && !isFinishing() && channelscrollIndex<=0) {
                     try {
                         currentFragment = new GuideFragment();
                         FragmentTransaction transaction = getSupportFragmentManager()
@@ -556,7 +559,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         scroll.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (view == null) return;
+                if (view == null || channelscrollIndex >0) return;
                 TextView channelBtn = (TextView) view.findViewById(R.id.channel_item);
                 channelChange = ChannelChange.CLICK_CHANNEL;
 
@@ -635,10 +638,16 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     public void onScroll(HGridView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         if (firstVisibleItem == 0) {
             // scroll.setSelection(0);
+        	if(channelscrollIndex == 0){
             setClickChannelView(scroll.getChildAt(0));
             lastview = scroll.getChildAt(0);
             TextView v = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
             v.setBackgroundResource(R.drawable.channel_item_selectd_focus);
+        	}else{
+                lastview = scroll.getChildAt(0);
+                TextView v = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
+                v.setBackgroundResource(0);
+        	}
             scroll.setOnScrollListener(null);
         }
 
@@ -989,6 +998,11 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             if (t4 != null)
                 transaction.hide(t4);
             if (t != null) {
+                if (scrollFromBorder) {
+                    t.setScrollFromBorder(scrollFromBorder);
+                    t.setRight(rightscroll);
+                    t.setBottomFlag(lastviewTag);
+                }
                 transaction.show(t);
                 transaction.commitAllowingStateLoss();
             } else {
@@ -1005,6 +1019,11 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             if (t4 != null)
                 transaction.hide(t4);
             if (t1 != null) {
+            	if (scrollFromBorder) {
+                    t1.setScrollFromBorder(scrollFromBorder);
+                    t1.setRight(rightscroll);
+                    t1.setBottomFlag(lastviewTag);
+                }
                 t1.setChannelEntity(channelEntity);
                 t1.refreshData();
                 transaction.show(t1);
@@ -1025,6 +1044,11 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             if (t2 != null) {
                 t2.setChannelEntity(channelEntity);
                 t2.refreshData();
+                if (scrollFromBorder) {
+                    t2.setScrollFromBorder(scrollFromBorder);
+                    t2.setRight(rightscroll);
+                    t2.setBottomFlag(lastviewTag);
+                }
                 transaction.show(t2);
                 transaction.commitAllowingStateLoss();
             } else {
@@ -1043,6 +1067,11 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             if (t3 != null) {
                 t3.setChannelEntity(channelEntity);
                 t3.refreshData();
+                if (scrollFromBorder) {
+                    t3.setScrollFromBorder(scrollFromBorder);
+                    t3.setRight(rightscroll);
+                    t3.setBottomFlag(lastviewTag);
+                }
                 transaction.show(t3);
                 transaction.commitAllowingStateLoss();
             } else {
@@ -1061,6 +1090,11 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             if (t4 != null) {
                 t4.setChannelEntity(channelEntity);
                 t4.refreshData();
+                if (scrollFromBorder) {
+                    t4.setScrollFromBorder(scrollFromBorder);
+                    t4.setRight(rightscroll);
+                    t4.setBottomFlag(lastviewTag);
+                }
                 transaction.show(t4);
                 transaction.commitAllowingStateLoss();
             } else {
@@ -1249,6 +1283,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     @Override
     protected void onResume() {
         super.onResume();
+        channelscrollIndex = 0;
         topView = (LaunchHeaderLayout) findViewById(R.id.top_column_layout);
     }
 
@@ -1260,6 +1295,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         }
         if (fragmentSwitch.hasMessages(SWITCH_PAGE))
             fragmentSwitch.removeMessages(SWITCH_PAGE);
+        if (fragmentSwitch.hasMessages(SWITCH_PAGE_FROMLAUNCH))
+            fragmentSwitch.removeMessages(SWITCH_PAGE_FROMLAUNCH);
     }
 
     @Override
@@ -1339,9 +1376,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                         activity.selectChannelByPosition(msg.arg1);
                         break;
                     case SWITCH_PAGE_FROMLAUNCH:
+                    	channelscrollIndex=channelscrollIndex-1;
                         activity.scroll.arrowScroll(View.FOCUS_RIGHT);
-                        activity.channelscrollIndex--;
-                        if (activity.channelscrollIndex > 0) {
+                        if (channelscrollIndex > 0) {
                             sendEmptyMessage(SWITCH_PAGE_FROMLAUNCH);
                         }
                         break;
