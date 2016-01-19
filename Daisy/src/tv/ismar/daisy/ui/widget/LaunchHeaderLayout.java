@@ -149,11 +149,13 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
         titleTextView.setText(title);
     }
 
-    public void setSubTitle(String subTitle) {
-        subTitleTextView.setText(subTitle);
-        if (StringUtils.isEmpty(subTitle))
-            hideSubTiltle();
-    }
+	public void setSubTitle(String subTitle) {
+		if (StringUtils.isEmpty(subTitle)) {
+			hideSubTiltle();
+		} else {
+			subTitleTextView.setText(subTitle.replace(" ", ""));
+		}
+	}
 
     public void hideSubTiltle() {
         subTitleTextView.setVisibility(View.GONE);
