@@ -55,7 +55,7 @@ public class AccountSharedPrefs {
 
     public static void initialize(Context context) {
         mContext = context;
-        mSharedPreferences = mContext.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
+        mSharedPreferences = mContext.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_WORLD_READABLE);
         mSharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
     }
 
