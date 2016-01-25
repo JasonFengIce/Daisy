@@ -1,5 +1,6 @@
 package tv.ismar.daisy.ui.fragment.launcher;
 
+import android.R.integer;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -167,7 +168,7 @@ public class GuideFragment extends ChannelBaseFragment {
             fetchHomePage();
         } else {
             if (!mSurfaceView.isPlaying()) {
-                playCarousel();
+                playCarousel(500);
             }
         }
     }
@@ -395,11 +396,11 @@ public class GuideFragment extends ChannelBaseFragment {
         allVideoUrl.add(carousels.get(1).getVideo_url());
         allVideoUrl.add(carousels.get(2).getVideo_url());
 
-        playCarousel();
+        playCarousel(0);
 
     }
 
-    private void playCarousel() {
+    private void playCarousel(int delay) {
         mHandler.removeMessages(CAROUSEL_NEXT);
         switch (mCarouselRepeatType) {
             case Once:
@@ -431,7 +432,7 @@ public class GuideFragment extends ChannelBaseFragment {
 
 //        mHelper.onStart();
         mHandler.removeMessages(START_PLAYBACK);
-        mHandler.sendEmptyMessage(START_PLAYBACK);
+        mHandler.sendEmptyMessageDelayed(START_PLAYBACK, delay);
 
 
     }
@@ -456,7 +457,7 @@ public class GuideFragment extends ChannelBaseFragment {
                     startPlayback();
                     break;
                 case CAROUSEL_NEXT:
-                    playCarousel();
+                    playCarousel(0);
                     break;
             }
 
@@ -508,7 +509,7 @@ public class GuideFragment extends ChannelBaseFragment {
                     int position = (Integer) v.getTag();
                     mCarouselRepeatType = CarouselRepeatType.Once;
                     mCurrentCarouselIndex = position;
-                    playCarousel();
+                    playCarousel(0);
                 }
             }
         }

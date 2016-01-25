@@ -174,7 +174,7 @@ public class FilmFragment extends ChannelBaseFragment {
                 fetchHomePage(channelEntity.getHomepage_url());
         } else {
             if (!mSurfaceView.isPlaying()) {
-                playCarousel();
+                playCarousel(500);
             }
         }
     }
@@ -411,7 +411,7 @@ public class FilmFragment extends ChannelBaseFragment {
                 mRightTopView = itemView;
             }
         }
-        playCarousel();
+        playCarousel(0);
     }
 
 
@@ -461,7 +461,7 @@ public class FilmFragment extends ChannelBaseFragment {
         }
     }
 
-    private void playCarousel() {
+    private void playCarousel(int delay) {
         mHandler.removeMessages(CAROUSEL_NEXT);
         if (film_post_layout == null)
             return;
@@ -489,7 +489,7 @@ public class FilmFragment extends ChannelBaseFragment {
 
         if (!TextUtils.isEmpty(mCarousels.get(mCurrentCarouselIndex).getVideo_url())) {
             if (externalStorageIsEnable()) {
-                playVideo();
+                playVideo(0);
             } else {
                 playImage();
             }
@@ -532,7 +532,7 @@ public class FilmFragment extends ChannelBaseFragment {
         });
     }
 
-    private void playVideo() {
+    private void playVideo(int delay) {
         if (mSurfaceView.getVisibility() == View.GONE) {
             mSurfaceView.setVisibility(View.VISIBLE);
         }
@@ -550,7 +550,7 @@ public class FilmFragment extends ChannelBaseFragment {
             film_linked_title.setVisibility(View.GONE);
         }
         mHandler.removeMessages(START_PLAYBACK);
-        mHandler.sendEmptyMessage(START_PLAYBACK);
+        mHandler.sendEmptyMessageDelayed(START_PLAYBACK,delay);
     }
 
 
@@ -562,7 +562,7 @@ public class FilmFragment extends ChannelBaseFragment {
                     startPlayback();
                     break;
                 case CAROUSEL_NEXT:
-                    playCarousel();
+                    playCarousel(0);
                     break;
             }
 
@@ -572,7 +572,7 @@ public class FilmFragment extends ChannelBaseFragment {
     private BroadcastReceiver externalStorageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            playCarousel();
+            playCarousel(0);
         }
     };
 
@@ -600,7 +600,7 @@ public class FilmFragment extends ChannelBaseFragment {
                     int position = (Integer) v.getTag();
                     mCarouselRepeatType = CarouselRepeatType.Once;
                     mCurrentCarouselIndex = position;
-                    playCarousel();
+                    playCarousel(0);
                 }
             }
         }
