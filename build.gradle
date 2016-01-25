@@ -1,6 +1,6 @@
 buildscript {
     repositories {
-        jcenter { url "http://192.168.1.90:8090/nexus/content/repositories/jcenter/" }
+        maven { url 'http://maven.oschina.net/content/groups/public/' }
     }
 
     dependencies {
@@ -10,7 +10,7 @@ buildscript {
 
     allprojects {
         repositories {
-            jcenter { url "http://192.168.1.90:8090/nexus/content/repositories/jcenter/" }
+            maven { url 'http://maven.oschina.net/content/groups/public/' }
         }
     }
 }
