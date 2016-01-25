@@ -601,10 +601,10 @@ public class PlayerActivity extends VodMenuAction {
 
 						} else {
 							// 广告
-							if (mHandler.hasMessages(AD_COUNT_ACTION))
-								mHandler.removeMessages(AD_COUNT_ACTION);
-							mHandler.sendEmptyMessageDelayed(AD_COUNT_ACTION,
-									1000);
+//							if (mHandler.hasMessages(AD_COUNT_ACTION))
+//								mHandler.removeMessages(AD_COUNT_ACTION);
+//							mHandler.sendEmptyMessageDelayed(AD_COUNT_ACTION,
+//									1000);
 							mp.start();
 							checkTaskStart(0);
 							adurl = url;
@@ -626,7 +626,6 @@ public class PlayerActivity extends VodMenuAction {
 					public void onCompletion(SmartPlayer smartPlayer, String url) {
                         Log.i("zhangjiqiangtest","playerActivity onCompletion url=="+url+"//");
                         Log.i("zhangjiqiangtest","playerActivity onCompletion paths[paths.length - 1]=="+       paths[paths.length - 1]+"//");
-
 						if (paths != null && url != null
 								&& paths[paths.length - 1].equals(url)) {
 							if (item.isPreview) {
@@ -661,6 +660,7 @@ public class PlayerActivity extends VodMenuAction {
 									(System.currentTimeMillis() - bufferDuration),
 									VodUserAgent.getMediaIp(url), item.pk,
 									adlog.get(url), "bestv");
+							adsumtime -= (currPosition / 1000);
 							if (paths[paths.length - 2].equals(url)) {
 								if (mHandler.hasMessages(AD_COUNT_ACTION))
 									mHandler.removeMessages(AD_COUNT_ACTION);
@@ -1156,6 +1156,9 @@ public class PlayerActivity extends VodMenuAction {
 					if (!isSeek && !isBuffer && !live_video) {
 						currPosition = mVideoView.getCurrentPosition();
 						timeBar.setProgress(currPosition);
+					}
+					if(isadvideoplaying){
+						ad_count_view.setText("广告倒计时" + (adsumtime -(currPosition / 1000)));
 					}
 				} else {
 					if (!paused && !isBuffer) {
