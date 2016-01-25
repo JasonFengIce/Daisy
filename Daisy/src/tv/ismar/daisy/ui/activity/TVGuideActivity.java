@@ -202,16 +202,16 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 return;
             if (hasFocus) {
                 TextView textview = (TextView) lastview.findViewById(R.id.channel_item);
-                textview.setBackgroundResource(R.drawable.channel_item_normal);
+                lastview.setBackgroundResource(R.drawable.channel_item_normal);
                 textview.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
-                AnimationSet animationSet1 = new AnimationSet(true);
-                ScaleAnimation scaleAnimation1 = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
-                        Animation.RELATIVE_TO_SELF, 0.5f,
-                        Animation.RELATIVE_TO_SELF, 0.5f);
-                scaleAnimation1.setDuration(200);
-                animationSet1.addAnimation(scaleAnimation1);
-                animationSet1.setFillAfter(true);
-                textview.startAnimation(animationSet1);
+//                AnimationSet animationSet1 = new AnimationSet(true);
+//                ScaleAnimation scaleAnimation1 = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
+//                        Animation.RELATIVE_TO_SELF, 0.5f,
+//                        Animation.RELATIVE_TO_SELF, 0.5f);
+//                scaleAnimation1.setDuration(200);
+//                animationSet1.addAnimation(scaleAnimation1);
+//                animationSet1.setFillAfter(true);
+//                textview.startAnimation(animationSet1);
 //                scroll.requestFocus();
                 switch (v.getId()) {
                     case R.id.arrow_scroll_left:
@@ -249,14 +249,14 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             TextView textview = (TextView) lastview.findViewById(R.id.channel_item);
             textview.setBackgroundResource(R.drawable.channel_item_normal);
             textview.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
-            AnimationSet animationSet1 = new AnimationSet(true);
-            ScaleAnimation scaleAnimation1 = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
-                    Animation.RELATIVE_TO_SELF, 0.5f,
-                    Animation.RELATIVE_TO_SELF, 0.5f);
-            scaleAnimation1.setDuration(200);
-            animationSet1.addAnimation(scaleAnimation1);
-            animationSet1.setFillAfter(true);
-            textview.startAnimation(animationSet1);
+//            AnimationSet animationSet1 = new AnimationSet(true);
+//            ScaleAnimation scaleAnimation1 = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
+//                    Animation.RELATIVE_TO_SELF, 0.5f,
+//                    Animation.RELATIVE_TO_SELF, 0.5f);
+//            scaleAnimation1.setDuration(200);
+//            animationSet1.addAnimation(scaleAnimation1);
+//            animationSet1.setFillAfter(true);
+//            textview.startAnimation(animationSet1);
             switch (v.getId()) {
                 case R.id.arrow_scroll_left:
                     channelChange = ChannelChange.LEFT_ARROW;
@@ -336,11 +336,15 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         String localInfo = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.LOCATION_INFO, "");
         getHardInfo();
         updatePoster();
-        String product = Build.BRAND.replace(" ", "_");
-        String mode = VodUserAgent.getModelName();
-		if (!activator.iswaiting)
-			activator.active(product, mode,
-					String.valueOf(SimpleRestClient.appVersion), localInfo);
+		if (StringUtils.isEmpty(SimpleRestClient.device_token)) {
+			String product = Build.BRAND.replace(" ", "_");
+			String mode = VodUserAgent.getModelName();
+			if (!activator.iswaiting)
+				activator.active(product, mode,
+						String.valueOf(SimpleRestClient.appVersion), localInfo);
+		} else {
+			fetchChannels();
+		}
     }
 
 
@@ -356,7 +360,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 if (hasFocus) {
                     scroll.requestFocus();
                     TextView tv = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
-                    tv.setBackgroundResource(R.drawable.channel_item_selectd_focus);
+                    scroll.getSelectedView().setBackgroundResource(R.drawable.channel_item_selectd_focus);
                 }
             }
         });
@@ -494,16 +498,16 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     private void setClickChannelView(View view) {
         TextView channelBtn = (TextView) view.findViewById(R.id.channel_item);
-        channelBtn.setBackgroundResource(R.drawable.channel_item_focus);
+        view.setBackgroundResource(R.drawable.channel_item_focus);
         channelBtn.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
-        AnimationSet animationSet = new AnimationSet(true);
-        ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
-                Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF, 0.5f);
-        scaleAnimation.setDuration(200);
-        animationSet.addAnimation(scaleAnimation);
-        animationSet.setFillAfter(true);
-        channelBtn.startAnimation(animationSet);
+//        AnimationSet animationSet = new AnimationSet(true);
+//        ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
+//                Animation.RELATIVE_TO_SELF, 0.5f,
+//                Animation.RELATIVE_TO_SELF, 0.5f);
+//        scaleAnimation.setDuration(200);
+//        animationSet.addAnimation(scaleAnimation);
+//        animationSet.setFillAfter(true);
+//        channelBtn.startAnimation(animationSet);
     }
 
     private int FOCUS_CHANNEL_BG = 0xffffba00;
@@ -546,14 +550,15 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             public void onFocusChange(View view, boolean flag) {
                 if (channelscrollIndex > 0 || scroll.getSelectedView() == null)
                     return;
-                TextView v = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
+                View selectedView = scroll.getSelectedView();
+                TextView v = (TextView) selectedView.findViewById(R.id.channel_item);
                 if (flag && scrollFromBorder) {
-                    v.setBackgroundResource(R.drawable.channel_item_selectd_focus);
+                	selectedView.setBackgroundResource(R.drawable.channel_item_selectd_focus);
                 } else {
                     //v.setTextColor(R.color._ffffff);
-                    v.setBackgroundResource(R.drawable.channel_item_focus);
+                	selectedView.setBackgroundResource(R.drawable.channel_item_focus);
                 }
-                v.invalidate();
+                selectedView.invalidate();
             }
         });
         scroll.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -577,30 +582,30 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
 
                     TextView mlastview = (TextView) lastview.findViewById(R.id.channel_item);
-                    mlastview.setBackgroundResource(0);
+                    lastview.setBackgroundResource(R.drawable.channel_item_normal);
                     mlastview.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
-                    AnimationSet animationSet1 = new AnimationSet(true);
-                    ScaleAnimation scaleAnimation1 = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
-                            Animation.RELATIVE_TO_SELF, 0.5f,
-                            Animation.RELATIVE_TO_SELF, 0.5f);
-                    scaleAnimation1.setDuration(200);
-                    animationSet1.addAnimation(scaleAnimation1);
-                    animationSet1.setFillAfter(true);
-                    mlastview.startAnimation(animationSet1);
+//                    AnimationSet animationSet1 = new AnimationSet(true);
+//                    ScaleAnimation scaleAnimation1 = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
+//                            Animation.RELATIVE_TO_SELF, 0.5f,
+//                            Animation.RELATIVE_TO_SELF, 0.5f);
+//                    scaleAnimation1.setDuration(200);
+//                    animationSet1.addAnimation(scaleAnimation1);
+//                    animationSet1.setFillAfter(true);
+//                    mlastview.startAnimation(animationSet1);
                 }
                 // if(view!=clickView){
                 if (!scrollFromBorder)
-                    channelBtn.setBackgroundResource(R.drawable.channel_item_selectd_focus);
+                	view.setBackgroundResource(R.drawable.channel_item_selectd_focus);
                 else
-                    channelBtn.setBackgroundResource(R.drawable.channel_item_focus);
-                AnimationSet animationSet = new AnimationSet(true);
-                ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
-                        Animation.RELATIVE_TO_SELF, 0.5f,
-                        Animation.RELATIVE_TO_SELF, 0.5f);
-                scaleAnimation.setDuration(200);
-                animationSet.addAnimation(scaleAnimation);
-                animationSet.setFillAfter(true);
-                channelBtn.startAnimation(animationSet);
+                	view.setBackgroundResource(R.drawable.channel_item_focus);
+//                AnimationSet animationSet = new AnimationSet(true);
+//                ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
+//                        Animation.RELATIVE_TO_SELF, 0.5f,
+//                        Animation.RELATIVE_TO_SELF, 0.5f);
+//                scaleAnimation.setDuration(200);
+//                animationSet.addAnimation(scaleAnimation);
+//                animationSet.setFillAfter(true);
+//                channelBtn.startAnimation(animationSet);
 
 
                 if (lastview == view) {
@@ -641,12 +646,12 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         	if(channelscrollIndex == 0){
             setClickChannelView(scroll.getChildAt(0));
             lastview = scroll.getChildAt(0);
-            TextView v = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
-            v.setBackgroundResource(R.drawable.channel_item_selectd_focus);
+//            TextView v = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
+            scroll.getSelectedView().setBackgroundResource(R.drawable.channel_item_selectd_focus);
         	}else{
                 lastview = scroll.getChildAt(0);
                 TextView v = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
-                v.setBackgroundResource(0);
+                lastview.setBackgroundResource(R.drawable.channel_item_normal);
         	}
             scroll.setOnScrollListener(null);
         }
@@ -1180,7 +1185,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     }
 
     private void setbackground(int id) {
-
 
         BitmapFactory.Options opt = new BitmapFactory.Options();
 
