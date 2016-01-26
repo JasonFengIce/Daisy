@@ -331,12 +331,12 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
         initViews();
         initTabView();
-        activator = Activator.getInstance(this);
-        activator.setOnCompleteListener(this);
         String localInfo = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.LOCATION_INFO, "");
         getHardInfo();
         updatePoster();
 		if (StringUtils.isEmpty(SimpleRestClient.device_token)) {
+	        activator = Activator.getInstance(this);
+	        activator.setOnCompleteListener(this);
 			String product = Build.BRAND.replace(" ", "_");
 			String mode = VodUserAgent.getModelName();
 			if (!activator.iswaiting)
