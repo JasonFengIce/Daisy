@@ -34,7 +34,7 @@ public class AccountSharedPrefs {
     public static final String IP = "ip";
     public static final String GEO_ID = "geo_id";
     public static final String FIRST_USE = "first_use";
-
+    public static final String WEATHER_INFO = "weather_info";
 
     private static AccountSharedPrefs instance;
 

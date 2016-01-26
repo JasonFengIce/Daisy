@@ -164,13 +164,22 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
     }
 
     private void fetchWeatherInfo(String geoId) {
-        Retrofit retrofit = HttpManager.getInstance().media_lily_Retrofit;
+		String weather = AccountSharedPrefs.getInstance()
+				.getSharedPreferences()
+				.getString(AccountSharedPrefs.WEATHER_INFO, null);
+		if (StringUtils.isNotEmpty(weather)) {
+			parseXml(weather);
+		}
+		Retrofit retrofit = HttpManager.getInstance().media_lily_Retrofit;
         retrofit.create(HttpAPI.WeatherAPI.class).doRequest(geoId).enqueue(new retrofit.Callback<ResponseBody>() {
             @Override
             public void onResponse(retrofit.Response<ResponseBody> response, Retrofit retrofit) {
                 try {
+                	if(response.body() != null){
                     String result = response.body().string();
+                    AccountSharedPrefs.getInstance().getSharedPreferences().edit().putString(AccountSharedPrefs.WEATHER_INFO, result);
                     parseXml(result);
+                	}
                 } catch (IOException e) {
                     Log.e(TAG, "解析天气数据失败");
                 }

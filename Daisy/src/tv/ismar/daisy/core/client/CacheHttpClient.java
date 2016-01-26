@@ -119,7 +119,9 @@ public class CacheHttpClient extends Thread {
 
             Response response;
             response = client.newCall(request).execute();
-            String result = response.body().string();
+            String result = "";
+            if(response.body() != null){
+            result = response.body().string();
             Log.i(TAG, "---> BEGIN\n" +
                             "\t<--- Request URL: " + "\t" + mUrlPath + "\n" +
                             "\t<--- Request Method: " + "\t" + "GET" + "\n" +
@@ -127,7 +129,7 @@ public class CacheHttpClient extends Thread {
                             "\t<--- Response Result: " + "\t" + result + "\n" +
                             "\t---> END"
             );
-
+            }
             if (!TextUtils.isEmpty(result)) {
                 HttpCacheSharedPrefs.setSharedPrefs(md5Url, result);
                 Message message = new Message();

@@ -109,11 +109,15 @@ public class Activator {
             @Override
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
+                	if(response.body() != null){
                     FileOutputStream fs = mContext.openFileOutput(SIGN_FILE_NAME, Context.MODE_WORLD_READABLE);
                     fs.write(response.body().bytes());
                     fs.flush();
                     fs.close();
                     activator(sn, manufacture, kind, version, fingerprint);
+                	}else{
+                		mOnComplete.onFailed("get licence failure!!!");
+                		}
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {

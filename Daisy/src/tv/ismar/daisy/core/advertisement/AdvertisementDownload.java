@@ -39,6 +39,7 @@ public class AdvertisementDownload implements Runnable {
             Response response;
             Request request = new Request.Builder().url(downloadUrl).build();
             response = client.newCall(request).execute();
+            if(response.body() != null){
             InputStream inputStream = response.body().byteStream();
             byte[] buffer = new byte[1024];
             int byteRead;
@@ -48,6 +49,7 @@ public class AdvertisementDownload implements Runnable {
             fileOutputStream.flush();
             fileOutputStream.close();
             inputStream.close();
+            }
         } catch (IOException e) {
             new CallaPlay().bootAdvExcept(AdvertisementLogger.BOOT_ADV_DOWNLOAD_EXCEPTION_CODE, AdvertisementLogger.BOOT_ADV_DOWNLOAD_EXCEPTION_STRING);
             Log.e(TAG, "advertisement download exception!!!");

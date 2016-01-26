@@ -256,7 +256,10 @@ public class IsmartvUrlClient extends Thread {
 
             Response response;
             response = client.newCall(request).execute();
-            String result = response.body().string();
+            String result = "";
+            if(response.body() != null){
+            result = response.body().string();
+            }
             Log.i(TAG, "---> BEGIN\n" +
                             "\t<--- Request URL: " + "\t" + api + "\n" +
                             "\t<--- Request Method: " + "\t" + "GET" + "\n" +

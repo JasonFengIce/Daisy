@@ -73,6 +73,7 @@ public class DownloadClient implements Runnable {
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder().url(url).build();
             Response response = client.newCall(request).execute();
+            if(response.body() != null){
             InputStream inputStream = response.body().byteStream();
             byte[] buffer = new byte[1024];
             int byteRead;
@@ -82,6 +83,7 @@ public class DownloadClient implements Runnable {
             fileOutputStream.flush();
             fileOutputStream.close();
             inputStream.close();
+            }
         } catch (IOException e) {
         }
 

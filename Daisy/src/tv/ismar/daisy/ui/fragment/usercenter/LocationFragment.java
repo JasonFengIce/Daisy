@@ -336,12 +336,14 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
         retrofit.create(HttpAPI.WeatherAPI.class).doRequest(geoId).enqueue(new retrofit.Callback<ResponseBody>() {
             @Override
             public void onResponse(retrofit.Response<ResponseBody> response, Retrofit retrofit) {
-                try {
-                    String result = response.body().string();
-                    parseXml(result);
-                } catch (IOException e) {
-                    Log.e(TAG, "解析天气数据失败");
-                }
+						try {
+							if (response.body() != null) {
+								String result = response.body().string();
+								parseXml(result);
+							}
+						} catch (IOException e) {
+							Log.e(TAG, "解析天气数据失败");
+						}
             }
 
             @Override
