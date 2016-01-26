@@ -1356,7 +1356,11 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             if (keyCode == 707 || keyCode == 774 || keyCode == 253) {
                 isneedpause = false;
             }
-        } else {
+        }else if("lx565ab".equals(VodUserAgent.getModelName())){
+			if(keyCode == 82 || keyCode == 707 || keyCode ==253){
+				isneedpause = false;
+			}
+		} else {
             if (keyCode == 223 || keyCode == 499 || keyCode == 480) {
                 isneedpause = false;
             }
