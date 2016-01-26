@@ -2,7 +2,6 @@ package tv.ismar.daisy.qiyimediaplayer;
 
 import com.qiyi.video.player.data.Definition;
 import com.qiyi.video.player.data.IPlaybackInfo;
-import com.qiyi.video.utils.LogUtils;
 
 /**
  * Reference implementation of IPlaybackInfo
@@ -50,19 +49,16 @@ public class SdkVideo implements IPlaybackInfo {
 
     @Override
     public String getAlbumId() {
-        if (LogUtils.mIsDebug) LogUtils.d(TAG, "getAlbumId() returns " + mAlbumId);
         return mAlbumId;
     }
 
     @Override
     public String getTvId() {
-        if (LogUtils.mIsDebug) LogUtils.d(TAG, "getTvId() returns " + mTvId);
         return mTvId;
     }
 
     @Override
     public String getVid() {
-        if (LogUtils.mIsDebug) LogUtils.d(TAG, "getVid() returns " + mVid);
         return mVid;
     }
 
