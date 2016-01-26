@@ -2,6 +2,7 @@ package tv.ismar.daisy.ui.adapter.weather;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -60,7 +61,20 @@ public class ProvinceAdapter extends BaseAdapter implements View.OnFocusChangeLi
         viewHolder.provinceTextView.setTag(position);
         viewHolder.provinceTextView.setOnFocusChangeListener(this);
         viewHolder.provinceTextView.setOnClickListener(this);
-
+        viewHolder.provinceTextView.setOnHoverListener(new View.OnHoverListener() {
+			
+			@Override
+			public boolean onHover(View v, MotionEvent event) {
+				int what = event.getAction();
+				switch (what) {
+				case MotionEvent.ACTION_HOVER_MOVE:
+				case MotionEvent.ACTION_HOVER_ENTER:
+					v.requestFocus();
+					break;
+				}
+				return false;
+			}
+		});
         return convertView;
     }
 

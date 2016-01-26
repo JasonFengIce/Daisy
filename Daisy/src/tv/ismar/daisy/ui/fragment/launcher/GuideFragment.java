@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -320,6 +321,7 @@ public class GuideFragment extends ChannelBaseFragment {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     Object tagObject = v.getTag(R.id.poster_title);
+                    Log.v("aaaa", "onFocusChange = "+hasFocus);
                     if (hasFocus) {
                         ((HomeItemContainer) v.getParent())
                                 .setDrawBorder(true);
@@ -337,6 +339,7 @@ public class GuideFragment extends ChannelBaseFragment {
                     }
                 }
             });
+
             Picasso.with(mContext).load(posters.get(i).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE)
                     .into(itemView);
             posters.get(i).setPosition(i);
@@ -360,7 +363,8 @@ public class GuideFragment extends ChannelBaseFragment {
             }
         }
 
-
+        guideRecommmendList.setFocusable(true);
+        guideRecommmendList.setFocusableInTouchMode(true);
         guideRecommmendList.addAllViews(imageViews);
 
     }

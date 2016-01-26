@@ -8,7 +8,7 @@
               android:clipChildren="false"
               android:clipToPadding="false">
 
-    <LinearLayout
+    <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/film_linearLayout_h"
             android:layout_marginTop="@dimen/film_linearLayout_margin"
@@ -27,6 +27,7 @@
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="@color/shawdow"
                 labelimage:focuspaddingtop="0.89"
+                labelimage:needzoom="true"
                 labelimage:focustextsize="@dimen/toppage_fragment_poster_title_textsize"
                 labelimage:maxfocustitle="8"
                 />
@@ -37,6 +38,7 @@
                 android:layout_height="@dimen/film_post_layout_h"
                 android:layout_marginLeft="@dimen/film_post_layout_ml"
                 android:layout_marginRight="@dimen/film_post_layout_ml"
+                android:layout_toRightOf="@id/film_lefttop_image"
                 android:focusable="true"
                 android:clickable="true"
                 >
@@ -49,11 +51,13 @@
                     android:focusableInTouchMode="false"/>
 
             <tv.ismar.daisy.views.LabelImageView
+                xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
                     android:id="@+id/film_linked_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:focusable="false"
                     android:scaleType="fitXY"
+                    labelimage:needzoom="true"
                     android:visibility="gone"/>
 
             <TextView
@@ -69,16 +73,17 @@
                     />
         </tv.ismar.daisy.ui.widget.HomeItemContainer>
 
-        <LinearLayout
+        <RelativeLayout
                 android:id="@+id/film_carousel_layout"
                 android:layout_width="@dimen/film_carousel_layout_w"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:clipChildren="false"
                 android:clipToPadding="false"
+                android:layout_toRightOf="@id/film_post_layout"
                 >
-        </LinearLayout>
-    </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
 
     <LinearLayout
             android:id="@+id/film_recommend_list"

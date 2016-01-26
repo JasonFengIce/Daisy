@@ -1324,8 +1324,8 @@ public class MyHorizontalScrollView extends FrameLayout {
         offsetDescendantRectToMyCoords(child, mTempRect);
 
         int scrollDelta = computeScrollDeltaToGetChildRectOnScreen(mTempRect);
-
-        if (scrollDelta != 0) {
+        Log.v("aaaa", "scrollDelta = "+scrollDelta);
+        if (scrollDelta != 0 && !child.isHovered()) {
             scrollBy(scrollDelta, 0);
         }
     }
@@ -1422,7 +1422,6 @@ public class MyHorizontalScrollView extends FrameLayout {
         if (!mIsLayoutDirty) {
             scrollToChild(focused);
         } else {
-            // The child may not be laid out yet, we can't compute the scroll yet
             mChildToScrollTo = focused;
         }
         super.requestChildFocus(child, focused);

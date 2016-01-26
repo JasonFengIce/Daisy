@@ -44,13 +44,8 @@
                 android:layout_height="match_parent"
                 android:clipChildren="false"
                 android:clipToPadding="false"
+
                 />
-        <TextView  android:id="@+id/toppage_divide_view"
-                   android:layout_width="match_parent"
-                   android:layout_height="3dip"
-                   android:layout_below="@id/container"
-                   android:focusable="true"
-                   />
         <ImageView
             android:id="@+id/arrow_scroll_left_visible"
                 android:layout_width="@dimen/tv_guide_arrow_scroll_w"
@@ -113,6 +108,15 @@
                 <!--android:orientation="horizontal">-->
         <!--</LinearLayout>-->
     <!--</tv.ismar.daisy.views.MyHorizontalScrollView>-->
+            <TextView  android:id="@+id/toppage_divide_view"
+                   android:layout_width="128.3dip"
+                   android:layout_height="1dip"
+                   android:layout_marginBottom="2dip"
+                   android:layout_marginLeft="100dip"
+                   android:focusable="true"
+                   android:focusableInTouchMode="true"
+                   android:visibility="gone"
+                   />
     <org.sakuratya.horizontal.ui.HGridView
             xmlns:sakura="http://schemas.android.com/apk/res/tv.ismar.daisy"
             android:layout_weight="0.7"
@@ -125,7 +129,7 @@
             android:fadingEdge="horizontal"
             sakura:selectorDrawable="@null"
             android:visibility="gone"
-            android:nextFocusUp="@+id/guidefragment_firstpost"
+            android:nextFocusUp="@id/toppage_divide_view"
       >
     </org.sakuratya.horizontal.ui.HGridView>
     <LinearLayout

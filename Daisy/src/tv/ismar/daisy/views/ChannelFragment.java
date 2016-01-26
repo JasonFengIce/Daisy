@@ -88,9 +88,8 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 
     private HashMap<String, Object> mSectionProperties = new HashMap<String, Object>();
 
-    //private ImageView leftarrow;
-    //private ImageView arrow_left;
-    //private ImageView arrow_right;
+    private ImageView arrow_left;
+    private ImageView arrow_right;
     //private Button btn_search;
     private View large_layout;
     private MenuFragment mMenuFragment;
@@ -116,22 +115,62 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
         mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
         left_shadow = (Button) fragmentView.findViewById(R.id.left_shadow);
         right_shadow = (Button) fragmentView.findViewById(R.id.right_shadow);
+        arrow_left = (ImageView) fragmentView.findViewById(R.id.arrow_left);
+        arrow_left.setOnHoverListener(new View.OnHoverListener() {
+
+			@Override
+			public boolean onHover(View arg0, MotionEvent arg1) {
+				// TODO Auto-generated method stub
+				if(arg1.getAction() == MotionEvent.ACTION_HOVER_ENTER){
+					Log.v("aaaa", "arrow_left");
+					}
+				return true;
+			}
+		});
+        arrow_left.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mScrollableSectionList.scrollBy(-233, 0);
+			}
+		});
+        arrow_right = (ImageView) fragmentView.findViewById(R.id.arrow_right);
+        arrow_right.setOnHoverListener(new View.OnHoverListener() {
+
+			@Override
+			public boolean onHover(View arg0, MotionEvent arg1) {
+				// TODO Auto-generated method stub
+				if(arg1.getAction() == MotionEvent.ACTION_HOVER_ENTER){
+				Log.v("aaaa", "arrow_right");
+				}
+				return true;
+			}
+		});
+        arrow_right.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mScrollableSectionList.scrollBy(233, 0);
+			}
+		});
         mHGridView.leftbtn = left_shadow;
         mHGridView.rightbtn = right_shadow;
-//        if(left_shadow!=null&&right_shadow!=null){
-//            left_shadow.setOnClickListener(new OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    mHGridView.pageScroll(View.FOCUS_LEFT);
-//                }
-//            });
-//            right_shadow.setOnClickListener(new OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    mHGridView.pageScroll(View.FOCUS_RIGHT);
-//                }
-//            });
-//        }
+        if(left_shadow!=null&&right_shadow!=null){
+            left_shadow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mHGridView.pageScroll(View.FOCUS_LEFT);
+                }
+            });
+            right_shadow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mHGridView.pageScroll(View.FOCUS_RIGHT);
+                }
+            });
+        }
 
 
         left_shadow.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -160,19 +199,16 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
         mHGridView.setOnItemClickListener(this);
         mHGridView.setOnItemSelectedListener(this);
         mHGridView.setOnScrollListener(this);
-
         mHGridView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    Log.i("testHGRIDVIEW", "focus");
-                    if (mScrollableSectionList != null) {
+                    if (mScrollableSectionList != null && mScrollableSectionList.sectionWhenGoto != null) {
                         mScrollableSectionList.currentState = ScrollableSectionList.STATE_GOTO_GRIDVIEW;
                         mScrollableSectionList.sectionWhenGoto.setTextColor(0xffffffff);
                         mScrollableSectionList.sectionWhenGoto.setBackgroundResource(R.drawable.gotogridview);
                     }
                 } else {
-                    Log.i("testHGRIDVIEW", "lostfocus");
                     if (mScrollableSectionList != null)
                         mScrollableSectionList.currentState = ScrollableSectionList.STATE_LEAVE_GRIDVIEW;
                 }
@@ -592,6 +628,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
         @Override
         public void onSectionSelectChanged(int index) {
             checkSectionChanged(index);
+            Log.v("aaaa", "index = "+index);
             mHGridView.jumpToSection(index);
         }
     };
@@ -913,7 +950,11 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
         if (percentage == 100 && sectionIndex == mSectionList.size() - 1) {
             // right_shadow.setVisibility(View.INVISIBLE);
         }
-
+        if(mScrollableSectionList != null && mScrollableSectionList.sectionhovered != null){
+//        	mScrollableSectionList.sectionhovered.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
+//        	mScrollableSectionList.sectionhovered.setBackgroundResource(android.R.color.transparent);
+//        	mScrollableSectionList.sectionhovered = null;
+        }
     }
 
     @Override

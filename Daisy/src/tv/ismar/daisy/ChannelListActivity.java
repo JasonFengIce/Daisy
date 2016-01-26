@@ -153,7 +153,7 @@ public class ChannelListActivity extends BaseActivity {
 					if(1 == portraitflag){
 	                channelFragment.setIsPOrtrait(false);
 					}else if(2 == portraitflag){
-						channelFragment.setIsPOrtrait(true);					
+						channelFragment.setIsPOrtrait(true);				
 					}
 					channelFragment.mChannel = channel;
 					channelFragment.mTitle = title;  //chinesemovie

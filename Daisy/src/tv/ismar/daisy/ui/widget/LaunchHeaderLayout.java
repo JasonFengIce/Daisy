@@ -1,25 +1,5 @@
 package tv.ismar.daisy.ui.widget;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import com.activeandroid.query.Select;
-import com.squareup.okhttp.ResponseBody;
-
-import org.apache.commons.lang3.StringUtils;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-
 import java.io.IOException;
 import java.io.StringReader;
 import java.text.SimpleDateFormat;
@@ -31,6 +11,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.commons.lang3.StringUtils;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+
 import retrofit.Retrofit;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.HttpAPI;
@@ -39,11 +24,27 @@ import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.core.weather.WeatherInfoHandler;
 import tv.ismar.daisy.data.table.location.CityTable;
 import tv.ismar.daisy.data.weather.WeatherEntity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnHoverListener;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.activeandroid.query.Select;
+import com.squareup.okhttp.ResponseBody;
 
 /**
  * Created by huaijie on 2015/7/21.
  */
-public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListener, View.OnFocusChangeListener {
+public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListener, View.OnFocusChangeListener,OnHoverListener {
     private static final String TAG = "LaunchHeaderLayout";
     private Context context;
 
@@ -130,6 +131,7 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
             TextView textView = (TextView) view.findViewById(R.id.weather_indicator);
             view.setOnClickListener(this);
             view.setOnFocusChangeListener(this);
+            view.setOnHoverListener(this);
             textView.setText(res);
             view.setId(res);
             if (i == 0) {
@@ -274,6 +276,26 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
             imageView.setVisibility(View.INVISIBLE);
         }
     }
+
+	@Override
+	public boolean onHover(View v, MotionEvent event) {
+		// TODO Auto-generated method stub
+		ImageView imageView = (ImageView) v.findViewById(R.id.indicator_image);
+		TextView textView = (TextView) v.findViewById(R.id.weather_indicator);
+		if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER) {
+			textView.setTextColor(getResources().getColor(R.color._ff9c3c));
+			imageView.setVisibility(View.VISIBLE);
+			v.requestFocus();
+		} else if (event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+			textView.setTextColor(getResources().getColor(R.color._ff9c3c));
+			imageView.setVisibility(View.VISIBLE);
+		} else {
+			textView.setTextColor(getResources().getColor(
+					R.color.association_normal));
+			imageView.setVisibility(View.INVISIBLE);
+		}
+		return false;
+	}
 
     public void hideIndicatorTable() {
         for (View textView : indicatorTableList) {

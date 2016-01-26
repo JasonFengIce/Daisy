@@ -6,6 +6,7 @@
     android:background="@drawable/related_bg"
     android:paddingLeft="@dimen/related_item_image_marginleft"
    android:focusable="true"
+   android:focusableInTouchMode="true"
    android:gravity="center_vertical">
     
     <tv.ismar.daisy.views.AsyncImageView

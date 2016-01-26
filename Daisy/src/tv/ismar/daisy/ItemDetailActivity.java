@@ -49,9 +49,11 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.View.OnHoverListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -89,7 +91,7 @@ public class ItemDetailActivity extends BaseActivity implements
     // private Button mBtnLeftBuy;
     // private Button mBtnFillBuy;
     private LinearLayout mDetailRightContainer;
-    private LinearLayout mRelatedVideoContainer;
+    private RelativeLayout mRelatedVideoContainer;
     private Button mMoreContent;
     private TextView detail_price_txt;
     private TextView detail_duration_txt;
@@ -155,7 +157,7 @@ public class ItemDetailActivity extends BaseActivity implements
         // mBtnFavorite = (Button) findViewById(R.id.btn_favorite);
         // mBtnFillBuy = (Button)findViewById(R.id.btn_fill_buy);
         mDetailRightContainer = (LinearLayout) findViewById(R.id.detail_right_container);
-        mRelatedVideoContainer = (LinearLayout) findViewById(R.id.related_video_container);
+        mRelatedVideoContainer = (RelativeLayout) findViewById(R.id.related_video_container);
         mMoreContent = (Button) findViewById(R.id.more_content);
         detail_price_txt = (TextView) findViewById(R.id.detail_price_txt);
         detail_duration_txt = (TextView) findViewById(R.id.detail_duration_txt);
@@ -178,19 +180,21 @@ public class ItemDetailActivity extends BaseActivity implements
                 initFocusBtn(v, hasFocus);
             }
         });
+        mLeftBtn.setOnHoverListener(mOnHoverListener);
         mMiddleBtn.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 initFocusBtn(v, hasFocus);
             }
         });
-
+        mMiddleBtn.setOnHoverListener(mOnHoverListener);
         mRightBtn.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 initFocusBtn(v, hasFocus);
             }
         });
+        mRightBtn.setOnHoverListener(mOnHoverListener);
         //mLeftBtn.setPressed(true);
 
         // mBtnFavorite.setOnClickListener(mIdOnClickListener);
@@ -848,12 +852,16 @@ public class ItemDetailActivity extends BaseActivity implements
             RelativeLayout relatedHolder = (RelativeLayout) LayoutInflater
                     .from(ItemDetailActivity.this).inflate(
                             R.layout.related_item_layout, null);
-
-            LinearLayout.LayoutParams layoutParams;
-            layoutParams = new LinearLayout.LayoutParams(getResources()
+            relatedHolder.setId(R.id.related_video_container+i);
+            RelativeLayout.LayoutParams layoutParams;
+            layoutParams = new RelativeLayout.LayoutParams(getResources()
                     .getDimensionPixelSize(R.dimen.item_detail_related_W),
                     getResources().getDimensionPixelSize(
                             R.dimen.item_detail_related_H));
+            if(i!=0){
+//            layoutParams.leftMargin = 8;
+            layoutParams.addRule(RelativeLayout.BELOW,R.id.related_video_container+i-1);
+            }
             relatedHolder.setLayoutParams(layoutParams);
             TextView titleView = (TextView) relatedHolder
                     .findViewById(R.id.related_title);
@@ -891,7 +899,10 @@ public class ItemDetailActivity extends BaseActivity implements
             relatedHolder
                     .setOnFocusChangeListener(mRelatedOnFocusChangeListener);
             relatedHolder.setOnClickListener(mRelatedClickListener);
+            relatedHolder.setOnHoverListener(mOnHoverListener);
         }
+        mLeftBtn.setFocusable(true);
+        mLeftBtn.requestFocus();
     }
 
     private OnFocusChangeListener mRelatedOnFocusChangeListener = new OnFocusChangeListener() {
@@ -900,6 +911,7 @@ public class ItemDetailActivity extends BaseActivity implements
         public void onFocusChange(View v, boolean hasFocus) {
             if (v.getParent() == mRelatedVideoContainer) {
                 if (hasFocus) {
+                	v.setBackgroundResource(R.drawable.related_bg);
                     TextView title = (TextView) v
                             .findViewById(R.id.related_title);
                     title.setTextColor(0xFFF8F8FF);
@@ -1433,4 +1445,31 @@ public class ItemDetailActivity extends BaseActivity implements
 		return ret;
 	}
 
+	private OnHoverListener mOnHoverListener = new OnHoverListener() {
+
+		@Override
+		public boolean onHover(View v, MotionEvent keycode) {
+			switch (keycode.getAction()) {
+			case MotionEvent.ACTION_HOVER_ENTER:
+			case MotionEvent.ACTION_HOVER_MOVE:
+				if(v instanceof Button){
+					v.requestFocus();
+					initFocusBtn(v, true);
+				}else{
+					v.requestFocus();			
+				}
+				break;
+			case MotionEvent.ACTION_HOVER_EXIT:
+				if(v instanceof Button){	
+					initFocusBtn(v, false);
+				}else{
+					v.setBackgroundResource(0);					
+				}
+				break;
+			default:
+				break;
+			}
+			return false;
+		}
+	};
 }

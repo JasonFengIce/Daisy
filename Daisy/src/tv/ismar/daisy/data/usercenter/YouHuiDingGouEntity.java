@@ -132,8 +132,8 @@ public class YouHuiDingGouEntity {
 
     public class Expense {
         private String duration;
-        private int subprice;
-        private int price;
+        private float subprice;
+        private float price;
 
         public String getDuration() {
             return duration;
@@ -143,7 +143,7 @@ public class YouHuiDingGouEntity {
             this.duration = duration;
         }
 
-        public int getSubprice() {
+        public float getSubprice() {
             return subprice;
         }
 
@@ -151,7 +151,7 @@ public class YouHuiDingGouEntity {
             this.subprice = subprice;
         }
 
-        public int getPrice() {
+        public float getPrice() {
             return price;
         }
 

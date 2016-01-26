@@ -1,5 +1,13 @@
 package tv.ismar.daisy.views;
 
+import java.text.DecimalFormat;
+
+import org.sakuratya.horizontal.ui.HGridView;
+
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.models.Section;
+import tv.ismar.daisy.models.SectionList;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
@@ -9,19 +17,17 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.FocusFinder;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
-import org.sakuratya.horizontal.ui.HGridView;
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.MessageGZIP;
-import tv.ismar.daisy.models.Section;
-import tv.ismar.daisy.models.SectionList;
+import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import java.text.DecimalFormat;
-
-public class ScrollableSectionList extends HorizontalScrollView {
+public class ScrollableSectionList extends tv.ismar.daisy.views.MyHorizontalScrollView {
 	
 	private static final String TAG = "ScrollableSectionList";
 	
@@ -82,6 +88,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
 	public void init(SectionList sectionLists, int totalWidth,boolean isChangeBarStyle) {
         rate = DaisyUtils.getVodApplication(getContext()).getRate(getContext());
 		mContainer = new LinearLayout(getContext());
+		mContainer.setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
 		this.isChangeBarStyle = isChangeBarStyle;
 //		int H = DaisyUtils.getVodApplication(getContext()).getheightPixels(getContext());
 //		if(H==720)
@@ -114,6 +121,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
         sectionFilter.setOnFocusChangeListener(mOnFocusChangeListener);
         sectionFilter.setOnClickListener(mOnClickListener);
         sectionFilter.setTag(0);
+        sectionFilter.setId(R.layout.section_list_item+1);
         mContainer.addView(sectionFilter, 0);
 
 		for(int i=0; i<sectionList.size(); i++) {			
@@ -121,6 +129,8 @@ public class ScrollableSectionList extends HorizontalScrollView {
 					.getDimensionPixelSize(R.dimen.channel_section_tabs_W));
 			sectionHolder.setOnFocusChangeListener(mOnFocusChangeListener);
 			sectionHolder.setOnClickListener(mOnClickListener);
+			sectionHolder.setOnHoverListener(mOnTouchListener);
+			sectionHolder.setId(R.layout.section_list_item+2+i);
 			sectionHolder.setTag(i+1);
             mContainer.addView(sectionHolder, i+1);
             if(i==sectionList.size()-1){
@@ -164,8 +174,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
         layoutParams = new LinearLayout.LayoutParams(233, LinearLayout.LayoutParams.MATCH_PARENT);
         DecimalFormat fnum = new DecimalFormat("##0.00");
         String dd = fnum.format(1 / rate);
-		layoutParams.rightMargin = (int)Float.parseFloat(dd);
-
+//		layoutParams.rightMargin = (int)Float.parseFloat(dd);
 		sectionHolder.setLayoutParams(layoutParams);
 		sectionHolder.setFocusable(true);
 		TextView label = (TextView) sectionHolder.findViewById(R.id.section_label);
@@ -188,6 +197,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
         label.setTag("filter");
         return sectionHolder;
     }
+
 	private View lastView = null;
 	private OnFocusChangeListener mOnFocusChangeListener = new OnFocusChangeListener() {
 		
@@ -215,9 +225,19 @@ public class ScrollableSectionList extends HorizontalScrollView {
 
 			TextView label = (TextView) v.findViewById(R.id.section_label);
 			if(hasFocus){
+				Log.v("aaaa", "onFocusChange tag = "+index);
+				if(v.isHovered()){
+					label.setBackgroundResource(R.drawable.channel_focus_frame);
+					return;
+				}
+				if(sectionhovered != null){
+					((RelativeLayout) sectionhovered.getParent()).setHovered(false);
+				}
+//				if(sectionhovered != null){
+//					sectionhovered.setBackgroundResource(android.R.color.transparent);
+//				}
                 int textsize = getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_ctextsize);
                 textsize = (int) (textsize/rate);
-                Log.i("testHGRIDVIEW","sectionfocus");
                 if(index==mSelectPosition){
                     label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
                     label.setTextSize(textsize);
@@ -288,6 +308,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
     }
     public boolean isRelated = false;
     public TextView sectionWhenGoto;
+    public TextView sectionhovered;
     public static int STATE_GOTO_GRIDVIEW = 2;
     public static int STATE_SECTION = 3;
     public static int STATE_LEAVE_GRIDVIEW = 4;
@@ -323,40 +344,44 @@ public class ScrollableSectionList extends HorizontalScrollView {
         }
 
 	}
-//	private OnTouchListener mOnTouchListener = new OnTouchListener() {
-//		
-//		@Override
-//		public boolean onTouch(View v, MotionEvent keycode) {
-//			// TODO Auto-generated method stub
-//			switch (keycode.getAction()) {
-//			case MotionEvent.ACTION_DOWN:
-//				int index = (Integer) v.getTag();
-//				
-//				if(index!=mSelectPosition){
-//					ProgressBar currentPercentageBar = (ProgressBar) v.findViewById(R.id.section_percentage);
-//					if(!isChangeBarStyle)
-//					  currentPercentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_hot_selected));
-//					else
-//					  currentPercentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.progress_line));
-//					
-//
-//					View lastSelectedView = mContainer.getChildAt(mSelectPosition);
-//					ProgressBar lastPercentageBar = (ProgressBar) lastSelectedView.findViewById(R.id.section_percentage);
-//					lastPercentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_noselected));
-//					setSectionTabProperty(v,lastSelectedView);
-//					changeSelection(index);
-//					if(mSectionSelectChangedListener!=null) {
-//						mSectionSelectChangedListener.onSectionSelectChanged(index);
-//					}
-//				}
-//				break;
-//
-//			default:
-//				break;
-//			}
-//			return false;
-//		}
-//	};
+
+	private OnHoverListener mOnTouchListener = new OnHoverListener() {
+
+		@Override
+		public boolean onHover(View v, MotionEvent keycode) {
+			// TODO Autogenerated method stub
+			int index = (Integer) v.getTag();
+			float rate = DaisyUtils.getVodApplication(getContext()).getRate(
+					getContext());
+			TextView label = (TextView) v.findViewById(R.id.section_label);
+			switch (keycode.getAction()) {
+			case MotionEvent.ACTION_HOVER_ENTER:
+			case MotionEvent.ACTION_HOVER_MOVE:
+				v.setFocusable(true);
+				v.setFocusableInTouchMode(true);
+				v.setHovered(true);
+				v.requestFocus();
+				sectionhovered = label;
+				v.setNextFocusRightId(v.getId() +1);
+				v.setNextFocusLeftId(v.getId() -1);
+//				label.setBackgroundResource(R.drawable.channel_focus_frame);
+//				if(sectionWhenGoto != null)
+//				  sectionWhenGoto.setBackgroundResource(R.drawable.gotogridview);
+				break;
+			case MotionEvent.ACTION_HOVER_EXIT:
+				if (index == mSelectPosition) {
+					label.setBackgroundResource(R.drawable.gotogridview);
+					return false;
+				}
+				label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
+				label.setBackgroundResource(android.R.color.transparent);
+				v.setHovered(false);
+			default:
+				break;
+			}
+			return false;
+		}
+	};
 
     private void setsectionview(View v){
         int index = (Integer) v.getTag();
@@ -391,7 +416,7 @@ public class ScrollableSectionList extends HorizontalScrollView {
                    else
                       intent.putExtra("isPortrait",false);
                    intent.setAction("tv.ismar.daisy.Filter");
-                sectionWhenGoto = (TextView) v.findViewById(R.id.section_label);
+                   sectionWhenGoto = (TextView) v.findViewById(R.id.section_label);
                    getContext().startActivity(intent);
             }else{
                 if(index!=mSelectPosition){

@@ -1,5 +1,6 @@
 package org.sakuratya.horizontal.ui;
 
+import android.R.integer;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
@@ -189,48 +190,57 @@ public class HGridView extends AdapterView<HGridAdapter> {
 
 	}
 	private boolean hover = false;
+
+	@Override
+	protected boolean dispatchHoverEvent(MotionEvent event) {
+		// TODO Auto-generated method stub
+		if(onhoverlistener != null){
+			onhoverlistener.onHover(this, event);
+		}
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_HOVER_ENTER:
+//			hover = true;
+//			break;
+		case MotionEvent.ACTION_HOVER_MOVE:
+			int position1 = pointToPosition((int) event.getX(),
+					(int) event.getY());
+			Log.v("testHGRIDVIEW", "position1="+position1);
+			if (position1 >= 0) {
+				hover = true;
+				setFocusable(true);
+				setFocusableInTouchMode(true);
+				setSelection(position1);
+				requestFocus();
+			}else{
+				hover = false;
+				mSelectorRect.setEmpty();
+				invalidate();
+			}
+			break;
+		case MotionEvent.ACTION_HOVER_EXIT: 
+//			clearFocus();
+			hover = false;
+			break;
+		}
+		return false;
+//		int position = pointToPosition((int) event.getX(), (int) event.getY());
 //
-//@Override
-//protected boolean dispatchHoverEvent(MotionEvent event) {
-//	// TODO Auto-generated method stub
-////switch (event.getAction()) {
-////case MotionEvent.ACTION_HOVER_ENTER:
-////
-////	break;
-////case MotionEvent.ACTION_HOVER_MOVE:  //鼠标在view上 
-////	int position1 = pointToPosition((int) event.getX(), (int) event.getY());
-////	if(position1>=0){
-////		setFocusable(true);
-////	    requestFocus();
-////	    hover = true;
-////		setSelection(position1);	
-////	}
-////	 hover = true;
-////    break; 
-////case MotionEvent.ACTION_HOVER_EXIT:  //鼠标离开view 
-////	 hover = false;
-////	 clearFocus();
-////    break; 
-////}
-////   return false;    
-//	int position = pointToPosition((int) event.getX(), (int) event.getY());
+//		if ((event.getAction() == MotionEvent.ACTION_HOVER_ENTER && position != -1)
+//				|| (event.getAction() == MotionEvent.ACTION_HOVER_MOVE && position != -1)) {
+//			hover = true;
+//			setFocusableInTouchMode(true);
+//			setFocusable(true);
+//			requestFocusFromTouch();
+//			requestFocus();
+//			setSelection(position);
 //
-//	if ((event.getAction() == MotionEvent.ACTION_HOVER_ENTER && position != -1)
-//			|| (event.getAction() == MotionEvent.ACTION_HOVER_MOVE && position != -1)) {
-//		hover = true;
-//		setFocusableInTouchMode(true);
-//		setFocusable(true);
-//		requestFocusFromTouch();
-//		requestFocus();
-//		setSelection(position);
+//		} else {
+//			hover = false;
+//			clearFocus();
 //
-//	} else {
-//		hover = false;
-//		clearFocus();
-//
-//	}
-//	return true;
-//}
+//		}
+//		return true;
+	}
 //@Override
 //public boolean onHoverEvent(MotionEvent event) {
 //	// TODO Auto-generated method stub
@@ -1151,6 +1161,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 			}
 
 			detachAllViewsFromParent();
+			Log.v("testHGRIDVIEW", "mLayoutMode ="+mLayoutMode);
 			switch (mLayoutMode) {
 			case LAYOUT_SPECIFIC:
 				sel = fillSpecific(mSelectedPosition, mSpecificLeft);
@@ -1203,6 +1214,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 
 			if (sel != null) {
 				positionSelector(sel);
+				sel.requestFocus();
 			} else {
 				mSelectorRect.setEmpty();
 			}
@@ -1355,6 +1367,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 
 
     public boolean commonKey(int keyCode, int repeatCount, KeyEvent event) {
+    	hover = false;
 		if (mAdapter == null) {
 			return false;
 		}
@@ -1482,7 +1495,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		if (nextSelectedPosition == INVALID_POSITION) {
 			return false;
 		}
-
+		mNextSelectedPosition = nextSelectedPosition;
 		if (nextSelectedPosition != INVALID_POSITION) {
 			setNextSelectedPositionInt(nextSelectedPosition);
 		}
@@ -1707,7 +1720,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	}
 
 	protected boolean shouldShowSelector() {
-		return hasFocus();
+		return hasFocus() || hover;
 	}
 
 	@Override
@@ -1936,6 +1949,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 			selector.setBounds(mSelectorRect);
 			selector.draw(canvas);
 		}
+
 	}
 
 	@Override
@@ -2744,66 +2758,57 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		int leftEdge = mListPadding.left;
 		int currentCol = getColumn(mSelectedPosition);
 		int currentRow = getRow(mSelectedPosition);
-		if (direction == FOCUS_LEFT) {
+		if(direction == FOCUS_LEFT) {
 			int lastVisiblePosition = mFirstPosition + count - 1;
-			for (int i = count - 1; i >= 0; i--) {
+			for(int i = count - 1; i >=0 ; i--) {
 				View v = getChildAt(i);
-				if (v.getRight() < rightEdge) {
+				if(v.getRight() < rightEdge) {
 					lastVisiblePosition = mFirstPosition + i;
 					break;
 				}
 			}
-			int cols = getColumn(lastVisiblePosition)
-					- getColumn(mFirstPosition);
+			int cols = getColumn(lastVisiblePosition) - getColumn(mFirstPosition);
 			int nextCol = Math.max(0, currentCol - cols);
 			int[] positionRange = getPositionRangeByColumn(nextCol);
-			nextPage = Math
-					.min(positionRange[0] + currentRow, positionRange[1]);
+			nextPage = Math.min(positionRange[0] + currentRow, positionRange[1]);
 		} else {
 			int firstVisibilePosition = mFirstPosition;
-			for (int i = 0; i < count; i++) {
+			for(int i = 0; i < count; i++) {
 				View v = getChildAt(i);
-				if (v.getLeft() > leftEdge) {
+				if(v.getLeft() > leftEdge) {
 					firstVisibilePosition += i;
 					break;
 				}
 			}
-			int cols = getColumn(mFirstPosition + count - 1)
-					- getColumn(firstVisibilePosition);
+			int cols = getColumn(mFirstPosition + count - 1) - getColumn(firstVisibilePosition);
+			cols+=2;
 			int nextCol = Math.min(mMaxColumn, currentCol + cols);
 			int[] positionRange = getPositionRangeByColumn(nextCol);
-			nextPage = Math
-					.min(positionRange[0] + currentRow, positionRange[1]);
+			nextPage = Math.min(positionRange[0] + currentRow, positionRange[1]);
 		}
-		if (nextPage >= 0) {
+		if(nextPage >= 0) {
 			View v = getChildAt(mSelectedPosition - mFirstPosition);
 			mSpecificLeft = v.getLeft();
 			setNextSelectedPositionInt(nextPage);
 			mLayoutMode = LAYOUT_SPECIFIC;
 			layoutChildren();
-			
-			if(leftbtn!=null&&rightbtn!=null){
-				if(mFirstPosition==0){
-					leftbtn.setVisibility(View.INVISIBLE);
-					rightbtn.setVisibility(View.VISIBLE);
-					}
-					else if(mFirstPosition>0&&mFirstPosition+getChildCount()<mAdapter.getCount()){
-						leftbtn.setVisibility(View.VISIBLE);
-						rightbtn.setVisibility(View.VISIBLE);
-					}
-					else if(mFirstPosition+getChildCount()==mAdapter.getCount()){
-					//upbtn.setVisibility(View.VISIBLE);
-					rightbtn.setVisibility(View.INVISIBLE);
-					leftbtn.setVisibility(View.VISIBLE);
-					}
-				return true;
-			}
-			}
+			return true;
+		}
 		return false;
 	}
 public View leftbtn;
 public View rightbtn;
+private OnHoverListener onhoverlistener;
+public void setOnHoverListener(OnHoverListener l){
+	onhoverlistener = l;
+}
+public interface OnHoverListener {
+	public boolean onHover(View v, MotionEvent event);
+}
 
-
+@Override
+public int getSelectedItemPosition(){
+	return mNextSelectedPosition;
+}
 
 }

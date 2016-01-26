@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.*;
 import android.graphics.drawable.NinePatchDrawable;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -101,11 +102,13 @@ public class LabelImageView extends AsyncImageView {
 		super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
 		if (needzoom) {
 			if (gainFocus) {
+				drawBorder = true;
 				bringToFront();
 				getRootView().requestLayout();
 				getRootView().invalidate();
 				zoomOut();
 			} else {
+				drawBorder = false;
 				zoomIn();
 			}
 		}
@@ -113,6 +116,28 @@ public class LabelImageView extends AsyncImageView {
 
 	public void setFrontcolor(int frontcolor) {
 		this.frontcolor = frontcolor;
+	}
+
+	@Override
+	protected boolean dispatchHoverEvent(MotionEvent event) {
+		// TODO Auto-generated method stub
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_HOVER_ENTER:
+			drawBorder = true;
+			requestFocus();
+			invalidate();
+			break;
+		case MotionEvent.ACTION_HOVER_MOVE:
+			drawBorder = true;
+			requestFocus();
+			invalidate();
+			break;
+		case MotionEvent.ACTION_HOVER_EXIT:
+			drawBorder = false;
+			invalidate();
+			break;
+		}
+		return false;
 	}
 
 	@Override
@@ -186,7 +211,7 @@ public class LabelImageView extends AsyncImageView {
 		}
 
 		// if (customfocus) {
-		if (hasFocus() || drawBorder) {
+		if (drawBorder) {
 			mBound.set(-21+mRect.left, -21+mRect.top, 21+mRect.right, mRect.bottom+21);
 			mDrawable.setBounds(mBound);
 			canvas.save();

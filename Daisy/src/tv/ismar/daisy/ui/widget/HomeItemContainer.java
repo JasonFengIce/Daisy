@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.NinePatchDrawable;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
@@ -47,6 +49,28 @@ public class HomeItemContainer extends FrameLayout {
 	}
 
 	@Override
+	protected boolean dispatchHoverEvent(MotionEvent event) {
+		// TODO Auto-generated method stub
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_HOVER_ENTER:
+			isDrawBorder = true;
+			requestFocus();
+			invalidate();
+			break;
+		case MotionEvent.ACTION_HOVER_MOVE:
+			isDrawBorder = true;
+			requestFocus();
+			invalidate();
+			break;
+		case MotionEvent.ACTION_HOVER_EXIT:
+			isDrawBorder = false;
+			invalidate();
+			break;
+		}
+		return false;
+	}
+
+	@Override
 	protected void onAttachedToWindow() {
 		super.onAttachedToWindow();
 	}
@@ -60,7 +84,6 @@ public class HomeItemContainer extends FrameLayout {
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		if (isDrawBorder) {
-			System.out.println("HomeItemContainer focus : true ");
 			super.getDrawingRect(mRect);
 			mBound.set(-21+mRect.left, -21+mRect.top, 21+mRect.right, mRect.bottom+21);
 			mDrawable.setBounds(mBound);
@@ -75,7 +98,7 @@ public class HomeItemContainer extends FrameLayout {
 		getRootView().requestLayout();
 		getRootView().invalidate();
 	}
-	
+
 	@Override
 	protected void onFocusChanged(boolean gainFocus, int direction, Rect previouslyFocusedRect) {
 		super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);

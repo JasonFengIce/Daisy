@@ -1,29 +1,8 @@
 package tv.ismar.daisy.ui.fragment.launcher;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.drawable.BitmapDrawable;
-import android.media.MediaPlayer;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import com.google.gson.Gson;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.Picasso;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -39,10 +18,30 @@ import tv.ismar.daisy.ui.widget.HomeItemContainer;
 import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.daisy.utils.HardwareUtils;
 import tv.ismar.daisy.views.LabelImageView;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaPlayer;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
+import com.google.gson.Gson;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -53,7 +52,7 @@ public class FilmFragment extends ChannelBaseFragment {
     private static final int CAROUSEL_NEXT = 0x0010;
 
     private LinearLayout guideRecommmendList;
-    private LinearLayout carouselLayout;
+    private RelativeLayout carouselLayout;
     private HomeItemContainer film_post_layout;
 
     private ImageView linkedVideoImage;
@@ -95,7 +94,7 @@ public class FilmFragment extends ChannelBaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mView = LayoutInflater.from(mContext).inflate(R.layout.fragment_film, null);
         guideRecommmendList = (LinearLayout) mView.findViewById(R.id.film_recommend_list);
-        carouselLayout = (LinearLayout) mView.findViewById(R.id.film_carousel_layout);
+        carouselLayout = (RelativeLayout) mView.findViewById(R.id.film_carousel_layout);
         mSurfaceView = (tv.ismar.daisy.ui.widget.DaisyVideoView) mView.findViewById(R.id.film_linked_video);
         mSurfaceView.setOnCompletionListener(mOnCompletionListener);
         mSurfaceView.setOnErrorListener(mVideoOnErrorListener);
@@ -382,17 +381,21 @@ public class FilmFragment extends ChannelBaseFragment {
         for (int i = 0; i < carousels.size(); i++) {
 
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(206, 86);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(206, 86);
             LabelImageView itemView = new LabelImageView(mContext);
             if (i == 0) {
                 params.topMargin = 0;
                 itemView.setId(R.id.filmfragment_firstcarousel);
                 firstcarousel = itemView;
-            } else
+            } else{
+            	itemView.setId(R.id.filmfragment_firstcarousel+i);
                 params.topMargin = 17;
+                params.addRule(RelativeLayout.BELOW,R.id.filmfragment_firstcarousel+(i-1));
+            }
             if (mContext == null)
                 return;
             itemView.setFocusable(true);
+            itemView.setNeedzoom(true);
             Picasso.with(mContext).load(carousels.get(i).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE)
                     .into(itemView);
             itemView.setScaleType(ImageView.ScaleType.FIT_XY);

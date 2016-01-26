@@ -171,6 +171,7 @@
                 android:textColor="#FFFFFFFF"
                 android:textSize="@dimen/item_detail_text_size"
                 android:gravity="center"
+                android:focusableInTouchMode="true"
                   android:paddingLeft="@dimen/item_detail_btn_pl"/>
                  
            <Button
@@ -182,6 +183,7 @@
                 android:layout_marginLeft="@dimen/item_detail_btn_marginleft"
                 android:visibility="visible"
                 android:textColor="#FFFFFFFF"
+                android:focusableInTouchMode="true"
                 android:textSize="@dimen/item_detail_text_size"/>
 
            <Button
@@ -192,6 +194,7 @@
                 android:layout_height="@dimen/item_detail_btn_left_height"
                 android:layout_marginLeft="@dimen/item_detail_btn_marginleft"
                 android:visibility="visible"
+                android:focusableInTouchMode="true"
                 android:textColor="#FFFFFFFF"
                 android:textSize="@dimen/item_detail_text_size" />                            
         </LinearLayout>
@@ -223,13 +226,13 @@
             android:background="@drawable/divider_person" 
             android:visibility="invisible"/>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_marginLeft="@dimen/item_detail_related_video_container_ml"
             android:id="@+id/related_video_container"
             android:layout_width="match_parent"
             android:layout_height="@dimen/item_detail_related_video_container_height"
-            android:orientation="vertical" >
-        </LinearLayout>
+            >
+        </RelativeLayout>
 
         <Button
             android:text="更多内容"

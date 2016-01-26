@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnHoverListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -898,7 +900,9 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         mMiddleBtn.setOnClickListener(mIdOnClickListener);
         mRightBtn.setOnClickListener(mIdOnClickListener);
         mMoreContent.setOnClickListener(mIdOnClickListener);
-
+        mLeftBtn.setOnHoverListener(mOnHoverListener);
+        mMiddleBtn.setOnHoverListener(mOnHoverListener);
+        mRightBtn.setOnHoverListener(mOnHoverListener);
 
         mLeftBtn.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -1074,6 +1078,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                     .setOnFocusChangeListener(mRelatedOnFocusChangeListener);
 
             relatedHolder.setOnClickListener(mRelatedClickListener);
+            relatedHolder.setOnHoverListener(mOnHoverListener);
         }
     }
 
@@ -1322,4 +1327,40 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 		}
 		return ret;
 	}
+
+	private OnHoverListener mOnHoverListener = new OnHoverListener() {
+
+		@Override
+		public boolean onHover(View v, MotionEvent keycode) {
+			switch (keycode.getAction()) {
+			case MotionEvent.ACTION_HOVER_ENTER:
+			case MotionEvent.ACTION_HOVER_MOVE:
+				if(v instanceof Button){
+					v.requestFocus();
+					initFocusBtn(v, true);
+				}else{
+					v.requestFocus();
+	                // img.setBackgroundResource(R.drawable.popup_bg_yellow);
+				}
+				break;
+			case MotionEvent.ACTION_HOVER_EXIT:
+				if(v instanceof Button){	
+					initFocusBtn(v, false);
+				}else{
+	                TextView title = (TextView) v
+	                        .findViewById(R.id.related_title);
+	                LabelImageView img = (LabelImageView) v.findViewById(R.id.related_preview_img);
+	                title.setTextColor(0xFFF8F8FF);
+	                img.setDrawBorder(false);
+	                img.invalidate();
+	                title.setSelected(false);				
+				}
+				break;
+			default:
+				break;
+			}
+			return false;
+		}
+	};
+
 }

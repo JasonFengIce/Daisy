@@ -9,9 +9,12 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
+import android.view.View.OnHoverListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,6 +33,7 @@ import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.core.account.AccountChangeListener;
 import tv.ismar.daisy.core.account.AccountManager;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
@@ -97,6 +101,8 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private boolean fargmentIsActive = false;
     private String fromLaunchflag;
     private BitmapDecoder bitmapDecoder;
+    private View hoveredView;
+    private View leavedhoveredView;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -213,6 +219,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             frameLayout.setTag(res);
             frameLayout.setOnClickListener(this);
             frameLayout.setOnFocusChangeListener(this);
+            frameLayout.setOnHoverListener(mOnHoverListener);
             frameLayout.setNextFocusRightId(R.id.vertical_divider_line);
             indicatorView.add(frameLayout);
             userCenterIndicatorLayout.addView(frameLayout);
@@ -404,6 +411,10 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+    	if(v.isHovered()){
+        clearFocus(v, indicatorView);
+        changeViewState(v, ViewState.Overlay);
+    	}
         handlerClick(v);
     }
 
@@ -477,6 +488,8 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
+    	if(v.isHovered())
+    		return;
         if (hasFocus) {
             switch ((Integer) v.getTag()) {
                 case R.id.vertical_divider_line:
@@ -529,7 +542,12 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 case R.string.usercenter_purchase_history:
                 case R.string.usercenter_help:
                 case R.string.usercenter_location:
-                    changeViewState(v, ViewState.Select);
+				if ((leavedhoveredView == null) || (leavedhoveredView != null && ((Integer)leavedhoveredView.getTag()) == currentFragmentIndictor)){
+					changeViewState(v, ViewState.Select);
+				}else{
+					ImageView text_focus_bg = (ImageView)v.findViewById(R.id.hover_focus_bg);
+					text_focus_bg.setVisibility(View.INVISIBLE);
+				}
                     verticalDividerView.setFocusable(true);
                     break;
             }
@@ -803,4 +821,47 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         getSupportFragmentManager().beginTransaction().replace(R.id.user_center_container, new UserInfoFragment()).commitAllowingStateLoss();
 
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    	if(hoveredView != null){
+    		ImageView text_focus_bg = (ImageView)hoveredView.findViewById(R.id.hover_focus_bg);
+    		text_focus_bg.setVisibility(View.INVISIBLE);
+    		hoveredView.setHovered(false);
+    	}
+        return super.onKeyDown(keyCode, event);
+    }
+
+	private OnHoverListener mOnHoverListener = new OnHoverListener() {
+
+		@Override
+		public boolean onHover(View v, MotionEvent keycode) {
+			int indictor = -1;
+			if(v.getTag() != null){
+				indictor = (Integer) v.getTag();
+			}
+//			if(indictor >=0 && indictor < INDICATOR_TEXT_RES_ARRAY.length){
+			ImageView text_focus_bg = (ImageView)v.findViewById(R.id.hover_focus_bg);
+			switch (keycode.getAction()) {
+			case MotionEvent.ACTION_HOVER_ENTER:
+			case MotionEvent.ACTION_HOVER_MOVE:
+				text_focus_bg.setVisibility(View.VISIBLE);
+				hoveredView = v;
+				verticalDividerView.setFocusable(false);
+				v.setHovered(true);
+				v.requestFocus();
+				break;
+			case MotionEvent.ACTION_HOVER_EXIT:
+				text_focus_bg.setVisibility(View.INVISIBLE);
+				v.setHovered(false);
+				leavedhoveredView = v;
+				break;
+			default:
+				break;
+			}
+//			}
+			return false;
+		}
+	};
+
 }

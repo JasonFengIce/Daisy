@@ -100,7 +100,7 @@ public class DramaListActivity extends BaseActivity implements
 		mDataCollectionProperties.put(EventProperty.ITEM, mItem.pk);
 		mDataCollectionProperties.put("title", mItem.title);
 		mDataCollectionProperties.put("to", "return");
-		new NetworkUtils.DataCollectionTask().execute(
+		NetworkUtils.SaveLogToLocal(
 				NetworkUtils.VIDEO_DRAMALIST_IN, mDataCollectionProperties);
 		DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(),
 				this);

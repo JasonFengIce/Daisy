@@ -1,6 +1,7 @@
 package tv.ismar.daisy.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,7 +75,6 @@ public class ChannelAdapter extends HGridAdapter<ChannelEntity>  {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-
         convertView.setBackgroundResource(R.drawable.channel_item_normal);
         channelHashMap.put(movieBean.getChannel(), holder.channelBtn);
         holder.channelBtn.setText(movieBean.getName());

@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.NinePatchDrawable;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
@@ -44,6 +45,28 @@ public class LinerLayoutContainer extends LinearLayout {
 		mBound = new Rect();
 		mDrawable = (NinePatchDrawable)getResources().getDrawable(R.drawable.vod_gv_selector);//nav_focused_2,poster_shadow_4
 		setChildrenDrawingOrderEnabled(true);
+	}
+
+	@Override
+	protected boolean dispatchHoverEvent(MotionEvent event) {
+		// TODO Auto-generated method stub
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_HOVER_ENTER:
+			isDrawBorder = true;
+			requestFocus();
+			invalidate();
+			break;
+		case MotionEvent.ACTION_HOVER_MOVE:
+			isDrawBorder = true;
+			requestFocus();
+			invalidate();
+			break;
+		case MotionEvent.ACTION_HOVER_EXIT:
+			isDrawBorder = false;
+			invalidate();
+			break;
+		}
+		return false;
 	}
 
 	@Override

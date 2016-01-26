@@ -647,9 +647,7 @@ public class NetworkUtils {
                 if (params.length > 1 && params[1] != null) {
                     properties = (HashMap<String, Object>) params[1];
                 }
-                // LogSender(eventName, properties);
 
-                // SaveLogToLocal(eventName,properties);
                 String jsonContent;
                 try {
                     jsonContent = getContentJson(eventName, properties);
@@ -657,7 +655,6 @@ public class NetworkUtils {
                         MessageQueue.addQueue(jsonContent);
 //                    }
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
