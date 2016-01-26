@@ -21,6 +21,7 @@ import com.ismartv.api.t.AccessProxy;
 import com.ismartv.bean.ClipInfo;
 import com.qiyi.video.player.IVideoStateListener;
 import com.qiyi.video.player.QiyiVideoPlayer;
+import com.qiyi.video.player.QiyiVideoPlayer.ParamBuilder;
 import com.qiyi.video.player.data.Definition;
 import com.qiyi.video.player.data.IPlaybackInfo;
 import com.qiyi.video.player.error.ISdkError;
@@ -417,8 +418,9 @@ public class QiYiPlayActivity extends VodMenuAction {
                 return false;
             }
         });
-        mPlayer = QiyiVideoPlayer.createVideoPlayer(this, frameContainer,
-                flParams, /* bundle */null, mVideoStateListener);
+        ParamBuilder extraParams = new ParamBuilder();
+        mPlayer = QiyiVideoPlayer.createVideoPlayer(this,mVideoStateListener, frameContainer,
+                flParams,extraParams);
         favoriteManager = DaisyUtils.getFavoriteManager(this);
         historyManager = DaisyUtils.getHistoryManager(this);
         if (SimpleRestClient.isLogin()) {
