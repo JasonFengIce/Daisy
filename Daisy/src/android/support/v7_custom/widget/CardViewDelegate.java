@@ -13,23 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package android.support.v7.widget;
+package android.support.v7_custom.widget;
 
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 
-class CardViewJellybeanMr1 extends CardViewEclairMr1 {
-
-    @Override
-    public void initStatic() {
-        RoundRectDrawableWithShadow.sRoundRectHelper
-                = new RoundRectDrawableWithShadow.RoundRectHelper() {
-            @Override
-            public void drawRoundRect(Canvas canvas, RectF bounds, float cornerRadius,
-                    Paint paint) {
-                canvas.drawRoundRect(bounds, cornerRadius, cornerRadius, paint);
-            }
-        };
-    }
+/**
+ * Interface provided by CardView to implementations.
+ * <p>
+ * Necessary to resolve circular dependency between base CardView and platform implementations.
+ */
+interface CardViewDelegate {
+    void setBackgroundDrawable(Drawable paramDrawable);
+    Drawable getBackground();
+    boolean getUseCompatPadding();
+    boolean getPreventCornerOverlap();
+    float getRadius();
+    void setShadowPadding(int left, int top, int right, int bottom);
 }

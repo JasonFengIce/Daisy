@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.support.v7.widget;
+package android.support.v7_custom.widget;
 
 import android.content.Context;
 import android.graphics.PointF;
@@ -36,11 +36,11 @@ import java.util.Arrays;
 import java.util.BitSet;
 import java.util.List;
 
-import static android.support.v7.widget.LayoutState.LAYOUT_START;
-import static android.support.v7.widget.LayoutState.LAYOUT_END;
-import static android.support.v7.widget.LayoutState.ITEM_DIRECTION_HEAD;
-import static android.support.v7.widget.LayoutState.ITEM_DIRECTION_TAIL;
-import static android.support.v7.widget.RecyclerView.NO_POSITION;
+import static android.support.v7_custom.widget.LayoutState.LAYOUT_START;
+import static android.support.v7_custom.widget.LayoutState.LAYOUT_END;
+import static android.support.v7_custom.widget.LayoutState.ITEM_DIRECTION_HEAD;
+import static android.support.v7_custom.widget.LayoutState.ITEM_DIRECTION_TAIL;
+import static android.support.v7_custom.widget.RecyclerView.NO_POSITION;
 
 /**
  * A LayoutManager that lays out children in a staggered grid formation.

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package android.support.v7.widget;
+package android.support.v7_custom.widget;
 
 import android.content.Context;
 /**

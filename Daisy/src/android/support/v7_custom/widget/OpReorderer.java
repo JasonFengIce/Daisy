@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package android.support.v7.widget;
+package android.support.v7_custom.widget;
 
 import java.util.List;
 
-import android.support.v7.widget.AdapterHelper.UpdateOp;
-import static android.support.v7.widget.AdapterHelper.UpdateOp.ADD;
-import static android.support.v7.widget.AdapterHelper.UpdateOp.MOVE;
-import static android.support.v7.widget.AdapterHelper.UpdateOp.REMOVE;
-import static android.support.v7.widget.AdapterHelper.UpdateOp.UPDATE;
+import android.support.v7_custom.widget.AdapterHelper.UpdateOp;
+import static android.support.v7_custom.widget.AdapterHelper.UpdateOp.ADD;
+import static android.support.v7_custom.widget.AdapterHelper.UpdateOp.MOVE;
+import static android.support.v7_custom.widget.AdapterHelper.UpdateOp.REMOVE;
+import static android.support.v7_custom.widget.AdapterHelper.UpdateOp.UPDATE;
 
 class OpReorderer {
 

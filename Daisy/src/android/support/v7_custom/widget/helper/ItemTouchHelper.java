@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.support.v7.widget.helper;
+package android.support.v7_custom.widget.helper;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -27,8 +27,8 @@ import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.VelocityTrackerCompat;
 import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7_custom.widget.LinearLayoutManager;
+import android.support.v7_custom.widget.RecyclerView;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.HapticFeedbackConstants;
@@ -41,8 +41,8 @@ import android.view.ViewParent;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.support.v7.widget.RecyclerView.OnItemTouchListener;
-import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.support.v7_custom.widget.RecyclerView.OnItemTouchListener;
+import android.support.v7_custom.widget.RecyclerView.ViewHolder;
 import android.view.animation.Interpolator;
 import tv.ismar.daisy.R;
 

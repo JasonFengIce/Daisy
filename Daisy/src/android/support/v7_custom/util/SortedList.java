@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.support.v7.util;
+package android.support.v7_custom.util;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -24,7 +24,7 @@ import java.util.Comparator;
 /**
  * A Sorted list implementation that can keep items in order and also notify for changes in the
  * list
- * such that it can be bound to a {@link android.support.v7.widget.RecyclerView.Adapter
+ * such that it can be bound to a {@link android.support.v7_custom.widget.RecyclerView.Adapter
  * RecyclerView.Adapter}.
  * <p>
  * It keeps items ordered using the {@link Callback#compare(Object, Object)} method and uses
@@ -737,7 +737,7 @@ public class SortedList<T> {
          * so
          * that you can change its behavior depending on your UI.
          * <p>
-         * For example, if you are using SortedList with a {@link android.support.v7.widget.RecyclerView.Adapter
+         * For example, if you are using SortedList with a {@link android.support.v7_custom.widget.RecyclerView.Adapter
          * RecyclerView.Adapter}, you should
          * return whether the items' visual representations are the same or not.
          *

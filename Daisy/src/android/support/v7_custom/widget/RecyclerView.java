@@ -15,7 +15,7 @@
  */
 
 
-package android.support.v7.widget;
+package android.support.v7_custom.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -66,8 +66,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static android.support.v7.widget.AdapterHelper.Callback;
-import static android.support.v7.widget.AdapterHelper.UpdateOp;
+import static android.support.v7_custom.widget.AdapterHelper.Callback;
+import static android.support.v7_custom.widget.AdapterHelper.UpdateOp;
 
 /**
  * A flexible view for providing a limited window into a large data set.

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package android.support.v7.widget.helper;
+package android.support.v7_custom.widget.helper;
 
 import android.graphics.Canvas;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7_custom.widget.RecyclerView;
 import android.view.View;
 
 /**

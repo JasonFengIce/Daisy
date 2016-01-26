@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package android.support.v7.widget;
+package android.support.v7_custom.widget;
 
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -24,8 +24,8 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 
-import static android.support.v7.widget.RoundRectDrawableWithShadow.calculateVerticalPadding;
-import static android.support.v7.widget.RoundRectDrawableWithShadow.calculateHorizontalPadding;
+import static android.support.v7_custom.widget.RoundRectDrawableWithShadow.calculateVerticalPadding;
+import static android.support.v7_custom.widget.RoundRectDrawableWithShadow.calculateHorizontalPadding;
 
 /**
  * Very simple drawable that draws a rounded rectangle background with arbitrary corners and also

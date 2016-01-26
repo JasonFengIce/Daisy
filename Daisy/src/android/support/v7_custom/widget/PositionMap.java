@@ -15,7 +15,7 @@
  */
 
 
-package android.support.v7.widget;
+package android.support.v7_custom.widget;
 
 import java.util.ArrayList;
 

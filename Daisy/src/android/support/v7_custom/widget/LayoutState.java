@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.support.v7.widget;
+package android.support.v7_custom.widget;
 import android.view.View;
 
 /**

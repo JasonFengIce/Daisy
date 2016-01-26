@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package android.support.v7.widget.util;
+package android.support.v7_custom.widget.util;
 
-import android.support.v7.util.SortedList;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7_custom.util.SortedList;
+import android.support.v7_custom.widget.RecyclerView;
 
 /**
  * A {@link SortedList.Callback} implementation that can bind a {@link SortedList} to a
