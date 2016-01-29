@@ -334,17 +334,17 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         String localInfo = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.LOCATION_INFO, "");
         getHardInfo();
         updatePoster();
-		if (StringUtils.isEmpty(SimpleRestClient.device_token)) {
-	        activator = Activator.getInstance(this);
-	        activator.setOnCompleteListener(this);
-			String product = Build.BRAND.replace(" ", "_");
-			String mode = VodUserAgent.getModelName();
-			if (!activator.iswaiting)
-				activator.active(product, mode,
-						String.valueOf(SimpleRestClient.appVersion), localInfo);
-		} else {
-			fetchChannels();
-		}
+                if (StringUtils.isEmpty(SimpleRestClient.device_token)) {
+                activator = Activator.getInstance(this);
+                activator.setOnCompleteListener(this);
+                        String product = Build.BRAND.replace(" ", "_");
+                        String mode = VodUserAgent.getModelName();
+                        if (!activator.iswaiting)
+                                activator.active(product, mode,
+                                                String.valueOf(SimpleRestClient.appVersion), localInfo);
+                } else {
+                        fetchChannels();
+                }
     }
 
 
@@ -553,10 +553,10 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 View selectedView = scroll.getSelectedView();
                 TextView v = (TextView) selectedView.findViewById(R.id.channel_item);
                 if (flag && scrollFromBorder) {
-                	selectedView.setBackgroundResource(R.drawable.channel_item_selectd_focus);
+                        selectedView.setBackgroundResource(R.drawable.channel_item_selectd_focus);
                 } else {
                     //v.setTextColor(R.color._ffffff);
-                	selectedView.setBackgroundResource(R.drawable.channel_item_focus);
+                        selectedView.setBackgroundResource(R.drawable.channel_item_focus);
                 }
                 selectedView.invalidate();
             }
@@ -595,9 +595,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 }
                 // if(view!=clickView){
                 if (!scrollFromBorder)
-                	view.setBackgroundResource(R.drawable.channel_item_selectd_focus);
+                        view.setBackgroundResource(R.drawable.channel_item_selectd_focus);
                 else
-                	view.setBackgroundResource(R.drawable.channel_item_focus);
+                        view.setBackgroundResource(R.drawable.channel_item_focus);
 //                AnimationSet animationSet = new AnimationSet(true);
 //                ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
 //                        Animation.RELATIVE_TO_SELF, 0.5f,
@@ -643,16 +643,16 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     public void onScroll(HGridView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         if (firstVisibleItem == 0) {
             // scroll.setSelection(0);
-        	if(channelscrollIndex == 0){
+                if(channelscrollIndex == 0){
             setClickChannelView(scroll.getChildAt(0));
             lastview = scroll.getChildAt(0);
 //            TextView v = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
             scroll.getSelectedView().setBackgroundResource(R.drawable.channel_item_selectd_focus);
-        	}else{
+                }else{
                 lastview = scroll.getChildAt(0);
                 TextView v = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
                 lastview.setBackgroundResource(R.drawable.channel_item_normal);
-        	}
+                }
             scroll.setOnScrollListener(null);
         }
 
@@ -746,8 +746,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         exitPopupWindow = new MessagePopWindow(this);
         exitPopupWindow.setFirstMessage(R.string.exit_prompt);
 //        WindowManager.LayoutParams lp = getWindow().getAttributes();
-//		lp.alpha = 0.5f;
-//		getWindow().setAttributes(lp);
+//              lp.alpha = 0.5f;
+//              getWindow().setAttributes(lp);
         guide_shadow_view.setVisibility(View.VISIBLE);
         exitPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
 
@@ -783,8 +783,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                     public void cancelClick(View view) {
                         exitPopupWindow.dismiss();
 //                        WindowManager.LayoutParams lp = getWindow().getAttributes();
-//        				lp.alpha = 1f;
-//        				getWindow().setAttributes(lp);
+//                                      lp.alpha = 1f;
+//                                      getWindow().setAttributes(lp);
                         guide_shadow_view.setVisibility(View.GONE);
                     }
                 }
@@ -939,10 +939,10 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             if (lastFragment instanceof ChildFragment) {
                 if (currentFragment instanceof ChildFragment) {
                 } else {
-                    destroybackground();
+//                    destroybackground();
                     if (ddddBitmapDecoder != null) {
                         ddddBitmapDecoder.removeAllCallback();
-//						ddddBitmapDecoder.interrupt();
+//                                              ddddBitmapDecoder.interrupt();
                     }
                     ddddBitmapDecoder = new BitmapDecoder();
                     ddddBitmapDecoder.decode(this, R.drawable.main_bg,
@@ -957,10 +957,10 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 }
             } else {
                 if (currentFragment instanceof ChildFragment) {
-                    destroybackground();
+//                    destroybackground();
                     if (ddddBitmapDecoder != null) {
                         ddddBitmapDecoder.removeAllCallback();
-//						ddddBitmapDecoder.interrupt();
+//                                              ddddBitmapDecoder.interrupt();
                     }
                     ddddBitmapDecoder = new BitmapDecoder();
                     ddddBitmapDecoder.decode(this,
@@ -1023,8 +1023,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 transaction.hide(t3);
             if (t4 != null)
                 transaction.hide(t4);
-            if (t1 != null) {
-            	if (scrollFromBorder) {
+            if (t1 != null && !t1.isRemoving()) {
+                if (scrollFromBorder) {
                     t1.setScrollFromBorder(scrollFromBorder);
                     t1.setRight(rightscroll);
                     t1.setBottomFlag(lastviewTag);
@@ -1046,7 +1046,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 transaction.hide(t3);
             if (t4 != null)
                 transaction.hide(t4);
-            if (t2 != null) {
+            if (t2 != null && !t2.isRemoving()) {
                 t2.setChannelEntity(channelEntity);
                 t2.refreshData();
                 if (scrollFromBorder) {
@@ -1092,7 +1092,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 transaction.hide(t2);
             if (t3 != null)
                 transaction.hide(t3);
-            if (t4 != null) {
+            if (t4 != null && !t4.isRemoving()) {
                 t4.setChannelEntity(channelEntity);
                 t4.refreshData();
                 if (scrollFromBorder) {
@@ -1328,7 +1328,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         homepage_url = intent.getStringExtra("homepage_url");
         if (StringUtils.isEmpty(homepage_template)
                 || StringUtils.isEmpty(homepage_url)) {
-//			fetchChannels();
+//                      fetchChannels();
         } else {
             if (StringUtils.isNotEmpty(SimpleRestClient.root_url)) {
                 fetchChannels();
@@ -1357,10 +1357,10 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 isneedpause = false;
             }
         }else if("lx565ab".equals(VodUserAgent.getModelName())){
-			if(keyCode == 82 || keyCode == 707 || keyCode ==253){
-				isneedpause = false;
-			}
-		} else {
+                        if(keyCode == 82 || keyCode == 707 || keyCode ==253){
+                                isneedpause = false;
+                        }
+                } else {
             if (keyCode == 223 || keyCode == 499 || keyCode == 480) {
                 isneedpause = false;
             }
@@ -1384,7 +1384,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                         activity.selectChannelByPosition(msg.arg1);
                         break;
                     case SWITCH_PAGE_FROMLAUNCH:
-                    	channelscrollIndex=channelscrollIndex-1;
+                        channelscrollIndex=channelscrollIndex-1;
                         activity.scroll.arrowScroll(View.FOCUS_RIGHT);
                         if (channelscrollIndex > 0) {
                             sendEmptyMessage(SWITCH_PAGE_FROMLAUNCH);
