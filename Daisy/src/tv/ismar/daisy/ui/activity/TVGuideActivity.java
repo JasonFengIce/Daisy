@@ -460,6 +460,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             @Override
             public void onFailed(String error) {
                 Log.e(TAG, "fetchChannels failed");
+                showNetErrorPopup();
             }
         });
     }

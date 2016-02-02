@@ -73,6 +73,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
     private TextView detail_duration_txt;
     private TextView mDetailTitle;
     private TextView mDetailIntro;
+    private TextView related_recomman_label;
     private AsyncImageView mDetailPreviewImg;
     private DetailAttributeContainer mDetailAttributeContainer;
     private LaunchHeaderLayout weatherFragment;
@@ -100,6 +101,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
         mLeftBtn = (Button) findViewById(R.id.btn_left);
         mMiddleBtn = (Button) findViewById(R.id.middle_btn);
         mRightBtn = (Button) findViewById(R.id.btn_right);
+        related_recomman_label = (TextView) findViewById(R.id.related_recomman_label);
         mLeftBtn.setOnClickListener(mIdOnClickListener);
         mMiddleBtn.setOnClickListener(mIdOnClickListener);
         mRightBtn.setOnClickListener(mIdOnClickListener);
@@ -578,6 +580,8 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 View top_view_layout = findViewById(R.id.top_view_layout);
                 top_view_layout.setVisibility(View.VISIBLE);
                 buildRelatedList();
+				mMoreContent.setVisibility(View.VISIBLE);
+				related_recomman_label.setVisibility(View.VISIBLE);
             }
             if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
                 mLoadingDialog.dismiss();
@@ -1287,6 +1291,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
     }
 
     private void initLayout() {
+		mDetailTitle.setVisibility(View.VISIBLE);
         mDetailTitle.setText(mItem.title);
         mDataCollectionProperties.put(EventProperty.ITEM, mItem.pk);
         mDataCollectionProperties.put(EventProperty.TITLE, mItem.title);

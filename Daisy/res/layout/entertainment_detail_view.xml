@@ -35,7 +35,9 @@
             android:textColor="@color/white"
             android:textSize="@dimen/entertainment_detail_view_detail_title_textsize"
             android:maxLines="1"
-            android:text="美国队长"/>
+            android:text=""
+            android:visibility="gone"
+            />
 
     <LinearLayout
             android:visibility="invisible"
@@ -165,6 +167,7 @@
             android:textSize="@dimen/item_detail_introlabel_textsize"/>
 
     <TextView
+            android:id="@+id/related_recomman_label"
             android:layout_marginLeft="@dimen/entertainment_detail_textView_ml"
             android:layout_marginTop="@dimen/entertainment_detail_textView_mt"
             android:layout_width="@dimen/entertainment_detail_textView_w"
@@ -172,6 +175,7 @@
             android:gravity="center"
             android:textSize="@dimen/h2_text_size"
             android:textColor="@color/white"
+            android:visibility="gone"
             android:text="同类推荐"/>
 
     <LinearLayout
@@ -203,6 +207,7 @@
                 android:layout_height="@dimen/entertainment_detail_view_linearLayout5_h"
                 android:orientation="vertical"
                 android:gravity="center"
+                android:visibility="gone"
                 android:background="@drawable/more_btn_sector">
 
             <TextView
