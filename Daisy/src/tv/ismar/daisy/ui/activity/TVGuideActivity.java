@@ -436,7 +436,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 if (StringUtils.isNotEmpty(homepage_template)) {
                     for (int i = 0; i < mChannelEntitys.length; i++) {
                         if (homepage_template.equals(mChannelEntitys[i].getHomepage_template()) && mChannelEntitys[i].getHomepage_url().contains(homepage_url)) {
-                            channelscrollIndex = i;
+                            if(channelscrollIndex >0)
+                            	break;
+                        	channelscrollIndex = i;
                             if (channelscrollIndex > 0) {
                                 fragmentSwitch.sendEmptyMessage(SWITCH_PAGE_FROMLAUNCH);
                             }
@@ -644,7 +646,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     public void onScroll(HGridView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         if (firstVisibleItem == 0) {
             // scroll.setSelection(0);
-                if(channelscrollIndex == 0){
+                if(channelscrollIndex == 0 && StringUtils.isEmpty(homepage_url)){
             setClickChannelView(scroll.getChildAt(0));
             lastview = scroll.getChildAt(0);
 //            TextView v = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
@@ -1230,7 +1232,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 break;
         }
 
-        transaction.replace(R.id.container, fragment, tag).commit();
+        transaction.replace(R.id.container, fragment, tag).commitAllowingStateLoss();
     }
 
     private void saveSimpleRestClientPreferences(Context context, Result result) {

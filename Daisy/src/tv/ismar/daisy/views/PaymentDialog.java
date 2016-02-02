@@ -11,19 +11,22 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.graphics.drawable.BitmapDrawable;
-import android.widget.*;
-
-import com.google.gson.Gson;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cn.ismartv.activator.Activator;
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
@@ -35,12 +38,12 @@ import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.sakura.ui.widget.MessagePopWindow;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Message;
@@ -50,6 +53,17 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+import cn.ismartv.activator.Activator;
+
+import com.google.gson.Gson;
 
 public class PaymentDialog extends Dialog implements
 		BaseActivity.OnLoginCallback {
@@ -615,6 +629,13 @@ public class PaymentDialog extends Dialog implements
 			login_panel.setVisibility(View.GONE);
 	}
 
+	final static HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
+		 
+		public boolean verify(String hostname, SSLSession session) {
+			return true;
+		}
+	};
+
 	private Bitmap returnBitMap(String url, String method, String params) {
 		URL myFileUrl = null;
 		Bitmap bitmap = null;
@@ -643,7 +664,14 @@ public class PaymentDialog extends Dialog implements
 			if (code == 302) {
 				String redirectlocation = connection.getHeaderField("Location");
 				myFileUrl = new URL(redirectlocation);
-				connection = (HttpURLConnection) myFileUrl.openConnection();
+				if (myFileUrl.getProtocol().toLowerCase().equals("https")) {
+					trustAllHosts();
+					HttpsURLConnection https = (HttpsURLConnection) myFileUrl.openConnection();
+					https.setHostnameVerifier(DO_NOT_VERIFY);
+					connection = https;
+				}else{
+					connection = (HttpsURLConnection) myFileUrl.openConnection();				
+				}
 				connection.setConnectTimeout(2000);
 				connection.setRequestMethod("GET");
 				connection.connect();
@@ -655,9 +683,9 @@ public class PaymentDialog extends Dialog implements
 			opt.inPurgeable = true;
 			opt.inInputShareable = true;
 			// opt.inTempStorage = new byte[1024];
-			// if (params.contains("alipay")) {
-			opt.inSampleSize = 1;
-			// }
+			 if (params.contains("alipay")) {
+			opt.inSampleSize = 2;
+			 }
 			bitmap = BitmapFactory.decodeStream(is, null, opt);
 			is.close();
 		} catch (MalformedURLException e) {
@@ -666,6 +694,36 @@ public class PaymentDialog extends Dialog implements
 			e.printStackTrace();
 		}
 		return bitmap;
+	}
+	/**
+	 * Trust every server - dont check for any certificate
+	 */
+	private static void trustAllHosts() {
+		final String TAG = "trustAllHosts";
+		// Create a trust manager that does not validate certificate chains
+		TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+	 
+			public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+				return new java.security.cert.X509Certificate[] {};
+			}
+	 
+			public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+				Log.i(TAG, "checkClientTrusted");
+			}
+	 
+			public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+				Log.i(TAG, "checkServerTrusted");
+			}
+		} };
+	 
+		// Install the all-trusting trust manager
+		try {
+			SSLContext sc = SSLContext.getInstance("TLS");
+			sc.init(null, trustAllCerts, new java.security.SecureRandom());
+			HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void aliPayChannel(String url, String params) {
