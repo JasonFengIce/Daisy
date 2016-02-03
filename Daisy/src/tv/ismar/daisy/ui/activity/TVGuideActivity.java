@@ -406,6 +406,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         }
     }
 
+    private boolean channelflag = false;
     /**
      * fetch channel
      */
@@ -436,10 +437,11 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 if (StringUtils.isNotEmpty(homepage_template)) {
                     for (int i = 0; i < mChannelEntitys.length; i++) {
                         if (homepage_template.equals(mChannelEntitys[i].getHomepage_template()) && mChannelEntitys[i].getHomepage_url().contains(homepage_url)) {
-                            if(channelscrollIndex >0)
+                            if(channelflag)
                             	break;
+                            channelflag = true;
                         	channelscrollIndex = i;
-                            if (channelscrollIndex > 0) {
+                            if (channelscrollIndex > 0 && !fragmentSwitch.hasMessages(SWITCH_PAGE_FROMLAUNCH)) {
                                 fragmentSwitch.sendEmptyMessage(SWITCH_PAGE_FROMLAUNCH);
                             }
                             topView.setSubTitle(mChannelEntitys[i].getName());
