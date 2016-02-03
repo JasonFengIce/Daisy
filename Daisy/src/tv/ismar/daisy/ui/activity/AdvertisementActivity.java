@@ -138,7 +138,7 @@ public class AdvertisementActivity extends Activity {
         timerText.setImageResource(secondsResId[second]);
         if (second == 0 && flag) {
             intentToLauncher();
-            finish();
+//            finish();
         }
     }
 
