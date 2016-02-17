@@ -452,6 +452,11 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 if (currentFragment == null && !isFinishing() && channelscrollIndex<=0) {
                     try {
                         currentFragment = new GuideFragment();
+                        ChannelEntity channelEntity = new ChannelEntity();
+                        launcher.setChannel("launcher");
+                        launcher.setName("首页");
+                        launcher.setHomepage_template("launcher");
+                        currentFragment.setChannelEntity(channelEntity);
                         FragmentTransaction transaction = getSupportFragmentManager()
                                 .beginTransaction();
                         transaction.replace(R.id.container, currentFragment, "template").commitAllowingStateLoss();
