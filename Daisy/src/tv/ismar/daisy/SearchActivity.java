@@ -577,7 +577,8 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == 4) {
-            hotlinefuture.cancel(true);
+			if (hotlinefuture != null)
+				hotlinefuture.cancel(true);
             finish();
         } else if ((keyCode == 774 || keyCode == 480) && autoCompleteTextView != null) {
             InputMethodManager imm = (InputMethodManager) autoCompleteTextView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
