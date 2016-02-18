@@ -9,7 +9,6 @@ import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.graphics.drawable.BitmapDrawable;
 import org.sakuratya.horizontal.ui.HGridView;
 
 import tv.ismar.daisy.adapter.SearchAdapter;
@@ -23,16 +22,21 @@ import tv.ismar.daisy.core.SortMovieUtils;
 import tv.ismar.daisy.models.MovieBean;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
+import tv.ismar.daisy.ui.activity.TVGuideActivity;
+import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
 import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.daisy.views.LoadingDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -98,7 +102,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 
     // 自定义的Dialog
     private LoadingDialog loadDialog;
-    private SearchPromptDialog customDialog;
+    private MessageDialogFragment customDialog;
 
     private Boolean isActivityExit = false;
     private Button arrow_right;
@@ -114,6 +118,8 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
         setContentView(R.layout.search_main);
         activityTag = "SearchActivity";
         final View background = findViewById(R.id.large_layout);
+        customDialog = new MessageDialogFragment(SearchActivity.this, getString(R.string.fetch_net_data_error), null);
+        customDialog.setButtonText(getString(R.string.setting_network), getString(R.string.i_know));
         bitmapDecoder = new BitmapDecoder();
         bitmapDecoder.decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
             @Override
@@ -130,12 +136,31 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
         DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
     }
 
+    boolean neterrorshow = false;
     @Override
     protected void onResume() {
         super.onResume();
         if (!ConnectionHelper.isNetWorkAvailable(this)) {
             if (!customDialog.isShowing()) {
-                customDialog.show();
+            	 try {
+            		 customDialog.showAtLocation(gridView, Gravity.CENTER,
+                             new MessageDialogFragment.ConfirmListener() {
+                                 @Override
+                                 public void confirmClick(View view) {
+                                     Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                                     SearchActivity.this.startActivity(intent);
+                                 }
+                             }, new MessageDialogFragment.CancelListener() {
+
+                                 @Override
+                                 public void cancelClick(View view) {
+                                	 customDialog.dismiss();
+                                     neterrorshow = false;
+                                 }
+                             });
+                     neterrorshow = true;
+                 } catch (android.view.WindowManager.BadTokenException e) {
+                 }
             }
             // 初始化一个自定义的Dialog
             return;
@@ -224,7 +249,6 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
 
         autoCompleteTextView.setOnClickListener(this);
         loadDialog = new LoadingDialog(this);
-        customDialog = new SearchPromptDialog(SearchActivity.this, R.style.MyDialog);
         startTime = System.currentTimeMillis();
 //		autoCompleteTextView.addTextChangedListener(new TextWatcher() {
 //			@Override
@@ -292,7 +316,25 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
             if (!ConnectionHelper.isNetWorkAvailable(this)) {
                 if (!customDialog.isShowing()) {
-                    customDialog.show();
+                	 try {
+                		 customDialog.showAtLocation(gridView, Gravity.CENTER,
+                                 new MessageDialogFragment.ConfirmListener() {
+                                     @Override
+                                     public void confirmClick(View view) {
+                                         Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                                         SearchActivity.this.startActivity(intent);
+                                     }
+                                 }, new MessageDialogFragment.CancelListener() {
+
+                                     @Override
+                                     public void cancelClick(View view) {
+                                    	 customDialog.dismiss();
+                                         neterrorshow = false;
+                                     }
+                                 });
+                         neterrorshow = true;
+                     } catch (android.view.WindowManager.BadTokenException e) {
+                     }
                 }
                 // 初始化一个自定义的Dialog
                 return;
@@ -329,7 +371,25 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                     if (!ConnectionHelper.isNetWorkAvailable(this)) {
                         if (!customDialog.isShowing()) {
-                            customDialog.show();
+                        	 try {
+                        		 customDialog.showAtLocation(gridView, Gravity.CENTER,
+                                         new MessageDialogFragment.ConfirmListener() {
+                                             @Override
+                                             public void confirmClick(View view) {
+                                                 Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                                                 SearchActivity.this.startActivity(intent);
+                                             }
+                                         }, new MessageDialogFragment.CancelListener() {
+
+                                             @Override
+                                             public void cancelClick(View view) {
+                                            	 customDialog.dismiss();
+                                                 neterrorshow = false;
+                                             }
+                                         });
+                                 neterrorshow = true;
+                             } catch (android.view.WindowManager.BadTokenException e) {
+                             }
                         }
                         // 初始化一个自定义的Dialog
                         return;
@@ -589,4 +649,5 @@ public class SearchActivity extends BaseActivity implements OnClickListener, OnI
         Matcher matcher = regex.matcher(username);
         return matcher.matches();
     }
+    
 }

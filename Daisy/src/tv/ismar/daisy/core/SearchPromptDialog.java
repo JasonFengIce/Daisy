@@ -4,9 +4,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.ui.activity.TVGuideActivity;
 
 public class SearchPromptDialog extends Dialog implements android.view.View.OnClickListener {
 
@@ -46,14 +48,8 @@ public class SearchPromptDialog extends Dialog implements android.view.View.OnCl
 			break;
 
 		case R.id.btndialog_setting:
-			Intent intent = new Intent();
-			intent.setAction(Intent.ACTION_VIEW);
-			Bundle mBundle = new Bundle();
-			mBundle.putInt("PreID", 0); 
-			mBundle.putInt("CurrentID", 1);
-			intent.putExtras(mBundle);
-			intent.setClassName("com.alpha.setting", "com.alpha.setting.AlphaSettingsActivity"); 
-			context.startActivity(intent);
+            Intent intent = new Intent(Settings.ACTION_SETTINGS);
+            context.startActivity(intent);
 			this.dismiss();
 			break;
 
