@@ -416,6 +416,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         cacheHttpClient.doRequest(api, new CacheHttpClient.Callback() {
             @Override
             public void onSuccess(String result) {
+            	if(neterrorshow)
+            		return;
                 topView.setVisibility(View.VISIBLE);
                 mChannelEntitys = new Gson().fromJson(result, ChannelEntity[].class);
 
