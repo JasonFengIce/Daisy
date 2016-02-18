@@ -845,7 +845,10 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         }
     }
 
+    private boolean neterrorshow = false;
     private void showNetErrorPopup() {
+    	if(neterrorshow)
+    		return;
         final MessageDialogFragment dialog = new MessageDialogFragment(TVGuideActivity.this, getString(R.string.fetch_net_data_error), null);
         dialog.setButtonText(getString(R.string.setting_network), getString(R.string.i_know));
         try {
@@ -861,8 +864,10 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                         @Override
                         public void cancelClick(View view) {
                             dialog.dismiss();
+                            neterrorshow = false;
                         }
                     });
+            neterrorshow = true;
         } catch (android.view.WindowManager.BadTokenException e) {
         }
     }
