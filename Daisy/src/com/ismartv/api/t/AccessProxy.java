@@ -6,12 +6,13 @@ import cn.ismartv.activator.core.rsa.AESOperator;
 import com.ismartv.api.AESDemo;
 import com.ismartv.bean.ClipInfo;
 import com.pplive.android.player.PlayCodeUtil;
-import com.qiyi.video.player.data.Definition;
+import com.qiyi.sdk.player.BitStream;
+import com.qiyi.sdk.player.IMedia;
+import com.qiyi.sdk.player.SdkVideo;
 import org.json.JSONException;
 import org.json.JSONObject;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.qiyimediaplayer.SdkVideo;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -56,15 +57,14 @@ public class AccessProxy {
 		return jsonToObject(content);
 	}
 
-	public static SdkVideo getQiYiInfo(String content,Definition definition) {
-		SdkVideo qiyiInfo = null;
+	public static IMedia getQiYiInfo(String content,BitStream definition) {
+		IMedia qiyiInfo = null;
 		JSONObject json;
 		try {
 			json = new JSONObject(content);
 			String info = json.getString("iqiyi_4_0");
 			String[] array = info.split(":");
-			qiyiInfo = new SdkVideo(array[0], array[1], array[2],
-					definition);
+			qiyiInfo = new SdkVideo(array[0], array[1],definition,false);
 			// qiyiInfo = new SdkVideo("202153901", "308529000",
 			// "8d301d7723586e7a0e1ecb778ada0cb5",Definition.DEFINITON_1080P);
 		} catch (Exception e) {
