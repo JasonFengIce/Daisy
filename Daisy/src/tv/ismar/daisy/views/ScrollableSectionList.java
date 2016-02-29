@@ -120,6 +120,7 @@ public class ScrollableSectionList extends tv.ismar.daisy.views.MyHorizontalScro
         sectionFilter.setFocusable(true);
         sectionFilter.setOnFocusChangeListener(mOnFocusChangeListener);
         sectionFilter.setOnClickListener(mOnClickListener);
+        sectionFilter.setOnHoverListener(mOnTouchListener);
         sectionFilter.setTag(0);
         sectionFilter.setId(R.layout.section_list_item+1);
         mContainer.addView(sectionFilter, 0);
