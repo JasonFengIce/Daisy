@@ -34,6 +34,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -131,8 +132,39 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         verificationEdit = (EditText) fragmentView.findViewById(R.id.login_verification_edit);
         fetchVerificationBtn = (Button) fragmentView.findViewById(R.id.fetch_verification_btn);
         fetchVerificationBtn.setOnClickListener(this);
+        fetchVerificationBtn.setOnHoverListener(new View.OnHoverListener() {
+			
+			@Override
+			public boolean onHover(View v, MotionEvent event) {
+				switch (event.getAction()) {
+				case MotionEvent.ACTION_HOVER_ENTER:
+				case MotionEvent.ACTION_HOVER_MOVE:
+					v.requestFocus();
+					break;
+				case MotionEvent.ACTION_HOVER_EXIT:
+					break;
+				}
+				return false;
+			}
+		});
         submitBtn = (Button) fragmentView.findViewById(R.id.submit_btn);
         submitBtn.setOnClickListener(this);
+        submitBtn.setOnHoverListener(new View.OnHoverListener() {
+			
+			@Override
+			public boolean onHover(View v, MotionEvent event) {
+				switch (event.getAction()) {
+				case MotionEvent.ACTION_HOVER_ENTER:
+				case MotionEvent.ACTION_HOVER_MOVE:
+					v.requestFocus();
+					break;
+				case MotionEvent.ACTION_HOVER_EXIT:
+					break;
+				}
+				return false;
+			}
+		});
+
         phoneNumberPrompt = (TextView) fragmentView.findViewById(R.id.phone_number_prompt);
         verificationPrompt = (TextView) fragmentView.findViewById(R.id.verification_prompt);
         phoneNumberMsg = (TextView) fragmentView.findViewById(R.id.phone_number_msg);
@@ -146,7 +178,36 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 return false;
             }
         });
-
+        phoneNumberEdit.setOnHoverListener(new View.OnHoverListener() {
+			
+			@Override
+			public boolean onHover(View v, MotionEvent event) {
+				switch (event.getAction()) {
+				case MotionEvent.ACTION_HOVER_ENTER:
+				case MotionEvent.ACTION_HOVER_MOVE:
+					v.requestFocus();
+					break;
+				case MotionEvent.ACTION_HOVER_EXIT:
+					break;
+				}
+				return false;
+			}
+		});
+        verificationEdit.setOnHoverListener(new View.OnHoverListener() {
+			
+			@Override
+			public boolean onHover(View v, MotionEvent event) {
+				switch (event.getAction()) {
+				case MotionEvent.ACTION_HOVER_ENTER:
+				case MotionEvent.ACTION_HOVER_MOVE:
+					v.requestFocus();
+					break;
+				case MotionEvent.ACTION_HOVER_EXIT:
+					break;
+				}
+				return false;
+			}
+		});
         return fragmentView;
     }
 

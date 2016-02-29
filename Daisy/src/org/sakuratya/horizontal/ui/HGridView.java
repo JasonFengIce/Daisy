@@ -204,7 +204,6 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		case MotionEvent.ACTION_HOVER_MOVE:
 			int position1 = pointToPosition((int) event.getX(),
 					(int) event.getY());
-			Log.v("testHGRIDVIEW", "position1="+position1);
 			if (position1 >= 0) {
 				hover = true;
 				setFocusable(true);

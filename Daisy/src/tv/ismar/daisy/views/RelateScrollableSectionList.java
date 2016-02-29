@@ -148,6 +148,7 @@ public class RelateScrollableSectionList extends HorizontalScrollView {
     public static int STATE_SECTION = 3;
     public static int STATE_LEAVE_GRIDVIEW = 4;
     public int currentState = STATE_SECTION;
+    public TextView sectionhovered;
 	private OnFocusChangeListener mOnFocusChangeListener = new OnFocusChangeListener() {
 		
 		@Override
@@ -175,6 +176,17 @@ public class RelateScrollableSectionList extends HorizontalScrollView {
             int textsize = getResources().getDimensionPixelSize(R.dimen.channel_section_tabs_label_ctextsize);
             textsize = (int) (textsize/rate);
             if(hasFocus){
+				if(v.isHovered()){
+					label.setBackgroundResource(R.drawable.channel_focus_frame);
+					return;
+				}
+				if(sectionhovered != null){
+					((RelativeLayout) sectionhovered.getParent()).setHovered(false);
+				}
+				if (sectionhovered != null) {
+					sectionhovered
+							.setBackgroundResource(android.R.color.transparent);
+				}
                 if(index==mSelectPosition){
                     label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
                     label.setTextSize(textsize);
@@ -235,23 +247,14 @@ public class RelateScrollableSectionList extends HorizontalScrollView {
 			switch (keycode.getAction()) {
 			case MotionEvent.ACTION_HOVER_ENTER:
 			case MotionEvent.ACTION_HOVER_MOVE:
-//				v.setFocusable(true);
-//				v.setFocusableInTouchMode(true);
-//				v.requestFocus(View.FOCUS_RIGHT);
-				int textsize = getResources().getDimensionPixelSize(
-						R.dimen.channel_section_tabs_label_ctextsize);
-				textsize = (int) (textsize / rate);
-//				if (index == mSelectPosition) {
-//					label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
-//					label.setTextSize(textsize);
-//					label.setBackgroundResource(R.drawable.sectionfocus);
-//					return false;
-//				} else {
-					label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
-					label.setTextSize(textsize);
-					label.setBackgroundResource(R.drawable.channel_focus_frame);
-//				}
-
+				v.setFocusable(true);
+				v.setFocusableInTouchMode(true);
+				v.setHovered(true);
+				v.requestFocus();
+				sectionhovered = label;
+				label.setBackgroundResource(R.drawable.channel_focus_frame);
+//				if(sectionWhenGoto != null)
+//					  sectionWhenGoto.setBackgroundResource(R.drawable.gotogridview);
 				break;
 			case MotionEvent.ACTION_HOVER_EXIT:
 				if (index == mSelectPosition) {
@@ -260,6 +263,7 @@ public class RelateScrollableSectionList extends HorizontalScrollView {
 				}
 				label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
 				label.setBackgroundResource(android.R.color.transparent);
+				v.setHovered(false);
 			default:
 				break;
 			}

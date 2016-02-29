@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:paddingLeft="@dimen/purchaseFragment_item_paddingLeft"
               android:minHeight="@dimen/purchaseFragment_item_minHeight"
-              android:orientation="horizontal"
               android:clipChildren="false"
               android:clipToPadding="false"
         >
 
     <tv.ismar.daisy.views.LabelImageView
+        xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
             android:focusable="true"
             android:layout_marginTop="@dimen/purchaseFragment_item_icon_marginTop"
             android:id="@+id/orderlistitem_icon"
             android:layout_width="@dimen/purchaseFragment_item_image_width"
             android:layout_height="@dimen/purchaseFragment_item_image_height"
+            labelimage:needzoom="true"
             android:scaleType="fitXY"
+            android:focusableInTouchMode="true"
             android:nextFocusLeft="@+id/vertical_divider_line"
             />
 
@@ -23,6 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/purchase_history_item_margin_left"
+            android:layout_toRightOf="@+id/orderlistitem_icon"
             android:orientation="vertical">
 
         <LinearLayout
@@ -110,4 +113,4 @@
     </LinearLayout>
 
 
-</LinearLayout>
+</RelativeLayout>

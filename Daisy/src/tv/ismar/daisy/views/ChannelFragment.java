@@ -122,7 +122,6 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 			public boolean onHover(View arg0, MotionEvent arg1) {
 				// TODO Auto-generated method stub
 				if(arg1.getAction() == MotionEvent.ACTION_HOVER_ENTER){
-					Log.v("aaaa", "arrow_left");
 					}
 				return true;
 			}
@@ -136,15 +135,31 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 			}
 		});
         arrow_right = (ImageView) fragmentView.findViewById(R.id.arrow_right);
-        arrow_right.setOnHoverListener(new View.OnHoverListener() {
+        right_shadow.setOnHoverListener(new View.OnHoverListener() {
 
 			@Override
 			public boolean onHover(View arg0, MotionEvent arg1) {
 				// TODO Auto-generated method stub
-				if(arg1.getAction() == MotionEvent.ACTION_HOVER_ENTER){
-				Log.v("aaaa", "arrow_right");
+				if(arg1.getAction() == MotionEvent.ACTION_HOVER_ENTER || arg1.getAction() == MotionEvent.ACTION_HOVER_MOVE){
+					right_shadow.setBackgroundResource(R.drawable.scroll_right_focus);
+				}else{
+					right_shadow.setBackgroundResource(R.drawable.scroll_right_normal);
 				}
-				return true;
+				return false;
+			}
+		});
+
+        left_shadow.setOnHoverListener(new View.OnHoverListener() {
+
+			@Override
+			public boolean onHover(View arg0, MotionEvent arg1) {
+				// TODO Auto-generated method stub
+				if(arg1.getAction() == MotionEvent.ACTION_HOVER_ENTER || arg1.getAction() == MotionEvent.ACTION_HOVER_MOVE){
+					left_shadow.setBackgroundResource(R.drawable.scroll_left_focus);
+				}else{
+					left_shadow.setBackgroundResource(R.drawable.scroll_left_normal);
+				}
+				return false;
 			}
 		});
         arrow_right.setOnClickListener(new View.OnClickListener() {
@@ -162,12 +177,20 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
                 @Override
                 public void onClick(View view) {
                     mHGridView.pageScroll(View.FOCUS_LEFT);
+                    right_shadow.setVisibility(View.VISIBLE);	
+                    if(mHGridView.getSelectedItemPosition() <= 1 ){
+                    	left_shadow.setVisibility(View.INVISIBLE);
+                    }
                 }
             });
             right_shadow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mHGridView.pageScroll(View.FOCUS_RIGHT);
+                    left_shadow.setVisibility(View.VISIBLE);
+                    if(mHGridView.getSelectedItemPosition() >= mHGridView.getCount() -2){
+                    	right_shadow.setVisibility(View.INVISIBLE);	
+                    }
                 }
             });
         }
@@ -628,7 +651,6 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
         @Override
         public void onSectionSelectChanged(int index) {
             checkSectionChanged(index);
-            Log.v("aaaa", "index = "+index);
             mHGridView.jumpToSection(index);
         }
     };

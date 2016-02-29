@@ -118,7 +118,7 @@ public class PurchaseHistoryFragment extends Fragment {
     private void createHistoryListView(ArrayList<AccountsOrdersEntity.OrderEntity> orderEntities) {
         accountOrderListView.removeAllViews();
 
-        for (int i = 0; i < orderEntities.size(); i++) {
+        for (int i = 1; i < orderEntities.size(); i++) {
             View convertView = LayoutInflater.from(mContext).inflate(R.layout.orderlistitem, null);
 
             AccountsOrdersEntity.OrderEntity item = orderEntities.get(i);

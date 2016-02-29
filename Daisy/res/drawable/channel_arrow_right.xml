@@ -2,4 +2,5 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item android:drawable="@drawable/scroll_right_normal" />
+    <item android:state_hovered="true" android:drawable="@drawable/scroll_right_focus"/>
 </selector>

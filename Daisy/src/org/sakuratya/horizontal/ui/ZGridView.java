@@ -13,6 +13,7 @@ import android.os.Parcelable;
 import android.os.SystemClock;
 import android.util.*;
 import android.view.*;
+import android.view.View.OnFocusChangeListener;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
@@ -22,6 +23,8 @@ import tv.ismar.daisy.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.sakuratya.horizontal.ui.HGridView.OnHoverListener;
 
 public class ZGridView extends AdapterView<ListAdapter> {
 
@@ -3789,63 +3792,34 @@ public class ZGridView extends AdapterView<ListAdapter> {
 	@Override
 	protected boolean dispatchHoverEvent(MotionEvent event) {
 		// TODO Auto-generated method stub
-		 switch (event.getAction()) {
-		 case MotionEvent.ACTION_HOVER_ENTER:
-		 break;
-		 case MotionEvent.ACTION_HOVER_MOVE: //鼠标在view上
-		 int position1 = pointToPosition((int) event.getX(), (int)
-		 event.getY());
-		 if(position1>=0){
-		 hover = true;
-		 setFocusableInTouchMode(true);
-		 requestFocusFromTouch();
-		 setFocusable(true);
-		 requestFocus();
-		 setSelection(position1);
-		 }
-		 else{
+		if(onhoverlistener != null){
+			onhoverlistener.onHover(this, event);
+		}
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_HOVER_ENTER:
+//			hover = true;
+//			break;
+		case MotionEvent.ACTION_HOVER_MOVE:
+			int position1 = pointToPosition((int) event.getX(),
+					(int) event.getY());
+			if (position1 >= 0) {
+				hover = true;
+				setFocusable(true);
+				setFocusableInTouchMode(true);
+				setSelection(position1);
+				requestFocus();
+			}else{
 				hover = false;
 				mSelectorRect.setEmpty();
 				invalidate();
-		 }
-		 break;
-		 case MotionEvent.ACTION_HOVER_EXIT: //鼠标离开view
-		 hover = false;
-		 break;
-		 }
-		 return false;
-//		if(downbtn!=null){
-//	
-//			boolean s =  super.dispatchHoverEvent(event);
-//			int position = pointToPosition((int) event.getX(), (int) event.getY());
-//			if ((event.getAction() == MotionEvent.ACTION_HOVER_ENTER && position != -1)
-//					|| (event.getAction() == MotionEvent.ACTION_HOVER_MOVE && position != -1)){
-//				
-//				if(position!=-1&&event.getAction() == MotionEvent.ACTION_HOVER_ENTER){
-//					mOnItemSelectedListener.onItemSelected(this, getChildAt(position), position,
-//							getAdapter().getItemId(position));
-//				}
-//			}
-//			return s;
-//		}
-//		int position = pointToPosition((int) event.getX(), (int) event.getY());
-//
-//		if ((event.getAction() == MotionEvent.ACTION_HOVER_ENTER && position != -1)
-//				|| (event.getAction() == MotionEvent.ACTION_HOVER_MOVE && position != -1)) {
-//			hover = true;
-//			setFocusableInTouchMode(true);
-//			setFocusable(true);
-//			requestFocusFromTouch();
-//			requestFocus();
-//			if(downbtn==null)
-//			   setSelection(position);
-//
-//		} else {
-//			hover = false;
+			}
+			break;
+		case MotionEvent.ACTION_HOVER_EXIT: 
 //			clearFocus();
-//
-//		}
-//		return true;
+			hover = false;
+			break;
+		}
+		return false;
 	}
 
 	@Override
@@ -5654,7 +5628,10 @@ public class ZGridView extends AdapterView<ListAdapter> {
 		} else {
 			requestLayout();
 		}
+		
 	}
+
+	public OnFocusChangeListener mFocusListener;
 
 	private boolean isCandidateSelection(int childIndex, int direction) {
 		final int count = getChildCount();
@@ -6043,5 +6020,13 @@ public class ZGridView extends AdapterView<ListAdapter> {
 			fillUp(position, startOffset);
 			correctTooLow(numColumns, verticalSpacing, getChildCount());
 		}
+	}
+	
+	private OnHoverListener onhoverlistener;
+	public void setOnHoverListener(OnHoverListener l){
+		onhoverlistener = l;
+	}
+	public interface OnHoverListener {
+		public boolean onHover(View v, MotionEvent event);
 	}
 }

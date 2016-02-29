@@ -108,6 +108,19 @@ public class FilterFragment extends BackHandledFragment {
                 realFilterStr = "";
             }
         });
+        submitBtn.setOnHoverListener(new View.OnHoverListener() {
+			
+			@Override
+			public boolean onHover(View v, MotionEvent event) {
+				
+				if(event.getAction() == MotionEvent.ACTION_HOVER_ENTER || event.getAction() == MotionEvent.ACTION_HOVER_MOVE){
+					v.setBackgroundResource(R.color.search_bg_focus);
+				}else{
+					v.setBackgroundResource(R.drawable.filter_btn_normal);		
+				}
+				return false;
+			}
+		});
     }
 
     @Override
@@ -153,9 +166,13 @@ public class FilterFragment extends BackHandledFragment {
                         View view = mInflater.inflate(R.layout.filter_condition_item,null);
                         TextView condition_txt = (TextView) view.findViewById(R.id.condition_txt);
                         MyViewGroup valueViews = (MyViewGroup)view.findViewById(R.id.line_group);
+                        valueViews.setFocusable(true);
+                        valueViews.setFocusableInTouchMode(true);
+                        valueViews.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
                         condition_txt.setText(label+" :");
                         RadioButton nolimitRbtn = new RadioButton(getActivity());
-
+                        nolimitRbtn.setFocusable(true);
+                        nolimitRbtn.setFocusableInTouchMode(true);
                         FilterItem noLimitItem = new FilterItem();
                         if(nolimit.startsWith("area")&&key.equals("area")&&(mChannel.equals("chinesemovie")||mChannel.equals("overseas"))){
                             noLimitItem.value = nolimit;
@@ -265,21 +282,12 @@ public class FilterFragment extends BackHandledFragment {
             public boolean onHover(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_HOVER_ENTER:
-                        if(!((RadioButton)view).isChecked()){
-                            ((RadioButton)view).setTextSize(48/rate);
-                            ((RadioButton)view).setTextColor(LABEL_TEXT_COLOR_FOCUSED);
-//                            if(((FilterItem)view.getTag()).nolimitView!=null){
-//                                ((FilterItem)view.getTag()).nolimitView.setChecked(false);
-//                            }
-                        }
-                        break;
                     case MotionEvent.ACTION_HOVER_MOVE:
+                    	view.setFocusable(true);
+                    	view.setFocusableInTouchMode(true);
+                    	view.requestFocus();
                         break;
                     case MotionEvent.ACTION_HOVER_EXIT:
-                        if(!((RadioButton)view).isChecked()){
-                            ((RadioButton)view).setTextSize(36/rate);
-                            ((RadioButton)view).setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
-                        }
                         break;
                 }
                 return false;
@@ -318,6 +326,5 @@ public class FilterFragment extends BackHandledFragment {
     public boolean onBackPressed() {
         return false;
     }
-
-
+ 
 }

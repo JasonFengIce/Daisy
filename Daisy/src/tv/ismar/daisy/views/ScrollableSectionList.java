@@ -226,7 +226,6 @@ public class ScrollableSectionList extends tv.ismar.daisy.views.MyHorizontalScro
 
 			TextView label = (TextView) v.findViewById(R.id.section_label);
 			if(hasFocus){
-				Log.v("aaaa", "onFocusChange tag = "+index);
 				if(v.isHovered()){
 					label.setBackgroundResource(R.drawable.channel_focus_frame);
 					return;
@@ -365,7 +364,7 @@ public class ScrollableSectionList extends tv.ismar.daisy.views.MyHorizontalScro
 				sectionhovered = label;
 				v.setNextFocusRightId(v.getId() +1);
 				v.setNextFocusLeftId(v.getId() -1);
-//				label.setBackgroundResource(R.drawable.channel_focus_frame);
+				label.setBackgroundResource(R.drawable.channel_focus_frame);
 //				if(sectionWhenGoto != null)
 //				  sectionWhenGoto.setBackgroundResource(R.drawable.gotogridview);
 				break;

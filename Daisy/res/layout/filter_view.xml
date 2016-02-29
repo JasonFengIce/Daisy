@@ -28,7 +28,6 @@
             android:layout_marginLeft="@dimen/filter_view_filtermenulayout_ml"
             android:layout_marginRight="@dimen/filter_view_filtermenulayout_ml"/>
     <Button
-            android:visibility="invisible"
             android:id="@+id/filter_submit"
             android:layout_marginTop="@dimen/filter_view_filter_submit_mt"
             android:layout_marginLeft="@dimen/filter_view_filter_submit_ml"

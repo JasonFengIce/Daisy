@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -33,6 +34,21 @@ public class HelpFragment extends Fragment implements View.OnClickListener {
         ismartvIcon.setNextFocusRightId(ismartvIcon.getId());
         ismartvIcon.setNextFocusUpId(ismartvIcon.getId());
         ismartvIcon.setNextFocusDownId(ismartvIcon.getId());
+        ismartvIcon.setOnHoverListener(new View.OnHoverListener() {
+			
+			@Override
+			public boolean onHover(View v, MotionEvent event) {
+				switch (event.getAction()) {
+				case MotionEvent.ACTION_HOVER_ENTER:
+				case MotionEvent.ACTION_HOVER_MOVE:
+					v.requestFocus();
+					break;
+				case MotionEvent.ACTION_HOVER_EXIT:
+					break;
+				}
+				return false;
+			}
+		});
         ismartvIcon.setOnClickListener(this);
         return view;
     }

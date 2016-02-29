@@ -84,13 +84,14 @@ public class RelatedActivity extends BaseActivity implements OnSectionSelectChan
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     Log.i("testHGRIDVIEW", "focus");
-                    if (mSectionTabs != null) {
+                    if (mSectionTabs != null && mSectionTabs.sectionWhenGoto != null) {
                         mSectionTabs.currentState = ScrollableSectionList.STATE_GOTO_GRIDVIEW;
                         mSectionTabs.sectionWhenGoto.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
                         mSectionTabs.sectionWhenGoto.setBackgroundResource(R.drawable.gotogridview);
                     }
                 } else {
                     Log.i("testHGRIDVIEW", "lostfocus");
+                    mItemListGrid.setSelection(AdapterView.INVALID_POSITION);
                     if (mSectionTabs != null)
                         mSectionTabs.currentState = ScrollableSectionList.STATE_LEAVE_GRIDVIEW;
                 }
