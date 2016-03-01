@@ -1324,7 +1324,6 @@ public class MyHorizontalScrollView extends FrameLayout {
         offsetDescendantRectToMyCoords(child, mTempRect);
 
         int scrollDelta = computeScrollDeltaToGetChildRectOnScreen(mTempRect);
-        Log.v("aaaa", "scrollDelta = "+scrollDelta);
         if (scrollDelta != 0 && !child.isHovered()) {
             scrollBy(scrollDelta, 0);
         }

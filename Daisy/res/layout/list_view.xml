@@ -92,6 +92,8 @@
             android:layout_marginTop="@dimen/listportait_shadow_mt"
             android:background="@drawable/channel_arrow_left"
             android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:visibility="visible" />
 
         <Button
@@ -102,6 +104,8 @@
             android:layout_marginRight="@dimen/listportait_shadow_ml"
             android:layout_marginTop="@dimen/listportait_shadow_mt"
             android:background="@drawable/channel_arrow_right"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:visibility="visible" />
 
         <org.sakuratya.horizontal.ui.HGridView

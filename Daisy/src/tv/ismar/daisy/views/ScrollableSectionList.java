@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -204,6 +205,9 @@ public class ScrollableSectionList extends tv.ismar.daisy.views.MyHorizontalScro
 		
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
+			if(left_shadow != null && (left_shadow.isHovered() || right_shadow.isHovered())){
+				return;
+			}
 			int index = (Integer) v.getTag();
 			float rate = DaisyUtils.getVodApplication(getContext()).getRate(getContext());
 			if(left!=null&&right!=null){
@@ -248,10 +252,26 @@ public class ScrollableSectionList extends tv.ismar.daisy.views.MyHorizontalScro
                 else{
 
                     if(currentState==STATE_LEAVE_GRIDVIEW){
-
                        // setsectionview(mContainer.getChildAt(mSelectPosition));
                         currentState = STATE_SECTION;
+//                        if(sectionhovered != null && (((View)sectionhovered.getParent()).getId() != v.getId() -1 && ((View)sectionhovered.getParent()).getId() != v.getId() +1)){
                         mContainer.getChildAt(mSelectPosition).requestFocus();
+//                        }else {
+//                            label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
+//                            label.setTextSize(textsize);
+//                            label.setBackgroundResource(R.drawable.sectionfocus);
+//                            mContainer.getChildAt(mSelectPosition).findViewById(R.id.section_label).setBackgroundResource(android.R.color.transparent);
+//                            if(mHandler!=null){
+//                                if(mHandler.hasMessages(START_CLICK)){
+//                                    mHandler.removeMessages(START_CLICK);
+//                                }
+//                            }
+//                            Message msg = new Message();
+//                            msg.what = START_CLICK;
+//                            msg.obj = v;
+//                            mHandler.sendMessageDelayed(msg,0);
+//                            return;
+//						} 
                     }else if(currentState==STATE_SECTION){
                         if(mHandler!=null){
                             if(mHandler.hasMessages(START_CLICK)){
@@ -269,9 +289,6 @@ public class ScrollableSectionList extends tv.ismar.daisy.views.MyHorizontalScro
                         msg.obj = v;
                         mHandler.sendMessageDelayed(msg,0);
                     }
-
-
-
                 }
 
 			} else {
@@ -283,7 +300,6 @@ public class ScrollableSectionList extends tv.ismar.daisy.views.MyHorizontalScro
                      }
                      label.setTextColor(LABEL_TEXT_COLOR_NOFOCUSED);
                      label.setBackgroundResource(android.R.color.transparent);
-
 			}
 		}
 	};
@@ -367,6 +383,13 @@ public class ScrollableSectionList extends tv.ismar.daisy.views.MyHorizontalScro
 				label.setBackgroundResource(R.drawable.channel_focus_frame);
 //				if(sectionWhenGoto != null)
 //				  sectionWhenGoto.setBackgroundResource(R.drawable.gotogridview);
+//				mSelectPosition = (Integer) v.getTag();
+				if (index != mSelectPosition) {
+					View lastSelectedView = mContainer.getChildAt(mSelectPosition);
+					TextView lastLabel = (TextView) lastSelectedView.findViewById(R.id.section_label);
+					lastLabel.setBackgroundResource(R.drawable.gotogridview);
+					return false;
+				}
 				break;
 			case MotionEvent.ACTION_HOVER_EXIT:
 				if (index == mSelectPosition) {
@@ -731,6 +754,8 @@ public class ScrollableSectionList extends tv.ismar.daisy.views.MyHorizontalScro
 //		// TODO Auto-generated method stub
 //		return false;
 //	}
+	public Button left_shadow;
+	public Button right_shadow;
 	public void reset() {
 		removeAllViews();
 	}

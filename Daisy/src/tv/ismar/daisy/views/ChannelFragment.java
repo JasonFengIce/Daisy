@@ -142,8 +142,13 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 				// TODO Auto-generated method stub
 				if(arg1.getAction() == MotionEvent.ACTION_HOVER_ENTER || arg1.getAction() == MotionEvent.ACTION_HOVER_MOVE){
 					right_shadow.setBackgroundResource(R.drawable.scroll_right_focus);
+					arg0.setFocusable(true);
+					arg0.setFocusableInTouchMode(true);
+					arg0.requestFocus();
+					arg0.setHovered(true);
 				}else{
 					right_shadow.setBackgroundResource(R.drawable.scroll_right_normal);
+					arg0.setHovered(false);
 				}
 				return false;
 			}
@@ -156,7 +161,12 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 				// TODO Auto-generated method stub
 				if(arg1.getAction() == MotionEvent.ACTION_HOVER_ENTER || arg1.getAction() == MotionEvent.ACTION_HOVER_MOVE){
 					left_shadow.setBackgroundResource(R.drawable.scroll_left_focus);
+					arg0.setFocusable(true);
+					arg0.setFocusableInTouchMode(true);
+					arg0.setHovered(true);
+					arg0.requestFocus();
 				}else{
+					arg0.setHovered(false);
 					left_shadow.setBackgroundResource(R.drawable.scroll_left_normal);
 				}
 				return false;
@@ -196,29 +206,31 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
         }
 
 
-        left_shadow.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    mHGridView.pageScroll(View.FOCUS_LEFT);
-                }
-            }
-        });
-
-        right_shadow.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    mHGridView.pageScroll(View.FOCUS_RIGHT);
-                }
-            }
-        });
+//        left_shadow.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus) {
+//                    mHGridView.pageScroll(View.FOCUS_LEFT);
+//                }
+//            }
+//        });
+//
+//        right_shadow.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus) {
+//                    mHGridView.pageScroll(View.FOCUS_RIGHT);
+//                }
+//            }
+//        });
         mScrollableSectionList = (ScrollableSectionList) fragmentView.findViewById(R.id.section_tabs);
         mScrollableSectionList.setOnSectionSelectChangeListener(mOnSectionSelectChangedListener);
         mScrollableSectionList.percentageBar = percentage;
         mScrollableSectionList.channel = mChannel;
         mScrollableSectionList.title = mTitle;
         mScrollableSectionList.isPortrait = isPortrait;
+        mScrollableSectionList.left_shadow = left_shadow;
+        mScrollableSectionList.right_shadow = right_shadow;
         mHGridView.setOnItemClickListener(this);
         mHGridView.setOnItemSelectedListener(this);
         mHGridView.setOnScrollListener(this);

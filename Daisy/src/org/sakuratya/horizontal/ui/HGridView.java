@@ -194,13 +194,8 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	@Override
 	protected boolean dispatchHoverEvent(MotionEvent event) {
 		// TODO Auto-generated method stub
-		if(onhoverlistener != null){
-			onhoverlistener.onHover(this, event);
-		}
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_HOVER_ENTER:
-//			hover = true;
-//			break;
 		case MotionEvent.ACTION_HOVER_MOVE:
 			int position1 = pointToPosition((int) event.getX(),
 					(int) event.getY());
@@ -208,16 +203,26 @@ public class HGridView extends AdapterView<HGridAdapter> {
 				hover = true;
 				setFocusable(true);
 				setFocusableInTouchMode(true);
-				setSelection(position1);
+				View childView = getChildAt(position1);
+				if(childView != null){
+					childView.setHovered(true);
+					if(onhoverlistener != null){
+						onhoverlistener.onHover(childView, event,position1);
+					}
+				}
+				if (onhoverlistener == null)
+					setSelection(position1);
 				requestFocus();
 			}else{
+				if(onhoverlistener != null){
+					onhoverlistener.onHover(null, event,position1);
+				}
 				hover = false;
 				mSelectorRect.setEmpty();
 				invalidate();
 			}
 			break;
 		case MotionEvent.ACTION_HOVER_EXIT: 
-//			clearFocus();
 			hover = false;
 			break;
 		}
@@ -1498,7 +1503,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		if (nextSelectedPosition != INVALID_POSITION) {
 			setNextSelectedPositionInt(nextSelectedPosition);
 		}
-
+		nextselectPosition = nextSelectedPosition;
 		if (nextSelectedPosition != INVALID_POSITION) {
             mLayoutMode = LAYOUT_MOVE_SELECTION;
             layoutChildren();
@@ -2795,6 +2800,13 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		}
 		return false;
 	}
+
+	private int nextselectPosition;
+
+	public int getnextSelectPosition() {
+		return nextselectPosition;
+	}
+
 public View leftbtn;
 public View rightbtn;
 private OnHoverListener onhoverlistener;
@@ -2802,7 +2814,7 @@ public void setOnHoverListener(OnHoverListener l){
 	onhoverlistener = l;
 }
 public interface OnHoverListener {
-	public boolean onHover(View v, MotionEvent event);
+	public boolean onHover(View v, MotionEvent event,int index);
 }
 
 @Override

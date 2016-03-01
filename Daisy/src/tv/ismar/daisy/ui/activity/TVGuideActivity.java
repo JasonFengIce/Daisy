@@ -1,6 +1,5 @@
 package tv.ismar.daisy.ui.activity;
 
-import android.app.Instrumentation;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +11,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.*;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -27,15 +30,33 @@ import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
-import android.widget.*;
-import cn.ismartv.activator.Activator;
-import cn.ismartv.activator.data.Result;
-import com.baidu.location.*;
-//import com.baidu.mobstat.i;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
+
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.GeofenceClient;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
+
 import org.apache.commons.lang3.StringUtils;
 import org.sakuratya.horizontal.ui.HGridView;
+
+import java.io.InputStream;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+
+import cn.ismartv.activator.Activator;
+import cn.ismartv.activator.data.Result;
 import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
@@ -53,22 +74,19 @@ import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
 import tv.ismar.daisy.ui.Position;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
-import tv.ismar.daisy.ui.fragment.launcher.*;
+import tv.ismar.daisy.ui.fragment.launcher.ChildFragment;
+import tv.ismar.daisy.ui.fragment.launcher.EntertainmentFragment;
+import tv.ismar.daisy.ui.fragment.launcher.FilmFragment;
+import tv.ismar.daisy.ui.fragment.launcher.GuideFragment;
+import tv.ismar.daisy.ui.fragment.launcher.SportFragment;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
 import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
 import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.sakura.ui.widget.MessagePopWindow;
 
-import java.io.InputStream;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-
-import javax.security.auth.PrivateCredentialPermission;
-
-import static tv.ismar.daisy.VodApplication.*;
+import static tv.ismar.daisy.VodApplication.LOCATION_CITY;
+import static tv.ismar.daisy.VodApplication.LOCATION_DISTRICT;
+import static tv.ismar.daisy.VodApplication.LOCATION_PROVINCE;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -118,13 +136,15 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private boolean rightscroll;
     private LeavePosition leavePosition = LeavePosition.RightBottom;
     private ImageView guide_shadow_view;
-    private int channelscrollIndex = 0;
+    private static int channelscrollIndex = 0;
 
     public boolean isneedpause;
 
     private FragmentSwitchHandler fragmentSwitch;
     private BitmapDecoder bitmapDecoder;
-
+    private Handler netErrorPopupHandler;
+    private Runnable netErrorPopupRunnable;
+    private CacheHttpClient cacheHttpClient;
     private enum LeavePosition {
         LeftTop,
         LeftBottom,
@@ -185,28 +205,81 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 TextView textview = (TextView) lastview.findViewById(R.id.channel_item);
                 lastview.setBackgroundResource(R.drawable.channel_item_normal);
                 textview.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
-                scroll.requestFocus();
-                scrollFromBorder = true;
+//                AnimationSet animationSet1 = new AnimationSet(true);
+//                ScaleAnimation scaleAnimation1 = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
+//                        Animation.RELATIVE_TO_SELF, 0.5f,
+//                        Animation.RELATIVE_TO_SELF, 0.5f);
+//                scaleAnimation1.setDuration(200);
+//                animationSet1.addAnimation(scaleAnimation1);
+//                animationSet1.setFillAfter(true);
+//                textview.startAnimation(animationSet1);
+//                scroll.requestFocus();
                 switch (v.getId()) {
                     case R.id.arrow_scroll_left:
                         scrollType = ScrollType.left;
+//                        channelChange = ChannelChange.LEFT_ARROW;
+//                        if (mCurrentChannelPosition.getPosition() - 1 >= 0) {
+//                            mCurrentChannelPosition.setPosition(mCurrentChannelPosition.getPosition() - 1);
+//                        } else {
+//                            mCurrentChannelPosition.setPosition(0);
+//                        }
                         scroll.arrowScroll(View.FOCUS_LEFT);
                         rightscroll = true;
-        				channelChange = ChannelChange.CLICK_CHANNEL;
-        				mCurrentChannelPosition.setPosition(scroll.getSelectedItemPosition());
+
                         break;
                     case R.id.arrow_scroll_right:
                         scrollType = ScrollType.right;
+//                        channelChange = ChannelChange.RIGHT_ARROW;
+//                        Log.i("TestFragment", "mCurrentChannelPosition.getPosition()" + mCurrentChannelPosition.getPosition());
+//                        if (mCurrentChannelPosition.getPosition() + 1 <= mChannelEntitys.length - 1) {
+//                            mCurrentChannelPosition.setPosition(mCurrentChannelPosition.getPosition() + 1);
+//                        } else {
+//                            mCurrentChannelPosition.setPosition(mChannelEntitys.length - 1);
+//                        }
                         scroll.arrowScroll(View.FOCUS_RIGHT);
                         rightscroll = false;
-                        channelChange = ChannelChange.CLICK_CHANNEL;
-        				mCurrentChannelPosition.setPosition(scroll.getSelectedItemPosition());
                         break;
                 }
+                scrollFromBorder = true;
             }
         }
     };
-  
+    private OnClickListener arrowViewListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            TextView textview = (TextView) lastview.findViewById(R.id.channel_item);
+            textview.setBackgroundResource(R.drawable.channel_item_normal);
+            textview.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
+//            AnimationSet animationSet1 = new AnimationSet(true);
+//            ScaleAnimation scaleAnimation1 = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
+//                    Animation.RELATIVE_TO_SELF, 0.5f,
+//                    Animation.RELATIVE_TO_SELF, 0.5f);
+//            scaleAnimation1.setDuration(200);
+//            animationSet1.addAnimation(scaleAnimation1);
+//            animationSet1.setFillAfter(true);
+//            textview.startAnimation(animationSet1);
+            switch (v.getId()) {
+                case R.id.arrow_scroll_left:
+                    channelChange = ChannelChange.LEFT_ARROW;
+                    if (mCurrentChannelPosition.getPosition() - 1 >= 0) {
+                        mCurrentChannelPosition.setPosition(mCurrentChannelPosition.getPosition() - 1);
+                    } else {
+                        mCurrentChannelPosition.setPosition(0);
+                    }
+
+                    break;
+                case R.id.arrow_scroll_right:
+                    channelChange = ChannelChange.RIGHT_ARROW;
+                    if (mCurrentChannelPosition.getPosition() + 1 <= mChannelEntitys.length - 1) {
+                        mCurrentChannelPosition.setPosition(mCurrentChannelPosition.getPosition() + 1);
+                    } else {
+                        mCurrentChannelPosition.setPosition(mChannelEntitys.length - 1);
+                    }
+                    break;
+            }
+        }
+
+    };
 
     private OnClickListener channelClickListener = new OnClickListener() {
         @Override
@@ -217,8 +290,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-    	if(savedInstanceState != null)
-    		savedInstanceState =null;
+        if (savedInstanceState != null)
+            savedInstanceState = null;
         super.onCreate(savedInstanceState);
         fragmentSwitch = new FragmentSwitchHandler(this);
         activityTag = "BaseActivity";
@@ -262,46 +335,36 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         String localInfo = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.LOCATION_INFO, "");
         getHardInfo();
         updatePoster();
-    	if (StringUtils.isEmpty(SimpleRestClient.device_token)) {
-            activator = Activator.getInstance(this);
-            activator.setOnCompleteListener(this);
-			String product = Build.BRAND.replace(" ", "_");
-			String mode = VodUserAgent.getModelName();
-			if (!activator.iswaiting)
-				activator.active(product, mode,
-						String.valueOf(SimpleRestClient.appVersion), localInfo);
-		} else {
-			fetchChannels();
-		}
+                if (StringUtils.isEmpty(SimpleRestClient.device_token)) {
+                activator = Activator.getInstance(this);
+                activator.setOnCompleteListener(this);
+                        String product = Build.BRAND.replace(" ", "_");
+                        String mode = VodUserAgent.getModelName();
+                        if (!activator.iswaiting)
+                                activator.active(product, mode,
+                                                String.valueOf(SimpleRestClient.appVersion), localInfo);
+                } else {
+                        fetchChannels();
+                }
     }
 
 
     private void initViews() {
         toppanel = (FrameLayout) findViewById(R.id.top_column_layout);
         toppage_divide_view = findViewById(R.id.toppage_divide_view);
-		toppage_divide_view
-				.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        toppage_divide_view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
-					@Override
-					public void onFocusChange(View v, boolean hasFocus) {
-						if (scroll == null)
-							return;
-						if(hasFocus){
-							final Instrumentation dd = new Instrumentation();
-							new Thread(){
-
-								@Override
-								public void run() {
-									super.run();
-									dd.sendKeyDownUpSync(KeyEvent.KEYCODE_DPAD_UP);
-								}
-							}.start();
-						}else{
-                            v.setFocusable(false);
-                            v.setFocusableInTouchMode(false);
-						}
-					}
-				});
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (scroll == null)
+                    return;
+                if (hasFocus) {
+                    scroll.requestFocus();
+                    TextView tv = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
+                    scroll.getSelectedView().setBackgroundResource(R.drawable.channel_item_selectd_focus);
+                }
+            }
+        });
 //        weatherFragment = new WeatherFragment();
 //        getSupportFragmentManager().beginTransaction().add(R.id.top_column_layout, weatherFragment).commit();
         //  channelListView = (LinearLayout) findViewById(R.id.channel_h_list);
@@ -344,14 +407,18 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         }
     }
 
+    private static boolean channelflag = false;
     /**
      * fetch channel
      */
     private void fetchChannels() {
         String api = SimpleRestClient.root_url + "/api/tv/channels/";
-        new CacheHttpClient().doRequest(api, new CacheHttpClient.Callback() {
+        cacheHttpClient = new CacheHttpClient(); 
+        cacheHttpClient.doRequest(api, new CacheHttpClient.Callback() {
             @Override
             public void onSuccess(String result) {
+            	if(neterrorshow)
+            		return;
                 topView.setVisibility(View.VISIBLE);
                 mChannelEntitys = new Gson().fromJson(result, ChannelEntity[].class);
 
@@ -362,7 +429,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
                 ChannelEntity launcher = new ChannelEntity();
                 launcher.setChannel("launcher");
-                launcher.setName("首页");
+                launcher.setName("      首页      ");
                 launcher.setHomepage_template("launcher");
                 mChannelEntitys[0] = launcher;
                 for (ChannelEntity e : tmp) {
@@ -370,12 +437,14 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                     k++;
                 }
                 createChannelView(mChannelEntitys);
-                toppage_divide_view.setVisibility(View.VISIBLE);
                 if (StringUtils.isNotEmpty(homepage_template)) {
                     for (int i = 0; i < mChannelEntitys.length; i++) {
                         if (homepage_template.equals(mChannelEntitys[i].getHomepage_template()) && mChannelEntitys[i].getHomepage_url().contains(homepage_url)) {
-                            channelscrollIndex = i;
-                            if (channelscrollIndex > 0) {
+                            if(channelflag)
+                            	break;
+                            channelflag = true;
+                        	channelscrollIndex = i;
+                            if (channelscrollIndex > 0 && !fragmentSwitch.hasMessages(SWITCH_PAGE_FROMLAUNCH)) {
                                 fragmentSwitch.sendEmptyMessage(SWITCH_PAGE_FROMLAUNCH);
                             }
                             topView.setSubTitle(mChannelEntitys[i].getName());
@@ -383,7 +452,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                         }
                     }
                 }
-                if (currentFragment == null && !isFinishing()) {
+                if (currentFragment == null && !isFinishing() && channelscrollIndex<=0) {
                     try {
                         currentFragment = new GuideFragment();
                         ChannelEntity channelEntity = new ChannelEntity();
@@ -393,7 +462,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                         currentFragment.setChannelEntity(channelEntity);
                         FragmentTransaction transaction = getSupportFragmentManager()
                                 .beginTransaction();
-                        transaction.replace(R.id.container, currentFragment,"template").commitAllowingStateLoss();
+                        transaction.replace(R.id.container, currentFragment, "template").commitAllowingStateLoss();
                     } catch (IllegalStateException e) {
                     }
 
@@ -403,6 +472,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             @Override
             public void onFailed(String error) {
                 Log.e(TAG, "fetchChannels failed");
+                showNetErrorPopup();
             }
         });
     }
@@ -410,13 +480,48 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private HGridView scroll;
     private View lastview = null;
     private View clickView = null;
+    private View lastHoverview = null;
 
-   
+    private void setFocusChannelView(View view) {
+        TextView channelBtn = (TextView) view.findViewById(R.id.channel_item);
+        channelBtn.setBackgroundResource(R.drawable.channel_focus_frame);
+        channelBtn.setTextColor(FOCUS_CHANNEL_TEXTCOLOR);
+        AnimationSet animationSet = new AnimationSet(true);
+        ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        scaleAnimation.setDuration(200);
+        animationSet.addAnimation(scaleAnimation);
+        animationSet.setFillAfter(true);
+        channelBtn.startAnimation(animationSet);
+    }
+
+    private void setLostFocusChannel(View view) {
+        TextView channelBtn = (TextView) view.findViewById(R.id.channel_item);
+        channelBtn.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
+        channelBtn.setBackgroundResource(R.drawable.channel_item_normal);
+        AnimationSet animationSet = new AnimationSet(true);
+        ScaleAnimation scaleAnimation = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        scaleAnimation.setDuration(200);
+        animationSet.addAnimation(scaleAnimation);
+        animationSet.setFillAfter(true);
+        channelBtn.startAnimation(animationSet);
+    }
 
     private void setClickChannelView(View view) {
         TextView channelBtn = (TextView) view.findViewById(R.id.channel_item);
         view.setBackgroundResource(R.drawable.channel_item_focus);
         channelBtn.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
+//        AnimationSet animationSet = new AnimationSet(true);
+//        ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
+//                Animation.RELATIVE_TO_SELF, 0.5f,
+//                Animation.RELATIVE_TO_SELF, 0.5f);
+//        scaleAnimation.setDuration(200);
+//        animationSet.addAnimation(scaleAnimation);
+//        animationSet.setFillAfter(true);
+//        channelBtn.startAnimation(animationSet);
     }
 
     private int FOCUS_CHANNEL_BG = 0xffffba00;
@@ -425,49 +530,39 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     private void createChannelView(ChannelEntity[] channelEntities) {
         List<ChannelEntity> channelList;
+//        ChannelEntity launcher = new ChannelEntity();
+//        launcher.setChannel("launcher");
+//        launcher.setName("首页");
+//        launcher.setHomepage_template("launcher");
         channelList = new ArrayList<ChannelEntity>();
+        // channelList.add(launcher);
         for (ChannelEntity entity : channelEntities) {
             channelList.add(entity);
         }
         scroll = (HGridView) contentView.findViewById(R.id.h_grid_view);
         scroll.setOnScrollListener(this);
-        channelHashMap = new HashMap<String, TextView>();
-        final ChannelAdapter imageAdapter = new ChannelAdapter(this, channelList, R.layout.item_channel);
-        scroll.setAdapter(imageAdapter);
-        imageAdapter.setMap(channelHashMap);
-        imageAdapter.setList((ArrayList<ChannelEntity>) channelList);
-        imageAdapter.setOnClickListener(channelClickListener);
-        scroll.setVisibility(View.VISIBLE);
-        scroll.setFocusable(true);
-        scroll.requestFocus();
         scroll.setOnHoverListener(new HGridView.OnHoverListener() {
-			
+
 			@Override
-			public boolean onHover(View vv, MotionEvent event) {
-				if (channelscrollIndex > 0 || scroll.getSelectedView() == null)
-					return false;
-				TextView v = (TextView) scroll.getSelectedView().findViewById(
-						R.id.channel_item);
-				if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER) {
-					toppage_divide_view.setFocusable(true);
-					toppage_divide_view.setFocusableInTouchMode(true);
-					if (v.getTag() != null
-							&& Integer.parseInt(v.getTag().toString()) == mCurrentChannelPosition
-									.getPosition())
-						scroll.getSelectedView().setBackgroundResource(R.drawable.channel_item_selectd_focus);
-					else
-						scroll.getSelectedView().setBackgroundResource(R.drawable.channel_focus_frame);
-				} else if(event.getAction() == MotionEvent.ACTION_HOVER_EXIT){
-					if (lastview != null) {
-						TextView mlastview = (TextView) lastview
-								.findViewById(R.id.channel_item);
-						if (mlastview.getTag() != null
-								&& Integer.parseInt(mlastview.getTag().toString()) == mCurrentChannelPosition
-										.getPosition()) {
-							lastview.setBackgroundResource(R.drawable.channel_item_focus);
-						} else {
-							lastview.setBackgroundResource(R.drawable.channel_item_normal);
-							mlastview.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
+			public boolean onHover(View v, MotionEvent event,int index) {
+				// TODO Auto-generated method stub
+				if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER
+						|| event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+					if(v != null){
+					resetLastHoverViewState();
+					v.setBackgroundResource(R.drawable.channel_focus_frame);
+					lastHoverview = v;
+					lastHoverview.setTag(index);
+					}else{
+						if (lastHoverview != null && lastview != null
+								&& (lastHoverview.getTag() != null && lastview.getTag() != null) && lastHoverview
+								.getTag().equals(lastview.getTag())) {
+							lastHoverview
+									.setBackgroundResource(R.drawable.channel_item_focus);
+						}else{
+							if (lastHoverview != null)
+								lastHoverview
+										.setBackgroundResource(R.drawable.channel_item_normal);
 						}
 					}
 				}
@@ -475,108 +570,133 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 			}
 		});
 
+        channelHashMap = new HashMap<String, TextView>();
+        final ChannelAdapter imageAdapter = new ChannelAdapter(this, channelList, R.layout.item_channel);
+//        imageAdapter.setOnClickCallback(new ChannelAdapter.OnClickCallback() {
+//            @Override
+//            public void onClickView(View v) {
+//                setClickChannelView(v);
+//                imageAdapter.setOnClickCallback(null);
+//            }
+//        });
+        scroll.setAdapter(imageAdapter);
+        imageAdapter.setMap(channelHashMap);
+        imageAdapter.setList((ArrayList<ChannelEntity>) channelList);
+        imageAdapter.setOnClickListener(channelClickListener);
+        scroll.setVisibility(View.VISIBLE);
+        scroll.setFocusable(true);
+        scroll.requestFocus();
+        //scroll.mFocusListener = mFocusListener;
         scroll.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
             @Override
             public void onFocusChange(View view, boolean flag) {
-				if (channelscrollIndex > 0 || scroll.getSelectedView() == null)
-					return;
-				TextView v = (TextView) scroll.getSelectedView().findViewById(
-						R.id.channel_item);
-				if (flag) {
-					toppage_divide_view.setFocusable(true);
-					toppage_divide_view.setFocusableInTouchMode(true);
-					if (v.getTag() != null
-							&& Integer.parseInt(v.getTag().toString()) == mCurrentChannelPosition
-									.getPosition())
-						scroll.getSelectedView().setBackgroundResource(R.drawable.channel_item_selectd_focus);
-					else
-						scroll.getSelectedView().setBackgroundResource(R.drawable.channel_focus_frame);
-				} else {
-					if (v.getTag() != null
-							&& Integer.parseInt(v.getTag().toString()) == mCurrentChannelPosition
-									.getPosition()) {
-						scroll.getSelectedView().setBackgroundResource(R.drawable.channel_item_focus);
-					} else {
-						scroll.getSelectedView().setBackgroundResource(R.drawable.channel_item_normal);
-					}
-				}
-				v.invalidate();
+                if (channelscrollIndex > 0 || scroll.getSelectedView() == null)
+                    return;
+                View selectedView = scroll.getSelectedView();
+                TextView v = (TextView) selectedView.findViewById(R.id.channel_item);
+                if (flag && scrollFromBorder) {
+                        selectedView.setBackgroundResource(R.drawable.channel_item_selectd_focus);
+                } else {
+                    //v.setTextColor(R.color._ffffff);
+                        selectedView.setBackgroundResource(R.drawable.channel_item_focus);
+                }
+                if(!flag){
+                	resetLastHoverViewState();
+                }
+                selectedView.invalidate();
             }
         });
         scroll.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (view == null) return;
+                if (view == null || channelscrollIndex >0) return;
                 TextView channelBtn = (TextView) view.findViewById(R.id.channel_item);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(128,1);
-                params.leftMargin = (int)view.getX();
-                toppage_divide_view.setLayoutParams(params);
-                toppage_divide_view.invalidate();
                 channelChange = ChannelChange.CLICK_CHANNEL;
-				if (lastview != null) {
-					TextView mlastview = (TextView) lastview
-							.findViewById(R.id.channel_item);
-					if (mlastview.getTag() != null
-							&& Integer.parseInt(mlastview.getTag().toString()) == mCurrentChannelPosition
-									.getPosition()) {
-						lastview.setBackgroundResource(R.drawable.channel_item_focus);
-					} else {
-						lastview.setBackgroundResource(R.drawable.channel_item_normal);
-						mlastview.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
-					}
-				}
 
-				if (!scrollFromBorder) {
-					if (mCurrentChannelPosition.getPosition() != i) {
-						view
-								.setBackgroundResource(R.drawable.channel_focus_frame);
-					} else {
-						view
-								.setBackgroundResource(R.drawable.channel_item_selectd_focus);
-					}
-				} else {
-					view
-							.setBackgroundResource(R.drawable.channel_item_focus);
-					channelChange = ChannelChange.CLICK_CHANNEL;
-					lastview.setBackgroundResource(R.drawable.channel_item_normal);
-					clickView = lastview;
-//					mCurrentChannelPosition.setPosition(i);
-				}
+//                if (arrow_left.getVisibility() == View.GONE) {
+//                    arrow_left.setVisibility(View.VISIBLE);
+//                }
+//                if (arrow_right.getVisibility() == View.GONE) {
+//                    arrow_right.setVisibility(View.VISIBLE);
+//                }
 
-				channelBtn.setTag(i);
-				if (lastview == view) {
-					return;
-				}
-				lastview = view;
+                int channelPosition = i;
+
+
+                if (lastview != null) {
+
+
+                    TextView mlastview = (TextView) lastview.findViewById(R.id.channel_item);
+                    lastview.setBackgroundResource(R.drawable.channel_item_normal);
+                    mlastview.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
+//                    AnimationSet animationSet1 = new AnimationSet(true);
+//                    ScaleAnimation scaleAnimation1 = new ScaleAnimation(1.05f, 1f, 1.05f, 1f,
+//                            Animation.RELATIVE_TO_SELF, 0.5f,
+//                            Animation.RELATIVE_TO_SELF, 0.5f);
+//                    scaleAnimation1.setDuration(200);
+//                    animationSet1.addAnimation(scaleAnimation1);
+//                    animationSet1.setFillAfter(true);
+//                    mlastview.startAnimation(animationSet1);
+                }
+                // if(view!=clickView){
+                if (!scrollFromBorder)
+                        view.setBackgroundResource(R.drawable.channel_item_selectd_focus);
+                else
+                        view.setBackgroundResource(R.drawable.channel_item_focus);
+//                AnimationSet animationSet = new AnimationSet(true);
+//                ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.05f, 1, 1.05f,
+//                        Animation.RELATIVE_TO_SELF, 0.5f,
+//                        Animation.RELATIVE_TO_SELF, 0.5f);
+//                scaleAnimation.setDuration(200);
+//                animationSet.addAnimation(scaleAnimation);
+//                animationSet.setFillAfter(true);
+//                channelBtn.startAnimation(animationSet);
+
+
+                if (lastview == view) {
+                    return;
+                }
+
+                lastview = view;
+                // }
+                lastview.setTag(i);
+                resetLastHoverViewState();
+                mCurrentChannelPosition.setPosition(channelPosition);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
-		scroll.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        scroll.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				if (view == null)
+					int i, long id) {
+				if (view == null || channelscrollIndex > 0)
 					return;
-				view
-						.setBackgroundResource(R.drawable.channel_item_selectd_focus);
 				channelChange = ChannelChange.CLICK_CHANNEL;
-				mCurrentChannelPosition.setPosition(position);
-				scrollFromBorder = false;
-				if (clickView != null) {
-					TextView mlastview = (TextView) clickView
+				int channelPosition = i;
+				if (lastview != null) {
+					TextView mlastview = (TextView) lastview
 							.findViewById(R.id.channel_item);
-					clickView.setBackgroundResource(R.drawable.channel_item_normal);
+					lastview.setBackgroundResource(R.drawable.channel_item_normal);
 					mlastview.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
 				}
-				clickView = view;
+				if (!scrollFromBorder)
+					view.setBackgroundResource(R.drawable.channel_item_selectd_focus);
+				else
+					view.setBackgroundResource(R.drawable.channel_item_focus);
+				if (lastview == view) {
+					return;
+				}
+				lastview = view;
+				lastview.setTag(i);
+				mCurrentChannelPosition.setPosition(channelPosition);
 			}
-		});
+        });
         scroll.setHorizontalFadingEdgeEnabled(true);
         scroll.setFadingEdgeLength(72);
         scroll.requestFocus();
@@ -598,10 +718,16 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     public void onScroll(HGridView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         if (firstVisibleItem == 0) {
             // scroll.setSelection(0);
+                if(channelscrollIndex == 0 && StringUtils.isEmpty(homepage_url)){
             setClickChannelView(scroll.getChildAt(0));
             lastview = scroll.getChildAt(0);
-            clickView = lastview;
-            lastview.setBackgroundResource(R.drawable.channel_item_selectd_focus);
+//            TextView v = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
+            scroll.getSelectedView().setBackgroundResource(R.drawable.channel_item_selectd_focus);
+                }else{
+                lastview = scroll.getChildAt(0);
+                TextView v = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
+                lastview.setBackgroundResource(R.drawable.channel_item_normal);
+                }
             scroll.setOnScrollListener(null);
         }
 
@@ -695,8 +821,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         exitPopupWindow = new MessagePopWindow(this);
         exitPopupWindow.setFirstMessage(R.string.exit_prompt);
 //        WindowManager.LayoutParams lp = getWindow().getAttributes();
-//		lp.alpha = 0.5f;
-//		getWindow().setAttributes(lp);
+//              lp.alpha = 0.5f;
+//              getWindow().setAttributes(lp);
         guide_shadow_view.setVisibility(View.VISIBLE);
         exitPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
 
@@ -713,18 +839,18 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                         callaPlay.app_exit(System.currentTimeMillis() - app_start_time, SimpleRestClient.appVersion);
                         TVGuideActivity.this.finish();
                         ArrayList<String> cache_log = tv.ismar.daisy.core.MessageQueue.getQueueList();
-                        HashSet<String> hasset_log = new HashSet<String>(); 
-						for (int i = 0; i < cache_log.size(); i++) {
-							hasset_log.add(cache_log.get(i));
-						}
-						DaisyUtils
-								.getVodApplication(TVGuideActivity.this)
-								.getEditor()
-								.putStringSet(VodApplication.CACHED_LOG,
-										hasset_log);
-						DaisyUtils.getVodApplication(getApplicationContext())
-								.save();
-						System.exit(0);
+                        HashSet<String> hasset_log = new HashSet<String>();
+                        for (int i = 0; i < cache_log.size(); i++) {
+                            hasset_log.add(cache_log.get(i));
+                        }
+                        DaisyUtils
+                                .getVodApplication(TVGuideActivity.this)
+                                .getEditor()
+                                .putStringSet(VodApplication.CACHED_LOG,
+                                        hasset_log);
+                        DaisyUtils.getVodApplication(getApplicationContext())
+                                .save();
+                        System.exit(0);
                     }
                 },
                 new MessagePopWindow.CancelListener() {
@@ -732,8 +858,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                     public void cancelClick(View view) {
                         exitPopupWindow.dismiss();
 //                        WindowManager.LayoutParams lp = getWindow().getAttributes();
-//        				lp.alpha = 1f;
-//        				getWindow().setAttributes(lp);
+//                                      lp.alpha = 1f;
+//                                      getWindow().setAttributes(lp);
                         guide_shadow_view.setVisibility(View.GONE);
                     }
                 }
@@ -764,8 +890,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.DEVICE_TOKEN, result.getDevice_token());
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.SN_TOKEN, result.getSn_Token());
 
-//        accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.PACKAGE_INFO, result.getPackageInfo());
-//        accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.EXPIRY_DATE, result.getExpiry_date());
 
     }
 
@@ -774,19 +898,23 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     public void onFailed(String erro) {
         Log.e(TAG, "active error: " + erro);
         fetchChannels();
-		if (StringUtils.isEmpty(SimpleRestClient.sn_token)) {
-			new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					showNetErrorPopup();
-				}
-			}, 2000);
-		}
+        if (StringUtils.isEmpty(SimpleRestClient.sn_token)) {
+            netErrorPopupHandler = new Handler(Looper.getMainLooper());
+            netErrorPopupRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    showNetErrorPopup();
+                }
+            };
+            netErrorPopupHandler.postDelayed(netErrorPopupRunnable, 2000);
+        }
     }
 
+    private boolean neterrorshow = false;
     private void showNetErrorPopup() {
-        final MessageDialogFragment dialog = new MessageDialogFragment(
-                TVGuideActivity.this, getString(R.string.fetch_net_data_error), null);
+    	if(neterrorshow)
+    		return;
+        final MessageDialogFragment dialog = new MessageDialogFragment(TVGuideActivity.this, getString(R.string.fetch_net_data_error), null);
         dialog.setButtonText(getString(R.string.setting_network), getString(R.string.i_know));
         try {
             dialog.showAtLocation(contentView, Gravity.CENTER,
@@ -801,8 +929,10 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                         @Override
                         public void cancelClick(View view) {
                             dialog.dismiss();
+                            neterrorshow = false;
                         }
                     });
+            neterrorshow = true;
         } catch (android.view.WindowManager.BadTokenException e) {
         }
     }
@@ -838,6 +968,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     }
 
     BitmapDecoder ddddBitmapDecoder;
+
     private void selectChannelByPosition(int position) {
         String tag;
         if (lastchannelindex < position) {
@@ -884,48 +1015,48 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             currentFragment = new GuideFragment();
             tag = "template";
         }
-		if (lastFragment != null) {
-			if (lastFragment instanceof ChildFragment) {
-				if (currentFragment instanceof ChildFragment) {
-				} else {
-					destroybackground();
-					if(ddddBitmapDecoder != null){
-						ddddBitmapDecoder.removeAllCallback();
-//						ddddBitmapDecoder.interrupt();
-					}
-					ddddBitmapDecoder = new BitmapDecoder();
-					ddddBitmapDecoder.decode(this, R.drawable.main_bg,
-							new BitmapDecoder.Callback() {
-								@Override
-								public void onSuccess(
-										BitmapDrawable bitmapDrawable) {
-									contentView
-											.setBackgroundDrawable(bitmapDrawable);
-								}
-							});
-				}
-			} else {
-				if (currentFragment instanceof ChildFragment) {
-					destroybackground();
-					if(ddddBitmapDecoder != null){
-						ddddBitmapDecoder.removeAllCallback();
-//						ddddBitmapDecoder.interrupt();
-					}
-					ddddBitmapDecoder = new BitmapDecoder();
-					ddddBitmapDecoder.decode(this,
-							R.drawable.channel_child_bg,
-							new BitmapDecoder.Callback() {
-								@Override
-								public void onSuccess(
-										BitmapDrawable bitmapDrawable) {
-									contentView
-											.setBackgroundDrawable(bitmapDrawable);
-								}
-							});
-				} else {
-				}
-			}
-		}
+        if (lastFragment != null) {
+            if (lastFragment instanceof ChildFragment) {
+                if (currentFragment instanceof ChildFragment) {
+                } else {
+//                    destroybackground();
+                    if (ddddBitmapDecoder != null) {
+                        ddddBitmapDecoder.removeAllCallback();
+//                                              ddddBitmapDecoder.interrupt();
+                    }
+                    ddddBitmapDecoder = new BitmapDecoder();
+                    ddddBitmapDecoder.decode(this, R.drawable.main_bg,
+                            new BitmapDecoder.Callback() {
+                                @Override
+                                public void onSuccess(
+                                        BitmapDrawable bitmapDrawable) {
+                                    contentView
+                                            .setBackgroundDrawable(bitmapDrawable);
+                                }
+                            });
+                }
+            } else {
+                if (currentFragment instanceof ChildFragment) {
+//                    destroybackground();
+                    if (ddddBitmapDecoder != null) {
+                        ddddBitmapDecoder.removeAllCallback();
+//                                              ddddBitmapDecoder.interrupt();
+                    }
+                    ddddBitmapDecoder = new BitmapDecoder();
+                    ddddBitmapDecoder.decode(this,
+                            R.drawable.channel_child_bg,
+                            new BitmapDecoder.Callback() {
+                                @Override
+                                public void onSuccess(
+                                        BitmapDrawable bitmapDrawable) {
+                                    contentView
+                                            .setBackgroundDrawable(bitmapDrawable);
+                                }
+                            });
+                } else {
+                }
+            }
+        }
         lastFragment = currentFragment;
         if (scrollFromBorder) {
             currentFragment.setScrollFromBorder(scrollFromBorder);
@@ -936,13 +1067,13 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         //currentFragment.position = position;
 //        scrollFromBorder = false;
         currentFragment.setChannelEntity(channelEntity);
-        ChannelBaseFragment t= (ChannelBaseFragment)getSupportFragmentManager().findFragmentByTag("template");
-        ChannelBaseFragment t1=(ChannelBaseFragment)getSupportFragmentManager().findFragmentByTag("template1");
-        ChannelBaseFragment t2=(ChannelBaseFragment)getSupportFragmentManager().findFragmentByTag("template2");
-        ChannelBaseFragment t3=(ChannelBaseFragment)getSupportFragmentManager().findFragmentByTag("template3");
-        ChannelBaseFragment t4=(ChannelBaseFragment)getSupportFragmentManager().findFragmentByTag("template4");
+        ChannelBaseFragment t = (ChannelBaseFragment) getSupportFragmentManager().findFragmentByTag("template");
+        ChannelBaseFragment t1 = (ChannelBaseFragment) getSupportFragmentManager().findFragmentByTag("template1");
+        ChannelBaseFragment t2 = (ChannelBaseFragment) getSupportFragmentManager().findFragmentByTag("template2");
+        ChannelBaseFragment t3 = (ChannelBaseFragment) getSupportFragmentManager().findFragmentByTag("template3");
+        ChannelBaseFragment t4 = (ChannelBaseFragment) getSupportFragmentManager().findFragmentByTag("template4");
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		if ("template".equals(tag)) {
+        if ("template".equals(tag)) {
             if (t1 != null)
                 transaction.hide(t1);
             if (t2 != null)
@@ -972,8 +1103,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 transaction.hide(t3);
             if (t4 != null)
                 transaction.hide(t4);
-            if (t1 != null) {
-            	if (scrollFromBorder) {
+            if (t1 != null && !t1.isRemoving()) {
+                if (scrollFromBorder) {
                     t1.setScrollFromBorder(scrollFromBorder);
                     t1.setRight(rightscroll);
                     t1.setBottomFlag(lastviewTag);
@@ -995,7 +1126,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 transaction.hide(t3);
             if (t4 != null)
                 transaction.hide(t4);
-            if (t2 != null) {
+            if (t2 != null && !t2.isRemoving()) {
                 t2.setChannelEntity(channelEntity);
                 t2.refreshData();
                 if (scrollFromBorder) {
@@ -1041,7 +1172,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 transaction.hide(t2);
             if (t3 != null)
                 transaction.hide(t3);
-            if (t4 != null) {
+            if (t4 != null && !t4.isRemoving()) {
                 t4.setChannelEntity(channelEntity);
                 t4.refreshData();
                 if (scrollFromBorder) {
@@ -1060,81 +1191,80 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         if (view2 == null)
             return;
         lastchannelindex = position;
-//        if (view2.getLeft() > 0) {
-//            switch (mCurrentChannelPosition.getPosition()) {
-//                case 0:
-//                    scroll.setNextFocusUpId(R.id.guidefragment_firstpost);
-//                    break;
-//                case 1:
-//                    scroll.setNextFocusUpId(R.id.filmfragment_secondpost);
-//                    break;
-//                case 2:
-//                    scroll.setNextFocusUpId(R.id.filmfragment_thirdpost);
-//                    break;
-//                case 3:
-//                    scroll.setNextFocusUpId(R.id.vaiety_channel2_image);
-//                    break;
-//                case 4:
-//                    scroll.setNextFocusUpId(R.id.vaiety_channel3_image);
-//                    break;
-//                case 5:
-//                    scroll.setNextFocusUpId(R.id.sport_channel4_image);
-//                    break;
-//                case 6:
-//                    scroll.setNextFocusUpId(R.id.vaiety_channel4_image);
-//                    break;
-//                case 7:
-//                    scroll.setNextFocusUpId(R.id.child_more);
-//                    break;
-//                case 8:
-//                    scroll.setNextFocusUpId(R.id.listmore);
-//                    break;
-//                case 9:
-//                    scroll.setNextFocusUpId(R.id.listmore);
-//                    break;
-//                default:
-//                    break;
-//            }
-//        } else {
-//            switch (mCurrentChannelPosition.getPosition()) {
-//                case 0:
-//                    scroll.setNextFocusUpId(R.id.guidefragment_firstpost);
-//                    break;
-//                case 1:
-//                    scroll.setNextFocusUpId(R.id.filmfragment_firstpost);
-//                    break;
-//                case 2:
-//                    scroll.setNextFocusUpId(R.id.filmfragment_secondpost);
-//                    break;
-//                case 3:
-//                    scroll.setNextFocusUpId(R.id.vaiety_channel2_image);
-//                    break;
-//                case 4:
-//                    scroll.setNextFocusUpId(R.id.vaiety_channel2_image);
-//                    break;
-//                case 5:
-//                    scroll.setNextFocusUpId(R.id.sport_channel3_image);
-//                    break;
-//                case 6:
-//                    scroll.setNextFocusUpId(R.id.vaiety_channel4_image);
-//                    break;
-//                case 7:
-//                    scroll.setNextFocusUpId(R.id.child_more);
-//                    break;
-//                case 8:
-//                    scroll.setNextFocusUpId(R.id.listmore);
-//                    break;
-//                case 9:
-//                    scroll.setNextFocusUpId(R.id.listmore);
-//                    break;
-//                default:
-//                    break;
-//            }
-//        }
+        if (view2.getLeft() > 0) {
+            switch (mCurrentChannelPosition.getPosition()) {
+                case 0:
+                    scroll.setNextFocusUpId(R.id.guidefragment_firstpost);
+                    break;
+                case 1:
+                    scroll.setNextFocusUpId(R.id.filmfragment_secondpost);
+                    break;
+                case 2:
+                    scroll.setNextFocusUpId(R.id.filmfragment_thirdpost);
+                    break;
+                case 3:
+                    scroll.setNextFocusUpId(R.id.vaiety_channel2_image);
+                    break;
+                case 4:
+                    scroll.setNextFocusUpId(R.id.vaiety_channel3_image);
+                    break;
+                case 5:
+                    scroll.setNextFocusUpId(R.id.sport_channel4_image);
+                    break;
+                case 6:
+                    scroll.setNextFocusUpId(R.id.vaiety_channel4_image);
+                    break;
+                case 7:
+                    scroll.setNextFocusUpId(R.id.child_more);
+                    break;
+                case 8:
+                    scroll.setNextFocusUpId(R.id.listmore);
+                    break;
+                case 9:
+                    scroll.setNextFocusUpId(R.id.listmore);
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            switch (mCurrentChannelPosition.getPosition()) {
+                case 0:
+                    scroll.setNextFocusUpId(R.id.guidefragment_firstpost);
+                    break;
+                case 1:
+                    scroll.setNextFocusUpId(R.id.filmfragment_firstpost);
+                    break;
+                case 2:
+                    scroll.setNextFocusUpId(R.id.filmfragment_secondpost);
+                    break;
+                case 3:
+                    scroll.setNextFocusUpId(R.id.vaiety_channel2_image);
+                    break;
+                case 4:
+                    scroll.setNextFocusUpId(R.id.vaiety_channel2_image);
+                    break;
+                case 5:
+                    scroll.setNextFocusUpId(R.id.sport_channel3_image);
+                    break;
+                case 6:
+                    scroll.setNextFocusUpId(R.id.vaiety_channel4_image);
+                    break;
+                case 7:
+                    scroll.setNextFocusUpId(R.id.child_more);
+                    break;
+                case 8:
+                    scroll.setNextFocusUpId(R.id.listmore);
+                    break;
+                case 9:
+                    scroll.setNextFocusUpId(R.id.listmore);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     private void setbackground(int id) {
-
 
         BitmapFactory.Options opt = new BitmapFactory.Options();
 
@@ -1165,7 +1295,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         bd.getBitmap().recycle();
     }
 
-    private void replaceFragment(Fragment fragment,String tag,FragmentTransaction transaction) {
+    private void replaceFragment(Fragment fragment, String tag, FragmentTransaction transaction) {
         switch (scrollType) {
             case left:
                 transaction.setCustomAnimations(
@@ -1179,7 +1309,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 break;
         }
 
-        transaction.replace(R.id.container, fragment,tag).commit();
+        transaction.replace(R.id.container, fragment, tag).commitAllowingStateLoss();
     }
 
     private void saveSimpleRestClientPreferences(Context context, Result result) {
@@ -1237,24 +1367,30 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     @Override
     protected void onResume() {
         super.onResume();
+        channelscrollIndex = 0;
         topView = (LaunchHeaderLayout) findViewById(R.id.top_column_layout);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        if (netErrorPopupHandler != null && netErrorPopupRunnable != null) {
+            netErrorPopupHandler.removeCallbacks(netErrorPopupRunnable);
+        }
         if (fragmentSwitch.hasMessages(SWITCH_PAGE))
             fragmentSwitch.removeMessages(SWITCH_PAGE);
+        if (fragmentSwitch.hasMessages(SWITCH_PAGE_FROMLAUNCH))
+            fragmentSwitch.removeMessages(SWITCH_PAGE_FROMLAUNCH);
     }
 
     @Override
     protected void onDestroy() {
         unregisterReceiver(appUpdateReceiver);
-        if(bitmapDecoder != null && bitmapDecoder.isAlive()){
-        	bitmapDecoder.interrupt();
+        if (bitmapDecoder != null && bitmapDecoder.isAlive()) {
+            bitmapDecoder.interrupt();
         }
-        if(ddddBitmapDecoder != null && ddddBitmapDecoder.isAlive()){
-        	ddddBitmapDecoder.interrupt();
+        if (ddddBitmapDecoder != null && ddddBitmapDecoder.isAlive()) {
+            ddddBitmapDecoder.interrupt();
         }
         if (!(updatePopupWindow == null)) {
             updatePopupWindow.dismiss();
@@ -1272,7 +1408,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         homepage_url = intent.getStringExtra("homepage_url");
         if (StringUtils.isEmpty(homepage_template)
                 || StringUtils.isEmpty(homepage_url)) {
-//			fetchChannels();
+//                      fetchChannels();
         } else {
             if (StringUtils.isNotEmpty(SimpleRestClient.root_url)) {
                 fetchChannels();
@@ -1300,7 +1436,11 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             if (keyCode == 707 || keyCode == 774 || keyCode == 253) {
                 isneedpause = false;
             }
-        } else {
+        }else if("lx565ab".equals(VodUserAgent.getModelName())){
+                        if(keyCode == 82 || keyCode == 707 || keyCode ==253){
+                                isneedpause = false;
+                        }
+                } else {
             if (keyCode == 223 || keyCode == 499 || keyCode == 480) {
                 isneedpause = false;
             }
@@ -1308,6 +1448,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         return super.onKeyDown(keyCode, event);
     }
 
+    private static int nextselectflag;
     static class FragmentSwitchHandler extends Handler {
         private WeakReference<TVGuideActivity> weakReference;
 
@@ -1317,22 +1458,45 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
         @Override
         public void handleMessage(Message msg) {
-            TVGuideActivity activity = weakReference.get();
-            if (activity != null) {
-                switch (msg.what) {
-                    case SWITCH_PAGE:
-                        activity.selectChannelByPosition(msg.arg1);
-                        break;
-                    case SWITCH_PAGE_FROMLAUNCH:
-                        activity.scroll.arrowScroll(View.FOCUS_RIGHT);
-                        activity.channelscrollIndex--;
-                        if (activity.channelscrollIndex > 0) {
-                            sendEmptyMessage(SWITCH_PAGE_FROMLAUNCH);
-                        }
-                        break;
-                }
-            }
+			TVGuideActivity activity = weakReference.get();
+			if (activity != null) {
+				switch (msg.what) {
+				case SWITCH_PAGE:
+					activity.selectChannelByPosition(msg.arg1);
+					break;
+				case SWITCH_PAGE_FROMLAUNCH:
+
+					if (nextselectflag == 0
+							|| (nextselectflag != activity.scroll
+									.getnextSelectPosition())) {
+						channelscrollIndex = channelscrollIndex - 1;
+					}
+
+					nextselectflag = activity.scroll.getnextSelectPosition();
+					activity.scroll.arrowScroll(View.FOCUS_RIGHT);
+					if (channelscrollIndex > 0) {
+						sendEmptyMessage(SWITCH_PAGE_FROMLAUNCH);
+					} else {
+						channelflag = false;
+					}
+					break;
+				}
+			}
         }
     }
+
+	private void resetLastHoverViewState() {
+		if (lastHoverview != null) {
+			if ((lastview != null
+					&& (lastHoverview.getTag() != null && lastview.getTag() != null) && lastHoverview
+					.getTag().equals(lastview.getTag()))) {
+				lastHoverview
+						.setBackgroundResource(R.drawable.channel_item_focus);
+			} else {
+				lastHoverview
+						.setBackgroundResource(R.drawable.channel_item_normal);
+			}
+		}
+	}
 
 }
