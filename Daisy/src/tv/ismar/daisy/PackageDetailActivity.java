@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -105,11 +106,22 @@ public class PackageDetailActivity extends BaseActivity implements OnItemClickLi
 		mRelatedVideoContainer = (LinearLayout)findViewById(R.id.related_video_container);
 		vod_payment_item_of_package_container = (ZGridView)findViewById(R.id.vod_payment_item_of_package_container);
 		vod_payment_item_of_package_container.setOnItemClickListener(this);
+		vod_payment_item_of_package_container.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(!hasFocus){
+					vod_payment_item_of_package_container.setSelection(AdapterView.INVALID_POSITION);
+				}
+			}
+		});
 		vod_payment_poster = (AsyncImageView)findViewById(R.id.vod_payment_poster);
 		vod_payment_price = (TextView)findViewById(R.id.vod_payment_price);
 		vod_payment_duration = (TextView)findViewById(R.id.vod_payment_duration);
 		vod_payment_buyButton = (Button)findViewById(R.id.vod_payment_buyButton);
 		vod_payment_item_more = (Button)findViewById(R.id.vod_payment_item_more);
+		vod_payment_buyButton.setOnHoverListener(onHoverListener);
+		vod_payment_item_more.setOnHoverListener(onHoverListener);
         vod_payment_buyButton.setFocusable(true);
         vod_payment_buyButton.requestFocus();
 		vod_payment_buyButton.setOnClickListener(new OnClickListener() {
@@ -183,6 +195,7 @@ public class PackageDetailActivity extends BaseActivity implements OnItemClickLi
 			titleView.setText(mRelatedItem[i].title);
 			focusView.setText(mRelatedItem[i].focus);
 			relatedHolder.setTag(mRelatedItem[i]);
+			relatedHolder.setOnHoverListener(onHoverListener);
 			mRelatedVideoContainer.addView(relatedHolder);
 //			relatedHolder
 //					.setOnFocusChangeListener(mRelatedOnFocusChangeListener);
@@ -558,4 +571,23 @@ public class PackageDetailActivity extends BaseActivity implements OnItemClickLi
 		}
 
 	};
+
+	  private View.OnHoverListener onHoverListener = new View.OnHoverListener() {
+
+			@Override
+			public boolean onHover(View v, MotionEvent event) {
+				switch (event.getAction()) {
+				case MotionEvent.ACTION_HOVER_ENTER:
+				case MotionEvent.ACTION_HOVER_MOVE:
+					v.setFocusable(true);
+					v.setFocusableInTouchMode(true);
+					v.requestFocus();
+					break;
+				case MotionEvent.ACTION_HOVER_EXIT:
+					break;
+				}
+				return false;
+			}
+		};
+
 }

@@ -182,7 +182,7 @@
         android:clipToPadding="false"
         android:orientation="horizontal" >
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/sport_channel1"
             android:layout_width="@dimen/sport_channel_w"
             android:layout_height="match_parent"
@@ -206,12 +206,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/sport_channel_subtitle_mt"
+                android:layout_below="@id/sport_channel1_image"
                 android:gravity="center"
                 android:textColor="#FFFFFFFF"
                 android:textSize="@dimen/sport_channel_subtitle_textSize" />
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/sport_channel2"
             android:layout_width="@dimen/sport_channel_w"
             android:layout_height="match_parent"
@@ -236,12 +237,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/sport_channel_subtitle_mt"
+                android:layout_below="@id/sport_channel2_image"
                 android:gravity="center"
                 android:textColor="#FFFFFFFF"
                 android:textSize="@dimen/sport_channel_subtitle_textSize" />
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/sport_channel3"
             android:layout_width="@dimen/sport_channel_w"
             android:layout_height="match_parent"
@@ -266,12 +268,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/sport_channel_subtitle_mt"
+                android:layout_below="@id/sport_channel3_image"
                 android:gravity="center"
                 android:textColor="#FFFFFFFF"
                 android:textSize="@dimen/sport_channel_subtitle_textSize" />
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/sport_channel4"
             android:layout_width="@dimen/sport_channel_w"
             android:layout_height="match_parent"
@@ -297,10 +300,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/sport_channel_subtitle_mt"
+                android:layout_below="@id/sport_channel4_image"
                 android:gravity="center"
                 android:textColor="#FFFFFFFF"
                 android:textSize="@dimen/sport_channel_subtitle_textSize" />
-        </LinearLayout>
+        </RelativeLayout>
 
         <include
             android:layout_width="@dimen/sport_channel_w"

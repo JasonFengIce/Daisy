@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.*;
 import com.google.gson.JsonSyntaxException;
@@ -106,6 +107,10 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
         mMiddleBtn.setOnClickListener(mIdOnClickListener);
         mRightBtn.setOnClickListener(mIdOnClickListener);
         mMoreContent.setOnClickListener(mIdOnClickListener);
+        mLeftBtn.setOnHoverListener(onHoverListener);
+        mMiddleBtn.setOnHoverListener(onHoverListener);
+        mRightBtn.setOnHoverListener(onHoverListener);
+        mMoreContent.setOnHoverListener(onHoverListener);
         detail_price_txt = (TextView) findViewById(R.id.detail_price_txt);
         detail_duration_txt = (TextView) findViewById(R.id.detail_duration_txt);
         //mLeftBtn.setFocusable(false);
@@ -1147,6 +1152,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             related_video_container.addView(relatedHolder);
             relatedHolder
                     .setOnFocusChangeListener(mRelatedOnFocusChangeListener);
+            relatedHolder.setOnHoverListener(onHoverListener);
             relatedHolder.setOnClickListener(mRelatedClickListener);
         }
     }
@@ -1425,4 +1431,23 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
 		}
 		return ret;
 	}
+
+	  private View.OnHoverListener onHoverListener = new View.OnHoverListener() {
+
+			@Override
+			public boolean onHover(View v, MotionEvent event) {
+				switch (event.getAction()) {
+				case MotionEvent.ACTION_HOVER_ENTER:
+				case MotionEvent.ACTION_HOVER_MOVE:
+					v.setFocusable(true);
+					v.setFocusableInTouchMode(true);
+					v.requestFocus();
+					break;
+				case MotionEvent.ACTION_HOVER_EXIT:
+					break;
+				}
+				return false;
+			}
+		};
+
 }

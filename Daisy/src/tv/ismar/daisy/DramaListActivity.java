@@ -31,7 +31,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -124,20 +126,19 @@ public class DramaListActivity extends BaseActivity implements
 			@Override
 			public void onScrollStateChanged(ZGridView view, int scrollState) {
 				// TODO Auto-generated method stub
-				
 			}
 			
 			@Override
 			public void onScroll(ZGridView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
 				// TODO Auto-generated method stub
-                if(firstVisibleItem==0){
-                    View convertView = view.getChildAt(0);
-                    if(convertView!=null){
-                        Button btn = (Button) convertView.findViewById(R.id.btn_count);
-                        btn.requestFocus();
-                    }
-                }
+//                if(firstVisibleItem==0){
+//                    View convertView = view.getChildAt(0);
+//                    if(convertView!=null){
+//                        Button btn = (Button) convertView.findViewById(R.id.btn_count);
+//                        btn.requestFocus();
+//                    }
+//                }
 				 if(visibleItemCount>=totalItemCount){
 					 down_btn.setVisibility(View.INVISIBLE);
 				 }
@@ -161,6 +162,8 @@ public class DramaListActivity extends BaseActivity implements
 				mDramaView.pageScroll(View.FOCUS_UP);
 			}
 		});
+		down_btn.setOnHoverListener(onHoverListener);
+		up_btn.setOnHoverListener(onHoverListener);
 	}
 
 	@Override
@@ -323,9 +326,19 @@ public class DramaListActivity extends BaseActivity implements
 //		mDramaView.setSelector(null);
 //	}
 
+	private View lastdaramView;
 	@Override
 	public void onItemSelected(AdapterView<?> adapterView, View view,
 			int postion, long arg3) {
+		if(lastdaramView != null){
+			lastdaramView.findViewById(R.id.btn_count).setBackgroundResource(R.drawable.daram_grid_selector);
+		}
+		if (view != null){
+			View butvView = view.findViewById(R.id.btn_count);
+			butvView.setBackgroundResource(R.drawable.vod_detail_series_episode_focus);
+			lastdaramView = view;
+		}else{
+		}
 		mSubItem = mList.get(postion);
 		// 分类
 		mTvDramaType.setText(mSubItem.title);
@@ -484,4 +497,26 @@ public class DramaListActivity extends BaseActivity implements
 			
 		}
 	};
+	
+	  private View.OnHoverListener onHoverListener = new View.OnHoverListener() {
+
+			@Override
+			public boolean onHover(View v, MotionEvent event) {
+				switch (event.getAction()) {
+				case MotionEvent.ACTION_HOVER_ENTER:
+				case MotionEvent.ACTION_HOVER_MOVE:
+					v.setFocusable(true);
+					v.setFocusableInTouchMode(true);
+					v.requestFocus();
+					if(lastdaramView != null){
+						lastdaramView.findViewById(R.id.btn_count).setBackgroundResource(R.drawable.daram_grid_selector);
+					}
+					break;
+				case MotionEvent.ACTION_HOVER_EXIT:
+					break;
+				}
+				return false;
+			}
+		};
+
 }
