@@ -75,10 +75,13 @@ public class LoginPanelView extends LinearLayout {
         edit_identifycode = (EditText) findViewById(R.id.pay_edit_identifycode);
         identifyCodeBtn = (Button) findViewById(R.id.pay_identifyCodeBtn);
         btn_submit = (Button) findViewById(R.id.pay_btn_submit);
+        edit_mobile.setOnHoverListener(onHoverListener);
+        edit_identifycode.setOnHoverListener(onHoverListener);
+        btn_submit.setOnHoverListener(onHoverListener);
+        identifyCodeBtn.setOnHoverListener(onHoverListener);
         edit_mobile.setOnEditorActionListener(new OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView arg0, int arg1, KeyEvent arg2) {
-//					Log.v("aaaa", arg0.getText()+"<>actioncode="+arg1+"<>arg2="+arg2);
                 return false;
             }
         });
@@ -543,4 +546,22 @@ public class LoginPanelView extends LinearLayout {
                 null
         );
     }
+    
+    private View.OnHoverListener onHoverListener = new View.OnHoverListener() {
+
+		@Override
+		public boolean onHover(View v, MotionEvent event) {
+			switch (event.getAction()) {
+			case MotionEvent.ACTION_HOVER_ENTER:
+			case MotionEvent.ACTION_HOVER_MOVE:
+				v.setFocusable(true);
+				v.setFocusableInTouchMode(true);
+				v.requestFocus();
+				break;
+			case MotionEvent.ACTION_HOVER_EXIT:
+				break;
+			}
+			return false;
+		}
+	};
 }
