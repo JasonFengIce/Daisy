@@ -255,8 +255,7 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
                         "tv.ismar.daisy.ui.activity.UserCenterActivity");
                 break;
             case R.string.guide_search:
-                intent.setClassName("tv.ismar.daisy",
-                        "tv.ismar.daisy.SearchActivity");
+                intent.setAction("cn.ismartv.jasmine.wordsearchactivity");
                 break;
         }
         context.startActivity(intent);

@@ -2,6 +2,7 @@ package tv.ismar.sakura.ui.widget;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.PopupWindow;
@@ -45,6 +46,26 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
         cancelBtn = (Button) contentView.findViewById(R.id.cancel_btn);
         confirmBtn.setOnClickListener(this);
         cancelBtn.setOnClickListener(this);
+        confirmBtn.setOnHoverListener(new View.OnHoverListener() {
+			
+			@Override
+			public boolean onHover(View v, MotionEvent event) {
+				if(event.getAction() == MotionEvent.ACTION_HOVER_ENTER || event.getAction() == MotionEvent.ACTION_HOVER_MOVE){
+					v.requestFocus();
+				}
+				return false;
+			}
+		});
+        cancelBtn.setOnHoverListener(new View.OnHoverListener() {
+			
+			@Override
+			public boolean onHover(View v, MotionEvent event) {
+				if(event.getAction() == MotionEvent.ACTION_HOVER_ENTER || event.getAction() == MotionEvent.ACTION_HOVER_MOVE){
+					v.requestFocus();
+				}
+				return false;
+			}
+		});
         firstMessage = (TextView) contentView.findViewById(R.id.first_text_info);
         secondMessage = (TextView) contentView.findViewById(R.id.pop_second_text);
         setContentView(contentView);

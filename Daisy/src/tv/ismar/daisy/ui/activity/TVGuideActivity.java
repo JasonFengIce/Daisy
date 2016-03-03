@@ -373,6 +373,20 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         arrow_right = (ImageView) findViewById(R.id.arrow_scroll_right);
         arrow_left_visible = (ImageView) findViewById(R.id.arrow_scroll_left_visible);
         arrow_right_visible = (ImageView) findViewById(R.id.arrow_scroll_right_visible);
+        arrow_left_visible.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				scroll.arrowScroll(View.FOCUS_LEFT);
+			}
+		});
+        arrow_right_visible.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				scroll.arrowScroll(View.FOCUS_RIGHT);
+			}
+		});
         //arrow_left.setOnClickListener(arrowViewListener);
         // arrow_right.setOnClickListener(arrowViewListener);
         arrow_left.setOnFocusChangeListener(scrollViewListener);
