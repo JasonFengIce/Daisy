@@ -173,7 +173,10 @@
                     android:layout_height="@dimen/filter_portraitresult_shadow_h"
                     android:background="@drawable/channel_arrow_right"
                     android:layout_marginTop="@dimen/vod_player_titletext_marginleft"
-                    android:layout_marginRight="@dimen/listportait_shadow_ml"/>
+                    android:layout_marginRight="@dimen/listportait_shadow_ml"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    />
             <org.sakuratya.horizontal.ui.HGridView
                     android:layout_toLeftOf="@id/recommend_right_shadow"
                     android:layout_toRightOf="@id/recommend_left_shadow"

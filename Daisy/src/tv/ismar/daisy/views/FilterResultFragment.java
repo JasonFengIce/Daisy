@@ -9,6 +9,7 @@ import android.util.FloatMath;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
@@ -96,6 +97,9 @@ public class FilterResultFragment extends BackHandledFragment implements Adapter
                         getFragmentManager().popBackStack();
                     }
                 });
+                right_shadow.setOnHoverListener(onHoverListener);
+                left_shadow.setOnHoverListener(onHoverListener);
+			filterBtn.setOnHoverListener(onHoverListener);
                 url = SimpleRestClient.root_url+"/api/tv/filtrate/"+"$"+"movie"+"/"+"area*10022$10261$10263$10378$10479$10483$10484$10494"+"/1";
                 isNoData = true;
                 mInitTask = new InitItemTask();
@@ -467,4 +471,22 @@ public class FilterResultFragment extends BackHandledFragment implements Adapter
             }
         }
     }
+    
+	private View.OnHoverListener onHoverListener = new View.OnHoverListener() {
+
+		@Override
+		public boolean onHover(View v, MotionEvent event) {
+			switch (event.getAction()) {
+			case MotionEvent.ACTION_HOVER_ENTER:
+			case MotionEvent.ACTION_HOVER_MOVE:
+				v.setFocusable(true);
+				v.setFocusableInTouchMode(true);
+				v.requestFocus();
+				break;
+			case MotionEvent.ACTION_HOVER_EXIT:
+				break;
+			}
+			return false;
+		}
+	};
 }
