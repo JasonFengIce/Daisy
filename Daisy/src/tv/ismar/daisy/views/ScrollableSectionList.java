@@ -167,7 +167,7 @@ public class ScrollableSectionList extends tv.ismar.daisy.views.MyHorizontalScro
         }
        // percentageBar.getLayoutParams().width = 1690;
 	}
-	
+
 	private RelativeLayout getSectionLabelLayout(Section section, int width) {
 		RelativeLayout sectionHolder = (RelativeLayout) LayoutInflater.from(getContext()).inflate(R.layout.section_list_item, null);
 

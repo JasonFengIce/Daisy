@@ -98,6 +98,7 @@ public static boolean isCanWriteSD(){
 }
 
 	public static long getSdCardTotal(final Context context) {
+		try{
 		if (Environment.getExternalStorageState().equals(
 				Environment.MEDIA_MOUNTED)) {
 			File path = Environment.getExternalStorageDirectory();
@@ -107,6 +108,9 @@ public static boolean isCanWriteSD(){
 			long totalSize = totalBlocks * blockSize;
 			return totalSize/1048576;
 		}else{
+			return 0;
+		}
+		}catch (java.lang.IllegalArgumentException e) {
 			return 0;
 		}
 	}

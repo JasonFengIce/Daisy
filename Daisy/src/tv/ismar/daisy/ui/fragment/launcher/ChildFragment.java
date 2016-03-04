@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -74,6 +75,17 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
 				if (arg1) {
 					((TVGuideActivity) (getActivity())).setLastViewTag("bottom");			
 				}
+			}
+		});
+        childMore.setOnHoverListener(new View.OnHoverListener() {
+			
+			@Override
+			public boolean onHover(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER
+						|| event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+                      v.requestFocus();
+				}
+				return false;
 			}
 		});
         return mView;
@@ -159,6 +171,17 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
             posters.get(i).setPosition(i);
             itemContainer.setTag(posters.get(i));
             itemContainer.setOnClickListener(ItemClickListener);
+            itemContainer.setOnHoverListener(new View.OnHoverListener() {
+				
+				@Override
+				public boolean onHover(View v, MotionEvent event) {
+					if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER
+							|| event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+                          v.requestFocus();
+					}
+					return false;
+				}
+			});
             ImageView itemImg = (ImageView) itemContainer.findViewById(R.id.item_img);
             TextView itemText = (TextView) itemContainer.findViewById(R.id.item_title);
             if(mContext==null)

@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -95,6 +96,17 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
         //退出按钮
         exitAccountBtn = (Button) fragmentView.findViewById(R.id.exit_account);
         exitAccountBtn.setOnClickListener(this);
+        exitAccountBtn.setOnHoverListener(new View.OnHoverListener() {
+			
+			@Override
+			public boolean onHover(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER
+						|| event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+					v.requestFocus();
+				}
+				return false;
+			}
+		});
 //
 //        changeButton = (Button) fragmentView.findViewById(R.id.change);
         exitAccountBtn.setNextFocusUpId(exitAccountBtn.getId());

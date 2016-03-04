@@ -26,11 +26,12 @@
             android:layout_width="@dimen/pay_person_login_pay_edit_mobile_w"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/pay_person_login_pay_edit_mobile_marginLeft"
-            android:background="@drawable/edit_selector"
             android:gravity="center"
             android:inputType="phone"
             android:paddingLeft="@dimen/pay_person_login_pay_edit_mobile_pl"
             android:textColor="#FFF8F8FF"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:textSize="@dimen/pay_person_login_pay_edit_mobile_textsize"/>
 
         <Button
@@ -41,6 +42,8 @@
             android:background="@drawable/person_btn_selector"
             android:text="获取验证码"
             android:textColor="#FFF8F8FF"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:textSize="@dimen/pay_person_login_pay_edit_mobile_textsize"/>
     </LinearLayout>
 
@@ -80,6 +83,8 @@
             android:inputType="number"
             android:paddingLeft="@dimen/pay_person_login_pay_edit_mobile_pl"
             android:textColor="#FFF8F8FF"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:textSize="@dimen/pay_person_login_pay_edit_mobile_textsize"/>
     </LinearLayout>
 
@@ -92,6 +97,8 @@
         android:background="@drawable/person_btn_selector"
         android:text="提交"
         android:textColor="#FFF8F8FF"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:textSize="@dimen/pay_person_login_pay_edit_mobile_textsize"
         />
 

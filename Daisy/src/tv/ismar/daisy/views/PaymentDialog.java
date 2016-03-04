@@ -50,9 +50,11 @@ import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.View.OnHoverListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -269,6 +271,14 @@ public class PaymentDialog extends Dialog implements
 		ali_exprie = (TextView) findViewById(R.id.ali_exprie);
 		alipay_submit = (Button) findViewById(R.id.alipay_submit);
 		alipay_submit.setOnClickListener(buttonClick);
+		shiyuncard_input.setOnHoverListener(mOnHoverListener);
+		yuepay_button.setOnHoverListener(mOnHoverListener);
+		submit_cardpay.setOnHoverListener(mOnHoverListener);
+		yueepay_canel.setOnHoverListener(mOnHoverListener);
+		zhifubao_button.setOnHoverListener(mOnHoverListener);
+		weixinpay_button.setOnHoverListener(mOnHoverListener);
+		guanyingcard_button.setOnHoverListener(mOnHoverListener);
+		submit_yuepay.setOnHoverListener(mOnHoverListener);
 		setPackageInfo();
 		if (StringUtils.isNotEmpty(SimpleRestClient.access_token)
 				&& StringUtils.isNotEmpty(SimpleRestClient.mobile_number)) {
@@ -908,11 +918,13 @@ public class PaymentDialog extends Dialog implements
 				if (balancefloat < mItem.expense.price) {
 					submit_yuepay.setEnabled(false);
 					submit_yuepay.setFocusable(false);
+					submit_yuepay.setFocusableInTouchMode(false);
 					submit_yuepay.setTextColor(getContext().getResources()
 							.getColor(R.color.paychannel_button_disable));
 				} else {
 					submit_yuepay.setEnabled(true);
 					submit_yuepay.setFocusable(true);
+					submit_yuepay.setFocusableInTouchMode(true);
 					submit_yuepay.setTextColor(getContext().getResources()
 							.getColor(R.color.white));
 				}
@@ -1421,4 +1433,22 @@ public class PaymentDialog extends Dialog implements
 					}
 				}, null);
 	}
+	
+	private OnHoverListener mOnHoverListener = new OnHoverListener() {
+
+		@Override
+		public boolean onHover(View v, MotionEvent keycode) {
+			switch (keycode.getAction()) {
+			case MotionEvent.ACTION_HOVER_ENTER:
+			case MotionEvent.ACTION_HOVER_MOVE:
+				v.requestFocus();
+				break;
+			case MotionEvent.ACTION_HOVER_EXIT:
+				break;
+			default:
+				break;
+			}
+			return false;
+		}
+	};
 }

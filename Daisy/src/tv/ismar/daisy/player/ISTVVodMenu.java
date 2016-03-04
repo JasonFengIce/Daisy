@@ -3,6 +3,7 @@ package tv.ismar.daisy.player;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -27,7 +28,7 @@ public class ISTVVodMenu extends ISTVVodMenuItem {
 	private ISTVVodMenuItem currMenu;
 	private ISTVVodMenuItem menuStack[] = new ISTVVodMenuItem[10];
 	private int menuStackTop = 0;
-
+    private View lastSelectMenu;
 	public ISTVVodMenu(VodMenuAction act) {
 		super(-1, "");
 		activity = act;
@@ -96,6 +97,30 @@ public class ISTVVodMenu extends ISTVVodMenuItem {
 					convertView.setBackgroundColor(Color
 							.argb(50, 0x0, 0x0, 0x0));
 				}
+				convertView.setTag(R.id.MenuText,id);
+				convertView.setOnHoverListener(new View.OnHoverListener() {
+					
+					@Override
+					public boolean onHover(View v, MotionEvent event) {
+						if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER
+								|| event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+							if (lastSelectMenu != null) {
+								lastSelectMenu.setBackgroundResource(R.color.player_menu_fg);
+//								lastSelectMenu.setSelected(false);
+//								lastSelectMenu.setBackgroundColor(Color.argb(50, 0x0,
+//										0x0, 0x0));
+							}
+
+							v.setBackgroundResource(R.color.search_color_count);
+							lastSelectMenu = v;
+						}else{
+							if (lastSelectMenu != null) {
+								lastSelectMenu.setBackgroundResource(R.color.player_menu_fg);
+							}
+						}
+						return false;
+					}
+				});
 				return convertView;
 			}
 		});
@@ -141,6 +166,23 @@ public class ISTVVodMenu extends ISTVVodMenuItem {
 						}
 					}
 				}
+			});
+			view.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+				@Override
+				public void onItemSelected(AdapterView<?> parent, View view,
+						int position, long id) {
+					view.setBackgroundResource(R.color.search_color_count);
+					if (lastSelectMenu != null) {
+						lastSelectMenu.setBackgroundResource(R.color.player_menu_fg);
+					}
+					lastSelectMenu = view;
+				}
+
+				@Override
+				public void onNothingSelected(AdapterView<?> parent) {	
+				}
+
 			});
 		}
 	}
