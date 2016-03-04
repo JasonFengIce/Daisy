@@ -469,6 +469,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 if (currentFragment == null && !isFinishing() && channelscrollIndex<=0) {
                     try {
                         currentFragment = new GuideFragment();
+                        lastFragment = currentFragment;
                         ChannelEntity channelEntity = new ChannelEntity();
                         launcher.setChannel("launcher");
                         launcher.setName("首页");

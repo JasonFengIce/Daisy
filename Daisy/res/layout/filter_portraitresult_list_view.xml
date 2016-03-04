@@ -59,6 +59,8 @@
                     android:layout_width="@dimen/filter_portraitresult_shadow_w"
                     android:layout_height="@dimen/filter_portraitresult_shadow_h"
                     android:background="@drawable/channel_arrow_left"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     />
             <Button
                     android:layout_marginTop="@dimen/filter_portraitresult_shadow_mt"
@@ -69,6 +71,8 @@
                     android:layout_width="@dimen/filter_portraitresult_shadow_w"
                     android:layout_height="@dimen/filter_portraitresult_shadow_h"
                     android:background="@drawable/channel_arrow_right"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     />
             <org.sakuratya.horizontal.ui.HGridView
                     android:layout_toLeftOf="@id/right_shadow"
@@ -160,6 +164,8 @@
                     android:layout_width="@dimen/filter_portraitresult_shadow_w"
                     android:layout_height="@dimen/filter_portraitresult_shadow_h"
                     android:background="@drawable/channel_arrow_left"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     />
             <Button
                     android:layout_marginTop="@dimen/toast_layout_H"
@@ -170,6 +176,8 @@
                     android:layout_width="@dimen/filter_portraitresult_shadow_w"
                     android:layout_height="@dimen/filter_portraitresult_shadow_h"
                     android:background="@drawable/channel_arrow_right"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     />
             <org.sakuratya.horizontal.ui.HGridView
                     android:layout_toLeftOf="@id/recommend_right_shadow"

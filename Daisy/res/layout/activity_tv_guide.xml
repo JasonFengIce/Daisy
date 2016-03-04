@@ -71,7 +71,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/tv_guide_arrow_scroll_margin"
                 android:src="@drawable/scroll_right_normal"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:clickable="true"
                 android:focusable="false"/>
         <ImageView
@@ -94,7 +94,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/tv_guide_arrow_scroll_margin"
                 android:src="@drawable/arrow_left_right"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:nextFocusRight="@id/arrow_scroll_right"
                 android:focusable="true"/>
     </RelativeLayout>

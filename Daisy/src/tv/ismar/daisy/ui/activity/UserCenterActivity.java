@@ -641,6 +641,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 textView.setTextColor(getResources().getColor(R.color.personinfo_login_button_disable));
                 parentView.setFocusable(false);
                 parentView.setFocusableInTouchMode(false);
+                parentView.setClickable(false);
                 break;
             case Enable:
                 parentView.setFocusable(true);
@@ -650,6 +651,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 textSelectImage.setVisibility(View.INVISIBLE);
                 textFocusImage.setVisibility(View.INVISIBLE);
                 parentView.setBackgroundResource(R.drawable._000000000);
+                parentView.setClickable(true);
                 break;
         }
 
@@ -841,18 +843,36 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 				indictor = (Integer) v.getTag();
 			}
 //			if(indictor >=0 && indictor < INDICATOR_TEXT_RES_ARRAY.length){
-			ImageView text_focus_bg = (ImageView)v.findViewById(R.id.hover_focus_bg);
+	        TextView textView = (TextView) v.findViewById(R.id.indicator_text);
+	        ImageView textSelectImage = (ImageView) v.findViewById(R.id.text_select_bg);
+	        ImageView textFocusImage = (ImageView) v.findViewById(R.id.text_focus_bg);
+			ImageView hover_focus_bg = (ImageView) v.findViewById(R.id.hover_focus_bg);
 			switch (keycode.getAction()) {
 			case MotionEvent.ACTION_HOVER_ENTER:
 			case MotionEvent.ACTION_HOVER_MOVE:
-				text_focus_bg.setVisibility(View.VISIBLE);
+				if((v != indicatorView.get(2)) || v.isFocusable())
+					hover_focus_bg.setVisibility(View.VISIBLE);
 				hoveredView = v;
 				verticalDividerView.setFocusable(false);
 				v.setHovered(true);
 				v.requestFocus();
+				for(View view:indicatorView){
+					if((Integer)view.getTag() == currentFragmentIndictor && ((Integer)v.getTag() != currentFragmentIndictor)){
+						Log.v("aaaa", "view.getTag() ="+view.getTag());
+						Log.v("aaaa", "v.getTag() ="+v.getTag());
+						Log.v("aaaa", "currentFragmentIndictor ="+currentFragmentIndictor);
+						 ImageView testSelectImage = (ImageView) view.findViewById(R.id.text_select_bg);
+					     ImageView testFocusImage = (ImageView) view.findViewById(R.id.text_focus_bg);
+					     testSelectImage.setVisibility(View.INVISIBLE);
+//						hover_focus_bg.setVisibility(View.INVISIBLE);
+						testFocusImage.setImageResource(R.drawable.usercenter_indicator_focused);
+		                testFocusImage.setVisibility(View.VISIBLE);
+		                break;
+					}
+				}
 				break;
 			case MotionEvent.ACTION_HOVER_EXIT:
-				text_focus_bg.setVisibility(View.INVISIBLE);
+				hover_focus_bg.setVisibility(View.INVISIBLE);
 				v.setHovered(false);
 				leavedhoveredView = v;
 				break;

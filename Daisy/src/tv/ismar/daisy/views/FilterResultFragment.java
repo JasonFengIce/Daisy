@@ -97,8 +97,6 @@ public class FilterResultFragment extends BackHandledFragment implements Adapter
                         getFragmentManager().popBackStack();
                     }
                 });
-                right_shadow.setOnHoverListener(onHoverListener);
-                left_shadow.setOnHoverListener(onHoverListener);
 			filterBtn.setOnHoverListener(onHoverListener);
                 url = SimpleRestClient.root_url+"/api/tv/filtrate/"+"$"+"movie"+"/"+"area*10022$10261$10263$10378$10479$10483$10484$10494"+"/1";
                 isNoData = true;
@@ -110,6 +108,54 @@ public class FilterResultFragment extends BackHandledFragment implements Adapter
         mHGridView.setOnItemClickListener(this);
         mHGridView.setOnItemSelectedListener(this);
         mHGridView.setOnScrollListener(this);
+        right_shadow.setOnHoverListener(onHoverListener);
+        left_shadow.setOnHoverListener(onHoverListener);
+        right_shadow.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(hasFocus){
+					v.setBackgroundResource(R.drawable.scroll_right_focus);
+				}else{
+					v.setBackgroundResource(R.drawable.scroll_right_normal);					
+				}
+			}
+		});
+
+        left_shadow.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (hasFocus) {
+					v.setBackgroundResource(R.drawable.scroll_left_focus);
+				} else {
+					v.setBackgroundResource(R.drawable.scroll_left_normal);
+				}
+			}
+		});
+
+		right_shadow.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				 left_shadow.setVisibility(View.VISIBLE);
+                 if(mHGridView.getSelectedItemPosition() >= mHGridView.getCount() -2){
+                 	right_shadow.setVisibility(View.INVISIBLE);	
+                 }
+				mHGridView.pageScroll(View.FOCUS_RIGHT);
+			}
+		});
+		left_shadow.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+                right_shadow.setVisibility(View.VISIBLE);	
+                if(mHGridView.getSelectedItemPosition() <= 1 ){
+                	left_shadow.setVisibility(View.INVISIBLE);
+                }
+				mHGridView.pageScroll(View.FOCUS_LEFT);
+			}
+		});
     }
     private void buildFilterListView(ViewGroup container,String str){
             if(str.length()>0){

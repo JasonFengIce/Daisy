@@ -114,9 +114,10 @@ public class FilterFragment extends BackHandledFragment {
 			public boolean onHover(View v, MotionEvent event) {
 				
 				if(event.getAction() == MotionEvent.ACTION_HOVER_ENTER || event.getAction() == MotionEvent.ACTION_HOVER_MOVE){
-					v.setBackgroundResource(R.color.search_bg_focus);
+//					v.setBackgroundResource(R.color.search_bg_focus);
+					v.requestFocus();
 				}else{
-					v.setBackgroundResource(R.drawable.filter_btn_normal);		
+//					v.setBackgroundResource(R.drawable.filter_btn_normal);		
 				}
 				return false;
 			}
