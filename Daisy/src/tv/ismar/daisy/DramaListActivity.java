@@ -121,6 +121,17 @@ public class DramaListActivity extends BaseActivity implements
 		up_btn = (Button)findViewById(R.id.up_btn);
 		mDramaView.setUpView(up_btn);
 		mDramaView.setDownView(down_btn);
+		mDramaView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (hasFocus) {
+				} else {
+					mDramaView.setSelection(AdapterView.INVALID_POSITION);
+				}
+			}
+		});
+
 		mDramaView.setOnScrollListener(new OnScrollListener() {
 			
 			@Override
@@ -210,6 +221,7 @@ public class DramaListActivity extends BaseActivity implements
 				dialog.show();
 			}
 		});
+		orderAll_drama.setOnHoverListener(onHoverListener);
 		loadDialog = new LoadingDialog(this, getString(R.string.vod_loading));
 	}
 

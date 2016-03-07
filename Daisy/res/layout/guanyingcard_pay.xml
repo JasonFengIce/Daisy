@@ -94,7 +94,7 @@
             android:layout_toRightOf="@id/card_balance_submit"
             android:layout_marginLeft="@dimen/pay_guanyingcard_card_balance_cancel_marginleft"
             android:text="@string/card_balance_cancel"
-            android:background="@drawable/person_btn_selector"
+            android:background="@drawable/paychannel_btn_selector"
             android:textColor="#FFF8F8FF"
             android:focusable="true"
             android:focusableInTouchMode="true"
