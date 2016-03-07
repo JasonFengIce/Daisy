@@ -389,6 +389,8 @@ public class ScrollableSectionList extends tv.ismar.daisy.views.MyHorizontalScro
 					TextView lastLabel = (TextView) lastSelectedView.findViewById(R.id.section_label);
 					lastLabel.setBackgroundResource(R.drawable.gotogridview);
 					return false;
+				}else{
+					label.setBackgroundResource(R.drawable.usercenter_indicator_overlay);
 				}
 				break;
 			case MotionEvent.ACTION_HOVER_EXIT:

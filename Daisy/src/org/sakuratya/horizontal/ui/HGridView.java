@@ -2772,6 +2772,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 				}
 			}
 			int cols = getColumn(lastVisiblePosition) - getColumn(mFirstPosition);
+			cols+=1;
 			int nextCol = Math.max(0, currentCol - cols);
 			int[] positionRange = getPositionRangeByColumn(nextCol);
 			nextPage = Math.min(positionRange[0] + currentRow, positionRange[1]);
