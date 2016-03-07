@@ -33,7 +33,6 @@
         android:singleLine="true"
         android:paddingLeft="5dip"
         android:textSize="32sp"
-        android:textColor="#FFF8F8FF"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:nextFocusDown="@+id/shiyuncard_submit"

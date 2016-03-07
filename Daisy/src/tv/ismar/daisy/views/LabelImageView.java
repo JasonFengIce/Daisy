@@ -105,8 +105,8 @@ public class LabelImageView extends AsyncImageView {
 			if (gainFocus) {
 				if(getId() != R.id.vaiety_post){
 					bringToFront();
-					drawBorder = true;
 				}
+				drawBorder = true;
 				getRootView().requestLayout();
 				getRootView().invalidate();
 				zoomOut();
@@ -127,12 +127,13 @@ public class LabelImageView extends AsyncImageView {
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_HOVER_ENTER:
 //			drawBorder = true;
-			requestFocus();
+//			requestFocus();
 //			invalidate();
-			break;
+//			break;
 		case MotionEvent.ACTION_HOVER_MOVE:
 //			drawBorder = true;
-//			requestFocus();
+			if(isFocusable() && isFocusableInTouchMode())
+			requestFocus();
 			invalidate();
 			break;
 		case MotionEvent.ACTION_HOVER_EXIT:

@@ -29,7 +29,6 @@
             android:gravity="center"
             android:inputType="phone"
             android:paddingLeft="@dimen/pay_person_login_pay_edit_mobile_pl"
-            android:textColor="#FFF8F8FF"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:textSize="@dimen/pay_person_login_pay_edit_mobile_textsize"/>
@@ -82,7 +81,6 @@
             android:gravity="center"
             android:inputType="number"
             android:paddingLeft="@dimen/pay_person_login_pay_edit_mobile_pl"
-            android:textColor="#FFF8F8FF"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:textSize="@dimen/pay_person_login_pay_edit_mobile_textsize"/>
