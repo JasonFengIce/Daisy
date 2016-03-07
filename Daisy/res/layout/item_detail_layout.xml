@@ -171,8 +171,9 @@
                 android:textColor="#FFFFFFFF"
                 android:textSize="@dimen/item_detail_text_size"
                 android:gravity="center"
+                android:focusable="true"
                 android:focusableInTouchMode="true"
-                  android:paddingLeft="@dimen/item_detail_btn_pl"/>
+                android:paddingLeft="@dimen/item_detail_btn_pl"/>
                  
            <Button
                    android:paddingLeft="@dimen/item_detail_btn_pl"
@@ -183,6 +184,7 @@
                 android:layout_marginLeft="@dimen/item_detail_btn_marginleft"
                 android:visibility="visible"
                 android:textColor="#FFFFFFFF"
+                android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:textSize="@dimen/item_detail_text_size"/>
 
@@ -194,6 +196,7 @@
                 android:layout_height="@dimen/item_detail_btn_left_height"
                 android:layout_marginLeft="@dimen/item_detail_btn_marginleft"
                 android:visibility="visible"
+                android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:textColor="#FFFFFFFF"
                 android:textSize="@dimen/item_detail_text_size" />                            
@@ -244,6 +247,8 @@
             android:gravity="center"
             android:background="@drawable/daisy_btn_bg_selector"
             android:textSize="@dimen/item_detail_more_content_textsize" 
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:layout_marginTop="@dimen/item_detail_btn_layout_marginB"/>
     </LinearLayout>
 </LinearLayout>

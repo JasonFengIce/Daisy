@@ -35,8 +35,10 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnHoverListener;
 import android.widget.Button;
 import android.widget.PopupWindow;
 
@@ -132,7 +134,26 @@ public class BaseActivity extends FragmentActivity {
         netErrorPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent));
         Button settingNetwork = (Button) contentView.findViewById(R.id.setting_network);
         Button iKnow = (Button) contentView.findViewById(R.id.i_know);
-
+        settingNetwork.setOnHoverListener(new OnHoverListener() {
+			
+			@Override
+			public boolean onHover(View v, MotionEvent event) {
+				if(event.getAction() == MotionEvent.ACTION_HOVER_ENTER || event.getAction() == MotionEvent.ACTION_HOVER_MOVE){
+					v.requestFocus();
+				}
+				return false;
+			}
+		});
+        iKnow.setOnHoverListener(new OnHoverListener() {
+			
+			@Override
+			public boolean onHover(View v, MotionEvent event) {
+				if(event.getAction() == MotionEvent.ACTION_HOVER_ENTER || event.getAction() == MotionEvent.ACTION_HOVER_MOVE){
+					v.requestFocus();
+				}
+				return false;
+			}
+		});
         settingNetwork.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

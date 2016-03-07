@@ -1691,6 +1691,26 @@ public class PlayerActivity extends VodMenuAction {
 			btn1.setText(R.string.vod_ok);
 			btn2 = (Button) view.findViewById(R.id.cancel_exit);
 			btn2.setText(R.string.vod_cancel);
+			btn1.setOnHoverListener(new OnHoverListener() {
+				
+				@Override
+				public boolean onHover(View v, MotionEvent event) {
+					if(event.getAction() == MotionEvent.ACTION_HOVER_ENTER || event.getAction() == MotionEvent.ACTION_HOVER_MOVE){
+						v.requestFocus();
+					}
+					return false;
+				}
+			});
+			btn2.setOnHoverListener(new OnHoverListener() {
+				
+				@Override
+				public boolean onHover(View v, MotionEvent event) {
+					if(event.getAction() == MotionEvent.ACTION_HOVER_ENTER || event.getAction() == MotionEvent.ACTION_HOVER_MOVE){
+						v.requestFocus();
+					}
+					return false;
+				}
+			});
 			if (btn1 != null) {
 				btn1.setOnClickListener(new View.OnClickListener() {
 					public void onClick(View v) {

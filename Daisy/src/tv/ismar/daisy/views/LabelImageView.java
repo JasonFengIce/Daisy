@@ -103,9 +103,9 @@ public class LabelImageView extends AsyncImageView {
 		super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
 		if (needzoom) {
 			if (gainFocus) {
-				drawBorder = true;
 				if(getId() != R.id.vaiety_post){
-					bringToFront();					
+					bringToFront();
+					drawBorder = true;
 				}
 				getRootView().requestLayout();
 				getRootView().invalidate();
@@ -126,13 +126,13 @@ public class LabelImageView extends AsyncImageView {
 		// TODO Auto-generated method stub
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_HOVER_ENTER:
-			drawBorder = true;
+//			drawBorder = true;
 			requestFocus();
-			invalidate();
+//			invalidate();
 			break;
 		case MotionEvent.ACTION_HOVER_MOVE:
-			drawBorder = true;
-			requestFocus();
+//			drawBorder = true;
+//			requestFocus();
 			invalidate();
 			break;
 		case MotionEvent.ACTION_HOVER_EXIT:

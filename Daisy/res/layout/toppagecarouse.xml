@@ -18,6 +18,7 @@
         labelimage:frontcolor="#B2000000"
         labelimage:customfocus="true"
         labelimage:needzoom="true"
+        android:focusableInTouchMode="true"
          />
 
     <tv.ismar.daisy.views.LabelImageView
@@ -32,6 +33,7 @@
         labelimage:frontcolor="#B2000000"
         labelimage:customfocus = "true"
         labelimage:needzoom="true"
+        android:focusableInTouchMode="true"
          />
 
     <tv.ismar.daisy.views.LabelImageView
@@ -46,6 +48,7 @@
         labelimage:frontcolor="#B2000000"
         labelimage:customfocus = "true"
         labelimage:needzoom="true"
+        android:focusableInTouchMode="true"
          />
 
 </RelativeLayout>

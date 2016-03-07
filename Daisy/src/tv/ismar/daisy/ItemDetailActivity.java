@@ -195,6 +195,7 @@ public class ItemDetailActivity extends BaseActivity implements
             }
         });
         mRightBtn.setOnHoverListener(mOnHoverListener);
+        mMoreContent.setOnHoverListener(mOnHoverListener);
         //mLeftBtn.setPressed(true);
 
         // mBtnFavorite.setOnClickListener(mIdOnClickListener);

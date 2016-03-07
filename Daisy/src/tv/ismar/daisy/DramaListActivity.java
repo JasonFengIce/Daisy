@@ -222,6 +222,16 @@ public class DramaListActivity extends BaseActivity implements
 			}
 		});
 		orderAll_drama.setOnHoverListener(onHoverListener);
+		orderAll_drama.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(hasFocus && lastdaramView != null){
+					View butvView = lastdaramView.findViewById(R.id.btn_count);
+					lastdaramView.setSelected(false);
+					butvView.setBackgroundResource(R.drawable.daram_grid_selector);
+				}
+			}
+		});
 		loadDialog = new LoadingDialog(this, getString(R.string.vod_loading));
 	}
 

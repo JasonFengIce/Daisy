@@ -152,6 +152,8 @@
                         android:paddingLeft="@dimen/filmitem_portrait_btn_left_pl"
                         android:visibility="visible"
                         android:textColor="#FFFFFFFF"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
                         android:textSize="@dimen/filmitem_portrait_btn_left_textsize"
                         />
 
@@ -164,6 +166,8 @@
                         android:gravity="center"
                         android:visibility="visible"
                         android:textColor="#FFFFFFFF"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
                         android:textSize="@dimen/filmitem_portrait_btn_left_textsize"/>
 
                 <Button
@@ -175,6 +179,8 @@
                         android:gravity="center"
                         android:visibility="visible"
                         android:textColor="#FFFFFFFF"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
                         android:textSize="@dimen/filmitem_portrait_btn_left_textsize"/>
             </LinearLayout>
         </RelativeLayout>

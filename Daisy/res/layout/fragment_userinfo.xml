@@ -53,6 +53,8 @@
                 android:text="@string/change_account"
                 android:textColor="#FFFFFF"
                 android:textSize="@dimen/h4_text_size"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:visibility="gone"/>
 
             <Button
@@ -65,6 +67,8 @@
                 android:gravity="center"
                 android:text="@string/exit_account"
                 android:textColor="#FFFFFF"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:textSize="@dimen/h4_text_size"/>
 
         </RelativeLayout>
