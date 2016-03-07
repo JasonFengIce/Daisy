@@ -826,6 +826,9 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+    	if(leavedhoveredView != null && ((Integer) leavedhoveredView.getTag() == currentFragmentIndictor)){
+    		leavedhoveredView = null;
+    	}
     	if(hoveredView != null){
     		ImageView text_focus_bg = (ImageView)hoveredView.findViewById(R.id.hover_focus_bg);
     		text_focus_bg.setVisibility(View.INVISIBLE);

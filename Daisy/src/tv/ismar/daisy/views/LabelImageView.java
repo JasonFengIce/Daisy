@@ -104,7 +104,9 @@ public class LabelImageView extends AsyncImageView {
 		if (needzoom) {
 			if (gainFocus) {
 				drawBorder = true;
-				bringToFront();
+				if(getId() != R.id.vaiety_post){
+					bringToFront();					
+				}
 				getRootView().requestLayout();
 				getRootView().invalidate();
 				zoomOut();

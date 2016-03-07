@@ -284,6 +284,17 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
                 title.setText(playAuths.get(i).getTitle());
                 convertView.setOnFocusChangeListener(playAuthFocusListener);
                 convertView.setOnClickListener(playAuthClickListener);
+                convertView.setOnHoverListener(new View.OnHoverListener() {
+        			
+        			@Override
+        			public boolean onHover(View v, MotionEvent event) {
+        				if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER
+        						|| event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+        					v.requestFocus();
+        				}
+        				return false;
+        			}
+        		});
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
                 if (i == 0) {
