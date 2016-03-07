@@ -542,7 +542,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 case R.string.usercenter_purchase_history:
                 case R.string.usercenter_help:
                 case R.string.usercenter_location:
-				if ((leavedhoveredView == null) || (leavedhoveredView != null && ((Integer)leavedhoveredView.getTag()) == currentFragmentIndictor)){
+				if ((leavedhoveredView == null) ||((Integer)v.getTag() == currentFragmentIndictor) || (leavedhoveredView != null && ((Integer)leavedhoveredView.getTag()) == currentFragmentIndictor)){
 					changeViewState(v, ViewState.Select);
 				}else{
 					ImageView text_focus_bg = (ImageView)v.findViewById(R.id.hover_focus_bg);
@@ -861,9 +861,6 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 				v.requestFocus();
 				for(View view:indicatorView){
 					if((Integer)view.getTag() == currentFragmentIndictor && ((Integer)v.getTag() != currentFragmentIndictor)){
-						Log.v("aaaa", "view.getTag() ="+view.getTag());
-						Log.v("aaaa", "v.getTag() ="+v.getTag());
-						Log.v("aaaa", "currentFragmentIndictor ="+currentFragmentIndictor);
 						 ImageView testSelectImage = (ImageView) view.findViewById(R.id.text_select_bg);
 					     ImageView testFocusImage = (ImageView) view.findViewById(R.id.text_focus_bg);
 					     testSelectImage.setVisibility(View.INVISIBLE);

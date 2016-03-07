@@ -116,17 +116,22 @@ public static boolean isCanWriteSD(){
 	}
 
 	public static long getSdCardAvalible(final Context context) {
-		if (Environment.getExternalStorageState().equals(
-				Environment.MEDIA_MOUNTED)) {
-			File path = Environment.getExternalStorageDirectory();
-			StatFs stat = new StatFs(path.getPath());
-			long blockSize = stat.getBlockSize();
-			long availableBlocks = stat.getAvailableBlocks();
-			long availSize = availableBlocks * blockSize;
-			return availSize/1048576;
-		}else{
+		try {
+			if (Environment.getExternalStorageState().equals(
+					Environment.MEDIA_MOUNTED)) {
+				File path = Environment.getExternalStorageDirectory();
+				StatFs stat = new StatFs(path.getPath());
+				long blockSize = stat.getBlockSize();
+				long availableBlocks = stat.getAvailableBlocks();
+				long availSize = availableBlocks * blockSize;
+				return availSize / 1048576;
+			} else {
+				return 0;
+			}
+		} catch (java.lang.IllegalArgumentException e) {
 			return 0;
 		}
+
 	}
 
 	public static synchronized void writeLogToLocal(String content) {
