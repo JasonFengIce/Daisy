@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/guide_padding"
             android:clickable="true"
+            android:focusableInTouchMode="true"
             android:focusable="true"
             android:nextFocusRight="@+id/toppage_carous_imageView1"
             >

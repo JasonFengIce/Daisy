@@ -66,6 +66,17 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
         childMore = (ImageButton) mView.findViewById(R.id.child_more);
         childMore.setOnClickListener(ItemClickListener);
         imageSwitcher.setOnClickListener(ItemClickListener);
+        imageSwitcher.setOnHoverListener(new View.OnHoverListener() {
+			
+			@Override
+			public boolean onHover(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER
+						|| event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+                      v.requestFocus();
+				}
+				return false;
+			}
+		});
         flag = new Flag(this);
         messageHandler = new MessageHandler();
         childMore.setOnFocusChangeListener(new View.OnFocusChangeListener() {

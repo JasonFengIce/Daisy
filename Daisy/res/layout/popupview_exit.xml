@@ -36,6 +36,8 @@
                     android:id="@+id/confirm_exit"
                     android:layout_width="250dp"
                     android:layout_height="60dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:background="@drawable/person_btn_selector"/>
 
             <Button
@@ -47,6 +49,8 @@
                     android:id="@+id/cancel_exit"
                     android:layout_width="250dp"
                     android:layout_height="60dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:background="@drawable/person_btn_selector"/>
 
         </LinearLayout>
