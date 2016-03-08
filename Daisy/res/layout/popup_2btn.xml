@@ -34,6 +34,8 @@
                 android:textSize="@dimen/sakura_h5_text_size"
                 android:text="@string/confirm"
                 android:textColor="@android:color/white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:id="@+id/confirm_exit"
                 android:layout_width="@dimen/pop_btn_width"
                 android:layout_height="wrap_content"/>
@@ -44,6 +46,8 @@
                 android:textSize="@dimen/locationFragment_h3_textSize"
                 android:text="@string/cancel"
                 android:textColor="@android:color/white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:id="@+id/cancel_exit"
                 android:layout_width="@dimen/pop_btn_width"
                 android:layout_height="wrap_content"/>

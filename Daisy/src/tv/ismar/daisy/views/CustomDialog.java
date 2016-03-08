@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
@@ -77,6 +78,17 @@ public class CustomDialog extends Dialog {
 
 			if(mPositiveButtonText!=null){
 				((Button)layout.findViewById(R.id.positive_button)).setText(mPositiveButtonText);
+				((Button)layout.findViewById(R.id.positive_button)).setOnHoverListener(new View.OnHoverListener() {
+					
+					@Override
+					public boolean onHover(View v, MotionEvent event) {
+								if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER
+										|| event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+                                    v.requestFocus();
+								}
+						return false;
+					}
+				});
 			}
 			((Button)layout.findViewById(R.id.positive_button)).setOnClickListener(new View.OnClickListener() {
 				
@@ -86,6 +98,18 @@ public class CustomDialog extends Dialog {
 			});
 			if(mNegativeButtonText!=null){
 				((Button)layout.findViewById(R.id.negative_btn)).setText(mNegativeButtonText);
+				((Button) layout.findViewById(R.id.positive_button))
+						.setOnHoverListener(new View.OnHoverListener() {
+
+							@Override
+							public boolean onHover(View v, MotionEvent event) {
+								if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER
+										|| event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+									v.requestFocus();
+								}
+								return false;
+							}
+						});
 			}
 			if(mNegativeListener!=null){
 				((Button)layout.findViewById(R.id.negative_btn)).setOnClickListener(new View.OnClickListener() {

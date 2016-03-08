@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -62,7 +63,28 @@ public class ExitDialog extends Dialog {
 				dismiss();
 			}
 		});
-		
+		btn1.setOnHoverListener(new View.OnHoverListener() {
+			
+			@Override
+			public boolean onHover(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER
+						|| event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+					v.requestFocus();
+				}
+				return false;
+			}
+		});
+		btn2.setOnHoverListener(new View.OnHoverListener() {
+			
+			@Override
+			public boolean onHover(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER
+						|| event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+					v.requestFocus();
+				}
+				return false;
+			}
+		});
 	}
 
 	private void resizeWindow() {

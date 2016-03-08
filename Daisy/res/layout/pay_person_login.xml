@@ -77,7 +77,6 @@
             android:layout_width="@dimen/pay_person_login_pay_edit_mobile_w"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/pay_person_login_pay_identifyCodeBtn_ml"
-            android:background="@drawable/edit_selector"
             android:gravity="center"
             android:inputType="number"
             android:paddingLeft="@dimen/pay_person_login_pay_edit_mobile_pl"

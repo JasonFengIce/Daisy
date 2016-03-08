@@ -169,8 +169,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 if (channelChange != null && channelChange != ChannelChange.CLICK_CHANNEL)
                     channelChange = ChannelChange.RIGHT_ARROW;
             } else {
-                arrow_left.setVisibility(View.VISIBLE);
-                arrow_left_visible.setVisibility(View.VISIBLE);
+//                arrow_left.setVisibility(View.VISIBLE);
+//                arrow_left_visible.setVisibility(View.VISIBLE);
             }
 
             if (position == mChannelEntitys.length - 1) {
@@ -179,8 +179,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 if (channelChange != null && channelChange != ChannelChange.CLICK_CHANNEL)
                     channelChange = ChannelChange.LEFT_ARROW;
             } else {
-                arrow_right.setVisibility(View.VISIBLE);
-                arrow_right_visible.setVisibility(View.VISIBLE);
+//                arrow_right.setVisibility(View.VISIBLE);
+//                arrow_right_visible.setVisibility(View.VISIBLE);
             }
             Log.i("TestFragment", "position==" + position);
             Message msg = new Message();
@@ -997,8 +997,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             if (channelChange != null && channelChange != ChannelChange.CLICK_CHANNEL)
                 channelChange = ChannelChange.RIGHT_ARROW;
         } else {
-            arrow_left.setVisibility(View.VISIBLE);
-            arrow_left_visible.setVisibility(View.VISIBLE);
+//            arrow_left.setVisibility(View.VISIBLE);
+//            arrow_left_visible.setVisibility(View.VISIBLE);
         }
 
         if (position == mChannelEntitys.length - 1) {
@@ -1007,8 +1007,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             if (channelChange != null && channelChange != ChannelChange.CLICK_CHANNEL)
                 channelChange = ChannelChange.LEFT_ARROW;
         } else {
-            arrow_right.setVisibility(View.VISIBLE);
-            arrow_right_visible.setVisibility(View.VISIBLE);
+//            arrow_right.setVisibility(View.VISIBLE);
+//            arrow_right_visible.setVisibility(View.VISIBLE);
         }
         ChannelEntity channelEntity = mChannelEntitys[position];
         topView.setSubTitle(channelEntity.getName());

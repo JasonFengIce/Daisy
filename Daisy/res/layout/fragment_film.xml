@@ -23,6 +23,7 @@
                 android:layout_width="@dimen/film_lefttop_image_w"
                 android:layout_height="match_parent"
                 android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:nextFocusUp="@+id/film_lefttop_image"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="@color/shawdow"
@@ -40,6 +41,7 @@
                 android:layout_marginRight="@dimen/film_post_layout_ml"
                 android:layout_toRightOf="@id/film_lefttop_image"
                 android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:clickable="true"
                 >
 

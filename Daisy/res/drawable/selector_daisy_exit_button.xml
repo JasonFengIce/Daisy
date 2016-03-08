@@ -3,6 +3,5 @@
     <item android:state_enabled="false" android:drawable="@drawable/button_disable"/>
     <item android:state_focused="true" android:drawable="@drawable/popwindow_focus_bg"></item>
     <item android:state_pressed="true" android:drawable="@drawable/popwindow_focus_bg"></item>
-    <item android:state_hovered="true" android:drawable="@drawable/popwindow_focus_bg"></item>
     <item android:drawable="@drawable/popwindow_normal_bg"></item>
 </selector>

@@ -395,6 +395,7 @@ public class FilmFragment extends ChannelBaseFragment {
             if (mContext == null)
                 return;
             itemView.setFocusable(true);
+            itemView.setFocusableInTouchMode(true);
             itemView.setNeedzoom(true);
             Picasso.with(mContext).load(carousels.get(i).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE)
                     .into(itemView);
