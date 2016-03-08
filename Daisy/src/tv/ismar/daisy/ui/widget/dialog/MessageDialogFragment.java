@@ -3,8 +3,10 @@ package tv.ismar.daisy.ui.widget.dialog;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.View.OnHoverListener;
 import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -56,6 +58,27 @@ public class MessageDialogFragment extends PopupWindow implements View.OnClickLi
         cancelBtn = (Button) contentView.findViewById(R.id.cancel_btn);
         confirmBtn.setOnClickListener(this);
         cancelBtn.setOnClickListener(this);
+        confirmBtn.setOnHoverListener(new OnHoverListener() {
+			
+			@Override
+			public boolean onHover(View v, MotionEvent event) {
+				if(event.getAction() == MotionEvent.ACTION_HOVER_ENTER || event.getAction() == MotionEvent.ACTION_HOVER_MOVE){
+					v.requestFocus();
+				}
+				return false;
+			}
+		});
+        cancelBtn.setOnHoverListener(new OnHoverListener() {
+
+			@Override
+			public boolean onHover(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER
+						|| event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+					v.requestFocus();
+				}
+				return false;
+			}
+		});
         firstMessage = (TextView) contentView.findViewById(R.id.first_text_info);
         secondMessage = (TextView) contentView.findViewById(R.id.pop_second_text);
         firstMessage.setText(mFirstLineMessage);

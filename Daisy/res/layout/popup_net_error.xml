@@ -36,6 +36,8 @@
                 android:text="@string/setting_network"
                 android:textColor="@android:color/white"
                 android:id="@+id/setting_network"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:layout_width="250dp"
                 android:layout_height="60dp"/>
 
@@ -47,6 +49,8 @@
                 android:text="@string/i_know"
                 android:textColor="@android:color/white"
                 android:id="@+id/i_know"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:layout_width="250dp"
                 android:layout_height="60dp"/>
 

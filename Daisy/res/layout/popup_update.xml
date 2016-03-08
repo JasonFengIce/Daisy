@@ -40,6 +40,8 @@
             android:layout_marginRight="30dp"
             android:background="@drawable/selector_daisy_exit_button"
             android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:text="@string/update_now"
             android:layout_centerHorizontal="true"
             android:textColor="@android:color/white"
