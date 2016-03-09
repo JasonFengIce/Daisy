@@ -321,7 +321,6 @@ public class GuideFragment extends ChannelBaseFragment {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     Object tagObject = v.getTag(R.id.poster_title);
-                    Log.v("aaaa", "onFocusChange = "+hasFocus);
                     if (hasFocus) {
                         ((HomeItemContainer) v.getParent())
                                 .setDrawBorder(true);
@@ -507,7 +506,7 @@ public class GuideFragment extends ChannelBaseFragment {
             if (focusFlag) {
                 mCarouselRepeatType = CarouselRepeatType.All;
             } else {
-                if (hasFocus) {
+                if (hasFocus && !v.isHovered()) {
                     stopPlayback();
 //                    mHelper.onStop();
                     int position = (Integer) v.getTag();

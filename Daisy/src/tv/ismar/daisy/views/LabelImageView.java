@@ -134,9 +134,11 @@ public class LabelImageView extends AsyncImageView {
 //			drawBorder = true;
 			if(isFocusable() && isFocusableInTouchMode())
 			requestFocus();
+			setHovered(true);
 //			invalidate();
 			break;
 		case MotionEvent.ACTION_HOVER_EXIT:
+			setHovered(false);
 //			drawBorder = false;
 //			invalidate();
 			break;
