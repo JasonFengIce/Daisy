@@ -127,7 +127,7 @@ public class DramaListActivity extends BaseActivity implements
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (hasFocus) {
 				} else {
-					mDramaView.setSelection(AdapterView.INVALID_POSITION);
+//					mDramaView.setSelection(AdapterView.INVALID_POSITION);
 				}
 			}
 		});
@@ -175,6 +175,26 @@ public class DramaListActivity extends BaseActivity implements
 		});
 		down_btn.setOnHoverListener(onHoverListener);
 		up_btn.setOnHoverListener(onHoverListener);
+		up_btn.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(hasFocus && lastdaramView != null){
+					View butvView = lastdaramView.findViewById(R.id.btn_count);
+					lastdaramView.setSelected(false);
+					butvView.setBackgroundResource(R.drawable.daram_grid_selector);
+				}
+			}
+		});
+		down_btn.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(hasFocus && lastdaramView != null){
+					View butvView = lastdaramView.findViewById(R.id.btn_count);
+					lastdaramView.setSelected(false);
+					butvView.setBackgroundResource(R.drawable.daram_grid_selector);
+				}
+			}
+		});
 	}
 
 	@Override
