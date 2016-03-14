@@ -471,6 +471,7 @@ public class GuideFragment extends ChannelBaseFragment {
     private void startPlayback() {
         if (mSurfaceView == null)
             return;
+        stopPlayback();
         Log.d(TAG, "startPlayback is invoke...");
         linkedVideoLoadingImage.setVisibility(View.VISIBLE);
         mSurfaceView.setFocusable(false);
@@ -507,12 +508,11 @@ public class GuideFragment extends ChannelBaseFragment {
                 mCarouselRepeatType = CarouselRepeatType.All;
             } else {
                 if (hasFocus && !v.isHovered()) {
-                    stopPlayback();
 //                    mHelper.onStop();
                     int position = (Integer) v.getTag();
                     mCarouselRepeatType = CarouselRepeatType.Once;
                     mCurrentCarouselIndex = position;
-                    playCarousel(0);
+                    playCarousel(100);
                 }
             }
         }

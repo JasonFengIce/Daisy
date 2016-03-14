@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -197,6 +198,28 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
         GridView gridView = (GridView) popupLayout.findViewById(R.id.area_grid);
         final Button confirmBtn = (Button) popupLayout.findViewById(R.id.confirm_btn);
         final Button cancelBtn = (Button) popupLayout.findViewById(R.id.cancel_btn);
+        confirmBtn.setOnHoverListener(new View.OnHoverListener() {
+			
+			@Override
+			public boolean onHover(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER
+						|| event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+					v.requestFocus();
+				}
+				return false;
+			}
+		});
+        cancelBtn.setOnHoverListener(new View.OnHoverListener() {
+			
+			@Override
+			public boolean onHover(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER
+						|| event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+					v.requestFocus();
+				}
+				return false;
+			}
+		});
         final TextView selectPrompt = (TextView) popupLayout.findViewById(R.id.area_select_prompt);
         int width = (int) mContext.getResources().getDimension(R.dimen.location_area_pop_width);
         int height = (int) mContext.getResources().getDimension(R.dimen.location_area_pop_height);

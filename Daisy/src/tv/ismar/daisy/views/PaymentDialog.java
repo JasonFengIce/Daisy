@@ -1441,7 +1441,7 @@ public class PaymentDialog extends Dialog implements
 			switch (keycode.getAction()) {
 			case MotionEvent.ACTION_HOVER_ENTER:
 			case MotionEvent.ACTION_HOVER_MOVE:
-				v.requestFocus();
+				v.requestFocusFromTouch();
 				break;
 			case MotionEvent.ACTION_HOVER_EXIT:
 				break;
