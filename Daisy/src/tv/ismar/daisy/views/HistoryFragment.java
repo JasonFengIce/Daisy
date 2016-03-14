@@ -11,6 +11,7 @@ import android.os.Message;
 import android.util.FloatMath;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -125,6 +126,28 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
         mHGridView.rightbtn = right_shadow;
 		mHGridView.setOnItemClickListener(this);
 		mHGridView.setOnItemSelectedListener(this);
+		left_shadow.setOnHoverListener(new View.OnHoverListener() {
+			
+			@Override
+			public boolean onHover(View arg0, MotionEvent arg1) {
+				if(arg1.getAction() == MotionEvent.ACTION_HOVER_ENTER || arg1.getAction() == MotionEvent.ACTION_HOVER_MOVE){
+					arg0.requestFocusFromTouch();
+				}
+				return false;
+			}
+		});
+
+		right_shadow.setOnHoverListener(new View.OnHoverListener() {
+
+			@Override
+			public boolean onHover(View arg0, MotionEvent arg1) {
+				if (arg1.getAction() == MotionEvent.ACTION_HOVER_ENTER
+						|| arg1.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+					arg0.requestFocusFromTouch();
+				}
+				return false;
+			}
+		});
 		mScrollableSectionList = (ScrollableSectionList) fragmentView.findViewById(R.id.section_tabs);
 		//mScrollableSectionList.setOnSectionSelectChangeListener(this);
 		mScrollableSectionList.setVisibility(View.GONE);

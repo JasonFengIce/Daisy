@@ -252,7 +252,12 @@ public class RelateScrollableSectionList extends HorizontalScrollView {
 				v.setHovered(true);
 				v.requestFocus();
 				sectionhovered = label;
-				label.setBackgroundResource(R.drawable.channel_focus_frame);
+				if (index == mSelectPosition) {
+					label.setBackgroundResource(R.drawable.usercenter_indicator_overlay);
+					return false;
+				}else{
+					label.setBackgroundResource(R.drawable.usercenter_indicator_selected);
+				}
 //				if(sectionWhenGoto != null)
 //					  sectionWhenGoto.setBackgroundResource(R.drawable.gotogridview);
 				break;
