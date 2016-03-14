@@ -134,6 +134,30 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 				return false;
 			}
 		});
+		left_shadow.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				mHGridView.pageScroll(View.FOCUS_LEFT);
+				right_shadow.setVisibility(View.VISIBLE);
+				if (mHGridView.getSelectedItemPosition() <= 1) {
+					left_shadow.setVisibility(View.INVISIBLE);
+				}
+			}
+		});
+		right_shadow.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				mHGridView.pageScroll(View.FOCUS_RIGHT);
+				left_shadow.setVisibility(View.VISIBLE);
+				if (mHGridView.getSelectedItemPosition() >= mHGridView
+						.getCount() - 2) {
+					right_shadow.setVisibility(View.INVISIBLE);
+				}
+			}
+		});
+
 		mScrollableSectionList = (ScrollableSectionList) fragmentView.findViewById(R.id.section_tabs);
 		mScrollableSectionList.setVisibility(View.GONE);
 //		mScrollableSectionList.setOnSectionSelectChangeListener(this);
