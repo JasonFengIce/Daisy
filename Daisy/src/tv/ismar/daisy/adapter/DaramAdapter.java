@@ -120,23 +120,24 @@ public class DaramAdapter extends BaseAdapter implements OnHoverListener,
 		int what = event.getAction();
 		switch (what) {
 		case MotionEvent.ACTION_HOVER_ENTER:
+		case MotionEvent.ACTION_HOVER_MOVE:
 			// v.setBackgroundResource(R.drawable.daram_grid_selector);
 			// int position = Integer.parseInt((String) v.getTag());
 			// subitem = getItem(position);
 
-			int position = Integer.parseInt((String) v.getTag());
-			subitem = getItem(position);
-			if (dramaItem.expense != null && subitem.remainDay <= 0) {
-				v.setBackgroundResource(R.drawable.daram_grid_selector);
-			} else {
-				if (dramaItem.expense != null && subitem.remainDay > 0)
-					v.setBackgroundResource(R.drawable.daram_grid_payed_selector);
-				else {
-					v.setBackgroundResource(R.drawable.daram_grid_selector);
-				}
-			}
-			// 分类
-			mTvDramaType.setText(subitem.title);
+//			int position = Integer.parseInt((String) v.getTag());
+//			subitem = getItem(position);
+//			if (dramaItem.expense != null && subitem.remainDay <= 0) {
+//				v.setBackgroundResource(R.drawable.daram_grid_selector);
+//			} else {
+//				if (dramaItem.expense != null && subitem.remainDay > 0)
+//					v.setBackgroundResource(R.drawable.daram_grid_payed_selector);
+//				else {
+//					v.setBackgroundResource(R.drawable.daram_grid_selector);
+//				}
+//			}
+//			mTvDramaType.setText(subitem.title);
+//			v.requestFocusFromTouch();
 			break;
 		}
 		return false;

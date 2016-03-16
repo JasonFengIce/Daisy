@@ -1772,6 +1772,8 @@ public class QiYiPlayActivity extends VodMenuAction {
             return;
         }
         releasePlayer();
+        currPosition = seekPostion =0;
+        timeBar.setProgress(currPosition);
         //创建IVideoOverlay对象, 不支持实现IVideoOverlay接口，必须调用PlaySdk.getInstance().createVideoOverlay创建
         //创建IVideoOverlay对象, 不需创建SurfaceView, 直接传入父容器即可
         mVideoOverlay = PlayerSdk.getInstance().createVideoOverlay(frameContainer);

@@ -3807,7 +3807,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 				setFocusable(true);
 				setFocusableInTouchMode(true);
 				setSelection(position1);
-				requestFocus();
+				requestFocusFromTouch();
 			}else{
 				hover = false;
 				mSelectorRect.setEmpty();

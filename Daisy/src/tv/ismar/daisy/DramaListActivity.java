@@ -179,9 +179,9 @@ public class DramaListActivity extends BaseActivity implements
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				if(hasFocus && lastdaramView != null){
-					View butvView = lastdaramView.findViewById(R.id.btn_count);
+//					View butvView = lastdaramView.findViewById(R.id.btn_count);
 					lastdaramView.setSelected(false);
-					butvView.setBackgroundResource(R.drawable.daram_grid_selector);
+//					butvView.setBackgroundResource(R.drawable.daram_grid_selector);
 				}
 			}
 		});
@@ -189,9 +189,9 @@ public class DramaListActivity extends BaseActivity implements
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				if(hasFocus && lastdaramView != null){
-					View butvView = lastdaramView.findViewById(R.id.btn_count);
+//					View butvView = lastdaramView.findViewById(R.id.btn_count);
 					lastdaramView.setSelected(false);
-					butvView.setBackgroundResource(R.drawable.daram_grid_selector);
+//					butvView.setBackgroundResource(R.drawable.daram_grid_selector);
 				}
 			}
 		});
@@ -246,9 +246,9 @@ public class DramaListActivity extends BaseActivity implements
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				if(hasFocus && lastdaramView != null){
-					View butvView = lastdaramView.findViewById(R.id.btn_count);
-					lastdaramView.setSelected(false);
-					butvView.setBackgroundResource(R.drawable.daram_grid_selector);
+//					View butvView = lastdaramView.findViewById(R.id.btn_count);
+//					lastdaramView.setSelected(false);
+//					butvView.setBackgroundResource(R.drawable.daram_grid_selector);
 				}
 			}
 		});
@@ -372,15 +372,19 @@ public class DramaListActivity extends BaseActivity implements
 	@Override
 	public void onItemSelected(AdapterView<?> adapterView, View view,
 			int postion, long arg3) {
-		if(lastdaramView != null){
-			lastdaramView.findViewById(R.id.btn_count).setBackgroundResource(R.drawable.daram_grid_selector);
-		}
-		if (view != null){
-			View butvView = view.findViewById(R.id.btn_count);
-			butvView.setBackgroundResource(R.drawable.vod_detail_series_episode_focus);
+		if(lastdaramView != null)
+			lastdaramView.setSelected(false);
+		if(view != null)
+		view.setSelected(true);
+//		if(lastdaramView != null){
+//			lastdaramView.findViewById(R.id.btn_count).setBackgroundResource(R.drawable.daram_grid_selector);
+//		}
+//		if (view != null){
+//			View butvView = view.findViewById(R.id.btn_count);
+//			butvView.setBackgroundResource(R.drawable.vod_detail_series_episode_focus);
 			lastdaramView = view;
-		}else{
-		}
+//		}else{
+//		}
 		mSubItem = mList.get(postion);
 		// 分类
 		mTvDramaType.setText(mSubItem.title);
@@ -549,10 +553,10 @@ public class DramaListActivity extends BaseActivity implements
 				case MotionEvent.ACTION_HOVER_MOVE:
 					v.setFocusable(true);
 					v.setFocusableInTouchMode(true);
-					v.requestFocus();
-					if(lastdaramView != null){
-						lastdaramView.findViewById(R.id.btn_count).setBackgroundResource(R.drawable.daram_grid_selector);
-					}
+					v.requestFocusFromTouch();
+//					if(lastdaramView != null){
+//						lastdaramView.findViewById(R.id.btn_count).setBackgroundResource(R.drawable.daram_grid_selector);
+//					}
 					break;
 				case MotionEvent.ACTION_HOVER_EXIT:
 					break;
