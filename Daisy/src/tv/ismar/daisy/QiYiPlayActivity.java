@@ -484,8 +484,8 @@ public class QiYiPlayActivity extends VodMenuAction {
         Parameter extraParams = new Parameter();
         //debug code
         extraParams.setInitPlayerSdkAfter(0);  //SDK初始化在调用initialize之后delay一定时间开始执行, 单位为毫秒.
-        extraParams.setCustomerAppVersion("1.0");      //传入客户App版本号
-        extraParams.setDeviceId("01-23-45-67-89-0a");   //传入deviceId, VIP项目必传, 登录和鉴权使用
+        extraParams.setCustomerAppVersion(""+SimpleRestClient.appVersion);      //传入客户App版本号
+        extraParams.setDeviceId(SimpleRestClient.sn_token);   //传入deviceId, VIP项目必传, 登录和鉴权使用
 		PlayerSdk.getInstance().initialize(this, extraParams,
 				new OnInitializedListener() {
 
