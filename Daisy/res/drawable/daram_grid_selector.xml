@@ -6,8 +6,8 @@
     
     
     
-<item android:drawable="@drawable/vod_detail_series_episode_focus" android:state_selected="true"/>
-<item android:drawable="@drawable/vod_detail_series_episode_focus" android:state_pressed="true"></item>
+<!-- <item android:drawable="@drawable/vod_detail_series_episode_focus" android:state_selected="true"/>-->
+<!--<item android:drawable="@drawable/vod_detail_series_episode_focus" android:state_pressed="true"></item>-->
 <item android:drawable="@drawable/vod_detail_series_episode_focus" android:state_focused="true"></item>
 <item android:drawable="@drawable/vod_detail_series_episode_backgroud" />
 </selector>

@@ -143,15 +143,27 @@ public class DramaListActivity extends BaseActivity implements
 			public void onScroll(ZGridView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
 				// TODO Auto-generated method stub
-//                if(firstVisibleItem==0){
-//                    View convertView = view.getChildAt(0);
-//                    if(convertView!=null){
-//                        Button btn = (Button) convertView.findViewById(R.id.btn_count);
-//                        btn.requestFocus();
-//                    }
-//                }
+				if (firstVisibleItem == 0) {
+					View convertView = view.getChildAt(0);
+					if (convertView != null) {
+						Button btn = (Button) convertView
+								.findViewById(R.id.btn_count);
+						btn.requestFocus();
+					}
+				}
+
 				 if(visibleItemCount>=totalItemCount){
 					 down_btn.setVisibility(View.INVISIBLE);
+				 }
+				 if(firstVisibleItem == 0){
+					 up_btn.setVisibility(View.INVISIBLE);
+				 }
+				 if(firstVisibleItem == 0 && firstVisibleItem+30 <totalItemCount){
+					 down_btn.setVisibility(View.VISIBLE);
+				 }
+				 if(firstVisibleItem != 0 && firstVisibleItem + 30 >= totalItemCount){
+					 down_btn.setVisibility(View.INVISIBLE);
+					 up_btn.setVisibility(View.VISIBLE);
 				 }
 			}
 		});
@@ -159,8 +171,6 @@ public class DramaListActivity extends BaseActivity implements
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				//mDramaView.arrowScroll(View.FOCUS_DOWN);
 				mDramaView.pageScroll(View.FOCUS_DOWN);
 			}
 		});
@@ -168,8 +178,6 @@ public class DramaListActivity extends BaseActivity implements
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				//mDramaView.arrowScroll(View.FOCUS_UP);
 				mDramaView.pageScroll(View.FOCUS_UP);
 			}
 		});
@@ -179,9 +187,7 @@ public class DramaListActivity extends BaseActivity implements
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				if(hasFocus && lastdaramView != null){
-//					View butvView = lastdaramView.findViewById(R.id.btn_count);
 					lastdaramView.setSelected(false);
-//					butvView.setBackgroundResource(R.drawable.daram_grid_selector);
 				}
 			}
 		});
@@ -372,19 +378,16 @@ public class DramaListActivity extends BaseActivity implements
 	@Override
 	public void onItemSelected(AdapterView<?> adapterView, View view,
 			int postion, long arg3) {
-		if(lastdaramView != null)
-			lastdaramView.setSelected(false);
-		if(view != null)
-		view.setSelected(true);
-//		if(lastdaramView != null){
-//			lastdaramView.findViewById(R.id.btn_count).setBackgroundResource(R.drawable.daram_grid_selector);
-//		}
-//		if (view != null){
-//			View butvView = view.findViewById(R.id.btn_count);
-//			butvView.setBackgroundResource(R.drawable.vod_detail_series_episode_focus);
-			lastdaramView = view;
-//		}else{
-//		}
+//		if (lastdaramView != null)
+//			lastdaramView.findViewById(R.id.btn_count).setSelected(false);
+//		if (view != null)
+//			view.findViewById(R.id.btn_count).setSelected(true);
+//
+//		lastdaramView = view;
+		if(down_btn != null && !down_btn.isFocusable()){
+			down_btn.setFocusable(true);
+			down_btn.setFocusableInTouchMode(true);
+		}
 		mSubItem = mList.get(postion);
 		// 分类
 		mTvDramaType.setText(mSubItem.title);

@@ -1,6 +1,7 @@
 package tv.ismar.daisy.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -149,30 +150,30 @@ public class DaramAdapter extends BaseAdapter implements OnHoverListener,
 		int position = Integer.parseInt((String) v.getTag());
 		subitem = getItem(position);
 		if (hasfocus) {			
-			if (dramaItem.expense != null && subitem.remainDay <= 0) {
-				v.setBackgroundResource(R.drawable.vod_detail_series_episode_focus);
-			} else {
-				if (dramaItem.expense != null && subitem.remainDay > 0)
-					v.setBackgroundResource(R.drawable.vod_detail_series_episode_payed_focus);
-				else {
-					v.setBackgroundResource(R.drawable.vod_detail_series_episode_focus);
-				}
-			}
+//			if (dramaItem.expense != null && subitem.remainDay <= 0) {
+//				v.setBackgroundResource(R.drawable.vod_detail_series_episode_focus);
+//			} else {
+//				if (dramaItem.expense != null && subitem.remainDay > 0)
+//					v.setBackgroundResource(R.drawable.vod_detail_series_episode_payed_focus);
+//				else {
+//					v.setBackgroundResource(R.drawable.vod_detail_series_episode_focus);
+//				}
+//			}
 			// 分类
 			mTvDramaType.setText(subitem.title);
 		}
-		 else{
-			 if(dramaItem.expense != null && subitem.remainDay <= 0)
-		        v.setBackgroundResource(R.drawable.vod_detail_series_episode_backgroud);
-			 else{
-				 if (dramaItem.expense != null && subitem.remainDay > 0){
-					 v.setBackgroundResource(R.drawable.vod_detail_series_episode_payed_backgroud);
-				 }
-				 else{
-					 v.setBackgroundResource(R.drawable.vod_detail_series_episode_backgroud);
-				 }
-			 }
-		 }
+//		 else{
+//			 if(dramaItem.expense != null && subitem.remainDay <= 0)
+//		        v.setBackgroundResource(R.drawable.vod_detail_series_episode_backgroud);
+//			 else{
+//				 if (dramaItem.expense != null && subitem.remainDay > 0){
+//					 v.setBackgroundResource(R.drawable.vod_detail_series_episode_payed_backgroud);
+//				 }
+//				 else{
+//					 v.setBackgroundResource(R.drawable.vod_detail_series_episode_backgroud);
+//				 }
+//			 }
+//		 }
 	}
 
 	private PaymentDialog.OrderResultListener innerordercheckListener = new PaymentDialog.OrderResultListener() {

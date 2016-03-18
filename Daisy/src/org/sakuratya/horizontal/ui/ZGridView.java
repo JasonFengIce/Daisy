@@ -3804,10 +3804,17 @@ public class ZGridView extends AdapterView<ListAdapter> {
 					(int) event.getY());
 			if (position1 >= 0) {
 				hover = true;
-				setFocusable(true);
-				setFocusableInTouchMode(true);
-				setSelection(position1);
-				requestFocusFromTouch();
+				if (getId() == R.id.drama_zgridview
+						&& getChildAt(position1) != null) {
+					getChildAt(position1 - mFirstPosition).findViewById(R.id.btn_count)
+							.requestFocusFromTouch();
+					
+				} else {
+					setFocusable(true);
+					setFocusableInTouchMode(true);
+					setSelection(position1);
+					requestFocusFromTouch();
+				}
 			}else{
 				hover = false;
 				mSelectorRect.setEmpty();
