@@ -372,9 +372,11 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         @Override
         public void payResult(boolean result) {
             if (result) {
-                isBuy = true;
+//                isBuy = true;
                 setExpenseStatus();
             }
+            mDetailAttributeContainer.removeAllViews();
+            isbuy();
         }
 
     };
@@ -841,8 +843,10 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             //mCollectBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
             mCollectBtn.setText(getResources().getString(R.string.favorite));
         }
-        mGetRelatedTask = new GetRelatedTask();
-        mGetRelatedTask.execute();
+		if (!(mRelatedItem != null && mRelatedItem.length > 0)) {
+			mGetRelatedTask = new GetRelatedTask();
+			mGetRelatedTask.execute();
+		}
 
         isInitialized = true;
     }
