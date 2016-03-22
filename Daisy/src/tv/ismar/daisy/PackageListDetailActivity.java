@@ -392,17 +392,12 @@ public class PackageListDetailActivity extends BaseActivity implements OnItemSel
         // TODO Auto-generated method stub
         Item item = mHGridAdapter.getItem(position);
         if (item != null) {
-            Intent intent = new Intent();
             if (item.is_complex) {
-                Expense f = item.expense;
-                intent.setAction("tv.ismar.daisy.Item");
-                intent.putExtra("url", item.url);
-                //startActivity(intent);
-
-                DaisyUtils.gotoSpecialPage(PackageListDetailActivity.this, item.content_model, item.url, "unknown");
-            } else {
-
-            }
+	            if (item.content_model.equals("variety") || item.content_model.equals("entertainment")) {
+	                item.content_model = "music";
+	            }
+	            DaisyUtils.gotoSpecialPage(this, item.content_model, item.item_url, "related");
+	        }
         }
     }
 

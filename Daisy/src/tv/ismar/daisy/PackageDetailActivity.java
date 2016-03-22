@@ -467,7 +467,6 @@ public class PackageDetailActivity extends BaseActivity implements OnItemClickLi
 		// TODO Auto-generated method stub
 		Item item = mItem.items.get(position);
 		if(item!=null){
-			Intent intent = new Intent();
 			if (item.is_complex) {
 	            if (item.content_model.equals("variety") || item.content_model.equals("entertainment")) {
 	                item.content_model = "music";
