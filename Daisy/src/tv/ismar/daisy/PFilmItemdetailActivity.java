@@ -1168,7 +1168,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                             if (isDrama()) {
                                 tool.initClipInfo(mItem.subitems[0].url, InitPlayerTool.FLAG_URL);
                             } else {
-                                tool.initClipInfo(mItem, InitPlayerTool.FLAG_ITEM, true);
+                                tool.initClipInfo(mItem, InitPlayerTool.FLAG_ITEM, true,null);
                             }
                         } else if (identify.equals(PLAY_VIDEO)) {
                             // 播放

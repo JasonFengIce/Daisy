@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Stack;
 
 import android.content.*;
+
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -366,6 +367,7 @@ public class PlayerActivity extends VodMenuAction {
 				itemUrl = SimpleRestClient.root_url + "/api/item/"
 						+ item.item_pk + "/";
 			if (isPreview) {
+				serialItem = (Item) bundle.get("seraItem");
 				initPlayer();
 			} else {
 				getAdInfo("qiantiepian");
@@ -624,31 +626,34 @@ public class PlayerActivity extends VodMenuAction {
 				.setOnCompletionListenerUrl(new SmartPlayer.OnCompletionListenerUrl() {
 					@Override
 					public void onCompletion(SmartPlayer smartPlayer, String url) {
-                        Log.i("zhangjiqiangtest","playerActivity onCompletion url=="+url+"//");
-                        Log.i("zhangjiqiangtest","playerActivity onCompletion paths[paths.length - 1]=="+       paths[paths.length - 1]+"//");
 						if (paths != null && url != null
 								&& paths[paths.length - 1].equals(url)) {
 							if (item.isPreview) {
 								if (item.expense == null) {
+									if (item.pk != item.item_pk && serialItem != null) {
+										Intent intent = new Intent();
+										intent.setClass(PlayerActivity.this,
+			                                    DramaListActivity.class);
+			                            intent.putExtra("item", serialItem);
+			                            startActivity(intent);
+									}
 									finish();
 									return;
 								}
-                                Log.i("zhangjiqiangtest","playerActivity onCompletion PaymentDialog");
 								mVideoView.stopPlayback();
                                 if(item.isPreview && "sport".equals(item.content_model)){
                                 	finish();
                                 }else{
-								PaymentDialog dialog = new PaymentDialog(
-										PlayerActivity.this,
-										R.style.PaymentDialog,
-										ordercheckListener);
-								item.model_name = "item";
-								dialog.setItem(item);
-								dialog.show();
-								isPaymentdialogShow = true;
+										PaymentDialog dialog = new PaymentDialog(
+												PlayerActivity.this,
+												R.style.PaymentDialog,
+												ordercheckListener);
+										item.model_name = "item";
+										dialog.setItem(item);
+										dialog.show();
+										isPaymentdialogShow = true;
                                 }
 							} else{
-                                Log.i("zhangjiqiangtest","playerActivity onCompletion gotoFinishPage");
                                 	gotoFinishPage();                                	
                             }
 

@@ -325,7 +325,7 @@ public class DramaListActivity extends BaseActivity implements
 			one_drama_order_info.setText(String.format(expensevalue,
 					mItem.expense.subprice, mItem.expense.duration));
 			one_drama_order_info.setVisibility(View.VISIBLE);
-			orderAll_drama.setVisibility(View.VISIBLE);
+//			orderAll_drama.setVisibility(View.VISIBLE);
 		}
 		if (mItem.poster_url != null) {
 			mImageBackground.setUrl(mItem.poster_url);
@@ -480,13 +480,14 @@ public class DramaListActivity extends BaseActivity implements
 		@Override
 		public void payResult(boolean result) {
 			paystatus = result;
-			if(result){
-			myHandler.sendEmptyMessage(ORDER_ALL_DRANA_SUCCESS);
-			}
+//			if(result){
+//			myHandler.sendEmptyMessage(ORDER_ALL_DRANA_SUCCESS);
+//			}
+			orderCheck();
 		}
 	};
 
-	private void orderCheck() {
+	public void orderCheck() {
 		SimpleRestClient client = new SimpleRestClient();
 		String typePara = "&item=" + mItem.pk;
 		client.doSendRequest(ORDER_CHECK_BASE_URL, "post", "device_token="
@@ -502,6 +503,7 @@ public class DramaListActivity extends BaseActivity implements
 
 		@Override
 		public void onSuccess(String info) {
+			orderAll_drama.setVisibility(View.VISIBLE);
 			if(mList == null)
 				return;
 			if (info != null && "0".equals(info)) {
