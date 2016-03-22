@@ -22,6 +22,7 @@
         labelimage:focuspaddingtop="0.90"
         labelimage:focustextpaddingtop="0.97"
         labelimage:maxfocustitle="10"
+        labelimage:needzoom="true"
         labelimage:focustextsize="@dimen/item_detail_detail_price_textsize"
         />
 
