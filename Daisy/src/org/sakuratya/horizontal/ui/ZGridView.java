@@ -3805,7 +3805,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
 			if (position1 >= 0) {
 				hover = true;
 				if (getId() == R.id.drama_zgridview
-						&& getChildAt(position1) != null) {
+						&& getChildAt(position1 - mFirstPosition) != null) {
 					getChildAt(position1 - mFirstPosition).findViewById(R.id.btn_count)
 							.requestFocusFromTouch();
 					
