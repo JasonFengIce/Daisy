@@ -707,8 +707,11 @@ public class ItemDetailActivity extends BaseActivity implements
             mDetailPreviewImg.setUrl(mItem.poster_url);
         }
 
-        mGetRelatedTask = new GetRelatedTask();
-        mGetRelatedTask.execute();
+		if (!(mRelatedItem != null && mRelatedItem.length > 0)) {
+			mGetRelatedTask = new GetRelatedTask();
+			mGetRelatedTask.execute();
+		}
+
         // label_uhd and label_hd has worry name. which label_uhd presents hd.
         switch (mItem.quality) {
             case 3:
@@ -1348,10 +1351,12 @@ public class ItemDetailActivity extends BaseActivity implements
 
         @Override
         public void payResult(boolean result) {
-            if (result) {
-                isBuy = true;
-                setExpenseStatus();
-            }
+//            if (result) {
+//                isBuy = true;
+//                setExpenseStatus();
+//            }
+        	mDetailAttributeContainer.removeAllViews();
+        	isbuy();
         }
 
     };

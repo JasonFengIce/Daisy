@@ -528,6 +528,7 @@ public class DramaListActivity extends BaseActivity implements
 					}
 				} catch (JSONException e) {
 //					orderAlldrama = true;
+					paystatus = true;
 					myHandler.sendEmptyMessage(DISABLE_ORDER_ALL_DRANA);
 					try {
 						remainDay = Util.daysBetween(currentDayString, info.replace("\"", ""));
