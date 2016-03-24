@@ -2612,16 +2612,16 @@ public class HGridView extends AdapterView<HGridAdapter> {
 			setNextSelectedPositionInt(nextPage);
 			mLayoutMode = LAYOUT_SPECIFIC;
 			layoutChildren();
-			leftbtn.setFocusable(false);
-			leftbtn.setFocusableInTouchMode(false);
-			rightbtn.setFocusable(false);
-			rightbtn.setFocusableInTouchMode(false);
 			if(nextPage/pageCount == 0){
 				leftbtn.setVisibility(View.INVISIBLE);
 				rightbtn.setVisibility(View.VISIBLE);
+				rightbtn.setFocusable(false);
+				rightbtn.setFocusableInTouchMode(false);
 			}else if(nextPage/pageCount == mAdapter.getCount()/pageCount){
 				leftbtn.setVisibility(View.VISIBLE);
 				rightbtn.setVisibility(View.INVISIBLE);
+				leftbtn.setFocusable(false);
+				leftbtn.setFocusableInTouchMode(false);
 			}else if(nextPage/pageCount >0){
 				leftbtn.setVisibility(View.VISIBLE);
 			}
