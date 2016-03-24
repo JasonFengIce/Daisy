@@ -480,10 +480,10 @@ public class DramaListActivity extends BaseActivity implements
 		@Override
 		public void payResult(boolean result) {
 			paystatus = result;
-//			if(result){
-//			myHandler.sendEmptyMessage(ORDER_ALL_DRANA_SUCCESS);
-//			}
-			orderCheck();
+			if(result){
+			myHandler.sendEmptyMessage(ORDER_ALL_DRANA_SUCCESS);
+			}
+//			orderCheck();
 		}
 	};
 

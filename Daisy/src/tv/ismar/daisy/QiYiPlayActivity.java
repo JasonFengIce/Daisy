@@ -378,7 +378,7 @@ public class QiYiPlayActivity extends VodMenuAction {
             if (result != null) {
             	BitStream definition = getDefinityByQuality(currQuality);
                 String[] array = urlInfo.getIqiyi_4_0().split(":");
-                SdkVideo qiyiInfo = new SdkVideo(array[0],array[1],definition,false);
+                SdkVideo qiyiInfo = new SdkVideo(array[0],array[1],false);
                 currPosition = seekPostion =0;
                 timeBar.setProgress(currPosition);
                 startPlayMovie(qiyiInfo);
@@ -1854,7 +1854,7 @@ public class QiYiPlayActivity extends VodMenuAction {
             startPlayMovie(AccessProxy.getQiYiInfo(info, definition));
         } else {
             String[] array = info.split(":");
-            SdkVideo qiyiInfo = new SdkVideo(array[0],array[1],definition,false);
+            SdkVideo qiyiInfo = new SdkVideo(array[0],array[1],false);
             startPlayMovie(qiyiInfo);
         }
         sid = MD5Utils.encryptByMD5(SimpleRestClient.sn_token+System.currentTimeMillis());

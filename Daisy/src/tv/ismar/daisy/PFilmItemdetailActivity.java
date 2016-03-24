@@ -372,11 +372,11 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         @Override
         public void payResult(boolean result) {
             if (result) {
-//                isBuy = true;
-//                setExpenseStatus();
+                isBuy = true;
+                setExpenseStatus();
             }
-            mDetailAttributeContainer.removeAllViews();
-            isbuy();
+//            mDetailAttributeContainer.removeAllViews();
+//            isbuy();
         }
 
     };

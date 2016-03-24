@@ -1351,12 +1351,12 @@ public class ItemDetailActivity extends BaseActivity implements
 
         @Override
         public void payResult(boolean result) {
-//            if (result) {
-//                isBuy = true;
-//                setExpenseStatus();
-//            }
-        	mDetailAttributeContainer.removeAllViews();
-        	isbuy();
+            if (result) {
+                isBuy = true;
+                setExpenseStatus();
+            }
+//        	mDetailAttributeContainer.removeAllViews();
+//        	isbuy();
         }
 
     };
