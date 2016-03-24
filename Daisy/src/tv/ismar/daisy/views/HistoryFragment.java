@@ -131,6 +131,8 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 			@Override
 			public boolean onHover(View arg0, MotionEvent arg1) {
 				if(arg1.getAction() == MotionEvent.ACTION_HOVER_ENTER || arg1.getAction() == MotionEvent.ACTION_HOVER_MOVE){
+					arg0.setFocusable(true);
+					arg0.setFocusableInTouchMode(true);
 					arg0.requestFocusFromTouch();
 				}
 				return false;
@@ -143,6 +145,8 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 			public boolean onHover(View arg0, MotionEvent arg1) {
 				if (arg1.getAction() == MotionEvent.ACTION_HOVER_ENTER
 						|| arg1.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+					arg0.setFocusable(true);
+					arg0.setFocusableInTouchMode(true);
 					arg0.requestFocusFromTouch();
 				}
 				return false;
@@ -153,10 +157,6 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 			@Override
 			public void onClick(View arg0) {
 				mHGridView.pageScroll(View.FOCUS_LEFT);
-				 right_shadow.setVisibility(View.VISIBLE);	
-                 if(mHGridView.getSelectedItemPosition() <= 1 ){
-                 	left_shadow.setVisibility(View.INVISIBLE);
-                 }
 			}
 		});
 		right_shadow.setOnClickListener(new View.OnClickListener() {
@@ -164,10 +164,6 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 			@Override
 			public void onClick(View arg0) {
 				mHGridView.pageScroll(View.FOCUS_RIGHT);
-				 left_shadow.setVisibility(View.VISIBLE);
-                 if(mHGridView.getSelectedItemPosition() >= mHGridView.getCount() -2){
-                 	right_shadow.setVisibility(View.INVISIBLE);	
-                 }
 			}
 		});
 

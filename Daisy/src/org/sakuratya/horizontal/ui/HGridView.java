@@ -159,7 +159,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	private SelectionNotifier mSelectionNotifier;
 
 	public int mScrollState = OnScrollListener.SCROLL_STATE_IDLE;
-
+    public int pageCount = 12;
 	/**
 	 * Controls how the next layout will happen
 	 */
@@ -2612,6 +2612,19 @@ public class HGridView extends AdapterView<HGridAdapter> {
 			setNextSelectedPositionInt(nextPage);
 			mLayoutMode = LAYOUT_SPECIFIC;
 			layoutChildren();
+			leftbtn.setFocusable(false);
+			leftbtn.setFocusableInTouchMode(false);
+			rightbtn.setFocusable(false);
+			rightbtn.setFocusableInTouchMode(false);
+			if(nextPage/pageCount == 0){
+				leftbtn.setVisibility(View.INVISIBLE);
+				rightbtn.setVisibility(View.VISIBLE);
+			}else if(nextPage/pageCount == mAdapter.getCount()/pageCount){
+				leftbtn.setVisibility(View.VISIBLE);
+				rightbtn.setVisibility(View.INVISIBLE);
+			}else if(nextPage/pageCount >0){
+				leftbtn.setVisibility(View.VISIBLE);
+			}
 			return true;
 		}
 		return false;

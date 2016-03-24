@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.FloatMath;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -107,6 +108,47 @@ public class PackageListDetailActivity extends BaseActivity implements OnItemSel
         mHGridView.setOnScrollListener(this);
         mHGridView.leftbtn = left_shadow;
         mHGridView.rightbtn = right_shadow;
+left_shadow.setOnHoverListener(new View.OnHoverListener() {
+			
+			@Override
+			public boolean onHover(View arg0, MotionEvent arg1) {
+				if(arg1.getAction() == MotionEvent.ACTION_HOVER_ENTER || arg1.getAction() == MotionEvent.ACTION_HOVER_MOVE){
+					arg0.setFocusable(true);
+					arg0.setFocusableInTouchMode(true);
+					arg0.requestFocusFromTouch();
+				}
+				return false;
+			}
+		});
+
+		right_shadow.setOnHoverListener(new View.OnHoverListener() {
+
+			@Override
+			public boolean onHover(View arg0, MotionEvent arg1) {
+				if (arg1.getAction() == MotionEvent.ACTION_HOVER_ENTER
+						|| arg1.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+					arg0.setFocusable(true);
+					arg0.setFocusableInTouchMode(true);
+					arg0.requestFocusFromTouch();
+				}
+				return false;
+			}
+		});
+		left_shadow.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				mHGridView.pageScroll(View.FOCUS_LEFT);
+			}
+		});
+		right_shadow.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				mHGridView.pageScroll(View.FOCUS_RIGHT);
+				 left_shadow.setVisibility(View.VISIBLE);
+			}
+		});
         btn_search = (Button) findViewById(R.id.list_view_search);
         btn_search.setOnClickListener(new OnClickListener() {
 
