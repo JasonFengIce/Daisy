@@ -23,6 +23,7 @@ import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
+import tv.ismar.daisy.data.ChannelEntity;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.AdElement;
@@ -341,7 +342,7 @@ public class PlayerActivity extends VodMenuAction {
 			mSection = intent.getStringExtra(EventProperty.SECTION);
 			bundle = intent.getExtras();
 			item = (Item) bundle.get("item");
-			if (item != null) {
+			if (item != null||item.equals("")) {
 				clip = item.clip;
 				live_video = item.live_video;
 				isPreview = item.isPreview;
@@ -826,12 +827,16 @@ public class PlayerActivity extends VodMenuAction {
 		
 
 		String channelSection = "channel=" + "" + "&section=" + "";
-		if (StringUtils.isNotEmpty(channel)
-				&& StringUtils.isNotEmpty(slug)) {
-			channelSection = "channel=" + channel + "&section="
-					+ slug;
-		}
+		if(StringUtils.isNotEmpty(channel)){
+			if(StringUtils.isNotEmpty(slug)){
+				channelSection = "channel=" + channel + "&section="
+						+ slug;
+			}else{
+				channelSection = "channel=" + channel + "&section="
+						+ "";
+			}
 
+		}
 		String params = channelSection
 				+ "&itemid="
 				+ item.pk
