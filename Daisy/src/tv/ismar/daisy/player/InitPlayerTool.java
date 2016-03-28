@@ -25,6 +25,7 @@ public class InitPlayerTool {
     public boolean isSubitemPreview = false;
     public String fromPage="";
     private ItemByUrlTask urltask;
+    private Item seraItem;
 	public InitPlayerTool(Context context){
 		this.mContext = context;
 		intent = new Intent();
@@ -36,11 +37,12 @@ public class InitPlayerTool {
 		urltask = new ItemByUrlTask();
 		urltask.execute(item,flag);
 	}
-	public void initClipInfo(Object item,String flag,boolean isPreviewVideo) {
+	public void initClipInfo(Object item,String flag,boolean isPreviewVideo,Item seraiItem) {
 		simpleRestClient = new SimpleRestClient();
 		this.mIsPreviewVideo = isPreviewVideo;
 		urltask = new ItemByUrlTask();
 		urltask.execute(item,flag);
+		this.seraItem = seraiItem;
 	}
     public void initClipInfo(Object item,String flag,int price ) {
         simpleRestClient = new SimpleRestClient();
@@ -95,6 +97,9 @@ public class InitPlayerTool {
             }
             else{
             	item = (Item) params[0];
+            }
+            if(seraItem != null){
+            	intent.putExtra("seraItem", seraItem);
             }
             String info = "";
             if(item!=null){

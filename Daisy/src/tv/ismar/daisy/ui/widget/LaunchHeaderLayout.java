@@ -99,7 +99,7 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
 
 
     private static final int[] INDICATOR_RES_LIST = {
-            R.string.guide_play_history,
+            R.string.vod_movielist_title_history,
             R.string.guide_my_favorite,
             R.string.guide_user_center,
             R.string.guide_search
@@ -240,7 +240,7 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         switch (v.getId()) {
-            case R.string.guide_play_history:
+            case R.string.vod_movielist_title_history:
                 intent.setClassName("tv.ismar.daisy",
                         "tv.ismar.daisy.ChannelListActivity");
                 intent.putExtra("channel", "histories");

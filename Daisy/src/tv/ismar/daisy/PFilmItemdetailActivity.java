@@ -375,6 +375,8 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 isBuy = true;
                 setExpenseStatus();
             }
+//            mDetailAttributeContainer.removeAllViews();
+//            isbuy();
         }
 
     };
@@ -841,8 +843,10 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             //mCollectBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
             mCollectBtn.setText(getResources().getString(R.string.favorite));
         }
-        mGetRelatedTask = new GetRelatedTask();
-        mGetRelatedTask.execute();
+		if (!(mRelatedItem != null && mRelatedItem.length > 0)) {
+			mGetRelatedTask = new GetRelatedTask();
+			mGetRelatedTask.execute();
+		}
 
         isInitialized = true;
     }
@@ -1168,7 +1172,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                             if (isDrama()) {
                                 tool.initClipInfo(mItem.subitems[0].url, InitPlayerTool.FLAG_URL);
                             } else {
-                                tool.initClipInfo(mItem, InitPlayerTool.FLAG_ITEM, true);
+                                tool.initClipInfo(mItem, InitPlayerTool.FLAG_ITEM, true,null);
                             }
                         } else if (identify.equals(PLAY_VIDEO)) {
                             // 播放

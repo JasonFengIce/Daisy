@@ -1,6 +1,7 @@
 package tv.ismar.daisy.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import tv.ismar.daisy.DramaListActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.player.InitPlayerTool;
@@ -20,14 +22,14 @@ import java.util.List;
 
 public class DaramAdapter extends BaseAdapter implements OnHoverListener,
 		OnFocusChangeListener {
-	Context mContext;
+	DramaListActivity mContext;
 	private List<Item> subitemlist;
 	private int sourceid;
 	private LayoutInflater mLayoutInflater;
 	private Item dramaItem;
 	public TextView mTvDramaType;
     private InitPlayerTool tool;
-	public DaramAdapter(Context context, List<Item> subitemlist,
+	public DaramAdapter(DramaListActivity context, List<Item> subitemlist,
 			Item dramaitem, int sourceid) {
 		this.mContext = context;
 		this.subitemlist = subitemlist;
@@ -149,40 +151,41 @@ public class DaramAdapter extends BaseAdapter implements OnHoverListener,
 		int position = Integer.parseInt((String) v.getTag());
 		subitem = getItem(position);
 		if (hasfocus) {			
-			if (dramaItem.expense != null && subitem.remainDay <= 0) {
-				v.setBackgroundResource(R.drawable.vod_detail_series_episode_focus);
-			} else {
-				if (dramaItem.expense != null && subitem.remainDay > 0)
-					v.setBackgroundResource(R.drawable.vod_detail_series_episode_payed_focus);
-				else {
-					v.setBackgroundResource(R.drawable.vod_detail_series_episode_focus);
-				}
-			}
+//			if (dramaItem.expense != null && subitem.remainDay <= 0) {
+//				v.setBackgroundResource(R.drawable.vod_detail_series_episode_focus);
+//			} else {
+//				if (dramaItem.expense != null && subitem.remainDay > 0)
+//					v.setBackgroundResource(R.drawable.vod_detail_series_episode_payed_focus);
+//				else {
+//					v.setBackgroundResource(R.drawable.vod_detail_series_episode_focus);
+//				}
+//			}
 			// 分类
 			mTvDramaType.setText(subitem.title);
 		}
-		 else{
-			 if(dramaItem.expense != null && subitem.remainDay <= 0)
-		        v.setBackgroundResource(R.drawable.vod_detail_series_episode_backgroud);
-			 else{
-				 if (dramaItem.expense != null && subitem.remainDay > 0){
-					 v.setBackgroundResource(R.drawable.vod_detail_series_episode_payed_backgroud);
-				 }
-				 else{
-					 v.setBackgroundResource(R.drawable.vod_detail_series_episode_backgroud);
-				 }
-			 }
-		 }
+//		 else{
+//			 if(dramaItem.expense != null && subitem.remainDay <= 0)
+//		        v.setBackgroundResource(R.drawable.vod_detail_series_episode_backgroud);
+//			 else{
+//				 if (dramaItem.expense != null && subitem.remainDay > 0){
+//					 v.setBackgroundResource(R.drawable.vod_detail_series_episode_payed_backgroud);
+//				 }
+//				 else{
+//					 v.setBackgroundResource(R.drawable.vod_detail_series_episode_backgroud);
+//				 }
+//			 }
+//		 }
 	}
 
 	private PaymentDialog.OrderResultListener innerordercheckListener = new PaymentDialog.OrderResultListener() {
 
 		@Override
 		public void payResult(boolean result) {
-			if(result){
-			subitem.remainDay = subitem.expense.duration;
-			DaramAdapter.this.notifyDataSetChanged();
-			}
+//			if(result){
+//			subitem.remainDay = subitem.expense.duration;
+//			DaramAdapter.this.notifyDataSetChanged();
+//			}
+			mContext.orderCheck();
 		}
 	};
 	

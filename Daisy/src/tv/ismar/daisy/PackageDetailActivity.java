@@ -30,6 +30,7 @@ import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.AsyncImageView;
@@ -466,28 +467,12 @@ public class PackageDetailActivity extends BaseActivity implements OnItemClickLi
 		// TODO Auto-generated method stub
 		Item item = mItem.items.get(position);
 		if(item!=null){
-			Intent intent = new Intent();
-			if(item.is_complex) {
-                DaisyUtils.gotoSpecialPage(PackageDetailActivity.this,item.content_model,item.url,"unknown");
-			} else {
-//				InitPlayerTool tool = new InitPlayerTool(PackageDetailActivity.this);
-//				tool.setonAsyncTaskListener(new onAsyncTaskHandler() {
-//					
-//					@Override
-//					public void onPreExecute(Intent intent) {
-//						// TODO Auto-generated method stub
-//						intent.putExtra(EventProperty.SECTION, s.slug);
-//			            mLoadingDialog.show();
-//					}
-//					
-//					@Override
-//					public void onPostExecute() {
-//						// TODO Auto-generated method stub
-//						mLoadingDialog.dismiss();
-//					}
-//				});
-//				tool.initClipInfo(item.url, InitPlayerTool.FLAG_URL);
-			}
+			if (item.is_complex) {
+	            if (item.content_model.equals("variety") || item.content_model.equals("entertainment")) {
+	                item.content_model = "music";
+	            }
+	            DaisyUtils.gotoSpecialPage(this, item.content_model, item.item_url, "related");
+	        }
 		}
 	}
 	private OnClickListener mRelatedClickListener = new OnClickListener() {

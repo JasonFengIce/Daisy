@@ -74,7 +74,8 @@ public class PaymentDialog extends Dialog implements
 	private static final String BALANCEPAY_BASE_URL = "/api/order/create/";
 	private static final String GETBALANCE_BASE_URL = "/accounts/balance/";
 	private static final String CARDRECHARGE_BASE_URL = "https://order.tvxio.com/api/pay/verify/";
-	public static final String PURCHASE_CHECK_BASE_URL = "/api/order/purchase/";
+	public static final String PURCHASE_PRUCHASE_BASE_URL = "/api/order/purchase/";
+	public static final String PURCHASE_CHECK_BASE_URL = "/api/order/check/";
 	public static final String ALI_PAY = "/api/order/choose_way/";
 	private static final int REFRESH_PAY_STATUS = 0x10;
 	private static final int SETQRCODE_VIEW = 0x11;
@@ -161,7 +162,7 @@ public class PaymentDialog extends Dialog implements
 					R.string.welocome_tip);
 			welocome_tip.setText(String.format(welocome,
 					SimpleRestClient.mobile_number));
-			purchaseCheck();
+			purchaseCheck(PURCHASE_CHECK_BASE_URL);
 		} else {
 			welocome_tip.setVisibility(View.GONE);
 		}
@@ -353,7 +354,7 @@ public class PaymentDialog extends Dialog implements
 				changeLoginPanelState(false);
 				changeYuePayPanelState(false, false);
 				changeshiyuncardPanelState(false);
-				purchaseCheck();
+				purchaseCheck(PURCHASE_PRUCHASE_BASE_URL);
 			}
 				break;
 			case R.id.videocard: {
@@ -372,7 +373,7 @@ public class PaymentDialog extends Dialog implements
 				changeLoginPanelState(false);
 				changeYuePayPanelState(false, false);
 				changeshiyuncardPanelState(false);
-				purchaseCheck();
+				purchaseCheck(PURCHASE_PRUCHASE_BASE_URL);
 			}
 				break;
 			case R.id.balance_pay: {
@@ -393,7 +394,7 @@ public class PaymentDialog extends Dialog implements
 				changeLoginPanelState(true);
 				changeYuePayPanelState(false, false);
 				changeshiyuncardPanelState(false);
-				purchaseCheck();
+				purchaseCheck(PURCHASE_PRUCHASE_BASE_URL);
 			}
 				break;
 
@@ -543,7 +544,7 @@ public class PaymentDialog extends Dialog implements
 				break;
 			}
 			case PURCHASE_CHECK_RESULT: {
-				purchaseCheck();
+				purchaseCheck(PURCHASE_PRUCHASE_BASE_URL);
 				break;
 			}
 			case LOGIN_SUCESS: {
@@ -969,7 +970,7 @@ public class PaymentDialog extends Dialog implements
 						R.string.pay_card_balance_title_label);
 				card_balance_title_label.setText(String.format(balancevalue,
 						balancefloat));
-				purchaseCheck();
+				purchaseCheck(PURCHASE_PRUCHASE_BASE_URL);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -1019,7 +1020,7 @@ public class PaymentDialog extends Dialog implements
 		}
 	};
 
-	private void purchaseCheck() {
+	private void purchaseCheck(String patch) {
 		if (urlHandler.hasMessages(PURCHASE_CHECK_RESULT))
 			urlHandler.removeMessages(PURCHASE_CHECK_RESULT);
 		SimpleRestClient client = new SimpleRestClient();
@@ -1029,7 +1030,7 @@ public class PaymentDialog extends Dialog implements
 		} else if ("subitem".equalsIgnoreCase(mItem.model_name)) {
 			typePara = "&subitem=" + mItem.pk;
 		}
-		client.doSendRequest(PURCHASE_CHECK_BASE_URL, "post", "device_token="
+		client.doSendRequest(patch, "post", "device_token="
 				+ SimpleRestClient.device_token + "&access_token="
 				+ SimpleRestClient.access_token + typePara, purchaseCheck);
 	}
@@ -1083,6 +1084,7 @@ public class PaymentDialog extends Dialog implements
 					R.string.welocome_tip);
 			welocome_tip.setText(String.format(welocome,
 					SimpleRestClient.mobile_number));
+			purchaseCheck(PURCHASE_CHECK_BASE_URL);
 		}
 
 		@Override

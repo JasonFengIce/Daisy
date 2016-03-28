@@ -707,8 +707,11 @@ public class ItemDetailActivity extends BaseActivity implements
             mDetailPreviewImg.setUrl(mItem.poster_url);
         }
 
-        mGetRelatedTask = new GetRelatedTask();
-        mGetRelatedTask.execute();
+		if (!(mRelatedItem != null && mRelatedItem.length > 0)) {
+			mGetRelatedTask = new GetRelatedTask();
+			mGetRelatedTask.execute();
+		}
+
         // label_uhd and label_hd has worry name. which label_uhd presents hd.
         switch (mItem.quality) {
             case 3:
@@ -1109,9 +1112,9 @@ public class ItemDetailActivity extends BaseActivity implements
                             // 预告
                             if (isDrama()) {
                                 tool.isSubitemPreview = true;
-                                tool.initClipInfo(mItem.subitems[0].url, InitPlayerTool.FLAG_URL, true);
+                                tool.initClipInfo(mItem.subitems[0].url, InitPlayerTool.FLAG_URL, true,mItem);
                             } else {
-                                tool.initClipInfo(mItem, InitPlayerTool.FLAG_ITEM, true);
+                                tool.initClipInfo(mItem, InitPlayerTool.FLAG_ITEM, true,null);
                             }
                         } else if (identify.equals(PLAY_VIDEO)) {
                             // 播放
@@ -1352,6 +1355,8 @@ public class ItemDetailActivity extends BaseActivity implements
                 isBuy = true;
                 setExpenseStatus();
             }
+//        	mDetailAttributeContainer.removeAllViews();
+//        	isbuy();
         }
 
     };

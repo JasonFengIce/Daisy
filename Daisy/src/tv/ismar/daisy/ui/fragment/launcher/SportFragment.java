@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -103,6 +104,8 @@ public class SportFragment extends ChannelBaseFragment {
         sports_live3 = (LabelImageView) view.findViewById(R.id.sports_live3);
         arrowUp.setOnFocusChangeListener(arrowFocusChangeListener);
         arrowDown.setOnFocusChangeListener(arrowFocusChangeListener);
+//        arrowUp.setOnHoverListener(onHoverListener);
+//        arrowDown.setOnHoverListener(onHoverListener);
         // arrowUp.setOnClickListener(arrowClickListener);
         // arrowDown.setOnClickListener(arrowClickListener);
         sports_live1.setOnClickListener(arrowClickListener);
@@ -490,4 +493,22 @@ public class SportFragment extends ChannelBaseFragment {
         }
 
     };
+    
+    private View.OnHoverListener onHoverListener = new View.OnHoverListener() {
+
+		@Override
+		public boolean onHover(View v, MotionEvent event) {
+			switch (event.getAction()) {
+			case MotionEvent.ACTION_HOVER_ENTER:
+			case MotionEvent.ACTION_HOVER_MOVE:
+				v.setFocusable(true);
+				v.setFocusableInTouchMode(true);
+				v.requestFocusFromTouch();
+				break;
+			case MotionEvent.ACTION_HOVER_EXIT:
+				break;
+			}
+			return false;
+		}
+	};
 }

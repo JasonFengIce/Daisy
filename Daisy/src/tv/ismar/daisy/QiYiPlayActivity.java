@@ -378,9 +378,12 @@ public class QiYiPlayActivity extends VodMenuAction {
             if (result != null) {
             	BitStream definition = getDefinityByQuality(currQuality);
                 String[] array = urlInfo.getIqiyi_4_0().split(":");
-                SdkVideo qiyiInfo = new SdkVideo(array[0],array[1],definition,false);
+                SdkVideo qiyiInfo = new SdkVideo(array[0],array[1],false);
+                currPosition = seekPostion =0;
+                timeBar.setProgress(currPosition);
                 startPlayMovie(qiyiInfo);
                 getIntent().putExtra("item", subItem);
+                titleText.setText(subItem.title);
             } else {
                 // ExToClosePlayer("url"," m3u8 quality is null ,or get m3u8 err");
             }
@@ -1768,12 +1771,11 @@ public class QiYiPlayActivity extends VodMenuAction {
     };
 
     private void startPlayMovie(IMedia media) {
+    	isfinish = false;
         if (!mQiyiSdkInitialized) {//必须SDK初始化成功后调用
             return;
         }
         releasePlayer();
-        currPosition = seekPostion =0;
-        timeBar.setProgress(currPosition);
         //创建IVideoOverlay对象, 不支持实现IVideoOverlay接口，必须调用PlaySdk.getInstance().createVideoOverlay创建
         //创建IVideoOverlay对象, 不需创建SurfaceView, 直接传入父容器即可
         mVideoOverlay = PlayerSdk.getInstance().createVideoOverlay(frameContainer);
@@ -1852,7 +1854,7 @@ public class QiYiPlayActivity extends VodMenuAction {
             startPlayMovie(AccessProxy.getQiYiInfo(info, definition));
         } else {
             String[] array = info.split(":");
-            SdkVideo qiyiInfo = new SdkVideo(array[0],array[1],definition,false);
+            SdkVideo qiyiInfo = new SdkVideo(array[0],array[1],false);
             startPlayMovie(qiyiInfo);
         }
         sid = MD5Utils.encryptByMD5(SimpleRestClient.sn_token+System.currentTimeMillis());

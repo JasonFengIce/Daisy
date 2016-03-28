@@ -138,10 +138,6 @@ public class FilterResultFragment extends BackHandledFragment implements Adapter
 
 			@Override
 			public void onClick(View v) {
-				 left_shadow.setVisibility(View.VISIBLE);
-                 if(mHGridView.getSelectedItemPosition() >= mHGridView.getCount() -2){
-                 	right_shadow.setVisibility(View.INVISIBLE);	
-                 }
 				mHGridView.pageScroll(View.FOCUS_RIGHT);
 			}
 		});
@@ -149,10 +145,6 @@ public class FilterResultFragment extends BackHandledFragment implements Adapter
 
 			@Override
 			public void onClick(View v) {
-                right_shadow.setVisibility(View.VISIBLE);	
-                if(mHGridView.getSelectedItemPosition() <= 1 ){
-                	left_shadow.setVisibility(View.INVISIBLE);
-                }
 				mHGridView.pageScroll(View.FOCUS_LEFT);
 			}
 		});
