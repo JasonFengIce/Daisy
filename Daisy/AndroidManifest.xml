@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="tv.ismar.daisy"
-          android:versionCode="20257"
-          android:versionName="20257">
+          android:versionCode="20260"
+          android:versionName="20260">
 
     <supports-screens
             android:anyDensity="true"
@@ -26,7 +26,7 @@
     <uses-permission android:name="android.permission.RESTART_PACKAGES"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <!-- 登录上报时需要带设备名称, 通过蓝牙模块来获取设备名称 -->
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
@@ -361,15 +361,7 @@
                 android:name=".core.provider.LocationProvider"
                 android:authorities="cn.ismartv.daisy.provider.location"
                 android:exported="true"/>
-        <service
-            android:name="com.qiyi.sdk.plugin.server.storage.StorageServer"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.qiyi.sdk.plugin.server.storage.StorageServer" />
-                <category android:name = "android.intent.category.DEFAULT" />
-            </intent-filter>
-        </service>
+
     </application>
 
 

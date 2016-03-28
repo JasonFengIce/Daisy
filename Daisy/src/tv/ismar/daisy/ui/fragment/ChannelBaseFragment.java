@@ -82,13 +82,16 @@ public class ChannelBaseFragment extends Fragment {
             String contentMode = null;
             String title = null;
             String mode_name = null;
-            String channel = "top";
+            String channel = "launcher";
             String type;
             int pk;
             boolean expense = false;
             int position = -1;
-            if(channelEntity != null)
-            	channel = channelEntity.getChannel();
+            if(channelEntity != null) {
+                if (channelEntity.getChannel() != null && !("".equals(channelEntity.getChannel()))) {
+                    channel = channelEntity.getChannel();
+                }
+            }
             if (view.getTag() instanceof Poster) {
                 Poster new_name = (Poster) view.getTag();
                 contentMode = new_name.getContent_model();
