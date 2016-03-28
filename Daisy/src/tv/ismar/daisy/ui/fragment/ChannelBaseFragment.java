@@ -82,7 +82,7 @@ public class ChannelBaseFragment extends Fragment {
             String contentMode = null;
             String title = null;
             String mode_name = null;
-            String channel = "launcher";
+            String channel = "top";
             String type;
             int pk;
             boolean expense = false;
