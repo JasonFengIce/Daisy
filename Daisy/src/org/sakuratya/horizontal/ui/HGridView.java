@@ -287,7 +287,15 @@ public class HGridView extends AdapterView<HGridAdapter> {
 					int motionPosition = pointToPosition(x, y);
 					if(motionPosition>=0){
 						final View v = getChildAt(motionPosition - mFirstPosition);
-						performItemClick(v, motionPosition, 0);
+						if(v.getX() > 1800){
+							setSelection(motionPosition-1);
+							arrowScroll(View.FOCUS_RIGHT);
+						}else if(v.getX() <0){
+							setSelection(motionPosition+1);
+							arrowScroll(View.FOCUS_LEFT);					
+						} else{
+							performItemClick(v, motionPosition, 0);
+						}
 					}
 				}
 
