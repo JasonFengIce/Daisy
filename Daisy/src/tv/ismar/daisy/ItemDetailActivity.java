@@ -992,11 +992,8 @@ public class ItemDetailActivity extends BaseActivity implements
 //			intent.setAction(action);
 //			intent.putExtra("url", url);
 //			startActivity(intent);
-            if ("launcher".equals(fromPage)) {
+            if ("launcher".equals(fromPage))
                 fromPage = "tvhome";
-            }else{
-                fromPage = "related";
-            }
             DaisyUtils.gotoSpecialPage(ItemDetailActivity.this, itemSection.content_model, itemSection.item_url, fromPage);
         }
     };

@@ -87,11 +87,8 @@ public class ChannelBaseFragment extends Fragment {
             int pk;
             boolean expense = false;
             int position = -1;
-            if(channelEntity != null) {
-                if (channelEntity.getChannel() != null && !("".equals(channelEntity.getChannel()))) {
-                    channel = channelEntity.getChannel();
-                }
-            }
+            if(channelEntity != null)
+            	channel = channelEntity.getChannel();
             if (view.getTag() instanceof Poster) {
                 Poster new_name = (Poster) view.getTag();
                 contentMode = new_name.getContent_model();
