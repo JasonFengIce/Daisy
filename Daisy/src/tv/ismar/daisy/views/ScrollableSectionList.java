@@ -22,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -453,11 +452,19 @@ public class ScrollableSectionList extends tv.ismar.daisy.views.MyHorizontalScro
                     if(mSectionSelectChangedListener!=null) {
                         mSectionSelectChangedListener.onSectionSelectChanged(index-1);
                     }
+                    Rect currentViewRect = new Rect();
+                    v.getGlobalVisibleRect(currentViewRect);
+                    if(currentViewRect.right >1800){
+                    	scrollBy(233, 0);
+                    }else if(currentViewRect.left <=115){
+                    	scrollBy(-233, 0);
+                    }
                 }
             }
 
 		}
 	};
+
 	/**
 	 * use to modify the special position's section percentage progress bar.
 	 * @param position  the section index which you want to modify
