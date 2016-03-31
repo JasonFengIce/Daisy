@@ -30,6 +30,7 @@ import tv.ismar.daisy.models.SportGame;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.ui.activity.TVGuideActivity;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
+import tv.ismar.daisy.ui.fragment.launcher.EntertainmentFragment.FetchDataTask;
 import tv.ismar.daisy.utils.PicassoUtils;
 import tv.ismar.daisy.views.LabelImageView;
 
@@ -509,4 +510,10 @@ public class SportFragment extends ChannelBaseFragment {
 			return false;
 		}
 	};
+
+	  public void refreshData(){
+		    imageswitch.removeCallbacksAndMessages(null);
+		    datafetch = new FetchDataTask();
+	        datafetch.execute();
+	    }
 }
