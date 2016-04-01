@@ -95,6 +95,7 @@ public class InitService extends Service implements Activator.OnComplete {
         SimpleRestClient.ad_domain = "http://" + result.getAd_domain();
         SimpleRestClient.log_domain = "http://" + result.getLog_Domain();
         SimpleRestClient.device_token = result.getDevice_token();
+        SimpleRestClient.upgrade_domain = result.getUpgrade_domain();
         DaisyUtils
                 .getVodApplication(context)
                 .getEditor()

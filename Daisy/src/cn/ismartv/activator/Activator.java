@@ -1,32 +1,32 @@
 package cn.ismartv.activator;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import org.apache.http.util.EncodingUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-
-import com.squareup.okhttp.ResponseBody;
-
-import org.apache.http.util.EncodingUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import cn.ismartv.activator.core.http.HttpClientAPI;
 import cn.ismartv.activator.core.http.HttpClientAPI.ExcuteActivator;
 import cn.ismartv.activator.core.http.HttpClientManager;
 import cn.ismartv.activator.core.mnative.NativeManager;
 import cn.ismartv.activator.data.Result;
 import cn.ismartv.activator.utils.MD5Utils;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+
+import com.squareup.okhttp.ResponseBody;
 
 public class Activator {
     public static final String SIGN_FILE_NAME = "sign1";
@@ -87,12 +87,18 @@ public class Activator {
                 fs.close();
                 getLicence();
             } else {
-                FileInputStream inputStream = mContext.openFileInput("sn");
-                int length = inputStream.available();
-                byte[] bytes = new byte[length];
-                inputStream.read(bytes);
-                String content = EncodingUtils.getString(bytes, "UTF-8");
-                inputStream.close();
+            	String content;
+            	File snfile = mContext.getFileStreamPath("sn");
+            	if(!snfile.exists()){
+            		content = sn;
+            	}else{
+            		FileInputStream inputStream = mContext.openFileInput("sn");
+                    int length = inputStream.available();
+                    byte[] bytes = new byte[length];
+                    inputStream.read(bytes);
+                    content = EncodingUtils.getString(bytes, "UTF-8");
+                    inputStream.close();       		
+            	}
                 this.sn = content;
                 this.fingerprint = MD5Utils.encryptByMD5(this.sn);
                 activator(sn, manufacture, kind, version, fingerprint);

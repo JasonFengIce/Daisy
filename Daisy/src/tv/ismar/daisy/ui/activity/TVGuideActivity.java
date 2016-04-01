@@ -343,6 +343,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                                 activator.active(product, mode,
                                                 String.valueOf(SimpleRestClient.appVersion), localInfo);
                 } else {
+                	String appUpdateHost = "http://" + SimpleRestClient.upgrade_domain;
+//                  AppUpdateUtils.getInstance(this).checkUpdate(appUpdateHost);
+                  AppUpdateUtilsV2.getInstance(this).checkAppUpdate(appUpdateHost);
                         fetchChannels();
                 }
     }
@@ -1331,6 +1334,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         SimpleRestClient.ad_domain = "http://" + result.getAd_domain();
         SimpleRestClient.log_domain = "http://" + result.getLog_Domain();
         SimpleRestClient.device_token = result.getDevice_token();
+        SimpleRestClient.upgrade_domain = result.getUpgrade_domain();
         DaisyUtils.getVodApplication(context).getEditor().putString(VodApplication.DEVICE_TOKEN, SimpleRestClient.device_token);
         DaisyUtils.getVodApplication(context).save();
         SimpleRestClient.sn_token = result.getSn_Token();
