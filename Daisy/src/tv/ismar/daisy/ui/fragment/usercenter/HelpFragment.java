@@ -10,7 +10,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.sakura.LauncherActivity;
 
 /**
@@ -18,7 +20,7 @@ import tv.ismar.sakura.LauncherActivity;
  */
 public class HelpFragment extends Fragment implements View.OnClickListener {
     private ImageButton ismartvIcon;
-
+    private TextView apk_version;
     private Context mContext;
 
     @Override
@@ -31,6 +33,8 @@ public class HelpFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_help, null);
         ismartvIcon = (ImageButton) view.findViewById(R.id.ismartv_icon);
+        apk_version = (TextView) view.findViewById(R.id.apk_version);
+        apk_version.setText("版本号 : "+SimpleRestClient.appVersion);
         ismartvIcon.setNextFocusRightId(ismartvIcon.getId());
         ismartvIcon.setNextFocusUpId(ismartvIcon.getId());
         ismartvIcon.setNextFocusDownId(ismartvIcon.getId());
