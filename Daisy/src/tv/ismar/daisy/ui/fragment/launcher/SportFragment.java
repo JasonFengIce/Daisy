@@ -215,6 +215,7 @@ public class SportFragment extends ChannelBaseFragment {
     };
 
     private void fillData(ArrayList<Carousel> carousels, ArrayList<Poster> postlist) {
+    	looppost.clear();
         LabelImageView[] sportCards = {sport_card1, sport_card2, sport_card3};
         for (int i = 0; i < 3; i++) {
             PicassoUtils.load(mContext, carousels.get(i).getThumb_image(), sportCards[i]);
