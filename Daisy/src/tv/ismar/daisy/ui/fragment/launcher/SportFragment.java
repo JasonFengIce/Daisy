@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -103,12 +104,44 @@ public class SportFragment extends ChannelBaseFragment {
         sports_live1 = (LabelImageView) view.findViewById(R.id.sports_live1);
         sports_live2 = (LabelImageView) view.findViewById(R.id.sports_live2);
         sports_live3 = (LabelImageView) view.findViewById(R.id.sports_live3);
-        arrowUp.setOnFocusChangeListener(arrowFocusChangeListener);
-        arrowDown.setOnFocusChangeListener(arrowFocusChangeListener);
-//        arrowUp.setOnHoverListener(onHoverListener);
-//        arrowDown.setOnHoverListener(onHoverListener);
+//        arrowUp.setOnFocusChangeListener(arrowFocusChangeListener);
+//        arrowDown.setOnFocusChangeListener(arrowFocusChangeListener);
+        arrowUp.setOnHoverListener(onHoverListener);
+        arrowDown.setOnHoverListener(onHoverListener);
         // arrowUp.setOnClickListener(arrowClickListener);
         // arrowDown.setOnClickListener(arrowClickListener);
+        arrowUp.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+                if (games.size() == 6 && currentLiveIndex == 3) {
+                    currentLiveIndex -= 3;
+                } else {
+                    currentLiveIndex -= 1;
+                }
+                Message msg = new Message();
+                msg.arg1 = 1;
+                msg.what = 0;
+                test.sendMessage(msg);
+			}
+		});
+
+        arrowDown.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				 if (games.size() == 6) {
+                     currentLiveIndex += 3;
+                 } else {
+                     currentLiveIndex += 1;
+                 }
+                 Message msg = new Message();
+                 msg.arg1 = 1;
+                 msg.what = 0;
+                 test.sendMessage(msg);
+			}
+		});
         sports_live1.setOnClickListener(arrowClickListener);
         sports_live2.setOnClickListener(arrowClickListener);
         sports_live3.setOnClickListener(arrowClickListener);
@@ -116,7 +149,7 @@ public class SportFragment extends ChannelBaseFragment {
 
             @Override
             public void onFocusChange(View arg0, boolean arg1) {
-                if (!arg1 && arrowUp.isFocused()) {
+                if (!arg1 && arrowUp.isFocused() && !arrowUp.isHovered()) {
                     if (games.size() == 6 && currentLiveIndex == 3) {
                         currentLiveIndex -= 3;
                     } else {
@@ -147,7 +180,7 @@ public class SportFragment extends ChannelBaseFragment {
 
             @Override
             public void onFocusChange(View arg0, boolean arg1) {
-                if (!arg1 && arrowDown.isFocused()) {
+                if (!arg1 && arrowDown.isFocused()&& !arrowDown.isHovered()) {
                     if (games.size() == 6) {
                         currentLiveIndex += 3;
                     } else {
@@ -215,6 +248,7 @@ public class SportFragment extends ChannelBaseFragment {
     };
 
     private void fillData(ArrayList<Carousel> carousels, ArrayList<Poster> postlist) {
+    	looppost.clear();
         LabelImageView[] sportCards = {sport_card1, sport_card2, sport_card3};
         for (int i = 0; i < 3; i++) {
             PicassoUtils.load(mContext, carousels.get(i).getThumb_image(), sportCards[i]);
@@ -500,11 +534,13 @@ public class SportFragment extends ChannelBaseFragment {
 			switch (event.getAction()) {
 			case MotionEvent.ACTION_HOVER_ENTER:
 			case MotionEvent.ACTION_HOVER_MOVE:
+				v.setHovered(true);
 				v.setFocusable(true);
 				v.setFocusableInTouchMode(true);
 				v.requestFocusFromTouch();
 				break;
 			case MotionEvent.ACTION_HOVER_EXIT:
+				v.setHovered(false);
 				break;
 			}
 			return false;

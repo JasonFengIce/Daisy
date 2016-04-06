@@ -18,6 +18,8 @@ import org.xml.sax.XMLReader;
 
 import retrofit.Retrofit;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.core.client.HttpAPI;
 import tv.ismar.daisy.core.client.HttpManager;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
@@ -255,7 +257,11 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
                         "tv.ismar.daisy.ui.activity.UserCenterActivity");
                 break;
             case R.string.guide_search:
+            	if("lcd_xxbel8a".equalsIgnoreCase(VodUserAgent.getModelName())){
                 intent.setAction("cn.ismartv.jasmine.wordsearchactivity");
+            	}else{
+            		intent.setAction("tv.ismar.daisy.Search");	
+            	}
                 break;
         }
         context.startActivity(intent);

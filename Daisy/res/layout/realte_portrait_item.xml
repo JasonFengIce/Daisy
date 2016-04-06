@@ -4,8 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/list_item_layout"
-    android:focusable="true"
     android:focusableInTouchMode="true"
+    android:focusable="true"
     android:clipChildren="false"
     android:clipToPadding="false">
     <tv.ismar.daisy.views.LabelImageView
@@ -16,8 +16,6 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:scaleType="fitXY"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
         labelimage:focusbackground="#b3303030"
         labelimage:focuspaddingtop="0.90"
         labelimage:focustextpaddingtop="0.97"

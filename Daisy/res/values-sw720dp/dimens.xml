@@ -1099,7 +1099,7 @@
 <dimen name="loginfragment_successPop_yOffset">33.33dp</dimen>
 <dimen name="loginfragment_CombinePop_xOffset">133.33dp</dimen>
 <dimen name="loginfragment_combinePop_yOffset">16.67dp</dimen>
-<dimen name="loginfragment_phoneNumberLayout_marginTop">6.67dp</dimen>
+<dimen name="loginfragment_phoneNumberLayout_marginTop">12.67dp</dimen>
 <dimen name="loginfragment_phoneNumberLayout_height">46.67dp</dimen>
 <dimen name="loginfragment_phoneNumber_edit_height">44.00dp</dimen>
 <dimen name="loginfragment_phoneNumber_edit_marginRright">6.67dp</dimen>

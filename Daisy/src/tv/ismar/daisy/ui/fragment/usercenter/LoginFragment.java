@@ -37,6 +37,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
@@ -132,6 +133,18 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         verificationEdit = (EditText) fragmentView.findViewById(R.id.login_verification_edit);
         fetchVerificationBtn = (Button) fragmentView.findViewById(R.id.fetch_verification_btn);
         fetchVerificationBtn.setOnClickListener(this);
+        fetchVerificationBtn.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View arg0, boolean arg1) {
+				// TODO Auto-generated method stub
+		        if (phoneNumberEdit != null) {
+		            InputMethodManager imm = (InputMethodManager) phoneNumberEdit.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+		            imm.hideSoftInputFromWindow(phoneNumberEdit.getWindowToken(), 0);
+		        }
+			}
+		});
+
         fetchVerificationBtn.setOnHoverListener(new View.OnHoverListener() {
 			
 			@Override
