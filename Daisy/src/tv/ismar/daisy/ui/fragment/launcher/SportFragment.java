@@ -437,6 +437,8 @@ public class SportFragment extends ChannelBaseFragment {
                 mContext.startActivity(intent);
             } else {
                 tool = new InitPlayerTool(mContext);
+                tool.channel=channelEntity.getChannel();
+                tool.fromPage="homepage";
                 tool.initClipInfo(data.getUrl(),
                         InitPlayerTool.FLAG_URL);
             }

@@ -831,10 +831,15 @@ public class PlayerActivity extends VodMenuAction {
 		
 
 		String channelSection = "channel=" + "" + "&section=" + "";
-		if (StringUtils.isNotEmpty(channel)
-				&& StringUtils.isNotEmpty(slug)) {
-			channelSection = "channel=" + channel + "&section="
-					+ slug;
+		if(StringUtils.isNotEmpty(channel)){
+			if(StringUtils.isNotEmpty(slug)){
+				channelSection = "channel=" + channel + "&section="
+						+ slug;
+			}else{
+				channelSection = "channel=" + channel + "&section="
+						+ "";
+			}
+
 		}
 
 		String params = channelSection
