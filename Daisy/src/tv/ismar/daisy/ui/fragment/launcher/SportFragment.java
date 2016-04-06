@@ -434,6 +434,8 @@ public class SportFragment extends ChannelBaseFragment {
                 Intent intent = new Intent();
                 intent.setAction("tv.ismar.daisy.Item");
                 intent.putExtra("url", data.getUrl());
+                intent.putExtra("channel", channelEntity.getChannel());
+                intent.putExtra("fromPage","homepage");
                 mContext.startActivity(intent);
             } else {
                 tool = new InitPlayerTool(mContext);
