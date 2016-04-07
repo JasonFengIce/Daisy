@@ -556,7 +556,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         for (ChannelEntity entity : channelEntities) {
             channelList.add(entity);
         }
-        scroll = (HGridView) contentView.findViewById(R.id.h_grid_view);
+        scroll = (HGridView) contentView.findViewById(R.id.tvguid_h_grid_view);
         scroll.setOnScrollListener(this);
         scroll.setOnHoverListener(new HGridView.OnHoverListener() {
 

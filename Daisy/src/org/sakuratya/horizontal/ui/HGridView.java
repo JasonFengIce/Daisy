@@ -294,8 +294,11 @@ public class HGridView extends AdapterView<HGridAdapter> {
 							setSelection(motionPosition+1);
 							arrowScroll(View.FOCUS_LEFT);			
 						} else{
-//							performItemClick(v, motionPosition, 0);
-							setSelection(motionPosition);
+							if(getId() == R.id.tvguid_h_grid_view){
+								setSelection(motionPosition);
+							}else{
+								performItemClick(v, motionPosition, 0);
+							}
 						}
 					}
 				}

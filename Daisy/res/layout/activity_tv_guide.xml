@@ -117,7 +117,7 @@
     <org.sakuratya.horizontal.ui.HGridView
             xmlns:sakura="http://schemas.android.com/apk/res/tv.ismar.daisy"
             android:layout_weight="0.7"
-            android:id="@+id/h_grid_view"
+            android:id="@+id/tvguid_h_grid_view"
             android:layout_width="match_parent"
             android:layout_height="0dip"
             sakura:horizontalSpacing="@dimen/tv_guide_h_grid_view_horizontalSpacing"
