@@ -90,6 +90,9 @@ public class ChannelBaseFragment extends Fragment {
             if(channelEntity != null)
                 if (channelEntity.getChannel() != null && !("".equals(channelEntity.getChannel()))) {
                     channel = channelEntity.getChannel();
+                    if("launcher".equals(channelEntity.getChannel())){
+                        channel="top";
+                    }
                 }
             if (view.getTag() instanceof Poster) {
                 Poster new_name = (Poster) view.getTag();
