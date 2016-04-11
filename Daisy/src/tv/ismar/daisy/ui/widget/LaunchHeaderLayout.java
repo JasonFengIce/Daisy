@@ -1,31 +1,5 @@
 package tv.ismar.daisy.ui.widget;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.apache.commons.lang3.StringUtils;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-
-import retrofit.Retrofit;
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.VodUserAgent;
-import tv.ismar.daisy.core.client.HttpAPI;
-import tv.ismar.daisy.core.client.HttpManager;
-import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
-import tv.ismar.daisy.core.weather.WeatherInfoHandler;
-import tv.ismar.daisy.data.table.location.CityTable;
-import tv.ismar.daisy.data.weather.WeatherEntity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -40,13 +14,40 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.activeandroid.query.Select;
-import com.squareup.okhttp.ResponseBody;
+import org.apache.commons.lang3.StringUtils;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import cn.ismartv.injectdb.library.query.Select;
+import okhttp3.ResponseBody;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.VodUserAgent;
+import tv.ismar.daisy.core.client.HttpAPI;
+import tv.ismar.daisy.core.client.HttpManager;
+import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
+import tv.ismar.daisy.core.weather.WeatherInfoHandler;
+import tv.ismar.daisy.data.table.location.CityTable;
+import tv.ismar.daisy.data.weather.WeatherEntity;
 
 /**
  * Created by huaijie on 2015/7/21.
  */
-public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListener, View.OnFocusChangeListener,OnHoverListener {
+public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListener, View.OnFocusChangeListener, OnHoverListener {
     private static final String TAG = "LaunchHeaderLayout";
     private Context context;
 
@@ -153,13 +154,13 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
         titleTextView.setText(title);
     }
 
-	public void setSubTitle(String subTitle) {
-		if (StringUtils.isEmpty(subTitle)) {
-			hideSubTiltle();
-		} else {
-			subTitleTextView.setText(subTitle.replace(" ", ""));
-		}
-	}
+    public void setSubTitle(String subTitle) {
+        if (StringUtils.isEmpty(subTitle)) {
+            hideSubTiltle();
+        } else {
+            subTitleTextView.setText(subTitle.replace(" ", ""));
+        }
+    }
 
     public void hideSubTiltle() {
         subTitleTextView.setVisibility(View.GONE);
@@ -168,29 +169,29 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
     }
 
     private void fetchWeatherInfo(String geoId) {
-		String weather = AccountSharedPrefs.getInstance()
-				.getSharedPreferences()
-				.getString(AccountSharedPrefs.WEATHER_INFO, null);
-		if (StringUtils.isNotEmpty(weather)) {
-			parseXml(weather);
-		}
-		Retrofit retrofit = HttpManager.getInstance().media_lily_Retrofit;
-        retrofit.create(HttpAPI.WeatherAPI.class).doRequest(geoId).enqueue(new retrofit.Callback<ResponseBody>() {
+        String weather = AccountSharedPrefs.getInstance()
+                .getSharedPreferences()
+                .getString(AccountSharedPrefs.WEATHER_INFO, null);
+        if (StringUtils.isNotEmpty(weather)) {
+            parseXml(weather);
+        }
+        Retrofit retrofit = HttpManager.getInstance().media_lily_Retrofit;
+        retrofit.create(HttpAPI.WeatherAPI.class).doRequest(geoId).enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(retrofit.Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Response<ResponseBody> response) {
                 try {
-                	if(response.body() != null){
-                    String result = response.body().string();
-                    AccountSharedPrefs.getInstance().getSharedPreferences().edit().putString(AccountSharedPrefs.WEATHER_INFO, result);
-                    parseXml(result);
-                	}
+                    if (response.body() != null) {
+                        String result = response.body().string();
+                        AccountSharedPrefs.getInstance().getSharedPreferences().edit().putString(AccountSharedPrefs.WEATHER_INFO, result);
+                        parseXml(result);
+                    }
                 } catch (IOException e) {
                     Log.e(TAG, "解析天气数据失败");
                 }
             }
 
             @Override
-            public void onFailure(Throwable throwable) {
+            public void onFailure(Throwable t) {
                 Log.e(TAG, "获取天气失败");
             }
         });
@@ -257,11 +258,11 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
                         "tv.ismar.daisy.ui.activity.UserCenterActivity");
                 break;
             case R.string.guide_search:
-            	if("lcd_xxbel8a".equalsIgnoreCase(VodUserAgent.getModelName())){
-                intent.setAction("cn.ismartv.jasmine.wordsearchactivity");
-            	}else{
-            		intent.setAction("tv.ismar.daisy.Search");	
-            	}
+                if ("lcd_xxbel8a".equalsIgnoreCase(VodUserAgent.getModelName())) {
+                    intent.setAction("cn.ismartv.jasmine.wordsearchactivity");
+                } else {
+                    intent.setAction("tv.ismar.daisy.Search");
+                }
                 break;
         }
         context.startActivity(intent);
@@ -282,25 +283,25 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
         }
     }
 
-	@Override
-	public boolean onHover(View v, MotionEvent event) {
-		// TODO Auto-generated method stub
-		ImageView imageView = (ImageView) v.findViewById(R.id.indicator_image);
-		TextView textView = (TextView) v.findViewById(R.id.weather_indicator);
-		if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER) {
-			textView.setTextColor(getResources().getColor(R.color._ff9c3c));
-			imageView.setVisibility(View.VISIBLE);
-			v.requestFocus();
-		} else if (event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
-			textView.setTextColor(getResources().getColor(R.color._ff9c3c));
-			imageView.setVisibility(View.VISIBLE);
-		} else {
-			textView.setTextColor(getResources().getColor(
-					R.color.association_normal));
-			imageView.setVisibility(View.INVISIBLE);
-		}
-		return false;
-	}
+    @Override
+    public boolean onHover(View v, MotionEvent event) {
+        // TODO Auto-generated method stub
+        ImageView imageView = (ImageView) v.findViewById(R.id.indicator_image);
+        TextView textView = (TextView) v.findViewById(R.id.weather_indicator);
+        if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER) {
+            textView.setTextColor(getResources().getColor(R.color._ff9c3c));
+            imageView.setVisibility(View.VISIBLE);
+            v.requestFocus();
+        } else if (event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+            textView.setTextColor(getResources().getColor(R.color._ff9c3c));
+            imageView.setVisibility(View.VISIBLE);
+        } else {
+            textView.setTextColor(getResources().getColor(
+                    R.color.association_normal));
+            imageView.setVisibility(View.INVISIBLE);
+        }
+        return false;
+    }
 
     public void hideIndicatorTable() {
         for (View textView : indicatorTableList) {

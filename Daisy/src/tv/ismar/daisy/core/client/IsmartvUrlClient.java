@@ -7,11 +7,6 @@ import android.os.Message;
 import android.util.Log;
 
 import com.google.gson.JsonParser;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -20,6 +15,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -248,8 +248,7 @@ public class IsmartvUrlClient extends Thread {
         Message message = messageHandler.obtainMessage();
         try {
             String api = url + "?" + params;
-            OkHttpClient client = new OkHttpClient();
-            client.setConnectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
+            OkHttpClient client = new OkHttpClient.Builder().connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS).build();
             Request request = new Request.Builder()
                     .url(api)
                     .build();
@@ -257,8 +256,8 @@ public class IsmartvUrlClient extends Thread {
             Response response;
             response = client.newCall(request).execute();
             String result = "";
-            if(response.body() != null){
-            result = response.body().string();
+            if (response.body() != null) {
+                result = response.body().string();
             }
             Log.i(TAG, "---> BEGIN\n" +
                             "\t<--- Request URL: " + "\t" + api + "\n" +
@@ -289,8 +288,7 @@ public class IsmartvUrlClient extends Thread {
     private void doPost() {
         Message message = messageHandler.obtainMessage();
         try {
-            OkHttpClient client = new OkHttpClient();
-            client.setConnectTimeout(10, TimeUnit.SECONDS);
+            OkHttpClient client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).build();
             RequestBody body = RequestBody.create(JSON, params);
 
             Request request = new Request.Builder()

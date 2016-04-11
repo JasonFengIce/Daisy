@@ -1,18 +1,18 @@
 package tv.ismar.sakura.core;
 
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
 import java.util.List;
 
-import retrofit.Call;
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
-import retrofit.http.Field;
-import retrofit.http.FormUrlEncoded;
-import retrofit.http.GET;
-import retrofit.http.POST;
-import retrofit.http.Query;
+import cn.ismartv.log.interceptor.HttpLoggingInterceptor;
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Retrofit;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
 import tv.ismar.sakura.data.http.BindedCdnEntity;
 import tv.ismar.sakura.data.http.ChatMsgEntity;
 import tv.ismar.sakura.data.http.Empty;

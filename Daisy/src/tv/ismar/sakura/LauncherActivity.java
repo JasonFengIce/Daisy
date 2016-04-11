@@ -7,16 +7,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import java.util.List;
+
+import retrofit2.Callback;
+import retrofit2.Response;
 import tv.ismar.daisy.R;
 import tv.ismar.sakura.core.FeedbackProblem;
 import tv.ismar.sakura.core.SakuraClientAPI;
 import tv.ismar.sakura.data.http.ProblemEntity;
 import tv.ismar.sakura.ui.activity.HomeActivity;
-
-import java.util.List;
 
 import static tv.ismar.sakura.core.SakuraClientAPI.restAdapter_IRIS_TVXIO;
 
@@ -77,13 +76,13 @@ public class LauncherActivity extends Activity implements View.OnClickListener {
 
         client.excute().enqueue(new Callback<List<ProblemEntity>>() {
             @Override
-            public void onResponse(Response<List<ProblemEntity>> response, Retrofit retrofit) {
+            public void onResponse(Response<List<ProblemEntity>> response) {
                 FeedbackProblem feedbackProblem = FeedbackProblem.getInstance();
                 feedbackProblem.saveCache(response.body());
             }
 
             @Override
-            public void onFailure(Throwable throwable) {
+            public void onFailure(Throwable t) {
                 Log.e(TAG, "fetchProblems error!!!");
             }
         });

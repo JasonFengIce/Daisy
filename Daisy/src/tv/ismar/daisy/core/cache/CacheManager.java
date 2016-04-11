@@ -1,7 +1,8 @@
 package tv.ismar.daisy.core.cache;
 
 import android.content.Context;
-import com.activeandroid.query.Select;
+
+import cn.ismartv.injectdb.library.query.Select;
 import tv.ismar.daisy.core.client.DownloadClient;
 import tv.ismar.daisy.core.client.DownloadThreadPool;
 import tv.ismar.daisy.data.table.DownloadTable;

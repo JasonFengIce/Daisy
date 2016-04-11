@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -26,17 +25,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.activeandroid.ActiveAndroid;
-import com.activeandroid.content.ContentProvider;
-import com.activeandroid.query.Select;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import cn.ismartv.injectdb.library.ActiveAndroid;
+import cn.ismartv.injectdb.library.content.ContentProvider;
+import cn.ismartv.injectdb.library.query.Select;
+import retrofit2.Callback;
+import retrofit2.Response;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -317,7 +315,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
 
         client.excute(snCode).enqueue(new Callback<BindedCdnEntity>() {
             @Override
-            public void onResponse(Response<BindedCdnEntity> response, Retrofit retrofit) {
+            public void onResponse(Response<BindedCdnEntity> response) {
                 BindedCdnEntity bindedCdnEntity = response.body();
                 if (BindedCdnEntity.NO_RECORD.equals(bindedCdnEntity.getRetcode())) {
                     clearCheck();
@@ -327,7 +325,7 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
             }
 
             @Override
-            public void onFailure(Throwable throwable) {
+            public void onFailure(Throwable t) {
                 Log.e(TAG, "fetchBindedCdn error!!!");
             }
         });
@@ -338,13 +336,13 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         SakuraClientAPI.BindCdn client = restAdapter_WX_API_TVXIO.create(SakuraClientAPI.BindCdn.class);
         client.excute(snCode, cdnId).enqueue(new Callback<Empty>() {
             @Override
-            public void onResponse(Response<Empty> response, Retrofit retrofit) {
+            public void onResponse(Response<Empty> response) {
                 Toast.makeText(mContext, R.string.node_bind_success, Toast.LENGTH_LONG).show();
                 fetchBindedCdn(snCode);
             }
 
             @Override
-            public void onFailure(Throwable throwable) {
+            public void onFailure(Throwable t) {
                 Log.e(TAG, "bindCdn error");
             }
         });
@@ -356,12 +354,12 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         SakuraClientAPI.UnbindNode client = restAdapter_WX_API_TVXIO.create(SakuraClientAPI.UnbindNode.class);
         client.excute(snCode).enqueue(new Callback<Empty>() {
             @Override
-            public void onResponse(Response<Empty> response, Retrofit retrofit) {
+            public void onResponse(Response<Empty> response) {
                 fetchBindedCdn(snCode);
             }
 
             @Override
-            public void onFailure(Throwable throwable) {
+            public void onFailure(Throwable t) {
                 Log.e(TAG, "unbindNode");
             }
         });
@@ -566,12 +564,12 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         SakuraClientAPI.DeviceLog client = restAdapter_SPEED_CALLA_TVXIO.create(SakuraClientAPI.DeviceLog.class);
         client.execute(data, snCode, model).enqueue(new Callback<Empty>() {
             @Override
-            public void onResponse(Response<Empty> response, Retrofit retrofit) {
+            public void onResponse(Response<Empty> response) {
                 Log.d(TAG, "uploadCdnTestLog success");
             }
 
             @Override
-            public void onFailure(Throwable throwable) {
+            public void onFailure(Throwable t) {
                 Log.e(TAG, "uploadCdnTestLog");
             }
         });
@@ -584,12 +582,12 @@ public class NodeFragment extends Fragment implements LoaderManager.LoaderCallba
         SakuraClientAPI.UploadResult client = restAdapter_WX_API_TVXIO.create(SakuraClientAPI.UploadResult.class);
         client.excute(SakuraClientAPI.UploadResult.ACTION_TYPE, snCode, cdnId, speed).enqueue(new Callback<Empty>() {
             @Override
-            public void onResponse(Response<Empty> response, Retrofit retrofit) {
+            public void onResponse(Response<Empty> response) {
                 Log.i(TAG, "uploadTestResult success");
             }
 
             @Override
-            public void onFailure(Throwable throwable) {
+            public void onFailure(Throwable t) {
                 Log.e(TAG, "uploadTestResult");
             }
         });

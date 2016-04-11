@@ -3,7 +3,8 @@ package tv.ismar.sakura.core;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import com.activeandroid.query.Select;
+
+import cn.ismartv.injectdb.library.query.Select;
 import tv.ismar.daisy.data.table.location.CdnTable;
 import tv.ismar.sakura.utils.DeviceUtils;
 

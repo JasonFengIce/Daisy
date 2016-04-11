@@ -1,8 +1,6 @@
 package tv.ismar.daisy.core.client;
 
 import android.util.Log;
-import com.activeandroid.ActiveAndroid;
-import com.activeandroid.query.Select;
 import tv.ismar.daisy.data.table.DownloadTable;
 
 import java.util.concurrent.ExecutorService;

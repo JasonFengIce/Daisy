@@ -1,13 +1,13 @@
 package cn.ismartv.activator.core.http;
 
-import com.squareup.okhttp.ResponseBody;
 
 import cn.ismartv.activator.data.Result;
-import retrofit.Call;
-import retrofit.http.Field;
-import retrofit.http.FormUrlEncoded;
-import retrofit.http.Headers;
-import retrofit.http.POST;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
 
 /**
  * Created by huaijie on 1/14/16.

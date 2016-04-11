@@ -1,18 +1,16 @@
 package tv.ismar.daisy.core.logger;
 
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.logging.HttpLoggingInterceptor;
-
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
-import retrofit.http.Field;
-import retrofit.http.FormUrlEncoded;
-import retrofit.http.HEAD;
-import retrofit.http.Header;
-import retrofit.http.POST;
+import cn.ismartv.log.interceptor.HttpLoggingInterceptor;
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Header;
+import retrofit2.http.POST;
 import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.utils.HardwareUtils;
@@ -49,15 +47,15 @@ public class AppLogger {
 
         Retrofit retrofit = buildRetrofit();
         LogRequest logRequest = retrofit.create(LogRequest.class);
-        Call<Empty> call = logRequest.doRequest(userAgent, contentEncoding,sn, deviceToken, accessToken, modelName, data);
+        Call<Empty> call = logRequest.doRequest(userAgent, contentEncoding, sn, deviceToken, accessToken, modelName, data);
         call.enqueue(new Callback<Empty>() {
             @Override
-            public void onResponse(Response<Empty> response, Retrofit retrofit) {
-
+            public void onResponse(Response<Empty> response) {
+                
             }
 
             @Override
-            public void onFailure(Throwable throwable) {
+            public void onFailure(Throwable t) {
 
             }
         });

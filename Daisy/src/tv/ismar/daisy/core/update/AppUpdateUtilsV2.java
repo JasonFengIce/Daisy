@@ -9,8 +9,8 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
-import com.activeandroid.util.Log;
 import com.google.gson.Gson;
 
 import java.io.File;

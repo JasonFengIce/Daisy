@@ -1,32 +1,33 @@
 package cn.ismartv.activator;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import org.apache.http.util.EncodingUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+
+import org.apache.http.util.EncodingUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import cn.ismartv.activator.core.http.HttpClientAPI;
 import cn.ismartv.activator.core.http.HttpClientAPI.ExcuteActivator;
 import cn.ismartv.activator.core.http.HttpClientManager;
 import cn.ismartv.activator.core.mnative.NativeManager;
 import cn.ismartv.activator.data.Result;
 import cn.ismartv.activator.utils.MD5Utils;
+import okhttp3.ResponseBody;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
-import com.squareup.okhttp.ResponseBody;
 
 public class Activator {
     public static final String SIGN_FILE_NAME = "sign1";
@@ -63,11 +64,11 @@ public class Activator {
 
     public void active(String manufacture, String kind, String version, String locationInfo) {
         actvieTryTime = actvieTryTime + 1;
-		iswaiting = true;
-		if (actvieTryTime > 2) {
-			iswaiting = false;
-			mOnComplete.onFailed("激活失败!!!");
-		}
+        iswaiting = true;
+        if (actvieTryTime > 2) {
+            iswaiting = false;
+            mOnComplete.onFailed("激活失败!!!");
+        }
 
         NativeManager nativeManager = new NativeManager();
         this.locationInfo = locationInfo;
@@ -87,18 +88,18 @@ public class Activator {
                 fs.close();
                 getLicence();
             } else {
-            	String content;
-            	File snfile = mContext.getFileStreamPath("sn");
-            	if(!snfile.exists()){
-            		content = sn;
-            	}else{
-            		FileInputStream inputStream = mContext.openFileInput("sn");
+                String content;
+                File snfile = mContext.getFileStreamPath("sn");
+                if (!snfile.exists()) {
+                    content = sn;
+                } else {
+                    FileInputStream inputStream = mContext.openFileInput("sn");
                     int length = inputStream.available();
                     byte[] bytes = new byte[length];
                     inputStream.read(bytes);
                     content = EncodingUtils.getString(bytes, "UTF-8");
-                    inputStream.close();       		
-            	}
+                    inputStream.close();
+                }
                 this.sn = content;
                 this.fingerprint = MD5Utils.encryptByMD5(this.sn);
                 activator(sn, manufacture, kind, version, fingerprint);
@@ -113,17 +114,17 @@ public class Activator {
         HttpClientAPI.GetLicence client = retrofit.create(HttpClientAPI.GetLicence.class);
         client.excute(fingerprint, sn, manufacture, "1").enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Response<ResponseBody> response) {
                 try {
-                	if(response.body() != null){
-                    FileOutputStream fs = mContext.openFileOutput(SIGN_FILE_NAME, Context.MODE_WORLD_READABLE);
-                    fs.write(response.body().bytes());
-                    fs.flush();
-                    fs.close();
-                    activator(sn, manufacture, kind, version, fingerprint);
-                	}else{
-                		mOnComplete.onFailed("get licence failure!!!");
-                		}
+                    if (response.body() != null) {
+                        FileOutputStream fs = mContext.openFileOutput(SIGN_FILE_NAME, Context.MODE_WORLD_READABLE);
+                        fs.write(response.body().bytes());
+                        fs.flush();
+                        fs.close();
+                        activator(sn, manufacture, kind, version, fingerprint);
+                    } else {
+                        mOnComplete.onFailed("get licence failure!!!");
+                    }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -132,8 +133,8 @@ public class Activator {
             }
 
             @Override
-            public void onFailure(Throwable throwable) {
-						iswaiting = false;
+            public void onFailure(Throwable t) {
+                iswaiting = false;
                 mOnComplete.onFailed("get licence failure!!!");
             }
         });
@@ -152,7 +153,7 @@ public class Activator {
         try {
             publicKey = result.split("\\$\\$\\$")[1];
         } catch (Exception e) {
-			iswaiting = false;
+            iswaiting = false;
             mOnComplete.onFailed(e.getMessage());
             return;
         }
@@ -164,21 +165,21 @@ public class Activator {
         ExcuteActivator activator = retrofit.create(ExcuteActivator.class);
         activator.excute(sn, manufacture, kind, version, rsaEnResult, fingerprint, "v2_0", getAndroidDevicesInfo()).enqueue(new Callback<Result>() {
             @Override
-            public void onResponse(Response<Result> response, Retrofit retrofit) {
+            public void onResponse(Response<Result> response) {
                 Result result = response.body();
                 if (response.errorBody() != null) {
-							iswaiting = false;
+                    iswaiting = false;
                     mOnComplete.onFailed("激活失败");
                     Log.e(TAG, response.errorBody().toString());
                 } else {
-							iswaiting = false;
+                    iswaiting = false;
                     mOnComplete.onSuccess(result);
                 }
             }
 
             @Override
-            public void onFailure(Throwable throwable) {
-            	iswaiting = false;
+            public void onFailure(Throwable t) {
+                iswaiting = false;
                 mOnComplete.onFailed("激活失败");
             }
         });

@@ -6,9 +6,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.JsonParser;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -17,6 +14,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.preferences.HttpCacheSharedPrefs;
 import tv.ismar.daisy.utils.HardwareUtils;
@@ -111,8 +111,7 @@ public class CacheHttpClient extends Thread {
         }
 
         try {
-            OkHttpClient client = new OkHttpClient();
-            client.setConnectTimeout(10, TimeUnit.SECONDS);
+            OkHttpClient client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).build();
             Request request = new Request.Builder()
                     .url(mUrlPath)
                     .build();
@@ -120,15 +119,15 @@ public class CacheHttpClient extends Thread {
             Response response;
             response = client.newCall(request).execute();
             String result = "";
-            if(response.body() != null){
-            result = response.body().string();
-            Log.i(TAG, "---> BEGIN\n" +
-                            "\t<--- Request URL: " + "\t" + mUrlPath + "\n" +
-                            "\t<--- Request Method: " + "\t" + "GET" + "\n" +
-                            "\t<--- Response Code: " + "\t" + response.code() + "\n" +
-                            "\t<--- Response Result: " + "\t" + result + "\n" +
-                            "\t---> END"
-            );
+            if (response.body() != null) {
+                result = response.body().string();
+                Log.i(TAG, "---> BEGIN\n" +
+                                "\t<--- Request URL: " + "\t" + mUrlPath + "\n" +
+                                "\t<--- Request Method: " + "\t" + "GET" + "\n" +
+                                "\t<--- Response Code: " + "\t" + response.code() + "\n" +
+                                "\t<--- Response Result: " + "\t" + result + "\n" +
+                                "\t---> END"
+                );
             }
             if (!TextUtils.isEmpty(result)) {
                 HttpCacheSharedPrefs.setSharedPrefs(md5Url, result);

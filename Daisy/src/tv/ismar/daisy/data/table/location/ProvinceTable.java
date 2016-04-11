@@ -1,8 +1,9 @@
 package tv.ismar.daisy.data.table.location;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
+
+import cn.ismartv.injectdb.library.Model;
+import cn.ismartv.injectdb.library.annotation.Column;
+import cn.ismartv.injectdb.library.annotation.Table;
 
 /**
  * Created by huaijie on 8/3/15.

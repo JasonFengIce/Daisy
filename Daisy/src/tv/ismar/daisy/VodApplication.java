@@ -1,21 +1,35 @@
 package tv.ismar.daisy;
 
 import android.app.Activity;
-import android.content.*;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
-import com.activeandroid.ActiveAndroid;
-import com.activeandroid.app.Application;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import tv.ismar.daisy.core.DaisyUtils;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import cn.ismartv.injectdb.library.ActiveAndroid;
+import cn.ismartv.injectdb.library.app.Application;
 import tv.ismar.daisy.core.ImageCache;
 import tv.ismar.daisy.core.MessageQueue;
 import tv.ismar.daisy.core.NetworkUtils;
@@ -25,7 +39,6 @@ import tv.ismar.daisy.core.cache.CacheManager;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.core.preferences.AppSharedPrefs;
-import tv.ismar.daisy.core.preferences.LogSharedPrefs;
 import tv.ismar.daisy.dao.DBHelper;
 import tv.ismar.daisy.models.ContentModel;
 import tv.ismar.daisy.models.ContentModelList;
@@ -33,20 +46,6 @@ import tv.ismar.daisy.persistence.FavoriteManager;
 import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.persistence.LocalFavoriteManager;
 import tv.ismar.daisy.persistence.LocalHistoryManager;
-import tv.ismar.daisy.ui.activity.TVGuideActivity;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class VodApplication extends Application {
@@ -77,6 +76,7 @@ public class VodApplication extends Application {
     public static String OPENID = "openid";
     public static final String CACHED_LOG = "cached_log";
     private ExecutorService mExecutorService;
+    public static String apiDomain = "http://skytest.tvxio.com";
     // public static float rate = 1;
     /**
      * Use to cache the AsyncImageView's bitmap in memory, When application memory is low, the cache will be recovered.
@@ -96,6 +96,7 @@ public class VodApplication extends Application {
         return mEditor;
     }
 
+
     private static VodApplication instance;
 
     public void load(Context a) {
@@ -108,12 +109,12 @@ public class VodApplication extends Application {
                 new Thread(mUpLoadLogRunnable).start();
                 isFinish = true;
             }
-			if (cached_log != null) {
-				Iterator<String> it = cached_log.iterator();
-				while (it.hasNext()) {
-					MessageQueue.addQueue(it.next());
-				}
-			}
+            if (cached_log != null) {
+                Iterator<String> it = cached_log.iterator();
+                while (it.hasNext()) {
+                    MessageQueue.addQueue(it.next());
+                }
+            }
         } catch (Exception e) {
             System.out.println("load(Activity a)=" + e);
         }
@@ -174,6 +175,8 @@ public class VodApplication extends Application {
         load(this);
         registerReceiver(mCloseReceiver, new IntentFilter("com.amlogic.dvbplayer.homekey"));
         registerReceiver(mSleepReceiver, new IntentFilter("com.alpha.lenovo.powerKey"));
+        SharedPreferences sharedPreferences = getSharedPreferences("account", Context.MODE_WORLD_READABLE);
+        apiDomain = sharedPreferences.getString("api_domain", "http://skytest.tvxio.com");
     }
 
 
@@ -235,34 +238,34 @@ public class VodApplication extends Application {
                 try {
                     Thread.sleep(10000);
 //                    synchronized (MessageQueue.async) {
-                        // Thread.sleep(900000);
+                    // Thread.sleep(900000);
 
 
-                        ArrayList<String> list = MessageQueue.getQueueList();
-                        int i;
-                        JSONArray s = new JSONArray();
-                        if (list.size() > 0) {
-                            for (i = 0; i < list.size(); i++) {
-                                JSONObject obj;
-                                try {
-                                    Log.i("qazwsx", "json item==" + list.get(i).toString());
-                                    obj = new JSONObject(list.get(i).toString());
-                                    s.put(obj);
-                                } catch (JSONException e) {
-                                    // TODO Auto-generated catch block
-                                    e.printStackTrace();
-                                }
-
+                    ArrayList<String> list = MessageQueue.getQueueList();
+                    int i;
+                    JSONArray s = new JSONArray();
+                    if (list.size() > 0) {
+                        for (i = 0; i < list.size(); i++) {
+                            JSONObject obj;
+                            try {
+                                Log.i("qazwsx", "json item==" + list.get(i).toString());
+                                obj = new JSONObject(list.get(i).toString());
+                                s.put(obj);
+                            } catch (JSONException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
                             }
-                            if (i == list.size()) {
-                                MessageQueue.remove();
-                                NetworkUtils.LogSender(s.toString());
-                                Log.i("qazwsx", "json array==" + s.toString());
-                                Log.i("qazwsx", "remove");
-                            }
-                        } else {
-                            Log.i("qazwsx", "queue is no elements");
+
                         }
+                        if (i == list.size()) {
+                            MessageQueue.remove();
+                            NetworkUtils.LogSender(s.toString());
+                            Log.i("qazwsx", "json array==" + s.toString());
+                            Log.i("qazwsx", "remove");
+                        }
+                    } else {
+                        Log.i("qazwsx", "queue is no elements");
+                    }
 //                    }
 
                     //NetworkUtils.LogUpLoad(getApplicationContext());

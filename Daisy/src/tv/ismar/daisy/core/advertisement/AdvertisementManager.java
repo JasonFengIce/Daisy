@@ -3,11 +3,10 @@ package tv.ismar.daisy.core.advertisement;
 import android.content.Context;
 import android.util.Log;
 
-import com.activeandroid.query.Delete;
-import com.activeandroid.query.Select;
 import com.google.gson.Gson;
 
-import tv.ismar.daisy.core.logger.AdvertisementLogger;
+import cn.ismartv.injectdb.library.query.Delete;
+import cn.ismartv.injectdb.library.query.Select;
 import tv.ismar.daisy.core.preferences.LogSharedPrefs;
 import tv.ismar.daisy.data.LaunchAdvertisementEntity;
 import tv.ismar.daisy.data.table.AdvertisementTable;

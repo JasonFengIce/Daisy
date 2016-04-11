@@ -2,15 +2,16 @@ package tv.ismar.daisy.core.advertisement;
 
 import android.content.Context;
 import android.util.Log;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import tv.ismar.daisy.core.logger.AdvertisementLogger;
-import tv.ismar.daisy.player.CallaPlay;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import tv.ismar.daisy.core.logger.AdvertisementLogger;
+import tv.ismar.daisy.player.CallaPlay;
 
 /**
  * Created by huaijie on 7/31/15.
@@ -39,16 +40,16 @@ public class AdvertisementDownload implements Runnable {
             Response response;
             Request request = new Request.Builder().url(downloadUrl).build();
             response = client.newCall(request).execute();
-            if(response.body() != null){
-            InputStream inputStream = response.body().byteStream();
-            byte[] buffer = new byte[1024];
-            int byteRead;
-            while ((byteRead = inputStream.read(buffer)) != -1) {
-                fileOutputStream.write(buffer, 0, byteRead);
-            }
-            fileOutputStream.flush();
-            fileOutputStream.close();
-            inputStream.close();
+            if (response.body() != null) {
+                InputStream inputStream = response.body().byteStream();
+                byte[] buffer = new byte[1024];
+                int byteRead;
+                while ((byteRead = inputStream.read(buffer)) != -1) {
+                    fileOutputStream.write(buffer, 0, byteRead);
+                }
+                fileOutputStream.flush();
+                fileOutputStream.close();
+                inputStream.close();
             }
         } catch (IOException e) {
             new CallaPlay().bootAdvExcept(AdvertisementLogger.BOOT_ADV_DOWNLOAD_EXCEPTION_CODE, AdvertisementLogger.BOOT_ADV_DOWNLOAD_EXCEPTION_STRING);

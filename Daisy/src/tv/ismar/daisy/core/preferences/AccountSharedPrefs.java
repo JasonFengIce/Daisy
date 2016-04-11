@@ -3,8 +3,8 @@ package tv.ismar.daisy.core.preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.activeandroid.query.Select;
 
+import cn.ismartv.injectdb.library.query.Select;
 import tv.ismar.daisy.data.table.location.ProvinceTable;
 
 /**

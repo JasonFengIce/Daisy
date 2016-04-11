@@ -3,11 +3,12 @@ package tv.ismar.daisy.core.initialization;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
-import com.activeandroid.ActiveAndroid;
-import com.activeandroid.query.Delete;
-import com.activeandroid.query.Select;
 import com.baidu.location.*;
 import com.google.gson.Gson;
+
+import cn.ismartv.injectdb.library.ActiveAndroid;
+import cn.ismartv.injectdb.library.query.Delete;
+import cn.ismartv.injectdb.library.query.Select;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.HttpMethod;
 import tv.ismar.daisy.core.client.HttpResponseMessage;

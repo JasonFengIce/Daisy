@@ -1,10 +1,10 @@
 package tv.ismar.daisy.core.client;
 
-import com.squareup.okhttp.ResponseBody;
 
-import retrofit.Call;
-import retrofit.http.GET;
-import retrofit.http.Path;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 /**
  * Created by huaijie on 1/18/16.

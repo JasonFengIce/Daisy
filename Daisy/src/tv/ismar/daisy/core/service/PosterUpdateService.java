@@ -9,7 +9,6 @@ import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
 
-import com.activeandroid.query.Delete;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -25,6 +24,7 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import cn.ismartv.injectdb.library.query.Delete;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.advertisement.AdvertisementManager;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;

@@ -2,15 +2,21 @@ package tv.ismar.daisy.core.client;
 
 import android.content.Context;
 import android.util.Log;
-import com.activeandroid.query.Select;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import cn.ismartv.injectdb.library.query.Select;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import tv.ismar.daisy.data.table.DownloadTable;
 import tv.ismar.daisy.utils.FileUtils;
 import tv.ismar.daisy.utils.HardwareUtils;
-
-import java.io.*;
 
 /**
  * Created by huaijie on 6/19/15.
@@ -73,16 +79,16 @@ public class DownloadClient implements Runnable {
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder().url(url).build();
             Response response = client.newCall(request).execute();
-            if(response.body() != null){
-            InputStream inputStream = response.body().byteStream();
-            byte[] buffer = new byte[1024];
-            int byteRead;
-            while ((byteRead = inputStream.read(buffer)) != -1) {
-                fileOutputStream.write(buffer, 0, byteRead);
-            }
-            fileOutputStream.flush();
-            fileOutputStream.close();
-            inputStream.close();
+            if (response.body() != null) {
+                InputStream inputStream = response.body().byteStream();
+                byte[] buffer = new byte[1024];
+                int byteRead;
+                while ((byteRead = inputStream.read(buffer)) != -1) {
+                    fileOutputStream.write(buffer, 0, byteRead);
+                }
+                fileOutputStream.flush();
+                fileOutputStream.close();
+                inputStream.close();
             }
         } catch (IOException e) {
         }

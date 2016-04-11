@@ -17,8 +17,6 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.activeandroid.query.Select;
-import com.squareup.okhttp.ResponseBody;
 import com.squareup.picasso.Picasso;
 
 import org.xml.sax.InputSource;
@@ -34,7 +32,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import retrofit.Retrofit;
+import cn.ismartv.injectdb.library.query.Select;
+import okhttp3.ResponseBody;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.client.HttpAPI;
@@ -199,27 +201,27 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
         final Button confirmBtn = (Button) popupLayout.findViewById(R.id.confirm_btn);
         final Button cancelBtn = (Button) popupLayout.findViewById(R.id.cancel_btn);
         confirmBtn.setOnHoverListener(new View.OnHoverListener() {
-			
-			@Override
-			public boolean onHover(View v, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER
-						|| event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
-					v.requestFocus();
-				}
-				return false;
-			}
-		});
+
+            @Override
+            public boolean onHover(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER
+                        || event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+                    v.requestFocus();
+                }
+                return false;
+            }
+        });
         cancelBtn.setOnHoverListener(new View.OnHoverListener() {
-			
-			@Override
-			public boolean onHover(View v, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER
-						|| event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
-					v.requestFocus();
-				}
-				return false;
-			}
-		});
+
+            @Override
+            public boolean onHover(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER
+                        || event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+                    v.requestFocus();
+                }
+                return false;
+            }
+        });
         final TextView selectPrompt = (TextView) popupLayout.findViewById(R.id.area_select_prompt);
         int width = (int) mContext.getResources().getDimension(R.dimen.location_area_pop_width);
         int height = (int) mContext.getResources().getDimension(R.dimen.location_area_pop_height);
@@ -356,21 +358,21 @@ public class LocationFragment extends Fragment implements ProvinceAdapter.OnItem
 
     private void fetchWeatherInfo(String geoId) {
         Retrofit retrofit = HttpManager.getInstance().media_lily_Retrofit;
-        retrofit.create(HttpAPI.WeatherAPI.class).doRequest(geoId).enqueue(new retrofit.Callback<ResponseBody>() {
+        retrofit.create(HttpAPI.WeatherAPI.class).doRequest(geoId).enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(retrofit.Response<ResponseBody> response, Retrofit retrofit) {
-						try {
-							if (response.body() != null) {
-								String result = response.body().string();
-								parseXml(result);
-							}
-						} catch (IOException e) {
-							Log.e(TAG, "解析天气数据失败");
-						}
+            public void onResponse(Response<ResponseBody> response) {
+                try {
+                    if (response.body() != null) {
+                        String result = response.body().string();
+                        parseXml(result);
+                    }
+                } catch (IOException e) {
+                    Log.e(TAG, "解析天气数据失败");
+                }
             }
 
             @Override
-            public void onFailure(Throwable throwable) {
+            public void onFailure(Throwable t) {
                 Log.e(TAG, "获取天气失败");
             }
         });

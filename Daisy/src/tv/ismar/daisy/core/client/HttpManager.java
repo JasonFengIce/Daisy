@@ -1,18 +1,20 @@
 package tv.ismar.daisy.core.client;
 
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
 import java.util.concurrent.TimeUnit;
 
-import retrofit.Retrofit;
+import cn.ismartv.log.interceptor.HttpLoggingInterceptor;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+
 
 /**
  * Created by huaijie on 1/18/16.
  */
 public class HttpManager {
+    private static final int DEFAULT_CONNECT_TIMEOUT = 2;
+    private static final int DEFAULT_READ_TIMEOUT = 5;
 
-    private static final int DEFAULT_TIMEOUT = 2;
     private static final String SKY_HOST = "http://media.lily.tvxio.com";
 
     public Retrofit media_lily_Retrofit;
@@ -23,14 +25,18 @@ public class HttpManager {
         return ourInstance;
     }
 
+    public OkHttpClient mClient;
+
     private HttpManager() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient();
-        client.setConnectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
-        client.interceptors().add(interceptor);
+        mClient = new OkHttpClient.Builder()
+                .connectTimeout(DEFAULT_CONNECT_TIMEOUT, TimeUnit.SECONDS)
+                .readTimeout(DEFAULT_READ_TIMEOUT, TimeUnit.SECONDS)
+                .addInterceptor(interceptor)
+                .build();
         media_lily_Retrofit = new Retrofit.Builder()
-                .client(client)
+                .client(mClient)
                 .baseUrl(SKY_HOST)
                 .build();
     }

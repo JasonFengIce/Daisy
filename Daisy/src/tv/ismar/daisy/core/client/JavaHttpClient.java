@@ -1,17 +1,14 @@
 package tv.ismar.daisy.core.client;
 
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import tv.ismar.daisy.core.SimpleRestClient;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
+
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by huaijie on 8/3/15.
@@ -71,14 +68,13 @@ public class JavaHttpClient {
                 api = mApi + "?" + mParams;
             }
 
-            OkHttpClient client = new OkHttpClient();
-            client.setConnectTimeout(10, TimeUnit.SECONDS);
+
             Request request = new Request.Builder()
                     .url(api)
                     .build();
 
             Response response;
-            response = client.newCall(request).execute();
+            response = HttpManager.getInstance().mClient.newCall(request).execute();
             String result = response.body().string();
             Log.i(TAG, "---> BEGIN\n" +
                             "\t<--- Request URL: " + "\t" + api + "\n" +

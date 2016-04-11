@@ -5,28 +5,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.ImageView;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
+
 import com.google.gson.Gson;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+
+import java.lang.ref.WeakReference;
+
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.advertisement.AdvertisementManager;
-import tv.ismar.daisy.core.cache.image_loader.ImageLoader;
 import tv.ismar.daisy.core.initialization.InitializeProcess;
 import tv.ismar.daisy.core.logger.AdvertisementLogger;
 import tv.ismar.daisy.core.preferences.LogSharedPrefs;
 import tv.ismar.daisy.data.LaunchAdvertisementEntity;
 import tv.ismar.daisy.player.CallaPlay;
-
-import java.lang.ref.WeakReference;
 
 public class AdvertisementActivity extends Activity {
     private static final String TAG = "AdvertisementActivity";
@@ -66,7 +62,6 @@ public class AdvertisementActivity extends Activity {
     @Override
     protected void onDestroy() {
         flag = false;
-        Glide.get(this).clearMemory();
         super.onDestroy();
     }
 
@@ -79,11 +74,11 @@ public class AdvertisementActivity extends Activity {
         mAdvertisementManager = new AdvertisementManager();
         String path = mAdvertisementManager.getAppLaunchAdvertisement();
         Log.d(TAG, "fetch advertisement path: " + path);
-        ImageLoader.with(this)
+        Picasso.with(this)
                 .load(path)
-                .diskCacheStrategy(ImageLoader.CacheStrategy.DISK_NONE)
-                .memoryCacheStrategy(ImageLoader.CacheStrategy.MEMORY_NODE)
-                .addCallback(new ImageLoader.LoadCallback() {
+                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_CACHE)
+                .into(adverPic, new Callback() {
                     @Override
                     public void onSuccess() {
                         timerCountDown();
@@ -96,17 +91,16 @@ public class AdvertisementActivity extends Activity {
                     }
 
                     @Override
-                    public void onFailure() {
-                       new CallaPlay().bootAdvExcept(AdvertisementLogger.BOOT_ADV_PLAY_EXCEPTION_CODE, AdvertisementLogger.BOOT_ADV_PLAY_EXCEPTION_STRING);
-                        ImageLoader.with(AdvertisementActivity.this)
+                    public void onError() {
+                        new CallaPlay().bootAdvExcept(AdvertisementLogger.BOOT_ADV_PLAY_EXCEPTION_CODE, AdvertisementLogger.BOOT_ADV_PLAY_EXCEPTION_STRING);
+                        Picasso.with(AdvertisementActivity.this)
                                 .load(DEFAULT_ADV_PICTURE)
-                                .diskCacheStrategy(ImageLoader.CacheStrategy.DISK_NONE)
-                                .memoryCacheStrategy(ImageLoader.CacheStrategy.MEMORY_NODE)
+                                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                                .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_CACHE)
                                 .into(adverPic);
                         timerCountDown();
                     }
-                })
-                .into(adverPic);
+                });
     }
 
     private void timerCountDown() {
