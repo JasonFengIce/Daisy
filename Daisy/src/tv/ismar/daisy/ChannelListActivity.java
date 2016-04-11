@@ -175,16 +175,16 @@ public class ChannelListActivity extends BaseActivity {
 		super.onDestroy();
 	}
 
-	@Override
-	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		if(keyCode==KeyEvent.KEYCODE_MENU) {
-			if(mOnMenuToggleListener!=null) {
-				mOnMenuToggleListener.OnMenuToggle();
-				return true;
-			}
-		}
-		return super.onKeyUp(keyCode, event);
-	}
+//	@Override
+//	public boolean onKeyUp(int keyCode, KeyEvent event) {
+//		if(keyCode==KeyEvent.KEYCODE_MENU) {
+//			if(mOnMenuToggleListener!=null) {
+//				mOnMenuToggleListener.OnMenuToggle();
+//				return true;
+//			}
+//		}
+//		return super.onKeyUp(keyCode, event);
+//	}
 
     public void registerOnMenuToggleListener(OnMenuToggleListener listener) {
 		mOnMenuToggleListener = listener;
