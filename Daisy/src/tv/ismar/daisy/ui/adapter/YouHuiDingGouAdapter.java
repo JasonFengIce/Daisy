@@ -8,11 +8,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.squareup.picasso.Picasso;
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.data.usercenter.YouHuiDingGouEntity;
 
 import java.util.ArrayList;
+
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.data.usercenter.YouHuiDingGouEntity;
 
 /**
  * Created by huaijie on 7/3/15.
@@ -61,15 +63,15 @@ public class YouHuiDingGouAdapter extends BaseAdapter implements View.OnClickLis
         Picasso.with(mContext).load(item.getPoster_url()).into(holder.icon);
 
         holder.icon.setTag(position);
-       // holder.icon.setOnClickListener(this);
+        // holder.icon.setOnClickListener(this);
 
         return convertView;
     }
 
     @Override
     public void onClick(View v) {
-        int position = (Integer)v.getTag();
-        YouHuiDingGouEntity.Object o =mList.get(position);
+        int position = (Integer) v.getTag();
+        YouHuiDingGouEntity.Object o = mList.get(position);
         Intent intent = new Intent();
         intent.setAction("tv.ismar.daisy.packageitem");
         intent.putExtra("url", o.getUrl());
