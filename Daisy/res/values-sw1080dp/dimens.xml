@@ -1326,6 +1326,19 @@
     <dimen name="textsize_72sp">72sp</dimen>
     <dimen name="newvip_item_text_margin">200dp</dimen>
     <dimen name="newvip_price_mariginTop">350dp</dimen>
+    <dimen name="textsize_24sp">24sp</dimen>
+    <dimen name="paylayvip_mariginleft">73dp</dimen>
+    <dimen name="paylayervip_title_mriginTop">140dp</dimen>
+    <dimen name="paylayervip_des_margintop">24dp</dimen>
+    <dimen name="paylayervip_scrollview_width">1250dp</dimen>
+    <dimen name="paylayervip_scrollview_height">460dp</dimen>
+    <dimen name="paylayervip_img_width">292dp</dimen>
+    <dimen name="paylayervip_img_height">409dp</dimen>
+    <dimen name="newvip_paylayervip_margin">14dp</dimen>
+    <dimen name="paylayervip_layout_width">1400dp</dimen>
+    <dimen name="paylayervip_layout_height">850dp</dimen>
+    <dimen name="paylayervip_width">40dp</dimen>
+    <dimen name="paylayervip_height">80dp</dimen>
 
 
 </resources>

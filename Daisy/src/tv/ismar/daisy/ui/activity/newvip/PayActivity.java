@@ -19,9 +19,10 @@ import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.client.NewVipHttpApi;
 import tv.ismar.daisy.core.client.NewVipHttpManager;
-import tv.ismar.daisy.data.http.newvip.Expense_item;
-import tv.ismar.daisy.data.http.newvip.PayLayerEntity;
-import tv.ismar.daisy.data.http.newvip.Vip;
+import tv.ismar.daisy.data.http.newvip.paylayer.Expense_item;
+import tv.ismar.daisy.data.http.newvip.paylayer.Package;
+import tv.ismar.daisy.data.http.newvip.paylayer.PayLayerEntity;
+import tv.ismar.daisy.data.http.newvip.paylayer.Vip;
 import tv.ismar.daisy.models.Expense;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.utils.ViewScaleUtil;
@@ -85,7 +86,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
             title.setText(vip.getTitle());
             TextView price = (TextView) vipItem.findViewById(R.id.price);
             price.setText(String.valueOf(vip.getPrice()));
-            Picasso.with(this).load("http://res.tvxio.com/media/upload/20140922/bg1.jpg").into(imageView);
+            Picasso.with(this).load(vip.getVertical_url()).into(imageView);
             vipItem.setOnHoverListener(this);
             vipItem.setOnFocusChangeListener(this);
             scrollViewLayout.addView(vipItem, layoutParams);
@@ -111,7 +112,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
             scrollViewLayout.addView(item, layoutParams);
         }
 
-        tv.ismar.daisy.data.http.newvip.Package newVipPackage = payLayerEntity.getPkage();
+        Package newVipPackage = payLayerEntity.getPkage();
         if (newVipPackage != null) {
             RelativeLayout item = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_newvip_pay, null);
             ImageView imageView = (ImageView) item.findViewById(R.id.item_newvip_pay_img);
@@ -154,7 +155,13 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
     }
 
     private void buyVideo(int pk, String type, float price) {
-        PaymentDialog dialog = new PaymentDialog(this, R.style.PaymentDialog, ordercheckListener);
+        PaymentDialog dialog = new PaymentDialog(this, R.style.PaymentDialog, new PaymentDialog.OrderResultListener() {
+            @Override
+            public void payResult(boolean result) {
+                if (result) {
+                }
+            }
+        });
         Item mItem = new Item();
         mItem.pk = pk;
         Expense expense = new Expense();
@@ -165,13 +172,4 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
         dialog.show();
     }
 
-    private PaymentDialog.OrderResultListener ordercheckListener = new PaymentDialog.OrderResultListener() {
-
-        @Override
-        public void payResult(boolean result) {
-            if (result) {
-                finish();
-            }
-        }
-    };
 }

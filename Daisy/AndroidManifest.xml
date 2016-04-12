@@ -314,6 +314,10 @@
             android:name=".ui.activity.newvip.PayActivity"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
             />
+        <activity
+            android:name=".ui.activity.newvip.PayLayerVipActivity"
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
+            />
 
         <!--content provider-->
         <provider
