@@ -5,11 +5,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnHoverListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -21,8 +22,8 @@ import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.NewVipHttpApi;
 import tv.ismar.daisy.core.client.NewVipHttpManager;
-import tv.ismar.daisy.data.http.newvip.paylayervip.PayLayerVipEntity;
-import tv.ismar.daisy.data.http.newvip.paylayervip.Vip_list;
+import tv.ismar.daisy.data.http.newvip.paylayerpackage.Item_list;
+import tv.ismar.daisy.data.http.newvip.paylayerpackage.PayLayerPackageEntity;
 import tv.ismar.daisy.models.Expense;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.utils.ViewScaleUtil;
@@ -31,21 +32,31 @@ import tv.ismar.daisy.views.PaymentDialog;
 /**
  * Created by huaijie on 4/12/16.
  */
-public class PayLayerVipActivity extends BaseActivity implements OnHoverListener, View.OnFocusChangeListener {
+public class PayLayerPackageActivity extends BaseActivity implements View.OnHoverListener, OnFocusChangeListener {
+
+    private static final String TAG = "PayLayerPackageActivity";
+
     private ImageView tmp;
     private TvHorizontalScrollView mTvHorizontalScrollView;
     private LinearLayout scrollViewLayout;
     private ImageView leftArrow;
     private ImageView rightArrow;
 
+    private TextView title;
+    private TextView price;
+    private TextView duration;
+    private TextView decription;
+
+    private PayLayerPackageEntity entity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_paylayervip);
+        setContentView(R.layout.activity_paylayerpackage);
         initViews();
         Intent intent = getIntent();
-        String cpid = intent.getStringExtra("cpid");
-        payLayerVip(cpid);
+        String packageId = intent.getStringExtra("package_id");
+        payLayerPackage(packageId);
     }
 
     private void initViews() {
@@ -56,15 +67,26 @@ public class PayLayerVipActivity extends BaseActivity implements OnHoverListener
         mTvHorizontalScrollView.setLeftArrow(leftArrow);
         mTvHorizontalScrollView.setRightArrow(rightArrow);
         tmp = (ImageView) findViewById(R.id.tmp);
+
+        title = (TextView) findViewById(R.id.title);
+        price = (TextView) findViewById(R.id.price);
+        duration = (TextView) findViewById(R.id.duration);
+        decription = (TextView) findViewById(R.id.description);
     }
 
+    private void payLayerPackage(String packageId) {
 
-    private void payLayerVip(String cpid) {
-        NewVipHttpManager.getInstance().resetAdapter_SKY.create(NewVipHttpApi.PayLayerVip.class).doRequest(cpid, SimpleRestClient.device_token).enqueue(new Callback<PayLayerVipEntity>() {
+        NewVipHttpManager.getInstance().resetAdapter_SKY.create(NewVipHttpApi.PayLayerPack.class).doRequest(packageId, SimpleRestClient.device_token).enqueue(new Callback<PayLayerPackageEntity>() {
             @Override
-            public void onResponse(Response<PayLayerVipEntity> response) {
-                if (response.errorBody() == null)
-                    fillLayout(response.body());
+            public void onResponse(Response<PayLayerPackageEntity> response) {
+                if (response.errorBody() == null) {
+                    entity = response.body();
+                    title.setText("名称 : " + entity.getTitle());
+                    price.setText("金额 : " + entity.getPrice() + "元");
+                    duration.setText("有效期 : " + entity.getDuration() + "天");
+                    decription.setText("说明 : " + entity.getDescription());
+                    fillLayout(entity);
+                }
             }
 
             @Override
@@ -75,21 +97,21 @@ public class PayLayerVipActivity extends BaseActivity implements OnHoverListener
     }
 
 
-    private void fillLayout(final PayLayerVipEntity payLayerVipEntity) {
+    private void fillLayout(final PayLayerPackageEntity packageEntity) {
         scrollViewLayout.removeAllViews();
         int margin = (int) getResources().getDimension(R.dimen.newvip_paylayervip_margin);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(margin, 0, margin, 0);
-        for (final Vip_list vipList : payLayerVipEntity.getVip_list()) {
+        for (final Item_list itemList : packageEntity.getItem_list()) {
             RelativeLayout itemView = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_paylayervip, null);
             ImageView imageView = (ImageView) itemView.findViewById(R.id.image);
-            Picasso.with(this).load(vipList.getVertical_url()).into(imageView);
+            Picasso.with(this).load(itemList.getVertical_url()).into(imageView);
             itemView.setOnFocusChangeListener(this);
             itemView.setOnHoverListener(this);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    buyVideo(vipList.getPk(), payLayerVipEntity.getType(), vipList.getPrice());
+                    buyVideo(packageEntity.getPk(), packageEntity.getType(), packageEntity.getPrice());
                 }
             });
             scrollViewLayout.addView(itemView, layoutParams);
@@ -138,5 +160,9 @@ public class PayLayerVipActivity extends BaseActivity implements OnHoverListener
         mItem.model_name = type;
         dialog.setItem(mItem);
         dialog.show();
+    }
+
+    public void buyPackage(View view) {
+        buyVideo(entity.getPk(), entity.getType(), entity.getPrice());
     }
 }

@@ -1,5 +1,6 @@
 package tv.ismar.daisy.ui.activity.newvip;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -17,6 +18,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.NewVipHttpApi;
 import tv.ismar.daisy.core.client.NewVipHttpManager;
 import tv.ismar.daisy.data.http.newvip.paylayer.Expense_item;
@@ -60,7 +62,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
     //675302
     //675300
     public void payLayer() {
-        NewVipHttpManager.getInstance().resetAdapter_SKY.create(NewVipHttpApi.PayLayer.class).doRequest("675300").enqueue(new Callback<PayLayerEntity>() {
+        NewVipHttpManager.getInstance().resetAdapter_SKY.create(NewVipHttpApi.PayLayer.class).doRequest("675300", SimpleRestClient.device_token).enqueue(new Callback<PayLayerEntity>() {
             @Override
             public void onResponse(Response<PayLayerEntity> response) {
                 fillLayout(response.body());
@@ -73,7 +75,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
         });
     }
 
-    private void fillLayout(PayLayerEntity payLayerEntity) {
+    private void fillLayout(final PayLayerEntity payLayerEntity) {
         scrollViewLayout.removeAllViews();
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         int margin = (int) getResources().getDimension(R.dimen.newip_payitem_margin);
@@ -89,6 +91,15 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
             Picasso.with(this).load(vip.getVertical_url()).into(imageView);
             vipItem.setOnHoverListener(this);
             vipItem.setOnFocusChangeListener(this);
+            vipItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.putExtra("cpid", String.valueOf(payLayerEntity.getCpid()));
+                    intent.setClass(PayActivity.this, PayLayerVipActivity.class);
+                    startActivity(intent);
+                }
+            });
             scrollViewLayout.addView(vipItem, layoutParams);
         }
 
@@ -112,7 +123,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
             scrollViewLayout.addView(item, layoutParams);
         }
 
-        Package newVipPackage = payLayerEntity.getPkage();
+        final Package newVipPackage = payLayerEntity.getPkage();
         if (newVipPackage != null) {
             RelativeLayout item = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_newvip_pay, null);
             ImageView imageView = (ImageView) item.findViewById(R.id.item_newvip_pay_img);
@@ -123,6 +134,15 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
             price.setText(String.valueOf(newVipPackage.getPrice()));
             item.setOnHoverListener(this);
             item.setOnFocusChangeListener(this);
+            item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.putExtra("package_id", String.valueOf(newVipPackage.getPackage_pk()));
+                    intent.setClass(PayActivity.this, PayLayerPackageActivity.class);
+                    startActivity(intent);
+                }
+            });
             scrollViewLayout.addView(item, layoutParams);
         }
     }
@@ -159,6 +179,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
             @Override
             public void payResult(boolean result) {
                 if (result) {
+
                 }
             }
         });

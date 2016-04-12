@@ -1339,6 +1339,13 @@
 <dimen name="paylayervip_layout_height">283.33dp</dimen>
 <dimen name="paylayervip_width">13.33dp</dimen>
 <dimen name="paylayervip_height">26.67dp</dimen>
+<dimen name="paylayerpkg_text_marginLeft">24.33dp</dimen>
+<dimen name="paylayerpkg_text_marginTop">8.00dp</dimen>
+<dimen name="paylayerpkg_scrollview_margintop">19.67dp</dimen>
+<dimen name="paylayerpkg_purchase_width">58.00dp</dimen>
+<dimen name="paylayerpkg_purchase_height">30.67dp</dimen>
+<dimen name="paylayerpkg_purchase_marginRight">26.33dp</dimen>
+<dimen name="paylayerpkg_title_marginTop">25.67dp</dimen>
 
 
 </resources>

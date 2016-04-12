@@ -321,4 +321,5 @@
     <string name="exit_account_message_text">您已退出登录!</string>
     <string name="vip_des">会员介绍</string>
     <string name="vip_des_content">购买视云VIP,在有效期内,可以不限时间和次数收看视云VIP内容.</string>
+    <string name="paylayerpkg_purchase">购买</string>
 </resources>
