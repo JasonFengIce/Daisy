@@ -1530,9 +1530,11 @@ public class PlayerActivity extends VodMenuAction {
 			}
 			return true;
 		}
+
 		if (!isVodMenuVisible() && mVideoView != null) {
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
+			case KeyEvent.KEYCODE_MEDIA_REWIND:
 				mHandler.removeCallbacks(mUpdateTimeTask);
 				mHandler.removeCallbacks(checkStatus);
 				if (clipLength > 0 && !live_video) {
@@ -1547,6 +1549,7 @@ public class PlayerActivity extends VodMenuAction {
 				}
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
+			case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
 				mHandler.removeCallbacks(mUpdateTimeTask);
 				mHandler.removeCallbacks(checkStatus);
 				if (clipLength > 0 && !live_video) {
@@ -1562,6 +1565,7 @@ public class PlayerActivity extends VodMenuAction {
 				break;
 			case KeyEvent.KEYCODE_DPAD_CENTER:
 			case KeyEvent.KEYCODE_ENTER:
+			case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
 				if (clipLength > 0) {
 					showPanel();
 					if (!paused) {
@@ -1652,7 +1656,8 @@ public class PlayerActivity extends VodMenuAction {
 					hideMenuHandler.postDelayed(hideMenuRunnable, 60000);
 				}
 				break;
-
+			case KeyEvent.KEYCODE_MEDIA_STOP:
+				finish();
 			default:
 				break;
 			}
