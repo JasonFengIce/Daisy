@@ -16,7 +16,7 @@ public class PayLayerEntity {
 
     private Expense_item expense_item;
 
-    private Package _package;
+    private Package pkage;
 
     public void setPk(int pk) {
         this.pk = pk;
@@ -24,6 +24,14 @@ public class PayLayerEntity {
 
     public int getPk() {
         return this.pk;
+    }
+
+    public Package getPkage() {
+        return pkage;
+    }
+
+    public void setPkage(Package pkage) {
+        this.pkage = pkage;
     }
 
     public void setPay_type(int pay_type) {
@@ -66,11 +74,4 @@ public class PayLayerEntity {
         return this.expense_item;
     }
 
-    public void setPackage(Package _package) {
-        this._package = _package;
-    }
-
-    public Package getPackage() {
-        return this._package;
-    }
 }

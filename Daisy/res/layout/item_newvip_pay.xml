@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/item_newvip_pay_img"
+        android:layout_width="@dimen/item_newvip_pay_img_width"
+        android:layout_height="@dimen/item_newvip_pay_img_height"
+        android:scaleType="fitXY"/>
+
+</RelativeLayout>

@@ -41,7 +41,7 @@ public class PayActivity extends Activity {
 
 
     public void payLayer() {
-        NewVipHttpManager.getInstance().resetAdapter_SKY.create(NewVipHttpApi.PayLayer.class).doRequest("23").enqueue(new Callback<PayLayerEntity>() {
+        NewVipHttpManager.getInstance().resetAdapter_SKY.create(NewVipHttpApi.PayLayer.class).doRequest("675305").enqueue(new Callback<PayLayerEntity>() {
             @Override
             public void onResponse(Response<PayLayerEntity> response) {
 
@@ -52,6 +52,11 @@ public class PayActivity extends Activity {
 
             }
         });
+    }
+
+    private void fillLayout(PayLayerEntity payLayerEntity) {
+        scrollViewLayout.removeAllViews();
+
 
     }
 }
