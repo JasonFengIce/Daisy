@@ -185,6 +185,7 @@ public abstract class VodMenuAction extends BaseActivity {
 		public boolean onKeyDown(int keyCode, KeyEvent event) {
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_BACK:
+			case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
 				dismiss();
 				return true;
 			}
