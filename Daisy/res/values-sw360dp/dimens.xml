@@ -189,6 +189,7 @@
 <dimen name="related_item_image_quality_margintop">-1.00dip</dimen>
 <dimen name="related_item_image_quality_marginright">-1.00dip</dimen>
 <dimen name="related_item_related_price_txt_marginleft">2.00dip</dimen>
+<dimen name="related_item_title_w">115.00dip</dimen>
 <dimen name="related_item_title_margintop">11.33dip</dimen>
 <dimen name="related_item_title_marginbottom">11.33dip</dimen>
 <dimen name="related_item_title_textsize">10.00sp</dimen>
@@ -1317,6 +1318,14 @@
 
 <dimen name="child_loop_indicator_text_height">18.33dp</dimen>
 <dimen name="child_loop_indicator_layout_height">28.33dp</dimen>
+<dimen name="item_newvip_pay_img_width">145.33dp</dimen>
+<dimen name="item_newvip_pay_img_height">204.33dp</dimen>
+<dimen name="newvip_pay_scroll_width">500.00dp</dimen>
+<dimen name="newvip_pay_scroll_height">233.33dp</dimen>
+<dimen name="newip_payitem_margin">7.67dp</dimen>
+<dimen name="textsize_72sp">24.00sp</dimen>
+<dimen name="newvip_item_text_margin">66.67dp</dimen>
+<dimen name="newvip_price_mariginTop">116.67dp</dimen>
 
 
 </resources>

@@ -1,12 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+<RelativeLayout
+    android:id="@+id/newvip_pay_item"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/selector_item"
+    android:clickable="true"
+    android:descendantFocusability="blocksDescendants"
+    android:focusable="true"
+    android:nextFocusUp="@id/newvip_pay_item"
+    >
 
     <ImageView
         android:id="@+id/item_newvip_pay_img"
         android:layout_width="@dimen/item_newvip_pay_img_width"
         android:layout_height="@dimen/item_newvip_pay_img_height"
         android:scaleType="fitXY"/>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="@dimen/item_newvip_pay_img_width"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/newvip_item_text_margin"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/textsize_72sp"/>
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="@dimen/item_newvip_pay_img_width"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/newvip_price_mariginTop"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/textsize_72sp"/>
 
 </RelativeLayout>

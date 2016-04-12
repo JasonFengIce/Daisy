@@ -6,7 +6,7 @@ package tv.ismar.daisy.data.http.newvip;
 public class Expense_item {
     private String title;
 
-    private int price;
+    private float price;
 
     private String duration;
 
@@ -28,7 +28,7 @@ public class Expense_item {
         this.price = price;
     }
 
-    public int getPrice() {
+    public float getPrice() {
         return this.price;
     }
 

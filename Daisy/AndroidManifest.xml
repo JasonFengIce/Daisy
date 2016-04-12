@@ -310,7 +310,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activity.newvip.PayActivity"/>
+        <activity
+            android:name=".ui.activity.newvip.PayActivity"
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
+            />
 
         <!--content provider-->
         <provider

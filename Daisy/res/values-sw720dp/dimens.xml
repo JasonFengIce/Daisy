@@ -189,7 +189,7 @@
 <dimen name="related_item_image_quality_margintop">-2.00dip</dimen>
 <dimen name="related_item_image_quality_marginright">-2.00dip</dimen>
 <dimen name="related_item_related_price_txt_marginleft">4.00dip</dimen>
-<dimen name="related_item_title_w">230dip</dimen>
+<dimen name="related_item_title_w">230.00dip</dimen>
 <dimen name="related_item_title_margintop">22.67dip</dimen>
 <dimen name="related_item_title_marginbottom">22.67dip</dimen>
 <dimen name="related_item_title_textsize">20.00sp</dimen>
@@ -765,10 +765,10 @@
 <dimen name="usercenter_fragment_help_ismartv_introduction_margin_right">26.67dp</dimen>
 <dimen name="usercenter_fragment_help_ismartv_introduction_margin_top">33.33dp</dimen>
 <dimen name="usercenter_fragment_help_ismartv_introduction_text_size">24.00dp</dimen>
-<dimen name="usercenter_fragment_help_ismartv_introduction_lineSpacingExtra">15.33dp</dimen>
+<dimen name="usercenter_fragment_help_ismartv_introduction_lineSpacingExtra">23.33dp</dimen>
 <dimen name="usercenter_help_contact_margin_left">90.00dp</dimen>
 <dimen name="usercenter_help_helpcenter_text_margin_top">40.00dp</dimen>
-<dimen name="usercenter_help_icon_margin_top">35.67dp</dimen>
+<dimen name="usercenter_help_icon_margin_top">56.67dp</dimen>
 <dimen name="usercenter_help_shipinkefu_margin_top">13.33dp</dimen>
 <dimen name="usercenter_info_layout_margin_left">26.67dp</dimen>
 <dimen name="usercenter_info_device_number_margin_top">23.33dp</dimen>
@@ -1021,10 +1021,10 @@
 <dimen name="usercenter_storefragment_packagelist_item_text_width">224.00dp</dimen>
 <dimen name="usercenter_storefragment_packagelist_item_text_height">41.33dp</dimen>
 <dimen name="usercenter_storefragment_packagelist_marginBottom">33.33dp</dimen>
-<dimen name="usercenter_storefragment_packagelist_selectorLeftPadding">14.93dip</dimen>
-<dimen name="usercenter_storefragment_packagelist_selectorTopPadding">11.93dip</dimen>
-<dimen name="usercenter_storefragment_packagelist_selectorRightPadding">14.73dip</dimen>
-<dimen name="usercenter_storefragment_packagelist_selectorBottomPadding">-30.00dip</dimen>
+<dimen name="usercenter_storefragment_packagelist_selectorLeftPadding">13.93dip</dimen>
+<dimen name="usercenter_storefragment_packagelist_selectorTopPadding">13.93dip</dimen>
+<dimen name="usercenter_storefragment_packagelist_selectorRightPadding">13.73dip</dimen>
+<dimen name="usercenter_storefragment_packagelist_selectorBottomPadding">-28.00dip</dimen>
 <dimen name="usercenter_storefragment_packagelist_gridview_P">3.33dip</dimen>
 
 
@@ -1099,7 +1099,7 @@
 <dimen name="loginfragment_successPop_yOffset">33.33dp</dimen>
 <dimen name="loginfragment_CombinePop_xOffset">133.33dp</dimen>
 <dimen name="loginfragment_combinePop_yOffset">16.67dp</dimen>
-<dimen name="loginfragment_phoneNumberLayout_marginTop">12.67dp</dimen>
+<dimen name="loginfragment_phoneNumberLayout_marginTop">6.67dp</dimen>
 <dimen name="loginfragment_phoneNumberLayout_height">46.67dp</dimen>
 <dimen name="loginfragment_phoneNumber_edit_height">44.00dp</dimen>
 <dimen name="loginfragment_phoneNumber_edit_marginRright">6.67dp</dimen>
@@ -1304,7 +1304,7 @@
 <dimen name="location_selected_city_text_width">133.33dp</dimen>
 
 <dimen name="usercenter_activity_top_layout_height">66.00dp</dimen>
-<dimen name="usercenter_horizontal_divider_line_height">2dp</dimen>
+<dimen name="usercenter_horizontal_divider_line_height">0.67dp</dimen>
 <dimen name="usercenter_vertical_divider_line_width">27.33dp</dimen>
 <dimen name="usercenter_vertical_divider_line2_width">0.67dp</dimen>
 <dimen name="user_center_container_width">953.33dp</dimen>
@@ -1318,6 +1318,14 @@
 
 <dimen name="child_loop_indicator_text_height">36.67dp</dimen>
 <dimen name="child_loop_indicator_layout_height">56.67dp</dimen>
+<dimen name="item_newvip_pay_img_width">290.67dp</dimen>
+<dimen name="item_newvip_pay_img_height">408.67dp</dimen>
+<dimen name="newvip_pay_scroll_width">1000.00dp</dimen>
+<dimen name="newvip_pay_scroll_height">466.67dp</dimen>
+<dimen name="newip_payitem_margin">15.33dp</dimen>
+<dimen name="textsize_72sp">48.00sp</dimen>
+<dimen name="newvip_item_text_margin">133.33dp</dimen>
+<dimen name="newvip_price_mariginTop">233.33dp</dimen>
 
 
 </resources>
