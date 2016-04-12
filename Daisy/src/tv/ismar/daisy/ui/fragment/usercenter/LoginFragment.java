@@ -333,7 +333,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 String bindflag = DaisyUtils.getVodApplication(mContext)
                         .getPreferences().getString(VodApplication.BESTTV_AUTH_BIND_FLAG, "");
                 AuthTokenEntity authTokenEntity = new Gson().fromJson(result, AuthTokenEntity.class);
-                saveToLocal(authTokenEntity.getAuth_token(), phoneNumber);
+                saveToLocal(authTokenEntity.getAuth_token(), phoneNumber,authTokenEntity.getZuser_token());
                 if (StringUtils.isNotEmpty(bindflag) && "privilege".equals(bindflag)) {
                     bindBestTvauth();
                 }
@@ -446,10 +446,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    private void saveToLocal(String authToken, String phoneNumber) {
+    private void saveToLocal(String authToken, String phoneNumber,String zuser_token) {
         SimpleRestClient.access_token = authToken;
         SimpleRestClient.mobile_number = phoneNumber;
-
+        SimpleRestClient.zuser_token = zuser_token;
         DaisyUtils.getVodApplication(mContext).getEditor().putString(VodApplication.AUTH_TOKEN, authToken);
         DaisyUtils.getVodApplication(mContext).getEditor().putString(VodApplication.MOBILE_NUMBER, phoneNumber);
         DaisyUtils.getVodApplication(mContext).save();

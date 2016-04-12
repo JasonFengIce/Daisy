@@ -111,7 +111,10 @@ public class InitPlayerTool {
                         clip = item.clip;
                     }
                     else{
+						if(item.preview != null)
                         clip = item.preview;
+						else
+						clip = item.clip;
                     }
             		item.isPreview = true;
             	}
