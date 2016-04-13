@@ -13,11 +13,10 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnHoverListener;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import com.google.gson.JsonSyntaxException;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,6 +35,7 @@ import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.*;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -75,7 +75,10 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
     private LinearLayout mMoreContent;
     private TextView detail_price_txt;
     private TextView detail_duration_txt;
-    private TextView bean_score;
+    //    private TextView bean_score;
+    private RotateTextView detail_tag_txt;
+    private TextView detail_permission_txt;
+    private ImageView source;
     private View top_view_layout;
     private View bottom_view_layout;
     private String channel;
@@ -85,6 +88,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
     private BitmapDecoder bitmapDecoder;
     private InitPlayerTool tool;
     private boolean isneedpause = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,14 +150,14 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
         setContentView(R.layout.filmitem_portrait_detail_view);
         mSimpleRestClient = new SimpleRestClient();
-      final   View vv = findViewById(R.id.large_layout);
-      bitmapDecoder = new BitmapDecoder();
-      bitmapDecoder.decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
-          @Override
-          public void onSuccess(BitmapDrawable bitmapDrawable) {
-              vv.setBackgroundDrawable(bitmapDrawable);
-          }
-      });
+        final View vv = findViewById(R.id.large_layout);
+        bitmapDecoder = new BitmapDecoder();
+        bitmapDecoder.decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {
+            @Override
+            public void onSuccess(BitmapDrawable bitmapDrawable) {
+                vv.setBackgroundDrawable(bitmapDrawable);
+            }
+        });
 
         mLoadingDialog = new LoadingDialog(this, getResources().getString(
                 R.string.vod_loading));
@@ -456,9 +460,13 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
     private void setExpenseStatus() {
         /*
-		 * if this item is a drama , the button should split to two. otherwise.
+         * if this item is a drama , the button should split to two. otherwise.
 		 * use one button.
 		 */
+        if (mItem.expense.cplogo != null) {
+            Picasso.with(this).load(mItem.expense.cplogo).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(source);
+            source.setVisibility(View.VISIBLE);
+        }
         if (isFree()) {
             // 免费
             if (!isDrama()) {
@@ -482,6 +490,17 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             mCollectBtn = mMiddleBtn;
         } else {
             // 收费
+            if (mItem.expense.cptitle != null && !"".equals(mItem.expense.cptitle)) {
+                detail_tag_txt.setText(mItem.expense.cptitle);
+                detail_tag_txt.setVisibility(View.VISIBLE);
+                if("荔枝VIP".equals(mItem.expense.cptitle)){
+                    detail_tag_txt.setBackgroundResource(R.drawable.lizhi);
+                }else if("视云VIP".equals(mItem.expense.cptitle)){
+                    detail_tag_txt.setBackgroundResource(R.drawable.ismar);
+                }else{
+                    detail_tag_txt.setBackgroundResource(R.drawable.single_buy);
+                }
+            }
             if (!isBuy) {
                 // 未购买
 //				if (!isDrama()) {
@@ -517,11 +536,18 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 initFocusBtn(mLeftBtn, false);
                 initFocusBtn(mRightBtn, false);
                 initFocusBtn(mMiddleBtn, false);
-                detail_price_txt.setText("￥" + mItem.expense.price);
-                detail_duration_txt.setText("有效期" + mItem.expense.duration
-                        + "天");
-                detail_price_txt.setVisibility(View.VISIBLE);
-                detail_duration_txt.setVisibility(View.VISIBLE);
+                if (mItem.expense.cpid == 3) {
+                    detail_permission_txt.setVisibility(View.VISIBLE);
+                    detail_duration_txt.setVisibility(View.GONE);
+                    detail_price_txt.setVisibility(View.GONE);
+                } else {
+                    detail_price_txt.setText("￥" + mItem.expense.price);
+//                detail_duration_txt.setText("有效期" + mItem.expense.duratio);
+                    detail_price_txt.setVisibility(View.VISIBLE);
+                    detail_permission_txt.setVisibility(View.GONE);
+                    detail_duration_txt.setVisibility(View.GONE);
+//                detail_duration_txt.setVisibility(View.VISIBLE);
+                }
                 remainDay = mItem.expense.duration;
                 mCollectBtn = mRightBtn;
             } else {
@@ -555,14 +581,19 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 mMiddleBtn.setTag(COLLECT_VIDEO);
                 initFocusBtn(mLeftBtn, false);
                 initFocusBtn(mMiddleBtn, false);
-                detail_price_txt.setText("已付费");
-                detail_duration_txt.setText("剩余" + remainDay + "天");
-                detail_price_txt.setVisibility(View.VISIBLE);
+//                detail_price_txt.setText("已付费");
+//                detail_duration_txt.setText("剩余" + remainDay + "天");
+                Date date=new Date();
+                date.setTime(System.currentTimeMillis()+3600*24*1000*remainDay);
+                SimpleDateFormat format=new SimpleDateFormat("yyyy年MM月dd日");
+                detail_duration_txt.setText("有效期至" +format.format(date));
                 detail_duration_txt.setVisibility(View.VISIBLE);
-                detail_duration_txt
-                        .setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
-                detail_price_txt
-                        .setBackgroundResource(R.drawable.vod_detail_already_payment_price);
+                detail_price_txt.setVisibility(View.GONE);
+                detail_permission_txt.setVisibility(View.GONE);
+//                detail_duration_txt
+//                        .setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
+//                detail_price_txt
+//                        .setBackgroundResource(R.drawable.vod_detail_already_payment_price);
                 mCollectBtn = mMiddleBtn;
             }
         }
@@ -589,8 +620,8 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
     @Override
     protected void onPause() {
-    	if(isneedpause)
-        isPause = true;
+        if (isneedpause)
+            isPause = true;
         if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
             mLoadingDialog.dismiss();
         }
@@ -618,11 +649,11 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
     @Override
     protected void onDestroy() {
-    	if(tool != null)
-    		tool.removeAsycCallback();
-    	 if(bitmapDecoder != null && bitmapDecoder.isAlive()){
-         	bitmapDecoder.interrupt();
-         }
+        if (tool != null)
+            tool.removeAsycCallback();
+        if (bitmapDecoder != null && bitmapDecoder.isAlive()) {
+            bitmapDecoder.interrupt();
+        }
         if (mGetItemTask != null
                 && mGetItemTask.getStatus() != AsyncTask.Status.FINISHED) {
             mGetItemTask.cancel(true);
@@ -742,7 +773,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
         new NetworkUtils.DataCollectionTask().execute(
                 NetworkUtils.VIDEO_DETAIL_IN, mDataCollectionProperties);
-		/*
+        /*
 		 * Build detail attributes list using a given order according to
 		 * ContentModel's define. we also need to add some common attributes
 		 * which are defined in ContentModel.
@@ -821,10 +852,10 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         }
         // Set the content to Introduction View
         mDetailIntro.setText("简介 : " + mItem.description);
-        if (mItem.bean_score > 0) {
-            bean_score.setVisibility(View.VISIBLE);
-            bean_score.setText(mItem.bean_score + "");
-        }
+//        if (mItem.bean_score > 0) {
+//            bean_score.setVisibility(View.VISIBLE);
+//            bean_score.setText(mItem.bean_score + "");
+//        }
         // Set the favorite button's label.
 //        if (isFavorite()) {
 //            //mCollectBtn.setBackgroundResource(R.drawable.collected_btn_bg_selector);
@@ -844,10 +875,10 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             //mCollectBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
             mCollectBtn.setText(getResources().getString(R.string.favorite));
         }
-		if (!(mRelatedItem != null && mRelatedItem.length > 0)) {
-			mGetRelatedTask = new GetRelatedTask();
-			mGetRelatedTask.execute();
-		}
+        if (!(mRelatedItem != null && mRelatedItem.length > 0)) {
+            mGetRelatedTask = new GetRelatedTask();
+            mGetRelatedTask.execute();
+        }
 
         isInitialized = true;
     }
@@ -897,7 +928,10 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         mMoreContent = (LinearLayout) findViewById(R.id.more_content);
         detail_price_txt = (TextView) findViewById(R.id.detail_price_txt);
         detail_duration_txt = (TextView) findViewById(R.id.detail_duration_txt);
-        bean_score = (TextView) findViewById(R.id.bean_score);
+        detail_permission_txt = (TextView) findViewById(R.id.detail_permission_txt);
+        detail_tag_txt = (RotateTextView) findViewById(R.id.detail_tag_txt);
+        source = (ImageView) findViewById(R.id.source);
+//        bean_score = (TextView) findViewById(R.id.bean_score);
         mLeftBtn = (Button) findViewById(R.id.btn_left);
         mMiddleBtn = (Button) findViewById(R.id.middle_btn);
         mRightBtn = (Button) findViewById(R.id.btn_right);
@@ -1135,15 +1169,15 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                     @Override
                     public void onPreExecute(Intent intent) {
                         // TODO Auto-generated method stub
-                    	if(mLoadingDialog != null)
-                        mLoadingDialog.show();
+                        if (mLoadingDialog != null)
+                            mLoadingDialog.show();
                     }
 
                     @Override
                     public void onPostExecute() {
                         // TODO Auto-generated method stub
-                    	if(mLoadingDialog != null)
-                        mLoadingDialog.dismiss();
+                        if (mLoadingDialog != null)
+                            mLoadingDialog.dismiss();
                     }
                 });
                 switch (id) {
@@ -1173,7 +1207,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                             if (isDrama()) {
                                 tool.initClipInfo(mItem.subitems[0].url, InitPlayerTool.FLAG_URL);
                             } else {
-                                tool.initClipInfo(mItem, InitPlayerTool.FLAG_ITEM, true,null);
+                                tool.initClipInfo(mItem, InitPlayerTool.FLAG_ITEM, true, null);
                             }
                         } else if (identify.equals(PLAY_VIDEO)) {
                             // 播放
@@ -1265,9 +1299,9 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 //            intent.setAction("tv.ismar.daisy.PFileItem");
 //            intent.putExtra("url", url);
 //            startActivity(intent);
-            if ("launcher".equals(fromPage)){
+            if ("launcher".equals(fromPage)) {
                 fromPage = "tvhome";
-            }else{
+            } else {
                 fromPage = "related";
             }
             DaisyUtils.gotoSpecialPage(PFilmItemdetailActivity.this, itemSection.content_model, itemSection.item_url, fromPage);
@@ -1321,54 +1355,54 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		boolean ret = super.onKeyDown(keyCode, event);
-		if("lcd_s3a01".equals(VodUserAgent.getModelName())){
-			if(keyCode == 707 || keyCode == 774 || keyCode ==253){
-				isneedpause = false;
-			}
-		}else{
-			if(keyCode == 223 || keyCode == 499 || keyCode ==480){
-				isneedpause = false;
-			}
-		}
-		return ret;
-	}
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        boolean ret = super.onKeyDown(keyCode, event);
+        if ("lcd_s3a01".equals(VodUserAgent.getModelName())) {
+            if (keyCode == 707 || keyCode == 774 || keyCode == 253) {
+                isneedpause = false;
+            }
+        } else {
+            if (keyCode == 223 || keyCode == 499 || keyCode == 480) {
+                isneedpause = false;
+            }
+        }
+        return ret;
+    }
 
-	private OnHoverListener mOnHoverListener = new OnHoverListener() {
+    private OnHoverListener mOnHoverListener = new OnHoverListener() {
 
-		@Override
-		public boolean onHover(View v, MotionEvent keycode) {
-			switch (keycode.getAction()) {
-			case MotionEvent.ACTION_HOVER_ENTER:
-			case MotionEvent.ACTION_HOVER_MOVE:
-				if(v instanceof Button){
-					v.requestFocus();
-					initFocusBtn(v, true);
-				}else{
-					v.requestFocus();
-	                // img.setBackgroundResource(R.drawable.popup_bg_yellow);
-				}
-				break;
-			case MotionEvent.ACTION_HOVER_EXIT:
-				if(v instanceof Button){	
-					initFocusBtn(v, false);
-				}else{
-	                TextView title = (TextView) v
-	                        .findViewById(R.id.related_title);
-	                LabelImageView img = (LabelImageView) v.findViewById(R.id.related_preview_img);
-	                title.setTextColor(0xFFF8F8FF);
-	                img.setDrawBorder(false);
-	                img.invalidate();
-	                title.setSelected(false);				
-				}
-				break;
-			default:
-				break;
-			}
-			return false;
-		}
-	};
+        @Override
+        public boolean onHover(View v, MotionEvent keycode) {
+            switch (keycode.getAction()) {
+                case MotionEvent.ACTION_HOVER_ENTER:
+                case MotionEvent.ACTION_HOVER_MOVE:
+                    if (v instanceof Button) {
+                        v.requestFocus();
+                        initFocusBtn(v, true);
+                    } else {
+                        v.requestFocus();
+                        // img.setBackgroundResource(R.drawable.popup_bg_yellow);
+                    }
+                    break;
+                case MotionEvent.ACTION_HOVER_EXIT:
+                    if (v instanceof Button) {
+                        initFocusBtn(v, false);
+                    } else {
+                        TextView title = (TextView) v
+                                .findViewById(R.id.related_title);
+                        LabelImageView img = (LabelImageView) v.findViewById(R.id.related_preview_img);
+                        title.setTextColor(0xFFF8F8FF);
+                        img.setDrawBorder(false);
+                        img.invalidate();
+                        title.setSelected(false);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return false;
+        }
+    };
 
 }

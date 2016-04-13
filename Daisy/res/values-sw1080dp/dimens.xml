@@ -1351,5 +1351,33 @@
     <dimen name="payvip_price_margintop">77dp</dimen>
     <dimen name="payvip_duration_marginTop">13dp</dimen>
 
+    <dimen name="VIP_tag_w">109dip</dimen>
+    <dimen name="VIP_tag_h">109dip</dimen>
+    <dimen name="film_VIP_tag_ml">298dip</dimen>
+    <dimen name="item_VIP_tag_ml">1060dip</dimen>
+    <dimen name="item_VIP_tag_mt">64dip</dimen>
+    <dimen name="enter_VIP_tag_ml">443dip</dimen>
+    <dimen name="enter_VIP_tag_mt">97dip</dimen>
+    <dimen name="duration_txt_w">232dip</dimen>
+    <dimen name="duration_txt_h">33dip</dimen>
+    <dimen name="film_duration_txt_ml">66dip</dimen>
+    <dimen name="film_duration_txt_mt">440dip</dimen>
+    <dimen name="permission_txt_w">133dip</dimen>
+    <dimen name="permission_txt_h">33dip</dimen>
+    <dimen name="price_txt_w">111dip</dimen>
+    <dimen name="price_txt_h">33dip</dimen>
+    <dimen name="item_duration_txt_ml">686dip</dimen>
+    <dimen name="item_duration_txt_mt">302dip</dimen>
+    <dimen name="enter_duration_txt_ml">69dip</dimen>
+    <dimen name="enter_duration_txt_mt">335dip</dimen>
+    <dimen name="source_tag_w">254dip</dimen>
+    <dimen name="source_tag_h">57dip</dimen>
+    <dimen name="film_source_tag_mt">133dip</dimen>
+    <dimen name="film_source_tag_mr">72dip</dimen>
+    <dimen name="item_source_tag_mt">336dip</dimen>
+    <dimen name="item_source_tag_ml">916dip</dimen>
 
+
+    <dimen name="tag_txt_size">20sp</dimen>
+    <dimen name="bottom_tag_txt_size">18sp</dimen>
 </resources>

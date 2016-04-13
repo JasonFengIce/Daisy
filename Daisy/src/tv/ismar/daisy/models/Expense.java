@@ -8,4 +8,11 @@ public class Expense implements Serializable {
 	public float price;
 	public float subprice;
 	public int duration;
+	public int cpid;
+	public String cpname;
+	public String cptitle;
+	public int paytype;
+	public String cplogo;
+	public boolean sale_subitem;
+
 }
