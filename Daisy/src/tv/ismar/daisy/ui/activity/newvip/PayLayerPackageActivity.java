@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -50,6 +51,8 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
 
     private PayLayerPackageEntity entity;
 
+    private Button purchaseBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +76,10 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
         price = (TextView) findViewById(R.id.price);
         duration = (TextView) findViewById(R.id.duration);
         decription = (TextView) findViewById(R.id.description);
+        purchaseBtn = (Button) findViewById(R.id.paylayerpkg_purchase);
+        purchaseBtn.setOnHoverListener(this);
+        purchaseBtn.setOnFocusChangeListener(this);
+        purchaseBtn.requestFocus();
     }
 
     private void payLayerPackage(String packageId) {

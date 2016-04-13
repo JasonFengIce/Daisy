@@ -95,6 +95,8 @@ public class PayLayerVipActivity extends BaseActivity implements OnHoverListener
             });
             scrollViewLayout.addView(itemView, layoutParams);
         }
+
+        scrollViewLayout.getChildAt(0).requestFocus();
     }
 
     @Override

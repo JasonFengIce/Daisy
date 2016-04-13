@@ -48,7 +48,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
         initViews();
         Intent intent = getIntent();
         String itemId = intent.getStringExtra("item_id");
-        payLayer(itemId);
+        payLayer("675300");
     }
 
     private void initViews() {
@@ -148,6 +148,8 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
             });
             scrollViewLayout.addView(item, layoutParams);
         }
+
+        scrollViewLayout.getChildAt(0).requestFocus();
     }
 
 
