@@ -577,6 +577,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         mItem.model_name = "item";
         dialog.setItem(mItem);
         dialog.show();
+
     }
 
     private void setLeftDrawable(Drawable drawable, Button btn) {
