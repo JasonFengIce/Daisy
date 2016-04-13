@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import cn.ismartv.tvhorizontalscrollview.TvHorizontalScrollView;
@@ -83,7 +84,7 @@ public class PayLayerVipActivity extends BaseActivity implements OnHoverListener
         for (final Vip_list vipList : payLayerVipEntity.getVip_list()) {
             RelativeLayout itemView = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_paylayervip, null);
             ImageView imageView = (ImageView) itemView.findViewById(R.id.image);
-            Picasso.with(this).load(vipList.getVertical_url()).into(imageView);
+            Picasso.with(this).load(vipList.getVertical_url()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(imageView);
             itemView.setOnFocusChangeListener(this);
             itemView.setOnHoverListener(this);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -127,6 +128,7 @@ public class PayLayerVipActivity extends BaseActivity implements OnHoverListener
             @Override
             public void payResult(boolean result) {
                 if (result) {
+                    finish();
                 }
             }
         });

@@ -6,7 +6,7 @@ package tv.ismar.daisy.data.http.newvip.paylayer;
 public class Vip {
     private String title;
 
-    private int price;
+    private float price;
 
     private String duration;
 
@@ -24,7 +24,7 @@ public class Vip {
         this.price = price;
     }
 
-    public int getPrice() {
+    public float getPrice() {
         return this.price;
     }
 

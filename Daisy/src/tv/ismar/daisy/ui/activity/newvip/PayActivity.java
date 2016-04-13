@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import cn.ismartv.tvhorizontalscrollview.TvHorizontalScrollView;
@@ -47,7 +48,6 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
         initViews();
         Intent intent = getIntent();
         String itemId = intent.getStringExtra("item_id");
-
         payLayer(itemId);
     }
 
@@ -90,8 +90,8 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
             TextView title = (TextView) vipItem.findViewById(R.id.title);
             title.setText(vip.getTitle());
             TextView price = (TextView) vipItem.findViewById(R.id.price);
-            price.setText(String.valueOf(vip.getPrice()));
-            Picasso.with(this).load(vip.getVertical_url()).into(imageView);
+            price.setText(String.valueOf(vip.getPrice()) + "元/" + vip.getDuration() + "天");
+            Picasso.with(this).load(vip.getVertical_url()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(imageView);
             vipItem.setOnHoverListener(this);
             vipItem.setOnFocusChangeListener(this);
             vipItem.setOnClickListener(new View.OnClickListener() {
@@ -114,7 +114,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
             TextView title = (TextView) item.findViewById(R.id.title);
             title.setText(expenseItem.getTitle());
             TextView price = (TextView) item.findViewById(R.id.price);
-            price.setText(String.valueOf(expenseItem.getPrice()));
+            price.setText(String.valueOf(expenseItem.getPrice()) + "元/" + expenseItem.getDuration() + "天");
             item.setOnHoverListener(this);
             item.setOnFocusChangeListener(this);
             item.setOnClickListener(new View.OnClickListener() {
@@ -134,7 +134,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
             TextView title = (TextView) item.findViewById(R.id.title);
             title.setText(newVipPackage.getTitle());
             TextView price = (TextView) item.findViewById(R.id.price);
-            price.setText(String.valueOf(newVipPackage.getPrice()));
+            price.setText(String.valueOf(newVipPackage.getPrice()) + "元/" + newVipPackage.getDuration() + "天");
             item.setOnHoverListener(this);
             item.setOnFocusChangeListener(this);
             item.setOnClickListener(new View.OnClickListener() {
@@ -182,7 +182,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
             @Override
             public void payResult(boolean result) {
                 if (result) {
-
+                    finish();
                 }
             }
         });
