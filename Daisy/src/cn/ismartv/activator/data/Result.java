@@ -8,6 +8,14 @@ public class Result {
     private String sn_token;
     private String log_domain;
     private String upgrade_domain;
+    private String zdevice_token;
+
+    public String getZdevice_token() {
+        return zdevice_token;
+    }
+    public void setZdevice_token(String zdevice_token) {
+        this.zdevice_token = zdevice_token;
+    }
 
     public String getUpgrade_domain() {
         return upgrade_domain;
