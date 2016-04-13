@@ -906,7 +906,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.DEVICE_TOKEN, result.getDevice_token());
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.SN_TOKEN, result.getSn_Token());
-
+        accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.ZDEVICE_TOKEN, result.getSn_Token());
 
     }
 

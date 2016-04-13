@@ -22,8 +22,9 @@ public class AccountSharedPrefs {
 
     public static final String DEVICE_TOKEN = "device_token";
     public static final String SN_TOKEN = "sn_token";
+    public static final String ZDEVICE_TOKEN = "zdevice_token";
     public static final String ACESS_TOKEN = "acess_token";
-
+    public static final String AUSER_TOKEN = "zuser_token";
     public static final String PACKAGE_INFO = "package_info";
     public static final String EXPIRY_DATE = "expiry_date";
 
