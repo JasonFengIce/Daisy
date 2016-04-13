@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/newvip_bg">
+
+    <ImageView
+        android:id="@+id/tmp"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:layout_centerHorizontal="true"
+        android:focusable="true"
+        android:src="@android:color/transparent"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/paylayervip_bg_line">
+
+        <LinearLayout
+            android:layout_width="@dimen/paylayervip_layout_width"
+            android:layout_height="@dimen/paylayervip_layout_height"
+            android:layout_centerInParent="true"
+            android:background="@android:color/black"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/paylayerpkg_text_marginLeft">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/paylayerpkg_title_marginTop"
+                        android:gravity="center"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/textsize_24sp"/>
+
+                    <TextView
+                        android:id="@+id/price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/paylayerpkg_text_marginTop"
+                        android:gravity="center"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/textsize_24sp"/>
+
+                    <TextView
+                        android:id="@+id/duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/paylayerpkg_text_marginTop"
+                        android:gravity="center"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/textsize_24sp"/>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/paylayerpkg_purchase"
+                    android:onClick="buyPackage"
+                    android:layout_width="@dimen/paylayerpkg_purchase_width"
+                    android:layout_height="@dimen/paylayerpkg_purchase_height"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/paylayerpkg_purchase_marginRight"
+                    android:text="@string/paylayerpkg_purchase"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/paylayerpkg_text_marginTop"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/textsize_24sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/paylayerpkg_scrollview_margintop"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/left_arrow"
+                    android:layout_width="@dimen/paylayervip_width"
+                    android:layout_height="@dimen/paylayervip_height"
+                    android:background="@drawable/selector_paylayervip_leftarrow"
+                    />
+
+                <cn.ismartv.tvhorizontalscrollview.TvHorizontalScrollView
+                    android:id="@+id/scroll_view"
+                    android:layout_width="@dimen/paylayervip_scrollview_width"
+                    android:layout_height="@dimen/paylayervip_scrollview_height"
+                    >
+
+                    <LinearLayout
+                        android:id="@+id/scroll_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="horizontal"/>
+
+                </cn.ismartv.tvhorizontalscrollview.TvHorizontalScrollView>
+
+                <ImageView
+                    android:id="@+id/right_arrow"
+                    android:layout_width="@dimen/paylayervip_width"
+                    android:layout_height="@dimen/paylayervip_height"
+                    android:background="@drawable/selector_paylayervip_rightarrow"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

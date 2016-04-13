@@ -1,16 +1,20 @@
-package tv.ismar.daisy.data.http.newvip;
+package tv.ismar.daisy.data.http.newvip.paylayer;
 
 /**
  * Created by huaijie on 4/11/16.
  */
-public class Vip {
+public class Expense_item {
     private String title;
 
-    private int price;
+    private float price;
 
     private String duration;
 
     private String vertical_url;
+
+    private int pk;
+
+    private String type;
 
     public void setTitle(String title) {
         this.title = title;
@@ -24,7 +28,7 @@ public class Vip {
         this.price = price;
     }
 
-    public int getPrice() {
+    public float getPrice() {
         return this.price;
     }
 
@@ -42,6 +46,22 @@ public class Vip {
 
     public String getVertical_url() {
         return this.vertical_url;
+    }
+
+    public void setPk(int pk) {
+        this.pk = pk;
+    }
+
+    public int getPk() {
+        return this.pk;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return this.type;
     }
 
 }

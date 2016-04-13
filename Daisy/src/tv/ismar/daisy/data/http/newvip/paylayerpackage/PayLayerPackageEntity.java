@@ -1,20 +1,40 @@
-package tv.ismar.daisy.data.http.newvip;
+package tv.ismar.daisy.data.http.newvip.paylayerpackage;
+
+import java.util.List;
 
 /**
- * Created by huaijie on 4/11/16.
+ * Created by huaijie on 4/12/16.
  */
-public class Expense_item {
+public class PayLayerPackageEntity {
+    private List<Item_list> item_list;
+
+    private String description;
+
     private String title;
 
     private float price;
 
     private String duration;
 
-    private String vertical_url;
-
     private int pk;
 
     private String type;
+
+    public void setItem_list(List<Item_list> item_list) {
+        this.item_list = item_list;
+    }
+
+    public List<Item_list> getItem_list() {
+        return this.item_list;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
 
     public void setTitle(String title) {
         this.title = title;
@@ -24,8 +44,8 @@ public class Expense_item {
         return this.title;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setPrice(double price) {
+        this.price = (float) price;
     }
 
     public float getPrice() {
@@ -38,14 +58,6 @@ public class Expense_item {
 
     public String getDuration() {
         return this.duration;
-    }
-
-    public void setVertical_url(String vertical_url) {
-        this.vertical_url = vertical_url;
-    }
-
-    public String getVertical_url() {
-        return this.vertical_url;
     }
 
     public void setPk(int pk) {
@@ -63,5 +75,4 @@ public class Expense_item {
     public String getType() {
         return this.type;
     }
-
 }

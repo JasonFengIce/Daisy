@@ -1,4 +1,4 @@
-package tv.ismar.daisy.data.http.newvip;
+package tv.ismar.daisy.data.http.newvip.paylayer;
 
 /**
  * Created by huaijie on 4/11/16.

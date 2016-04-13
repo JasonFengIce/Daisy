@@ -1326,6 +1326,26 @@
 <dimen name="textsize_72sp">36.00sp</dimen>
 <dimen name="newvip_item_text_margin">100.00dp</dimen>
 <dimen name="newvip_price_mariginTop">175.00dp</dimen>
+<dimen name="textsize_24sp">12.00sp</dimen>
+<dimen name="paylayvip_mariginleft">36.50dp</dimen>
+<dimen name="paylayervip_title_mriginTop">70.00dp</dimen>
+<dimen name="paylayervip_des_margintop">12.00dp</dimen>
+<dimen name="paylayervip_scrollview_width">625.00dp</dimen>
+<dimen name="paylayervip_scrollview_height">230.00dp</dimen>
+<dimen name="paylayervip_img_width">146.00dp</dimen>
+<dimen name="paylayervip_img_height">204.50dp</dimen>
+<dimen name="newvip_paylayervip_margin">7.00dp</dimen>
+<dimen name="paylayervip_layout_width">700.00dp</dimen>
+<dimen name="paylayervip_layout_height">425.00dp</dimen>
+<dimen name="paylayervip_width">20.00dp</dimen>
+<dimen name="paylayervip_height">40.00dp</dimen>
+<dimen name="paylayerpkg_text_marginLeft">36.50dp</dimen>
+<dimen name="paylayerpkg_text_marginTop">12.00dp</dimen>
+<dimen name="paylayerpkg_scrollview_margintop">29.50dp</dimen>
+<dimen name="paylayerpkg_purchase_width">87.00dp</dimen>
+<dimen name="paylayerpkg_purchase_height">46.00dp</dimen>
+<dimen name="paylayerpkg_purchase_marginRight">39.50dp</dimen>
+<dimen name="paylayerpkg_title_marginTop">38.50dp</dimen>
 
 
 </resources>

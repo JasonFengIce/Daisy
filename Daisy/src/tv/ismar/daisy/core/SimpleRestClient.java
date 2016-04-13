@@ -37,6 +37,8 @@ public class SimpleRestClient {
 	public static String sn_token;
 	public static String access_token = "";
 	public static String mobile_number = "";
+	public static String zuser_token ="";
+	public static String zdevice_token="";
 	public static int appVersion;
 	public static String app = "SKY";
 	public static int densityDpi;
