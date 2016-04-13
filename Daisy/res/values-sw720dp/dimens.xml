@@ -1346,6 +1346,10 @@
 <dimen name="paylayerpkg_purchase_height">61.33dp</dimen>
 <dimen name="paylayerpkg_purchase_marginRight">52.67dp</dimen>
 <dimen name="paylayerpkg_title_marginTop">51.33dp</dimen>
+<dimen name="payvip_item_marginTop">36.67dp</dimen>
+<dimen name="textsize_48sp">32.00sp</dimen>
+<dimen name="payvip_price_margintop">51.33dp</dimen>
+<dimen name="payvip_duration_marginTop">8.67dp</dimen>
 
 
 </resources>
