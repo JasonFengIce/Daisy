@@ -697,10 +697,10 @@ public class ItemDetailActivity extends BaseActivity implements
         // Set the content to Introduction View
         mDetailIntro.setText(mItem.description);
         // Set the favorite button's label.
-        if (isFavorite()) {
+        if (isFavorite()&&mCollectBtn!=null) {
             //mCollectBtn.setBackgroundResource(R.drawable.collected_btn_bg_selector);
             mCollectBtn.setText(getResources().getString(R.string.favorited));
-        } else {
+        } else if(mCollectBtn!=null){
             //mCollectBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
             mCollectBtn.setText(getResources().getString(R.string.favorite));
         }
