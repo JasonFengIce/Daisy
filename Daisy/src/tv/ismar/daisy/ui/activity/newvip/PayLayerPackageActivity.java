@@ -7,11 +7,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import cn.ismartv.tvhorizontalscrollview.TvHorizontalScrollView;
@@ -49,6 +51,8 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
 
     private PayLayerPackageEntity entity;
 
+    private Button purchaseBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +76,10 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
         price = (TextView) findViewById(R.id.price);
         duration = (TextView) findViewById(R.id.duration);
         decription = (TextView) findViewById(R.id.description);
+        purchaseBtn = (Button) findViewById(R.id.paylayerpkg_purchase);
+        purchaseBtn.setOnHoverListener(this);
+        purchaseBtn.setOnFocusChangeListener(this);
+        purchaseBtn.requestFocus();
     }
 
     private void payLayerPackage(String packageId) {
@@ -105,7 +113,7 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
         for (final Item_list itemList : packageEntity.getItem_list()) {
             RelativeLayout itemView = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_paylayervip, null);
             ImageView imageView = (ImageView) itemView.findViewById(R.id.image);
-            Picasso.with(this).load(itemList.getVertical_url()).into(imageView);
+            Picasso.with(this).load(itemList.getVertical_url()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(imageView);
             itemView.setOnFocusChangeListener(this);
             itemView.setOnHoverListener(this);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -149,6 +157,7 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
             @Override
             public void payResult(boolean result) {
                 if (result) {
+                    finish();
                 }
             }
         });
