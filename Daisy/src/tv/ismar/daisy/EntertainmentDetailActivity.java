@@ -14,6 +14,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.*;
 import com.google.gson.JsonSyntaxException;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,6 +74,8 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
     private boolean isPause = false;
     private TextView detail_price_txt;
     private TextView detail_duration_txt;
+    private TextView detail_permission_txt;
+    private RotateTextView detail_tag_txt;
     private TextView mDetailTitle;
     private TextView mDetailIntro;
     private TextView related_recomman_label;
@@ -112,7 +116,9 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
         mRightBtn.setOnHoverListener(onHoverListener);
         mMoreContent.setOnHoverListener(onHoverListener);
         detail_price_txt = (TextView) findViewById(R.id.detail_price_txt);
+        detail_permission_txt = (TextView) findViewById(R.id.detail_permission_txt);
         detail_duration_txt = (TextView) findViewById(R.id.detail_duration_txt);
+        detail_tag_txt = (RotateTextView) findViewById(R.id.detail_tag_txt);
         //mLeftBtn.setFocusable(false);
         mLeftBtn.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -1042,11 +1048,15 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 initFocusBtn(mLeftBtn, false);
                 initFocusBtn(mRightBtn, false);
                 initFocusBtn(mMiddleBtn, false);
-                detail_price_txt.setText("￥" + mItem.expense.price);
-                detail_duration_txt.setText("有效期" + mItem.expense.duration
-                        + "天");
-                detail_price_txt.setVisibility(View.VISIBLE);
-                detail_duration_txt.setVisibility(View.VISIBLE);
+                if (mItem.expense.cpid == 3) {
+                    detail_permission_txt.setVisibility(View.VISIBLE);
+                } else {
+                    detail_price_txt.setText("￥" + mItem.expense.price);
+//                detail_duration_txt.setText("有效期" + mItem.expense.duration
+//                        + "天");
+                    detail_price_txt.setVisibility(View.VISIBLE);
+//                detail_duration_txt.setVisibility(View.VISIBLE);
+                }
                 remainDay = mItem.expense.duration;
                 mCollectBtn = mRightBtn;
             } else {
@@ -1090,14 +1100,15 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 mMiddleBtn.setTag(COLLECT_VIDEO);
                 initFocusBtn(mLeftBtn, false);
                 initFocusBtn(mMiddleBtn, false);
-                detail_price_txt.setText("已付费");
-                detail_duration_txt.setText("剩余" + remainDay + "天");
-                detail_price_txt.setVisibility(View.VISIBLE);
+//                detail_price_txt.setText("已付费");
+//                detail_duration_txt.setText("剩余" + remainDay + "天");
+                detail_duration_txt.setText("有效期" + mItem.expense.duration + "天");
+//                detail_price_txt.setVisibility(View.VISIBLE);
                 detail_duration_txt.setVisibility(View.VISIBLE);
-                detail_duration_txt
-                        .setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
-                detail_price_txt
-                        .setBackgroundResource(R.drawable.vod_detail_already_payment_price);
+//                detail_duration_txt
+//                        .setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
+//                detail_price_txt
+//                        .setBackgroundResource(R.drawable.vod_detail_already_payment_price);
                 mCollectBtn = mMiddleBtn;
             }
         }

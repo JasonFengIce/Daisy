@@ -46,50 +46,55 @@
                     android:layout_alignParentTop="true"
                     />
 
-            <TextView
-                    android:id="@+id/bean_score"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@id/detail_preview_img"
-                    android:layout_alignRight="@id/detail_preview_img"
-                    android:layout_marginTop="@dimen/gridview_item_ItemBeanScore_MT"
-                    android:background="@drawable/bean_score"
-                    android:gravity="top|center"
-                    android:paddingTop="@dimen/gridview_item_ItemBeanScore_PT"
-                    android:textColor="#ffffffff"
-                    android:textSize="@dimen/gridview_item_ItemBeanScore_textsize"
-                    android:visibility="gone"/>
-
-            <TextView
-                    android:layout_marginLeft="@dimen/filmitem_portrait_detail_price_txt_ml"
-                    android:id="@+id/detail_price_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/detail_preview_img"
-                    android:layout_alignParentLeft="true"
-                    android:ellipsize="end"
-                    android:gravity="center"
-                    android:singleLine="true"
-                    android:textColor="#ffe3e3e3"
-                    android:textSize="@dimen/item_detail_detail_price_textsize"
-                    android:background="@drawable/vod_detail_unpayment_price"
-                    android:visibility="gone"/>
-
+            <tv.ismar.daisy.views.RotateTextView
+                    android:id="@+id/detail_tag_txt"
+                    android:layout_width="@dimen/VIP_tag_w"
+                    android:layout_height="@dimen/VIP_tag_h"
+                    android:layout_marginLeft="@dimen/film_VIP_tag_ml"
+                    android:background="@drawable/ismar"
+                    android:textSize="@dimen/tag_txt_size"
+                    android:textColor="#ffffff"
+                    android:visibility="gone"
+                    />
             <TextView
                     android:id="@+id/detail_duration_txt"
-                    android:text="有效期7天"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/detail_price_txt"
-                    android:layout_alignTop="@id/detail_price_txt"
-                    android:layout_alignBottom="@id/detail_price_txt"
+                    android:layout_width="@dimen/duration_txt_w"
+                    android:layout_height="@dimen/duration_txt_h"
+                    android:layout_marginTop="@dimen/film_duration_txt_mt"
+                    android:layout_marginLeft="@dimen/film_duration_txt_ml"
                     android:visibility="gone"
-                    android:ellipsize="end"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:textColor="#ffe3e3e3"
-                    android:textSize="@dimen/item_detail_detail_price_textsize"
-                    android:background="@drawable/vod_detail_unpayment_duration"/>
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/bottom_tag_txt_size"
+                    android:background="@drawable/indate"/>
+            <TextView
+                    android:id="@+id/detail_permission_txt"
+                    android:text="仅限VIP观看"
+                    android:layout_width="@dimen/permission_txt_w"
+                    android:layout_height="@dimen/permission_txt_h"
+                    android:layout_marginTop="@dimen/film_duration_txt_mt"
+                    android:layout_marginLeft="@dimen/film_duration_txt_ml"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/bottom_tag_txt_size"
+                    android:background="@drawable/permission"/>
+            <TextView
+                    android:id="@+id/detail_price_txt"
+                    android:text="￥7.00"
+                    android:layout_width="@dimen/price_txt_w"
+                    android:layout_height="@dimen/price_txt_h"
+                    android:layout_marginTop="@dimen/film_duration_txt_mt"
+                    android:layout_marginLeft="@dimen/film_duration_txt_ml"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/bottom_tag_txt_size"
+                    android:background="@drawable/pay"/>
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -183,6 +188,16 @@
                         android:focusableInTouchMode="true"
                         android:textSize="@dimen/filmitem_portrait_btn_left_textsize"/>
             </LinearLayout>
+            
+            <ImageView
+                    android:id="@+id/source"
+                    android:layout_width="@dimen/source_tag_w"
+                    android:layout_height="@dimen/source_tag_h"
+                    android:layout_marginTop="@dimen/film_source_tag_mt"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/film_source_tag_mr"
+                    android:visibility="gone"
+                    />
         </RelativeLayout>
     </LinearLayout>
 

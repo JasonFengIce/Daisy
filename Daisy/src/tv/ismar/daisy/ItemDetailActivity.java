@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 import android.graphics.drawable.BitmapDrawable;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,11 +33,8 @@ import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
 import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.daisy.utils.Util;
-import tv.ismar.daisy.views.AsyncImageView;
+import tv.ismar.daisy.views.*;
 import tv.ismar.daisy.views.AsyncImageView.OnImageViewLoadListener;
-import tv.ismar.daisy.views.DetailAttributeContainer;
-import tv.ismar.daisy.views.LoadingDialog;
-import tv.ismar.daisy.views.PaymentDialog;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -95,6 +94,9 @@ public class ItemDetailActivity extends BaseActivity implements
     private Button mMoreContent;
     private TextView detail_price_txt;
     private TextView detail_duration_txt;
+    private RotateTextView detail_tag_txt;
+    private TextView detail_permission_txt;
+    private ImageView source;
     private DetailAttributeContainer mDetailAttributeContainer;
 
     private LoadingDialog mLoadingDialog;
@@ -103,7 +105,7 @@ public class ItemDetailActivity extends BaseActivity implements
 
     private History mHistory;
 
-    private ImageView mDetailQualityLabel;
+//    private ImageView mDetailQualityLabel;
 
     private GetItemTask mGetItemTask;
     private GetRelatedTask mGetRelatedTask;
@@ -139,6 +141,7 @@ public class ItemDetailActivity extends BaseActivity implements
     private BitmapDecoder bitmapDecoder;
     private InitPlayerTool tool;
     private boolean isneedpause = true;
+
     private void initViews() {
         isbuy_label = (ImageView) findViewById(R.id.isbuy_label);
         mDetailLeftContainer = (RelativeLayout) findViewById(R.id.detail_left_container);
@@ -147,7 +150,7 @@ public class ItemDetailActivity extends BaseActivity implements
         mDetailIntro = (TextView) findViewById(R.id.detail_intro);
         mDetailPreviewImg = (AsyncImageView) findViewById(R.id.detail_preview_img);
         mDetailPreviewImg.setOnImageViewLoadListener(this);
-        mDetailQualityLabel = (ImageView) findViewById(R.id.detail_quality_label);
+//        mDetailQualityLabel = (ImageView) findViewById(R.id.detail_quality_label);
         mLeftBtn = (Button) findViewById(R.id.btn_left);
 
 
@@ -161,6 +164,9 @@ public class ItemDetailActivity extends BaseActivity implements
         mMoreContent = (Button) findViewById(R.id.more_content);
         detail_price_txt = (TextView) findViewById(R.id.detail_price_txt);
         detail_duration_txt = (TextView) findViewById(R.id.detail_duration_txt);
+        detail_tag_txt = (RotateTextView) findViewById(R.id.detail_tag_txt);
+        detail_permission_txt = (TextView) findViewById(R.id.detail_permission_txt);
+        source = (ImageView) findViewById(R.id.source);
         mMoreContent.setOnFocusChangeListener(mRelatedOnFocusChangeListener);
         mLeftBtn.setOnFocusChangeListener(mLeftElementFocusChangeListener);
         // mBtnRight.setOnFocusChangeListener(mLeftElementFocusChangeListener);
@@ -362,7 +368,7 @@ public class ItemDetailActivity extends BaseActivity implements
                 entry.setValue(true);
             }
         }
-        if (isPause && mCollectBtn!= null) {
+        if (isPause && mCollectBtn != null) {
             if (isFavorite()) {
                 //mCollectBtn.setBackgroundResource(R.drawable.collected_btn_bg_selector);
                 mCollectBtn.setText(getResources().getString(R.string.favorited));
@@ -385,8 +391,8 @@ public class ItemDetailActivity extends BaseActivity implements
 
     @Override
     protected void onPause() {
-    	if(isneedpause)
-        isPause = true;
+        if (isneedpause)
+            isPause = true;
         if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
             mLoadingDialog.dismiss();
         }
@@ -412,11 +418,11 @@ public class ItemDetailActivity extends BaseActivity implements
 
     @Override
     protected void onDestroy() {
-    	if(tool != null){
-    		tool.removeAsycCallback();
-    	}
-        if(bitmapDecoder != null && bitmapDecoder.isAlive()){
-        	bitmapDecoder.interrupt();
+        if (tool != null) {
+            tool.removeAsycCallback();
+        }
+        if (bitmapDecoder != null && bitmapDecoder.isAlive()) {
+            bitmapDecoder.interrupt();
         }
         if (mGetItemTask != null
                 && mGetItemTask.getStatus() != AsyncTask.Status.FINISHED) {
@@ -615,7 +621,7 @@ public class ItemDetailActivity extends BaseActivity implements
         }
 
         mDetailTitle.setText(mItem.title);
-		/*
+        /*
 		 * Build detail attributes list using a given order according to
 		 * ContentModel's define. we also need to add some common attributes
 		 * which are defined in ContentModel.
@@ -707,22 +713,22 @@ public class ItemDetailActivity extends BaseActivity implements
             mDetailPreviewImg.setUrl(mItem.poster_url);
         }
 
-		if (!(mRelatedItem != null && mRelatedItem.length > 0)) {
-			mGetRelatedTask = new GetRelatedTask();
-			mGetRelatedTask.execute();
-		}
+        if (!(mRelatedItem != null && mRelatedItem.length > 0)) {
+            mGetRelatedTask = new GetRelatedTask();
+            mGetRelatedTask.execute();
+        }
 
         // label_uhd and label_hd has worry name. which label_uhd presents hd.
         switch (mItem.quality) {
             case 3:
-                mDetailQualityLabel.setImageResource(R.drawable.label_uhd);
+//                mDetailQualityLabel.setImageResource(R.drawable.label_uhd);
                 break;
             case 4:
             case 5:
-                mDetailQualityLabel.setImageResource(R.drawable.label_hd);
+//                mDetailQualityLabel.setImageResource(R.drawable.label_hd);
                 break;
             default:
-                mDetailQualityLabel.setVisibility(View.GONE);
+//                mDetailQualityLabel.setVisibility(View.GONE);
         }
         if ("variety".equals(mItem.content_model) || "entertainment".equals(mItem.content_model)) {
             top_column_layout.setTitle("娱乐综艺");
@@ -856,15 +862,15 @@ public class ItemDetailActivity extends BaseActivity implements
             RelativeLayout relatedHolder = (RelativeLayout) LayoutInflater
                     .from(ItemDetailActivity.this).inflate(
                             R.layout.related_item_layout, null);
-            relatedHolder.setId(R.id.related_video_container+i);
+            relatedHolder.setId(R.id.related_video_container + i);
             RelativeLayout.LayoutParams layoutParams;
             layoutParams = new RelativeLayout.LayoutParams(getResources()
                     .getDimensionPixelSize(R.dimen.item_detail_related_W),
                     getResources().getDimensionPixelSize(
                             R.dimen.item_detail_related_H));
-            if(i!=0){
+            if (i != 0) {
 //            layoutParams.leftMargin = 8;
-            layoutParams.addRule(RelativeLayout.BELOW,R.id.related_video_container+i-1);
+                layoutParams.addRule(RelativeLayout.BELOW, R.id.related_video_container + i - 1);
             }
             relatedHolder.setLayoutParams(layoutParams);
             TextView titleView = (TextView) relatedHolder
@@ -915,7 +921,7 @@ public class ItemDetailActivity extends BaseActivity implements
         public void onFocusChange(View v, boolean hasFocus) {
             if (v.getParent() == mRelatedVideoContainer) {
                 if (hasFocus) {
-                	v.setBackgroundResource(R.drawable.related_bg);
+                    v.setBackgroundResource(R.drawable.related_bg);
                     TextView title = (TextView) v
                             .findViewById(R.id.related_title);
                     title.setTextColor(0xFFF8F8FF);
@@ -994,7 +1000,7 @@ public class ItemDetailActivity extends BaseActivity implements
 //			startActivity(intent);
             if ("launcher".equals(fromPage)) {
                 fromPage = "tvhome";
-            }else{
+            } else {
                 fromPage = "related";
             }
             DaisyUtils.gotoSpecialPage(ItemDetailActivity.this, itemSection.content_model, itemSection.item_url, fromPage);
@@ -1073,15 +1079,15 @@ public class ItemDetailActivity extends BaseActivity implements
                     @Override
                     public void onPreExecute(Intent intent) {
                         // TODO Auto-generated method stub
-                    	if(mLoadingDialog != null)
-                        mLoadingDialog.show();
+                        if (mLoadingDialog != null)
+                            mLoadingDialog.show();
                     }
 
                     @Override
                     public void onPostExecute() {
                         // TODO Auto-generated method stub
-                    	if(mLoadingDialog != null)
-                        mLoadingDialog.dismiss();
+                        if (mLoadingDialog != null)
+                            mLoadingDialog.dismiss();
                     }
                 });
                 switch (id) {
@@ -1115,9 +1121,9 @@ public class ItemDetailActivity extends BaseActivity implements
                             // 预告
                             if (isDrama()) {
                                 tool.isSubitemPreview = true;
-                                tool.initClipInfo(mItem.subitems[0].url, InitPlayerTool.FLAG_URL, true,mItem);
+                                tool.initClipInfo(mItem.subitems[0].url, InitPlayerTool.FLAG_URL, true, mItem);
                             } else {
-                                tool.initClipInfo(mItem, InitPlayerTool.FLAG_ITEM, true,null);
+                                tool.initClipInfo(mItem, InitPlayerTool.FLAG_ITEM, true, null);
                             }
                         } else if (identify.equals(PLAY_VIDEO)) {
                             // 播放
@@ -1238,6 +1244,10 @@ public class ItemDetailActivity extends BaseActivity implements
 		 * if this item is a drama , the button should split to two. otherwise.
 		 * use one button.
 		 */
+        if(mItem.expense.cplogo!=null){
+            Picasso.with(this).load(mItem.expense.cplogo).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(source);
+            source.setVisibility(View.VISIBLE);
+        }
         if (isFree()) {
             // 免费
             if (!isDrama()) {
@@ -1260,6 +1270,10 @@ public class ItemDetailActivity extends BaseActivity implements
             initFocusBtn(mMiddleBtn, false);
             mCollectBtn = mMiddleBtn;
         } else {
+            if (mItem.expense.cptitle != null && !"".equals(mItem.expense.cptitle)) {
+                detail_tag_txt.setText(mItem.expense.cptitle);
+                detail_tag_txt.setVisibility(View.VISIBLE);
+            }
             // 收费
             if (!isBuy) {
                 // 未购买
@@ -1296,11 +1310,15 @@ public class ItemDetailActivity extends BaseActivity implements
                 initFocusBtn(mLeftBtn, false);
                 initFocusBtn(mRightBtn, false);
                 initFocusBtn(mMiddleBtn, false);
-                detail_price_txt.setText("￥" + mItem.expense.price);
-                detail_duration_txt.setText("有效期" + mItem.expense.duration
-                        + "天");
-                detail_price_txt.setVisibility(View.VISIBLE);
-                detail_duration_txt.setVisibility(View.VISIBLE);
+                if (mItem.expense.cpid == 3) {
+                    detail_permission_txt.setVisibility(View.VISIBLE);
+                } else {
+                    detail_price_txt.setText("￥" + mItem.expense.price);
+//                detail_duration_txt.setText("有效期" + mItem.expense.duration
+//                        + "天");
+                    detail_price_txt.setVisibility(View.VISIBLE);
+                }
+//                detail_duration_txt.setVisibility(View.VISIBLE);
                 remainDay = mItem.expense.duration;
                 mCollectBtn = mRightBtn;
             } else {
@@ -1335,15 +1353,17 @@ public class ItemDetailActivity extends BaseActivity implements
                 mLeftBtn.setTag(PLAY_VIDEO);
                 initFocusBtn(mLeftBtn, false);
                 initFocusBtn(mMiddleBtn, false);
-                detail_price_txt.setText("已付费");
-                detail_duration_txt.setText("剩余" + remainDay + "天");
-                detail_price_txt.setVisibility(View.VISIBLE);
+//                detail_price_txt.setText("已付费");
+//                detail_duration_txt.setText("剩余" + remainDay + "天");
+//                detail_price_txt.setVisibility(View.VISIBLE);
+                detail_duration_txt.setText("有效期" + mItem.expense.duration
+                        + "天");
                 detail_duration_txt.setVisibility(View.VISIBLE);
-                detail_duration_txt
-                        .setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
-                detail_price_txt
-                        .setBackgroundResource(R.drawable.vod_detail_already_payment_price);
-                mCollectBtn = mMiddleBtn;
+//                detail_duration_txt
+//                        .setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
+//                detail_price_txt
+//                        .setBackgroundResource(R.drawable.vod_detail_already_payment_price);
+//                mCollectBtn = mMiddleBtn;
             }
         }
         mLeftBtn.setFocusable(true);
@@ -1438,47 +1458,47 @@ public class ItemDetailActivity extends BaseActivity implements
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-    
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		boolean ret = super.onKeyDown(keyCode, event);
-		if("lcd_s3a01".equals(VodUserAgent.getModelName())){
-			if(keyCode == 707 || keyCode == 774 || keyCode ==253){
-				isneedpause = false;
-			}
-		}else{
-			if(keyCode == 223 || keyCode == 499 || keyCode ==480){
-				isneedpause = false;
-			}
-		}
-		return ret;
-	}
 
-	private OnHoverListener mOnHoverListener = new OnHoverListener() {
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        boolean ret = super.onKeyDown(keyCode, event);
+        if ("lcd_s3a01".equals(VodUserAgent.getModelName())) {
+            if (keyCode == 707 || keyCode == 774 || keyCode == 253) {
+                isneedpause = false;
+            }
+        } else {
+            if (keyCode == 223 || keyCode == 499 || keyCode == 480) {
+                isneedpause = false;
+            }
+        }
+        return ret;
+    }
 
-		@Override
-		public boolean onHover(View v, MotionEvent keycode) {
-			switch (keycode.getAction()) {
-			case MotionEvent.ACTION_HOVER_ENTER:
-			case MotionEvent.ACTION_HOVER_MOVE:
-				if(v instanceof Button){
-					v.requestFocus();
-					initFocusBtn(v, true);
-				}else{
-					v.requestFocus();			
-				}
-				break;
-			case MotionEvent.ACTION_HOVER_EXIT:
-				if(v instanceof Button){	
-					initFocusBtn(v, false);
-				}else{
-					v.setBackgroundResource(0);					
-				}
-				break;
-			default:
-				break;
-			}
-			return false;
-		}
-	};
+    private OnHoverListener mOnHoverListener = new OnHoverListener() {
+
+        @Override
+        public boolean onHover(View v, MotionEvent keycode) {
+            switch (keycode.getAction()) {
+                case MotionEvent.ACTION_HOVER_ENTER:
+                case MotionEvent.ACTION_HOVER_MOVE:
+                    if (v instanceof Button) {
+                        v.requestFocus();
+                        initFocusBtn(v, true);
+                    } else {
+                        v.requestFocus();
+                    }
+                    break;
+                case MotionEvent.ACTION_HOVER_EXIT:
+                    if (v instanceof Button) {
+                        initFocusBtn(v, false);
+                    } else {
+                        v.setBackgroundResource(0);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return false;
+        }
+    };
 }

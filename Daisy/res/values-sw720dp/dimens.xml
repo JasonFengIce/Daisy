@@ -1327,5 +1327,33 @@
 <dimen name="newvip_item_text_margin">133.33dp</dimen>
 <dimen name="newvip_price_mariginTop">233.33dp</dimen>
 
+    <dimen name="VIP_tag_w">72.67dip</dimen>
+    <dimen name="VIP_tag_h">72.67dip</dimen>
+    <dimen name="film_VIP_tag_ml">198.67dip</dimen>
+    <dimen name="item_VIP_tag_ml">706.67dip</dimen>
+    <dimen name="item_VIP_tag_mt">42.67dip</dimen>
+    <dimen name="enter_VIP_tag_ml">295.33dip</dimen>
+    <dimen name="enter_VIP_tag_mt">64.67dip</dimen>
+    <dimen name="duration_txt_w">154.67dip</dimen>
+    <dimen name="duration_txt_h">22dip</dimen>
+    <dimen name="film_duration_txt_ml">44dip</dimen>
+    <dimen name="film_duration_txt_mt">293.33dip</dimen>
+    <dimen name="permission_txt_w">88.67dip</dimen>
+    <dimen name="permission_txt_h">22dip</dimen>
+    <dimen name="price_txt_w">74dip</dimen>
+    <dimen name="price_txt_h">22dip</dimen>
+    <dimen name="item_duration_txt_ml">457.33dip</dimen>
+    <dimen name="item_duration_txt_mt">201.33dip</dimen>
+    <dimen name="enter_duration_txt_ml">46dip</dimen>
+    <dimen name="enter_duration_txt_mt">223.33dip</dimen>
+    <dimen name="source_tag_w">169.33dip</dimen>
+    <dimen name="source_tag_h">38dip</dimen>
+    <dimen name="film_source_tag_mt">88.67dip</dimen>
+    <dimen name="film_source_tag_mr">48dip</dimen>
+    <dimen name="item_source_tag_mt">224dip</dimen>
+    <dimen name="item_source_tag_ml">610.67dip</dimen>
 
+
+    <dimen name="tag_txt_size">13.33sp</dimen>
+    <dimen name="bottom_tag_txt_size">12sp</dimen>
 </resources>
