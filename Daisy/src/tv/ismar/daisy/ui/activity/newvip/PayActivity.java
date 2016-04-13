@@ -48,7 +48,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
         initViews();
         Intent intent = getIntent();
         String itemId = intent.getStringExtra("item_id");
-        payLayer("675300");
+        payLayer(itemId);
     }
 
     private void initViews() {
