@@ -34,6 +34,7 @@ import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.*;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -1061,11 +1062,15 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 initFocusBtn(mMiddleBtn, false);
                 if (mItem.expense.cpid == 3) {
                     detail_permission_txt.setVisibility(View.VISIBLE);
+                    detail_duration_txt.setVisibility(View.GONE);
+                    detail_price_txt.setVisibility(View.GONE);
                 } else {
                     detail_price_txt.setText("￥" + mItem.expense.price);
 //                detail_duration_txt.setText("有效期" + mItem.expense.duration
 //                        + "天");
                     detail_price_txt.setVisibility(View.VISIBLE);
+                    detail_permission_txt.setVisibility(View.GONE);
+                    detail_duration_txt.setVisibility(View.GONE);
 //                detail_duration_txt.setVisibility(View.VISIBLE);
                 }
                 remainDay = mItem.expense.duration;
@@ -1113,9 +1118,14 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 initFocusBtn(mMiddleBtn, false);
 //                detail_price_txt.setText("已付费");
 //                detail_duration_txt.setText("剩余" + remainDay + "天");
-                detail_duration_txt.setText("有效期" + mItem.expense.duration + "天");
+                Date date=new Date();
+                date.setTime(System.currentTimeMillis()+3600*24*1000*remainDay);
+                SimpleDateFormat format=new SimpleDateFormat("yyyy年MM月dd日");
+                detail_duration_txt.setText("有效期至" +format.format(date));
 //                detail_price_txt.setVisibility(View.VISIBLE);
                 detail_duration_txt.setVisibility(View.VISIBLE);
+                detail_price_txt.setVisibility(View.GONE);
+                detail_permission_txt.setVisibility(View.GONE);
 //                detail_duration_txt
 //                        .setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
 //                detail_price_txt
