@@ -28,6 +28,7 @@ import java.util.ArrayList;
 /**
  * Created by huaijie on 5/18/15.
  */
+@SuppressWarnings("ResourceType")
 public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCallback {
     private static final String TAG = "ChildFragment";
 
@@ -89,16 +90,16 @@ public class ChildFragment extends ChannelBaseFragment implements Flag.ChangeCal
 			}
 		});
         childMore.setOnHoverListener(new View.OnHoverListener() {
-			
-			@Override
-			public boolean onHover(View v, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER
-						|| event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
-                      v.requestFocus();
-				}
-				return false;
-			}
-		});
+
+            @Override
+            public boolean onHover(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER
+                        || event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+                    v.requestFocus();
+                }
+                return false;
+            }
+        });
         return mView;
     }
 
