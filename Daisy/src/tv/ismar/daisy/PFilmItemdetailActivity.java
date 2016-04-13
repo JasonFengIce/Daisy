@@ -491,10 +491,14 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             // 收费
             if (mItem.expense.cptitle != null && !"".equals(mItem.expense.cptitle)) {
                 detail_tag_txt.setText(mItem.expense.cptitle);
-//                detail_tag_txt.price=mItem.expense.cptitle;
-//                detail_tag_txt.setIsHorizontal(false);
-//                detail_tag_txt.price="视云VIP";
                 detail_tag_txt.setVisibility(View.VISIBLE);
+                if("荔枝VIP".equals(mItem.expense.cptitle)){
+                    detail_tag_txt.setBackgroundResource(R.drawable.lizhi);
+                }else if("视云VIP".equals(mItem.expense.cptitle)){
+                    detail_tag_txt.setBackgroundResource(R.drawable.ismar);
+                }else{
+                    detail_tag_txt.setBackgroundResource(R.drawable.single_buy);
+                }
             }
             if (!isBuy) {
                 // 未购买
