@@ -14,5 +14,5 @@ public class Expense implements Serializable {
 	public int paytype;
 	public String cplogo;
 	public boolean sale_subitem;
-
+	public int jump_to;
 }

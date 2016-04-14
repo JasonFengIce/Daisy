@@ -163,7 +163,7 @@ public class Activator {
 
         Retrofit retrofit = HttpClientManager.getInstance().SKY_Retrofit;
         ExcuteActivator activator = retrofit.create(ExcuteActivator.class);
-        activator.excute(sn, manufacture, kind, version, rsaEnResult, fingerprint, "v2_0", getAndroidDevicesInfo()).enqueue(new Callback<Result>() {
+        activator.excute(sn, manufacture, kind, version, rsaEnResult, fingerprint, "v3_0", getAndroidDevicesInfo()).enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Response<Result> response) {
                 Result result = response.body();

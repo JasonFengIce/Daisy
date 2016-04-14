@@ -29,6 +29,7 @@ import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.*;
 import tv.ismar.daisy.player.InitPlayerTool;
+import tv.ismar.daisy.ui.activity.newvip.PayActivity;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
 import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.daisy.utils.Util;
@@ -603,13 +604,21 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
     }
 
     private void buyVideo() {
-        PaymentDialog dialog = new PaymentDialog(PFilmItemdetailActivity.this,
-                R.style.PaymentDialog, ordercheckListener);
-
-        mItem.model_name = "item";
-        dialog.setItem(mItem);
-        dialog.show();
-
+        if(0 == mItem.expense.jump_to) {
+            PaymentDialog dialog = new PaymentDialog(PFilmItemdetailActivity.this,
+                    R.style.PaymentDialog, ordercheckListener);
+            mItem.model_name = "item";
+            dialog.setItem(mItem);
+            dialog.show();
+        }else if(1 == mItem.expense.jump_to){
+            Intent intent = new Intent(PFilmItemdetailActivity.this, PayActivity.class);
+            intent.getExtras().putString("item_id", String.valueOf(mItem.pk));
+            startActivity(intent);
+        }else if(2 == mItem.expense.jump_to){
+            Intent intent = new Intent(PFilmItemdetailActivity.this, PayActivity.class);
+            intent.getExtras().putString("cpid", String.valueOf(mItem.expense.cpid));
+            startActivity(intent);
+        }
     }
 
     private void setLeftDrawable(Drawable drawable, Button btn) {
@@ -1017,7 +1026,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                                 if (json.has("max_expiry_date")) {
                                     // 电视剧部分购买
                                     isBuy = false;// 暂时无法处理
-                                } else {
+                                }  else {
                                     // 电影或者电视剧整部购买
                                     try {
                                         remainDay = Util.daysBetween(

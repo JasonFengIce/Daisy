@@ -28,6 +28,7 @@ import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
+import tv.ismar.daisy.ui.activity.newvip.PayActivity;
 import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.*;
@@ -1043,11 +1044,21 @@ public class ItemDetailActivity extends BaseActivity implements
     }
 
     private void buyVideo() {
-        PaymentDialog dialog = new PaymentDialog(ItemDetailActivity.this,
-                R.style.PaymentDialog, ordercheckListener);
-        mItem.model_name = "item";
-        dialog.setItem(mItem);
-        dialog.show();
+        if(0 == mItem.expense.jump_to) {
+            PaymentDialog dialog = new PaymentDialog(ItemDetailActivity.this,
+                    R.style.PaymentDialog, ordercheckListener);
+            mItem.model_name = "item";
+            dialog.setItem(mItem);
+            dialog.show();
+        }else if(1 == mItem.expense.jump_to){
+            Intent intent = new Intent(ItemDetailActivity.this, PayActivity.class);
+            intent.getExtras().putString("item_id", String.valueOf(mItem.pk));
+            startActivity(intent);
+        }else if(2 == mItem.expense.jump_to){
+            Intent intent = new Intent(ItemDetailActivity.this, PayActivity.class);
+            intent.getExtras().putString("cpid", String.valueOf(mItem.expense.cpid));
+            startActivity(intent);
+        }
     }
 
     private void startDramaListActivity() {
