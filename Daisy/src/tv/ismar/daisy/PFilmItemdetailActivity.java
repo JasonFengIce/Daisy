@@ -618,7 +618,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             dialog.show();
         }else if(1 == mItem.expense.jump_to){
             Intent intent = new Intent(PFilmItemdetailActivity.this, PayActivity.class);
-            intent.getExtras().putString("item_id", String.valueOf(mItem.pk));
+            intent.putExtra("item_id", String.valueOf(mItem.pk));
             startActivity(intent);
         }else if(2 == mItem.expense.jump_to){
             Intent intent = new Intent(PFilmItemdetailActivity.this, PayActivity.class);

@@ -1054,7 +1054,7 @@ public class ItemDetailActivity extends BaseActivity implements
             dialog.show();
         }else if(1 == mItem.expense.jump_to){
             Intent intent = new Intent(ItemDetailActivity.this, PayActivity.class);
-            intent.getExtras().putString("item_id", String.valueOf(mItem.pk));
+            intent.putExtra("item_id", String.valueOf(mItem.pk));
             startActivity(intent);
         }else if(2 == mItem.expense.jump_to){
             Intent intent = new Intent(ItemDetailActivity.this, PayActivity.class);
