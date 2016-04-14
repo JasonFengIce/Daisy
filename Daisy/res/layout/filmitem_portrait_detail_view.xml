@@ -50,7 +50,7 @@
                     android:id="@+id/detail_tag_txt"
                     android:layout_width="@dimen/VIP_tag_w"
                     android:layout_height="@dimen/VIP_tag_h"
-                    android:layout_marginLeft="@dimen/film_VIP_tag_ml"
+                   android:layout_alignRight="@id/detail_preview_img"
                     android:background="@drawable/ismar"
                     android:textSize="@dimen/tag_txt_size"
                     android:textColor="#ffffff"

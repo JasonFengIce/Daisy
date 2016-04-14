@@ -1376,8 +1376,13 @@
     <dimen name="film_source_tag_mr">72dip</dimen>
     <dimen name="item_source_tag_mt">336dip</dimen>
     <dimen name="item_source_tag_ml">916dip</dimen>
-
+    <dimen name="list_vip_score_w">56dip</dimen>
+    <dimen name="list_vip_score_h">38dip</dimen>
+    <dimen name="list_vip_score_mr">6dip</dimen>
+    <dimen name="list_vip_score_mt">110dip</dimen>
+    <dimen name="list_vip_score_horizon_mt">280dip</dimen>
 
     <dimen name="tag_txt_size">20sp</dimen>
     <dimen name="bottom_tag_txt_size">18sp</dimen>
+    <dimen name="score_tag_txt_size">30sp</dimen>
 </resources>

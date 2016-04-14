@@ -12,6 +12,7 @@ import android.widget.TextView;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.FinshedImageService;
 import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.views.RotateTextView;
 
 public class PlayFinishedAdapter extends BaseAdapter {
 	Context mContext;
@@ -68,8 +69,30 @@ public class PlayFinishedAdapter extends BaseAdapter {
 		holder.imageView = (ImageView) convertView.findViewById(R.id.itemImage);
 		holder.tvItemText = (TextView) convertView.findViewById(R.id.itemText);
 		holder.imageLabel = (ImageView) convertView.findViewById(R.id.iv_label);
+		holder.ItemBeanScore = (TextView) convertView.findViewById(R.id.ItemBeanScore);
+		holder.expense_txt = (RotateTextView) convertView.findViewById(R.id.expense_txt);
+		holder.expense_txt.setDegrees(315);
 		holder.tvItemText.setText(item.title);
 		showImage(holder.imageView, holder.imageLabel, item);
+		if(item!=null){
+			if(item.expense!=null){
+				if(item.expense.cptitle!=null){
+					holder.expense_txt.setText(item.expense.cptitle);
+					holder.expense_txt.setVisibility(View.VISIBLE);
+					if("荔枝VIP".equals(item.expense.cptitle)){
+						holder.expense_txt.setBackgroundResource(R.drawable.list_lizhi);
+					}else if("视云VIP".equals(item.expense.cptitle)){
+						holder.expense_txt.setBackgroundResource(R.drawable.list_ismar);
+					}else{
+						holder.expense_txt.setBackgroundResource(R.drawable.list_single_buy);
+					}
+				}
+				if(item.bean_score>0){
+					holder.ItemBeanScore.setVisibility(View.VISIBLE);
+					holder.ItemBeanScore.setText(item.bean_score+"");
+				}
+			}
+		}
 		return convertView;
 	}
 
@@ -116,5 +139,7 @@ public class PlayFinishedAdapter extends BaseAdapter {
 		ImageView imageView;
 		TextView tvItemText;
 		ImageView imageLabel;
+		RotateTextView expense_txt;
+		TextView ItemBeanScore;
 	}
 }

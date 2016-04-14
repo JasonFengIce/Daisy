@@ -89,6 +89,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
     private BitmapDecoder bitmapDecoder;
     private InitPlayerTool tool;
     private boolean isneedpause = true;
+    private String toDate;
     private void initViews() {
         large_layout = findViewById(R.id.large_layout);
         mChannel = getIntent().getStringExtra("channel");
@@ -710,6 +711,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                             } catch (JSONException e) {
                                 // TODO Auto-generated catch block
                                 info = info.substring(1, info.length() - 1);
+                                toDate=info;
                                 try {
                                     remainDay = Util.daysBetween(
                                             Util.getTime(), info) + 1;
@@ -1060,7 +1062,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 initFocusBtn(mLeftBtn, false);
                 initFocusBtn(mRightBtn, false);
                 initFocusBtn(mMiddleBtn, false);
-                if (mItem.expense.cpid == 3) {
+                if (mItem.expense.paytype == 3) {
                     detail_permission_txt.setVisibility(View.VISIBLE);
                     detail_duration_txt.setVisibility(View.GONE);
                     detail_price_txt.setVisibility(View.GONE);
@@ -1116,20 +1118,20 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 mMiddleBtn.setTag(COLLECT_VIDEO);
                 initFocusBtn(mLeftBtn, false);
                 initFocusBtn(mMiddleBtn, false);
-//                detail_price_txt.setText("已付费");
-//                detail_duration_txt.setText("剩余" + remainDay + "天");
-                Date date=new Date();
-                date.setTime(System.currentTimeMillis()+3600*24*1000*remainDay);
-                SimpleDateFormat format=new SimpleDateFormat("yyyy年MM月dd日");
-                detail_duration_txt.setText("有效期至" +format.format(date));
+                if(toDate!=null) {
+                    String[] todate = toDate.substring(0, toDate.indexOf(" ")).split("-");
+                    detail_duration_txt.setText("有效期至" + todate[0] + "年" + todate[1] + "月" + todate[2] + "日");
+                }else{
+                    Date date=new Date();
+                    Log.e("DATE",date.getTime()+"");
+                    date.setTime(date.getTime()+((long)3600*24*1000*remainDay));
+                    SimpleDateFormat format=new SimpleDateFormat("yyyy年MM月dd日");
+                    detail_duration_txt.setText("有效期至" +format.format(date));
+                }
 //                detail_price_txt.setVisibility(View.VISIBLE);
                 detail_duration_txt.setVisibility(View.VISIBLE);
                 detail_price_txt.setVisibility(View.GONE);
                 detail_permission_txt.setVisibility(View.GONE);
-//                detail_duration_txt
-//                        .setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
-//                detail_price_txt
-//                        .setBackgroundResource(R.drawable.vod_detail_already_payment_price);
                 mCollectBtn = mMiddleBtn;
             }
         }

@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.*;
 import tv.ismar.daisy.player.InitPlayerTool;
+import tv.ismar.daisy.ui.activity.newvip.PayActivity;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
 import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.daisy.utils.Util;
@@ -88,6 +90,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
     private BitmapDecoder bitmapDecoder;
     private InitPlayerTool tool;
     private boolean isneedpause = true;
+    private String toDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -537,7 +540,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 initFocusBtn(mLeftBtn, false);
                 initFocusBtn(mRightBtn, false);
                 initFocusBtn(mMiddleBtn, false);
-                if (mItem.expense.cpid == 3) {
+                if (mItem.expense.paytype == 3) {
                     detail_permission_txt.setVisibility(View.VISIBLE);
                     detail_duration_txt.setVisibility(View.GONE);
                     detail_price_txt.setVisibility(View.GONE);
@@ -582,12 +585,16 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 mMiddleBtn.setTag(COLLECT_VIDEO);
                 initFocusBtn(mLeftBtn, false);
                 initFocusBtn(mMiddleBtn, false);
-//                detail_price_txt.setText("已付费");
-//                detail_duration_txt.setText("剩余" + remainDay + "天");
-                Date date=new Date();
-                date.setTime(System.currentTimeMillis()+3600*24*1000*remainDay);
-                SimpleDateFormat format=new SimpleDateFormat("yyyy年MM月dd日");
-                detail_duration_txt.setText("有效期至" +format.format(date));
+                if(toDate!=null) {
+                    String[] todate = toDate.substring(0, toDate.indexOf(" ")).split("-");
+                    detail_duration_txt.setText("有效期至" + todate[0] + "年" + todate[1] + "月" + todate[2] + "日");
+                }else{
+                    Date date=new Date();
+                    Log.e("DATE", date.getTime() + "");
+                    date.setTime(date.getTime()+((long)3600*24*1000*remainDay));
+                    SimpleDateFormat format=new SimpleDateFormat("yyyy年MM月dd日");
+                    detail_duration_txt.setText("有效期至" +format.format(date));
+                }
                 detail_duration_txt.setVisibility(View.VISIBLE);
                 detail_price_txt.setVisibility(View.GONE);
                 detail_permission_txt.setVisibility(View.GONE);
@@ -603,13 +610,21 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
     }
 
     private void buyVideo() {
-        PaymentDialog dialog = new PaymentDialog(PFilmItemdetailActivity.this,
-                R.style.PaymentDialog, ordercheckListener);
-
-        mItem.model_name = "item";
-        dialog.setItem(mItem);
-        dialog.show();
-
+        if(0 == mItem.expense.jump_to) {
+            PaymentDialog dialog = new PaymentDialog(PFilmItemdetailActivity.this,
+                    R.style.PaymentDialog, ordercheckListener);
+            mItem.model_name = "item";
+            dialog.setItem(mItem);
+            dialog.show();
+        }else if(1 == mItem.expense.jump_to){
+            Intent intent = new Intent(PFilmItemdetailActivity.this, PayActivity.class);
+            intent.putExtra("item_id", String.valueOf(mItem.pk));
+            startActivity(intent);
+        }else if(2 == mItem.expense.jump_to){
+            Intent intent = new Intent(PFilmItemdetailActivity.this, PayActivity.class);
+            intent.getExtras().putString("cpid", String.valueOf(mItem.expense.cpid));
+            startActivity(intent);
+        }
     }
 
     private void setLeftDrawable(Drawable drawable, Button btn) {
@@ -1003,6 +1018,8 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 "device_token=" + SimpleRestClient.device_token
                         + "&access_token=" + SimpleRestClient.access_token
                         + "&item=" + mItem.pk, new SimpleRestClient.HttpPostRequestInterface() {
+
+
                     // subitem=214277
                     @Override
                     public void onSuccess(String info) {
@@ -1017,7 +1034,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                                 if (json.has("max_expiry_date")) {
                                     // 电视剧部分购买
                                     isBuy = false;// 暂时无法处理
-                                } else {
+                                }  else {
                                     // 电影或者电视剧整部购买
                                     try {
                                         remainDay = Util.daysBetween(
@@ -1035,6 +1052,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                             } catch (JSONException e) {
                                 // TODO Auto-generated catch block
                                 info = info.substring(1, info.length() - 1);
+                                toDate = info;
                                 try {
                                     remainDay = Util.daysBetween(
                                             Util.getTime(), info) + 1;

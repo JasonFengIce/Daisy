@@ -28,6 +28,7 @@ import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
+import tv.ismar.daisy.ui.activity.newvip.PayActivity;
 import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.*;
@@ -138,6 +139,7 @@ public class ItemDetailActivity extends BaseActivity implements
     private BitmapDecoder bitmapDecoder;
     private InitPlayerTool tool;
     private boolean isneedpause = true;
+    private String toDate;
 
     private void initViews() {
         isbuy_label = (ImageView) findViewById(R.id.isbuy_label);
@@ -553,6 +555,7 @@ public class ItemDetailActivity extends BaseActivity implements
                             } catch (JSONException e) {
                                 // TODO Auto-generated catch block
                                 info = info.substring(1, info.length() - 1);
+                                toDate=info;
                                 try {
                                     remainDay = Util.daysBetween(
                                             Util.getTime(), info) + 1;
@@ -1043,11 +1046,21 @@ public class ItemDetailActivity extends BaseActivity implements
     }
 
     private void buyVideo() {
-        PaymentDialog dialog = new PaymentDialog(ItemDetailActivity.this,
-                R.style.PaymentDialog, ordercheckListener);
-        mItem.model_name = "item";
-        dialog.setItem(mItem);
-        dialog.show();
+        if(0 == mItem.expense.jump_to) {
+            PaymentDialog dialog = new PaymentDialog(ItemDetailActivity.this,
+                    R.style.PaymentDialog, ordercheckListener);
+            mItem.model_name = "item";
+            dialog.setItem(mItem);
+            dialog.show();
+        }else if(1 == mItem.expense.jump_to){
+            Intent intent = new Intent(ItemDetailActivity.this, PayActivity.class);
+            intent.putExtra("item_id", String.valueOf(mItem.pk));
+            startActivity(intent);
+        }else if(2 == mItem.expense.jump_to){
+            Intent intent = new Intent(ItemDetailActivity.this, PayActivity.class);
+            intent.getExtras().putString("cpid", String.valueOf(mItem.expense.cpid));
+            startActivity(intent);
+        }
     }
 
     private void startDramaListActivity() {
@@ -1314,7 +1327,7 @@ public class ItemDetailActivity extends BaseActivity implements
                 initFocusBtn(mLeftBtn, false);
                 initFocusBtn(mRightBtn, false);
                 initFocusBtn(mMiddleBtn, false);
-                if (mItem.expense.cpid == 3) {
+                if (mItem.expense.paytype == 3) {
                     detail_permission_txt.setVisibility(View.VISIBLE);
                     detail_duration_txt.setVisibility(View.GONE);
                     detail_price_txt.setVisibility(View.GONE);
@@ -1364,10 +1377,16 @@ public class ItemDetailActivity extends BaseActivity implements
 //                detail_price_txt.setText("已付费");
 //                detail_duration_txt.setText("剩余" + remainDay + "天");
 //                detail_price_txt.setVisibility(View.VISIBLE);
-                Date date=new Date();
-                date.setTime(System.currentTimeMillis()+3600*24*1000*remainDay);
-                SimpleDateFormat format=new SimpleDateFormat("yyyy年MM月dd日");
-                detail_duration_txt.setText("有效期至" +format.format(date));
+                if(toDate!=null) {
+                    String[] todate = toDate.substring(0, toDate.indexOf(" ")).split("-");
+                    detail_duration_txt.setText("有效期至" + todate[0] + "年" + todate[1] + "月" + todate[2] + "日");
+                }else{
+                    Date date=new Date();
+                    Log.e("DATE",date.getTime()+"");
+                    date.setTime(date.getTime()+((long)3600*24*1000*remainDay));
+                    SimpleDateFormat format=new SimpleDateFormat("yyyy年MM月dd日");
+                    detail_duration_txt.setText("有效期至" +format.format(date));
+                }
                 detail_duration_txt.setVisibility(View.VISIBLE);
                 detail_price_txt.setVisibility(View.GONE);
                 detail_permission_txt.setVisibility(View.GONE);
