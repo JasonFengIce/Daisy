@@ -13,6 +13,7 @@ import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.AsyncImageView.OnImageViewLoadListener;
 import tv.ismar.daisy.views.LabelImageView;
+import tv.ismar.daisy.views.RotateTextView;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -90,7 +91,8 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 		holder.title.setText(mItemList.get(position).title);
 		holder.qualityLabel = (ImageView) convertView.findViewById(R.id.list_item_quality_label);
 		holder.ItemBeanScore = (TextView)convertView.findViewById(R.id.ItemBeanScore);
-        holder.price = (TextView)convertView.findViewById(R.id.expense_txt);
+        holder.price = (RotateTextView)convertView.findViewById(R.id.expense_txt);
+		holder.price.setDegrees(315);
 		if(mItemList.get(position).bean_score>0){
 			holder.ItemBeanScore.setText(""+mItemList.get(position).bean_score);
 			holder.ItemBeanScore.setVisibility(View.VISIBLE);
@@ -99,8 +101,17 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 			holder.ItemBeanScore.setVisibility(View.INVISIBLE);
 		}
         if(mItemList.get(position).expense!=null){
-            holder.price.setText("￥"+mItemList.get(position).expense.price);
-            holder.price.setVisibility(View.VISIBLE);
+			if(mItemList.get(position).expense.cptitle!=null){
+				holder.price.setText(mItemList.get(position).expense.cptitle);
+				holder.price.setVisibility(View.VISIBLE);
+				if("荔枝VIP".equals(mItemList.get(position).expense.cptitle)){
+					holder.price.setBackgroundResource(R.drawable.list_lizhi);
+				}else if("视云VIP".equals(mItemList.get(position).expense.cptitle)){
+					holder.price.setBackgroundResource(R.drawable.list_ismar);
+				}else{
+					holder.price.setBackgroundResource(R.drawable.list_single_buy);
+				}
+			}
         }
         else{
             holder.price.setVisibility(View.GONE);
@@ -113,7 +124,7 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 		TextView title;
 		ImageView qualityLabel;
 		TextView ItemBeanScore;
-        TextView price;
+		RotateTextView price;
 	}
 	
 	public void cancel() {

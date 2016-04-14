@@ -70,32 +70,6 @@
             android:background="@drawable/list_ismar"
             android:visibility="visible" >
     </tv.ismar.daisy.views.RotateTextView>
-       <!--<TextView-->
-        <!--android:id="@+id/ItemBeanScore"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_marginLeft="@dimen/list_item_ItemBeanScore_ml"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_marginTop="@dimen/gridview_item_ItemBeanScore_MT"-->
-        <!--android:background="@drawable/bean_score"-->
-        <!--android:gravity="top|center"-->
-        <!--android:paddingTop="@dimen/gridview_item_ItemBeanScore_PT"-->
-        <!--android:textColor="#ffffffff"-->
-        <!--android:textSize="@dimen/gridview_item_ItemBeanScore_textsize"-->
-        <!--android:visibility="gone" />-->
-    <!--<tv.ismar.daisy.views.RotateTextView-->
-       <!--android:id="@+id/expense_txt"-->
-       <!--android:layout_width="wrap_content"-->
-       <!--android:layout_height="wrap_content"-->
-       <!--android:textStyle="bold"-->
-       <!--android:textSize="@dimen/gridview_item_expense_txt_size"-->
-       <!--android:textColor="#ffe3e3e3"-->
 
-       <!--android:layout_alignParentRight="true"-->
-       <!--android:layout_alignParentTop="true"-->
-       <!--android:background="@drawable/price_bg"-->
-       <!--android:visibility="gone" >-->
-    <!--</tv.ismar.daisy.views.RotateTextView>-->
 
 </RelativeLayout>
