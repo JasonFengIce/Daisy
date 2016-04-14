@@ -1327,7 +1327,7 @@ public class ItemDetailActivity extends BaseActivity implements
                 initFocusBtn(mLeftBtn, false);
                 initFocusBtn(mRightBtn, false);
                 initFocusBtn(mMiddleBtn, false);
-                if (mItem.expense.cpid == 3) {
+                if (mItem.expense.paytype == 3) {
                     detail_permission_txt.setVisibility(View.VISIBLE);
                     detail_duration_txt.setVisibility(View.GONE);
                     detail_price_txt.setVisibility(View.GONE);
