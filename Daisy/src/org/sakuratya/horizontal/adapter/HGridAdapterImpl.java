@@ -9,6 +9,7 @@ import org.sakuratya.horizontal.ui.HGridView;
 
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.data.usercenter.YouHuiDingGouEntity;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemCollection;
 import tv.ismar.daisy.views.AsyncImageView;
@@ -22,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import tv.ismar.daisy.views.RotateTextView;
 
 public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements OnImageViewLoadListener {
 	
@@ -115,7 +117,8 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 			holder.previewImage = (LabelImageView) convertView.findViewById(R.id.list_item_preview_img);
 			holder.qualityLabel = (ImageView) convertView.findViewById(R.id.list_item_quality_label);
 			holder.listLayout = (RelativeLayout)convertView.findViewById(R.id.list_item_layout);
-			holder.price = (TextView)convertView.findViewById(R.id.expense_txt);
+			holder.price = (RotateTextView)convertView.findViewById(R.id.expense_txt);
+			holder.price.setDegrees(315);
 			holder.ItemBeanScore = (TextView)convertView.findViewById(R.id.ItemBeanScore);
 			convertView.setTag(holder);
 		} else {
@@ -179,8 +182,18 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
                 final Item item = mList.get(sectionIndex).objects.get(indexOfCurrentSection);
                 if(item!=null){
                     if(item.expense!=null){
-                        holder.price.setText("￥"+item.expense.price);
-                        holder.price.setVisibility(View.VISIBLE);
+						if(item.expense.cptitle!=null){
+							holder.price.setText(item.expense.cptitle);
+							holder.price.setVisibility(View.VISIBLE);
+							if("荔枝VIP".equals(item.expense.cptitle)){
+								holder.price.setBackgroundResource(R.drawable.list_lizhi);
+							}else if("视云VIP".equals(item.expense.cptitle)){
+								holder.price.setBackgroundResource(R.drawable.list_ismar);
+							}else{
+								holder.price.setBackgroundResource(R.drawable.list_single_buy);
+							}
+						}
+
                     }
                     else{
                         holder.price.setVisibility(View.GONE);
@@ -238,10 +251,10 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 		return convertView;
 	}
 
-	static class Holder {
+		static class Holder {
 		LabelImageView previewImage;
 		TextView title;
-		TextView price;
+		RotateTextView price;
 		ImageView qualityLabel;
 		RelativeLayout listLayout;
 		TextView ItemBeanScore;

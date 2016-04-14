@@ -1241,7 +1241,7 @@ public class ItemDetailActivity extends BaseActivity implements
 		 * if this item is a drama , the button should split to two. otherwise.
 		 * use one button.
 		 */
-        if(mItem.expense.cplogo!=null){
+        if(mItem.expense!=null&&mItem.expense.cplogo!=null){
             Picasso.with(this).load(mItem.expense.cplogo).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(source);
             source.setVisibility(View.VISIBLE);
         }
