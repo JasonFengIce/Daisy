@@ -68,7 +68,8 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
         NewVipHttpManager.getInstance().resetAdapter_SKY.create(NewVipHttpApi.PayLayer.class).doRequest(itemId, SimpleRestClient.device_token).enqueue(new Callback<PayLayerEntity>() {
             @Override
             public void onResponse(Response<PayLayerEntity> response) {
-                fillLayout(response.body());
+                if (response.errorBody() == null)
+                    fillLayout(response.body());
             }
 
             @Override
