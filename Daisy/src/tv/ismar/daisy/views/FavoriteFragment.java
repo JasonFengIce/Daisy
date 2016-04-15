@@ -355,6 +355,14 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		item.content_model = favorite.content_model;
 		item.is_complex = favorite.is_complex;
 		item.quality = favorite.quality;
+		if(favorite.cpid!=0)
+			item.expense.cpid = favorite.cpid;
+		if(favorite.cptitle!=null)
+			item.expense.cptitle = favorite.cptitle;
+		if(favorite.cpname!=null)
+			item.expense.cpname = favorite.cpname;
+		if(favorite.paytype!=0)
+			item.expense.pay_type = favorite.paytype;
 		return item;
 	}
 	

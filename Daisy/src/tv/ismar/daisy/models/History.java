@@ -25,7 +25,10 @@ public class History implements Serializable, Comparable<History> {
     public String sub_url;
     public String isnet;
     public int price;
-
+    public int cpid;
+    public String cpname;
+    public String cptitle;
+    public int paytype;
     public History() {
         super();
     }
@@ -33,7 +36,7 @@ public class History implements Serializable, Comparable<History> {
 
     public History(long id, String title, String url, String adlet_url,
                    String content_model, int quality, int last_quality,
-                   boolean is_complex, boolean is_continue, long last_played_time, long last_position, String sub_url, String isNet, int price) {
+                   boolean is_complex, boolean is_continue, long last_played_time, long last_position, String sub_url, String isNet, int price,int cpid,String cpname,String cptitle,int paytype) {
         super();
         this.id = id;
         this.userid = SimpleRestClient.device_token;
@@ -50,6 +53,10 @@ public class History implements Serializable, Comparable<History> {
         this.sub_url = sub_url;
         this.isnet = isNet;
         this.price = price;
+        this.cpid=cpid;
+        this.cpname=cpname;
+        this.cptitle=cptitle;
+        this.paytype=paytype;
     }
 
 
@@ -68,6 +75,10 @@ public class History implements Serializable, Comparable<History> {
         sub_url = c.getString(c.getColumnIndex(DBFields.HistroyTable.SUB_URL));
         isnet = c.getString(c.getColumnIndex(DBFields.HistroyTable.ISNET));
         price = c.getInt(c.getColumnIndex(DBFields.HistroyTable.PRICE));
+        cpid=c.getInt(c.getColumnIndex(DBFields.HistroyTable.CPID));
+        cpname=c.getString(c.getColumnIndex(DBFields.HistroyTable.CPNAME));
+        cptitle=c.getString(c.getColumnIndex(DBFields.HistroyTable.CPTITLE));
+        paytype=c.getInt(c.getColumnIndex(DBFields.HistroyTable.PAYTYPE));
     }
 
 

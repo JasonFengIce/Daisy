@@ -27,18 +27,18 @@
             android:textColor="@color/hotwords_text_color"
             android:textSize="@dimen/search_gridview_item_btn_type_textsize" 
             />
-      <TextView
-       android:id="@+id/expense_txt"
-       android:layout_width="123dip"
-       android:layout_height="40dip"
-       android:textStyle="bold"
-       android:textSize="20sp"
-       android:gravity="center"
-       android:layout_alignBottom="@id/itemImage"
-       android:layout_alignLeft="@id/itemImage"
-       android:background="@drawable/vodcategory_gv_item_price"
-       android:visibility="gone" >        
-    </TextView>
+      <!--<TextView-->
+       <!--android:id="@+id/expense_txt"-->
+       <!--android:layout_width="123dip"-->
+       <!--android:layout_height="40dip"-->
+       <!--android:textStyle="bold"-->
+       <!--android:textSize="20sp"-->
+       <!--android:gravity="center"-->
+       <!--android:layout_alignBottom="@id/itemImage"-->
+       <!--android:layout_alignLeft="@id/itemImage"-->
+       <!--android:background="@drawable/vodcategory_gv_item_price"-->
+       <!--android:visibility="gone" >        -->
+    <!--</TextView>-->
         <tv.ismar.daisy.views.MarqueeText
             android:id="@+id/itemText"
             android:layout_width="@dimen/filter_list_item_title_w"
@@ -68,7 +68,31 @@
             android:layout_marginRight="@dimen/search_gridview_item_label_marginR"
             android:layout_marginTop="@dimen/search_gridview_item_label_marginT"
             android:visibility="gone"/>
+    <TextView
+            android:id="@+id/ItemBeanScore"
+            android:layout_width="@dimen/list_vip_score_w"
+            android:layout_height="@dimen/list_vip_score_h"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/list_vip_score_mr"
+            android:layout_marginTop="@dimen/list_vip_score_mt"
+            android:gravity="center"
+            android:textColor="#ff9000"
+            android:textSize="@dimen/score_tag_txt_size"
+            android:textStyle="bold"
+            android:visibility="gone" />
 
+    <tv.ismar.daisy.views.RotateTextView
+            android:id="@+id/expense_txt"
+            android:layout_width="@dimen/VIP_tag_w"
+            android:layout_height="@dimen/VIP_tag_h"
+            android:textStyle="bold"
+            android:textSize="@dimen/tag_txt_size"
+            android:textColor="#ffffff"
+            android:gravity="center"
+            android:background="@drawable/list_ismar"
+            android:text="视云VIP"
+            android:visibility="gone" >
+    </tv.ismar.daisy.views.RotateTextView>
     </RelativeLayout>
 
 
