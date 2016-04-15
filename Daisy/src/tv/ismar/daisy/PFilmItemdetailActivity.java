@@ -618,13 +618,13 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
     }
 
     private void buyVideo() {
-        if(0 == mItem.expense.jump_to) {
+        if(1 == mItem.expense.jump_to) {
             PaymentDialog dialog = new PaymentDialog(PFilmItemdetailActivity.this,
                     R.style.PaymentDialog, ordercheckListener);
             mItem.model_name = "item";
             dialog.setItem(mItem);
             dialog.show();
-        }else if(1 == mItem.expense.jump_to){
+        }else if(0 == mItem.expense.jump_to){
             Intent intent = new Intent(PFilmItemdetailActivity.this, PayActivity.class);
             intent.putExtra("item_id", String.valueOf(mItem.pk));
             startActivity(intent);

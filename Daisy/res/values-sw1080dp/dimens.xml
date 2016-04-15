@@ -1379,7 +1379,7 @@
     <dimen name="list_vip_score_w">56dip</dimen>
     <dimen name="list_vip_score_h">38dip</dimen>
     <dimen name="list_vip_score_mr">6dip</dimen>
-    <dimen name="list_vip_score_mt">110dip</dimen>
+    <dimen name="list_vip_score_mt">115dip</dimen>
     <dimen name="list_vip_score_horizon_mt">280dip</dimen>
 
     <dimen name="tag_txt_size">20sp</dimen>
