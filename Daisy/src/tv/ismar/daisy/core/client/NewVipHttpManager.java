@@ -8,6 +8,7 @@ import cn.ismartv.log.interceptor.HttpLoggingInterceptor;
 import okhttp3.OkHttpClient;
 import retrofit2.GsonConverterFactory;
 import retrofit2.Retrofit;
+import tv.ismar.daisy.core.SimpleRestClient;
 
 
 /**
@@ -40,7 +41,7 @@ public class NewVipHttpManager {
 
         resetAdapter_SKY = new Retrofit.Builder()
                 .client(client)
-                .baseUrl(appendProtocol("http://skytest.tvxio.com"))
+                .baseUrl(appendProtocol(SimpleRestClient.root_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
