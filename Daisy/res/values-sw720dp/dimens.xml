@@ -1382,7 +1382,7 @@
     <dimen name="list_vip_score_mt">76.67dip</dimen>
     <dimen name="list_vip_score_horizon_mt">186.67dip</dimen>
 
-    <dimen name="tag_txt_size">13.33sp</dimen>
-    <dimen name="bottom_tag_txt_size">12sp</dimen>
-    <dimen name="score_tag_txt_size">20sp</dimen>
+<dimen name="tag_txt_size">13.33sp</dimen>
+<dimen name="bottom_tag_txt_size">12.00sp</dimen>
+<dimen name="score_tag_txt_size">20.00sp</dimen>
 </resources>
