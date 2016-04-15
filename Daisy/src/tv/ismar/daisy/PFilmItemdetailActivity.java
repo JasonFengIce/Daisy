@@ -623,7 +623,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             startActivity(intent);
         }else if(2 == mItem.expense.jump_to){
             Intent intent = new Intent(PFilmItemdetailActivity.this, PayActivity.class);
-            intent.getExtras().putString("cpid", String.valueOf(mItem.expense.cpid));
+            intent.putExtra("cpid", String.valueOf(mItem.expense.cpid));
             startActivity(intent);
         }
     }
