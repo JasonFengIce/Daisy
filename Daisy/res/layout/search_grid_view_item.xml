@@ -25,6 +25,7 @@
             android:layout_marginLeft="@dimen/search_gridview_item_btn_type_marginL"
             android:focusable="false"
             android:textColor="@color/hotwords_text_color"
+            android:visibility="gone"
             android:textSize="@dimen/search_gridview_item_btn_type_textsize" 
             />
       <!--<TextView-->

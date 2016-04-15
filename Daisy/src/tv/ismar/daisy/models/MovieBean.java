@@ -47,4 +47,5 @@ public class MovieBean {
 	public int item_pk;
 	// item表示电影或电视剧 subitem表示电视剧的子剧集
 	public String model_name;
+	public Expense expense;
 }
