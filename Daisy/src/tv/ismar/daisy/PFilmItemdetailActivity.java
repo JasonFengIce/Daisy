@@ -1052,8 +1052,6 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                                 }
                             } catch (JSONException e) {
                                 // TODO Auto-generated catch block
-                                info = info.substring(1, info.length() - 1);
-                                toDate = info;
                                 try{
                                 JSONObject object = new JSONObject(info);
                                  info = object.getString("expiry_date");
@@ -1064,6 +1062,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                                 } catch (JSONException ee) {
                                     info = info.substring(1, info.length() - 1);
                                 }
+                                toDate = info;
                                 try {
                                     remainDay = Util.daysBetween(
                                             Util.getTime(), info) + 1;
