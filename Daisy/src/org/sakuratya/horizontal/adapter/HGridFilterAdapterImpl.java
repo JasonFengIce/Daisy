@@ -15,6 +15,7 @@ import tv.ismar.daisy.models.ItemCollection;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.AsyncImageView.OnImageViewLoadListener;
 import tv.ismar.daisy.views.LabelImageView;
+import tv.ismar.daisy.views.RotateTextView;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -100,6 +101,9 @@ public class HGridFilterAdapterImpl extends HGridAdapter<ItemCollection> impleme
 			holder = new Holder();
 			holder.title = (TextView) convertView.findViewById(R.id.filter_list_item_title);
 			holder.previewImage = (AsyncImageView) convertView.findViewById(R.id.filter_list_item_preview_img);
+			holder.ItemBeanScore= (TextView) convertView.findViewById(R.id.ItemBeanScore);
+			holder.expense_txt= (RotateTextView) convertView.findViewById(R.id.expense_txt);
+			holder.expense_txt.setDegrees(315);
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();
@@ -128,6 +132,23 @@ public class HGridFilterAdapterImpl extends HGridAdapter<ItemCollection> impleme
                         holder.previewImage.setUrl(item.adlet_url);
                     }
                     holder.title.setText(item.title);
+					if(item.bean_score>0) {
+						holder.ItemBeanScore.setText(item.bean_score + "");
+						holder.ItemBeanScore.setVisibility(View.VISIBLE);
+					}
+					if(item.expense!=null){
+						if(item.expense.cptitle!=null){
+							holder.expense_txt.setText(item.expense.cptitle);
+							holder.expense_txt.setVisibility(View.VISIBLE);
+							if("荔枝VIP".equals(item.expense.cptitle)){
+								holder.expense_txt.setBackgroundResource(R.drawable.list_lizhi);
+							}else if("视云VIP".equals(item.expense.cptitle)){
+								holder.expense_txt.setBackgroundResource(R.drawable.list_ismar);
+							}else{
+								holder.expense_txt.setBackgroundResource(R.drawable.list_single_buy);
+							}
+						}
+					}
                 }
                 if(item.focus!=null)
                     ((LabelImageView)holder.previewImage).setFocustitle(item.focus);
@@ -146,6 +167,8 @@ public class HGridFilterAdapterImpl extends HGridAdapter<ItemCollection> impleme
 	static class Holder {
 		AsyncImageView previewImage;
 		TextView title;
+		TextView ItemBeanScore;
+		RotateTextView expense_txt;
 	}
 
 	@Override
