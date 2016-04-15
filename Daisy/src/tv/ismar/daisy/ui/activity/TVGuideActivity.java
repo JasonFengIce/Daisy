@@ -907,6 +907,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.DEVICE_TOKEN, result.getDevice_token());
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.SN_TOKEN, result.getSn_Token());
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.ZDEVICE_TOKEN, result.getSn_Token());
+        accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.CARNATION_DOMAIN, result.getCarnation());
 
     }
 
@@ -1333,6 +1334,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         SimpleRestClient.sRoot_url = "http://" + result.getDomain();
         SimpleRestClient.ad_domain = "http://" + result.getAd_domain();
         SimpleRestClient.log_domain = "http://" + result.getLog_Domain();
+        SimpleRestClient.carnation_domain = "http://" + result.getCarnation();
         SimpleRestClient.device_token = result.getDevice_token();
         SimpleRestClient.upgrade_domain = result.getUpgrade_domain();
         DaisyUtils.getVodApplication(context).getEditor().putString(VodApplication.DEVICE_TOKEN, SimpleRestClient.device_token);
