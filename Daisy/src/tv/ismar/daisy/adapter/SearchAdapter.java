@@ -15,6 +15,7 @@ import tv.ismar.daisy.core.ImageLabelUtils;
 import tv.ismar.daisy.models.MovieBean;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.AsyncImageView.OnImageViewLoadListener;
+import tv.ismar.daisy.views.RotateTextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,7 +91,9 @@ public class SearchAdapter extends HGridAdapter<MovieBean> implements OnImageVie
 			holder.imageLabel = (AsyncImageView) convertView.findViewById(R.id.iv_label);
 			holder.imageLabel.setOnImageViewLoadListener(this);
 			holder.imageType = (Button) convertView.findViewById(R.id.iv_type);
-			holder.expense_txt = (TextView)convertView.findViewById(R.id.expense_txt);
+			holder.expense_txt = (RotateTextView)convertView.findViewById(R.id.expense_txt);
+			holder.expense_txt.setDegrees(315);
+			holder.ItemBeanScore= (TextView) convertView.findViewById(R.id.ItemBeanScore);
 			Log.i("zhnagjiqiang", "count=="+position);
 			convertView.setTag(holder);
 		} else {
@@ -104,6 +107,7 @@ public class SearchAdapter extends HGridAdapter<MovieBean> implements OnImageVie
 		holder.imageType.setText(ImageLabelUtils.getImageType(movieBean));
 		holder.tvItemText.setText(movieBean.title);
 		holder.imageView.setTag(movieBean.adlet_url);
+
 		if (null != hashCache.get(movieBean.adlet_url)) {
 			holder.imageView.setImageBitmap(hashCache.get(movieBean.adlet_url));
 		}else{
@@ -192,7 +196,8 @@ public class SearchAdapter extends HGridAdapter<MovieBean> implements OnImageVie
 		public AsyncImageView imageLabel;
 		public Button imageType;
 		public TextView tvItemText;
-		public TextView expense_txt;
+		public TextView ItemBeanScore;
+		public RotateTextView expense_txt;
 	}
 	
 	@Override
