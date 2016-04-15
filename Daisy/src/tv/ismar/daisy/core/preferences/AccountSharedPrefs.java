@@ -18,6 +18,7 @@ public class AccountSharedPrefs {
     public static final String APP_UPDATE_DOMAIN = "app_update_domain";
     public static final String LOG_DOMAIN = "log_domain";
     public static final String API_DOMAIN = "api_domain";
+    public static final String CARNATION_DOMAIN = "carnation_domain";
     public static final String ADVERTISEMENT_DOMAIN = "advertisement_domain";
 
     public static final String DEVICE_TOKEN = "device_token";

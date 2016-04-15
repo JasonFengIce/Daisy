@@ -9,6 +9,15 @@ public class Result {
     private String log_domain;
     private String upgrade_domain;
     private String zdevice_token;
+    private String carnation;
+
+    public String getCarnation() {
+        return carnation;
+    }
+
+    public void setCarnation(String carnation) {
+        this.carnation = carnation;
+    }
 
     public String getZdevice_token() {
         return zdevice_token;

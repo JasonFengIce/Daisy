@@ -91,7 +91,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
     private InitPlayerTool tool;
     private boolean isneedpause = true;
     private String toDate;
-
+    String iqiyi_code = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -202,6 +202,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
     @Override
     protected void onResume() {
+        iqiyi_code = null;
         if (isInitialized) {
             if (isDrama()) {
                 String url = mItem.item_url == null ? mSimpleRestClient.root_url
@@ -1014,7 +1015,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
     private void isbuy() {
         SimpleRestClient simpleRestClient = new SimpleRestClient();
-        simpleRestClient.doSendRequest("/api/order/check/", "post",
+        simpleRestClient.doSendRequest("/api/play/check/", "post",
                 "device_token=" + SimpleRestClient.device_token
                         + "&access_token=" + SimpleRestClient.access_token
                         + "&item=" + mItem.pk, new SimpleRestClient.HttpPostRequestInterface() {
@@ -1053,6 +1054,16 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                                 // TODO Auto-generated catch block
                                 info = info.substring(1, info.length() - 1);
                                 toDate = info;
+                                try{
+                                JSONObject object = new JSONObject(info);
+                                 info = object.getString("expiry_date");
+                                 iqiyi_code = object.getString("iqiyi_code");
+                                    if(iqiyi_code != null && !"".equals(iqiyi_code) && !"null".equals(iqiyi_code)){
+                                        api_check();
+                                    }
+                                } catch (JSONException ee) {
+                                    info = info.substring(1, info.length() - 1);
+                                }
                                 try {
                                     remainDay = Util.daysBetween(
                                             Util.getTime(), info) + 1;
@@ -1068,6 +1079,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                                 e.printStackTrace();
                             }
                         }
+                        if(iqiyi_code ==null || (iqiyi_code!= null && "null".equals(iqiyi_code)))
                         initLayout();
                     }
 
@@ -1423,5 +1435,42 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             return false;
         }
     };
+
+    private  void api_check(){
+        SimpleRestClient simpleRestClient = new SimpleRestClient();
+        simpleRestClient.doSendRequest(SimpleRestClient.carnation_domain+"/api/check/", "post",
+                "device_token=" + SimpleRestClient.device_token
+                        + "&access_token=" + SimpleRestClient.access_token
+                        + "&verify_code=" + iqiyi_code, new SimpleRestClient.HttpPostRequestInterface() {
+                    // subitem=214277
+                    @Override
+                    public void onSuccess(String info) {
+                        try {
+                            JSONObject object = new JSONObject(info);
+                            int code =object.getInt("code");
+                            if(code == 1)
+                            isBuy = false;
+                            else
+                            isBuy = true;
+                            initLayout();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onPrepare() {
+                        // TODO Auto-generated method stub
+                    }
+
+                    @Override
+                    public void onFailed(String error) {
+                        // TODO Auto-generated method stub
+                        isBuy = false;
+                        initLayout();
+                    }
+                });
+    }
+
 
 }

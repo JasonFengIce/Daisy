@@ -33,6 +33,7 @@ public class SimpleRestClient {
 	public static String ad_domain = "lilac.t.tvxio.com";
 	public static String log_domain = "cord.tvxio.com";
 	public static String upgrade_domain = "client.tvxio.com";
+	public static String carnation_domain = "carnation.tvxio.com";
 	public static String device_token;
 	public static String sn_token;
 	public static String access_token = "";
