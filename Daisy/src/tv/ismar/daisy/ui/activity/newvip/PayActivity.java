@@ -48,7 +48,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
         initViews();
         Intent intent = getIntent();
         String itemId = intent.getStringExtra("item_id");
-        payLayer(itemId);
+        payLayer("675300");
     }
 
     private void initViews() {
@@ -64,6 +64,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
     //675305
     //675302
     //675300
+    //675322
     public void payLayer(String itemId) {
         NewVipHttpManager.getInstance().resetAdapter_SKY.create(NewVipHttpApi.PayLayer.class).doRequest(itemId, SimpleRestClient.device_token).enqueue(new Callback<PayLayerEntity>() {
             @Override
@@ -185,6 +186,9 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
             @Override
             public void payResult(boolean result) {
                 if (result) {
+                    Intent data = new Intent();
+                    data.putExtra("result", true);
+                    setResult(20, data);
                     finish();
                 }
             }

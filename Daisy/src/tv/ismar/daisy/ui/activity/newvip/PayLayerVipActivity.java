@@ -2,6 +2,7 @@ package tv.ismar.daisy.ui.activity.newvip;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -47,7 +48,7 @@ public class PayLayerVipActivity extends BaseActivity implements OnHoverListener
         initViews();
         Intent intent = getIntent();
         String cpid = intent.getStringExtra("cpid");
-        payLayerVip(cpid);
+        payLayerVip("2");
     }
 
     private void initViews() {
@@ -85,7 +86,12 @@ public class PayLayerVipActivity extends BaseActivity implements OnHoverListener
         for (final Vip_list vipList : payLayerVipEntity.getVip_list()) {
             RelativeLayout itemView = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_paylayervip, null);
             ImageView imageView = (ImageView) itemView.findViewById(R.id.image);
-            Picasso.with(this).load(vipList.getVertical_url()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(imageView);
+            if (TextUtils.isEmpty(vipList.getVertical_url())) {
+                Picasso.with(this).load(R.drawable.preview).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(imageView);
+            } else {
+                Picasso.with(this).load(vipList.getVertical_url()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(imageView);
+            }
+
             TextView title = (TextView) itemView.findViewById(R.id.title);
             title.setText(vipList.getTitle());
             TextView price = (TextView) itemView.findViewById(R.id.price);
@@ -137,6 +143,9 @@ public class PayLayerVipActivity extends BaseActivity implements OnHoverListener
             @Override
             public void payResult(boolean result) {
                 if (result) {
+                    Intent data = new Intent();
+                    data.putExtra("result", true);
+                    setResult(20, data);
                     finish();
                 }
             }

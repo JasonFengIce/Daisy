@@ -157,6 +157,9 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
             @Override
             public void payResult(boolean result) {
                 if (result) {
+                    Intent data = new Intent();
+                    data.putExtra("result", true);
+                    setResult(20, data);
                     finish();
                 }
             }
