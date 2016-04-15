@@ -73,6 +73,7 @@ public class BaseActivity extends FragmentActivity {
             SimpleRestClient.sRoot_url = "http://" + accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.API_DOMAIN);
             SimpleRestClient.ad_domain = "http://" + accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.ADVERTISEMENT_DOMAIN);
             SimpleRestClient.log_domain = "http://" + accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.LOG_DOMAIN);
+            SimpleRestClient.carnation_domain = "http://" + accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.CARNATION_DOMAIN);
             SimpleRestClient.device_token = accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.DEVICE_TOKEN);
             SimpleRestClient.sn_token = accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.SN_TOKEN);
             SimpleRestClient.mobile_number = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.MOBILE_NUMBER, "");
