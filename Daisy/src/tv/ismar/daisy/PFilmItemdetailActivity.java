@@ -332,6 +332,12 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             favorite.url = url;
             favorite.quality = mItem.quality;
             favorite.is_complex = mItem.is_complex;
+            if(mItem.expense!=null) {
+                favorite.cpid = mItem.expense.cpid;
+                favorite.cpname=mItem.expense.cpname;
+                favorite.cptitle=mItem.expense.cptitle;
+                favorite.paytype=mItem.expense.pay_type;
+            }
             if (SimpleRestClient.isLogin()) {
                 favorite.isnet = "yes";
                 createFavoriteByNet();
@@ -540,7 +546,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 initFocusBtn(mLeftBtn, false);
                 initFocusBtn(mRightBtn, false);
                 initFocusBtn(mMiddleBtn, false);
-                if (mItem.expense.paytype == 3||mItem.expense.paytype == 0) {
+                if (mItem.expense.pay_type == 3||mItem.expense.pay_type == 0) {
                     detail_permission_txt.setVisibility(View.VISIBLE);
                     detail_duration_txt.setVisibility(View.GONE);
                     detail_price_txt.setVisibility(View.GONE);
