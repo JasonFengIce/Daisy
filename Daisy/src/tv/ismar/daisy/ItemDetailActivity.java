@@ -1032,6 +1032,12 @@ public class ItemDetailActivity extends BaseActivity implements
             favorite.url = url;
             favorite.quality = mItem.quality;
             favorite.is_complex = mItem.is_complex;
+            if(mItem.expense!=null) {
+                favorite.cpid = mItem.expense.cpid;
+                favorite.cpname=mItem.expense.cpname;
+                favorite.cptitle=mItem.expense.cptitle;
+                favorite.paytype=mItem.expense.pay_type;
+            }
             if (SimpleRestClient.isLogin()) {
                 favorite.isnet = "yes";
                 createFavoriteByNet();
@@ -1383,7 +1389,7 @@ public class ItemDetailActivity extends BaseActivity implements
                 }else{
                     Date date=new Date();
                     Log.e("DATE",date.getTime()+"");
-                    date.setTime(date.getTime()+((long)3600*24*1000*remainDay));
+                    date.setTime(date.getTime()+((long) 3600 * 24 *1000*remainDay));
                     SimpleDateFormat format=new SimpleDateFormat("yyyy年MM月dd日");
                     detail_duration_txt.setText("有效期至" +format.format(date));
                 }

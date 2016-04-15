@@ -838,6 +838,12 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             favorite.url = url;
             favorite.quality = mItem.quality;
             favorite.is_complex = mItem.is_complex;
+            if(mItem.expense!=null) {
+                favorite.cpid = mItem.expense.cpid;
+                favorite.cpname=mItem.expense.cpname;
+                favorite.cptitle=mItem.expense.cptitle;
+                favorite.paytype=mItem.expense.pay_type;
+            }
             if (SimpleRestClient.isLogin()) {
                 favorite.isnet = "yes";
                 createFavoriteByNet();
