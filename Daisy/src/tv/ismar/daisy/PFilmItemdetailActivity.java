@@ -31,6 +31,7 @@ import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.*;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.ui.activity.newvip.PayActivity;
+import tv.ismar.daisy.ui.activity.newvip.PayLayerVipActivity;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
 import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.daisy.utils.Util;
@@ -622,7 +623,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             intent.putExtra("item_id", String.valueOf(mItem.pk));
             startActivity(intent);
         }else if(2 == mItem.expense.jump_to){
-            Intent intent = new Intent(PFilmItemdetailActivity.this, PayActivity.class);
+            Intent intent = new Intent(PFilmItemdetailActivity.this, PayLayerVipActivity.class);
             intent.putExtra("cpid", String.valueOf(mItem.expense.cpid));
             startActivity(intent);
         }
