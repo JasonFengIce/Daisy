@@ -58,6 +58,7 @@ public class PayLayerVipActivity extends BaseActivity implements OnHoverListener
         rightArrow = (ImageView) findViewById(R.id.right_arrow);
         mTvHorizontalScrollView.setLeftArrow(leftArrow);
         mTvHorizontalScrollView.setRightArrow(rightArrow);
+        mTvHorizontalScrollView.setCoverOffset(10);
         tmp = (ImageView) findViewById(R.id.tmp);
     }
 

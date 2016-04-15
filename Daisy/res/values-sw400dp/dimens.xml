@@ -1330,12 +1330,12 @@
 <dimen name="paylayvip_mariginleft">27.04dp</dimen>
 <dimen name="paylayervip_title_mriginTop">51.85dp</dimen>
 <dimen name="paylayervip_des_margintop">8.89dp</dimen>
-<dimen name="paylayervip_scrollview_width">462.96dp</dimen>
+<dimen name="paylayervip_scrollview_width">485.19dp</dimen>
 <dimen name="paylayervip_scrollview_height">170.37dp</dimen>
 <dimen name="paylayervip_img_width">108.15dp</dimen>
 <dimen name="paylayervip_img_height">151.48dp</dimen>
 <dimen name="newvip_paylayervip_margin">5.19dp</dimen>
-<dimen name="paylayervip_layout_width">518.52dp</dimen>
+<dimen name="paylayervip_layout_width">540.74dp</dimen>
 <dimen name="paylayervip_layout_height">314.81dp</dimen>
 <dimen name="paylayervip_width">14.81dp</dimen>
 <dimen name="paylayervip_height">29.63dp</dimen>
@@ -1351,5 +1351,38 @@
 <dimen name="payvip_price_margintop">28.52dp</dimen>
 <dimen name="payvip_duration_marginTop">4.81dp</dimen>
 
+<dimen name="VIP_tag_w">40.37dip</dimen>
+<dimen name="VIP_tag_h">40.37dip</dimen>
+<dimen name="film_VIP_tag_ml">110.37dip</dimen>
+<dimen name="item_VIP_tag_ml">392.59dip</dimen>
+<dimen name="item_VIP_tag_mt">23.70dip</dimen>
+<dimen name="enter_VIP_tag_ml">164.07dip</dimen>
+<dimen name="enter_VIP_tag_mt">35.93dip</dimen>
+<dimen name="duration_txt_w">85.93dip</dimen>
+<dimen name="duration_txt_h">12.22dip</dimen>
+<dimen name="film_duration_txt_ml">24.44dip</dimen>
+<dimen name="film_duration_txt_mt">162.96dip</dimen>
+<dimen name="permission_txt_w">49.26dip</dimen>
+<dimen name="permission_txt_h">12.22dip</dimen>
+<dimen name="price_txt_w">41.11dip</dimen>
+<dimen name="price_txt_h">12.22dip</dimen>
+<dimen name="item_duration_txt_ml">254.07dip</dimen>
+<dimen name="item_duration_txt_mt">111.85dip</dimen>
+<dimen name="enter_duration_txt_ml">25.56dip</dimen>
+<dimen name="enter_duration_txt_mt">124.07dip</dimen>
+<dimen name="source_tag_w">94.07dip</dimen>
+<dimen name="source_tag_h">21.11dip</dimen>
+<dimen name="film_source_tag_mt">49.26dip</dimen>
+<dimen name="film_source_tag_mr">26.67dip</dimen>
+<dimen name="item_source_tag_mt">124.44dip</dimen>
+<dimen name="item_source_tag_ml">339.26dip</dimen>
+<dimen name="list_vip_score_w">20.74dip</dimen>
+<dimen name="list_vip_score_h">14.07dip</dimen>
+<dimen name="list_vip_score_mr">2.22dip</dimen>
+<dimen name="list_vip_score_mt">40.74dip</dimen>
+<dimen name="list_vip_score_horizon_mt">103.70dip</dimen>
 
+<dimen name="tag_txt_size">7.41sp</dimen>
+<dimen name="bottom_tag_txt_size">6.67sp</dimen>
+<dimen name="score_tag_txt_size">11.11sp</dimen>
 </resources>

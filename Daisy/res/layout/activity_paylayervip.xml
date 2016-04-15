@@ -68,11 +68,10 @@
                     >
 
                     <LinearLayout
+                        android:gravity="center_vertical"
                         android:id="@+id/scroll_layout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:gravity="center"
                         android:orientation="horizontal"/>
 
                 </cn.ismartv.tvhorizontalscrollview.TvHorizontalScrollView>
