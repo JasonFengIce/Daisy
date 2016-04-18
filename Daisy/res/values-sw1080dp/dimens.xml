@@ -1381,6 +1381,10 @@
     <dimen name="list_vip_score_mr">6dip</dimen>
     <dimen name="list_vip_score_mt">115dip</dimen>
     <dimen name="list_vip_score_horizon_mt">280dip</dimen>
+    <dimen name="VIP_tag_small_w">80dip</dimen>
+    <dimen name="VIP_tag_small_h">80dip</dimen>
+    <dimen name="VIP_beanscore_small_ml">160dip</dimen>
+    <dimen name="VIP_beanscore_small_mt">100dip</dimen>
 
     <dimen name="tag_txt_size">20sp</dimen>
     <dimen name="bottom_tag_txt_size">18sp</dimen>
