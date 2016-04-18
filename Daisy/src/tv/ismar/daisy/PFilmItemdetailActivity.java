@@ -537,8 +537,16 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 //					mRightBtn.setTag(COLLECT_VIDEO);
 //				}
                 //setLeftDrawable(drawableleftplay, mLeftBtn);
-                mLeftBtn.setTag(PREVIEW_VIDEO);
-                mLeftBtn.setText(getResources().getString(R.string.preview_video));
+                if(mItem.preview == null){
+                    mLeftBtn.setTag(PREVIEW_VIDEO);
+                    mLeftBtn.setText(getResources().getString(R.string.preview_video));
+                    mLeftBtn.setBackgroundResource(R.drawable.button_disable);
+                    mLeftBtn.setEnabled(false);
+                    mLeftBtn.setClickable(false);
+                }else{
+                    mLeftBtn.setTag(PREVIEW_VIDEO);
+                    mLeftBtn.setText(getResources().getString(R.string.preview_video));
+                }
                 //setLeftDrawable(drawableleftbuy, mMiddleBtn);
                 mMiddleBtn.setTag(BUY_VIDEO);
                 mMiddleBtn.setText(getResources().getString(R.string.buy_video));
@@ -613,8 +621,13 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 mCollectBtn = mMiddleBtn;
             }
         }
-        mLeftBtn.setFocusable(true);
-        mLeftBtn.requestFocus();
+        if(mLeftBtn.isEnabled()) {
+            mLeftBtn.setFocusable(true);
+            mLeftBtn.requestFocus();
+        }else{
+            mMiddleBtn.setFocusable(true);
+            mMiddleBtn.requestFocus();
+        }
     }
 
     private void buyVideo() {
