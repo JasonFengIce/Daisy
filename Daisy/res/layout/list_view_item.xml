@@ -57,7 +57,7 @@
         android:textColor="#ff9000"
         android:textSize="@dimen/score_tag_txt_size"
         android:textStyle="bold"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <tv.ismar.daisy.views.RotateTextView
         android:id="@+id/expense_txt"
@@ -69,7 +69,7 @@
         android:gravity="center"
         android:background="@drawable/list_ismar"
         android:text="视云VIP"
-        android:visibility="visible" >
+        android:visibility="gone" >
     </tv.ismar.daisy.views.RotateTextView>
 
 </RelativeLayout>

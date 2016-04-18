@@ -18,7 +18,7 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * database version. this may changed with future update.
      */
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     /**
      * database file name.

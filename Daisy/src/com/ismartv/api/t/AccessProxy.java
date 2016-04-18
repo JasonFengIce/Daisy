@@ -64,7 +64,7 @@ public class AccessProxy {
 			json = new JSONObject(content);
 			String info = json.getString("iqiyi_4_0");
 			String[] array = info.split(":");
-			qiyiInfo = new SdkVideo(array[0], array[1],false);
+			qiyiInfo = new SdkVideo(array[0], array[1],array[2],true);
 			// qiyiInfo = new SdkVideo("202153901", "308529000",
 			// "8d301d7723586e7a0e1ecb778ada0cb5",Definition.DEFINITON_1080P);
 		} catch (Exception e) {

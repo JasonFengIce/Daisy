@@ -43,7 +43,8 @@
                 android:layout_width="@dimen/playfinish_gridview_iv_label_W"
                 android:layout_height="@dimen/playfinish_gridview_iv_label_H"
                 android:layout_alignRight="@id/itemImage"
-                android:layout_alignTop="@id/itemImage"/>
+                android:layout_alignTop="@id/itemImage"
+                android:visibility="gone"/>
 
         <TextView
                 android:id="@+id/ItemBeanScore"

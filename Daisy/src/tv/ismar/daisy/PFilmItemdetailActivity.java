@@ -537,8 +537,16 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 //					mRightBtn.setTag(COLLECT_VIDEO);
 //				}
                 //setLeftDrawable(drawableleftplay, mLeftBtn);
-                mLeftBtn.setTag(PREVIEW_VIDEO);
-                mLeftBtn.setText(getResources().getString(R.string.preview_video));
+                if(mItem.preview == null){
+                    mLeftBtn.setTag(PREVIEW_VIDEO);
+                    mLeftBtn.setText(getResources().getString(R.string.preview_video));
+                    mLeftBtn.setBackgroundResource(R.drawable.button_disable);
+                    mLeftBtn.setEnabled(false);
+                    mLeftBtn.setClickable(false);
+                }else{
+                    mLeftBtn.setTag(PREVIEW_VIDEO);
+                    mLeftBtn.setText(getResources().getString(R.string.preview_video));
+                }
                 //setLeftDrawable(drawableleftbuy, mMiddleBtn);
                 mMiddleBtn.setTag(BUY_VIDEO);
                 mMiddleBtn.setText(getResources().getString(R.string.buy_video));
@@ -613,8 +621,13 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 mCollectBtn = mMiddleBtn;
             }
         }
-        mLeftBtn.setFocusable(true);
-        mLeftBtn.requestFocus();
+        if(mLeftBtn.isEnabled()) {
+            mLeftBtn.setFocusable(true);
+            mLeftBtn.requestFocus();
+        }else{
+            mMiddleBtn.setFocusable(true);
+            mMiddleBtn.requestFocus();
+        }
     }
 
     private void buyVideo() {
@@ -1128,15 +1141,26 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                     .findViewById(R.id.related_title);
             LabelImageView imgView = (LabelImageView) relatedHolder
                     .findViewById(R.id.related_preview_img);
+            TextView ItemBeanScore= (TextView)relatedHolder.findViewById(R.id.ItemBeanScore);
+            RotateTextView expense_txt= (RotateTextView)relatedHolder.findViewById(R.id.expense_txt);
+            expense_txt.setDegrees(315);
             imgView.setOnImageViewLoadListener(this);
-//            if (mRelatedItem[i].bean_score > 0) {
-//                ItemBeanScore.setText(mRelatedItem[i].bean_score + "");
-//                ItemBeanScore.setVisibility(View.VISIBLE);
-//            }
-//            if (mRelatedItem[i].expense != null) {
-//                related_price_txt.setVisibility(View.VISIBLE);
+            if (mRelatedItem[i].bean_score > 0) {
+                ItemBeanScore.setText(mRelatedItem[i].bean_score + "");
+                ItemBeanScore.setVisibility(View.VISIBLE);
+            }
+            if (mRelatedItem[i].expense != null) {
+                expense_txt.setVisibility(View.VISIBLE);
+                expense_txt.setText(mRelatedItem[i].expense.cptitle);
+                if("荔枝VIP".equals(mRelatedItem[i].expense.cptitle)){
+                    expense_txt.setBackgroundResource(R.drawable.list_lizhi);
+                }else if("视云VIP".equals(mRelatedItem[i].expense.cptitle)){
+                    expense_txt.setBackgroundResource(R.drawable.list_ismar);
+                }else{
+                    expense_txt.setBackgroundResource(R.drawable.list_single_buy);
+                }
 //                related_price_txt.setText("￥" + mRelatedItem[i].expense.price);
-//            }
+            }
             imgView.setTag(mRelatedItem[i].adlet_url);
 //            if(StringUtils.isNotEmpty(mRelatedItem[i].list_url)){
 //

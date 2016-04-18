@@ -3,6 +3,7 @@ package tv.ismar.daisy.views;
 /**
  * Created by zhangjiqiang on 15-7-12.
  */
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
@@ -15,8 +16,9 @@ import tv.ismar.daisy.core.DaisyUtils;
  */
 public class RotateTextView extends TextView {
     private static final int DEFAULT_DEGREES = 45;
-    private int mDegrees=DEFAULT_DEGREES;
+    private int mDegrees = DEFAULT_DEGREES;
     private float rate;
+
     public RotateTextView(Context context) {
         super(context, null);
     }
@@ -36,9 +38,11 @@ public class RotateTextView extends TextView {
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.save();
-        if(mDegrees==45) {
+        if (mDegrees == 45) {
             canvas.translate(getCompoundPaddingLeft() + 11, getExtendedPaddingTop() - 14);
-        }else {
+        } else if (mDegrees == -45) {
+            canvas.translate(getCompoundPaddingLeft() - 11, getExtendedPaddingTop() - 8);
+        } else {
             canvas.translate(getCompoundPaddingLeft() - 11, getExtendedPaddingTop() - 14);
         }
         canvas.rotate(mDegrees, this.getWidth() / 2f, this.getHeight() / 2f);

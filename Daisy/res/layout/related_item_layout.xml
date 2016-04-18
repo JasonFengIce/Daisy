@@ -24,17 +24,45 @@
         android:paddingBottom="@dimen/related_item_image_paddingbottom"       
         android:scaleType="fitXY"
         />
-       <TextView
-        android:id="@id/ItemBeanScore"
-        android:layout_width="@dimen/related_item_ItemBeanScore_w"
-        android:layout_height="@dimen/related_item_ItemBeanScore_h"
-        android:layout_alignRight="@id/related_preview_img"
-        android:layout_alignTop="@id/related_preview_img"
-        android:background="@drawable/bean_score"
-        android:gravity="center"
-        android:textColor="#ffffffff"
-        android:textSize="@dimen/related_item_ItemBeanScore_textsize"
-        android:visibility="gone" />
+    <TextView
+            android:id="@+id/ItemBeanScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/VIP_beanscore_small_ml"
+            android:layout_marginTop="@dimen/VIP_beanscore_small_mt"
+            android:gravity="center"
+            android:textColor="#ff9000"
+            android:textSize="@dimen/bottom_tag_txt_size"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:layout_alignLeft="@id/related_preview_img"
+           />
+
+    <tv.ismar.daisy.views.RotateTextView
+            android:id="@+id/expense_txt"
+            android:layout_width="@dimen/VIP_tag_small_w"
+            android:layout_height="@dimen/VIP_tag_small_h"
+            android:textStyle="bold"
+            android:textSize="@dimen/bottom_tag_txt_size"
+            android:textColor="#ffffff"
+            android:gravity="center"
+            android:background="@drawable/list_ismar"
+            android:text="视云VIP"
+            android:visibility="gone"
+            android:layout_alignTop="@id/related_preview_img"
+            android:layout_alignLeft="@id/related_preview_img">
+    </tv.ismar.daisy.views.RotateTextView>
+       <!--<TextView-->
+        <!--android:id="@id/ItemBeanScore"-->
+        <!--android:layout_width="@dimen/related_item_ItemBeanScore_w"-->
+        <!--android:layout_height="@dimen/related_item_ItemBeanScore_h"-->
+        <!--android:layout_alignRight="@id/related_preview_img"-->
+        <!--android:layout_alignTop="@id/related_preview_img"-->
+        <!--android:background="@drawable/bean_score"-->
+        <!--android:gravity="center"-->
+        <!--android:textColor="#ffffffff"-->
+        <!--android:textSize="@dimen/related_item_ItemBeanScore_textsize"-->
+        <!--android:visibility="gone" />-->
     <ImageView
         android:id="@+id/related_quality_label"
         android:layout_width="@dimen/related_item_image_quality_W"
@@ -45,7 +73,7 @@
         android:layout_marginRight="@dimen/related_item_image_quality_marginright"
         android:visibility="gone"/>
     <TextView
-        android:id="@+id/related_price_txt" 
+        android:id="@+id/related_price_txt"
         android:layout_width="@dimen/list_view_item_expense_txt_w"
         android:layout_height="@dimen/list_view_item_expense_txt_h"
         android:layout_alignBottom="@id/related_preview_img"

@@ -114,6 +114,10 @@ public class LocalHistoryManager implements HistoryManager {
 			h.sub_url = history.sub_url;
             h.isnet = isnet;
             h.price = history.price;
+			h.cpid=history.cpid;
+			h.cpname=history.cpname;
+			h.cptitle=history.cptitle;
+			h.paytype=history.paytype;
 			mDBHelper.updateHistory(h);
 		} else {
 			ContentValues cv = new ContentValues();
@@ -130,6 +134,10 @@ public class LocalHistoryManager implements HistoryManager {
 			cv.put(DBFields.HistroyTable.SUB_URL, history.sub_url);
             cv.put(DBFields.HistroyTable.PRICE, history.price);
             cv.put(DBFields.HistroyTable.ISNET,isnet);
+			cv.put(DBFields.FavoriteTable.CPID,history.cpid);
+			cv.put(DBFields.FavoriteTable.CPNAME,history.cpname);
+			cv.put(DBFields.FavoriteTable.CPTITLE,history.cptitle);
+			cv.put(DBFields.FavoriteTable.PAYTYPE,history.paytype);
 			long result = mDBHelper.insert(cv, DBFields.HistroyTable.TABLE_NAME, mTotalEntriesLimit);
 			mHistories = mDBHelper.getAllHistories(isnet);
 			if(result >=0) {

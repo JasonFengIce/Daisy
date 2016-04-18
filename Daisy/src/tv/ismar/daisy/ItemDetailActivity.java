@@ -882,8 +882,9 @@ public class ItemDetailActivity extends BaseActivity implements
                     .findViewById(R.id.related_focus);
             ImageView qualityLabel = (ImageView) relatedHolder
                     .findViewById(R.id.related_quality_label);
-            TextView related_price_txt = (TextView) relatedHolder
-                    .findViewById(R.id.related_price_txt);
+            RotateTextView expense_txt = (RotateTextView) relatedHolder
+                    .findViewById(R.id.expense_txt);
+            expense_txt.setDegrees(-45);
             TextView ItemBeanScore = (TextView) relatedHolder
                     .findViewById(R.id.ItemBeanScore);
             if (mRelatedItem[i].bean_score > 0) {
@@ -891,8 +892,17 @@ public class ItemDetailActivity extends BaseActivity implements
                 ItemBeanScore.setVisibility(View.VISIBLE);
             }
             if (mRelatedItem[i].expense != null) {
-                related_price_txt.setVisibility(View.VISIBLE);
-                related_price_txt.setText("￥" + mRelatedItem[i].expense.price);
+                expense_txt.setVisibility(View.VISIBLE);
+                expense_txt.setText(mRelatedItem[i].expense.cptitle);
+                if("荔枝VIP".equals(mRelatedItem[i].expense.cptitle)){
+                    expense_txt.setBackgroundResource(R.drawable.list_lizhi);
+                }else if("视云VIP".equals(mRelatedItem[i].expense.cptitle)){
+                    expense_txt.setBackgroundResource(R.drawable.list_ismar);
+                }else{
+                    expense_txt.setBackgroundResource(R.drawable.list_single_buy);
+                }
+//                related_price_txt.setVisibility(View.VISIBLE);
+//                related_price_txt.setText("￥" + mRelatedItem[i].expense.price);
             }
             // if (mRelatedItem[i].quality == 3) {
             // qualityLabel.setImageResource(R.drawable.label_hd_small);
@@ -1032,6 +1042,12 @@ public class ItemDetailActivity extends BaseActivity implements
             favorite.url = url;
             favorite.quality = mItem.quality;
             favorite.is_complex = mItem.is_complex;
+            if(mItem.expense!=null) {
+                favorite.cpid = mItem.expense.cpid;
+                favorite.cpname=mItem.expense.cpname;
+                favorite.cptitle=mItem.expense.cptitle;
+                favorite.paytype=mItem.expense.pay_type;
+            }
             if (SimpleRestClient.isLogin()) {
                 favorite.isnet = "yes";
                 createFavoriteByNet();
@@ -1383,7 +1399,7 @@ public class ItemDetailActivity extends BaseActivity implements
                 }else{
                     Date date=new Date();
                     Log.e("DATE",date.getTime()+"");
-                    date.setTime(date.getTime()+((long)3600*24*1000*remainDay));
+                    date.setTime(date.getTime()+((long) 3600 * 24 *1000*remainDay));
                     SimpleDateFormat format=new SimpleDateFormat("yyyy年MM月dd日");
                     detail_duration_txt.setText("有效期至" +format.format(date));
                 }

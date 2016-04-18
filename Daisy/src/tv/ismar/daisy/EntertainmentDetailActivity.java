@@ -838,6 +838,12 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             favorite.url = url;
             favorite.quality = mItem.quality;
             favorite.is_complex = mItem.is_complex;
+            if(mItem.expense!=null) {
+                favorite.cpid = mItem.expense.cpid;
+                favorite.cpname=mItem.expense.cpname;
+                favorite.cptitle=mItem.expense.cptitle;
+                favorite.paytype=mItem.expense.pay_type;
+            }
             if (SimpleRestClient.isLogin()) {
                 favorite.isnet = "yes";
                 createFavoriteByNet();
@@ -1162,15 +1168,27 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                     .findViewById(R.id.related_title);
             LabelImageView imgView = (LabelImageView) relatedHolder
                     .findViewById(R.id.related_preview_img);
+            TextView ItemBeanScore= (TextView)relatedHolder.findViewById(R.id.ItemBeanScore);
+            RotateTextView expense_txt= (RotateTextView)relatedHolder.findViewById(R.id.expense_txt);
+            expense_txt.setDegrees(315);
             imgView.setOnImageViewLoadListener(this);
-//            if (mRelatedItem[i].bean_score > 0) {
-//                ItemBeanScore.setText(mRelatedItem[i].bean_score + "");
-//                ItemBeanScore.setVisibility(View.VISIBLE);
-//            }
-//            if (mRelatedItem[i].expense != null) {
+            if (mRelatedItem[i].bean_score > 0) {
+                ItemBeanScore.setText(mRelatedItem[i].bean_score + "");
+                ItemBeanScore.setVisibility(View.VISIBLE);
+            }
+            if (mRelatedItem[i].expense != null) {
 //                related_price_txt.setVisibility(View.VISIBLE);
 //                related_price_txt.setText("￥" + mRelatedItem[i].expense.price);
-//            }
+                expense_txt.setVisibility(View.VISIBLE);
+                expense_txt.setText(mRelatedItem[i].expense.cptitle);
+                if("荔枝VIP".equals(mRelatedItem[i].expense.cptitle)){
+                    expense_txt.setBackgroundResource(R.drawable.list_lizhi);
+                }else if("视云VIP".equals(mRelatedItem[i].expense.cptitle)){
+                    expense_txt.setBackgroundResource(R.drawable.list_ismar);
+                }else{
+                    expense_txt.setBackgroundResource(R.drawable.list_single_buy);
+                }
+            }
             imgView.setTag(mRelatedItem[i].adlet_url);
 //            if(StringUtils.isNotEmpty(mRelatedItem[i].list_url)){
 //
