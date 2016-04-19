@@ -104,7 +104,7 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 			if(mItemList.get(position).expense.cptitle!=null){
 				holder.price.setText(mItemList.get(position).expense.cptitle);
 				holder.price.setVisibility(View.VISIBLE);
-				if("荔枝VIP".equals(mItemList.get(position).expense.cptitle)){
+				if("奇异果VIP".equals(mItemList.get(position).expense.cptitle)){
 					holder.price.setBackgroundResource(R.drawable.list_lizhi);
 				}else if("视云VIP".equals(mItemList.get(position).expense.cptitle)){
 					holder.price.setBackgroundResource(R.drawable.list_ismar);

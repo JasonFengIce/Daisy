@@ -1179,14 +1179,16 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             if (mRelatedItem[i].expense != null) {
 //                related_price_txt.setVisibility(View.VISIBLE);
 //                related_price_txt.setText("￥" + mRelatedItem[i].expense.price);
-                expense_txt.setVisibility(View.VISIBLE);
-                expense_txt.setText(mRelatedItem[i].expense.cptitle);
-                if("荔枝VIP".equals(mRelatedItem[i].expense.cptitle)){
-                    expense_txt.setBackgroundResource(R.drawable.list_lizhi);
-                }else if("视云VIP".equals(mRelatedItem[i].expense.cptitle)){
-                    expense_txt.setBackgroundResource(R.drawable.list_ismar);
-                }else{
-                    expense_txt.setBackgroundResource(R.drawable.list_single_buy);
+                if(mRelatedItem[i].expense.cptitle!=null) {
+                    expense_txt.setVisibility(View.VISIBLE);
+                    expense_txt.setText(mRelatedItem[i].expense.cptitle);
+                    if ("奇异果VIP".equals(mRelatedItem[i].expense.cptitle)) {
+                        expense_txt.setBackgroundResource(R.drawable.list_lizhi);
+                    } else if ("视云VIP".equals(mRelatedItem[i].expense.cptitle)) {
+                        expense_txt.setBackgroundResource(R.drawable.list_ismar);
+                    } else {
+                        expense_txt.setBackgroundResource(R.drawable.list_single_buy);
+                    }
                 }
             }
             imgView.setTag(mRelatedItem[i].adlet_url);

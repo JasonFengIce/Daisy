@@ -140,7 +140,7 @@ public class HGridFilterAdapterImpl extends HGridAdapter<ItemCollection> impleme
 						if(item.expense.cptitle!=null){
 							holder.expense_txt.setText(item.expense.cptitle);
 							holder.expense_txt.setVisibility(View.VISIBLE);
-							if("荔枝VIP".equals(item.expense.cptitle)){
+							if("奇异果VIP".equals(item.expense.cptitle)){
 								holder.expense_txt.setBackgroundResource(R.drawable.list_lizhi);
 							}else if("视云VIP".equals(item.expense.cptitle)){
 								holder.expense_txt.setBackgroundResource(R.drawable.list_ismar);

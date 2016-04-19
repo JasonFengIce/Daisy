@@ -185,7 +185,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 						if(item.expense.cptitle!=null){
 							holder.price.setText(item.expense.cptitle);
 							holder.price.setVisibility(View.VISIBLE);
-							if("荔枝VIP".equals(item.expense.cptitle)){
+							if("奇异果VIP".equals(item.expense.cptitle)){
 								holder.price.setBackgroundResource(R.drawable.list_lizhi);
 							}else if("视云VIP".equals(item.expense.cptitle)){
 								holder.price.setBackgroundResource(R.drawable.list_ismar);

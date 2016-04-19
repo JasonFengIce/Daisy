@@ -117,7 +117,7 @@ public class SearchAdapter extends HGridAdapter<MovieBean> implements OnImageVie
 			if (movieBean.expense.cptitle != null) {
 				holder.expense_txt.setText(movieBean.expense.cptitle);
 				holder.expense_txt.setVisibility(View.VISIBLE);
-				if ("荔枝VIP".equals(movieBean.expense.cptitle)) {
+				if ("奇异果VIP".equals(movieBean.expense.cptitle)) {
 					holder.expense_txt.setBackgroundResource(R.drawable.list_lizhi);
 				} else if ("视云VIP".equals(movieBean.expense.cptitle)) {
 					holder.expense_txt.setBackgroundResource(R.drawable.list_ismar);
