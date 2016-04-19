@@ -50,6 +50,7 @@ public class NetworkUtils {
             URL url = new URL(urlStr + "?device_token="
                     + SimpleRestClient.device_token + "&access_token="
                     + SimpleRestClient.access_token + values);
+            Log.v("aaaa", "url=" + url.toString());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             StringBuffer sb = new StringBuffer();
@@ -123,6 +124,7 @@ public class NetworkUtils {
             }
             buff.close();
             conn.disconnect();
+            Log.v("aaaa", "response.toString()=" + sb.toString());
             return sb.toString();
         } catch (Exception e) {
             if (e instanceof ItemOfflineException) {
@@ -139,6 +141,7 @@ public class NetworkUtils {
         StringBuffer response = new StringBuffer();
         try {
             URL postUrl = new URL(url);
+            Log.v("aaaa","postUrl="+postUrl);
             HttpURLConnection connection = (HttpURLConnection) postUrl
                     .openConnection();
             connection.setDoOutput(true);
@@ -212,6 +215,7 @@ public class NetworkUtils {
                 throw (NetworkException) e;
             }
         }
+        Log.v("aaaa","response.toString()="+response.toString());
         return response.toString();
     }
 
