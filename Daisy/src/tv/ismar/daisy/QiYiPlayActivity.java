@@ -161,6 +161,7 @@ public class QiYiPlayActivity extends VodMenuAction {
     private TextView mTxtAdTimer;
     private static final int[] SEEK_STEPS = {5000,      10000,      30000,      60000,      300000,     600000};
     private int mSeekStepIndex;
+    private  boolean is_vip;
     static {
         DEFINITION_NAMES = new HashMap<BitStream, String>();
         DEFINITION_NAMES.put(BitStream.BITSTREAM_HIGH, "高清");
@@ -1865,7 +1866,7 @@ public class QiYiPlayActivity extends VodMenuAction {
             startPlayMovie(AccessProxy.getQiYiInfo(info, definition));
         } else {
             String[] array = info.split(":");
-            SdkVideo qiyiInfo = new SdkVideo(array[0],array[1],array[2],true);
+            SdkVideo qiyiInfo = new SdkVideo(array[0],array[1],array[2],urlInfo.isIs_vip());
             startPlayMovie(qiyiInfo);
         }
         sid = MD5Utils.encryptByMD5(SimpleRestClient.sn_token+System.currentTimeMillis());
