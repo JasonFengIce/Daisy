@@ -9,7 +9,7 @@ public class ClipInfo {
 	private String normal;
 	private String ultra;
 	private String iqiyi_4_0;
-
+    private boolean is_vip;
 	public ClipInfo() {
 		adaptive = "";
 		high = "";
@@ -75,4 +75,11 @@ public class ClipInfo {
 	public void setIqiyi_4_0(String iqiyi_4_0) {
 		this.iqiyi_4_0 = iqiyi_4_0;
 	}
+	public  boolean isIs_vip(){
+		return is_vip;
+	}
+	public  void setIs_vip(boolean value){
+		is_vip = value;
+	}
+
 }
