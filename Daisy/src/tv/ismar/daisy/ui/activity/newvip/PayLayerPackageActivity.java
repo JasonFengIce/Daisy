@@ -71,6 +71,7 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
         rightArrow = (ImageView) findViewById(R.id.right_arrow);
         mTvHorizontalScrollView.setLeftArrow(leftArrow);
         mTvHorizontalScrollView.setRightArrow(rightArrow);
+        mTvHorizontalScrollView.setCoverOffset(20);
         tmp = (ImageView) findViewById(R.id.tmp);
 
         title = (TextView) findViewById(R.id.title);
@@ -81,6 +82,20 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
         purchaseBtn.setOnHoverListener(this);
         purchaseBtn.setOnFocusChangeListener(this);
         purchaseBtn.requestFocus();
+
+        leftArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTvHorizontalScrollView.pageScroll(View.FOCUS_LEFT);
+            }
+        });
+
+        rightArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTvHorizontalScrollView.pageScroll(View.FOCUS_RIGHT);
+            }
+        });
     }
 
     private void payLayerPackage(String packageId) {
@@ -114,10 +129,10 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
         for (final Item_list itemList : packageEntity.getItem_list()) {
             RelativeLayout itemView = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_paylayervip, null);
             ImageView imageView = (ImageView) itemView.findViewById(R.id.image);
-            if (TextUtils.isEmpty(itemList.getVertical_url())){
-                Picasso.with(this).load(R.drawable.preview).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(imageView);
-            }else {
-                Picasso.with(this).load(itemList.getVertical_url()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(imageView);
+            if (TextUtils.isEmpty(itemList.getVertical_url())) {
+                Picasso.with(this).load(R.drawable.preview).into(imageView);
+            } else {
+                Picasso.with(this).load(itemList.getVertical_url()).into(imageView);
             }
             itemView.setOnFocusChangeListener(this);
             itemView.setOnHoverListener(this);

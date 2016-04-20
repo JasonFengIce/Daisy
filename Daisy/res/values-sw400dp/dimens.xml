@@ -1318,7 +1318,7 @@
 
 <dimen name="child_loop_indicator_text_height">20.37dp</dimen>
 <dimen name="child_loop_indicator_layout_height">31.48dp</dimen>
-<dimen name="item_newvip_pay_img_width">161.48dp</dimen>
+<dimen name="item_newvip_pay_img_width">158.52dp</dimen>
 <dimen name="item_newvip_pay_img_height">227.04dp</dimen>
 <dimen name="newvip_pay_scroll_width">555.56dp</dimen>
 <dimen name="newvip_pay_scroll_height">259.26dp</dimen>
@@ -1379,8 +1379,12 @@
 <dimen name="list_vip_score_w">20.74dip</dimen>
 <dimen name="list_vip_score_h">14.07dip</dimen>
 <dimen name="list_vip_score_mr">2.22dip</dimen>
-<dimen name="list_vip_score_mt">40.74dip</dimen>
+<dimen name="list_vip_score_mt">42.59dip</dimen>
 <dimen name="list_vip_score_horizon_mt">103.70dip</dimen>
+<dimen name="VIP_tag_small_w">29.63dip</dimen>
+<dimen name="VIP_tag_small_h">29.63dip</dimen>
+<dimen name="VIP_beanscore_small_ml">59.26dip</dimen>
+<dimen name="VIP_beanscore_small_mt">37.04dip</dimen>
 
 <dimen name="tag_txt_size">7.41sp</dimen>
 <dimen name="bottom_tag_txt_size">6.67sp</dimen>
