@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/selector_item"
+    android:background="@drawable/newvip_pay_selector_item"
     android:clickable="true"
     android:descendantFocusability="blocksDescendants"
     android:focusable="true"
