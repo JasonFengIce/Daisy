@@ -475,7 +475,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 		 * use one button.
 		 */
 
-        if (mItem.expense!=null&&mItem.expense.cplogo != null) {
+        if (mItem.expense != null && mItem.expense.cplogo != null) {
             Picasso.with(this).load(mItem.expense.cplogo).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(source);
             source.setVisibility(View.VISIBLE);
         }
@@ -505,16 +505,16 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             if (mItem.expense.cptitle != null && !"".equals(mItem.expense.cptitle)) {
                 detail_tag_txt.setText(mItem.expense.cptitle);
                 detail_tag_txt.setVisibility(View.VISIBLE);
-                if("荔枝VIP".equals(mItem.expense.cptitle)){
-                    detail_tag_txt.setBackgroundResource(R.drawable.lizhi);
-                }else if("视云VIP".equals(mItem.expense.cptitle)){
-                    detail_tag_txt.setBackgroundResource(R.drawable.ismar);
-                }else{
+                if (mItem.expense.pay_type == 1) {
                     detail_tag_txt.setBackgroundResource(R.drawable.single_buy);
+                } else if ("ismart".equals(mItem.expense.cpname)) {
+                    detail_tag_txt.setBackgroundResource(R.drawable.ismar);
+                } else if ("iqiyi".equals(mItem.expense.cpname)) {
+                    detail_tag_txt.setBackgroundResource(R.drawable.lizhi);
+
                 }
-            }
-            if (!isBuy) {
-                // 未购买
+                if (!isBuy) {
+                    // 未购买
 //				if (!isDrama()) {
 //					// 电影
 //					mLeftBtn.setBackgroundResource(R.drawable.preview_video_btn_bg_selector);
@@ -536,97 +536,98 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 //							.setBackgroundResource(R.drawable.collect_btn_bg_selector);
 //					mRightBtn.setTag(COLLECT_VIDEO);
 //				}
-                //setLeftDrawable(drawableleftplay, mLeftBtn);
-                if(mItem.preview == null){
-                    mLeftBtn.setTag(PREVIEW_VIDEO);
-                    mLeftBtn.setText(getResources().getString(R.string.preview_video));
-                    mLeftBtn.setBackgroundResource(R.drawable.button_disable);
-                    mLeftBtn.setEnabled(false);
-                    mLeftBtn.setClickable(false);
-                }else{
-                    mLeftBtn.setTag(PREVIEW_VIDEO);
-                    mLeftBtn.setText(getResources().getString(R.string.preview_video));
-                }
-                //setLeftDrawable(drawableleftbuy, mMiddleBtn);
-                mMiddleBtn.setTag(BUY_VIDEO);
-                mMiddleBtn.setText(getResources().getString(R.string.buy_video));
-                //setLeftDrawable(drawableleftcollect, mRightBtn);
-                mRightBtn.setText(getResources().getString(R.string.favorite));
-                mRightBtn.setTag(COLLECT_VIDEO);
-                initFocusBtn(mLeftBtn, false);
-                initFocusBtn(mRightBtn, false);
-                initFocusBtn(mMiddleBtn, false);
-                if (mItem.expense.pay_type == 3||mItem.expense.pay_type == 0) {
-                    detail_permission_txt.setVisibility(View.VISIBLE);
-                    detail_duration_txt.setVisibility(View.GONE);
-                    detail_price_txt.setVisibility(View.GONE);
-                } else {
-                    detail_price_txt.setText("￥" + mItem.expense.price);
+                    //setLeftDrawable(drawableleftplay, mLeftBtn);
+                    if (mItem.preview == null) {
+                        mLeftBtn.setTag(PREVIEW_VIDEO);
+                        mLeftBtn.setText(getResources().getString(R.string.preview_video));
+                        mLeftBtn.setBackgroundResource(R.drawable.button_disable);
+                        mLeftBtn.setEnabled(false);
+                        mLeftBtn.setClickable(false);
+                    } else {
+                        mLeftBtn.setTag(PREVIEW_VIDEO);
+                        mLeftBtn.setText(getResources().getString(R.string.preview_video));
+                    }
+                    //setLeftDrawable(drawableleftbuy, mMiddleBtn);
+                    mMiddleBtn.setTag(BUY_VIDEO);
+                    mMiddleBtn.setText(getResources().getString(R.string.buy_video));
+                    //setLeftDrawable(drawableleftcollect, mRightBtn);
+                    mRightBtn.setText(getResources().getString(R.string.favorite));
+                    mRightBtn.setTag(COLLECT_VIDEO);
+                    initFocusBtn(mLeftBtn, false);
+                    initFocusBtn(mRightBtn, false);
+                    initFocusBtn(mMiddleBtn, false);
+                    if (mItem.expense.pay_type == 3 || mItem.expense.pay_type == 0) {
+                        detail_permission_txt.setVisibility(View.VISIBLE);
+                        detail_duration_txt.setVisibility(View.GONE);
+                        detail_price_txt.setVisibility(View.GONE);
+                    } else {
+                        detail_price_txt.setText("￥" + mItem.expense.price);
 //                detail_duration_txt.setText("有效期" + mItem.expense.duratio);
-                    detail_price_txt.setVisibility(View.VISIBLE);
-                    detail_permission_txt.setVisibility(View.GONE);
-                    detail_duration_txt.setVisibility(View.GONE);
+                        detail_price_txt.setVisibility(View.VISIBLE);
+                        detail_permission_txt.setVisibility(View.GONE);
+                        detail_duration_txt.setVisibility(View.GONE);
 //                detail_duration_txt.setVisibility(View.VISIBLE);
-                }
-                remainDay = mItem.expense.duration;
-                mCollectBtn = mRightBtn;
-            } else {
-                // 已经购买
-                //isbuy_label.setVisibility(View.VISIBLE);
-                //mDetailQualityLabel.setVisibility(View.GONE);
-                if (!isDrama()) {
-                    // 电影
-                    mRightBtn.setVisibility(View.GONE);
-                    // mRightBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
-                    // mRightBtn.setTag(COLLECT_VIDEO);
+                    }
+                    remainDay = mItem.expense.duration;
+                    mCollectBtn = mRightBtn;
                 } else {
-                    // 电视剧
+                    // 已经购买
+                    //isbuy_label.setVisibility(View.VISIBLE);
+                    //mDetailQualityLabel.setVisibility(View.GONE);
+                    if (!isDrama()) {
+                        // 电影
+                        mRightBtn.setVisibility(View.GONE);
+                        // mRightBtn.setBackgroundResource(R.drawable.collect_btn_bg_selector);
+                        // mRightBtn.setTag(COLLECT_VIDEO);
+                    } else {
+                        // 电视剧
 //					mLeftBtn.setBackgroundResource(R.drawable.play_btn_bg_selector);
 //					mLeftBtn.setTag(PLAY_VIDEO);
 //					mMiddleBtn
 //							.setBackgroundResource(R.drawable.collect_btn_bg_selector);
 //					mMiddleBtn.setTag(COLLECT_VIDEO);
 
-                    //setLeftDrawable(drawableleftdrama, mRightBtn);
-                    mRightBtn.setText(getResources().getString(R.string.vod_itemepisode));
-                    mRightBtn.setTag(DRAMA_VIDEO);
-                    initFocusBtn(mRightBtn, false);
-                }
+                        //setLeftDrawable(drawableleftdrama, mRightBtn);
+                        mRightBtn.setText(getResources().getString(R.string.vod_itemepisode));
+                        mRightBtn.setTag(DRAMA_VIDEO);
+                        initFocusBtn(mRightBtn, false);
+                    }
 
-                //setLeftDrawable(drawableleftplay, mLeftBtn);
-                mLeftBtn.setTag(PLAY_VIDEO);
-                mLeftBtn.setText(getResources().getString(R.string.play));
-                //setLeftDrawable(drawableleftcollect,mMiddleBtn);
-                mMiddleBtn.setText(getResources().getString(R.string.favorite));
-                mMiddleBtn.setTag(COLLECT_VIDEO);
-                initFocusBtn(mLeftBtn, false);
-                initFocusBtn(mMiddleBtn, false);
-                if(toDate!=null) {
-                    String[] todate = toDate.substring(0, toDate.indexOf(" ")).split("-");
-                    detail_duration_txt.setText("有效期至" + todate[0] + "年" + todate[1] + "月" + todate[2] + "日");
-                }else{
-                    Date date=new Date();
-                    Log.e("DATE", date.getTime() + "");
-                    date.setTime(date.getTime()+((long)3600*24*1000*remainDay));
-                    SimpleDateFormat format=new SimpleDateFormat("yyyy年MM月dd日");
-                    detail_duration_txt.setText("有效期至" +format.format(date));
-                }
-                detail_duration_txt.setVisibility(View.VISIBLE);
-                detail_price_txt.setVisibility(View.GONE);
-                detail_permission_txt.setVisibility(View.GONE);
+                    //setLeftDrawable(drawableleftplay, mLeftBtn);
+                    mLeftBtn.setTag(PLAY_VIDEO);
+                    mLeftBtn.setText(getResources().getString(R.string.play));
+                    //setLeftDrawable(drawableleftcollect,mMiddleBtn);
+                    mMiddleBtn.setText(getResources().getString(R.string.favorite));
+                    mMiddleBtn.setTag(COLLECT_VIDEO);
+                    initFocusBtn(mLeftBtn, false);
+                    initFocusBtn(mMiddleBtn, false);
+                    if (toDate != null) {
+                        String[] todate = toDate.substring(0, toDate.indexOf(" ")).split("-");
+                        detail_duration_txt.setText("有效期至" + todate[0] + "年" + todate[1] + "月" + todate[2] + "日");
+                    } else {
+                        Date date = new Date();
+                        Log.e("DATE", date.getTime() + "");
+                        date.setTime(date.getTime() + ((long) 3600 * 24 * 1000 * remainDay));
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
+                        detail_duration_txt.setText("有效期至" + format.format(date));
+                    }
+                    detail_duration_txt.setVisibility(View.VISIBLE);
+                    detail_price_txt.setVisibility(View.GONE);
+                    detail_permission_txt.setVisibility(View.GONE);
 //                detail_duration_txt
 //                        .setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
 //                detail_price_txt
 //                        .setBackgroundResource(R.drawable.vod_detail_already_payment_price);
-                mCollectBtn = mMiddleBtn;
+                    mCollectBtn = mMiddleBtn;
+                }
             }
-        }
-        if(mLeftBtn.isEnabled()) {
-            mLeftBtn.setFocusable(true);
-            mLeftBtn.requestFocus();
-        }else{
-            mMiddleBtn.setFocusable(true);
-            mMiddleBtn.requestFocus();
+            if (mLeftBtn.isEnabled()) {
+                mLeftBtn.setFocusable(true);
+                mLeftBtn.requestFocus();
+            } else {
+                mMiddleBtn.setFocusable(true);
+                mMiddleBtn.requestFocus();
+            }
         }
     }
 
@@ -1150,16 +1151,18 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 ItemBeanScore.setVisibility(View.VISIBLE);
             }
             if (mRelatedItem[i].expense != null) {
-                expense_txt.setVisibility(View.VISIBLE);
-                expense_txt.setText(mRelatedItem[i].expense.cptitle);
-                if("荔枝VIP".equals(mRelatedItem[i].expense.cptitle)){
-                    expense_txt.setBackgroundResource(R.drawable.list_lizhi);
-                }else if("视云VIP".equals(mRelatedItem[i].expense.cptitle)){
-                    expense_txt.setBackgroundResource(R.drawable.list_ismar);
-                }else{
-                    expense_txt.setBackgroundResource(R.drawable.list_single_buy);
-                }
+                if (mRelatedItem[i].expense.cptitle != null) {
+                    expense_txt.setVisibility(View.VISIBLE);
+                    expense_txt.setText(mRelatedItem[i].expense.cptitle);
+                    if(mRelatedItem[i].expense.pay_type==1){
+                        expense_txt.setBackgroundResource(R.drawable.list_single_buy);
+                    }else if("ismart".equals(mRelatedItem[i].expense.cpname)){
+                        expense_txt.setBackgroundResource(R.drawable.list_ismar);
+                    }else if("iqiyi".equals(mRelatedItem[i].expense.cpname)){
+                        expense_txt.setBackgroundResource(R.drawable.list_lizhi);
+                    }
 //                related_price_txt.setText("￥" + mRelatedItem[i].expense.price);
+                }
             }
             imgView.setTag(mRelatedItem[i].adlet_url);
 //            if(StringUtils.isNotEmpty(mRelatedItem[i].list_url)){

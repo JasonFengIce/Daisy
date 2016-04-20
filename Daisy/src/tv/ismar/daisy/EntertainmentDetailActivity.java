@@ -1020,12 +1020,13 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             if (mItem.expense.cptitle != null && !"".equals(mItem.expense.cptitle)) {
                 detail_tag_txt.setText(mItem.expense.cptitle);
                 detail_tag_txt.setVisibility(View.VISIBLE);
-                if("荔枝VIP".equals(mItem.expense.cptitle)){
-                    detail_tag_txt.setBackgroundResource(R.drawable.lizhi);
-                }else if("视云VIP".equals(mItem.expense.cptitle)){
-                    detail_tag_txt.setBackgroundResource(R.drawable.ismar);
-                }else{
+                if (mItem.expense.pay_type == 1) {
                     detail_tag_txt.setBackgroundResource(R.drawable.single_buy);
+                } else if ("ismart".equals(mItem.expense.cpname)) {
+                    detail_tag_txt.setBackgroundResource(R.drawable.ismar);
+                } else if ("iqiyi".equals(mItem.expense.cpname)) {
+                    detail_tag_txt.setBackgroundResource(R.drawable.lizhi);
+
                 }
             }
             // 收费
@@ -1179,14 +1180,16 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             if (mRelatedItem[i].expense != null) {
 //                related_price_txt.setVisibility(View.VISIBLE);
 //                related_price_txt.setText("￥" + mRelatedItem[i].expense.price);
-                expense_txt.setVisibility(View.VISIBLE);
-                expense_txt.setText(mRelatedItem[i].expense.cptitle);
-                if("荔枝VIP".equals(mRelatedItem[i].expense.cptitle)){
-                    expense_txt.setBackgroundResource(R.drawable.list_lizhi);
-                }else if("视云VIP".equals(mRelatedItem[i].expense.cptitle)){
-                    expense_txt.setBackgroundResource(R.drawable.list_ismar);
-                }else{
-                    expense_txt.setBackgroundResource(R.drawable.list_single_buy);
+                if(mRelatedItem[i].expense.cptitle!=null) {
+                    expense_txt.setVisibility(View.VISIBLE);
+                    expense_txt.setText(mRelatedItem[i].expense.cptitle);
+                    if(mRelatedItem[i].expense.pay_type==1){
+                        expense_txt.setBackgroundResource(R.drawable.list_single_buy);
+                    }else if("ismart".equals(mRelatedItem[i].expense.cpname)){
+                        expense_txt.setBackgroundResource(R.drawable.list_ismar);
+                    }else if("iqiyi".equals(mRelatedItem[i].expense.cpname)){
+                        expense_txt.setBackgroundResource(R.drawable.list_lizhi);
+                    }
                 }
             }
             imgView.setTag(mRelatedItem[i].adlet_url);
