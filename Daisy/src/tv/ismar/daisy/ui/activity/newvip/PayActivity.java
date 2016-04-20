@@ -2,6 +2,7 @@ package tv.ismar.daisy.ui.activity.newvip;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -93,7 +94,12 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
             title.setText(vip.getTitle());
             TextView price = (TextView) vipItem.findViewById(R.id.price);
             price.setText(String.valueOf(vip.getPrice()) + "元/" + vip.getDuration() + "天");
-            Picasso.with(this).load(vip.getVertical_url()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(imageView);
+            if (TextUtils.isEmpty(vip.getVertical_url())){
+                Picasso.with(this).load(R.drawable.preview).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(imageView);
+            }else {
+
+                Picasso.with(this).load(vip.getVertical_url()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(imageView);
+            }
             vipItem.setOnHoverListener(this);
             vipItem.setOnFocusChangeListener(this);
             vipItem.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +118,12 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
         if (expenseItem != null) {
             RelativeLayout item = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_newvip_pay, null);
             ImageView imageView = (ImageView) item.findViewById(R.id.item_newvip_pay_img);
-            Picasso.with(this).load(expenseItem.getVertical_url()).into(imageView);
+            if (TextUtils.isEmpty(expenseItem.getVertical_url())){
+                Picasso.with(this).load(R.drawable.preview).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(imageView);
+            }else {
+
+                Picasso.with(this).load(expenseItem.getVertical_url()).into(imageView);
+            }
             TextView title = (TextView) item.findViewById(R.id.title);
             title.setText(expenseItem.getTitle());
             TextView price = (TextView) item.findViewById(R.id.price);
@@ -132,7 +143,11 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
         if (newVipPackage != null) {
             RelativeLayout item = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_newvip_pay, null);
             ImageView imageView = (ImageView) item.findViewById(R.id.item_newvip_pay_img);
-            Picasso.with(this).load(newVipPackage.getVertical_url()).into(imageView);
+            if (TextUtils.isEmpty(newVipPackage.getVertical_url())){
+                Picasso.with(this).load(R.drawable.preview).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(imageView);
+            }else {
+                Picasso.with(this).load(newVipPackage.getVertical_url()).into(imageView);
+            }
             TextView title = (TextView) item.findViewById(R.id.title);
             title.setText(newVipPackage.getTitle());
             TextView price = (TextView) item.findViewById(R.id.price);

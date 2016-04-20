@@ -64,7 +64,12 @@ public class AccessProxy {
 			json = new JSONObject(content);
 			String info = json.getString("iqiyi_4_0");
 			String[] array = info.split(":");
-			qiyiInfo = new SdkVideo(array[0], array[1],false);
+			if(json.has("is_vip")){
+				boolean isvip = json.getBoolean("is_vip");
+				qiyiInfo = new SdkVideo(array[0], array[1],array[2],isvip);
+			}else{
+				qiyiInfo = new SdkVideo(array[0], array[1],array[2],false);
+			}
 			// qiyiInfo = new SdkVideo("202153901", "308529000",
 			// "8d301d7723586e7a0e1ecb778ada0cb5",Definition.DEFINITON_1080P);
 		} catch (Exception e) {
@@ -212,6 +217,9 @@ public class AccessProxy {
 				iqiyi_4_0 = jsonObject.getString("iqiyi_4_0");
 			if (adaptive != "null") {
 				adaptive = AES_decrypt(adaptive);
+			}
+			if(jsonObject.has("is_vip")){
+				ci.setIs_vip(jsonObject.getBoolean("is_vip"));
 			}
 			if (high != "null") {
 				high = AES_decrypt(high);

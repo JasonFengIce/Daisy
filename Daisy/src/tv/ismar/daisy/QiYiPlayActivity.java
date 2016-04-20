@@ -94,6 +94,7 @@ public class QiYiPlayActivity extends VodMenuAction {
     private boolean isSeekBuffer = false;
     private boolean panelShow = false;
     private int currQuality = 0;// 0: normal 1: 720P 2:1080P
+    private boolean mIsPreview;
     private Animation panelShowAnimation;
     private Animation panelHideAnimation;
     private BitStream currentDefinition;
@@ -160,6 +161,7 @@ public class QiYiPlayActivity extends VodMenuAction {
     private TextView mTxtAdTimer;
     private static final int[] SEEK_STEPS = {5000,      10000,      30000,      60000,      300000,     600000};
     private int mSeekStepIndex;
+    private  boolean is_vip;
     static {
         DEFINITION_NAMES = new HashMap<BitStream, String>();
         DEFINITION_NAMES.put(BitStream.BITSTREAM_HIGH, "高清");
@@ -1864,7 +1866,7 @@ public class QiYiPlayActivity extends VodMenuAction {
             startPlayMovie(AccessProxy.getQiYiInfo(info, definition));
         } else {
             String[] array = info.split(":");
-            SdkVideo qiyiInfo = new SdkVideo(array[0],array[1],false);
+            SdkVideo qiyiInfo = new SdkVideo(array[0],array[1],array[2],urlInfo.isIs_vip());
             startPlayMovie(qiyiInfo);
         }
         sid = MD5Utils.encryptByMD5(SimpleRestClient.sn_token+System.currentTimeMillis());
@@ -1937,6 +1939,10 @@ public class QiYiPlayActivity extends VodMenuAction {
             //TODO, onPreviewComplete回调接口去掉, 保持状态不重复; 当onComplete回调时，判断如果是试看, 即表示试看结束
             if (mPlayer == null)
                 return;
+            if(mIsPreview){
+                QiYiPlayActivity.this.finish();
+                return;
+            }
             gotoFinishPage();
         }
 
@@ -2077,7 +2083,7 @@ public class QiYiPlayActivity extends VodMenuAction {
         @Override
         public void onPreviewInfoReady(IMediaPlayer player, final boolean isPreview, final int previewEndTimeInSecond) {
             Log.d(TAG, "onPreviewInfoReady: isPreview=" + isPreview + ", previewEndTimeInSecond=" + previewEndTimeInSecond);
-//	            mIsPreview = isPreview;
+            mIsPreview = isPreview;
             String text = "isPreview=" + isPreview + ", previewEndTimeInSecond=" + previewEndTimeInSecond;
         }
     };
