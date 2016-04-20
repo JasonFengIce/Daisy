@@ -140,12 +140,12 @@ public class HGridFilterAdapterImpl extends HGridAdapter<ItemCollection> impleme
 						if(item.expense.cptitle!=null){
 							holder.expense_txt.setText(item.expense.cptitle);
 							holder.expense_txt.setVisibility(View.VISIBLE);
-							if("奇异果VIP".equals(item.expense.cptitle)){
-								holder.expense_txt.setBackgroundResource(R.drawable.list_lizhi);
-							}else if("视云VIP".equals(item.expense.cptitle)){
-								holder.expense_txt.setBackgroundResource(R.drawable.list_ismar);
-							}else{
+							if(item.expense.pay_type==1){
 								holder.expense_txt.setBackgroundResource(R.drawable.list_single_buy);
+							}else if("ismart".equals(item.expense.cpname)){
+								holder.expense_txt.setBackgroundResource(R.drawable.list_ismar);
+							}else if("iqiyi".equals(item.expense.cpname)){
+								holder.expense_txt.setBackgroundResource(R.drawable.list_lizhi);
 							}
 						}
 					}
