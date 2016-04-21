@@ -2,6 +2,7 @@ package tv.ismar.sakura.core;
 
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import cn.ismartv.log.interceptor.HttpLoggingInterceptor;
 import okhttp3.OkHttpClient;
@@ -33,12 +34,18 @@ public class SakuraClientAPI {
     private static final String SPEED_CALLA_TVXIO_HOST = "http://speed.calla.tvxio.com";
     private static final String LILY_TVXIO_HOST = "http://lily.tvxio.com";
 
+    private static final int DEFAULT_CONNECT_TIMEOUT = 2;
+    private static final int DEFAULT_READ_TIMEOUT = 5;
 
     static {
-        OkHttpClient client = new OkHttpClient();
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        client.interceptors().add(interceptor);
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(DEFAULT_CONNECT_TIMEOUT, TimeUnit.SECONDS)
+                .readTimeout(DEFAULT_READ_TIMEOUT, TimeUnit.SECONDS)
+                .addInterceptor(interceptor)
+                .build();
+
         restAdapter_WX_API_TVXIO = new Retrofit.Builder()
                 .client(client)
                 .baseUrl(SakuraClientAPI.API_HOST)
