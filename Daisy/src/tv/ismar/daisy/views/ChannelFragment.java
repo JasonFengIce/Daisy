@@ -663,7 +663,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
     @Override
     public void onResume() {
         mIsBusy = false;
-        ((ChannelListActivity) getActivity()).registerOnMenuToggleListener(this);
+//        ((ChannelListActivity) getActivity()).registerOnMenuToggleListener(this);
         super.onResume();
         if (isPause) {
             isPause = false;
@@ -716,7 +716,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
         for (Integer index : currentLoadingTask.keySet()) {
             currentLoadingTask.get(index).cancel(true);
         }
-        ((ChannelListActivity) getActivity()).unregisterOnMenuToggleListener();
+//        ((ChannelListActivity) getActivity()).unregisterOnMenuToggleListener();
         super.onPause();
     }
 

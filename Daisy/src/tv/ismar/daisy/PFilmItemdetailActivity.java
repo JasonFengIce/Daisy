@@ -641,11 +641,11 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         }else if(0 == mItem.expense.jump_to){
             Intent intent = new Intent(PFilmItemdetailActivity.this, PayActivity.class);
             intent.putExtra("item_id", String.valueOf(mItem.pk));
-            startActivity(intent);
+            startActivityForResult(intent, 20);
         }else if(2 == mItem.expense.jump_to){
             Intent intent = new Intent(PFilmItemdetailActivity.this, PayLayerVipActivity.class);
             intent.putExtra("cpid", String.valueOf(mItem.expense.cpid));
-            startActivity(intent);
+            startActivityForResult(intent,20);
         }
     }
 
