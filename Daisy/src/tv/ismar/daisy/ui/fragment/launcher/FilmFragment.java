@@ -388,9 +388,9 @@ public class FilmFragment extends ChannelBaseFragment {
                 itemView.setId(R.id.filmfragment_firstcarousel);
                 firstcarousel = itemView;
             } else{
-            	itemView.setId(R.id.filmfragment_firstcarousel+i);
+            	itemView.setId(R.id.filmfragment_firstcarousel+i*5);
                 params.topMargin = 17;
-                params.addRule(RelativeLayout.BELOW,R.id.filmfragment_firstcarousel+(i-1));
+                params.addRule(RelativeLayout.BELOW,R.id.filmfragment_firstcarousel+5*(i-1));
             }
             if (mContext == null)
                 return;
