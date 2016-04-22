@@ -73,8 +73,11 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/paylayerpkg_purchase_marginRight"
+                    android:background="@drawable/daisy_btn_bg_selector"
+                    android:enabled="false"
                     android:onClick="buyPackage"
-                    android:text="@string/paylayerpkg_purchase"/>
+                    android:text="@string/paylayerpkg_purchase"
+                    android:textSize="@dimen/textsize_36sp"/>
             </RelativeLayout>
 
             <TextView

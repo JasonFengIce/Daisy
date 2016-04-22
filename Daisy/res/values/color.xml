@@ -92,4 +92,7 @@
     <color name="paychannel_button_disable">#3f3f3f</color>
 
     <drawable name="pop_bg_drawable">#CC000000</drawable>
+
+    <color name="newvip_purchase_focus">#ff9c3c</color>
+    <color name="newvip_purchase_normal">#383d43</color>
 </resources>

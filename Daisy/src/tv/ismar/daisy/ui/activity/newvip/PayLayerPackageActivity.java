@@ -3,6 +3,7 @@ package tv.ismar.daisy.ui.activity.newvip;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,7 +19,10 @@ import com.example.foregroundimageview.ForegroundImageView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+
 import cn.ismartv.tvhorizontalscrollview.TvHorizontalScrollView;
+import okhttp3.ResponseBody;
 import retrofit2.Callback;
 import retrofit2.Response;
 import tv.ismar.daisy.BaseActivity;
@@ -63,6 +67,7 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
         Intent intent = getIntent();
         String packageId = intent.getStringExtra("package_id");
         payLayerPackage(packageId);
+        orderCheck(packageId);
     }
 
     private void initViews() {
@@ -128,15 +133,32 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(margin, 0, margin, 0);
         for (final Item_list itemList : packageEntity.getItem_list()) {
-            RelativeLayout itemView = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_paylayervip, null);
+            RelativeLayout itemView = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_paylayerpackage, null);
             ForegroundImageView imageView = (ForegroundImageView) itemView.findViewById(R.id.image);
+            TextView itemTitle = (TextView) itemView.findViewById(R.id.title);
+            itemTitle.setText(itemList.getTitle());
+
             if (TextUtils.isEmpty(itemList.getVertical_url())) {
                 Picasso.with(this).load(R.drawable.preview).into(imageView);
             } else {
                 Picasso.with(this).load(itemList.getVertical_url()).into(imageView);
             }
 
-            itemView.setOnFocusChangeListener(this);
+            itemView.setOnFocusChangeListener(new OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    View itemContainer = v.findViewById(R.id.item_container);
+                    View itemTitle = v.findViewById(R.id.title);
+                    if (hasFocus) {
+                        itemContainer.setSelected(true);
+                        itemTitle.setSelected(true);
+                    } else {
+                        itemContainer.setSelected(false);
+                        itemTitle.setSelected(false);
+                    }
+
+                }
+            });
             itemView.setOnHoverListener(this);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -167,6 +189,7 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
+
 //        if (hasFocus) {
 //            ViewScaleUtil.zoomin_1_15(v);
 //        } else {
@@ -198,5 +221,33 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
 
     public void buyPackage(View view) {
         buyVideo(entity.getPk(), entity.getType(), entity.getPrice());
+    }
+
+    private void orderCheck(String pkg) {
+        NewVipHttpManager.getInstance().resetAdapter_SKY.create(NewVipHttpApi.OrderCheck.class).doRequest(null, pkg, null,
+                SimpleRestClient.device_token, SimpleRestClient.access_token).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Response<ResponseBody> response) {
+                if (response.errorBody() == null) {
+                    try {
+                        String result = response.body().string();
+                        if (!result.equals("0")) {
+                            purchaseBtn.setText("已购买");
+                            purchaseBtn.setEnabled(false);
+                        } else {
+                            purchaseBtn.setText("购买");
+                            purchaseBtn.setEnabled(true);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e(TAG, "order check :" + t.getMessage());
+            }
+        });
     }
 }

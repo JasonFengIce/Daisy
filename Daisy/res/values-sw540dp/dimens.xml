@@ -1389,4 +1389,6 @@
 <dimen name="tag_txt_size">10.00sp</dimen>
 <dimen name="bottom_tag_txt_size">9.00sp</dimen>
 <dimen name="score_tag_txt_size">15.00sp</dimen>
+<dimen name="item_title_marginTop">7.00dp</dimen>
+<dimen name="textsize_36sp">18.00sp</dimen>
 </resources>
