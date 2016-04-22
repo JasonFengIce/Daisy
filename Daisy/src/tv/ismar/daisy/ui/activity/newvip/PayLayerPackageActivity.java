@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.foregroundimageview.ForegroundImageView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -128,12 +129,13 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
         layoutParams.setMargins(margin, 0, margin, 0);
         for (final Item_list itemList : packageEntity.getItem_list()) {
             RelativeLayout itemView = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_paylayervip, null);
-            ImageView imageView = (ImageView) itemView.findViewById(R.id.image);
+            ForegroundImageView imageView = (ForegroundImageView) itemView.findViewById(R.id.image);
             if (TextUtils.isEmpty(itemList.getVertical_url())) {
                 Picasso.with(this).load(R.drawable.preview).into(imageView);
             } else {
                 Picasso.with(this).load(itemList.getVertical_url()).into(imageView);
             }
+
             itemView.setOnFocusChangeListener(this);
             itemView.setOnHoverListener(this);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -165,11 +167,11 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        if (hasFocus) {
-            ViewScaleUtil.zoomin_1_15(v);
-        } else {
-            ViewScaleUtil.zoomout_1_15(v);
-        }
+//        if (hasFocus) {
+//            ViewScaleUtil.zoomin_1_15(v);
+//        } else {
+//            ViewScaleUtil.zoomout_1_15(v);
+//        }
     }
 
     private void buyVideo(int pk, String type, float price) {
