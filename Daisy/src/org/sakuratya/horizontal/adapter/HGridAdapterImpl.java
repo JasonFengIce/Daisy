@@ -187,7 +187,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 							holder.price.setVisibility(View.VISIBLE);
 							if(item.expense.pay_type==1){
 								holder.price.setBackgroundResource(R.drawable.list_single_buy);
-							}else if("ismart".equals(item.expense.cpname)){
+							}else if((item.expense.cpname).startsWith("ismar")){
 								holder.price.setBackgroundResource(R.drawable.list_ismar);
 							}else if("iqiyi".equals(item.expense.cpname)){
 								holder.price.setBackgroundResource(R.drawable.list_lizhi);

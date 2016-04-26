@@ -81,7 +81,7 @@ public class PlayFinishedAdapter extends BaseAdapter {
 					holder.expense_txt.setVisibility(View.VISIBLE);
 					if(item.expense.pay_type==1){
 						holder.expense_txt.setBackgroundResource(R.drawable.list_single_buy);
-					}else if("ismart".equals(item.expense.cpname)){
+					}else if((item.expense.cpname).startsWith("ismar")){
 						holder.expense_txt.setBackgroundResource(R.drawable.list_ismar);
 					}else if("iqiyi".equals(item.expense.cpname)){
 						holder.expense_txt.setBackgroundResource(R.drawable.list_lizhi);

@@ -507,7 +507,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 detail_tag_txt.setVisibility(View.VISIBLE);
                 if (mItem.expense.pay_type == 1) {
                     detail_tag_txt.setBackgroundResource(R.drawable.single_buy);
-                } else if ("ismart".equals(mItem.expense.cpname)) {
+                }else if((mItem.expense.cpname).startsWith("ismar")){
                     detail_tag_txt.setBackgroundResource(R.drawable.ismar);
                 } else if ("iqiyi".equals(mItem.expense.cpname)) {
                     detail_tag_txt.setBackgroundResource(R.drawable.lizhi);
@@ -1156,7 +1156,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                     expense_txt.setText(mRelatedItem[i].expense.cptitle);
                     if(mRelatedItem[i].expense.pay_type==1){
                         expense_txt.setBackgroundResource(R.drawable.list_single_buy);
-                    }else if("ismart".equals(mRelatedItem[i].expense.cpname)){
+                    }else if((mRelatedItem[i].expense.cpname).startsWith("ismar")){
                         expense_txt.setBackgroundResource(R.drawable.list_ismar);
                     }else if("iqiyi".equals(mRelatedItem[i].expense.cpname)){
                         expense_txt.setBackgroundResource(R.drawable.list_lizhi);

@@ -106,7 +106,7 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
 				holder.price.setVisibility(View.VISIBLE);
 				if(mItemList.get(position).expense.pay_type==1){
 					holder.price.setBackgroundResource(R.drawable.list_single_buy);
-				}else if("ismart".equals(mItemList.get(position).expense.cpname)){
+				}else if((mItemList.get(position).expense.cpname).startsWith("ismar")){
 					holder.price.setBackgroundResource(R.drawable.list_ismar);
 				}else if("iqiyi".equals(mItemList.get(position).expense.cpname)){
 					holder.price.setBackgroundResource(R.drawable.list_lizhi);
