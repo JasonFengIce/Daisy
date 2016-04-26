@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.foregroundimageview.ForegroundImageView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -49,6 +50,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
         initViews();
         Intent intent = getIntent();
         String itemId = intent.getStringExtra("item_id");
+//        payLayer(itemId);
         payLayer("675300");
     }
 
@@ -89,7 +91,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
         Vip vip = payLayerEntity.getVip();
         if (vip != null) {
             RelativeLayout vipItem = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_newvip_pay, null);
-            ImageView imageView = (ImageView) vipItem.findViewById(R.id.item_newvip_pay_img);
+            ForegroundImageView imageView = (ForegroundImageView) vipItem.findViewById(R.id.item_newvip_pay_img);
             TextView title = (TextView) vipItem.findViewById(R.id.title);
             title.setText(vip.getTitle());
             TextView price = (TextView) vipItem.findViewById(R.id.price);
@@ -189,11 +191,11 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        if (hasFocus) {
-            ViewScaleUtil.zoomin_1_15(v);
-        } else {
-            ViewScaleUtil.zoomout_1_15(v);
-        }
+//        if (hasFocus) {
+//            ViewScaleUtil.zoomin_1_15(v);
+//        } else {
+//            ViewScaleUtil.zoomout_1_15(v);
+//        }
     }
 
     private void buyVideo(int pk, String type, float price) {

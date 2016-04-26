@@ -162,6 +162,7 @@ public class QiYiPlayActivity extends VodMenuAction {
     private static final int[] SEEK_STEPS = {5000,      10000,      30000,      60000,      300000,     600000};
     private int mSeekStepIndex;
     private  boolean is_vip;
+    private int previewLength;
     static {
         DEFINITION_NAMES = new HashMap<BitStream, String>();
         DEFINITION_NAMES.put(BitStream.BITSTREAM_HIGH, "高清");
@@ -1910,8 +1911,14 @@ public class QiYiPlayActivity extends VodMenuAction {
             Log.d(TAG, "onStarted: current position=" + player.getCurrentPosition() + ", duration=" + player.getDuration());
             if (mPlayer == null)
                 return;
-            clipLength = mPlayer.getDuration();
-            timeBar.setMax(clipLength);
+            if(previewLength > 0){
+                timeBar.setMax(previewLength);
+                clipLength = previewLength;
+            }else{
+                clipLength = mPlayer.getDuration();
+                timeBar.setMax(clipLength);
+            }
+
             if(currPosition >0)
                 mPlayer.seekTo(currPosition);
             if (subItem != null) {
@@ -2085,6 +2092,7 @@ public class QiYiPlayActivity extends VodMenuAction {
             Log.d(TAG, "onPreviewInfoReady: isPreview=" + isPreview + ", previewEndTimeInSecond=" + previewEndTimeInSecond);
             mIsPreview = isPreview;
             String text = "isPreview=" + isPreview + ", previewEndTimeInSecond=" + previewEndTimeInSecond;
+            previewLength = previewEndTimeInSecond;
         }
     };
 

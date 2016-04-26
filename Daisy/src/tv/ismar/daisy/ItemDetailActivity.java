@@ -29,6 +29,7 @@ import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
 import tv.ismar.daisy.ui.activity.newvip.PayActivity;
+import tv.ismar.daisy.ui.activity.newvip.PayLayerVipActivity;
 import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.*;
@@ -140,7 +141,7 @@ public class ItemDetailActivity extends BaseActivity implements
     private InitPlayerTool tool;
     private boolean isneedpause = true;
     private String toDate;
-
+    String iqiyi_code = null;
     private void initViews() {
         isbuy_label = (ImageView) findViewById(R.id.isbuy_label);
         mDetailLeftContainer = (RelativeLayout) findViewById(R.id.detail_left_container);
@@ -554,8 +555,17 @@ public class ItemDetailActivity extends BaseActivity implements
                                 }
                             } catch (JSONException e) {
                                 // TODO Auto-generated catch block
-                                info = info.substring(1, info.length() - 1);
-                                toDate=info;
+                                try{
+                                    JSONObject object = new JSONObject(info);
+                                    info = object.getString("expiry_date");
+                                    iqiyi_code = object.getString("iqiyi_code");
+                                    if(iqiyi_code != null && !"".equals(iqiyi_code) && !"null".equals(iqiyi_code)){
+                                        api_check();
+                                    }
+                                } catch (JSONException ee) {
+                                    info = info.substring(1, info.length() - 1);
+                                }
+                                toDate = info;
                                 try {
                                     remainDay = Util.daysBetween(
                                             Util.getTime(), info) + 1;
@@ -1064,20 +1074,20 @@ public class ItemDetailActivity extends BaseActivity implements
     }
 
     private void buyVideo() {
-        if(0 == mItem.expense.jump_to) {
+        if(1 == mItem.expense.jump_to) {
             PaymentDialog dialog = new PaymentDialog(ItemDetailActivity.this,
                     R.style.PaymentDialog, ordercheckListener);
             mItem.model_name = "item";
             dialog.setItem(mItem);
             dialog.show();
-        }else if(1 == mItem.expense.jump_to){
+        }else if(0 == mItem.expense.jump_to){
             Intent intent = new Intent(ItemDetailActivity.this, PayActivity.class);
             intent.putExtra("item_id", String.valueOf(mItem.pk));
-            startActivity(intent);
+            startActivityForResult(intent,20);
         }else if(2 == mItem.expense.jump_to){
-            Intent intent = new Intent(ItemDetailActivity.this, PayActivity.class);
-            intent.getExtras().putString("cpid", String.valueOf(mItem.expense.cpid));
-            startActivity(intent);
+            Intent intent = new Intent(ItemDetailActivity.this, PayLayerVipActivity.class);
+            intent.putExtra("cpid", String.valueOf(mItem.expense.cpid));
+            startActivityForResult(intent,20);
         }
     }
 
@@ -1551,4 +1561,40 @@ public class ItemDetailActivity extends BaseActivity implements
             return false;
         }
     };
+
+    private  void api_check(){
+        SimpleRestClient simpleRestClient = new SimpleRestClient();
+        simpleRestClient.doSendRequest(SimpleRestClient.carnation_domain+"/api/check/", "post",
+                "device_token=" + SimpleRestClient.device_token
+                        + "&access_token=" + SimpleRestClient.access_token
+                        + "&verify_code=" + iqiyi_code, new SimpleRestClient.HttpPostRequestInterface() {
+                    // subitem=214277
+                    @Override
+                    public void onSuccess(String info) {
+                        try {
+                            JSONObject object = new JSONObject(info);
+                            int code =object.getInt("code");
+                            if(code == 1)
+                                isBuy = false;
+                            else
+                                isBuy = true;
+                            initLayout();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onPrepare() {
+                        // TODO Auto-generated method stub
+                    }
+
+                    @Override
+                    public void onFailed(String error) {
+                        // TODO Auto-generated method stub
+                        isBuy = false;
+                        initLayout();
+                    }
+                });
+    }
 }

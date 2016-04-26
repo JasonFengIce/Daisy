@@ -1,8 +1,12 @@
 package tv.ismar.daisy.core.client;
 
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import tv.ismar.daisy.data.http.newvip.paylayer.PayLayerEntity;
@@ -34,6 +38,19 @@ public class NewVipHttpApi {
         Call<PayLayerPackageEntity> doRequest(
                 @Path("package_id") String packageId,
                 @Query("device_token") String deviceToken
+        );
+    }
+
+
+    public interface OrderCheck {
+        @FormUrlEncoded
+        @POST("api/order/check/")
+        Call<ResponseBody> doRequest(
+                @Field("item") String item,
+                @Field("package") String pkg,
+                @Field("subitem") String subItem,
+                @Field("device_token") String deviceToken,
+                @Field("access_token") String accessToken
         );
     }
 }

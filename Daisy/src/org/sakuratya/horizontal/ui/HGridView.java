@@ -490,11 +490,14 @@ public class HGridView extends AdapterView<HGridAdapter> {
 
 	@Override
 	public View getSelectedView() {
-		if (mAdapter.getCount() > 0 && mSelectedPosition >= 0) {
-			return getChildAt(mSelectedPosition - mFirstPosition);
-		} else {
-			return null;
-		}
+		try {
+			if (mAdapter.getCount() > 0 && mSelectedPosition >= 0) {
+				return getChildAt(mSelectedPosition - mFirstPosition);
+			} else {
+				return null;
+			}
+		}catch (Exception e){}
+		return null;
 	}
 
 	@Override
@@ -1177,7 +1180,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 			}
 
 			detachAllViewsFromParent();
-			Log.v("testHGRIDVIEW", "mLayoutMode ="+mLayoutMode);
+			Log.v("testHGRIDVIEW", "mLayoutMode =" + mLayoutMode);
 			switch (mLayoutMode) {
 			case LAYOUT_SPECIFIC:
 				sel = fillSpecific(mSelectedPosition, mSpecificLeft);
