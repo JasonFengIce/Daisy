@@ -644,21 +644,27 @@ public class QiYiPlayActivity extends VodMenuAction {
     public boolean onVodMenuOpened(ISTVVodMenu menu) {
 
         if (avalibleRate[0]) {
+        	if(menu.findItem(1) != null)
             menu.findItem(1).enable();
         } else {
+        	if(menu.findItem(1) != null)
             menu.findItem(1).disable();
         }
         if (avalibleRate[1]) {
+        	if(menu.findItem(2) != null)
             menu.findItem(2).enable();
         } else {
+        	if(menu.findItem(2) != null)
             menu.findItem(2).disable();
         }
         if (avalibleRate[2]) {
+        	if(menu.findItem(3) != null)
             menu.findItem(3).enable();
         } else {
+        	if(menu.findItem(3) != null)
             menu.findItem(3).disable();
         }
-        menu.findItem(4).disable();
+//        menu.findItem(4).disable();
         if (panelShow) {
             hidePanel();
         }
@@ -1302,17 +1308,20 @@ public class QiYiPlayActivity extends VodMenuAction {
 
         sub = menu.addSubMenu(0,
                 getResources().getString(R.string.vod_player_quality_setting));
+        if(avalibleRate[0])
         sub.addItem(1,
                 getResources().getString(R.string.vod_player_quality_medium),
                 true, currQuality == 0);
+        if(avalibleRate[1])
         sub.addItem(2,
                 getResources().getString(R.string.vod_player_quality_high),
                 true, currQuality == 1);
+        if(avalibleRate[2])
         sub.addItem(3,
                 getResources().getString(R.string.vod_player_quality_ultra),
                 true, currQuality == 2);
-        sub.addItem(4,
-                getResources().getString(R.string.vod_player_quality_adaptive));
+//        sub.addItem(4,
+//                getResources().getString(R.string.vod_player_quality_adaptive));
         menu.addItem(20, getResources().getString(R.string.kefucentertitle));
         menu.addItem(30, getResources().getString(R.string.playfromstarttitle));
 

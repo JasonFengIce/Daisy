@@ -2008,14 +2008,15 @@ public class PlayerActivity extends VodMenuAction {
 
 		sub = menu.addSubMenu(0,
 				getResources().getString(R.string.vod_player_quality_setting));
+		if(urls[0] != null)
 		sub.addItem(1,
 				getResources().getString(R.string.vod_player_quality_medium));
+		if(urls[1] != null)
 		sub.addItem(2,
 				getResources().getString(R.string.vod_player_quality_high));
+		if(urls[2] != null)
 		sub.addItem(3,
 				getResources().getString(R.string.vod_player_quality_ultra));
-		sub.addItem(4,
-				getResources().getString(R.string.vod_player_quality_adaptive));
 		menu.addItem(20, getResources().getString(R.string.kefucentertitle));
 		menu.addItem(30, getResources().getString(R.string.playfromstarttitle));
 
@@ -2026,6 +2027,8 @@ public class PlayerActivity extends VodMenuAction {
 		for (int i = 0; i < 4; i++) {
 			ISTVVodMenuItem item;
 			item = menu.findItem(i + 1);
+			if(item == null)
+				continue;
 			if (urls[i] == null) {
 				item.disable();
 			} else {
