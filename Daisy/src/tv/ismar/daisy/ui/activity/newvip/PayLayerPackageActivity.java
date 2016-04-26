@@ -36,6 +36,7 @@ import tv.ismar.daisy.models.Expense;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.utils.ViewScaleUtil;
 import tv.ismar.daisy.views.PaymentDialog;
+import tv.ismar.daisy.views.RotateTextView;
 
 /**
  * Created by huaijie on 4/12/16.
@@ -137,6 +138,18 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
             ForegroundImageView imageView = (ForegroundImageView) itemView.findViewById(R.id.image);
             TextView itemTitle = (TextView) itemView.findViewById(R.id.title);
             itemTitle.setText(itemList.getTitle());
+            RotateTextView expense_txt= (RotateTextView) itemView.findViewById(R.id.expense_txt);
+            expense_txt.setDegrees(315);
+            if(itemList.getCptitle()!=null&&""!=itemList.getCptitle()){
+                expense_txt.setText(itemList.getCptitle());
+                if(itemList.getCptitle().startsWith("视云")){
+                    expense_txt.setBackgroundResource(R.drawable.list_ismar);
+                }else if(itemList.getCptitle().startsWith("奇异果")){
+                    expense_txt.setBackgroundResource(R.drawable.list_lizhi);
+                }else{
+                    expense_txt.setBackgroundResource(R.drawable.list_single_buy);
+                }
+            }
 
             if (TextUtils.isEmpty(itemList.getVertical_url())) {
                 Picasso.with(this).load(R.drawable.preview).into(imageView);
