@@ -16,7 +16,7 @@
         android:clickable="false"
         android:text="√"
         android:textColor="@android:color/white"
-        android:visibility="gone"
+        android:visibility="invisible"
     >
     </TextView>
 
