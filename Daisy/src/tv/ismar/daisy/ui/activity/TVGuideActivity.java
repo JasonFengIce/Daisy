@@ -906,7 +906,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.DEVICE_TOKEN, result.getDevice_token());
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.SN_TOKEN, result.getSn_Token());
-        accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.ZDEVICE_TOKEN, result.getSn_Token());
+        accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.ZDEVICE_TOKEN, result.getZdevice_token());
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.CARNATION_DOMAIN, result.getCarnation());
 
     }
@@ -1342,6 +1342,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         SimpleRestClient.sn_token = result.getSn_Token();
         SimpleRestClient.mobile_number = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.MOBILE_NUMBER, "");
         SimpleRestClient.access_token = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.AUTH_TOKEN, "");
+        SimpleRestClient.zdevice_token = result.getZdevice_token();
     }
 
     private void getHardInfo() {

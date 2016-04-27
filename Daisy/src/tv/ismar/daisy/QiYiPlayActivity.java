@@ -1836,8 +1836,14 @@ public class QiYiPlayActivity extends VodMenuAction {
 
     private void doOnSuccess() {
         //login, 同步操作, 有网络接口调用, 可能耗时, 请注意. 初始只需调用一次, 登录成功后一直有效, 如需登出, 请调用logout
-//        PlaySdk.getInstance().login("123456789012345678901234567890");
-        PlayerSdk.getInstance().login("76d0baca6075c45cd8a3a55fa6a23c05324489b865af03383292a41fde765ec6");
+               if(SimpleRestClient.zuser_token != null && !"".equals(SimpleRestClient.zuser_token)){
+                        PlayerSdk.getInstance().login(SimpleRestClient.zuser_token);
+                    }else if(SimpleRestClient.zdevice_token != null && !"".equals(SimpleRestClient.zdevice_token)){
+                        PlayerSdk.getInstance().login(SimpleRestClient.zdevice_token);
+                    }else{
+                        PlayerSdk.getInstance().login("76d0baca6075c45cd8a3a55fa6a23c05324489b865af03383292a41fde765ec6");
+                    }
+
         //测试栏位
 //        SdkVideo video = new SdkVideo("202168401", "310271100", BitStream.BITSTREAM_720P, false);
 //        startPlayMovie(video);

@@ -12,6 +12,7 @@ import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.core.receiver.TimeCountdownBroadcastSender;
 import tv.ismar.daisy.data.usercenter.AuthTokenEntity;
 import tv.ismar.daisy.models.Favorite;
@@ -453,6 +454,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         DaisyUtils.getVodApplication(mContext).getEditor().putString(VodApplication.AUTH_TOKEN, authToken);
         DaisyUtils.getVodApplication(mContext).getEditor().putString(VodApplication.MOBILE_NUMBER, phoneNumber);
         DaisyUtils.getVodApplication(mContext).save();
+        AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs
+                .getInstance();
+        accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.ZUSER_TOKEN, zuser_token);
         fetchFavorite();
         getHistoryByNet();
     }

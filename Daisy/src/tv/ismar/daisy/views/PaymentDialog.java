@@ -33,6 +33,7 @@ import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
+import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.data.usercenter.AuthTokenEntity;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
@@ -1120,6 +1121,10 @@ public class PaymentDialog extends Dialog implements
 		SimpleRestClient.mobile_number = nickname;
 
 		SimpleRestClient.access_token = authToken;
+		SimpleRestClient.zuser_token = authTokenEntity.getZuser_token();
+		AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs
+				.getInstance();
+		accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.ZUSER_TOKEN, authTokenEntity.getZuser_token());
 		GetFavoriteByNet();
 		getHistoryByNet();
 		urlHandler.sendEmptyMessage(LOGIN_SUCESS);
