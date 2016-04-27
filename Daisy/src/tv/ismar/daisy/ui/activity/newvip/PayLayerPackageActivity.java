@@ -138,15 +138,15 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
             ForegroundImageView imageView = (ForegroundImageView) itemView.findViewById(R.id.image);
             TextView itemTitle = (TextView) itemView.findViewById(R.id.title);
             itemTitle.setText(itemList.getTitle());
-            RotateTextView expense_txt= (RotateTextView) itemView.findViewById(R.id.expense_txt);
+            RotateTextView expense_txt = (RotateTextView) itemView.findViewById(R.id.expense_txt);
             expense_txt.setDegrees(315);
-            if(itemList.getCptitle()!=null&&""!=itemList.getCptitle()){
+            if (itemList.getCptitle() != null && "" != itemList.getCptitle()) {
                 expense_txt.setText(itemList.getCptitle());
-                if(itemList.getCptitle().startsWith("视云")){
+                if (itemList.getCptitle().startsWith("视云")) {
                     expense_txt.setBackgroundResource(R.drawable.list_ismar);
-                }else if(itemList.getCptitle().startsWith("奇异果")){
+                } else if (itemList.getCptitle().startsWith("奇异果")) {
                     expense_txt.setBackgroundResource(R.drawable.list_lizhi);
-                }else{
+                } else {
                     expense_txt.setBackgroundResource(R.drawable.list_single_buy);
                 }
             }
@@ -176,7 +176,13 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    buyVideo(packageEntity.getPk(), packageEntity.getType(), packageEntity.getPrice());
+                    Intent intent = new Intent();
+                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    String url = SimpleRestClient.root_url + "/api/item/" + itemList.getItem_id() + "/";
+                    Log.d(TAG, "click url: " + url);
+                    intent.putExtra("url", url);
+                    intent.setAction("tv.ismar.daisy.PFileItem");
+                    startActivity(intent);
                 }
             });
             scrollViewLayout.addView(itemView, layoutParams);
@@ -245,9 +251,11 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
                     try {
                         String result = response.body().string();
                         if (!result.equals("0")) {
+                            purchaseBtn.setFocusable(false);
                             purchaseBtn.setText("已购买");
                             purchaseBtn.setEnabled(false);
                         } else {
+                            purchaseBtn.setFocusable(true);
                             purchaseBtn.setText("购买");
                             purchaseBtn.setEnabled(true);
                         }
