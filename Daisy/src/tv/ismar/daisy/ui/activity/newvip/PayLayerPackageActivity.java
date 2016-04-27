@@ -67,8 +67,9 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
         initViews();
         Intent intent = getIntent();
         String packageId = intent.getStringExtra("package_id");
-        payLayerPackage(packageId);
         orderCheck(packageId);
+        payLayerPackage(packageId);
+
     }
 
     private void initViews() {
@@ -172,6 +173,11 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
 
                 }
             });
+            if(!purchaseBtn.isFocusable()){
+                itemView.setNextFocusUpId(R.id.pay_layer_item);
+            }else{
+                itemView.setNextFocusUpId(purchaseBtn.getId());
+            }
             itemView.setOnHoverListener(this);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -180,6 +186,9 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
                 }
             });
             scrollViewLayout.addView(itemView, layoutParams);
+        }
+        if(!purchaseBtn.isFocusable()){
+            scrollViewLayout.getChildAt(0).requestFocus();
         }
     }
 
@@ -247,9 +256,13 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
                         if (!result.equals("0")) {
                             purchaseBtn.setText("已购买");
                             purchaseBtn.setEnabled(false);
+                            purchaseBtn.setFocusable(false);
+
                         } else {
                             purchaseBtn.setText("购买");
                             purchaseBtn.setEnabled(true);
+                            purchaseBtn.setFocusable(true);
+
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
