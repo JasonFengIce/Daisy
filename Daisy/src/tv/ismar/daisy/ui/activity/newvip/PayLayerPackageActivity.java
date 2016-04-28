@@ -194,6 +194,9 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
 
             scrollViewLayout.addView(itemView, layoutParams);
         }
+        if(!purchaseBtn.isFocusable()){
+            scrollViewLayout.getChildAt(0).findViewById(R.id.pay_layer_item).requestFocus();
+        }
     }
 
     @Override
