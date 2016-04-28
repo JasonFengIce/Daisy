@@ -87,7 +87,7 @@ public class InitService extends Service implements Activator.OnComplete {
                 result.getDevice_token());
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.SN_TOKEN,
                 result.getSn_Token());
-        accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.ZDEVICE_TOKEN, result.getSn_Token());
+        accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.ZDEVICE_TOKEN, result.getZdevice_token());
     }
 
     private void saveSimpleRestClientPreferences(Context context, Result result) {

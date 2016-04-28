@@ -67,8 +67,8 @@ public class BaseActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance();
         if (SimpleRestClient.root_url.equals("")) {
-            AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance();
             SimpleRestClient.root_url = "http://" + accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.API_DOMAIN);
             SimpleRestClient.sRoot_url = "http://" + accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.API_DOMAIN);
             SimpleRestClient.ad_domain = "http://" + accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.ADVERTISEMENT_DOMAIN);
@@ -79,12 +79,13 @@ public class BaseActivity extends FragmentActivity {
             SimpleRestClient.mobile_number = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.MOBILE_NUMBER, "");
             SimpleRestClient.access_token = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.AUTH_TOKEN, "");
         }
+        SimpleRestClient.zdevice_token = accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.ZDEVICE_TOKEN);
+        SimpleRestClient.zuser_token = accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.ZUSER_TOKEN);
         fromPage = getIntent().getStringExtra("fromPage");
         intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_CONNECT_ERROR);
         connectionErrorReceiver = new ConnectionErrorReceiver();
         createNetErrorPopup();
-        AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance();
         String province = accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.PROVINCE);
         String city = accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.CITY);
         String isp = accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.ISP);

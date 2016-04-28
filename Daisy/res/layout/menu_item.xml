@@ -7,6 +7,19 @@
 	android:focusable="false"
 	android:clickable="false"
 	>
+	<TextView android:id="@+id/Menucheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:textSize="@dimen/menu_item_menutext_textsize"
+        android:gravity="left|center_vertical"
+        android:focusable="false"
+        android:clickable="false"
+        android:text="√"
+        android:textColor="@android:color/white"
+        android:visibility="invisible"
+    >
+    </TextView>
+
 	<TextView android:id="@+id/MenuText"
 		android:layout_width="wrap_content"
 	    android:layout_height="fill_parent"

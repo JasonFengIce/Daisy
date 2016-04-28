@@ -543,6 +543,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                         mLeftBtn.setBackgroundResource(R.drawable.button_disable);
                         mLeftBtn.setEnabled(false);
                         mLeftBtn.setClickable(false);
+                        mLeftBtn.setVisibility(View.INVISIBLE);
                     } else {
                         mLeftBtn.setTag(PREVIEW_VIDEO);
                         mLeftBtn.setText(getResources().getString(R.string.preview_video));

@@ -26,6 +26,7 @@ import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
+import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
@@ -128,6 +129,8 @@ public class LoginPanelView extends LinearLayout {
                                             info);
                                     String auth_token = json
                                             .getString(VodApplication.AUTH_TOKEN);
+                                    String zuser_token = json
+                                            .getString(VodApplication.AUTH_TOKEN);
                                     DaisyUtils
                                             .getVodApplication(getContext())
                                             .getEditor()
@@ -146,6 +149,10 @@ public class LoginPanelView extends LinearLayout {
                                     SimpleRestClient.access_token = auth_token;
                                     SimpleRestClient.mobile_number = edit_mobile
                                             .getText().toString();
+                                    SimpleRestClient.zuser_token = json.getString("zuser_token");
+                                    AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs
+                                            .getInstance();
+                                    accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.ZUSER_TOKEN, json.getString("zuser_token"));
                                     GetFavoriteByNet();
                                     getHistoryByNet();
                                     showLoginSuccessPopup();

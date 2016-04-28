@@ -644,21 +644,27 @@ public class QiYiPlayActivity extends VodMenuAction {
     public boolean onVodMenuOpened(ISTVVodMenu menu) {
 
         if (avalibleRate[0]) {
+        	if(menu.findItem(1) != null)
             menu.findItem(1).enable();
         } else {
+        	if(menu.findItem(1) != null)
             menu.findItem(1).disable();
         }
         if (avalibleRate[1]) {
+        	if(menu.findItem(2) != null)
             menu.findItem(2).enable();
         } else {
+        	if(menu.findItem(2) != null)
             menu.findItem(2).disable();
         }
         if (avalibleRate[2]) {
+        	if(menu.findItem(3) != null)
             menu.findItem(3).enable();
         } else {
+        	if(menu.findItem(3) != null)
             menu.findItem(3).disable();
         }
-        menu.findItem(4).disable();
+//        menu.findItem(4).disable();
         if (panelShow) {
             hidePanel();
         }
@@ -1302,17 +1308,20 @@ public class QiYiPlayActivity extends VodMenuAction {
 
         sub = menu.addSubMenu(0,
                 getResources().getString(R.string.vod_player_quality_setting));
+        if(avalibleRate[0])
         sub.addItem(1,
                 getResources().getString(R.string.vod_player_quality_medium),
                 true, currQuality == 0);
+        if(avalibleRate[1])
         sub.addItem(2,
                 getResources().getString(R.string.vod_player_quality_high),
                 true, currQuality == 1);
+        if(avalibleRate[2])
         sub.addItem(3,
                 getResources().getString(R.string.vod_player_quality_ultra),
                 true, currQuality == 2);
-        sub.addItem(4,
-                getResources().getString(R.string.vod_player_quality_adaptive));
+//        sub.addItem(4,
+//                getResources().getString(R.string.vod_player_quality_adaptive));
         menu.addItem(20, getResources().getString(R.string.kefucentertitle));
         menu.addItem(30, getResources().getString(R.string.playfromstarttitle));
 
@@ -1836,8 +1845,14 @@ public class QiYiPlayActivity extends VodMenuAction {
 
     private void doOnSuccess() {
         //login, 同步操作, 有网络接口调用, 可能耗时, 请注意. 初始只需调用一次, 登录成功后一直有效, 如需登出, 请调用logout
-//        PlaySdk.getInstance().login("123456789012345678901234567890");
-        PlayerSdk.getInstance().login("76d0baca6075c45cd8a3a55fa6a23c05324489b865af03383292a41fde765ec6");
+               if(SimpleRestClient.zuser_token != null && !"".equals(SimpleRestClient.zuser_token)){
+                        PlayerSdk.getInstance().login(SimpleRestClient.zuser_token);
+                    }else if(SimpleRestClient.zdevice_token != null && !"".equals(SimpleRestClient.zdevice_token)){
+                        PlayerSdk.getInstance().login(SimpleRestClient.zdevice_token);
+                    }else{
+                        PlayerSdk.getInstance().login("76d0baca6075c45cd8a3a55fa6a23c05324489b865af03383292a41fde765ec6");
+                    }
+
         //测试栏位
 //        SdkVideo video = new SdkVideo("202168401", "310271100", BitStream.BITSTREAM_720P, false);
 //        startPlayMovie(video);

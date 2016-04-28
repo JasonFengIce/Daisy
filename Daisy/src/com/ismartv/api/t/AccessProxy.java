@@ -153,6 +153,7 @@ public class AccessProxy {
 		do
 			try {
 				URL connURL = new URL(full_url);
+				Log.v("aaaa", "url = "+full_url);
 				httpConn = (HttpURLConnection) connURL.openConnection();
 				httpConn.setRequestProperty("Accept", "application/json");
 				httpConn.setRequestProperty("User-Agent", userAgent);
