@@ -1010,7 +1010,7 @@
     <dimen name="entertainment_vaiety_channel_title_textsize">30sp</dimen>
     <!-- fragment entertainment end -->
 
-    <dimen name="usercenter_storefragment_packagelist_marginRight">73dp</dimen>
+    <dimen name="usercenter_storefragment_packagelist_marginRight">30dp</dimen>
     <dimen name="usercenter_storefragment_packagelist_marginLeft">17dp</dimen>
     <dimen name="usercenter_storefragment_packagelist_verticalSpacing">6dp</dimen>
     <dimen name="usercenter_storefragment_packagelist_horizontalSpacing">15dp</dimen>
