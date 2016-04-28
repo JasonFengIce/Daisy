@@ -110,7 +110,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
                     Intent intent = new Intent();
                     intent.putExtra("cpid", String.valueOf(payLayerEntity.getCpid()));
                     intent.setClass(PayActivity.this, PayLayerVipActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent,20);
                 }
             });
             scrollViewLayout.addView(vipItem, layoutParams);
@@ -162,7 +162,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
                     Intent intent = new Intent();
                     intent.putExtra("package_id", String.valueOf(newVipPackage.getPackage_pk()));
                     intent.setClass(PayActivity.this, PayLayerPackageActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent,20);
                 }
             });
             scrollViewLayout.addView(item, layoutParams);
@@ -219,4 +219,18 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
         dialog.setItem(mItem);
         dialog.show();
     }
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        if (resultCode == 20) {
+            Intent datas = new Intent();
+            data.putExtra("result", true);
+            setResult(20, datas);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
 }

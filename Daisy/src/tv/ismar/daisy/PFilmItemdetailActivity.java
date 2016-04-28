@@ -595,6 +595,9 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                     }
 
                     //setLeftDrawable(drawableleftplay, mLeftBtn);
+                    if(mLeftBtn.getVisibility() == View.INVISIBLE){
+                        mLeftBtn.setVisibility(View.VISIBLE);
+                    }
                     mLeftBtn.setTag(PLAY_VIDEO);
                     mLeftBtn.setText(getResources().getString(R.string.play));
                     //setLeftDrawable(drawableleftcollect,mMiddleBtn);
