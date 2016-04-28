@@ -60,6 +60,8 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
 
     private Button purchaseBtn;
 
+    private boolean listLayoutItemNextFocusUpIsSelf = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -177,7 +179,6 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent();
-                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     String url = SimpleRestClient.root_url + "/api/item/" + itemList.getItem_id() + "/";
                     Log.d(TAG, "click url: " + url);
                     intent.putExtra("url", url);
@@ -185,6 +186,12 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
                     startActivity(intent);
                 }
             });
+            if (listLayoutItemNextFocusUpIsSelf == true) {
+                itemView.setNextFocusUpId(itemView.getId());
+            } else {
+                itemView.setNextFocusUpId(purchaseBtn.getId());
+            }
+
             scrollViewLayout.addView(itemView, layoutParams);
         }
     }
@@ -254,10 +261,14 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
                             purchaseBtn.setFocusable(false);
                             purchaseBtn.setText("已购买");
                             purchaseBtn.setEnabled(false);
+                            changeListItemNextFocusUp(true);
+                            listLayoutItemNextFocusUpIsSelf = true;
                         } else {
                             purchaseBtn.setFocusable(true);
                             purchaseBtn.setText("购买");
                             purchaseBtn.setEnabled(true);
+                            changeListItemNextFocusUp(false);
+                            listLayoutItemNextFocusUpIsSelf = false;
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -270,5 +281,14 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
                 Log.e(TAG, "order check :" + t.getMessage());
             }
         });
+    }
+
+    private void changeListItemNextFocusUp(boolean isSelf) {
+        for (int i = 0; i < scrollViewLayout.getChildCount(); i++) {
+            if (isSelf)
+                scrollViewLayout.getChildAt(i).setNextFocusUpId(scrollViewLayout.getChildAt(i).getId());
+            else
+                scrollViewLayout.getChildAt(i).setNextFocusUpId(purchaseBtn.getId());
+        }
     }
 }

@@ -219,5 +219,4 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
         dialog.setItem(mItem);
         dialog.show();
     }
-
 }

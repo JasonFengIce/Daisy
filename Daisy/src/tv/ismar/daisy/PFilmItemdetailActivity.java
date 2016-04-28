@@ -640,10 +640,12 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             dialog.show();
         }else if(0 == mItem.expense.jump_to){
             Intent intent = new Intent(PFilmItemdetailActivity.this, PayActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("item_id", String.valueOf(mItem.pk));
             startActivityForResult(intent, 20);
         }else if(2 == mItem.expense.jump_to){
             Intent intent = new Intent(PFilmItemdetailActivity.this, PayLayerVipActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("cpid", String.valueOf(mItem.expense.cpid));
             startActivityForResult(intent,20);
         }
