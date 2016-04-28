@@ -36,7 +36,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/item_container"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/item_title_marginTop"
         android:ellipsize="marquee"
         android:gravity="center"
         android:marqueeRepeatLimit="marquee_forever"

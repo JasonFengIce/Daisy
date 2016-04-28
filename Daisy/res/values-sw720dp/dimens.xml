@@ -1332,9 +1332,9 @@
 <dimen name="paylayervip_des_margintop">16.00dp</dimen>
 <dimen name="paylayervip_scrollview_width">873.33dp</dimen>
 <dimen name="paylayervip_scrollview_height">306.67dp</dimen>
-<dimen name="paylayervip_img_width">194.67dp</dimen>
-<dimen name="paylayervip_img_height">272.67dp</dimen>
-<dimen name="newvip_paylayervip_margin">9.33dp</dimen>
+<dimen name="paylayervip_img_width">181.33dp</dimen>
+<dimen name="paylayervip_img_height">254dp</dimen>
+<dimen name="newvip_paylayervip_margin">5.33dp</dimen>
 <dimen name="paylayervip_layout_width">973.33dp</dimen>
 <dimen name="paylayervip_layout_height">566.67dp</dimen>
 <dimen name="paylayervip_width">26.67dp</dimen>
