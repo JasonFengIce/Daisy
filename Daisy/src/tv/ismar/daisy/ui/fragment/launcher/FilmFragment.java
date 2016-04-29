@@ -2,10 +2,12 @@ package tv.ismar.daisy.ui.fragment.launcher;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import org.apache.commons.lang3.StringUtils;
 
+import retrofit2.http.Url;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.cache.CacheManager;
 import tv.ismar.daisy.core.client.DownloadClient;
@@ -18,12 +20,14 @@ import tv.ismar.daisy.ui.widget.HomeItemContainer;
 import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.daisy.utils.HardwareUtils;
 import tv.ismar.daisy.views.LabelImageView;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -205,6 +209,7 @@ public class FilmFragment extends ChannelBaseFragment {
     }
 
     private void fetchHomePage(String url) {
+        Log.i(TAG, "chinese url: " + url);
         mChannelName = getChannelEntity().getChannel();
         datafetch = new IsmartvUrlClient();
         datafetch.doRequest(url, new IsmartvUrlClient.CallBack() {
@@ -271,8 +276,8 @@ public class FilmFragment extends ChannelBaseFragment {
         });
         mLeftTopView = film_lefttop_image;
         for (int i = 1; i <= posters.size(); i++) {
-			if (i > 8)
-				break;
+            if (i > 8)
+                break;
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(199, 278);
 //            params.weight = 1;
 //            if (i != 7) {
@@ -387,10 +392,10 @@ public class FilmFragment extends ChannelBaseFragment {
                 params.topMargin = 0;
                 itemView.setId(R.id.filmfragment_firstcarousel);
                 firstcarousel = itemView;
-            } else{
-            	itemView.setId(R.id.filmfragment_firstcarousel+i*5);
+            } else {
+                itemView.setId(R.id.filmfragment_firstcarousel + i * 5);
                 params.topMargin = 17;
-                params.addRule(RelativeLayout.BELOW,R.id.filmfragment_firstcarousel+5*(i-1));
+                params.addRule(RelativeLayout.BELOW, R.id.filmfragment_firstcarousel + 5 * (i - 1));
             }
             if (mContext == null)
                 return;
@@ -491,7 +496,16 @@ public class FilmFragment extends ChannelBaseFragment {
             }
         }
 
-        if (!TextUtils.isEmpty(mCarousels.get(mCurrentCarouselIndex).getVideo_url())) {
+        String videoUrl = mCarousels.get(mCurrentCarouselIndex).getVideo_url();
+
+        if (!TextUtils.isEmpty(videoUrl)) {
+            try {
+                Uri.parse(videoUrl);
+            } catch (Exception e) {
+                Log.i(TAG, videoUrl + " ---> " + e.getMessage());
+                playImage();
+                return;
+            }
             if (externalStorageIsEnable()) {
                 playVideo(0);
             } else {
@@ -554,7 +568,7 @@ public class FilmFragment extends ChannelBaseFragment {
             film_linked_title.setVisibility(View.GONE);
         }
         mHandler.removeMessages(START_PLAYBACK);
-        mHandler.sendEmptyMessageDelayed(START_PLAYBACK,delay);
+        mHandler.sendEmptyMessageDelayed(START_PLAYBACK, delay);
     }
 
 
