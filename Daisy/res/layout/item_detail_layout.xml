@@ -170,6 +170,7 @@
                 android:layout_height="@dimen/item_detail_btn_left_height"
                 android:visibility="visible"
                 android:textColor="#FFFFFFFF"
+                android:layout_marginRight="@dimen/item_detail_btn_marginleft"
                 android:textSize="@dimen/item_detail_text_size"
                 android:gravity="center"
                 android:focusable="true"
@@ -182,7 +183,7 @@
                 android:id="@+id/middle_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/item_detail_btn_left_height"
-                android:layout_marginLeft="@dimen/item_detail_btn_marginleft"
+                android:layout_marginRight="@dimen/item_detail_btn_marginleft"
                 android:visibility="visible"
                 android:textColor="#FFFFFFFF"
                 android:focusable="true"
@@ -190,12 +191,11 @@
                 android:textSize="@dimen/item_detail_text_size"/>
 
            <Button
-                   android:paddingLeft="@dimen/item_detail_btn_pl"
+                android:paddingLeft="@dimen/item_detail_btn_pl"
                 android:gravity="center"
                 android:id="@+id/btn_right"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/item_detail_btn_left_height"
-                android:layout_marginLeft="@dimen/item_detail_btn_marginleft"
                 android:visibility="visible"
                 android:focusable="true"
                 android:focusableInTouchMode="true"

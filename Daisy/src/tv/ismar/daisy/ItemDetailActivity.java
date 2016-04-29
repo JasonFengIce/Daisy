@@ -1348,7 +1348,7 @@ public class ItemDetailActivity extends BaseActivity implements
                 mLeftBtn.setTag(PREVIEW_VIDEO);
                 mLeftBtn.setText(getResources().getString(R.string.preview_video));
                 if (mItem.preview == null) {
-                    mLeftBtn.setVisibility(View.INVISIBLE);
+                    mLeftBtn.setVisibility(View.GONE);
                 }
                 //setLeftDrawable(drawableleftbuy, mMiddleBtn);
                 mMiddleBtn.setTag(BUY_VIDEO);
@@ -1399,7 +1399,7 @@ public class ItemDetailActivity extends BaseActivity implements
 
                 //setLeftDrawable(drawableleftplay, mLeftBtn);
                 mLeftBtn.setText(getResources().getString(R.string.play));
-                if(mLeftBtn.getVisibility() == View.INVISIBLE){
+                if(mLeftBtn.getVisibility() == View.GONE){
                     mLeftBtn.setVisibility(View.VISIBLE);
                 }
                 //setLeftDrawable(drawableleftcollect,mMiddleBtn);
