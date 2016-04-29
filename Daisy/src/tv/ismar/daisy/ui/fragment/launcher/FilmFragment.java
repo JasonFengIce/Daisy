@@ -500,15 +500,18 @@ public class FilmFragment extends ChannelBaseFragment {
 
         if (!TextUtils.isEmpty(videoUrl)) {
             try {
-                Uri.parse(videoUrl);
+                Uri uri = Uri.parse(videoUrl);
+                if (uri.isAbsolute()) {
+                    if (externalStorageIsEnable()) {
+                        playVideo(0);
+                    } else {
+                        playImage();
+                    }
+                } else {
+                    playImage();
+                }
             } catch (Exception e) {
                 Log.i(TAG, videoUrl + " ---> " + e.getMessage());
-                playImage();
-                return;
-            }
-            if (externalStorageIsEnable()) {
-                playVideo(0);
-            } else {
                 playImage();
             }
         } else {
