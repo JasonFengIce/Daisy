@@ -21,6 +21,9 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="@dimen/usercenter_horizontal_divider_line_height"
+            android:scaleType="fitXY"
+            android:layout_marginLeft="26dp"
+            android:layout_marginRight="26dp"
             android:src="@drawable/horizontal_divider_line"/>
 
         <LinearLayout
