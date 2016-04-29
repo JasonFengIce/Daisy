@@ -91,7 +91,12 @@ public class DownloadClient implements Runnable {
                 inputStream.close();
             }
         } catch (IOException e) {
+            Log.e(TAG, "IOException: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            Log.e(TAG, "IllegalArgumentException: " + e.getMessage());
         }
+
+
 
         downloadTable.download_path = downloadFile.getAbsolutePath();
         downloadTable.download_state = DownloadState.complete.name();

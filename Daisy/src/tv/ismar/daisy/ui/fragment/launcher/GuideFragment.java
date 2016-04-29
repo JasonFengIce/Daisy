@@ -1,9 +1,6 @@
 package tv.ismar.daisy.ui.fragment.launcher;
 
-import android.R.integer;
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -12,13 +9,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.MemoryPolicy;
@@ -26,23 +21,22 @@ import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
+
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.cache.CacheManager;
 import tv.ismar.daisy.core.client.CacheHttpClient;
 import tv.ismar.daisy.core.client.DownloadClient;
-import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.ui.activity.TVGuideActivity;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
+import tv.ismar.daisy.ui.widget.DaisyVideoView;
 import tv.ismar.daisy.ui.widget.DaisyViewContainer;
 import tv.ismar.daisy.ui.widget.HomeItemContainer;
 import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.daisy.views.LabelImageView;
-
-import java.io.InputStream;
-import java.util.ArrayList;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -54,7 +48,6 @@ public class GuideFragment extends ChannelBaseFragment {
     private static final int CAROUSEL_NEXT = 0x0010;
 
     private DaisyViewContainer guideRecommmendList;
-    private DaisyViewContainer carouselLayout;
 
 
     private ArrayList<String> allVideoUrl;
@@ -65,9 +58,8 @@ public class GuideFragment extends ChannelBaseFragment {
     private LabelImageView toppage_carous_imageView2;
     private LabelImageView toppage_carous_imageView3;
     private HomeItemContainer lastpostview;
-    private IsmartvUrlClient datafetch;
     private BitmapDecoder bitmapDecoder;
-    private tv.ismar.daisy.ui.widget.DaisyVideoView mSurfaceView;
+    private DaisyVideoView mSurfaceView;
 
 
     private int mCurrentCarouselIndex = -1;
@@ -93,14 +85,13 @@ public class GuideFragment extends ChannelBaseFragment {
 
         View mView = LayoutInflater.from(mContext).inflate(R.layout.fragment_guide, null);
         guideRecommmendList = (DaisyViewContainer) mView.findViewById(R.id.recommend_list);
-        carouselLayout = (DaisyViewContainer) mView.findViewById(R.id.carousel_layout);
         toppage_carous_imageView1 = (LabelImageView) mView.findViewById(R.id.toppage_carous_imageView1);
         toppage_carous_imageView2 = (LabelImageView) mView.findViewById(R.id.toppage_carous_imageView2);
         toppage_carous_imageView3 = (LabelImageView) mView.findViewById(R.id.toppage_carous_imageView3);
         film_post_layout = (HomeItemContainer) mView.findViewById(R.id.guide_center_layoutview);
         linkedVideoLoadingImage = (ImageView) mView.findViewById(R.id.linked_video_loading_image);
 
-        mSurfaceView = (tv.ismar.daisy.ui.widget.DaisyVideoView) mView.findViewById(R.id.linked_video);
+        mSurfaceView = (DaisyVideoView) mView.findViewById(R.id.linked_video);
         mSurfaceView.setOnCompletionListener(videoPlayEndListener);
         mSurfaceView.setOnErrorListener(mVideoOnErrorListener);
         mSurfaceView.setOnPreparedListener(mOnPreparedListener);
@@ -193,8 +184,6 @@ public class GuideFragment extends ChannelBaseFragment {
         if (bitmapDecoder != null && bitmapDecoder.isAlive()) {
             bitmapDecoder.interrupt();
         }
-        if (datafetch != null && datafetch.isAlive())
-            datafetch.interrupt();
     }
 
 
@@ -220,7 +209,6 @@ public class GuideFragment extends ChannelBaseFragment {
                 }
                 if (scrollFromBorder) {
                     if (isRight) {//右侧移入
-//                		if(StringUtils.isNotEmpty(bottomFlag)){
                         if ("bottom".equals(bottomFlag)) {//下边界移入
                             lastpostview.findViewById(R.id.poster_title).requestFocus();
                         } else {//上边界边界移入
@@ -246,52 +234,6 @@ public class GuideFragment extends ChannelBaseFragment {
             }
         });
 
-//        datafetch = new IsmartvUrlClient();
-//        datafetch.doRequest(api, new IsmartvUrlClient.CallBack() {
-//            @Override
-//            public void onSuccess(String result) {
-//                if (mContext == null || guideRecommmendList == null)
-//                    return;
-//                HomePagerEntity homePagerEntity = new Gson().fromJson(result,
-//                        HomePagerEntity.class);
-//                ArrayList<HomePagerEntity.Carousel> carousels = homePagerEntity
-//                        .getCarousels();
-//                ArrayList<HomePagerEntity.Poster> posters = homePagerEntity
-//                        .getPosters();
-//                if (!carousels.isEmpty()) {
-//                    initCarousel(carousels);
-//                }
-//
-//                if (!posters.isEmpty()) {
-//                    initPosters(posters);
-//                }
-//                if (scrollFromBorder) {
-//                    if (isRight) {//右侧移入
-////                		if(StringUtils.isNotEmpty(bottomFlag)){
-//                        if ("bottom".equals(bottomFlag)) {//下边界移入
-//                            lastpostview.findViewById(R.id.poster_title).requestFocus();
-//                        } else {//上边界边界移入
-//                            toppage_carous_imageView1.requestFocus();
-//                        }
-////                		}
-//                    } else {//左侧移入
-//                        if (StringUtils.isNotEmpty(bottomFlag)) {
-//                            if ("bottom".equals(bottomFlag)) {
-//
-//                            } else {
-//
-//                            }
-//                        }
-//                    }
-//                    ((TVGuideActivity) getActivity()).resetBorderFocus();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailed(Exception exception) {
-//                Log.e(TAG, exception.getMessage());
-//            }
-//        });
     }
 
     private void initPosters(ArrayList<HomePagerEntity.Poster> posters) {
@@ -370,8 +312,8 @@ public class GuideFragment extends ChannelBaseFragment {
 
     private void initCarousel(final ArrayList<HomePagerEntity.Carousel> carousels) {
         mCarousels = carousels;
-        allItem = new ArrayList<LabelImageView>();
-        allVideoUrl = new ArrayList<String>();
+        allItem = new ArrayList<>();
+        allVideoUrl = new ArrayList<>();
 
 
         Picasso.with(mContext).load(carousels.get(0).getThumb_image()).memoryPolicy(MemoryPolicy.NO_STORE).into(toppage_carous_imageView1);
@@ -427,30 +369,13 @@ public class GuideFragment extends ChannelBaseFragment {
             }
         }
 
-//        HashMap<String, String> hashMap = new HashMap<String, String>();
-//        hashMap.put(ItemDetailClickListener.MODEL, mCarousels.get(mCurrentCarouselIndex).getModel_name());
-//        hashMap.put(ItemDetailClickListener.URL, mCarousels.get(mCurrentCarouselIndex).getUrl());
-//        hashMap.put(ItemDetailClickListener.TITLE, mCarousels.get(mCurrentCarouselIndex).getTitle());
         film_post_layout.setTag(R.drawable.launcher_selector, mCarousels.get(mCurrentCarouselIndex));
-
-//        mHelper.onStart();
         mHandler.removeMessages(START_PLAYBACK);
         mHandler.sendEmptyMessageDelayed(START_PLAYBACK, delay);
 
 
     }
 
-//    private void switchVideo() {
-//        if (mContext == null)
-//            return;
-//        String videoUrl = CacheManager.getInstance().doRequest(mCarousels.get(mCurrentCarouselIndex).getVideo_url(),
-//                "guide_" + mCurrentCarouselIndex + ".mp4", DownloadClient.StoreType.Internal);
-//        Log.d(TAG, "play video: " + videoUrl);
-//        MediaWrapper mediaWrapper = new MediaWrapper(Uri.parse(videoUrl));
-//        mediaWrapper.removeFlags(MediaWrapper.MEDIA_FORCE_AUDIO);
-//        mediaWrapper.addFlags(MediaWrapper.MEDIA_VIDEO);
-//        mService.load(mediaWrapper);
-//    }
 
     private Handler mHandler = new Handler() {
         @Override
