@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:clipChildren="false"
@@ -23,8 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/guide_padding"
             android:clickable="true"
-            android:focusableInTouchMode="true"
             android:focusable="true"
+            android:focusableInTouchMode="true"
             android:nextFocusRight="@+id/toppage_carous_imageView1"
             >
 
@@ -34,7 +35,8 @@
                 android:layout_width="@dimen/guide_video_width"
                 android:layout_height="@dimen/guide_video_height"
                 android:focusable="false"
-                android:focusableInTouchMode="false"/>
+                android:focusableInTouchMode="false"
+                />
 
             <ImageView
                 android:id="@+id/linked_video_loading_image"
@@ -43,16 +45,6 @@
                 />
 
         </tv.ismar.daisy.ui.widget.HomeItemContainer>
-
-        <tv.ismar.daisy.ui.widget.DaisyViewContainer
-            android:id="@+id/carousel_layout"
-            xmlns:app="http://schemas.android.com/apk/res/tv.ismar.daisy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone"
-            app:vertical_spacing="0dp">
-        </tv.ismar.daisy.ui.widget.DaisyViewContainer>
 
         <include
             layout="@layout/toppagecarouse"
@@ -65,11 +57,11 @@
 
     <tv.ismar.daisy.ui.widget.DaisyViewContainer
         android:id="@+id/recommend_list"
-        xmlns:app="http://schemas.android.com/apk/res/tv.ismar.daisy"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toppage_fragment_recommend_list_h"
         android:clipChildren="false"
         android:clipToPadding="false"
+        android:descendantFocusability="afterDescendants"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/toppage_fragment_recommend_list_padding"
         app:horizontal_spacing="@dimen/guide_recommend_item_spacing"

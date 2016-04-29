@@ -3,10 +3,12 @@ package tv.ismar.daisy.ui.widget;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.LinearLayout;
+
 import tv.ismar.daisy.R;
 
 import java.util.ArrayList;
@@ -39,37 +41,21 @@ public class DaisyViewContainer extends LinearLayout {
         typedArray.recycle();
     }
 
-
     public void addAllViews(ArrayList<? extends View> allViews) {
-//        float spacing = 0;
         switch (getOrientation()) {
             case HORIZONTAL:
-//                spacing = horizontalSpacing / rate;
                 for (int i = 0; i < allViews.size(); i++) {
                     if (i != 0) {
-                        LayoutParams layoutParams = new LayoutParams((int)itemWidth, (int)itemHeight);
+                        LayoutParams layoutParams = new LayoutParams((int) itemWidth, (int) itemHeight);
                         layoutParams.setMargins((int) horizontalSpacing, 0, 0, 0);
                         allViews.get(i).setLayoutParams(layoutParams);
                         addView(allViews.get(i));
                     } else {
-					    LayoutParams layoutParams = new LayoutParams((int)itemWidth, (int)itemHeight);
-                        addView(allViews.get(i),layoutParams);
+                        LayoutParams layoutParams = new LayoutParams((int) itemWidth, (int) itemHeight);
+                        addView(allViews.get(i), layoutParams);
                     }
                 }
                 break;
-//            case VERTICAL:
-//                spacing = verticalSpacing / rate;
-//                for (int i = 0; i < allViews.size(); i++) {
-//                    if (i != 0) {
-//                        LayoutParams layoutParams = new LayoutParams(297, 166);
-//                        layoutParams.setMargins(0, (int) spacing, 0, 0);
-//                        allViews.get(i).setLayoutParams(layoutParams);
-//                        addView(allViews.get(i));
-//                    } else {
-//                        addView(allViews.get(i));
-//                    }
-//                }
-//                break;
         }
         requestLayout();
         invalidate();
