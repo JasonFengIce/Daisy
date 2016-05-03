@@ -1341,7 +1341,7 @@
 <dimen name="paylayervip_height">40.00dp</dimen>
 <dimen name="paylayerpkg_text_marginLeft">36.50dp</dimen>
 <dimen name="paylayerpkg_text_marginTop">12.00dp</dimen>
-<dimen name="paylayerpkg_scrollview_margintop">29.50dp</dimen>
+<dimen name="paylayerpkg_scrollview_margintop">5.00dp</dimen>
 <dimen name="paylayerpkg_purchase_width">87.00dp</dimen>
 <dimen name="paylayerpkg_purchase_height">46.00dp</dimen>
 <dimen name="paylayerpkg_purchase_marginRight">39.50dp</dimen>
