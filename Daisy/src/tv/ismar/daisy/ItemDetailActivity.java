@@ -1428,7 +1428,7 @@ public class ItemDetailActivity extends BaseActivity implements
 //                        .setBackgroundResource(R.drawable.vod_detail_already_payment_duration);
 //                detail_price_txt
 //                        .setBackgroundResource(R.drawable.vod_detail_already_payment_price);
-//                mCollectBtn = mMiddleBtn;
+                mCollectBtn = mMiddleBtn;
             }
         }
         mLeftBtn.setFocusable(true);
