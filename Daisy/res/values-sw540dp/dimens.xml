@@ -1010,7 +1010,7 @@
 <dimen name="entertainment_vaiety_channel_title_textsize">15.00sp</dimen>
 <!-- fragment entertainment end -->
 
-<dimen name="usercenter_storefragment_packagelist_marginRight">15dp</dimen>
+<dimen name="usercenter_storefragment_packagelist_marginRight">15.00dp</dimen>
 <dimen name="usercenter_storefragment_packagelist_marginLeft">8.50dp</dimen>
 <dimen name="usercenter_storefragment_packagelist_verticalSpacing">3.00dp</dimen>
 <dimen name="usercenter_storefragment_packagelist_horizontalSpacing">7.50dp</dimen>
@@ -1391,4 +1391,6 @@
 <dimen name="score_tag_txt_size">15.00sp</dimen>
 <dimen name="item_title_marginTop">7.00dp</dimen>
 <dimen name="textsize_36sp">18.00sp</dimen>
+<dimen name="lineSpacing">12.00dp</dimen>
+<dimen name="vip_pkg_des_marginRight">65.50dp</dimen>
 </resources>

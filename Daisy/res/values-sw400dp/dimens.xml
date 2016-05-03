@@ -1391,4 +1391,6 @@
 <dimen name="score_tag_txt_size">11.11sp</dimen>
 <dimen name="item_title_marginTop">5.19dp</dimen>
 <dimen name="textsize_36sp">13.33sp</dimen>
+<dimen name="lineSpacing">8.89dp</dimen>
+<dimen name="vip_pkg_des_marginRight">48.52dp</dimen>
 </resources>

@@ -765,10 +765,10 @@
 <dimen name="usercenter_fragment_help_ismartv_introduction_margin_right">26.67dp</dimen>
 <dimen name="usercenter_fragment_help_ismartv_introduction_margin_top">33.33dp</dimen>
 <dimen name="usercenter_fragment_help_ismartv_introduction_text_size">24.00dp</dimen>
-<dimen name="usercenter_fragment_help_ismartv_introduction_lineSpacingExtra">15.33dp</dimen>
+<dimen name="usercenter_fragment_help_ismartv_introduction_lineSpacingExtra">23.33dp</dimen>
 <dimen name="usercenter_help_contact_margin_left">90.00dp</dimen>
 <dimen name="usercenter_help_helpcenter_text_margin_top">40.00dp</dimen>
-<dimen name="usercenter_help_icon_margin_top">35.67dp</dimen>
+<dimen name="usercenter_help_icon_margin_top">56.67dp</dimen>
 <dimen name="usercenter_help_shipinkefu_margin_top">13.33dp</dimen>
 <dimen name="usercenter_info_layout_margin_left">26.67dp</dimen>
 <dimen name="usercenter_info_device_number_margin_top">23.33dp</dimen>
@@ -1010,7 +1010,7 @@
 <dimen name="entertainment_vaiety_channel_title_textsize">20.00sp</dimen>
 <!-- fragment entertainment end -->
 
-<dimen name="usercenter_storefragment_packagelist_marginRight">20dp</dimen>
+<dimen name="usercenter_storefragment_packagelist_marginRight">20.00dp</dimen>
 <dimen name="usercenter_storefragment_packagelist_marginLeft">11.33dp</dimen>
 <dimen name="usercenter_storefragment_packagelist_verticalSpacing">4.00dp</dimen>
 <dimen name="usercenter_storefragment_packagelist_horizontalSpacing">10.00dp</dimen>
@@ -1333,7 +1333,7 @@
 <dimen name="paylayervip_scrollview_width">873.33dp</dimen>
 <dimen name="paylayervip_scrollview_height">306.67dp</dimen>
 <dimen name="paylayervip_img_width">181.33dp</dimen>
-<dimen name="paylayervip_img_height">254dp</dimen>
+<dimen name="paylayervip_img_height">254.00dp</dimen>
 <dimen name="newvip_paylayervip_margin">5.33dp</dimen>
 <dimen name="paylayervip_layout_width">973.33dp</dimen>
 <dimen name="paylayervip_layout_height">566.67dp</dimen>
@@ -1391,4 +1391,6 @@
 <dimen name="score_tag_txt_size">20.00sp</dimen>
 <dimen name="item_title_marginTop">9.33dp</dimen>
 <dimen name="textsize_36sp">24.00sp</dimen>
+<dimen name="lineSpacing">16.00dp</dimen>
+<dimen name="vip_pkg_des_marginRight">87.33dp</dimen>
 </resources>

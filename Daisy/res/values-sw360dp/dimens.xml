@@ -1010,7 +1010,7 @@
 <dimen name="entertainment_vaiety_channel_title_textsize">10.00sp</dimen>
 <!-- fragment entertainment end -->
 
-<dimen name="usercenter_storefragment_packagelist_marginRight">10dp</dimen>
+<dimen name="usercenter_storefragment_packagelist_marginRight">10.00dp</dimen>
 <dimen name="usercenter_storefragment_packagelist_marginLeft">5.67dp</dimen>
 <dimen name="usercenter_storefragment_packagelist_verticalSpacing">2.00dp</dimen>
 <dimen name="usercenter_storefragment_packagelist_horizontalSpacing">5.00dp</dimen>
@@ -1333,7 +1333,7 @@
 <dimen name="paylayervip_scrollview_width">436.67dp</dimen>
 <dimen name="paylayervip_scrollview_height">153.33dp</dimen>
 <dimen name="paylayervip_img_width">90.67dp</dimen>
-<dimen name="paylayervip_img_height">127dp</dimen>
+<dimen name="paylayervip_img_height">127.00dp</dimen>
 <dimen name="newvip_paylayervip_margin">2.67dp</dimen>
 <dimen name="paylayervip_layout_width">486.67dp</dimen>
 <dimen name="paylayervip_layout_height">283.33dp</dimen>
@@ -1391,4 +1391,6 @@
 <dimen name="score_tag_txt_size">10.00sp</dimen>
 <dimen name="item_title_marginTop">4.67dp</dimen>
 <dimen name="textsize_36sp">12.00sp</dimen>
+<dimen name="lineSpacing">8.00dp</dimen>
+<dimen name="vip_pkg_des_marginRight">43.67dp</dimen>
 </resources>

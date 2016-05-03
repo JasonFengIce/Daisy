@@ -82,6 +82,8 @@
             </RelativeLayout>
 
             <TextView
+                android:layout_marginRight="@dimen/vip_pkg_des_marginRight"
+                android:lineSpacingExtra="@dimen/lineSpacing"
                 android:id="@+id/description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
