@@ -78,7 +78,7 @@
                     android:onClick="buyPackage"
                     android:text="@string/paylayerpkg_purchase"
                     android:textColor="@color/_ffffff"
-                    android:textSize="@dimen/textsize_36sp"/>
+                    android:textSize="@dimen/textsize_48sp"/>
             </RelativeLayout>
 
             <TextView
