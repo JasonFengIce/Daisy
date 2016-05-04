@@ -114,8 +114,8 @@ public class PackageDetailActivity extends BaseActivity implements OnItemClickLi
 			
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
-				if(!hasFocus){
-					vod_payment_item_of_package_container.setSelection(AdapterView.INVALID_POSITION);
+				if(hasFocus){
+					vod_payment_item_of_package_container.setSelection(0);
 				}
 			}
 		});
