@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -32,6 +33,8 @@ import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.utils.BitmapDecoder;
+import tv.ismar.daisy.utils.PicassoUtils;
+import tv.ismar.daisy.utils.StringUtils;
 import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.AsyncImageView;
 import tv.ismar.daisy.views.CustomDialog;
@@ -452,7 +455,11 @@ public class PackageDetailActivity extends BaseActivity implements OnItemClickLi
 				holder = (ViewHolder) convertView.getTag();
 			
 			holder.title.setText(items.get(position).title);
-			holder.previewImage.setUrl(items.get(position).adlet_url);
+			if(TextUtils.isEmpty(items.get(position).adlet_url)||!PicassoUtils.isValidImg(items.get(position).adlet_url)){
+				holder.previewImage.setImageResource(R.drawable.list_item_preview_bg);
+			}else {
+				holder.previewImage.setUrl(items.get(position).adlet_url);
+			}
 			return convertView;
 		}
 		

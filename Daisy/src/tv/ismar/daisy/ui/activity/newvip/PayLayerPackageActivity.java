@@ -34,6 +34,7 @@ import tv.ismar.daisy.data.http.newvip.paylayerpackage.Item_list;
 import tv.ismar.daisy.data.http.newvip.paylayerpackage.PayLayerPackageEntity;
 import tv.ismar.daisy.models.Expense;
 import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.utils.PicassoUtils;
 import tv.ismar.daisy.utils.ViewScaleUtil;
 import tv.ismar.daisy.views.PaymentDialog;
 import tv.ismar.daisy.views.RotateTextView;
@@ -153,8 +154,8 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
                 }
             }
 
-            if (TextUtils.isEmpty(itemList.getVertical_url())) {
-                Picasso.with(this).load(R.drawable.preview).into(imageView);
+            if (TextUtils.isEmpty(itemList.getVertical_url())||!PicassoUtils.isValidImg(itemList.getVertical_url())) {
+                Picasso.with(this).load(R.drawable.list_item_ppreview_bg).into(imageView);
             } else {
                 Picasso.with(this).load(itemList.getVertical_url()).into(imageView);
             }

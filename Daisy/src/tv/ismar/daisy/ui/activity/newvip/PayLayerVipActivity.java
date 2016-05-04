@@ -29,6 +29,7 @@ import tv.ismar.daisy.data.http.newvip.paylayervip.PayLayerVipEntity;
 import tv.ismar.daisy.data.http.newvip.paylayervip.Vip_list;
 import tv.ismar.daisy.models.Expense;
 import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.utils.PicassoUtils;
 import tv.ismar.daisy.utils.ViewScaleUtil;
 import tv.ismar.daisy.views.PaymentDialog;
 
@@ -88,8 +89,8 @@ public class PayLayerVipActivity extends BaseActivity implements OnHoverListener
         for (final Vip_list vipList : payLayerVipEntity.getVip_list()) {
             RelativeLayout itemView = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_paylayervip, null);
             ForegroundImageView imageView = (ForegroundImageView) itemView.findViewById(R.id.image);
-            if (TextUtils.isEmpty(vipList.getVertical_url())) {
-                Picasso.with(this).load(R.drawable.preview).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(imageView);
+            if (TextUtils.isEmpty(vipList.getVertical_url())||!PicassoUtils.isValidImg(vipList.getVertical_url())) {
+                Picasso.with(this).load(R.drawable.list_item_ppreview_bg).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(imageView);
             } else {
                 Picasso.with(this).load(vipList.getVertical_url()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(imageView);
             }
