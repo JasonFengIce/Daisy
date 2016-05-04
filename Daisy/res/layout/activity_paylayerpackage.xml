@@ -78,6 +78,9 @@
                     android:onClick="buyPackage"
                     android:text="@string/paylayerpkg_purchase"
                     android:textColor="@color/_ffffff"
+                    android:nextFocusLeft="@id/paylayerpkg_purchase"
+                    android:nextFocusUp="@id/paylayerpkg_purchase"
+                    android:nextFocusRight="@id/paylayerpkg_purchase"
                     android:textSize="@dimen/textsize_48sp"/>
             </RelativeLayout>
 
