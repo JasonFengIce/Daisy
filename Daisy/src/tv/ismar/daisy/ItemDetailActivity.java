@@ -1157,12 +1157,12 @@ public class ItemDetailActivity extends BaseActivity implements
                         identify = (String) v.getTag();
                         if (identify.equals(PREVIEW_VIDEO)) {
                             // 预告
-                            if (isDrama()) {
-                                tool.isSubitemPreview = true;
-                                tool.initClipInfo(mItem.subitems[0].url, InitPlayerTool.FLAG_URL, true, mItem);
-                            } else {
+//                            if (isDrama()) {
+//                                tool.isSubitemPreview = true;
+//                                tool.initClipInfo(mItem.subitems[0].url, InitPlayerTool.FLAG_URL, true, mItem);
+//                            } else {
                                 tool.initClipInfo(mItem, InitPlayerTool.FLAG_ITEM, true, null);
-                            }
+//                            }
                         } else if (identify.equals(PLAY_VIDEO)) {
                             // 播放
                             if (isDrama())
