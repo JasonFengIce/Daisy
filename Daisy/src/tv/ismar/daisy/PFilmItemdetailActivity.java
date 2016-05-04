@@ -986,6 +986,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         mLeftBtn.setOnHoverListener(mOnHoverListener);
         mMiddleBtn.setOnHoverListener(mOnHoverListener);
         mRightBtn.setOnHoverListener(mOnHoverListener);
+        mLeftBtn.setBackgroundResource(R.drawable.filmplayvideo_focus_btn_bg);
 
         mLeftBtn.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -1189,6 +1190,8 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             relatedHolder.setOnClickListener(mRelatedClickListener);
             relatedHolder.setOnHoverListener(mOnHoverListener);
         }
+        mLeftBtn.setFocusable(true);
+        mLeftBtn.requestFocus();
     }
 
     private View.OnFocusChangeListener mRelatedOnFocusChangeListener = new View.OnFocusChangeListener() {
