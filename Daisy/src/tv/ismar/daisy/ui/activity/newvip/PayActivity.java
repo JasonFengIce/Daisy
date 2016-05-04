@@ -232,9 +232,8 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
         if (resultCode == 20) {
-            Intent datas = new Intent();
-            data.putExtra("result", true);
-            setResult(20, datas);
+            setResult(20, data);
+            finish();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
