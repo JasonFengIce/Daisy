@@ -94,6 +94,7 @@ public class ISTVVodMenu extends ISTVVodMenuItem {
 					convertView.setBackgroundColor(Color.argb(50, 0xe5, 0xaa,
 							0x50));
 					TextView checkbox = (TextView)convertView.findViewById(R.id.Menucheckbox);
+					if(curr.subItems.get(id).id != 0 && curr.subItems.get(id).id != 100 & curr.subItems.get(id).id != 20 && curr.subItems.get(id).id != 30)
 					checkbox.setVisibility(View.VISIBLE);
 				} else {
 					convertView.setBackgroundColor(Color
@@ -224,6 +225,7 @@ public class ISTVVodMenu extends ISTVVodMenuItem {
 			visible = false;
 			view.startAnimation(hideAnimation);
 			view.setVisibility(View.GONE);
+			view.setSelection(-1);
 			activity.onVodMenuClosed(this);
 		}
 	}
