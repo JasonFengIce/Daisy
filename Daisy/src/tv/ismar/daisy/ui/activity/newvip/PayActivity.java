@@ -96,7 +96,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
             TextView title = (TextView) vipItem.findViewById(R.id.title);
             title.setText(vip.getTitle());
             TextView price = (TextView) vipItem.findViewById(R.id.price);
-            price.setText(String.valueOf(vip.getPrice()) + "元/" + vip.getDuration() + "天");
+            price.setText((int)vip.getPrice() + "元/" + vip.getDuration() + "天");
             if (TextUtils.isEmpty(vip.getVertical_url())||!PicassoUtils.isValidImg(vip.getVertical_url())) {
                 Picasso.with(this).load(R.drawable.list_item_ppreview_bg).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(imageView);
             } else {
@@ -130,7 +130,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
             TextView title = (TextView) item.findViewById(R.id.title);
             title.setText(expenseItem.getTitle());
             TextView price = (TextView) item.findViewById(R.id.price);
-            price.setText(String.valueOf(expenseItem.getPrice()) + "元/" + expenseItem.getDuration() + "天");
+            price.setText((int)expenseItem.getPrice()+ "元/" + expenseItem.getDuration() + "天");
             item.setOnHoverListener(this);
             item.setOnFocusChangeListener(this);
             item.setOnClickListener(new View.OnClickListener() {
@@ -154,7 +154,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
             TextView title = (TextView) item.findViewById(R.id.title);
             title.setText(newVipPackage.getTitle());
             TextView price = (TextView) item.findViewById(R.id.price);
-            price.setText(String.valueOf(newVipPackage.getPrice()) + "元/" + newVipPackage.getDuration() + "天");
+            price.setText((int)newVipPackage.getPrice() + "元/" + newVipPackage.getDuration() + "天");
             item.setOnHoverListener(this);
             item.setOnFocusChangeListener(this);
             item.setOnClickListener(new View.OnClickListener() {
