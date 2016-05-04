@@ -1179,11 +1179,11 @@ public class ItemDetailActivity extends BaseActivity implements
                         identify = (String) v.getTag();
                         if (identify.equals(BUY_VIDEO)) {
                             // 购买
-                            if (isDrama()) {
-                                startDramaListActivity();
-                            } else {
+//                            if (isDrama()) {
+//                                startDramaListActivity();
+//                            } else {
                                 buyVideo();
-                            }
+//                            }
                         } else if (identify.equals(COLLECT_VIDEO)) {
                             addFavorite();
                             if (isFavorite()) {
