@@ -91,7 +91,12 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
         layoutParams.setMargins(margin, 0, margin, 0);
         Vip vip = payLayerEntity.getVip();
         if (vip != null) {
-            RelativeLayout vipItem = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_newvip_pay, null);
+            RelativeLayout vipItem;
+            if(payLayerEntity.getCpname().startsWith("ismar")) {
+                vipItem = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_daisy_vip_pay, null);
+            }else{
+                vipItem = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_newvip_pay, null);
+            }
             ForegroundImageView imageView = (ForegroundImageView) vipItem.findViewById(R.id.item_newvip_pay_img);
             TextView title = (TextView) vipItem.findViewById(R.id.title);
             title.setText(vip.getTitle());
