@@ -30,6 +30,7 @@ public class AccountPlayAuthEntity {
         private String expiry_date;
         private String title;
         private String url;
+        private String contentMode;
 
         public String getUrl() {
             return url;
@@ -53,6 +54,13 @@ public class AccountPlayAuthEntity {
 
         public void setTitle(String title) {
             this.title = title;
+        }
+        public String getContentMode() {
+            return contentMode;
+        }
+
+        public void setContentMode(String contentMode) {
+            this.contentMode = contentMode;
         }
     }
 }

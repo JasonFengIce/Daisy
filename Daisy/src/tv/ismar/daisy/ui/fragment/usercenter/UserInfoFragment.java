@@ -259,11 +259,13 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
     private View.OnClickListener playAuthClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            String url = ((AccountPlayAuthEntity.PlayAuth) v.getTag()).getUrl();
-            if (!TextUtils.isEmpty(url)) {
-                InitPlayerTool tool = new InitPlayerTool(mContext);
-                tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
-            }
+            AccountPlayAuthEntity.PlayAuth playAuth = (AccountPlayAuthEntity.PlayAuth) v.getTag();
+//            if (!TextUtils.isEmpty(url)) {
+//                InitPlayerTool tool = new InitPlayerTool(mContext);
+//                tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
+//            }
+            if(playAuth.getUrl() != null && !playAuth.getUrl().equals(""))
+            DaisyUtils.gotoSpecialPage(mContext,playAuth.getContentMode(),playAuth.getUrl(),"");
         }
     };
 
