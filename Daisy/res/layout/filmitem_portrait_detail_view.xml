@@ -136,7 +136,9 @@
                     android:ellipsize="end"
                     android:textColor="@color/white"
                     android:lineSpacingExtra="@dimen/filmitem_portrait_detail_intro_lineSpacingExtra"
-                    android:textSize="@dimen/filmitem_portrait_detail_intro_textsize"/>
+                    android:textSize="@dimen/filmitem_portrait_detail_intro_textsize"
+                    android:maxLines="3"
+                />
 
             <LinearLayout
                     android:layout_height="@dimen/filmitem_portrait_linearLayout_h"
