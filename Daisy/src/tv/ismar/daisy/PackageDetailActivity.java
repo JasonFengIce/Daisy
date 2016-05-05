@@ -19,6 +19,8 @@ import android.view.ViewGroup;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import com.google.gson.JsonSyntaxException;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,7 +35,6 @@ import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.utils.BitmapDecoder;
-import tv.ismar.daisy.utils.PicassoUtils;
 import tv.ismar.daisy.utils.StringUtils;
 import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.AsyncImageView;
@@ -455,10 +456,11 @@ public class PackageDetailActivity extends BaseActivity implements OnItemClickLi
 				holder = (ViewHolder) convertView.getTag();
 			
 			holder.title.setText(items.get(position).title);
-			if(TextUtils.isEmpty(items.get(position).adlet_url)||!PicassoUtils.isValidImg(items.get(position).adlet_url)){
-				holder.previewImage.setImageResource(R.drawable.list_item_preview_bg);
+			if(TextUtils.isEmpty(items.get(position).adlet_url)){
+				holder.previewImage.setImageResource(R.drawable.preview);
 			}else {
-				holder.previewImage.setUrl(items.get(position).adlet_url);
+				Picasso.with(PackageDetailActivity.this).load(items.get(position).adlet_url).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).error(R.drawable.error_hor).into(holder.previewImage);
+
 			}
 			return convertView;
 		}

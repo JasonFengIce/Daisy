@@ -154,10 +154,10 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
                 }
             }
 
-            if (TextUtils.isEmpty(itemList.getVertical_url())||!PicassoUtils.isValidImg(itemList.getVertical_url())) {
-                Picasso.with(this).load(R.drawable.list_item_ppreview_bg).into(imageView);
+            if (TextUtils.isEmpty(itemList.getVertical_url())) {
+                Picasso.with(this).load(R.drawable.preview).into(imageView);
             } else {
-                Picasso.with(this).load(itemList.getVertical_url()).into(imageView);
+                Picasso.with(this).load(itemList.getVertical_url()).error(R.drawable.error_ver).into(imageView);
             }
 
             itemView.setOnFocusChangeListener(new OnFocusChangeListener() {

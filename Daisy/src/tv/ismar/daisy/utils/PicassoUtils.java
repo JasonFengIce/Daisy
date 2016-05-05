@@ -28,15 +28,4 @@ public class PicassoUtils {
 
     }
 
-    public static boolean isValidImg(String path){
-        try {
-            URL url=new URL(path);
-            HttpURLConnection conn= (HttpURLConnection) url.openConnection();
-            conn.getInputStream();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
 }
