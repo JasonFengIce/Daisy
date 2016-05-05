@@ -520,7 +520,7 @@ public class ItemDetailActivity extends BaseActivity implements
 
     private void isbuy() {
         SimpleRestClient simpleRestClient = new SimpleRestClient();
-        simpleRestClient.doSendRequest("/api/order/check/", "post",
+        simpleRestClient.doSendRequest("/api/play/check/", "post",
                 "device_token=" + SimpleRestClient.device_token
                         + "&access_token=" + SimpleRestClient.access_token
                         + "&item=" + mItem.pk, new HttpPostRequestInterface() {
@@ -538,7 +538,7 @@ public class ItemDetailActivity extends BaseActivity implements
                                 if (json.has("max_expiry_date")) {
                                     // 电视剧部分购买
                                     isBuy = false;// 暂时无法处理
-                                } else {
+                                }  else {
                                     // 电影或者电视剧整部购买
                                     try {
                                         remainDay = Util.daysBetween(
@@ -581,7 +581,8 @@ public class ItemDetailActivity extends BaseActivity implements
                                 e.printStackTrace();
                             }
                         }
-                        initLayout();
+                        if(iqiyi_code ==null || (iqiyi_code!= null && "null".equals(iqiyi_code)))
+                            initLayout();
                     }
 
                     @Override
@@ -1411,7 +1412,7 @@ public class ItemDetailActivity extends BaseActivity implements
 //                detail_price_txt.setText("已付费");
 //                detail_duration_txt.setText("剩余" + remainDay + "天");
 //                detail_price_txt.setVisibility(View.VISIBLE);
-                if(toDate!=null) {
+                if(toDate!=null&&!toDate.equals("")) {
                     String[] todate = toDate.substring(0, toDate.indexOf(" ")).split("-");
                     detail_duration_txt.setText("有效期至" + todate[0] + "年" + todate[1] + "月" + todate[2] + "日");
                 }else{
