@@ -136,7 +136,8 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
         int margin = (int) getResources().getDimension(R.dimen.newvip_paylayervip_margin);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(margin, 0, margin, 0);
-        for (final Item_list itemList : packageEntity.getItem_list()) {
+        for (int i = 0; i <packageEntity.getItem_list().size() ; i++) {
+            final Item_list itemList=packageEntity.getItem_list().get(i);
             RelativeLayout itemView = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_paylayerpackage, null);
             ForegroundImageView imageView = (ForegroundImageView) itemView.findViewById(R.id.image);
             TextView itemTitle = (TextView) itemView.findViewById(R.id.title);
@@ -192,7 +193,9 @@ public class PayLayerPackageActivity extends BaseActivity implements View.OnHove
             } else {
                 itemView.setNextFocusUpId(purchaseBtn.getId());
             }
-
+            if(i==packageEntity.getItem_list().size()-1){
+                itemView.setNextFocusRightId(R.id.pay_layer_item);
+            }
             scrollViewLayout.addView(itemView, layoutParams);
         }
         if(!purchaseBtn.isFocusable()){
