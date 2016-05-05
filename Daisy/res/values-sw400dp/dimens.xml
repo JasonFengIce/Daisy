@@ -1320,6 +1320,8 @@
 <dimen name="child_loop_indicator_layout_height">31.48dp</dimen>
 <dimen name="item_newvip_pay_img_width">158.52dp</dimen>
 <dimen name="item_newvip_pay_img_height">227.04dp</dimen>
+    <dimen name="item_newvip_pay_img_margin_top">63.33dp</dimen>
+    <dimen name="item_newvip_pay_title_margin_top">140.37dp</dimen>
 <dimen name="newvip_pay_scroll_width">555.56dp</dimen>
 <dimen name="newvip_pay_scroll_height">259.26dp</dimen>
 <dimen name="newip_payitem_margin">8.52dp</dimen>
