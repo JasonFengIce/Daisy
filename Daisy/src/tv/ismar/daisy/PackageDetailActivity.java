@@ -111,15 +111,15 @@ public class PackageDetailActivity extends BaseActivity implements OnItemClickLi
 		mRelatedVideoContainer = (LinearLayout)findViewById(R.id.related_video_container);
 		vod_payment_item_of_package_container = (ZGridView)findViewById(R.id.vod_payment_item_of_package_container);
 		vod_payment_item_of_package_container.setOnItemClickListener(this);
-		vod_payment_item_of_package_container.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if(hasFocus){
-					vod_payment_item_of_package_container.setSelection(0);
-				}
-			}
-		});
+//		vod_payment_item_of_package_container.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//
+//			@Override
+//			public void onFocusChange(View v, boolean hasFocus) {
+//				if(hasFocus){
+//					vod_payment_item_of_package_container.setSelection(0);
+//				}
+//			}
+//		});
 		vod_payment_poster = (AsyncImageView)findViewById(R.id.vod_payment_poster);
 		vod_payment_price = (TextView)findViewById(R.id.vod_payment_price);
 		vod_payment_duration = (TextView)findViewById(R.id.vod_payment_duration);
@@ -298,7 +298,7 @@ public class PackageDetailActivity extends BaseActivity implements OnItemClickLi
 				vod_payment_packageDescribe_content.setText(mItem.description);
 				ItemAdapter adaptet= new ItemAdapter(PackageDetailActivity.this,mItem.items);
 				vod_payment_item_of_package_container.setAdapter(adaptet);
-				vod_payment_item_of_package_container.setFocusable(true);
+//				vod_payment_item_of_package_container.setFocusable(true);
 				if(mItem.expense!=null){
 					//收费
                     isbuy();

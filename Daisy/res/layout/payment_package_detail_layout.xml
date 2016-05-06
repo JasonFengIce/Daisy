@@ -77,7 +77,9 @@
             android:textSize="@dimen/vod_payment_packageDescribe_textsize"
             android:textColor="#ffffffff"
             android:lineSpacingExtra="3dip"
-            android:layout_marginTop="@dimen/vod_payment_packageDescribe_content_MT" />
+            android:layout_marginTop="@dimen/vod_payment_packageDescribe_content_MT"
+            />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -186,6 +188,7 @@
         sakura:selectorTopPadding="@dimen/ZGridView_packagedetail_selectorTopPadding"
         sakura:selectorRightPadding="@dimen/ZGridView_packagedetail_selectorRight"
         sakura:selectorBottomPadding="@dimen/ZGridView_packagedetail_selectorBottom"
+        android:focusable="true"
         >
     </org.sakuratya.horizontal.ui.ZGridView>
     <Button
