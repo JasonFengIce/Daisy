@@ -88,6 +88,7 @@ public class InitService extends Service implements Activator.OnComplete {
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.SN_TOKEN,
                 result.getSn_Token());
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.ZDEVICE_TOKEN, result.getZdevice_token());
+        accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.CARNATION_DOMAIN, result.getCarnation());
     }
 
     private void saveSimpleRestClientPreferences(Context context, Result result) {
@@ -97,6 +98,7 @@ public class InitService extends Service implements Activator.OnComplete {
         SimpleRestClient.log_domain = "http://" + result.getLog_Domain();
         SimpleRestClient.device_token = result.getDevice_token();
         SimpleRestClient.upgrade_domain = result.getUpgrade_domain();
+        SimpleRestClient.carnation_domain = "http://" + result.getCarnation();
         DaisyUtils
                 .getVodApplication(context)
                 .getEditor()
