@@ -375,6 +375,8 @@ public class PlayerActivity extends VodMenuAction {
 		}
 	}
 
+	private HashMap<String,Integer> adTimeMap = new HashMap<String,Integer>();
+
 	protected void showAd(ArrayList<AdElement> result, String adpid) {
 		adElement = new Stack<AdElement>();
 		for (int i = 0; i < result.size(); i++) {

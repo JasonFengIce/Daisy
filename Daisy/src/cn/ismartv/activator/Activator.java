@@ -5,6 +5,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.telephony.TelephonyManager;
+import android.util.Base64;
 import android.util.Log;
 
 import org.apache.http.util.EncodingUtils;
@@ -21,6 +22,7 @@ import cn.ismartv.activator.core.http.HttpClientAPI;
 import cn.ismartv.activator.core.http.HttpClientAPI.ExcuteActivator;
 import cn.ismartv.activator.core.http.HttpClientManager;
 import cn.ismartv.activator.core.mnative.NativeManager;
+import cn.ismartv.activator.core.rsa.RSACoder;
 import cn.ismartv.activator.data.Result;
 import cn.ismartv.activator.utils.MD5Utils;
 import okhttp3.ResponseBody;
@@ -159,7 +161,7 @@ public class Activator {
         }
 
         String sign = "ismartv=201415&kind=" + kind + "&sn=" + sn;
-        String rsaEnResult = nativeManager.RSAEncrypt(publicKey, sign);
+        String rsaEnResult = ecodeWithPublic(sign,publicKey);
 
         Retrofit retrofit = HttpClientManager.getInstance().SKY_Retrofit;
         ExcuteActivator activator = retrofit.create(ExcuteActivator.class);
@@ -271,4 +273,15 @@ public class Activator {
         return deviceId;
     }
 
+    private String ecodeWithPublic(String string, String publicKey) {
+        try {
+            String input = MD5Utils.encryptByMD5(string);
+            byte[] rsaResult = RSACoder.encryptByPublicKey(input.getBytes(), publicKey);
+            Log.d(TAG, "base 64 ---> " + Base64.encodeToString(rsaResult, Base64.DEFAULT));
+            return Base64.encodeToString(rsaResult, Base64.DEFAULT);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
