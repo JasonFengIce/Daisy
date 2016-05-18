@@ -205,7 +205,7 @@ left_shadow.setOnHoverListener(new View.OnHoverListener() {
 
                 if (items != null) {
                     mItemCollections = new ArrayList<ItemCollection>();
-                    int num_pages = (int) FloatMath.ceil((float) items.count / (float) ItemCollection.NUM_PER_PAGE);
+                    int num_pages = (int) Math.ceil((float) items.count / (float) ItemCollection.NUM_PER_PAGE);
                     ItemCollection itemCollection = new ItemCollection(num_pages, items.count, "1", "1");
                     mItemCollections.add(itemCollection);
                 }

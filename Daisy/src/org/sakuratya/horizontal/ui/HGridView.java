@@ -449,7 +449,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 						mSectionLabelRect[i] = new Rect();
 						mSectionFirstColumns[i] = columnCount;
 						final int sectionCount = mAdapter.getSectionCount(i);
-						columnCount += (int) FloatMath.ceil((float) sectionCount
+						columnCount += (int) Math.ceil((float) sectionCount
 								/ (float) mRows);
 						if (columnCount - 1 < mMaxColumn) {
 							mSectionLastColumns[i] = columnCount - 1;
@@ -1614,13 +1614,13 @@ public class HGridView extends AdapterView<HGridAdapter> {
 				int itemCount = 0;
 				for (int i = 0; i < sectionIndex; i++) {
 					int sectionCount = mAdapter.getSectionCount(i);
-					column += (int) FloatMath.ceil((float) sectionCount
+					column += (int) Math.ceil((float) sectionCount
 							/ (float) mRows);
 					itemCount += sectionCount;
 				}
 				column += (position - itemCount) / mRows;
 			} else {
-				column = (int) FloatMath
+				column = (int) Math
 						.floor((float) position / (float) mRows);
 			}
 			return column;
@@ -1662,7 +1662,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		int col = 0;
 		for (int i = 0; i < totalSectionCount; i++) {
 			final int sectionCount = mAdapter.getSectionCount(i);
-			final int sectionColumnCount = (int) FloatMath
+			final int sectionColumnCount = (int) Math
 					.ceil((float) sectionCount / (float) mRows);
 			if (col + sectionColumnCount > column) {
 				currentSectionIndex = i;
@@ -2378,7 +2378,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 					mSectionLabelRect[i] = new Rect();
 					mSectionFirstColumns[i] = columnCount;
 					final int sectionCount = mAdapter.getSectionCount(i);
-					columnCount += (int) FloatMath.ceil((float) sectionCount
+					columnCount += (int) Math.ceil((float) sectionCount
 							/ (float) mRows);
 					if (columnCount - 1 < mMaxColumn) {
 						mSectionLastColumns[i] = columnCount - 1;

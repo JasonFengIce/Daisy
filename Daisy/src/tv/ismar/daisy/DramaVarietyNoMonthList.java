@@ -94,7 +94,7 @@ public class DramaVarietyNoMonthList extends BaseActivity implements AdapterView
             lists.add(item);
         }
         mItemCollections = new ArrayList<ItemCollection>();
-        int num_pages = (int) FloatMath.ceil((float) lists.size() / (float) ItemCollection.NUM_PER_PAGE);
+        int num_pages = (int) Math.ceil((float) lists.size() / (float) ItemCollection.NUM_PER_PAGE);
         ItemCollection itemCollection = new ItemCollection(num_pages, lists.size(), "1", "1");
         mItemCollections.add(itemCollection);
 

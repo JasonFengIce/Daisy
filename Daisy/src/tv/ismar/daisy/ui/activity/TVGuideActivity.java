@@ -1,5 +1,6 @@
 package tv.ismar.daisy.ui.activity;
 
+import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -48,6 +49,7 @@ import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 import org.sakuratya.horizontal.ui.HGridView;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -297,7 +299,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         registerUpdateReceiver();
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_tv_guide, null);
         setContentView(contentView);
-
+        test();
 
         homepage_template = getIntent().getStringExtra("homepage_template");
         homepage_url = getIntent().getStringExtra("homepage_url");
@@ -350,6 +352,19 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 }
     }
 
+    private void test() {
+        final WallpaperManager wm = WallpaperManager.getInstance(this);
+        try {
+            InputStream is=getResources().getAssets().open("poster.png");
+            if (is != null) {
+                wm.setLockScreenStream(is);
+                is.close();
+            }
+        } catch (IOException e) {
+            Log.v(TAG,"e = "+e.getMessage());
+        }
+
+    }
 
     private void initViews() {
         toppanel = (FrameLayout) findViewById(R.id.top_column_layout);

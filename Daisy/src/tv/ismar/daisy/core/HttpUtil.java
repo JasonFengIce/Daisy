@@ -2,9 +2,6 @@ package tv.ismar.daisy.core;
 
 
 import android.util.Log;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.NetworkInterface;
@@ -71,21 +68,6 @@ public class HttpUtil {
 
 		return u;
 	}
-
-	/**
-	 * 通过Url获取HttpGet对象
-	 */
-	public static HttpGet getHttpGet(String url) {
-		return new HttpGet(url);
-	}
-
-	/**
-	 * 通过Url获取HttpPost对象
-	 */
-	public static HttpPost getHttpPost(String urlString) {
-		return new HttpPost(urlString);
-	}
-
 
 	/**
 	 * 通过HttpPost获取HttpResponse对象

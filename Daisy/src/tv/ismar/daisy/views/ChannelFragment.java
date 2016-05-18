@@ -506,7 +506,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
                     mItemCollections = new ArrayList<ItemCollection>();
                     for (int i = 0; i < mSectionList.size(); i++) {
                         Section section = mSectionList.get(i);
-                        int num_pages = (int) FloatMath.ceil((float) section.count / (float) ItemCollection.NUM_PER_PAGE);
+                        int num_pages = (int) Math.ceil((float) section.count / (float) ItemCollection.NUM_PER_PAGE);
                         if (num_pages == 0) {
                             num_pages = num_pages + 1;
                         }
@@ -568,7 +568,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 //                        }
                         mHGridAdapter.hg = mHGridView;
                         int num_rows = mHGridView.getRows();
-                        int totalColumnsOfSectionX = (int) FloatMath.ceil((float) mItemCollections.get(nextSection).count / (float) num_rows);
+                        int totalColumnsOfSectionX = (int) Math.ceil((float) mItemCollections.get(nextSection).count / (float) num_rows);
                         mScrollableSectionList.setPercentage(nextSection + 1, (int) (1f / (float) totalColumnsOfSectionX * 100f));
                         checkSectionChanged(nextSection + 1);
                     }
@@ -969,7 +969,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 
         }
         int columnOfX = (position - itemCount) / rows + 1;
-        int totalColumnOfSectionX = (int) (FloatMath.ceil((float) mHGridAdapter.getSectionCount(sectionIndex) / (float) rows));
+        int totalColumnOfSectionX = (int) (Math.ceil((float) mHGridAdapter.getSectionCount(sectionIndex) / (float) rows));
         int percentage = (int) ((float) columnOfX / (float) totalColumnOfSectionX * 100f);
         mScrollableSectionList.setPercentage(sectionIndex + 1, percentage);
         checkSectionChanged(sectionIndex + 1);

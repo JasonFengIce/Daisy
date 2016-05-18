@@ -281,7 +281,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 						addHistory(i);
 					}
 					mItemCollections = new ArrayList<ItemCollection>();
-					int num_pages = (int) FloatMath.ceil((float)mHistoriesByNet.length / (float)ItemCollection.NUM_PER_PAGE);
+					int num_pages = (int) Math.ceil((float)mHistoriesByNet.length / (float)ItemCollection.NUM_PER_PAGE);
 					ItemCollection itemCollection = new ItemCollection(num_pages, mHistoriesByNet.length, "1", "1");
 					mItemCollections.add(itemCollection);
 					mHGridAdapter = new HGridAdapterImpl(getActivity(), mItemCollections,false);
@@ -383,7 +383,7 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 					//mTodayItemList.num_pages = (int) FloatMath.ceil((float)mTodayItemList.count / (float)ItemCollection.NUM_PER_PAGE);
 					//mYesterdayItemList.num_pages = (int) FloatMath.ceil((float)mYesterdayItemList.count /(float) ItemCollection.NUM_PER_PAGE);
 					//mEarlyItemList.num_pages = (int) FloatMath.ceil((float)mEarlyItemList.count / (float)ItemCollection.NUM_PER_PAGE);
-					mHistoryItemList.num_pages = (int) FloatMath.ceil((float)mHistoryItemList.count / (float)ItemCollection.NUM_PER_PAGE);
+					mHistoryItemList.num_pages = (int) Math.ceil((float)mHistoryItemList.count / (float)ItemCollection.NUM_PER_PAGE);
 					if(mHistoryItemList.count>0){
 						Arrays.fill(mHistoryItemList.hasFilledValidItem, true);
 					}

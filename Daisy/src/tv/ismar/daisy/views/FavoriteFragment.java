@@ -212,7 +212,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 				FavoriteList = mRestClient.getItems(info);
 				if(FavoriteList!=null&&FavoriteList.length>0){
 					mItemCollections = new ArrayList<ItemCollection>();
-				    int num_pages = (int) FloatMath.ceil((float)FavoriteList.length / (float)ItemCollection.NUM_PER_PAGE);
+				    int num_pages = (int) Math.ceil((float)FavoriteList.length / (float)ItemCollection.NUM_PER_PAGE);
 					ItemCollection itemCollection = new ItemCollection(num_pages, FavoriteList.length, "1", "1");
 					mItemCollections.add(itemCollection);
 					mHGridAdapter = new HGridAdapterImpl(getActivity(), mItemCollections,false);
@@ -301,7 +301,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 				}
 			}
 			mItemCollections = new ArrayList<ItemCollection>();
-            int num_pages = (int) FloatMath.ceil((float)FavoriteLists.size() / (float)ItemCollection.NUM_PER_PAGE);
+            int num_pages = (int) Math.ceil((float)FavoriteLists.size() / (float)ItemCollection.NUM_PER_PAGE);
             ItemCollection itemCollection = new ItemCollection(num_pages, FavoriteLists.size(), "1", "1");
             mItemCollections.add(itemCollection);
            // mItemCollections.get(0).fillItems(0, FavoriteLists);
@@ -341,7 +341,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		//	mHGridView.setHorizontalFadingEdgeEnabled(true);
 			//mHGridView.setFadingEdgeLength(144);
 			int num_rows = mHGridView.getRows();
-			int totalColumnsOfSectionX = (int) FloatMath.ceil((float)mItemCollections.get(mCurrentSectionPosition).count / (float) num_rows);
+			int totalColumnsOfSectionX = (int) Math.ceil((float)mItemCollections.get(mCurrentSectionPosition).count / (float) num_rows);
 //			mScrollableSectionList.setPercentage(mCurrentSectionPosition, (int)(1f/(float)totalColumnsOfSectionX*100f));
 		}
 		
@@ -682,7 +682,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 				
 			}
 			int columnOfX = (position - itemCount) / rows + 1;
-			int totalColumnOfSectionX = (int)(FloatMath.ceil((float)mHGridAdapter.getSectionCount(sectionIndex) / (float) rows)); 
+			int totalColumnOfSectionX = (int)(Math.ceil((float)mHGridAdapter.getSectionCount(sectionIndex) / (float) rows));
 			int percentage = (int) ((float)columnOfX / (float)totalColumnOfSectionX * 100f);
 //			mScrollableSectionList.setPercentage(sectionIndex, percentage);
 		}		

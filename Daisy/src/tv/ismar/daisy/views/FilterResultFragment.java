@@ -230,7 +230,7 @@ public class FilterResultFragment extends BackHandledFragment implements Adapter
                 items = mRestClient.getItemList(url);
                 if(items!=null&&items.count>0){
                     mItemCollections = new ArrayList<ItemCollection>();
-                    int num_pages = (int) FloatMath.ceil((float) items.count / (float) ItemCollection.NUM_PER_PAGE);
+                    int num_pages = (int) Math.ceil((float) items.count / (float) ItemCollection.NUM_PER_PAGE);
                     ItemCollection itemCollection = new ItemCollection(num_pages, items.count, "1", "1");
                     mItemCollections.add(itemCollection);
                 }
@@ -430,7 +430,7 @@ public class FilterResultFragment extends BackHandledFragment implements Adapter
 
         }
         int columnOfX = (position - itemCount) / rows + 1;
-        int totalColumnOfSectionX = (int)(FloatMath.ceil((float)mHGridAdapter.getSectionCount(sectionIndex) / (float) rows));
+        int totalColumnOfSectionX = (int)(Math.ceil((float)mHGridAdapter.getSectionCount(sectionIndex) / (float) rows));
         int percentage = (int) ((float)columnOfX / (float)totalColumnOfSectionX * 100f);
         Log.i("asdfghjkl","percentage=="+percentage);
        // percentageBar.setProgressDrawable(getResources().getDrawable(R.drawable.section_percentage_selected));

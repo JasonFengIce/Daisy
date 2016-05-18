@@ -2,13 +2,14 @@ package tv.ismar.sakura.utils;
 
 import android.content.Context;
 import android.os.Build;
-import org.apache.http.conn.util.InetAddressUtils;
 
 import tv.ismar.daisy.core.VodUserAgent;
 
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.Enumeration;
 
 /**
@@ -27,7 +28,7 @@ public class DeviceUtils {
                 NetworkInterface intf = en.nextElement();
                 for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress() && InetAddressUtils.isIPv4Address(inetAddress.getHostAddress()))  //这里做了一步IPv4的判定
+                    if (!inetAddress.isLoopbackAddress() && Inet4Address.getByName(inetAddress.getHostAddress()) != null)  //这里做了一步IPv4的判定
                     {
                         ip = inetAddress.getHostAddress().toString();
                         return ip;
@@ -35,6 +36,8 @@ public class DeviceUtils {
                 }
             }
         } catch (SocketException e) {
+            return "0.0.0.0";
+        } catch (UnknownHostException ee){
             return "0.0.0.0";
         }
         return ip;

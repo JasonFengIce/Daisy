@@ -8,7 +8,6 @@ import android.telephony.TelephonyManager;
 import android.util.Base64;
 import android.util.Log;
 
-import org.apache.http.util.EncodingUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -99,7 +98,7 @@ public class Activator {
                     int length = inputStream.available();
                     byte[] bytes = new byte[length];
                     inputStream.read(bytes);
-                    content = EncodingUtils.getString(bytes, "UTF-8");
+                    content = new String(bytes, "UTF-8");
                     inputStream.close();
                 }
                 this.sn = content;
@@ -195,7 +194,7 @@ public class Activator {
             int length = inputStream.available();
             byte[] bytes = new byte[length];
             inputStream.read(bytes);
-            String mac = EncodingUtils.getString(bytes, "UTF-8");
+            String mac = new String(bytes, "UTF-8");
             inputStream.close();
             this.sn = mac;
 

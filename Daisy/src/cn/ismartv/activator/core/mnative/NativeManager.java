@@ -13,8 +13,6 @@ import javax.crypto.Cipher;
 import android.util.Base64;
 import android.util.Log;
 
-import org.apache.http.util.EncodingUtils;
-
 import cn.ismartv.activator.core.rsa.SkyAESTool2;
 import cn.ismartv.activator.utils.MD5Utils;
 
@@ -90,7 +88,7 @@ public static String RSAEncrypt(String publicKeyString, String content){
             int length = inputStream.available();
             byte[] bytes = new byte[length];
             inputStream.read(bytes);
-            content = EncodingUtils.getString(bytes, "UTF-8");
+            content = new String(bytes, "UTF-8");
             inputStream.close();  
 		} catch (FileNotFoundException e) {
             content ="noaddress";
