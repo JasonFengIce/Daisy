@@ -84,7 +84,8 @@ public static String RSAEncrypt(String publicKeyString, String content){
     public String GetEtherentMac(){
     	String content = null;
     	try {
-			FileInputStream inputStream = new FileInputStream("sys/class/net/eth0/address");
+			FileInputStream inputStream = new FileInputStream("sys/class/net/wlan0/address");
+			
             int length = inputStream.available();
             byte[] bytes = new byte[length];
             inputStream.read(bytes);

@@ -299,7 +299,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         registerUpdateReceiver();
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_tv_guide, null);
         setContentView(contentView);
-        test();
+        testLock();
 
         homepage_template = getIntent().getStringExtra("homepage_template");
         homepage_url = getIntent().getStringExtra("homepage_url");
@@ -352,7 +352,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 }
     }
 
-    private void test() {
+    private void testLock() {
         final WallpaperManager wm = WallpaperManager.getInstance(this);
         try {
             InputStream is=getResources().getAssets().open("poster.png");
