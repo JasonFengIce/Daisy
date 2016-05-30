@@ -261,53 +261,56 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	private float mLastMotionX;
 	private int TOUCH_STATE = -1;
 
+
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		// TODO Auto-generated method stub
 		final float x1 = event.getX();
+		final float y1 = event.getY();
 		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			mLastMotionX = event.getX();
-			break;
-		case MotionEvent.ACTION_UP:
-			int deltaX = (int) (mLastMotionX - x1);
-			mLastMotionX = x1;
-			if (deltaX > 50) {
-				//pageScroll(FOCUS_RIGHT);
-				TOUCH_STATE = FOCUS_RIGHT;
-			} 
-			if (deltaX < -50) {
-				//pageScroll(FOCUS_LEFT);
-				TOUCH_STATE = FOCUS_LEFT;
-			}
-			if (TOUCH_STATE != FOCUS_LEFT && TOUCH_STATE != FOCUS_RIGHT) {
-				if(Math.abs(deltaX)<50){
-					final int x = (int) event.getX();
-					final int y = (int) event.getY();
-					int motionPosition = pointToPosition(x, y);
-					if(motionPosition>=0){
-						final View v = getChildAt(motionPosition - mFirstPosition);
-						if(v.getX() > 1800){
-							setSelection(motionPosition-1);
-							arrowScroll(View.FOCUS_RIGHT);
-						}else if(v.getX() <0){
-							setSelection(motionPosition+1);
-							arrowScroll(View.FOCUS_LEFT);			
-						} else{
-							if(getId() == R.id.tvguid_h_grid_view){
-								setSelection(motionPosition);
-							}else{
-								performItemClick(v, motionPosition, 0);
-							}
-						}
-					}
-				}
+			case MotionEvent.ACTION_DOWN:
+				mLastMotionX = event.getX();
+				break;
+			case MotionEvent.ACTION_UP:
+				int deltaX = (int) (mLastMotionX - x1);
+				mLastMotionX = x1;
 
-			}
-			TOUCH_STATE = -1;
-			break;
-		default:
-			break;
+				// scrollBy(deltaX, 0);
+				if (deltaX > 50) {
+					if(getId() == R.id.tvguid_h_grid_view){
+						arrowScroll(FOCUS_RIGHT);
+					}else{
+						pageScroll(FOCUS_RIGHT);
+					}
+					TOUCH_STATE = FOCUS_RIGHT;
+					//checkScrollState(OnScrollListener.SCROLL_STATE_FOCUS_MOVING);
+					//checkScrollState(OnScrollListener.SCROLL_STATE_IDLE);
+				}
+				if (deltaX < -50) {
+					if(getId() == R.id.tvguid_h_grid_view){
+						arrowScroll(FOCUS_LEFT);
+					}else{
+						pageScroll(FOCUS_LEFT);
+					}
+					TOUCH_STATE = FOCUS_LEFT;
+					//checkScrollState(OnScrollListener.SCROLL_STATE_FOCUS_MOVING);
+					//checkScrollState(OnScrollListener.SCROLL_STATE_IDLE);
+
+				}
+				if (TOUCH_STATE != FOCUS_LEFT || TOUCH_STATE != FOCUS_RIGHT) {
+					if(Math.abs(deltaX)<50){
+						final int x = (int) event.getX();
+						final int y = (int) event.getY();
+						int motionPosition = pointToPosition(x, y);
+						final View v = getChildAt(motionPosition - mFirstPosition);
+						performItemClick(v, motionPosition, 0);
+					}
+
+				}
+				TOUCH_STATE = -1;
+				break;
+			default:
+				break;
 		}
 		return true;
 	}
@@ -2627,19 +2630,19 @@ public class HGridView extends AdapterView<HGridAdapter> {
 			setNextSelectedPositionInt(nextPage);
 			mLayoutMode = LAYOUT_SPECIFIC;
 			layoutChildren();
-			if(nextPage/pageCount == 0){
-				leftbtn.setVisibility(View.INVISIBLE);
-				rightbtn.setVisibility(View.VISIBLE);
-				rightbtn.setFocusable(false);
-				rightbtn.setFocusableInTouchMode(false);
-			}else if(nextPage/pageCount == mAdapter.getCount()/pageCount){
-				leftbtn.setVisibility(View.VISIBLE);
-				rightbtn.setVisibility(View.INVISIBLE);
-				leftbtn.setFocusable(false);
-				leftbtn.setFocusableInTouchMode(false);
-			}else if(nextPage/pageCount >0){
-				leftbtn.setVisibility(View.VISIBLE);
-			}
+//			if(nextPage/pageCount == 0){
+//				leftbtn.setVisibility(View.INVISIBLE);
+//				rightbtn.setVisibility(View.VISIBLE);
+//				rightbtn.setFocusable(false);
+//				rightbtn.setFocusableInTouchMode(false);
+//			}else if(nextPage/pageCount == mAdapter.getCount()/pageCount){
+//				leftbtn.setVisibility(View.VISIBLE);
+//				rightbtn.setVisibility(View.INVISIBLE);
+//				leftbtn.setFocusable(false);
+//				leftbtn.setFocusableInTouchMode(false);
+//			}else if(nextPage/pageCount >0){
+//				leftbtn.setVisibility(View.VISIBLE);
+//			}
 			return true;
 		}
 		return false;
