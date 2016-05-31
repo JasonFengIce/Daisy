@@ -1006,7 +1006,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             } else {
                 mLeftBtn.setText("播放");
                 LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mLeftBtn.getLayoutParams();
-                params.width = 214;
+                params.width = getResources().getDimensionPixelOffset(R.dimen.entertain_leftbtn_w);
                 mLeftBtn.setLayoutParams(params);
             }
             //setLeftDrawable(drawableleftcollect, mMiddleBtn);
@@ -1057,8 +1057,8 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 mLeftBtn.setTag(PREVIEW_VIDEO);
                 mLeftBtn.setText(getResources().getString(R.string.preview_video));
                 LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mLeftBtn.getLayoutParams();
-                params.width = 214;
-                mLeftBtn.setPadding(45, mLeftBtn.getPaddingTop(), mLeftBtn.getPaddingRight(), mLeftBtn.getPaddingBottom());
+                params.width = getResources().getDimensionPixelOffset(R.dimen.entertain_leftbtn_w);
+                mLeftBtn.setPadding(getResources().getDimensionPixelOffset(R.dimen.entertain_leftbtn_pl), mLeftBtn.getPaddingTop(), mLeftBtn.getPaddingRight(), mLeftBtn.getPaddingBottom());
                 mLeftBtn.setLayoutParams(params);
                 //setLeftDrawable(drawableleftbuy, mMiddleBtn);
                 mMiddleBtn.setTag(BUY_VIDEO);
@@ -1115,8 +1115,8 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 } else {
                     mLeftBtn.setText(getResources().getString(R.string.play));
                     LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mLeftBtn.getLayoutParams();
-                    params.width = 214;
-                    mLeftBtn.setPadding(45, mLeftBtn.getPaddingTop(), mLeftBtn.getPaddingRight(), mLeftBtn.getPaddingBottom());
+                    params.width = getResources().getDimensionPixelOffset(R.dimen.entertain_leftbtn_w);;
+                    mLeftBtn.setPadding(getResources().getDimensionPixelOffset(R.dimen.entertain_leftbtn_pl), mLeftBtn.getPaddingTop(), mLeftBtn.getPaddingRight(), mLeftBtn.getPaddingBottom());
                     mLeftBtn.setLayoutParams(params);
                 }
 
@@ -1161,9 +1161,9 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                     .from(EntertainmentDetailActivity.this).inflate(
                             R.layout.realte_entertainment_item, null);
             LinearLayout.LayoutParams layoutParams;
-            layoutParams = new LinearLayout.LayoutParams(336, 242);
+            layoutParams = new LinearLayout.LayoutParams(getResources().getDimensionPixelOffset(R.dimen.entertain_relate_poster_w), getResources().getDimensionPixelOffset(R.dimen.entertain_relate_poster_h));
             if (i != 0)
-                layoutParams.leftMargin = 74;
+                layoutParams.leftMargin = getResources().getDimensionPixelOffset(R.dimen.entertain_relate_poster_ml);
             relatedHolder.setLayoutParams(layoutParams);
             TextView titleView = (TextView) relatedHolder
                     .findViewById(R.id.related_title);

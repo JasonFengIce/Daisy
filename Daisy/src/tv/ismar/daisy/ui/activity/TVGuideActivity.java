@@ -730,7 +730,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 			}
         });
         scroll.setHorizontalFadingEdgeEnabled(true);
-        scroll.setFadingEdgeLength(72);
+        scroll.setFadingEdgeLength(106);
         scroll.requestFocus();
     }
 

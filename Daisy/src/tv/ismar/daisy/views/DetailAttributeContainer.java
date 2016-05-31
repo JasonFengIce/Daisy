@@ -67,7 +67,7 @@ public class DetailAttributeContainer extends LinearLayout {
 			int width = getResources().getDimensionPixelSize(R.dimen.item_detail_attribute_width);
 			layoutParams = new LinearLayout.LayoutParams(width,LinearLayout.LayoutParams.WRAP_CONTENT);
 									
-			layoutParams.topMargin =((int)(21/1));
+			layoutParams.topMargin =(getResources().getDimensionPixelOffset(R.dimen.detail_attribute_container_mt1));
 			infoLine.setLayoutParams(layoutParams);
 			infoLine.setOrientation(LinearLayout.HORIZONTAL);
 			TextView itemName = new TextView(getContext());
@@ -104,7 +104,7 @@ public class DetailAttributeContainer extends LinearLayout {
             int width = getResources().getDimensionPixelSize(R.dimen.item_detail_attribute_width);
             layoutParams = new LinearLayout.LayoutParams(width,LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            layoutParams.topMargin =((int)(11/1));
+            layoutParams.topMargin =(getResources().getDimensionPixelOffset(R.dimen.detail_attribute_container_mt2));
             infoLine.setLayoutParams(layoutParams);
             infoLine.setOrientation(LinearLayout.HORIZONTAL);
             TextView itemName = new TextView(getContext());
@@ -138,7 +138,7 @@ public class DetailAttributeContainer extends LinearLayout {
 
 
         for(Map.Entry<String, String> entry: attrMap.entrySet()){
-            int layoutLeft = (int)(22/1);
+            int layoutLeft = getResources().getDimensionPixelOffset(R.dimen.detail_attribute_container_ml1);
             if(entry.getValue()==null || mContentModel.attributes.get(entry.getKey())==null){
                 continue;
             }
@@ -147,8 +147,8 @@ public class DetailAttributeContainer extends LinearLayout {
                 infoLine = new LinearLayout(getContext());
                 layoutParamsInfo = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
                 if(i>=3)
-                   layoutParamsInfo.topMargin = (int)(30/1);
-                layoutParamsInfo.rightMargin = (int)(73/1);
+                   layoutParamsInfo.topMargin = getResources().getDimensionPixelOffset(R.dimen.detail_attribute_container_mt3);
+                layoutParamsInfo.rightMargin = getResources().getDimensionPixelOffset(R.dimen.detail_attribute_container_mr);
                 infoLine.setLayoutParams(layoutParamsInfo);
                 infoLine.setOrientation(LinearLayout.HORIZONTAL);
                 addView(infoLine);
@@ -168,13 +168,13 @@ public class DetailAttributeContainer extends LinearLayout {
             if(entry.getValue()==null || mContentModel.attributes.get(entry.getKey())==null){
                 continue;
             }
-            int layoutLeft = (int)(9);
+            int layoutLeft = getResources().getDimensionPixelOffset(R.dimen.detail_attribute_container_ml);
             if(i%2==0&&(i<=3)){
                 layoutLeft = 0;
                 infoLine = new LinearLayout(getContext());
                 layoutParamsInfo = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
                 if(i>1)
-                layoutParamsInfo.topMargin = (int)(22);
+                layoutParamsInfo.topMargin =getResources().getDimensionPixelOffset(R.dimen.detail_attribute_container_mt4);
 
                 infoLine.setLayoutParams(layoutParamsInfo);
                 infoLine.setOrientation(LinearLayout.HORIZONTAL);
@@ -185,7 +185,7 @@ public class DetailAttributeContainer extends LinearLayout {
                 infoLine = new LinearLayout(getContext());
                 infoLine.setOrientation(LinearLayout.HORIZONTAL);
                 layoutParamsInfo = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-                layoutParamsInfo.topMargin = (int)(22/1);
+                layoutParamsInfo.topMargin = getResources().getDimensionPixelOffset(R.dimen.detail_attribute_container_mt4);
                 infoLine.setLayoutParams(layoutParamsInfo);
                 infoLine.setOrientation(LinearLayout.HORIZONTAL);
                 addView(infoLine);
@@ -199,10 +199,10 @@ public class DetailAttributeContainer extends LinearLayout {
         LinearLayout.LayoutParams itemNameParams = null;
         TextView itemValue = new TextView(getContext());
         if((position+1)%3==0){
-            itemNameParams = new LinearLayout.LayoutParams((int)(390/1), (int)(34/1));
+            itemNameParams = new LinearLayout.LayoutParams(getResources().getDimensionPixelOffset(R.dimen.detail_attribute_container_lp_w1), getResources().getDimensionPixelOffset(R.dimen.detail_attribute_container_lp_h1));
         }
         else{
-            itemNameParams = new LinearLayout.LayoutParams((int)(390/1), (int)(34/1));
+            itemNameParams = new LinearLayout.LayoutParams(getResources().getDimensionPixelOffset(R.dimen.detail_attribute_container_lp_w1), getResources().getDimensionPixelOffset(R.dimen.detail_attribute_container_lp_h1));
         }
         itemNameParams.leftMargin = distanceLeft;
         // LinearLayout.LayoutParams itemValueParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -219,17 +219,17 @@ public class DetailAttributeContainer extends LinearLayout {
         LinearLayout.LayoutParams itemNameParams = null;
 
         if(distanceLeft>0){
-            itemNameParams = new LinearLayout.LayoutParams((int)(289/1), (int)(27/1));
+            itemNameParams = new LinearLayout.LayoutParams(getResources().getDimensionPixelOffset(R.dimen.detail_attribute_container_lp_w2),getResources ().getDimensionPixelOffset(R.dimen.detail_attribute_container_lp_h2));
         }
         else if(distanceLeft==0){
             if(lineNumber==-1){
                 itemNameParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             }
             else if(lineNumber>=4){
-                itemNameParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,(int)(27/1));
+                itemNameParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,getResources().getDimensionPixelOffset(R.dimen.detail_attribute_container_lp_h2));
             }
             else{
-                itemNameParams = new LinearLayout.LayoutParams((int)(341/1), (int)(27/1));
+                itemNameParams = new LinearLayout.LayoutParams(getResources ().getDimensionPixelOffset(R.dimen.detail_attribute_container_lp_w3), getResources().getDimensionPixelOffset(R.dimen.detail_attribute_container_lp_h2));
             }
         }
 

@@ -278,18 +278,18 @@ public class FilmFragment extends ChannelBaseFragment {
         for (int i = 1; i <= posters.size(); i++) {
             if (i > 8)
                 break;
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(199, 278);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(getResources().getDimensionPixelOffset(R.dimen.film_poster_w),getResources().getDimensionPixelOffset(R.dimen.film_poster_h));
 //            params.weight = 1;
 //            if (i != 7) {
 //            params.setMargins(0, 0, 28, 0);
 //            }
 
             if (i == 6) {
-                params.setMargins(0, 0, 27, 0);
+                params.setMargins(0, 0, getResources().getDimensionPixelOffset(R.dimen.film_poster_mr1), 0);
             } else if (i == 7) {
-                params.setMargins(0, 0, 8, 0);
+                params.setMargins(0, 0, getResources().getDimensionPixelOffset(R.dimen.film_poster_mr2), 0);
             } else {
-                params.setMargins(0, 0, 28, 0);
+                params.setMargins(0, 0, getResources().getDimensionPixelOffset(R.dimen.film_poster_mr3), 0);
             }
             if (mContext == null)
                 return;
@@ -353,8 +353,8 @@ public class FilmFragment extends ChannelBaseFragment {
                 }
 
             } else {
-                params.width = 206;
-                params.height = 277;
+                params.width = getResources().getDimensionPixelOffset(R.dimen.film_poster_more_w);
+                params.height = getResources().getDimensionPixelOffset(R.dimen.film_poster_more_h);
                 params.setMargins(0, 0, 0, 0);
                 morelayout = (HomeItemContainer) LayoutInflater.from(
                         mContext).inflate(R.layout.toppagelistmorebutton,
@@ -386,7 +386,7 @@ public class FilmFragment extends ChannelBaseFragment {
         for (int i = 0; i < carousels.size(); i++) {
 
 
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(206, 86);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(getResources().getDimensionPixelOffset(R.dimen.film_carousel_w),getResources().getDimensionPixelOffset(R.dimen.film_carousel_h));
             LabelImageView itemView = new LabelImageView(mContext);
             if (i == 0) {
                 params.topMargin = 0;
@@ -394,7 +394,7 @@ public class FilmFragment extends ChannelBaseFragment {
                 firstcarousel = itemView;
             } else {
                 itemView.setId(R.id.filmfragment_firstcarousel + i * 5);
-                params.topMargin = 17;
+                params.topMargin = getResources().getDimensionPixelOffset(R.dimen.film_carousel_tp);
                 params.addRule(RelativeLayout.BELOW, R.id.filmfragment_firstcarousel + 5 * (i - 1));
             }
             if (mContext == null)

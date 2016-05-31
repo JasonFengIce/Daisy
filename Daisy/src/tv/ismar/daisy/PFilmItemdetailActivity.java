@@ -1141,9 +1141,9 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                             R.layout.realte_portrait_item, null);
             LinearLayout.LayoutParams layoutParams;
 
-            layoutParams = new LinearLayout.LayoutParams(254, 401);
+            layoutParams = new LinearLayout.LayoutParams(getResources().getDimensionPixelOffset(R.dimen.film_relate_poster_w), getResources().getDimensionPixelOffset(R.dimen.film_relate_poster_h));
             if (i != 0)
-                layoutParams.leftMargin = 8;
+                layoutParams.leftMargin = getResources().getDimensionPixelOffset(R.dimen.film_relate_poster_ml);
             relatedHolder.setLayoutParams(layoutParams);
             TextView titleView = (TextView) relatedHolder
                     .findViewById(R.id.related_title);

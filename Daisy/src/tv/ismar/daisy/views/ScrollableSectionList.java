@@ -81,7 +81,7 @@ public class ScrollableSectionList extends tv.ismar.daisy.views.MyHorizontalScro
 	}
 	
 	private void initialize() {
-		this.setFadingEdgeLength(100);
+		this.setFadingEdgeLength(getResources().getDimensionPixelOffset(R.dimen.scrollable_selection_list_fading));
 		this.setHorizontalFadingEdgeEnabled(true);
 	}
     public HGridView mGridView;
@@ -172,7 +172,7 @@ public class ScrollableSectionList extends tv.ismar.daisy.views.MyHorizontalScro
 
 		LinearLayout.LayoutParams layoutParams;
 
-        layoutParams = new LinearLayout.LayoutParams(233, LinearLayout.LayoutParams.MATCH_PARENT);
+        layoutParams = new LinearLayout.LayoutParams(getResources().getDimensionPixelOffset(R.dimen.scrollable_selection_list_item_w), LinearLayout.LayoutParams.MATCH_PARENT);
         DecimalFormat fnum = new DecimalFormat("##0.00");
         String dd = fnum.format(1 / rate);
 //		layoutParams.rightMargin = (int)Float.parseFloat(dd);
@@ -187,7 +187,7 @@ public class ScrollableSectionList extends tv.ismar.daisy.views.MyHorizontalScro
     private RelativeLayout getSectionFilterLabel(int width){
         RelativeLayout sectionHolder = (RelativeLayout) LayoutInflater.from(getContext()).inflate(R.layout.section_list_item, null);
         LinearLayout.LayoutParams layoutParams;
-        layoutParams = new LinearLayout.LayoutParams(233, LinearLayout.LayoutParams.MATCH_PARENT);
+        layoutParams = new LinearLayout.LayoutParams(getResources().getDimensionPixelOffset(R.dimen.scrollable_selection_list_item_w), LinearLayout.LayoutParams.MATCH_PARENT);
         DecimalFormat fnum = new DecimalFormat("##0.00");
         String dd = fnum.format(1 / rate);
         layoutParams.rightMargin = (int)Float.parseFloat(dd);
@@ -454,10 +454,10 @@ public class ScrollableSectionList extends tv.ismar.daisy.views.MyHorizontalScro
                     }
                     Rect currentViewRect = new Rect();
                     v.getGlobalVisibleRect(currentViewRect);
-                    if(currentViewRect.right >1800){
-                    	scrollBy(233, 0);
-                    }else if(currentViewRect.left <=115){
-                    	scrollBy(-233, 0);
+                    if(currentViewRect.right >getResources().getDimensionPixelOffset(R.dimen.scrollable_selection_list_right)){
+                    	scrollBy(getResources().getDimensionPixelOffset(R.dimen.scrollable_selection_list_item_w), 0);
+                    }else if(currentViewRect.left <=getResources().getDimensionPixelOffset(R.dimen.scrollable_selection_list_left)){
+                    	scrollBy(-getResources().getDimensionPixelOffset(R.dimen.scrollable_selection_list_item_w), 0);
                     }
                 }
             }
