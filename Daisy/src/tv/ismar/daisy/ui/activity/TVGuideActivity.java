@@ -47,11 +47,17 @@ import com.baidu.location.LocationClientOption;
 import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.sakuratya.horizontal.ui.HGridView;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -353,17 +359,50 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     }
 
     private void testLock() {
-        final WallpaperManager wm = WallpaperManager.getInstance(this);
-        try {
-            InputStream is=getResources().getAssets().open("poster.png");
-            if (is != null) {
-                wm.setLockScreenStream(is);
-                is.close();
+        new Thread(){
+            public void run() {
+                HttpURLConnection httpConn = null;
+                InputStreamReader inputStreamReader = null;
+                try {
+                    URL connURL = new URL("http://skytest.tvxio.com/api/tv/homepage/lockscreen/");
+                    httpConn = (HttpURLConnection) connURL.openConnection();
+                    httpConn.setRequestProperty("Accept", "application/json");
+//                    httpConn.setRequestProperty("User-Agent", userAgent);
+                    httpConn.setConnectTimeout(10000);
+                    httpConn.setReadTimeout(10000);
+                    httpConn.connect();
+                    int code = httpConn.getResponseCode();
+                    inputStreamReader = new InputStreamReader(
+                            httpConn.getInputStream(), "UTF-8");
+                    StringBuffer json = new StringBuffer();
+                    String line = null;
+                    try {
+                        BufferedReader reader = new BufferedReader(inputStreamReader);
+                        while ((line = reader.readLine()) != null)
+                            json.append(line);
+                    } catch (Exception e) {
+                        System.out.println(e.toString());
+                    }
+                    inputStreamReader.close();
+                    httpConn.disconnect();
+                    JSONArray object = new JSONArray(json.toString());
+                    if(object.length() >0){
+                      JSONObject element = object.getJSONObject(0);
+                      String url = element.getString("url");
+                      String image = element.getString("image");
+                      String content_model = element.getString("content_model");
+                      AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance();
+                        accountSharedPrefs.setSharedPrefs("lock_url",url);
+                        accountSharedPrefs.setSharedPrefs("lock_content_model",content_model);
+                        Intent setlockscreen = new Intent("setlockscreenwallpaper");
+                        setlockscreen.putExtra("wallpaperUrl",image);
+                        TVGuideActivity.this.sendBroadcast(setlockscreen);
+                    }
+                } catch (Exception e) {
+                    Log.e("Exception", e.toString());
+                }
             }
-        } catch (IOException e) {
-            Log.v(TAG,"e = "+e.getMessage());
-        }
-
+        }.start();
     }
 
     private void initViews() {

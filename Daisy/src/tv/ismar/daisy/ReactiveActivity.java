@@ -1,11 +1,14 @@
 package tv.ismar.daisy;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+
+import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 
 public class ReactiveActivity extends Activity {
 	private LinearLayout layout;
@@ -18,14 +21,25 @@ public class ReactiveActivity extends Activity {
 		lp.dimAmount=0.75f;
 		getWindow().setAttributes(lp);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-//		layout = (LinearLayout) findViewById(R.id.rea);
-//		layout.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				Toast.makeText(getApplicationContext(), "提示：点击窗口外部关闭窗口！",
-//						Toast.LENGTH_SHORT).show();
-//			}
-//		});
+		AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance();
+		String lock_url = accountSharedPrefs.getSharedPreferences().getString("lock_url", null);
+		String lock_content_model = accountSharedPrefs.getSharedPreferences().getString("lock_content_model",null);
+		if(lock_url != null && lock_content_model != null){
+			Intent intent = new Intent();
+			if (("variety".equals(lock_content_model) || "entertainment".equals(lock_content_model))) {
+				intent.setAction("tv.ismar.daisy.EntertainmentItem");
+				intent.putExtra("title", "娱乐综艺");
+			} else if ("movie".equals(lock_content_model)) {
+				intent.setAction("tv.ismar.daisy.PFileItem");
+				intent.putExtra("title", "电影");
+			}else {
+				intent.setAction("tv.ismar.daisy.Item");
+			}
+			intent.putExtra("url", lock_url);
+			intent.putExtra("fromPage", "homepage");
+			startActivity(intent);
+			finish();
+		}
 	}
 
 	@Override
