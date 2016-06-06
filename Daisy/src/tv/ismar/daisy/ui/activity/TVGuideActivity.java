@@ -12,24 +12,59 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.*;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.*;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
+
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.GeofenceClient;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.google.gson.Gson;
+
+import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.sakuratya.horizontal.ui.HGridView;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+
 import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
-import com.baidu.location.*;
-import com.google.gson.Gson;
-import org.apache.commons.lang3.StringUtils;
-import org.sakuratya.horizontal.ui.HGridView;
 import tv.ismar.daisy.AppConstant;
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
@@ -47,21 +82,19 @@ import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.ui.ItemViewFocusChangeListener;
 import tv.ismar.daisy.ui.Position;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
-import tv.ismar.daisy.ui.fragment.launcher.*;
+import tv.ismar.daisy.ui.fragment.launcher.ChildFragment;
+import tv.ismar.daisy.ui.fragment.launcher.EntertainmentFragment;
+import tv.ismar.daisy.ui.fragment.launcher.FilmFragment;
+import tv.ismar.daisy.ui.fragment.launcher.GuideFragment;
+import tv.ismar.daisy.ui.fragment.launcher.SportFragment;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
 import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
 import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.sakura.ui.widget.MessagePopWindow;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-
-import static tv.ismar.daisy.VodApplication.*;
+import static tv.ismar.daisy.VodApplication.LOCATION_CITY;
+import static tv.ismar.daisy.VodApplication.LOCATION_DISTRICT;
+import static tv.ismar.daisy.VodApplication.LOCATION_PROVINCE;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -120,9 +153,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private Handler netErrorPopupHandler;
     private Runnable netErrorPopupRunnable;
     private CacheHttpClient cacheHttpClient;
-    private HorizontalScrollView channel_list_scroll;
-
-
     private enum LeavePosition {
         LeftTop,
         LeftBottom,
@@ -329,17 +359,50 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     }
 
     private void testLock() {
-        final WallpaperManager wm = WallpaperManager.getInstance(this);
-        try {
-            InputStream is=getResources().getAssets().open("poster.png");
-            if (is != null) {
-                wm.setLockScreenStream(is);
-                is.close();
+        new Thread(){
+            public void run() {
+                HttpURLConnection httpConn = null;
+                InputStreamReader inputStreamReader = null;
+                try {
+                    URL connURL = new URL("http://skytest.tvxio.com/api/tv/homepage/lockscreen/");
+                    httpConn = (HttpURLConnection) connURL.openConnection();
+                    httpConn.setRequestProperty("Accept", "application/json");
+//                    httpConn.setRequestProperty("User-Agent", userAgent);
+                    httpConn.setConnectTimeout(10000);
+                    httpConn.setReadTimeout(10000);
+                    httpConn.connect();
+                    int code = httpConn.getResponseCode();
+                    inputStreamReader = new InputStreamReader(
+                            httpConn.getInputStream(), "UTF-8");
+                    StringBuffer json = new StringBuffer();
+                    String line = null;
+                    try {
+                        BufferedReader reader = new BufferedReader(inputStreamReader);
+                        while ((line = reader.readLine()) != null)
+                            json.append(line);
+                    } catch (Exception e) {
+                        System.out.println(e.toString());
+                    }
+                    inputStreamReader.close();
+                    httpConn.disconnect();
+                    JSONArray object = new JSONArray(json.toString());
+                    if(object.length() >0){
+                      JSONObject element = object.getJSONObject(0);
+                      String url = element.getString("url");
+                      String image = element.getString("image");
+                      String content_model = element.getString("content_model");
+                      AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance();
+                        accountSharedPrefs.setSharedPrefs("lock_url",url);
+                        accountSharedPrefs.setSharedPrefs("lock_content_model",content_model);
+                        Intent setlockscreen = new Intent("setlockscreenwallpaper");
+                        setlockscreen.putExtra("wallpaperUrl",image);
+                        TVGuideActivity.this.sendBroadcast(setlockscreen);
+                    }
+                } catch (Exception e) {
+                    Log.e("Exception", e.toString());
+                }
             }
-        } catch (IOException e) {
-            Log.v(TAG,"e = "+e.getMessage());
-        }
-
+        }.start();
     }
 
     private void initViews() {
@@ -380,13 +443,11 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 				scroll.arrowScroll(View.FOCUS_RIGHT);
 			}
 		});
-//        arrow_left.setOnClickListener(arrowViewListener);
-//        arrow_right.setOnClickListener(arrowViewListener);
+        //arrow_left.setOnClickListener(arrowViewListener);
+        // arrow_right.setOnClickListener(arrowViewListener);
         arrow_left.setOnFocusChangeListener(scrollViewListener);
         arrow_right.setOnFocusChangeListener(scrollViewListener);
         guide_shadow_view = (ImageView) findViewById(R.id.guide_shadow_view);
-        channel_list_scroll = (HorizontalScrollView) findViewById(R.id.channel_list_scroll);
-
     }
 
     @Override
@@ -539,7 +600,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private int NORMAL_CHANNEL_TEXTCOLOR = 0xffffffff;
 
     private void createChannelView(ChannelEntity[] channelEntities) {
-        final List<ChannelEntity> channelList;
+        List<ChannelEntity> channelList;
 //        ChannelEntity launcher = new ChannelEntity();
 //        launcher.setChannel("launcher");
 //        launcher.setName("首页");
@@ -589,7 +650,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 //                imageAdapter.setOnClickCallback(null);
 //            }
 //        });
-        scroll.setLayoutParams(new LinearLayout.LayoutParams(106+getResources().getDimensionPixelOffset(R.dimen.channel_list_item_width)*channelList.size()+getResources().getDimensionPixelOffset(R.dimen.tv_guide_h_grid_view_horizontalSpacing)*(channelList.size()-1), LinearLayout.LayoutParams.MATCH_PARENT));
         scroll.setAdapter(imageAdapter);
         imageAdapter.setMap(channelHashMap);
         imageAdapter.setList((ArrayList<ChannelEntity>) channelList);
@@ -668,18 +728,12 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 if (lastview == view) {
                     return;
                 }
+
                 lastview = view;
                 // }
                 lastview.setTag(i);
                 resetLastHoverViewState();
                 mCurrentChannelPosition.setPosition(channelPosition);
-                if(i>8){
-                    channel_list_scroll.scrollTo((int) scroll.getChildAt(i-8).getX(),0);
-                }else{
-                    channel_list_scroll.scrollTo(0,0);
-                    scroll.scrollTo(0,0);
-                }
-
             }
 
             @Override
@@ -692,33 +746,26 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int i, long id) {
-//				if (view == null || channelscrollIndex > 0)
-//					return;
-//				channelChange = ChannelChange.CLICK_CHANNEL;
-//				int channelPosition = i;
-//				if (lastview != null) {
-//					TextView mlastview = (TextView) lastview
-//							.findViewById(R.id.channel_item);
-//					lastview.setBackgroundResource(R.drawable.channel_item_normal);
-//					mlastview.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
-//				}
-//				if (!scrollFromBorder)
-//					view.setBackgroundResource(R.drawable.channel_item_selectd_focus);
-//				else
-//					view.setBackgroundResource(R.drawable.channel_item_focus);
-//				if (lastview == view) {
-//					return;
-//				}
-//				lastview = view;
-//				lastview.setTag(i);
-//				mCurrentChannelPosition.setPosition(channelPosition);
-                scroll.setSelection(i);
-//                if(i>8){
-//                    channel_list_scroll.scrollTo((int) scroll.getChildAt(i-8).getX(),0);
-//                }else{
-//                    channel_list_scroll.scrollTo(0,0);
-//                    scroll.scrollTo(0,0);
-//                }
+				if (view == null || channelscrollIndex > 0)
+					return;
+				channelChange = ChannelChange.CLICK_CHANNEL;
+				int channelPosition = i;
+				if (lastview != null) {
+					TextView mlastview = (TextView) lastview
+							.findViewById(R.id.channel_item);
+					lastview.setBackgroundResource(R.drawable.channel_item_normal);
+					mlastview.setTextColor(NORMAL_CHANNEL_TEXTCOLOR);
+				}
+				if (!scrollFromBorder)
+					view.setBackgroundResource(R.drawable.channel_item_selectd_focus);
+				else
+					view.setBackgroundResource(R.drawable.channel_item_focus);
+				if (lastview == view) {
+					return;
+				}
+				lastview = view;
+				lastview.setTag(i);
+				mCurrentChannelPosition.setPosition(channelPosition);
 			}
         });
         scroll.setHorizontalFadingEdgeEnabled(true);
@@ -732,6 +779,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         intentFilter.addAction(AppConstant.APP_UPDATE_ACTION);
         registerReceiver(appUpdateReceiver, intentFilter);
     }
+
     @Override
     public void onScrollStateChanged(HGridView view, int scrollState) {
 
@@ -739,7 +787,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     @Override
     public void onScroll(HGridView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        Log.e("TVGuide","Scroll");
         if (firstVisibleItem == 0) {
             // scroll.setSelection(0);
                 if(channelscrollIndex == 0 && StringUtils.isEmpty(homepage_url)){
@@ -1525,29 +1572,5 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 			}
 		}
 	}
-    private int downX = 0;
-    private int downY=0;
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
-        switch (event.getAction()){
-            case MotionEvent.ACTION_DOWN:
-                downX= (int) event.getRawX();
-                downY= (int) event.getRawY();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                break;
-            case MotionEvent.ACTION_UP:
-                int moveX= (int) event.getRawX();
-                if(downY<channel_list_scroll.getY()) {
-                    if ((moveX - downX) > 200) {
-                        scroll.arrowScroll(View.FOCUS_LEFT);
-                    } else if ((downX - moveX) > 200) {
-                        scroll.arrowScroll(View.FOCUS_RIGHT);
-                    }
-                }
-                break;
-        }
-        return super.dispatchTouchEvent(event);
-    }
 
 }
