@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
@@ -17,10 +18,16 @@ public class ReactiveActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.reactive);
+		Window win = getWindow();
+		WindowManager.LayoutParams winParams = win.getAttributes();
+		winParams.flags |= (WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+				| WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+				| WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON
+				| WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 		WindowManager.LayoutParams lp=getWindow().getAttributes();
 		lp.dimAmount=0.75f;
-		getWindow().setAttributes(lp);
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		win.setAttributes(lp);
+		win.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 		AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance();
 		String lock_url = accountSharedPrefs.getSharedPreferences().getString("lock_url", null);
 		String lock_content_model = accountSharedPrefs.getSharedPreferences().getString("lock_content_model",null);
