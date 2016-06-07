@@ -226,7 +226,7 @@
     <dimen name="vod_player_fbimage_marginleft">13dip</dimen>
     <dimen name="vod_player_timeseekbar_PL">12dip</dimen>
     <dimen name="vod_player_timeseekbar_PR">12dip</dimen>
-    <dimen name="vod_player_timeseekbar_MaxH">12dip</dimen>
+    <dimen name="vod_player_timeseekbar_MaxH">6dip</dimen>
     <dimen name="vod_player_timeseekbar_thumbOffset">20dip</dimen>
     <dimen name="vod_player_ffimage_W">57dip</dimen>
     <dimen name="vod_player_ffimage_H">57dip</dimen>
