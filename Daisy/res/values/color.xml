@@ -83,6 +83,8 @@
     <color name="_ffba00">#ffba00</color>
     <color name="_ffffff">#ffffff</color>
     <color name="_ff9c3c">#ff9c3c</color>
+    <color name="_555555">#555555</color>
+    <color name="_202020">#202020</color>
     <drawable name="exit_focus_bg_color">#ff9c3c</drawable>
     <drawable name="_000000000">#00000000</drawable>
 

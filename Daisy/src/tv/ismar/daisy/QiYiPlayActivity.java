@@ -101,7 +101,7 @@ public class QiYiPlayActivity extends VodMenuAction {
     // private Animation bufferHideAnimation;
     private LinearLayout bufferLayout;
     private ImageView logoImage;
-    private LinearLayout panelLayout;
+    private RelativeLayout panelLayout;
     private tv.ismar.daisy.views.MarqueeView titleText;
     private TextView qualityText;
     private TextView timeText;
@@ -199,7 +199,7 @@ public class QiYiPlayActivity extends VodMenuAction {
                 R.anim.fly_down);
         // bufferHideAnimation =
         // AnimationUtils.loadAnimation(this,R.drawable.fade_out);
-        panelLayout = (LinearLayout) findViewById(R.id.PanelLayout);
+        panelLayout = (RelativeLayout) findViewById(R.id.PanelLayout);
         titleText = (tv.ismar.daisy.views.MarqueeView) findViewById(R.id.TitleText);
         qualityText = (TextView) findViewById(R.id.QualityText);
         timeText = (TextView) findViewById(R.id.TimeText);
@@ -207,7 +207,7 @@ public class QiYiPlayActivity extends VodMenuAction {
         timeBar.setOnSeekBarChangeListener(new SeekBarChangeEvent());
         playPauseImage = (ImageView) findViewById(R.id.PlayPauseImage);
         ffImage = (ImageView) findViewById(R.id.FFImage);
-        fbImage = (ImageView) findViewById(R.id.FBImage);
+       // fbImage = (ImageView) findViewById(R.id.FBImage);
         bufferLayout = (LinearLayout) findViewById(R.id.BufferLayout);
         bufferText = (TextView) findViewById(R.id.BufferText);
         logoImage = (ImageView) findViewById(R.id.logo_image);
@@ -243,35 +243,35 @@ public class QiYiPlayActivity extends VodMenuAction {
                 return false;
             }
         });
-        fbImage.setOnTouchListener(new OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View v, MotionEvent keycode) {
-                // TODO Auto-generated method stub
-                switch (keycode.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        if (clipLength > 0 && !live_video) {
-                            isSeek = true;
-                            showPanel();
-                            isBuffer = true;
-                            showBuffer();
-                            int currentPosition = mPlayer.getCurrentPosition();
-                            mPlayer.seekTo(currentPosition + SEEK_STEPS[mSeekStepIndex]);
-                            isSeekBuffer = true;
-                            Log.d(TAG, "LEFT seek to "
-                                    + getTimeString(currPosition));
-                            isSeek = false;
-                            offsets = 0;
-                            offn = 1;
-                        }
-                        break;
-
-                    default:
-                        break;
-                }
-                return false;
-            }
-        });
+//        fbImage.setOnTouchListener(new OnTouchListener() {
+//
+//            @Override
+//            public boolean onTouch(View v, MotionEvent keycode) {
+//                // TODO Auto-generated method stub
+//                switch (keycode.getAction()) {
+//                    case MotionEvent.ACTION_DOWN:
+//                        if (clipLength > 0 && !live_video) {
+//                            isSeek = true;
+//                            showPanel();
+//                            isBuffer = true;
+//                            showBuffer();
+//                            int currentPosition = mPlayer.getCurrentPosition();
+//                            mPlayer.seekTo(currentPosition + SEEK_STEPS[mSeekStepIndex]);
+//                            isSeekBuffer = true;
+//                            Log.d(TAG, "LEFT seek to "
+//                                    + getTimeString(currPosition));
+//                            isSeek = false;
+//                            offsets = 0;
+//                            offn = 1;
+//                        }
+//                        break;
+//
+//                    default:
+//                        break;
+//                }
+//                return false;
+//            }
+//        });
         ffImage.setOnTouchListener(new OnTouchListener() {
 
             @Override
