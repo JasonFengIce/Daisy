@@ -2577,7 +2577,9 @@ public class PlayerActivity extends VodMenuAction {
 		}
 		int[] location = new int[2];
 		pop.getLocationOnScreen(location);
-		popupWindow.showAtLocation(panelLayout, Gravity.NO_GRAVITY, location[0]+2252, location[1]-380);
+		Log.i("Height",panelLayout.getHeight()+"");
+
+		popupWindow.showAtLocation(panelLayout, Gravity.NO_GRAVITY, location[0]+2252, location[1]+1600);
 	}
 	View.OnClickListener listener=new View.OnClickListener() {
 		@Override
@@ -2593,14 +2595,14 @@ public class PlayerActivity extends VodMenuAction {
 			}
 		}
 	};
-	public void initItmePop(){
-		View view=View.inflate(this,R.layout.quality_pop_item,null);
-		itemPopWindow =new PopupWindow(view,490,793);
-		itemPopWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.quality_pop));
-		itemPopWindow.setFocusable(true);
-		itemPopWindow.setOutsideTouchable(true);
-
-	}
+//	public void initItmePop(){
+//		View view=View.inflate(this,R.layout.quality_pop_item,null);
+//		itemPopWindow =new PopupWindow(view,490,793);
+//		itemPopWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.quality_pop));
+//		itemPopWindow.setFocusable(true);
+//		itemPopWindow.setOutsideTouchable(true);
+//
+//	}
 	public void initEntertainmentPop(){
 		View view=View.inflate(this,R.layout.entet_pop,null);
 		EntertainmentPop=new PopupWindow(view,490,793);
@@ -2616,6 +2618,6 @@ public class PlayerActivity extends VodMenuAction {
 				EntertainmentPop.dismiss();
 			}
 		});
-		EntertainmentPop.showAsDropDown(top_panel,-500,0);
+		EntertainmentPop.showAsDropDown(anthology,0,50);
 	}
 }
