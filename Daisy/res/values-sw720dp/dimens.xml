@@ -1432,4 +1432,5 @@
     <dimen name="scrollable_selection_list_left">76.67dp</dimen>
     <dimen name="scrollable_selection_list_fading">66.67dp</dimen>
     <dimen name="channel_list_item_width">128.3dp</dimen>
+    <dimen name="quality_item">360dp</dimen>
 </resources>

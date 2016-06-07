@@ -119,7 +119,7 @@
         <RelativeLayout
             android:id="@+id/PanelLayout"
             android:layout_width="fill_parent"
-            android:layout_height="116dp"
+            android:layout_height="@dimen/quality_item"
             android:layout_alignParentBottom="true"
             android:background="#202020"
             android:alpha="0.8"
@@ -130,46 +130,46 @@
                 android:id="@+id/TimeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginLeft="46.66dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginLeft="92dp"
                 android:textColor="#e4e4e4"
-                android:textSize="14.66sp"/>
+                android:textSize="28sp"/>
             <SeekBar
                 android:id="@+id/TimeSeekBar"
                 android:layout_width="1061dp"
                 android:layout_height="4dp"
                 android:focusable="false"
                 android:max="100"
-                android:layout_marginLeft="109.33dp"
-                android:layout_marginTop="17.33dp"
-                android:maxHeight="4dp"
+                android:layout_marginLeft="216dp"
+                android:layout_marginTop="37dp"
+                android:maxHeight="8dp"
                 android:progressDrawable="@drawable/vodplayer_seekbar_style"
                 android:secondaryProgress="0"
                 android:thumb="@drawable/vod_player_time_yoga"
                 android:thumbOffset="4dp" />
                 <TextView
                     android:id="@+id/endTimeText"
-                    android:layout_width="50dp"
-                    android:layout_height="12dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_width="98dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="24dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="45.33dp"
+                    android:layout_marginRight="90dp"
                     android:textColor="#e4e4e4"
                     android:layout_toRightOf="@+id/TimeSeekBar"
-                    android:textSize="14.66sp"/>
+                    android:textSize="28sp"/>
                 <TextView
                     android:id="@+id/QualityText"
-                    android:layout_width="40dp"
-                    android:layout_height="30dp"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
-                    android:layout_marginBottom="35.33dp"
-                    android:layout_marginRight="60dp"
+                    android:layout_marginBottom="72dp"
+                    android:layout_marginRight="120dp"
                     android:ellipsize="marquee"
                     android:marqueeRepeatLimit="marquee_forever"
                     android:singleLine="true"
                     android:textColor="#e4e4e4"
-                    android:textSize="20sp" />
+                    android:textSize="40sp" />
                     <!--<ImageView-->
                         <!--android:id="@+id/FBImage"-->
                         <!--android:layout_width="@dimen/vod_player_ffimage_W"-->
@@ -182,9 +182,9 @@
                         android:id="@+id/PlayPauseImage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="92dp"
+                        android:layout_marginLeft="172dp"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="32dp"
                         android:clickable="true"
                         android:src="@drawable/play" />
 
@@ -192,8 +192,8 @@
                         android:id="@+id/FFImage"
                         android:layout_width="26.66dp"
                         android:layout_height="28dp"
-                        android:layout_marginLeft="208dp"
-                        android:layout_marginBottom="34.66dp"
+                        android:layout_marginLeft="404dp"
+                        android:layout_marginBottom="68dp"
                         android:layout_alignParentBottom="true"
                         android:clickable="true"
                         android:src="@drawable/vodplayer_ffd" />
