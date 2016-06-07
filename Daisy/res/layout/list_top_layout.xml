@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/listportait_top_column_layout_h"
+        >
+    <ImageView
+            android:id="@+id/list_arrow_back"
+            android:layout_width="@dimen/list_arrow_w"
+            android:layout_height="@dimen/list_arrow_h"
+            android:layout_marginLeft="@dimen/list_arrow_ml"
+            android:layout_marginTop="@dimen/list_arrow_mt"
+            android:background="@drawable/list_arrow_back_selector"/>
+    <TextView
+            android:id="@+id/list_channel_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/list_title_textsize"
+            android:textColor="#ffffff"
+            android:gravity="center"
+            />
+
+    <TextView
+            android:id="@+id/list_channel"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/list_channel_h"
+            android:layout_marginTop="@dimen/list_channel_mt"
+            android:drawableLeft="@drawable/list_channel_selector"
+            android:drawablePadding="@dimen/list_channel_padding"
+            android:textSize="@dimen/list_channel_textsize"
+            android:textColor="@color/list_text_color"
+            android:text="频道"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/list_channel_mr"/>
+    <TextView
+            android:id="@+id/list_search"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/list_search_h"
+            android:layout_marginTop="@dimen/list_channel_mt"
+            android:drawablePadding="@dimen/list_channel_padding"
+            android:drawableLeft="@drawable/list_search_selector"
+            android:layout_toLeftOf="@+id/list_channel"
+            android:layout_marginRight="@dimen/list_search_mr"
+            android:textSize="@dimen/list_channel_textsize"
+            android:textColor="@color/list_text_color"
+            android:text="搜索"
+            />
+</RelativeLayout>

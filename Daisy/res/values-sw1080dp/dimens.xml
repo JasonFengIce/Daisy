@@ -1432,4 +1432,23 @@
     <dimen name="scrollable_selection_list_left">115dp</dimen>
     <dimen name="scrollable_selection_list_fading">100dp</dimen>
     <dimen name="channel_list_item_width">192.45dp</dimen>
+
+    <dimen name="list_arrow_w">64dp</dimen>
+    <dimen name="list_arrow_h">32dp</dimen>
+    <dimen name="list_arrow_ml">30dp</dimen>
+    <dimen name="list_arrow_mt">46dp</dimen>
+    <dimen name="list_title_textsize">46sp</dimen>
+    <dimen name="list_search_h">34dp</dimen>
+    <dimen name="list_channel_h">34dp</dimen>
+    <dimen name="list_channel_mt">53dp</dimen>
+    <dimen name="list_channel_textsize">24sp</dimen>
+    <dimen name="list_channel_padding">8dp</dimen>
+    <dimen name="list_channel_mr">82dp</dimen>
+    <dimen name="list_search_mr">68dp</dimen>
+    <dimen name="full_channel_gridview_w">1814dp</dimen>
+    <dimen name="full_channel_gridview_column_w">425dp</dimen>
+    <dimen name="full_channel_gridview_vs">84dp</dimen>
+    <dimen name="full_channel_gridview_hs">38dp</dimen>
+    <dimen name="full_channel_gridview_ml">52dp</dimen>
+    <dimen name="full_channel_gridview_mt">255dp</dimen>
 </resources>

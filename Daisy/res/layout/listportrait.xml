@@ -7,15 +7,10 @@
 
               android:orientation="vertical">
 
-    <tv.ismar.daisy.ui.widget.LaunchHeaderLayout
-            android:id="@+id/top_column_layout"
+    <tv.ismar.daisy.ui.widget.ListHeaderLayout
+            android:id="@+id/list_header_layout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/listportait_top_column_layout_h"
-            android:gravity="center_vertical"
-            android:paddingLeft="@dimen/tv_guide_top_section_padding"
-            android:paddingRight="@dimen/tv_guide_top_section_padding"
-            >
-    </tv.ismar.daisy.ui.widget.LaunchHeaderLayout>
+            android:layout_height="@dimen/listportait_top_column_layout_h"/>
 
     <ImageView
             android:layout_marginLeft="@dimen/listportait_imageview_margin"

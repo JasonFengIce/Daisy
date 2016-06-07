@@ -52,6 +52,7 @@ import tv.ismar.daisy.ui.fragment.launcher.*;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
 import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
 import tv.ismar.daisy.utils.BitmapDecoder;
+import tv.ismar.daisy.views.FullChannelFragment;
 import tv.ismar.sakura.ui.widget.MessagePopWindow;
 
 import java.io.BufferedReader;
@@ -125,6 +126,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private Runnable netErrorPopupRunnable;
     private CacheHttpClient cacheHttpClient;
     private HorizontalScrollView channel_list_scroll;
+    private String intentFlag;
+
     private enum LeavePosition {
         LeftTop,
         LeftBottom,
@@ -281,6 +284,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
         homepage_template = getIntent().getStringExtra("homepage_template");
         homepage_url = getIntent().getStringExtra("homepage_url");
+        intentFlag = getIntent().getStringExtra("intent_flag");
         final View vv = findViewById(R.id.large_layout);
         bitmapDecoder = new BitmapDecoder();
         bitmapDecoder.decode(this, R.drawable.main_bg, new BitmapDecoder.Callback() {

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/full_channel_bg">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/listportait_top_column_layout_h">
+        <ImageView
+                android:id="@+id/full_channel_arrow_back"
+                android:layout_width="@dimen/list_arrow_w"
+                android:layout_height="@dimen/list_arrow_h"
+                android:layout_marginLeft="@dimen/list_arrow_ml"
+                android:layout_marginTop="@dimen/list_arrow_mt"
+                android:background="@drawable/list_arrow_back_selector"/>
+        <TextView
+                android:id="@+id/list_channel_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/list_title_textsize"
+                android:textColor="#ffffff"
+                android:text="全部频道"
+                android:gravity="center"
+                />
+    </RelativeLayout>
+    <GridView
+            android:id="@+id/full_channel"
+            android:layout_width="@dimen/full_channel_gridview_w"
+            android:layout_height="match_parent"
+            android:columnWidth="@dimen/full_channel_gridview_column_w"
+            android:numColumns="4"
+            android:verticalSpacing="@dimen/full_channel_gridview_vs"
+            android:horizontalSpacing="@dimen/full_channel_gridview_hs"
+            android:layout_marginLeft="@dimen/full_channel_gridview_ml"
+            android:layout_marginTop="@dimen/full_channel_gridview_mt">
+
+    </GridView>
+</RelativeLayout>

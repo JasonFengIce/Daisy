@@ -325,7 +325,16 @@
             android:name=".ui.activity.newvip.PayLayerPackageActivity"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
             />
+        <activity
+                android:name=".FullChannelActivity"
+                android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
+                >
+            <intent-filter>
+                <action android:name="tv.ismar.daisy.fullchannel"/>
 
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+                </activity>
         <!--content provider-->
         <provider
             android:name="cn.ismartv.injectdb.library.content.ContentProvider"

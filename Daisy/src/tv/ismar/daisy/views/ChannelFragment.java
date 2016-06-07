@@ -33,6 +33,7 @@ import tv.ismar.daisy.models.SectionList;
 import tv.ismar.daisy.player.InitPlayerTool;
 import tv.ismar.daisy.player.InitPlayerTool.onAsyncTaskHandler;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
+import tv.ismar.daisy.ui.widget.ListHeaderLayout;
 import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.daisy.views.ScrollableSectionList.OnSectionSelectChangedListener;
 import android.app.Fragment;
@@ -106,11 +107,12 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
     private void initViews(View fragmentView) {
 
         percentage = (ProgressBar) fragmentView.findViewById(R.id.section_percentage);
-
-        weatherFragment = (LaunchHeaderLayout) fragmentView.findViewById(R.id.top_column_layout);
-        weatherFragment.setTitle(mTitle);
-        weatherFragment.hideSubTiltle();
-        weatherFragment.hideIndicatorTable();
+        ListHeaderLayout list_header_layout= (ListHeaderLayout) fragmentView.findViewById(R.id.list_header_layout);
+        list_header_layout.setChannelTitle(mTitle);
+//        weatherFragment = (LaunchHeaderLayout) fragmentView.findViewById(R.id.top_column_layout);
+//        weatherFragment.setTitle(mTitle);
+//        weatherFragment.hideSubTiltle();
+//        weatherFragment.hideIndicatorTable();
         large_layout = fragmentView.findViewById(R.id.large_layout);
         mHGridView = (HGridView) fragmentView.findViewById(R.id.h_grid_view);
         left_shadow = (Button) fragmentView.findViewById(R.id.left_shadow);
@@ -531,7 +533,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
                 mLoadingDialog.dismiss();
             }
             isInitTaskLoading = false;
-            weatherFragment.setVisibility(View.VISIBLE);
+//            weatherFragment.setVisibility(View.VISIBLE);
 
             // right_shadow.setVisibility(View.VISIBLE);
             //top_column_layout.setSecondChannelVisable();
