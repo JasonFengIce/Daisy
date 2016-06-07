@@ -265,54 +265,58 @@ public class HGridView extends AdapterView<HGridAdapter> {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		// TODO Auto-generated method stub
-		final float x1 = event.getX();
-		final float y1 = event.getY();
-		switch (event.getAction()) {
-			case MotionEvent.ACTION_DOWN:
-				mLastMotionX = event.getX();
-				break;
-			case MotionEvent.ACTION_UP:
-				int deltaX = (int) (mLastMotionX - x1);
-				mLastMotionX = x1;
+		if(getChildCount()==0){
+			return false;
+		}else {
+			final float x1 = event.getX();
+			final float y1 = event.getY();
+			switch (event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					mLastMotionX = event.getX();
+					break;
+				case MotionEvent.ACTION_UP:
+					int deltaX = (int) (mLastMotionX - x1);
+					mLastMotionX = x1;
 
-				// scrollBy(deltaX, 0);
-				if (deltaX > 50) {
-					if(getId() == R.id.tvguid_h_grid_view){
-						arrowScroll(FOCUS_RIGHT);
-					}else{
-						pageScroll(FOCUS_RIGHT);
+					// scrollBy(deltaX, 0);
+					if (deltaX > 50) {
+						if (getId() == R.id.tvguid_h_grid_view) {
+							arrowScroll(FOCUS_RIGHT);
+						} else {
+							pageScroll(FOCUS_RIGHT);
+						}
+						TOUCH_STATE = FOCUS_RIGHT;
+						//checkScrollState(OnScrollListener.SCROLL_STATE_FOCUS_MOVING);
+						//checkScrollState(OnScrollListener.SCROLL_STATE_IDLE);
 					}
-					TOUCH_STATE = FOCUS_RIGHT;
-					//checkScrollState(OnScrollListener.SCROLL_STATE_FOCUS_MOVING);
-					//checkScrollState(OnScrollListener.SCROLL_STATE_IDLE);
-				}
-				if (deltaX < -50) {
-					if(getId() == R.id.tvguid_h_grid_view){
-						arrowScroll(FOCUS_LEFT);
-					}else{
-						pageScroll(FOCUS_LEFT);
-					}
-					TOUCH_STATE = FOCUS_LEFT;
-					//checkScrollState(OnScrollListener.SCROLL_STATE_FOCUS_MOVING);
-					//checkScrollState(OnScrollListener.SCROLL_STATE_IDLE);
+					if (deltaX < -50) {
+						if (getId() == R.id.tvguid_h_grid_view) {
+							arrowScroll(FOCUS_LEFT);
+						} else {
+							pageScroll(FOCUS_LEFT);
+						}
+						TOUCH_STATE = FOCUS_LEFT;
+						//checkScrollState(OnScrollListener.SCROLL_STATE_FOCUS_MOVING);
+						//checkScrollState(OnScrollListener.SCROLL_STATE_IDLE);
 
-				}
-				if (TOUCH_STATE != FOCUS_LEFT || TOUCH_STATE != FOCUS_RIGHT) {
-					if(Math.abs(deltaX)<50){
-						final int x = (int) event.getX();
-						final int y = (int) event.getY();
-						int motionPosition = pointToPosition(x, y);
-						final View v = getChildAt(motionPosition - mFirstPosition);
-						performItemClick(v, motionPosition, 0);
 					}
+					if (TOUCH_STATE != FOCUS_LEFT || TOUCH_STATE != FOCUS_RIGHT) {
+						if (Math.abs(deltaX) < 50) {
+							final int x = (int) event.getX();
+							final int y = (int) event.getY();
+							int motionPosition = pointToPosition(x, y);
+							final View v = getChildAt(motionPosition - mFirstPosition);
+							performItemClick(v, motionPosition, 0);
+						}
 
-				}
-				TOUCH_STATE = -1;
-				break;
-			default:
-				break;
+					}
+					TOUCH_STATE = -1;
+					break;
+				default:
+					break;
+			}
+			return true;
 		}
-		return true;
 	}
 
 	public int pointToPosition(int x, int y) {
