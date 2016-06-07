@@ -227,7 +227,8 @@
             android:name=".ChannelListActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="tv.ismar.daisy.Channel"/>
 
@@ -328,6 +329,7 @@
         <activity
                 android:name=".FullChannelActivity"
                 android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
+                android:launchMode="singleTask"
                 >
             <intent-filter>
                 <action android:name="tv.ismar.daisy.fullchannel"/>

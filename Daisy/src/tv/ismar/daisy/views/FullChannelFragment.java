@@ -1,9 +1,9 @@
 package tv.ismar.daisy.views;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +13,13 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import tv.ismar.daisy.FullChannelActivity;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.ui.fragment.ChannelBaseFragment;
 
 /**
  * Created by admin on 2016/6/6.
  */
-public class FullChannelFragment extends ChannelBaseFragment implements View.OnClickListener {
+public class FullChannelFragment extends ChannelBaseFragment implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private int[] channels = new int[]{R.drawable.full_channel_top, R.drawable.full_channel_chinese, R.drawable.full_channel_overseas, R.drawable.full_channel_tv, R.drawable.full_channel_entertain, R.drawable.full_channel_sport, R.drawable.full_channel_life, R.drawable.full_channel_children, R.drawable.full_channel_music, R.drawable.full_channel_game};
     private GridView full_channel;
@@ -32,7 +33,7 @@ public class FullChannelFragment extends ChannelBaseFragment implements View.OnC
         full_channel = (GridView)view.findViewById(R.id.full_channel);
         FullChannelAdapter adapter=new FullChannelAdapter();
         full_channel.setAdapter(adapter);
-        full_channel.setOnItemClickListener(onItemClickListener);
+        full_channel.setOnItemClickListener(this);
         return view;
     }
 
@@ -47,39 +48,80 @@ public class FullChannelFragment extends ChannelBaseFragment implements View.OnC
         getActivity().finish();
     }
 
-//    @Override
-//    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        Intent intent=new Intent();
-//        if(position==0){
-//            intent.setAction("tv.ismar.daisy.tvguide");
-//        }else{
-//
-//        }
-//        switch (position){
-//            case 0:
-//
-//                break;
-//            case 1:
-//
-//                break;
-//            case 2:
-//                break;
-//            case 3:
-//                break;
-//            case 4:
-//                break;
-//            case 5:
-//                break;
-//            case 6:
-//                break;
-//            case 7:
-//                break;
-//            case 8:
-//                break;
-//            case 9:
-//                break;
-//        }
-//    }
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent=new Intent();
+        String channel=null;
+        String title=null;
+        String url=null;
+        int portraitflag=0;
+        switch (position){
+            case 0:
+                intent.setAction("tv.ismar.daisy.tvguide");
+                startActivity(intent);
+                return;
+            case 1:
+                channel="chinesemovie";
+                title="华语电影";
+                url=SimpleRestClient.root_url+"/api/tv/sections/chinesemovie/";
+                portraitflag=2;
+                break;
+            case 2:
+                channel="overseas";
+                title="海外电影";
+                url=SimpleRestClient.root_url+"/api/tv/sections/overseas/";
+                portraitflag=2;
+                break;
+            case 3:
+                channel="teleplay";
+                title="电视剧";
+                url=SimpleRestClient.root_url+"/api/tv/sections/teleplay/";
+                portraitflag=1;
+                break;
+            case 4:
+                channel="variety";
+                title="娱乐综艺";
+                url=SimpleRestClient.root_url+"/api/tv/sections/variety/";
+                portraitflag=1;
+                break;
+            case 5:
+                channel="sport";
+                title="体育";
+                url=SimpleRestClient.root_url+"/api/tv/sections/sport/";
+                portraitflag=1;
+                break;
+            case 6:
+                channel="documentary";
+                title="生活纪实";
+                url=SimpleRestClient.root_url+"/api/tv/sections/documentary/";
+                portraitflag=1;
+                break;
+            case 7:
+                channel="comic";
+                title="少儿";
+                url=SimpleRestClient.root_url+"/api/tv/sections/comic/";
+                portraitflag=1;
+                break;
+            case 8:
+                channel="music";
+                title="音乐";
+                url=SimpleRestClient.root_url+"/api/tv/sections/music/";
+                portraitflag=1;
+                break;
+            case 9:
+                channel="game";
+                title="游戏竞技";
+                url=SimpleRestClient.root_url+"/api/tv/sections/game/";
+                portraitflag=1;
+                break;
+        }
+        intent.putExtra("channel", channel);
+        intent.setAction("tv.ismar.daisy.Channel");
+        intent.putExtra("title", title);
+        intent.putExtra("url", url);
+        intent.putExtra("portraitflag", portraitflag);
+        startActivity(intent);
+    }
 
     private class FullChannelAdapter extends BaseAdapter {
 
