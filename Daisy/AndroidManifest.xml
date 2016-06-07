@@ -355,6 +355,11 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </service>
+        <receiver android:name=".ui.activity.TVGuideActivity$yogaReceiver">
+            <intent-filter>
+                <action android:name="com.daisy.yogasport"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 

@@ -15,7 +15,7 @@ public class Item implements Serializable {
     public String content_model; //对应频道, 例如: documentary
     public int counting_count;
     public String description;
-    public int episode;
+    public int episode;//集数
     public String focus;
     public boolean is_complex;
     public int pk;

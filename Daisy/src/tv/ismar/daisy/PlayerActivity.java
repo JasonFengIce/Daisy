@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tv.ismar.daisy.adapter.EntertainmentPopAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.ImageUtils;
@@ -51,9 +52,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.text.Layout;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -65,9 +68,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -101,10 +108,11 @@ public class PlayerActivity extends VodMenuAction {
 	private Animation panelHideAnimation;
 	// private Animation bufferHideAnimation;
 	private ImageView logoImage;
-	private LinearLayout panelLayout;
+	private RelativeLayout panelLayout;
+	private RelativeLayout top_panel;
 	private MarqueeView titleText;
 	private TextView qualityText;
-	private TextView timeText;
+	private TextView timeText,endTimetext;
 	private ImageView playPauseImage;
 	private ImageView ffImage;
 	private ImageView fbImage;
@@ -160,6 +168,8 @@ public class PlayerActivity extends VodMenuAction {
 	private boolean isneedpause = true;
 	private HashMap<String,Integer> adlog = new HashMap<String,Integer>();
 	private String adurl;
+	private TextView anthology;
+	private PopupWindow popupWindow,itemPopWindow,EntertainmentPop;
 	private class ScreenSaveBrocast extends BroadcastReceiver {
 
 		@Override
@@ -179,10 +189,9 @@ public class PlayerActivity extends VodMenuAction {
 		IntentFilter intentFilter = new IntentFilter(ACTION);
 		saveScreenbroad = new ScreenSaveBrocast();
 		intentFilter.setPriority(119110);
-		registerReceiver( saveScreenbroad , intentFilter);
+		registerReceiver(saveScreenbroad, intentFilter);
 		shardpref = AccountSharedPrefs.getInstance();
 		setView();
-
 		DisplayMetrics metric = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metric);
 
@@ -215,21 +224,27 @@ public class PlayerActivity extends VodMenuAction {
 		setContentView(R.layout.vod_player);
 
 		mVideoView = (IsmatvVideoView) findViewById(R.id.video_view);
-		panelLayout = (LinearLayout) findViewById(R.id.PanelLayout);
+		panelLayout = (RelativeLayout) findViewById(R.id.PanelLayout);
+		top_panel= (RelativeLayout) findViewById(R.id.top_panelayout);
 		titleText = (MarqueeView) findViewById(R.id.TitleText);
-
+		anthology= (TextView) findViewById(R.id.anthology);
+		anthology.setOnClickListener(listener);
 		qualityText = (TextView) findViewById(R.id.QualityText);
+		qualityText.setOnClickListener(listener);
 		timeText = (TextView) findViewById(R.id.TimeText);
+		endTimetext= (TextView) findViewById(R.id.endTimeText);
+
 		timeBar = (SeekBar) findViewById(R.id.TimeSeekBar);
 		timeBar.setOnSeekBarChangeListener(new SeekBarChangeEvent());
 		playPauseImage = (ImageView) findViewById(R.id.PlayPauseImage);
 		ffImage = (ImageView) findViewById(R.id.FFImage);
-		fbImage = (ImageView) findViewById(R.id.FBImage);
+		//fbImage = (ImageView) findViewById(R.id.FBImage);
 		bufferLayout = (LinearLayout) findViewById(R.id.BufferLayout);
 		bufferText = (TextView) findViewById(R.id.BufferText);
 		logoImage = (ImageView) findViewById(R.id.logo_image);
 		ad_count_view = (TextView) findViewById(R.id.ad_count_view);
 		panelLayout.setVisibility(View.GONE);
+		top_panel.setVisibility(View.GONE);
 		bufferLayout.setVisibility(View.GONE);
 		qualityText.setVisibility(View.GONE);
 		gesture_tipview = (ImageView)findViewById(R.id.gesture_tipview);
@@ -244,11 +259,11 @@ public class PlayerActivity extends VodMenuAction {
 						if (!paused) {
 							pauseItem();
 							playPauseImage
-									.setImageResource(R.drawable.vod_playbtn_selector);
+									.setImageResource(R.drawable.paus);
 						} else {
 							resumeItem();
 							playPauseImage
-									.setImageResource(R.drawable.vod_pausebtn_selector);
+									.setImageResource(R.drawable.play);
 						}
 
 						// }
@@ -260,35 +275,35 @@ public class PlayerActivity extends VodMenuAction {
 				return false;
 			}
 		});
-		fbImage.setOnTouchListener(new OnTouchListener() {
-
-			@Override
-			public boolean onTouch(View v, MotionEvent keycode) {
-				// TODO Auto-generated method stub
-				switch (keycode.getAction()) {
-					case MotionEvent.ACTION_DOWN:
-						if (clipLength > 0 && !live_video) {
-							isSeek = true;
-							showPanel();
-							isBuffer = true;
-							showBuffer();
-							fastBackward(SHORT_STEP);
-							mVideoView.seekTo(currPosition);
-							isSeekBuffer = true;
-							Log.d(TAG, "LEFT seek to "
-									+ getTimeString(currPosition));
-							isSeek = false;
-							offsets = 0;
-							offn = 1;
-						}
-						break;
-
-					default:
-						break;
-				}
-				return false;
-			}
-		});
+//	//	fbImage.setOnTouchListener(new OnTouchListener() {
+//
+//			@Override
+//			public boolean onTouch(View v, MotionEvent keycode) {
+//				// TODO Auto-generated method stub
+//				switch (keycode.getAction()) {
+//					case MotionEvent.ACTION_DOWN:
+//						if (clipLength > 0 && !live_video) {
+//							isSeek = true;
+//							showPanel();
+//							isBuffer = true;
+//							showBuffer();
+//							fastBackward(SHORT_STEP);
+//							mVideoView.seekTo(currPosition);
+//							isSeekBuffer = true;
+//							Log.d(TAG, "LEFT seek to "
+//									+ getTimeString(currPosition));
+//							isSeek = false;
+//							offsets = 0;
+//							offn = 1;
+//						}
+//						break;
+//
+//					default:
+//						break;
+//				}
+//				return false;
+//			}
+//		});
 		ffImage.setOnTouchListener(new OnTouchListener() {
 
 			@Override
@@ -366,7 +381,7 @@ public class PlayerActivity extends VodMenuAction {
 			else
 				itemUrl = SimpleRestClient.root_url + "/api/item/"
 						+ item.item_pk + "/";
-			if (isPreview) {
+				if (isPreview) {
 				serialItem = (Item) bundle.get("seraItem");
 				initPlayer();
 			} else {
@@ -553,6 +568,8 @@ public class PlayerActivity extends VodMenuAction {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
+				showPanel();
+				top_panel.setVisibility(View.VISIBLE);
 				if (isadvideoplaying)
 					return false;
 				if (isVodMenuVisible()) {
@@ -561,11 +578,11 @@ public class PlayerActivity extends VodMenuAction {
 					if (!paused) {
 						pauseItem();
 						playPauseImage
-								.setImageResource(R.drawable.vod_playbtn_selector);
+								.setImageResource(R.drawable.paus);
 					} else {
 						resumeItem();
 						playPauseImage
-								.setImageResource(R.drawable.vod_pausebtn_selector);
+								.setImageResource(R.drawable.play);
 					}
 				}
 				return false;
@@ -1392,6 +1409,8 @@ public class PlayerActivity extends VodMenuAction {
 		if (!panelShow) {
 			panelLayout.startAnimation(panelShowAnimation);
 			panelLayout.setVisibility(View.VISIBLE);
+			top_panel.startAnimation(panelHideAnimation);
+			top_panel.setVisibility(View.VISIBLE);
 			panelShow = true;
 			hidePanelHandler.postDelayed(hidePanelRunnable, 3000);
 		} else {
@@ -1405,6 +1424,9 @@ public class PlayerActivity extends VodMenuAction {
 		if (panelShow) {
 			panelLayout.startAnimation(panelHideAnimation);
 			panelLayout.setVisibility(View.GONE);
+
+			top_panel.startAnimation(panelShowAnimation);
+			top_panel.setVisibility(View.GONE);
 			panelShow = false;
 		}
 	}
@@ -1577,11 +1599,11 @@ public class PlayerActivity extends VodMenuAction {
 						if (!paused) {
 							pauseItem();
 							playPauseImage
-									.setImageResource(R.drawable.vod_playbtn_selector);
+									.setImageResource(R.drawable.paus);
 						} else {
 							resumeItem();
 							playPauseImage
-									.setImageResource(R.drawable.vod_pausebtn_selector);
+									.setImageResource(R.drawable.play);
 						}
 
 						ret = true;
@@ -1646,7 +1668,7 @@ public class PlayerActivity extends VodMenuAction {
 					if (!paused) {
 						pauseItem();
 						playPauseImage
-								.setImageResource(R.drawable.vod_playbtn_selector);
+								.setImageResource(R.drawable.paus);
 					}
 					break;
 				case KeyEvent.KEYCODE_MENU:
@@ -1691,7 +1713,7 @@ public class PlayerActivity extends VodMenuAction {
 									1000);
 						}
 						playPauseImage
-								.setImageResource(R.drawable.vod_pausebtn_selector);
+								.setImageResource(R.drawable.play);
 					}
 				}
 
@@ -1790,7 +1812,7 @@ public class PlayerActivity extends VodMenuAction {
 							if (paused) {
 								resumeItem();
 								playPauseImage
-										.setImageResource(R.drawable.vod_pausebtn_selector);
+										.setImageResource(R.drawable.play);
 							}
 						}
 					}
@@ -2118,7 +2140,7 @@ public class PlayerActivity extends VodMenuAction {
 					checkTaskPause();
 					paused = false;
 					playPauseImage
-							.setImageResource(R.drawable.vod_pausebtn_selector);
+							.setImageResource(R.drawable.play);
 					isBuffer = true;
 					showBuffer();
 					currQuality = pos;
@@ -2217,40 +2239,124 @@ public class PlayerActivity extends VodMenuAction {
 
 		return true;
 	}
+	public void changeQualtiy(int pos){
+		if (urls[pos] != null && currQuality != pos) {
+			try {
+				timeTaskPause();
+				checkTaskPause();
+				paused = false;
+				playPauseImage
+						.setImageResource(R.drawable.play);
+				isBuffer = true;
+				showBuffer();
+				currQuality = pos;
+				// mVideoView = (IsmatvVideoView)
+				// findViewById(R.id.video_view);
+				paths = new String[1];
+				paths[0] = urls[currQuality];
+				tempOffset = seekPostion;
+				mVideoView.setVideoPaths(paths);
+				// mVideoView.setVideoPath(urls[currQuality]);
+				historyManager.addOrUpdateQuality(new Quality(0,
+						urls[currQuality], currQuality));
+				if (item.pk != item.item_pk)
+					callaPlay.videoSwitchStream(item.item_pk, item.pk,
+							item.title, clip.pk, currQuality, "manual",
+							null, null, mediaip, sid,"bestv");
+				else
+					callaPlay.videoSwitchStream(item.pk, null, item.title,
+							clip.pk, currQuality, "manual", null, null,
+							mediaip, sid,"bestv");
+				initQualtiyText();
+			} catch (Exception e) {
+				Log.d(TAG, "Exception change url " + e);
+			}
+		}
+	}
+	public void changeItem(int id){
+		try {
+			if (item != null)
+				callaPlay
+						.videoExit(
+								item.item_pk,
+								item.pk,
+								item.title,
+								clip.pk,
+								currQuality,
+								0,
+								"end",
+								currPosition,
+								(System.currentTimeMillis() - startDuration),
+								item.slug, sid, "list",
+								item.content_model, "bestv");// String
+				// section,String
+				// sid,String
+				// source,String
+				// channel
+			else
+				callaPlay
+						.videoExit(
+								item.pk,
+								null,
+								item.title,
+								clip.pk,
+								currQuality,
+								0,
+								"end",
+								currPosition,
+								(System.currentTimeMillis() - startDuration),
+								item.slug, sid, "list",
+								item.content_model, "bestv");
+		} catch (Exception e) {
+			Log.e(TAG, " log Sender videoExit end " + e.toString());
+		}
+		subItemUrl = SimpleRestClient.root_url + "/api/subitem/" + id + "/";
+		bundle.remove("url");
+		bundle.putString("url", subItemUrl);
+		addHistory(0);
+		if (mVideoView != null) {
+			mVideoView.setAlpha(0);
+		}
+		for (Item i : listItems) {
+			if (i.pk == id) {
+				item = i;
+				break;
+			}
+		}
+		checkContinueOrPay(item.pk);
+
+	}
 
 	private void updataTimeText() {
-		String text = getTimeString(currPosition) + "/"
-				+ getTimeString(clipLength);
+		String text = getTimeString(currPosition);
 		timeText.setText(text);
+		endTimetext.setText(getTimeString(clipLength));
 	}
 
 	private void initQualtiyText() {
 
 		switch (currQuality) {
 			case 0:
-				// qualityText.setText("流畅");
-				qualityText
-						.setBackgroundResource(R.drawable.vodplayer_stream_normal);
+				 qualityText.setText("流畅");
+				//qualityText.setBackgroundResource(R.drawable.vodplayer_stream_normal);
 				break;
 			case 1:
-				// qualityText.setText("高清");
-				qualityText.setBackgroundResource(R.drawable.vodplayer_stream_high);
+				 qualityText.setText("高清");
+				//qualityText.setBackgroundResource(R.drawable.vodplayer_stream_high);
 				break;
 			case 2:
-				// qualityText.setText("超清");
-				qualityText
-						.setBackgroundResource(R.drawable.vodplayer_stream_ultra);
+				 qualityText.setText("超清");
+				//qualityText.setBackgroundResource(R.drawable.vodplayer_stream_ultra);
 				break;
 
 			case 3:
 				qualityText.setText("自适应");
-				qualityText.setBackgroundResource(R.drawable.rounded_edittext);
+				//qualityText.setBackgroundResource(R.drawable.rounded_edittext);
 				break;
 
 			default:
-				// qualityText.setText("流畅");
-				qualityText
-						.setBackgroundResource(R.drawable.vodplayer_stream_normal);
+				 qualityText.setText("流畅");
+				//qualityText.setBackgroundResource(R.drawable.vodplayer_stream_normal);
 				break;
 		}
 
@@ -2429,5 +2535,87 @@ public class PlayerActivity extends VodMenuAction {
 
 		}
 	};
+	public void creatPopWindows(){
+		View pop=View.inflate(this, R.layout.quality_pop_item, null);
+		popupWindow = new PopupWindow(pop, 200, 278);
+		popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.quality_pop));
+		popupWindow.setFocusable(true);
+		popupWindow.setOutsideTouchable(true);
+		LinearLayout popMenu= (LinearLayout) pop.findViewById(R.id.pop);
+		for(int i=0;i<urls.length;i++){
+			if(urls[i]!=null){
+				View view=View.inflate(this,R.layout.pop_menu_item,null);
+				TextView textView= (TextView) view.findViewById(R.id.quality_text);
+				ImageView img= (ImageView) view.findViewById(R.id.quality_focus);
+				switch (i){
+					case 0:
+						textView.setText("流畅");
+						break;
+					case 1:
+						textView.setText("高清");
+						break;
+					case 2:
+						textView.setText("超清");
+						break;
+					default:
+						textView.setText("自适应");
+				}
+				if(i==currQuality){
+					textView.setTextColor(getResources().getColor(R.color._ff9c3c));
+					img.setBackgroundResource(R.drawable.quality_chosed);
+				}
+				final int j=i;
+				view.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						changeQualtiy(j);
+						popupWindow.dismiss();
+					}
+				});
+				popMenu.addView(view);
+			}
+		}
+		int[] location = new int[2];
+		pop.getLocationOnScreen(location);
+		popupWindow.showAtLocation(panelLayout, Gravity.NO_GRAVITY, location[0]+2252, location[1]-380);
+	}
+	View.OnClickListener listener=new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			switch (v.getId()){
+				case R.id.QualityText:
+					creatPopWindows();
+					break;
+				case R.id.anthology:
+					initEntertainmentPop();
+					anthology.setTextColor(getResources().getColor(R.color._ff9c3c));
+					break;
+			}
+		}
+	};
+	public void initItmePop(){
+		View view=View.inflate(this,R.layout.quality_pop_item,null);
+		itemPopWindow =new PopupWindow(view,490,793);
+		itemPopWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.quality_pop));
+		itemPopWindow.setFocusable(true);
+		itemPopWindow.setOutsideTouchable(true);
 
+	}
+	public void initEntertainmentPop(){
+		View view=View.inflate(this,R.layout.entet_pop,null);
+		EntertainmentPop=new PopupWindow(view,490,793);
+		EntertainmentPop.setBackgroundDrawable(getResources().getDrawable(R.drawable.quality_pop));
+		EntertainmentPop.setFocusable(true);
+		EntertainmentPop.setOutsideTouchable(true);
+		ListView list= (ListView) view.findViewById(R.id.enter_list);
+		list.setAdapter(new EntertainmentPopAdapter(listItems, this));
+		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			//	changeItem(listItems.get(position).);
+				EntertainmentPop.dismiss();
+			}
+		});
+		EntertainmentPop.showAsDropDown(top_panel,-500,0);
+	}
 }

@@ -29,7 +29,47 @@
         android:layout_centerInParent="true"
         android:background="@android:color/transparent"
         android:foreground="@android:color/transparent" >
-
+        <RelativeLayout
+            android:id="@+id/top_panelayout"
+            android:layout_width="fill_parent"
+            android:layout_height="74.66dp"
+            android:layout_alignParentTop="true"
+            android:background="#202020"
+            android:alpha="0.8"
+            android:visibility="gone"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30.666dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/back"
+                />
+            <tv.ismar.daisy.views.MarqueeView
+                xmlns:app="http://schemas.android.com/apk/res/tv.ismar.daisy"
+                android:id="@+id/TitleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="29.33dp"
+                android:layout_marginLeft="86.66dp"
+                android:layout_marginBottom="22.66dp"
+                app:textsize="22.66sp"
+                app:textcolor="#e4e4e4"
+                app:speed="20">
+            </tv.ismar.daisy.views.MarqueeView>
+            <TextView
+                android:id="@+id/anthology"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="#e4e4e4"
+                android:layout_marginRight="60dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="36dp"
+                android:layout_alignParentRight="true"
+                android:text="选集"
+                />
+        </RelativeLayout>
         <ImageView
             android:id="@+id/logo_image"
             android:layout_width="wrap_content"
@@ -76,111 +116,88 @@
                 android:textSize="@dimen/vod_player_buffertext_textsize" />
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/PanelLayout"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="116dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/player_panel_bg"
+            android:background="#202020"
+            android:alpha="0.8"
             android:focusable="true"         
-            android:foreground="@color/player_panel_fg"
-            android:orientation="vertical"
             android:visibility="gone" >
 
+            <TextView
+                android:id="@+id/TimeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginLeft="46.66dp"
+                android:textColor="#e4e4e4"
+                android:textSize="14.66sp"/>
             <SeekBar
                 android:id="@+id/TimeSeekBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="1061dp"
+                android:layout_height="4dp"
                 android:focusable="false"
                 android:max="100"
-                android:maxHeight="@dimen/vod_player_timeseekbar_MaxH"
+                android:layout_marginLeft="109.33dp"
+                android:layout_marginTop="17.33dp"
+                android:maxHeight="4dp"
                 android:progressDrawable="@drawable/vodplayer_seekbar_style"
                 android:secondaryProgress="0"
-                android:thumb="@drawable/vod_player_time_round"
-                android:thumbOffset="@dimen/vod_player_timeseekbar_thumbOffset" />
-
-            <RelativeLayout
-                android:id="@+id/vodLayout"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/vod_player_vodlayout_marginleft"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/vod_player_vodlayout_PB" >
-
-                <LinearLayout
-                    android:id="@+id/vod_content_layout"
-                    android:layout_width="@dimen/vod_player_vod_content_layout_W"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/TimeText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/vod_player_timetext_H"
-                        android:layout_marginTop="@dimen/vod_player_timetext_marginTop"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/vod_player_timetext_textsize" />
-
-                    <TextView
-                        android:id="@+id/QualityText"
-                        android:layout_width="@dimen/vod_player_qualitytext_W"
-                        android:layout_height="@dimen/vod_player_qualitytext_H"
-                        android:layout_marginTop="@dimen/vod_player_qualitytext_margintop"
-                        android:background="@drawable/rounded_edittext"
-                        android:ellipsize="marquee"
-                        android:gravity="center_horizontal"
-                        android:marqueeRepeatLimit="marquee_forever"
-                        android:singleLine="true"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/vod_player_qualitytext_textsize" />                   
-                 <tv.ismar.daisy.views.MarqueeView
-                     xmlns:app="http://schemas.android.com/apk/res/tv.ismar.daisy"
-                        android:id="@+id/TitleText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/vod_player_titletext_H"
-                        android:layout_marginTop="@dimen/vod_player_titletext_margintop"
-                        app:textsize="@dimen/vod_player_titletext_textsize"
-                        app:textcolor="@color/hotwords_text_color"
-                        app:speed="20">
-                 </tv.ismar.daisy.views.MarqueeView>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/TitleLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/vod_player_titlelayout_H"
-                    android:layout_marginLeft="@dimen/vod_player_titlelayout_marginleft"
-                    android:layout_marginTop="@dimen/vod_player_titlelayout_margintop"
-                    android:layout_toRightOf="@id/vod_content_layout"
-                    android:orientation="horizontal" >
-
-                    <ImageView
-                        android:id="@+id/FBImage"
-                        android:layout_width="@dimen/vod_player_ffimage_W"
-                        android:layout_height="@dimen/vod_player_ffimage_W"
-                        android:layout_marginLeft="@dimen/vod_player_fbimage_marginleft"
-                        android:clickable="true"
-                        android:src="@drawable/vodplayer_controller_fbf" />
+                android:thumb="@drawable/vod_player_time_yoga"
+                android:thumbOffset="4dp" />
+                <TextView
+                    android:id="@+id/endTimeText"
+                    android:layout_width="50dp"
+                    android:layout_height="12dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="45.33dp"
+                    android:textColor="#e4e4e4"
+                    android:layout_toRightOf="@+id/TimeSeekBar"
+                    android:textSize="14.66sp"/>
+                <TextView
+                    android:id="@+id/QualityText"
+                    android:layout_width="40dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="35.33dp"
+                    android:layout_marginRight="60dp"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:singleLine="true"
+                    android:textColor="#e4e4e4"
+                    android:textSize="20sp" />
+                    <!--<ImageView-->
+                        <!--android:id="@+id/FBImage"-->
+                        <!--android:layout_width="@dimen/vod_player_ffimage_W"-->
+                        <!--android:layout_height="@dimen/vod_player_ffimage_W"-->
+                        <!--android:layout_marginLeft="@dimen/vod_player_fbimage_marginleft"-->
+                        <!--android:clickable="true"-->
+                        <!--android:src="@drawable/vodplayer_controller_fbf" />-->
 
                     <ImageView
                         android:id="@+id/PlayPauseImage"
-                        android:layout_width="@dimen/vod_player_ffimage_W"
-                        android:layout_height="@dimen/vod_player_ffimage_H"
-                        android:layout_marginLeft="@dimen/vod_player_playpauseimage_marginleft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="92dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="16dp"
                         android:clickable="true"
-                        android:src="@drawable/vod_pausebtn_selector" />
+                        android:src="@drawable/play" />
 
                     <ImageView
                         android:id="@+id/FFImage"
-                        android:layout_width="@dimen/vod_player_ffimage_W"
-                        android:layout_height="@dimen/vod_player_ffimage_H"
-                        android:layout_marginLeft="@dimen/vod_player_playpauseimage_marginleft"
+                        android:layout_width="26.66dp"
+                        android:layout_height="28dp"
+                        android:layout_marginLeft="208dp"
+                        android:layout_marginBottom="34.66dp"
+                        android:layout_alignParentBottom="true"
                         android:clickable="true"
                         android:src="@drawable/vodplayer_ffd" />
-                </LinearLayout>
-            </RelativeLayout>
-        </LinearLayout>
+        </RelativeLayout>
     </RelativeLayout>
     <ImageView
             android:id="@+id/gesture_tipview"
