@@ -67,7 +67,7 @@
     <color name="association_normal">#FFFFFF</color>
     <color name="association_focus">#00a9ff</color>
 
-    <drawable name="transparent">#00000000</drawable>
+    <!--<drawable name="transparent">#00000000</drawable>-->
 
     <drawable name="button_disable">#7f7f7f</drawable>
 

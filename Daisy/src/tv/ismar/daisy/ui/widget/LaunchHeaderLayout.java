@@ -47,7 +47,7 @@ import tv.ismar.daisy.data.weather.WeatherEntity;
 /**
  * Created by huaijie on 2015/7/21.
  */
-public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListener, View.OnFocusChangeListener, OnHoverListener {
+public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListener {
     private static final String TAG = "LaunchHeaderLayout";
     private Context context;
 
@@ -133,8 +133,8 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
             View view = LayoutInflater.from(context).inflate(R.layout.item_weather_indicator, null);
             TextView textView = (TextView) view.findViewById(R.id.weather_indicator);
             view.setOnClickListener(this);
-            view.setOnFocusChangeListener(this);
-            view.setOnHoverListener(this);
+//            view.setOnFocusChangeListener(this);
+//            view.setOnHoverListener(this);
             textView.setText(res);
             view.setId(res);
             if (i == 0) {
@@ -268,40 +268,40 @@ public class LaunchHeaderLayout extends FrameLayout implements View.OnClickListe
         context.startActivity(intent);
     }
 
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        ImageView imageView = (ImageView) v.findViewById(R.id.indicator_image);
-        TextView textView = (TextView) v.findViewById(R.id.weather_indicator);
-        if (hasFocus) {
-            textView.setTextColor(getResources().getColor(R.color._ff9c3c));
+//    @Override
+//    public void onFocusChange(View v, boolean hasFocus) {
+//        ImageView imageView = (ImageView) v.findViewById(R.id.indicator_image);
+//        TextView textView = (TextView) v.findViewById(R.id.weather_indicator);
+//        if (hasFocus) {
+//            textView.setTextColor(getResources().getColor(R.color._ff9c3c));
+//
+//            imageView.setVisibility(View.VISIBLE);
+//
+//        } else {
+//            textView.setTextColor(getResources().getColor(R.color.association_normal));
+//            imageView.setVisibility(View.INVISIBLE);
+//        }
+//    }
 
-            imageView.setVisibility(View.VISIBLE);
-
-        } else {
-            textView.setTextColor(getResources().getColor(R.color.association_normal));
-            imageView.setVisibility(View.INVISIBLE);
-        }
-    }
-
-    @Override
-    public boolean onHover(View v, MotionEvent event) {
-        // TODO Auto-generated method stub
-        ImageView imageView = (ImageView) v.findViewById(R.id.indicator_image);
-        TextView textView = (TextView) v.findViewById(R.id.weather_indicator);
-        if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER) {
-            textView.setTextColor(getResources().getColor(R.color._ff9c3c));
-            imageView.setVisibility(View.VISIBLE);
-            v.requestFocus();
-        } else if (event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
-            textView.setTextColor(getResources().getColor(R.color._ff9c3c));
-            imageView.setVisibility(View.VISIBLE);
-        } else {
-            textView.setTextColor(getResources().getColor(
-                    R.color.association_normal));
-            imageView.setVisibility(View.INVISIBLE);
-        }
-        return false;
-    }
+//    @Override
+//    public boolean onHover(View v, MotionEvent event) {
+//        // TODO Auto-generated method stub
+////        ImageView imageView = (ImageView) v.findViewById(R.id.indicator_image);
+//        TextView textView = (TextView) v.findViewById(R.id.weather_indicator);
+//        if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER) {
+//            textView.setTextColor(getResources().getColor(R.color._ff9c3c));
+//            imageView.setVisibility(View.VISIBLE);
+//            v.requestFocus();
+//        } else if (event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+//            textView.setTextColor(getResources().getColor(R.color._ff9c3c));
+//            imageView.setVisibility(View.VISIBLE);
+//        } else {
+//            textView.setTextColor(getResources().getColor(
+//                    R.color.association_normal));
+//            imageView.setVisibility(View.INVISIBLE);
+//        }
+//        return false;
+//    }
 
     public void hideIndicatorTable() {
         for (View textView : indicatorTableList) {
