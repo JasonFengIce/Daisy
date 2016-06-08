@@ -64,7 +64,7 @@
                     android:layout_marginLeft="@dimen/tv_guide_arrow_scroll_margin"
                     android:clickable="true"
                     android:focusable="false"
-                    android:src="@drawable/scroll_left_normal"
+                    android:src="@drawable/channel_arrow_left"
                     android:visibility="gone"
                     />
 
@@ -77,7 +77,7 @@
                     android:layout_marginRight="@dimen/tv_guide_arrow_scroll_margin"
                     android:clickable="true"
                     android:focusable="false"
-                    android:src="@drawable/scroll_right_normal"/>
+                    android:src="@drawable/channel_arrow_right"/>
 
             <ImageView
                     android:id="@+id/arrow_scroll_left"

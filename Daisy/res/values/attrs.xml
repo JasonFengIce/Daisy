@@ -167,6 +167,7 @@
         <attr name="customfocus" format="boolean"/>
         <attr name="maxfocustitle" format="integer"/>
         <attr name="needzoom" format="boolean"/>
+        <attr name="touchable" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="DaisyViewContainer">

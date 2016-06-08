@@ -28,7 +28,8 @@ public class LabelImageView extends AsyncImageView {
 	private boolean customselected;
 	private int maxfocustitle;
     private boolean drawBorder;
-    
+	private boolean touchable;
+
 	public void setDrawBorder(boolean drawBorder) {
 		this.drawBorder = drawBorder;
 	}
@@ -90,6 +91,7 @@ public class LabelImageView extends AsyncImageView {
 				false);
 		needzoom = a.getBoolean(R.styleable.LabelImageView_needzoom, false);
 		maxfocustitle = a.getInt(R.styleable.LabelImageView_maxfocustitle, 0);
+		touchable = a.getBoolean(R.styleable.LabelImageView_touchable, true);
 		a.recycle();
 		setWillNotDraw(false);
 		mRect = new Rect();
@@ -98,53 +100,73 @@ public class LabelImageView extends AsyncImageView {
 				R.drawable.vod_gv_selector);
 	}
 
-	protected void onFocusChanged(boolean gainFocus, int direction,
-			Rect previouslyFocusedRect) {
-		super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
-		if (needzoom) {
-			if (gainFocus) {
-				if(getId() != R.id.vaiety_post && getId() != R.id.image_switcher){
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		if(touchable) {
+			if (event.getAction() == MotionEvent.ACTION_UP) {
+				drawBorder = false;
+				zoomIn();
+			} else {
+				if (getId() != R.id.vaiety_post && getId() != R.id.image_switcher) {
 					bringToFront();
 				}
 				drawBorder = true;
 				getRootView().requestLayout();
 				getRootView().invalidate();
 				zoomOut();
-			} else {
-				drawBorder = false;
-				zoomIn();
 			}
 		}
+		return super.onTouchEvent(event);
 	}
+
+//	protected void onFocusChanged(boolean gainFocus, int direction,
+//			Rect previouslyFocusedRect) {
+//		super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
+//		if (needzoom) {
+//			if (gainFocus) {
+//				if(getId() != R.id.vaiety_post && getId() != R.id.image_switcher){
+//					bringToFront();
+//				}
+////				drawBorder = true;
+////				getRootView().requestLayout();
+////				getRootView().invalidate();
+////				zoomOut();
+//			} else {
+////				drawBorder = false;
+////				zoomIn();
+//			}
+//		}
+//	}
 
 	public void setFrontcolor(int frontcolor) {
 		this.frontcolor = frontcolor;
 	}
 
-	@Override
-	protected boolean dispatchHoverEvent(MotionEvent event) {
-		// TODO Auto-generated method stub
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_HOVER_ENTER:
-//			drawBorder = true;
+//	@Override
+//	protected boolean dispatchHoverEvent(MotionEvent event) {
+//		// TODO Auto-generated method stub
+//		switch (event.getAction()) {
+//		case MotionEvent.ACTION_HOVER_ENTER:
+////			drawBorder = true;
+////			requestFocus();
+////			invalidate();
+////			break;
+//		case MotionEvent.ACTION_HOVER_MOVE:
+////			drawBorder = true;
+//			if(isFocusable() && isFocusableInTouchMode())
 //			requestFocus();
-//			invalidate();
+//			setHovered(true);
+////			invalidate();
 //			break;
-		case MotionEvent.ACTION_HOVER_MOVE:
-//			drawBorder = true;
-			if(isFocusable() && isFocusableInTouchMode())
-			requestFocus();
-			setHovered(true);
-//			invalidate();
-			break;
-		case MotionEvent.ACTION_HOVER_EXIT:
-			setHovered(false);
-//			drawBorder = false;
-//			invalidate();
-			break;
-		}
-		return false;
-	}
+//		case MotionEvent.ACTION_HOVER_EXIT:
+//			setHovered(false);
+////			drawBorder = false;
+////			invalidate();
+//			break;
+//		}
+//		return false;
+//	}
 
 	@Override
 	public void draw(Canvas canvas) {

@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -259,27 +260,42 @@ public class GuideFragment extends ChannelBaseFragment {
             textView.setOnClickListener(ItemClickListener);
             frameLayout.setOnClickListener(ItemClickListener);
             textView.setTag(R.id.poster_title, i);
-            textView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    Object tagObject = v.getTag(R.id.poster_title);
-                    if (hasFocus) {
-                        ((HomeItemContainer) v.getParent())
-                                .setDrawBorder(true);
-                        ((HomeItemContainer) v.getParent()).invalidate();
-                        if (tagObject != null) {
-                            int tagindex = Integer.parseInt(tagObject.toString());
-                            if (tagindex == 0 || tagindex == 7) {
-                                ((TVGuideActivity) (getActivity())).setLastViewTag("bottom");
-                            }
-                        }
-                    } else {
-                        ((HomeItemContainer) v.getParent())
-                                .setDrawBorder(false);
-                        ((HomeItemContainer) v.getParent()).invalidate();
-                    }
-                }
-            });
+//            textView.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View view, MotionEvent motionEvent) {
+//                    if(motionEvent.getAction()==MotionEvent.ACTION_UP){
+//                        ((HomeItemContainer) view.getParent())
+//                                .setDrawBorder(false);
+//                        ((HomeItemContainer) view.getParent()).invalidate();
+//                    }else{
+//                        ((HomeItemContainer) view.getParent())
+//                                .setDrawBorder(true);
+//                        ((HomeItemContainer) view.getParent()).invalidate();
+//                    }
+//                    return false;
+//                }
+//            });
+//            textView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//                @Override
+//                public void onFocusChange(View v, boolean hasFocus) {
+//                    Object tagObject = v.getTag(R.id.poster_title);
+//                    if (hasFocus) {
+//                        ((HomeItemContainer) v.getParent())
+//                                .setDrawBorder(true);
+//                        ((HomeItemContainer) v.getParent()).invalidate();
+//                        if (tagObject != null) {
+//                            int tagindex = Integer.parseInt(tagObject.toString());
+//                            if (tagindex == 0 || tagindex == 7) {
+//                                ((TVGuideActivity) (getActivity())).setLastViewTag("bottom");
+//                            }
+//                        }
+//                    } else {
+//                        ((HomeItemContainer) v.getParent())
+//                                .setDrawBorder(false);
+//                        ((HomeItemContainer) v.getParent()).invalidate();
+//                    }
+//                }
+//            });
 
             Picasso.with(mContext).load(posters.get(i).getCustom_image()).memoryPolicy(MemoryPolicy.NO_STORE)
                     .into(itemView);

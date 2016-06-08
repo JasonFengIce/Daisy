@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:labelimage="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipChildren="false"
@@ -27,7 +28,6 @@
             android:clipToPadding="false" >
 
             <tv.ismar.daisy.views.LabelImageView
-                xmlns:labelimage="http://schemas.android.com/apk/res/tv.ismar.daisy"
                 android:id="@+id/vaiety_post"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -54,7 +54,8 @@
                     android:focusableInTouchMode="false"
                     android:paddingBottom="@dimen/entertainment_vaiety_thumb_padding"
                     android:scaleType="fitXY"
-                    android:src="@drawable/list_item_preview_bg" />
+                    android:src="@drawable/list_item_preview_bg"
+                    labelimage:touchable="false"/>
 
                 <tv.ismar.daisy.views.LabelImageView
                     android:id="@+id/vaiety_thumb2"
@@ -65,7 +66,9 @@
                     android:paddingBottom="@dimen/entertainment_vaiety_thumb_padding"
                     android:scaleType="fitXY"
                     android:layout_marginLeft="@dimen/entertainment_vaiety_fouce_label_margin"
-                    android:src="@drawable/list_item_preview_bg" />
+                    android:src="@drawable/list_item_preview_bg"
+                    labelimage:touchable="false"
+                        />
 
                 <tv.ismar.daisy.views.LabelImageView
                     android:id="@+id/vaiety_thumb3"
@@ -76,7 +79,8 @@
                     android:paddingBottom="@dimen/entertainment_vaiety_thumb_padding"
                     android:scaleType="fitXY"
                     android:layout_marginLeft="@dimen/entertainment_vaiety_fouce_label_margin"
-                    android:src="@drawable/list_item_preview_bg" />
+                    android:src="@drawable/list_item_preview_bg"
+                    labelimage:touchable="false"/>
 
                 <TextView
                     android:id="@+id/vaiety_fouce_label"
@@ -107,8 +111,6 @@
                 android:layout_height="@dimen/entertainment_vaiety_card_h"
                 android:clipChildren="false"
                 android:clipToPadding="false"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:clickable="true"
                 android:orientation="vertical"
                 android:background="@drawable/entertainment_item_bg"
@@ -119,12 +121,12 @@
                     android:id="@+id/vaiety_card1_image"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/entertainment_vaiety_card_image_h"
-                    android:focusable="false"
                     android:scaleType="fitXY"
                     android:layout_margin="@dimen/entertainment_vaiety_card_image_margin"
                     labelimage:focusbackground="@color/shawdow"
                     labelimage:focuspaddingtop="0.89"
                     labelimage:focustextsize="@dimen/entertainment_vaiety_card_image_textsize"
+                    labelimage:touchable="false"
                      />
 
                 <TextView
@@ -142,8 +144,6 @@
                 android:layout_height="@dimen/entertainment_vaiety_card_h"
                 android:clipChildren="false"
                 android:clipToPadding="false"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:clickable="true"
                 android:orientation="vertical"
                 android:layout_marginLeft="@dimen/entertainment_vaiety_card_ml"
@@ -162,6 +162,7 @@
                     labelimage:focuspaddingtop="0.89"
                     android:src="@drawable/list_item_preview_bg"
                     labelimage:focustextsize="@dimen/entertainment_vaiety_card_image_textsize"
+                    labelimage:touchable="false"
                      />
 
                 <TextView
@@ -181,8 +182,6 @@
                 android:clipToPadding="false"
                 android:orientation="vertical"
                 android:layout_below="@+id/vaiety_card1"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:clickable="true"
                 android:background="@drawable/entertainment_item_bg" >
 
@@ -191,13 +190,13 @@
                     android:id="@+id/vaiety_card3_image"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/entertainment_vaiety_card_image_h"
-                    android:focusable="false"
                     android:scaleType="fitXY"
                     android:layout_margin="@dimen/entertainment_vaiety_card_image_margin"
                     labelimage:focusbackground="@color/shawdow"
                     labelimage:focuspaddingtop="0.89"
                     android:src="@drawable/list_item_preview_bg"
                     labelimage:focustextsize="@dimen/entertainment_vaiety_card_image_textsize"
+                    labelimage:touchable="false"
                      />
 
                 <TextView
@@ -216,8 +215,6 @@
                 android:layout_height="@dimen/entertainment_vaiety_card_h"
                 android:clipChildren="false"
                 android:clipToPadding="false"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:clickable="true"
                 android:orientation="vertical"
                 android:layout_toRightOf="@+id/vaiety_card3"
@@ -230,13 +227,13 @@
                     android:id="@+id/vaiety_card4_image"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/entertainment_vaiety_card_image_h"
-                    android:focusable="false"
                     android:scaleType="fitXY"
                     android:layout_margin="@dimen/entertainment_vaiety_card_image_margin"
                     labelimage:focusbackground="@color/shawdow"
                     labelimage:focuspaddingtop="0.89"
                     android:src="@drawable/list_item_preview_bg"
                     labelimage:focustextsize="@dimen/entertainment_vaiety_card_image_textsize"
+                    labelimage:touchable="false"
                      />
 
                 <TextView
@@ -272,8 +269,6 @@
                 android:id="@+id/vaiety_channel1_image"
                 android:layout_width="@dimen/entertainment_vaiety_channel_image_w"
                 android:layout_height="@dimen/entertainment_vaiety_channel_image_h"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="@color/shawdow"
@@ -306,8 +301,6 @@
                 android:id="@+id/vaiety_channel2_image"
                 android:layout_width="@dimen/entertainment_vaiety_channel_image_w"
                 android:layout_height="@dimen/entertainment_vaiety_channel_image_h"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="@color/shawdow"
@@ -340,8 +333,6 @@
                 android:id="@+id/vaiety_channel3_image"
                 android:layout_width="@dimen/entertainment_vaiety_channel_image_w"
                 android:layout_height="@dimen/entertainment_vaiety_channel_image_h"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="@color/shawdow"
@@ -376,8 +367,6 @@
                 android:layout_height="@dimen/entertainment_vaiety_channel_image_h"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/list_item_preview_bg"
                 labelimage:focusbackground="@color/shawdow"

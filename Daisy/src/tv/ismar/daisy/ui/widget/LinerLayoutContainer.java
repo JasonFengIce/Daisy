@@ -47,27 +47,27 @@ public class LinerLayoutContainer extends LinearLayout {
 		setChildrenDrawingOrderEnabled(true);
 	}
 
-	@Override
-	protected boolean dispatchHoverEvent(MotionEvent event) {
-		// TODO Auto-generated method stub
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_HOVER_ENTER:
-			isDrawBorder = true;
-			requestFocus();
-			invalidate();
-			break;
-		case MotionEvent.ACTION_HOVER_MOVE:
-			isDrawBorder = true;
-			requestFocus();
-			invalidate();
-			break;
-		case MotionEvent.ACTION_HOVER_EXIT:
-			isDrawBorder = false;
-			invalidate();
-			break;
-		}
-		return false;
-	}
+//	@Override
+//	protected boolean dispatchHoverEvent(MotionEvent event) {
+//		// TODO Auto-generated method stub
+//		switch (event.getAction()) {
+//		case MotionEvent.ACTION_HOVER_ENTER:
+//			isDrawBorder = true;
+//			requestFocus();
+//			invalidate();
+//			break;
+//		case MotionEvent.ACTION_HOVER_MOVE:
+//			isDrawBorder = true;
+//			requestFocus();
+//			invalidate();
+//			break;
+//		case MotionEvent.ACTION_HOVER_EXIT:
+//			isDrawBorder = false;
+//			invalidate();
+//			break;
+//		}
+//		return false;
+//	}
 
 	@Override
 	protected void onAttachedToWindow() {
@@ -99,20 +99,36 @@ public class LinerLayoutContainer extends LinearLayout {
 		getRootView().invalidate();
 	}
 
+
 	@Override
-	protected void onFocusChanged(boolean gainFocus, int direction, Rect previouslyFocusedRect) {
-		super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
-		if (gainFocus) {
+	public boolean onTouchEvent(MotionEvent event) {
+		if(event.getAction()==MotionEvent.ACTION_UP){
+			isDrawBorder = false;
+			zoomIn();
+		}else{
 			isDrawBorder = true;
 			bringToFront();
 			getRootView().requestLayout();
 			getRootView().invalidate();
 			zoomOut();
-		} else {
-			isDrawBorder = false;
-			zoomIn();
 		}
+		return super.onTouchEvent(event);
 	}
+
+//	@Override
+//	protected void onFocusChanged(boolean gainFocus, int direction, Rect previouslyFocusedRect) {
+//		super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
+//		if (gainFocus) {
+//			isDrawBorder = true;
+//			bringToFront();
+//			getRootView().requestLayout();
+//			getRootView().invalidate();
+//			zoomOut();
+//		} else {
+//			isDrawBorder = false;
+//			zoomIn();
+//		}
+//	}
 
 	private void zoomIn() {
 		if (scaleSmallAnimation == null) {

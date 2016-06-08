@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.NinePatchDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -48,27 +49,27 @@ public class HomeItemContainer extends FrameLayout {
 		setChildrenDrawingOrderEnabled(true);
 	}
 
-	@Override
-	protected boolean dispatchHoverEvent(MotionEvent event) {
-		// TODO Auto-generated method stub
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_HOVER_ENTER:
-//			isDrawBorder = true;
-//			requestFocus();
+//	@Override
+//	protected boolean dispatchHoverEvent(MotionEvent event) {
+//		// TODO Auto-generated method stub
+//		switch (event.getAction()) {
+//		case MotionEvent.ACTION_HOVER_ENTER:
+////			isDrawBorder = true;
+////			requestFocus();
+////			invalidate();
+////			break;
+//		case MotionEvent.ACTION_HOVER_MOVE:
+////			isDrawBorder = true;
+//			requestFocusFromTouch();
 //			invalidate();
 //			break;
-		case MotionEvent.ACTION_HOVER_MOVE:
-//			isDrawBorder = true;
-			requestFocusFromTouch();
-			invalidate();
-			break;
-		case MotionEvent.ACTION_HOVER_EXIT:
-//			isDrawBorder = false;
-			invalidate();
-			break;
-		}
-		return false;
-	}
+//		case MotionEvent.ACTION_HOVER_EXIT:
+////			isDrawBorder = false;
+//			invalidate();
+//			break;
+//		}
+//		return false;
+//	}
 
 	@Override
 	protected void onAttachedToWindow() {
@@ -100,19 +101,34 @@ public class HomeItemContainer extends FrameLayout {
 	}
 
 	@Override
-	protected void onFocusChanged(boolean gainFocus, int direction, Rect previouslyFocusedRect) {
-		super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
-		if (gainFocus) {
+	public boolean onTouchEvent(MotionEvent event) {
+		if(event.getAction()==MotionEvent.ACTION_UP){
+			isDrawBorder = false;
+			zoomIn();
+		}else {
 			isDrawBorder = true;
+//			bringToFront();
+			getRootView().requestLayout();
+			getRootView().invalidate();
+			zoomOut();
+		}
+		return super.onTouchEvent(event);
+	}
+
+//	@Override
+//	protected void onFocusChanged(boolean gainFocus, int direction, Rect previouslyFocusedRect) {
+//		super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
+//		if (gainFocus) {
+//			isDrawBorder = true;
 //			bringToFront();
 //			getRootView().requestLayout();
 //			getRootView().invalidate();
 //			zoomOut();
-		} else {
-			isDrawBorder = false;
+//		} else {
+//			isDrawBorder = false;
 //			zoomIn();
-		}
-	}
+//		}
+//	}
 
 	private void zoomIn() {
 		if (scaleSmallAnimation == null) {

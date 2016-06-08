@@ -393,7 +393,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 if (hasFocus) {
                     scroll.requestFocus();
                     TextView tv = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
-                    scroll.getSelectedView().setBackgroundResource(R.drawable.channel_item_selectd_focus);
+                    scroll.getSelectedView().setBackgroundResource(R.drawable.channel_item_focus);
                 }
             }
         });
@@ -645,7 +645,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 View selectedView = scroll.getSelectedView();
                 TextView v = (TextView) selectedView.findViewById(R.id.channel_item);
                 if (flag && scrollFromBorder) {
-                        selectedView.setBackgroundResource(R.drawable.channel_item_selectd_focus);
+                        selectedView.setBackgroundResource(R.drawable.channel_item_focus);
                 } else {
                     //v.setTextColor(R.color._ffffff);
                         selectedView.setBackgroundResource(R.drawable.channel_item_focus);
@@ -690,7 +690,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 }
                 // if(view!=clickView){
                 if (!scrollFromBorder)
-                        view.setBackgroundResource(R.drawable.channel_item_selectd_focus);
+                        view.setBackgroundResource(R.drawable.channel_item_focus);
                 else
                         view.setBackgroundResource(R.drawable.channel_item_focus);
 //                AnimationSet animationSet = new AnimationSet(true);
@@ -778,7 +778,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             setClickChannelView(scroll.getChildAt(0));
             lastview = scroll.getChildAt(0);
 //            TextView v = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
-            scroll.getSelectedView().setBackgroundResource(R.drawable.channel_item_selectd_focus);
+            scroll.getSelectedView().setBackgroundResource(R.drawable.channel_item_focus);
                 }else{
                 lastview = scroll.getChildAt(0);
                 TextView v = (TextView) scroll.getSelectedView().findViewById(R.id.channel_item);
