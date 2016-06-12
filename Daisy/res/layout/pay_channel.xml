@@ -15,8 +15,6 @@
         android:background="@drawable/paychannel_btn_selector"
         android:text="@string/weixinpay_button_title"
         android:textColor="#FFFFFF"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:textSize="@dimen/pay_channel_weixin_textsize" />
     <Button
         android:id="@+id/zhifubao"
@@ -29,8 +27,6 @@
         android:background="@drawable/paychannel_btn_selector"
         android:text="@string/zhifubao_pay_button_title"
         android:textColor="#FFFFFF"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:textSize="@dimen/pay_channel_weixin_textsize" 
         />
     <Button
@@ -44,8 +40,6 @@
         android:background="@drawable/paychannel_btn_selector"
         android:text="@string/guanyingcard_pay_button_title"
         android:textColor="#FFFFFF"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:textSize="@dimen/pay_channel_weixin_textsize"
          />
 
@@ -60,8 +54,6 @@
         android:background="@drawable/paychannel_btn_selector"
         android:text="@string/yu_e_pay_button_title"
         android:textColor="#FFFFFF"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:textSize="@dimen/pay_channel_weixin_textsize"
          />
 

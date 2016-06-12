@@ -83,8 +83,6 @@
             android:text="@string/card_balance_submit"
             android:background="@drawable/paychannel_btn_selector"
             android:textColor="#FFF8F8FF"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:textSize="@dimen/pay_guanyingcard_card_balance_submit_textsize" />
 
         <Button
@@ -96,8 +94,6 @@
             android:text="@string/card_balance_cancel"
             android:background="@drawable/paychannel_btn_selector"
             android:textColor="#FFF8F8FF"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:textSize="@dimen/pay_guanyingcard_card_balance_cancel_textsize" />
     </RelativeLayout>
 

@@ -17,7 +17,6 @@
             android:layout_height="@dimen/purchaseFragment_item_image_height"
             labelimage:needzoom="true"
             android:scaleType="fitXY"
-            android:focusableInTouchMode="true"
             android:nextFocusLeft="@+id/vertical_divider_line"
             />
 

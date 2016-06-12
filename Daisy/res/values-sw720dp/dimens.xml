@@ -180,10 +180,10 @@
 <!-- <dimen name="related_item_image_paddingtop">3dip</dimen> -->
 <!-- <dimen name="related_item_image_paddingright">7dip</dimen> -->
 <!-- <dimen name="related_item_image_paddingbottom">12dip</dimen> -->
-<dimen name="related_item_image_paddingleft">0.67dip</dimen>
-<dimen name="related_item_image_paddingtop">0.67dip</dimen>
-<dimen name="related_item_image_paddingright">0.67dip</dimen>
-<dimen name="related_item_image_paddingbottom">0.67dip</dimen>
+<dimen name="related_item_image_paddingleft">0.00dip</dimen>
+<dimen name="related_item_image_paddingtop">0.00dip</dimen>
+<dimen name="related_item_image_paddingright">0.00dip</dimen>
+<dimen name="related_item_image_paddingbottom">0.00dip</dimen>
 <dimen name="related_item_image_quality_W">32.00dip</dimen>
 <dimen name="related_item_image_quality_H">32.00dip</dimen>
 <dimen name="related_item_image_quality_margintop">-2.00dip</dimen>
@@ -461,18 +461,18 @@
 <dimen name="ZGridView_related_selectorTopPadding">15.87dip</dimen>
 <dimen name="ZGridView_related_selectorRightPadding">15.87dip</dimen>
 <dimen name="ZGridView_related_selectorBottomPadding">-40.00dip</dimen>
-<dimen name="ZGridView_played_selectorLeftPadding">15.33dip</dimen>
-<dimen name="ZGridView_played_selectorTopPadding">14.67dip</dimen>
-<dimen name="ZGridView_played_selectorRightPadding">14.67dip</dimen>
-<dimen name="ZGridView_played_selectorBottomPadding">-15.33dip</dimen>
+<dimen name="ZGridView_played_selectorLeftPadding">12.33dip</dimen>
+<dimen name="ZGridView_played_selectorTopPadding">11.67dip</dimen>
+<dimen name="ZGridView_played_selectorRightPadding">11.67dip</dimen>
+<dimen name="ZGridView_played_selectorBottomPadding">-18.33dip</dimen>
 <dimen name="ZGridView_search_selectorLeftPadding">4.67dip</dimen>
 <dimen name="ZGridView_search_selectorTopPadding">14.00dip</dimen>
 <dimen name="ZGridView_search_selectorRight">14.00dip</dimen>
 <dimen name="ZGridView_search_selectorBottom">-26.67dip</dimen>
-<dimen name="ZGridView_packagedetail_selectorLeftPadding">0.47dip</dimen>
-<dimen name="ZGridView_packagedetail_selectorTopPadding">0.00dip</dimen>
-<dimen name="ZGridView_packagedetail_selectorRight">0.67dip</dimen>
-<dimen name="ZGridView_packagedetail_selectorBottom">-16.67dip</dimen>
+<dimen name="ZGridView_packagedetail_selectorLeftPadding">-3dip</dimen>
+<dimen name="ZGridView_packagedetail_selectorTopPadding">-3dip</dimen>
+<dimen name="ZGridView_packagedetail_selectorRight">-3dip</dimen>
+<dimen name="ZGridView_packagedetail_selectorBottom">-19.67dip</dimen>
 <dimen name="ZGridView_recommend_selectorLeftPadding">16.00dip</dimen>
 <dimen name="ZGridView_recommend_selectorTopPadding">0.67dip</dimen>
 <dimen name="ZGridView_recommend_selectorRightPadding">14.67dip</dimen>
@@ -1021,10 +1021,10 @@
 <dimen name="usercenter_storefragment_packagelist_item_text_width">224.00dp</dimen>
 <dimen name="usercenter_storefragment_packagelist_item_text_height">41.33dp</dimen>
 <dimen name="usercenter_storefragment_packagelist_marginBottom">33.33dp</dimen>
-<dimen name="usercenter_storefragment_packagelist_selectorLeftPadding">13.93dip</dimen>
-<dimen name="usercenter_storefragment_packagelist_selectorTopPadding">13.93dip</dimen>
-<dimen name="usercenter_storefragment_packagelist_selectorRightPadding">13.73dip</dimen>
-<dimen name="usercenter_storefragment_packagelist_selectorBottomPadding">-28.00dip</dimen>
+<dimen name="usercenter_storefragment_packagelist_selectorLeftPadding">11dip</dimen>
+<dimen name="usercenter_storefragment_packagelist_selectorTopPadding">11dip</dimen>
+<dimen name="usercenter_storefragment_packagelist_selectorRightPadding">11dip</dimen>
+<dimen name="usercenter_storefragment_packagelist_selectorBottomPadding">-30.00dip</dimen>
 <dimen name="usercenter_storefragment_packagelist_gridview_P">3.33dip</dimen>
 
 

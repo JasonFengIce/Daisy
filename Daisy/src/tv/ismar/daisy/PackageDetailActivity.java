@@ -200,7 +200,7 @@ public class PackageDetailActivity extends BaseActivity implements OnItemClickLi
 			titleView.setText(mRelatedItem[i].title);
 			focusView.setText(mRelatedItem[i].focus);
 			relatedHolder.setTag(mRelatedItem[i]);
-			relatedHolder.setOnHoverListener(onHoverListener);
+//			relatedHolder.setOnHoverListener(onHoverListener);
 			mRelatedVideoContainer.addView(relatedHolder);
 //			relatedHolder
 //					.setOnFocusChangeListener(mRelatedOnFocusChangeListener);

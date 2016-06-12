@@ -29,6 +29,7 @@ import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.*;
 import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.daisy.views.AlertDialogFragment;
+import tv.ismar.daisy.views.LabelImageView;
 import tv.ismar.daisy.views.LoadingDialog;
 import tv.ismar.daisy.views.ScrollableSectionList;
 
@@ -432,6 +433,7 @@ left_shadow.setOnHoverListener(new View.OnHoverListener() {
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
         // TODO Auto-generated method stub
+        ((LabelImageView)view.findViewById(R.id.list_item_preview_img)).setDrawBorder(false);
         Item item = mHGridAdapter.getItem(position);
         if (item != null) {
             if (item.is_complex) {
