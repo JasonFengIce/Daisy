@@ -23,6 +23,7 @@
         labelimage:focustextsize="@dimen/variety_dramalist_focustextsize"
         labelimage:maxfocustitle="10"
         labelimage:focusbackground="#b3303030"
+        android:layout_margin="3dp"
         />
 
     <TextView

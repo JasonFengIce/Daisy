@@ -23,7 +23,8 @@
         labelimage:focuspaddingtop="0.87"
         labelimage:focustextsize="@dimen/variety_dramalist_focustextsize"
         labelimage:focusbackground="#b3303030"
-        labelimage:maxfocustitle="10"/>
+        labelimage:maxfocustitle="10"
+        android:layout_margin="3dp"/>
     <TextView
         android:layout_width="@dimen/variety_dramalist_gridview_month_item_w"
         android:layout_height="match_parent"

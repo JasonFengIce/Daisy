@@ -832,10 +832,10 @@
 <dimen name="h3_text_size">20.00sp</dimen>
 <dimen name="h4_text_size">20.00sp</dimen>
 <dimen name="h5_text_size">16.00sp</dimen>
-<dimen name="filter_list_item_preview_img_h">126.00dp</dimen>
+<dimen name="filter_list_item_preview_img_h">120.00dp</dimen>
 <dimen name="filter_list_item_title_mt">10.00dp</dimen>
 <dimen name="filter_list_item_title_pb">22.67dp</dimen>
-<dimen name="filter_list_item_title_w">224.00dp</dimen>
+<dimen name="filter_list_item_title_w">218.00dp</dimen>
 <dimen name="filter_list_item_title_textsize">20.00sp</dimen>
 <dimen name="filter_portraitresult_top_layout_ml">148.00dip</dimen>
 <dimen name="filter_portraitresult_filter_percentage_w">1126.67dip</dimen>
@@ -997,7 +997,7 @@
 <dimen name="entertainment_vaiety_card_ml">18.00dp</dimen>
 <dimen name="entertainment_vaiety_card_subtitle_mt">-3.33dp</dimen>
 <dimen name="entertainment_vaiety_card_image_w">265.33dp</dimen>
-<dimen name="entertainment_vaiety_card_image_h">151.33dp</dimen>
+<dimen name="entertainment_vaiety_card_image_h">145.33dp</dimen>
 <dimen name="entertainment_vaiety_card_image_margin">1.33dp</dimen>
 <dimen name="entertainment_vaiety_card_image_textsize">12.00sp</dimen>
 <dimen name="entertainment_vaiety_card_subtitle_textsize">16.00sp</dimen>
@@ -1079,8 +1079,8 @@
 <dimen name="listportait_h_grid_view_pl">6.00dip</dimen>
 <!-- listportait end -->
 <!-- listportait item -->
-<dimen name="list_item_preview_img_w">169.33dp</dimen>
-<dimen name="list_item_preview_img_h">236.67dp</dimen>
+<dimen name="list_item_preview_img_w">163.33dp</dimen>
+<dimen name="list_item_preview_img_h">230.67dp</dimen>
 <dimen name="list_item_preview_img_mt">4.67dip</dimen>
 <dimen name="list_item_title_w">169.33dp</dimen>
 <dimen name="list_item_title_pt">1.33dp</dimen>
@@ -1250,7 +1250,7 @@
 <dimen name="variety_dramalist_gridview_mb">11.33dip</dimen>
 <dimen name="variety_dramalist_gridview_pt">2.67dip</dimen>
 <dimen name="variety_dramalist_gridview_plr">3.33dip</dimen>
-<dimen name="variety_dramalist_gridview_month_item_w">269.33dip</dimen>
+<dimen name="variety_dramalist_gridview_month_item_w">263.33dip</dimen>
 <dimen name="variety_dramalist_gridview_month_item_pt">19.33dip</dimen>
 <dimen name="variety_dramalist_gridview_month_item_pb">50.00dip</dimen>
 <!-- pay_person_login -->

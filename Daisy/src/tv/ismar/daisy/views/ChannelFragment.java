@@ -176,12 +176,12 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 		});
         arrow_right.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				mScrollableSectionList.scrollBy(233, 0);
-			}
-		});
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                mScrollableSectionList.scrollBy(233, 0);
+            }
+        });
         mHGridView.leftbtn = left_shadow;
         mHGridView.rightbtn = right_shadow;
         if(left_shadow!=null&&right_shadow!=null){
@@ -881,6 +881,7 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
+        ((LabelImageView)view.findViewById(R.id.list_item_preview_img)).setDrawBorder(false);
         Item item = mHGridAdapter.getItem(position);
         currentposition = position;
         if (item != null) {

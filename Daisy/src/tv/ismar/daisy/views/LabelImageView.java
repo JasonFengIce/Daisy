@@ -104,12 +104,13 @@ public class LabelImageView extends AsyncImageView {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if(touchable) {
+			Log.e("event.getAction()",event.getAction()+"");
 			if (event.getAction() == MotionEvent.ACTION_UP) {
 				drawBorder = false;
 				zoomIn();
 			} else {
 				if (getId() != R.id.vaiety_post && getId() != R.id.image_switcher) {
-					bringToFront();
+//					bringToFront();
 				}
 				drawBorder = true;
 				getRootView().requestLayout();
