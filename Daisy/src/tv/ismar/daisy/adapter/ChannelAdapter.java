@@ -73,6 +73,7 @@ public class ChannelAdapter extends HGridAdapter<ChannelEntity>  {
             holder.channelBtn = (TextView)convertView.findViewById(R.id.channel_item);
 			convertView.setTag(holder);
 		} else {
+			if(convertView.getTag() instanceof ViewHolder)
 			holder = (ViewHolder) convertView.getTag();
 		}
         convertView.setBackgroundResource(R.drawable.channel_item_normal);
