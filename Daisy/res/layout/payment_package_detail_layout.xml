@@ -188,7 +188,6 @@
         sakura:selectorTopPadding="@dimen/ZGridView_packagedetail_selectorTopPadding"
         sakura:selectorRightPadding="@dimen/ZGridView_packagedetail_selectorRight"
         sakura:selectorBottomPadding="@dimen/ZGridView_packagedetail_selectorBottom"
-        android:focusable="true"
         >
     </org.sakuratya.horizontal.ui.ZGridView>
     <Button

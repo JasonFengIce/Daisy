@@ -217,27 +217,27 @@ public class ItemDetailActivity extends BaseActivity implements
 
         if (hasFocus) {
             if (COLLECT_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.collect_focus_btn_bg);
+                v.setBackgroundResource(R.drawable.collect_selector);
             } else if (BUY_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.buybideo_focus_btn_bg);
+                v.setBackgroundResource(R.drawable.buyvideo_selector);
             } else if (PREVIEW_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.playvideo_focus_btn_bg);
+                v.setBackgroundResource(R.drawable.playvideo_selector);
             } else if (PLAY_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.playvideo_focus_btn_bg);
+                v.setBackgroundResource(R.drawable.playvideo_selector);
             } else if (DRAMA_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.dramalist_focus_btn_bg);
+                v.setBackgroundResource(R.drawable.entertain_playlist_selector);
             }
         } else {
             if (COLLECT_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.collect_normal_btn_bg);
+                v.setBackgroundResource(R.drawable.collect_selector);
             } else if (BUY_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.buyvideo_normal_btn_bg);
+                v.setBackgroundResource(R.drawable.buyvideo_selector);
             } else if (PREVIEW_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.playvideo_normal_btn_bg);
+                v.setBackgroundResource(R.drawable.playvideo_selector);
             } else if (PLAY_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.playvideo_normal_btn_bg);
+                v.setBackgroundResource(R.drawable.playvideo_selector);
             } else if (DRAMA_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.dramalist_normal_btn_bg);
+                v.setBackgroundResource(R.drawable.entertain_playlist_selector);
             }
         }
 
@@ -929,15 +929,42 @@ public class ItemDetailActivity extends BaseActivity implements
             focusView.setText(mRelatedItem[i].focus);
             relatedHolder.setTag(mRelatedItem[i]);
             mRelatedVideoContainer.addView(relatedHolder);
-            relatedHolder
-                    .setOnFocusChangeListener(mRelatedOnFocusChangeListener);
+            relatedHolder.setOnTouchListener(mOnTouchListener);
+//            relatedHolder
+//                    .setOnFocusChangeListener(mRelatedOnFocusChangeListener);
             relatedHolder.setOnClickListener(mRelatedClickListener);
-            relatedHolder.setOnHoverListener(mOnHoverListener);
+//            relatedHolder.setOnHoverListener(mOnHoverListener);
         }
         mLeftBtn.setFocusable(true);
         mLeftBtn.requestFocus();
     }
 
+    private View.OnTouchListener mOnTouchListener=new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent motionEvent) {
+            if(motionEvent.getAction()==MotionEvent.ACTION_UP){
+                TextView title = (TextView) v
+                        .findViewById(R.id.related_title);
+                title.setTextColor(0xFFF8F8FF);
+                TextView focus = (TextView) v
+                        .findViewById(R.id.related_focus);
+                focus.setTextColor(0xFFF8F8FF);
+                title.setSelected(false);
+                focus.setSelected(false);
+            }else{
+                v.setBackgroundResource(R.drawable.related_bg);
+                TextView title = (TextView) v
+                        .findViewById(R.id.related_title);
+                title.setTextColor(0xFFF8F8FF);
+                TextView focus = (TextView) v
+                        .findViewById(R.id.related_focus);
+                focus.setTextColor(0xFFF8F8FF);
+                title.setSelected(true);
+                focus.setSelected(true);
+            }
+            return false;
+        }
+    };
     private OnFocusChangeListener mRelatedOnFocusChangeListener = new OnFocusChangeListener() {
 
         @Override
@@ -1519,7 +1546,7 @@ public class ItemDetailActivity extends BaseActivity implements
                 isBuy = true;
                 setExpenseStatus();
                 if (mLeftBtn != null)
-                    mLeftBtn.setBackgroundResource(R.drawable.playvideo_focus_btn_bg);
+                    mLeftBtn.setBackgroundResource(R.drawable.zy_play_selector);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

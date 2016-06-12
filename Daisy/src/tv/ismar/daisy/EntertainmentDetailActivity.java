@@ -147,40 +147,40 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
 
         if (hasFocus) {
             if (COLLECT_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.zycollect_focus_btn_bg);
+                v.setBackgroundResource(R.drawable.entertain_collect_selector);
             } else if (BUY_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.buybideo_focus_btn_bg);
+                v.setBackgroundResource(R.drawable.film_buy_selector);
             } else if (PREVIEW_VIDEO.equals(identify)) {
                 if (isDrama()) {
-                    v.setBackgroundResource(R.drawable.zyplayvideo_focus_btn_bg);
+                    v.setBackgroundResource(R.drawable.entertain_play_selector);
                 } else {
-                    v.setBackgroundResource(R.drawable.playvideo_focus_btn_bg);
+                    v.setBackgroundResource(R.drawable.zy_play_selector);
                 }
             } else if (PLAY_VIDEO.equals(identify)) {
                 if (isDrama())
-                    v.setBackgroundResource(R.drawable.zyplayvideo_focus_btn_bg);
+                    v.setBackgroundResource(R.drawable.entertain_play_selector);
                 else
-                    v.setBackgroundResource(R.drawable.playvideo_focus_btn_bg);
+                    v.setBackgroundResource(R.drawable.zy_play_selector);
             } else if (DRAMA_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.zydramalist_focus_btn_bg);
+                v.setBackgroundResource(R.drawable.entertain_playlist_selector);
             }
         } else {
             if (COLLECT_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.zycollect_normal_btn_bg);
+                v.setBackgroundResource(R.drawable.entertain_collect_selector);
             } else if (BUY_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.buyvideo_normal_btn_bg);
+                v.setBackgroundResource(R.drawable.film_buy_selector);
             } else if (PREVIEW_VIDEO.equals(identify)) {
                 if (isDrama())
-                    v.setBackgroundResource(R.drawable.zyplayvideo_normal_btn_bg);
+                    v.setBackgroundResource(R.drawable.entertain_play_selector);
                 else
-                    v.setBackgroundResource(R.drawable.playvideo_normal_btn_bg);
+                    v.setBackgroundResource(R.drawable.zy_play_selector);
             } else if (PLAY_VIDEO.equals(identify)) {
                 if (isDrama())
-                    v.setBackgroundResource(R.drawable.zyplayvideo_normal_btn_bg);
+                    v.setBackgroundResource(R.drawable.entertain_play_selector);
                 else
-                    v.setBackgroundResource(R.drawable.playvideo_normal_btn_bg);
+                    v.setBackgroundResource(R.drawable.zy_play_selector);
             } else if (DRAMA_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.zydramalist_normal_btn_bg);
+                v.setBackgroundResource(R.drawable.entertain_playlist_selector);
             }
         }
 
@@ -1205,13 +1205,37 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             titleView.setText(mRelatedItem[i].title);
             relatedHolder.setTag(mRelatedItem[i]);
             related_video_container.addView(relatedHolder);
-            relatedHolder
-                    .setOnFocusChangeListener(mRelatedOnFocusChangeListener);
-            relatedHolder.setOnHoverListener(onHoverListener);
+            relatedHolder.setOnTouchListener(mOnTouchListener);
+//            relatedHolder
+//                    .setOnFocusChangeListener(mRelatedOnFocusChangeListener);
+//            relatedHolder.setOnHoverListener(onHoverListener);
             relatedHolder.setOnClickListener(mRelatedClickListener);
         }
     }
-
+    private View.OnTouchListener mOnTouchListener=new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent motionEvent) {
+            if(motionEvent.getAction()==MotionEvent.ACTION_UP){
+                TextView title = (TextView) v
+                        .findViewById(R.id.related_title);
+                LabelImageView img = (LabelImageView) v.findViewById(R.id.related_preview_img);
+                title.setTextColor(0xFFF8F8FF);
+                img.setDrawBorder(false);
+                img.invalidate();
+                title.setSelected(false);
+            }else{
+                TextView title = (TextView) v
+                        .findViewById(R.id.related_title);
+                LabelImageView img = (LabelImageView) v.findViewById(R.id.related_preview_img);
+                title.setTextColor(0xFFF8F8FF);
+                //img.setBackgroundResource(R.drawable.popup_bg_yellow);
+                img.setDrawBorder(true);
+                img.invalidate();
+                title.setSelected(true);
+            }
+            return false;
+        }
+    };
     private View.OnFocusChangeListener mRelatedOnFocusChangeListener = new View.OnFocusChangeListener() {
 
         @Override

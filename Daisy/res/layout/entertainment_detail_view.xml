@@ -176,8 +176,6 @@
                         android:gravity="center"
                         android:visibility="visible"
                         android:textColor="#FFFFFFFF"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
                         android:textSize="@dimen/item_detail_text_size"
                         />
 
@@ -190,8 +188,6 @@
                         android:layout_marginLeft="@dimen/entertainment_detail_btn_right_ml"
                         android:visibility="visible"
                         android:textColor="#FFFFFFFF"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
                         android:textSize="@dimen/item_detail_text_size"/>
 
                 <Button
@@ -203,8 +199,6 @@
                         android:layout_marginLeft="@dimen/entertainment_detail_btn_right_ml"
                         android:visibility="visible"
                         android:textColor="#FFFFFFFF"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
                         android:textSize="@dimen/item_detail_text_size"/>
             </LinearLayout>
         </RelativeLayout>

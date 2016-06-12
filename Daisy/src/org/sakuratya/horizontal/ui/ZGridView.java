@@ -5598,45 +5598,45 @@ public class ZGridView extends AdapterView<ListAdapter> {
 		return commonKey(keyCode, 1, event);
 	}
 
-	@Override
-	protected void onFocusChanged(boolean gainFocus, int direction,
-			Rect previouslyFocusedRect) {
-		super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
-		int closestChildIndex = -1;
-		if (gainFocus && previouslyFocusedRect != null) {
-			 previouslyFocusedRect.offset(getScrollX(), getScrollY());
-
-			// figure out which item should be selected based on previously
-			// focused rect
-			Rect otherRect = mTempRect;
-			int minDistance = Integer.MAX_VALUE;
-			final int childCount = getChildCount();
-			for (int i = 0; i < childCount; i++) {
-				// only consider view's on appropriate edge of grid
-				if (!isCandidateSelection(i, direction)) {
-					continue;
-				}
-
-				final View other = getChildAt(i);
-				other.getDrawingRect(otherRect);
-				offsetDescendantRectToMyCoords(other, otherRect);
-				int distance = getDistance(previouslyFocusedRect, otherRect,
-						direction);
-
-				if (distance < minDistance) {
-					minDistance = distance;
-					closestChildIndex = i;
-				}
-			}
-		}
-
-		if (closestChildIndex >= 0) {
-			setSelection(closestChildIndex + mFirstPosition);
-		} else {
-			requestLayout();
-		}
-		
-	}
+//	@Override
+//	protected void onFocusChanged(boolean gainFocus, int direction,
+//			Rect previouslyFocusedRect) {
+//		super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
+//		int closestChildIndex = -1;
+//		if (gainFocus && previouslyFocusedRect != null) {
+//			 previouslyFocusedRect.offset(getScrollX(), getScrollY());
+//
+//			// figure out which item should be selected based on previously
+//			// focused rect
+//			Rect otherRect = mTempRect;
+//			int minDistance = Integer.MAX_VALUE;
+//			final int childCount = getChildCount();
+//			for (int i = 0; i < childCount; i++) {
+//				// only consider view's on appropriate edge of grid
+//				if (!isCandidateSelection(i, direction)) {
+//					continue;
+//				}
+//
+//				final View other = getChildAt(i);
+//				other.getDrawingRect(otherRect);
+//				offsetDescendantRectToMyCoords(other, otherRect);
+//				int distance = getDistance(previouslyFocusedRect, otherRect,
+//						direction);
+//
+//				if (distance < minDistance) {
+//					minDistance = distance;
+//					closestChildIndex = i;
+//				}
+//			}
+//		}
+//
+//		if (closestChildIndex >= 0) {
+//			setSelection(closestChildIndex + mFirstPosition);
+//		} else {
+//			requestLayout();
+//		}
+//
+//	}
 
 	public OnFocusChangeListener mFocusListener;
 

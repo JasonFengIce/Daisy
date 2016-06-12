@@ -986,7 +986,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         mLeftBtn.setOnHoverListener(mOnHoverListener);
         mMiddleBtn.setOnHoverListener(mOnHoverListener);
         mRightBtn.setOnHoverListener(mOnHoverListener);
-        mLeftBtn.setBackgroundResource(R.drawable.filmplayvideo_focus_btn_bg);
+        mLeftBtn.setBackgroundResource(R.drawable.film_play_selector);
 
         mLeftBtn.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -1015,27 +1015,27 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
         if (hasFocus) {
             if (COLLECT_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.filmcollect_focus_btn_bg);
+                v.setBackgroundResource(R.drawable.film_collect_selector);
             } else if (BUY_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.filmbuybideo_focus_btn_bg);
+                v.setBackgroundResource(R.drawable.film_buy_selector);
             } else if (PREVIEW_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.filmplayvideo_focus_btn_bg);
+                v.setBackgroundResource(R.drawable.film_play_selector);
             } else if (PLAY_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.filmplayvideo_focus_btn_bg);
+                v.setBackgroundResource(R.drawable.film_play_selector);
             } else if (DRAMA_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.zydramalist_focus_btn_bg);
+                v.setBackgroundResource(R.drawable.zydramalist_selector);
             }
         } else {
             if (COLLECT_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.filmcollect_normal_btn_bg);
+                v.setBackgroundResource(R.drawable.film_collect_selector);
             } else if (BUY_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.filmbuyvideo_normal_btn_bg);
+                v.setBackgroundResource(R.drawable.film_buy_selector);
             } else if (PREVIEW_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.filmplayvideo_normal_btn_bg);
+                v.setBackgroundResource(R.drawable.film_play_selector);
             } else if (PLAY_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.filmplayvideo_normal_btn_bg);
+                v.setBackgroundResource(R.drawable.film_play_selector);
             } else if (DRAMA_VIDEO.equals(identify)) {
-                v.setBackgroundResource(R.drawable.zydramalist_normal_btn_bg);
+                v.setBackgroundResource(R.drawable.zydramalist_selector);
             }
         }
 
@@ -1184,9 +1184,30 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
             titleView.setText(mRelatedItem[i].title);
             relatedHolder.setTag(mRelatedItem[i]);
             related_video_container.addView(relatedHolder);
-            relatedHolder
-                    .setOnFocusChangeListener(mRelatedOnFocusChangeListener);
+//            relatedHolder.setOnFocusChangeListener(mRelatedOnFocusChangeListener);
+            relatedHolder.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    if(motionEvent.getAction()==MotionEvent.ACTION_UP){
+                        TextView title = (TextView) view.findViewById(R.id.related_title);
+                        LabelImageView img = (LabelImageView) view.findViewById(R.id.related_preview_img);
+                        title.setTextColor(0xFFF8F8FF);
+                        img.setDrawBorder(false);
+                        img.invalidate();
+                        title.setSelected(false);
+                    }else{
+                        TextView title = (TextView) view.findViewById(R.id.related_title);
+                        LabelImageView img = (LabelImageView) view.findViewById(R.id.related_preview_img);
+                        img.setDrawBorder(true);
+                        img.invalidate();
+                        title.setTextColor(0xFFF8F8FF);
+                        // img.setBackgroundResource(R.drawable.popup_bg_yellow);
 
+                        title.setSelected(true);
+                    }
+                    return false;
+                }
+            });
             relatedHolder.setOnClickListener(mRelatedClickListener);
             relatedHolder.setOnHoverListener(mOnHoverListener);
         }
@@ -1422,7 +1443,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 isBuy = true;
                 setExpenseStatus();
                 if (mLeftBtn != null)
-                    mLeftBtn.setBackgroundResource(R.drawable.filmplayvideo_focus_btn_bg);
+                    mLeftBtn.setBackgroundResource(R.drawable.film_play_selector);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
