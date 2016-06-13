@@ -13,6 +13,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.*;
 import android.provider.Settings;
+import android.support.annotation.TransitionRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.DisplayMetrics;
@@ -127,6 +128,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private CacheHttpClient cacheHttpClient;
     private HorizontalScrollView channel_list_scroll;
     private String intentFlag;
+    public boolean isMove=false;
 
     private enum LeavePosition {
         LeftTop,
@@ -1571,10 +1573,14 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             case MotionEvent.ACTION_UP:
                 int moveX= (int) event.getRawX();
                 if(downY<channel_list_scroll.getY()) {
-                    if ((moveX - downX) > 200) {
+                    if ((moveX - downX) > 50) {
                         scroll.arrowScroll(View.FOCUS_LEFT);
-                    } else if ((downX - moveX) > 200) {
+                        isMove =true;
+                    } else if ((downX - moveX) > 50) {
                         scroll.arrowScroll(View.FOCUS_RIGHT);
+                        isMove = true;
+                    }else{
+                        isMove=false;
                     }
                 }
                 break;
