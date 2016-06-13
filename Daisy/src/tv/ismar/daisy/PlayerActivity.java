@@ -2,21 +2,34 @@ package tv.ismar.daisy;
 
 import static tv.ismar.daisy.DramaListActivity.ORDER_CHECK_BASE_URL;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.concurrent.TimeUnit;
 
 import android.animation.Animator;
 import android.content.*;
 
+import android.net.Uri;
+import android.support.v4.app.FragmentTransaction;
+import android.widget.*;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.ismartv.log.interceptor.HttpLoggingInterceptor;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Retrofit;
 import tv.ismar.daisy.adapter.EntertainmentPopAdapter;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
@@ -25,7 +38,10 @@ import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.core.VodUserAgent;
+import tv.ismar.daisy.core.client.HttpAPI;
+import tv.ismar.daisy.core.client.HttpManager;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
+import tv.ismar.daisy.data.http.ItemEntity;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.AdElement;
@@ -39,6 +55,8 @@ import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.player.ISTVVodMenu;
 import tv.ismar.daisy.player.ISTVVodMenuItem;
+import tv.ismar.daisy.ui.fragment.EpisodeFragment;
+import tv.ismar.daisy.ui.fragment.EpisodeFragment.OnItemSelectedListener;
 import tv.ismar.daisy.views.IsmatvVideoView;
 import tv.ismar.daisy.views.MarqueeView;
 import tv.ismar.daisy.views.PaymentDialog;
@@ -71,24 +89,15 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import cn.ismartv.activator.utils.MD5Utils;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.ismartv.api.t.AccessProxy;
 import com.ismartv.bean.ClipInfo;
 
-public class PlayerActivity extends VodMenuAction {
+public class PlayerActivity extends VodMenuAction implements OnItemSelectedListener {
 
 	@SuppressWarnings("unused")
 	private static final String SAMPLE = "http://114.80.0.33/qyrrs?url=http%3A%2F%2Fjq.v.tvxio.com%2Fcdn%2F0%2F7b%2F78fadc2ffa42309bda633346871f26%2Fhigh%2Fslice%2Findex.m3u8&quality=high&sn=weihongchang_s52&clipid=779521&sid=85d3f919a918460d9431136d75db17f03&sign=08a868ad3c4e3b37537a13321a6f9d4b";
@@ -182,6 +191,9 @@ public class PlayerActivity extends VodMenuAction {
 	/** 左右滑动的最大速度 */
 	private int velocity = 200;
 	private PopupWindow popupWindow,itemPopWindow,EntertainmentPop;
+
+
+
 	private class ScreenSaveBrocast extends BroadcastReceiver {
 
 		@Override
@@ -193,6 +205,8 @@ public class PlayerActivity extends VodMenuAction {
 		}
 
 	}
+
+	private EpisodeFragment mEpisodeFragment;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -206,6 +220,13 @@ public class PlayerActivity extends VodMenuAction {
 		setView();
 		DisplayMetrics metric = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metric);
+
+		mEpisodeFragment = new EpisodeFragment();
+		FragmentTransaction fragmentTransaction =  getSupportFragmentManager().beginTransaction();
+		fragmentTransaction.add(R.id.episode_layout, mEpisodeFragment);
+		fragmentTransaction.hide(mEpisodeFragment);
+		fragmentTransaction.commit();
+		mEpisodeFragment.setOnItemSelectedListener(this);
 	}
 
 
@@ -485,6 +506,7 @@ public class PlayerActivity extends VodMenuAction {
 			if (urlInfo != null && item.pk == item.item_pk) {// 单集节目
 				initPlayer();
 			} else {// 电视剧单集,需要反查父类
+                fetchItemInfo(String.valueOf(item.item_pk));
 				new FetchSeriallTask().execute();
 			}
 		}
@@ -1518,6 +1540,7 @@ public class PlayerActivity extends VodMenuAction {
 			hidePanelHandler.postDelayed(hidePanelRunnable, 3000);
 		}
 
+        getSupportFragmentManager().beginTransaction().show(mEpisodeFragment).commit();
 	}
 
 	private void hidePanel() {
@@ -1533,6 +1556,7 @@ public class PlayerActivity extends VodMenuAction {
 			panelShow = false;
 //			}
 		}
+        getSupportFragmentManager().beginTransaction().hide(mEpisodeFragment).commit();
 	}
 
 	private void pauseItem() {
@@ -2736,5 +2760,102 @@ public class PlayerActivity extends VodMenuAction {
 				hidePanel();
 			}
 		});
+	}
+
+	public void fetchItemInfo(String itemId) {
+
+		Retrofit retrofit = new Retrofit.Builder()
+				.client(HttpManager.getInstance().mClient)
+				.baseUrl(appendProtocol(SimpleRestClient.root_url))
+				.addConverterFactory(GsonConverterFactory.create())
+				.build();
+		retrofit.create(HttpAPI.ApiItem.class).doRequest(itemId).enqueue(new retrofit2.Callback<ItemEntity>() {
+			@Override
+			public void onResponse(retrofit2.Response<ItemEntity> response) {
+				if (response.body()!= null){
+					ItemEntity itemEntity = response.body();
+					if (itemEntity.getSubitems() != null && itemEntity.getSubitems().length != 0) {
+						switch (itemEntity.getContentModel()){
+							case "teleplay":
+								mEpisodeFragment.setData(itemEntity, EpisodeFragment.Type.Teleplay);
+								break;
+							case "variety":
+							case "entertainment":
+								mEpisodeFragment.setData(itemEntity, EpisodeFragment.Type.Entertainment);
+								break;
+						}
+						mEpisodeFragment.setCurrentItem(item.position);
+					}
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable t) {
+
+			}
+		});
+	}
+
+	private String appendProtocol(String host) {
+		Uri uri = Uri.parse(host);
+		String url = uri.toString();
+		if (!uri.toString().startsWith("http://") && !uri.toString().startsWith("https://")) {
+			url = "http://" + host;
+		}
+
+		if (!url.endsWith("/")) {
+			url = url + "/";
+		}
+		return url;
+	}
+
+	@Override
+	public void onEpisodeItemSelected(ItemEntity.SubItem subItem) {
+		try {
+			if (item != null) {
+				callaPlay.videoExit(
+						item.item_pk,
+						item.pk,
+						item.title,
+						clip.pk,
+						currQuality,
+						0,
+						"end",
+						currPosition,
+						(System.currentTimeMillis() - startDuration),
+						item.slug, sid, "list",
+						item.content_model, "bestv");
+			}
+			else{
+				callaPlay.videoExit(
+								item.pk,
+								null,
+								item.title,
+								clip.pk,
+								currQuality,
+								0,
+								"end",
+								currPosition,
+								(System.currentTimeMillis() - startDuration),
+								item.slug, sid, "list",
+								item.content_model, "bestv");
+			}
+		} catch (Exception e) {
+			Log.e(TAG, " log Sender videoExit end " + e.toString());
+		}
+		subItemUrl = SimpleRestClient.root_url + "/api/subitem/" + subItem.getPk() + "/";
+		bundle.remove("url");
+		bundle.putString("url", subItemUrl);
+		addHistory(0);
+		if (mVideoView != null) {
+			mVideoView.setAlpha(0);
+		}
+		for (Item i : listItems) {
+			if (i.pk == subItem.getPk()) {
+				item = i;
+				break;
+			}
+		}
+		checkContinueOrPay(item.pk);
 	}
 }

@@ -225,4 +225,13 @@
         android:layout_height="match_parent"
         android:visibility="gone"
         />
+    
+    <FrameLayout
+            android:layout_alignParentRight="true"
+            android:id="@+id/episode_layout"
+            android:layout_marginTop="@dimen/episode_layout_marginTop"
+            android:layout_marginBottom="@dimen/episode_layout_marginBottom"
+            android:layout_width="@dimen/episode_layout_widht"
+            android:layout_height="match_parent"
+    />
 </RelativeLayout>

@@ -1451,4 +1451,7 @@
     <dimen name="full_channel_gridview_hs">38dp</dimen>
     <dimen name="full_channel_gridview_ml">52dp</dimen>
     <dimen name="full_channel_gridview_mt">143dp</dimen>
+    <dimen name="episode_layout_marginTop">148dp</dimen>
+    <dimen name="episode_layout_marginBottom">232dp</dimen>
+    <dimen name="episode_layout_widht">490dp</dimen>
 </resources>
