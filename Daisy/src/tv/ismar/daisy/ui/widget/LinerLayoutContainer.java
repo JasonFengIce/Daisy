@@ -100,21 +100,6 @@ public class LinerLayoutContainer extends LinearLayout {
 	}
 
 
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		if(event.getAction()==MotionEvent.ACTION_UP){
-			isDrawBorder = false;
-			zoomIn();
-		}else{
-			isDrawBorder = true;
-			bringToFront();
-			getRootView().requestLayout();
-			getRootView().invalidate();
-			zoomOut();
-		}
-		return super.onTouchEvent(event);
-	}
-
 //	@Override
 //	protected void onFocusChanged(boolean gainFocus, int direction, Rect previouslyFocusedRect) {
 //		super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);

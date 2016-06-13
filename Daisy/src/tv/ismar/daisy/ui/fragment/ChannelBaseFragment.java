@@ -83,6 +83,9 @@ public class ChannelBaseFragment extends Fragment {
     protected View.OnClickListener ItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            if(((TVGuideActivity)getActivity()).isMove){
+                return;
+            }
             String url = null;
             String contentMode = null;
             String title = null;

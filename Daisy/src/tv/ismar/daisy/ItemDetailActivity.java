@@ -949,18 +949,13 @@ public class ItemDetailActivity extends BaseActivity implements
                 TextView focus = (TextView) v
                         .findViewById(R.id.related_focus);
                 focus.setTextColor(0xFFF8F8FF);
-                title.setSelected(false);
-                focus.setSelected(false);
             }else{
-                v.setBackgroundResource(R.drawable.related_bg);
                 TextView title = (TextView) v
                         .findViewById(R.id.related_title);
                 title.setTextColor(0xFFF8F8FF);
                 TextView focus = (TextView) v
                         .findViewById(R.id.related_focus);
                 focus.setTextColor(0xFFF8F8FF);
-                title.setSelected(true);
-                focus.setSelected(true);
             }
             return false;
         }

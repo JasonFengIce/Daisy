@@ -56,8 +56,6 @@
             android:text="@string/association_fetch_verification"
             android:textColor="#FFFFFF"
             android:textSize="@dimen/h2_text_size"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             />
 
 
@@ -142,7 +140,5 @@
         android:text="@string/association_submit"
         android:textColor="#FFFFFF"
         android:textSize="@dimen/h2_text_size"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         />
 </LinearLayout>

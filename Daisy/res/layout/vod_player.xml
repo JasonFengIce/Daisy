@@ -225,7 +225,7 @@
         android:layout_height="match_parent"
         android:visibility="gone"
         />
-    
+
     <FrameLayout
             android:layout_alignParentRight="true"
             android:id="@+id/episode_layout"

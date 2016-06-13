@@ -649,7 +649,6 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		((LabelImageView)view.findViewById(R.id.list_item_preview_img)).setDrawBorder(false);
 		switch (parent.getId()) {
 		case R.id.h_grid_view:
 			Item item = mHGridAdapter.getItem(position);

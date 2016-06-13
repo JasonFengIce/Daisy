@@ -1192,14 +1192,10 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                         TextView title = (TextView) view.findViewById(R.id.related_title);
                         LabelImageView img = (LabelImageView) view.findViewById(R.id.related_preview_img);
                         title.setTextColor(0xFFF8F8FF);
-                        img.setDrawBorder(false);
-                        img.invalidate();
                         title.setSelected(false);
                     }else{
                         TextView title = (TextView) view.findViewById(R.id.related_title);
                         LabelImageView img = (LabelImageView) view.findViewById(R.id.related_preview_img);
-                        img.setDrawBorder(true);
-                        img.invalidate();
                         title.setTextColor(0xFFF8F8FF);
                         // img.setBackgroundResource(R.drawable.popup_bg_yellow);
 

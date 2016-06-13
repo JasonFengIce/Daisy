@@ -2,7 +2,6 @@ package tv.ismar.daisy;
 
 import static tv.ismar.daisy.DramaListActivity.ORDER_CHECK_BASE_URL;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -191,9 +190,14 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	/** 左右滑动的最大速度 */
 	private int velocity = 200;
 	private PopupWindow popupWindow,itemPopWindow,EntertainmentPop;
-
-
-
+	/** 最大声音 */
+	private int mMaxVolume;
+	/** 当前声音 */
+	private int mVolume = -1;
+	/** 最大亮度 */
+	private int mMaxBrightness;
+	/** 当前亮度 */
+	private float mBrightness = -1f;
 	private class ScreenSaveBrocast extends BroadcastReceiver {
 
 		@Override
@@ -864,6 +868,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 			}
 		});
 	}
+	private int screenWidth=0;
 	private void spearEvent(int compare, MotionEvent event) {
 		switch (compare) {
 			case MOVE_LEFT:
