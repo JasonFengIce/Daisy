@@ -87,7 +87,7 @@
     <color name="_202020">#202020</color>
     <drawable name="exit_focus_bg_color">#ff9c3c</drawable>
     <drawable name="_000000000">#00000000</drawable>
-
+    <color name="_e4e4e4">#e4e4e4</color>
     <color name="detail_more_bg">#33ffffff</color>
     <color name="search_bg_focus">#ffffba00</color>
     <color name="personinfo_login_button_disable">#5c626e</color>
