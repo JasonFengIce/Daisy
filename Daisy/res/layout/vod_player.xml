@@ -113,6 +113,28 @@
                 android:textColor="#ffffffff"
                 android:textSize="@dimen/vod_player_buffertext_textsize" />
         </LinearLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/yoga_seek_bg"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                />
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                />
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/PanelLayout"
@@ -144,7 +166,7 @@
                 android:progressDrawable="@drawable/vodplayer_seekbar_style"
                 android:secondaryProgress="0"
                 android:thumb="@drawable/vod_player_time_yoga"
-                android:thumbOffset="4dp" />
+                android:thumbOffset="0dp" />
             <TextView
                 android:id="@+id/endTimeText"
                 android:layout_width="98dp"

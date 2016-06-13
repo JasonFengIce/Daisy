@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import android.animation.Animator;
 import android.content.*;
 
 import org.apache.commons.lang3.StringUtils;
@@ -33,6 +34,7 @@ import tv.ismar.daisy.models.Clip;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.Quality;
+import tv.ismar.daisy.models.Subitem;
 import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.player.ISTVVodMenu;
@@ -56,6 +58,7 @@ import android.text.Layout;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -77,6 +80,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import cn.ismartv.activator.utils.MD5Utils;
 
@@ -98,7 +102,10 @@ public class PlayerActivity extends VodMenuAction {
 
 	private static final int SHORT_STEP = 1;
 	private static final int DIALOG_OK_CANCEL = 0;
-
+	private final int MOVE_LEFT = 1011;
+	private final int MOVE_RIGHT = 1012;
+	private final int MOVE_TOP = 1013;
+	private final int MOVE_BOTTOM = 1014;
 	private boolean paused = false;
 	private boolean isSeekBuffer = false;
 	private boolean panelShow = false;
@@ -106,6 +113,7 @@ public class PlayerActivity extends VodMenuAction {
 	private String urls[] = new String[6];
 	private Animation panelShowAnimation;
 	private Animation panelHideAnimation;
+	private Animation top_to_down,top_to_up;
 	// private Animation bufferHideAnimation;
 	private ImageView logoImage;
 	private RelativeLayout panelLayout;
@@ -169,6 +177,10 @@ public class PlayerActivity extends VodMenuAction {
 	private HashMap<String,Integer> adlog = new HashMap<String,Integer>();
 	private String adurl;
 	private TextView anthology;
+	/** 左右滑动的最短距离 */
+	private int distance = 100;
+	/** 左右滑动的最大速度 */
+	private int velocity = 200;
 	private PopupWindow popupWindow,itemPopWindow,EntertainmentPop;
 	private class ScreenSaveBrocast extends BroadcastReceiver {
 
@@ -194,8 +206,9 @@ public class PlayerActivity extends VodMenuAction {
 		setView();
 		DisplayMetrics metric = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metric);
-
 	}
+
+
 
 
 	@Override
@@ -215,6 +228,8 @@ public class PlayerActivity extends VodMenuAction {
 				R.anim.fly_up);
 		panelHideAnimation = AnimationUtils.loadAnimation(this,
 				R.anim.fly_down);
+		top_to_down=AnimationUtils.loadAnimation(this,R.anim.top_fly_down);
+		top_to_up=AnimationUtils.loadAnimation(this,R.anim.top_fly_up);
 		// bufferHideAnimation =
 		// AnimationUtils.loadAnimation(this,R.drawable.fade_out);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -309,26 +324,30 @@ public class PlayerActivity extends VodMenuAction {
 			@Override
 			public boolean onTouch(View v, MotionEvent keycode) {
 				// TODO Auto-generated method stub
-				switch (keycode.getAction()) {
-					case MotionEvent.ACTION_DOWN:
-						if (clipLength > 0 && !live_video) {
-							isSeek = true;
-							showPanel();
-							isBuffer = true;
-							showBuffer();
-							fastForward(SHORT_STEP);
-							mVideoView.seekTo(currPosition);
-							isSeekBuffer = true;
-							Log.d(TAG, "RIGHT seek to"
-									+ getTimeString(currPosition));
-							isSeek = false;
-							offsets = 0;
-							offn = 1;
-						}
-						break;
+//				switch (keycode.getAction()) {
+//					case MotionEvent.ACTION_DOWN:
+//						if (clipLength > 0 && !live_video) {
+//							isSeek = true;
+//							showPanel();
+//							isBuffer = true;
+//							showBuffer();
+//							fastForward(SHORT_STEP);
+//							mVideoView.seekTo(currPosition);
+//							isSeekBuffer = true;
+//							Log.d(TAG, "RIGHT seek to"
+//									+ getTimeString(currPosition));
+//							isSeek = false;
+//							offsets = 0;
+//							offn = 1;
+//						}
+//						break;
+//
+//					default:
+//						break;
 
-					default:
-						break;
+				//}
+				if(listItems.size()!=0){
+					gotoFinishPage();
 				}
 				return false;
 			}
@@ -381,7 +400,7 @@ public class PlayerActivity extends VodMenuAction {
 			else
 				itemUrl = SimpleRestClient.root_url + "/api/item/"
 						+ item.item_pk + "/";
-				if (isPreview) {
+			if (isPreview) {
 				serialItem = (Item) bundle.get("seraItem");
 				initPlayer();
 			} else {
@@ -562,33 +581,56 @@ public class PlayerActivity extends VodMenuAction {
 			return result;
 		}
 	}
-
+	long lastTouchTime=0;
+	boolean doubleTouch=true;
+	private int preX,upX;
+	private int preY,upY;
 	private void setVideoActionListener() {
+
 		mVideoView.setOnTouchListener(new OnTouchListener() {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				showPanel();
-				top_panel.setVisibility(View.VISIBLE);
-				if (isadvideoplaying)
-					return false;
-				if (isVodMenuVisible()) {
-					hideMenuHandler.post(hideMenuRunnable);
-				} else {
-					if (!paused) {
-						pauseItem();
-						playPauseImage
-								.setImageResource(R.drawable.paus);
-					} else {
-						resumeItem();
-						playPauseImage
-								.setImageResource(R.drawable.play);
-					}
+				switch (event.getAction()){
+					case MotionEvent.ACTION_DOWN:
+						preX = (int) event.getX();
+						preY = (int) event.getY();
+						long currentTime=System.currentTimeMillis();
+						if (isadvideoplaying)
+							return false;
+						if(doubleTouch==true&&currentTime-lastTouchTime<500){
+							if (!paused) {
+								pauseItem();
+								playPauseImage
+										.setImageResource(R.drawable.paus);
+							} else {
+								resumeItem();
+								playPauseImage
+										.setImageResource(R.drawable.play);
+							}
+							doubleTouch=false;
+						}else{
+							if (panelShow) {
+								//				hideMenuHandler.post(hideMenuRunnable);
+								hidePanelHandler.removeCallbacks(hidePanelRunnable);
+								hidePanelHandler.postDelayed(hidePanelRunnable, 3000);
+							} else {
+								showPanel();
+
+							}
+						}
+						lastTouchTime=currentTime;
+						doubleTouch=true;
+						break;
+					case MotionEvent.ACTION_UP:
+						upX=(int) event.getX();
+						upY=(int) event.getY();
+						spearEvent(compare(upX, upY), event);
+						break;
 				}
-				return false;
+				return true;
 			}
 		});
-
 		mVideoView
 				.setOnPreparedListenerUrl(new SmartPlayer.OnPreparedListenerUrl() {
 					@Override
@@ -756,9 +798,9 @@ public class PlayerActivity extends VodMenuAction {
 									clip.pk,
 									currQuality,
 									(System.currentTimeMillis() - startDuration),
-									speed, mediaip, sid,urls[currQuality], "bestv");
+									speed, mediaip, sid, urls[currQuality], "bestv");
 							callaPlay.videoPlayStart(item.item_pk, item.pk,
-									item.title, clip.pk, currQuality, speed,sid,
+									item.title, clip.pk, currQuality, speed, sid,
 									"bestv");
 						} else {
 							callaPlay.videoPlayLoad(
@@ -768,9 +810,9 @@ public class PlayerActivity extends VodMenuAction {
 									clip.pk,
 									currQuality,
 									(System.currentTimeMillis() - startDuration),
-									speed, mediaip, sid, urls[currQuality],"bestv");
+									speed, mediaip, sid, urls[currQuality], "bestv");
 							callaPlay.videoPlayStart(item.pk, null, item.title,
-									clip.pk, currQuality, speed,sid, "bestv");
+									clip.pk, currQuality, speed, sid, "bestv");
 						}
 					}
 					bufferText.setText(BUFFERING + " " + 100 + "%");
@@ -785,7 +827,7 @@ public class PlayerActivity extends VodMenuAction {
 			public void onTsInfo(SmartPlayer smartPlayer, Map<String, String> stringStringMap) {
 				String spd = stringStringMap.get("TsDownLoadSpeed");
 				speed = Integer.parseInt(spd);
-				speed = speed/(1024*8);
+				speed = speed / (1024 * 8);
 				mediaip = stringStringMap.get(SmartPlayer.DownLoadTsInfo.TsIpAddr);
 			}
 		});
@@ -799,6 +841,64 @@ public class PlayerActivity extends VodMenuAction {
 				mediaip = ip;
 			}
 		});
+	}
+	private void spearEvent(int compare, MotionEvent event) {
+		switch (compare) {
+			case MOVE_LEFT:
+				if (clipLength > 0 && !live_video) {
+					isSeek = true;
+					showPanel();
+					isBuffer = true;
+					showBuffer();
+					fastForward(SHORT_STEP);
+					mVideoView.seekTo(currPosition);
+					isSeekBuffer = true;
+					Log.d(TAG, "RIGHT seek to" + getTimeString(currPosition));
+					isSeek = false;
+					offsets = 0;
+					offn = 1;
+				}
+				break;
+			case MOVE_RIGHT:
+				if (clipLength > 0 && !live_video) {
+					isSeek = true;
+					showPanel();
+					isBuffer = true;
+					showBuffer();
+					fastForward(SHORT_STEP);
+					mVideoView.seekTo(currPosition);
+					isSeekBuffer = true;
+					Log.d(TAG, "RIGHT seek to" + getTimeString(currPosition));
+					isSeek = false;
+					offsets = 0;
+					offn = 1;
+				}
+				break;
+			case MOVE_TOP:
+//				if (upX<=screenWidth/2){
+//
+//				}else{
+//
+//				}
+//				break;
+			case MOVE_BOTTOM:
+//				if (upX<=screenWidth/2){
+//
+//				}else{
+//
+//				}
+//				break;
+			default:
+				break;
+		}
+	}
+	private int compare(int x, int y) {
+		int dltX = x - preX, dltY = y - preY;
+		if (Math.abs(dltX) > Math.abs(dltY)){
+			return dltX > 0 ? MOVE_RIGHT : MOVE_LEFT;
+		}else{
+			return dltX > 0 ? MOVE_TOP : MOVE_BOTTOM;
+		}
 	}
 
 	private void getAdInfo(String adpid) {
@@ -1409,7 +1509,7 @@ public class PlayerActivity extends VodMenuAction {
 		if (!panelShow) {
 			panelLayout.startAnimation(panelShowAnimation);
 			panelLayout.setVisibility(View.VISIBLE);
-			top_panel.startAnimation(panelHideAnimation);
+			top_panel.startAnimation(top_to_down);
 			top_panel.setVisibility(View.VISIBLE);
 			panelShow = true;
 			hidePanelHandler.postDelayed(hidePanelRunnable, 3000);
@@ -1422,12 +1522,16 @@ public class PlayerActivity extends VodMenuAction {
 
 	private void hidePanel() {
 		if (panelShow) {
+//			if(EntertainmentPop.isShowing()||popupWindow.isShowing()||itemPopWindow.isShowing()){
+//				return;
+//			}else {
 			panelLayout.startAnimation(panelHideAnimation);
 			panelLayout.setVisibility(View.GONE);
 
-			top_panel.startAnimation(panelShowAnimation);
+			top_panel.startAnimation(top_to_up);
 			top_panel.setVisibility(View.GONE);
 			panelShow = false;
+//			}
 		}
 	}
 
@@ -2033,14 +2137,14 @@ public class PlayerActivity extends VodMenuAction {
 		sub = menu.addSubMenu(0,
 				getResources().getString(R.string.vod_player_quality_setting));
 		if(urls[0] != null)
-		sub.addItem(1,
-				getResources().getString(R.string.vod_player_quality_medium));
+			sub.addItem(1,
+					getResources().getString(R.string.vod_player_quality_medium));
 		if(urls[1] != null)
-		sub.addItem(2,
-				getResources().getString(R.string.vod_player_quality_high));
+			sub.addItem(2,
+					getResources().getString(R.string.vod_player_quality_high));
 		if(urls[2] != null)
-		sub.addItem(3,
-				getResources().getString(R.string.vod_player_quality_ultra));
+			sub.addItem(3,
+					getResources().getString(R.string.vod_player_quality_ultra));
 		menu.addItem(20, getResources().getString(R.string.kefucentertitle));
 		menu.addItem(30, getResources().getString(R.string.playfromstarttitle));
 
@@ -2337,15 +2441,15 @@ public class PlayerActivity extends VodMenuAction {
 
 		switch (currQuality) {
 			case 0:
-				 qualityText.setText("流畅");
+				qualityText.setText("流畅");
 				//qualityText.setBackgroundResource(R.drawable.vodplayer_stream_normal);
 				break;
 			case 1:
-				 qualityText.setText("高清");
+				qualityText.setText("高清");
 				//qualityText.setBackgroundResource(R.drawable.vodplayer_stream_high);
 				break;
 			case 2:
-				 qualityText.setText("超清");
+				qualityText.setText("超清");
 				//qualityText.setBackgroundResource(R.drawable.vodplayer_stream_ultra);
 				break;
 
@@ -2355,7 +2459,7 @@ public class PlayerActivity extends VodMenuAction {
 				break;
 
 			default:
-				 qualityText.setText("流畅");
+				qualityText.setText("流畅");
 				//qualityText.setBackgroundResource(R.drawable.vodplayer_stream_normal);
 				break;
 		}
@@ -2537,8 +2641,10 @@ public class PlayerActivity extends VodMenuAction {
 	};
 	public void creatPopWindows(){
 		View pop=View.inflate(this, R.layout.quality_pop_item, null);
-		popupWindow = new PopupWindow(pop, 200, 278);
-		popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.quality_pop));
+		popupWindow = new PopupWindow(pop,getResources().getDimensionPixelSize(R.dimen.quality_pop_width), getResources().getDimensionPixelSize(R.dimen.quality_pop_height));
+		//popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.quality_pop));
+		popupWindow.setBackgroundDrawable(getResources().getDrawable(R.color._202020));
+		popupWindow.getBackground().setAlpha(102);
 		popupWindow.setFocusable(true);
 		popupWindow.setOutsideTouchable(true);
 		LinearLayout popMenu= (LinearLayout) pop.findViewById(R.id.pop);
@@ -2577,7 +2683,9 @@ public class PlayerActivity extends VodMenuAction {
 		}
 		int[] location = new int[2];
 		pop.getLocationOnScreen(location);
-		popupWindow.showAtLocation(panelLayout, Gravity.NO_GRAVITY, location[0]+2252, location[1]-380);
+		Log.i("Height",panelLayout.getHeight()+"");
+
+		popupWindow.showAtLocation(panelLayout, Gravity.NO_GRAVITY, location[0]+2325, location[1]+985);
 	}
 	View.OnClickListener listener=new View.OnClickListener() {
 		@Override
@@ -2587,24 +2695,28 @@ public class PlayerActivity extends VodMenuAction {
 					creatPopWindows();
 					break;
 				case R.id.anthology:
-					initEntertainmentPop();
-					anthology.setTextColor(getResources().getColor(R.color._ff9c3c));
+					if(listItems.size()!=0) {
+						initEntertainmentPop();
+						anthology.setTextColor(getResources().getColor(R.color._ff9c3c));
+					}
 					break;
 			}
 		}
 	};
 	public void initItmePop(){
 		View view=View.inflate(this,R.layout.quality_pop_item,null);
-		itemPopWindow =new PopupWindow(view,490,793);
-		itemPopWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.quality_pop));
+		itemPopWindow =new PopupWindow(view,490,1320);
+		itemPopWindow.setBackgroundDrawable(getResources().getDrawable(R.color._202020));
+		itemPopWindow.getBackground().setAlpha(102);
 		itemPopWindow.setFocusable(true);
 		itemPopWindow.setOutsideTouchable(true);
 
 	}
 	public void initEntertainmentPop(){
 		View view=View.inflate(this,R.layout.entet_pop,null);
-		EntertainmentPop=new PopupWindow(view,490,793);
-		EntertainmentPop.setBackgroundDrawable(getResources().getDrawable(R.drawable.quality_pop));
+		EntertainmentPop=new PopupWindow(view,490,1130);
+		EntertainmentPop.setBackgroundDrawable(getResources().getDrawable(R.color._202020));
+		EntertainmentPop.getBackground().setAlpha(102);
 		EntertainmentPop.setFocusable(true);
 		EntertainmentPop.setOutsideTouchable(true);
 		ListView list= (ListView) view.findViewById(R.id.enter_list);
@@ -2612,10 +2724,17 @@ public class PlayerActivity extends VodMenuAction {
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			//	changeItem(listItems.get(position).);
+				changeItem(listItems.get(position).pk);
 				EntertainmentPop.dismiss();
 			}
 		});
-		EntertainmentPop.showAsDropDown(top_panel,-500,0);
+		EntertainmentPop.showAsDropDown(anthology, 0, 24);
+		EntertainmentPop.setOnDismissListener(new PopupWindow.OnDismissListener() {
+			@Override
+			public void onDismiss() {
+				anthology.setTextColor(getResources().getColor(R.color._e4e4e4));
+				hidePanel();
+			}
+		});
 	}
 }
