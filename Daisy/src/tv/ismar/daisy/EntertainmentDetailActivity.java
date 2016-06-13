@@ -1220,8 +1220,6 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                         .findViewById(R.id.related_title);
                 LabelImageView img = (LabelImageView) v.findViewById(R.id.related_preview_img);
                 title.setTextColor(0xFFF8F8FF);
-                img.setDrawBorder(false);
-                img.invalidate();
                 title.setSelected(false);
             }else{
                 TextView title = (TextView) v
@@ -1229,8 +1227,6 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
                 LabelImageView img = (LabelImageView) v.findViewById(R.id.related_preview_img);
                 title.setTextColor(0xFFF8F8FF);
                 //img.setBackgroundResource(R.drawable.popup_bg_yellow);
-                img.setDrawBorder(true);
-                img.invalidate();
                 title.setSelected(true);
             }
             return false;

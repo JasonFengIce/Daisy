@@ -881,7 +881,6 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
-        ((LabelImageView)view.findViewById(R.id.list_item_preview_img)).setDrawBorder(false);
         Item item = mHGridAdapter.getItem(position);
         currentposition = position;
         if (item != null) {

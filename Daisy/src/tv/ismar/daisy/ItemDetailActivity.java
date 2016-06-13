@@ -952,7 +952,6 @@ public class ItemDetailActivity extends BaseActivity implements
                 title.setSelected(false);
                 focus.setSelected(false);
             }else{
-                v.setBackgroundResource(R.drawable.related_bg);
                 TextView title = (TextView) v
                         .findViewById(R.id.related_title);
                 title.setTextColor(0xFFF8F8FF);

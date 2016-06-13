@@ -12,18 +12,16 @@
             android:textColor="@color/list_text_color"
             android:layout_marginLeft="@dimen/weather_guide_text_margin_lr"
             android:layout_marginRight="@dimen/weather_guide_text_margin_lr"
-            android:gravity="center"
             android:id="@+id/weather_indicator"
-            android:layout_width="120dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
     <ImageView
 
-            android:visibility="visible"
+            android:visibility="invisible"
             android:scaleType="fitXY"
             android:id="@+id/indicator_image"
-            android:src="@drawable/indicator_line_selector"
             android:layout_width="120dp"
-            android:layout_height="5dp"/>
+            android:layout_height="wrap_content"/>
 
 </LinearLayout>

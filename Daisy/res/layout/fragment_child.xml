@@ -138,7 +138,7 @@
             android:layout_marginBottom="12dp"
             android:layout_marginLeft="@dimen/child_fragment_center_layout_margin_left"
             android:layout_toRightOf="@id/center_layout"
-            android:background="@drawable/selector_child_more"/>
+            android:background="@drawable/child_more_normal"/>
     </RelativeLayout>
 
 
