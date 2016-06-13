@@ -67,8 +67,6 @@
                 android:gravity="center"
                 android:text="@string/exit_account"
                 android:textColor="#FFFFFF"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:textSize="@dimen/h4_text_size"/>
 
         </RelativeLayout>
