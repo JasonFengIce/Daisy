@@ -5,11 +5,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import retrofit2.GsonConverterFactory;
+import retrofit2.Retrofit;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.core.VodUserAgent;
+import tv.ismar.daisy.core.client.HttpAPI;
+import tv.ismar.daisy.core.client.HttpManager;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
+import tv.ismar.daisy.data.http.ItemEntity;
 import tv.ismar.daisy.models.Clip;
 import tv.ismar.daisy.models.Favorite;
 import tv.ismar.daisy.models.History;
@@ -25,11 +30,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -53,6 +60,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.ismartv.activator.utils.MD5Utils;
+import tv.ismar.daisy.ui.fragment.EpisodeFragment;
 
 import com.ismartv.api.t.AccessProxy;
 import com.ismartv.bean.ClipInfo;
@@ -73,7 +81,7 @@ import com.qiyi.sdk.player.PlayerSdk;
 import com.qiyi.sdk.player.PlayerSdk.OnInitializedListener;
 import com.qiyi.sdk.player.SdkVideo;
 
-public class QiYiPlayActivity extends VodMenuAction {
+public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.OnItemSelectedListener {
     private static final int MSG_AD_COUNTDOWN = 100;
     private static final int MSG_PLAY_TIME = 101;
     private static final int MSG_INITQUALITYTITLE = 102;
@@ -180,6 +188,8 @@ public class QiYiPlayActivity extends VodMenuAction {
         DEFINITION_NAMES.put(BitStream.BITSTREAM_4K_H265, "H265_4K");
     }
 
+    private EpisodeFragment mEpisodeFragment;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -190,6 +200,13 @@ public class QiYiPlayActivity extends VodMenuAction {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         shardpref = AccountSharedPrefs.getInstance();
         setContentView(R.layout.vod_player);
+
+        mEpisodeFragment = new EpisodeFragment();
+        FragmentTransaction fragmentTransaction =  getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.episode_layout, mEpisodeFragment);
+        fragmentTransaction.hide(mEpisodeFragment);
+        fragmentTransaction.commit();
+        mEpisodeFragment.setOnItemSelectedListener(this);
     }
 
     public void initView() {
@@ -316,11 +333,15 @@ public class QiYiPlayActivity extends VodMenuAction {
         simpleRestClient = new SimpleRestClient();
 //		if("false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
         new initPlayTask().execute();
+
+        fetchItemInfo(String.valueOf(item.item_pk));
 //		}else{
 //			gesture_tipview.setVisibility(View.VISIBLE);
 //			setGesturebackground(gesture_tipview, R.drawable.play_gesture);
 //		}
     }
+
+
 
     private class initPlayTask extends AsyncTask<String, Void, Void> {
 
@@ -790,6 +811,7 @@ public class QiYiPlayActivity extends VodMenuAction {
             panelLayout.setVisibility(View.GONE);
             panelShow = false;
         }
+        getSupportFragmentManager().beginTransaction().hide(mEpisodeFragment).commit();
     }
 
     private void showPanel() {
@@ -804,7 +826,7 @@ public class QiYiPlayActivity extends VodMenuAction {
             hidePanelHandler.removeCallbacks(hidePanelRunnable);
             hidePanelHandler.postDelayed(hidePanelRunnable, 3000);
         }
-
+        getSupportFragmentManager().beginTransaction().show(mEpisodeFragment).commit();
     }
 
     private void pauseItem() {
@@ -2132,5 +2154,98 @@ public class QiYiPlayActivity extends VodMenuAction {
         Intent intent = new Intent();
         intent.setAction("cn.ismar.sakura.launcher");
         startActivity(intent);
+    }
+
+    @Override
+    public void onEpisodeItemSelected(ItemEntity.SubItem msubItem) {
+        try {
+            if (subItem != null)
+                callaPlay
+                        .videoExit(
+                                item.pk,
+                                subItem.pk,
+                                subItem.title,
+                                clip.pk,
+                                currQuality,
+                                0,
+                                "end",
+                                currPosition,
+                                (System.currentTimeMillis() - startDuration),
+                                item.slug, sid, item.fromPage,
+                                item.content_model,"qiyi");// String
+            else
+                callaPlay
+                        .videoExit(
+                                item.pk,
+                                null,
+                                item.title,
+                                clip.pk,
+                                currQuality,
+                                0,
+                                "end",
+                                currPosition,
+                                (System.currentTimeMillis() - startDuration),
+                                item.slug, sid, item.fromPage,
+                                item.content_model,"qiyi");
+        } catch (Exception e) {
+            Log.e(TAG, " log Sender videoExit end " + e.toString());
+        }
+        subItemUrl = simpleRestClient.root_url + "/api/subitem/" + msubItem.getPk() + "/";
+        bundle.remove("url");
+        bundle.putString("url", subItemUrl);
+        currPosition = 0;
+        tempOffset = 0;
+        addHistory(currPosition);
+        mPlayer.stop();
+        isBuffer = true;
+        showBuffer();
+        new ItemByUrlTask().execute();
+    }
+
+    public void fetchItemInfo(String itemId) {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .client(HttpManager.getInstance().mClient)
+                .baseUrl(appendProtocol(SimpleRestClient.root_url))
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        retrofit.create(HttpAPI.ApiItem.class).doRequest(itemId).enqueue(new retrofit2.Callback<ItemEntity>() {
+            @Override
+            public void onResponse(retrofit2.Response<ItemEntity> response) {
+                if (response.body()!= null){
+                    ItemEntity itemEntity = response.body();
+                    if (itemEntity.getSubitems() != null && itemEntity.getSubitems().length != 0) {
+                        switch (itemEntity.getContentModel()){
+                            case "teleplay":
+                                mEpisodeFragment.setData(itemEntity, EpisodeFragment.Type.Teleplay);
+                                break;
+                            case "variety":
+                            case "entertainment":
+                                mEpisodeFragment.setData(itemEntity, EpisodeFragment.Type.Entertainment);
+                                break;
+                        }
+                        mEpisodeFragment.setCurrentItem(item.position);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
+
+    private String appendProtocol(String host) {
+        Uri uri = Uri.parse(host);
+        String url = uri.toString();
+        if (!uri.toString().startsWith("http://") && !uri.toString().startsWith("https://")) {
+            url = "http://" + host;
+        }
+
+        if (!url.endsWith("/")) {
+            url = url + "/";
+        }
+        return url;
     }
 }
