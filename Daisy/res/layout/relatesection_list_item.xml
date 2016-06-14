@@ -3,8 +3,6 @@
     android:layout_width="@dimen/channel_section_tabs_W"
     android:layout_height="match_parent"
     android:id="@+id/section_item_layout"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
  >
     
         <ProgressBar

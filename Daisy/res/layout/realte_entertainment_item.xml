@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/list_item_layout"
-    android:focusable="true"
     android:clipChildren="false"
     android:clipToPadding="false">
     <tv.ismar.daisy.views.LabelImageView

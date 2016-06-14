@@ -28,7 +28,6 @@
             android:layout_height="wrap_content"
             sakura:horizontalSpace="@dimen/usercenter_storefragment_packagelist_horizontalSpacing"
             sakura:verticalSpace="@dimen/usercenter_storefragment_packagelist_verticalSpacing"
-            sakura:listSelector="@drawable/vod_gv_selector"
             sakura:numColumns="4"
             sakura:stretchMode="columnWidth"
             sakura:selectorLeftPadding="@dimen/usercenter_storefragment_packagelist_selectorLeftPadding"

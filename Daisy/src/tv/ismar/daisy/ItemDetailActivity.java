@@ -167,7 +167,7 @@ public class ItemDetailActivity extends BaseActivity implements
         detail_tag_txt = (RotateTextView) findViewById(R.id.detail_tag_txt);
         detail_permission_txt = (TextView) findViewById(R.id.detail_permission_txt);
         source = (ImageView) findViewById(R.id.source);
-        mMoreContent.setOnFocusChangeListener(mRelatedOnFocusChangeListener);
+//        mMoreContent.setOnFocusChangeListener(mRelatedOnFocusChangeListener);
         mLeftBtn.setOnFocusChangeListener(mLeftElementFocusChangeListener);
         // mBtnRight.setOnFocusChangeListener(mLeftElementFocusChangeListener);
         // mBtnFill.setOnFocusChangeListener(mLeftElementFocusChangeListener);
@@ -929,7 +929,6 @@ public class ItemDetailActivity extends BaseActivity implements
             focusView.setText(mRelatedItem[i].focus);
             relatedHolder.setTag(mRelatedItem[i]);
             mRelatedVideoContainer.addView(relatedHolder);
-            relatedHolder.setOnTouchListener(mOnTouchListener);
 //            relatedHolder
 //                    .setOnFocusChangeListener(mRelatedOnFocusChangeListener);
             relatedHolder.setOnClickListener(mRelatedClickListener);
@@ -938,62 +937,40 @@ public class ItemDetailActivity extends BaseActivity implements
         mLeftBtn.setFocusable(true);
         mLeftBtn.requestFocus();
     }
-
-    private View.OnTouchListener mOnTouchListener=new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent motionEvent) {
-            if(motionEvent.getAction()==MotionEvent.ACTION_UP){
-                TextView title = (TextView) v
-                        .findViewById(R.id.related_title);
-                title.setTextColor(0xFFF8F8FF);
-                TextView focus = (TextView) v
-                        .findViewById(R.id.related_focus);
-                focus.setTextColor(0xFFF8F8FF);
-            }else{
-                TextView title = (TextView) v
-                        .findViewById(R.id.related_title);
-                title.setTextColor(0xFFF8F8FF);
-                TextView focus = (TextView) v
-                        .findViewById(R.id.related_focus);
-                focus.setTextColor(0xFFF8F8FF);
-            }
-            return false;
-        }
-    };
-    private OnFocusChangeListener mRelatedOnFocusChangeListener = new OnFocusChangeListener() {
-
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (v.getParent() == mRelatedVideoContainer) {
-                if (hasFocus) {
-                    v.setBackgroundResource(R.drawable.related_bg);
-                    TextView title = (TextView) v
-                            .findViewById(R.id.related_title);
-                    title.setTextColor(0xFFF8F8FF);
-                    TextView focus = (TextView) v
-                            .findViewById(R.id.related_focus);
-                    focus.setTextColor(0xFFF8F8FF);
-                    title.setSelected(true);
-                    focus.setSelected(true);
-                } else {
-                    TextView title = (TextView) v
-                            .findViewById(R.id.related_title);
-                    title.setTextColor(0xFFF8F8FF);
-                    TextView focus = (TextView) v
-                            .findViewById(R.id.related_focus);
-                    focus.setTextColor(0xFFF8F8FF);
-                    title.setSelected(false);
-                    focus.setSelected(false);
-                }
-            }
+//    private OnFocusChangeListener mRelatedOnFocusChangeListener = new OnFocusChangeListener() {
+//
+//        @Override
+//        public void onFocusChange(View v, boolean hasFocus) {
+//            if (v.getParent() == mRelatedVideoContainer) {
+//                if (hasFocus) {
+//                    v.setBackgroundResource(R.drawable.related_bg);
+//                    TextView title = (TextView) v
+//                            .findViewById(R.id.related_title);
+//                    title.setTextColor(0xFFF8F8FF);
+//                    TextView focus = (TextView) v
+//                            .findViewById(R.id.related_focus);
+//                    focus.setTextColor(0xFFF8F8FF);
+//                    title.setSelected(true);
+//                    focus.setSelected(true);
+//                } else {
+//                    TextView title = (TextView) v
+//                            .findViewById(R.id.related_title);
+//                    title.setTextColor(0xFFF8F8FF);
+//                    TextView focus = (TextView) v
+//                            .findViewById(R.id.related_focus);
+//                    focus.setTextColor(0xFFF8F8FF);
+//                    title.setSelected(false);
+//                    focus.setSelected(false);
+//                }
+//            }
 //			if (hasFocus) {
 //				mDetailRightContainer
 //						.setBackgroundResource(android.R.color.transparent);
 //				mDetailLeftContainer
 //						.setBackgroundResource(R.drawable.left_bg_unfocused);
 //			}
-        }
-    };
+//        }
+//    };
 
     private OnFocusChangeListener mLeftElementFocusChangeListener = new OnFocusChangeListener() {
 

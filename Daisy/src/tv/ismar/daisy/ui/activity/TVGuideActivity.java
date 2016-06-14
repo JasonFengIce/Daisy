@@ -1573,10 +1573,10 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             case MotionEvent.ACTION_UP:
                 int moveX= (int) event.getRawX();
                 if(downY<channel_list_scroll.getY()) {
-                    if ((moveX - downX) > 10) {
+                    if ((moveX - downX) > 50) {
                         scroll.arrowScroll(View.FOCUS_LEFT);
                         isMove =true;
-                    } else if ((downX - moveX) > 10) {
+                    } else if ((downX - moveX) > 50) {
                         scroll.arrowScroll(View.FOCUS_RIGHT);
                         isMove = true;
                     }else{
