@@ -408,6 +408,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
                 startPlayMovie(qiyiInfo);
                 getIntent().putExtra("item", subItem);
                 titleText.setText(subItem.title);
+                mEpisodeFragment.setCurrentItem(currNum);
             } else {
                 // ExToClosePlayer("url"," m3u8 quality is null ,or get m3u8 err");
             }
