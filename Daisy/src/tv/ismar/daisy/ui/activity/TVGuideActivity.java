@@ -28,6 +28,12 @@ import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
 import com.baidu.location.*;
 import com.google.gson.Gson;
+import com.koushikdutta.async.http.WebSocket;
+import com.koushikdutta.async.http.server.AsyncHttpServer;
+import com.koushikdutta.async.http.server.AsyncHttpServerRequest;
+import com.koushikdutta.async.http.server.AsyncHttpServerResponse;
+import com.koushikdutta.async.http.server.HttpServerRequestCallback;
+
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -295,6 +301,23 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 vv.setBackgroundDrawable(bitmapDrawable);
             }
         });
+        AsyncHttpServer server = new AsyncHttpServer();
+
+        List<WebSocket> _sockets = new ArrayList<WebSocket>();
+
+        server.get("/", new HttpServerRequestCallback() {
+            @Override
+            public void onRequest(AsyncHttpServerRequest request, AsyncHttpServerResponse response) {
+                response.send("Hello!!!");
+                Log.i("onRequest","htmlRequest");
+                Intent intent =new Intent();
+                intent.setAction("tv.ismar.daisy.Channel");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+              //  request.getQuery().getString("")
+            }
+        });
+        server.listen(5000);
 
 
         vv.setOnKeyListener(new View.OnKeyListener() {
@@ -1587,4 +1610,5 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         }
         return super.dispatchTouchEvent(event);
     }
+
 }

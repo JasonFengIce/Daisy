@@ -2732,15 +2732,6 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 			}
 		}
 	};
-	public void initItmePop(){
-		View view=View.inflate(this,R.layout.quality_pop_item,null);
-		itemPopWindow =new PopupWindow(view,490,1320);
-		itemPopWindow.setBackgroundDrawable(getResources().getDrawable(R.color._202020));
-		itemPopWindow.getBackground().setAlpha(102);
-		itemPopWindow.setFocusable(true);
-		itemPopWindow.setOutsideTouchable(true);
-
-	}
 	public void initEntertainmentPop(){
 		View view=View.inflate(this,R.layout.entet_pop,null);
 		EntertainmentPop=new PopupWindow(view,490,1130);
@@ -2762,7 +2753,6 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 			@Override
 			public void onDismiss() {
 				anthology.setTextColor(getResources().getColor(R.color._e4e4e4));
-				hidePanel();
 			}
 		});
 	}
