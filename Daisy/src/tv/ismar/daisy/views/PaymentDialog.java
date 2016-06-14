@@ -76,7 +76,7 @@ public class PaymentDialog extends Dialog implements
 	private static final String GETBALANCE_BASE_URL = "/accounts/balance/";
 	private static final String CARDRECHARGE_BASE_URL = "https://order.tvxio.com/api/pay/verify/";
 	public static final String PURCHASE_PRUCHASE_BASE_URL = "/api/order/purchase/";
-	public static final String PURCHASE_CHECK_BASE_URL = "/api/order/check/";
+	public static final String PURCHASE_CHECK_BASE_URL = "/api/play/check/";
 	public static final String ALI_PAY = "/api/order/choose_way/";
 	private static final int REFRESH_PAY_STATUS = 0x10;
 	private static final int SETQRCODE_VIEW = 0x11;

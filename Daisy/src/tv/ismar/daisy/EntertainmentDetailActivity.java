@@ -675,7 +675,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
 
     private void isbuy() {
         SimpleRestClient simpleRestClient = new SimpleRestClient();
-        simpleRestClient.doSendRequest("/api/order/check/", "post",
+        simpleRestClient.doSendRequest("/api/play/check/", "post",
                 "device_token=" + SimpleRestClient.device_token
                         + "&access_token=" + SimpleRestClient.access_token
                         + "&item=" + mItem.pk, new SimpleRestClient.HttpPostRequestInterface() {
