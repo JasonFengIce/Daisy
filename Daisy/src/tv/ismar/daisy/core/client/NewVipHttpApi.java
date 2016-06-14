@@ -44,7 +44,7 @@ public class NewVipHttpApi {
 
     public interface OrderCheck {
         @FormUrlEncoded
-        @POST("api/order/check/")
+        @POST("api/play/check/")
         Call<ResponseBody> doRequest(
                 @Field("item") String item,
                 @Field("package") String pkg,
