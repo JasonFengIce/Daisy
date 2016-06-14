@@ -628,7 +628,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             case Overlay:
                 textView.setTextColor(getResources().getColor(R.color._ffffff));
                 textSelectImage.setVisibility(View.INVISIBLE);
-                textFocusImage.setImageResource(R.drawable.usercenter_indicator_overlay);
+                textFocusImage.setImageResource(R.drawable.usercenter_indicator_focused);
                 textFocusImage.setVisibility(View.VISIBLE);
                 break;
             case None:

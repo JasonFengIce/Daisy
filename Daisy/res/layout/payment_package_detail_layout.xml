@@ -181,7 +181,6 @@
         android:layout_marginLeft="@dimen/vod_payment_item_of_package_container_ML"
         android:layout_marginTop="@dimen/vod_payment_item_of_package_container_MT"
         sakura:horizontalSpace="@dimen/vod_payment_item_of_package_container_horizontalSpace"
-        sakura:listSelector="@drawable/vod_gv_selector"
         sakura:numColumns="3"
         sakura:stretchMode="columnWidth"
         sakura:selectorLeftPadding="@dimen/ZGridView_packagedetail_selectorLeftPadding"
