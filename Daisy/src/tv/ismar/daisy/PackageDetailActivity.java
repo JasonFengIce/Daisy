@@ -311,7 +311,7 @@ public class PackageDetailActivity extends BaseActivity implements OnItemClickLi
 	ViewHolder holder;
 	  private void isbuy(){
 		  SimpleRestClient simpleRestClient = new SimpleRestClient();
-		  simpleRestClient.doSendRequest("/api/order/check/","post", "device_token="+SimpleRestClient.device_token+"&access_token="
+		  simpleRestClient.doSendRequest("/api/play/check/","post", "device_token="+SimpleRestClient.device_token+"&access_token="
 		  +SimpleRestClient.access_token+"&package="+ mItem.pk, new HttpPostRequestInterface() {
 			//subitem=214277
 			@Override

@@ -675,7 +675,7 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
 
     private void isbuy() {
         SimpleRestClient simpleRestClient = new SimpleRestClient();
-        simpleRestClient.doSendRequest("/api/order/check/", "post",
+        simpleRestClient.doSendRequest("/api/play/check/", "post",
                 "device_token=" + SimpleRestClient.device_token
                         + "&access_token=" + SimpleRestClient.access_token
                         + "&item=" + mItem.pk, new SimpleRestClient.HttpPostRequestInterface() {
@@ -1205,33 +1205,12 @@ public class EntertainmentDetailActivity extends BaseActivity implements AsyncIm
             titleView.setText(mRelatedItem[i].title);
             relatedHolder.setTag(mRelatedItem[i]);
             related_video_container.addView(relatedHolder);
-            relatedHolder.setOnTouchListener(mOnTouchListener);
 //            relatedHolder
 //                    .setOnFocusChangeListener(mRelatedOnFocusChangeListener);
 //            relatedHolder.setOnHoverListener(onHoverListener);
             relatedHolder.setOnClickListener(mRelatedClickListener);
         }
     }
-    private View.OnTouchListener mOnTouchListener=new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent motionEvent) {
-            if(motionEvent.getAction()==MotionEvent.ACTION_UP){
-                TextView title = (TextView) v
-                        .findViewById(R.id.related_title);
-                LabelImageView img = (LabelImageView) v.findViewById(R.id.related_preview_img);
-                title.setTextColor(0xFFF8F8FF);
-                title.setSelected(false);
-            }else{
-                TextView title = (TextView) v
-                        .findViewById(R.id.related_title);
-                LabelImageView img = (LabelImageView) v.findViewById(R.id.related_preview_img);
-                title.setTextColor(0xFFF8F8FF);
-                //img.setBackgroundResource(R.drawable.popup_bg_yellow);
-                title.setSelected(true);
-            }
-            return false;
-        }
-    };
     private View.OnFocusChangeListener mRelatedOnFocusChangeListener = new View.OnFocusChangeListener() {
 
         @Override

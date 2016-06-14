@@ -149,7 +149,6 @@
             android:layout_height="match_parent"
             sakura:columnWidth="@dimen/playfinish_gridview_item_linearimage_W"
             sakura:horizontalSpace="@dimen/play_finished_gridview_related_horizontalSpace"
-            sakura:listSelector="@drawable/vod_gv_selector"
             sakura:numColumns="3"
             sakura:stretchMode="columnWidth"
             sakura:verticalSpace="@dimen/play_finished_gridview_related_verticalSpace"

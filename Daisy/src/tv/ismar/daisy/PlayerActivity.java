@@ -198,6 +198,17 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	private int mMaxBrightness;
 	/** 当前亮度 */
 	private float mBrightness = -1f;
+
+	public float getScreenWidth() {
+		DisplayMetrics metric = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(metric);
+		int width = metric.widthPixels;     // 屏幕宽度（像素）
+		int height = metric.heightPixels;   // 屏幕高度（像素）
+		float density = metric.density;      // 屏幕密度（0.75 / 1.0 / 1.5）
+		int densityDpi = metric.densityDpi;  // 屏幕密度DPI（120 / 160 / 240）
+		return width/density;
+	}
+
 	private class ScreenSaveBrocast extends BroadcastReceiver {
 
 		@Override
@@ -611,6 +622,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	boolean doubleTouch=true;
 	private int preX,upX;
 	private int preY,upY;
+	private int moveX,moveY;
 	private void setVideoActionListener() {
 
 		mVideoView.setOnTouchListener(new OnTouchListener() {
@@ -647,6 +659,11 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 						}
 						lastTouchTime=currentTime;
 						doubleTouch=true;
+						break;
+					case MotionEvent.ACTION_MOVE:
+						moveX= (int) event.getX();
+						moveY= (int) event.getY();
+						spearEvent(compare(moveX,moveY),event);
 						break;
 					case MotionEvent.ACTION_UP:
 						upX=(int) event.getX();
@@ -868,7 +885,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 			}
 		});
 	}
-	private int screenWidth=0;
+	private float screenWidth=2560;
 	private void spearEvent(int compare, MotionEvent event) {
 		switch (compare) {
 			case MOVE_LEFT:
@@ -902,12 +919,17 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 				}
 				break;
 			case MOVE_TOP:
-//				if (upX<=screenWidth/2){
-//
-//				}else{
-//
-//				}
-//				break;
+				float diffY=moveY-preY;
+				if (moveX<=screenWidth/2){
+					//亮度切换
+					onBrightnessSlide(diffY/1000);
+					Log.e("scroll^^1^^",diffY+"");
+				}else{
+					//音量切换
+					onVolumnSlide(diffY / 1000);
+					Log.e("scroll^^2^^",diffY+"");
+				}
+				break;
 			case MOVE_BOTTOM:
 //				if (upX<=screenWidth/2){
 //
@@ -919,6 +941,16 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 				break;
 		}
 	}
+
+	private void onVolumnSlide(float percentage) {
+
+
+	}
+
+	private void onBrightnessSlide(float percentage) {
+
+	}
+
 	private int compare(int x, int y) {
 		int dltX = x - preX, dltY = y - preY;
 		if (Math.abs(dltX) > Math.abs(dltY)){

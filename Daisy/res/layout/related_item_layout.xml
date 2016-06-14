@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_detail_related_H"
     android:layout_marginLeft="@dimen/related_item_layout_marginleft"
-    android:background="@drawable/related_bg"
     android:paddingLeft="@dimen/related_item_image_marginleft"
    android:gravity="center_vertical">
     
@@ -82,6 +81,7 @@
         android:singleLine="true"
         android:layout_marginLeft="@dimen/related_item_related_price_txt_marginleft"
         android:textSize="@dimen/related_item_related_price_txt_size"
+        android:textColor="#ffffff"
         android:background="@drawable/vodcategory_gv_item_price"/>
     <TextView
         android:id="@+id/related_title"

@@ -48,7 +48,7 @@ public class DramaListActivity extends BaseActivity implements
 		OnItemSelectedListener, OnItemClickListener {
 
 	private static final String TAG = "DramaListActivity";
-	public static String ORDER_CHECK_BASE_URL ="/api/order/check/";
+	public static String ORDER_CHECK_BASE_URL ="/api/play/check/";
     public final static int visableItems = 30;
     private final static int DISABLE_ORDER_ALL_DRANA = 0x10;
     private final static int ORDER_ALL_DRANA_SUCCESS = 0x11;
