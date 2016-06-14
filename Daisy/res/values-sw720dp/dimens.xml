@@ -1489,4 +1489,10 @@
     <dimen name="quality_popitem_texttop">17dp</dimen>
     <dimen name="enter_text_left">4dp</dimen>
     <dimen name="enter_text_height">66.67dp</dimen>
+    <dimen name="episode_layout_marginTop">73.33dp</dimen>
+    <dimen name="episode_layout_marginBottom">113.33dp</dimen>
+    <dimen name="episode_layout_widht">326.67dp</dimen>
+    <dimen name="item_layout_width">80.00dp</dimen>
+    <dimen name="item_layout_height">66.67dp</dimen>
+    <dimen name="episode_item_height">40.00dp</dimen>
 </resources>
