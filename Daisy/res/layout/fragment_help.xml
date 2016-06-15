@@ -100,7 +100,7 @@
         <ImageButton
                 android:id="@+id/ismartv_icon"
                 android:background="@drawable/launcher_selector"
-                android:layout_marginTop="@dimen/usercenter_help_icon_margin_top"
+                android:layout_marginTop="@dimen/usercenter_help_shipinkefu_margin_top"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/ismartv_icon"
                 android:layout_width="wrap_content"
@@ -115,6 +115,20 @@
                 android:textSize="@dimen/usercenter_fragment_help_ismartv_introduction_text_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-
+            <TextView
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="#FFFFFF"
+                    android:text="@string/cn_copyright"
+                    android:layout_marginTop="@dimen/usercenter_help_copyright_margin_top"
+                    android:textSize="@dimen/usercenter_fragment_help_ismartv_copyright_text_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            <TextView
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="#FFFFFF"
+                    android:text="@string/en_copyright"
+                    android:textSize="@dimen/usercenter_fragment_help_ismartv_copyright_text_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
     </LinearLayout>
 </LinearLayout>

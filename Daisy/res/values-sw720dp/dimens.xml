@@ -765,11 +765,13 @@
 <dimen name="usercenter_fragment_help_ismartv_introduction_margin_right">26.67dp</dimen>
 <dimen name="usercenter_fragment_help_ismartv_introduction_margin_top">33.33dp</dimen>
 <dimen name="usercenter_fragment_help_ismartv_introduction_text_size">24.00dp</dimen>
+<dimen name="usercenter_fragment_help_ismartv_copyright_text_size">20.00sp</dimen>
 <dimen name="usercenter_fragment_help_ismartv_introduction_lineSpacingExtra">23.33dp</dimen>
 <dimen name="usercenter_help_contact_margin_left">90.00dp</dimen>
 <dimen name="usercenter_help_helpcenter_text_margin_top">40.00dp</dimen>
 <dimen name="usercenter_help_icon_margin_top">56.67dp</dimen>
 <dimen name="usercenter_help_shipinkefu_margin_top">13.33dp</dimen>
+<dimen name="usercenter_help_copyright_margin_top">9dp</dimen>
 <dimen name="usercenter_info_layout_margin_left">26.67dp</dimen>
 <dimen name="usercenter_info_device_number_margin_top">23.33dp</dimen>
 <dimen name="usercenter_info_association_pop_widht">913.33dp</dimen>
