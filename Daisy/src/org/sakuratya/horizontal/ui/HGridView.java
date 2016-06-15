@@ -2628,6 +2628,12 @@ public class HGridView extends AdapterView<HGridAdapter> {
 			int[] positionRange = getPositionRangeByColumn(nextCol);
 			nextPage = Math.min(positionRange[0] + currentRow, positionRange[1]);
 		}
+		if(nextPage >0){
+			leftbtn.setVisibility(View.VISIBLE);
+		}
+		else{
+			leftbtn.setVisibility(View.INVISIBLE);
+		}
 		if(nextPage >= 0) {
 			View v = getChildAt(mSelectedPosition - mFirstPosition);
 			mSpecificLeft = v.getLeft();
