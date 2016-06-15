@@ -527,6 +527,9 @@ public class HGridView extends AdapterView<HGridAdapter> {
             else{
                 leftbtn.setVisibility(View.INVISIBLE);
             }
+			if(sectionFirstPosition+12>getAdapter().getCount()-1){
+				rightbtn.setVisibility(View.INVISIBLE);
+			}
         }
 		setNextSelectedPositionInt(sectionFirstPosition);
 		mLayoutMode = LAYOUT_JUMP;
@@ -2600,6 +2603,9 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		int currentCol = getColumn(mSelectedPosition);
 		int currentRow = getRow(mSelectedPosition);
 		if(direction == FOCUS_LEFT) {
+			if(leftbtn.getVisibility()==View.INVISIBLE){
+				return false;
+			}
 			int lastVisiblePosition = mFirstPosition + count - 1;
 			for(int i = count - 1; i >=0 ; i--) {
 				View v = getChildAt(i);
@@ -2614,6 +2620,9 @@ public class HGridView extends AdapterView<HGridAdapter> {
 			int[] positionRange = getPositionRangeByColumn(nextCol);
 			nextPage = Math.min(positionRange[0] + currentRow, positionRange[1]);
 		} else {
+			if(rightbtn.getVisibility()==View.INVISIBLE){
+				return false;
+			}
 			int firstVisibilePosition = mFirstPosition;
 			for(int i = 0; i < count; i++) {
 				View v = getChildAt(i);
@@ -2637,7 +2646,12 @@ public class HGridView extends AdapterView<HGridAdapter> {
 		if(nextPage >= 0) {
 			View v = getChildAt(mSelectedPosition - mFirstPosition);
 			mSpecificLeft = v.getLeft();
-			setNextSelectedPositionInt(nextPage);
+			if(nextPage>getAdapter().getCount()-12){
+				setNextSelectedPositionInt(getAdapter().getCount()-11);
+				rightbtn.setVisibility(View.INVISIBLE);
+			}else {
+				setNextSelectedPositionInt(nextPage);
+			}
 			mLayoutMode = LAYOUT_SPECIFIC;
 			layoutChildren();
 //			if(nextPage/pageCount == 0){
