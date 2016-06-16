@@ -75,6 +75,7 @@
 
 
         <service android:name=".core.service.PosterUpdateService"/>
+        <service android:name=".views.YogaWebService"/>
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
@@ -337,6 +338,15 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
                 </activity>
+
+        <!-- alipay sdk begin -->
+        <activity
+                android:name="com.alipay.sdk.app.H5PayActivity"
+                android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+                android:exported="false"
+                android:screenOrientation="behind"
+                android:windowSoftInputMode="adjustResize|stateHidden">
+        </activity>
         <!--content provider-->
         <provider
             android:name="cn.ismartv.injectdb.library.content.ContentProvider"
@@ -357,11 +367,6 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </service>
-        <receiver android:name=".ui.activity.TVGuideActivity$yogaReceiver">
-            <intent-filter>
-                <action android:name="com.daisy.yogasport"/>
-            </intent-filter>
-        </receiver>
     </application>
 
 

@@ -58,11 +58,13 @@ public class InitPlayerTool {
 			if(result.equals("iqiyi")){
 				intent.setAction("tv.ismar.daisy.qiyiPlay");
 				String info = AccessProxy.getvVideoClipInfo();
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				intent.putExtra("iqiyi", info);		
 			}
 			else{
 				String ismartv = AccessProxy.getvVideoClipInfo();
 				intent.setAction("tv.ismar.daisy.Play");
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				intent.putExtra("ismartv", ismartv);
 			}
 			if(!"".equals(result))

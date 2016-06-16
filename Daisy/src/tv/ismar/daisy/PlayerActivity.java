@@ -273,11 +273,11 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 						if (!paused) {
 							pauseItem();
 							playPauseImage
-									.setImageResource(R.drawable.paus);
+									.setImageResource(R.drawable.play);
 						} else {
 							resumeItem();
 							playPauseImage
-									.setImageResource(R.drawable.play);
+									.setImageResource(R.drawable.paus);
 						}
 
 						// }
@@ -354,12 +354,13 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 
 		mVideoView.setOnHoverListener(onhoverlistener);
 		setVideoActionListener();
-//		if("false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
+		if("false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
 		initClipInfo();
-//		}else{
-//			gesture_tipview.setVisibility(View.VISIBLE);
-//			setGesturebackground(gesture_tipview, R.drawable.play_gesture);
-//		}
+		}else{
+			gesture_tipview.setVisibility(View.VISIBLE);
+			gesture_tipview.setAlpha(81);
+			setGesturebackground(gesture_tipview, R.drawable.frist_play);
+		}
 	}
 	private void initData() {
 		progress_bright.setMax(100);
@@ -1685,15 +1686,15 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean ret = false;
-//		if(keyCode == KeyEvent.KEYCODE_BACK && !"false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
-//			gesture_tipview.setVisibility(View.GONE);
-//			shardpref.setSharedPrefs(AccountSharedPrefs.FIRST_USE, "false");
-//			initClipInfo();
-//			return false;
-//		}
-//		if(!"false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
-//			return false;			
-//		}
+		if(keyCode == KeyEvent.KEYCODE_BACK && !"false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
+			gesture_tipview.setVisibility(View.GONE);
+			shardpref.setSharedPrefs(AccountSharedPrefs.FIRST_USE, "false");
+			initClipInfo();
+			return false;
+		}
+		if(!"false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
+			return false;
+		}
 		if("lcd_s3a01".equals(VodUserAgent.getModelName())){
 			if(keyCode == 707 || keyCode == 774 || keyCode ==253){
 				isneedpause = false;
