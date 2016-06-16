@@ -241,10 +241,15 @@ public class LoginPanelView extends LinearLayout {
     }
 
     public static boolean isMobileNumber(String mobiles) {
-        Pattern p = Pattern
-                .compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
-        Matcher m = p.matcher(mobiles);
-        return m.matches();
+//        Pattern p = Pattern
+//                .compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
+//        Matcher m = p.matcher(mobiles);
+//        return m.matches();
+        if (mobiles.length() == 11) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     LoginInterface callback;
