@@ -602,42 +602,44 @@ public class HistoryFragment extends Fragment implements OnSectionSelectChangedL
 		protected Integer doInBackground(Item... params) {
 			item = params[0];
 			netItem = params[0];
-			mCurrentGetItemTask.put(item.url, this);
-			Item i;
-			try {
-				String url;
-				if(SimpleRestClient.isLogin()){
-					if(item.model_name.equals("subitem"))
-						url = SimpleRestClient.root_url + "/api/item/" + item.item_pk + "/";
-					else
-						url = SimpleRestClient.root_url + "/api/item/" + item.pk + "/";
-				}
-
-				else{
-
-					int id = SimpleRestClient.getItemId(item.url, new boolean[1]);
-					url = SimpleRestClient.root_url + "/api/item/" + id + "/";
-				}
-
-				i = mRestClient.getItem(url);
-			} catch (ItemOfflineException e) {
-				e.printStackTrace();
-				return ITEM_OFFLINE;
-			} catch (JsonSyntaxException e) {
-				e.printStackTrace();
-				return NETWORK_EXCEPTION;
-			} catch (NetworkException e) {
-				e.printStackTrace();
-				return NETWORK_EXCEPTION;
-			}
-			if(i==null && !isCancelled()) {
-				return NETWORK_EXCEPTION;
-			} else if(!isCancelled()) {
-				item = i;
-				return ITEM_SUCCESS_GET;
-			} else {
+			if(item==null){
 				return TASK_CANCELLED;
 			}
+				mCurrentGetItemTask.put(item.url, this);
+				Item i;
+				try {
+					String url;
+					if (SimpleRestClient.isLogin()) {
+						if (item.model_name.equals("subitem"))
+							url = SimpleRestClient.root_url + "/api/item/" + item.item_pk + "/";
+						else
+							url = SimpleRestClient.root_url + "/api/item/" + item.pk + "/";
+					} else {
+
+						int id = SimpleRestClient.getItemId(item.url, new boolean[1]);
+						url = SimpleRestClient.root_url + "/api/item/" + id + "/";
+					}
+
+					i = mRestClient.getItem(url);
+				} catch (ItemOfflineException e) {
+					e.printStackTrace();
+					return ITEM_OFFLINE;
+				} catch (JsonSyntaxException e) {
+					e.printStackTrace();
+					return NETWORK_EXCEPTION;
+				} catch (NetworkException e) {
+					e.printStackTrace();
+					return NETWORK_EXCEPTION;
+				}
+
+				if (i == null && !isCancelled()) {
+					return NETWORK_EXCEPTION;
+				} else if (!isCancelled()) {
+					item = i;
+					return ITEM_SUCCESS_GET;
+				} else {
+					return TASK_CANCELLED;
+				}
 
 		}
 

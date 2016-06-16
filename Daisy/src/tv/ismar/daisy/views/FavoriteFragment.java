@@ -376,6 +376,7 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		private static final int ITEM_OFFLINE = 0;
 		private static final int ITEM_SUCCESS_GET = 1;
 		private static final int NETWORK_EXCEPTION = 2;
+		private static final int TASK_CANCELLED = 3;
 		
 		private Item item;
 		
@@ -395,6 +396,9 @@ public class FavoriteFragment extends Fragment implements OnSectionSelectChanged
 		@Override
 		protected Integer doInBackground(Item... params) {
 			item = params[0];
+			if(item==null){
+				return TASK_CANCELLED;
+			}
 			mCurrentGetItemTask.put(item.url, this);
 			Item i;
 //			try {

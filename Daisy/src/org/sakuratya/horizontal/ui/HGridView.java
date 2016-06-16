@@ -2637,7 +2637,7 @@ public class HGridView extends AdapterView<HGridAdapter> {
 			int[] positionRange = getPositionRangeByColumn(nextCol);
 			nextPage = Math.min(positionRange[0] + currentRow, positionRange[1]);
 		}
-		if(nextPage >0){
+		if(nextPage >1){
 			leftbtn.setVisibility(View.VISIBLE);
 		}
 		else{
