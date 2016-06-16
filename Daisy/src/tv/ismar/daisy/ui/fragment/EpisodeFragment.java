@@ -149,4 +149,10 @@ public class EpisodeFragment extends Fragment {
     public   interface OnItemSelectedListener{
         void onEpisodeItemSelected(ItemEntity.SubItem subItem);
     }
+
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+    }
 }

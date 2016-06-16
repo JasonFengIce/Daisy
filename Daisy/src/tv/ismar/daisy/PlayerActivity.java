@@ -634,6 +634,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 								showPanel();
 
 							}
+							getSupportFragmentManager().beginTransaction().hide(mEpisodeFragment).commit();
 						}
 						lastTouchTime=currentTime;
 						doubleTouch=true;
@@ -1569,7 +1570,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 			hidePanelHandler.postDelayed(hidePanelRunnable, 3000);
 		}
 
-        getSupportFragmentManager().beginTransaction().show(mEpisodeFragment).commit();
+
 	}
 
 	private void hidePanel() {
@@ -2749,8 +2750,9 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 					break;
 				case R.id.anthology:
 					if(listItems.size()!=0) {
-						initEntertainmentPop();
+//						initEntertainmentPop();
 						anthology.setTextColor(getResources().getColor(R.color._ff9c3c));
+						getSupportFragmentManager().beginTransaction().show(mEpisodeFragment).commit();
 					}
 					break;
 			}
