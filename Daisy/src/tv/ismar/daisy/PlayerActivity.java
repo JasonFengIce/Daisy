@@ -1,55 +1,43 @@
 package tv.ismar.daisy;
 
-import static tv.ismar.daisy.DramaListActivity.ORDER_CHECK_BASE_URL;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
-import java.util.concurrent.TimeUnit;
-
-import android.animation.Animator;
+import android.app.Dialog;
 import android.content.*;
-
+import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.media.AudioManager;
 import android.net.Uri;
+import android.os.*;
+import android.provider.Settings;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Base64;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.*;
+import android.view.View.OnHoverListener;
+import android.view.View.OnTouchListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.*;
+import cn.ismartv.activator.utils.MD5Utils;
+import com.google.gson.JsonSyntaxException;
+import com.ismartv.api.t.AccessProxy;
+import com.ismartv.bean.ClipInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import cn.ismartv.log.interceptor.HttpLoggingInterceptor;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.GsonConverterFactory;
 import retrofit2.Retrofit;
 import tv.ismar.daisy.adapter.EntertainmentPopAdapter;
-import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.EventProperty;
-import tv.ismar.daisy.core.ImageUtils;
-import tv.ismar.daisy.core.NetworkUtils;
-import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.*;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
-import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.core.client.HttpAPI;
 import tv.ismar.daisy.core.client.HttpManager;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.data.http.ItemEntity;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
-import tv.ismar.daisy.models.AdElement;
-import tv.ismar.daisy.models.Attribute;
-import tv.ismar.daisy.models.Clip;
-import tv.ismar.daisy.models.History;
-import tv.ismar.daisy.models.Item;
-import tv.ismar.daisy.models.Quality;
-import tv.ismar.daisy.models.Subitem;
+import tv.ismar.daisy.models.*;
 import tv.ismar.daisy.persistence.HistoryManager;
 import tv.ismar.daisy.player.CallaPlay;
 import tv.ismar.daisy.player.ISTVVodMenu;
@@ -60,41 +48,11 @@ import tv.ismar.daisy.views.IsmatvVideoView;
 import tv.ismar.daisy.views.MarqueeView;
 import tv.ismar.daisy.views.PaymentDialog;
 import tv.ismar.player.SmartPlayer;
-import android.app.Dialog;
-import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.media.AudioManager;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.text.Layout;
-import android.util.Base64;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.GestureDetector;
-import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnHoverListener;
-import android.view.View.OnTouchListener;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
-import cn.ismartv.activator.utils.MD5Utils;
+import java.io.InputStream;
+import java.util.*;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import com.ismartv.api.t.AccessProxy;
-import com.ismartv.bean.ClipInfo;
+import static tv.ismar.daisy.DramaListActivity.ORDER_CHECK_BASE_URL;
 
 public class PlayerActivity extends VodMenuAction implements OnItemSelectedListener {
 
@@ -190,14 +148,14 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	/** 左右滑动的最大速度 */
 	private int velocity = 200;
 	private PopupWindow popupWindow,itemPopWindow,EntertainmentPop;
-	/** 最大声音 */
-	private int mMaxVolume;
-	/** 当前声音 */
-	private int mVolume = -1;
-	/** 最大亮度 */
-	private int mMaxBrightness;
-	/** 当前亮度 */
-	private float mBrightness = -1f;
+	private View bright;
+	private ProgressBar progress_bright;
+	private View volumn;
+	private ProgressBar progress_volumn;
+	private int currentVolumn;
+	private int currentBright;
+	private int maxVolumn;
+	private AudioManager mAudioManager;
 
 	public float getScreenWidth() {
 		DisplayMetrics metric = new DisplayMetrics();
@@ -233,6 +191,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 		registerReceiver(saveScreenbroad, intentFilter);
 		shardpref = AccountSharedPrefs.getInstance();
 		setView();
+		initData();
 		DisplayMetrics metric = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metric);
 
@@ -300,6 +259,10 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 		qualityText.setVisibility(View.GONE);
 		gesture_tipview = (ImageView)findViewById(R.id.gesture_tipview);
 		am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+		bright = findViewById(R.id.bright);
+		progress_bright = (ProgressBar) findViewById(R.id.progress_bright);
+		volumn = findViewById(R.id.volumn);
+		progress_volumn = (ProgressBar) findViewById(R.id.progress_volumn);
 		playPauseImage.setOnTouchListener(new OnTouchListener() {
 
 			@Override
@@ -398,7 +361,18 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 //			setGesturebackground(gesture_tipview, R.drawable.play_gesture);
 //		}
 	}
-
+	private void initData() {
+		progress_bright.setMax(100);
+		progress_volumn.setMax(100);
+		// 获取系统音量
+		mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+		maxVolumn = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+		currentVolumn = getVolumn();
+		progress_volumn.setProgress(currentVolumn);
+		//获取系统亮度
+		currentBright = getsystemBright();
+		progress_bright.setProgress(currentBright);
+	}
 	protected void initClipInfo() {
 		simpleRestClient = new SimpleRestClient();
 		bufferText.setText(BUFFERING);
@@ -626,11 +600,14 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	private void setVideoActionListener() {
 
 		mVideoView.setOnTouchListener(new OnTouchListener() {
-
+			float downY;
+			float downX;
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				switch (event.getAction()){
 					case MotionEvent.ACTION_DOWN:
+						downY=event.getY();
+						downX=event.getX();
 						preX = (int) event.getX();
 						preY = (int) event.getY();
 						long currentTime=System.currentTimeMillis();
@@ -661,14 +638,28 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 						doubleTouch=true;
 						break;
 					case MotionEvent.ACTION_MOVE:
-						moveX= (int) event.getX();
-						moveY= (int) event.getY();
-						spearEvent(compare(moveX,moveY),event);
+						float moveY = event.getY() - downY;
+						int halfScreenH=getWindowManager().getDefaultDisplay().getHeight()/2;
+						int halfScreenW=getWindowManager().getDefaultDisplay().getWidth()/2;
+						float movePercent=-moveY/halfScreenH;
+						if(Math.abs(moveY)>50) {
+							if (event.getX() < halfScreenW&&downX<halfScreenW) {
+								if(volumn.getVisibility()==View.INVISIBLE)
+								changeBright(movePercent);
+							} else if(downX>halfScreenW){
+								if(bright.getVisibility()==View.INVISIBLE)
+								changeVolumn(movePercent);
+							}
+							downY = event.getY();
+							downX=event.getX();
+						}
 						break;
 					case MotionEvent.ACTION_UP:
 						upX=(int) event.getX();
 						upY=(int) event.getY();
 						spearEvent(compare(upX, upY), event);
+						bright.setVisibility(View.INVISIBLE);
+						volumn.setVisibility(View.INVISIBLE);
 						break;
 				}
 				return true;
@@ -2884,5 +2875,55 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 			}
 		}
 		checkContinueOrPay(item.pk);
+	}
+
+	//滑动改变音量
+	private void changeVolumn(float movePercent) {
+		volumn.setVisibility(View.VISIBLE);
+		float newVolumn=currentVolumn+movePercent*100;
+		if(newVolumn<=100&&newVolumn>=0){
+			setVolumn((int) newVolumn);
+		}
+	}
+	//滑动改变亮度
+	private void changeBright(float movePercent) {
+		bright.setVisibility(View.VISIBLE);
+		float newBright=currentBright+movePercent*100;
+		if(newBright>=0&&newBright<=100){
+			setBright((int) newBright);
+		}
+	}
+
+	public int getVolumn() {
+		return mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+	}
+
+	public void setVolumn(int volumn) {
+		mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volumn, 0);
+		currentVolumn = volumn;
+		progress_volumn.setProgress(volumn);
+	}
+
+
+	public void setBright(int bright) {
+		currentBright = bright;
+		Window window=getWindow();
+		WindowManager.LayoutParams params=window.getAttributes();
+		params.screenBrightness=bright/100f;
+		window.setAttributes(params);
+		progress_bright.setProgress(bright);
+	}
+
+	public int getsystemBright() {
+		int brightness = 0;
+		try {
+			/**
+			 * 返回的亮度值是处于0-255之间的整型数值
+			 */
+			brightness = Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+		} catch (Settings.SettingNotFoundException e) {
+			e.printStackTrace();
+		}
+		return brightness*100/255;
 	}
 }

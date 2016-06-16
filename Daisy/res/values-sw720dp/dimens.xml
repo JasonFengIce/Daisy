@@ -1497,4 +1497,11 @@
     <dimen name="item_layout_width">80.00dp</dimen>
     <dimen name="item_layout_height">66.67dp</dimen>
     <dimen name="episode_item_height">40.00dp</dimen>
+
+    <dimen name="bright_w">256dp</dimen>
+    <dimen name="bright_h">144dp</dimen>
+    <dimen name="bright_progress_h">6.67dp</dimen>
+    <dimen name="bright_progress_w">221.33dp</dimen>
+    <dimen name="bright_progress_ml">17.33dp</dimen>
+    <dimen name="bright_progress_mt">116.67dp</dimen>
 </resources>
