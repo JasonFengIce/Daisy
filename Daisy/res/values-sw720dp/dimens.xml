@@ -1497,7 +1497,11 @@
     <dimen name="item_layout_width">80.00dp</dimen>
     <dimen name="item_layout_height">66.67dp</dimen>
     <dimen name="episode_item_height">40.00dp</dimen>
-
+    <dimen name="local_app_pay_btn_width">173.33dp</dimen>
+    <dimen name="local_app_pay_btn_height">53.33dp</dimen>
+    <dimen name="textSize_30sp">20.00sp</dimen>
+    <dimen name="pay_info_marginTop">80.00dp</dimen>
+    <dimen name="local_pay_btn_marginTop">13.33dp</dimen>
     <dimen name="bright_w">256dp</dimen>
     <dimen name="bright_h">144dp</dimen>
     <dimen name="bright_progress_h">6.67dp</dimen>
