@@ -28,7 +28,7 @@ public class DeviceUtils {
                 NetworkInterface intf = en.nextElement();
                 for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress() && Inet4Address.getByName(inetAddress.getHostAddress()) != null)  //这里做了一步IPv4的判定
+                    if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress())  //这里做了一步IPv4的判定
                     {
                         ip = inetAddress.getHostAddress().toString();
                         return ip;
@@ -36,8 +36,6 @@ public class DeviceUtils {
                 }
             }
         } catch (SocketException e) {
-            return "0.0.0.0";
-        } catch (UnknownHostException ee){
             return "0.0.0.0";
         }
         return ip;
