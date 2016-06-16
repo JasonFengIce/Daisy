@@ -23,16 +23,29 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.os.Handler;
+import android.text.TextUtils;
+import com.alipay.sdk.app.PayTask;
+import okhttp3.ResponseBody;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
+import tv.ismar.daisy.core.alipay.PayResult;
+import tv.ismar.daisy.core.client.HttpAPI;
+import tv.ismar.daisy.core.client.HttpManager;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.data.usercenter.AuthTokenEntity;
 import tv.ismar.daisy.models.Favorite;
@@ -85,6 +98,7 @@ public class PaymentDialog extends Dialog implements
 	private static final int LOGIN_SUCESS = 0x14;
 	private static final int SETDAIKOUPANELVISIBLE = 0x15;
 	private static final int DAIKOU_ERROR = 0x16;
+	private static final String TAG ="PaymentDialog";
 	private Context mycontext;
 	private int width;
 	private int height;
@@ -128,6 +142,7 @@ public class PaymentDialog extends Dialog implements
 	private TextView ali_price;
 	private TextView ali_exprie;
 	private Button alipay_submit;
+	private TextView mLocalAppPayBtn;
 
 	public PaymentDialog(Context context) {
 		super(context);
@@ -290,6 +305,9 @@ public class PaymentDialog extends Dialog implements
 			disableButton();
 		}
 		login_panel.setLoginListener(loginInterFace);
+
+		mLocalAppPayBtn = (TextView) findViewById(R.id.local_app_pay_btn);
+		mLocalAppPayBtn.setOnClickListener(mOnLocalPayClickListener);
 	}
 
 	private void disableButton() {
@@ -356,6 +374,7 @@ public class PaymentDialog extends Dialog implements
 				changeYuePayPanelState(false, false);
 				changeshiyuncardPanelState(false);
 				purchaseCheck(PURCHASE_PRUCHASE_BASE_URL);
+				mLocalAppPayBtn.setVisibility(View.INVISIBLE);
 			}
 				break;
 			case R.id.videocard: {
@@ -375,6 +394,9 @@ public class PaymentDialog extends Dialog implements
 				changeYuePayPanelState(false, false);
 				changeshiyuncardPanelState(false);
 				purchaseCheck(PURCHASE_PRUCHASE_BASE_URL);
+				mLocalAppPayBtn.setVisibility(View.VISIBLE);
+				mLocalAppPayBtn.setTag(LocalPayType.AliPay);
+				mLocalAppPayBtn.setText(R.string.already_install_alipay);
 			}
 				break;
 			case R.id.balance_pay: {
@@ -642,7 +664,7 @@ public class PaymentDialog extends Dialog implements
 	}
 
 	final static HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
-		 
+
 		public boolean verify(String hostname, SSLSession session) {
 			return true;
 		}
@@ -682,7 +704,7 @@ public class PaymentDialog extends Dialog implements
 					https.setHostnameVerifier(DO_NOT_VERIFY);
 					connection = https;
 				}else{
-					connection = (HttpsURLConnection) myFileUrl.openConnection();				
+					connection = (HttpsURLConnection) myFileUrl.openConnection();
 				}
 				connection.setConnectTimeout(2000);
 				connection.setRequestMethod("GET");
@@ -714,20 +736,20 @@ public class PaymentDialog extends Dialog implements
 		final String TAG = "trustAllHosts";
 		// Create a trust manager that does not validate certificate chains
 		TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
-	 
+
 			public java.security.cert.X509Certificate[] getAcceptedIssuers() {
 				return new java.security.cert.X509Certificate[] {};
 			}
-	 
+
 			public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
 				Log.i(TAG, "checkClientTrusted");
 			}
-	 
+
 			public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
 				Log.i(TAG, "checkServerTrusted");
 			}
 		} };
-	 
+
 		// Install the all-trusting trust manager
 		try {
 			SSLContext sc = SSLContext.getInstance("TLS");
@@ -1440,7 +1462,7 @@ public class PaymentDialog extends Dialog implements
 					}
 				}, null);
 	}
-	
+
 	private OnHoverListener mOnHoverListener = new OnHoverListener() {
 
 		@Override
@@ -1457,5 +1479,115 @@ public class PaymentDialog extends Dialog implements
 			}
 			return false;
 		}
+	};
+
+	private View.OnClickListener mOnLocalPayClickListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			switch ((LocalPayType)v.getTag()){
+				case AliPay:
+					localAlipay();
+					break;
+			}
+		}
+	};
+
+	enum LocalPayType{
+		AliPay,
+		WeixinPay
+	}
+
+    private void localAlipay(){
+		fetchPayInfo();
+    }
+
+
+	private void fetchPayInfo() {
+		String deviceToken = SimpleRestClient.device_token;
+		String waresId = String.valueOf(mItem.pk);
+		String waresType = mItem.model_name;
+		String source = "alipay_mb";
+		HttpManager.getInstance().media_lily_Retrofit.create(HttpAPI.OrderCreate.class).doRequest(deviceToken, waresId, waresType, source).enqueue(new Callback<ResponseBody>() {
+			@Override
+			public void onResponse(Response<ResponseBody> response) {
+				if (response.body()!= null){
+				try {
+
+					final String payInfo = response.body().string();
+					Runnable payRunnable = new Runnable() {
+						@Override
+						public void run() {
+							// 构造PayTask 对象
+							PayTask alipay = new PayTask((Activity) mycontext);
+							// 调用支付接口，获取支付结果
+							String result = alipay.pay(payInfo, true);
+
+							Message msg = new Message();
+							msg.what = SDK_PAY_FLAG;
+							msg.obj = result;
+							mHandler.sendMessage(msg);
+						}
+					};
+
+					// 必须异步调用
+					Thread payThread = new Thread(payRunnable);
+					payThread.start();
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			}
+
+			@Override
+			public void onFailure(Throwable t) {
+
+			}
+		});
+	}
+
+
+	private static final int SDK_PAY_FLAG = 1;
+
+	@SuppressLint("HandlerLeak")
+	private Handler mHandler = new Handler() {
+		@SuppressWarnings("unused")
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+				case SDK_PAY_FLAG: {
+					PayResult payResult = new PayResult((String) msg.obj);
+					/**
+					 * 同步返回的结果必须放置到服务端进行验证（验证的规则请看https://doc.open.alipay.com/doc2/
+					 * detail.htm?spm=0.0.0.0.xdvAU6&treeId=59&articleId=103665&
+					 * docType=1) 建议商户依赖异步通知
+					 */
+					String resultInfo = payResult.getResult();// 同步返回需要验证的信息
+
+					String resultStatus = payResult.getResultStatus();
+					// 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
+					Log.d(TAG, "result code: " + resultStatus + "  status: " + resultStatus);
+					if (TextUtils.equals(resultStatus, "9000")) {
+						Toast.makeText(getContext(), "支付成功", Toast.LENGTH_SHORT).show();
+						purchaseCheck(PURCHASE_PRUCHASE_BASE_URL);
+					} else {
+						// 判断resultStatus 为非"9000"则代表可能支付失败
+						// "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
+						if (TextUtils.equals(resultStatus, "8000")) {
+							Toast.makeText(getContext(), "支付结果确认中", Toast.LENGTH_SHORT).show();
+
+						} else {
+							// 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
+							Toast.makeText(getContext(), "支付失败", Toast.LENGTH_SHORT).show();
+
+						}
+					}
+					break;
+				}
+				default:
+					break;
+			}
+		}
+
+		;
 	};
 }

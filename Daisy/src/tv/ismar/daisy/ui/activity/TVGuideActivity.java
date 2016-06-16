@@ -544,7 +544,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
             @Override
             public void onFailed(String error) {
-                Log.e(TAG, "fetchChannels failed");
+                Log.e(TAG, "fetchChannels failed: " + error);
                 showNetErrorPopup();
             }
         });
@@ -1610,5 +1610,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         }
         return super.dispatchTouchEvent(event);
     }
+
 
 }

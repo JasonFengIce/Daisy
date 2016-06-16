@@ -3,8 +3,7 @@ package tv.ismar.daisy.core.client;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Path;
+import retrofit2.http.*;
 import tv.ismar.daisy.data.http.ItemEntity;
 
 /**
@@ -23,6 +22,17 @@ public class HttpAPI {
         @GET("api/item/{itemId}/")
         Call<ItemEntity> doRequest(
                 @Path("itemId") String itemId
+        );
+    }
+
+    public interface OrderCreate {
+        @FormUrlEncoded
+        @POST("//skytest.tvxio.com:7001/api/order/create/")
+        Call<ResponseBody> doRequest(
+                @Field("device_token") String deviceToken,
+                @Field("wares_id") String waresId,
+                @Field("wares_type") String waresType,
+                @Field("source") String source
         );
     }
 
