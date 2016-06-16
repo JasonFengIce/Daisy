@@ -1502,4 +1502,10 @@
     <dimen name="textSize_30sp">20.00sp</dimen>
     <dimen name="pay_info_marginTop">80.00dp</dimen>
     <dimen name="local_pay_btn_marginTop">13.33dp</dimen>
+    <dimen name="bright_w">256dp</dimen>
+    <dimen name="bright_h">144dp</dimen>
+    <dimen name="bright_progress_h">6.67dp</dimen>
+    <dimen name="bright_progress_w">221.33dp</dimen>
+    <dimen name="bright_progress_ml">17.33dp</dimen>
+    <dimen name="bright_progress_mt">116.67dp</dimen>
 </resources>

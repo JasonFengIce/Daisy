@@ -151,5 +151,6 @@
         android:descendantFocusability="afterDescendants"
         android:gravity="center"
         android:numColumns="9"
-        android:verticalSpacing="60dp"></GridView>
+        android:verticalSpacing="60dp"
+        android:listSelector="@android:color/transparent"></GridView>
 </LinearLayout>

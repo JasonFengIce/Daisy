@@ -119,21 +119,13 @@
             android:layout_centerInParent="true"
 
             >
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/yoga_seek_bg"
-                />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
                 />
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
 
-                />
         </RelativeLayout>
 
         <RelativeLayout
@@ -234,4 +226,41 @@
             android:layout_width="@dimen/episode_layout_widht"
             android:layout_height="match_parent"
     />
+    <RelativeLayout
+            android:id="@+id/bright"
+            android:layout_width="@dimen/bright_w"
+            android:layout_height="@dimen/bright_h"
+            android:layout_centerInParent="true"
+            android:background="@drawable/bright"
+            android:visibility="gone">
+
+        <ProgressBar
+                android:id="@+id/progress_bright"
+                android:layout_width="@dimen/bright_progress_w"
+                android:layout_height="@dimen/bright_progress_h"
+                android:layout_marginLeft="@dimen/bright_progress_ml"
+                android:layout_marginTop="@dimen/bright_progress_mt"
+                android:progressDrawable="@drawable/progressbar"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                />
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/volumn"
+            android:layout_width="@dimen/bright_w"
+            android:layout_height="@dimen/bright_h"
+            android:layout_centerInParent="true"
+            android:background="@drawable/volumn"
+            android:visibility="gone">
+
+        <ProgressBar
+                android:id="@+id/progress_volumn"
+                android:layout_width="@dimen/bright_progress_w"
+                android:layout_height="@dimen/bright_progress_h"
+                android:layout_marginLeft="@dimen/bright_progress_ml"
+                android:layout_marginTop="@dimen/bright_progress_mt"
+                android:progressDrawable="@drawable/progressbar"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                />
+    </RelativeLayout>
 </RelativeLayout>

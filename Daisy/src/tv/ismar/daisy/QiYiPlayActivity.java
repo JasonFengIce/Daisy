@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import android.provider.Settings;
+import android.widget.*;
 import retrofit2.GsonConverterFactory;
 import retrofit2.Retrofit;
 import tv.ismar.daisy.core.DaisyUtils;
@@ -51,14 +53,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.Toast;
 import cn.ismartv.activator.utils.MD5Utils;
 import tv.ismar.daisy.ui.fragment.EpisodeFragment;
 
@@ -189,6 +183,14 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
     }
 
     private EpisodeFragment mEpisodeFragment;
+    private View bright;
+    private ProgressBar progress_bright;
+    private View volumn;
+    private ProgressBar progress_volumn;
+    private int currentVolumn;
+    private int currentBright;
+    private int maxVolumn;
+    private AudioManager mAudioManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -235,6 +237,10 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
         qualityText.setVisibility(View.GONE);
         am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         mRootLayout = (RelativeLayout) findViewById(R.id.RootRelativeLayout);
+        bright = findViewById(R.id.bright);
+        progress_bright = (ProgressBar) findViewById(R.id.progress_bright);
+        volumn = findViewById(R.id.volumn);
+        progress_volumn = (ProgressBar) findViewById(R.id.progress_volumn);
         playPauseImage.setOnTouchListener(new OnTouchListener() {
 
             @Override
@@ -340,8 +346,52 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
 //			setGesturebackground(gesture_tipview, R.drawable.play_gesture);
 //		}
     }
+    float downY=0;
+    float downX=0;
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                downY = event.getY();
+                downX = event.getX();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                float moveY = event.getY() - downY;
+                int halfScreenH=getWindowManager().getDefaultDisplay().getHeight()/2;
+                int halfScreenW=getWindowManager().getDefaultDisplay().getWidth()/2;
+                float movePercent=-moveY/halfScreenH;
+                if(Math.abs(moveY)>50) {
+                    if (event.getX() < halfScreenW&&downX<halfScreenW) {
+                        if(volumn.getVisibility()==View.INVISIBLE)
+                        changeBright(movePercent);
+                    } else if(downX>halfScreenW){
+                        if(bright.getVisibility()==View.INVISIBLE)
+                        changeVolumn(movePercent);
+                    }
+                    downY = event.getY();
+                    downX=event.getX();
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                bright.setVisibility(View.INVISIBLE);
+                volumn.setVisibility(View.INVISIBLE);
+                break;
+        }
+        return super.onTouchEvent(event);
+    }
 
-
+    private void initData() {
+        progress_bright.setMax(100);
+        progress_volumn.setMax(100);
+        // 获取系统音量
+        mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        maxVolumn = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        currentVolumn = getVolumn();
+        progress_volumn.setProgress(currentVolumn);
+        //获取系统亮度
+        currentBright = getsystemBright();
+        progress_bright.setProgress(currentBright);
+    }
 
     private class initPlayTask extends AsyncTask<String, Void, Void> {
 
@@ -467,7 +517,6 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
         frameContainer.setVisibility(View.VISIBLE);
         frameContainer.setOnHoverListener(onhoverlistener);
         frameContainer.setOnTouchListener(new OnTouchListener() {
-
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (isVodMenuVisible()) {
@@ -741,6 +790,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
         super.onResume();
         if(isneedpause){
             initView();
+            initData();
         }
         isneedpause = true;
     }
@@ -2248,5 +2298,54 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
             url = url + "/";
         }
         return url;
+    }
+    //滑动改变音量
+    private void changeVolumn(float movePercent) {
+        volumn.setVisibility(View.VISIBLE);
+        float newVolumn=currentVolumn+movePercent*maxVolumn;
+        if(newVolumn<=100&&newVolumn>=0){
+            setVolumn((int) newVolumn);
+        }
+    }
+    //滑动改变亮度
+    private void changeBright(float movePercent) {
+        bright.setVisibility(View.VISIBLE);
+        float newBright=currentBright+movePercent*100;
+        if(newBright>=0&&newBright<=100){
+            setBright((int) newBright);
+        }
+    }
+
+    public int getVolumn() {
+        return mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+    }
+
+    public void setVolumn(int volumn) {
+        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volumn, 0);
+        currentVolumn = volumn;
+        progress_volumn.setProgress(volumn);
+    }
+
+
+    public void setBright(int bright) {
+        currentBright = bright;
+        Window window=getWindow();
+        WindowManager.LayoutParams params=window.getAttributes();
+        params.screenBrightness=bright/100f;
+        window.setAttributes(params);
+        progress_bright.setProgress(bright);
+    }
+
+    public int getsystemBright() {
+        int brightness = 0;
+        try {
+            /**
+             * 返回的亮度值是处于0-255之间的整型数值
+             */
+            brightness = Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+        }
+        return brightness*100/255;
     }
 }

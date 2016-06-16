@@ -11,8 +11,6 @@
         android:layout_width="@dimen/location_selected_city_text_width"
         android:layout_height="match_parent"
         android:clickable="true"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:gravity="center"
         android:singleLine="true"
         android:textColor="#FFFFFF"
