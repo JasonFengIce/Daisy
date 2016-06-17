@@ -293,6 +293,8 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 			@Override
 			public void onClick(View v) {
 				gesture_tipview.setVisibility(View.GONE);
+				shardpref.setSharedPrefs(AccountSharedPrefs.FIRST_USE, "false");
+				initClipInfo();
 			}
 		});
 //	//	fbImage.setOnTouchListener(new OnTouchListener() {
@@ -365,7 +367,8 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 		}else{
 			gesture_tipview.setVisibility(View.VISIBLE);
 			gesture_tipview.setAlpha(81);
-			setGesturebackground(gesture_tipview, R.drawable.frist_play);
+			//setGesturebackground(gesture_tipview, R.drawable.frist_play);
+			gesture_tipview.setBackgroundResource(R.drawable.frist_play);
 		}
 	}
 	private void initData() {
