@@ -315,9 +315,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             }
         });
 
-        Intent intent = new Intent();
-        intent.setClass(this, YogaWebService.class);
-        startService(intent);
         initViews();
         initTabView();
         String localInfo = DaisyUtils.getVodApplication(this).getPreferences().getString(VodApplication.LOCATION_INFO, "");

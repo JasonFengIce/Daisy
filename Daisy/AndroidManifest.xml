@@ -75,7 +75,13 @@
 
 
         <service android:name=".core.service.PosterUpdateService"/>
-        <service android:name=".views.YogaWebService"/>
+        <service android:name=".views.YogaWebService">
+        <intent-filter>
+            <action android:name="tv.ismartv.daisy.yogawebService"/>
+            <category android:name="android.intent.category.DEFAULT"/>
+        </intent-filter>
+        </service>
+
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
