@@ -37,7 +37,7 @@
                 android:layout_height="@dimen/filmitem_portrait_relativeLayout_h"
                 android:layout_marginTop="@dimen/filmitem_portrait_relativeLayout_mt">
 
-            <tv.ismar.daisy.views.AsyncImageView
+            <ImageView
                     android:layout_marginLeft="@dimen/filmitem_portrait_detail_preview_img_ml"
                     android:id="@+id/detail_preview_img"
                     android:layout_width="@dimen/filmitem_portrait_detail_preview_img_w"

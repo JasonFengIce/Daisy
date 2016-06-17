@@ -52,7 +52,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
     private GetItemTask mGetItemTask;
     private TextView mDetailTitle;
     private TextView mDetailIntro;
-    private AsyncImageView mDetailPreviewImg;
+    private ImageView mDetailPreviewImg;
     private DetailAttributeContainer mDetailAttributeContainer;
     private ContentModel mContentModel;
     private boolean isDrama = false;
@@ -910,7 +910,8 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 //        }
         if (mItem.poster_url != null) {
             mDetailPreviewImg.setTag(mItem.detail_url);
-            mDetailPreviewImg.setUrl(mItem.detail_url);
+//            mDetailPreviewImg.setUrl(mItem.detail_url);
+            Picasso.with(this).load(mItem.detail_url).fit().into(mDetailPreviewImg);
         }
         if (isFavorite()) {
             //mCollectBtn.setBackgroundResource(R.drawable.collected_btn_bg_selector);
@@ -966,7 +967,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
         weatherFragment.hideWeather();
         mDetailTitle = (TextView) findViewById(R.id.detail_title);
         mDetailIntro = (TextView) findViewById(R.id.detail_intro);
-        mDetailPreviewImg = (AsyncImageView) findViewById(R.id.detail_preview_img);
+        mDetailPreviewImg = (ImageView) findViewById(R.id.detail_preview_img);
         mDetailAttributeContainer = (DetailAttributeContainer) findViewById(R.id.detail_attribute_container);
         related_video_container = (LinearLayout) findViewById(R.id.related_video_container);
         mMoreContent = (LinearLayout) findViewById(R.id.more_content);
