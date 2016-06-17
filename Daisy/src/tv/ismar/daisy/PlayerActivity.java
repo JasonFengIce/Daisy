@@ -289,6 +289,12 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 				return false;
 			}
 		});
+		gesture_tipview.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				gesture_tipview.setVisibility(View.GONE);
+			}
+		});
 //	//	fbImage.setOnTouchListener(new OnTouchListener() {
 //
 //			@Override
@@ -2728,9 +2734,9 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 		}
 		int[] location = new int[2];
 		pop.getLocationOnScreen(location);
-		Log.i("Height",panelLayout.getHeight()+"");
+		Log.i("Height", panelLayout.getHeight()+"");
 
-		popupWindow.showAtLocation(panelLayout, Gravity.NO_GRAVITY, location[0]+2325, location[1]+985);
+		popupWindow.showAtLocation(panelLayout, Gravity.NO_GRAVITY, location[0] + 2325, location[1]+985);
 	}
 	View.OnClickListener listener=new View.OnClickListener() {
 		@Override

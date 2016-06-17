@@ -358,12 +358,45 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
     }
     float downY=0;
     float downX=0;
+    long lastTouchTime=0;
+    boolean doubleTouch=true;
+    private int preX,upX;
+    private int preY,upY;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 downY = event.getY();
                 downX = event.getX();
+                preX = (int) event.getX();
+                preY = (int) event.getY();
+                long currentTime=System.currentTimeMillis();
+//                if (isadvideoplaying)
+//                    return false;
+                if(doubleTouch==true&&currentTime-lastTouchTime<500){
+                    if (!paused) {
+                        pauseItem();
+                        playPauseImage
+                                .setImageResource(R.drawable.paus);
+                    } else {
+                        resumeItem();
+                        playPauseImage
+                                .setImageResource(R.drawable.play);
+                    }
+                    doubleTouch=false;
+                }else{
+                    if (panelShow) {
+                        //				hideMenuHandler.post(hideMenuRunnable);
+                        hidePanelHandler.removeCallbacks(hidePanelRunnable);
+                        hidePanelHandler.postDelayed(hidePanelRunnable, 3000);
+                    } else {
+                        showPanel();
+
+                    }
+                    getSupportFragmentManager().beginTransaction().hide(mEpisodeFragment).commit();
+                }
+                lastTouchTime=currentTime;
+                doubleTouch=true;
                 break;
             case MotionEvent.ACTION_MOVE:
                 float moveY = event.getY() - downY;
