@@ -9,26 +9,24 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.google.gson.Gson;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
-
 import org.apache.commons.lang3.StringUtils;
-
-import java.util.ArrayList;
-
+import retrofit2.Callback;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.cache.CacheManager;
-import tv.ismar.daisy.core.client.CacheHttpClient;
 import tv.ismar.daisy.core.client.DownloadClient;
+import tv.ismar.daisy.core.client.HttpAPI;
+import tv.ismar.daisy.core.client.HttpManager;
 import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.HomePagerEntity.Carousel;
 import tv.ismar.daisy.ui.activity.TVGuideActivity;
@@ -38,6 +36,8 @@ import tv.ismar.daisy.ui.widget.DaisyViewContainer;
 import tv.ismar.daisy.ui.widget.HomeItemContainer;
 import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.daisy.views.LabelImageView;
+
+import java.util.ArrayList;
 
 /**
  * Created by huaijie on 5/18/15.
@@ -189,53 +189,61 @@ public class GuideFragment extends ChannelBaseFragment {
 
 
     public void fetchHomePage() {
-        String api = SimpleRestClient.root_url + "/api/tv/homepage/top/";
 
-        new CacheHttpClient().doRequest(api, new CacheHttpClient.Callback() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .client(HttpManager.getInstance().mCacheClient)
+                .baseUrl(HttpManager.appendProtocol(SimpleRestClient.root_url))
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        retrofit.create(HttpAPI.TvHomepageTop.class).doRequest().enqueue(new Callback<HomePagerEntity>() {
             @Override
-            public void onSuccess(String result) {
-                String s = result;
-                if (mContext == null || guideRecommmendList == null)
-                    return;
-                HomePagerEntity homePagerEntity = new Gson().fromJson(result, HomePagerEntity.class);
-                ArrayList<HomePagerEntity.Carousel> carousels = homePagerEntity.getCarousels();
-                ArrayList<HomePagerEntity.Poster> posters = homePagerEntity.getPosters();
-
-                if (!carousels.isEmpty()) {
-                    initCarousel(carousels);
-                }
-
-                if (!posters.isEmpty()) {
-                    initPosters(posters);
-                }
-                if (scrollFromBorder) {
-                    if (isRight) {//右侧移入
-                        if ("bottom".equals(bottomFlag)) {//下边界移入
-                            lastpostview.findViewById(R.id.poster_title).requestFocus();
-                        } else {//上边界边界移入
-                            toppage_carous_imageView1.requestFocus();
-                        }
-//                		}
-                    } else {//左侧移入
-                        if (StringUtils.isNotEmpty(bottomFlag)) {
-                            if ("bottom".equals(bottomFlag)) {
-
-                            } else {
-
-                            }
-                        }
-                    }
-                    ((TVGuideActivity) getActivity()).resetBorderFocus();
+            public void onResponse(Response<HomePagerEntity> response) {
+                if (response.body() != null) {
+                    fillLayout(response.body());
                 }
             }
 
             @Override
-            public void onFailed(String error) {
-                Log.e(TAG, error);
+            public void onFailure(Throwable t) {
+
             }
         });
-
     }
+
+    private void fillLayout(HomePagerEntity homePagerEntity) {
+        if (mContext == null || guideRecommmendList == null)
+            return;
+        ArrayList<HomePagerEntity.Carousel> carousels = homePagerEntity.getCarousels();
+        ArrayList<HomePagerEntity.Poster> posters = homePagerEntity.getPosters();
+
+        if (!carousels.isEmpty()) {
+            initCarousel(carousels);
+        }
+
+        if (!posters.isEmpty()) {
+            initPosters(posters);
+        }
+        if (scrollFromBorder) {
+            if (isRight) {//右侧移入
+                if ("bottom".equals(bottomFlag)) {//下边界移入
+                    lastpostview.findViewById(R.id.poster_title).requestFocus();
+                } else {//上边界边界移入
+                    toppage_carous_imageView1.requestFocus();
+                }
+//                		}
+            } else {//左侧移入
+                if (StringUtils.isNotEmpty(bottomFlag)) {
+                    if ("bottom".equals(bottomFlag)) {
+
+                    } else {
+
+                    }
+                }
+            }
+            ((TVGuideActivity) getActivity()).resetBorderFocus();
+        }
+    }
+
 
     private void initPosters(ArrayList<HomePagerEntity.Poster> posters) {
         guideRecommmendList.removeAllViews();

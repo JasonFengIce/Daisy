@@ -4,6 +4,8 @@ package tv.ismar.daisy.core.client;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.*;
+import tv.ismar.daisy.data.ChannelEntity;
+import tv.ismar.daisy.data.HomePagerEntity;
 import tv.ismar.daisy.data.http.ItemEntity;
 
 /**
@@ -35,5 +37,19 @@ public class HttpAPI {
                 @Field("source") String source
         );
     }
+
+    public interface TvChannels {
+        @Headers("Cache-Control: public, max-age=3600")
+        @GET("api/tv/channels/")
+        Call<ChannelEntity[]> doRequest();
+    }
+
+
+    public interface TvHomepageTop {
+        @Headers("Cache-Control: public, max-age=3600")
+        @GET("api/tv/homepage/top/")
+        Call<HomePagerEntity> doRequest();
+    }
+
 
 }
