@@ -99,14 +99,15 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
     private boolean mIsPreview;
     private Animation panelShowAnimation;
     private Animation panelHideAnimation;
+    private Animation top_to_down,top_to_up;
     private BitStream currentDefinition;
     // private Animation bufferHideAnimation;
     private LinearLayout bufferLayout;
     private ImageView logoImage;
-    private RelativeLayout panelLayout;
+    private RelativeLayout panelLayout,top_panelayout;
     private tv.ismar.daisy.views.MarqueeView titleText;
     private TextView qualityText;
-    private TextView timeText;
+    private TextView timeText,endtime;
     private ImageView playPauseImage;
     private ImageView ffImage;
     private ImageView fbImage;
@@ -120,6 +121,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
     private Item item;
     private Item subItem;
     private Clip clip;
+    private PopupWindow popupWindow;
     private Bundle bundle;
     private SeekBar timeBar;
     private Dialog popupDlg = null;
@@ -191,6 +193,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
     private int currentBright;
     private int maxVolumn;
     private AudioManager mAudioManager;
+    private String urls[] = new String[6];
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -216,12 +219,16 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
                 R.anim.fly_up);
         panelHideAnimation = AnimationUtils.loadAnimation(this,
                 R.anim.fly_down);
+        top_to_down=AnimationUtils.loadAnimation(this,R.anim.top_fly_down);
+        top_to_up=AnimationUtils.loadAnimation(this,R.anim.top_fly_up);
         // bufferHideAnimation =
         // AnimationUtils.loadAnimation(this,R.drawable.fade_out);
+        top_panelayout= (RelativeLayout) findViewById(R.id.top_panelayout);
         panelLayout = (RelativeLayout) findViewById(R.id.PanelLayout);
         titleText = (tv.ismar.daisy.views.MarqueeView) findViewById(R.id.TitleText);
         qualityText = (TextView) findViewById(R.id.QualityText);
         timeText = (TextView) findViewById(R.id.TimeText);
+        endtime= (TextView) findViewById(R.id.endTimeText);
         timeBar = (SeekBar) findViewById(R.id.TimeSeekBar);
         timeBar.setOnSeekBarChangeListener(new SeekBarChangeEvent());
         playPauseImage = (ImageView) findViewById(R.id.PlayPauseImage);
@@ -251,11 +258,11 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
                         if (!paused) {
                             pauseItem();
                             playPauseImage
-                                    .setImageResource(R.drawable.vod_playbtn_selector);
+                                    .setImageResource(R.drawable.play);
                         } else {
                             resumeItem();
                             playPauseImage
-                                    .setImageResource(R.drawable.vod_pausebtn_selector);
+                                    .setImageResource(R.drawable.paus);
                         }
 
                         break;
@@ -302,20 +309,23 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
                 // TODO Auto-generated method stub
                 switch (keycode.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        if (clipLength > 0 && !live_video) {
-                            isSeek = true;
-                            showPanel();
-                            isBuffer = true;
-                            showBuffer();
-                            int currentPosition = mPlayer.getCurrentPosition();
-                            mPlayer.seekTo(currentPosition - SEEK_STEPS[mSeekStepIndex]);
-                            mPlayer.seekTo(SEEK_STEP);
-                            isSeekBuffer = true;
-                            Log.d(TAG, "RIGHT seek to"
-                                    + getTimeString(currPosition));
-                            isSeek = false;
-                            offsets = 0;
-                            offn = 1;
+//                        if (clipLength > 0 && !live_video) {
+//                            isSeek = true;
+//                            showPanel();
+//                            isBuffer = true;
+//                            showBuffer();
+//                            int currentPosition = mPlayer.getCurrentPosition();
+//                            mPlayer.seekTo(currentPosition - SEEK_STEPS[mSeekStepIndex]);
+//                            mPlayer.seekTo(SEEK_STEP);
+//                            isSeekBuffer = true;
+//                            Log.d(TAG, "RIGHT seek to"
+//                                    + getTimeString(currPosition));
+//                            isSeek = false;
+//                            offsets = 0;
+//                            offn = 1;
+ //                       }
+                        if(listItems.size()>0){
+                            gotoFinishPage();
                         }
                         break;
 
@@ -525,11 +535,11 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
                     if (!paused) {
                         pauseItem();
                         playPauseImage
-                                .setImageResource(R.drawable.vod_playbtn_selector);
+                                .setImageResource(R.drawable.play);
                     } else {
                         resumeItem();
                         playPauseImage
-                                .setImageResource(R.drawable.vod_pausebtn_selector);
+                                .setImageResource(R.drawable.paus);
                     }
                 }
                 return false;
@@ -860,6 +870,8 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
         if (panelShow) {
             panelLayout.startAnimation(panelHideAnimation);
             panelLayout.setVisibility(View.GONE);
+            top_panelayout.startAnimation(top_to_up);
+            top_panelayout.setVisibility(View.GONE);
             panelShow = false;
         }
         getSupportFragmentManager().beginTransaction().hide(mEpisodeFragment).commit();
@@ -871,6 +883,8 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
         if (!panelShow) {
             panelLayout.startAnimation(panelShowAnimation);
             panelLayout.setVisibility(View.VISIBLE);
+            top_panelayout.startAnimation(top_to_down);
+            top_panelayout.setVisibility(View.VISIBLE);
             panelShow = true;
             hidePanelHandler.postDelayed(hidePanelRunnable, 3000);
         } else {
@@ -1102,11 +1116,11 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
                         if (!paused) {
                             pauseItem();
                             playPauseImage
-                                    .setImageResource(R.drawable.vod_playbtn_selector);
+                                    .setImageResource(R.drawable.play);
                         } else {
                             resumeItem();
                             playPauseImage
-                                    .setImageResource(R.drawable.vod_pausebtn_selector);
+                                    .setImageResource(R.drawable.paus);
                         }
 
                         ret = true;
@@ -1168,7 +1182,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
                     if (!paused) {
                         pauseItem();
                         playPauseImage
-                                .setImageResource(R.drawable.vod_playbtn_selector);
+                                .setImageResource(R.drawable.play);
                     }
                     break;
                 case KeyEvent.KEYCODE_MENU:
@@ -1217,7 +1231,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
                     if (paused) {
                         resumeItem();
                         playPauseImage
-                                .setImageResource(R.drawable.vod_pausebtn_selector);
+                                .setImageResource(R.drawable.paus);
                     }
                 }
 
@@ -1316,7 +1330,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
                             if (paused) {
                                 resumeItem();
                                 playPauseImage
-                                        .setImageResource(R.drawable.vod_pausebtn_selector);
+                                        .setImageResource(R.drawable.paus);
                             }
                         }
                     }
@@ -1402,9 +1416,10 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
     }
 
     private void updataTimeText() {
-        String text = getTimeString(currPosition) + "/"
-                + getTimeString(clipLength);
+        String text = getTimeString(currPosition);
+        String text2=getTimeString(clipLength);
         timeText.setText(text);
+        endtime.setText(text2);
     }
 
     private BitStream getDefinityByQuality(int currQuality) {
@@ -1422,23 +1437,26 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
     private void initQualtiyText() {
         switch (currQuality) {
             case 0:
-                qualityText
-                        .setBackgroundResource(R.drawable.vodplayer_stream_normal);
+              //  qualityText.setBackgroundResource(R.drawable.vodplayer_stream_normal);
+                qualityText.setText("流畅");
                 break;
             case 1:
-                qualityText.setBackgroundResource(R.drawable.vodplayer_stream_high);
+               // qualityText.setBackgroundResource(R.drawable.vodplayer_stream_high);
+                qualityText.setText("高清");
                 break;
             case 2:
-                qualityText
-                        .setBackgroundResource(R.drawable.vodplayer_stream_ultra);
+//                qualityText
+//                        .setBackgroundResource(R.drawable.vodplayer_stream_ultra);
+                qualityText.setText("超清");
                 break;
             case 3:
                 qualityText.setText("自适应");
-                qualityText.setBackgroundResource(R.drawable.rounded_edittext);
+               // qualityText.setBackgroundResource(R.drawable.rounded_edittext);
                 break;
             default:
-                qualityText
-                        .setBackgroundResource(R.drawable.vodplayer_stream_normal);
+//                qualityText
+//                        .setBackgroundResource(R.drawable.vodplayer_stream_normal);
+                qualityText.setText("流畅");
                 break;
         }
 
@@ -1456,7 +1474,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
                     isBuffer = true;
                     showBuffer();
                     playPauseImage
-                            .setImageResource(R.drawable.vod_pausebtn_selector);
+                            .setImageResource(R.drawable.paus);
                     currQuality = pos;
                     if (currQuality == 0) {
                         mPlayer.switchBitStream(BitStream.BITSTREAM_HIGH);
@@ -2205,6 +2223,54 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
         Intent intent = new Intent();
         intent.setAction("cn.ismar.sakura.launcher");
         startActivity(intent);
+    }
+    public void creatPopWindows(){
+        View pop=View.inflate(this, R.layout.quality_pop_item, null);
+        popupWindow = new PopupWindow(pop,getResources().getDimensionPixelSize(R.dimen.quality_pop_width), getResources().getDimensionPixelSize(R.dimen.quality_pop_height));
+        //popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.quality_pop));
+        popupWindow.setBackgroundDrawable(getResources().getDrawable(R.color._202020));
+        popupWindow.getBackground().setAlpha(102);
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(true);
+        LinearLayout popMenu= (LinearLayout) pop.findViewById(R.id.pop);
+        for(int i=0;i<urls.length;i++){
+            if(urls[i]!=null){
+                View view=View.inflate(this,R.layout.pop_menu_item,null);
+                TextView textView= (TextView) view.findViewById(R.id.quality_text);
+                ImageView img= (ImageView) view.findViewById(R.id.quality_focus);
+                switch (i){
+                    case 0:
+                        textView.setText("流畅");
+                        break;
+                    case 1:
+                        textView.setText("高清");
+                        break;
+                    case 2:
+                        textView.setText("超清");
+                        break;
+                    default:
+                        textView.setText("自适应");
+                }
+                if(i==currQuality){
+                    textView.setTextColor(getResources().getColor(R.color._ff9c3c));
+                    img.setBackgroundResource(R.drawable.quality_chosed);
+                }
+                final int j=i;
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //initQualtiyText(j);
+                        popupWindow.dismiss();
+                    }
+                });
+                popMenu.addView(view);
+            }
+        }
+        int[] location = new int[2];
+        pop.getLocationOnScreen(location);
+        Log.i("Height", panelLayout.getHeight() + "");
+
+        popupWindow.showAtLocation(panelLayout, Gravity.NO_GRAVITY, location[0] + 2325, location[1] + 985);
     }
 
     @Override
