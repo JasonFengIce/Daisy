@@ -41,9 +41,14 @@ public class YogaWebService extends Service {
     Context mContext=this;
     AsyncHttpServer server;
     GetHistoryTask mGetHistoryTask;
+    private Item[] mHistoriesByNet;
+    private SimpleRestClient mRestClient;
     private boolean isInGetHistoryTask;
-    private ItemCollection mHistoryItemList=new ItemCollection(1,0,"1","1");
+    private ItemCollection mHistoryItemList;
     private ArrayList<ItemCollection> mItemCollections;
+    ArrayList<Item> items=new ArrayList<>();
+    ArrayList<History> mHistories;
+    String result;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -54,6 +59,8 @@ public class YogaWebService extends Service {
     public void onCreate() {
        server = new AsyncHttpServer();
         server.listen(5000);
+        mRestClient = new SimpleRestClient();
+
         super.onCreate();
     }
 
@@ -64,13 +71,13 @@ public class YogaWebService extends Service {
             @Override
             public void onRequest(AsyncHttpServerRequest request, AsyncHttpServerResponse response) {
                 String type = request.getQuery().getString("type");
-                Log.i("request", request + "heh"+type);
+                Log.i("request", request + "heh" + type);
                 if (type.equals("channel")) {
                     String portraitflag = request.getQuery().getString("portraitflag");
                     String url = request.getQuery().getString("url");
                     String title = request.getQuery().getString("title");
                     String channel = request.getQuery().getString("channel");
-                    Log.i("yoga",url+"-----"+title+"----"+channel);
+                    Log.i("yoga", url + "-----" + title + "----" + channel);
                     Intent intent = new Intent();
                     intent.setAction("tv.ismar.daisy.Channel");
                     intent.putExtra("channel", channel);
@@ -81,11 +88,11 @@ public class YogaWebService extends Service {
                     startActivity(intent);
                 } else if (type.equals("detail")) {
                     String url = request.getQuery().getString("url");
-                    String contentMode=request.getQuery().getString("content_model");
-                    String expense=request.getQuery().getString("expense");
+                    String contentMode = request.getQuery().getString("content_model");
+                    String expense = request.getQuery().getString("expense");
                     Intent intent = new Intent();
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    if(expense.equals("true")){
+                    if (expense.equals("true")) {
                         if (("variety".equals(contentMode) || "entertainment".equals(contentMode))) {
                             intent.setAction("tv.ismar.daisy.EntertainmentItem");
                             intent.putExtra("title", "娱乐综艺");
@@ -102,7 +109,7 @@ public class YogaWebService extends Service {
                         intent.putExtra("url", url);
                         intent.putExtra("fromPage", "homepage");
                         startActivity(intent);
-                    }else if (expense.equals("false")){
+                    } else if (expense.equals("false")) {
                         InitPlayerTool tool = new InitPlayerTool(mContext);
                         tool.fromPage = "homepage";
                         tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
@@ -113,10 +120,16 @@ public class YogaWebService extends Service {
                     intent.setAction("tv.ismar.daisy.Channel");
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
-                }else if(type.equals("history")){
-                    mGetHistoryTask = new GetHistoryTask(response);
-                    mGetHistoryTask.execute();
-
+                } else if (type.equals("history")) {
+                    Log.i("yoga","history"+"___"+type+"--"+SimpleRestClient.access_token);
+                    if("".equals(SimpleRestClient.access_token)){
+                        mHistoryItemList=new ItemCollection(1,0,"1","1");
+                        mGetHistoryTask = new GetHistoryTask(response);
+                        mGetHistoryTask.execute();
+                    }else{
+                        Log.i("yoga","islogin"+SimpleRestClient.access_token);
+                        getHistoryByNet(response);
+                    }
                 }
             }
         });
@@ -140,13 +153,14 @@ public class YogaWebService extends Service {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                ArrayList<History> mHistories = DaisyUtils.getHistoryManager(mContext).getAllHistories("no");
+                mHistories = DaisyUtils.getHistoryManager(mContext).getAllHistories("no");
                 Log.i("yoga",mHistories.size()+"");
                 if(mHistories.size()>0) {
                     Collections.sort(mHistories);
                     for(int i=0;i<mHistories.size();++i) {
                         History history = mHistories.get(i);
                         Item item = getItem(history);
+                        items.add(item);
                         mHistoryItemList.objects.put(mHistoryItemList.count++, item);
                     }
                     mHistoryItemList.num_pages = (int) Math.ceil((float)mHistoryItemList.count / (float) ItemCollection.NUM_PER_PAGE);
@@ -170,11 +184,11 @@ public class YogaWebService extends Service {
                     obj.put("device_token", SimpleRestClient.device_token);
                     JSONArray array = new JSONArray();
                     Gson gson=new Gson();
-                    for(int i=0;i<mHistoryItemList.count;i++){
+                    for(int i=0;i<mHistories.size();i++){
                         String js=gson.toJson(mHistoryItemList.objects.get(i));
                         array.put(js);
                     }
-                    obj.put("historyList", array);
+                    obj.put("historyList", array.toString());
                     response.send("callback("+obj+")");
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -213,6 +227,37 @@ public class YogaWebService extends Service {
             item.expense.pay_type=history.paytype;
 //		}
         return item;
+    }
+    private void getHistoryByNet(final AsyncHttpServerResponse resp){
+        Log.i("begin", System.currentTimeMillis()+"");
+        mRestClient.doSendRequest("/api/histories/", "get", "", new SimpleRestClient.HttpPostRequestInterface() {
+            @Override
+            public void onPrepare() {
+
+            }
+            @Override
+            public void onSuccess(String info) {
+                // TODO Auto-generated method stub
+                Log.i("info", info);
+                JSONObject obj=new JSONObject();
+                try {
+                    obj.put("access_token", SimpleRestClient.access_token);
+                    obj.put("device_token", SimpleRestClient.device_token);
+                    obj.put("historyList", info);
+                    resp.send("callback("+obj+")");
+                    Log.i("end", System.currentTimeMillis()+"");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
+            @Override
+            public void onFailed(String error) {
+                Log.i("yoga",error);
+            }
+        });
     }
 
 }
