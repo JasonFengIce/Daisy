@@ -124,20 +124,20 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
         getChildFragmentManager().beginTransaction().hide(loginFragment).commit();
 
 
-        fragmentView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    if (!TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
-                        exitAccountBtn.requestFocus();
-                    } else {
-                        if (playAuthListView.getChildAt(0) != null)
-                            playAuthListView.getChildAt(0).requestFocus();
-                    }
-
-                }
-            }
-        });
+//        fragmentView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus) {
+//                    if (!TextUtils.isEmpty(SimpleRestClient.mobile_number)) {
+//                        exitAccountBtn.requestFocus();
+//                    } else {
+//                        if (playAuthListView.getChildAt(0) != null)
+//                            playAuthListView.getChildAt(0).requestFocus();
+//                    }
+//
+//                }
+//            }
+//        });
         return fragmentView;
     }
 
@@ -284,19 +284,19 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
                 convertView.setTag(playAuths.get(i));
                 buydate_txt.setText(String.format(remainday, remaindDay(playAuths.get(i).getExpiry_date())));
                 title.setText(playAuths.get(i).getTitle());
-                convertView.setOnFocusChangeListener(playAuthFocusListener);
+//                convertView.setOnFocusChangeListener(playAuthFocusListener);
                 convertView.setOnClickListener(playAuthClickListener);
-                convertView.setOnHoverListener(new View.OnHoverListener() {
-        			
-        			@Override
-        			public boolean onHover(View v, MotionEvent event) {
-        				if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER
-        						|| event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
-        					v.requestFocus();
-        				}
-        				return false;
-        			}
-        		});
+//                convertView.setOnHoverListener(new View.OnHoverListener() {
+//
+//        			@Override
+//        			public boolean onHover(View v, MotionEvent event) {
+//        				if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER
+//        						|| event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+//        					v.requestFocus();
+//        				}
+//        				return false;
+//        			}
+//        		});
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
                 if (i == 0) {

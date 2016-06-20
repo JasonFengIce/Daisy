@@ -204,7 +204,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:descendantFocusability="afterDescendants"
-                    android:focusable="true"
                     android:orientation="vertical">
 
                 </LinearLayout>
