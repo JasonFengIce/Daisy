@@ -23,8 +23,9 @@
         labelimage:focustextpaddingtop="0.97"
         labelimage:focustextsize="@dimen/item_detail_detail_price_textsize"
         labelimage:maxfocustitle="10"
-        android:layout_margin="3dp"
+
         />
+    <!--android:layout_margin="3dp"-->
     <TextView
         android:paddingTop="@dimen/list_item_title_pt"
         android:layout_width="@dimen/list_item_title_w"
