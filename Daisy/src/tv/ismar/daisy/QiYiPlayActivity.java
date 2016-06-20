@@ -601,29 +601,33 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
             isContinue = mHistory.is_continue;
             tempOffset = (int) mHistory.last_position;
         }
-        Parameter extraParams = new Parameter();
-        //debug code
-        extraParams.setInitPlayerSdkAfter(0);  //SDK初始化在调用initialize之后delay一定时间开始执行, 单位为毫秒.
-        extraParams.setCustomerAppVersion(""+SimpleRestClient.appVersion);      //传入客户App版本号
-        extraParams.setDeviceId(SimpleRestClient.sn_token);   //传入deviceId, VIP项目必传, 登录和鉴权使用
-        PlayerSdk.getInstance().initialize(this, extraParams,
-                new OnInitializedListener() {
+        if(!mQiyiSdkInitialized) {
+            Parameter extraParams = new Parameter();
+            //debug code
+            extraParams.setInitPlayerSdkAfter(0);  //SDK初始化在调用initialize之后delay一定时间开始执行, 单位为毫秒.
+            extraParams.setCustomerAppVersion("" + SimpleRestClient.appVersion);      //传入客户App版本号
+            extraParams.setDeviceId(SimpleRestClient.sn_token);   //传入deviceId, VIP项目必传, 登录和鉴权使用
+            PlayerSdk.getInstance().initialize(this, extraParams,
+                    new OnInitializedListener() {
 
-                    @Override
-                    public void onSuccess() {
-                        mQiyiSdkInitialized = true;
-                        doOnSuccess(); // 初始化成功后做
-                    }
+                        @Override
+                        public void onSuccess() {
+                            mQiyiSdkInitialized = true;
+                            doOnSuccess(); // 初始化成功后做
+                        }
 
-                    @Override
-                    public void onFailed(int what, int extra) {
-                        // TODO
-                        Toast.makeText(
-                                QiYiPlayActivity.this,
-                                "QiyiSdk init fail: what=" + what + ", extra="
-                                        + extra, Toast.LENGTH_LONG).show();
-                    }
-                });
+                        @Override
+                        public void onFailed(int what, int extra) {
+                            // TODO
+                            Toast.makeText(
+                                    QiYiPlayActivity.this,
+                                    "QiyiSdk init fail: what=" + what + ", extra="
+                                            + extra, Toast.LENGTH_LONG).show();
+                        }
+                    });
+        }else{
+            doOnSuccess(); // 初始化成功后做
+        }
     }
 
     private boolean isVodMenuVisible() {
