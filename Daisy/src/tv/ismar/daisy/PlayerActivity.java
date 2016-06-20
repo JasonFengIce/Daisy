@@ -623,7 +623,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 						long currentTime=System.currentTimeMillis();
 						if (isadvideoplaying)
 							return false;
-						if(doubleTouch==true&&currentTime-lastTouchTime<500){
+						if(doubleTouch==true&&lastTouchTime!=0&&currentTime-lastTouchTime<500){
 							if (!paused) {
 								pauseItem();
 								playPauseImage

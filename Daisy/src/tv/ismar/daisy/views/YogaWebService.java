@@ -67,7 +67,13 @@ public class YogaWebService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("yoga","onstart");
+        Log.i("yoga", "onstart");
+        if ("".equals(SimpleRestClient.device_token)){
+            Log.i("yoga","激活服务");
+            Intent init=new Intent();
+            init.setAction("tv.ismar.daisy.initservice");
+            startService(init);
+        }
         server.get("/", new HttpServerRequestCallback() {
             @Override
             public void onRequest(AsyncHttpServerRequest request, AsyncHttpServerResponse response) {
@@ -88,7 +94,8 @@ public class YogaWebService extends Service {
                     intent.putExtra("portraitflag", portraitflag);
                     Log.i("yoga", "send Intent!");
                     startActivity(intent);
-                    response.send(type);
+                    response.send("callback(" + type + ")");
+                    Log.i("yoga", "跳转channel" + channel);
                 } else if (type.equals("detail")) {
                     String url = request.getQuery().getString("url");
                     String contentMode = request.getQuery().getString("content_model");
@@ -110,19 +117,20 @@ public class YogaWebService extends Service {
                         intent.putExtra("url", url);
                         intent.putExtra("fromPage", "homepage");
                         startActivity(intent);
-                        response.send(type);
+                        Log.i("yoga","跳转详情"+contentMode);
+                        response.send("callback("+type+")");
                     } else if (expense.equals("false")) {
                         InitPlayerTool tool = new InitPlayerTool(mContext);
                         tool.fromPage = "homepage";
                         tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
-                        response.send(type);
+                        response.send("callback("+type+")");
                     }
                 } else if (type.equals("morehistories")) {
 
                     intent.putExtra("channel", "histories");
                     intent.setAction("tv.ismar.daisy.Channel");
                     startActivity(intent);
-                    response.send(type);
+                    response.send("callback("+type+")");
                 } else if (type.equals("history")) {
                     Log.i("yoga","history"+"___"+type+"--"+SimpleRestClient.access_token);
                     if("".equals(SimpleRestClient.access_token)){
