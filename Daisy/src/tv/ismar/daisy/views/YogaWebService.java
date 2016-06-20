@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -72,26 +73,26 @@ public class YogaWebService extends Service {
             public void onRequest(AsyncHttpServerRequest request, AsyncHttpServerResponse response) {
                 String type = request.getQuery().getString("type");
                 Log.i("request", request + "heh" + type);
+                Intent intent = new Intent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 if (type.equals("channel")) {
                     String portraitflag = request.getQuery().getString("portraitflag");
                     String url = request.getQuery().getString("url");
                     String title = request.getQuery().getString("title");
                     String channel = request.getQuery().getString("channel");
                     Log.i("yoga", url + "-----" + title + "----" + channel);
-                    Intent intent = new Intent();
                     intent.setAction("tv.ismar.daisy.Channel");
                     intent.putExtra("channel", channel);
                     intent.putExtra("url", url);
                     intent.putExtra("title", title);
                     intent.putExtra("portraitflag", portraitflag);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Log.i("yoga", "send Intent!");
                     startActivity(intent);
+                    response.send(type);
                 } else if (type.equals("detail")) {
                     String url = request.getQuery().getString("url");
                     String contentMode = request.getQuery().getString("content_model");
                     String expense = request.getQuery().getString("expense");
-                    Intent intent = new Intent();
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     if (expense.equals("true")) {
                         if (("variety".equals(contentMode) || "entertainment".equals(contentMode))) {
                             intent.setAction("tv.ismar.daisy.EntertainmentItem");
@@ -109,17 +110,19 @@ public class YogaWebService extends Service {
                         intent.putExtra("url", url);
                         intent.putExtra("fromPage", "homepage");
                         startActivity(intent);
+                        response.send(type);
                     } else if (expense.equals("false")) {
                         InitPlayerTool tool = new InitPlayerTool(mContext);
                         tool.fromPage = "homepage";
                         tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
+                        response.send(type);
                     }
                 } else if (type.equals("morehistories")) {
-                    Intent intent = new Intent();
+
                     intent.putExtra("channel", "histories");
                     intent.setAction("tv.ismar.daisy.Channel");
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
+                    response.send(type);
                 } else if (type.equals("history")) {
                     Log.i("yoga","history"+"___"+type+"--"+SimpleRestClient.access_token);
                     if("".equals(SimpleRestClient.access_token)){
@@ -138,6 +141,7 @@ public class YogaWebService extends Service {
 
     @Override
     public void onDestroy() {
+        Log.i("yoga","service  is destroy");
         super.onDestroy();
     }
     class GetHistoryTask extends AsyncTask<Void, Void, Void> {

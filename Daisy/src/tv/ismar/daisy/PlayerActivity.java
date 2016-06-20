@@ -289,6 +289,14 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 				return false;
 			}
 		});
+		gesture_tipview.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				gesture_tipview.setVisibility(View.GONE);
+				shardpref.setSharedPrefs(AccountSharedPrefs.FIRST_USE, "false");
+				initClipInfo();
+			}
+		});
 //	//	fbImage.setOnTouchListener(new OnTouchListener() {
 //
 //			@Override
@@ -359,7 +367,8 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 		}else{
 			gesture_tipview.setVisibility(View.VISIBLE);
 			gesture_tipview.setAlpha(81);
-			setGesturebackground(gesture_tipview, R.drawable.frist_play);
+			//setGesturebackground(gesture_tipview, R.drawable.frist_play);
+			gesture_tipview.setBackgroundResource(R.drawable.frist_play);
 		}
 	}
 	private void initData() {
@@ -882,46 +891,37 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	private void spearEvent(int compare, MotionEvent event) {
 		switch (compare) {
 			case MOVE_LEFT:
-				if (clipLength > 0 && !live_video) {
-					isSeek = true;
-					showPanel();
-					isBuffer = true;
-					showBuffer();
-					fastForward(SHORT_STEP);
-					mVideoView.seekTo(currPosition);
-					isSeekBuffer = true;
-					Log.d(TAG, "RIGHT seek to" + getTimeString(currPosition));
-					isSeek = false;
-					offsets = 0;
-					offn = 1;
-				}
+//				if (clipLength > 0 && !live_video) {
+//					isSeek = true;
+//					showPanel();
+//					isBuffer = true;
+//					showBuffer();
+//					fastForward(SHORT_STEP);
+//					mVideoView.seekTo(currPosition);
+//					isSeekBuffer = true;
+//					Log.d(TAG, "RIGHT seek to" + getTimeString(currPosition));
+//					isSeek = false;
+//					offsets = 0;
+//					offn = 1;
+//				}
 				break;
 			case MOVE_RIGHT:
-				if (clipLength > 0 && !live_video) {
-					isSeek = true;
-					showPanel();
-					isBuffer = true;
-					showBuffer();
-					fastForward(SHORT_STEP);
-					mVideoView.seekTo(currPosition);
-					isSeekBuffer = true;
-					Log.d(TAG, "RIGHT seek to" + getTimeString(currPosition));
-					isSeek = false;
-					offsets = 0;
-					offn = 1;
-				}
+//				if (clipLength > 0 && !live_video) {
+//					isSeek = true;
+//					showPanel();
+//					isBuffer = true;
+//					showBuffer();
+//					fastForward(SHORT_STEP);
+//					mVideoView.seekTo(currPosition);
+//					isSeekBuffer = true;
+//					Log.d(TAG, "RIGHT seek to" + getTimeString(currPosition));
+//					isSeek = false;
+//					offsets = 0;
+//					offn = 1;
+//				}
 				break;
 			case MOVE_TOP:
-				float diffY=moveY-preY;
-				if (moveX<=screenWidth/2){
-					//亮度切换
-					onBrightnessSlide(diffY/1000);
-					Log.e("scroll^^1^^",diffY+"");
-				}else{
-					//音量切换
-					onVolumnSlide(diffY / 1000);
-					Log.e("scroll^^2^^",diffY+"");
-				}
+//
 				break;
 			case MOVE_BOTTOM:
 //				if (upX<=screenWidth/2){
@@ -949,7 +949,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 		if (Math.abs(dltX) > Math.abs(dltY)){
 			return dltX > 0 ? MOVE_RIGHT : MOVE_LEFT;
 		}else{
-			return dltX > 0 ? MOVE_TOP : MOVE_BOTTOM;
+			return dltY > 0 ? MOVE_TOP : MOVE_BOTTOM;
 		}
 	}
 
@@ -2737,9 +2737,9 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 		}
 		int[] location = new int[2];
 		pop.getLocationOnScreen(location);
-		Log.i("Height",panelLayout.getHeight()+"");
+		Log.i("Height", panelLayout.getHeight()+"");
 
-		popupWindow.showAtLocation(panelLayout, Gravity.NO_GRAVITY, location[0]+2325, location[1]+985);
+		popupWindow.showAtLocation(panelLayout, Gravity.NO_GRAVITY, location[0] + 2325, location[1]+985);
 	}
 	View.OnClickListener listener=new View.OnClickListener() {
 		@Override
@@ -2758,31 +2758,6 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 			}
 		}
 	};
-	public void initEntertainmentPop(){
-		View view=View.inflate(this,R.layout.entet_pop,null);
-		EntertainmentPop=new PopupWindow(view,490,1130);
-		EntertainmentPop.setBackgroundDrawable(getResources().getDrawable(R.color._202020));
-		EntertainmentPop.getBackground().setAlpha(102);
-		EntertainmentPop.setFocusable(true);
-		EntertainmentPop.setOutsideTouchable(true);
-		ListView list= (ListView) view.findViewById(R.id.enter_list);
-		list.setAdapter(new EntertainmentPopAdapter(listItems, this));
-		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				changeItem(listItems.get(position).pk);
-				EntertainmentPop.dismiss();
-			}
-		});
-		EntertainmentPop.showAsDropDown(anthology, 0, 24);
-		EntertainmentPop.setOnDismissListener(new PopupWindow.OnDismissListener() {
-			@Override
-			public void onDismiss() {
-				anthology.setTextColor(getResources().getColor(R.color._e4e4e4));
-			}
-		});
-	}
-
 	public void fetchItemInfo(String itemId) {
 
 		Retrofit retrofit = new Retrofit.Builder()

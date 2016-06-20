@@ -36,6 +36,7 @@ import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.advertisement.AdvertisementManager;
 import tv.ismar.daisy.core.cache.CacheManager;
+import tv.ismar.daisy.core.client.HttpManager;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.core.preferences.AppSharedPrefs;
@@ -164,11 +165,13 @@ public class VodApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        HttpManager.initialize(this);
         ActiveAndroid.initialize(this, true);
         IsmartvUrlClient.initializeWithContext(this);
         CacheManager.initialize(this);
         AccountSharedPrefs.initialize(this);
         AppSharedPrefs.initialize(this);
+
 
         AdvertisementManager.initialize(this);
         getContentModelFromAssets();
