@@ -211,7 +211,7 @@ public class Activator {
             String publicKey;
             publicKey = result.split("\\$\\$\\$")[1];
             Log.d(TAG, "zjq public key is ---> " + publicKey);
-            rsaEnResult = nativeManagers.RSAEncrypt(publicKey, content);
+            rsaEnResult = ecodeWithPublic(content,publicKey);
             Log.d(TAG, "zjq RSA 加密" + rsaEnResult);
         } catch (Exception e) {
             e.printStackTrace();
