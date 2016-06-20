@@ -932,7 +932,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         fetchChannels();
 
 
-        sendLoncationRequest();
+//        sendLoncationRequest();
         String appUpdateHost = "http://" + result.getUpgrade_domain();
 //        AppUpdateUtils.getInstance(this).checkUpdate(appUpdateHost);
         AppUpdateUtilsV2.getInstance(this).checkAppUpdate(appUpdateHost);
