@@ -18,6 +18,8 @@ import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
+
+import cn.ismartv.activator.data.Result;
 import cn.ismartv.activator.utils.MD5Utils;
 import com.google.gson.JsonSyntaxException;
 import com.ismartv.api.t.AccessProxy;
@@ -156,7 +158,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	private int currentBright;
 	private int maxVolumn;
 	private AudioManager mAudioManager;
-
+	private PowerManager.WakeLock mWakelock;
 	public float getScreenWidth() {
 		DisplayMetrics metric = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metric);
@@ -184,6 +186,16 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Window win = getWindow();
+		WindowManager.LayoutParams winParams = win.getAttributes();
+		winParams.flags |= (WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+				| WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+				| WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON
+				| WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+//		WindowManager.LayoutParams lp = getWindow().getAttributes();
+//		lp.dimAmount = 0.75f;
+//		win.setAttributes(lp);
+//		win.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 		activityTag = "BaseActivity";
 		IntentFilter intentFilter = new IntentFilter(ACTION);
 		saveScreenbroad = new ScreenSaveBrocast();
@@ -363,7 +375,14 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 		mVideoView.setOnHoverListener(onhoverlistener);
 		setVideoActionListener();
 		if("false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
-		initClipInfo();
+			Intent intent = getIntent();
+			String testitemurl = " http://sky.tvxio.bestv.com.cn/v3_0/UF30/tou/api/item/701893/";
+			if(testitemurl != null && !"".equals(testitemurl)){
+				GetItemTask mGetItemTask = new GetItemTask();
+				mGetItemTask.execute(testitemurl);
+			}else{
+				initClipInfo();
+			}
 		}else{
 			gesture_tipview.setVisibility(View.VISIBLE);
 			gesture_tipview.setAlpha(81);
@@ -413,6 +432,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 			// *********************
 			// new ItemByUrlTask().execute();
 			String info = bundle.getString("ismartv");
+			if(urlInfo == null)
 			urlInfo = AccessProxy.getIsmartvClipInfo(info);
 			if (item.item_pk == item.pk)
 				itemUrl = SimpleRestClient.root_url + "/api/item/" + item.pk
@@ -2739,7 +2759,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 		pop.getLocationOnScreen(location);
 		Log.i("Height", panelLayout.getHeight()+"");
 
-		popupWindow.showAtLocation(panelLayout, Gravity.NO_GRAVITY, location[0] + 2325, location[1]+985);
+		popupWindow.showAtLocation(panelLayout, Gravity.NO_GRAVITY, location[0] + 2325, location[1] + 985);
 	}
 	View.OnClickListener listener=new View.OnClickListener() {
 		@Override
@@ -2903,5 +2923,84 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 			e.printStackTrace();
 		}
 		return brightness*100/255;
+	}
+
+
+	class GetItemTask extends AsyncTask<String, Void, Void> {
+
+		int id = 0;
+		String url = null;
+
+		@Override
+		protected void onPostExecute(Void result) {
+			initClipInfo();
+		}
+		@Override
+		protected Void doInBackground(String... params) {
+			try {
+				SimpleRestClient mSimpleRestClient = new SimpleRestClient();
+				url = params[0];
+				id = SimpleRestClient.getItemId(url, new boolean[1]);
+				Item mItem = mSimpleRestClient.getItem(url);
+				mItem.isPreview = true;
+				getIntent().putExtra("item", mItem);
+				urlInfo = AccessProxy.parse(SimpleRestClient.root_url
+								+ "/api/clip/" + mItem.preview.pk + "/", VodUserAgent
+								.getAccessToken(SimpleRestClient.sn_token),
+						PlayerActivity.this);
+			} catch (ItemOfflineException e) {
+				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
+				exceptionProperties.put(EventProperty.CODE, "nodetail");
+				exceptionProperties.put(EventProperty.CONTENT,
+						"no detail error : " + e.getUrl());
+				exceptionProperties.put(EventProperty.ITEM, id);
+				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT,
+						exceptionProperties);
+				e.printStackTrace();
+			} catch (JsonSyntaxException e) {
+				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
+				exceptionProperties.put(EventProperty.CODE, "parsejsonerror");
+				exceptionProperties.put(EventProperty.CONTENT, e.getMessage()
+						+ " : " + url);
+				exceptionProperties.put(EventProperty.ITEM, id);
+				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT,
+						exceptionProperties);
+				e.printStackTrace();
+			} catch (NetworkException e) {
+				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
+				exceptionProperties.put(EventProperty.CODE, "networkconnerror");
+				exceptionProperties.put(EventProperty.CONTENT, e.getMessage()
+						+ " : " + e.getUrl());
+				exceptionProperties.put(EventProperty.ITEM, id);
+				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT,
+						exceptionProperties);
+				e.printStackTrace();
+			}
+			return null;
+		}
+	}
+
+	private void acquireWakeLock() {
+
+		if (mWakelock == null) {
+
+			PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+
+			mWakelock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, this.getClass().getCanonicalName());
+
+			mWakelock.acquire();
+
+		}
+	}
+
+	private void releaseWakeLock() {
+
+		if (mWakelock != null && mWakelock.isHeld()) {
+
+			mWakelock.release();
+
+			mWakelock = null;
+
+		}
 	}
 }
