@@ -162,7 +162,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
     private boolean mQiyiSdkInitialized;
     private FrameLayout frameContainer;
     private IVideoOverlay mVideoOverlay;
-    private TextView mTxtAdTimer;
+    private TextView mTxtAdTimer,anthology;
     private static final int[] SEEK_STEPS = {5000,      10000,      30000,      60000,      300000,     600000};
     private int mSeekStepIndex;
     private  boolean is_vip;
@@ -227,6 +227,9 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
         panelLayout = (RelativeLayout) findViewById(R.id.PanelLayout);
         titleText = (tv.ismar.daisy.views.MarqueeView) findViewById(R.id.TitleText);
         qualityText = (TextView) findViewById(R.id.QualityText);
+        anthology= (TextView) findViewById(R.id.anthology);
+        anthology.setOnClickListener(listener);
+        qualityText.setOnClickListener(listener);
         timeText = (TextView) findViewById(R.id.TimeText);
         endtime= (TextView) findViewById(R.id.endTimeText);
         timeBar = (SeekBar) findViewById(R.id.TimeSeekBar);
@@ -1654,7 +1657,45 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
 
         return true;
     }
-
+    public void changeQuality(int id){
+        if (id > 0 && id < 5) {
+            int pos = id - 1;
+            if (currQuality != pos) {
+                try {
+                    timeTaskPause();
+                    checkTaskPause();
+                    paused = false;
+                    isBuffer = true;
+                    showBuffer();
+                    playPauseImage
+                            .setImageResource(R.drawable.paus);
+                    currQuality = pos;
+                    if (currQuality == 0) {
+                        mPlayer.switchBitStream(BitStream.BITSTREAM_HIGH);
+                    } else if (currQuality == 1) {
+                        mPlayer.switchBitStream(BitStream.BITSTREAM_720P);
+                    } else {
+                        mPlayer.switchBitStream(BitStream.BITSTREAM_1080P);
+                    }
+                    mPlayer.pause();
+                    // historyManager.addOrUpdateQuality(new Quality(0,
+                    // urls[currQuality], currQuality));
+                    mediaip = "127.0.0.1";
+                    if (subItem != null)
+                        callaPlay.videoSwitchStream(item.pk, subItem.pk,
+                                subItem.title, clip.pk, currQuality, "manual",
+                                null, null, mediaip, sid, "qiyi");
+                    else
+                        callaPlay.videoSwitchStream(item.pk, null, item.title,
+                                clip.pk, currQuality, "manual", null, null,
+                                mediaip, sid, "qiyi");
+                    initQualtiyText();
+                } catch (Exception e) {
+                    Log.d(TAG, "Exception change url " + e);
+                }
+            }
+        }
+    }
     private void deleteFavoriteByNet() {
         simpleRestClient.doSendRequest("/api/bookmark/remove/", "post",
                 "access_token=" + SimpleRestClient.access_token
@@ -2261,6 +2302,23 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
         intent.setAction("cn.ismar.sakura.launcher");
         startActivity(intent);
     }
+    View.OnClickListener listener=new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.QualityText:
+                    creatPopWindows();
+                    break;
+                case R.id.anthology:
+                    if(listItems.size()>0){
+                         anthology.setTextColor(getResources().getColor(R.color._ff9c3c));
+                         getSupportFragmentManager().beginTransaction().show(mEpisodeFragment).commit();
+                    }
+                    break;
+
+            }
+        }
+    };
     public void creatPopWindows(){
         View pop=View.inflate(this, R.layout.quality_pop_item, null);
         popupWindow = new PopupWindow(pop,getResources().getDimensionPixelSize(R.dimen.quality_pop_width), getResources().getDimensionPixelSize(R.dimen.quality_pop_height));
@@ -2296,7 +2354,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //initQualtiyText(j);
+                        changeQuality(j);
                         popupWindow.dismiss();
                     }
                 });

@@ -29,6 +29,7 @@ import java.util.Set;
 
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.service.InitService;
 import tv.ismar.daisy.models.Expense;
 import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
@@ -71,7 +72,7 @@ public class YogaWebService extends Service {
         if ("".equals(SimpleRestClient.device_token)){
             Log.i("yoga","激活服务");
             Intent init=new Intent();
-            init.setAction("tv.ismar.daisy.initservice");
+            init.setClass(mContext, InitService.class);
             startService(init);
         }
         server.get("/", new HttpServerRequestCallback() {
@@ -94,7 +95,7 @@ public class YogaWebService extends Service {
                     intent.putExtra("portraitflag", portraitflag);
                     Log.i("yoga", "send Intent!");
                     startActivity(intent);
-                    response.send("callback(" + type + ")");
+                    response.send("callback(" +type + ")");
                     Log.i("yoga", "跳转channel" + channel);
                 } else if (type.equals("detail")) {
                     String url = request.getQuery().getString("url");
@@ -118,7 +119,7 @@ public class YogaWebService extends Service {
                         intent.putExtra("fromPage", "homepage");
                         startActivity(intent);
                         Log.i("yoga","跳转详情"+contentMode);
-                        response.send("callback("+type+")");
+                        response.send("callback(\""+type+"\")");
                     } else if (expense.equals("false")) {
                         InitPlayerTool tool = new InitPlayerTool(mContext);
                         tool.fromPage = "homepage";
