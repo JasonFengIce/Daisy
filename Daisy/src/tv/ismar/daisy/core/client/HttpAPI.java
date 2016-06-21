@@ -29,7 +29,7 @@ public class HttpAPI {
 
     public interface OrderCreate {
         @FormUrlEncoded
-        @POST("//skytest.tvxio.com:7001/api/order/create/")
+        @POST("api/order/create/")
         Call<ResponseBody> doRequest(
                 @Field("device_token") String deviceToken,
                 @Field("wares_id") String waresId,
@@ -50,6 +50,5 @@ public class HttpAPI {
         @GET("api/tv/homepage/top/")
         Call<HomePagerEntity> doRequest();
     }
-
 
 }

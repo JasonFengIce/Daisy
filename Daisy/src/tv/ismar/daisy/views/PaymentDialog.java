@@ -34,9 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import retrofit2.*;
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
@@ -143,6 +141,8 @@ public class PaymentDialog extends Dialog implements
 	private TextView ali_exprie;
 	private Button alipay_submit;
 	private TextView mLocalAppPayBtn;
+
+	private String alipayInfo;
 
 	public PaymentDialog(Context context) {
 		super(context);
@@ -1498,7 +1498,11 @@ public class PaymentDialog extends Dialog implements
 	}
 
     private void localAlipay(){
-		fetchPayInfo();
+		if (!TextUtils.isEmpty(alipayInfo)){
+			invokeAlipay();
+		}else {
+			fetchPayInfo();
+		}
     }
 
 
@@ -1507,31 +1511,19 @@ public class PaymentDialog extends Dialog implements
 		String waresId = String.valueOf(mItem.pk);
 		String waresType = mItem.model_name;
 		String source = "alipay_mb";
-		HttpManager.getInstance().media_lily_Retrofit.create(HttpAPI.OrderCreate.class).doRequest(deviceToken, waresId, waresType, source).enqueue(new Callback<ResponseBody>() {
+		Retrofit retrofit = new Retrofit.Builder()
+				.addConverterFactory(GsonConverterFactory.create())
+				.baseUrl(HttpManager.appendProtocol(SimpleRestClient.root_url))
+				.client(HttpManager.getInstance().mClient)
+				.build();
+
+		retrofit.create(HttpAPI.OrderCreate.class).doRequest(deviceToken, waresId, waresType, source).enqueue(new Callback<ResponseBody>() {
 			@Override
 			public void onResponse(Response<ResponseBody> response) {
 				if (response.body()!= null){
 				try {
-
-					final String payInfo = response.body().string();
-					Runnable payRunnable = new Runnable() {
-						@Override
-						public void run() {
-							// 构造PayTask 对象
-							PayTask alipay = new PayTask((Activity) mycontext);
-							// 调用支付接口，获取支付结果
-							String result = alipay.pay(payInfo, true);
-
-							Message msg = new Message();
-							msg.what = SDK_PAY_FLAG;
-							msg.obj = result;
-							mHandler.sendMessage(msg);
-						}
-					};
-
-					// 必须异步调用
-					Thread payThread = new Thread(payRunnable);
-					payThread.start();
+					alipayInfo = response.body().string();
+					invokeAlipay();
 
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -1546,6 +1538,27 @@ public class PaymentDialog extends Dialog implements
 		});
 	}
 
+
+	private void invokeAlipay(){
+		Runnable payRunnable = new Runnable() {
+			@Override
+			public void run() {
+				// 构造PayTask 对象
+				PayTask alipay = new PayTask((Activity) mycontext);
+				// 调用支付接口，获取支付结果
+				String result = alipay.pay(alipayInfo, true);
+
+				Message msg = new Message();
+				msg.what = SDK_PAY_FLAG;
+				msg.obj = result;
+				mHandler.sendMessage(msg);
+			}
+		};
+
+		// 必须异步调用
+		Thread payThread = new Thread(payRunnable);
+		payThread.start();
+	}
 
 	private static final int SDK_PAY_FLAG = 1;
 
@@ -1569,16 +1582,15 @@ public class PaymentDialog extends Dialog implements
 					if (TextUtils.equals(resultStatus, "9000")) {
 						Toast.makeText(getContext(), "支付成功", Toast.LENGTH_SHORT).show();
 						purchaseCheck(PURCHASE_PRUCHASE_BASE_URL);
+						alipayInfo = null;
 					} else {
 						// 判断resultStatus 为非"9000"则代表可能支付失败
 						// "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
 						if (TextUtils.equals(resultStatus, "8000")) {
 							Toast.makeText(getContext(), "支付结果确认中", Toast.LENGTH_SHORT).show();
-
 						} else {
 							// 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
 							Toast.makeText(getContext(), "支付失败", Toast.LENGTH_SHORT).show();
-
 						}
 					}
 					break;
@@ -1587,7 +1599,11 @@ public class PaymentDialog extends Dialog implements
 					break;
 			}
 		}
-
-		;
 	};
+
+	@Override
+	protected void onStop() {
+		alipayInfo = null;
+		super.onStop();
+	}
 }
