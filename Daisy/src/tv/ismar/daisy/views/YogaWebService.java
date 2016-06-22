@@ -95,7 +95,7 @@ public class YogaWebService extends Service {
                     intent.putExtra("portraitflag", portraitflag);
                     Log.i("yoga", "send Intent!");
                     startActivity(intent);
-                    response.send("callback(" +type + ")");
+                    response.send("callback(\"" +type + "\")");
                     Log.i("yoga", "跳转channel" + channel);
                 } else if (type.equals("detail")) {
                     String url = request.getQuery().getString("url");
@@ -124,14 +124,14 @@ public class YogaWebService extends Service {
                         InitPlayerTool tool = new InitPlayerTool(mContext);
                         tool.fromPage = "homepage";
                         tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
-                        response.send("callback("+type+")");
+                        response.send("callback(\""+type+"\")");
                     }
                 } else if (type.equals("morehistories")) {
 
                     intent.putExtra("channel", "histories");
                     intent.setAction("tv.ismar.daisy.Channel");
                     startActivity(intent);
-                    response.send("callback("+type+")");
+                    response.send("callback(\""+type+"\")");
                 } else if (type.equals("history")) {
                     Log.i("yoga","history"+"___"+type+"--"+SimpleRestClient.access_token);
                     if("".equals(SimpleRestClient.access_token)){

@@ -39,11 +39,12 @@
             android:visibility="gone"
             >
             <ImageView
+                android:id="@+id/player_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/player_back_top"
                 android:layout_marginLeft="@dimen/player_back_left"
-                android:src="@drawable/player_back_selector"
+                android:src="@drawable/list_arrow_back_selector"
                 />
             <tv.ismar.daisy.views.MarqueeView
                 xmlns:app="http://schemas.android.com/apk/res/tv.ismar.daisy"
@@ -127,53 +128,69 @@
                 />
 
         </RelativeLayout>
-
-        <RelativeLayout
+        <TextView
+                android:id="@+id/progress_time"
+                android:layout_width="@dimen/progress_time_text_w"
+                android:layout_height="@dimen/progress_time_text_h"
+                android:background="@drawable/yoga_seek_bg"
+                android:gravity="center"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/progress_time_text_size"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/panlLayout_height"
+                android:visibility="invisible"
+                />
+        <LinearLayout
             android:id="@+id/PanelLayout"
             android:layout_width="fill_parent"
-            android:layout_height="@dimen/panlLayout_height"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="#202020"
             android:alpha="0.8"
             android:focusable="true"
+            android:orientation="vertical"
             android:visibility="gone" >
-
+            <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
             <TextView
                 android:id="@+id/TimeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/timeText_marginTop"
+                android:layout_marginTop="@dimen/seekbar_h"
                 android:layout_marginLeft="@dimen/timeText_marginLeft"
                 android:textColor="#e4e4e4"
                 android:textSize="@dimen/timeText_size"/>
             <SeekBar
                 android:id="@+id/TimeSeekBar"
-                android:layout_width="1061dp"
+                android:layout_width="@dimen/seekbar_w"
                 android:layout_height="wrap_content"
                 android:focusable="false"
                 android:max="100"
-                android:layout_marginLeft="@dimen/play_seekbar_marginleft"
-                android:layout_marginTop="@dimen/play_seekbar_margintop"
-                android:maxHeight="8dp"
+                android:maxHeight="@dimen/seekbar_h"
+                android:layout_marginLeft="@dimen/seekbar_ml"
                 android:progressDrawable="@drawable/vodplayer_seekbar_style"
+                android:layout_marginTop="@dimen/seekbar_h"
                 android:secondaryProgress="0"
                 android:thumb="@drawable/vod_player_time_yoga"
                 android:thumbOffset="0dp" />
             <TextView
                 android:id="@+id/endTimeText"
-                android:layout_width="98dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="@dimen/endtime_text_marginTop"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/endtime_text_marginRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/seekbar_h"
+                android:layout_marginLeft="@dimen/endtime_text_marginleft"
                 android:textColor="#e4e4e4"
-                android:layout_toRightOf="@+id/TimeSeekBar"
                 android:textSize="@dimen/endtime_text_size"/>
+            </LinearLayout>
+            <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/QualityText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginBottom="@dimen/quality_text_bottom"
                 android:layout_marginRight="@dimen/anthology_right"
@@ -195,7 +212,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/play_pause_left"
-                android:layout_alignParentBottom="true"
                 android:layout_marginBottom="@dimen/play_pause_bottom"
                 android:clickable="true"
                 android:src="@drawable/play" />
@@ -206,10 +222,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/play_ff_left"
                 android:layout_marginBottom="@dimen/play_ff_bottom"
-                android:layout_alignParentBottom="true"
                 android:clickable="true"
                 android:src="@drawable/vodplayer_ffd" />
-        </RelativeLayout>
+            </RelativeLayout>
+        </LinearLayout>
     </RelativeLayout>
     <ImageView
         android:id="@+id/gesture_tipview"
@@ -262,5 +278,32 @@
                 android:progressDrawable="@drawable/progressbar"
                 style="@android:style/Widget.ProgressBar.Horizontal"
                 />
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/play_progress"
+            android:layout_width="@dimen/bright_w"
+            android:layout_height="@dimen/bright_h"
+            android:layout_centerInParent="true"
+            android:background="@drawable/moveon"
+            android:visibility="gone">
+
+        <TextView
+                android:id="@+id/current_play_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="127dp"
+                />
+        <ProgressBar
+                android:id="@+id/progress_play"
+                android:layout_width="@dimen/bright_progress_w"
+                android:layout_height="@dimen/bright_progress_h"
+                android:layout_marginLeft="@dimen/bright_progress_ml"
+                android:layout_marginTop="@dimen/bright_progress_mt"
+                android:progressDrawable="@drawable/progressbar"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                />
+
     </RelativeLayout>
 </RelativeLayout>
