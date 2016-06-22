@@ -84,7 +84,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	private Animation top_to_down,top_to_up;
 	// private Animation bufferHideAnimation;
 	private ImageView logoImage;
-	private RelativeLayout panelLayout;
+	private LinearLayout panelLayout;
 	private RelativeLayout top_panel;
 	private MarqueeView titleText;
 	private TextView qualityText;
@@ -158,6 +158,11 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	private int currentBright;
 	private int maxVolumn;
 	private AudioManager mAudioManager;
+	private TextView progress_time;
+	private ImageView player_back;
+	private View play_progress;
+	private TextView current_play_progress;
+	private ProgressBar progress_play;
 	private PowerManager.WakeLock mWakelock;
 	public float getScreenWidth() {
 		DisplayMetrics metric = new DisplayMetrics();
@@ -246,8 +251,10 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 		setContentView(R.layout.vod_player);
 
 		mVideoView = (IsmatvVideoView) findViewById(R.id.video_view);
-		panelLayout = (RelativeLayout) findViewById(R.id.PanelLayout);
+		panelLayout = (LinearLayout) findViewById(R.id.PanelLayout);
 		top_panel= (RelativeLayout) findViewById(R.id.top_panelayout);
+		player_back = (ImageView) findViewById(R.id.player_back);
+		player_back.setOnClickListener(listener);
 		titleText = (MarqueeView) findViewById(R.id.TitleText);
 		anthology= (TextView) findViewById(R.id.anthology);
 		anthology.setOnClickListener(listener);
@@ -255,7 +262,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 		qualityText.setOnClickListener(listener);
 		timeText = (TextView) findViewById(R.id.TimeText);
 		endTimetext= (TextView) findViewById(R.id.endTimeText);
-
+		progress_time = (TextView) findViewById(R.id.progress_time);
 		timeBar = (SeekBar) findViewById(R.id.TimeSeekBar);
 		timeBar.setOnSeekBarChangeListener(new SeekBarChangeEvent());
 		playPauseImage = (ImageView) findViewById(R.id.PlayPauseImage);
@@ -275,6 +282,9 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 		progress_bright = (ProgressBar) findViewById(R.id.progress_bright);
 		volumn = findViewById(R.id.volumn);
 		progress_volumn = (ProgressBar) findViewById(R.id.progress_volumn);
+		play_progress = findViewById(R.id.play_progress);
+		current_play_progress = (TextView) findViewById(R.id.current_play_progress);
+		progress_play = (ProgressBar) findViewById(R.id.progress_play);
 		playPauseImage.setOnTouchListener(new OnTouchListener() {
 
 			@Override
@@ -393,6 +403,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	private void initData() {
 		progress_bright.setMax(100);
 		progress_volumn.setMax(100);
+		progress_play.setMax(100);
 		// 获取系统音量
 		mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 		maxVolumn = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
@@ -670,6 +681,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 						break;
 					case MotionEvent.ACTION_MOVE:
 						float moveY = event.getY() - downY;
+						float moveX=event.getX()-downX;
 						int halfScreenH=getWindowManager().getDefaultDisplay().getHeight()/2;
 						int halfScreenW=getWindowManager().getDefaultDisplay().getWidth()/2;
 						float movePercent=-moveY/halfScreenH;
@@ -684,6 +696,10 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 							downY = event.getY();
 							downX=event.getX();
 						}
+						if(Math.abs(moveX)>50){
+							changePlayProgress(moveX);
+							downX=event.getX();
+						}
 						break;
 					case MotionEvent.ACTION_UP:
 						upX=(int) event.getX();
@@ -691,6 +707,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 						spearEvent(compare(upX, upY), event);
 						bright.setVisibility(View.INVISIBLE);
 						volumn.setVisibility(View.INVISIBLE);
+						play_progress.setVisibility(View.INVISIBLE);
 						break;
 				}
 				return true;
@@ -2252,6 +2269,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 
 	class SeekBarChangeEvent implements SeekBar.OnSeekBarChangeListener {
 
+		RelativeLayout.LayoutParams params= (RelativeLayout.LayoutParams) progress_time.getLayoutParams();
 		@Override
 		public void onProgressChanged(SeekBar seekBar, int progress,
 									  boolean fromUser) {
@@ -2261,6 +2279,9 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 					Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
 				}
 				updataTimeText();
+				params.leftMargin=seekBar.getWidth()*progress/clipLength-params.width/2+getResources().getDimensionPixelOffset(R.dimen.play_seekbar_marginleft);
+				progress_time.setLayoutParams(params);
+				progress_time.setText(getTimeString(progress));
 			}
 		}
 
@@ -2272,6 +2293,9 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 				isBuffer = true;
 				showPanel();
 				showBuffer();
+				params.leftMargin=seekBar.getWidth()*seekBar.getProgress()/clipLength-params.width/2+getResources().getDimensionPixelOffset(R.dimen.play_seekbar_marginleft);
+				progress_time.setLayoutParams(params);
+				progress_time.setVisibility(View.VISIBLE);
 			}
 
 		}
@@ -2287,6 +2311,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 				offsets = 0;
 				offn = 1;
 				hideBuffer();
+				progress_time.setVisibility(View.INVISIBLE);
 			}
 
 		}
@@ -2775,6 +2800,9 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 						getSupportFragmentManager().beginTransaction().show(mEpisodeFragment).commit();
 					}
 					break;
+				case R.id.player_back:
+					finish();
+					break;
 			}
 		}
 	};
@@ -2891,7 +2919,12 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 			setBright((int) newBright);
 		}
 	}
-
+	private void changePlayProgress(float movePercent){
+		play_progress.setVisibility(View.VISIBLE);
+		timeBar.setProgress((int) (timeBar.getProgress()+movePercent));
+		current_play_progress.setText(getTimeString(currPosition)+"/"+getTimeString(clipLength));
+		progress_play.setProgress(currPosition/clipLength);
+	}
 	public int getVolumn() {
 		return mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 	}
