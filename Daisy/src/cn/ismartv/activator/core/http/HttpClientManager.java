@@ -15,7 +15,8 @@ import retrofit2.Retrofit;
 public class HttpClientManager {
     private static final int DEFAULT_CONNECT_TIMEOUT = 2;
     private static final int DEFAULT_READ_TIMEOUT = 5;
-    private static final String SKY_HOST = "http://peachtest.tvxio.com";
+    private static final String SKY_HOST = "http://sky.tvxio.com";
+    private static final String SKY_HOST_TEST = "http://peachtest.tvxio.com";
 
     public Retrofit SKY_Retrofit;
 

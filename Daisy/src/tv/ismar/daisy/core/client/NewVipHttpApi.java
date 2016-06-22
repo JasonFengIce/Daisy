@@ -29,7 +29,9 @@ public class NewVipHttpApi {
         @GET("api/paylayer/vip/{cpid}/")
         Call<PayLayerVipEntity> doRequest(
                 @Path("cpid") String cpid,
+                @Query("item_id") String itemId,
                 @Query("device_token") String deviceToken
+
         );
     }
 

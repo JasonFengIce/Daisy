@@ -4,6 +4,8 @@ package tv.ismar.daisy.data.http.newvip.paylayervip;
  * Created by huaijie on 4/12/16.
  */
 public class Vip_list {
+    private String description;
+
     private String duration;
 
     private int pk;
@@ -52,5 +54,13 @@ public class Vip_list {
 
     public String getTitle() {
         return this.title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

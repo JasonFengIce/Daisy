@@ -43,6 +43,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
     private LinearLayout scrollViewLayout;
     private TvHorizontalScrollView mTvHorizontalScrollView;
     private ImageView tmp;
+    private String mItemId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +51,8 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
         setContentView(R.layout.activity_newvip_pay);
         initViews();
         Intent intent = getIntent();
-        String itemId = intent.getStringExtra("item_id");
-        payLayer(itemId);
+        mItemId = intent.getStringExtra("item_id");
+        payLayer(mItemId);
 //        payLayer("675300");
     }
 
@@ -92,16 +93,16 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
         Vip vip = payLayerEntity.getVip();
         if (vip != null) {
             RelativeLayout vipItem;
-            if(payLayerEntity.getCpname().startsWith("ismar")) {
+            if (payLayerEntity.getCpname().startsWith("ismar")) {
                 vipItem = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_daisy_vip_pay, null);
-            }else{
+            } else {
                 vipItem = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_newvip_pay, null);
             }
             ForegroundImageView imageView = (ForegroundImageView) vipItem.findViewById(R.id.item_newvip_pay_img);
             TextView title = (TextView) vipItem.findViewById(R.id.title);
             title.setText(vip.getTitle());
             TextView price = (TextView) vipItem.findViewById(R.id.price);
-            price.setText((int)vip.getPrice() + "元/" + vip.getDuration() + "天");
+            price.setText((int) vip.getPrice() + "元/" + vip.getDuration() + "天");
             if (TextUtils.isEmpty(vip.getVertical_url())) {
                 Picasso.with(this).load(R.drawable.preview).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(imageView);
             } else {
@@ -116,7 +117,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
                     Intent intent = new Intent();
                     intent.putExtra("cpid", String.valueOf(payLayerEntity.getCpid()));
                     intent.setClass(PayActivity.this, PayLayerVipActivity.class);
-                    startActivityForResult(intent,20);
+                    startActivityForResult(intent, 20);
                 }
             });
             scrollViewLayout.addView(vipItem, layoutParams);
@@ -135,7 +136,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
             TextView title = (TextView) item.findViewById(R.id.title);
             title.setText(expenseItem.getTitle());
             TextView price = (TextView) item.findViewById(R.id.price);
-            price.setText((int)expenseItem.getPrice()+ "元/" + expenseItem.getDuration() + "天");
+            price.setText((int) expenseItem.getPrice() + "元/" + expenseItem.getDuration() + "天");
             item.setOnHoverListener(this);
             item.setOnFocusChangeListener(this);
             item.setOnClickListener(new View.OnClickListener() {
@@ -159,7 +160,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
             TextView title = (TextView) item.findViewById(R.id.title);
             title.setText(newVipPackage.getTitle());
             TextView price = (TextView) item.findViewById(R.id.price);
-            price.setText((int)newVipPackage.getPrice() + "元/" + newVipPackage.getDuration() + "天");
+            price.setText((int) newVipPackage.getPrice() + "元/" + newVipPackage.getDuration() + "天");
             item.setOnHoverListener(this);
             item.setOnFocusChangeListener(this);
             item.setOnClickListener(new View.OnClickListener() {
@@ -168,13 +169,13 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
                     Intent intent = new Intent();
                     intent.putExtra("package_id", String.valueOf(newVipPackage.getPackage_pk()));
                     intent.setClass(PayActivity.this, PayLayerPackageActivity.class);
-                    startActivityForResult(intent,20);
+                    startActivityForResult(intent, 20);
                 }
             });
             scrollViewLayout.addView(item, layoutParams);
         }
-
-        scrollViewLayout.getChildAt(0).requestFocus();
+        if (scrollViewLayout.getChildAt(0) != null)
+            scrollViewLayout.getChildAt(0).requestFocus();
     }
 
 
@@ -225,7 +226,6 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
         dialog.setItem(mItem);
         dialog.show();
     }
-
 
 
     @Override
