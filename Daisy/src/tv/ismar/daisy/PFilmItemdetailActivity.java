@@ -1,5 +1,6 @@
 package tv.ismar.daisy;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -7,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -14,6 +16,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnHoverListener;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.*;
 import com.google.gson.JsonSyntaxException;
 import com.squareup.picasso.MemoryPolicy;
@@ -93,10 +97,21 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
     private boolean isneedpause = true;
     private String toDate;
     String iqiyi_code = null;
+    private PowerManager.WakeLock mWakelock;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Window win = getWindow();
+        WindowManager.LayoutParams winParams = win.getAttributes();
+        winParams.flags |= (WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+//        WindowManager.LayoutParams lp = getWindow().getAttributes();
+//        lp.dimAmount = 0.75f;
+//        win.setAttributes(lp);
+//        win.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         setContentView(R.layout.filmitem_portrait_detail_view);
         mSimpleRestClient = new SimpleRestClient();
         final View vv = findViewById(R.id.large_layout);
@@ -203,6 +218,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
     @Override
     protected void onResume() {
+        acquireWakeLock();
         iqiyi_code = null;
         if (isInitialized) {
             if (isDrama()) {
@@ -664,6 +680,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
     @Override
     protected void onPause() {
+        releaseWakeLock();
         if (isneedpause)
             isPause = true;
         if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
@@ -796,6 +813,11 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                PaymentDialog dialog = new PaymentDialog(PFilmItemdetailActivity.this,
+                        R.style.PaymentDialog, ordercheckListener);
+                mItem.model_name = "item";
+                dialog.setItem(mItem);
+                dialog.show();
             }
         }
 
@@ -1479,7 +1501,7 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
 
     private  void api_check(){
         SimpleRestClient simpleRestClient = new SimpleRestClient();
-        simpleRestClient.doSendRequest(SimpleRestClient.carnation_domain+"/api/check/", "post",
+        simpleRestClient.doSendRequest(SimpleRestClient.carnation_domain + "/api/check/", "post",
                 "device_token=" + SimpleRestClient.device_token
                         + "&access_token=" + SimpleRestClient.access_token
                         + "&verify_code=" + iqiyi_code, new SimpleRestClient.HttpPostRequestInterface() {
@@ -1488,11 +1510,11 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                     public void onSuccess(String info) {
                         try {
                             JSONObject object = new JSONObject(info);
-                            int code =object.getInt("code");
-                            if(code == 1)
-                            isBuy = false;
+                            int code = object.getInt("code");
+                            if (code == 1)
+                                isBuy = false;
                             else
-                            isBuy = true;
+                                isBuy = true;
                             initLayout();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -1513,5 +1535,29 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 });
     }
 
+
+    private void acquireWakeLock() {
+
+        if (mWakelock == null) {
+
+            PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+
+            mWakelock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, this.getClass().getCanonicalName());
+
+            mWakelock.acquire();
+
+        }
+    }
+
+    private void releaseWakeLock() {
+
+        if (mWakelock != null && mWakelock.isHeld()) {
+
+            mWakelock.release();
+
+            mWakelock = null;
+
+        }
+    }
 
 }

@@ -42,6 +42,7 @@ public class PayLayerVipActivity extends BaseActivity implements OnHoverListener
     private LinearLayout scrollViewLayout;
     private ImageView leftArrow;
     private ImageView rightArrow;
+    private TextView vipDescriptionTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,8 @@ public class PayLayerVipActivity extends BaseActivity implements OnHoverListener
         initViews();
         Intent intent = getIntent();
         String cpid = intent.getStringExtra("cpid");
-        payLayerVip(cpid);
+        String itemId = intent.getStringExtra("item_id");
+        payLayerVip(cpid, itemId);
     }
 
     private void initViews() {
@@ -65,8 +67,8 @@ public class PayLayerVipActivity extends BaseActivity implements OnHoverListener
     }
 
 
-    private void payLayerVip(String cpid) {
-        NewVipHttpManager.getInstance().resetAdapter_SKY.create(NewVipHttpApi.PayLayerVip.class).doRequest(cpid, SimpleRestClient.device_token).enqueue(new Callback<PayLayerVipEntity>() {
+    private void payLayerVip(String cpid, String itemId) {
+        NewVipHttpManager.getInstance().resetAdapter_SKY.create(NewVipHttpApi.PayLayerVip.class).doRequest(cpid, itemId, SimpleRestClient.device_token).enqueue(new Callback<PayLayerVipEntity>() {
             @Override
             public void onResponse(Response<PayLayerVipEntity> response) {
                 if (response.errorBody() == null)
@@ -82,6 +84,14 @@ public class PayLayerVipActivity extends BaseActivity implements OnHoverListener
 
 
     private void fillLayout(final PayLayerVipEntity payLayerVipEntity) {
+//        if (payLayerVipEntity.getCpname().equals("iqiyi")) {
+//            vipDescriptionTextView.setText(R.string.iqiyi_vip_des_content);
+//        } else if (payLayerVipEntity.getCpname().equals("ismartv")) {
+//            vipDescriptionTextView.setText(R.string.ismartv_vip_des_content);
+//        }
+        if (!payLayerVipEntity.getVip_list().isEmpty()) {
+            vipDescriptionTextView.setText(payLayerVipEntity.getVip_list().get(0).getDescription());
+        }
         scrollViewLayout.removeAllViews();
         int margin = (int) getResources().getDimension(R.dimen.newvip_paylayervip_margin);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -98,9 +108,10 @@ public class PayLayerVipActivity extends BaseActivity implements OnHoverListener
             TextView title = (TextView) itemView.findViewById(R.id.title);
             title.setText(vipList.getTitle());
             TextView price = (TextView) itemView.findViewById(R.id.price);
-            price.setText((int)(vipList.getPrice()) + "元");
+//            price.setText((int)(vipList.getPrice()) + "元");
             TextView duration = (TextView) itemView.findViewById(R.id.duration);
-            duration.setText(vipList.getDuration() + "天");
+//            duration.setText(vipList.getDuration() + "天");
+            itemView.setTag(vipList);
             itemView.setOnFocusChangeListener(this);
             itemView.setOnHoverListener(this);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -134,11 +145,10 @@ public class PayLayerVipActivity extends BaseActivity implements OnHoverListener
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-//        if (hasFocus) {
-//            ViewScaleUtil.zoomin_1_15(v);
-//        } else {
-//            ViewScaleUtil.zoomout_1_15(v);
-//        }
+        if (hasFocus) {
+            Vip_list vipList = (Vip_list) v.getTag();
+            vipDescriptionTextView.setText(vipList.getDescription());
+        }
     }
 
     private void buyVideo(int pk, String type, float price) {

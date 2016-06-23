@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
+import tv.ismar.daisy.player.InitPlayerTool;
 
 public class ReactiveActivity extends Activity {
     private LinearLayout layout;
@@ -44,6 +45,7 @@ public class ReactiveActivity extends Activity {
 			public void run() {
 				AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance();
 				String lock_url = accountSharedPrefs.getSharedPreferences().getString("lock_url", null);
+                lock_url = "http://sky.tvxio.bestv.com.cn/v3_0/UF30/tou/api/item/701893/";
 				String lock_content_model = accountSharedPrefs.getSharedPreferences().getString("lock_content_model", null);
 				if (lock_url != null && lock_content_model != null) {
 					Intent intent = new Intent();
@@ -58,12 +60,16 @@ public class ReactiveActivity extends Activity {
 					}
 					intent.putExtra("url", lock_url);
 					intent.putExtra("fromPage", "homepage");
-					startActivity(intent);
+//					startActivity(intent);
+                    InitPlayerTool tool = new InitPlayerTool(ReactiveActivity.this);
+//                    tool.channel=channelEntity.getChannel();
+                    tool.fromPage="homepage";
+                    tool.initClipInfo("http://sky.tvxio.bestv.com.cn/v3_0/UF30/tou/api/item/701893/", InitPlayerTool.FLAG_URL);
 					finish();
 				}
 			}
-		},200);
-    }
+		},100);
+     }
 
     @Override
     protected void onPause() {
