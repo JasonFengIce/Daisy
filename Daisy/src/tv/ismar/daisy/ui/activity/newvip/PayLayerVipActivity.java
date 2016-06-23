@@ -106,7 +106,7 @@ public class PayLayerVipActivity extends BaseActivity implements OnHoverListener
             }
 
             TextView title = (TextView) itemView.findViewById(R.id.title);
-            title.setText(vipList.getTitle());
+//            title.setText(vipList.getTitle());
             TextView price = (TextView) itemView.findViewById(R.id.price);
 //            price.setText((int)(vipList.getPrice()) + "元");
             TextView duration = (TextView) itemView.findViewById(R.id.duration);
