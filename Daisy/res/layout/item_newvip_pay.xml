@@ -15,6 +15,7 @@
         android:id="@+id/item_newvip_pay_img"
         android:layout_width="@dimen/item_newvip_pay_img_width"
         android:layout_height="@dimen/item_newvip_pay_img_height"
+        android:foreground="#7f000000"
         android:scaleType="fitXY"/>
 
     <TextView
