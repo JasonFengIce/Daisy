@@ -1480,4 +1480,8 @@
     <dimen name="anthology_right">90dp</dimen>
     <dimen name="quality_text_bottom">53dp</dimen>
     <dimen name="play_top_height">112dp</dimen>
+    <dimen name="play_progress_text_mt">127dp</dimen>
+    <dimen name="play_seekbar_marginleft">165dp</dimen>
+    <dimen name="play_progress_text_mb">189dp</dimen>
+    <dimen name="seekbar_thumb_w">46dp</dimen>
 </resources>

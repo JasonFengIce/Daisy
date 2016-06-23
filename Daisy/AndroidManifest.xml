@@ -220,11 +220,11 @@
 
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
-            <intent-filter>
-                <action android:name="tv.ismar.daisy.reactive"/>
+            <!--<intent-filter>-->
+                <!--<action android:name="tv.ismar.daisy.reactive"/>-->
 
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
+                <!--<category android:name="android.intent.category.DEFAULT"/>-->
+            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".QiYiPlayActivity"

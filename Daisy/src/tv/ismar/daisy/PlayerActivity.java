@@ -164,6 +164,8 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	private TextView current_play_progress;
 	private ProgressBar progress_play;
 	private PowerManager.WakeLock mWakelock;
+	private boolean isAnthology=false;
+
 	public float getScreenWidth() {
 		DisplayMetrics metric = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metric);
@@ -191,16 +193,16 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Window win = getWindow();
-		WindowManager.LayoutParams winParams = win.getAttributes();
-		winParams.flags |= (WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
-				| WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-				| WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON
-				| WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-//		WindowManager.LayoutParams lp = getWindow().getAttributes();
-//		lp.dimAmount = 0.75f;
-//		win.setAttributes(lp);
-//		win.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+//		Window win = getWindow();
+//		WindowManager.LayoutParams winParams = win.getAttributes();
+//		winParams.flags |= (WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+//				| WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+//				| WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON
+//				| WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+////		WindowManager.LayoutParams lp = getWindow().getAttributes();
+////		lp.dimAmount = 0.75f;
+////		win.setAttributes(lp);
+////		win.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 		activityTag = "BaseActivity";
 		IntentFilter intentFilter = new IntentFilter(ACTION);
 		saveScreenbroad = new ScreenSaveBrocast();
@@ -385,14 +387,14 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 		mVideoView.setOnHoverListener(onhoverlistener);
 		setVideoActionListener();
 		if("false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
-			Intent intent = getIntent();
-			String testitemurl = " http://sky.tvxio.bestv.com.cn/v3_0/UF30/tou/api/item/701893/";
-			if(testitemurl != null && !"".equals(testitemurl)){
-				GetItemTask mGetItemTask = new GetItemTask();
-				mGetItemTask.execute(testitemurl);
-			}else{
+//			Intent intent = getIntent();
+//			String testitemurl = " http://sky.tvxio.bestv.com.cn/v3_0/UF30/tou/api/item/701893/";
+//			if(testitemurl != null && !"".equals(testitemurl)){
+//				GetItemTask mGetItemTask = new GetItemTask();
+//				mGetItemTask.execute(testitemurl);
+//			}else{
 				initClipInfo();
-			}
+//			}
 		}else{
 			gesture_tipview.setVisibility(View.VISIBLE);
 			gesture_tipview.setAlpha(81);
@@ -403,7 +405,6 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	private void initData() {
 		progress_bright.setMax(100);
 		progress_volumn.setMax(100);
-		progress_play.setMax(100);
 		// 获取系统音量
 		mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 		maxVolumn = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
@@ -443,7 +444,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 			// *********************
 			// new ItemByUrlTask().execute();
 			String info = bundle.getString("ismartv");
-			if(urlInfo == null)
+//			if(urlInfo == null)
 			urlInfo = AccessProxy.getIsmartvClipInfo(info);
 			if (item.item_pk == item.pk)
 				itemUrl = SimpleRestClient.root_url + "/api/item/" + item.pk
@@ -485,6 +486,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	private String[] paths = null;
 
 	private void playAdElement() {
+			hidePanel();
 		if (!adElement.isEmpty()) {
 			int count = adElement.size();
 			if (count > 0) {
@@ -674,7 +676,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 								showPanel();
 
 							}
-							getSupportFragmentManager().beginTransaction().hide(mEpisodeFragment).commit();
+//							getSupportFragmentManager().beginTransaction().hide(mEpisodeFragment).commit();
 						}
 						lastTouchTime=currentTime;
 						doubleTouch=true;
@@ -685,7 +687,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 						int halfScreenH=getWindowManager().getDefaultDisplay().getHeight()/2;
 						int halfScreenW=getWindowManager().getDefaultDisplay().getWidth()/2;
 						float movePercent=-moveY/halfScreenH;
-						if(Math.abs(moveY)>50) {
+						if(Math.abs(moveY)>100) {
 							if (event.getX() < halfScreenW&&downX<halfScreenW) {
 								if(volumn.getVisibility()==View.INVISIBLE)
 								changeBright(movePercent);
@@ -696,7 +698,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 							downY = event.getY();
 							downX=event.getX();
 						}
-						if(Math.abs(moveX)>50){
+						if(Math.abs(moveX)>100){
 							changePlayProgress(moveX);
 							downX=event.getX();
 						}
@@ -727,6 +729,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 								} else {
 									clipLength = mp.getDuration();
 									timeBar.setMax(clipLength);
+									progress_play.setMax(clipLength);
 									if (paths != null) {
 										initPlayerRelatedUI();
 									}
@@ -737,6 +740,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 									// isBuffer = true;
 									// showBuffer();
 									timeBar.setProgress(currPosition);
+									progress_play.setProgress(currPosition);
 									timeBar.setEnabled(true);
 									isadvideoplaying = false;
 								}
@@ -1587,7 +1591,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	}
 
 	private void showPanel() {
-		if(mVideoView==null){
+		if(mVideoView==null||isadvideoplaying){
 			return;
 		}
 		if (isVodMenuVisible()
@@ -2279,7 +2283,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 					Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
 				}
 				updataTimeText();
-				params.leftMargin=seekBar.getWidth()*progress/clipLength-params.width/2+getResources().getDimensionPixelOffset(R.dimen.play_seekbar_marginleft);
+				params.leftMargin=(seekBar.getWidth()-50)*(progress/1000)/(clipLength/1000)-params.width/2+getResources().getDimensionPixelOffset(R.dimen.play_seekbar_marginleft)+getResources().getDimensionPixelOffset(R.dimen.seekbar_thumb_w)/2;
 				progress_time.setLayoutParams(params);
 				progress_time.setText(getTimeString(progress));
 			}
@@ -2296,6 +2300,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 				params.leftMargin=seekBar.getWidth()*seekBar.getProgress()/clipLength-params.width/2+getResources().getDimensionPixelOffset(R.dimen.play_seekbar_marginleft);
 				progress_time.setLayoutParams(params);
 				progress_time.setVisibility(View.VISIBLE);
+				hidePanelHandler.removeCallbacks(hidePanelRunnable);
 			}
 
 		}
@@ -2312,6 +2317,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 				offn = 1;
 				hideBuffer();
 				progress_time.setVisibility(View.INVISIBLE);
+				hidePanelHandler.postDelayed(hidePanelRunnable, 3000);
 			}
 
 		}
@@ -2787,6 +2793,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 		popupWindow.showAtLocation(panelLayout, Gravity.NO_GRAVITY, location[0] + 2325, location[1] + 985);
 	}
 	View.OnClickListener listener=new View.OnClickListener() {
+
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()){
@@ -2795,9 +2802,19 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 					break;
 				case R.id.anthology:
 					if(listItems.size()!=0) {
+						if(!isAnthology) {
+							isAnthology = true;
+							if(!panelShow)
+								showPanel();
 //						initEntertainmentPop();
-						anthology.setTextColor(getResources().getColor(R.color._ff9c3c));
-						getSupportFragmentManager().beginTransaction().show(mEpisodeFragment).commit();
+							anthology.setTextColor(getResources().getColor(R.color._ff9c3c));
+							getSupportFragmentManager().beginTransaction().show(mEpisodeFragment).commit();
+							hidePanelHandler.removeCallbacks(hidePanelRunnable);
+						}else{
+							isAnthology = false;
+							getSupportFragmentManager().beginTransaction().hide(mEpisodeFragment).commit();
+							hidePanelHandler.postDelayed(hidePanelRunnable,3000);
+						}
 					}
 					break;
 				case R.id.player_back:
@@ -2856,6 +2873,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	@Override
 	public void onEpisodeItemSelected(ItemEntity.SubItem subItem) {
 		try {
+			hidePanel();
 			if (item != null) {
 				callaPlay.videoExit(
 						item.item_pk,
@@ -2905,6 +2923,9 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 
 	//滑动改变音量
 	private void changeVolumn(float movePercent) {
+		if(bright.getVisibility()==View.VISIBLE||play_progress.getVisibility()==View.VISIBLE||isadvideoplaying){
+			return;
+		}
 		volumn.setVisibility(View.VISIBLE);
 		float newVolumn=currentVolumn+movePercent*100;
 		if(newVolumn<=100&&newVolumn>=0){
@@ -2913,6 +2934,9 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	}
 	//滑动改变亮度
 	private void changeBright(float movePercent) {
+		if(volumn.getVisibility()==View.VISIBLE||play_progress.getVisibility()==View.VISIBLE||isadvideoplaying){
+			return;
+		}
 		bright.setVisibility(View.VISIBLE);
 		float newBright=currentBright+movePercent*100;
 		if(newBright>=0&&newBright<=100){
@@ -2920,10 +2944,20 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 		}
 	}
 	private void changePlayProgress(float movePercent){
+		if(volumn.getVisibility()==View.VISIBLE||bright.getVisibility()==View.VISIBLE||isadvideoplaying){
+			return;
+		}
+		if(movePercent>0){
+			play_progress.setBackgroundResource(R.drawable.moveon);
+		}else{
+			play_progress.setBackgroundResource(R.drawable.moveback);
+		}
 		play_progress.setVisibility(View.VISIBLE);
-		timeBar.setProgress((int) (timeBar.getProgress()+movePercent));
-		current_play_progress.setText(getTimeString(currPosition)+"/"+getTimeString(clipLength));
-		progress_play.setProgress(currPosition/clipLength);
+		progress_play.setProgress((int) (currPosition + movePercent*1000));
+		current_play_progress.setText(getTimeString((int) (currPosition+movePercent*1000)<0?0:(int) (currPosition+movePercent*1000))+"/"+getTimeString(clipLength));
+		mVideoView.seekTo((int) (currPosition+movePercent*1000));
+		timeBar.setProgress(currPosition);
+		currPosition=mVideoView.getCurrentPosition();
 	}
 	public int getVolumn() {
 		return mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
@@ -2958,82 +2992,82 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 		return brightness*100/255;
 	}
 
-
-	class GetItemTask extends AsyncTask<String, Void, Void> {
-
-		int id = 0;
-		String url = null;
-
-		@Override
-		protected void onPostExecute(Void result) {
-			initClipInfo();
-		}
-		@Override
-		protected Void doInBackground(String... params) {
-			try {
-				SimpleRestClient mSimpleRestClient = new SimpleRestClient();
-				url = params[0];
-				id = SimpleRestClient.getItemId(url, new boolean[1]);
-				Item mItem = mSimpleRestClient.getItem(url);
-				mItem.isPreview = true;
-				getIntent().putExtra("item", mItem);
-				urlInfo = AccessProxy.parse(SimpleRestClient.root_url
-								+ "/api/clip/" + mItem.preview.pk + "/", VodUserAgent
-								.getAccessToken(SimpleRestClient.sn_token),
-						PlayerActivity.this);
-			} catch (ItemOfflineException e) {
-				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
-				exceptionProperties.put(EventProperty.CODE, "nodetail");
-				exceptionProperties.put(EventProperty.CONTENT,
-						"no detail error : " + e.getUrl());
-				exceptionProperties.put(EventProperty.ITEM, id);
-				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT,
-						exceptionProperties);
-				e.printStackTrace();
-			} catch (JsonSyntaxException e) {
-				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
-				exceptionProperties.put(EventProperty.CODE, "parsejsonerror");
-				exceptionProperties.put(EventProperty.CONTENT, e.getMessage()
-						+ " : " + url);
-				exceptionProperties.put(EventProperty.ITEM, id);
-				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT,
-						exceptionProperties);
-				e.printStackTrace();
-			} catch (NetworkException e) {
-				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
-				exceptionProperties.put(EventProperty.CODE, "networkconnerror");
-				exceptionProperties.put(EventProperty.CONTENT, e.getMessage()
-						+ " : " + e.getUrl());
-				exceptionProperties.put(EventProperty.ITEM, id);
-				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT,
-						exceptionProperties);
-				e.printStackTrace();
-			}
-			return null;
-		}
-	}
-
-	private void acquireWakeLock() {
-
-		if (mWakelock == null) {
-
-			PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-
-			mWakelock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, this.getClass().getCanonicalName());
-
-			mWakelock.acquire();
-
-		}
-	}
-
-	private void releaseWakeLock() {
-
-		if (mWakelock != null && mWakelock.isHeld()) {
-
-			mWakelock.release();
-
-			mWakelock = null;
-
-		}
-	}
+//
+//	class GetItemTask extends AsyncTask<String, Void, Void> {
+//
+//		int id = 0;
+//		String url = null;
+//
+//		@Override
+//		protected void onPostExecute(Void result) {
+//			initClipInfo();
+//		}
+//		@Override
+//		protected Void doInBackground(String... params) {
+//			try {
+//				SimpleRestClient mSimpleRestClient = new SimpleRestClient();
+//				url = params[0];
+//				id = SimpleRestClient.getItemId(url, new boolean[1]);
+//				Item mItem = mSimpleRestClient.getItem(url);
+//				mItem.isPreview = true;
+//				getIntent().putExtra("item", mItem);
+//				urlInfo = AccessProxy.parse(SimpleRestClient.root_url
+//								+ "/api/clip/" + mItem.preview.pk + "/", VodUserAgent
+//								.getAccessToken(SimpleRestClient.sn_token),
+//						PlayerActivity.this);
+//			} catch (ItemOfflineException e) {
+//				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
+//				exceptionProperties.put(EventProperty.CODE, "nodetail");
+//				exceptionProperties.put(EventProperty.CONTENT,
+//						"no detail error : " + e.getUrl());
+//				exceptionProperties.put(EventProperty.ITEM, id);
+//				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT,
+//						exceptionProperties);
+//				e.printStackTrace();
+//			} catch (JsonSyntaxException e) {
+//				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
+//				exceptionProperties.put(EventProperty.CODE, "parsejsonerror");
+//				exceptionProperties.put(EventProperty.CONTENT, e.getMessage()
+//						+ " : " + url);
+//				exceptionProperties.put(EventProperty.ITEM, id);
+//				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT,
+//						exceptionProperties);
+//				e.printStackTrace();
+//			} catch (NetworkException e) {
+//				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
+//				exceptionProperties.put(EventProperty.CODE, "networkconnerror");
+//				exceptionProperties.put(EventProperty.CONTENT, e.getMessage()
+//						+ " : " + e.getUrl());
+//				exceptionProperties.put(EventProperty.ITEM, id);
+//				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT,
+//						exceptionProperties);
+//				e.printStackTrace();
+//			}
+//			return null;
+//		}
+//	}
+//
+//	private void acquireWakeLock() {
+//
+//		if (mWakelock == null) {
+//
+//			PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+//
+//			mWakelock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, this.getClass().getCanonicalName());
+//
+//			mWakelock.acquire();
+//
+//		}
+//	}
+//
+//	private void releaseWakeLock() {
+//
+//		if (mWakelock != null && mWakelock.isHeld()) {
+//
+//			mWakelock.release();
+//
+//			mWakelock = null;
+//
+//		}
+//	}
 }

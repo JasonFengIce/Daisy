@@ -1458,7 +1458,7 @@
     <dimen name="timeText_marginTop">12dp</dimen>
     <dimen name="timeText_size">14sp</dimen>
     <dimen name="play_seekbar_marginheight">4dp</dimen>
-    <dimen name="play_seekbar_marginleft">108dp</dimen>
+    <dimen name="play_seekbar_marginleft">110dp</dimen>
     <dimen name="play_seekbar_margintop">18.5dp</dimen>
     <dimen name="endtime_text_marginRight">45.33dp</dimen>
     <dimen name="endtime_text_marginTop">12dp</dimen>
@@ -1516,4 +1516,7 @@
     <dimen name="seekbar_h">4dp</dimen>
     <dimen name="seekbar_ml">13.33dp</dimen>
     <dimen name="endtime_text_marginleft">16dp</dimen>
+    <dimen name="play_progress_text_mt">84.67dp</dimen>
+    <dimen name="play_progress_text_mb">126dp</dimen>
+    <dimen name="seekbar_thumb_w">30.67dp</dimen>
 </resources>

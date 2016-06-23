@@ -102,9 +102,9 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
     private Animation top_to_down,top_to_up;
     private BitStream currentDefinition;
     // private Animation bufferHideAnimation;
-    private LinearLayout bufferLayout;
+    private LinearLayout panelLayout,bufferLayout;
     private ImageView logoImage;
-    private RelativeLayout panelLayout,top_panelayout;
+    private RelativeLayout top_panelayout;
     private tv.ismar.daisy.views.MarqueeView titleText;
     private TextView qualityText;
     private TextView timeText,endtime;
@@ -193,7 +193,14 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
     private int currentBright;
     private int maxVolumn;
     private AudioManager mAudioManager;
+    private TextView progress_time;
+    private ImageView player_back;
+    private View play_progress;
+    private TextView current_play_progress;
+    private ProgressBar progress_play;
     private String urls[] = new String[6];
+    private boolean isAdPlaying;
+    private boolean isAnthologyShow=false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -224,7 +231,13 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
         // bufferHideAnimation =
         // AnimationUtils.loadAnimation(this,R.drawable.fade_out);
         top_panelayout= (RelativeLayout) findViewById(R.id.top_panelayout);
-        panelLayout = (RelativeLayout) findViewById(R.id.PanelLayout);
+        panelLayout = (LinearLayout) findViewById(R.id.PanelLayout);
+        player_back = (ImageView) findViewById(R.id.player_back);
+        player_back.setOnClickListener(listener);
+        progress_time = (TextView) findViewById(R.id.progress_time);
+        play_progress = findViewById(R.id.play_progress);
+        current_play_progress = (TextView) findViewById(R.id.current_play_progress);
+        progress_play = (ProgressBar) findViewById(R.id.progress_play);
         titleText = (tv.ismar.daisy.views.MarqueeView) findViewById(R.id.TitleText);
         qualityText = (TextView) findViewById(R.id.QualityText);
         anthology= (TextView) findViewById(R.id.anthology);
@@ -396,17 +409,18 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
                         showPanel();
 
                     }
-                    getSupportFragmentManager().beginTransaction().hide(mEpisodeFragment).commit();
+//                    getSupportFragmentManager().beginTransaction().hide(mEpisodeFragment).commit();
                 }
                 lastTouchTime=currentTime;
                 doubleTouch=true;
                 break;
             case MotionEvent.ACTION_MOVE:
                 float moveY = event.getY() - downY;
+                float moveX=event.getX()-downX;
                 int halfScreenH=getWindowManager().getDefaultDisplay().getHeight()/2;
                 int halfScreenW=getWindowManager().getDefaultDisplay().getWidth()/2;
                 float movePercent=-moveY/halfScreenH;
-                if(Math.abs(moveY)>50) {
+                if(Math.abs(moveY)>100) {
                     if (event.getX() < halfScreenW&&downX<halfScreenW) {
                         if(volumn.getVisibility()==View.INVISIBLE)
                         changeBright(movePercent);
@@ -417,10 +431,15 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
                     downY = event.getY();
                     downX=event.getX();
                 }
+                if(Math.abs(moveX)>100){
+                    changePlayProgress(moveX);
+                    downX=event.getX();
+                }
                 break;
             case MotionEvent.ACTION_UP:
                 bright.setVisibility(View.INVISIBLE);
                 volumn.setVisibility(View.INVISIBLE);
+                play_progress.setVisibility(View.INVISIBLE);
                 break;
         }
         return super.onTouchEvent(event);
@@ -795,6 +814,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
 
     class SeekBarChangeEvent implements SeekBar.OnSeekBarChangeListener {
 
+        RelativeLayout.LayoutParams params= (RelativeLayout.LayoutParams) progress_time.getLayoutParams();
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress,
                                       boolean fromUser) {
@@ -804,6 +824,9 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
                     Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
                 }
                 updataTimeText();
+                params.leftMargin=(seekBar.getWidth()-50)*(progress/1000)/(clipLength/1000)-params.width/2+getResources().getDimensionPixelOffset(R.dimen.play_seekbar_marginleft)+getResources().getDimensionPixelOffset(R.dimen.seekbar_thumb_w)/2;
+                progress_time.setLayoutParams(params);
+                progress_time.setText(getTimeString(progress));
             }
         }
 
@@ -815,6 +838,10 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
                 isBuffer = true;
                 showPanel();
                 showBuffer();
+                params.leftMargin=seekBar.getWidth()*seekBar.getProgress()/clipLength-params.width/2+getResources().getDimensionPixelOffset(R.dimen.play_seekbar_marginleft);
+                progress_time.setLayoutParams(params);
+                progress_time.setVisibility(View.VISIBLE);
+                hidePanelHandler.removeCallbacks(hidePanelRunnable);
             }
 
         }
@@ -830,6 +857,8 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
                 offsets = 0;
                 offn = 1;
                 hideBuffer();
+                progress_time.setVisibility(View.INVISIBLE);
+                hidePanelHandler.postDelayed(hidePanelRunnable, 3000);
             }
 
         }
@@ -918,7 +947,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
     }
 
     private void showPanel() {
-        if (isVodMenuVisible())
+        if (isVodMenuVisible()||isAdPlaying)
             return;
         if (!panelShow) {
             panelLayout.startAnimation(panelShowAnimation);
@@ -931,7 +960,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
             hidePanelHandler.removeCallbacks(hidePanelRunnable);
             hidePanelHandler.postDelayed(hidePanelRunnable, 3000);
         }
-        getSupportFragmentManager().beginTransaction().show(mEpisodeFragment).commit();
+//        getSupportFragmentManager().beginTransaction().show(mEpisodeFragment).commit();
     }
 
     private void pauseItem() {
@@ -2080,12 +2109,15 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
         @Override
         public void onAdStart(IMediaPlayer player) {
             Log.d(TAG, "onAdStart");
+            hidePanel();
+            isAdPlaying = true;
             mTxtAdTimer.setVisibility(View.VISIBLE);
             startAdCountDown();
         }
 
         @Override
         public void onAdEnd(IMediaPlayer player) {
+            isAdPlaying = false;
             mTxtAdTimer.setVisibility(View.GONE);
             stopAdCountDown();
         }
@@ -2097,10 +2129,12 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
                 return;
             if(previewLength > 0){
                 timeBar.setMax(previewLength);
+                progress_play.setMax(previewLength);
                 clipLength = previewLength;
             }else{
                 clipLength = mPlayer.getDuration();
                 timeBar.setMax(clipLength);
+                progress_play.setMax(clipLength);
             }
 
             if(currPosition >0)
@@ -2311,11 +2345,24 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
                     break;
                 case R.id.anthology:
                     if(listItems.size()>0){
-                         anthology.setTextColor(getResources().getColor(R.color._ff9c3c));
-                         getSupportFragmentManager().beginTransaction().show(mEpisodeFragment).commit();
+                        if(!isAnthologyShow) {
+                            isAnthologyShow = true;
+                            if(!panelShow)
+                                showPanel();
+                            anthology.setTextColor(getResources().getColor(R.color._ff9c3c));
+                            getSupportFragmentManager().beginTransaction().show(mEpisodeFragment).commit();
+                            hidePanelHandler.removeCallbacks(hidePanelRunnable);
+                        }else{
+                            isAnthologyShow = false;
+                            getSupportFragmentManager().beginTransaction().hide(mEpisodeFragment).commit();
+                            hidePanelHandler.postDelayed(hidePanelRunnable,3000);
+                        }
+
                     }
                     break;
-
+                case R.id.player_back:
+                    finish();
+                    break;
             }
         }
     };
@@ -2371,6 +2418,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
     @Override
     public void onEpisodeItemSelected(ItemEntity.SubItem msubItem) {
         try {
+            hidePanel();
             if (subItem != null)
                 callaPlay
                         .videoExit(
@@ -2462,19 +2510,41 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
     }
     //滑动改变音量
     private void changeVolumn(float movePercent) {
+        if(bright.getVisibility()==View.VISIBLE||play_progress.getVisibility()==View.VISIBLE||isAdPlaying){
+            return;
+        }
         volumn.setVisibility(View.VISIBLE);
-        float newVolumn=currentVolumn+movePercent*maxVolumn;
+        float newVolumn=currentVolumn+movePercent*100;
         if(newVolumn<=100&&newVolumn>=0){
             setVolumn((int) newVolumn);
         }
     }
     //滑动改变亮度
     private void changeBright(float movePercent) {
+        if(volumn.getVisibility()==View.VISIBLE||play_progress.getVisibility()==View.VISIBLE||isAdPlaying){
+            return;
+        }
         bright.setVisibility(View.VISIBLE);
         float newBright=currentBright+movePercent*100;
         if(newBright>=0&&newBright<=100){
             setBright((int) newBright);
         }
+    }
+    private void changePlayProgress(float movePercent){
+        if(volumn.getVisibility()==View.VISIBLE||bright.getVisibility()==View.VISIBLE||isAdPlaying){
+            return;
+        }
+        if(movePercent>0){
+            play_progress.setBackgroundResource(R.drawable.moveon);
+        }else{
+            play_progress.setBackgroundResource(R.drawable.moveback);
+        }
+        play_progress.setVisibility(View.VISIBLE);
+        progress_play.setProgress((int) (currPosition + movePercent*1000));
+        current_play_progress.setText(getTimeString((int) (currPosition+movePercent*1000)<0?0:(int) (currPosition+movePercent*1000))+"/"+getTimeString(clipLength));
+        mPlayer.seekTo((int) (currPosition+movePercent*1000));
+        timeBar.setProgress(currPosition);
+        currPosition=mPlayer.getCurrentPosition();
     }
 
     public int getVolumn() {
