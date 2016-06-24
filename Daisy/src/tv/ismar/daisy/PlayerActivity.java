@@ -193,16 +193,16 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		Window win = getWindow();
-//		WindowManager.LayoutParams winParams = win.getAttributes();
-//		winParams.flags |= (WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
-//				| WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-//				| WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON
-//				| WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-////		WindowManager.LayoutParams lp = getWindow().getAttributes();
-////		lp.dimAmount = 0.75f;
-////		win.setAttributes(lp);
-////		win.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		Window win = getWindow();
+		WindowManager.LayoutParams winParams = win.getAttributes();
+		winParams.flags |= (WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+				| WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+				| WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON
+				| WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+//		WindowManager.LayoutParams lp = getWindow().getAttributes();
+//		lp.dimAmount = 0.75f;
+//		win.setAttributes(lp);
+//		win.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 		activityTag = "BaseActivity";
 		IntentFilter intentFilter = new IntentFilter(ACTION);
 		saveScreenbroad = new ScreenSaveBrocast();
@@ -228,10 +228,16 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (needOnresume && isneedpause) {
-			isBuffer = true;
-			showBuffer();
-			initPlayer();
+		if(item == null){
+			String testitemurl = " http://sky.tvxio.bestv.com.cn/v3_0/UF30/tou/api/item/701893/";
+				GetItemTask mGetItemTask = new GetItemTask();
+				mGetItemTask.execute(testitemurl);
+		}else {
+			if (needOnresume && isneedpause) {
+				isBuffer = true;
+				showBuffer();
+				initPlayer();
+			}
 		}
 		isneedpause = true;
 		needOnresume = true;
@@ -387,7 +393,8 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 		mVideoView.setOnHoverListener(onhoverlistener);
 		setVideoActionListener();
 		if("false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
-//			Intent intent = getIntent();
+			Intent intent = getIntent();
+			String testitemurl =intent.getStringExtra("testitemurl");
 //			String testitemurl = " http://sky.tvxio.bestv.com.cn/v3_0/UF30/tou/api/item/701893/";
 //			if(testitemurl != null && !"".equals(testitemurl)){
 //				GetItemTask mGetItemTask = new GetItemTask();
@@ -1728,6 +1735,12 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean ret = false;
+		if(keyCode == KeyEvent.KEYCODE_BACK && "lockscreen".equals(item.fromPage)){
+			setResult(1010);
+			finish();
+			return false;
+		}
+
 		if(keyCode == KeyEvent.KEYCODE_BACK && !"false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
 			gesture_tipview.setVisibility(View.GONE);
 			shardpref.setSharedPrefs(AccountSharedPrefs.FIRST_USE, "false");
@@ -2655,6 +2668,8 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 					isPreview = false;
 					new FetchClipTask().execute();
 				} else {
+					if("lockscreen".equals(item.fromPage))
+						 setResult(1010);
 					PlayerActivity.this.finish();
 				}
 			}
@@ -2992,82 +3007,82 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 		return brightness*100/255;
 	}
 
-//
-//	class GetItemTask extends AsyncTask<String, Void, Void> {
-//
-//		int id = 0;
-//		String url = null;
-//
-//		@Override
-//		protected void onPostExecute(Void result) {
-//			initClipInfo();
-//		}
-//		@Override
-//		protected Void doInBackground(String... params) {
-//			try {
-//				SimpleRestClient mSimpleRestClient = new SimpleRestClient();
-//				url = params[0];
-//				id = SimpleRestClient.getItemId(url, new boolean[1]);
-//				Item mItem = mSimpleRestClient.getItem(url);
-//				mItem.isPreview = true;
-//				getIntent().putExtra("item", mItem);
-//				urlInfo = AccessProxy.parse(SimpleRestClient.root_url
-//								+ "/api/clip/" + mItem.preview.pk + "/", VodUserAgent
-//								.getAccessToken(SimpleRestClient.sn_token),
-//						PlayerActivity.this);
-//			} catch (ItemOfflineException e) {
-//				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
-//				exceptionProperties.put(EventProperty.CODE, "nodetail");
-//				exceptionProperties.put(EventProperty.CONTENT,
-//						"no detail error : " + e.getUrl());
-//				exceptionProperties.put(EventProperty.ITEM, id);
-//				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT,
-//						exceptionProperties);
-//				e.printStackTrace();
-//			} catch (JsonSyntaxException e) {
-//				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
-//				exceptionProperties.put(EventProperty.CODE, "parsejsonerror");
-//				exceptionProperties.put(EventProperty.CONTENT, e.getMessage()
-//						+ " : " + url);
-//				exceptionProperties.put(EventProperty.ITEM, id);
-//				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT,
-//						exceptionProperties);
-//				e.printStackTrace();
-//			} catch (NetworkException e) {
-//				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
-//				exceptionProperties.put(EventProperty.CODE, "networkconnerror");
-//				exceptionProperties.put(EventProperty.CONTENT, e.getMessage()
-//						+ " : " + e.getUrl());
-//				exceptionProperties.put(EventProperty.ITEM, id);
-//				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT,
-//						exceptionProperties);
-//				e.printStackTrace();
-//			}
-//			return null;
-//		}
-//	}
-//
-//	private void acquireWakeLock() {
-//
-//		if (mWakelock == null) {
-//
-//			PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-//
-//			mWakelock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, this.getClass().getCanonicalName());
-//
-//			mWakelock.acquire();
-//
-//		}
-//	}
-//
-//	private void releaseWakeLock() {
-//
-//		if (mWakelock != null && mWakelock.isHeld()) {
-//
-//			mWakelock.release();
-//
-//			mWakelock = null;
-//
-//		}
-//	}
+
+	class GetItemTask extends AsyncTask<String, Void, Void> {
+
+		int id = 0;
+		String url = null;
+
+		@Override
+		protected void onPostExecute(Void result) {
+			initClipInfo();
+		}
+		@Override
+		protected Void doInBackground(String... params) {
+			try {
+				SimpleRestClient mSimpleRestClient = new SimpleRestClient();
+				url = params[0];
+				id = SimpleRestClient.getItemId(url, new boolean[1]);
+				Item mItem = mSimpleRestClient.getItem(url);
+				mItem.isPreview = true;
+				getIntent().putExtra("item", mItem);
+				urlInfo = AccessProxy.parse(SimpleRestClient.root_url
+								+ "/api/clip/" + mItem.preview.pk + "/", VodUserAgent
+								.getAccessToken(SimpleRestClient.sn_token),
+						PlayerActivity.this);
+			} catch (ItemOfflineException e) {
+				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
+				exceptionProperties.put(EventProperty.CODE, "nodetail");
+				exceptionProperties.put(EventProperty.CONTENT,
+						"no detail error : " + e.getUrl());
+				exceptionProperties.put(EventProperty.ITEM, id);
+				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT,
+						exceptionProperties);
+				e.printStackTrace();
+			} catch (JsonSyntaxException e) {
+				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
+				exceptionProperties.put(EventProperty.CODE, "parsejsonerror");
+				exceptionProperties.put(EventProperty.CONTENT, e.getMessage()
+						+ " : " + url);
+				exceptionProperties.put(EventProperty.ITEM, id);
+				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT,
+						exceptionProperties);
+				e.printStackTrace();
+			} catch (NetworkException e) {
+				HashMap<String, Object> exceptionProperties = new HashMap<String, Object>();
+				exceptionProperties.put(EventProperty.CODE, "networkconnerror");
+				exceptionProperties.put(EventProperty.CONTENT, e.getMessage()
+						+ " : " + e.getUrl());
+				exceptionProperties.put(EventProperty.ITEM, id);
+				NetworkUtils.SaveLogToLocal(NetworkUtils.DETAIL_EXCEPT,
+						exceptionProperties);
+				e.printStackTrace();
+			}
+			return null;
+		}
+	}
+
+	private void acquireWakeLock() {
+
+		if (mWakelock == null) {
+
+			PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+
+			mWakelock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, this.getClass().getCanonicalName());
+
+			mWakelock.acquire();
+
+		}
+	}
+
+	private void releaseWakeLock() {
+
+		if (mWakelock != null && mWakelock.isHeld()) {
+
+			mWakelock.release();
+
+			mWakelock = null;
+
+		}
+	}
 }

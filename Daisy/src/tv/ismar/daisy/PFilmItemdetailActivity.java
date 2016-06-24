@@ -813,11 +813,6 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                PaymentDialog dialog = new PaymentDialog(PFilmItemdetailActivity.this,
-                        R.style.PaymentDialog, ordercheckListener);
-                mItem.model_name = "item";
-                dialog.setItem(mItem);
-                dialog.show();
             }
         }
 

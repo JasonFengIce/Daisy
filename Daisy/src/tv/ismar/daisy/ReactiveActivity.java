@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.player.InitPlayerTool;
 
-public class ReactiveActivity extends Activity {
+public class ReactiveActivity extends BaseActivity {
     private LinearLayout layout;
     private PowerManager.WakeLock mWakelock;
 
@@ -34,46 +34,47 @@ public class ReactiveActivity extends Activity {
         win.setAttributes(lp);
         win.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         setContentView(R.layout.reactive);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance();
+                String lock_url = accountSharedPrefs.getSharedPreferences().getString("lock_url", null);
+                lock_url = "http://sky.tvxio.bestv.com.cn/v3_0/UF30/tou/api/item/701893/";
+                String lock_content_model = accountSharedPrefs.getSharedPreferences().getString("lock_content_model", null);
+                if (lock_url != null && lock_content_model != null) {
+                    Intent intent = new Intent();
+                    if (("variety".equals(lock_content_model) || "entertainment".equals(lock_content_model))) {
+                        intent.setAction("tv.ismar.daisy.EntertainmentItem");
+                        intent.putExtra("title", "娱乐综艺");
+                    } else if ("movie".equals(lock_content_model)) {
+                        intent.setAction("tv.ismar.daisy.PFileItem");
+                        intent.putExtra("title", "电影");
+                    } else {
+                        intent.setAction("tv.ismar.daisy.Item");
+                    }
+                    intent.putExtra("url", lock_url);
+                    intent.putExtra("fromPage", "lockscreen");
+//					startActivity(intent);
+                    InitPlayerTool tool = new InitPlayerTool(ReactiveActivity.this);
+//                    tool.channel=channelEntity.getChannel();
+                    tool.fromPage = "lockscreen";
+                    tool.initClipInfo("http://sky.tvxio.bestv.com.cn/v3_0/SKY2/tou/api/item/702040/", InitPlayerTool.FLAG_URL);
+//					finish();
+                }
+            }
+        }, 10);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         acquireWakeLock();
-        new Handler().postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance();
-				String lock_url = accountSharedPrefs.getSharedPreferences().getString("lock_url", null);
-                lock_url = "http://sky.tvxio.bestv.com.cn/v3_0/UF30/tou/api/item/701893/";
-				String lock_content_model = accountSharedPrefs.getSharedPreferences().getString("lock_content_model", null);
-				if (lock_url != null && lock_content_model != null) {
-					Intent intent = new Intent();
-					if (("variety".equals(lock_content_model) || "entertainment".equals(lock_content_model))) {
-						intent.setAction("tv.ismar.daisy.EntertainmentItem");
-						intent.putExtra("title", "娱乐综艺");
-					} else if ("movie".equals(lock_content_model)) {
-						intent.setAction("tv.ismar.daisy.PFileItem");
-						intent.putExtra("title", "电影");
-					} else {
-						intent.setAction("tv.ismar.daisy.Item");
-					}
-					intent.putExtra("url", lock_url);
-					intent.putExtra("fromPage", "homepage");
-//					startActivity(intent);
-                    InitPlayerTool tool = new InitPlayerTool(ReactiveActivity.this);
-//                    tool.channel=channelEntity.getChannel();
-                    tool.fromPage="homepage";
-                    tool.initClipInfo("http://sky.tvxio.bestv.com.cn/v3_0/UF30/tou/api/item/701893/", InitPlayerTool.FLAG_URL);
-					finish();
-				}
-			}
-		},100);
      }
 
     @Override
     protected void onPause() {
         super.onPause();
+//        finish();
         releaseWakeLock();
     }
 
@@ -90,6 +91,17 @@ public class ReactiveActivity extends Activity {
     public void exitbutton0(View v) {
         this.finish();
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        if (resultCode == 1010) {
+           finish();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
 
     private void acquireWakeLock() {
 

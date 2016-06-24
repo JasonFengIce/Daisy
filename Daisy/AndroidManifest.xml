@@ -318,6 +318,10 @@
             android:name=".ReactiveActivity"
             android:screenOrientation="landscape"
             android:theme="@style/reactiveactivitydialog">
+            <intent-filter>
+                <action android:name="tv.ismar.daisy.reactive"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
 
         </activity>
 
