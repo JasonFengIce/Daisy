@@ -2814,6 +2814,15 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 			switch (v.getId()){
 				case R.id.QualityText:
 					creatPopWindows();
+					if(!isAnthology) {
+						isAnthology = true;
+						if(!panelShow)
+							showPanel();
+						hidePanelHandler.removeCallbacks(hidePanelRunnable);
+					}else{
+						isAnthology = false;
+						hidePanelHandler.postDelayed(hidePanelRunnable,3000);
+					}
 					break;
 				case R.id.anthology:
 					if(listItems.size()!=0) {

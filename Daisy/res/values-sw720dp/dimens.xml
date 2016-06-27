@@ -1455,13 +1455,13 @@
     <dimen name="full_channel_gridview_mt">95.33dp</dimen>
     <dimen name="panlLayout_height">116dp</dimen>
     <dimen name="timeText_marginLeft">46.67dp</dimen>
-    <dimen name="timeText_marginTop">12dp</dimen>
+    <dimen name="timeText_marginTop">10dp</dimen>
     <dimen name="timeText_size">14sp</dimen>
     <dimen name="play_seekbar_marginheight">4dp</dimen>
     <dimen name="play_seekbar_marginleft">110dp</dimen>
     <dimen name="play_seekbar_margintop">18.5dp</dimen>
     <dimen name="endtime_text_marginRight">45.33dp</dimen>
-    <dimen name="endtime_text_marginTop">12dp</dimen>
+    <dimen name="endtime_text_marginTop">10dp</dimen>
     <dimen name="endtime_text_size">14sp</dimen>
     <dimen name="quality_text_size">20sp</dimen>
     <dimen name="quality_text_bottom">35.33dp</dimen>
@@ -1469,7 +1469,7 @@
     <dimen name="play_pause_left">86dp</dimen>
     <dimen name="play_pause_bottom">16dp</dimen>
     <dimen name="play_ff_left">202dp</dimen>
-    <dimen name="play_ff_bottom">34dp</dimen>
+    <dimen name="play_ff_bottom">20dp</dimen>
     <dimen name="play_top_height">74.67dp</dimen>
     <dimen name="player_back_top">31dp</dimen>
     <dimen name="player_back_left">20.5dp</dimen>

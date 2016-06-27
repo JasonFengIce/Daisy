@@ -69,7 +69,7 @@ public class YogaWebService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("yoga", "onstart");
-        if ("".equals(SimpleRestClient.device_token)){
+        if (SimpleRestClient.device_token==null||"".equals(SimpleRestClient.device_token)){
             Log.i("yoga","激活服务");
             Intent init=new Intent();
             init.setClass(mContext, InitService.class);

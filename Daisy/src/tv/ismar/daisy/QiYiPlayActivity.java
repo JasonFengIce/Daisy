@@ -587,15 +587,15 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
                 if (isVodMenuVisible()) {
                     hideMenuHandler.post(hideMenuRunnable);
                 } else {
-                    if (!paused) {
-                        pauseItem();
-                        playPauseImage
-                                .setImageResource(R.drawable.play);
-                    } else {
-                        resumeItem();
-                        playPauseImage
-                                .setImageResource(R.drawable.paus);
-                    }
+//                    if (!paused) {
+//                        pauseItem();
+//                        playPauseImage
+//                                .setImageResource(R.drawable.play);
+//                    } else {
+//                        resumeItem();
+//                        playPauseImage
+//                                .setImageResource(R.drawable.paus);
+//                    }
                 }
                 return false;
             }
@@ -2342,6 +2342,15 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
             switch (v.getId()){
                 case R.id.QualityText:
                     creatPopWindows();
+                    if(!isAnthologyShow) {
+                        isAnthologyShow = true;
+                        if(!panelShow)
+                            showPanel();
+                        hidePanelHandler.removeCallbacks(hidePanelRunnable);
+                    }else{
+                        isAnthologyShow = false;
+                        hidePanelHandler.postDelayed(hidePanelRunnable,3000);
+                    }
                     break;
                 case R.id.anthology:
                     if(listItems.size()>0){
