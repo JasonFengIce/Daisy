@@ -1,9 +1,11 @@
 package tv.ismar.daisy.ui.activity;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -24,6 +26,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.*;
+
+import cn.ismar.daisy.pad.lockscreenservice.Setlockscreenservice;
 import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
 import com.baidu.location.*;
@@ -132,7 +136,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private HorizontalScrollView channel_list_scroll;
     private String intentFlag;
     public boolean isMove = false;
-
+    private Setlockscreenservice nativeservice;
     private enum LeavePosition {
         LeftTop,
         LeftBottom,
@@ -288,6 +292,9 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         registerUpdateReceiver();
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_tv_guide, null);
         setContentView(contentView);
+        Intent intent = new Intent("cn.ismar.daisy.pad.setlockscreenservice");
+        intent.setPackage("cn.ismar.daisy.pad");
+        bindService(intent, mConnection, BIND_AUTO_CREATE);
         testLock();
 
         homepage_template = getIntent().getStringExtra("homepage_template");
@@ -378,9 +385,10 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                         AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance();
                         accountSharedPrefs.setSharedPrefs("lock_url", url);
                         accountSharedPrefs.setSharedPrefs("lock_content_model", content_model);
-                        Intent setlockscreen = new Intent("setlockscreenwallpaper");
-                        setlockscreen.putExtra("wallpaperUrl", image);
-                        TVGuideActivity.this.sendBroadcast(setlockscreen);
+//                        Intent setlockscreen = new Intent("setlockscreenwallpaper");
+//                        setlockscreen.putExtra("wallpaperUrl", image);
+//                        TVGuideActivity.this.sendBroadcast(setlockscreen);
+                        nativeservice.setLockScreen(image);
                     }
                 } catch (Exception e) {
                     Log.e("Exception", e.toString());
@@ -1477,6 +1485,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         if (exitPopupWindow != null) {
             exitPopupWindow.dismiss();
         }
+        unbindService(mConnection);
         super.onDestroy();
     }
 
@@ -1608,6 +1617,15 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         }
         return super.dispatchTouchEvent(event);
     }
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            nativeservice = Setlockscreenservice.Stub.asInterface(service);
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+        }
+    };
 
 
 }
