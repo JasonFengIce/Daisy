@@ -70,6 +70,6 @@ dependencies {
     compile 'com.example.foregroundimageview:foregroundimageview:1.0'
     compile 'cn.ismartv.recyclerview:recyclerview:1.0'
     compile 'com.koushikdutta.async:androidasync:2.+'
-    compile 'io.reactivex:rxjava:1.1.6'
+    compile 'io.reactivex:rxandroid:1.2.1'
 }
 

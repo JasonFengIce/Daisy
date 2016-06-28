@@ -3,8 +3,6 @@ package tv.ismar.daisy.ui.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -14,8 +12,13 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
-import java.lang.ref.WeakReference;
+import java.util.concurrent.TimeUnit;
 
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.functions.Func1;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.advertisement.AdvertisementManager;
 import tv.ismar.daisy.core.initialization.InitializeProcess;
@@ -27,24 +30,19 @@ import tv.ismar.daisy.player.CallaPlay;
 public class AdvertisementActivity extends Activity {
     private static final String TAG = "AdvertisementActivity";
     private static final String DEFAULT_ADV_PICTURE = "file:///android_asset/poster.png";
-    private static final int TIME_COUNTDOWN = 0x0001;
 
     private static final int[] secondsResId = {R.drawable.second_1, R.drawable.second_2,
             R.drawable.second_3, R.drawable.second_4, R.drawable.second_5};
     private ImageView adverPic;
     private ImageView timerText;
-    private Handler messageHandler;
-    private volatile boolean flag = true;
     private AdvertisementManager mAdvertisementManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        flag = true;
         setContentView(R.layout.activity_advertisement);
         initViews();
         placeAdvertisementPic();
-        messageHandler = new MessageHandler(this);
         new Thread(new InitializeProcess(this)).start();
     }
 
@@ -61,7 +59,6 @@ public class AdvertisementActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        flag = false;
         super.onDestroy();
     }
 
@@ -81,7 +78,6 @@ public class AdvertisementActivity extends Activity {
                 .into(adverPic, new Callback() {
                     @Override
                     public void onSuccess() {
-                        timerCountDown();
                         String launchAppAdvEntityStr = LogSharedPrefs.getSharedPrefs(LogSharedPrefs.SHARED_PREFS_NAME);
                         LaunchAdvertisementEntity.AdvertisementData[] advertisementDatas = new Gson().fromJson(launchAppAdvEntityStr, LaunchAdvertisementEntity.AdvertisementData[].class);
                         if (null != advertisementDatas) {
@@ -98,28 +94,37 @@ public class AdvertisementActivity extends Activity {
                                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                                 .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_CACHE)
                                 .into(adverPic);
-                        timerCountDown();
+
                     }
                 });
+        timerCountDown();
     }
 
     private void timerCountDown() {
-        new Thread() {
+        Observable<Integer> observable = countdown(5);
+        observable.doOnSubscribe(new Action0() {
             @Override
-            public void run() {
-                for (int i = 4; i >= 0; i--) {
-                    Message message = new Message();
-                    message.what = TIME_COUNTDOWN;
-                    message.obj = i;
-                    messageHandler.sendMessage(message);
-                    try {
-                        sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
+            public void call() {
+                Log.i(TAG, "开始计时");
             }
-        }.start();
+        }).subscribe(new Subscriber<Integer>() {
+            @Override
+            public void onCompleted() {
+                Log.i(TAG, "计时完成");
+                intentToLauncher();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "计时出错: " + e.getMessage());
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                Log.i(TAG, "当前计时：" + integer);
+                timerText.setImageResource(secondsResId[integer - 1]);
+            }
+        });
     }
 
     private void intentToLauncher() {
@@ -128,32 +133,19 @@ public class AdvertisementActivity extends Activity {
         startActivity(intent);
     }
 
-    public void showCountTime(int second) {
-        timerText.setImageResource(secondsResId[second]);
-        if (second == 0 && flag) {
-            intentToLauncher();
-        }
-    }
+    public Observable<Integer> countdown(int time) {
+        if (time < 0) time = 0;
 
-
-    static class MessageHandler extends Handler {
-        WeakReference<AdvertisementActivity> mWeakReference;
-
-        public MessageHandler(AdvertisementActivity activity) {
-            mWeakReference = new WeakReference<AdvertisementActivity>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            AdvertisementActivity activity = mWeakReference.get();
-            if (mWeakReference != null) {
-                switch (msg.what) {
-                    case TIME_COUNTDOWN:
-                        int second = Integer.parseInt(String.valueOf(msg.obj));
-                        activity.showCountTime(second);
-                        break;
-                }
-            }
-        }
+        final int countTime = time;
+        return Observable.interval(0, 1, TimeUnit.SECONDS)
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(new Func1<Long, Integer>() {
+                    @Override
+                    public Integer call(Long increaseTime) {
+                        return countTime - increaseTime.intValue();
+                    }
+                })
+                .take(countTime);
     }
 }
