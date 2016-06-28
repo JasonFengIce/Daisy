@@ -60,6 +60,8 @@ public class PayLayerVipActivity extends BaseActivity implements OnHoverListener
         scrollViewLayout = (LinearLayout) findViewById(R.id.scroll_layout);
         leftArrow = (ImageView) findViewById(R.id.left_arrow);
         rightArrow = (ImageView) findViewById(R.id.right_arrow);
+
+        vipDescriptionTextView = (TextView)findViewById(R.id.vip_des_text);
         mTvHorizontalScrollView.setLeftArrow(leftArrow);
         mTvHorizontalScrollView.setRightArrow(rightArrow);
         mTvHorizontalScrollView.setCoverOffset(10);
