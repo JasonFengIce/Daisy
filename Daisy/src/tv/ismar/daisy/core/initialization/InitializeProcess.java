@@ -9,7 +9,14 @@ import com.google.gson.Gson;
 import cn.ismartv.injectdb.library.ActiveAndroid;
 import cn.ismartv.injectdb.library.query.Delete;
 import cn.ismartv.injectdb.library.query.Select;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Retrofit;
+import retrofit2.RxJavaCallAdapterFactory;
+import rx.Subscriber;
 import tv.ismar.daisy.R;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.client.HttpAPI;
+import tv.ismar.daisy.core.client.HttpManager;
 import tv.ismar.daisy.core.client.HttpMethod;
 import tv.ismar.daisy.core.client.HttpResponseMessage;
 import tv.ismar.daisy.core.client.JavaHttpClient;
@@ -223,21 +230,30 @@ public class InitializeProcess implements Runnable {
     }
 
     private void fetchLocationByIP() {
-        String api = "http://lily.tvxio.com/iplookup";
-        new JavaHttpClient().doRequest(api, new JavaHttpClient.Callback() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://lily.tvxio.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .client(HttpManager.getInstance().mClient)
+                .build();
+
+        HttpAPI.IpLookup ipLookup = retrofit.create(HttpAPI.IpLookup.class);
+        ipLookup.doRequest(SimpleRestClient.device_token).subscribe(new Subscriber<IpLookUpEntity>() {
             @Override
-            public void onSuccess(HttpResponseMessage result) {
-                IpLookUpEntity ipLookUpEntity = new Gson().fromJson(result.responseResult, IpLookUpEntity.class);
-                initializeLocation(ipLookUpEntity);
+            public void onCompleted() {
+                Log.i(TAG, "fetchLocation: onCompleted");
             }
 
             @Override
-            public void onFailed(HttpResponseMessage error) {
+            public void onError(Throwable e) {
                 Log.e(TAG, "fetchLocation: error");
             }
+
+            @Override
+            public void onNext(IpLookUpEntity ipLookUpEntity) {
+                initializeLocation(ipLookUpEntity);
+            }
         });
-
-
     }
 
     private void initializeLocation(IpLookUpEntity ipLookUpEntity) {
