@@ -296,7 +296,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         Intent intent = new Intent("cn.ismar.daisy.pad.setlockscreenservice");
         intent.setPackage("cn.ismar.daisy.pad");
         bindService(intent, mConnection, BIND_AUTO_CREATE);
-        testLock();
 
         homepage_template = getIntent().getStringExtra("homepage_template");
         homepage_url = getIntent().getStringExtra("homepage_url");
@@ -342,11 +341,13 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             if (!activator.iswaiting)
                 activator.active(product, mode,
                         String.valueOf(SimpleRestClient.appVersion), localInfo);
+
         } else {
             String appUpdateHost = "http://" + SimpleRestClient.upgrade_domain;
 //                  AppUpdateUtils.getInstance(this).checkUpdate(appUpdateHost);
             AppUpdateUtilsV2.getInstance(this).checkAppUpdate(appUpdateHost);
             fetchChannels();
+            testLock();
         }
     }
 
@@ -356,7 +357,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 HttpURLConnection httpConn = null;
                 InputStreamReader inputStreamReader = null;
                 try {
-                    URL connURL = new URL("http://sky.tvxio.com/api/tv/homepage/lockscreen/7/");
+                    URL connURL = new URL(SimpleRestClient.root_url+"/api/tv/homepage/lockscreen/7/");
                     httpConn = (HttpURLConnection) connURL.openConnection();
                     httpConn.setRequestProperty("Accept", "application/json");
 //                    httpConn.setRequestProperty("User-Agent", userAgent);
@@ -957,7 +958,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         saveSimpleRestClientPreferences(this, result);
         DaisyUtils.getVodApplication(TVGuideActivity.this).getNewContentModel();
         fetchChannels();
-
+        testLock();
 
 //        sendLoncationRequest();
         String appUpdateHost = "http://" + result.getUpgrade_domain();
