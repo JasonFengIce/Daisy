@@ -37,11 +37,11 @@
                 android:textSize="@dimen/textsize_24sp"/>
 
             <TextView
+                android:id="@+id/vip_des_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/paylayvip_mariginleft"
                 android:layout_marginTop="@dimen/paylayervip_des_margintop"
-                android:text="@string/vip_des_content"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/textsize_24sp"/>
 

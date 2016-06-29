@@ -4,8 +4,10 @@ package tv.ismar.daisy.core.client;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.*;
+import rx.Observable;
 import tv.ismar.daisy.data.ChannelEntity;
 import tv.ismar.daisy.data.HomePagerEntity;
+import tv.ismar.daisy.data.http.IpLookUpEntity;
 import tv.ismar.daisy.data.http.ItemEntity;
 
 /**
@@ -49,6 +51,13 @@ public class HttpAPI {
         @Headers("Cache-Control: public, max-age=3600")
         @GET("api/tv/homepage/top/")
         Call<HomePagerEntity> doRequest();
+    }
+
+    public interface IpLookup{
+        @GET("http://lily.tvxio.com/iplookup")
+        Observable<IpLookUpEntity> doRequest(
+                @Query("device_token") String deviceToken
+        );
     }
 
 }

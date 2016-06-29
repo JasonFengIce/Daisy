@@ -26,9 +26,9 @@ import android.widget.TextView;
 import tv.ismar.daisy.views.RotateTextView;
 
 public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements OnImageViewLoadListener {
-	
+
 	private final static String TAG = "HGridAdapterImpl";
-	
+
 	private Context mContext;
 	private boolean mHasSection = true;
 	private int mSize = 0;
@@ -51,7 +51,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 				mSize +=list.get(i).count;
 			}
 		}
-		
+
 	}
 	public HGridAdapterImpl(Context context, ArrayList<ItemCollection> list,boolean hasSection) {
 		mContext = context;
@@ -72,7 +72,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 		cancel();
 		super.setList(list);
 	}
-	
+
 	@Override
 	public int getCount() {
 		return mSize;
@@ -225,7 +225,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
                     }
                     if(item.bean_score>0){
                         holder.ItemBeanScore.setVisibility(View.VISIBLE);
-                        holder.ItemBeanScore.setText(item.bean_score+"");
+                        holder.ItemBeanScore.setText(item.bean_score+"    ");
                     }
                     else{
                         holder.ItemBeanScore.setVisibility(View.INVISIBLE);
@@ -271,7 +271,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 		}
 		return 0;
 	}
-	
+
 	@Override
 	public boolean hasSection() {
 		if(this.mHasSection)
@@ -295,7 +295,7 @@ public class HGridAdapterImpl extends HGridAdapter<ItemCollection> implements On
 		else
 			return " ";
 	}
-	
+
 	public void cancel() {
 		for(AsyncImageView imageView: mOnLoadingImageQueue) {
 
