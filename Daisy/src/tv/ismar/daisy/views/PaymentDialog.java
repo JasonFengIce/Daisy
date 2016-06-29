@@ -366,7 +366,9 @@ public class PaymentDialog extends Dialog implements
 				qrcodeBitmap = null;
 			}
 			switch (view.getId()) {
-			case R.id.weixin: {
+			case R.id.weixin:
+			{
+				qrcodeview.setVisibility(View.INVISIBLE);
 				if (urlHandler.hasMessages(PURCHASE_CHECK_RESULT))
 					urlHandler.removeMessages(PURCHASE_CHECK_RESULT);
 				changeQrcodePayPanelState(true, true);
@@ -387,6 +389,7 @@ public class PaymentDialog extends Dialog implements
 			}
 				break;
 			case R.id.zhifubao: {
+				qrcodeview.setVisibility(View.INVISIBLE);
 				if (urlHandler.hasMessages(PURCHASE_CHECK_RESULT))
 					urlHandler.removeMessages(PURCHASE_CHECK_RESULT);
 				changeQrcodePayPanelState(true, false);
@@ -550,6 +553,7 @@ public class PaymentDialog extends Dialog implements
 			case SETQRCODE_VIEW: {
 				qrcode_panel.setVisibility(View.VISIBLE);
 				daikou_panel.setVisibility(View.GONE);
+				qrcodeview.setVisibility(View.VISIBLE);
 				qrcodeview.setImageBitmap(qrcodeBitmap);
 				if (qrcodeBitmap != null && qrcodeBitmap.isRecycled())
 					qrcodeBitmap.recycle();
