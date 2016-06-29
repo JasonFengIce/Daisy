@@ -2952,9 +2952,12 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 		}
 		volumn.setVisibility(View.VISIBLE);
 		float newVolumn=currentVolumn+movePercent*100;
-		if(newVolumn<=100&&newVolumn>=0){
-			setVolumn((int) newVolumn);
+		if(newVolumn>100){
+			newVolumn=100;
+		}else if(newVolumn<0){
+			newVolumn=0;
 		}
+		setVolumn((int) newVolumn);
 	}
 	//滑动改变亮度
 	private void changeBright(float movePercent) {
@@ -2963,9 +2966,12 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 		}
 		bright.setVisibility(View.VISIBLE);
 		float newBright=currentBright+movePercent*100;
-		if(newBright>=0&&newBright<=100){
-			setBright((int) newBright);
+		if(newBright>100){
+			newBright=100;
+		}else if(newBright<0){
+			newBright=0;
 		}
+		setBright((int) newBright);
 	}
 	private void changePlayProgress(float movePercent){
 		if(volumn.getVisibility()==View.VISIBLE||bright.getVisibility()==View.VISIBLE||isadvideoplaying){
