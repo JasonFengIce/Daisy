@@ -1384,7 +1384,7 @@
 <dimen name="list_vip_score_h">25.33dip</dimen>
 <dimen name="list_vip_score_mr">4.00dip</dimen>
 <dimen name="list_vip_score_mt">76.67dip</dimen>
-<dimen name="list_vip_score_horizon_mt">186.67dip</dimen>
+<dimen name="list_vip_score_horizon_mt">180dip</dimen>
 <dimen name="VIP_tag_small_w">53.33dip</dimen>
 <dimen name="VIP_tag_small_h">53.33dip</dimen>
 <dimen name="VIP_beanscore_small_ml">106.67dip</dimen>

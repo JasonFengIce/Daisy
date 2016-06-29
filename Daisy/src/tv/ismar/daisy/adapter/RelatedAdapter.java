@@ -94,7 +94,7 @@ public class RelatedAdapter extends BaseAdapter implements OnImageViewLoadListen
         holder.price = (RotateTextView)convertView.findViewById(R.id.expense_txt);
 		holder.price.setDegrees(315);
 		if(mItemList.get(position).bean_score>0){
-			holder.ItemBeanScore.setText(""+mItemList.get(position).bean_score);
+			holder.ItemBeanScore.setText(""+mItemList.get(position).bean_score + "    ");
 			holder.ItemBeanScore.setVisibility(View.VISIBLE);
 		}
 		else{
