@@ -39,7 +39,6 @@ public class ReactiveActivity extends BaseActivity {
             public void run() {
                 AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance();
                 String lock_url = accountSharedPrefs.getSharedPreferences().getString("lock_url", null);
-                lock_url = "http://sky.tvxio.bestv.com.cn/v3_0/UF30/tou/api/item/701893/";
                 String lock_content_model = accountSharedPrefs.getSharedPreferences().getString("lock_content_model", null);
                 if (lock_url != null && lock_content_model != null) {
                     Intent intent = new Intent();
@@ -58,7 +57,7 @@ public class ReactiveActivity extends BaseActivity {
                     InitPlayerTool tool = new InitPlayerTool(ReactiveActivity.this);
 //                    tool.channel=channelEntity.getChannel();
                     tool.fromPage = "lockscreen";
-                    tool.initClipInfo("http://sky.tvxio.bestv.com.cn/v3_0/SKY2/tou/api/item/702040/", InitPlayerTool.FLAG_URL);
+                    tool.initClipInfo(lock_url, InitPlayerTool.FLAG_URL);
 //					finish();
                 }
             }

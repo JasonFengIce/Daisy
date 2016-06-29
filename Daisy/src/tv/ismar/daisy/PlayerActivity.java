@@ -228,17 +228,17 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	@Override
 	public void onResume() {
 		super.onResume();
-		if(item == null){
-			String testitemurl = " http://sky.tvxio.bestv.com.cn/v3_0/UF30/tou/api/item/701893/";
-				GetItemTask mGetItemTask = new GetItemTask();
-				mGetItemTask.execute(testitemurl);
-		}else {
+//		if(item == null){
+//			String testitemurl = " http://sky.tvxio.bestv.com.cn/v3_0/UF30/tou/api/item/701893/";
+//				GetItemTask mGetItemTask = new GetItemTask();
+//				mGetItemTask.execute(testitemurl);
+//		}else {
 			if (needOnresume && isneedpause) {
 				isBuffer = true;
 				showBuffer();
 				initPlayer();
 			}
-		}
+//		}
 		isneedpause = true;
 		needOnresume = true;
 	}
