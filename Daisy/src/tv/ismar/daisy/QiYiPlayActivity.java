@@ -2384,39 +2384,57 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
         popupWindow.setFocusable(true);
         popupWindow.setOutsideTouchable(true);
         LinearLayout popMenu= (LinearLayout) pop.findViewById(R.id.pop);
-        for(int i=0;i<urls.length;i++){
-            if(urls[i]!=null){
+        //for(int i=0;i<mBitStreamList.size();i++){
+//            if(urls[i]!=null){
+//                switch (i){
+//                    case 0:
+//                        textView.setText("流畅");
+//                        break;
+//                    case 1:
+//                        textView.setText("高清");
+//                        break;
+//                    case 2:
+//                        textView.setText("超清");
+//                        break;
+//                    default:
+//                        textView.setText("自适应");
+//                }
+                 int j=0;
+                for(int i=0;i<mBitStreamList.size();i++){
+                BitStream d =mBitStreamList.get(i);
                 View view=View.inflate(this,R.layout.pop_menu_item,null);
                 TextView textView= (TextView) view.findViewById(R.id.quality_text);
                 ImageView img= (ImageView) view.findViewById(R.id.quality_focus);
-                switch (i){
-                    case 0:
-                        textView.setText("流畅");
-                        break;
-                    case 1:
-                        textView.setText("高清");
-                        break;
-                    case 2:
-                        textView.setText("超清");
-                        break;
-                    default:
-                        textView.setText("自适应");
-                }
-                if(i==currQuality){
+                        if (d.equals(BitStream.BITSTREAM_HIGH)) {
+                         //   avalibleRate[0] = true;
+                            // currQuality = 0;
+                            j=0;
+                            textView.setText("流畅");
+                        } else if (d.equals(BitStream.BITSTREAM_720P)) {
+                            //avalibleRate[1] = true;
+                            // currQuality = 1;
+                            j=1;
+                            textView.setText("高清");
+                        } else if (d.equals(BitStream.BITSTREAM_1080P)) {
+                            // avalibleRate[2] = true;
+                            textView.setText("超清");
+                            j=2;
+                            // currQuality = 2;
+                        }
+                if(j==currQuality){
                     textView.setTextColor(getResources().getColor(R.color._ff9c3c));
                     img.setBackgroundResource(R.drawable.quality_chosed);
                 }
-                final int j=i;
+                final int k=j;
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        changeQuality(j);
+                        changeQuality(k);
                         popupWindow.dismiss();
                     }
                 });
                 popMenu.addView(view);
             }
-        }
         int[] location = new int[2];
         pop.getLocationOnScreen(location);
         Log.i("Height", panelLayout.getHeight() + "");
@@ -2524,9 +2542,12 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
         }
         volumn.setVisibility(View.VISIBLE);
         float newVolumn=currentVolumn+movePercent*100;
-        if(newVolumn<=100&&newVolumn>=0){
-            setVolumn((int) newVolumn);
+        if(newVolumn>100){
+            newVolumn=100;
+        }else if(newVolumn<0){
+            newVolumn=0;
         }
+        setVolumn((int) newVolumn);
     }
     //滑动改变亮度
     private void changeBright(float movePercent) {
@@ -2535,9 +2556,12 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
         }
         bright.setVisibility(View.VISIBLE);
         float newBright=currentBright+movePercent*100;
-        if(newBright>=0&&newBright<=100){
-            setBright((int) newBright);
+        if(newBright>100){
+            newBright=100;
+        }else if(newBright<0){
+            newBright=0;
         }
+        setBright((int) newBright);
     }
     private void changePlayProgress(float movePercent){
         if(volumn.getVisibility()==View.VISIBLE||bright.getVisibility()==View.VISIBLE||isAdPlaying){
