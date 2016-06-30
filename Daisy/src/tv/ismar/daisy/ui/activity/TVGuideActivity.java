@@ -2,6 +2,7 @@ package tv.ismar.daisy.ui.activity;
 
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -295,7 +296,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         Intent intent = new Intent("cn.ismar.daisy.pad.setlockscreenservice");
         intent.setPackage("cn.ismar.daisy.pad");
         bindService(intent, mConnection, BIND_AUTO_CREATE);
-        testLock();
 
         homepage_template = getIntent().getStringExtra("homepage_template");
         homepage_url = getIntent().getStringExtra("homepage_url");
@@ -341,11 +341,13 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             if (!activator.iswaiting)
                 activator.active(product, mode,
                         String.valueOf(SimpleRestClient.appVersion), localInfo);
+
         } else {
             String appUpdateHost = "http://" + SimpleRestClient.upgrade_domain;
 //                  AppUpdateUtils.getInstance(this).checkUpdate(appUpdateHost);
             AppUpdateUtilsV2.getInstance(this).checkAppUpdate(appUpdateHost);
             fetchChannels();
+            testLock();
         }
     }
 
@@ -355,7 +357,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 HttpURLConnection httpConn = null;
                 InputStreamReader inputStreamReader = null;
                 try {
-                    URL connURL = new URL("http://skytest.tvxio.com/api/tv/homepage/lockscreen/");
+                    URL connURL = new URL(SimpleRestClient.root_url+"/api/tv/homepage/lockscreen/7/");
                     httpConn = (HttpURLConnection) connURL.openConnection();
                     httpConn.setRequestProperty("Accept", "application/json");
 //                    httpConn.setRequestProperty("User-Agent", userAgent);
@@ -377,18 +379,19 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                     inputStreamReader.close();
                     httpConn.disconnect();
                     JSONArray object = new JSONArray(json.toString());
-                    if (object.length() > 0) {
-                        JSONObject element = object.getJSONObject(0);
+                    ArrayList<String> prefrence = getPreferenceChannels(getContentResolver());
+                    for(int i =0;i<object.length();i++){
+                        JSONObject element = object.getJSONObject(i);
                         String url = element.getString("url");
                         String image = element.getString("image");
                         String content_model = element.getString("content_model");
-                        AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance();
-                        accountSharedPrefs.setSharedPrefs("lock_url", url);
-                        accountSharedPrefs.setSharedPrefs("lock_content_model", content_model);
-//                        Intent setlockscreen = new Intent("setlockscreenwallpaper");
-//                        setlockscreen.putExtra("wallpaperUrl", image);
-//                        TVGuideActivity.this.sendBroadcast(setlockscreen);
-                        nativeservice.setLockScreen(image);
+                        if(prefrence.contains(content_model)) {
+                            AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance();
+                            accountSharedPrefs.setSharedPrefs("lock_url", url);
+                            accountSharedPrefs.setSharedPrefs("lock_content_model", content_model);
+                            nativeservice.setLockScreen(image);
+                            break;
+                        }
                     }
                 } catch (Exception e) {
                     Log.e("Exception", e.toString());
@@ -955,7 +958,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         saveSimpleRestClientPreferences(this, result);
         DaisyUtils.getVodApplication(TVGuideActivity.this).getNewContentModel();
         fetchChannels();
-
+        testLock();
 
 //        sendLoncationRequest();
         String appUpdateHost = "http://" + result.getUpgrade_domain();
@@ -1627,5 +1630,29 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         }
     };
 
-
+    private ArrayList<String> getPreferenceChannels(ContentResolver resolver) {
+        ArrayList<String> prefrence = new ArrayList<String>();
+        if(Settings.System.getInt(resolver,"chinese_film_favor",0) == 1){
+            prefrence.add("movie");
+        }
+        if(Settings.System.getInt(resolver,"overseas_film_favor",0) == 1){
+            prefrence.add("movie");
+        }
+        if(Settings.System.getInt(resolver,"variety_entertainment_favor",0) == 1){
+            prefrence.add("entertainment");
+        }
+        if(Settings.System.getInt(resolver,"music_favor",0) == 1){
+            prefrence.add("music");
+        }
+        if(Settings.System.getInt(resolver,"game_favor",0) == 1){
+            prefrence.add("game");
+        }
+        if(Settings.System.getInt(resolver,"sport_favor",0) == 1){
+            prefrence.add("sport");
+        }
+        if(Settings.System.getInt(resolver,"live_documentary_favor",0) == 1){
+            prefrence.add("documentary");
+        }
+        return prefrence;
+    }
 }

@@ -104,10 +104,10 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
             TextView price = (TextView) vipItem.findViewById(R.id.price);
             price.setText((int) vip.getPrice() + "元/" + vip.getDuration() + "天");
             if (TextUtils.isEmpty(vip.getVertical_url())) {
-                Picasso.with(this).load(R.drawable.preview).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(imageView);
+                Picasso.with(this).load(R.drawable.preview).into(imageView);
             } else {
 
-                Picasso.with(this).load(vip.getVertical_url()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).error(R.drawable.error_ver).into(imageView);
+                Picasso.with(this).load(vip.getVertical_url()).error(R.drawable.error_ver).into(imageView);
             }
             vipItem.setOnHoverListener(this);
             vipItem.setOnFocusChangeListener(this);
@@ -128,7 +128,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
             RelativeLayout item = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_newvip_pay, null);
             ImageView imageView = (ImageView) item.findViewById(R.id.item_newvip_pay_img);
             if (TextUtils.isEmpty(expenseItem.getVertical_url())) {
-                Picasso.with(this).load(R.drawable.preview).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(imageView);
+                Picasso.with(this).load(R.drawable.preview).into(imageView);
             } else {
 
                 Picasso.with(this).load(expenseItem.getVertical_url()).error(R.drawable.error_ver).into(imageView);
@@ -153,7 +153,7 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
             RelativeLayout item = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.item_newvip_pay, null);
             ImageView imageView = (ImageView) item.findViewById(R.id.item_newvip_pay_img);
             if (TextUtils.isEmpty(newVipPackage.getVertical_url())) {
-                Picasso.with(this).load(R.drawable.preview).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(imageView);
+                Picasso.with(this).load(R.drawable.preview).into(imageView);
             } else {
                 Picasso.with(this).load(newVipPackage.getVertical_url()).error(R.drawable.error_ver).into(imageView);
             }
