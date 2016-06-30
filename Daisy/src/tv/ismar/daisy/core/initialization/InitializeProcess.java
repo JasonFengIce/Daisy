@@ -3,6 +3,7 @@ package tv.ismar.daisy.core.initialization;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
+
 import com.baidu.location.*;
 import com.google.gson.Gson;
 
@@ -12,6 +13,7 @@ import cn.ismartv.injectdb.library.query.Select;
 import retrofit2.GsonConverterFactory;
 import retrofit2.Retrofit;
 import retrofit2.RxJavaCallAdapterFactory;
+import rx.Observable;
 import rx.Subscriber;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -238,7 +240,8 @@ public class InitializeProcess implements Runnable {
                 .build();
 
         HttpAPI.IpLookup ipLookup = retrofit.create(HttpAPI.IpLookup.class);
-        ipLookup.doRequest(SimpleRestClient.device_token).subscribe(new Subscriber<IpLookUpEntity>() {
+        Observable<IpLookUpEntity> observable = ipLookup.doRequest(SimpleRestClient.device_token);
+        observable.subscribe(new Subscriber<IpLookUpEntity>() {
             @Override
             public void onCompleted() {
                 Log.i(TAG, "fetchLocation: onCompleted");

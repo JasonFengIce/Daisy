@@ -9,6 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import rx.Observable;
 import tv.ismar.daisy.data.http.newvip.paylayer.PayLayerEntity;
 import tv.ismar.daisy.data.http.newvip.paylayerpackage.PayLayerPackageEntity;
 import tv.ismar.daisy.data.http.newvip.paylayervip.PayLayerVipEntity;
@@ -48,6 +49,30 @@ public class NewVipHttpApi {
         @FormUrlEncoded
         @POST("api/play/check/")
         Call<ResponseBody> doRequest(
+                @Field("item") String item,
+                @Field("package") String pkg,
+                @Field("subitem") String subItem,
+                @Field("device_token") String deviceToken,
+                @Field("access_token") String accessToken
+        );
+    }
+
+    public interface PlayCheck {
+        @FormUrlEncoded
+        @POST("api/play/check/")
+        Observable<String> doRequest(
+                @Field("item") String item,
+                @Field("package") String pkg,
+                @Field("subitem") String subItem,
+                @Field("device_token") String deviceToken,
+                @Field("access_token") String accessToken
+        );
+    }
+
+    public interface OrderPurchase {
+        @FormUrlEncoded
+        @POST("api/order/purchase/")
+        Observable<String> doRequest(
                 @Field("item") String item,
                 @Field("package") String pkg,
                 @Field("subitem") String subItem,

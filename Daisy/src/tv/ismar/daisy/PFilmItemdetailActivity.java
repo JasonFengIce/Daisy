@@ -22,14 +22,19 @@ import android.widget.*;
 import com.google.gson.JsonSyntaxException;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
+import okhttp3.ResponseBody;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import retrofit2.Callback;
+import retrofit2.Response;
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.EventProperty;
 import tv.ismar.daisy.core.NetworkUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.VodUserAgent;
+import tv.ismar.daisy.core.client.NewVipHttpApi;
+import tv.ismar.daisy.core.client.NewVipHttpManager;
 import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.*;
@@ -41,6 +46,7 @@ import tv.ismar.daisy.utils.BitmapDecoder;
 import tv.ismar.daisy.utils.Util;
 import tv.ismar.daisy.views.*;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -1060,86 +1066,87 @@ public class PFilmItemdetailActivity extends BaseActivity implements AsyncImageV
     }
 
     private void isbuy() {
-        SimpleRestClient simpleRestClient = new SimpleRestClient();
-        simpleRestClient.doSendRequest("/api/play/check/", "post",
-                "device_token=" + SimpleRestClient.device_token
-                        + "&access_token=" + SimpleRestClient.access_token
-                        + "&item=" + mItem.pk, new SimpleRestClient.HttpPostRequestInterface() {
 
 
-                    // subitem=214277
-                    @Override
-                    public void onSuccess(String info) {
-                        // TODO Auto-generated method stub
-                        if ("0".equals(info)) {
+            NewVipHttpManager.getInstance().resetAdapter_SKY.create(NewVipHttpApi.OrderCheck.class).doRequest(String.valueOf(mItem.pk), null, null,
+                    SimpleRestClient.device_token, SimpleRestClient.access_token).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Response<ResponseBody> response) {
+                    if (response.errorBody() == null) {
+                        try {
+                            String result = response.body().string();
+                            handlePlaycheck(result);
+                        } catch (IOException e) {
                             isBuy = false;
-                        } else {
-                            JSONArray jsonArray;
-                            try {
-                                jsonArray = new JSONArray(info);
-                                JSONObject json = jsonArray.getJSONObject(0);
-                                if (json.has("max_expiry_date")) {
-                                    // 电视剧部分购买
-                                    isBuy = false;// 暂时无法处理
-                                }  else {
-                                    // 电影或者电视剧整部购买
-                                    try {
-                                        remainDay = Util.daysBetween(
-                                                Util.getTime(), info) + 1;
-                                        if (remainDay == 0) {
-                                            isBuy = false;// 过期了。认为没购买
-                                            remainDay = -1;
-                                        } else
-                                            isBuy = true;// 购买了，剩余天数大于0
-                                    } catch (ParseException e) {
-                                        // TODO Auto-generated catch block
-                                        e.printStackTrace();
-                                    }
-                                }
-                            } catch (JSONException e) {
-                                // TODO Auto-generated catch block
-                                try{
-                                JSONObject object = new JSONObject(info);
-                                 info = object.getString("expiry_date");
-                                 iqiyi_code = object.getString("iqiyi_code");
-                                    if(iqiyi_code != null && !"".equals(iqiyi_code) && !"null".equals(iqiyi_code)){
-                                        api_check();
-                                    }
-                                } catch (JSONException ee) {
-                                    info = info.substring(1, info.length() - 1);
-                                }
-                                toDate = info;
-                                try {
-                                    remainDay = Util.daysBetween(
-                                            Util.getTime(), info) + 1;
-                                    if (remainDay == 0) {
-                                        isBuy = false;// 过期了。认为没购买
-                                        remainDay = -1;
-                                    } else
-                                        isBuy = true;// 购买了，剩余天数大于0
-                                } catch (ParseException e1) {
-                                    // TODO Auto-generated catch block
-                                    e1.printStackTrace();
-                                }
-                                e.printStackTrace();
-                            }
+                            initLayout();
                         }
-                        if(iqiyi_code ==null || (iqiyi_code!= null && "null".equals(iqiyi_code)))
-                        initLayout();
                     }
+                }
 
-                    @Override
-                    public void onPrepare() {
-                        // TODO Auto-generated method stub
-                    }
+                @Override
+                public void onFailure(Throwable t) {
+                    isBuy = false;
+                    initLayout();
+                }
+            });
+    }
 
-                    @Override
-                    public void onFailed(String error) {
-                        // TODO Auto-generated method stub
-                        isBuy = false;
-                        initLayout();
+    private void handlePlaycheck(String info){
+        if ("0".equals(info)) {
+            isBuy = false;
+        } else {
+            JSONArray jsonArray;
+            try {
+                jsonArray = new JSONArray(info);
+                JSONObject json = jsonArray.getJSONObject(0);
+                if (json.has("max_expiry_date")) {
+                    // 电视剧部分购买
+                    isBuy = false;// 暂时无法处理
+                }  else {
+                    // 电影或者电视剧整部购买
+                    try {
+                        remainDay = Util.daysBetween(
+                                Util.getTime(), info) + 1;
+                        if (remainDay == 0) {
+                            isBuy = false;// 过期了。认为没购买
+                            remainDay = -1;
+                        } else
+                            isBuy = true;// 购买了，剩余天数大于0
+                    } catch (ParseException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
                     }
-                });
+                }
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                try{
+                    JSONObject object = new JSONObject(info);
+                    info = object.getString("expiry_date");
+                    iqiyi_code = object.getString("iqiyi_code");
+                    if(iqiyi_code != null && !"".equals(iqiyi_code) && !"null".equals(iqiyi_code)){
+                        api_check();
+                    }
+                } catch (JSONException ee) {
+                    info = info.substring(1, info.length() - 1);
+                }
+                toDate = info;
+                try {
+                    remainDay = Util.daysBetween(
+                            Util.getTime(), info) + 1;
+                    if (remainDay == 0) {
+                        isBuy = false;// 过期了。认为没购买
+                        remainDay = -1;
+                    } else
+                        isBuy = true;// 购买了，剩余天数大于0
+                } catch (ParseException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                e.printStackTrace();
+            }
+        }
+        if(iqiyi_code ==null || (iqiyi_code!= null && "null".equals(iqiyi_code)))
+            initLayout();
     }
 
     private boolean isDrama() {

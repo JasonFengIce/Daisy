@@ -19,6 +19,9 @@ import com.squareup.picasso.Picasso;
 import cn.ismartv.tvhorizontalscrollview.TvHorizontalScrollView;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -33,6 +36,8 @@ import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.utils.PicassoUtils;
 import tv.ismar.daisy.utils.ViewScaleUtil;
 import tv.ismar.daisy.views.PaymentDialog;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by huaijie on 4/11/16.
@@ -238,4 +243,19 @@ public class PayActivity extends BaseActivity implements View.OnHoverListener, V
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    public Observable<Integer> countdown(int time) {
+        if (time < 0) time = 0;
+
+        final int countTime = time;
+        return Observable.interval(0, 1, TimeUnit.SECONDS)
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(new Func1<Long, Integer>() {
+                    @Override
+                    public Integer call(Long increaseTime) {
+                        return countTime - increaseTime.intValue();
+                    }
+                })
+                .take(countTime);
+    }
 }
