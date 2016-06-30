@@ -1,32 +1,23 @@
 package tv.ismar.daisy.views;
 
 import android.app.Service;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.util.Log;
-
 import com.google.gson.Gson;
-import com.koushikdutta.async.http.WebSocket;
 import com.koushikdutta.async.http.server.AsyncHttpServer;
 import com.koushikdutta.async.http.server.AsyncHttpServerRequest;
 import com.koushikdutta.async.http.server.AsyncHttpServerResponse;
 import com.koushikdutta.async.http.server.HttpServerRequestCallback;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.sakuratya.horizontal.adapter.HGridAdapterImpl;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Set;
-
 import tv.ismar.daisy.core.DaisyUtils;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.service.InitService;
@@ -35,6 +26,8 @@ import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemCollection;
 import tv.ismar.daisy.player.InitPlayerTool;
+
+import java.util.*;
 
 /**
  * Created by liucan on 2016/6/15.
@@ -51,6 +44,10 @@ public class YogaWebService extends Service {
     ArrayList<Item> items=new ArrayList<>();
     ArrayList<History> mHistories;
     String result;
+    private List<String> checkedChannels;
+    private boolean firstIn;
+    private SharedPreferences sharedPreferences;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -62,12 +59,13 @@ public class YogaWebService extends Service {
        server = new AsyncHttpServer();
         server.listen(5000);
         mRestClient = new SimpleRestClient();
-
+        sharedPreferences = getSharedPreferences("DUAL_HOME",MODE_PRIVATE);
+        sharedPreferences.edit().putBoolean("first_in",true).commit();
         super.onCreate();
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(Intent intent, final int flags, int startId) {
         Log.i("yoga", "onstart");
         if (SimpleRestClient.device_token==null||"".equals(SimpleRestClient.device_token)){
             Log.i("yoga","激活服务");
@@ -76,6 +74,9 @@ public class YogaWebService extends Service {
             startService(init);
         }
         server.get("/", new HttpServerRequestCallback() {
+
+            private List<String> checkedChannels;
+
             @Override
             public void onRequest(AsyncHttpServerRequest request, AsyncHttpServerResponse response) {
                 String type = request.getQuery().getString("type");
@@ -87,6 +88,14 @@ public class YogaWebService extends Service {
                     String url = request.getQuery().getString("url");
                     String title = request.getQuery().getString("title");
                     String channel = request.getQuery().getString("channel");
+                    checkedChannels = getCheckedChannels();
+                    if(sharedPreferences.getBoolean("first_in",true)) {
+                        if (checkedChannels.size() < 3) {
+                            setPreferenceChannel(channel);
+                        }else{
+                            sharedPreferences.edit().putBoolean("first_in", false).commit();
+                        }
+                    }
                     Log.i("yoga", url + "-----" + title + "----" + channel);
                     intent.setAction("tv.ismar.daisy.Channel");
                     intent.putExtra("channel", channel);
@@ -95,7 +104,7 @@ public class YogaWebService extends Service {
                     intent.putExtra("portraitflag", portraitflag);
                     Log.i("yoga", "send Intent!");
                     startActivity(intent);
-                    response.send("callback(\"" +type + "\")");
+                    response.send("callback(\"" + type + "\")");
                     Log.i("yoga", "跳转channel" + channel);
                 } else if (type.equals("detail")) {
                     String url = request.getQuery().getString("url");
@@ -118,28 +127,28 @@ public class YogaWebService extends Service {
                         intent.putExtra("url", url);
                         intent.putExtra("fromPage", "homepage");
                         startActivity(intent);
-                        Log.i("yoga","跳转详情"+contentMode);
-                        response.send("callback(\""+type+"\")");
+                        Log.i("yoga", "跳转详情" + contentMode);
+                        response.send("callback(\"" + type + "\")");
                     } else if (expense.equals("false")) {
                         InitPlayerTool tool = new InitPlayerTool(mContext);
                         tool.fromPage = "homepage";
                         tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
-                        response.send("callback(\""+type+"\")");
+                        response.send("callback(\"" + type + "\")");
                     }
                 } else if (type.equals("morehistories")) {
 
                     intent.putExtra("channel", "histories");
                     intent.setAction("tv.ismar.daisy.Channel");
                     startActivity(intent);
-                    response.send("callback(\""+type+"\")");
+                    response.send("callback(\"" + type + "\")");
                 } else if (type.equals("history")) {
-                    Log.i("yoga","history"+"___"+type+"--"+SimpleRestClient.access_token);
-                    if("".equals(SimpleRestClient.access_token)){
-                        mHistoryItemList=new ItemCollection(1,0,"1","1");
+                    Log.i("yoga", "history" + "___" + type + "--" + SimpleRestClient.access_token);
+                    if ("".equals(SimpleRestClient.access_token)) {
+                        mHistoryItemList = new ItemCollection(1, 0, "1", "1");
                         mGetHistoryTask = new GetHistoryTask(response);
                         mGetHistoryTask.execute();
-                    }else{
-                        Log.i("yoga","islogin"+SimpleRestClient.access_token);
+                    } else {
+                        Log.i("yoga", "islogin" + SimpleRestClient.access_token);
                         getHistoryByNet(response);
                     }
                 }
@@ -273,4 +282,72 @@ public class YogaWebService extends Service {
         });
     }
 
+    public ArrayList<String> getCheckedChannels() {
+        ArrayList<String> list = new ArrayList<>();
+        ContentResolver resolver = getContentResolver();
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("chinese_film_favor", Settings.System.getInt(resolver, "chinese_film_favor", 0));
+        map.put("overseas_film_favor", Settings.System.getInt(resolver, "overseas_film_favor", 0));
+        map.put("variety_entertainment_favor", Settings.System.getInt(resolver, "variety_entertainment_favor", 0));
+        map.put("music_favor", Settings.System.getInt(resolver, "music_favor", 0));
+        map.put("game_favor", Settings.System.getInt(resolver, "game_favor", 0));
+        map.put("sport_favor", Settings.System.getInt(resolver, "sport_favor", 0));
+        map.put("live_documentary_favor", Settings.System.getInt(resolver, "live_documentary_favor", 0));
+        Iterator iterator = map.entrySet().iterator();
+        while (iterator.hasNext()) {
+            HashMap.Entry entry = (HashMap.Entry) iterator.next();
+            if (entry.getValue() == 1) {
+                list.add((String) entry.getKey());
+            }
+        }
+        return list;
+    }
+
+        public void setPreferenceChannel(String preferenceChannel) {
+            String channel="";
+            switch(preferenceChannel){
+                case "chinesemovie":
+                    channel="chinese_film_favor";
+                    break;
+                case "overseas":
+                    channel="overseas_film_favor";
+                    break;
+                case "variety":
+                    channel="variety_entertainment_favor";
+                    break;
+                case "music":
+                    channel="music_favor";
+                    break;
+                case "game":
+                    channel="game_favor";
+                    break;
+                case "sport":
+                    channel="sport_favor";
+                    break;
+                case "documentary":
+                    channel="live_documentary_favor";
+                    break;
+
+            }
+            if(!"".equals(channel)){
+
+                Settings.System.putInt(getContentResolver(),channel,1);
+            }
+
+        }
 }
+//if("chinesemovie".equals(preferenceChannel)){
+//        channel="chinese_film_favor";
+//        }else if("overseas".equals(preferenceChannel)){
+//        channel="overseas_film_favor";
+//        }else if("variety".equals(preferenceChannel)){
+//        channel="variety_entertainment_favor";
+//        }else if("music".equals(preferenceChannel)){
+//        channel="music_favor";
+//        }else if("game".equals(preferenceChannel)){
+//        channel="game_favor";
+//        }else if("sport".equals(preferenceChannel)){
+//        channel="sport_favor";
+//        }else if("documentary".equals(preferenceChannel)){
+//        channel="live_documentary_favor";
+//        }
