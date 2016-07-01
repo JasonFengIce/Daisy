@@ -1,26 +1,30 @@
 package tv.ismar.daisy;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
+import android.os.IBinder;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import cn.ismar.daisy.pad.lockscreenservice.Setlockscreenservice;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -99,7 +103,9 @@ public class VodApplication extends Application {
 
 
     private static VodApplication instance;
-
+    private Setlockscreenservice nativeservice;
+    private Random random=new Random();
+    public static YogaBroadcastReceiver receiver;
     public void load(Context a) {
         try {
             mPreferences = a.getSharedPreferences(PREFERENCE_FILE_NAME, 0);
@@ -180,6 +186,13 @@ public class VodApplication extends Application {
         registerReceiver(mSleepReceiver, new IntentFilter("com.alpha.lenovo.powerKey"));
         SharedPreferences sharedPreferences = getSharedPreferences("account", Context.MODE_WORLD_READABLE);
         apiDomain = sharedPreferences.getString("api_domain", "http://skytest.tvxio.com");
+        Intent intent = new Intent("cn.ismar.daisy.pad.setlockscreenservice");
+        intent.setPackage("cn.ismar.daisy.pad");
+        bindService(intent, mConnection, BIND_AUTO_CREATE);
+        receiver = new YogaBroadcastReceiver();
+        IntentFilter filter=new IntentFilter();
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        registerReceiver(receiver,filter);
     }
 
 
@@ -445,6 +458,97 @@ public class VodApplication extends Application {
         float rate = (float) densityDpi / (float) 160;
         return rate;
     }
+    public  ServiceConnection mConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            nativeservice = Setlockscreenservice.Stub.asInterface(service);
+        }
 
+        public void onServiceDisconnected(ComponentName className) {
+        }
+    };
+    private void testLock() {
+        new Thread() {
+            public void run() {
+                Log.e("yoga==","testlock");
+                HttpURLConnection httpConn = null;
+                InputStreamReader inputStreamReader = null;
+                try {
+                    URL connURL = new URL(SimpleRestClient.root_url+"/api/tv/homepage/lockscreen/7/");
+                    httpConn = (HttpURLConnection) connURL.openConnection();
+                    httpConn.setRequestProperty("Accept", "application/json");
+//                    httpConn.setRequestProperty("User-Agent", userAgent);
+                    httpConn.setConnectTimeout(10000);
+                    httpConn.setReadTimeout(10000);
+                    httpConn.connect();
+                    int code = httpConn.getResponseCode();
+                    inputStreamReader = new InputStreamReader(
+                            httpConn.getInputStream(), "UTF-8");
+                    StringBuffer json = new StringBuffer();
+                    String line = null;
+                    try {
+                        BufferedReader reader = new BufferedReader(inputStreamReader);
+                        while ((line = reader.readLine()) != null)
+                            json.append(line);
+                    } catch (Exception e) {
+                        System.out.println(e.toString());
+                    }
+                    inputStreamReader.close();
+                    httpConn.disconnect();
+                    JSONArray object = new JSONArray(json.toString());
+                    ArrayList<String> prefrence = getPreferenceChannels(getContentResolver());
+                    String channel=prefrence.get(random.nextInt(prefrence.size()));
+                    for(int i =0;i<object.length();i++){
+                        JSONObject element = object.getJSONObject(i);
+                        String url = element.getString("url");
+                        String image = element.getString("image");
+                        String content_model = element.getString("content_model");
+                        Log.e("yoga==",channel+"&"+content_model);
+                        if(channel.equals(content_model)) {
+                            Log.e("yoga==",url);
+                            AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance();
+                            accountSharedPrefs.setSharedPrefs("lock_url", url);
+                            accountSharedPrefs.setSharedPrefs("lock_content_model", content_model);
+                            nativeservice.setLockScreen(image);
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    Log.e("Exception", e.toString());
+                }
+            }
+        }.start();
+    }
+    private ArrayList<String> getPreferenceChannels(ContentResolver resolver) {
+        ArrayList<String> prefrence = new ArrayList<String>();
+        if(Settings.System.getInt(resolver,"chinese_film_favor",0) == 1){
+            prefrence.add("movie");
+        }
+        if(Settings.System.getInt(resolver,"overseas_film_favor",0) == 1){
+            prefrence.add("movie");
+        }
+        if(Settings.System.getInt(resolver,"variety_entertainment_favor",0) == 1){
+            prefrence.add("variety");
+        }
+        if(Settings.System.getInt(resolver,"music_favor",0) == 1){
+            prefrence.add("music");
+        }
+        if(Settings.System.getInt(resolver,"game_favor",0) == 1){
+            prefrence.add("game");
+        }
+        if(Settings.System.getInt(resolver,"sport_favor",0) == 1){
+            prefrence.add("sport");
+        }
+        if(Settings.System.getInt(resolver,"live_documentary_favor",0) == 1){
+            prefrence.add("documentary");
+        }
+        return prefrence;
+    }
+    public class YogaBroadcastReceiver extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            testLock();
+        }
+    }
 
 }
