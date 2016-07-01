@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -70,8 +71,10 @@ import retrofit2.RxJavaCallAdapterFactory;
 import retrofit2.ScalarsConverterFactory;
 import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import tv.ismar.daisy.BaseActivity;
@@ -1223,111 +1226,89 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
     }
 
     private void localAlipay() {
-        if (!TextUtils.isEmpty(alipayInfo)) {
-            invokeAlipay();
-        } else {
-            fetchPayInfo();
-        }
+        fetchPayInfo();
     }
 
 
     private void fetchPayInfo() {
-        String deviceToken = SimpleRestClient.device_token;
-        String waresId = String.valueOf(mItem.pk);
-        String waresType = mItem.model_name;
-        String source = "alipay_mb";
+        final String deviceToken = SimpleRestClient.device_token;
+        final String waresId = String.valueOf(mItem.pk);
+        final String waresType = mItem.model_name;
+        final String source = "alipay_mb";
         Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(HttpManager.appendProtocol(SimpleRestClient.root_url))
                 .client(HttpManager.getInstance().mClient)
                 .build();
 
-        retrofit.create(HttpAPI.OrderCreate.class).doRequest(deviceToken, waresId, waresType, source).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Response<ResponseBody> response) {
-                if (response.body() != null) {
-                    try {
-                        alipayInfo = response.body().string();
-                        invokeAlipay();
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
+        final HttpAPI.OrderCreate orderCreate = retrofit.create(HttpAPI.OrderCreate.class);
+        Observable.just(alipayInfo)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .map(new Func1<String, String>() {
+                    @Override
+                    public String call(String s) {
+                        if (TextUtils.isEmpty(s)) {
+                            try {
+                                alipayInfo = orderCreate.doRequest(deviceToken, waresId, waresType, source).execute().body().string();
+                                return alipayInfo;
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        return s;
                     }
-                }
-            }
+                })
+                .map(new Func1<String, String>() {
+                    @Override
+                    public String call(String s) {
+                        PayTask alipay = new PayTask((Activity) mycontext);
+                        return alipay.pay(alipayInfo, true);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onCompleted() {
 
-            @Override
-            public void onFailure(Throwable t) {
+                    }
 
-            }
-        });
-    }
-
-
-    private void invokeAlipay() {
-        Runnable payRunnable = new Runnable() {
-            @Override
-            public void run() {
-                // 构造PayTask 对象
-                PayTask alipay = new PayTask((Activity) mycontext);
-                // 调用支付接口，获取支付结果
-                String result = alipay.pay(alipayInfo, true);
-
-                Message msg = new Message();
-                msg.what = SDK_PAY_FLAG;
-                msg.obj = result;
-                mHandler.sendMessage(msg);
-            }
-        };
-
-        // 必须异步调用
-        Thread payThread = new Thread(payRunnable);
-        payThread.start();
-    }
-
-    private static final int SDK_PAY_FLAG = 1;
-
-    @SuppressLint("HandlerLeak")
-    private Handler mHandler = new Handler() {
-        @SuppressWarnings("unused")
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case SDK_PAY_FLAG: {
-                    PayResult payResult = new PayResult((String) msg.obj);
-                    /**
-                     * 同步返回的结果必须放置到服务端进行验证（验证的规则请看https://doc.open.alipay.com/doc2/
-                     * detail.htm?spm=0.0.0.0.xdvAU6&treeId=59&articleId=103665&
-                     * docType=1) 建议商户依赖异步通知
-                     */
-                    String resultInfo = payResult.getResult();// 同步返回需要验证的信息
-
-                    String resultStatus = payResult.getResultStatus();
-                    // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
-                    Log.d(TAG, "result code: " + resultStatus + "  status: " + resultStatus);
-                    if (TextUtils.equals(resultStatus, "9000")) {
-                        Toast.makeText(getContext(), "支付成功", Toast.LENGTH_SHORT).show();
-                        purchaseCheck(CheckType.OrderPurchase);
+                    @Override
+                    public void onError(Throwable e) {
                         alipayInfo = null;
-                    } else {
-                        // 判断resultStatus 为非"9000"则代表可能支付失败
-                        // "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
-                        if (TextUtils.equals(resultStatus, "8000")) {
-                            Toast.makeText(getContext(), "支付结果确认中", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "fetchPayInfo: " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        PayResult payResult = new PayResult(s);
+                        String resultInfo = payResult.getResult();// 同步返回需要验证的信息
+                        String resultStatus = payResult.getResultStatus();
+                        // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
+                        Log.d(TAG, "result code: " + resultStatus + "  status: " + resultInfo);
+                        if (TextUtils.equals(resultStatus, "9000")) {
+                            Toast.makeText(getContext(), "支付成功", Toast.LENGTH_SHORT).show();
+                            purchaseCheck(CheckType.OrderPurchase);
+                            alipayInfo = null;
                         } else {
-                            // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
-                            Toast.makeText(getContext(), "支付失败", Toast.LENGTH_SHORT).show();
+                            // 判断resultStatus 为非"9000"则代表可能支付失败
+                            // "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
+                            if (TextUtils.equals(resultStatus, "8000")) {
+                                Toast.makeText(getContext(), "支付结果确认中", Toast.LENGTH_SHORT).show();
+                            } else {
+                                // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
+                                Toast.makeText(getContext(), "支付失败", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
-                    break;
-                }
-                default:
-                    break;
-            }
-        }
-    };
+                });
+    }
+
 
     @Override
     protected void onStop() {
+        if (mOrderCheckLoopSubscription != null) {
+            mOrderCheckLoopSubscription.unsubscribe();
+        }
         alipayInfo = null;
         super.onStop();
     }
@@ -1338,16 +1319,39 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
         }
         mOrderCheckLoopSubscription = Observable.interval(0, 10, TimeUnit.SECONDS)
                 .observeOn(Schedulers.io())
-                .flatMap(new Func1<Long, Observable<String>>() {
+                .map(new Func1<Long, String>() {
                     @Override
-                    public Observable<String> call(Long aLong) {
-                        return orderCheck(checkType, item, pkg, subItem);
+                    public String call(Long aLong) {
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl(HttpManager.appendProtocol(SimpleRestClient.root_url))
+                                .client(HttpManager.getInstance().mClient)
+                                .build();
+                        switch (checkType) {
+                            case PlayCheck:
+                                try {
+                                    return retrofit.create(NewVipHttpApi.PlayCheck.class)
+                                            .doRequest(item, pkg, subItem, SimpleRestClient.device_token, SimpleRestClient.access_token)
+                                            .execute().body().string();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+                            case OrderPurchase:
+                                try {
+                                    return retrofit.create(NewVipHttpApi.OrderPurchase.class)
+                                            .doRequest(item, pkg, subItem, SimpleRestClient.device_token, SimpleRestClient.access_token)
+                                            .execute().body().string();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                        }
+                        return null;
                     }
                 })
                 .takeUntil(new Func1<String, Boolean>() {
                     @Override
                     public Boolean call(String responseBody) {
-                        if (TextUtils.isEmpty(responseBody)) {
+                        if (TextUtils.isEmpty(responseBody.toString())) {
                             return false;
                         } else {
                             return true;
@@ -1376,24 +1380,6 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
                         }
                     }
                 });
-    }
-
-    private Observable<String> orderCheck(CheckType checkType, String item, String pkg, String subItem) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(HttpManager.appendProtocol(SimpleRestClient.root_url))
-                .client(HttpManager.getInstance().mClient)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .build();
-        switch (checkType) {
-            case PlayCheck:
-                return retrofit.create(NewVipHttpApi.PlayCheck.class)
-                        .doRequest(item, pkg, subItem, SimpleRestClient.device_token, SimpleRestClient.access_token);
-            case OrderPurchase:
-                return retrofit.create(NewVipHttpApi.OrderPurchase.class)
-                        .doRequest(item, pkg, subItem, SimpleRestClient.device_token, SimpleRestClient.access_token);
-        }
-        return null;
     }
 
     private enum CheckType {

@@ -60,7 +60,7 @@ public class NewVipHttpApi {
     public interface PlayCheck {
         @FormUrlEncoded
         @POST("api/play/check/")
-        Observable<String> doRequest(
+        Call<ResponseBody> doRequest(
                 @Field("item") String item,
                 @Field("package") String pkg,
                 @Field("subitem") String subItem,
@@ -72,7 +72,7 @@ public class NewVipHttpApi {
     public interface OrderPurchase {
         @FormUrlEncoded
         @POST("api/order/purchase/")
-        Observable<String> doRequest(
+        Call<ResponseBody> doRequest(
                 @Field("item") String item,
                 @Field("package") String pkg,
                 @Field("subitem") String subItem,
