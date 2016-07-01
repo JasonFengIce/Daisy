@@ -1,6 +1,5 @@
 package tv.ismar.daisy.views;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -8,9 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
@@ -32,6 +29,7 @@ import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
@@ -64,17 +62,12 @@ import javax.net.ssl.X509TrustManager;
 import cn.ismartv.activator.Activator;
 import okhttp3.ResponseBody;
 import retrofit2.Callback;
-import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.RxJavaCallAdapterFactory;
-import retrofit2.ScalarsConverterFactory;
 import rx.Observable;
 import rx.Observer;
-import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import tv.ismar.daisy.BaseActivity;
@@ -559,50 +552,50 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
         }
     };
 
-    private void changeQrcodePayPanelState(boolean visible,
-                                           final boolean isweixin) {
+    private void changeQrcodePayPanelState(boolean visible, final boolean isweixin) {
         if (visible) {
             qrcodeview.setImageDrawable((new ColorDrawable(Color.WHITE)));
             qrcode_pay.setVisibility(View.VISIBLE);
             daikou_panel.setVisibility(View.GONE);
-            new Thread() {
+            String deviceToken = SimpleRestClient.device_token;
+            String waresId = String.valueOf(mItem.pk);
+            String waresType = mItem.model_name;
+            final String source;
+            if (isweixin) {
+                source = "weixin";
+            } else {
+                source = "alipay";
+            }
 
+            final Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(HttpManager.appendProtocol(SimpleRestClient.root_url))
+                    .client(HttpManager.getInstance().mClient)
+                    .build();
+            HttpAPI.OrderCreate orderCreate = retrofit.create(HttpAPI.OrderCreate.class);
+            orderCreate.doRequest(deviceToken, waresId, waresType, source).enqueue(new Callback<ResponseBody>() {
                 @Override
-                public void run() {
-                    super.run();
-                    if (isweixin) {
-                        qrcodeBitmap = returnBitMap(SimpleRestClient.root_url
-                                + QRCODE_BASE_URL, "POST", "wares_id="
-                                + mItem.pk + "&wares_type=" + mItem.model_name
-                                + "&device_token="
-                                + SimpleRestClient.device_token
-                                + "&access_token="
-                                + SimpleRestClient.access_token
-                                + "&source=weixin");
+                public void onResponse(Response<ResponseBody> response) {
+                    if (response.body() != null) {
+                        BitmapFactory.Options opt = new BitmapFactory.Options();
+                        opt.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                        opt.inPurgeable = true;
+                        opt.inInputShareable = true;
+                        // opt.inTempStorage = new byte[1024];
+                        if (source.contains("alipay")) {
+                            opt.inSampleSize = 2;
+                        }
+                        qrcodeBitmap  = BitmapFactory.decodeStream(response.body().byteStream(), null, opt);
                         urlHandler.sendEmptyMessage(SETQRCODE_VIEW);
-                        purchaseCheck(CheckType.OrderPurchase);
-                    } else {
-//						aliPayChannel(SimpleRestClient.root_url + ALI_PAY,
-//								"wares_id=" + mItem.pk + "&wares_type="
-//										+ mItem.model_name + "&device_token="
-//										+ SimpleRestClient.device_token
-//										+ "&access_token="
-//										+ SimpleRestClient.access_token
-//										+ "&source=alipay");
-                        qrcodeBitmap = returnBitMap(SimpleRestClient.root_url
-                                + QRCODE_BASE_URL, "POST", "wares_id="
-                                + mItem.pk + "&wares_type=" + mItem.model_name
-                                + "&device_token="
-                                + SimpleRestClient.device_token
-                                + "&access_token="
-                                + SimpleRestClient.access_token
-                                + "&source=alipay");
-                        urlHandler.sendEmptyMessage(SETQRCODE_VIEW);
-                        purchaseCheck(CheckType.OrderPurchase);
                     }
                 }
 
-            }.start();
+                @Override
+                public void onFailure(Throwable t) {
+
+                }
+            });
+
+            purchaseCheck(CheckType.OrderPurchase);
         } else {
             qrcode_pay.setVisibility(View.GONE);
         }
@@ -629,65 +622,6 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
         }
     };
 
-    private Bitmap returnBitMap(String url, String method, String params) {
-        URL myFileUrl = null;
-        Bitmap bitmap = null;
-        try {
-            myFileUrl = new URL(url);
-            HttpURLConnection connection = (HttpURLConnection) myFileUrl
-                    .openConnection();
-            if ("POST".equals(method)) {
-                connection.setDoOutput(true);
-                connection.setDoInput(true);
-                connection.setRequestProperty("Content-Type",
-                        "application/x-www-form-urlencoded");
-                connection.setUseCaches(false);
-                connection.setInstanceFollowRedirects(true);
-            }
-            connection.setRequestMethod(method);
-            connection.connect();
-            if ("POST".equals(method)) {
-                DataOutputStream out = new DataOutputStream(
-                        connection.getOutputStream());
-                out.writeBytes(params);
-                out.flush();
-                out.close();
-            }
-            int code = connection.getResponseCode();
-            if (code == 302) {
-                String redirectlocation = connection.getHeaderField("Location");
-                myFileUrl = new URL(redirectlocation);
-                if (myFileUrl.getProtocol().toLowerCase().equals("https")) {
-                    trustAllHosts();
-                    HttpsURLConnection https = (HttpsURLConnection) myFileUrl.openConnection();
-                    https.setHostnameVerifier(DO_NOT_VERIFY);
-                    connection = https;
-                } else {
-                    connection = (HttpsURLConnection) myFileUrl.openConnection();
-                }
-                connection.setConnectTimeout(2000);
-                connection.setRequestMethod("GET");
-                connection.connect();
-                code = connection.getResponseCode();
-            }
-            InputStream is = connection.getInputStream();
-            BitmapFactory.Options opt = new BitmapFactory.Options();
-            opt.inPreferredConfig = Bitmap.Config.ARGB_8888;
-            opt.inPurgeable = true;
-            opt.inInputShareable = true;
-            // opt.inTempStorage = new byte[1024];
-            if (params.contains("alipay")) {
-                opt.inSampleSize = 2;
-            }
-            bitmap = BitmapFactory.decodeStream(is, null, opt);
-            is.close();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return bitmap;
-    }
 
     /**
      * Trust every server - dont check for any certificate
