@@ -80,7 +80,9 @@ public class YogaWebService extends Service {
                 String type = request.getQuery().getString("type");
                 Log.i("request", request + "heh" + type);
                 Intent intent = new Intent();
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
                 if (type.equals("channel")) {
                     String portraitflag = request.getQuery().getString("portraitflag");
                     String url = request.getQuery().getString("url");
