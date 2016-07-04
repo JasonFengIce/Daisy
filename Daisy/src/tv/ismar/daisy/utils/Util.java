@@ -643,4 +643,17 @@ public class Util {
         }
 
     }
+
+	public static int checkNetState(Context context) {
+		ConnectivityManager connectMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo mobNetInfo = connectMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+		NetworkInfo wifiNetInfo = connectMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		if (wifiNetInfo != null && wifiNetInfo.isConnected()) {
+			return 1;
+		} else if (mobNetInfo != null && mobNetInfo.isConnected()) {
+			return 0;
+		} else {
+			return -1;
+		}
+	}
 }

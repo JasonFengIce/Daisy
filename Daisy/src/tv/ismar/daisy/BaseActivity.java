@@ -58,12 +58,12 @@ public class BaseActivity extends FragmentActivity {
     private PopupWindow netErrorPopupWindow;
     Tencent mTencent;
     String APP_ID = "1104828726";
-    protected String fromPage="";
+    protected String fromPage = "";
     protected String activityTag = "";
     private FetchBestTvAuth authTask;
     protected static int activityCount = 0;
     protected static int activityCount2 = 0;
-    protected  long app_start_time;
+    protected long app_start_time;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,16 +89,16 @@ public class BaseActivity extends FragmentActivity {
         String province = accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.PROVINCE);
         String city = accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.CITY);
         String isp = accountSharedPrefs.getSharedPrefs(AccountSharedPrefs.ISP);
-        if(activityCount2 == 0){
-        	CallaPlay callaPlay = new CallaPlay();
-        	app_start_time = System.currentTimeMillis();
-			callaPlay
-					.app_start(SimpleRestClient.sn_token,
-							VodUserAgent.getModelName(), "0",
-							android.os.Build.VERSION.RELEASE,
-							SystemFileUtil.getSdCardTotal(this),
-							SystemFileUtil.getSdCardAvalible(this),
-							SimpleRestClient.mobile_number, province, city, isp, fromPage, DeviceUtils.getLocalMacAddress(BaseActivity.this));
+        if (activityCount2 == 0) {
+            CallaPlay callaPlay = new CallaPlay();
+            app_start_time = System.currentTimeMillis();
+            callaPlay
+                    .app_start(SimpleRestClient.sn_token,
+                            VodUserAgent.getModelName(), "0",
+                            android.os.Build.VERSION.RELEASE,
+                            SystemFileUtil.getSdCardTotal(this),
+                            SystemFileUtil.getSdCardAvalible(this),
+                            SimpleRestClient.mobile_number, province, city, isp, fromPage, DeviceUtils.getLocalMacAddress(BaseActivity.this));
         }
 
         mTencent = Tencent.createInstance(APP_ID, getApplicationContext());
@@ -137,25 +137,25 @@ public class BaseActivity extends FragmentActivity {
         Button settingNetwork = (Button) contentView.findViewById(R.id.setting_network);
         Button iKnow = (Button) contentView.findViewById(R.id.i_know);
         settingNetwork.setOnHoverListener(new OnHoverListener() {
-			
-			@Override
-			public boolean onHover(View v, MotionEvent event) {
-				if(event.getAction() == MotionEvent.ACTION_HOVER_ENTER || event.getAction() == MotionEvent.ACTION_HOVER_MOVE){
-					v.requestFocus();
-				}
-				return false;
-			}
-		});
+
+            @Override
+            public boolean onHover(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER || event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+                    v.requestFocus();
+                }
+                return false;
+            }
+        });
         iKnow.setOnHoverListener(new OnHoverListener() {
-			
-			@Override
-			public boolean onHover(View v, MotionEvent event) {
-				if(event.getAction() == MotionEvent.ACTION_HOVER_ENTER || event.getAction() == MotionEvent.ACTION_HOVER_MOVE){
-					v.requestFocus();
-				}
-				return false;
-			}
-		});
+
+            @Override
+            public boolean onHover(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER || event.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+                    v.requestFocus();
+                }
+                return false;
+            }
+        });
         settingNetwork.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -500,8 +500,8 @@ public class BaseActivity extends FragmentActivity {
             showExitPopup(((ViewGroup) findViewById(android.R.id.content))
                     .getChildAt(0), R.string.exit_prompt);
         } else {
-        	if(!"SearchActivity".equals(activityTag))
-            super.onBackPressed();
+            if (!"SearchActivity".equals(activityTag))
+                super.onBackPressed();
         }
 
     }

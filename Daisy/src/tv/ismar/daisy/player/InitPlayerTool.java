@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.widget.Toast;
+
 import com.google.gson.JsonSyntaxException;
 import com.ismartv.api.t.AccessProxy;
 import tv.ismar.daisy.core.SimpleRestClient;
@@ -12,6 +14,8 @@ import tv.ismar.daisy.exception.ItemOfflineException;
 import tv.ismar.daisy.exception.NetworkException;
 import tv.ismar.daisy.models.Clip;
 import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.utils.Util;
+
 public class InitPlayerTool {
     Context mContext;
     Intent intent;
@@ -54,7 +58,11 @@ public class InitPlayerTool {
 	private class ItemByUrlTask extends AsyncTask<Object, Void, String> {
 
 		@Override
-		protected void onPostExecute(String result) {		
+		protected void onPostExecute(String result) {
+            if(Util.checkNetState(mContext) < 0){
+                Toast.makeText(mContext, "网络无连接！", Toast.LENGTH_SHORT).show();
+                return;
+            }
 			if(result.equals("iqiyi")){
 				intent.setAction("tv.ismar.daisy.qiyiPlay");
 				String info = AccessProxy.getvVideoClipInfo();
