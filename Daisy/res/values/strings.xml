@@ -325,4 +325,6 @@
     <string name="vip_des_content">购买视云VIP,在有效期内,可以不限时间和次数收看视云VIP内容.</string>
     <string name="paylayerpkg_purchase">购买</string>
     <string name="already_install_alipay">我已安装支付宝</string>
+    <string name="iqiyi_vip_des_content">购买奇艺VIP,在有效期内,可以不限时间和次数收看奇艺VIP内容.</string>
+    <string name="ismartv_vip_des_content">购买视云VIP,在有效期内,可以不限时间和次数收看视云VIP内容.</string>
 </resources>
