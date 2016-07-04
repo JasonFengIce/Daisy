@@ -2447,6 +2447,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
     public void onEpisodeItemSelected(ItemEntity.SubItem msubItem) {
         try {
             hidePanel();
+            anthology.setTextColor(getResources().getColor(R.color._e4e4e4));
             if (subItem != null)
                 callaPlay
                         .videoExit(

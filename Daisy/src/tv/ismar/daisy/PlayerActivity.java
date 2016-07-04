@@ -2900,6 +2900,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	public void onEpisodeItemSelected(ItemEntity.SubItem subItem) {
 		try {
 			hidePanel();
+			anthology.setTextColor(getResources().getColor(R.color._e4e4e4));
 			if (item != null) {
 				callaPlay.videoExit(
 						item.item_pk,
