@@ -294,7 +294,7 @@ public class YogaWebService extends Service {
         Iterator iterator = map.entrySet().iterator();
         while (iterator.hasNext()) {
             HashMap.Entry entry = (HashMap.Entry) iterator.next();
-            if (entry.getValue() == 1) {
+            if (Integer.parseInt(entry.getValue().toString()) == 1) {
                 list.add((String) entry.getKey());
             }
         }
