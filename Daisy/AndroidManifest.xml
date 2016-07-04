@@ -327,15 +327,18 @@
         </activity>
 
         <activity
+            android:screenOrientation="landscape"
             android:name=".ui.activity.newvip.PayActivity"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
             />
         <activity
+            android:screenOrientation="landscape"
             android:name=".ui.activity.newvip.PayLayerVipActivity"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
             >
         </activity>
         <activity
+            android:screenOrientation="landscape"
             android:name=".ui.activity.newvip.PayLayerPackageActivity"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
             />
