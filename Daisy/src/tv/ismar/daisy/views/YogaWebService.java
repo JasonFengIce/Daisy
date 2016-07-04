@@ -83,7 +83,7 @@ public class YogaWebService extends Service {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 if (type.equals("channel")) {
                     String portraitflag = request.getQuery().getString("portraitflag");
-                    String url = request.getQuery().getString("url");
+                    String url = SimpleRestClient.root_url+request.getQuery().getString("url").substring(request.getQuery().getString("url").indexOf("/api"));
                     String title = request.getQuery().getString("title");
                     String channel = request.getQuery().getString("channel");
                     checkedChannels = getCheckedChannels();
@@ -105,7 +105,7 @@ public class YogaWebService extends Service {
                     response.send("callback(\"" + type + "\")");
                     Log.i("yoga", "跳转channel" + channel);
                 } else if (type.equals("detail")) {
-                    String url = request.getQuery().getString("url");
+                    String url = SimpleRestClient.root_url+request.getQuery().getString("url").substring(request.getQuery().getString("url").indexOf("/api"));
                     String contentMode = request.getQuery().getString("content_model");
                     String expense = request.getQuery().getString("expense");
                     if (expense.equals("true")) {
