@@ -1,10 +1,7 @@
 package tv.ismar.daisy.views;
 
 import android.app.Service;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.provider.Settings;
@@ -26,6 +23,7 @@ import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.models.ItemCollection;
 import tv.ismar.daisy.player.InitPlayerTool;
+import tv.ismar.daisy.ui.activity.TVGuideActivity;
 
 import java.util.*;
 
@@ -336,18 +334,3 @@ public class YogaWebService extends Service {
 
         }
 }
-//if("chinesemovie".equals(preferenceChannel)){
-//        channel="chinese_film_favor";
-//        }else if("overseas".equals(preferenceChannel)){
-//        channel="overseas_film_favor";
-//        }else if("variety".equals(preferenceChannel)){
-//        channel="variety_entertainment_favor";
-//        }else if("music".equals(preferenceChannel)){
-//        channel="music_favor";
-//        }else if("game".equals(preferenceChannel)){
-//        channel="game_favor";
-//        }else if("sport".equals(preferenceChannel)){
-//        channel="sport_favor";
-//        }else if("documentary".equals(preferenceChannel)){
-//        channel="live_documentary_favor";
-//        }

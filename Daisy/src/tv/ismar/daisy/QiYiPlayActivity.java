@@ -1686,9 +1686,8 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
 
         return true;
     }
-    public void changeQuality(int id){
-        if (id > 0 && id < 5) {
-            int pos = id - 1;
+    public void changeQuality(int pos){
+        if (mBitStreamList.size()!=0 && pos!=currQuality) {
             if (currQuality != pos) {
                 try {
                     timeTaskPause();

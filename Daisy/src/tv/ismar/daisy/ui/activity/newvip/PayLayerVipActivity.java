@@ -86,14 +86,14 @@ public class PayLayerVipActivity extends BaseActivity implements OnHoverListener
 
 
     private void fillLayout(final PayLayerVipEntity payLayerVipEntity) {
-//        if (payLayerVipEntity.getCpname().equals("iqiyi")) {
-//            vipDescriptionTextView.setText(R.string.iqiyi_vip_des_content);
-//        } else if (payLayerVipEntity.getCpname().equals("ismartv")) {
-//            vipDescriptionTextView.setText(R.string.ismartv_vip_des_content);
-//        }
-        if (!payLayerVipEntity.getVip_list().isEmpty()) {
-            vipDescriptionTextView.setText(payLayerVipEntity.getVip_list().get(0).getDescription());
+        if (payLayerVipEntity.getCpname().equals("iqiyi")) {
+            vipDescriptionTextView.setText(R.string.iqiyi_vip_des_content);
+        } else if (payLayerVipEntity.getCpname().equals("ismartv")) {
+            vipDescriptionTextView.setText(R.string.ismartv_vip_des_content);
         }
+//        if (!payLayerVipEntity.getVip_list().isEmpty()) {
+//            vipDescriptionTextView.setText(payLayerVipEntity.getVip_list().get(0).getDescription());
+//        }
         scrollViewLayout.removeAllViews();
         int margin = (int) getResources().getDimension(R.dimen.newvip_paylayervip_margin);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
