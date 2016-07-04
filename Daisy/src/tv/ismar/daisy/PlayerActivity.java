@@ -303,11 +303,11 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 						if (!paused) {
 							pauseItem();
 							playPauseImage
-									.setImageResource(R.drawable.play);
+									.setImageResource(R.drawable.paus);
 						} else {
 							resumeItem();
 							playPauseImage
-									.setImageResource(R.drawable.paus);
+									.setImageResource(R.drawable.play);
 						}
 
 						// }
@@ -2296,6 +2296,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 					Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
 				}
 				updataTimeText();
+				if(clipLength/1000!=0)
 				params.leftMargin=(seekBar.getWidth()-50)*(progress/1000)/(clipLength/1000)-params.width/2+getResources().getDimensionPixelOffset(R.dimen.play_seekbar_marginleft)+getResources().getDimensionPixelOffset(R.dimen.seekbar_thumb_w)/2;
 				progress_time.setLayoutParams(params);
 				progress_time.setText(getTimeString(progress));
@@ -2836,6 +2837,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 							hidePanelHandler.removeCallbacks(hidePanelRunnable);
 						}else{
 							isAnthology = false;
+							anthology.setTextColor(getResources().getColor(R.color._e4e4e4));
 							getSupportFragmentManager().beginTransaction().hide(mEpisodeFragment).commit();
 							hidePanelHandler.postDelayed(hidePanelRunnable,3000);
 						}
