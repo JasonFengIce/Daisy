@@ -807,7 +807,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 									return;
 								}
 								mVideoView.stopPlayback();
-								if(item.isPreview && "sport".equals(item.content_model)){
+								if(item.isPreview && "sport".equals(item.content_model)&& item.live_video){
 									finish();
 								}else{
 									PaymentDialog dialog = new PaymentDialog(
