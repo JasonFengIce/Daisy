@@ -1,6 +1,7 @@
 package tv.ismar.daisy.player;
 
 import android.app.Activity;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -83,7 +84,10 @@ public class InitPlayerTool {
 					mContext.startActivity(intent);
 				}else{
 					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			       ((Activity)mContext).startActivityForResult(intent, 20);}
+			      // ((Activity)mContext).startActivityForResult(intent, 20);
+					mContext.startActivity(intent);
+
+				}
 			if(mListener!=null)
 				mListener.onPostExecute();	
 		}

@@ -597,15 +597,21 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 									.getAccessToken(SimpleRestClient.sn_token),
 							PlayerActivity.this);
 					result = true;
-					if (urlInfo.getIqiyi_4_0().length() > 0) {
-						Intent intent = new Intent();
-						intent.setAction("tv.ismar.daisy.qiyiPlay");
-						intent.putExtra("iqiyi", urlInfo.getIqiyi_4_0());
-						intent.putExtra("item", item);
-						startActivity(intent);
-						PlayerActivity.this.finish();
-					}
-				}
+//					if (urlInfo.getIqiyi_4_0().length() > 0) {
+//						if("lockscreen".equals(item.fromPage)){
+//							showPopupDialog(
+//									DIALOG_OK_CANCEL, "请先解锁！");
+//							finish();
+//						}else {
+							Intent intent = new Intent();
+							intent.setAction("tv.ismar.daisy.qiyiPlay");
+							intent.putExtra("iqiyi", urlInfo.getIqiyi_4_0());
+							intent.putExtra("item", item);
+							startActivity(intent);
+							PlayerActivity.this.finish();
+						}
+//					}
+//				}
 				result = true;
 			} catch (JsonSyntaxException e) {
 				e.printStackTrace();
@@ -1646,7 +1652,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 			panelShow = false;
 //			}
 		}
-        getSupportFragmentManager().beginTransaction().hide(mEpisodeFragment).commit();
+        getSupportFragmentManager().beginTransaction().hide(mEpisodeFragment).commitAllowingStateLoss();
 	}
 
 	private void pauseItem() {
