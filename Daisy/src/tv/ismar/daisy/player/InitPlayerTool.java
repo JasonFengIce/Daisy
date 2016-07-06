@@ -1,7 +1,6 @@
 package tv.ismar.daisy.player;
 
 import android.app.Activity;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -36,7 +35,7 @@ public class InitPlayerTool {
 		intent = new Intent();
 		simpleRestClient = new SimpleRestClient();
 	}
-	
+
 	public void initClipInfo(Object item,String flag) {
 		simpleRestClient = new SimpleRestClient();
 		urltask = new ItemByUrlTask();
@@ -68,7 +67,7 @@ public class InitPlayerTool {
 				intent.setAction("tv.ismar.daisy.qiyiPlay");
 				String info = AccessProxy.getvVideoClipInfo();
 //				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				intent.putExtra("iqiyi", info);		
+				intent.putExtra("iqiyi", info);
 			}
 			else{
 				String ismartv = AccessProxy.getvVideoClipInfo();
@@ -84,10 +83,7 @@ public class InitPlayerTool {
 					mContext.startActivity(intent);
 				}else{
 					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			      // ((Activity)mContext).startActivityForResult(intent, 20);
-					mContext.startActivity(intent);
-
-				}
+			       ((Activity)mContext).startActivityForResult(intent, 20);}
 			if(mListener!=null)
 				mListener.onPostExecute();	
 		}
