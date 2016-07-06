@@ -6,13 +6,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/pop_text_layout_height"
+        android:layout_height="match_parent"
         android:layout_marginTop="@dimen/pop_first_text_margin_top"
         android:gravity="center"
         android:layout_centerInParent="true"
         android:orientation="vertical" >
 
         <TextView
+            android:id="@+id/reactive_msg"
             android:layout_width="@dimen/pop_text_width"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -20,7 +21,17 @@
             android:textSize="@dimen/h3_text_size"
             android:text="正在加载中.........."
              />
-
+        <Button
+                android:id="@+id/reactive_btn"
+                android:layout_width="@dimen/pop_btn_width"
+                android:layout_height="@dimen/pop_btn_height"
+                android:background="@drawable/selector_daisy_exit_button"
+                android:text="确定"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/pop_btn_mt"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/h3_text_size"
+                android:visibility="gone"/>
     </LinearLayout>
 
     <LinearLayout

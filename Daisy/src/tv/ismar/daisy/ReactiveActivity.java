@@ -11,14 +11,18 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
+import android.widget.TextView;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.player.InitPlayerTool;
 
 public class ReactiveActivity extends BaseActivity {
     private LinearLayout layout;
     private PowerManager.WakeLock mWakelock;
+    private TextView reactive_msg;
+    private Button reactive_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +38,8 @@ public class ReactiveActivity extends BaseActivity {
         win.setAttributes(lp);
         win.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         setContentView(R.layout.reactive);
+        reactive_msg = (TextView) findViewById(R.id.reactive_msg);
+        reactive_btn = (Button) findViewById(R.id.reactive_btn);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -59,6 +65,15 @@ public class ReactiveActivity extends BaseActivity {
                     tool.fromPage = "lockscreen";
                     tool.initClipInfo(lock_url, InitPlayerTool.FLAG_URL);
 //					finish();
+                }else{
+                    reactive_msg.setText("请先设置喜好频道！");
+                    reactive_btn.setVisibility(View.VISIBLE);
+                    reactive_btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            finish();
+                        }
+                    });
                 }
             }
         }, 10);

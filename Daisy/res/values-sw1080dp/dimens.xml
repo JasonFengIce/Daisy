@@ -1286,6 +1286,7 @@
     <!-- pop-->
     <dimen name="pop_btn_width">180dp</dimen>
     <dimen name="pop_btn_height">54dp</dimen>
+    <dimen name="pop_btn_mt">75.00dp</dimen>
 
     <dimen name="pop_width">877dp</dimen>
     <dimen name="pop_height">305dp</dimen>
