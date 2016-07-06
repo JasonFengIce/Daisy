@@ -35,6 +35,7 @@ import tv.ismar.daisy.core.*;
 import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
 import tv.ismar.daisy.core.client.HttpAPI;
 import tv.ismar.daisy.core.client.HttpManager;
+import tv.ismar.daisy.core.client.PlayCheckManager;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 import tv.ismar.daisy.data.http.ItemEntity;
 import tv.ismar.daisy.exception.ItemOfflineException;
@@ -421,6 +422,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 		currentBright = getsystemBright();
 		progress_bright.setProgress(currentBright);
 	}
+
 	protected void initClipInfo() {
 		simpleRestClient = new SimpleRestClient();
 		bufferText.setText(BUFFERING);
@@ -438,33 +440,43 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 				clip = item.clip;
 				live_video = item.live_video;
 				isPreview = item.isPreview;
-				if(isPreview && live_video)
+				if (isPreview && live_video)
 					live_video = false;
 				section = item.section;
 				channel = item.channel;
-				slug =  item.slug;
+				slug = item.slug;
 				fromPage = item.fromPage;
 			}
 			// use to get mUrl, and registerActivity
-			DaisyUtils.getVodApplication(this).addActivityToPool(
-					this.toString(), this);
-			// *********************
-			// new ItemByUrlTask().execute();
+			DaisyUtils.getVodApplication(this).addActivityToPool(this.toString(), this);
 			String info = bundle.getString("ismartv");
-//			if(urlInfo == null)
 			urlInfo = AccessProxy.getIsmartvClipInfo(info);
 			if (item.item_pk == item.pk)
-				itemUrl = SimpleRestClient.root_url + "/api/item/" + item.pk
-						+ "/";
+				itemUrl = SimpleRestClient.root_url + "/api/item/" + item.pk + "/";
 			else
-				itemUrl = SimpleRestClient.root_url + "/api/item/"
-						+ item.item_pk + "/";
-			if (isPreview) {
-				serialItem = (Item) bundle.get("seraItem");
-				initPlayer();
-			} else {
-				getAdInfo("qiantiepian");
-			}
+				itemUrl = SimpleRestClient.root_url + "/api/item/" + item.item_pk + "/";
+
+			PlayCheckManager.getInstance().check(String.valueOf(item.item_pk), new PlayCheckManager.Callback() {
+				@Override
+				public void onSuccess(boolean isBuy) {
+					if (isBuy) {
+						isPreview = false;
+						new FetchClipTask().execute();
+					} else {
+						if (isPreview) {
+							serialItem = (Item) bundle.get("seraItem");
+							initPlayer();
+						} else {
+							getAdInfo("qiantiepian");
+						}
+					}
+				}
+
+				@Override
+				public void onFailure() {
+
+				}
+			});
 		}
 	}
 
@@ -795,7 +807,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 									return;
 								}
 								mVideoView.stopPlayback();
-								if(item.isPreview && "sport".equals(item.content_model)){
+								if(item.isPreview && "sport".equals(item.content_model)&& item.live_video){
 									finish();
 								}else{
 									PaymentDialog dialog = new PaymentDialog(
