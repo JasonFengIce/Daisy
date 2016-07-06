@@ -520,26 +520,13 @@ public class VodApplication extends Application {
     }
     private ArrayList<String> getPreferenceChannels(ContentResolver resolver) {
         ArrayList<String> prefrence = new ArrayList<String>();
-        if(Settings.System.getInt(resolver,"chinese_film_favor",0) == 1){
-            prefrence.add("movie");
-        }
-        if(Settings.System.getInt(resolver,"overseas_film_favor",0) == 1){
-            prefrence.add("movie");
-        }
-        if(Settings.System.getInt(resolver,"variety_entertainment_favor",0) == 1){
-            prefrence.add("variety");
-        }
-        if(Settings.System.getInt(resolver,"music_favor",0) == 1){
-            prefrence.add("music");
-        }
-        if(Settings.System.getInt(resolver,"game_favor",0) == 1){
-            prefrence.add("game");
-        }
-        if(Settings.System.getInt(resolver,"sport_favor",0) == 1){
-            prefrence.add("sport");
-        }
-        if(Settings.System.getInt(resolver,"live_documentary_favor",0) == 1){
-            prefrence.add("documentary");
+        String[] content_model=Settings.System.getString(resolver,"push_messages_favors_content_model").split("\\|");
+        String[] ischecked=Settings.System.getString(resolver,"push_messages_favors_ischecked").split("\\|");
+        for (int i = 0; i <ischecked.length ; i++) {
+           if(Integer.parseInt(ischecked[i])==1){
+               prefrence.add(content_model[i]);
+           }
+
         }
         return prefrence;
     }

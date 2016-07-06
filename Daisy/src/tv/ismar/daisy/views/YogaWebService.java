@@ -285,54 +285,31 @@ public class YogaWebService extends Service {
     public ArrayList<String> getCheckedChannels() {
         ArrayList<String> list = new ArrayList<>();
         ContentResolver resolver = getContentResolver();
-        HashMap<String, Integer> map = new HashMap<>();
-        map.put("chinese_film_favor", Settings.System.getInt(resolver, "chinese_film_favor", 0));
-        map.put("overseas_film_favor", Settings.System.getInt(resolver, "overseas_film_favor", 0));
-        map.put("variety_entertainment_favor", Settings.System.getInt(resolver, "variety_entertainment_favor", 0));
-        map.put("music_favor", Settings.System.getInt(resolver, "music_favor", 0));
-        map.put("game_favor", Settings.System.getInt(resolver, "game_favor", 0));
-        map.put("sport_favor", Settings.System.getInt(resolver, "sport_favor", 0));
-        map.put("live_documentary_favor", Settings.System.getInt(resolver, "live_documentary_favor", 0));
-        Iterator iterator = map.entrySet().iterator();
-        while (iterator.hasNext()) {
-            HashMap.Entry entry = (HashMap.Entry) iterator.next();
-            if (Integer.parseInt(entry.getValue().toString()) == 1) {
-                list.add((String) entry.getKey());
+        String[] name=Settings.System.getString(resolver,"push_messages_favors_name").split("\\|");
+        String[] ischecked=Settings.System.getString(resolver,"push_messages_favors_ischecked").split("\\|");
+        for (int i = 0; i <ischecked.length ; i++) {
+            if(Integer.parseInt(ischecked[i])==1) {
+                list.add(name[i]);
             }
         }
         return list;
     }
 
         public void setPreferenceChannel(String preferenceChannel) {
-            String channel="";
-            switch(preferenceChannel){
-                case "chinesemovie":
-                    channel="chinese_film_favor";
-                    break;
-                case "overseas":
-                    channel="overseas_film_favor";
-                    break;
-                case "variety":
-                    channel="variety_entertainment_favor";
-                    break;
-                case "music":
-                    channel="music_favor";
-                    break;
-                case "game":
-                    channel="game_favor";
-                    break;
-                case "sport":
-                    channel="sport_favor";
-                    break;
-                case "documentary":
-                    channel="live_documentary_favor";
-                    break;
-
+            ContentResolver resolver = getContentResolver();
+            String[] content_model=Settings.System.getString(resolver,"push_messages_favors_content_model").split("\\|");
+            String[] ischecked=Settings.System.getString(resolver,"push_messages_favors_ischecked").split("\\|");
+            String checkdChannel="";
+            for (int i = 0; i <content_model.length ; i++) {
+                if(preferenceChannel.equals(content_model[i])){
+                    ischecked[i]="1";
+                }
+                if(i!=content_model.length-1){
+                    checkdChannel+=ischecked[i]+"|";
+                }else{
+                    checkdChannel+=ischecked[i];
+                }
             }
-            if(!"".equals(channel)){
-
-                Settings.System.putInt(getContentResolver(),channel,1);
-            }
-
+                Settings.System.putString(resolver,"push_messages_favors_ischecked",checkdChannel);
         }
 }

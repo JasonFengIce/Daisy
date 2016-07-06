@@ -1,12 +1,10 @@
 package tv.ismar.daisy.ui.activity;
 
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -28,13 +26,10 @@ import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.*;
 
-import cn.ismar.daisy.pad.lockscreenservice.Setlockscreenservice;
 import cn.ismartv.activator.Activator;
 import cn.ismartv.activator.data.Result;
 import com.baidu.location.*;
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.sakuratya.horizontal.ui.HGridView;
 import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
@@ -62,15 +57,10 @@ import tv.ismar.daisy.ui.fragment.launcher.*;
 import tv.ismar.daisy.ui.widget.LaunchHeaderLayout;
 import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
 import tv.ismar.daisy.utils.BitmapDecoder;
-import tv.ismar.daisy.views.YogaWebService;
 import tv.ismar.sakura.ui.widget.MessagePopWindow;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.*;
 
 import static tv.ismar.daisy.VodApplication.*;
@@ -621,6 +611,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         for (ChannelEntity entity : channelEntities) {
             channelList.add(entity);
         }
+        checkUpdateChannel(channelList);
         scroll = (HGridView) contentView.findViewById(R.id.tvguid_h_grid_view);
         scroll.setOnScrollListener(this);
         scroll.setOnHoverListener(new HGridView.OnHoverListener() {
@@ -1665,4 +1656,91 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 //            testLock();
 //        }
 //    }
+
+    private void checkUpdateChannel(List<ChannelEntity> channelList) {
+        ContentResolver resolver=getContentResolver();
+        boolean update=false;
+        if(Settings.System.getString(resolver,"push_messages_favors_id")==null){
+            initChannelData(channelList, null);
+        }else{
+            String[] channel_name=Settings.System.getString(resolver,"push_messages_favors_name").split("\\|");
+            if(channelList.size()-1!=channel_name.length){
+                update=true;
+            }else {
+                for (int i = 1; i < channelList.size(); i++) {
+                    if (!channelList.get(i).equals(channel_name[i - 1])){
+                        update=true;
+                        break;
+                    }
+                }
+            }
+            //判断是否更新
+            if(update){
+                List<String> checked=new ArrayList<>();
+                String[] checkd_channel= Settings.System.getString(resolver,"push_messages_favors_ischecked").split("\\|");
+                //记录用户之前勾选的喜好频道
+                for (int i = 0; i <checkd_channel.length ; i++) {
+                    if(Integer.parseInt(checkd_channel[i])==1){
+                        checked.add(channel_name[i]);
+                    }
+                }
+                initChannelData(channelList,checked);
+            }
+
+        }
+
+
+    }
+    private void initChannelData(List<ChannelEntity> channelList, List<String> checked){
+        ContentResolver resolver=getContentResolver();
+        List<String> channels=new ArrayList<>();
+        for (int i = 1; i <channelList.size() ; i++) {
+            channels.add(channelList.get(i).getName());
+        }
+        String id="";
+        String name="";
+        String ischecked="";
+        String content_mode="";
+        for (int i = 0; i <channels.size(); i++) {
+            if(i==channels.size()-1){
+                id+="00000"+(i+1);
+                name+=channels.get(i);
+                ischecked+=0;
+                if("chinesemovie".equals(channelList.get(i+1).getChannel())||"overseas".equals(channelList.get(i+1).getChannel())){
+                    content_mode+="movie";
+                }else{
+                    content_mode+=channelList.get(i+1).getChannel();
+                }
+            }else{
+                id+="00000"+(i+1)+"|";
+                name+=channels.get(i)+"|";
+                ischecked+=0+"|";
+                if("chinesemovie".equals(channelList.get(i+1).getChannel())||"overseas".equals(channelList.get(i+1).getChannel())){
+                    content_mode+="movie"+"|";
+                }else{
+                    content_mode+=channelList.get(i+1).getChannel()+"|";
+                }
+            }
+        }
+        if(checked!=null){
+            String[] check=ischecked.split("\\|");
+            for (int i = 0; i <channels.size() ; i++) {
+                if(checked.contains(channels.get(i))){
+                    check[i]="1";
+                }
+            }
+            ischecked="";
+            for (int i = 0; i <check.length; i++) {
+                if(i==check.length-1){
+                    ischecked+=check[i];
+                }else{
+                    ischecked+=check[i]+"|";
+                }
+            }
+        }
+        Settings.System.putString(resolver, "push_messages_favors_id", id);
+        Settings.System.putString(resolver, "push_messages_favors_name", name);
+        Settings.System.putString(resolver, "push_messages_favors_ischecked", ischecked);
+        Settings.System.putString(resolver, "push_messages_favors_content_model", content_mode);
+    }
 }
