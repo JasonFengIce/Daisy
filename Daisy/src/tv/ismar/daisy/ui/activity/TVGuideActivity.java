@@ -124,8 +124,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private HorizontalScrollView channel_list_scroll;
     private String intentFlag;
     public boolean isMove = false;
-    private boolean canMove;
-    //    private Setlockscreenservice nativeservice;
+//    private Setlockscreenservice nativeservice;
 //    public static YogaBroadcastReceiver receiver;
 
     private enum LeavePosition {
@@ -483,8 +482,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             @Override
             public void onResponse(Response<ChannelEntity[]> response) {
                 if (response.body() != null) {
-                    canMove=true;
-                    arrow_right.setEnabled(true);
                     fillChannelLayout(response.body());
                 } else {
                     showNetErrorPopup();
@@ -998,8 +995,6 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private boolean neterrorshow = false;
 
     private void showNetErrorPopup() {
-        canMove=false;
-        arrow_right.setEnabled(false);
         if (neterrorshow)
             return;
         final MessageDialogFragment dialog = new MessageDialogFragment(TVGuideActivity.this, getString(R.string.fetch_net_data_error), null);
@@ -1595,30 +1590,27 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        canMove = true;
-        if(canMove) {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    downX = (int) event.getRawX();
-                    downY = (int) event.getRawY();
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    break;
-                case MotionEvent.ACTION_UP:
-                    int moveX = (int) event.getRawX();
-                    if (downY < channel_list_scroll.getY()) {
-                        if ((moveX - downX) > 50) {
-                            scroll.arrowScroll(View.FOCUS_LEFT);
-                            isMove = true;
-                        } else if ((downX - moveX) > 50) {
-                            scroll.arrowScroll(View.FOCUS_RIGHT);
-                            isMove = true;
-                        } else {
-                            isMove = false;
-                        }
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                downX = (int) event.getRawX();
+                downY = (int) event.getRawY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                break;
+            case MotionEvent.ACTION_UP:
+                int moveX = (int) event.getRawX();
+                if (downY < channel_list_scroll.getY()) {
+                    if ((moveX - downX) > 50) {
+                        scroll.arrowScroll(View.FOCUS_LEFT);
+                        isMove = true;
+                    } else if ((downX - moveX) > 50) {
+                        scroll.arrowScroll(View.FOCUS_RIGHT);
+                        isMove = true;
+                    } else {
+                        isMove = false;
                     }
-                    break;
-            }
+                }
+                break;
         }
         return super.dispatchTouchEvent(event);
     }
