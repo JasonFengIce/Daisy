@@ -1668,7 +1668,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 update=true;
             }else {
                 for (int i = 1; i < channelList.size(); i++) {
-                    if (!channelList.get(i).equals(channel_name[i - 1])){
+                    if (!channelList.get(i).getName().equals(channel_name[i - 1])){
                         update=true;
                         break;
                     }
