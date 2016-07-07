@@ -75,6 +75,7 @@ public class AdvertisementActivity extends Activity {
                 .load(path)
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_CACHE)
+                .fit()
                 .into(adverPic, new Callback() {
                     @Override
                     public void onSuccess() {
@@ -93,6 +94,7 @@ public class AdvertisementActivity extends Activity {
                                 .load(DEFAULT_ADV_PICTURE)
                                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                                 .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_CACHE)
+                                .fit()
                                 .into(adverPic);
 
                     }
