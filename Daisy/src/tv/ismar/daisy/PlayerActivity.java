@@ -567,14 +567,14 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	class FetchSeriallTask extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected void onPostExecute(Boolean result) {
-			if (result || currNum==0) { // 免费或已经付费的电视剧单集直接播放
+			if (result) { // 免费或已经付费的电视剧单集直接播放
 				initPlayer();
 			}
 		}
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			boolean result;
+			boolean result = false;
 			try {
 				currNum = item.position;
 				Log.d(TAG, "currNum ===" + currNum);
@@ -590,29 +590,26 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 							listItems.add(serialItem.subitems[i]);
 						}
 					}
+					result = true;
 				} else { // 电视剧联播，非第一集需要重新获取clip
 					clip = item.clip;
 					urlInfo = AccessProxy.parse(SimpleRestClient.root_url
 									+ "/api/clip/" + clip.pk + "/", VodUserAgent
 									.getAccessToken(SimpleRestClient.sn_token),
 							PlayerActivity.this);
-					result = true;
-//					if (urlInfo.getIqiyi_4_0().length() > 0) {
-//						if("lockscreen".equals(item.fromPage)){
-//							showPopupDialog(
-//									DIALOG_OK_CANCEL, "请先解锁！");
-//							finish();
-//						}else {
-							Intent intent = new Intent();
-							intent.setAction("tv.ismar.daisy.qiyiPlay");
-							intent.putExtra("iqiyi", urlInfo.getIqiyi_4_0());
-							intent.putExtra("item", item);
-							startActivity(intent);
-							PlayerActivity.this.finish();
+
+					if (urlInfo.getIqiyi_4_0().length() > 0) {
+						Intent intent = new Intent();
+						intent.setAction("tv.ismar.daisy.qiyiPlay");
+						intent.putExtra("iqiyi", urlInfo.getIqiyi_4_0());
+						intent.putExtra("item", item);
+						startActivity(intent);
+						PlayerActivity.this.finish();
+						}else {
+						result = true;
 						}
-//					}
+					}
 //				}
-				result = true;
 			} catch (JsonSyntaxException e) {
 				e.printStackTrace();
 				result = false;
@@ -635,6 +632,7 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	class FetchClipTask extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected void onPostExecute(Boolean result) {
+			if(result)
 			initPlayer();
 		}
 
@@ -647,7 +645,6 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 								+ "/api/clip/" + clip.pk + "/",
 						VodUserAgent.getAccessToken(SimpleRestClient.sn_token),
 						PlayerActivity.this);
-				result = true;
 				if (urlInfo.getIqiyi_4_0().length() > 0) {
 					Intent intent = new Intent();
 					intent.setAction("tv.ismar.daisy.qiyiPlay");
@@ -655,6 +652,8 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 					intent.putExtra("item", item);
 					startActivity(intent);
 					PlayerActivity.this.finish();
+				}else{
+					result = true;
 				}
 			}
 			return result;
@@ -2311,7 +2310,6 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 			if (!live_video) {
 				if (mVideoView.getDuration() > 0) {
 					timeBar.setProgress(progress);
-					Log.d(TAG, "LEFT seek to " + getTimeString(currPosition));
 				}
 				updataTimeText();
 				if(clipLength/1000!=0)
