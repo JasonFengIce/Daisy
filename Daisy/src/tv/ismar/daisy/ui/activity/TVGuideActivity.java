@@ -124,7 +124,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private HorizontalScrollView channel_list_scroll;
     private String intentFlag;
     public boolean isMove = false;
-//    private Setlockscreenservice nativeservice;
+    private boolean canMove=false;
+    //    private Setlockscreenservice nativeservice;
 //    public static YogaBroadcastReceiver receiver;
 
     private enum LeavePosition {
@@ -473,28 +474,32 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
      * fetch channel
      */
     private void fetchChannels() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .client(HttpManager.getInstance().mCacheClient)
-                .baseUrl(HttpManager.appendProtocol(SimpleRestClient.root_url))
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        retrofit.create(HttpAPI.TvChannels.class).doRequest().enqueue(new Callback<ChannelEntity[]>() {
-            @Override
-            public void onResponse(Response<ChannelEntity[]> response) {
-                if (response.body() != null) {
-                    fillChannelLayout(response.body());
-                } else {
+        if(!"http://".equals(SimpleRestClient.root_url)) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .client(HttpManager.getInstance().mCacheClient)
+                    .baseUrl(HttpManager.appendProtocol(SimpleRestClient.root_url))
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            retrofit.create(HttpAPI.TvChannels.class).doRequest().enqueue(new Callback<ChannelEntity[]>() {
+                @Override
+                public void onResponse(Response<ChannelEntity[]> response) {
+                    if (response.body() != null) {
+                        canMove=true;
+                        arrow_right_visible.setEnabled(true);
+                        fillChannelLayout(response.body());
+                    } else {
+                        showNetErrorPopup();
+                    }
+                }
+
+                @Override
+                public void onFailure(Throwable throwable) {
                     showNetErrorPopup();
                 }
-            }
-
-            @Override
-            public void onFailure(Throwable throwable) {
-                showNetErrorPopup();
-            }
-        });
+            });
+        }
     }
-
     private void fillChannelLayout(ChannelEntity[] channelEntities) {
         if (neterrorshow)
             return;
@@ -995,6 +1000,8 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private boolean neterrorshow = false;
 
     private void showNetErrorPopup() {
+        arrow_right_visible.setEnabled(false);
+        canMove=false;
         if (neterrorshow)
             return;
         final MessageDialogFragment dialog = new MessageDialogFragment(TVGuideActivity.this, getString(R.string.fetch_net_data_error), null);
@@ -1590,6 +1597,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
+        if(canMove){
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 downX = (int) event.getRawX();
@@ -1611,7 +1619,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                     }
                 }
                 break;
-        }
+        }}
         return super.dispatchTouchEvent(event);
     }
 

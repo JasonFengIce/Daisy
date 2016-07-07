@@ -473,7 +473,7 @@ public class VodApplication extends Application {
                 HttpURLConnection httpConn = null;
                 InputStreamReader inputStreamReader = null;
                 try {
-                    URL connURL = new URL(SimpleRestClient.root_url+"/api/tv/homepage/lockscreen/7/");
+                    URL connURL = new URL(SimpleRestClient.root_url+"/api/tv/homepage/lockscreen/"+Settings.System.getString(getContentResolver(),"push_messages_favors_id").split("\\|").length+"/");
                     httpConn = (HttpURLConnection) connURL.openConnection();
                     httpConn.setRequestProperty("Accept", "application/json");
 //                    httpConn.setRequestProperty("User-Agent", userAgent);

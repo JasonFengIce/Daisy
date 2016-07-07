@@ -35,7 +35,7 @@ public class InitPlayerTool {
 		intent = new Intent();
 		simpleRestClient = new SimpleRestClient();
 	}
-	
+
 	public void initClipInfo(Object item,String flag) {
 		simpleRestClient = new SimpleRestClient();
 		urltask = new ItemByUrlTask();
@@ -67,7 +67,7 @@ public class InitPlayerTool {
 				intent.setAction("tv.ismar.daisy.qiyiPlay");
 				String info = AccessProxy.getvVideoClipInfo();
 //				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				intent.putExtra("iqiyi", info);		
+				intent.putExtra("iqiyi", info);
 			}
 			else{
 				String ismartv = AccessProxy.getvVideoClipInfo();
@@ -75,15 +75,17 @@ public class InitPlayerTool {
 //				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				intent.putExtra("ismartv", ismartv);
 			}
-			if(!"".equals(result))
+			if(!"".equals(result)){
 				if("lockscreen".equals(fromPage)){
 					((Activity)mContext).startActivityForResult(intent, 1010);
-				}else if(!mIsPreviewVideo) {
+				}else if(!mIsPreviewVideo||"dualhome".equals(fromPage)) {
 					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					mContext.startActivity(intent);
 				}else{
 					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			       ((Activity)mContext).startActivityForResult(intent, 20);}
+			      ((Activity)mContext).startActivityForResult(intent, 20);
+				}
 			if(mListener!=null)
 				mListener.onPostExecute();	
 		}

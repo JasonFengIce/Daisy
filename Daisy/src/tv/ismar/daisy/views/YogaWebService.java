@@ -110,7 +110,7 @@ public class YogaWebService extends Service {
                     String url = SimpleRestClient.root_url+request.getQuery().getString("url").substring(request.getQuery().getString("url").indexOf("/api"));
                     String contentMode = request.getQuery().getString("content_model");
                     String expense = request.getQuery().getString("expense");
-                    if (expense.equals("true")) {
+                    if (expense.equals("true")&&expense!=null) {
                         if (("variety".equals(contentMode) || "entertainment".equals(contentMode))) {
                             intent.setAction("tv.ismar.daisy.EntertainmentItem");
                             intent.putExtra("title", "娱乐综艺");
@@ -131,7 +131,7 @@ public class YogaWebService extends Service {
                         response.send("callback(\"" + type + "\")");
                     } else if (expense.equals("false")) {
                         InitPlayerTool tool = new InitPlayerTool(mContext);
-                        tool.fromPage = "homepage";
+                        tool.fromPage = "dualhome";
                         tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
                         response.send("callback(\"" + type + "\")");
                     }

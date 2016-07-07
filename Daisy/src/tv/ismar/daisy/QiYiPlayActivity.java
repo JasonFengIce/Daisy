@@ -223,8 +223,9 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
         FragmentTransaction fragmentTransaction =  getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.episode_layout, mEpisodeFragment);
         fragmentTransaction.hide(mEpisodeFragment);
-        fragmentTransaction.commit();
+        fragmentTransaction.commitAllowingStateLoss();
         mEpisodeFragment.setOnItemSelectedListener(this);
+
     }
 
     public void initView() {
@@ -950,7 +951,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
             top_panelayout.setVisibility(View.GONE);
             panelShow = false;
         }
-        getSupportFragmentManager().beginTransaction().hide(mEpisodeFragment).commit();
+        getSupportFragmentManager().beginTransaction().hide(mEpisodeFragment).commitAllowingStateLoss();
     }
 
     private void showPanel() {
