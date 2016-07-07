@@ -1752,12 +1752,13 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean ret = false;
-		if(keyCode == KeyEvent.KEYCODE_BACK && "lockscreen".equals(item.fromPage)){
-			setResult(1010);
-			finish();
-			return false;
+		if(item.fromPage!=null) {
+			if (keyCode == KeyEvent.KEYCODE_BACK && "lockscreen".equals(item.fromPage)) {
+				setResult(1010);
+				finish();
+				return false;
+			}
 		}
-
 		if(keyCode == KeyEvent.KEYCODE_BACK && !"false".equals(shardpref.getSharedPrefs(AccountSharedPrefs.FIRST_USE))){
 			gesture_tipview.setVisibility(View.GONE);
 			shardpref.setSharedPrefs(AccountSharedPrefs.FIRST_USE, "false");
