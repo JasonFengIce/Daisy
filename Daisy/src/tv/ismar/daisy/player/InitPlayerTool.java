@@ -91,7 +91,6 @@ public class InitPlayerTool {
 		}
 		@Override
 		protected String doInBackground(Object... params) {
-
 			String sn = VodUserAgent.getMACAddress();
             AccessProxy.init(VodUserAgent.getModelName(),
                     ""+SimpleRestClient.appVersion, SimpleRestClient.sn_token);
@@ -100,7 +99,7 @@ public class InitPlayerTool {
             if(flag.equals("url")){
             	try {
 					item = simpleRestClient.getItem((String) params[0]);
-					if(item.expense != null && item.preview != null){
+					if(item != null && item.expense != null && item.preview != null){
 						mIsPreviewVideo = true;
 						item.isPreview = true;
 					}
@@ -111,7 +110,7 @@ public class InitPlayerTool {
 				} catch (ItemOfflineException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				} catch (NetworkException e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
