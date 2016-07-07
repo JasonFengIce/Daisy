@@ -49,8 +49,6 @@
             android:background="@drawable/selector_daisy_exit_button"
             android:text="@string/confirm"
             android:textColor="@android:color/white"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:textSize="@dimen/h3_text_size"/>
 
         <Button
@@ -61,8 +59,6 @@
             android:background="@drawable/selector_daisy_exit_button"
             android:text="@string/cancel"
             android:textColor="@android:color/white"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:textSize="@dimen/h3_text_size"/>
 
     </LinearLayout>
