@@ -75,21 +75,27 @@ public class InitPlayerTool {
 //				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				intent.putExtra("ismartv", ismartv);
 			}
-			if(!"".equals(result))
-				if("lockscreen".equals(fromPage)){
-					((Activity)mContext).startActivityForResult(intent, 1010);
-				}else if(!mIsPreviewVideo) {
+			if(!"".equals(result)) {
+				if ("lockscreen".equals(fromPage)) {
+					((Activity) mContext).startActivityForResult(intent, 1010);
+				} else if (!mIsPreviewVideo) {
 					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					mContext.startActivity(intent);
-				}else{
-					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			       ((Activity)mContext).startActivityForResult(intent, 20);}
+				} else {
+					if ("dualhome".equals(fromPage)) {
+						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						mContext.startActivity(intent);
+					} else {
+						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						((Activity) mContext).startActivityForResult(intent, 20);
+					}
+				}
+			}
 			if(mListener!=null)
 				mListener.onPostExecute();	
 		}
 		@Override
 		protected String doInBackground(Object... params) {
-
 			String sn = VodUserAgent.getMACAddress();
             AccessProxy.init(VodUserAgent.getModelName(),
                     ""+SimpleRestClient.appVersion, SimpleRestClient.sn_token);
@@ -98,7 +104,7 @@ public class InitPlayerTool {
             if(flag.equals("url")){
             	try {
 					item = simpleRestClient.getItem((String) params[0]);
-					if(item.expense != null && item.preview != null){
+					if(item != null && item.expense != null && item.preview != null){
 						mIsPreviewVideo = true;
 						item.isPreview = true;
 					}
@@ -109,7 +115,7 @@ public class InitPlayerTool {
 				} catch (ItemOfflineException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				} catch (NetworkException e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}

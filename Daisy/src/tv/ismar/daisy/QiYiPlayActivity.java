@@ -2118,6 +2118,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
             Log.d(TAG, "onAdStart");
             hidePanel();
             isAdPlaying = true;
+            mPlayer=player;
             mTxtAdTimer.setVisibility(View.VISIBLE);
             startAdCountDown();
         }

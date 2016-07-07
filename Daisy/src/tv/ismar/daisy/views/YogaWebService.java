@@ -125,13 +125,13 @@ public class YogaWebService extends Service {
                                     "tv.ismar.daisy.ItemDetailActivity");
                         }
                         intent.putExtra("url", url);
-                        intent.putExtra("fromPage", "homepage");
+                        intent.putExtra("fromPage", "dualhome");
                         startActivity(intent);
                         Log.i("yoga", "跳转详情" + contentMode);
                         response.send("callback(\"" + type + "\")");
                     } else if (expense.equals("false")) {
                         InitPlayerTool tool = new InitPlayerTool(mContext);
-                        tool.fromPage = "homepage";
+                        tool.fromPage = "dualhome";
                         tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
                         response.send("callback(\"" + type + "\")");
                     }
