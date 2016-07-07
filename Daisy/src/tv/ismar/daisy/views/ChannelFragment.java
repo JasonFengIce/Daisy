@@ -137,8 +137,8 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
 			}
 		});
         arrow_right = (ImageView) fragmentView.findViewById(R.id.arrow_right);
-        arrow_left.setEnabled(false);
-        arrow_right.setEnabled(false);
+        left_shadow.setEnabled(false);
+        right_shadow.setEnabled(false);
         right_shadow.setOnHoverListener(new View.OnHoverListener() {
 
 			@Override
@@ -559,8 +559,8 @@ public class ChannelFragment extends Fragment implements OnItemSelectedListener,
                     mHGridAdapter.setList(mItemCollections);
                     if (mHGridAdapter.getCount() > 0) {
                         mHGridView.setAdapter(mHGridAdapter);
-                        arrow_left.setEnabled(true);
-                        arrow_right.setEnabled(true);
+                        left_shadow.setEnabled(true);
+                        right_shadow.setEnabled(true);
                         mHGridView.setFocusable(true);
                         mHGridView.requestFocus();
 //                        mHGridView.setSelection(6);
