@@ -75,15 +75,17 @@ public class InitPlayerTool {
 //				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				intent.putExtra("ismartv", ismartv);
 			}
-			if(!"".equals(result))
+			if(!"".equals(result)){
 				if("lockscreen".equals(fromPage)){
 					((Activity)mContext).startActivityForResult(intent, 1010);
-				}else if(!mIsPreviewVideo) {
+				}else if(!mIsPreviewVideo||"dualhome".equals(fromPage)) {
 					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					mContext.startActivity(intent);
 				}else{
 					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			       ((Activity)mContext).startActivityForResult(intent, 20);}
+			      ((Activity)mContext).startActivityForResult(intent, 20);
+				}
 			if(mListener!=null)
 				mListener.onPostExecute();	
 		}

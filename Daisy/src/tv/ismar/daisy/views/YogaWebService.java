@@ -131,7 +131,7 @@ public class YogaWebService extends Service {
                         response.send("callback(\"" + type + "\")");
                     } else if (expense.equals("false")) {
                         InitPlayerTool tool = new InitPlayerTool(mContext);
-                        tool.fromPage = "homepage";
+                        tool.fromPage = "dualhome";
                         tool.initClipInfo(url, InitPlayerTool.FLAG_URL);
                         response.send("callback(\"" + type + "\")");
                     }
