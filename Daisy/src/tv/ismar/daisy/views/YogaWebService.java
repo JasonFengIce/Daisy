@@ -125,7 +125,7 @@ public class YogaWebService extends Service {
                                     "tv.ismar.daisy.ItemDetailActivity");
                         }
                         intent.putExtra("url", url);
-                        intent.putExtra("fromPage", "homepage");
+                        intent.putExtra("fromPage", "dualhome");
                         startActivity(intent);
                         Log.i("yoga", "跳转详情" + contentMode);
                         response.send("callback(\"" + type + "\")");
