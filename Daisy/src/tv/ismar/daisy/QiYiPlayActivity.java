@@ -1407,7 +1407,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
                             if (paused) {
                                 resumeItem();
                                 playPauseImage
-                                        .setImageResource(R.drawable.paus);
+                                        .setImageResource(R.drawable.play);
                             }
                         }
                     }
