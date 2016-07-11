@@ -1704,7 +1704,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
                     isBuffer = true;
                     showBuffer();
                     playPauseImage
-                            .setImageResource(R.drawable.paus);
+                            .setImageResource(R.drawable.play);
                     currQuality = pos;
                     if (currQuality == 0) {
                         mPlayer.switchBitStream(BitStream.BITSTREAM_HIGH);

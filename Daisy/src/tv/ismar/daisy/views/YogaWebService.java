@@ -73,7 +73,7 @@ public class YogaWebService extends Service {
         }
         server.get("/", new HttpServerRequestCallback() {
 
-            private List<String> checkedChannels;
+            private List<String> checkedChannels=new ArrayList<String>();
 
             @Override
             public void onRequest(AsyncHttpServerRequest request, AsyncHttpServerResponse response) {
@@ -285,11 +285,13 @@ public class YogaWebService extends Service {
     public ArrayList<String> getCheckedChannels() {
         ArrayList<String> list = new ArrayList<>();
         ContentResolver resolver = getContentResolver();
-        String[] name=Settings.System.getString(resolver,"push_messages_favors_name").split("\\|");
-        String[] ischecked=Settings.System.getString(resolver,"push_messages_favors_ischecked").split("\\|");
-        for (int i = 0; i <ischecked.length ; i++) {
-            if(Integer.parseInt(ischecked[i])==1) {
-                list.add(name[i]);
+        if(Settings.System.getString(resolver,"push_messages_favors_name")!=null){
+            String[] name=Settings.System.getString(resolver,"push_messages_favors_name").split("\\|");
+            String[] ischecked=Settings.System.getString(resolver,"push_messages_favors_ischecked").split("\\|");
+            for (int i = 0; i <ischecked.length ; i++) {
+                if(Integer.parseInt(ischecked[i])==1) {
+                    list.add(name[i]);
+                }
             }
         }
         return list;
@@ -297,19 +299,22 @@ public class YogaWebService extends Service {
 
         public void setPreferenceChannel(String preferenceChannel) {
             ContentResolver resolver = getContentResolver();
-            String[] content_model=Settings.System.getString(resolver,"push_messages_favors_content_model").split("\\|");
-            String[] ischecked=Settings.System.getString(resolver,"push_messages_favors_ischecked").split("\\|");
-            String checkdChannel="";
-            for (int i = 0; i <content_model.length ; i++) {
-                if(preferenceChannel.equals(content_model[i])){
-                    ischecked[i]="1";
+            if(Settings.System.getString(resolver,"push_messages_favors_content_model")!=null){
+                String[] content_model=Settings.System.getString(resolver,"push_messages_favors_content_model").split("\\|");
+                String[] ischecked=Settings.System.getString(resolver,"push_messages_favors_ischecked").split("\\|");
+                String checkdChannel="";
+                for (int i = 0; i <content_model.length ; i++) {
+                    if(preferenceChannel.equals(content_model[i])){
+                        ischecked[i]="1";
+                    }
+                    if(i!=content_model.length-1){
+                        checkdChannel+=ischecked[i]+"|";
+                    }else{
+                        checkdChannel+=ischecked[i];
+                    }
                 }
-                if(i!=content_model.length-1){
-                    checkdChannel+=ischecked[i]+"|";
-                }else{
-                    checkdChannel+=ischecked[i];
-                }
-            }
                 Settings.System.putString(resolver,"push_messages_favors_ischecked",checkdChannel);
+            }
+
         }
 }

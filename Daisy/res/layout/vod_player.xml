@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/black"
+    android:keepScreenOn="true"
     >
     <tv.ismar.daisy.views.IsmatvVideoView
         android:id="@+id/video_view"
@@ -192,10 +193,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginBottom="@dimen/quality_text_bottom"
                 android:layout_marginRight="@dimen/anthology_right"
                 android:ellipsize="marquee"
                 android:marqueeRepeatLimit="marquee_forever"
+                android:layout_centerVertical="true"
                 android:singleLine="true"
                 android:textColor="#e4e4e4"
                 android:textSize="@dimen/quality_text_size" />
@@ -212,7 +213,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/play_pause_left"
-                android:layout_marginBottom="@dimen/play_pause_bottom"
+                android:layout_centerVertical="true"
                 android:clickable="true"
                 android:src="@drawable/play" />
 
@@ -221,7 +222,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/play_ff_left"
-                android:layout_marginBottom="@dimen/play_ff_bottom"
+                android:layout_centerVertical="true"
                 android:clickable="true"
                 android:src="@drawable/vodplayer_ffd" />
             </RelativeLayout>
