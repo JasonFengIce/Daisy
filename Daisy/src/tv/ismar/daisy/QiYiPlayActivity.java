@@ -880,6 +880,8 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
             initData();
         }
         isneedpause = true;
+        showPanel();
+        panelLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -958,6 +960,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
         if (isVodMenuVisible()||isAdPlaying)
             return;
         if (!panelShow) {
+            Log.e("qiyi","!panelShow");
             panelLayout.startAnimation(panelShowAnimation);
             panelLayout.setVisibility(View.VISIBLE);
             top_panelayout.startAnimation(top_to_down);
@@ -965,6 +968,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
             panelShow = true;
             hidePanelHandler.postDelayed(hidePanelRunnable, 3000);
         } else {
+            Log.e("qiyi","removecallback");
             hidePanelHandler.removeCallbacks(hidePanelRunnable);
             hidePanelHandler.postDelayed(hidePanelRunnable, 3000);
         }
