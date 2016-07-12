@@ -1263,7 +1263,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
                     if (!paused) {
                         pauseItem();
                         playPauseImage
-                                .setImageResource(R.drawable.play);
+                                .setImageResource(R.drawable.paus);
                     }
                     break;
                 case KeyEvent.KEYCODE_MENU:
