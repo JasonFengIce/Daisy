@@ -979,7 +979,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
         if (paused)
             return;
         hideBuffer();
-        if (mPlayer.isPlaying())
+//        if (mPlayer.isPlaying())
             mPlayer.pause();
         paused = true;
         if (subItem != null)
@@ -1312,7 +1312,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
                     if (paused) {
                         resumeItem();
                         playPauseImage
-                                .setImageResource(R.drawable.paus);
+                                .setImageResource(R.drawable.play);
                     }
                 }
 
