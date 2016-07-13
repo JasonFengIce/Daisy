@@ -1445,7 +1445,6 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
     private String getTimeString(int ms) {
         int left = ms;
         int hour = left / 3600000;
-        left %= 3600000;
         int min = left / 60000;
         left %= 60000;
         int sec = left / 1000;
@@ -2017,7 +2016,6 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
 
         //IMediaPlayer对象通过QiyiPlayerSdk.getInstance().createVideoPlayer()创建
         mPlayer = PlayerSdk.getInstance().createMediaPlayer();
-
         //setVideo方法, 更名为setData, 必须调用, 需传入IMedia对象, 起播时间点修改为从IMedia对象获取, 不从setData传参
         mPlayer.setData(media);
 
@@ -2285,8 +2283,10 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
             Log.d(TAG, "onBufferEnd");
             if (mPlayer == null)
                 return;
-            if (!mPlayer.isPlaying())
+            if (!mPlayer.isPlaying()){
                 mPlayer.start();
+                playPauseImage.setImageResource(R.drawable.play);
+            }
             isBuffer = false;
             hideBuffer();
             checkTaskStart(0);
@@ -2299,8 +2299,11 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
             Log.d(TAG, "onSeekComplete");
             if (mPlayer == null)
                 return;
-            if (!mPlayer.isPlaying())
+            if (!mPlayer.isPlaying()){
                 mPlayer.start();
+                playPauseImage.setImageResource(R.drawable.play);
+            }
+
             isBuffer = false;
             hideBuffer();
             checkTaskStart(0);
