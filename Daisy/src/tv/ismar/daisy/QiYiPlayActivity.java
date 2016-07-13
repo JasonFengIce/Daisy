@@ -846,7 +846,10 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
                 isBuffer = true;
                 showPanel();
                 showBuffer();
-                params.leftMargin=seekBar.getWidth()*seekBar.getProgress()/clipLength-params.width/2+getResources().getDimensionPixelOffset(R.dimen.play_seekbar_marginleft);
+                if(clipLength!=0) {
+                    Log.i("length", "clip=" + clipLength + "--" + "params=" + params.width / 2 + getResources().getDimensionPixelOffset(R.dimen.play_seekbar_marginleft));
+                    params.leftMargin = seekBar.getWidth() * seekBar.getProgress() / clipLength - params.width / 2 + getResources().getDimensionPixelOffset(R.dimen.play_seekbar_marginleft);
+                }
                 progress_time.setLayoutParams(params);
                 progress_time.setVisibility(View.VISIBLE);
                 hidePanelHandler.removeCallbacks(hidePanelRunnable);
@@ -901,6 +904,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
     private void removeAllHandler() {
         mHandler.removeCallbacks(mUpdateTimeTask);
         mHandler.removeCallbacks(finishPlayerActivity);
+        mHandler.removeMessages(MSG_AD_COUNTDOWN);
         hideMenuHandler.removeCallbacks(hideMenuRunnable);
         mHandler.removeCallbacks(mUpdateTimeTask);
         mCheckHandler.removeCallbacks(checkStatus);
