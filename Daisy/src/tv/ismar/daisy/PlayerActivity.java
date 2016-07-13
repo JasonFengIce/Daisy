@@ -866,11 +866,15 @@ public class PlayerActivity extends VodMenuAction implements OnItemSelectedListe
 					@Override
 					public void onSeekComplete(SmartPlayer mp) {
 						// TODO Auto-generated method stub
-						if (!mp.isPlaying())
+						if (!mp.isPlaying()){
 							mp.start();
-						if (paused) {
-							mp.pause();
+							playPauseImage.setImageResource(R.drawable.play);
+							paused=false;
 						}
+
+//						if (paused) {
+//							mp.pause();
+//						}
 						isBuffer = false;
 						isSeek = false;
 //						hideBuffer();
