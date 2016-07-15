@@ -1,1 +1,1 @@
-include ":Daisy"
+include ":Daisy", ":player", ":library"
