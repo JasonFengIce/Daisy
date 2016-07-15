@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.ismartv.tvplayer;
+package cn.ismartv.tvplayer.mvvm.view.activity;
 
 import android.Manifest.permission;
 import android.annotation.TargetApi;
@@ -71,6 +71,11 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.List;
 import java.util.Locale;
+
+import cn.ismartv.tvplayer.DemoPlayer;
+import cn.ismartv.tvplayer.EventLogger;
+import cn.ismartv.tvplayer.HlsRendererBuilder;
+import cn.ismartv.tvplayer.R;
 
 /**
  * An activity that plays media using {@link DemoPlayer}.

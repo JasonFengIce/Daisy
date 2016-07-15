@@ -1,31 +1,5 @@
 package tv.ismar.daisy;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import android.provider.Settings;
-import android.widget.*;
-import retrofit2.GsonConverterFactory;
-import retrofit2.Retrofit;
-import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
-import tv.ismar.daisy.core.VodUserAgent;
-import tv.ismar.daisy.core.client.HttpAPI;
-import tv.ismar.daisy.core.client.HttpManager;
-import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
-import tv.ismar.daisy.data.http.ItemEntity;
-import tv.ismar.daisy.models.Clip;
-import tv.ismar.daisy.models.Favorite;
-import tv.ismar.daisy.models.History;
-import tv.ismar.daisy.models.Item;
-import tv.ismar.daisy.persistence.FavoriteManager;
-import tv.ismar.daisy.persistence.HistoryManager;
-import tv.ismar.daisy.player.CallaPlay;
-import tv.ismar.daisy.player.ISTVVodMenu;
-import tv.ismar.daisy.player.ISTVVodMenuItem;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -38,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -53,8 +28,16 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import cn.ismartv.activator.utils.MD5Utils;
-import tv.ismar.daisy.ui.fragment.EpisodeFragment;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ismartv.api.t.AccessProxy;
 import com.ismartv.bean.ClipInfo;
@@ -74,6 +57,33 @@ import com.qiyi.sdk.player.Parameter;
 import com.qiyi.sdk.player.PlayerSdk;
 import com.qiyi.sdk.player.PlayerSdk.OnInitializedListener;
 import com.qiyi.sdk.player.SdkVideo;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import retrofit2.GsonConverterFactory;
+import retrofit2.Retrofit;
+import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
+import tv.ismar.daisy.core.VodUserAgent;
+import tv.ismar.daisy.core.client.HttpAPI;
+import tv.ismar.daisy.core.client.HttpManager;
+import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
+import tv.ismar.daisy.data.http.ItemEntity;
+import tv.ismar.daisy.models.Clip;
+import tv.ismar.daisy.models.Favorite;
+import tv.ismar.daisy.models.History;
+import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.persistence.FavoriteManager;
+import tv.ismar.daisy.persistence.HistoryManager;
+import tv.ismar.daisy.player.CallaPlay;
+import tv.ismar.daisy.player.ISTVVodMenu;
+import tv.ismar.daisy.player.ISTVVodMenuItem;
+import tv.ismar.daisy.ui.fragment.EpisodeFragment;
+import tv.ismar.daisy.utils.HardwareUtils;
 
 public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.OnItemSelectedListener {
     private static final int MSG_AD_COUNTDOWN = 100;
@@ -2096,7 +2106,7 @@ public class QiYiPlayActivity extends VodMenuAction implements EpisodeFragment.O
             SdkVideo qiyiInfo = new SdkVideo(array[0],array[1],array[2],urlInfo.isIs_vip());
             startPlayMovie(qiyiInfo);
         }
-        sid = MD5Utils.encryptByMD5(SimpleRestClient.sn_token+System.currentTimeMillis());
+        sid = HardwareUtils.getMd5ByString(SimpleRestClient.sn_token+System.currentTimeMillis());
         startDuration = System.currentTimeMillis();
         if (subItem != null)
             callaPlay.videoStart(item, subItem.pk, subItem.title,

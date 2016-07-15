@@ -1,27 +1,5 @@
 package tv.ismar.daisy.ui.fragment.usercenter;
 
-import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.StringUtils;
-
-import tv.ismar.daisy.R;
-import tv.ismar.daisy.VodApplication;
-import tv.ismar.daisy.core.DaisyUtils;
-import tv.ismar.daisy.core.SimpleRestClient;
-import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
-import tv.ismar.daisy.core.client.IsmartvUrlClient;
-import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
-import tv.ismar.daisy.core.receiver.TimeCountdownBroadcastSender;
-import tv.ismar.daisy.data.usercenter.AuthTokenEntity;
-import tv.ismar.daisy.models.Favorite;
-import tv.ismar.daisy.models.History;
-import tv.ismar.daisy.models.Item;
-import tv.ismar.daisy.ui.activity.UserCenterActivity;
-import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
-import tv.ismar.sakura.utils.DeviceUtils;
-
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -45,9 +23,28 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import cn.ismartv.activator.Activator;
-
 import com.google.gson.Gson;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.HashMap;
+
+import cn.ismartv.activator.IsmartvActivator;
+import tv.ismar.daisy.R;
+import tv.ismar.daisy.VodApplication;
+import tv.ismar.daisy.core.DaisyUtils;
+import tv.ismar.daisy.core.SimpleRestClient;
+import tv.ismar.daisy.core.SimpleRestClient.HttpPostRequestInterface;
+import tv.ismar.daisy.core.client.IsmartvUrlClient;
+import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
+import tv.ismar.daisy.core.receiver.TimeCountdownBroadcastSender;
+import tv.ismar.daisy.data.usercenter.AuthTokenEntity;
+import tv.ismar.daisy.models.Favorite;
+import tv.ismar.daisy.models.History;
+import tv.ismar.daisy.models.Item;
+import tv.ismar.daisy.ui.activity.UserCenterActivity;
+import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
+import tv.ismar.sakura.utils.DeviceUtils;
 
 /**
  * Created by huaijie on 7/3/15.
@@ -359,7 +356,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private void accountsCombine() {
         String api = SimpleRestClient.root_url + "/accounts/combine/";
         long timestamp = System.currentTimeMillis();
-        Activator activator = Activator.getInstance(mContext);
+        IsmartvActivator activator = IsmartvActivator.getInstance(mContext);
         String rsaResult = activator.PayRsaEncode("sn=" + SimpleRestClient.sn_token + "&timestamp=" + timestamp);
 
         HashMap<String, String> params = new HashMap<String, String>();
@@ -605,7 +602,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private void bindBestTvauth() {
         long timestamp = System.currentTimeMillis();
-        Activator activator = Activator.getInstance(mContext);
+        IsmartvActivator activator = IsmartvActivator.getInstance(mContext);
         String mac = DeviceUtils.getLocalMacAddress(mContext);
         mac = mac.replace("-", "").replace(":", "");
         String rsaResult = activator.PayRsaEncode("sn="

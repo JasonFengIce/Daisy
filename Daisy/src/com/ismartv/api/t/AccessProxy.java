@@ -1,8 +1,8 @@
 package com.ismartv.api.t;
 
 import android.content.Context;
+import android.util.Base64;
 import android.util.Log;
-import cn.ismartv.activator.core.rsa.AESOperator;
 import com.ismartv.api.AESDemo;
 import com.ismartv.bean.ClipInfo;
 import com.pplive.android.player.PlayCodeUtil;
@@ -11,6 +11,8 @@ import com.qiyi.sdk.player.IMedia;
 import com.qiyi.sdk.player.SdkVideo;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import cn.ismartv.activator.core.rsa.SkyAESTool2;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.SimpleRestClient;
 
@@ -251,7 +253,8 @@ public class AccessProxy {
 	}
 
 	private static String AES_decrypt(String url) {
-		return AESOperator.getInstance().AES_decrypt(SimpleRestClient.device_token, url);
+
+		return SkyAESTool2.decrypt(SimpleRestClient.device_token.substring(0, 16), Base64.decode(url, Base64.URL_SAFE));
 	}
 
 	private static String getURLStr(String url) {

@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,7 +23,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import cn.ismartv.activator.Activator;
+import cn.ismartv.activator.IsmartvActivator;
 import tv.ismar.daisy.BaseActivity;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
@@ -35,8 +34,6 @@ import tv.ismar.daisy.core.account.AccountManager;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
 import tv.ismar.daisy.data.usercenter.AccountBalanceEntity;
 import tv.ismar.daisy.data.usercenter.AccountPlayAuthEntity;
-import tv.ismar.daisy.player.InitPlayerTool;
-import tv.ismar.daisy.ui.activity.TVGuideActivity;
 import tv.ismar.daisy.ui.activity.UserCenterActivity;
 import tv.ismar.daisy.ui.adapter.AccoutPlayAuthAdapter;
 import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
@@ -209,7 +206,7 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener, 
         String api = SimpleRestClient.root_url + "/accounts/playauths/";
 
         String timestamp = String.valueOf(System.currentTimeMillis());
-        Activator activator = Activator.getInstance(mContext);
+        IsmartvActivator activator = IsmartvActivator.getInstance(mContext);
         String sign = activator.PayRsaEncode("sn=" + SimpleRestClient.sn_token + "&timestamp=" + timestamp);
 
         final HashMap<String, String> params = new HashMap<String, String>();

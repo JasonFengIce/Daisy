@@ -29,20 +29,16 @@ import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -59,7 +55,7 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import cn.ismartv.activator.Activator;
+import cn.ismartv.activator.IsmartvActivator;
 import okhttp3.ResponseBody;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -332,7 +328,7 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
     }
 
     private View.OnClickListener buttonClick = new View.OnClickListener() {
-        private Activator activator;
+        private IsmartvActivator activator;
 
         @Override
         public void onClick(View view) {
@@ -421,7 +417,7 @@ public class PaymentDialog extends Dialog implements BaseActivity.OnLoginCallbac
                             + "&source=sky" + "&timestamp=" + timestamp
                             + "&wares_id=" + mItem.pk + "&wares_type="
                             + mItem.model_name;
-                    activator = Activator.getInstance(getContext());
+                    activator = IsmartvActivator.getInstance(getContext());
                     String rsaResult = activator.PayRsaEncode(encode);
                     if (rsaResult != null && !"".equals(rsaResult)) {
                         client.doSendRequest(BALANCEPAY_BASE_URL, "post",

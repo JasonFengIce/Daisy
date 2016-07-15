@@ -14,7 +14,7 @@ import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
-import cn.ismartv.activator.Activator;
+import cn.ismartv.activator.IsmartvActivator;
 import cn.ismartv.activator.data.Result;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
@@ -23,12 +23,12 @@ import tv.ismar.daisy.core.VodUserAgent;
 import tv.ismar.daisy.core.initialization.InitializeProcess;
 import tv.ismar.daisy.core.preferences.AccountSharedPrefs;
 
-public class InitService extends Service implements Activator.OnComplete {
+public class InitService extends Service implements IsmartvActivator.Callback {
 
     private ConnectionChangeReceiver mConnectivityReceiver;
     private String product;
     private String mode;
-    private Activator activator;
+    private IsmartvActivator activator;
     private String localInfo;
 
     @Override
@@ -42,16 +42,28 @@ public class InitService extends Service implements Activator.OnComplete {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        activator = Activator.getInstance(this);
-        activator.setOnCompleteListener(this);
+        activator = IsmartvActivator.getInstance(this);
         localInfo = DaisyUtils.getVodApplication(this).getPreferences()
                 .getString(VodApplication.LOCATION_INFO, "");
         product = Build.BRAND.replace(" ", "_");
         mode = VodUserAgent.getModelName();
         getHardInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            activator.active(product, mode,
-                    String.valueOf(SimpleRestClient.appVersion), localInfo);
+            activator.setKind(mode);
+            activator.setManufacture(product);
+            activator.setLocation(localInfo);
+            activator.setVersion(String.valueOf(SimpleRestClient.appVersion));
+            activator.execute(new IsmartvActivator.Callback() {
+                @Override
+                public void onSuccess(Result result) {
+
+                }
+
+                @Override
+                public void onFailure(String msg) {
+
+                }
+            });
             Log.v("InitService", "InitService started");
             new Thread(new InitializeProcess(this)).start();
         } else {
@@ -59,16 +71,17 @@ public class InitService extends Service implements Activator.OnComplete {
         }
     }
 
-    @Override
-    public void onFailed(String arg0) {
-
-    }
 
     @Override
     public void onSuccess(Result result) {
         saveActivedInfo(result);
         saveSimpleRestClientPreferences(this, result);
         DaisyUtils.getVodApplication(this).getNewContentModel();
+    }
+
+    @Override
+    public void onFailure(String msg) {
+
     }
 
     private void saveActivedInfo(Result result) {
@@ -145,9 +158,22 @@ public class InitService extends Service implements Activator.OnComplete {
             if (networkInfo != null) {
                 unregisterNetStateReceiver();
                 if (networkInfo.isConnected()) {
-                    activator.active(product, mode,
-                            String.valueOf(SimpleRestClient.appVersion),
-                            localInfo);
+                    activator.setKind(mode);
+                    activator.setManufacture(product);
+                    activator.setLocation(localInfo);
+                    activator.setVersion(String.valueOf(SimpleRestClient.appVersion));
+                    activator.execute(new IsmartvActivator.Callback() {
+                        @Override
+                        public void onSuccess(Result result) {
+
+                        }
+
+                        @Override
+                        public void onFailure(String msg) {
+
+                        }
+                    });
+
                     Log.v("InitService", "InitService started");
                     new Thread(new InitializeProcess(InitService.this)).start();
                 }

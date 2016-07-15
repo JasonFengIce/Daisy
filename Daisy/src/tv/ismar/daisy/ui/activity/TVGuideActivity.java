@@ -26,11 +26,14 @@ import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.*;
 
-import cn.ismartv.activator.Activator;
+import cn.ismartv.activator.IsmartvActivator;
 import cn.ismartv.activator.data.Result;
+
 import com.baidu.location.*;
+
 import org.apache.commons.lang3.StringUtils;
 import org.sakuratya.horizontal.ui.HGridView;
+
 import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
@@ -68,7 +71,7 @@ import static tv.ismar.daisy.VodApplication.*;
 /**
  * Created by huaijie on 5/18/15.
  */
-public class TVGuideActivity extends BaseActivity implements Activator.OnComplete, HGridView.OnScrollListener {
+public class TVGuideActivity extends BaseActivity implements IsmartvActivator.Callback, HGridView.OnScrollListener {
     private static final String TAG = "TVGuideActivity";
     private static final int SWITCH_PAGE = 0X01;
     private static final int SWITCH_PAGE_FROMLAUNCH = 0X02;
@@ -86,7 +89,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private LinearLayout tabListView;
 
     private View contentView;
-    private Activator activator;
+    private IsmartvActivator activator;
 
     private LocationClient mLocationClient;
     private MyLocationListener mMyLocationListener;
@@ -116,7 +119,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private static int channelscrollIndex = 0;
 
     public boolean isneedpause;
-    private Random random=new Random();
+    private Random random = new Random();
     private FragmentSwitchHandler fragmentSwitch;
     private BitmapDecoder bitmapDecoder;
     private Handler netErrorPopupHandler;
@@ -124,7 +127,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
     private HorizontalScrollView channel_list_scroll;
     private String intentFlag;
     public boolean isMove = false;
-    private boolean canMove=false;
+    private boolean canMove = false;
     //    private Setlockscreenservice nativeservice;
 //    public static YogaBroadcastReceiver receiver;
 
@@ -324,13 +327,15 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         getHardInfo();
         updatePoster();
         if (StringUtils.isEmpty(SimpleRestClient.device_token)) {
-            activator = Activator.getInstance(this);
-            activator.setOnCompleteListener(this);
+            activator = IsmartvActivator.getInstance(this);
             String product = Build.BRAND.replace(" ", "_");
             String mode = VodUserAgent.getModelName();
-            if (!activator.iswaiting)
-                activator.active(product, mode,
-                        String.valueOf(SimpleRestClient.appVersion), localInfo);
+            activator.setKind(mode);
+            activator.setManufacture(product);
+            activator.setLocation(localInfo);
+            activator.setVersion(String.valueOf(SimpleRestClient.appVersion));
+            activator.execute(this);
+
 
         } else {
             String appUpdateHost = "http://" + SimpleRestClient.upgrade_domain;
@@ -475,7 +480,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
      * fetch channel
      */
     private void fetchChannels() {
-        if(!"http://".equals(SimpleRestClient.root_url)) {
+        if (!"http://".equals(SimpleRestClient.root_url)) {
             Retrofit retrofit = new Retrofit.Builder()
                     .client(HttpManager.getInstance().mCacheClient)
                     .baseUrl(HttpManager.appendProtocol(SimpleRestClient.root_url))
@@ -486,7 +491,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
                 @Override
                 public void onResponse(Response<ChannelEntity[]> response) {
                     if (response.body() != null) {
-                        canMove=true;
+                        canMove = true;
                         arrow_right_visible.setEnabled(true);
                         fillChannelLayout(response.body());
                     } else {
@@ -501,6 +506,7 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
             });
         }
     }
+
     private void fillChannelLayout(ChannelEntity[] channelEntities) {
         if (neterrorshow)
             return;
@@ -967,6 +973,22 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
         AppUpdateUtilsV2.getInstance(this).checkAppUpdate(appUpdateHost);
     }
 
+    @Override
+    public void onFailure(String msg) {
+        Log.e(TAG, "active error: " + msg);
+        fetchChannels();
+        if (StringUtils.isEmpty(SimpleRestClient.sn_token)) {
+            netErrorPopupHandler = new Handler(Looper.getMainLooper());
+            netErrorPopupRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    showNetErrorPopup();
+                }
+            };
+            netErrorPopupHandler.postDelayed(netErrorPopupRunnable, 2000);
+        }
+    }
+
     private void saveActivedInfo(Result result) {
         AccountSharedPrefs accountSharedPrefs = AccountSharedPrefs.getInstance();
         accountSharedPrefs.setSharedPrefs(AccountSharedPrefs.APP_UPDATE_DOMAIN, result.getUpgrade_domain());
@@ -981,28 +1003,11 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     }
 
-
-    @Override
-    public void onFailed(String erro) {
-        Log.e(TAG, "active error: " + erro);
-        fetchChannels();
-        if (StringUtils.isEmpty(SimpleRestClient.sn_token)) {
-            netErrorPopupHandler = new Handler(Looper.getMainLooper());
-            netErrorPopupRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    showNetErrorPopup();
-                }
-            };
-            netErrorPopupHandler.postDelayed(netErrorPopupRunnable, 2000);
-        }
-    }
-
     private boolean neterrorshow = false;
 
     private void showNetErrorPopup() {
         arrow_right_visible.setEnabled(false);
-        canMove=false;
+        canMove = false;
         if (neterrorshow)
             return;
         final MessageDialogFragment dialog = new MessageDialogFragment(TVGuideActivity.this, getString(R.string.fetch_net_data_error), null);
@@ -1598,29 +1603,30 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        if(canMove){
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                downX = (int) event.getRawX();
-                downY = (int) event.getRawY();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                break;
-            case MotionEvent.ACTION_UP:
-                int moveX = (int) event.getRawX();
-                if (downY < channel_list_scroll.getY()) {
-                    if ((moveX - downX) > 50) {
-                        scroll.arrowScroll(View.FOCUS_LEFT);
-                        isMove = true;
-                    } else if ((downX - moveX) > 50) {
-                        scroll.arrowScroll(View.FOCUS_RIGHT);
-                        isMove = true;
-                    } else {
-                        isMove = false;
+        if (canMove) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    downX = (int) event.getRawX();
+                    downY = (int) event.getRawY();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    break;
+                case MotionEvent.ACTION_UP:
+                    int moveX = (int) event.getRawX();
+                    if (downY < channel_list_scroll.getY()) {
+                        if ((moveX - downX) > 50) {
+                            scroll.arrowScroll(View.FOCUS_LEFT);
+                            isMove = true;
+                        } else if ((downX - moveX) > 50) {
+                            scroll.arrowScroll(View.FOCUS_RIGHT);
+                            isMove = true;
+                        } else {
+                            isMove = false;
+                        }
                     }
-                }
-                break;
-        }}
+                    break;
+            }
+        }
         return super.dispatchTouchEvent(event);
     }
 
@@ -1667,83 +1673,84 @@ public class TVGuideActivity extends BaseActivity implements Activator.OnComplet
 //    }
 
     private void checkUpdateChannel(List<ChannelEntity> channelList) {
-        ContentResolver resolver=getContentResolver();
-        boolean update=false;
-        if(Settings.System.getString(resolver,"push_messages_favors_id")==null){
+        ContentResolver resolver = getContentResolver();
+        boolean update = false;
+        if (Settings.System.getString(resolver, "push_messages_favors_id") == null) {
             initChannelData(channelList, null);
-        }else{
-            String[] channel_name=Settings.System.getString(resolver,"push_messages_favors_name").split("\\|");
-            if(channelList.size()-1!=channel_name.length){
-                update=true;
-            }else {
+        } else {
+            String[] channel_name = Settings.System.getString(resolver, "push_messages_favors_name").split("\\|");
+            if (channelList.size() - 1 != channel_name.length) {
+                update = true;
+            } else {
                 for (int i = 1; i < channelList.size(); i++) {
-                    if (!channelList.get(i).getName().equals(channel_name[i - 1])){
-                        update=true;
+                    if (!channelList.get(i).getName().equals(channel_name[i - 1])) {
+                        update = true;
                         break;
                     }
                 }
             }
             //判断是否更新
-            if(update){
-                List<String> checked=new ArrayList<>();
-                String[] checkd_channel= Settings.System.getString(resolver,"push_messages_favors_ischecked").split("\\|");
+            if (update) {
+                List<String> checked = new ArrayList<>();
+                String[] checkd_channel = Settings.System.getString(resolver, "push_messages_favors_ischecked").split("\\|");
                 //记录用户之前勾选的喜好频道
-                for (int i = 0; i <checkd_channel.length ; i++) {
-                    if(Integer.parseInt(checkd_channel[i])==1){
+                for (int i = 0; i < checkd_channel.length; i++) {
+                    if (Integer.parseInt(checkd_channel[i]) == 1) {
                         checked.add(channel_name[i]);
                     }
                 }
-                initChannelData(channelList,checked);
+                initChannelData(channelList, checked);
             }
 
         }
 
 
     }
-    private void initChannelData(List<ChannelEntity> channelList, List<String> checked){
-        ContentResolver resolver=getContentResolver();
-        List<String> channels=new ArrayList<>();
-        for (int i = 1; i <channelList.size() ; i++) {
+
+    private void initChannelData(List<ChannelEntity> channelList, List<String> checked) {
+        ContentResolver resolver = getContentResolver();
+        List<String> channels = new ArrayList<>();
+        for (int i = 1; i < channelList.size(); i++) {
             channels.add(channelList.get(i).getName());
         }
-        String id="";
-        String name="";
-        String ischecked="";
-        String content_mode="";
-        for (int i = 0; i <channels.size(); i++) {
-            if(i==channels.size()-1){
-                id+="00000"+(i+1);
-                name+=channels.get(i);
-                ischecked+=0;
-                if("chinesemovie".equals(channelList.get(i+1).getChannel())||"overseas".equals(channelList.get(i+1).getChannel())){
-                    content_mode+="movie";
-                }else{
-                    content_mode+=channelList.get(i+1).getChannel();
+        String id = "";
+        String name = "";
+        String ischecked = "";
+        String content_mode = "";
+        for (int i = 0; i < channels.size(); i++) {
+            if (i == channels.size() - 1) {
+                id += "00000" + (i + 1);
+                name += channels.get(i);
+                ischecked += 0;
+                if ("chinesemovie".equals(channelList.get(i + 1).getChannel()) || "overseas".equals(channelList.get(i + 1).getChannel())) {
+                    content_mode += "movie";
+                } else {
+                    content_mode += channelList.get(i + 1).getChannel();
                 }
-            }else{
-                id+="00000"+(i+1)+"|";
-                name+=channels.get(i)+"|";
-                ischecked+=0+"|";
-                if("chinesemovie".equals(channelList.get(i+1).getChannel())||"overseas".equals(channelList.get(i+1).getChannel())){
-                    content_mode+="movie"+"|";
-                }else{
-                    content_mode+=channelList.get(i+1).getChannel()+"|";
+            } else {
+                id += "00000" + (i + 1) + "|";
+                name += channels.get(i) + "|";
+                ischecked += 0 + "|";
+                if ("chinesemovie".equals(channelList.get(i + 1).getChannel()) || "overseas".equals(channelList.get(i + 1).getChannel())) {
+                    content_mode += "movie" + "|";
+                } else {
+                    content_mode += channelList.get(i + 1).getChannel() + "|";
                 }
             }
         }
-        if(checked!=null){
-            String[] check=ischecked.split("\\|");
-            for (int i = 0; i <channels.size() ; i++) {
-                if(checked.contains(channels.get(i))){
-                    check[i]="1";
+        if (checked != null) {
+            String[] check = ischecked.split("\\|");
+            for (int i = 0; i < channels.size(); i++) {
+                if (checked.contains(channels.get(i))) {
+                    check[i] = "1";
                 }
             }
-            ischecked="";
-            for (int i = 0; i <check.length; i++) {
-                if(i==check.length-1){
-                    ischecked+=check[i];
-                }else{
-                    ischecked+=check[i]+"|";
+            ischecked = "";
+            for (int i = 0; i < check.length; i++) {
+                if (i == check.length - 1) {
+                    ischecked += check[i];
+                } else {
+                    ischecked += check[i] + "|";
                 }
             }
         }

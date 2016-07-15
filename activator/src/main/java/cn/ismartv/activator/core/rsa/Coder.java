@@ -1,7 +1,8 @@
 package cn.ismartv.activator.core.rsa;
 
-import java.io.UnsupportedEncodingException;
 import android.util.Base64;
+
+import java.io.UnsupportedEncodingException;
 
 /**
  * Created by Administrator on 2014/10/10.
@@ -24,16 +25,16 @@ public class Coder {
      * @return
      */
     public static String encryptBASE64(byte[] sign){
-        return Base64.encodeToString(sign,Base64.DEFAULT);
+        return Base64.encodeToString(sign, Base64.DEFAULT);
         
     }
   //解密
-    public static byte[] UrlSafeBase64_decode(String data) throws UnsupportedEncodingException{
-     byte[] b= Base64.decode(data, Base64.URL_SAFE);    
+    public static byte[] UrlSafeBase64_decode(String data) throws UnsupportedEncodingException {
+     byte[] b= Base64.decode(data, Base64.URL_SAFE);
      return b;
     }
     //解密
-    public static String UrlSafeBase64_encode(byte[] data) throws UnsupportedEncodingException{
+    public static String UrlSafeBase64_encode(byte[] data) throws UnsupportedEncodingException {
      //byte[] b= Base64.encode(data, Base64.URL_SAFE);
      String b =  Base64.encodeToString(data, Base64.URL_SAFE);
      return b;
@@ -42,13 +43,13 @@ public class Coder {
      * @param hexStr 
      * @return 
      */  
-    public static byte[] parseHexStr2Byte(String hexStr) {  
+    public static byte[] parseHexStr2Byte(String hexStr) {
             if (hexStr.length() < 1)  
                     return null;  
             byte[] result = new byte[hexStr.length()/2];  
             for (int i = 0;i< hexStr.length()/2; i++) {  
-                    int high = Integer.parseInt(hexStr.substring(i*2, i*2+1), 16);  
-                    int low = Integer.parseInt(hexStr.substring(i*2+1, i*2+2), 16);  
+                    int high = Integer.parseInt(hexStr.substring(i*2, i*2+1), 16);
+                    int low = Integer.parseInt(hexStr.substring(i*2+1, i*2+2), 16);
                     result[i] = (byte) (high * 16 + low);  
             }  
             return result;  
@@ -58,10 +59,10 @@ public class Coder {
      * @param buf 
      * @return 
      */  
-    public static String parseByte2HexStr(byte buf[]) {  
-            StringBuffer sb = new StringBuffer();  
+    public static String parseByte2HexStr(byte buf[]) {
+            StringBuffer sb = new StringBuffer();
             for (int i = 0; i < buf.length; i++) {  
-                    String hex = Integer.toHexString(buf[i] & 0xFF);  
+                    String hex = Integer.toHexString(buf[i] & 0xFF);
                     if (hex.length() == 1) {  
                             hex = '0' + hex;  
                     }  

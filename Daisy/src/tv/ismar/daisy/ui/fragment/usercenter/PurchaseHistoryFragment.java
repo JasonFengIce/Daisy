@@ -22,7 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import cn.ismartv.activator.Activator;
+import cn.ismartv.activator.IsmartvActivator;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.SimpleRestClient;
 import tv.ismar.daisy.core.client.IsmartvUrlClient;
@@ -66,7 +66,7 @@ public class PurchaseHistoryFragment extends Fragment {
 
     private void fetchAccountsOrders() {
         String api = SimpleRestClient.root_url + "/accounts/orders/";
-        Activator activator = Activator.getInstance(mContext);
+        IsmartvActivator activator = IsmartvActivator.getInstance(mContext);
 
         String timestamp = String.valueOf(System.currentTimeMillis());
         String sign = activator.PayRsaEncode("sn=" + SimpleRestClient.sn_token + "&timestamp=" + timestamp);

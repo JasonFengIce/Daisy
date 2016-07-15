@@ -2,25 +2,27 @@ package tv.ismar.daisy.views;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.*;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import cn.ismartv.activator.Activator;
-
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 
-import tv.ismar.daisy.BaseActivity;
+import cn.ismartv.activator.IsmartvActivator;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.VodApplication;
 import tv.ismar.daisy.core.DaisyUtils;
@@ -32,10 +34,6 @@ import tv.ismar.daisy.models.History;
 import tv.ismar.daisy.models.Item;
 import tv.ismar.daisy.ui.widget.dialog.MessageDialogFragment;
 import tv.ismar.sakura.utils.DeviceUtils;
-
-import java.net.ContentHandler;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class LoginPanelView extends LinearLayout {
 
@@ -444,7 +442,7 @@ public class LoginPanelView extends LinearLayout {
                 @Override
                 public void onClick(View v) {
                     long timestamp = System.currentTimeMillis();
-                    Activator activator = Activator.getInstance(getContext());
+                    IsmartvActivator activator = IsmartvActivator.getInstance(getContext());
                     String rsaResult = activator.PayRsaEncode("sn="
                             + SimpleRestClient.sn_token + "&timestamp="
                             + timestamp);
@@ -516,7 +514,7 @@ public class LoginPanelView extends LinearLayout {
 
     private void bindBestTvauth() {
         long timestamp = System.currentTimeMillis();
-        Activator activator = Activator.getInstance(getContext());
+        IsmartvActivator activator = IsmartvActivator.getInstance(getContext());
         String mac = DeviceUtils.getLocalMacAddress(mcontext);
         mac = mac.replace("-", "").replace(":", "");
         String rsaResult = activator.PayRsaEncode("sn="
